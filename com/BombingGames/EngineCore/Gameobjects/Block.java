@@ -4,6 +4,7 @@ import com.BombingGames.EngineCore.Controller;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WECamera;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -147,7 +148,10 @@ public class Block extends AbstractGameObject {
             case 8: block = new Block(id); //sand
                     block.setObstacle(true);
                     break;      
-            case 9: block = new Sea(id, coords); //water
+            case 9: if(Gdx.app.getType()==ApplicationType.Android)
+                    block = new Block(id); //static water
+                    else
+                    block = new Sea(id, coords); //Sea
                     block.liquid = true;
                     block.setTransparent(true);
                     break;

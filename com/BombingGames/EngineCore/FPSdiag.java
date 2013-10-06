@@ -16,8 +16,8 @@ public class FPSdiag {
 
     /**
      *
-     * @param xPos the position of the diagram
-     * @param yPos the position of the diagram
+     * @param xPos the position of the diagram from left
+     * @param yPos the position of the diagram (its bottom)
      */
     public FPSdiag(int xPos, int yPos) {
         this.xPos = xPos;

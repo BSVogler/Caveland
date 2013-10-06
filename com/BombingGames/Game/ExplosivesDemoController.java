@@ -1,12 +1,9 @@
 package com.BombingGames.Game;
 
 import com.BombingGames.EngineCore.Controller;
-import static com.BombingGames.EngineCore.Controller.getLightengine;
-import static com.BombingGames.EngineCore.Controller.getMap;
 import com.BombingGames.EngineCore.Gameobjects.AbstractCharacter;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
 import com.BombingGames.EngineCore.Gameobjects.Block;
-import com.BombingGames.EngineCore.Gameobjects.ExplosiveBarrel;
 import com.BombingGames.EngineCore.GameplayScreen;
 import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
@@ -17,7 +14,6 @@ import com.BombingGames.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 
 /**
  *The <i>CustomGameController</i> is for the game code. Put engine code into <i>Controller</i>.
@@ -62,8 +58,6 @@ public class ExplosivesDemoController extends Controller {
         );
         
         useLightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        
-        Gdx.input.setInputProcessor(new InputListener());
     }
 
     
@@ -110,110 +104,4 @@ public class ExplosivesDemoController extends Controller {
         super.update(delta);
     }
     
-    private class InputListener implements InputProcessor {
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if (!GameplayScreen.msgSystem().isListeningForInput()) {
-                //toggle minimap
-                 if (keycode == Input.Keys.M){
-                     GameplayScreen.msgSystem().add("Minimap toggled to: "+ getMinimap().toggleVisibility());
-                 }
-                 //toggle fullscreen
-                 if (keycode == Input.Keys.F){
-                     WurfelEngine.setFullscreen(!WurfelEngine.isFullscreen());
-                     Gdx.app.log("DEBUG","Set to fullscreen:"+!WurfelEngine.isFullscreen());
-                 }
-
-                 //toggle eathquake
-                 if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
-                     getMap().earthquake(5000);
-                 }
-
-                 //pause
-                 //if (input.isKeyDown(Input.Keys.P)) Gdx.app.setPaused(true);
-                 //time is set 0 but the game keeps running
-                   if (keycode == Input.Keys.P) {
-                     setTimespeed(0);
-                  } 
-
-                 //reset zoom
-                 if (keycode == Input.Keys.Z) {
-                     getCameras().get(0).setZoom(1);
-                     GameplayScreen.msgSystem().add("Zoom reset");
-                  }  
-
-                 //show/hide light engine
-                 if (keycode == Input.Keys.L) {
-                     if (getLightengine() != null) getLightengine().RenderData(!getLightengine().isRenderingData());
-                  } 
-
-                  if (keycode == Input.Keys.T) {
-                     setTimespeed();
-                  } 
-
-                 if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
-                     WurfelEngine.getInstance().setScreen(new MainMenuScreen());
-            }
-            
-             //toggle input for msgSystem
-             if (keycode == Input.Keys.ENTER)
-                 GameplayScreen.msgSystem().listenForInput(!GameplayScreen.msgSystem().isListeningForInput());
-
-            return true;            
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            GameplayScreen.msgSystem().getInput(character);
-            return true;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = getView().ScreenToGameCoords(screenX,screenY);
-            if (coords.getZ() < Map.getBlocksZ()-1) coords.setZ(coords.getZ()+1);
-            
-            if (button == 0){ //left click
-                getMap().setData(coords, Block.getInstance(71, 0, coords));
-                WECamera.traceRayTo(coords, true);
-            } else {//right click
-                if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
-                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
-                 if (coords.getZ() < Map.getBlocksZ()-1) coords.setZ(coords.getZ()+1);
-                 if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
-                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
-            }
-            return true;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount/100f);
-            
-            GameplayScreen.msgSystem().add("Zoom: " + getCameras().get(0).getZoom());   
-            return true;
-        }
-       
     }
-}

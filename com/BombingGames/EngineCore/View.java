@@ -293,4 +293,8 @@ public class View {
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
+
+    public Controller getController() {
+        return controller;
+    }
 }

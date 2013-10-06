@@ -25,7 +25,6 @@ public class Controller {
     private static Map map;
     private static boolean recalcRequested;
     
-    private View view;
         
     private final ArrayList<WECamera> cameras = new ArrayList<WECamera>(6);
     private Minimap minimap;
@@ -236,22 +235,8 @@ public class Controller {
         this.timespeed = timespeed;
     }
     
-    /**
-     * Set the coressponging main view.
-     *
-     * @param view new value of view
-     */
-    public void setView(View view) {
-        this.view = view;
-    }
 
-    /**
-     *Returns the coressponging main view.
      * @return
-     */
-    public View getView() {
-        return view;
-    }
 
     /**
      * Use the light engine

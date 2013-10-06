@@ -34,13 +34,14 @@ public class View {
     
     private OrthographicCamera hudCamera;
     
+    
     /**
      *
      * @param controller
      */
     public void init(Controller controller){
         this.controller = controller;
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true);
+        font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
         font.setColor(Color.GREEN);
         font.scale(-0.5f);
         

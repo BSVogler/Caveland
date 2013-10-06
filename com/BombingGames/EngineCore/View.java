@@ -40,6 +40,7 @@ public class View {
      * @param controller
      */
     public void init(Controller controller){
+        Gdx.app.debug("DEBUG", "Initializing View");
         this.controller = controller;
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
         font.setColor(Color.GREEN);

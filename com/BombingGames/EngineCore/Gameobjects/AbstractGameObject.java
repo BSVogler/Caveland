@@ -202,6 +202,7 @@ public abstract class AbstractGameObject {
      * Load the spritesheet from memory.
      */
     public static void loadSheet()  {
+        Gdx.app.log("DEBUG","Loading spritesheet");
         spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.png"));//load again for pixmap, allows access to image color data
         Gdx.app.log("DEBUG","Spritesheet loaded");

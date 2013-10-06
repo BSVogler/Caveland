@@ -30,13 +30,16 @@ public class Controller {
     private Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
-    private AbstractCharacter player;   
+    private AbstractCharacter player;  
+    
+    private FPSdiag fpsdiag;
 
     /**
      * This method works like a constructor. Everything is loaded. Set you custom chunk generator before calling this method.
      */
     public void init(){
         newMap();
+        fpsdiag = new FPSdiag(10,300);
         
         recalcRequested = true;
     }
@@ -90,6 +93,8 @@ public class Controller {
         for (WECamera camera : cameras) {
             camera.update();
         }
+        
+        fpsdiag.update(delta);
                 
         //recalculates the light if requested
         recalcIfRequested();      
@@ -176,7 +181,7 @@ public class Controller {
      * Returns a camera.
      * @return The virtual cameras rendering the scene
      */
-    protected ArrayList<WECamera> getCameras() {
+    public ArrayList<WECamera> getCameras() {
         return cameras;
     }
 
@@ -236,8 +241,11 @@ public class Controller {
     }
     
 
-     * @return
 
+    public FPSdiag getFpsdiag() {
+        return fpsdiag;
+    }
+    
     /**
      * Use the light engine
      * @param xPos the x position of the diagrams position

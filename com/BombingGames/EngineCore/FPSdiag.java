@@ -61,6 +61,12 @@ public class FPSdiag {
         shRenderer.begin(ShapeRenderer.ShapeType.Line);
         shRenderer.setColor(Color.BLUE);
         shRenderer.line(xPos, yPos-avg, xPos+width*data.length, yPos-avg);
+        
+        shRenderer.setColor(Color.GRAY);
+        shRenderer.line(xPos, yPos, xPos+width*data.length, yPos);
+        shRenderer.line(xPos, yPos-30, xPos+width*data.length, yPos-30);
+        shRenderer.line(xPos, yPos-60, xPos+width*data.length, yPos-60);
+        shRenderer.line(xPos, yPos-120, xPos+width*data.length, yPos-120);
         shRenderer.end();
     }
     

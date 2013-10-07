@@ -141,7 +141,6 @@ public class WurfelEngine extends Game {
     public static void setFullscreen(boolean fullscreen) {
         WurfelEngine.fullscreen = fullscreen;
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
-        Gdx.graphics.setTitle("Wurfelengine V" + WurfelEngine.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
     }
 
     /**

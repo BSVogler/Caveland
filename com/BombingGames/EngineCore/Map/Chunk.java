@@ -1,5 +1,6 @@
 package com.BombingGames.EngineCore.Map;
 
+import com.BombingGames.EngineCore.Gameobjects.AbstractGameObject;
 import com.BombingGames.EngineCore.GameplayScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
@@ -396,5 +397,13 @@ public class Chunk {
      */
     public static void setGenerator(int generator) {
         Chunk.generator = generator;
+    }
+    
+    public static int getWidth(){
+        return blocksX*AbstractGameObject.SCREEN_WIDTH;
+    }
+    
+    public static int getDepth() {
+        return blocksY*AbstractGameObject.SCREEN_DEPTH*2;
     }
 }

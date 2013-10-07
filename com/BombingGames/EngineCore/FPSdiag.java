@@ -90,7 +90,7 @@ public class FPSdiag {
             avg += fps;
             if (fps > 0) length ++;//count how many field are filled
         }
-        avg /= length;
+        if (length > 0) avg /= length;
         return avg;
     }
 }

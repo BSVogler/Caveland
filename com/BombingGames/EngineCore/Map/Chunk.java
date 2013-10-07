@@ -227,7 +227,7 @@ public class Chunk {
         try {
             FileHandle path = Gdx.files.internal("map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
             
-            Gdx.app.log("DEBUG","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
+            Gdx.app.log("Map","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
             GameplayScreen.msgSystem().add("Load: "+coordX+","+coordY);
             
             if (path.exists()) {
@@ -286,11 +286,11 @@ public class Chunk {
                     z++;
                 } while (lastline != null);
             } else {
-                Gdx.app.log("DEBUG","...but it could not be found.");
+                Gdx.app.log("Map","...but it could not be found.");
                 generate(pos, coordX, coordY);
             }
         } catch (IOException ex) {
-            Gdx.app.log("ERROR","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
+            Gdx.app.error("Map","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
         }
     }
     
@@ -302,29 +302,29 @@ public class Chunk {
         try {
             FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
             //File path = new File(WurfelEngine.getWorkingDirectory().getAbsolutePath() + "/map/map."+METAFILESUFFIX);
-            Gdx.app.log("DEBUG","Trying to load Map Info from \"" + path.path() + "\"");
+            Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
             bufRead =  path.reader(1024);
             String mapname = bufRead.readLine();
             mapname = mapname.substring(2, mapname.length());
-            Gdx.app.log("INFO","Loading map: "+mapname);
+            Gdx.app.log("Map","Loading map: "+mapname);
             GameplayScreen.msgSystem().add("Loading map: "+mapname);   
             
             String mapversion = bufRead.readLine(); 
             mapversion = mapversion.substring(2, mapversion.length());
-            Gdx.app.log("DEBUG","Map Version:"+mapversion);
+            Gdx.app.log("Map","Map Version:"+mapversion);
             
             String blocksXString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeX:"+blocksXString);
+            Gdx.app.debug("Map","sizeX:"+blocksXString);
             blocksXString = blocksXString.substring(2, blocksXString.length());
             blocksX = Integer.parseInt(blocksXString);
             
             String blocksYString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeY:"+blocksYString);
+            Gdx.app.debug("Map","sizeY:"+blocksYString);
             blocksYString = blocksYString.substring(2, blocksYString.length());
             blocksY = Integer.parseInt(blocksYString);
             
             String blocksZString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeZ:"+blocksZString);
+            Gdx.app.debug("Map","sizeZ:"+blocksZString);
             blocksZString = blocksZString.substring(2, blocksZString.length());
             blocksZ = Integer.parseInt(blocksZString);
         } catch (IOException ex) {

@@ -40,7 +40,7 @@ public class View {
      * @param controller
      */
     public void init(Controller controller){
-        Gdx.app.debug("DEBUG", "Initializing View");
+        Gdx.app.debug("View", "Initializing View");
         this.controller = controller;
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
         font.setColor(Color.GREEN);
@@ -48,7 +48,7 @@ public class View {
         
         //default rendering size is FullHD
         equalizationScale = Gdx.graphics.getWidth() / (float) RENDER_RESOLUTION_WIDTH;
-        Gdx.app.debug("DEBUG","Scale is:" + Float.toString(equalizationScale));
+        Gdx.app.debug("View","Scale is:" + Float.toString(equalizationScale));
  
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

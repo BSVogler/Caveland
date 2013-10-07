@@ -105,7 +105,7 @@ public class Controller {
      * Informs the map that a recalc is requested. It will do it in the next update. This method  to limit update calls to to per frame
      */
     public static void requestRecalc(){
-        Gdx.app.log("DEBUG", "A recalc was requested.");
+        Gdx.app.debug("Controller", "A recalc was requested.");
         recalcRequested = true;
     }
     
@@ -115,7 +115,7 @@ public class Controller {
      */
     public void recalcIfRequested(){
         if (recalcRequested) {
-            Gdx.app.log("DEBUG", "Recalcing.");
+            Gdx.app.log("Controller", "Recalcing.");
             WECamera.raytracing();
             LightEngine.calcSimpleLight();
             if (minimap != null) minimap.update();
@@ -226,9 +226,9 @@ public class Controller {
             this.timespeed = Float.parseFloat(JOptionPane.showInputDialog(frame, "Use dot as separator.", "Set the speed of time", JOptionPane.QUESTION_MESSAGE));
         } catch(NumberFormatException e) {
             this.timespeed = 1;
-            Gdx.app.error("Error", "Invalid nubmer entered: "+e.toString());
+            Gdx.app.error("JFrame", "Invalid nubmer entered: "+e.toString());
         } catch(NullPointerException e){
-            Gdx.app.debug("DEBUG", "Canceled: "+e.toString());
+            Gdx.app.debug("JFrame", "Canceled: "+e.toString());
         }
     }
     

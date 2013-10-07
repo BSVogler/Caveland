@@ -60,9 +60,6 @@ public class CustomGameController extends Controller {
         );
         
         useLightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        
-        
-        Gdx.input.setInputProcessor(new InputListener());
     }
 
     
@@ -99,97 +96,5 @@ public class CustomGameController extends Controller {
         }
         
         super.update(delta);
-    }
-    
-    private class InputListener implements InputProcessor {
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if (!GameplayScreen.msgSystem().isListeningForInput()) {
-                //toggle minimap
-                 if (keycode == Input.Keys.M){
-                     getMinimap().toggleVisibility();
-                 }
-                 //toggle fullscreen
-                 if (keycode == Input.Keys.F){
-                     WurfelEngine.setFullscreen(!WurfelEngine.isFullscreen());
-                 }
-
-                 //toggle eathquake
-                 if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
-                     getMap().earthquake(5000);
-                 }
-
-                 //pause
-                 //time is set 0 but the game keeps running
-                   if (keycode == Input.Keys.P) {
-                     setTimespeed(0);
-                  } 
-
-                 //reset zoom
-                 if (keycode == Input.Keys.Z) {
-                     getCameras().get(0).setZoom(1);
-                     GameplayScreen.msgSystem().add("Zoom reset");
-                  }  
-
-                 //show/hide light engine
-                 if (keycode == Input.Keys.L) {
-                     if (getLightengine() != null) getLightengine().RenderData(!getLightengine().isRenderingData());
-                  } 
-
-                  if (keycode == Input.Keys.T) {
-                     setTimespeed();
-                  } 
-
-                 if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
-                     WurfelEngine.getInstance().setScreen(new MainMenuScreen());
-            }
-            
-             //toggle input for msgSystem
-             if (keycode == Input.Keys.ENTER)
-                 GameplayScreen.msgSystem().listenForInput(!GameplayScreen.msgSystem().isListeningForInput());
-
-            return true;            
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            GameplayScreen.msgSystem().getInput(character);
-            return true;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount/100f);
-            
-            GameplayScreen.msgSystem().add("Zoom: " + getCameras().get(0).getZoom());   
-            return true;
-        }
-        
     }
 }

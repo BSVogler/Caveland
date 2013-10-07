@@ -2,8 +2,13 @@ package com.BombingGames.Game;
 
 import static com.BombingGames.EngineCore.Controller.getLightengine;
 import static com.BombingGames.EngineCore.Controller.getMap;
+import com.BombingGames.EngineCore.Gameobjects.Block;
+import com.BombingGames.EngineCore.Gameobjects.ExplosiveBarrel;
 import com.BombingGames.EngineCore.GameplayScreen;
+import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.View;
+import com.BombingGames.EngineCore.WECamera;
 import com.BombingGames.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
@@ -15,12 +20,12 @@ import com.badlogic.gdx.InputProcessor;
  *
  * @author Benedikt
  */
-public class CustomGameView extends View{
+public class ExplosivesDemoView extends View {
  
      /**
      *
      */
-    public CustomGameView() {
+    public ExplosivesDemoView() {
          super();
          Gdx.input.setInputProcessor(new InputListener());
      }
@@ -31,14 +36,14 @@ public class CustomGameView extends View{
          super.render();
      } 
      
-         private class InputListener implements InputProcessor {
+     private class InputListener implements InputProcessor {
 
         @Override
         public boolean keyDown(int keycode) {
             if (!GameplayScreen.msgSystem().isListeningForInput()) {
                 //toggle minimap
                  if (keycode == Input.Keys.M){
-                     getController().getMinimap().toggleVisibility();
+                     GameplayScreen.msgSystem().add("Minimap toggled to: "+ getController().getMinimap().toggleVisibility());
                  }
                  //toggle fullscreen
                  if (keycode == Input.Keys.F){
@@ -51,6 +56,7 @@ public class CustomGameView extends View{
                  }
 
                  //pause
+                 //if (input.isKeyDown(Input.Keys.P)) Gdx.app.setPaused(true);
                  //time is set 0 but the game keeps running
                    if (keycode == Input.Keys.P) {
                      getController().setTimespeed(0);
@@ -95,7 +101,20 @@ public class CustomGameView extends View{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
+            Coordinate coords = ScreenToGameCoords(screenX,screenY);
+            if (coords.getZ() < Map.getBlocksZ()-1) coords.setZ(coords.getZ()+1);
+            
+            if (button == 0){ //left click
+                getMap().setData(coords, Block.getInstance(71, 0, coords));
+                WECamera.traceRayTo(coords, true);
+            } else {//right click
+                if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
+                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
+                 if (coords.getZ() < Map.getBlocksZ()-1) coords.setZ(coords.getZ()+1);
+                 if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
+                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
+            }
+            return true;
         }
 
         @Override
@@ -120,5 +139,7 @@ public class CustomGameView extends View{
             GameplayScreen.msgSystem().add("Zoom: " + getController().getCameras().get(0).getZoom());   
             return true;
         }
+       
     }
-}
+
+ }

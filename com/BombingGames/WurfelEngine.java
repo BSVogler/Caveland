@@ -28,7 +28,7 @@ public class WurfelEngine extends Game {
     private static WurfelEngine instance;
 
     /**
-     * Create the Engine. Don't use this. Use construct() instead. 
+     * Create the Engine. Don't use this constructor. Use construct() instead. 
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
@@ -41,7 +41,7 @@ public class WurfelEngine extends Game {
 
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = false;
-        config.vSyncEnabled = false;
+        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
         config.useGL20 = false;
          
         //arguments
@@ -58,7 +58,7 @@ public class WurfelEngine extends Game {
             }
         }    
         
-        config.title = title + " " + config.width + "x"+config.height;     
+        config.title = title + " " + config.width + "x"+config.height;
 
         workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfelengine");
         
@@ -135,7 +135,7 @@ public class WurfelEngine extends Game {
     }
 
     /**
-     *
+     *You can switch to fullscreen. It only works if the current window resolution is supported by your hardware.
      * @param fullscreen
      */
     public static void setFullscreen(boolean fullscreen) {

@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class Chunk {
     /**The number of the mapgenerator used.*/
     private static int generator = 1;
-    /**The suffix of a chunk file.*/
+    /**The suffix of a chunk files.*/
     protected static final String CHUNKFILESUFFIX = "wec";
     /**The suffix of the metafile */
     protected static final String METAFILESUFFIX = "wem";
@@ -220,7 +220,7 @@ public class Chunk {
     }
     
     /**
-     * loads a chunk from memory
+     * Trys to load a chunk from disk.
      */
     private void load(int pos, int coordX, int coordY){
         //Reading map files test
@@ -382,7 +382,7 @@ public class Chunk {
     }
 
     /**
-     * 
+     * Get the number of the algorithm used for creating new worlds
      * @return 
      */
     public static int getGenerator() {

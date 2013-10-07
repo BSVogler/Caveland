@@ -48,7 +48,6 @@ public class CustomGameView extends View{
                  //toggle fullscreen
                  if (keycode == Input.Keys.F){
                      WurfelEngine.setFullscreen(!WurfelEngine.isFullscreen());
-                     Gdx.app.log("DEBUG","Set to fullscreen:"+!WurfelEngine.isFullscreen());
                  }
 
                  //toggle eathquake

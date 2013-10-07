@@ -82,7 +82,7 @@ public class MsgSystem extends ArrayList<Msg> {
      */
     public void add(String message) {
         add(new Msg(message, "System", 100));
-        Gdx.app.log("DEBUG",message);
+        Gdx.app.debug("System",message);
     }
     
     /**
@@ -92,7 +92,7 @@ public class MsgSystem extends ArrayList<Msg> {
      */
     public void add(String message, String sender){
         add(new Msg(message, sender, 100));
-        Gdx.app.log("DEBUG",message);
+        Gdx.app.debug(sender,message);
     }
     
     /**
@@ -103,7 +103,7 @@ public class MsgSystem extends ArrayList<Msg> {
      */
     public void add(String message, String sender, int importance){
         add(new Msg(message, sender, importance));
-        Gdx.app.log("DEBUG",message);
+        Gdx.app.debug(sender,message);
     }
     
     /**

@@ -202,10 +202,10 @@ public abstract class AbstractGameObject {
      * Load the spritesheet from memory.
      */
     public static void loadSheet()  {
-        Gdx.app.log("DEBUG","Loading spritesheet");
+        Gdx.app.debug("Spritesheet","Loading spritesheet");
         spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.png"));//load again for pixmap, allows access to image color data
-        Gdx.app.log("DEBUG","Spritesheet loaded");
+        Gdx.app.log("Spritesheet","Spritesheet loaded");
     }
 
     /**
@@ -219,7 +219,7 @@ public abstract class AbstractGameObject {
         if (sprites[category][id][value] == null){ //load if not already loaded
             AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                Gdx.app.log("debug", category+Integer.toString(id)+"-"+value + " not found");
+                Gdx.app.debug("Spritesheet", category+Integer.toString(id)+"-"+value + " not found");
                 sprite = getSpritesheet().findRegion(category+"0-0");
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");

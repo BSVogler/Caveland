@@ -226,9 +226,9 @@ public class Controller {
             this.timespeed = Float.parseFloat(JOptionPane.showInputDialog(frame, "Use dot as separator.", "Set the speed of time", JOptionPane.QUESTION_MESSAGE));
         } catch(NumberFormatException e) {
             this.timespeed = 1;
-            Gdx.app.log("Error", "Invalid nubmer entered: "+e.toString());
+            Gdx.app.error("Error", "Invalid nubmer entered: "+e.toString());
         } catch(NullPointerException e){
-            Gdx.app.log("DEBUG", "Canceled: "+e.toString());
+            Gdx.app.debug("DEBUG", "Canceled: "+e.toString());
         }
     }
     

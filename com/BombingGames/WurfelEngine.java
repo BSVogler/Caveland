@@ -5,6 +5,7 @@ import com.BombingGames.EngineCore.GameplayScreen;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WorkingDirectory;
 import com.BombingGames.MainMenu.MainMenuScreen;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -64,6 +65,7 @@ public class WurfelEngine extends Game {
         
         Texture.setEnforcePotImages(false);//allow non-power-of-two textures
         LwjglApplication application = new LwjglApplication(this, config);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
          
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
@@ -141,10 +143,11 @@ public class WurfelEngine extends Game {
     public static void setFullscreen(boolean fullscreen) {
         WurfelEngine.fullscreen = fullscreen;
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
+        Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WurfelEngine.isFullscreen());
     }
 
     /**
-     *
+     *Check if the game is running in fullscreen.
      * @return
      */
     public static boolean isFullscreen() {

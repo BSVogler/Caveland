@@ -7,7 +7,6 @@ import com.BombingGames.EngineCore.Gameobjects.AbstractCharacter;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
 import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.BombingGames.EngineCore.GameplayScreen;
-import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.Map.Minimap;
@@ -114,7 +113,6 @@ public class CustomGameController extends Controller {
                  //toggle fullscreen
                  if (keycode == Input.Keys.F){
                      WurfelEngine.setFullscreen(!WurfelEngine.isFullscreen());
-                     Gdx.app.log("DEBUG","Set to fullscreen:"+!WurfelEngine.isFullscreen());
                  }
 
                  //toggle eathquake
@@ -123,7 +121,6 @@ public class CustomGameController extends Controller {
                  }
 
                  //pause
-                 //if (input.isKeyDown(Input.Keys.P)) Gdx.app.setPaused(true);
                  //time is set 0 but the game keeps running
                    if (keycode == Input.Keys.P) {
                      setTimespeed(0);

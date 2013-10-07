@@ -301,26 +301,26 @@ public class Map {
     public Block getDataSafe(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
-            Gdx.app.log("DEBUG","X:"+x);
+            Gdx.app.debug("DEBUG","X:"+x);
         } else if( x<0 ){
             x = 0;
-            Gdx.app.log("DEBUG","X:"+x);
+            Gdx.app.debug("DEBUG","X:"+x);
         }
         
         if (y >= blocksY){
             y = blocksY-1;
-            Gdx.app.log("DEBUG","Y:"+y);
+            Gdx.app.debug("DEBUG","Y:"+y);
         } else if( y < 0 ){
             y = 0;
-            Gdx.app.log("DEBUG","Y:"+y);
+            Gdx.app.debug("DEBUG","Y:"+y);
         }
         
         if (z >= blocksZ){
             z = blocksZ-1;
-            Gdx.app.log("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.debug("DEBUG","Z:"+z+">="+blocksZ);
         } else if( z < 0 ){
             z = 0;
-            Gdx.app.log("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.debug("DEBUG","Z:"+z+">="+blocksZ);
         }
         
         return data[x][y][z].getBlock();    

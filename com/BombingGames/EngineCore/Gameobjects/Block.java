@@ -205,7 +205,7 @@ public class Block extends AbstractGameObject {
         if (blocksprites[id][value][side] == null){ //load if not already loaded
             AtlasRegion sprite = getSpritesheet().findRegion(CATEGORY+Integer.toString(id)+"-"+value+"-"+side);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                Gdx.app.log("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
+                Gdx.app.debug("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
                 sprite = getSpritesheet().findRegion(CATEGORY+"0-0-"+side);
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");

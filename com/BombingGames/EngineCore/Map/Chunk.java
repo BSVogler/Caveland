@@ -64,7 +64,7 @@ public class Chunk {
         GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
         switch (generator){
             case 0:{//random pillars
-                for (int x=0; x < blocksX; x++)
+                for (int x=0; x < blocksX; x++){
                     for (int y=0; y < blocksY; y++){
                         int height = (int) (Math.random()*blocksZ-1)+1;
                         for (int z=0; z < height; z++){
@@ -72,6 +72,7 @@ public class Chunk {
                             }
                         data[x][y][height] = new Cell(1);
                     }
+                }
                 break;
             }
                 

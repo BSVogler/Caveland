@@ -55,7 +55,7 @@ public class Map {
      * @see fillWithBlocks(boolean load)
      */
     public Map(boolean newMap, int worldSpinDirection) {
-        Gdx.app.log("DEBUG","Should the Engine generate a new map: "+newMap);
+        Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
         this.newMap = newMap;
         this.worldSpinDirection = worldSpinDirection;
         
@@ -72,7 +72,7 @@ public class Map {
      * Fill the data array of the map with blocks. Also resets the cellOffset.
      */
     public void fillWithBlocks(){
-        Gdx.app.log("DEBUG","Filling the map with air cells...");
+        Gdx.app.debug("Map","Filling the map with air cells...");
         for (Cell[][] x : data) {
             for (Cell[] y : x) {
                 for (int z = 0; z < y.length; z++) {
@@ -92,7 +92,7 @@ public class Map {
                 chunkpos++;
         }
        
-        Gdx.app.log("DEBUG","...Finished filling the map");
+        Gdx.app.log("Map","...Finished filling the map");
     }
     
      /**
@@ -159,7 +159,7 @@ public class Map {
      */
     public void setCenter(int newmiddle){
         if (ENABLECHUNKSWITCH){
-            Gdx.app.log("DEBUG","ChunkSwitch:"+newmiddle);
+            Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
                 //make a chunk of the data
@@ -185,7 +185,7 @@ public class Map {
 
                 Controller.requestRecalc();
             } else {
-                Gdx.app.log("ERROR","setCenter was called with center:"+newmiddle);
+                Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
             }
         }
     }
@@ -301,26 +301,26 @@ public class Map {
     public Block getDataSafe(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
-            Gdx.app.debug("DEBUG","X:"+x);
+            Gdx.app.error("Map","X:"+x);
         } else if( x<0 ){
             x = 0;
-            Gdx.app.debug("DEBUG","X:"+x);
+            Gdx.app.error("Map","X:"+x);
         }
         
         if (y >= blocksY){
             y = blocksY-1;
-            Gdx.app.debug("DEBUG","Y:"+y);
+            Gdx.app.debug("Map","Y:"+y);
         } else if( y < 0 ){
             y = 0;
-            Gdx.app.debug("DEBUG","Y:"+y);
+            Gdx.app.error("Map","Y:"+y);
         }
         
         if (z >= blocksZ){
             z = blocksZ-1;
-            Gdx.app.debug("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         } else if( z < 0 ){
             z = 0;
-            Gdx.app.debug("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         }
         
         return data[x][y][z].getBlock();    
@@ -470,9 +470,9 @@ public class Map {
         ArrayList<type> list = new ArrayList<type>();
         //e inst=(e) e.newInstance();
 
-        for (AbstractEntity entity : entitylist) {
-            if (type.isInstance(entity)) {
-                list.add((type) entity);
+        for (AbstractEntity entity : entitylist) {//check every entity
+            if (type.isInstance(entity)) {//if the entity has the wanted type
+                list.add((type) entity);//add it to list
             }
         }
         return list;

@@ -3,6 +3,7 @@ package com.BombingGames.MainMenu;
 import com.BombingGames.Game.CustomGameController;
 import com.BombingGames.Game.CustomGameView;
 import com.BombingGames.Game.ExplosivesDemoController;
+import com.BombingGames.Game.ExplosivesDemoView;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -51,7 +52,7 @@ public class Controller {
             } else if (menuItems[2].isClicked()){
                     MainMenuScreen.setLoadMap(false);
                     fx.play();
-                    WurfelEngine.startGame(new ExplosivesDemoController(), new CustomGameView());
+                    WurfelEngine.startGame(new ExplosivesDemoController(), new ExplosivesDemoView());
                 } else if (menuItems[3].isClicked()){
                     fx.play();
                     Gdx.app.exit();

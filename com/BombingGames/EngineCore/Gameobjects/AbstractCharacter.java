@@ -1,9 +1,7 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
-import com.BombingGames.EngineCore.Controller;
-import static com.BombingGames.EngineCore.Gameobjects.AbstractGameObject.SCREEN_DEPTH2;
-import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
+import com.BombingGames.EngineCore.Map.Point;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
@@ -12,7 +10,7 @@ import com.badlogic.gdx.audio.Sound;
  * @author Benedikt
  */
 public abstract class AbstractCharacter extends AbstractEntity {
-   private final int COLISSIONRADIUS = SCREEN_DEPTH2;
+   private final int COLISSIONRADIUS = GAME_DIAGSIZE/2;
    private final int SPRITESPERDIR;
       
    private final float[] dir = {1, 0, 0};
@@ -43,12 +41,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
     * Constructor of AbstractCharacter.
     * @param id
     * @param spritesPerDir The number of animation sprites per walking direction
-    * @param coords  
+    * @param point  
     */
-   protected AbstractCharacter(final int id, final int spritesPerDir, Coordinate coords) {
+   protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
         super(id);
         SPRITESPERDIR = spritesPerDir;
-        shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,coords.cpy());
+        shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,point.cpy());
         if (waterSound == null) waterSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/splash.ogg"));
     }
    
@@ -94,28 +92,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
    }
     
    /**
-     * Make a step on the coordinate grid.
-     * @param x left or right step
-     * @param y the coodinate steps
-     */
-    private void makeCoordinateStep(int x, int y){
-        //mirror the position around the center
-        setPositionX(getPositionX() -x*Block.SCREEN_WIDTH2);
-        setPositionY(getPositionY() -y*Block.SCREEN_DEPTH);
-
-        setCoords(getCoords().addVector(0, y, 0));
-        if (x < 0 && getCoords().getRelY() % 2 == 1) setCoords(getCoords().addVector(-1, 0, 0));
-        if (x > 0 && getCoords().getRelY() % 2 == 0) setCoords(getCoords().addVector(1, 0, 0));
-
-    }
-    
-   /**
      * Updates the charackter.
      * @param delta time since last update
      */
     @Override
     public void update(float delta) {
-        if (getCoords().onLoadedMap()) {
+        if (getPos().onLoadedMap()) {
             //scale that the velocity vector is always an unit vector (only x and y)
             double vectorLenght = Math.sqrt(dir[0]*dir[0] + dir[1]*dir[1]);
             if (vectorLenght > 0){
@@ -123,14 +105,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 dir[1] /= vectorLenght;
             }
 
-            float oldPositionX = getPositionX();
-            float oldPositionY = getPositionY();
-            float oldHeight = getCoords().getHeight();
+            float oldHeight = getPos().getHeight();
 
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
             if (!onGround()) dir[2] += -Map.GRAVITY*t; //in m/s
-            getCoords().setHeight(getCoords().getHeight() + dir[2] * GAMEDIMENSION * t); //in m
+            getPos().setHeight(getPos().getHeight() + dir[2] * GAME_DIMENSION * t); //in m
             
             
             //check new height for colission            
@@ -143,45 +123,26 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 dir[2] = 0;
                 
                 //set on top of block
-                getCoords().setHeight((int)(oldHeight/GAMEDIMENSION)*GAMEDIMENSION);
+                getPos().setHeight((int)(oldHeight/GAME_DIMENSION)*GAME_DIMENSION);
             }
             
-            if (!inliquid  && getCoords().getBlockSafe().isLiquid())
+            if (!inliquid  && getPos().getBlockSafe().isLiquid())
                 waterSound.play();
             
-            inliquid = getCoords().getBlockSafe().isLiquid();
+            inliquid = getPos().getBlockSafe().isLiquid();
 
 
             /*HORIZONTAL MOVEMENT*/
             //calculate new position
-            float newx = getPositionX() + delta * speed * dir[0];
-            float newy = getPositionY() + delta * speed * dir[1];
+            float[] dMove = new float[]{
+                delta * speed * dir[0],
+                delta * speed * dir[1],
+                0
+            };
 
             //if movement allowed => move player   
-            if (! horizontalColission(newx, newy, oldPositionX, oldPositionY)) {                
-                setPositionX(newx);
-                setPositionY(newy);
-
-                //track the coordiante change, if there is one
-                int sidennumb = getSideNumb();              
-                switch(sidennumb) {
-                    case 0:
-                    case 1:
-                            makeCoordinateStep(1, -1);
-                            break;
-                    case 2:    
-                    case 3:
-                            makeCoordinateStep(1, 1);
-                            break;
-                    case 4:
-                    case 5:
-                            makeCoordinateStep(-1, 1);
-                            break;
-                    case 6:
-                    case 7:
-                            makeCoordinateStep(-1, -1);
-                            break;    
-                }
+            if (! horizontalColission(getPos().addVectorCpy(dMove)) ) {                
+                getPos().addVector(dMove);
             }
 
             //graphic
@@ -229,7 +190,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             //uncomment this line to see where to player stands:
             //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
 
-            shadow.update(delta, this);
+            //shadow.update(delta, this);
 
             //slow walking down
             if (speed > 0) speed -= delta/(float) smoothBreaks;
@@ -261,7 +222,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
                     fallingSoundPlaying = false;
                 }
             }
-            
         }
     }
     
@@ -271,55 +231,26 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * @param newy the new y position
      * @return 
      */
-    private boolean horizontalColission(float newx, float newy, float oldx, float oldy){
-        boolean validmovement = false;
-        
-        //check for movement in x
-        //top corner
-        int neighbourNumber = Coordinate.getNeighbourSide(newx, newy - COLISSIONRADIUS); 
-        if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-            validmovement = true;
-        //bottom corner
-        neighbourNumber = Coordinate.getNeighbourSide(newx, newy + COLISSIONRADIUS); 
-        if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-            validmovement = true;
-
-        //find out the direction of the movement
-        if (oldx - newx > 0) {
-            //check left corner
-            neighbourNumber = Coordinate.getNeighbourSide(newx - COLISSIONRADIUS, newy);
-            if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-                validmovement = true;
-        } else {
-            //check right corner
-            neighbourNumber = Coordinate.getNeighbourSide(newx + COLISSIONRADIUS, newy);
-            if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-                validmovement = true;
-        }
-
+    private boolean horizontalColission(Point pos){
+        boolean colission = false;
+    
         //check for movement in y
-        //left corner
-        neighbourNumber = Coordinate.getNeighbourSide(newx - COLISSIONRADIUS, newy); 
-        if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-            validmovement = true;
-
-        //right corner
-        neighbourNumber = Coordinate.getNeighbourSide(newx + COLISSIONRADIUS, newy); 
-        if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-            validmovement = true; 
-
-        if (oldy - newy > 0) {
-            //check top corner
-            neighbourNumber = Coordinate.getNeighbourSide(newx, newy - COLISSIONRADIUS);
-            if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-                validmovement = true;
-        } else {
-            //check bottom corner
-            neighbourNumber = Coordinate.getNeighbourSide(newx, newy + COLISSIONRADIUS);
-            if (neighbourNumber != 8 && Controller.getNeighbourBlock(getCoords(), neighbourNumber).isObstacle())
-                validmovement = true;
-        }
-        return validmovement;
+        //top corner
+        if (pos.addVectorCpy(new float[]{0, - COLISSIONRADIUS, 0}).getBlock().isObstacle())
+            colission = true;
+        //bottom corner
+        if (pos.addVectorCpy(new float[]{0, COLISSIONRADIUS, 0}).getBlock().isObstacle())
+            colission = true;
+        
+        //check X
+        //left
+        if (pos.addVectorCpy(new float[]{-COLISSIONRADIUS, 0, 0}).getBlock().isObstacle())
+            colission = true;
+        //bottom corner
+        if (pos.addVectorCpy(new float[]{COLISSIONRADIUS, 0, 0}).getBlock().isObstacle())
+            colission = true;
+        
+        return colission;
     }
     
     /**
@@ -399,10 +330,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     @Override
     public boolean onGround() {
-        getCoords().setHeight(getCoords().getHeight()-1);
+        getPos().setHeight(getPos().getHeight()-1);
         
-        boolean colission = horizontalColission(getPositionX(), getPositionY(), getPositionX(), getPositionY());
-        getCoords().setHeight(getCoords().getHeight()+1);
+        boolean colission = getPos().getBlock().isObstacle();
+        getPos().setHeight(getPos().getHeight()+1);
         
         //if standing on ground on own or neighbour block then true
         return (super.onGround() || colission);
@@ -411,13 +342,13 @@ public abstract class AbstractCharacter extends AbstractEntity {
     @Override
     public void exist() {
         super.exist();
-        shadow.exist();
+       // shadow.exist();
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        shadow.destroy();
+        //shadow.destroy();
     } 
 
     /**

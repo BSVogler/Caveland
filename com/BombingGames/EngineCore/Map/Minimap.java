@@ -14,8 +14,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  */
 public class Minimap {
     private int posX, posY;
-    private final float scaleX = 12;//8
-    private final float scaleY = 6;//4
+    private final float scaleX = 12;
+    private final float scaleY = scaleX/2;
+    private final float renderSize = (float) (scaleX/Math.sqrt(2));
+    
     private Controller controller;
     private WECamera camera;
     private final Color[][] mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
@@ -68,6 +70,7 @@ public class Minimap {
      */
     public void render(View view) {
         if (visible) {
+            //this needs offscreen rendering for a single call with a recalc
             int viewportPosX = posX;
             int viewportPosY = posY;
             
@@ -77,26 +80,36 @@ public class Minimap {
             shapeRenderer.begin(ShapeType.FilledRectangle);
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
-                    shapeRenderer.setColor(mapdata[x][y]);
-                    shapeRenderer.filledRect(
-                        viewportPosX + (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX,
-                        viewportPosY + y*scaleY,
-                        scaleX,
-                        scaleY
-                    );   
+                    shapeRenderer.setColor(mapdata[x][y]);//get color
+                    float rectX = viewportPosX
+                                + (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
+                    float rectY = viewportPosY
+                                + y*scaleY;
+                    
+                    shapeRenderer.translate(rectX, rectY, 0);
+                    shapeRenderer.rotate(0, 0, 1, 45);
+                    shapeRenderer.filledRect(0,0,renderSize,renderSize); 
+                    shapeRenderer.rotate(0, 0, 1, -45);
+                    shapeRenderer.translate(-rectX, -rectY, 0);
                 }
             }
             
             //show player position
             if (controller.getPlayer()!=null){
-                shapeRenderer.setColor(Color.BLUE);
-                shapeRenderer.filledRect(
-                    viewportPosX + (controller.getPlayer().getCoords().getRelX()
-                    + (controller.getPlayer().getCoords().getRelY()%2==1?0.5f:0) ) * scaleX,
-                    viewportPosY + controller.getPlayer().getCoords().getRelY() * scaleY,
-                    scaleX,
-                    scaleY
-                );
+                Color color = Color.BLUE.cpy();
+                color.a = 0.8f;
+                shapeRenderer.setColor(color);
+                float rectX = viewportPosX
+                    + (controller.getPlayer().getPos().getRelX()
+                    + (controller.getPlayer().getPos().getCoordinate().getRelY()%2==1?0.5f:0)
+                    )/Block.GAME_DIAGSIZE * scaleX;
+                float rectY = viewportPosY
+                    + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE * scaleY*2;
+                shapeRenderer.translate(rectX, rectY, 0);
+                shapeRenderer.rotate(0, 0, 1, 45);
+                shapeRenderer.filledRect(0,0,renderSize,renderSize);
+                shapeRenderer.rotate(0, 0, 1, -45);
+                shapeRenderer.translate(-rectX, -rectY, 0);
             }
             shapeRenderer.end();
             
@@ -113,6 +126,7 @@ public class Minimap {
             }
             shapeRenderer.end();
 
+            //chunk coordinates
             for (int chunk = 0; chunk < 9; chunk++) {
                 view.drawString(
                     Controller.getMap().getChunkCoords(chunk)[0] +" | "+ Controller.getMap().getChunkCoords(chunk)[1],
@@ -126,21 +140,21 @@ public class Minimap {
             shapeRenderer.begin(ShapeType.Rectangle);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(
-                viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
-                viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2,
-                scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH,
-                scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2
+                viewportPosX + scaleX * camera.getOutputPosX() / Block.GAME_DIAGSIZE,
+                viewportPosY + 2*scaleY * camera.getOutputPosY() / Block.GAME_DIAGSIZE,
+                scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
+                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
             );
 
+            //player level getCameras() rectangle
             if (controller.getPlayer()!=null){
-                //player level getCameras() rectangle
                 shapeRenderer.setColor(Color.GRAY);
                 shapeRenderer.rect(
                     viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                     viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-                    + scaleY *2*(controller.getPlayer().getCoords().getZ() * Block.SCREEN_HEIGHT2)/ (float) (Block.SCREEN_DEPTH),
-                    scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH,
-                    scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2
+                    + scaleY *2*(controller.getPlayer().getPos().getCoordinate().getZ() * Block.SCREEN_HEIGHT2)/ (float) (Block.SCREEN_DEPTH),
+                    scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
+                    scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
                 );
             }
 
@@ -150,45 +164,36 @@ public class Minimap {
                 viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                 viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
                 + scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ (float) (Block.SCREEN_DEPTH),
-                scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH,
-                scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2
+                scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
+                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
             );
             shapeRenderer.end();
             
+//            view.drawString(
+//                    camera.getOutputPosX()+" | "+ camera.getOutputPosY(),
+//                    (int) (viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH
+//                    + scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH),
+//                    (int) (viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
+//                    + scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2),
+//                    Color.BLACK
+//                );
+                            
             if (controller.getPlayer()!=null){
-                view.drawString(
-                        camera.getRightBorder() +" | "+ camera.getBottomBorder(),
-                        (int) (viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH
-                        + scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH),
-                        (int) (viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-                        + scaleY *2*(controller.getPlayer().getCoords().getZ() * Block.SCREEN_DEPTH2)/ (float) (Block.SCREEN_DEPTH)
-                        + scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2),
-                        Color.BLACK
-                    );
-
-                //player coord
-                view.drawString(
-                    controller.getPlayer().getCoords().getRelX() +" | "+ controller.getPlayer().getCoords().getRelY() +" | "+ controller.getPlayer().getCoords().getZ(),
-                    (int) (viewportPosX + (controller.getPlayer().getCoords().getRelX() + (controller.getPlayer().getCoords().getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (viewportPosY + controller.getPlayer().getCoords().getRelY() * scaleY - 30),
-                    Color.BLACK
-                );
-
                 //player pos
                 view.drawString(
-                    (int) controller.getPlayer().getPositionX() +" | "+ (int) controller.getPlayer().getPositionY() +" | "+ (int) controller.getPlayer().getCoords().getHeight(),
-                    (int) (viewportPosX + (controller.getPlayer().getCoords().getRelX() + (controller.getPlayer().getCoords().getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (viewportPosY + controller.getPlayer().getCoords().getRelY() * scaleY - 10),
+                    controller.getPlayer().getPos().getCoordinate().getRelX() +" | "+ controller.getPlayer().getPos().getCoordinate().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
+                    (int) (viewportPosX + (controller.getPlayer().getPos().getCoordinate().getRelX() + (controller.getPlayer().getPos().getRelY()%2==1?0.5f:0) ) * scaleX+20),
+                    (int) (viewportPosY + controller.getPlayer().getPos().getCoordinate().getRelY() * scaleY - 10),
                     Color.RED
                 );
             }
 
-            //getCamera() pos
+            //camera position
             view.drawString(
-                    camera.getOutputPosX() +" | "+ camera.getOutputPosY(),
-                    viewportPosX ,
-                    (int) (viewportPosY + 3*Chunk.getBlocksY()*scaleY + 15),
-                    Color.WHITE
+                camera.getOutputPosX() +" | "+ camera.getOutputPosY(),
+                viewportPosX ,
+                (int) (viewportPosY + 3*Chunk.getBlocksY()*scaleY + 15),
+                Color.WHITE
             );
         }
     }

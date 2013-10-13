@@ -2,7 +2,6 @@ package com.BombingGames.EngineCore;
 
 import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.BombingGames.EngineCore.Map.Coordinate;
-import com.BombingGames.EngineCore.Map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -162,34 +161,9 @@ public class View {
         x = ScreenXtoGame(x, camera);
         y = ScreenYtoGame(y, camera);
         
-        //find out where the click went
-        Coordinate coords = new Coordinate(
-                       x / Block.SCREEN_WIDTH,
-                       y / (2*Block.SCREEN_DEPTH)*2,
-                       Map.getBlocksZ()-1,
-                       true
-        );
-       
-        //find the specific coordinate
-        Coordinate specificCoords = Coordinate.neighbourSidetoCoords(
-            coords,
-            Coordinate.getNeighbourSide(x % Block.SCREEN_WIDTH, y % (2*Block.SCREEN_DEPTH))
-        );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY() + coords.getZ()*2);
-//        coords.setRelY(coords.getRelY() + coords.getZ()*2);
-        
-        //if selection is not found by that specify it
-        if (coords.getBlock().isHidden()){
-            //trace ray down to bottom
-            do {
-                coords.setRelY(coords.getRelY()-2);
-                coords.setZ(coords.getZ()-1);
-            } while (coords.getBlock().isHidden() && coords.getZ()>0);
-        }
-        
-        return coords;
+        return Controller.findCoordinate(x,y, true);
     }
+    
 
     /**
      * 

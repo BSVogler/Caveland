@@ -1,25 +1,25 @@
 package com.BombingGames.EngineCore;
 
 import com.BombingGames.EngineCore.Gameobjects.AbstractGameObject;
-import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 
 /**
  *Saves the information for the rendering. This class is only used in the rendering process.
  * @author Benedikt
  */
 public class Renderobject {
-    private final Coordinate coords;
+    private final AbstractPosition pos;
     private final int depth;
     private final AbstractGameObject content;
 
      /**
          * Create an Renderobject with a regular Block in the map
          * @param object 
-         * @param coords The coordinates where the object should be rendered
+         * @param pos The coordinates where the object should be rendered
          */
-    protected Renderobject(AbstractGameObject object, Coordinate coords) {
-        this.coords = coords;
-        this.depth = object.getDepth(coords);
+    protected Renderobject(AbstractGameObject object, AbstractPosition pos) {
+        this.pos = pos;
+        this.depth = object.getDepth(pos);
         content = object;
     }
 
@@ -36,8 +36,8 @@ public class Renderobject {
      * 
      * @return
      */
-    public Coordinate getCoords() {
-        return coords;
+    public AbstractPosition getCoords() {
+        return pos;
     }
 
     /**

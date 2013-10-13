@@ -2,6 +2,7 @@ package com.BombingGames.EngineCore.Map;
 
 import com.BombingGames.EngineCore.Controller;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
+import com.BombingGames.EngineCore.Gameobjects.AbstractGameObject;
 import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Map {
     /**
      *Set if the map should load or generate new chunks when the camera reaches an end of the map.
      */
-    public final static boolean ENABLECHUNKSWITCH = true;
+    public final static boolean ENABLECHUNKSWITCH = false;
     
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0
@@ -418,7 +419,7 @@ public class Map {
         for (int i=0;i < numberofblocks; i++){
                 //cellPos[x[i]][y[i]][z[i]][0] = (float) (Math.random()*Block.SCREEN_DEPTH2);
                 //cellPos[x[i]][y[i]][z[i]][1] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                data[x[i]][y[i]][z[i]].setCellOffset(2, (float) (Math.random()*Block.GAMEDIMENSION));//vertical shake
+                data[x[i]][y[i]][z[i]].setCellOffset(2, (float) (Math.random()*Block.GAME_DIMENSION));//vertical shake
             
         }
         Controller.requestRecalc();
@@ -476,5 +477,48 @@ public class Map {
             }
         }
         return list;
+    }
+    
+        /**
+     *Returns a coordinate pointing to the absolute(?) center of the map. Height is half the map's height.
+     * @return
+     */
+    public static Point getCenter(){
+        return getCenter(Map.getBlocksZ()*Block.GAME_DIMENSION/2);
+    }
+    
+    /**
+     *Returns a corodinate pointing to the absolute(?) center of the map.
+     * @param height You custom height.
+     * @return
+     */
+    public static Point getCenter(float height){
+        return
+            new Point(
+                Chunk.getGameWidth()*1.5f,
+                Chunk.getGameDepth()*1.5f,
+                height,
+                false
+            );
+    }
+    
+    public static int getGameWidth(){
+        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    /**
+     * The depth of the map in game size
+     * @return 
+     */
+    public static int getGameDepth() {
+        return blocksY*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    /**
+     * Game size
+     * @return 
+     */
+    public static int getGameHeight(){
+        return blocksZ*AbstractGameObject.GAME_DIMENSION;
     }
 }

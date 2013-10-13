@@ -1,6 +1,7 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Controller;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -37,14 +38,16 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
                 for (int z=-RADIUS; z<RADIUS; z++){
                     //place air
                     Controller.getMap().setDataSafe(
-                        coords.addVectorCpy(x, y, z) , Block.getInstance(0)
+                        coords.addVectorCpy(new float[]{x, y, z}).getCoordinate() , Block.getInstance(0)
                     );
                     
                     //spawn effect
                     if (x*x + y*y >= RADIUS*RADIUS){
-                        AbstractEntity.getInstance(41, 0,
-                                coords.addVectorCpy(x, y, z) 
-                            ).exist();
+                        AbstractEntity.getInstance(
+                            41,
+                            0,
+                            coords.addVectorCpy(new float[]{x, y, z}).getPoint()
+                        ).exist();
                     }
                 }
          explosionsound.play();
@@ -52,12 +55,12 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
     }
 
     @Override
-    public Coordinate getCoords() {
+    public Coordinate getPos() {
         return coords;
     }
 
     @Override
-    public void setCoords(Coordinate coords) {
-        this.coords = coords;
+    public void setPos(AbstractPosition pos) {
+        this.coords = pos.getCoordinate();
     }
 }

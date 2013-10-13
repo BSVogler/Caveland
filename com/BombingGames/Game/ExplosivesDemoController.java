@@ -29,14 +29,23 @@ public class ExplosivesDemoController extends Controller {
          AbstractCharacter player = (AbstractCharacter) AbstractEntity.getInstance(
                 40,
                 0,
-                Coordinate.getMapCenter(Map.getBlocksZ()*Block.GAMEDIMENSION)
+                Map.getCenter(Map.getGameHeight())
         );
         player.setControls("WASD");
         setPlayer(player);
         
+//        addCamera(
+//            new WECamera(
+//                getPlayer(),
+//                0, //left
+//                0, //top
+//                Gdx.graphics.getWidth(), //width 
+//                Gdx.graphics.getHeight()//height
+//            )
+//        );
+        
         addCamera(
             new WECamera(
-                getPlayer(),
                 0, //left
                 0, //top
                 Gdx.graphics.getWidth(), //width 
@@ -44,20 +53,11 @@ public class ExplosivesDemoController extends Controller {
             )
         );
         
-//        addCamera(
-//            new WECamera(
-//                Gdx.graphics.getWidth()/2, //left
-//                0, //top
-//                Gdx.graphics.getWidth()/2, //width 
-//                Gdx.graphics.getHeight()//height
-//            )
-//        );
-        
         setMinimap(
             new Minimap(this, getCameras().get(0), Gdx.graphics.getWidth() - 400,10)
         );
         
-        useLightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        //useLightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
     }
 
     
@@ -84,14 +84,12 @@ public class ExplosivesDemoController extends Controller {
             } else {
                 //update camera position
                 WECamera camera = getCameras().get(0);
-                camera.setOutputPosY( camera.getOutputPosY()
-                    - (input.isKeyPressed(Input.Keys.W)? 3: 0)
-                    + (input.isKeyPressed(Input.Keys.S)? 3: 0)
-                    );
-                camera.setOutputPosX( camera.getOutputPosX()
-                    + (input.isKeyPressed(Input.Keys.D)? 3: 0)
-                    - (input.isKeyPressed(Input.Keys.A)? 3: 0)
-                    );
+                camera.setOutputPosY( (int) (camera.getOutputPosY()
+                    - (input.isKeyPressed(Input.Keys.W)? delta: 0)
+                    + (input.isKeyPressed(Input.Keys.S)? delta: 0)));
+                camera.setOutputPosX( (int) (camera.getOutputPosX()
+                    + (input.isKeyPressed(Input.Keys.D)? delta: 0)
+                    - (input.isKeyPressed(Input.Keys.A)? delta: 0)));
             }
             
         } else {

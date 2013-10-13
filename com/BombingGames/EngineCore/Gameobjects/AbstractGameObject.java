@@ -2,7 +2,7 @@ package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Controller;
 import com.BombingGames.EngineCore.LightEngine.PseudoGrey;
-import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WECamera;
 import com.badlogic.gdx.Gdx;
@@ -39,10 +39,21 @@ public abstract class AbstractGameObject {
      * The width (x-axis) of the sprite size
      */
     public static final int SCREEN_HEIGHT = 80;
-    /**The half (2) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/2*/
+    /**The half (2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/
     public static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
-    /**A quarter (4) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/4*/
+    /**A quarter (4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/
     public static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
+    
+    /**The real game world dimension in pixel. Usually the use of SCREEN_DEPTH is fine because of the map format every coordinate center is straight.
+        * The value is SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
+        */
+    public static final int GAME_DIMENSION = (int) (SCREEN_HEIGHT * Math.sqrt(2));
+    
+    /**
+     * The game size aequivalent to SCREEN_DEPTH.
+     * The value is GAMEDIMENSION * Math.sqrt(2) which is the same as SCREEN_HEIGHT * 2
+     */
+    public static final int GAME_DIAGSIZE = SCREEN_HEIGHT * 2;
     
     /**the max. amount of different object types*/
     public static final int OBJECTTYPESCOUNT = 99;
@@ -50,11 +61,6 @@ public abstract class AbstractGameObject {
     public static final int VALUESCOUNT = 25;
     
 
-    
-    /**The real game world dimension in pixel. Usually the use of SCREEN_DEPTH is fine because of the map format every coordinate center is straight.
-        * The value is SCREEN_DEPTH/sqrt(2).
-        */
-    public static final int GAMEDIMENSION = (int) (SCREEN_HEIGHT*2 / Math.sqrt(2));
         
     /**The sprite texture which contains every object texture*/
     private static TextureAtlas spritesheet;
@@ -98,48 +104,33 @@ public abstract class AbstractGameObject {
         Sea.staticUpdate(delta);
     }
         
-    
-    /**
-     *Get the screen position of this object.
-     * @param coords
-     * @return
-     */
-    public abstract int get2DPosX(Coordinate coords);
-    
-    /**
-     *Get the screen position of this object.
-     * @param coords
-     * @return
-     */
-    public abstract int get2DPosY(Coordinate coords);
-    
     /**
      * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
-     * @param coords the coordinates where the object should be rendered
+     * @param pos the coordinates where the object should be rendered
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
-    public void render(View view, WECamera camera, Coordinate coords) {
+    public void render(View view, WECamera camera, AbstractPosition pos) {
         Color color = Color.GRAY.cpy();
         if (Controller.getLightengine() != null){
                 color = Controller.getLightengine().getGlobalLight();
         }
-        render(view, camera, coords, color.mul(lightlevel));
+        render(view, camera, pos, color.mul(lightlevel));
     }
     
      /**
      * Draws an object if it is not hidden and not clipped.
-     * @param coords the coordinates where the object is rendered
+     * @param pos the coordinates where the object is rendered
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param color  custom blending color
      */
-    public void render(View view, WECamera camera, Coordinate coords, Color color) {
+    public void render(View view, WECamera camera, AbstractPosition pos, Color color) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
              
-            int xPos = get2DPosX(coords) + getOffsetX();
-            int yPos = get2DPosY(coords) - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY();
+            int xPos = pos.get2DPosX() + getOffsetX();
+            int yPos = pos.get2DPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY();
             
             renderAt(view, xPos, yPos, color);
         }
@@ -271,10 +262,10 @@ public abstract class AbstractGameObject {
 
     /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
-     * @param coords 
+     * @param pos 
      * @return the depth in game size
      */
-    public abstract int getDepth(Coordinate coords);
+    public abstract int getDepth(AbstractPosition pos);
     
     /**
      * Returns the name of the object

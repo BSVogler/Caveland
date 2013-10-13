@@ -9,13 +9,9 @@ import com.BombingGames.EngineCore.Gameobjects.Block;
  * Relative coordinates are similar to the currently loaded map array. Absolute coordinates  are indipendent of the current map but to acces them you must have the chunk thet the coordiantes are in the currently loaded chunks.
  * @author Benedikt Vogler
  */
-public class Coordinate {
-    private final int topleftX;//top left chunk x coordinate
-    private final int topleftY;//topl left chunk Y coordinate
-    
+public class Coordinate extends AbstractPosition {
     private int x;
     private int y;
-    private float height;
     
     /**
      * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
@@ -25,17 +21,16 @@ public class Coordinate {
      * @param relative   True when the coordiantes are relative to the currently loaded map. False when they are absolute.
      */
     public Coordinate(int x, int y, int z, final boolean relative) {
-        topleftX = Controller.getMap().getChunkCoords(0)[0];
-        topleftY = Controller.getMap().getChunkCoords(0)[1];
+        super();
         
         if (relative){
             this.x = x;
             this.y = y;
         } else {
-            this.x = x - topleftX * Chunk.getBlocksX();
-            this.y = y - topleftY * Chunk.getBlocksY();
+            this.x = x - getTopleftX() * Chunk.getBlocksX();
+            this.y = y - getTopleftY() * Chunk.getBlocksY();
         }
-        this.height = z*Block.GAMEDIMENSION;
+        setHeight(z*Block.GAME_DIMENSION);
     }
     
      /**
@@ -46,69 +41,43 @@ public class Coordinate {
      * @param relative  True when the coordiantes are relative to the currently loaded map. False when they are absolute.
      */
     public Coordinate(int x, int y, float height, final boolean relative) {
-        topleftX = Controller.getMap().getChunkCoords(0)[0];
-        topleftY = Controller.getMap().getChunkCoords(0)[1];
+        super();
         
         if (relative){
             this.x = x;
             this.y = y;
         } else {
-            this.x = x - topleftX * Chunk.getBlocksX();
-            this.y = y - topleftY * Chunk.getBlocksY();
+            this.x = x - getTopleftX() * Chunk.getBlocksX();
+            this.y = y - getTopleftY() * Chunk.getBlocksY();
         }
-        this.height = height;
+        setHeight(height);
     }
     
     /**
-     * Creates a new relative(!) coordinate from an existing coordinate
+     * Creates a new coordinate from an existing coordinate
      * @param coord the Coordinate
      */
     public Coordinate(Coordinate coord) {
+        super(coord.getTopleftX(), coord.getTopleftY());
+        
         this.x = coord.getRelX();
         this.y = coord.getRelY();
-        this.height = coord.getHeight();
-        
-        topleftX = Controller.getMap().getChunkCoords(0)[0];
-        topleftY = Controller.getMap().getChunkCoords(0)[1];
+        setHeight(coord.getHeight());
     }
-    
-    /**
-     *Returns a coordinate pointing to the absolute(?) center of the map. Height is half the map's height.
-     * @return
-     */
-    public static Coordinate getMapCenter(){
-        return getMapCenter(Map.getBlocksZ()*Block.GAMEDIMENSION/2);
-    }
-    
-    /**
-     *Returns a corodinate pointing to the absolute(?) center of the map.
-     * @param height You custom height.
-     * @return
-     */
-    public static Coordinate getMapCenter(float height){
-        return
-            new Coordinate(
-                Chunk.getBlocksX()/2,
-                Chunk.getBlocksY()/2,
-                height,
-                false
-            );
-    }
-        
     
     /**
      *
      * @return
      */
     public int getRelX(){
-        return x + (topleftX-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
+        return x + (getTopleftX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
     }
     /**
      *
      * @return
      */
     public int getRelY(){
-        return y + (topleftY-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
+        return y + (getTopleftY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
     }
     
     /**
@@ -116,14 +85,14 @@ public class Coordinate {
      * @return
      */
     public int getAbsX(){
-        return x + topleftX *Chunk.getBlocksX();
+        return x + getTopleftX() *Chunk.getBlocksX();
     }
     /**
      *
      * @return
      */
     public int getAbsY(){
-         return y + topleftY *Chunk.getBlocksY();
+         return y + getTopleftY() *Chunk.getBlocksY();
     }
     
     /**
@@ -131,7 +100,7 @@ public class Coordinate {
      * @return
      */
     public int getZ(){
-        return (int) (height/Block.GAMEDIMENSION);
+        return (int) (getHeight()/Block.GAME_DIMENSION);
     }
     
     /**
@@ -139,21 +108,13 @@ public class Coordinate {
      * @return
      */
     public int getZSafe(){
-        int tmpZ =  (int) (height/Block.GAMEDIMENSION);
+        int tmpZ =  (int) (getHeight()/Block.GAME_DIMENSION);
         if (tmpZ >= Map.getBlocksZ())
             return Map.getBlocksZ() -1;
         else if (tmpZ < 0) return 0;
             else return tmpZ;
     }
     
-    /**
-     * Geht the height (z-value) of the coordinate (game dimension).
-     * @return
-     */
-    public float getHeight(){
-        return height;
-    }
-
     
    /**
      *
@@ -185,17 +146,10 @@ public class Coordinate {
      * @param z
      */
     public void setZ(int z){
-        this.height = z*Block.GAMEDIMENSION;
+        setHeight(z*Block.GAME_DIMENSION);
     }
     
-    /**
-     * 
-     * @param height
-     */
-    public void setHeight(float height){
-        this.height = height;
-        
-    }
+
     
     /**
      *Set the vertical offset in the cell, where the coordiante is pointing at.
@@ -234,10 +188,11 @@ public class Coordinate {
      * @param vector
      * @return the new coordiantes which resulted of the addition
      */
-    public Coordinate addVector(int[] vector) {
+    @Override
+    public Coordinate addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        this.height += vector[2]*Block.GAMEDIMENSION;
+        setHeight(getHeight()+ vector[2]*Block.GAME_DIMENSION);
         return this;
     }
     
@@ -246,47 +201,23 @@ public class Coordinate {
      * @param vector
      * @return the new coordiantes which resulted of the addition
      */
-    public Coordinate addVectorCpy(int[] vector) {
+    @Override
+    public Coordinate addVectorCpy(float[] vector) {
         Coordinate newvec = this.cpy();
         newvec.x += vector[0];
         newvec.y += vector[1];
-        newvec.height += vector[2]*Block.GAMEDIMENSION;
+        newvec.setHeight(newvec.getHeight()+ vector[2]*Block.GAME_DIMENSION);
         return newvec;
     }
-
-    /**
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return the new coordiantes which resulted of the addition
-     */
-    public Coordinate addVector(int x, int y, int z) {
-        return addVector(new int[]{x,y,z});
-    }
-    
-      /**
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return the new coordiantes which resulted of the addition
-     */
-    public Coordinate addVectorCpy(int x, int y, int z) {
-        return addVectorCpy(new int[]{x,y,z});
-    }
-    
-    
     
     /**
      *
      * @return
      */
+    @Override
     public Block getBlock(){
         return Controller.getMap().getData(this);
     }
-    
-
     
     /**
      *
@@ -314,42 +245,17 @@ public class Coordinate {
         return (getBlock().hasSides() && ! getBlock().isTransparent() && ! hasOffset());
     }
     
-    /**
-     *Returns the screen x-position where the object is rendered without regarding the camera. It also adds the cell offset.
-     * @return
-     */
-    public int get2DPosX() {
-        int offset = 0;
-        if (getZ()>=0)
-            offset = (int) (getCellOffset()[0]);
-        return getRelX() * Block.SCREEN_WIDTH //x-coordinate multiplied by it's dimension in this direction
-               + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
-               + offset;
-    }
-    
-    /**
-     *Returns the screen y-position where the object is rendered without regarding the camera. It also adds the cell offset.
-     * @return
-     */
-    public int get2DPosY() {
-        int offset = 0;
-        if (getZ()>=0)
-            offset = (int) (getCellOffset()[1] / 2) //add the objects position inside this coordinate
-                    - (int) (getCellOffset()[2] / Math.sqrt(2)); //add the objects position inside this coordinate
-        return getRelY() * Block.SCREEN_DEPTH2 //y-coordinate * the tile's half size size
-               - (int) (getHeight() / Math.sqrt(2)) //take axis shortening into account
-               + offset;
-    }
-    
     /** @return a copy of this coordinate */
+    @Override
     public Coordinate cpy () {
-            return new Coordinate(this);
+        return new Coordinate(this);
     }
     
     /**
      * Checks if the coordiantes are accessable with the currently loaded Chunks.
      * @return 
      */
+    @Override
     public boolean onLoadedMap(){
         return (getRelX() >= 0 && getRelX() < Map.getBlocksX()
             && getRelY() >= 0 && getRelY() < Map.getBlocksY());
@@ -448,4 +354,45 @@ public class Coordinate {
         result[2] = coords.getZ();
         return new Coordinate(result[0], result[1], result[2], true);
     }
+
+    protected int getX() {
+        return x;
+    }
+
+    protected int getY() {
+        return y;
+    }
+
+    @Override
+    public Point getPoint() {
+        return new Point(x*Block.SCREEN_WIDTH, y*Block.SCREEN_DEPTH, getHeight(), true);
+    }
+
+    @Override
+    public Coordinate getCoordinate() {
+        return this;
+    }
+    
+    @Override
+    public int get2DPosX() {
+        int offset = 0;
+        if (getZ()>=0)
+            offset = (int) (getCellOffset()[0]);
+        return getRelX() * Block.SCREEN_WIDTH //x-coordinate multiplied by it's dimension in this direction
+               + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
+               + offset;
+    }
+
+    @Override
+    public int get2DPosY() {
+        int offset = 0;
+        if (getZ()>=0)
+            offset = (int) (getCellOffset()[1] / 2) //add the objects position inside this coordinate
+                    - (int) (getCellOffset()[2] / Math.sqrt(2)); //add the objects position inside this coordinate
+        return getRelY() * Block.SCREEN_DEPTH2 //y-coordinate * the tile's half size size
+               - (int) (getHeight() / Math.sqrt(2)) //take axis shortening into account
+               + offset;
+    }
+
+
 }

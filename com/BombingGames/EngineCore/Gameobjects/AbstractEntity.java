@@ -1,8 +1,10 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Controller;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
+import com.BombingGames.EngineCore.Map.Point;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -20,9 +22,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     /** A list containing the offset of the objects. */
     public static final int[][][] OFFSET = new int[OBJECTTYPESCOUNT][VALUESCOUNT][2];
     
-    private Coordinate coords;//the position in the map-grid
-    private float positionX = 0; //the horizontal offset
-    private float positionY = 0;
+    private Point point;//the position in the map-grid
    
     static {
         NAMELIST[40] = "player";
@@ -63,15 +63,15 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * Create an entity through this factory method..
      * @param id the object id of the entity.
      * @param value The value at start.
-     * @param coords The coordiantes where you place it.
+     * @param point The coordiantes where you place it.
      * @return the entity.
      */
-    public static AbstractEntity getInstance(int id, int value, Coordinate coords){
+    public static AbstractEntity getInstance(int id, int value, Point point){
         AbstractEntity entity;
         //define the default SideSprites
         switch (id){
             case 40:
-                    entity = new Player(id, coords);
+                    entity = new Player(id, point);
                     break;
             case 41: //explosion
                     entity = new AnimatedEntity(
@@ -88,41 +88,39 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
             default: entity = new SimpleEntity(id);
         }
         
-        entity.setCoords(coords);
+        entity.setPos(point);
         entity.setValue(value);
         return entity;
     }
     
     @Override
-    public int getDepth(Coordinate coords){
+    public int getDepth(AbstractPosition pos){
         return (int) (
-            coords.getRelY() * (SCREEN_DEPTH+1)//Y
-            + getPositionY()
-            + coords.getHeight()/Math.sqrt(2)//Z
-            + (getDimensionZ() - 1) * GAMEDIMENSION/6/Math.sqrt(2)
+            pos.getPoint().getRelY()//Y
+            
+            + pos.getHeight()/Math.sqrt(2)//Z
+            + (getDimensionZ() - 1) * GAME_DIMENSION/6/Math.sqrt(2)
         );
     }
     
     //IsSelfAware implementation
     @Override
-    public Coordinate getCoords() {
-        return this.coords;
+    public Point getPos() {
+        return point;
     }
 
     @Override
-    public void setCoords(Coordinate coords) {
-        this.coords = coords;
+    public void setPos(AbstractPosition pos) {
+        this.point = pos.getPoint();
     }
-    
     
     /**
      * 
      * @param height 
      */
     public void setHeight(float height) {
-        coords.setHeight(height);
+        point.setHeight(height);
     }
-    
     
   
     /**
@@ -130,89 +128,22 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @return true when on the ground
      */
     public boolean onGround(){
-        if (getCoords().getHeight() <= 0) return true; //if entity is under the map
+        if (getPos().getHeight() <= 0) return true; //if entity is under the map
         
         //check if one pixel deeper is on ground.
-        int z = (int) ((getCoords().getHeight()-1)/GAMEDIMENSION);
+        int z = (int) ((getPos().getHeight()-1)/GAME_DIMENSION);
         if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
         
-        return new Coordinate(coords.getRelX(), coords.getRelY(), z, true).getBlock().isObstacle();
+        return new Coordinate(point.getCoordinate().getRelX(), point.getCoordinate().getRelY(), z, true).getBlock().isObstacle();
     }
     
-
-        
-     /**
-     * Get the screen x-position where the object is rendered without regarding the camera.
-     * @param coords  this parameter get's ignored because entitys know their own coordinates. You can pass <i>null</i> here.
-     * @return The screen X-position in pixels.
-     */
-   @Override
-    public int get2DPosX(Coordinate coords) {
-        return this.coords.getRelX() * SCREEN_WIDTH //x-coordinate multiplied by it's dimension in this direction
-               + (this.coords.getRelY() % 2) * SCREEN_DEPTH //y-coordinate multiplied by it's dimension in this direction
-               + (int) (positionX); //add the objects position inside this coordinate
-    }
-
-    /**
-     * Get the 2D-projection y-position where the object is rendered without regarding the camera.
-     * @param coords  this parameter get's ignored because entitys know their own coordinates. You can pass <i>null</i> here.
-     * @return The 2D-projection Y-position in pixels.
-     */
-   @Override
-    public int get2DPosY(Coordinate coords) {
-        return this.coords.getRelY() * SCREEN_DEPTH2 //y-coordinate * the tile's size
-               + (int) (positionY / 2) //add the objects position inside this coordinate
-               - (int) (this.coords.getHeight() / Math.sqrt(2)); //take z-axis shortening into account
-    }
-        
     /**
      * add this entity to the map-> let it exist
      */
     public void exist(){
         Controller.getMap().getEntitys().add(this);
     }
-    
-    /**
-     * Returns the side with the current position.
-     * @return
-     * @see com.BombingGames.Game.Blocks.Block#getSideNumb(int, int) 
-     */
-    protected int getSideNumb() {
-        return Coordinate.getNeighbourSide(positionX, positionY);
-    }  
-
-    /**
-     *The positon coordiante system has it's center in the top left corner of the cell, like the offset.
-     * @return
-     */
-    public float getPositionX() {
-        return positionX;
-    }
-
-    /**
-     *The positon coordiante system has it's center in the top left corner of the cell, like the offset.
-     * @param offsetX
-     */
-    public void setPositionX(float offsetX) {
-        this.positionX = offsetX;
-    }
-
-    /**
-     *The positon coordiante system has it's center in the top left corner of the cell, like the offset.
-     * @return
-     */
-    public float getPositionY() {
-        return positionY;
-    }
-
-    /**
-     *The positon coordiante system has it's center in the top left corner of the cell, like the offset.
-     * @param offsetY
-     */
-    public void setPositionY(float offsetY) {
-        this.positionY = offsetY;
-    }
-
+  
     /**
      *
      * @return
@@ -228,7 +159,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
     
     /**
-     *
+     *The offset is the offset of the sprite image.
      * @return
      */
     @Override
@@ -237,7 +168,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
 
     /**
-     *
+     *The offset is the offset of the sprite image.
      * @return
      */
     @Override

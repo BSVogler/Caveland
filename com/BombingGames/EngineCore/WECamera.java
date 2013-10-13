@@ -59,8 +59,8 @@ public class WECamera extends Camera {
 	position.set(equalizationScale*zoom * viewportWidth / 2.0f, equalizationScale*zoom * viewportHeight / 2.0f, 0);        
         
         //set the camera's focus to the center of the map
-        outputPosX = Coordinate.getMapCenter().get2DPosX() - get2DWidth() / 2;
-        outputPosY = Coordinate.getMapCenter().get2DPosY() - get2DHeight() / 2;
+        outputPosX = Map.getCenter().get2DPosX() - get2DWidth() / 2;
+        outputPosY = Map.getCenter().get2DPosY() - get2DHeight() / 2;
         
         groundBlock = Block.getInstance(2);//set the ground level groundBlock
         groundBlock.setSideClipping(0, true);
@@ -107,11 +107,11 @@ public class WECamera extends Camera {
     public void update() {       
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
-            outputPosX = focusCoordinates.getBlock().get2DPosX(focusCoordinates) - get2DWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
-            outputPosY = focusCoordinates.getBlock().get2DPosY(focusCoordinates) - get2DHeight() / 2;
+            outputPosX = focusCoordinates.get2DPosX() - get2DWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
+            outputPosY = focusCoordinates.get2DPosY() - get2DHeight() / 2;
         } else if (focusentity != null ){
-            outputPosX = focusentity.get2DPosX(null) - get2DWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
-            outputPosY = focusentity.get2DPosY(null) - get2DHeight()/2 ;
+            outputPosX = focusentity.getPos().get2DPosX() - get2DWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
+            outputPosY = focusentity.getPos().get2DPosY() - get2DHeight()/2 ;
         }
         
         position.set(outputPosX+ get2DWidth()/2 , outputPosY+ get2DHeight()/2 , 0); 
@@ -217,14 +217,16 @@ public class WECamera extends Camera {
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
             if (!entity.isHidden() && !entity.isClipped()
                 && 
-                entity.get2DPosY(null) < outputPosY + get2DHeight()
+                entity.getPos().get2DPosY() < outputPosY + get2DHeight()
                 )
                     depthsort.add(
-                        new Renderobject(entity, entity.getCoords())
+                        new Renderobject(entity, entity.getPos())
                     );
         }
         //sort the list
-        sortDepthList(0, depthsort.size()-1);
+        if (depthsort.size()>0)
+            sortDepthList(0, depthsort.size()-1);
+        else Gdx.app.error("WECamera", "depthsort is empty");
     }
     
     /**

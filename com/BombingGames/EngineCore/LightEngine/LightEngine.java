@@ -259,7 +259,7 @@ public class LightEngine {
                 shapeRenderer.circle(0, 0, size);
                 shapeRenderer.end();
                 shapeRenderer.scale(1f, (1/(sun.getMaxAngle()/90f-0.5f)), 1f);
-                                shapeRenderer.rotate(0, 0, 1, -Controller.getMap().getWorldSpinDirection());
+                shapeRenderer.rotate(0, 0, 1, -Controller.getMap().getWorldSpinDirection());
                 shapeRenderer.translate(-posX, -posY, 0);
             } else {
                 shapeRenderer.begin(ShapeType.Line);

@@ -399,11 +399,19 @@ public class Chunk {
         Chunk.generator = generator;
     }
     
-    public static int getWidth(){
+    public static int getScreenWidth(){
         return blocksX*AbstractGameObject.SCREEN_WIDTH;
     }
     
-    public static int getDepth() {
-        return blocksY*AbstractGameObject.SCREEN_DEPTH*2;
+    public static int getScreenDepth() {
+        return blocksY*AbstractGameObject.SCREEN_DEPTH/4;
+    }
+    
+    public static int getGameWidth(){
+        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    public static int getGameDepth() {
+        return blocksY*AbstractGameObject.GAME_DIAGSIZE/2;
     }
 }

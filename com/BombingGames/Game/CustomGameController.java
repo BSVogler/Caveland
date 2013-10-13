@@ -3,9 +3,8 @@ package com.BombingGames.Game;
 import com.BombingGames.EngineCore.Controller;
 import com.BombingGames.EngineCore.Gameobjects.AbstractCharacter;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
-import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.BombingGames.EngineCore.GameplayScreen;
-import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.Map.Minimap;
 import com.BombingGames.EngineCore.WECamera;
@@ -20,13 +19,13 @@ public class CustomGameController extends Controller {
         
     @Override
     public void init(){
-         //Chunk.setGenerator(0);
+         Chunk.setGenerator(2);
          super.init();
 
          AbstractCharacter player = (AbstractCharacter) AbstractEntity.getInstance(
                 40,
                 0,
-                Coordinate.getMapCenter(Map.getBlocksZ()*Block.GAMEDIMENSION)
+                Map.getCenter(Map.getGameHeight())
         );
         player.setControls("WASD");
         setPlayer(player);

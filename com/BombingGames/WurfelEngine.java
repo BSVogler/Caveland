@@ -79,7 +79,7 @@ public class WurfelEngine extends Game {
     }
     
         /**
-     * Create a new instance of the Engine.
+     * Create a new instance of the engine.
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
@@ -148,10 +148,9 @@ public class WurfelEngine extends Game {
 
     /**
      *Check if the game is running in fullscreen.
-     * @return
+     * @return true when running in fullscreen, false if in window mode
      */
     public static boolean isFullscreen() {
         return fullscreen;
     } 
-    
 }

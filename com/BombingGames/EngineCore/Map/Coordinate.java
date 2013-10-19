@@ -364,7 +364,7 @@ public class Coordinate extends AbstractPosition {
 
     @Override
     public Point getPoint() {
-        return new Point(x*Block.SCREEN_WIDTH, y*Block.SCREEN_DEPTH, getHeight(), true);
+        return new Point(x*Block.SCREEN_WIDTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0), y*Block.SCREEN_DEPTH, getHeight(), true);
     }
 
     @Override

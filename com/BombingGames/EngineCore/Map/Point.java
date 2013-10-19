@@ -38,7 +38,7 @@ public class Point extends AbstractPosition {
        super(point.getTopleftX(), point.getTopleftY());
        this.x = point.x;
        this.y = point.y;
-       this.setHeight(this.getHeight());
+       this.setHeight(point.getHeight());
     }
     
     

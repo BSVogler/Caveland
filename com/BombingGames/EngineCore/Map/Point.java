@@ -137,10 +137,10 @@ public class Point extends AbstractPosition {
 
     @Override
     public Point addVectorCpy(float[] vector) {
-        Point newvec = this.cpy();
-        newvec.x += vector[0];
-        newvec.y += vector[1];
-        newvec.setHeight(newvec.getHeight()+ vector[2]*Block.GAME_DIMENSION);
-        return newvec;
+        Point cpy = this.cpy();
+        cpy.x += vector[0];
+        cpy.y += vector[1];
+        cpy.setHeight(cpy.getHeight()+ vector[2]*Block.GAME_DIMENSION);
+        return cpy;
     }
 }

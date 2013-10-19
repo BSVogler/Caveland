@@ -103,7 +103,7 @@ public class Point extends AbstractPosition {
      */
     public Block getBlockSafe(){
         Coordinate coord = getCoordinate();
-        if (coord.getZ() > 0)
+        if (coord.getZ() >= Chunk.getGameHeight())
             return Block.getInstance(0);
         else
             return Controller.getMap().getDataSafe(coord);

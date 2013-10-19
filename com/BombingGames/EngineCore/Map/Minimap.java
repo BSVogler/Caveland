@@ -179,11 +179,24 @@ public class Minimap {
 //                );
                             
             if (controller.getPlayer()!=null){
-                //player pos
+                //player coordinate
                 view.drawString(
                     controller.getPlayer().getPos().getCoordinate().getRelX() +" | "+ controller.getPlayer().getPos().getCoordinate().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
                     (int) (viewportPosX + (controller.getPlayer().getPos().getCoordinate().getRelX() + (controller.getPlayer().getPos().getRelY()%2==1?0.5f:0) ) * scaleX+20),
                     (int) (viewportPosY + controller.getPlayer().getPos().getCoordinate().getRelY() * scaleY - 10),
+                    Color.RED
+                );
+                 int rectX = (int) (viewportPosX
+                     + (controller.getPlayer().getPos().getRelX()
+                     + (controller.getPlayer().getPos().getCoordinate().getRelY()%2==1?0.5f:0)
+                     )/Block.GAME_DIAGSIZE * scaleX);
+                int rectY = (int) (viewportPosY
+                    + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE * scaleY*2);
+                
+                view.drawString(
+                    controller.getPlayer().getPos().getRelX() +" | "+ controller.getPlayer().getPos().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
+                    rectX,
+                    rectY,
                     Color.RED
                 );
             }

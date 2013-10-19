@@ -100,11 +100,15 @@ public class Minimap {
                 color.a = 0.8f;
                 shapeRenderer.setColor(color);
                 float rectX = viewportPosX
-                    + (controller.getPlayer().getPos().getRelX()
+                    + ((controller.getPlayer().getPos().getRelX()
                     + (controller.getPlayer().getPos().getCoordinate().getRelY()%2==1?0.5f:0)
-                    )/Block.GAME_DIAGSIZE * scaleX;
+                    )/Block.GAME_DIAGSIZE
+                    - 0.5f)
+                    * scaleX;
                 float rectY = viewportPosY
-                    + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE * scaleY*2;
+                    + (controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE
+                    - 0.5f
+                    )* scaleY*2;
                 shapeRenderer.translate(rectX, rectY, 0);
                 shapeRenderer.rotate(0, 0, 1, 45);
                 shapeRenderer.filledRect(0,0,renderSize,renderSize);

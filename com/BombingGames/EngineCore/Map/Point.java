@@ -1,7 +1,6 @@
 package com.BombingGames.EngineCore.Map;
 
 import com.BombingGames.EngineCore.Controller;
-import static com.BombingGames.EngineCore.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.EngineCore.Gameobjects.Block;
 
 /**
@@ -33,9 +32,10 @@ public class Point extends AbstractPosition {
     
     /**
      * This constructor copies the values.
-     * @param point 
+     * @param point the source of the copy
      */
     public Point(Point point) {
+       super(point.getTopleftX(), point.getTopleftY());
        this.x = point.x;
        this.y = point.y;
        this.setHeight(this.getHeight());
@@ -56,13 +56,6 @@ public class Point extends AbstractPosition {
         return new float[]{getRelX(), getRelY(), getHeight()};
     }
 
-    @Override
-    public Coordinate getCoordinate() {
-        return Controller.findCoordinate((int) getRelX(), (int) getRelY(), false);
-    }
-
-    
-
     public float getRelX() {
         return x + (getTopleftX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
     }
@@ -70,15 +63,36 @@ public class Point extends AbstractPosition {
     public float getRelY() {
         return y + (getTopleftY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
     }
+    
+            /**
+     *
+     * @return
+     */
+    public float[] getAbs(){
+        return new float[]{getAbsX(), getAbsY(), getHeight()};
+    }
+
+    public float getAbsX() {
+        return x + getTopleftX() *Chunk.getGameWidth();
+    }
+    
+    public float getAbsY() {
+        return y + getTopleftY() *Chunk.getGameDepth();
+    }
+    
+    @Override
+    public Coordinate getCoordinate() {
+        return Controller.findCoordinate(this, false);
+    }
+    
+    
       /**
      *
      * @return
      */
     @Override
     public Block getBlock(){
-        return Controller.getMap().getData(
-            getCoordinate()
-        );
+        return getCoordinate().getBlock();
     }
     
 

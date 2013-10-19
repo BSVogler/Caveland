@@ -110,7 +110,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
 
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
-            if (!onGround()) dir[2] += -Map.GRAVITY*t; //in m/s
+            if (!onGround()) dir[2] -= Map.GRAVITY*t; //in m/s
             getPos().setHeight(getPos().getHeight() + dir[2] * GAME_DIMENSION * t); //in m
             
             

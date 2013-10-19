@@ -164,7 +164,7 @@ public class Controller {
      * @return the neighbour block
      */
     public static Block getNeighbourBlock(Coordinate coords, int side){
-        return Controller.getMap().getDataSafe(Coordinate.neighbourSidetoCoords(coords, side));
+        return Controller.getMap().getDataSafe(coords.neighbourSidetoCoords(side));
     }
     
   

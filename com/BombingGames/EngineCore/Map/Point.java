@@ -109,8 +109,7 @@ public class Point extends AbstractPosition {
 
     @Override
     public int get2DPosX() {
-        return (int) (getRelX() //x-coordinate multiplied by it's dimension in this direction
-            + (getCoordinate().getRelY() % 2) * SCREEN_DEPTH); //y-coordinate multiplied by it's dimension in this direction
+        return (int) (getRelX()); //x-coordinate multiplied by it's dimension in this direction
     }
 
     @Override

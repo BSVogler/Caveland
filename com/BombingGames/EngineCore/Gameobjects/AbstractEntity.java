@@ -44,8 +44,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         OFFSET[40][7][1] = 33-40;
         NAMELIST[41] = "smoke test";
         NAMELIST[42] = "character shadow";
-        OFFSET[42][0][0] = 0;
-        OFFSET[42][0][1] = 80;
+        OFFSET[42][0][0] = -80;
+        OFFSET[42][0][1] = 40;
     }
     
     private boolean destroy;

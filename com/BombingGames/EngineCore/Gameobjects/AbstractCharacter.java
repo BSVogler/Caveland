@@ -330,13 +330,15 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     @Override
     public boolean onGround() {
-        getPos().setHeight(getPos().getHeight()-1);
-        
-        boolean colission = getPos().getBlock().isObstacle();
-        getPos().setHeight(getPos().getHeight()+1);
-        
-        //if standing on ground on own or neighbour block then true
-        return (super.onGround() || colission);
+        if (getPos().getHeight() > 0){
+            getPos().setHeight(getPos().getHeight()-1);
+
+            boolean colission = getPos().getBlock().isObstacle();
+            getPos().setHeight(getPos().getHeight()+1);
+
+            //if standing on ground on own or neighbour block then true
+            return (super.onGround() || colission);
+        } return true;
     }
 
     @Override

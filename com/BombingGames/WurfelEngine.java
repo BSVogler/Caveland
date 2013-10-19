@@ -35,7 +35,7 @@ public class WurfelEngine extends Game {
      */
     private WurfelEngine(String title, String[] args){
         // set the name of the application menu item on mac
-        if (System.getProperty("os.name").toLowerCase().equals("mac"))
+        if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

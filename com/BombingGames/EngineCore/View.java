@@ -1,7 +1,9 @@
 package com.BombingGames.EngineCore;
 
 import com.BombingGames.EngineCore.Gameobjects.Block;
+import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.Point;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -126,7 +128,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public int ScreenXtoGame(int x, WECamera camera){
+    public float ScreenXtoGame(int x, WECamera camera){
         return (int) (x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getOutputPosX());
     }
     
@@ -136,7 +138,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public int ScreenYtoGame(int y, WECamera camera){
+    public float ScreenYtoGame(int y, WECamera camera){
         return (int) ((y / camera.getTotalScale() + camera.getOutputPosY())*2 - camera.getViewportPosY());
     }
     
@@ -157,11 +159,15 @@ public class View {
             && !(x > camera.getViewportPosX() && x < camera.getViewportPosX()+camera.getViewportWidth()
                 && y > camera.getViewportPosY() && y < camera.getViewportPosY()+camera.getViewportHeight()));
  
-        //reverse y to game niveau
-        x = ScreenXtoGame(x, camera);
-        y = ScreenYtoGame(y, camera);
+
         
-        return Controller.findCoordinate(x,y, true);
+        return Controller.findCoordinate(
+            new Point(
+                ScreenXtoGame(x, camera),
+                ScreenYtoGame(y, camera),
+                Chunk.getGameHeight()-1, true),
+            true
+        );
     }
     
 

@@ -19,7 +19,7 @@ public class Map {
     /**
      *Set if the map should load or generate new chunks when the camera reaches an end of the map.
      */
-    public final static boolean ENABLECHUNKSWITCH = false;
+    public final static boolean ENABLECHUNKSWITCH = true;
     
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0

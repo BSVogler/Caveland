@@ -102,7 +102,11 @@ public class Point extends AbstractPosition {
      * @return
      */
     public Block getBlockSafe(){
-        return Controller.getMap().getDataSafe(getCoordinate());
+        Coordinate coord = getCoordinate();
+        if (coord.getZ() > 0)
+            return Block.getInstance(0);
+        else
+            return Controller.getMap().getDataSafe(coord);
     }
 
     @Override

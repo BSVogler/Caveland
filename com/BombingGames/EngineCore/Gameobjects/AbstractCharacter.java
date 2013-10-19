@@ -10,7 +10,7 @@ import com.badlogic.gdx.audio.Sound;
  * @author Benedikt
  */
 public abstract class AbstractCharacter extends AbstractEntity {
-   private final int COLISSIONRADIUS = GAME_DIAGSIZE/2;
+   private final int COLISSIONRADIUS = GAME_DIAGSIZE/4;
    private final int SPRITESPERDIR;
       
    private final float[] dir = {1, 0, 0};
@@ -334,7 +334,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         if (getPos().getHeight() > 0){
             getPos().setHeight(getPos().getHeight()-1);
 
-            boolean colission = getPos().getBlockSafe().isObstacle();
+            boolean colission = getPos().getBlockSafe().isObstacle() || horizontalColission(getPos());
             getPos().setHeight(getPos().getHeight()+1);
 
             //if standing on ground on own or neighbour block then true

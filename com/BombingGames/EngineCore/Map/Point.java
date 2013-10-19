@@ -30,17 +30,6 @@ public class Point extends AbstractPosition {
         }
         setHeight(height);
     }
-
-    /**
-     * Don't know if finished?
-     * @param coordX
-     * @param coordY
-     * @param coordZ
-     * @param relative 
-     */
-    public Point(int coordX, int coordY, int coordZ, boolean relative) {
-        super();
-    }
     
     /**
      * This constructor copies the values.

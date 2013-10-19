@@ -13,7 +13,7 @@ public abstract class AbstractPosition {
     private float height;
 
     /**
-     * 
+     * With custom reference
      * @param topleftX
      * @param topleftY 
      */
@@ -24,7 +24,7 @@ public abstract class AbstractPosition {
 
     
     /**
-     * 
+     * With the currently loaded reference
      */
     public AbstractPosition() {
         topleftX = Controller.getMap().getChunkCoords(0)[0];

@@ -9,6 +9,7 @@ import com.BombingGames.EngineCore.Map.Cell;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.Map.Minimap;
+import com.BombingGames.EngineCore.Map.Point;
 import com.BombingGames.MainMenu.MainMenuScreen;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -257,32 +258,32 @@ public class Controller {
     
     /**
      * Game poition to game coordinate
-     * @param gameX The position on the map
-     * @param gameY
-     * @param depthCheck when true the coordiantes are checked with depth, use this for screen to coords
+     * @param pos the position on the map
+     * @param depthCheck when true the coordiantes are checked with depth, use this for screen to coords. This is only possible if the position are on the map.
      * @return 
      */
-    public static Coordinate findCoordinate(int gameX, int gameY,boolean depthCheck){
+    public static Coordinate findCoordinate(Point pos, boolean depthCheck){
         //find out where the click went
         Coordinate coords = new Coordinate(
-            gameX / Block.GAME_DIAGSIZE,
-            gameY / Block.GAME_DIAGSIZE*2,
-            Map.getBlocksZ()-1,
+            (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,
+            (int) (pos.getRelY()) / Block.GAME_DIAGSIZE*2,
+            pos.getHeight(),
             true
         );
        
         //find the specific coordinate
-        Coordinate specificCoords = Coordinate.neighbourSidetoCoords(
-            coords,
-            Coordinate.getNeighbourSide(gameX % Block.GAME_DIAGSIZE, gameY % (Block.GAME_DIAGSIZE))
+        Coordinate specificCoords = coords.neighbourSidetoCoords(
+            Coordinate.getNeighbourSide(pos.getRelX() % Block.GAME_DIAGSIZE, pos.getRelY() % (Block.GAME_DIAGSIZE))
         );
         coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
+        coords.setRelY(specificCoords.getRelY());
         
-        if (depthCheck) {
+        //trace ray down if wanted
+        if (depthCheck && pos.onLoadedMap()) {
+            coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
             //if selection is not found by that specify it
             if (coords.getBlock().isHidden()){
-                //trace ray down to bottom
+                //trace ray down to bottom. for each step 2 y and 1 z down
                 do {
                     coords.setRelY(coords.getRelY()-2);
                     coords.setZ(coords.getZ()-1);
@@ -291,6 +292,5 @@ public class Controller {
         }
         
         return coords;
-    
     }
 }

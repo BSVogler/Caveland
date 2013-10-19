@@ -10,26 +10,26 @@ import com.BombingGames.EngineCore.Gameobjects.Block;
  * @author Benedikt Vogler
  */
 public class Coordinate extends AbstractPosition {
-    private int x;
-    private int y;
+    private int x; //saved as relative
+    private int y; //saved as relative
     
     /**
      * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
      * @param x The x value.
      * @param y The y value.
-     * @param z The z value.
-     * @param relative   True when the coordiantes are relative to the currently loaded map. False when they are absolute.
+     * @param z The z value as coordinate.
+     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
     public Coordinate(int x, int y, int z, final boolean relative) {
         super();
         
-        if (relative){
-            this.x = x;
-            this.y = y;
-        } else {
-            this.x = x - getTopleftX() * Chunk.getBlocksX();
-            this.y = y - getTopleftY() * Chunk.getBlocksY();
+        this.x = x;
+        this.y = y;
+        if (!relative){ //if absolute then make it relative
+            this.x -= getTopleftX() * Chunk.getBlocksX();
+            this.y -= getTopleftY() * Chunk.getBlocksY();
         }
+        
         setHeight(z*Block.GAME_DIMENSION);
     }
     
@@ -37,19 +37,19 @@ public class Coordinate extends AbstractPosition {
      * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
      * @param x The x value.
      * @param y The y value.
-     * @param height The height of the Coordiante.
-     * @param relative  True when the coordiantes are relative to the currently loaded map. False when they are absolute.
+     * @param height The z value as height.
+     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
     public Coordinate(int x, int y, float height, final boolean relative) {
         super();
         
-        if (relative){
-            this.x = x;
-            this.y = y;
-        } else {
-            this.x = x - getTopleftX() * Chunk.getBlocksX();
-            this.y = y - getTopleftY() * Chunk.getBlocksY();
+        this.x = x;
+        this.y = y;
+        if (!relative){ //if absolute then make it relative
+            this.x -= getTopleftX() * Chunk.getBlocksX();
+            this.y -= getTopleftY() * Chunk.getBlocksY();
         }
+        
         setHeight(height);
     }
     
@@ -347,7 +347,6 @@ public class Coordinate extends AbstractPosition {
                 result[1] = getRelY() - 1;
                 break;
             default:
-                result[1] = coords.getRelY();
                 result[0] = getRelX();
                 result[1] = getRelY();
         }

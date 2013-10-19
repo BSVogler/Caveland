@@ -127,10 +127,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 getPos().setHeight((int)(oldHeight/GAME_DIMENSION)*GAME_DIMENSION);
             }
             
-            if (!inliquid  && getPos().getBlockSafe().isLiquid())
+            if (!inliquid && getPos().getBlockSafe().isLiquid())//if enterin water
                 waterSound.play();
             
-            inliquid = getPos().getBlockSafe().isLiquid();
+            inliquid = getPos().getBlockSafe().isLiquid();//save if in water
 
 
             /*HORIZONTAL MOVEMENT*/

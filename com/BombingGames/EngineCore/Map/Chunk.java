@@ -414,4 +414,12 @@ public class Chunk {
     public static int getGameDepth() {
         return blocksY*AbstractGameObject.GAME_DIAGSIZE/2;
     }
+    
+        /**
+     * Game size
+     * @return 
+     */
+    public static int getGameHeight(){
+        return blocksZ*AbstractGameObject.GAME_DIMENSION;
+    }
 }

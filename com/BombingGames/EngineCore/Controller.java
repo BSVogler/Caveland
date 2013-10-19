@@ -158,7 +158,7 @@ public class Controller {
     }   
 
     /**
-     * Get the neighbour block to a side
+     * Get the neighbour block to a side. It may be itself
      * @param coords 
      * @param side the id of the side
      * @return the neighbour block

@@ -308,50 +308,50 @@ public class Coordinate extends AbstractPosition {
 
     /**
      * Get the neighbour coordinates of the neighbour of the coords you give.
-     * @param coords the coordinates of the field
      * @param neighbourSide the side number of the given coordinates
      * @return The coordinates of the neighbour.
      */
-    public static Coordinate neighbourSidetoCoords(Coordinate coords, int neighbourSide) {
+    public Coordinate neighbourSidetoCoords(int neighbourSide) {
         int[] result = new int[3];
         switch (neighbourSide) {
             case 0:
-                result[0] = coords.getRelX();
-                result[1] = coords.getRelY() - 2;
+                result[0] = getRelX();
+                result[1] = getRelY() - 2;
                 break;
             case 1:
-                result[0] = coords.getRelX() + (coords.getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = coords.getRelY() - 1;
+                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
+                result[1] = getRelY() - 1;
                 break;
             case 2:
-                result[0] = coords.getRelX() + 1;
-                result[1] = coords.getRelY();
+                result[0] = getRelX() + 1;
+                result[1] = getRelY();
                 break;
             case 3:
-                result[0] = coords.getRelX() + (coords.getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = coords.getRelY() + 1;
+                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
+                result[1] = getRelY() + 1;
                 break;
             case 4:
-                result[0] = coords.getRelX();
-                result[1] = coords.getRelY() + 2;
+                result[0] = getRelX();
+                result[1] = getRelY() + 2;
                 break;
             case 5:
-                result[0] = coords.getRelX() - (coords.getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = coords.getRelY() + 1;
+                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
+                result[1] = getRelY() + 1;
                 break;
             case 6:
-                result[0] = coords.getRelX() - 1;
-                result[1] = coords.getRelY();
+                result[0] = getRelX() - 1;
+                result[1] = getRelY();
                 break;
             case 7:
-                result[0] = coords.getRelX() - (coords.getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = coords.getRelY() - 1;
+                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
+                result[1] = getRelY() - 1;
                 break;
             default:
-                result[0] = coords.getRelX();
                 result[1] = coords.getRelY();
+                result[0] = getRelX();
+                result[1] = getRelY();
         }
-        result[2] = coords.getZ();
+        result[2] = getZ();
         return new Coordinate(result[0], result[1], result[2], true);
     }
 

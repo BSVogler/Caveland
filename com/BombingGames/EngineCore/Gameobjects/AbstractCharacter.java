@@ -47,6 +47,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         super(id);
         SPRITESPERDIR = spritesPerDir;
         shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,point.cpy());
+        shadow.exist();
         if (waterSound == null) waterSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/splash.ogg"));
     }
    
@@ -190,7 +191,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             //uncomment this line to see where to player stands:
             //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
 
-            //shadow.update(delta, this);
+            shadow.update(delta, this);
 
             //slow walking down
             if (speed > 0) speed -= delta/(float) smoothBreaks;

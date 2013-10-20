@@ -73,10 +73,10 @@ public class Block extends AbstractGameObject {
         NAMELIST[50] = "strewbed";
         NAMELIST[70] = "campfire";
         NAMELIST[71] = "explosive barrel";
-        OFFSET[71][0][0] = 39;
-        OFFSET[71][0][1] = 19;
-        OFFSET[71][1][0] = 35;
-        OFFSET[71][1][1] = 16;
+        OFFSET[71][0][0] = 35;
+        OFFSET[71][0][1] = 16;
+        OFFSET[71][1][0] = 39;
+        OFFSET[71][1][1] = 19;
         NAMELIST[72] = "animation test";
     }
     

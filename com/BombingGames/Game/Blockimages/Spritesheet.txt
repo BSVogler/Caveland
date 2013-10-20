@@ -173,9 +173,9 @@ b44-0-2
 b71-0
   rotate: false
   xy: 155, 518
-  size: 84, 122
-  orig: 84, 122
-  offset: 38, -20
+  size: 84, 130
+  orig: 84, 130
+  offset: 38, -17
   index: -1
 b4-0-1
   rotate: false
@@ -215,9 +215,9 @@ b5-0-0
 b71-1
   rotate: false
   xy: 240, 518
-  size: 84, 130
-  orig: 84, 130
-  offset: 38, -17
+  size: 84, 122
+  orig: 84, 122
+  offset: 38, -20
   index: -1
 e41-0
   rotate: false

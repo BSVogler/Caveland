@@ -2,6 +2,7 @@ package com.BombingGames.EngineCore.Map;
 
 import com.BombingGames.EngineCore.Controller;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
+import com.BombingGames.EngineCore.Gameobjects.AbstractGameObject;
 import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class Map {
      * @see fillWithBlocks(boolean load)
      */
     public Map(boolean newMap, int worldSpinDirection) {
-        Gdx.app.log("DEBUG","Should the Engine generate a new map: "+newMap);
+        Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
         this.newMap = newMap;
         this.worldSpinDirection = worldSpinDirection;
         
@@ -72,7 +73,7 @@ public class Map {
      * Fill the data array of the map with blocks. Also resets the cellOffset.
      */
     public void fillWithBlocks(){
-        Gdx.app.log("DEBUG","Filling the map with air cells...");
+        Gdx.app.debug("Map","Filling the map with air cells...");
         for (Cell[][] x : data) {
             for (Cell[] y : x) {
                 for (int z = 0; z < y.length; z++) {
@@ -92,7 +93,7 @@ public class Map {
                 chunkpos++;
         }
        
-        Gdx.app.log("DEBUG","...Finished filling the map");
+        Gdx.app.log("Map","...Finished filling the map");
     }
     
      /**
@@ -159,7 +160,7 @@ public class Map {
      */
     public void setCenter(int newmiddle){
         if (ENABLECHUNKSWITCH){
-            Gdx.app.log("DEBUG","ChunkSwitch:"+newmiddle);
+            Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
                 //make a chunk of the data
@@ -185,7 +186,7 @@ public class Map {
 
                 Controller.requestRecalc();
             } else {
-                Gdx.app.log("ERROR","setCenter was called with center:"+newmiddle);
+                Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
             }
         }
     }
@@ -301,26 +302,26 @@ public class Map {
     public Block getDataSafe(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
-            Gdx.app.log("DEBUG","X:"+x);
+            Gdx.app.error("Map","X:"+x);
         } else if( x<0 ){
             x = 0;
-            Gdx.app.log("DEBUG","X:"+x);
+            Gdx.app.error("Map","X:"+x);
         }
         
         if (y >= blocksY){
             y = blocksY-1;
-            Gdx.app.log("DEBUG","Y:"+y);
+            Gdx.app.debug("Map","Y:"+y);
         } else if( y < 0 ){
             y = 0;
-            Gdx.app.log("DEBUG","Y:"+y);
+            Gdx.app.error("Map","Y:"+y);
         }
         
         if (z >= blocksZ){
             z = blocksZ-1;
-            Gdx.app.log("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         } else if( z < 0 ){
             z = 0;
-            Gdx.app.log("DEBUG","Z:"+z+">="+blocksZ);
+            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         }
         
         return data[x][y][z].getBlock();    
@@ -418,7 +419,7 @@ public class Map {
         for (int i=0;i < numberofblocks; i++){
                 //cellPos[x[i]][y[i]][z[i]][0] = (float) (Math.random()*Block.SCREEN_DEPTH2);
                 //cellPos[x[i]][y[i]][z[i]][1] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                data[x[i]][y[i]][z[i]].setCellOffset(2, (float) (Math.random()*Block.GAMEDIMENSION));//vertical shake
+                data[x[i]][y[i]][z[i]].setCellOffset(2, (float) (Math.random()*Block.GAME_DIMENSION));//vertical shake
             
         }
         Controller.requestRecalc();
@@ -470,11 +471,54 @@ public class Map {
         ArrayList<type> list = new ArrayList<type>();
         //e inst=(e) e.newInstance();
 
-        for (AbstractEntity entity : entitylist) {
-            if (type.isInstance(entity)) {
-                list.add((type) entity);
+        for (AbstractEntity entity : entitylist) {//check every entity
+            if (type.isInstance(entity)) {//if the entity has the wanted type
+                list.add((type) entity);//add it to list
             }
         }
         return list;
+    }
+    
+        /**
+     *Returns a coordinate pointing to the absolute(?) center of the map. Height is half the map's height.
+     * @return
+     */
+    public static Point getCenter(){
+        return getCenter(Map.getBlocksZ()*Block.GAME_DIMENSION/2);
+    }
+    
+    /**
+     *Returns a corodinate pointing to the absolute(?) center of the map.
+     * @param height You custom height.
+     * @return
+     */
+    public static Point getCenter(float height){
+        return
+            new Point(
+                Chunk.getGameWidth()*1.5f,
+                Chunk.getGameDepth()*1.5f,
+                height,
+                false
+            );
+    }
+    
+    public static int getGameWidth(){
+        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    /**
+     * The depth of the map in game size
+     * @return 
+     */
+    public static int getGameDepth() {
+        return blocksY*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    /**
+     * Game size
+     * @return 
+     */
+    public static int getGameHeight(){
+        return blocksZ*AbstractGameObject.GAME_DIMENSION;
     }
 }

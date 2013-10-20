@@ -5,6 +5,7 @@ import com.BombingGames.EngineCore.GameplayScreen;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WorkingDirectory;
 import com.BombingGames.MainMenu.MainMenuScreen;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -23,27 +24,27 @@ public class WurfelEngine extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.1.12";    
+    public static final String VERSION = "1.1.14";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WurfelEngine instance;
 
     /**
-     * Create the Engine. Don't use this. Use construct() instead. 
+     * Create the Engine. Don't use this constructor. Use construct() instead. 
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
     private WurfelEngine(String title, String[] args){
         // set the name of the application menu item on mac
-        if (System.getProperty("os.name").toLowerCase().equals("mac"))
+        if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-         config.fullscreen = false;
-         config.vSyncEnabled = false;
-         config.useGL20 = false;
+        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
+        config.fullscreen = false;
+        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
+        config.useGL20 = false;
          
         //arguments
         //you can start the game with a custom resolution
@@ -59,12 +60,13 @@ public class WurfelEngine extends Game {
             }
         }    
         
-        config.title = title + " " + config.width + "x"+config.height;     
+        config.title = title + " " + config.width + "x"+config.height;
 
         workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfelengine");
         
         Texture.setEnforcePotImages(false);//allow non-power-of-two textures
         LwjglApplication application = new LwjglApplication(this, config);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
          
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
@@ -78,7 +80,7 @@ public class WurfelEngine extends Game {
     }
     
         /**
-     * Create a new instance of the Engine.
+     * Create a new instance of the engine.
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
@@ -136,21 +138,20 @@ public class WurfelEngine extends Game {
     }
 
     /**
-     *
+     *You can switch to fullscreen. It only works if the current window resolution is supported by your hardware.
      * @param fullscreen
      */
     public static void setFullscreen(boolean fullscreen) {
         WurfelEngine.fullscreen = fullscreen;
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
-        Gdx.graphics.setTitle("Wurfelengine V" + WurfelEngine.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
+        Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WurfelEngine.isFullscreen());
     }
 
     /**
-     *
-     * @return
+     *Check if the game is running in fullscreen.
+     * @return true when running in fullscreen, false if in window mode
      */
     public static boolean isFullscreen() {
         return fullscreen;
     } 
-    
 }

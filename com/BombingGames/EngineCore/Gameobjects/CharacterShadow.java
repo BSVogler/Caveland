@@ -1,6 +1,7 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.LightEngine.PseudoGrey;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WECamera;
@@ -23,23 +24,20 @@ class CharacterShadow extends AbstractEntity {
     
     public void update(float delta, AbstractCharacter character){
         this.character = character;
-        Coordinate tmpCoords = character.getCoords().cpy();
-        tmpCoords.setZ(tmpCoords.getZ());
-        while (tmpCoords.getZ() > 0 && tmpCoords.addVectorCpy(0, 0, -1).getBlock().isTransparent())
-            tmpCoords.addVector(0, 0, -1);
-        this.setCoords(tmpCoords);
-        this.setPositionX(character.getPositionX());
-        this.setPositionY(character.getPositionY());
+        Coordinate tmpPos = character.getPos().getCoordinate().cpy();
+        tmpPos.setZ(tmpPos.getZ());
+        while (tmpPos.getZ() > 0 && tmpPos.addVectorCpy(new float[]{0, 0, -1}).getBlockSafe().isTransparent())
+            tmpPos.addVector(new float[]{0, 0, -1});
+        
+        setPos(character.getPos().cpy());
+        getPos().setHeight(tmpPos.getHeight());
     }
 
     @Override
-    public void render(View view, WECamera camera, Coordinate coords) {
+    public void render(View view, WECamera camera, AbstractPosition coords) {
         Color color = PseudoGrey.toColor(
-                (character.getCoords().getHeight() - getCoords().getZ()*Block.GAMEDIMENSION)/Block.GAMEDIMENSION
-                );
+                (character.getPos().getHeight() - getPos().getHeight())/Block.GAME_DIMENSION
+                );//make color out of distance from player
         super.render(view, camera, coords,color);
     }
-    
-    
-    
 }

@@ -9,6 +9,7 @@ import com.BombingGames.EngineCore.Map.Cell;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.Map.Minimap;
+import com.BombingGames.EngineCore.Map.Point;
 import com.BombingGames.MainMenu.MainMenuScreen;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -25,19 +26,21 @@ public class Controller {
     private static Map map;
     private static boolean recalcRequested;
     
-    private View view;
         
     private final ArrayList<WECamera> cameras = new ArrayList<WECamera>(6);
     private Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
-    private AbstractCharacter player;   
+    private AbstractCharacter player;  
+    
+    private FPSdiag fpsdiag;
 
     /**
      * This method works like a constructor. Everything is loaded. Set you custom chunk generator before calling this method.
      */
     public void init(){
         newMap();
+        fpsdiag = new FPSdiag(10,300);
         
         recalcRequested = true;
     }
@@ -91,6 +94,8 @@ public class Controller {
         for (WECamera camera : cameras) {
             camera.update();
         }
+        
+        fpsdiag.update(delta);
                 
         //recalculates the light if requested
         recalcIfRequested();      
@@ -101,7 +106,7 @@ public class Controller {
      * Informs the map that a recalc is requested. It will do it in the next update. This method  to limit update calls to to per frame
      */
     public static void requestRecalc(){
-        Gdx.app.log("DEBUG", "A recalc was requested.");
+        Gdx.app.debug("Controller", "A recalc was requested.");
         recalcRequested = true;
     }
     
@@ -111,7 +116,7 @@ public class Controller {
      */
     public void recalcIfRequested(){
         if (recalcRequested) {
-            Gdx.app.log("DEBUG", "Recalcing.");
+            Gdx.app.log("Controller", "Recalcing.");
             WECamera.raytracing();
             LightEngine.calcSimpleLight();
             if (minimap != null) minimap.update();
@@ -137,81 +142,6 @@ public class Controller {
     
     
     /**
-     * Returns a block inside the map. The same as "getMap().getDataSafe(x,y,z)"
-     * @param x
-     * @param y
-     * @param z
-     * @return the wanted block
-     * @see com.BombingGames.Game.Map#getDataSafe(int, int, int) 
-     */
-    public static Block getMapDataSafe(int x, int y, int z){
-        return map.getDataSafe(x, y, z);
-    }
-    
-    /**
-     * 
-     * @param coords
-     * @return
-     */
-    public static Block getMapDataSafe(Coordinate coords) {
-        return map.getDataSafe(coords);
-    }
-    
-    /**
-     * Same as "Map.getDataSafe(int, int, int)". This is a shortcut.
-     * @param x
-     * @param y
-     * @param z
-     * @return the wanted block
-     * @see com.BombingGames.Game.Map#getData(int, int, int) 
-     */
-    public static Block getMapData(int x, int y, int z){
-        return map.getData(x, y, z);
-    }
-    
-    /**
-     * Shortcut to "Map.getDataSafe(int, int, int)"
-     * @param coords the coordinates in an array (vector)
-     * @return the wanted block
-     * @see com.BombingGames.Game.Map#getData(int, int, int) 
-     */
-    public static Block getMapData(Coordinate coords){
-        return map.getData(coords);
-    }
-    
-    /**
-     * Shortcut to  "Map.setDataSafe(int, int, int, Block block)"
-     * @param x
-     * @param y
-     * @param z
-     * @param block 
-     * 
-     */
-    public static void setMapData(int x, int y, int z, Block block){
-        map.setData(x, y, z, block);
-    }
-    
-    
-     /**
-     * 
-     * @param coords 
-     * @param block
-     */
-    public static void setMapData(Coordinate coords, Block block) {
-        map.setData(coords, block);
-    }
-    
-    /**
-     * Shortcut to "map.setDataSafe". Set a block with safety checks.
-     * @param coords 
-     * @param block the block you want to set
-     */
-    public static void setMapDataSafe(Coordinate coords, Block block) {
-        map.setDataSafe(coords, block);
-    }
-
-    
-    /**
      * Returns the player
      * @return the player
      */
@@ -229,13 +159,13 @@ public class Controller {
     }   
 
     /**
-     * Get the neighbour block to a side
+     * Get the neighbour block to a side. It may be itself
      * @param coords 
      * @param side the id of the side
      * @return the neighbour block
      */
     public static Block getNeighbourBlock(Coordinate coords, int side){
-        return Controller.getMapDataSafe(Coordinate.neighbourSidetoCoords(coords, side));
+        return Controller.getMap().getDataSafe(coords.neighbourSidetoCoords(side));
     }
     
   
@@ -252,7 +182,7 @@ public class Controller {
      * Returns a camera.
      * @return The virtual cameras rendering the scene
      */
-    protected ArrayList<WECamera> getCameras() {
+    public ArrayList<WECamera> getCameras() {
         return cameras;
     }
 
@@ -297,9 +227,9 @@ public class Controller {
             this.timespeed = Float.parseFloat(JOptionPane.showInputDialog(frame, "Use dot as separator.", "Set the speed of time", JOptionPane.QUESTION_MESSAGE));
         } catch(NumberFormatException e) {
             this.timespeed = 1;
-            Gdx.app.log("Error", "Invalid nubmer entered: "+e.toString());
+            Gdx.app.error("JFrame", "Invalid nubmer entered: "+e.toString());
         } catch(NullPointerException e){
-            Gdx.app.log("DEBUG", "Canceled: "+e.toString());
+            Gdx.app.debug("JFrame", "Canceled: "+e.toString());
         }
     }
     
@@ -311,23 +241,12 @@ public class Controller {
         this.timespeed = timespeed;
     }
     
-    /**
-     * Set the coressponging main view.
-     *
-     * @param view new value of view
-     */
-    public void setView(View view) {
-        this.view = view;
-    }
 
-    /**
-     *Returns the coressponging main view.
-     * @return
-     */
-    public View getView() {
-        return view;
-    }
 
+    public FPSdiag getFpsdiag() {
+        return fpsdiag;
+    }
+    
     /**
      * Use the light engine
      * @param xPos the x position of the diagrams position
@@ -335,5 +254,43 @@ public class Controller {
      */
     public static void useLightEngine(int xPos, int yPos) {
         Controller.lightEngine = new LightEngine(xPos, yPos);
+    }
+    
+    /**
+     * Game poition to game coordinate
+     * @param pos the position on the map
+     * @param depthCheck when true the coordiantes are checked with depth, use this for screen to coords. This is only possible if the position are on the map.
+     * @return 
+     */
+    public static Coordinate findCoordinate(Point pos, boolean depthCheck){
+        //find out where the click went
+        Coordinate coords = new Coordinate(
+            (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,
+            (int) (pos.getRelY()) / Block.GAME_DIAGSIZE*2,
+            pos.getHeight(),
+            true
+        );
+       
+        //find the specific coordinate
+        Coordinate specificCoords = coords.neighbourSidetoCoords(
+            Coordinate.getNeighbourSide(pos.getRelX() % Block.GAME_DIAGSIZE, pos.getRelY() % (Block.GAME_DIAGSIZE))
+        );
+        coords.setRelX(specificCoords.getRelX());
+        coords.setRelY(specificCoords.getRelY());
+        
+        //trace ray down if wanted
+        if (depthCheck && pos.onLoadedMap()) {
+            coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
+            //if selection is not found by that specify it
+            if (coords.getBlock().isHidden()){
+                //trace ray down to bottom. for each step 2 y and 1 z down
+                do {
+                    coords.setRelY(coords.getRelY()-2);
+                    coords.setZ(coords.getZ()-1);
+                } while (coords.getBlock().isHidden() && coords.getZ()>0);
+            }
+        }
+        
+        return coords;
     }
 }

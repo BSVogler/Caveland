@@ -1,8 +1,9 @@
 package com.BombingGames.EngineCore;
 
 import com.BombingGames.EngineCore.Gameobjects.Block;
+import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
-import com.BombingGames.EngineCore.Map.Map;
+import com.BombingGames.EngineCore.Map.Point;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -34,19 +35,21 @@ public class View {
     
     private OrthographicCamera hudCamera;
     
+    
     /**
      *
      * @param controller
      */
     public void init(Controller controller){
+        Gdx.app.debug("View", "Initializing View");
         this.controller = controller;
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true);
+        font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
         font.setColor(Color.GREEN);
         font.scale(-0.5f);
         
         //default rendering size is FullHD
         equalizationScale = Gdx.graphics.getWidth() / (float) RENDER_RESOLUTION_WIDTH;
-        Gdx.app.log("DEBUG","Scale is:" + Float.toString(equalizationScale));
+        Gdx.app.debug("View","Scale is:" + Float.toString(equalizationScale));
  
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -70,7 +73,8 @@ public class View {
     public void render(){       
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-        //Gdx.gl10.glClear(GL10.GL_DEPTH_BUFFER_BIT); //clearing the screen is ~5-10% slower than without.
+        //Gdx.gl10.glClearColor(0, 0, 0, 1);
+        //Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT); //clearing the screen is ~5-10% slower than without.
         
         //render every camera
         for (WECamera camera : controller.getCameras()) {
@@ -94,6 +98,8 @@ public class View {
         );
         
         drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
+        
+        controller.getFpsdiag().render(this);
         
         //scale to fit
         //hudCamera.zoom = 1/equalizationScale;
@@ -123,7 +129,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public int ScreenXtoGame(int x, WECamera camera){
+    public float ScreenXtoGame(int x, WECamera camera){
         return (int) (x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getOutputPosX());
     }
     
@@ -133,7 +139,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public int ScreenYtoGame(int y, WECamera camera){
+    public float ScreenYtoGame(int y, WECamera camera){
         return (int) ((y / camera.getTotalScale() + camera.getOutputPosY())*2 - camera.getViewportPosY());
     }
     
@@ -154,38 +160,17 @@ public class View {
             && !(x > camera.getViewportPosX() && x < camera.getViewportPosX()+camera.getViewportWidth()
                 && y > camera.getViewportPosY() && y < camera.getViewportPosY()+camera.getViewportHeight()));
  
-        //reverse y to game niveau
-        x = ScreenXtoGame(x, camera);
-        y = ScreenYtoGame(y, camera);
+
         
-        //find out where the click went
-        Coordinate coords = new Coordinate(
-                       x / Block.SCREEN_WIDTH,
-                       y / (2*Block.SCREEN_DEPTH)*2,
-                       Map.getBlocksZ()-1,
-                       true
+        return Controller.findCoordinate(
+            new Point(
+                ScreenXtoGame(x, camera),
+                ScreenYtoGame(y, camera),
+                Chunk.getGameHeight()-1, true),
+            true
         );
-       
-        //find the specific coordinate
-        Coordinate specificCoords = Coordinate.neighbourSidetoCoords(
-            coords,
-            Coordinate.getNeighbourSide(x % Block.SCREEN_WIDTH, y % (2*Block.SCREEN_DEPTH))
-        );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY() + coords.getZ()*2);
-//        coords.setRelY(coords.getRelY() + coords.getZ()*2);
-        
-        //if selection is not found by that specify it
-        if (coords.getBlock().isHidden()){
-            //trace ray down to bottom
-            do {
-                coords.setRelY(coords.getRelY()-2);
-                coords.setZ(coords.getZ()-1);
-            } while (coords.getBlock().isHidden() && coords.getZ()>0);
-        }
-        
-        return coords;
     }
+    
 
     /**
      * 
@@ -290,5 +275,9 @@ public class View {
      */
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
+    }
+
+    public Controller getController() {
+        return controller;
     }
 }

@@ -1,6 +1,6 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
-import com.BombingGames.EngineCore.Map.Coordinate;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 
 /**
  *An object that knows his own position IsSelfAware.
@@ -11,11 +11,11 @@ public interface IsSelfAware{
      * Return the coordinates of the SelfAware object.
      * @return the coordinates where the object is located
      */
-    public Coordinate getCoords();
+    public AbstractPosition getPos();
     
     /**
      * Set the coordinates without safety check.
-     * @param coords the coordiantes you want to set
+     * @param pos the coordinates you want to set
      */
-    public void setCoords(Coordinate coords);
+    public void setPos(AbstractPosition pos);
 }

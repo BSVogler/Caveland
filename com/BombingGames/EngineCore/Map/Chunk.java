@@ -1,12 +1,11 @@
 package com.BombingGames.EngineCore.Map;
 
+import com.BombingGames.EngineCore.Gameobjects.AbstractGameObject;
 import com.BombingGames.EngineCore.GameplayScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,8 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class Chunk {
     /**The number of the mapgenerator used.*/
-    private static int generator = 8;
-    /**The suffix of a chunk file.*/
+    private static int generator = 1;
+    /**The suffix of a chunk files.*/
     protected static final String CHUNKFILESUFFIX = "wec";
     /**The suffix of the metafile */
     protected static final String METAFILESUFFIX = "wem";
@@ -66,14 +65,15 @@ public class Chunk {
         GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
         switch (generator){
             case 0:{//random pillars
-                for (int x=0; x < blocksX; x++)
+                for (int x=0; x < blocksX; x++){
                     for (int y=0; y < blocksY; y++){
                         int height = (int) (Math.random()*blocksZ-1)+1;
                         for (int z=0; z < height; z++){
-                            data[x][y][z].newBlock(2);
+                            data[x][y][z] = new Cell(2);
                             }
-                        data[x][y][height].newBlock(1);
+                        data[x][y][height] = new Cell(1);
                     }
+                }
                 break;
             }
                 
@@ -81,9 +81,10 @@ public class Chunk {
                 //water
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
-                        data[x][y][0].newBlock(8);
-                        data[x][y][1].newBlock(9);
-                        data[x][y][2].newBlock(9);
+                        
+                        data[x][y][0] = new Cell(8);
+                        data[x][y][1] = new Cell(9, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 1, true));
+                        data[x][y][2] = new Cell(9, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 2, true));
                     }
                 
                 //mountain
@@ -96,18 +97,18 @@ public class Chunk {
                         if (height>0){
                             for (int z=0; z < height; z++) {
                                 if (height > 2)
-                                    data[x][y][z].newBlock(2);
+                                    data[x][y][z] = new Cell(2);
                                 else
-                                    data[x][y][z].newBlock(8);
+                                    data[x][y][z] = new Cell(8);
                                     
                             }
                             if (height > 2)
-                                    data[x][y][height].newBlock(1);
+                                    data[x][y][height] = new Cell(1);
                                 else
-                                    data[x][y][height].newBlock(8);
+                                    data[x][y][height] = new Cell(8);
                             
-                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1].newBlock(34);
-                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1].newBlock(35);
+                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
+                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);
                         }
                     }
                 break;
@@ -119,10 +120,10 @@ public class Chunk {
                         if (blocksZ>1){
                             int z;
                             for (z=0; z < blocksZ/2; z++){
-                                data[x][y][z].newBlock(2);
+                                data[x][y][z] = new Cell(2);
                             }
-                            data[x][y][z-1].newBlock(1);
-                        }else data[x][y][0].newBlock(2);
+                            data[x][y][z-1] = new Cell(1);
+                        }else data[x][y][0] = new Cell(2);
                     }
                 break;
             }
@@ -131,13 +132,13 @@ public class Chunk {
                 int pillarx = (int) (Math.random()*blocksX-1);
                 int pillary = (int) (Math.random()*blocksY-1);
                 //pillar
-                for (int z=0; z < blocksZ; z++) data[pillarx][pillary][z].newBlock(1);
+                for (int z=0; z < blocksZ; z++) data[pillarx][pillary][z] = new Cell(1);
                 
                 //flat grass
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
-                        data[x][y][0].newBlock(2);
-                        data[x][y][1].newBlock(3);
+                        data[x][y][0] = new Cell(2);
+                        data[x][y][1] = new Cell(3);
                     }
                 break;
             }
@@ -147,8 +148,8 @@ public class Chunk {
                     for (int y=0; y < blocksY; y++)
                         for (int z=0; z < blocksZ-1; z++){
                             if (z!=blocksZ-2)
-                                 data[x][y][z].newBlock(2);
-                            else data[x][y][z].newBlock(1);
+                                 data[x][y][z] = new Cell(2);
+                            else data[x][y][z] = new Cell(1);
                     }
             }
             break;
@@ -156,7 +157,7 @@ public class Chunk {
             case 5: {//animation test                
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
-                        data[x][y][0].newBlock(72);
+                        data[x][y][0] = new Cell(72);
                     }
                 //data[blocksX/2][blocksY/2][2].newBlock(72);//animation test
                 //data[blocksX/2][blocksY/2][1].newBlock(2);
@@ -166,7 +167,7 @@ public class Chunk {
             case 6: {//every block                
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
-                        data[x][y][0].newBlock(y, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 0, true));
+                        data[x][y][0] = new Cell(y, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 0, true));
                     }
                 break;
             }
@@ -176,9 +177,9 @@ public class Chunk {
                         if (blocksZ>1){
                             int z;
                             for (z=0; z < blocksZ/2; z++){
-                                data[x][y][z].newBlock(9);
+                                data[x][y][z] = new Cell(9);
                             }
-                        }else data[x][y][0].newBlock(9);
+                        }else data[x][y][0] = new Cell(9);
                     }
                 break;
             }
@@ -186,14 +187,14 @@ public class Chunk {
                 //flat grass
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
-                        data[x][y][0].newBlock(2);
-                        data[x][y][1].newBlock(3);
+                        data[x][y][0] = new Cell(2);
+                        data[x][y][1] = new Cell(3);
                     }
                 
                 int specialx = (int) (Math.random()*blocksX-1);
                 int specialy = (int) (Math.random()*blocksY-1);
                 //special block
-                data[specialx][specialy][1].newBlock(40, 0, new Coordinate(specialx + pos % 3 * blocksX, specialy + pos / 3 * blocksY, 1, true));
+                data[specialx][specialy][1] = new Cell(40, 0, new Coordinate(specialx + pos % 3 * blocksX, specialy + pos / 3 * blocksY, 1, true));
                 break;
             }
                 
@@ -202,7 +203,7 @@ public class Chunk {
                     for (int y=0; y < blocksY; y++){
                         int height = (int) (Math.random()*blocksZ-1)+1;
                         for (int z=0; z < height; z++){
-                            data[x][y][z].newBlock(44,0);
+                            data[x][y][z] = new Cell(44,0);
                         }
                     }
                 break;
@@ -212,7 +213,7 @@ public class Chunk {
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){
                         for (int z=0; z < blocksZ; z++){
-                            data[x][y][z].newBlock(0);
+                            data[x][y][z] = new Cell(0);
                         }
                     }
                 break;
@@ -221,7 +222,7 @@ public class Chunk {
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++)
                         for (int z=0; z < blocksZ/2; z++)
-                            data[x][y][z].newBlock(1);
+                            data[x][y][z] = new Cell(1);
                 //place trees
                  for (int i = 0; i < 3; i++) {
                     int treeX = (int) (Math.random()*blocksX-1);
@@ -230,11 +231,11 @@ public class Chunk {
                         for (int leavesX = treeX-2+Math.abs(leavesY-treeY); leavesX <= treeX+1-Math.abs(leavesY-treeY); leavesX++)
                             for (int leavesZ = blocksZ/2+2; leavesZ <= blocksZ/2+4; leavesZ++)
                                 if (leavesX < blocksX && leavesX>=0 && leavesY < blocksY && leavesY >= 0)        
-                                    data[leavesX][leavesY][leavesZ].newBlock(18);
+                                    data[leavesX][leavesY][leavesZ] = new Cell(18);
                     //trunk 
-                    data[treeX][treeY][blocksZ/2].newBlock(17);
-                    data[treeX][treeY][blocksZ/2+1].newBlock(17);
-                    data[treeX][treeY][blocksZ/2+2].newBlock(17);
+                    data[treeX][treeY][blocksZ/2] = new Cell(17);
+                    data[treeX][treeY][blocksZ/2+1] = new Cell(17);
+                    data[treeX][treeY][blocksZ/2+2] = new Cell(7);
                  }
                  break;
             }    
@@ -243,14 +244,14 @@ public class Chunk {
     }
     
     /**
-     * loads a chunk from memory
+     * Trys to load a chunk from disk.
      */
     private void load(int pos, int coordX, int coordY){
         //Reading map files test
         try {
             FileHandle path = Gdx.files.internal("map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
             
-            Gdx.app.log("DEBUG","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
+            Gdx.app.log("Map","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
             GameplayScreen.msgSystem().add("Load: "+coordX+","+coordY);
             
             if (path.exists()) {
@@ -270,11 +271,11 @@ public class Chunk {
 
                 //finish a layer
                 do {
-                    line = new StringBuilder();
+                    line = new StringBuilder(1);
                     line.append(bufRead.readLine());
                     
                     if ((line.charAt(1) == '/') && (line.charAt(2) == '/')){//jump over optional comment line
-                        line = new StringBuilder();
+                        line = new StringBuilder(1);
                         line.append(bufRead.readLine());
                     }
 
@@ -291,7 +292,7 @@ public class Chunk {
                                 posend++;
                             }
 
-                            data[x][y][z].newBlock(
+                            data[x][y][z] = new Cell(
                                         Integer.parseInt(line.substring(0,posdots)),
                                         Integer.parseInt(line.substring(posdots+1, posend)),
                                         new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, z, true)
@@ -309,11 +310,11 @@ public class Chunk {
                     z++;
                 } while (lastline != null);
             } else {
-                Gdx.app.log("DEBUG","...but it could not be found. Creating new.");
+                Gdx.app.log("Map","...but it could not be found.");
                 generate(pos, coordX, coordY);
             }
         } catch (IOException ex) {
-            Gdx.app.log("ERROR","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
+            Gdx.app.error("Map","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
         }
     }
     
@@ -325,38 +326,41 @@ public class Chunk {
         try {
             FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
             //File path = new File(WurfelEngine.getWorkingDirectory().getAbsolutePath() + "/map/map."+METAFILESUFFIX);
-            Gdx.app.log("DEBUG","Trying to load Map Info from \"" + path.path() + "\"");
+            Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
             bufRead =  path.reader(1024);
             String mapname = bufRead.readLine();
             mapname = mapname.substring(2, mapname.length());
-            Gdx.app.log("INFO","Loading map: "+mapname);
+            Gdx.app.log("Map","Loading map: "+mapname);
             GameplayScreen.msgSystem().add("Loading map: "+mapname);   
             
             String mapversion = bufRead.readLine(); 
             mapversion = mapversion.substring(2, mapversion.length());
-            Gdx.app.log("DEBUG","Map Version:"+mapversion);
+            Gdx.app.log("Map","Map Version:"+mapversion);
             
             String blocksXString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeX:"+blocksXString);
+            Gdx.app.debug("Map","sizeX:"+blocksXString);
             blocksXString = blocksXString.substring(2, blocksXString.length());
             blocksX = Integer.parseInt(blocksXString);
             
             String blocksYString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeY:"+blocksYString);
+            Gdx.app.debug("Map","sizeY:"+blocksYString);
             blocksYString = blocksYString.substring(2, blocksYString.length());
             blocksY = Integer.parseInt(blocksYString);
             
             String blocksZString = bufRead.readLine();
-            Gdx.app.log("DEBUG","sizeZ:"+blocksZString);
+            Gdx.app.debug("Map","sizeZ:"+blocksZString);
             blocksZString = blocksZString.substring(2, blocksZString.length());
             blocksZ = Integer.parseInt(blocksZString);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(
-                null,
-                "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WurfelEngine.getWorkingDirectory().getAbsolutePath() + "/map/",
-                "Loading error",
-                 JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+            if (!WurfelEngine.isFullscreen()) {
+                JOptionPane.showMessageDialog(
+                    null,
+                    "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WurfelEngine.getWorkingDirectory().getAbsolutePath() + "/map/",
+                    "Loading error",
+                     JOptionPane.ERROR_MESSAGE
+                );
+            }
+             Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -402,7 +406,7 @@ public class Chunk {
     }
 
     /**
-     * 
+     * Get the number of the algorithm used for creating new worlds
      * @return 
      */
     public static int getGenerator() {
@@ -415,5 +419,29 @@ public class Chunk {
      */
     public static void setGenerator(int generator) {
         Chunk.generator = generator;
+    }
+    
+    public static int getScreenWidth(){
+        return blocksX*AbstractGameObject.SCREEN_WIDTH;
+    }
+    
+    public static int getScreenDepth() {
+        return blocksY*AbstractGameObject.SCREEN_DEPTH/4;
+    }
+    
+    public static int getGameWidth(){
+        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+    }
+    
+    public static int getGameDepth() {
+        return blocksY*AbstractGameObject.GAME_DIAGSIZE/2;
+    }
+    
+        /**
+     * Game size
+     * @return 
+     */
+    public static int getGameHeight(){
+        return blocksZ*AbstractGameObject.GAME_DIMENSION;
     }
 }

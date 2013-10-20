@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  * @author Benedikt
  */
 public class Controller {
-    private MenuItem[] menuItems = new MenuItem[3];
+    private final MenuItem[] menuItems = new MenuItem[3];
     private final Sound fx;
     
     /**
@@ -47,9 +47,9 @@ public class Controller {
                 fx.play();
                 WurfelEngine.startGame(new MinecraftController(), new MinecraftView());
             } else if (menuItems[2].isClicked()){
-                fx.play();
-                Gdx.app.exit();
-            }
+                    fx.play();
+                    Gdx.app.exit();
+                }
     }
 
     /**

@@ -1,10 +1,12 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Controller;
+import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WECamera;
 import com.BombingGames.Game.AirLift;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -79,10 +81,10 @@ public class Block extends AbstractGameObject {
         NAMELIST[50] = "strewbed";
         NAMELIST[70] = "campfire";
         NAMELIST[71] = "explosive barrel";
-        OFFSET[71][0][0] = 39;
-        OFFSET[71][0][1] = 19;
-        OFFSET[71][1][0] = 35;
-        OFFSET[71][1][1] = 16;
+        OFFSET[71][0][0] = 35;
+        OFFSET[71][0][1] = 16;
+        OFFSET[71][1][0] = 39;
+        OFFSET[71][1][1] = 19;
         NAMELIST[72] = "animation test";
     }
     
@@ -155,8 +157,10 @@ public class Block extends AbstractGameObject {
             case 8: block = new Block(id); //sand
                     block.setObstacle(true);
                     break;      
-            case 9: block = new AnimatedBlock(id, new int[]{500,500,500},true, true); //water
-                    block.setTransparent(true);
+            case 9: if(Gdx.app.getType()==ApplicationType.Android)
+                        block = new AnimatedBlock(id, new int[]{500,500,500},true, true); //water
+                    else
+                        block = new Sea(id, coords); //Sea
                     block.liquid = true;
                     block.setTransparent(true);
                     break;
@@ -220,7 +224,7 @@ public class Block extends AbstractGameObject {
         if (blocksprites[id][value][side] == null){ //load if not already loaded
             AtlasRegion sprite = getSpritesheet().findRegion(CATEGORY+Integer.toString(id)+"-"+value+"-"+side);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                Gdx.app.log("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
+                Gdx.app.debug("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
                 sprite = getSpritesheet().findRegion(CATEGORY+"0-0-"+side);
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");
@@ -309,30 +313,8 @@ public class Block extends AbstractGameObject {
                     clippedRight = clipping;
     }
     
-       /**
-     * Get the screen x-position where the object is rendered without regarding the camera.
-     * @param coords  The relative coordinates where the object is rendered 
-     * @return The screen X-position in pixels.
-     */
-   @Override
-    public int get2DPosX(Coordinate coords) {
-        return coords.get2DPosX();
-    }
-
-    /**
-     * Get the screen y-position where the object is rendered without regarding the camera.
-     * @param coords The coordinates where the object is rendered 
-     * @return The screen Y-position in pixels.
-     */
-   @Override
-    public int get2DPosY(Coordinate coords) {
-        return coords.get2DPosY();
-    }
-
-
-    
     @Override
-    public void render(final View view, final WECamera camera, Coordinate coords) {
+    public void render(final View view, final WECamera camera, AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -407,7 +389,7 @@ public class Block extends AbstractGameObject {
      * @param coords the coordinates where the side is rendered 
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final WECamera camera, Coordinate coords, final int sidenumb){
+    public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb){
         Color color;
         if (Controller.getLightengine() != null){
             color = Controller.getLightengine().getColorOfSide(sidenumb);
@@ -423,9 +405,9 @@ public class Block extends AbstractGameObject {
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
      */
-    public void renderSide(final View view, final WECamera camera, Coordinate coords, final int sidenumb, Color color){
-        int xPos = get2DPosX(coords) + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0);//right side is  half a block more to the right
-        int yPos = get2DPosY(coords) + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0);//the top is drawn a quarter blocks higher
+    public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb, Color color){
+        int xPos = coords.get2DPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0);//right side is  half a block more to the right
+        int yPos = coords.get2DPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0);//the top is drawn a quarter blocks higher
                 //uncomment these two lines to add a depth-effect (note that it is very dark and still a prototype)
 //        color.mul((camera.getBottomBorder()-coords.getRelY())
 //            /
@@ -496,13 +478,14 @@ public class Block extends AbstractGameObject {
     
 
     @Override
-    public int getDepth(Coordinate coords){
+    public int getDepth(AbstractPosition coords){
         return (int) (
-            coords.getRelY() *(Block.SCREEN_DEPTH+1)//Y
-            + coords.getCellOffset()[1]
+            coords.getCoordinate().getRelY() *(Block.SCREEN_DEPTH+1)//Y
+            + coords.getCoordinate().getCellOffset()[1]
+            
             + coords.getHeight()/Math.sqrt(2)//Z
-            + coords.getCellOffset()[2]/Math.sqrt(2)
-            + (getDimensionZ() - 1) *GAMEDIMENSION/Math.sqrt(2)
+            + coords.getCoordinate().getCellOffset()[2]/Math.sqrt(2)
+            + (getDimensionZ() - 1) *GAME_DIMENSION/Math.sqrt(2)
         );
     }
 
@@ -545,4 +528,5 @@ public class Block extends AbstractGameObject {
     public static AtlasRegion[][][] getBlocksprites() {
         return blocksprites;
     }
+
 }

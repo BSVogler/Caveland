@@ -256,10 +256,17 @@ b1-0-2
   index: -1
 b9-1-1
   rotate: false
+<<<<<<< HEAD
   xy: 1851, 242
   size: 160, 80
   orig: 160, 80
   offset: 0, 0
+=======
+  xy: 155, 518
+  size: 84, 130
+  orig: 84, 130
+  offset: 38, -17
+>>>>>>> V1.1
   index: -1
 b2-0-1
   rotate: false
@@ -305,10 +312,17 @@ b20-0-2
   index: -1
 e40-9
   rotate: false
+<<<<<<< HEAD
   xy: 531, 568
   size: 87, 151
   orig: 87, 151
   offset: 0, 0
+=======
+  xy: 240, 518
+  size: 84, 122
+  orig: 84, 122
+  offset: 38, -20
+>>>>>>> V1.1
   index: -1
 e40-18
   rotate: false

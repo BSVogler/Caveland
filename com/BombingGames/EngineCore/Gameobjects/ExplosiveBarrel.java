@@ -12,7 +12,7 @@ import com.badlogic.gdx.audio.Sound;
  */
 public class ExplosiveBarrel extends Block implements IsSelfAware {
     /**Defines the radius of the explosion.*/
-    public static final int RADIUS = 2;
+    public static final int RADIUS = 3;
     private Coordinate coords;
     private static Sound explosionsound;
 
@@ -37,12 +37,20 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
             for (int y=-RADIUS*2; y<RADIUS*2; y++)
                 for (int z=-RADIUS; z<RADIUS; z++){
                     //place air
-                    Controller.getMap().setDataSafe(
-                        coords.addVectorCpy(new float[]{x, y, z}).getCoordinate() , Block.getInstance(0)
-                    );
+                     if (x*x + (y/2)*(y/2)+ z*z < RADIUS*RADIUS){
+                        Controller.getMap().setDataSafe(
+                            coords.addVectorCpy(new float[]{x, y, z}).getCoordinate() , Block.getInstance(0)
+                        );
+                     }
+                }
+        
+         for (int x=-RADIUS; x<RADIUS; x++)
+            for (int y=-RADIUS*2; y<RADIUS*2; y++)
+                for (int z=-RADIUS; z<RADIUS; z++){
                     
                     //spawn effect
-                    if (x*x + y*y >= RADIUS*RADIUS){
+                    if (x*x + (y/2)*(y/2)+ z*z >= RADIUS*RADIUS-4 &&
+                        x*x + (y/2)*(y/2)+ z*z <= RADIUS*RADIUS){
                         AbstractEntity.getInstance(
                             41,
                             0,

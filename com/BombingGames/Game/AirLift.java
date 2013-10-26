@@ -21,7 +21,7 @@ public class AirLift extends Block implements IsSelfAware {
 
     @Override
     public void update(float delta) {
-        Coordinate topblock = coords.addVectorCpy(new float[]{0, 0, 1});
+        Coordinate topblock = coords.cpy().addVector(0, 0, 1);
         if (topblock.getBlock().getId() != 0)
             topblock.setCellOffsetZ(topblock.getCellOffset()[2]+delta/8f);
     }
@@ -34,6 +34,6 @@ public class AirLift extends Block implements IsSelfAware {
 
     @Override
     public void setPos(AbstractPosition pos) {
-        coords = pos.getCoordinate();
+        coords = pos.getCoord();
     }
 }

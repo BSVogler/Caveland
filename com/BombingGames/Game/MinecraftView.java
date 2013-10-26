@@ -40,6 +40,8 @@ public class MinecraftView extends View{
             - Block.getSpritesheet().findRegion("toolbar").originalWidth/2,
             (Gdx.graphics.getHeight())
             - Block.getSpritesheet().findRegion("toolbar").originalHeight);
+         
+       Gdx.input.setInputProcessor(new InputListener());
     }
     
     
@@ -140,13 +142,13 @@ public class MinecraftView extends View{
             if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
             
             if (button == 0){ //left click
-                setMapData(coords, Block.getInstance(0));
+                Controller.getMap().setData(coords, Block.getInstance(0));
                 requestRecalc();
                 //getCameras().get(0).traceRayTo(coords, true);
                 gras1.play();
             } else {//right click
-                if (getMapData(coords).getId() == 0){
-                    setMapData(coords, Block.getInstance(controller.getBlockToolbar().getSelectionID(),0,coords));
+                if (Controller.getMap().getData(coords).getId() == 0){
+                    Controller.getMap().setData(coords, Block.getInstance(controller.getBlockToolbar().getSelectionID(),0,coords));
                     requestRecalc();
                     gras2.play();
                 }
@@ -166,7 +168,7 @@ public class MinecraftView extends View{
 
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
-            controller.getFocusentity().setCoords(ScreenToGameCoords(screenX,screenY).addVector(0, 0, 1));
+            controller.getFocusentity().setPos(ScreenToGameCoords(screenX,screenY).addVector(0, 0, 1));
             return true;
         }
 

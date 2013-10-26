@@ -196,18 +196,19 @@ public class Coordinate extends AbstractPosition {
         return this;
     }
     
-   /**
-     * Add a vector to the coordinates. This method does not change the coordinates.
-     * @param vector
+     /**
+     * Add a vector to the coordinates. If you just want the result and don't change the coordiantes use addVectorCpy.
+     * @param x
+     * @param y
+     * @param z
      * @return the new coordiantes which resulted of the addition
      */
     @Override
-    public Coordinate addVectorCpy(float[] vector) {
-        Coordinate newvec = this.cpy();
-        newvec.x += vector[0];
-        newvec.y += vector[1];
-        newvec.setHeight(newvec.getHeight()+ vector[2]*Block.GAME_DIMENSION);
-        return newvec;
+    public Coordinate addVector(float x, float y, float z) {
+        this.x += x;
+        this.y += y;
+        setHeight(getHeight()+ z*Block.GAME_DIMENSION);
+        return this;
     }
     
     /**
@@ -368,7 +369,7 @@ public class Coordinate extends AbstractPosition {
     }
 
     @Override
-    public Coordinate getCoordinate() {
+    public Coordinate getCoord() {
         return this;
     }
     

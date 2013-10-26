@@ -81,7 +81,7 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public Coordinate getCoordinate() {
+    public Coordinate getCoord() {
         return Controller.findCoordinate(this, false);
     }
     
@@ -92,7 +92,7 @@ public class Point extends AbstractPosition {
      */
     @Override
     public Block getBlock(){
-        return getCoordinate().getBlock();
+        return getCoord().getBlock();
     }
     
 
@@ -102,7 +102,7 @@ public class Point extends AbstractPosition {
      * @return
      */
     public Block getBlockSafe(){
-        Coordinate coord = getCoordinate();
+        Coordinate coord = getCoord();
         if (coord.getZ() >= Chunk.getGameHeight())
             return Block.getInstance(0);
         else
@@ -140,11 +140,10 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public Point addVectorCpy(float[] vector) {
-        Point cpy = this.cpy();
-        cpy.x += vector[0];
-        cpy.y += vector[1];
-        cpy.setHeight(cpy.getHeight()+ vector[2]*Block.GAME_DIMENSION);
-        return cpy;
+    public AbstractPosition addVector(float x, float y, float z) {
+        this.x += x;
+        this.y += y;
+        setHeight(getHeight()+ z*Block.GAME_DIMENSION);
+        return this;
     }
 }

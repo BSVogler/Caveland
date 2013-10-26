@@ -77,7 +77,7 @@ public abstract class AbstractPosition {
     
     public abstract Point getPoint();
     
-    public abstract Coordinate getCoordinate();
+    public abstract Coordinate getCoord();
     
     public abstract Block getBlock(); 
     
@@ -87,10 +87,5 @@ public abstract class AbstractPosition {
     
     public abstract AbstractPosition addVector(float[] vector);
     
-   /**
-     * Add a vector to the coordinates. This method does not change the coordinates.
-     * @param vector
-     * @return the new coordiantes which resulted of the addition
-     */
-    public abstract AbstractPosition addVectorCpy(float[] vector);
+    public abstract AbstractPosition addVector(float x, float y, float z);
 }

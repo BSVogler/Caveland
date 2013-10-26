@@ -58,7 +58,7 @@ public class Minimap {
                 }
                 mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue()).cpy();
                 mapdata[x][y].a = 1;
-                mapdata[x][y].mul(1.3f).mul((float)z/(float)Map.getBlocksZ());
+                mapdata[x][y].mul(1.3f).mul(z/(float)Map.getBlocksZ());
             }
         }
     }
@@ -156,7 +156,7 @@ public class Minimap {
                 shapeRenderer.rect(
                     viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                     viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-                    + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ (float) (Block.SCREEN_DEPTH),
+                    + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ Block.SCREEN_DEPTH,
                     scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
                     scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
                 );
@@ -167,7 +167,7 @@ public class Minimap {
             shapeRenderer.rect(
                 viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                 viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-                + scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ (float) (Block.SCREEN_DEPTH),
+                + scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ Block.SCREEN_DEPTH,
                 scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
                 scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
             );

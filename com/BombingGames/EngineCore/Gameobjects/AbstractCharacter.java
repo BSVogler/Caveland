@@ -194,7 +194,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             shadow.update(delta, this);
 
             //slow walking down
-            if (speed > 0) speed -= delta/(float) smoothBreaks;
+            if (speed > 0) speed -= delta/ smoothBreaks;
             if (speed < 0) speed = 0;
             
             /* SOUNDS */

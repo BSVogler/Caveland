@@ -48,7 +48,7 @@ public class View {
         font.scale(-0.5f);
         
         //default rendering size is FullHD
-        equalizationScale = Gdx.graphics.getWidth() / (float) RENDER_RESOLUTION_WIDTH;
+        equalizationScale = Gdx.graphics.getWidth() / RENDER_RESOLUTION_WIDTH;
         Gdx.app.debug("View","Scale is:" + Float.toString(equalizationScale));
  
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -130,7 +130,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenXtoGame(int x, WECamera camera){
-        return (int) (x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getOutputPosX());
+        return x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getOutputPosX();
     }
     
    /**
@@ -140,7 +140,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenYtoGame(int y, WECamera camera){
-        return (int) ((y / camera.getTotalScale() + camera.getOutputPosY())*2 - camera.getViewportPosY());
+        return (y / camera.getTotalScale() + camera.getOutputPosY())*2 - camera.getViewportPosY();
     }
     
     /**

@@ -51,7 +51,7 @@ public class WECamera extends Camera {
         viewportPosX = x;
         viewportPosY = y;
         
-        equalizationScale = viewportWidth / (float) View.RENDER_RESOLUTION_WIDTH;
+        equalizationScale = viewportWidth / View.RENDER_RESOLUTION_WIDTH;
                 
 	near = 0;
 	up.set(0, -1, 0);

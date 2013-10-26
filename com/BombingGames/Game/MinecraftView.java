@@ -7,12 +7,15 @@ import static com.BombingGames.EngineCore.Controller.requestRecalc;
 import com.BombingGames.EngineCore.Gameobjects.AbstractEntity;
 import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.BombingGames.EngineCore.GameplayScreen;
+import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.View;
+import com.BombingGames.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.backends.openal.Ogg.Sound;
 
 
 /**
@@ -21,12 +24,17 @@ import com.badlogic.gdx.InputProcessor;
  */
 public class MinecraftView extends View{
      private MinecraftController controller;
+     private Sound gras1;
+     private Sound gras2;
 
     @Override
     public void init(Controller controller) {
         super.init(controller);
          this.controller = (MinecraftController) controller;
          
+        gras1 =  (Sound) Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/grass1.ogg"));
+        gras2 = (Sound) Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/grass2.ogg"));
+        
          this.controller.getBlockToolbar().setPos(
             (Gdx.graphics.getWidth()/2)
             - Block.getSpritesheet().findRegion("toolbar").originalWidth/2,
@@ -90,21 +98,21 @@ public class MinecraftView extends View{
                     Zombie zombie = (Zombie) AbstractEntity.getInstance(
                         43,
                         0,
-                        focusentity.getCoords()
+                        controller.getFocusentity().getPos()
                     );
-                    zombie.setTarget(getPlayer());
+                    zombie.setTarget(controller.getPlayer());
                     zombie.exist();   
                  }
              
-                if (keycode == Input.Keys.NUM_1) blockToolbar.setSelection(0);
-                if (keycode == Input.Keys.NUM_2) blockToolbar.setSelection(1);
-                if (keycode == Input.Keys.NUM_3) blockToolbar.setSelection(2);
-                if (keycode == Input.Keys.NUM_4) blockToolbar.setSelection(3);
-                if (keycode == Input.Keys.NUM_5) blockToolbar.setSelection(4);
-                if (keycode == Input.Keys.NUM_6) blockToolbar.setSelection(5);
-                if (keycode == Input.Keys.NUM_7) blockToolbar.setSelection(6);
-                if (keycode == Input.Keys.NUM_8) blockToolbar.setSelection(7);
-                if (keycode == Input.Keys.NUM_9) blockToolbar.setSelection(8);
+                if (keycode == Input.Keys.NUM_1) controller.getBlockToolbar().setSelection(0);
+                if (keycode == Input.Keys.NUM_2) controller.getBlockToolbar().setSelection(1);
+                if (keycode == Input.Keys.NUM_3) controller.getBlockToolbar().setSelection(2);
+                if (keycode == Input.Keys.NUM_4) controller.getBlockToolbar().setSelection(3);
+                if (keycode == Input.Keys.NUM_5) controller.getBlockToolbar().setSelection(4);
+                if (keycode == Input.Keys.NUM_6) controller.getBlockToolbar().setSelection(5);
+                if (keycode == Input.Keys.NUM_7) controller.getBlockToolbar().setSelection(6);
+                if (keycode == Input.Keys.NUM_8) controller.getBlockToolbar().setSelection(7);
+                if (keycode == Input.Keys.NUM_9) controller.getBlockToolbar().setSelection(8);
             }
 
 
@@ -128,7 +136,7 @@ public class MinecraftView extends View{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = getView().ScreenToGameCoords(screenX,screenY);
+            Coordinate coords = ScreenToGameCoords(screenX,screenY);
             if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
             
             if (button == 0){ //left click
@@ -138,7 +146,7 @@ public class MinecraftView extends View{
                 gras1.play();
             } else {//right click
                 if (getMapData(coords).getId() == 0){
-                    setMapData(coords, Block.getInstance(blockToolbar.getSelectionID(),0,coords));
+                    setMapData(coords, Block.getInstance(controller.getBlockToolbar().getSelectionID(),0,coords));
                     requestRecalc();
                     gras2.play();
                 }
@@ -158,7 +166,7 @@ public class MinecraftView extends View{
 
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
-            focusentity.setCoords(getController().getView().ScreenToGameCoords(screenX,screenY).addVector(0, 0, 1));
+            controller.getFocusentity().setCoords(ScreenToGameCoords(screenX,screenY).addVector(0, 0, 1));
             return true;
         }
 

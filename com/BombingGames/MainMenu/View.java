@@ -53,8 +53,8 @@ public class View {
      */
     public void render(Controller pController){
         //clear & set background to black
-        Gdx.gl11.glClearColor( 0f, 0f, 0f, 1f );
-        Gdx.gl11.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
+        Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
         camera.update();

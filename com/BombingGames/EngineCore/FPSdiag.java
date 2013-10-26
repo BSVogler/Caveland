@@ -13,7 +13,7 @@ public class FPSdiag {
     private float timeSinceUpdate;
     private int field;//the current field number
     private final int xPos, yPos, width;
-    private boolean visible;
+    private boolean visible = true;
 
     /**
      *

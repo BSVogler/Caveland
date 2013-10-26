@@ -169,7 +169,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         int z = (int) ((getPos().getHeight()-1)/GAME_DIMENSION);
         if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
         
-        return new Coordinate(point.getCoordinate().getRelX(), point.getCoordinate().getRelY(), z, true).getBlock().isObstacle();
+        return new Coordinate(point.getCoord().getRelX(), point.getCoord().getRelY(), z, true).getBlock().isObstacle();
     }
     
     /**

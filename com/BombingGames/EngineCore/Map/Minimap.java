@@ -101,7 +101,7 @@ public class Minimap {
                 shapeRenderer.setColor(color);
                 float rectX = viewportPosX
                     + ((controller.getPlayer().getPos().getRelX()
-                    + (controller.getPlayer().getPos().getCoordinate().getRelY()%2==1?0.5f:0)
+                    + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
                     )/Block.GAME_DIAGSIZE
                     - 0.5f)
                     * scaleX;
@@ -156,7 +156,7 @@ public class Minimap {
                 shapeRenderer.rect(
                     viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                     viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-                    + scaleY *2*(controller.getPlayer().getPos().getCoordinate().getZ() * Block.SCREEN_HEIGHT2)/ (float) (Block.SCREEN_DEPTH),
+                    + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ (float) (Block.SCREEN_DEPTH),
                     scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
                     scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
                 );
@@ -185,14 +185,14 @@ public class Minimap {
             if (controller.getPlayer()!=null){
                 //player coordinate
                 view.drawString(
-                    controller.getPlayer().getPos().getCoordinate().getRelX() +" | "+ controller.getPlayer().getPos().getCoordinate().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
-                    (int) (viewportPosX + (controller.getPlayer().getPos().getCoordinate().getRelX() + (controller.getPlayer().getPos().getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (viewportPosY + controller.getPlayer().getPos().getCoordinate().getRelY() * scaleY - 10),
+                    controller.getPlayer().getPos().getCoord().getRelX() +" | "+ controller.getPlayer().getPos().getCoord().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
+                    (int) (viewportPosX + (controller.getPlayer().getPos().getCoord().getRelX() + (controller.getPlayer().getPos().getRelY()%2==1?0.5f:0) ) * scaleX+20),
+                    (int) (viewportPosY + controller.getPlayer().getPos().getCoord().getRelY() * scaleY - 10),
                     Color.RED
                 );
                  int rectX = (int) (viewportPosX
                      + (controller.getPlayer().getPos().getRelX()
-                     + (controller.getPlayer().getPos().getCoordinate().getRelY()%2==1?0.5f:0)
+                     + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
                      )/Block.GAME_DIAGSIZE * scaleX);
                 int rectY = (int) (viewportPosY
                     + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE * scaleY*2);

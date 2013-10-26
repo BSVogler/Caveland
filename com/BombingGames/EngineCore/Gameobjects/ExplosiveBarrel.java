@@ -39,7 +39,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
                     //place air
                      if (x*x + (y/2)*(y/2)+ z*z < RADIUS*RADIUS){
                         Controller.getMap().setDataSafe(
-                            coords.addVectorCpy(new float[]{x, y, z}).getCoordinate() , Block.getInstance(0)
+                            coords.cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
                         );
                      }
                 }
@@ -54,7 +54,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
                         AbstractEntity.getInstance(
                             41,
                             0,
-                            coords.addVectorCpy(new float[]{x, y, z}).getPoint()
+                            coords.cpy().addVector(new float[]{x, y, z}).getPoint()
                         ).exist();
                     }
                 }
@@ -69,6 +69,6 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
 
     @Override
     public void setPos(AbstractPosition pos) {
-        this.coords = pos.getCoordinate();
+        this.coords = pos.getCoord();
     }
 }

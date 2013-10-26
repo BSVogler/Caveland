@@ -30,7 +30,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
     @Override
     public void update(float delta) {
-        int[] coordsOnTop = coords.addVectorCpy(new float[]{0, 0, 1}).getCoordinate().getRel();
+        int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getRel();
         
         //get every character
         ArrayList<AbstractCharacter> entitylist;
@@ -38,11 +38,11 @@ public class EntitySpawner extends Block implements IsSelfAware {
         
         //check every character if standing on top
         int i = 0;
-        while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPos().getCoordinate().getRel(), coordsOnTop)){
+        while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPos().getCoord().getRel(), coordsOnTop)){
             i++;
         }
         
-        if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPos().getCoordinate().getRel(), coordsOnTop)) {
+        if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPos().getCoord().getRel(), coordsOnTop)) {
             if (up) trigger();
             up = false;
         } else {
@@ -58,11 +58,11 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
     private void trigger() {
         GameplayScreen.msgSystem().add("You are standing on: " + coords.getRelX() +"," + coords.getRelY() +","+ coords.getZ(), "System");
-        AbstractEntity.getInstance(41, 0, coords.addVectorCpy(new float[]{0, 2, 1}).getPoint()).exist();
+        AbstractEntity.getInstance(41, 0, coords.cpy().addVector(0, 2, 1).getPoint()).exist();
     }
 
     @Override
     public void setPos(AbstractPosition pos) {
-        coords = pos.getCoordinate();
+        coords = pos.getCoord();
     }
 }

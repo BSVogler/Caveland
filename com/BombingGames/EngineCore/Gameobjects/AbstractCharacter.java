@@ -143,7 +143,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             };
 
             //if movement allowed => move player   
-            if (! horizontalColission(getPos().addVectorCpy(dMove)) ) {                
+            if (! horizontalColission(getPos().cpy().addVector(dMove)) ) {                
                 getPos().addVector(dMove);
             }
 
@@ -238,18 +238,18 @@ public abstract class AbstractCharacter extends AbstractEntity {
     
         //check for movement in y
         //top corner
-        if (pos.addVectorCpy(new float[]{0, - COLISSIONRADIUS, 0}).getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(0, - COLISSIONRADIUS, 0).getCoord().getBlockSafe().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.addVectorCpy(new float[]{0, COLISSIONRADIUS, 0}).getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(0, COLISSIONRADIUS, 0).getCoord().getBlockSafe().isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.addVectorCpy(new float[]{-COLISSIONRADIUS, 0, 0}).getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(-COLISSIONRADIUS, 0, 0).getCoord().getBlockSafe().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.addVectorCpy(new float[]{COLISSIONRADIUS, 0, 0}).getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(COLISSIONRADIUS, 0, 0).getCoord().getBlockSafe().isObstacle())
             colission = true;
         
         return colission;

@@ -480,11 +480,11 @@ public class Block extends AbstractGameObject {
     @Override
     public int getDepth(AbstractPosition coords){
         return (int) (
-            coords.getCoordinate().getRelY() *(Block.SCREEN_DEPTH+1)//Y
-            + coords.getCoordinate().getCellOffset()[1]
+            coords.getCoord().getRelY() *(Block.SCREEN_DEPTH+1)//Y
+            + coords.getCoord().getCellOffset()[1]
             
             + coords.getHeight()/Math.sqrt(2)//Z
-            + coords.getCoordinate().getCellOffset()[2]/Math.sqrt(2)
+            + coords.getCoord().getCellOffset()[2]/Math.sqrt(2)
             + (getDimensionZ() - 1) *GAME_DIMENSION/Math.sqrt(2)
         );
     }

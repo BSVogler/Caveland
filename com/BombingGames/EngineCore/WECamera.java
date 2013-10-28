@@ -530,7 +530,7 @@ public class WECamera extends Camera {
     }
     
      /**
-     * Returns the bottom seight border of the highest groundBlock
+     * Returns the bottom seight border y-coordinate of the highest groundBlock
      * @return measured in blocks
      */
     public int getBottomBorder(){

@@ -47,13 +47,11 @@ public class Sea extends Block implements IsSelfAware{
     @Override
     public void update(float delta) {
         coords.setCellOffsetZ(
-            startvalue +
-            (float) (Math.sin(
-                (currentX-coords.getRelX()-coords.getRelY())
-                * Math.PI/waveWidth
-                )*WAVE_AMPLITUDE
-            )
-        );
+            (int) (startvalue +
+                Math.sin(
+                    (currentX-coords.getRelX()-coords.getRelY())
+                        * Math.PI/waveWidth
+                )*WAVE_AMPLITUDE));
     }
     
     /**

@@ -8,7 +8,7 @@ import com.BombingGames.EngineCore.Gameobjects.Block;
  */
 public class Cell {
     private Block block;
-    private float[] cellOffset = new float[]{0, 0,0};
+    private int[] cellOffset = new int[]{0, 0,0};
 
     /**
      *Create a new cell containing air.
@@ -64,7 +64,7 @@ public class Cell {
      *The cell offset has it's center in the top left corner.
      * @return
      */
-    public float[] getCellOffset() {
+    public int[] getCellOffset() {
         return cellOffset;
     }
 
@@ -72,7 +72,7 @@ public class Cell {
      *The cell offset has it's center in the top left corner.
      * @param cellOffset
      */
-    public void setCellOffset(float[] cellOffset) {
+    public void setCellOffset(int[] cellOffset) {
         this.cellOffset = cellOffset;
     }
 
@@ -81,7 +81,7 @@ public class Cell {
      * @param field
      * @param offset
      */
-    public void setCellOffset(int field, float offset) {
+    public void setCellOffset(int field, int offset) {
         this.cellOffset[field] = offset;
     }
 

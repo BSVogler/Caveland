@@ -217,7 +217,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Block getBlock(){
-        return Controller.getMap().getData(this);
+        return Controller.getMap().getBlock(this);
     }
     
     /**

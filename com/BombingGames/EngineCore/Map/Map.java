@@ -278,7 +278,7 @@ public class Map {
      * @param z position
      * @return the single renderobject you wanted
      */
-    public Block getData(int x, int y, int z){
+    public Block getBlock(int x, int y, int z){
         return data[x][y][z].getBlock();  
     }
     
@@ -287,7 +287,7 @@ public class Map {
      * @param coord
      * @return
      */
-    public Block getData(Coordinate coord){
+    public Block getBlock(Coordinate coord){
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getBlock();  
     }
     
@@ -299,7 +299,7 @@ public class Map {
      * @return A single Block at the wanted coordinates.
      * @see com.BombingGames.Game.Map#getData(int, int, int) 
      */
-    public Block getDataSafe(int x, int y, int z){
+    public Block getBlockClamp(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
             Gdx.app.error("Map","X:"+x);
@@ -333,7 +333,7 @@ public class Map {
      * @return
      */
     public Block getDataSafe(Coordinate coords) {
-        return getDataSafe(coords.getRelX(), coords.getRelY(), coords.getZ());
+        return getBlockClamp(coords.getRelX(), coords.getRelY(), coords.getZ());
     }
     
    

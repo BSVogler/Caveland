@@ -175,14 +175,14 @@ public class LightEngine {
             for (int y=0; y < Map.getBlocksY(); y++) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ()-1;//start at top
-                while (Controller.getMap().getData(x,y,topmost).isTransparent() && topmost > 0 ){
+                while (Controller.getMap().getBlock(x,y,topmost).isTransparent() && topmost > 0 ){
                     topmost--;
                 }
                 
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
                     for (int level = topmost; level >= 0; level--){
-                        Controller.getMap().getData(x,y,level).setLightlevel(.25f + .25f*level / (float) topmost);
+                        Controller.getMap().getBlock(x,y,level).setLightlevel(.25f + .25f*level / (float) topmost);
                     }
                 }
             }

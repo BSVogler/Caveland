@@ -2,6 +2,7 @@ package com.BombingGames.EngineCore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -49,11 +50,15 @@ public class FPSdiag {
     public void render(View view){
         if (visible){
             ShapeRenderer shRenderer = view.getShapeRenderer();
+            Gdx.gl.glEnable(GL10.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             shRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
+            
             for (int i = 0; i < data.length; i++) { //render each field in memory
                 if (i == field) //highlight current FPS
-                    shRenderer.setColor(Color.PINK);
-                else shRenderer.setColor(Color.WHITE);
+                    shRenderer.setColor(new Color(1, 0, 1, 0.8f));
+                else
+                    shRenderer.setColor(new Color(1, 1, 1, 0.8f));
                 shRenderer.filledRect(xPos+width*i, yPos-data[i], width-1, data[i]);
             }
             shRenderer.end();
@@ -69,7 +74,9 @@ public class FPSdiag {
             shRenderer.line(xPos, yPos-30, xPos+width*data.length, yPos-30);
             shRenderer.line(xPos, yPos-60, xPos+width*data.length, yPos-60);
             shRenderer.line(xPos, yPos-120, xPos+width*data.length, yPos-120);
+            
             shRenderer.end();
+            Gdx.gl.glDisable(GL10.GL_BLEND);
      }
     }
     

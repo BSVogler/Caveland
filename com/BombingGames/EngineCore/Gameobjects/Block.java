@@ -424,8 +424,10 @@ public class Block extends AbstractGameObject {
     public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb, Color color, float scale){
         Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), sidenumb));
         sprite.setPosition(xPos, yPos);
-        sprite.setOrigin(0, 0);
-        sprite.scale(scale);
+        if (scale != 0) {
+            sprite.setOrigin(0, 0);
+            sprite.scale(scale);
+        }
         
         color.mul(getLightlevel()*2);
         

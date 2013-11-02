@@ -88,6 +88,7 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void dispose() {
+        controller.dispose();
     }
     
 }

@@ -314,23 +314,23 @@ public class WECamera extends Camera {
 
             if (side == 0){
                 //direct neighbour groundBlock on left hiding the complete left side
-                if (Controller.getMap().getData(x, y, z).hasSides()//block on top
+                if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && x > 0 && y < Map.getBlocksY()-1
                     && new Coordinate(x - (y%2 == 0 ? 1:0), y+1, z, true).hidingPastBlock())
                     break; //stop ray
 
                 //liquid
-                if (Controller.getMap().getData(x, y, z).isLiquid()){
+                if (Controller.getMap().getBlock(x, y, z).isLiquid()){
                     if (x > 0 && y+1 < Map.getBlocksY()
-                    && Controller.getMap().getData(x - (y%2 == 0 ? 1:0), y+1, z).isLiquid())
+                    && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z).isLiquid())
                         liquidfilter = true;
 
                     if (x > 0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
-                        && Controller.getMap().getData(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
+                        && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
                         leftliquid = true;
 
                     if (y < Map.getBlocksY()-2 &&
-                        Controller.getMap().getData(x, y+2, z).isLiquid())
+                        Controller.getMap().getBlock(x, y+2, z).isLiquid())
                         rightliquid = true;
 
                     if (leftliquid && rightliquid) liquidfilter = true;
@@ -346,22 +346,22 @@ public class WECamera extends Camera {
                     right = false;
 
             } else if (side == 1) {//check top side
-                if (Controller.getMap().getData(x, y, z).hasSides()//block on top
+                if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && z+1 < Map.getBlocksZ()
                     && new Coordinate(x, y, z+1, true).hidingPastBlock())
                     break;
 
                 //liquid
-                if (Controller.getMap().getData(x, y, z).isLiquid()){
-                    if (z < Map.getBlocksZ()-1 && Controller.getMap().getData(x, y, z+1).isLiquid())
+                if (Controller.getMap().getBlock(x, y, z).isLiquid()){
+                    if (z < Map.getBlocksZ()-1 && Controller.getMap().getBlock(x, y, z+1).isLiquid())
                         liquidfilter = true;
 
                     if (x>0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
-                        && Controller.getMap().getData(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
+                        && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
                         leftliquid = true;
 
                     if (x < Map.getBlocksX()-1  && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
-                        &&  Controller.getMap().getData(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
+                        &&  Controller.getMap().getBlock(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
                         rightliquid = true;
 
                     if (leftliquid && rightliquid) liquidfilter = true;
@@ -379,25 +379,25 @@ public class WECamera extends Camera {
 
             } else if (side==2){
                 //block on right hiding the whole right side
-                if (Controller.getMap().getData(x, y, z).hasSides()//block on top
+                if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY()
                     && new Coordinate(x + (y%2 == 0 ? 0:1), y+1, z, true).hidingPastBlock()
                     ) break;
 
                 //liquid
-                if (Controller.getMap().getData(x, y, z).isLiquid()){
+                if (Controller.getMap().getBlock(x, y, z).isLiquid()){
                    if (x < Map.getBlocksX()-1 && y < Map.getBlocksY()-1
-                        && Controller.getMap().getData(x + (y%2 == 0 ? 0:1), y+1, z).isLiquid()
+                        && Controller.getMap().getBlock(x + (y%2 == 0 ? 0:1), y+1, z).isLiquid()
                        ) liquidfilter = true;
 
                     if (y+2 < Map.getBlocksY()
                         &&
-                        Controller.getMap().getData(x, y+2, z).isLiquid())
+                        Controller.getMap().getBlock(x, y+2, z).isLiquid())
                         leftliquid = true;
 
                     if (x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY() && z+1 < Map.getBlocksZ()
                         &&
-                        Controller.getMap().getData(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
+                        Controller.getMap().getBlock(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
                         rightliquid = true;
 
                     if (leftliquid && rightliquid) liquidfilter = true;
@@ -417,9 +417,9 @@ public class WECamera extends Camera {
                     right = false;
             }
 
-            if ((left || right) && !(liquidfilter && Controller.getMap().getData(x, y, z).isLiquid())){ //unless both sides are clipped don't clip the whole groundBlock
+            if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())){ //unless both sides are clipped don't clip the whole groundBlock
                 liquidfilter = false;
-                Controller.getMap().getData(x, y, z).setSideClipping(side, false);                            
+                Controller.getMap().getBlock(x, y, z).setSideClipping(side, false);                            
             }                
         } while (y > 1 && z > 0 //not on bottom of map
             && (left || right) //left or right still visible
@@ -530,7 +530,7 @@ public class WECamera extends Camera {
     }
     
      /**
-     * Returns the bottom seight border of the highest groundBlock
+     * Returns the bottom seight border y-coordinate of the highest groundBlock
      * @return measured in blocks
      */
     public int getBottomBorder(){

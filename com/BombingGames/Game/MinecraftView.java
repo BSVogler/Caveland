@@ -147,7 +147,7 @@ public class MinecraftView extends View{
                 //getCameras().get(0).traceRayTo(coords, true);
                 gras1.play();
             } else {//right click
-                if (Controller.getMap().getData(coords).getId() == 0){
+                if (Controller.getMap().getBlock(coords).getId() == 0){
                     Controller.getMap().setData(coords, Block.getInstance(controller.getBlockToolbar().getSelectionID(),0,coords));
                     requestRecalc();
                     gras2.play();

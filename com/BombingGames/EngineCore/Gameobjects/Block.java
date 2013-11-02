@@ -437,13 +437,16 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
-     * @param scale
+     * @param scale if you want to scale it up use scale > 0 else < 0
      */
     public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb, Color color, float scale){
         Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), sidenumb));
         sprite.setPosition(xPos, yPos);
-        sprite.setOrigin(0,0);
-        sprite.scale(scale);
+
+        if (scale != 0) {
+            sprite.setOrigin(0, 0);
+            sprite.scale(scale);
+        }
         
         color.mul(getLightlevel()*2);
         

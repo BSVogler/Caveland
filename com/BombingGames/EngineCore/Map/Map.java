@@ -21,6 +21,8 @@ public class Map {
      */
     public final static boolean ENABLECHUNKSWITCH = true;
     
+    private static int blocksX, blocksY, blocksZ;
+        
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0
       * SOUTH->WEST->NORTH = -90
@@ -29,12 +31,11 @@ public class Map {
        **/
     private int worldSpinDirection;
     
-    private boolean newMap;
+    private final boolean newMap;
     
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
     
-    private static int blocksX, blocksY, blocksZ;
     /** the map data are the blocks in their cells */
     private Cell[][][] data;
     
@@ -278,7 +279,7 @@ public class Map {
      * @param z position
      * @return the single renderobject you wanted
      */
-    public Block getData(int x, int y, int z){
+    public Block getBlock(int x, int y, int z){
         return data[x][y][z].getBlock();  
     }
     
@@ -287,7 +288,7 @@ public class Map {
      * @param coord
      * @return
      */
-    public Block getData(Coordinate coord){
+    public Block getBlock(Coordinate coord){
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getBlock();  
     }
     
@@ -299,7 +300,7 @@ public class Map {
      * @return A single Block at the wanted coordinates.
      * @see com.BombingGames.Game.Map#getData(int, int, int) 
      */
-    public Block getDataSafe(int x, int y, int z){
+    public Block getBlockClamp(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
             Gdx.app.error("Map","X:"+x);
@@ -333,7 +334,7 @@ public class Map {
      * @return
      */
     public Block getDataSafe(Coordinate coords) {
-        return getDataSafe(coords.getRelX(), coords.getRelY(), coords.getZ());
+        return getBlockClamp(coords.getRelX(), coords.getRelY(), coords.getZ());
     }
     
    
@@ -419,7 +420,7 @@ public class Map {
         for (int i=0;i < numberofblocks; i++){
                 //cellPos[x[i]][y[i]][z[i]][0] = (float) (Math.random()*Block.SCREEN_DEPTH2);
                 //cellPos[x[i]][y[i]][z[i]][1] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                data[x[i]][y[i]][z[i]].setCellOffset(2, (float) (Math.random()*Block.GAME_DIMENSION));//vertical shake
+                data[x[i]][y[i]][z[i]].setCellOffset(2, (int) (Math.random()*Block.GAME_DIMENSION));//vertical shake
             
         }
         Controller.requestRecalc();
@@ -447,7 +448,7 @@ public class Map {
      * @param coord
      * @return
      */
-    public float[] getCellOffset(Coordinate coord) {
+    public int[] getCellOffset(Coordinate coord) {
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getCellOffset();
     }   
     
@@ -457,7 +458,7 @@ public class Map {
      * @param field 0 = X, 1 = y, 2 = z
      * @param value the value you want to set the field
      */
-    public void setCelloffset(Coordinate coord, int field, float value){
+    public void setCelloffset(Coordinate coord, int field, int value){
         data[coord.getRelX()][coord.getRelY()][coord.getZSafe()].setCellOffset(field, value);
     }
     

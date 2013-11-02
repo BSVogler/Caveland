@@ -120,7 +120,7 @@ public class Coordinate extends AbstractPosition {
      *
      * @return an array with the offset of the cell
      */
-    public float[] getCellOffset(){
+    public int[] getCellOffset(){
         return Controller.getMap().getCellOffset(this);
     }
  
@@ -155,7 +155,7 @@ public class Coordinate extends AbstractPosition {
      *Set the vertical offset in the cell, where the coordiante is pointing at.
      * @param height
      */
-    public void setCellOffsetZ(float height){
+    public void setCellOffsetZ(int height){
         Controller.getMap().setCelloffset(this, 2, height);
     }
     
@@ -217,7 +217,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Block getBlock(){
-        return Controller.getMap().getData(this);
+        return Controller.getMap().getBlock(this);
     }
     
     /**

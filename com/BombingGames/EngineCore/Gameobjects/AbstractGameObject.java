@@ -168,7 +168,7 @@ public abstract class AbstractGameObject {
     }
     
     /**
-     * Changes the color that it works with the blending. Sets the blending mode.
+     * Transform the color that it works with the blending mode which is also set in this method.
      * @param view
      * @param color a tint in which the sprite should be rendered
      */
@@ -398,5 +398,10 @@ public abstract class AbstractGameObject {
      */
     public static AtlasRegion[][][] getSprites() {
         return sprites;
+    }
+    
+    public void dispose(){
+        spritesheet.dispose();
+        pixmap.dispose();
     }
 }

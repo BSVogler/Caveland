@@ -363,5 +363,11 @@ public abstract class AbstractCharacter extends AbstractEntity {
         return inliquid;
     }
     
-    
+   @Override
+    public void dispose(){
+        fallingSound.dispose();
+        jumpingSound.dispose();
+        waterSound.dispose();
+        runningSound.dispose();
+    }
 }

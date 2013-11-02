@@ -293,4 +293,10 @@ public class Controller {
         
         return coords;
     }
+    
+    public void dispose(){
+        for (AbstractEntity entity :  map.getEntitys()) {
+            entity.dispose();
+        }
+    }
 }

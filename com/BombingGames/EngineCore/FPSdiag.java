@@ -52,14 +52,14 @@ public class FPSdiag {
             ShapeRenderer shRenderer = view.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
-            shRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
+            shRenderer.begin(ShapeRenderer.ShapeType.Filled);
             
             for (int i = 0; i < data.length; i++) { //render each field in memory
                 if (i == field) //highlight current FPS
                     shRenderer.setColor(new Color(1, 0, 1, 0.8f));
                 else
                     shRenderer.setColor(new Color(1, 1, 1, 0.8f));
-                shRenderer.filledRect(xPos+width*i, yPos-data[i], width-1, data[i]);
+                shRenderer.rect(xPos+width*i, yPos-data[i], width-1, data[i]);
             }
             shRenderer.end();
 

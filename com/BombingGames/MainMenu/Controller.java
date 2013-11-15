@@ -56,7 +56,7 @@ public class Controller {
                 } else if (menuItems[3].isClicked()){
                     fx.play();
                     Gdx.app.exit();
-                }
+        }
     }
 
     /**

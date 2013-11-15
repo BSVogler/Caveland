@@ -119,7 +119,7 @@ public class Controller {
             Gdx.app.log("Controller", "Recalcing.");
             WECamera.raytracing();
             LightEngine.calcSimpleLight();
-            if (minimap != null) minimap.update();
+            if (minimap != null) minimap.buildMinimap();
             recalcRequested = false;
         }
     }

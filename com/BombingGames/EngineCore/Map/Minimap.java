@@ -47,7 +47,7 @@ public class Minimap {
     /**
      * Updates the minimap- Should only be done after changing the map.
      */
-    public void update(){
+    public void buildMinimap(){
         for (int x = 0; x < Map.getBlocksX(); x++) {
             for (int y = 0; y < Map.getBlocksY(); y++) {
                 int z = Map.getBlocksZ() -1;//start at top

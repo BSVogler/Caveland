@@ -203,6 +203,7 @@ public class Block extends AbstractGameObject {
      * @return an sprite of the side
      */
     public static AtlasRegion getBlockSprite(int id, int value, int side) {
+        if (getSpritesheet() == null) return null;
         if (blocksprites[id][value][side] == null){ //load if not already loaded
             AtlasRegion sprite = getSpritesheet().findRegion(CATEGORY+Integer.toString(id)+"-"+value+"-"+side);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category

@@ -207,6 +207,7 @@ public abstract class AbstractGameObject {
      * @return 
      */
     public static AtlasRegion getSprite(char category, int id, int value) {
+        if (spritesheet == null) return null;
         if (sprites[category][id][value] == null){ //load if not already loaded
             AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category

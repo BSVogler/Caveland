@@ -1,9 +1,11 @@
 package com.BombingGames.EngineCore;
 
 import com.BombingGames.EngineCore.Gameobjects.Block;
+import com.BombingGames.EngineCore.Loading.LoadingScreen;
 import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Point;
+import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -42,7 +44,10 @@ public class View {
      */
     public void init(Controller controller){
         Gdx.app.debug("View", "Initializing View");
+        
         this.controller = controller;
+        WurfelEngine.getInstance().setScreen(new LoadingScreen());
+        
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
         font.setColor(Color.GREEN);
         font.scale(-0.5f);

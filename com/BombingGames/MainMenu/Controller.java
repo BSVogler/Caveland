@@ -44,15 +44,15 @@ public class Controller {
         if (menuItems[0].isClicked()){
             MainMenuScreen.setLoadMap(true);
             fx.play();
-            WurfelEngine.startGame(new CustomGameController(), new CustomGameView());
+            WurfelEngine.initGame(new CustomGameController(), new CustomGameView());
         } else if (menuItems[1].isClicked()) { 
                 MainMenuScreen.setLoadMap(false);
                 fx.play();
-                WurfelEngine.startGame(new CustomGameController(), new CustomGameView());
+                WurfelEngine.initGame(new CustomGameController(), new CustomGameView());
             } else if (menuItems[2].isClicked()){
                     MainMenuScreen.setLoadMap(false);
                     fx.play();
-                    WurfelEngine.startGame(new ExplosivesDemoController(), new ExplosivesDemoView());
+                    WurfelEngine.initGame(new ExplosivesDemoController(), new ExplosivesDemoView());
                 } else if (menuItems[3].isClicked()){
                     fx.play();
                     Gdx.app.exit();

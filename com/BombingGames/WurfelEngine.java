@@ -27,6 +27,7 @@ public class WurfelEngine extends Game {
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WurfelEngine instance;
+    private static GameplayScreen gameplayScreen;
     public AssetManager manager;
 
     /**
@@ -100,17 +101,32 @@ public class WurfelEngine extends Game {
     }
     
     /**
-     * Launch the main game with you custom controller and view.
+     * Initialize the main game with you custom controller and view. This call shows the loadingScreen.
      * @param controller
      * @param view 
+     * @see com.BombingGames.WurfelEngine#startGame()
      */
-    public static void startGame(Controller controller, View view){
-        instance.setScreen(
-            new GameplayScreen(
+    public static void initGame(Controller controller, View view){
+        if (instance != null) {
+            Gdx.app.log("Wurfel Engine", "Initializing game…");
+            gameplayScreen = new GameplayScreen(
                 controller,
                 view
-            )
-        );
+            );
+        } else
+            Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
+    }
+    
+    /**
+     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, View view)</i>. This is called after the loading screen.
+     */
+    public static void startGame(){
+        if (instance != null) {
+            Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
+            instance.setScreen(gameplayScreen);
+        } else
+            Gdx.app.error("Wurfel Engine", "You should call initGame first.");
+        
     }
     
     /**

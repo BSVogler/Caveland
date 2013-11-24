@@ -8,6 +8,7 @@ import com.BombingGames.MainMenu.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,7 @@ public class WurfelEngine extends Game {
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WurfelEngine instance;
+    public AssetManager manager;
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -36,6 +38,8 @@ public class WurfelEngine extends Game {
         // set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
+        
+        manager = new AssetManager();
         
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 

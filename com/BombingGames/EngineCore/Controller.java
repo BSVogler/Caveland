@@ -39,6 +39,7 @@ public class Controller {
      * This method works like a constructor. Everything is loaded. Set you custom chunk generator before calling this method.
      */
     public void init(){
+        Gdx.app.log("Controller", "Initializing");
         newMap();
         fpsdiag = new FPSdiag(10,300);
         
@@ -98,7 +99,7 @@ public class Controller {
         fpsdiag.update(delta);
                 
         //recalculates the light if requested
-        recalcIfRequested();      
+        recalcIfRequested();
     }
 
     
@@ -293,7 +294,7 @@ public class Controller {
         
         return coords;
     }
-    
+
     public void dispose(){
         for (AbstractEntity entity :  map.getEntitys()) {
             entity.dispose();

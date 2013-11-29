@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,20 +26,19 @@ public class LoadingScreen implements Screen {
     private Image loadingBg;
 
     private float startX, endX;
-    private float percent;
 
     private Actor loadingBar;
+    
+    private final LoadingController controller;
 
+    public LoadingScreen(LoadingController controller) {
+        this.controller = controller;
+    }
+
+    
+    
     @Override
-    public void show() {
-        Gdx.app.log("Loading", "show");
-        // Tell the manager to load assets for the loading screen
-        WurfelEngine.getInstance().manager.load(
-            "com/BombingGames/EngineCore/Loading/loading.pack",
-            TextureAtlas.class);
-        // Wait until they are finished loading
-        WurfelEngine.getInstance().manager.finishLoading();
-
+    public void show() {       
         // Initialize the stage where we will place everything
         stage = new Stage();
 
@@ -69,9 +67,6 @@ public class LoadingScreen implements Screen {
         stage.addActor(loadingBarHidden);
         stage.addActor(loadingFrame);
         stage.addActor(logo);
-
-        // Add everything to be loaded, for instance:
-         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", TextureAtlas.class);
     }
 
     @Override
@@ -111,29 +106,20 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
+         controller.update();
+        
         // Clear the screen
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        if (WurfelEngine.getInstance().manager.update()) { // Load some, will return true if done loading
-            
-        }
-
-        // Interpolate the percentage to make it more smooth
-        percent = Interpolation.linear.apply(percent, WurfelEngine.getInstance().manager.getProgress(), 0.1f);
-
         // Update positions (and size) to match the percentage
-        loadingBarHidden.setX(startX + endX * percent);
+        loadingBarHidden.setX(startX + endX * controller.getPercent());
         loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setWidth(450 - 450 * percent);
+        loadingBg.setWidth(450 - 450 * controller.getPercent());
         loadingBg.invalidate();
 
         // Show the loading screen
         stage.act();
         stage.draw();
-        
-        if (percent>=0.99f){
-            WurfelEngine.startGame();
-        }
     }
 
     @Override

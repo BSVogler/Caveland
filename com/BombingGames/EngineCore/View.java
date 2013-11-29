@@ -41,7 +41,7 @@ public class View {
      * @param controller
      */
     public void init(Controller controller){
-        Gdx.app.debug("View", "Initializing View");
+        Gdx.app.debug("View", "Initializing");
         
         this.controller = controller;
         

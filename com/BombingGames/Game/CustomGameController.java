@@ -19,6 +19,7 @@ public class CustomGameController extends Controller {
         
     @Override
     public void init(){
+        Gdx.app.log("CustomGameController", "Initializing");
          Chunk.setGenerator(2);
          super.init();
 

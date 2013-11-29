@@ -13,7 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.matsemann.libgdxloadingscreen.LoadingBar;
 
 /**
- * @author Mats Svensson
+ * Class under public domain. Modified for own needs.
+ * @author Mats Svensson, Benedikt Vogler
  */
 public class LoadingScreen implements Screen {
 

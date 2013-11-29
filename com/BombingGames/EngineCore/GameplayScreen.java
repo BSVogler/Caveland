@@ -26,9 +26,7 @@ public class GameplayScreen implements Screen{
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
         this.controller = controller;
-        this.controller.init();
         this.view = view;
-        this.view.init(controller);
     }
              
 
@@ -71,6 +69,8 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void show() {
+        this.controller.init();
+        this.view.init(controller);
 
     }
 

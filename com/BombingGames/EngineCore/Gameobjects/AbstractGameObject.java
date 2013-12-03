@@ -5,6 +5,7 @@ import com.BombingGames.EngineCore.LightEngine.PseudoGrey;
 import com.BombingGames.EngineCore.Map.AbstractPosition;
 import com.BombingGames.EngineCore.View;
 import com.BombingGames.EngineCore.WECamera;
+import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -193,10 +194,12 @@ public abstract class AbstractGameObject {
      * Load the spritesheet from memory.
      */
     public static void loadSheet()  {
-        Gdx.app.debug("Spritesheet","Loading spritesheet");
-        spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
-        pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.png"));//load again for pixmap, allows access to image color data
-        Gdx.app.log("Spritesheet","Spritesheet loaded");
+        //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
+        Gdx.app.log("AGameObject", "getting spritesheet");
+        spritesheet = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.txt");
+        //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+        pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.png"));//load again for pixmap, allows access to image color data;
+        //load again for pixmap, allows access to image color data
     }
 
     /**

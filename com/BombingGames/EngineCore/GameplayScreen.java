@@ -1,5 +1,7 @@
 package com.BombingGames.EngineCore;
 
+import com.BombingGames.EngineCore.Loading.LoadingController;
+import com.BombingGames.EngineCore.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,6 +18,7 @@ public class GameplayScreen implements Screen{
     
     private View view = null;
     private Controller controller = null;
+    private final LoadingController loadingController;
     
     /**
      * Create the gameplay state.
@@ -23,8 +26,14 @@ public class GameplayScreen implements Screen{
      * @param view  The view of this screen.
      */
     public GameplayScreen(Controller controller, View view) {
+        Gdx.app.log("GameplayScreen", "Initializing");
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
+        loadingController = new LoadingController();
+        loadingController.init(WurfelEngine.getInstance().manager);
+
+        WurfelEngine.getInstance().setScreen(new LoadingScreen(loadingController));
+        
         this.controller = controller;
         this.view = view;
     }

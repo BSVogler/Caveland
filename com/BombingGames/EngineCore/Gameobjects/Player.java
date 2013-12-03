@@ -1,6 +1,7 @@
 package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Map.Point;
+import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 
 
@@ -17,10 +18,12 @@ public class Player extends AbstractCharacter{
      */
     public Player(int id, Point point) {
         super(id, 1, point);
-        setFallingSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/wind.ogg")));
-        setRunningSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/victorcenusa_running.ogg")));
-        setJumpingSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/jump_man.wav")));
-        setLandingSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/landing.wav")));
+        Gdx.app.debug("Player", "Creating player");
+        setFallingSound((com.badlogic.gdx.backends.openal.Ogg.Sound) WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Sounds/wind.ogg"));
+        setRunningSound(
+            (com.badlogic.gdx.backends.openal.Ogg.Sound) WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Sounds/victorcenusa_running.ogg"));
+        setJumpingSound((com.badlogic.gdx.backends.openal.Wav.Sound) WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Sounds/jump_man.wav"));
+        setLandingSound((com.badlogic.gdx.backends.openal.Wav.Sound) WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Sounds/landing.wav"));
         
         setTransparent(true);
         setObstacle(true);

@@ -9,7 +9,6 @@ package com.BombingGames.EngineCore.Loading;
 import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
@@ -34,9 +33,6 @@ public class LoadingController {
         WurfelEngine.getInstance().manager.finishLoading();
         
         // Add everything to be loaded, for instance:
-        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-        TextureParameter param = new TextureParameter();
-        param.genMipMaps = true;
         manager.load("com/BombingGames/Game/Blockimages/Spritesheet.txt", TextureAtlas.class);
        // manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/Game/Sounds/wind.ogg", Sound.class);

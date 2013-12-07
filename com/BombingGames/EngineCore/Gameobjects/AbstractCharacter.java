@@ -2,7 +2,7 @@ package com.BombingGames.EngineCore.Gameobjects;
 
 import com.BombingGames.EngineCore.Map.Map;
 import com.BombingGames.EngineCore.Map.Point;
-import com.badlogic.gdx.Gdx;
+import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.audio.Sound;
 
 /**
@@ -48,7 +48,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         SPRITESPERDIR = spritesPerDir;
         shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,point.cpy());
         shadow.exist();
-        if (waterSound == null) waterSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/splash.ogg"));
+        waterSound =  WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Sounds/victorcenusa_running.ogg");
     }
    
    /**

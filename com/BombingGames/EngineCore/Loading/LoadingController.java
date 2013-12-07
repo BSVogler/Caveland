@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 
@@ -44,6 +43,7 @@ public class LoadingController {
         manager.load("com/BombingGames/Game/Sounds/victorcenusa_running.ogg", Sound.class);
         manager.load("com/BombingGames/Game/Sounds/jump_man.wav", Sound.class);
         manager.load("com/BombingGames/Game/Sounds/landing.wav", Sound.class);
+        manager.load("com/BombingGames/Game/Sounds/splash.ogg", Sound.class);
     }
     
     public void update(){

@@ -33,6 +33,7 @@ public class LoadingController {
         WurfelEngine.getInstance().manager.finishLoading();
         
         // Add everything to be loaded, for instance:
+        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);       
         manager.load("com/BombingGames/Game/Blockimages/Spritesheet.txt", TextureAtlas.class);
        // manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/Game/Sounds/wind.ogg", Sound.class);
@@ -40,6 +41,7 @@ public class LoadingController {
         manager.load("com/BombingGames/Game/Sounds/jump_man.wav", Sound.class);
         manager.load("com/BombingGames/Game/Sounds/landing.wav", Sound.class);
         manager.load("com/BombingGames/Game/Sounds/splash.ogg", Sound.class);
+        //manager.load("com/BombingGames/EngineCore/arial.fnt", BitmapFont.class);
     }
     
     public void update(){

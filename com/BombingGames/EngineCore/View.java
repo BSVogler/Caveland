@@ -4,12 +4,15 @@ import com.BombingGames.EngineCore.Gameobjects.Block;
 import com.BombingGames.EngineCore.Map.Chunk;
 import com.BombingGames.EngineCore.Map.Coordinate;
 import com.BombingGames.EngineCore.Map.Point;
+import com.BombingGames.WurfelEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -45,9 +48,15 @@ public class View {
         
         this.controller = controller;
         
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/EngineCore/arial.fnt"), true); //load font
+        //font = WurfelEngine.getInstance().manager.get("com/BombingGames/EngineCore/arial.fnt"); //load font
+        font = new BitmapFont(true);
+        //font.scale(2);
+        for (TextureRegion region : font.getRegions()) {
+                region.flip(false, false);
+            }
+        
         font.setColor(Color.GREEN);
-        font.scale(-0.5f);
+        //font.scale(-0.5f);
         
         //default rendering size is FullHD
         equalizationScale = Gdx.graphics.getWidth() / RENDER_RESOLUTION_WIDTH;

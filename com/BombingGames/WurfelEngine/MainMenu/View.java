@@ -1,6 +1,6 @@
 package com.BombingGames.WurfelEngine.MainMenu;
 
-import com.BombingGames.WurfelEngine.Launcher;
+import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -80,7 +80,7 @@ public class View {
         
         font.scale(-0.5f);
         batch.begin();
-        font.drawMultiLine(batch, Launcher.getCredits(), 50, 100);
+        font.drawMultiLine(batch, WEMain.getCredits(), 50, 100);
         batch.end();
         font.scale(0.5f);
     }

@@ -11,6 +11,6 @@ public class WurfelEngineDesktopLauncher{
      * @see WurfelEngine
      */
     public static void main(String[] args) {
-        Launcher.construct("Wurfelengine V" + Launcher.VERSION, args); 
+        WEMain.construct("Wurfelengine V" + WEMain.VERSION, args); 
     }
 }

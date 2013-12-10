@@ -1,17 +1,17 @@
 package com.BombingGames.WurfelEngine.Game;
 
-import com.BombingGames.WurfelEngine.EngineCore.Controller;
-import com.BombingGames.WurfelEngine.EngineCore.Gameobjects.AbstractCharacter;
-import com.BombingGames.WurfelEngine.EngineCore.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.EngineCore.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.EngineCore.GameplayScreen;
-import com.BombingGames.WurfelEngine.EngineCore.Map.Chunk;
-import com.BombingGames.WurfelEngine.EngineCore.Map.Coordinate;
-import com.BombingGames.WurfelEngine.EngineCore.Map.Map;
-import com.BombingGames.WurfelEngine.EngineCore.Map.Minimap;
-import com.BombingGames.WurfelEngine.EngineCore.WECamera;
+import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.GameplayScreen;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.Minimap;
+import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
-import com.BombingGames.WurfelEngine.Launcher;
+import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
@@ -67,7 +67,7 @@ public class ExplosivesDemoController extends Controller {
         Input input = Gdx.input;
         
         if (!GameplayScreen.msgSystem().isListeningForInput()) {
-            if (input.isKeyPressed(Input.Keys.ESCAPE)) Launcher.getInstance().setScreen(new MainMenuScreen());
+            if (input.isKeyPressed(Input.Keys.ESCAPE)) WEMain.getInstance().setScreen(new MainMenuScreen());
 
 
             //walk

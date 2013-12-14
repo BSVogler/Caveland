@@ -140,7 +140,7 @@ public class MsgSystem extends ArrayList<Msg> {
                 else if ("Warning".equals(msg.getSender())) color = Color.RED.cpy();
             
             //draw
-            view.getBatch().setColor(color);
+            view.getFont().setColor(color);
             view.getFont().draw(view.getBatch(), msg.getMessage(), 10,50+i*20);
         }
          view.getBatch().end();

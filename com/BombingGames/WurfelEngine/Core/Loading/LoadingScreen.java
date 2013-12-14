@@ -43,7 +43,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage();
 
         // Get our textureatlas from the manager
-        TextureAtlas atlas = WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/Loading/loading.pack", TextureAtlas.class);
+        TextureAtlas atlas = WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Core/Loading/loading.pack", TextureAtlas.class);
 
         // Grab the regions from the atlas and create some images
         logo = new Image(atlas.findRegion("libgdx-logo"));
@@ -125,7 +125,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void hide() {
         // Dispose the loading assets as we no longer need them
-        WEMain.getInstance().manager.unload("com/BombingGames/WurfelEngine/EngineCore/Loading/loading.pack");
+        WEMain.getInstance().manager.unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
     }
 
     public void pause() {

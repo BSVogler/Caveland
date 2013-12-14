@@ -38,7 +38,7 @@ public class View {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"), true);
+        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
     }
 

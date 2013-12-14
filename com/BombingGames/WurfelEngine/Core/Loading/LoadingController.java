@@ -21,7 +21,7 @@ public class LoadingController {
                 
         // Tell the manager to load assets for the loading screen
         WEMain.getInstance().manager.load(
-            "com/BombingGames/WurfelEngine/EngineCore/Loading/loading.pack",
+            "com/BombingGames/WurfelEngine/Core/Loading/loading.pack",
             TextureAtlas.class);
         // Wait until they are finished loading
         WEMain.getInstance().manager.finishLoading();
@@ -35,7 +35,7 @@ public class LoadingController {
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/jump_man.wav", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/landing.wav", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/splash.ogg", Sound.class);
-        //manager.load("com/BombingGames/WurfelEngine/EngineCore/arial.fnt", BitmapFont.class);
+        //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
     }
     
     public void update(){

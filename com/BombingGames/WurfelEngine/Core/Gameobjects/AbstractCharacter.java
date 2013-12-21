@@ -10,6 +10,8 @@ import com.badlogic.gdx.audio.Sound;
  * @author Benedikt
  */
 public abstract class AbstractCharacter extends AbstractEntity {
+   private static int soundlimit;//time to pass before new sound can be played
+     
    private final int COLISSIONRADIUS = GAME_DIAGSIZE/4;
    private final int SPRITESPERDIR;
       
@@ -29,9 +31,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
    private boolean runningSoundPlaying;
    private Sound jumpingSound;
    private Sound landingSound;
+   private Sound[] damageSounds;
 
 
    private boolean inliquid;
+   private int health = 1000;
+   private int mana = 1000;
        
    private final CharacterShadow shadow;
    
@@ -98,6 +103,13 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     @Override
     public void update(float delta) {
+        //clamp health & mana
+        if (mana > 1000) mana = 1000;
+        if (health > 1000) health = 1000;
+        if (mana < 0) mana = 0;
+        if (health < 0) health = 0;
+        
+        /*Here comes the stuff where the character interacts with the environment*/
         if (getPos().onLoadedMap()) {
             //scale that the velocity vector is always an unit vector (only x and y)
             double vectorLenght = Math.sqrt(dir[0]*dir[0] + dir[1]*dir[1]);
@@ -223,6 +235,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
                     fallingSoundPlaying = false;
                 }
             }
+            if (soundlimit>0)soundlimit-=delta;
+            
+            if (health<=0)
+                destroy();
         }
     }
     
@@ -358,8 +374,31 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * Is the character standing in a liquid?
      * @return 
      */
-    public boolean isInliquid() {
+    public boolean isInLiquid() {
         return inliquid;
+    }
+    
+     public void damage(int value) {
+        if (health >0){
+            if (damageSounds.length > 0 && soundlimit<=0) {
+                damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
+                soundlimit = 100;
+            }
+            health -= value;
+        } else
+            health=0;
+    }
+
+    public int getHealt() {
+       return health;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
     }
     
    @Override

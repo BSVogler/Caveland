@@ -486,7 +486,7 @@ public class Map {
      * @return a list with the entitys
      */
     public ArrayList<AbstractEntity> getAllEntitysOnCoord(Coordinate coord) {
-        ArrayList<AbstractEntity> list = new ArrayList<>();
+        ArrayList<AbstractEntity> list = new ArrayList<AbstractEntity>();
 
         for (AbstractEntity ent : entitylist) {
             if (Arrays.equals(
@@ -503,13 +503,13 @@ public class Map {
     
       /**
      * Get every entity on a coord of the wanted type
-     * @param <type>
-     * @param coord
-     * @param type
+     * @param <type> the class you want to filter.
+     * @param coord the coord where you want to get every entity from
+     * @param type the class you want to filter.
      * @return a list with the entitys
      */
     public <type> ArrayList<type> getAllEntitysOnCoord(Coordinate coord, Class<type> type) {
-        ArrayList<type> list = new ArrayList<>();
+        ArrayList<type> list = new ArrayList<type>();
 
         for (AbstractEntity ent : entitylist) {
             if (Arrays.equals(

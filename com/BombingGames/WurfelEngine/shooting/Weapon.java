@@ -257,8 +257,8 @@ public class Weapon {
         shotsLoaded--;
         
         if (bulletSprite <0)
-            AbstractEntity.getInstance(20, 0, character.getPos()).existNext();
-        else AbstractEntity.getInstance(21, 0, character.getPos()).existNext();
+            AbstractEntity.getInstance(20, 0, character.getPos()).exist();
+        else AbstractEntity.getInstance(21, 0, character.getPos()).exist();
         
         //shot bullets
         for (int i = 0; i < bps; i++) {

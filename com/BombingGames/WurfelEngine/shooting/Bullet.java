@@ -51,7 +51,7 @@ public class Bullet extends AbstractEntity {
                 
         //block hit & spawn effect
         if (getPos().onLoadedMap() && getPos().getBlockSafe().isObstacle()){
-            AbstractEntity.getInstance(impactSprite, 0, getPos().cpy()).existNext();
+            AbstractEntity.getInstance(impactSprite, 0, getPos().cpy()).exist();
             destroy();
         }
         
@@ -61,7 +61,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);
-            AbstractEntity.getInstance(16, 0, getPos().cpy()).existNext();//spawn blood
+            AbstractEntity.getInstance(16, 0, getPos().cpy()).exist();//spawn blood
             destroy();
         }
     }
@@ -117,7 +117,7 @@ public class Bullet extends AbstractEntity {
                             0,
                             getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint()
                         );
-                        effect.existNext();
+                        effect.exist();
                         ArrayList<AbstractCharacter> list = Controller.getMap().getAllEntitysOnCoord(effect.getPos().getCoord(), AbstractCharacter.class);
                         for (AbstractCharacter ent : list) {
                             if (!(ent instanceof Player))

@@ -61,6 +61,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * @see com.BombingGames.Game.Gameobjects.AbstractCharacter#jump(float)
      */
     public abstract void jump();
+   
+    /**
+     * Defines the direction of the gun - if no gun available - the direction of the head.
+     * @return normalized vector with three values
+     */
+   public abstract float[] getAiming();
     
    /**
      * Jump with a specific speed

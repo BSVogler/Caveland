@@ -46,4 +46,19 @@ public class Player extends AbstractCharacter{
     public void jump() {
         super.jump(5);
     }
+    
+    @Override
+    /**
+     * Getting aim relative to player by reading mouse position.
+     */
+    public float[] getAiming(){
+       float deltaX =Gdx.input.getX() - this.getPos().get2DPosX();
+       float deltaY =Gdx.input.getY() - this.getPos().get2DPosY(); 
+       float length = (float) Math.sqrt( Math.pow(deltaX,2)+ Math.pow(deltaY,2));
+       return new float[]{
+            deltaX/length,
+            deltaY*2/length,
+            0
+        };
+    }
 }

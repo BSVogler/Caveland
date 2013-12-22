@@ -51,7 +51,7 @@ public class Bullet extends AbstractEntity {
             destroy();
                 
         //block hit & spawn effect
-        if (getPos().onLoadedMap() && getPos().getBlockSafe().isObstacle()){
+        if (getPos().onLoadedMap() && getPos().getBlockClamp().isObstacle()){
             AbstractEntity.getInstance(impactSprite, 0, getPos().cpy()).exist();
             destroy();
         }

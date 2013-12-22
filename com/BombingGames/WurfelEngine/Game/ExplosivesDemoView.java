@@ -108,11 +108,11 @@ public class ExplosivesDemoView extends View {
                 getMap().setData(coords, Block.getInstance(71, 0, coords));
                 WECamera.traceRayTo(coords, true);
             } else {//right click
-                if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
-                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
+                if (getMap().getDataClamp(coords) instanceof ExplosiveBarrel)
+                    ((ExplosiveBarrel) getMap().getDataClamp(coords)).explode();
                  if (coords.getZ() < Map.getBlocksZ()-1) coords.setZ(coords.getZ()+1);
-                 if (getMap().getDataSafe(coords) instanceof ExplosiveBarrel)
-                    ((ExplosiveBarrel) getMap().getDataSafe(coords)).explode();
+                 if (getMap().getDataClamp(coords) instanceof ExplosiveBarrel)
+                    ((ExplosiveBarrel) getMap().getDataClamp(coords)).explode();
             }
             return true;
         }

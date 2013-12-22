@@ -334,7 +334,7 @@ public class Map {
      * @param coords
      * @return
      */
-    public Block getDataSafe(Coordinate coords) {
+    public Block getDataClamp(Coordinate coords) {
         return getBlockClamp(coords.getRelX(), coords.getRelY(), coords.getZ());
     }
     

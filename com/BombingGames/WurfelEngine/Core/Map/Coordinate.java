@@ -230,7 +230,7 @@ public class Coordinate extends AbstractPosition {
      * @return
      */
     public Block getBlockSafe(){
-        return Controller.getMap().getDataSafe(this);
+        return Controller.getMap().getDataClamp(this);
     }
     
 
@@ -263,8 +263,12 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public boolean onLoadedMap(){
-        return (getRelX() >= 0 && getRelX() < Map.getBlocksX()
-            && getRelY() >= 0 && getRelY() < Map.getBlocksY());
+        return (
+            getRelX() >= 0
+            && getRelX() < Map.getBlocksX()
+            && getRelY() >= 0
+            && getRelY() < Map.getBlocksY()
+        );
     }
     
     /**

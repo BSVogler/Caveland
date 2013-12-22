@@ -52,7 +52,7 @@ public class SpinningWheel extends ArrayList<Weapon> {
                 current = currentRandom;
                 controller.equipWeapon(current);
                 controller.setTimespeed(1f);
-                controller.getMusic().setVolume(1f);
+                //controller.getMusic().setVolume(1f);
             }
 
             wheelSpeed *= 1+ delta/400f;//time to pass before new random item get's bigger

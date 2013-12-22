@@ -4,6 +4,7 @@ import com.BombingGames.WurfelEngine.Game.CustomGameController;
 import com.BombingGames.WurfelEngine.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Game.ExplosivesDemoController;
 import com.BombingGames.WurfelEngine.Game.ExplosivesDemoView;
+import com.BombingGames.WurfelEngine.Game.GunTestController;
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -48,7 +49,7 @@ public class Controller {
         } else if (menuItems[1].isClicked()) { 
                 MainMenuScreen.setLoadMap(false);
                 fx.play();
-                WEMain.initGame(new CustomGameController(), new CustomGameView());
+                WEMain.initGame(new GunTestController(), new CustomGameView());
             } else if (menuItems[2].isClicked()){
                     MainMenuScreen.setLoadMap(false);
                     fx.play();

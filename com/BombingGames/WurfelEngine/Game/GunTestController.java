@@ -52,12 +52,12 @@ public class GunTestController extends Controller {
         );
         player.setControls("WASD");
         setPlayer(player);
-        player.setDamageSounds(new Sound[]{
-            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream1.wav"),
-            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream2.wav"),
-            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream3.wav"),
-            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream4.wav")
-        });
+//        player.setDamageSounds(new Sound[]{
+//            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream1.wav"),
+//            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream2.wav"),
+//            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream3.wav"),
+//            (Sound) WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/scream4.wav")
+//        });
         
         addCamera(
             new WECamera(

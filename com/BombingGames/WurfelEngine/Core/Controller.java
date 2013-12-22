@@ -13,6 +13,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -84,8 +85,9 @@ public class Controller {
                     mapdata[x][y][z].getBlock().update(delta);
         
         //update every entity
-        for (AbstractEntity entity : map.getEntitys())
-            entity.update(delta);
+        for (int i = 0; i < map.getEntitys().size(); i++) {
+            map.getEntitys().get(i).update(delta);
+        }
        
         for (int i = map.getEntitys().size()-1; i >= 0; i--) {
             if (map.getEntitys().get(i).shouldBeDestroyed())

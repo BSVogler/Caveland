@@ -328,6 +328,9 @@ public abstract class AbstractCharacter extends AbstractEntity {
         AbstractCharacter.waterSound = waterSound;
     }
     
+    public void setDamageSounds(Sound[] sound){
+        damageSounds = sound;
+    }
     
     
    /**

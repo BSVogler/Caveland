@@ -35,6 +35,7 @@ public class LoadingController {
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/jump_man.wav", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/landing.wav", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Game/Sounds/splash.ogg", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Game/Sounds/explosion2.ogg", Sound.class);
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
     }
     

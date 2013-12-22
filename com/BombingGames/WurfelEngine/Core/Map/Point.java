@@ -93,7 +93,7 @@ public class Point extends AbstractPosition {
     @Override
     public Block getBlock(){
         if (onLoadedMap())
-                    return getCoord().getBlock();
+            return getCoord().getBlock();
         else return null;
     }
     
@@ -129,8 +129,11 @@ public class Point extends AbstractPosition {
 
     @Override
     public boolean onLoadedMap() {
-        return (getRelX() >= 0 && getRelX() < Map.getGameWidth()
-            && getRelY() >= 0 && getRelY() < Map.getGameDepth());
+        return (
+            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X
+            && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
+            && getCoord().onLoadedMap()//do extended check
+        );
     }
 
     @Override

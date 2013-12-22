@@ -28,7 +28,7 @@ public class WEMain extends Game {
     private static boolean fullscreen = false;
     private static WEMain instance;
     private static GameplayScreen gameplayScreen;
-    private static final AssetManager manager = new AssetManager();
+    private static final AssetManager assetManager = new AssetManager();
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -165,7 +165,7 @@ public class WEMain extends Game {
     }
     
     public static <T> T getAsset(String filename){
-        return manager.get(filename);
+        return assetManager.get(filename);
     }
 
     /**
@@ -185,9 +185,9 @@ public class WEMain extends Game {
      * To load assets you can use getAsset(String filename)
      * @return 
      */
-    public static AssetManager getManager() {
+    public static AssetManager getAssetManager() {
         if (instance != null) {
-            return manager;
+            return assetManager;
         } else {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
             return null;

@@ -8,27 +8,27 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
  * @author Benedikt Vogler
  */
 public abstract class AbstractPosition {
-    private final int topleftX;//top left chunk x coordinate
-    private final int topleftY;//topl left chunk Y coordinate
+    private final int referenceX;//top left chunk x coordinate
+    private final int referenceY;//top left chunk Y coordinate
     private float height;
 
     /**
      * With custom reference
-     * @param topleftX
-     * @param topleftY 
+     * @param topleftX the chunk's X coordinate of the chunk at the top left
+     * @param topleftY the chunk's Y coordinate of the chunk at the top left 
      */
     public AbstractPosition(int topleftX, int topleftY) {
-        this.topleftX = topleftX;
-        this.topleftY = topleftY;
+        this.referenceX = topleftX;
+        this.referenceY = topleftY;
     }
 
     
     /**
-     * With the currently loaded reference
+     * With the currently loaded top left chunk.
      */
     public AbstractPosition() {
-        topleftX = Controller.getMap().getChunkCoords(0)[0];
-        topleftY = Controller.getMap().getChunkCoords(0)[1];
+        referenceX = Controller.getMap().getChunkCoords(0)[0];
+        referenceY = Controller.getMap().getChunkCoords(0)[1];
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class AbstractPosition {
     * @return 
     */
     protected int getTopleftX() {
-        return topleftX;
+        return referenceX;
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class AbstractPosition {
      * @return 
      */
     protected int getTopleftY() {
-        return topleftY;
+        return referenceY;
     }
     
      /**
@@ -79,10 +79,18 @@ public abstract class AbstractPosition {
     
     public abstract Coordinate getCoord();
     
+    /**
+     * Get the block at the position. If the coordiante is outside the map return null.
+     * @return 
+     */
     public abstract Block getBlock(); 
     
     public abstract AbstractPosition cpy(); 
     
+    /**
+     * Checks if the position is on the chunks currently in memory.
+     * @return 
+     */
     public abstract boolean onLoadedMap();
     
     public abstract AbstractPosition addVector(float[] vector);

@@ -23,7 +23,7 @@ public class WEMain extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.1.17";    
+    public static final String VERSION = "1.2.1";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WEMain instance;

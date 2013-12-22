@@ -5,6 +5,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.shooting.Bullet;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -70,6 +71,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         AbstractEntity entity;
         //define the default SideSprites
         switch (id){
+            case 12:
+                entity = new Bullet(id);
+            break;
+            case 15:case 16: case 19:case 20:case 21:
+                entity = new AnimatedEntity(id, value, new int[]{300}, true, false);
+            break;         
             case 40:
                     entity = new Player(id, point);
                     break;

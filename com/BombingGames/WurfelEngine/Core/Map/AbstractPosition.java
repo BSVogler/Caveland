@@ -51,7 +51,7 @@ public abstract class AbstractPosition {
     * 
     * @return 
     */
-    protected int getTopleftX() {
+    protected int getReferenceX() {
         return referenceX;
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractPosition {
      * 
      * @return 
      */
-    protected int getTopleftY() {
+    protected int getReferenceY() {
         return referenceY;
     }
     

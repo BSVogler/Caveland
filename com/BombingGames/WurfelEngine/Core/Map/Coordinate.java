@@ -15,8 +15,8 @@ public class Coordinate extends AbstractPosition {
     
     /**
      * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
-     * @param x The x value.
-     * @param y The y value.
+     * @param x The x value as coordinate.
+     * @param y The y value as coordinate.
      * @param z The z value as coordinate.
      * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
@@ -26,8 +26,8 @@ public class Coordinate extends AbstractPosition {
         this.x = x;
         this.y = y;
         if (!relative){ //if absolute then make it relative
-            this.x -= getTopleftX() * Chunk.getBlocksX();
-            this.y -= getTopleftY() * Chunk.getBlocksY();
+            this.x -= getReferenceX() * Chunk.getBlocksX();
+            this.y -= getReferenceY() * Chunk.getBlocksY();
         }
         
         setHeight(z*Block.GAME_DIMENSION);
@@ -35,8 +35,8 @@ public class Coordinate extends AbstractPosition {
     
      /**
      * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
-     * @param x The x value.
-     * @param y The y value.
+     * @param x The x value as coordinate.
+     * @param y The y value as coordinate.
      * @param height The z value as height.
      * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
@@ -46,8 +46,8 @@ public class Coordinate extends AbstractPosition {
         this.x = x;
         this.y = y;
         if (!relative){ //if absolute then make it relative
-            this.x -= getTopleftX() * Chunk.getBlocksX();
-            this.y -= getTopleftY() * Chunk.getBlocksY();
+            this.x -= getReferenceX() * Chunk.getBlocksX();
+            this.y -= getReferenceY() * Chunk.getBlocksY();
         }
         
         setHeight(height);
@@ -55,10 +55,10 @@ public class Coordinate extends AbstractPosition {
     
     /**
      * Creates a new coordinate from an existing coordinate
-     * @param coord the Coordinate
+     * @param coord the Coordinate you want to copy
      */
     public Coordinate(Coordinate coord) {
-        super(coord.getTopleftX(), coord.getTopleftY());
+        super(coord.getReferenceX(), coord.getReferenceY());
         
         this.x = coord.getRelX();
         this.y = coord.getRelY();
@@ -70,14 +70,14 @@ public class Coordinate extends AbstractPosition {
      * @return
      */
     public int getRelX(){
-        return x + (getTopleftX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
+        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
     }
     /**
      *
      * @return
      */
     public int getRelY(){
-        return y + (getTopleftY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
+        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
     }
     
     /**
@@ -85,14 +85,14 @@ public class Coordinate extends AbstractPosition {
      * @return
      */
     public int getAbsX(){
-        return x + getTopleftX() *Chunk.getBlocksX();
+        return x + getReferenceX() *Chunk.getBlocksX();
     }
     /**
      *
      * @return
      */
     public int getAbsY(){
-         return y + getTopleftY() *Chunk.getBlocksY();
+         return y + getReferenceY() *Chunk.getBlocksY();
     }
     
     /**
@@ -367,7 +367,12 @@ public class Coordinate extends AbstractPosition {
 
     @Override
     public Point getPoint() {
-        return new Point(x*Block.SCREEN_WIDTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0), y*Block.SCREEN_DEPTH, getHeight(), true);
+        return new Point(
+            x*Block.SCREEN_WIDTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
+            y*Block.SCREEN_DEPTH,
+            getHeight(),
+            true
+        );
     }
 
     @Override

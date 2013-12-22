@@ -24,8 +24,8 @@ public class Point extends AbstractPosition {
             this.x = posX;
             this.y = posY;
         } else {
-            this.x = posX - getTopleftX() * Chunk.getBlocksX();
-            this.y = posY - getTopleftY() * Chunk.getBlocksY();
+            this.x = posX - getReferenceX() * Chunk.getBlocksX();
+            this.y = posY - getReferenceY() * Chunk.getBlocksY();
         }
         setHeight(height);
     }
@@ -35,7 +35,7 @@ public class Point extends AbstractPosition {
      * @param point the source of the copy
      */
     public Point(Point point) {
-       super(point.getTopleftX(), point.getTopleftY());
+       super(point.getReferenceX(), point.getReferenceY());
        this.x = point.x;
        this.y = point.y;
        this.setHeight(point.getHeight());
@@ -57,11 +57,11 @@ public class Point extends AbstractPosition {
     }
 
     public float getRelX() {
-        return x + (getTopleftX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
+        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
     }
     
     public float getRelY() {
-        return y + (getTopleftY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
+        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
     }
     
             /**
@@ -73,11 +73,11 @@ public class Point extends AbstractPosition {
     }
 
     public float getAbsX() {
-        return x + getTopleftX() *Chunk.getGameWidth();
+        return x + getReferenceX() *Chunk.getGameWidth();
     }
     
     public float getAbsY() {
-        return y + getTopleftY() *Chunk.getGameDepth();
+        return y + getReferenceY() *Chunk.getGameDepth();
     }
     
     @Override

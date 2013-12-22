@@ -49,7 +49,7 @@ public class Controller {
         } else if (menuItems[1].isClicked()) { 
                 MainMenuScreen.setLoadMap(false);
                 fx.play();
-                WEMain.initGame(new GunTestController(), new CustomGameView());
+                WEMain.initGame(new CustomGameController(), new CustomGameView());
             } else if (menuItems[2].isClicked()){
                     MainMenuScreen.setLoadMap(false);
                     fx.play();

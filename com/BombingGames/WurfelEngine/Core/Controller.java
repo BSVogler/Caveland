@@ -158,18 +158,6 @@ public class Controller {
         this.player = player;
         player.exist();
     }   
-
-    /**
-     * Get the neighbour block to a side. It may be itself
-     * @param coords 
-     * @param side the id of the side
-     * @return the neighbour block
-     */
-    public static Block getNeighbourBlock(Coordinate coords, int side){
-        return Controller.getMap().getDataSafe(coords.neighbourSidetoCoords(side));
-    }
-    
-  
     
     /**
      * Returns the minimap.
@@ -257,43 +245,7 @@ public class Controller {
         Controller.lightEngine = new LightEngine(xPos, yPos);
     }
     
-    /**
-     * Game poition to game coordinate
-     * @param pos the position on the map
-     * @param depthCheck when true the coordiantes are checked with depth, use this for screen to coords. This is only possible if the position are on the map.
-     * @return 
-     */
-    public static Coordinate findCoordinate(Point pos, boolean depthCheck){
-        //find out where the click went
-        Coordinate coords = new Coordinate(
-            (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,
-            (int) (pos.getRelY()) / Block.GAME_DIAGSIZE*2,
-            pos.getHeight(),
-            true
-        );
-       
-        //find the specific coordinate
-        Coordinate specificCoords = coords.neighbourSidetoCoords(
-            Coordinate.getNeighbourSide(pos.getRelX() % Block.GAME_DIAGSIZE, pos.getRelY() % (Block.GAME_DIAGSIZE))
-        );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY());
-        
-        //trace ray down if wanted
-        if (depthCheck && pos.onLoadedMap()) {
-            coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
-            //if selection is not found by that specify it
-            if (coords.getBlock().isHidden()){
-                //trace ray down to bottom. for each step 2 y and 1 z down
-                do {
-                    coords.setRelY(coords.getRelY()-2);
-                    coords.setZ(coords.getZ()-1);
-                } while (coords.getBlock().isHidden() && coords.getZ()>0);
-            }
-        }
-        
-        return coords;
-    }
+    
 
     public void dispose(){
         for (AbstractEntity entity :  map.getEntitys()) {

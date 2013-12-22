@@ -48,6 +48,11 @@ public class Point extends AbstractPosition {
        return this;
     }
     
+    @Override
+    public Coordinate getCoord() {
+        return Coordinate.posToCoord(this, false);
+    }
+    
         /**
      *
      * @return
@@ -78,11 +83,6 @@ public class Point extends AbstractPosition {
     
     public float getAbsY() {
         return y + getReferenceY() *Chunk.getGameDepth();
-    }
-    
-    @Override
-    public Coordinate getCoord() {
-        return Controller.findCoordinate(this, false);
     }
     
     

@@ -50,7 +50,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public Coordinate getCoord() {
-        return Coordinate.posToCoord(this, false);
+        return Point.posToCoord(this, false);
     }
     
         /**
@@ -147,5 +147,46 @@ public class Point extends AbstractPosition {
         this.y += y;
         setHeight(getHeight()+ z*Block.GAME_DIMENSION);
         return this;
+    }
+    
+        /**
+     * Game position to game coordinate
+     * @param pos the position on the map
+     * @param depthCheck when true the coordiantes are checked with depth, use this for "screen to coords". This is only possible if the position are on the map.
+     * @return 
+     */
+    public static Coordinate posToCoord(Point pos, boolean depthCheck){
+        //find out where the position is (basic)
+        Coordinate coords = new Coordinate(
+            (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,
+            (int) (pos.getRelY()) / Block.GAME_DIAGSIZE*2,
+            pos.getHeight(),
+            true
+        );
+       
+        //find the specific coordinate (detail)
+        Coordinate specificCoords = coords.neighbourSidetoCoords(
+            Coordinate.getNeighbourSide(
+                pos.getRelX() % Block.GAME_DIAGSIZE,
+                pos.getRelY() % (Block.GAME_DIAGSIZE)
+            )
+        );
+        coords.setRelX(specificCoords.getRelX());
+        coords.setRelY(specificCoords.getRelY());
+        
+        //trace ray down if wanted
+        if (depthCheck && pos.onLoadedMap()) {
+            coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
+            //if selection is not found by that specify it
+            if (coords.getBlock().isHidden()){
+                //trace ray down to bottom. for each step 2 y and 1 z down
+                do {
+                    coords.setRelY(coords.getRelY()-2);
+                    coords.setZ(coords.getZ()-1);
+                } while (coords.getBlock().isHidden() && coords.getZ()>0);
+            }
+        }
+        
+        return coords;
     }
 }

@@ -460,7 +460,7 @@ public class Map {
      * @param value the value you want to set the field
      */
     public void setCelloffset(Coordinate coord, int field, int value){
-        data[coord.getRelX()][coord.getRelY()][coord.getZSafe()].setCellOffset(field, value);
+        data[coord.getRelX()][coord.getRelY()][coord.getZClamp()].setCellOffset(field, value);
     }
     
      /**

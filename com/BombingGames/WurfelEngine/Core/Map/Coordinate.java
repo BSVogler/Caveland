@@ -66,14 +66,14 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *
+     *Gets the X coordinate relative to the map.
      * @return
      */
     public int getRelX(){
         return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
     }
     /**
-     *
+     *Gets the Y coordinate relative to the map.
      * @return
      */
     public int getRelY(){
@@ -81,14 +81,14 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *
+     *Absolute coordinates are independent of the currently loaded chunks.
      * @return
      */
     public int getAbsX(){
         return x + getReferenceX() *Chunk.getBlocksX();
     }
     /**
-     *
+     *Absolute coordinates are independent of the currently loaded chunks.
      * @return
      */
     public int getAbsY(){
@@ -96,23 +96,26 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *
+     *The z value is absolute even when used as relative coordinate because there are no chunks in Z direction.
      * @return
      */
     public int getZ(){
-        return (int) (getHeight()/Block.GAME_DIMENSION);
+        return (int) (getHeight() / Block.GAME_DIMENSION);
     }
     
     /**
-     *
+     *Checks if the calculated value is valid and clamps it to the map dimensions.
      * @return
+     * @see #getZ() 
      */
-    public int getZSafe(){
-        int tmpZ =  (int) (getHeight()/Block.GAME_DIMENSION);
+    public int getZClamp(){
+        int tmpZ = getZ();
         if (tmpZ >= Map.getBlocksZ())
             return Map.getBlocksZ() -1;
-        else if (tmpZ < 0) return 0;
-            else return tmpZ;
+        else if (tmpZ < 0)
+                return 0;
+             else
+                return tmpZ;
     }
     
     

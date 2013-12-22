@@ -171,7 +171,7 @@ public class View {
  
 
         
-        return Point.posToCoord(
+        return Point.toCoord(
             new Point(
                 ScreenXtoGame(x, camera),
                 ScreenYtoGame(y, camera),

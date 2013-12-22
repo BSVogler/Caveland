@@ -50,7 +50,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public Coordinate getCoord() {
-        return Point.posToCoord(this, false);
+        return toCoord(this, false);
     }
     
         /**
@@ -155,7 +155,7 @@ public class Point extends AbstractPosition {
      * @param depthCheck when true the coordiantes are checked with depth, use this for "screen to coords". This is only possible if the position are on the map.
      * @return 
      */
-    public static Coordinate posToCoord(Point pos, boolean depthCheck){
+    public static Coordinate toCoord(Point pos, boolean depthCheck){
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,

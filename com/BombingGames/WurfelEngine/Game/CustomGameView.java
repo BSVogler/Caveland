@@ -37,7 +37,7 @@ public class CustomGameView extends View{
         public boolean keyDown(int keycode) {
             if (!GameplayScreen.msgSystem().isListeningForInput()) {
                 //toggle minimap
-                 if (keycode == Input.Keys.M){
+                 if (keycode == Input.Keys.M && getController().getMinimap() != null){
                      getController().getMinimap().toggleVisibility();
                  }
                  //toggle fullscreen

@@ -92,7 +92,9 @@ public class Point extends AbstractPosition {
      */
     @Override
     public Block getBlock(){
-        return getCoord().getBlock();
+        if (onLoadedMap())
+                    return getCoord().getBlock();
+        else return null;
     }
     
 

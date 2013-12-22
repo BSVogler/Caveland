@@ -28,7 +28,7 @@ public class WEMain extends Game {
     private static boolean fullscreen = false;
     private static WEMain instance;
     private static GameplayScreen gameplayScreen;
-    public AssetManager manager;
+    private static final AssetManager manager = new AssetManager();
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -39,8 +39,6 @@ public class WEMain extends Game {
         // set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
-        
-        manager = new AssetManager();
         
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
@@ -165,12 +163,34 @@ public class WEMain extends Game {
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
         Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WEMain.isFullscreen());
     }
+    
+    public static <T> T getAsset(String filename){
+        return manager.get(filename);
+    }
 
     /**
      *Check if the game is running in fullscreen.
      * @return true when running in fullscreen, false if in window mode
      */
     public static boolean isFullscreen() {
-        return fullscreen;
+         if (instance != null) {
+            return fullscreen;
+        } else {
+            Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
+            return false;
+        }
     } 
+
+    /**
+     * To load assets you can use getAsset(String filename)
+     * @return 
+     */
+    public static AssetManager getManager() {
+        if (instance != null) {
+            return manager;
+        } else {
+            Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
+            return null;
+        }
+    }
 }

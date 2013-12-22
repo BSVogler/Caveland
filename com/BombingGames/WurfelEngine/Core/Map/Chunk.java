@@ -330,7 +330,7 @@ public class Chunk {
             blocksZString = blocksZString.substring(2, blocksZString.length());
             blocksZ = Integer.parseInt(blocksZString);
         } catch (IOException ex) {
-            if (!WEMain.isFullscreen()) {
+            if (!WEMain.getInstance().isFullscreen()) {
                 JOptionPane.showMessageDialog(
                     null,
                     "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WEMain.getWorkingDirectory().getAbsolutePath() + "/map/",

@@ -20,11 +20,11 @@ public class LoadingController {
         this.manager = manager;
                 
         // Tell the manager to load assets for the loading screen
-        WEMain.getInstance().manager.load(
+        manager.load(
             "com/BombingGames/WurfelEngine/Core/Loading/loading.pack",
             TextureAtlas.class);
         // Wait until they are finished loading
-        WEMain.getInstance().manager.finishLoading();
+        manager.finishLoading();
         
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);       

@@ -197,7 +197,7 @@ public abstract class AbstractGameObject {
         //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {
-            spritesheet = WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.txt");
+            spritesheet = WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.txt");
             for (AtlasRegion region : spritesheet.getRegions()) {
                 region.flip(false, true);
             }

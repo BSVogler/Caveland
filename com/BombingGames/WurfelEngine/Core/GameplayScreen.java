@@ -30,7 +30,7 @@ public class GameplayScreen implements Screen{
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
         loadingController = new LoadingController();
-        loadingController.init(WEMain.getInstance().manager);
+        loadingController.init(WEMain.getInstance().getManager());
 
         WEMain.getInstance().setScreen(new LoadingScreen(loadingController));
         

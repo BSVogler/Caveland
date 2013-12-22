@@ -21,17 +21,17 @@ public class Player extends AbstractCharacter{
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
             (com.badlogic.gdx.backends.openal.Ogg.Sound)
-            WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Game/Sounds/wind.ogg")
+            WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/wind.ogg")
         );
         setRunningSound(
             (com.badlogic.gdx.backends.openal.Ogg.Sound)
-            WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Game/Sounds/victorcenusa_running.ogg")
+            WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/victorcenusa_running.ogg")
         );
         setJumpingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
-            WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Game/Sounds/jump_man.wav")
+            WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/jump_man.wav")
         );
         setLandingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
-            WEMain.getInstance().manager.get("com/BombingGames/WurfelEngine/Game/Sounds/landing.wav")
+            WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/landing.wav")
         );
         
         setTransparent(true);

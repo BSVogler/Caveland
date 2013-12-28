@@ -236,12 +236,12 @@ public class LightEngine {
             //surrounding sphere
             Gdx.gl10.glLineWidth(2);
             shapeRenderer.setColor(Color.BLACK);
-            shapeRenderer.begin(ShapeType.Circle);
+            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.circle(posX, posY, size);
             shapeRenderer.end();
             
             //cut through
-            shapeRenderer.begin(ShapeType.Circle);
+            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.translate(posX, posY, 0);
             shapeRenderer.scale(1f, (0.5f), 1f);
             shapeRenderer.circle(0, 0, size);
@@ -252,7 +252,7 @@ public class LightEngine {
             //perfect/correct line
             shapeRenderer.setColor(Color.ORANGE);
             if ((sun.getMaxAngle()/90f-0.5f) != 0) {
-                shapeRenderer.begin(ShapeType.Circle);
+                shapeRenderer.begin(ShapeType.Line);
                 shapeRenderer.translate(posX, posY, 0);
                                 shapeRenderer.rotate(0, 0, 1, Controller.getMap().getWorldSpinDirection());
                 shapeRenderer.scale(1f, (sun.getMaxAngle()/90f-0.5f), 1f);
@@ -310,40 +310,40 @@ public class LightEngine {
             view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, 120, Color.WHITE);
             view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, 130, Color.WHITE);
             view.drawString("LightColor: "+getGlobalLight().toString(), 600, 140, Color.WHITE);
-            shapeRenderer.begin(ShapeType.FilledRectangle);
+            shapeRenderer.begin(ShapeType.Filled);
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.filledRect(600, 160, 70, 70);
+            shapeRenderer.rect(600, 160, 70, 70);
             shapeRenderer.setColor(getGlobalLight());
-            shapeRenderer.filledRect(610, 170, 50, 50);
+            shapeRenderer.rect(610, 170, 50, 50);
 
              //info bars
             
             //left side
             view.drawText(I_ambient+"\n+"+I_diff0+"\n+"+ I_spec0+"\n="+I_0, (int) (I_0*size), 100, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.filledRect(0, 100, I_ambient*size, 10);
+            shapeRenderer.rect(0, 100, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.filledRect(I_ambient*size, 100, I_diff0*size, 8);
+            shapeRenderer.rect(I_ambient*size, 100, I_diff0*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.filledRect((I_ambient+I_diff0)*size, 100, I_spec0*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff0)*size, 100, I_spec0*size, 6);
 
             //top side
             view.drawText(I_ambient+"\n+"+I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), 180, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.filledRect(0, 180, I_ambient*size, 10);
+            shapeRenderer.rect(0, 180, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.filledRect(I_ambient*size, 180, I_diff1*size, 8);
+            shapeRenderer.rect(I_ambient*size, 180, I_diff1*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.filledRect((I_ambient+I_diff1)*size, 180, I_spec1*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff1)*size, 180, I_spec1*size, 6);
 
             //right side
             view.drawText(I_ambient+"\n+"+I_diff2+"\n+"+ I_spec2+"\n="+I_2, (int) (I_2*size), 260, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.filledRect(0, 260, I_ambient*size, 10);
+            shapeRenderer.rect(0, 260, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.filledRect(I_ambient*size, 260, I_diff2*size, 8);
+            shapeRenderer.rect(I_ambient*size, 260, I_diff2*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.filledRect((I_ambient+I_diff2)*size, 260, I_spec2*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff2)*size, 260, I_spec2*size, 6);
             
             shapeRenderer.end();
         }

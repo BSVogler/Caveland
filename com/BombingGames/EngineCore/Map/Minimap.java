@@ -77,7 +77,7 @@ public class Minimap {
             ShapeRenderer shapeRenderer = view.getShapeRenderer();
                         
             //render the map
-            shapeRenderer.begin(ShapeType.FilledRectangle);
+            shapeRenderer.begin(ShapeType.Filled);
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
                     shapeRenderer.setColor(mapdata[x][y]);//get color
@@ -88,7 +88,7 @@ public class Minimap {
                     
                     shapeRenderer.translate(rectX, rectY, 0);
                     shapeRenderer.rotate(0, 0, 1, 45);
-                    shapeRenderer.filledRect(0,0,renderSize,renderSize); 
+                    shapeRenderer.rect(0,0,renderSize,renderSize); 
                     shapeRenderer.rotate(0, 0, 1, -45);
                     shapeRenderer.translate(-rectX, -rectY, 0);
                 }
@@ -111,14 +111,14 @@ public class Minimap {
                     )* scaleY*2;
                 shapeRenderer.translate(rectX, rectY, 0);
                 shapeRenderer.rotate(0, 0, 1, 45);
-                shapeRenderer.filledRect(0,0,renderSize,renderSize);
+                shapeRenderer.rect(0,0,renderSize,renderSize);
                 shapeRenderer.rotate(0, 0, 1, -45);
                 shapeRenderer.translate(-rectX, -rectY, 0);
             }
             shapeRenderer.end();
             
             //Chunk outline
-            shapeRenderer.begin(ShapeType.Rectangle);
+            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.setColor(Color.BLACK);
             for (int chunk = 0; chunk < 9; chunk++) {
                 shapeRenderer.rect(
@@ -141,7 +141,7 @@ public class Minimap {
             }
 
             //bottom getCameras() rectangle
-            shapeRenderer.begin(ShapeType.Rectangle);
+            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(
                 viewportPosX + scaleX * camera.getOutputPosX() / Block.GAME_DIAGSIZE,

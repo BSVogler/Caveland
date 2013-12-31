@@ -32,8 +32,8 @@ public class MinecraftView extends View{
         super.init(controller);
          this.controller = (MinecraftController) controller;
          
-        gras1 =  (Sound) Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/grass1.ogg"));
-        gras2 = (Sound) Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Game/Sounds/grass2.ogg"));
+        gras1 = (Sound) WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/grass1.ogg");
+        gras2 = (Sound) WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/grass2.ogg");
         
          this.controller.getBlockToolbar().setPos(
             (Gdx.graphics.getWidth()/2)

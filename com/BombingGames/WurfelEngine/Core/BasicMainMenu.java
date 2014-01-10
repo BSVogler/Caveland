@@ -37,6 +37,9 @@ import com.badlogic.gdx.Screen;
 public abstract class BasicMainMenu implements Screen{
     private static boolean loadMap = false;
         
+    /**
+     * Use init like the constructor. Init gets called when every system is ready.
+     */
     public abstract void init();
 
     

@@ -28,11 +28,11 @@
  */
 package com.BombingGames.WurfelEngine;
 
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -51,7 +51,7 @@ public class WEMain extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.2.1";    
+    public static final String VERSION = "1.2.2";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WEMain instance;
@@ -113,14 +113,18 @@ public class WEMain extends Game {
             mainMenu.init();
             setScreen(mainMenu);
         }
-        
     }
 
+    /**
+     * Pass the mainMenu which get's displayed when you call launch().
+     * @param mainMenu 
+     * @see  #launch() 
+     */
     public static void setMainMenu(BasicMainMenu mainMenu) {
         WEMain.mainMenu = mainMenu;
     }
     
-        /**
+   /**
      * Create a new instance of the engine.
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
@@ -129,6 +133,10 @@ public class WEMain extends Game {
         instance = new WEMain(title,args);
     }
     
+    /**
+     * Start the engine. You have to pass a main menu first.
+     * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.BasicMainMenu) 
+     */
     public static void launch(){
         System.out.println("Launching engine...");
         LwjglApplication application = new LwjglApplication(instance, config);
@@ -185,7 +193,7 @@ public class WEMain extends Game {
     public static String getCredits() {
         String newline = System.getProperty("line.separator");
         return "Created by:"+newline
-            + " Benedikt Vogler"+newline+newline
+            + "Benedikt Vogler"+newline+newline
             + "Programming:"+newline
             + "Benedikt Vogler"+newline+newline
             + "Art:"+newline
@@ -234,7 +242,7 @@ public class WEMain extends Game {
 
     /**
      * To load assets you can use getAsset(String filename)
-     * @return 
+     * @return the asset manager.
      */
     public static AssetManager getAssetManager() {
         if (instance != null) {

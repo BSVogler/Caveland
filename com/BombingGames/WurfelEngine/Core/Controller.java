@@ -7,7 +7,6 @@ import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
-import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -127,7 +126,7 @@ public class Controller {
      * Creates a new Map.
      */
     public static void newMap(){
-        map = new Map(!MainMenuScreen.shouldLoadMap(),-45);
+        map = new Map(!BasicMainMenu.shouldLoadMap(),-45);
         map.fillWithBlocks();
     }
     

@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
-import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -106,7 +105,7 @@ public class ExplosivesDemoView extends View {
                   } 
 
                  if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
-                     WEMain.getInstance().setScreen(new MainMenuScreen());
+                     WEMain.showMainMenu();
             }
             
              //toggle input for msgSystem

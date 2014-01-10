@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Benedikt Vogler.
+ * Copyright 2014 Benedikt Vogler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,23 +27,69 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine;
+package com.BombingGames.WurfelEngine.Game.CustomMainMenu;
 
-import com.BombingGames.WurfelEngine.Game.CustomMainMenu.CustomMainMenuScreen;
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 /**
- * The Launcher should contain a line where it creates the wurfelengine. You can show a box where you can set the resolution for example.
+ *
  * @author Benedikt Vogler
  */
-public class WurfelEngineDesktopLauncher{
+public class CustomMainMenuScreen extends BasicMainMenu {
+ 
+    private static View View;
+    private static Controller Controller;
+    
+    public void init(){
+        Controller = new Controller(); 
+        View = new View();
+    }
+
+    @Override
+    public void render(float delta) {
+        Controller.update((int) (delta*1000));
+        View.render(Controller);
+        View.update(delta*1000);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void show() {
+        Controller.show();
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void dispose() {
+    }
+  
     /**
-     * Main method wich starts the game. For a detailed description of the arguments see WurfelEngine class.
-     * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
-     * @see WurfelEngine
+     * 
+     * @return
      */
-    public static void main(String[] args) {
-        WEMain.construct("Wurfelengine V" + WEMain.VERSION, args);
-        WEMain.setMainMenu(new CustomMainMenuScreen());
-        WEMain.launch();        
+    public static Controller getController() {
+        return Controller;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public static View getView() {
+        return View;
     }
 }

@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.MainMenu;
+package com.BombingGames.WurfelEngine.Game.CustomMainMenu;
 
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
@@ -55,7 +55,7 @@ public class View {
      */
     public View(){
         //load textures
-        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/MainMenu/Images/Lettering.png")));
+        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Game/CustomMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
         lettering.setY(50);
         lettering.flip(false, true);
@@ -96,7 +96,7 @@ public class View {
         
         // Draw the menu items
         batch.begin();
-        for (MenuItem mI : MainMenuScreen.getController().getMenuItems()) {
+        for (MenuItem mI : CustomMainMenuScreen.getController().getMenuItems()) {
             mI.render(batch, camera);
         }
         batch.end();

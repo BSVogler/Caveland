@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.WECamera;
-import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -93,7 +92,7 @@ public class ExplosivesDemoController extends Controller {
         Input input = Gdx.input;
         
         if (!GameplayScreen.msgSystem().isListeningForInput()) {
-            if (input.isKeyPressed(Input.Keys.ESCAPE)) WEMain.getInstance().setScreen(new MainMenuScreen());
+            if (input.isKeyPressed(Input.Keys.ESCAPE)) WEMain.showMainMenu();
 
 
             //walk

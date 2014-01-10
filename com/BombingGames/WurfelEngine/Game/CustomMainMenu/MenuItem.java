@@ -26,89 +26,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.MainMenu;
+package com.BombingGames.WurfelEngine.Game.CustomMainMenu;
 
-import com.badlogic.gdx.Screen;
- 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+
 /**
- * The game state of the Main Menu.
+ *A menu item is an object wich can be placed on a menu.
  * @author Benedikt
  */
-public class MainMenuScreen implements Screen{
-    private static boolean loadMap = false;
- 
-    private static View View;
-    private static Controller Controller;
+public class MenuItem extends Sprite {
+    /**
+     * Create a new menu Item and say which texture it should have.
+     * @param index
+     * @param texture  
+     */
+    public MenuItem(int index, TextureRegion texture) {
+        super(texture);
+        this.setX((Gdx.graphics.getWidth()-getWidth())/2);
+        this.setY(Gdx.graphics.getHeight()/2-120+index*80);
+    }
+
+
+    /**
+     *
+     * @param spriteBatch
+     * @param camera The camera rendering the MenuItem
+     */
+    public void render(SpriteBatch spriteBatch, Camera camera) {
+        super.draw(spriteBatch);        
+    }
     
+
     /**
-     * Creates the main Menu
-     */
-    public MainMenuScreen() {
-        Controller = new Controller(); 
-        View = new View();
-    }
-
-    
-    @Override
-    public void render(float delta) {
-        Controller.update((int) (delta*1000));
-        View.render(Controller);
-        View.update(delta*1000);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
-    }
-  
-    /**
-     * 
+     * Check if ithe mouse clicked the menuItem.
      * @return
      */
-    public static com.BombingGames.WurfelEngine.MainMenu.Controller getController() {
-        return Controller;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public static com.BombingGames.WurfelEngine.MainMenu.View getView() {
-        return View;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public static boolean shouldLoadMap() {
-        return loadMap;
-    }
-
-    /**
-     * 
-     * @param loadmap
-     */
-    public static void setLoadMap(boolean loadmap) {
-        MainMenuScreen.loadMap = loadmap;
+    public boolean isClicked() {
+        int mouseX = Gdx.input.getX();
+        int mouseY = Gdx.input.getY();
+        
+        return (
+            Gdx.input.isButtonPressed(Buttons.LEFT) &&
+            (mouseX >= getX() && mouseX <= getX() + getWidth()) &&
+            (mouseY >= getY() && mouseY <= getY() + getHeight())
+        );
     }
 }

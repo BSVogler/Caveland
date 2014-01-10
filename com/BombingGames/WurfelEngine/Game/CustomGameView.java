@@ -32,7 +32,6 @@ import static com.BombingGames.WurfelEngine.Core.Controller.getLightengine;
 import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -100,7 +99,7 @@ public class CustomGameView extends View{
                   } 
 
                  if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
-                     WEMain.getInstance().setScreen(new MainMenuScreen());
+                     WEMain.showMainMenu();
             }
             
              //toggle input for msgSystem

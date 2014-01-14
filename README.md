@@ -11,22 +11,23 @@ If you want to use the engine for your game take a look at the [wiki](https://gi
 
 
 ### Features
-* Free: No licensing costs
-* Open Source:
+* **Free**: No licensing costs
+* **Open Source**:
 	* Well documented
 	* Clean code: no geeky code with strange indent and names
-* Cross-platform (Windows, Mac, Linux, Android (in work))
-* Map Streaming: make maps as big as you want like in Minecraft or Skyrim
-* Three Dimensions: make maps with high buildings or deep dungeons
-* Map editor: free & included
-* Fast: Wurfel Engine renders only what is visible 
-* Easy: look at our examples (at wurfelengine.net) how easy it is to build a small game
-* Small: The engine is currently under 5 MB file size (+5 MB libGDX)
+* **Cross-platform** (Windows, Mac, Linux, Android (in work))
+* **Map Streaming**: make maps as big as you want like in Minecraft or Skyrim
+* **Three Dimensions**: make maps with high buildings or deep dungeons
+* **Map editor**: free & included
+* **Fast**: Wurfel Engine renders only what is visible 
+* **Easy**: look at our examples (at wurfelengine.net) how easy it is to build a small game
+* **Small**: The engine is currently under 5 MB file size (+5 MB libGDX)
 
 ### The Goal
 1. Provide a "normal" open source game engine because open source games are always geek games (e.g with ASCII output).
 2. An easy and fast engine for strategy or adventure games.
 3. Minecraft is hip, so are blocks.
+
 You can find more about the [design philosopy in the wiki](https://github.com/Cbeed/Wurfel-Engine/wiki/Philosophy)
 
 Visit the official website for more information:

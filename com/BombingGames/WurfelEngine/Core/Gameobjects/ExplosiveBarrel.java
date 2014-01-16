@@ -55,7 +55,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
         this.coords = coords;
         setObstacle(true);
         if (explosionsound == null)
-            explosionsound = WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/explosion2.ogg");
+            explosionsound = WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
     }
     
     /**

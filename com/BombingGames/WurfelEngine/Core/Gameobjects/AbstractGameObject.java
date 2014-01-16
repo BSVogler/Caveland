@@ -225,14 +225,14 @@ public abstract class AbstractGameObject {
         //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {
-            spritesheet = WEMain.getAsset("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.txt");
+            spritesheet = WEMain.getAsset("com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt");
             for (AtlasRegion region : spritesheet.getRegions()) {
                 region.flip(false, true);
             }
         }
         if (pixmap == null) {
             //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-            pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png"));//load again for pixmap, allows access to image color data;
+            pixmap = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/Spritesheet.png"));//load again for pixmap, allows access to image color data;
             //load again for pixmap, allows access to image color data
         }
     }

@@ -28,38 +28,68 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
  *A menu item is an object wich can be placed on a menu.
  * @author Benedikt
  */
-public class MenuItem extends Sprite {
+public class BasicMenuItem{
+    private final Class<Controller> gameController;
+    private final Class<View> gameView;
+    private int x;
+    private int y;
+    private final int index;
+    private final boolean exit;
+    
     /**
      * Create a new menu Item and say which texture it should have.
      * @param index
-     * @param texture  
+     * @param gameController Your game controller for this menu item
+     * @param gameViews Your game view for this menu item
      */
-    public MenuItem(int index, TextureRegion texture) {
-        super(texture);
-        this.setX((Gdx.graphics.getWidth()-getWidth())/2);
-        this.setY(Gdx.graphics.getHeight()/2-120+index*80);
+    public BasicMenuItem(int index, Class gameController, Class gameViews) {
+        this.gameController = gameController;
+        this.gameView = gameViews;
+        this.index = index;
+        exit=false;
+
     }
+    
+      /**
+     * Create a new menu Item which exits the game
+     * @param index
+     */
+    public BasicMenuItem(int index) {
+        this.gameController = null;
+        this.gameView = null;
+        this.index = index;
+        this.exit = true;
+    }
+    
+    
 
 
     /**
      *
-     * @param spriteBatch
      * @param camera The camera rendering the MenuItem
+     * @param font
+     * @param batch
      */
-    public void render(SpriteBatch spriteBatch, Camera camera) {
-        super.draw(spriteBatch);        
+    public void render(Camera camera, BitmapFont font, SpriteBatch batch) {
+        this.x = ((Gdx.graphics.getWidth()-50)/2);
+        this.y = (Gdx.graphics.getHeight()/2-120+index*80);
+        font.draw(batch, Integer.toString(index), x, y);
     }
     
 
@@ -73,8 +103,32 @@ public class MenuItem extends Sprite {
         
         return (
             Gdx.input.isButtonPressed(Buttons.LEFT) &&
-            (mouseX >= getX() && mouseX <= getX() + getWidth()) &&
-            (mouseY >= getY() && mouseY <= getY() + getHeight())
+            (mouseX >= x && mouseX <= x + 50) &&
+            (mouseY >= y && mouseY <= y + 50)
         );
+    }
+
+    public Class<Controller> getGameController() {
+        return gameController;
+    }
+
+    public Class<View> getGameView() {
+        return gameView;
+    }
+    
+    public void action(){
+        if (exit) {
+            Gdx.app.exit();
+        } else {
+            try {
+                Controller c = getGameController().newInstance();
+                View v = getGameView().newInstance();
+                WEMain.initGame(c,v);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

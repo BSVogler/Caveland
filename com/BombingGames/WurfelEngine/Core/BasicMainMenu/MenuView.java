@@ -41,10 +41,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 /**
- * The View manages ouput
+ * The View manages the graphical ouput and input.
  * @author Benedikt
  */
-public class View {
+public class MenuView {
     private final Sprite lettering;    
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
@@ -54,7 +54,7 @@ public class View {
     /**
      * Creates a View.
      */
-    public View(){
+    public MenuView(){
         //load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
@@ -80,7 +80,7 @@ public class View {
      * renders the scene
      * @param pController
      */
-    public void render(Controller pController){
+    public void render(MenuController pController){
         //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -97,8 +97,8 @@ public class View {
         
         // Draw the menu items
         batch.begin();
-        for (MenuItem mI : BasicMainMenu.getController().getMenuItems()) {
-            mI.render(batch, camera);
+        for (BasicMenuItem mI : BasicMainMenu.getMenuItems()) {
+            mI.render(camera, font, batch);
         }
         batch.end();
         

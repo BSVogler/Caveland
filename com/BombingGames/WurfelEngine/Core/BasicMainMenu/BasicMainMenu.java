@@ -37,26 +37,24 @@ import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
  */
 public class BasicMainMenu extends AbstractMainMenu {
  
-    private static View View;
-    private static Controller Controller;
-    private static Class gameController[];
-    private static Class gameViews[];
+    private static MenuView View;
+    private static MenuController Controller;
+    private static BasicMenuItem[] menuItems;
 
     /**
      * Use this constructor to pass your controller and views in order of the main menu
-     * @param gameController An array filled with game controllers
-     * @param gameViews An array filled with game views.
+     * @param menuItems
+
      */
-    public BasicMainMenu(Class gameController[], Class gameViews[]) {
-        BasicMainMenu.gameController = gameController;
-        BasicMainMenu.gameViews = gameViews;
+    public BasicMainMenu(BasicMenuItem[] menuItems) {
+        BasicMainMenu.menuItems = menuItems;
     }
     
     
     @Override
     public void init(){
-        Controller = new Controller(); 
-        View = new View();
+        Controller = new MenuController(); 
+        View = new MenuView();
     }
 
     @Override
@@ -95,7 +93,7 @@ public class BasicMainMenu extends AbstractMainMenu {
      * 
      * @return
      */
-    public static Controller getController() {
+    public static MenuController getController() {
         return Controller;
     }
 
@@ -103,18 +101,11 @@ public class BasicMainMenu extends AbstractMainMenu {
      * 
      * @return
      */
-    public static View getView() {
+    public static MenuView getView() {
         return View;
     }
 
-    public static Class[] getGameController() {
-        return gameController;
+    public static BasicMenuItem[] getMenuItems() {
+        return menuItems;
     }
-
-    public static Class[] getGameViews() {
-        return gameViews;
-    }
-    
-
-    
 }

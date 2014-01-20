@@ -34,8 +34,10 @@ import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,30 +53,40 @@ public class BasicMenuItem{
     private int y;
     private final int index;
     private final boolean exit;
+    private final String text;
+    private final int width;
+    private final int height = 50;
     
     /**
      * Create a new menu Item and say which texture it should have.
      * @param index
+     * @param label
      * @param gameController Your game controller for this menu item
      * @param gameViews Your game view for this menu item
      */
-    public BasicMenuItem(int index, Class gameController, Class gameViews) {
+    @SuppressWarnings("unchecked")
+    public BasicMenuItem(int index, String label, Class gameController, Class gameViews) {
         this.gameController = gameController;
         this.gameView = gameViews;
         this.index = index;
-        exit=false;
+        this.text = label;
+        this.width= text.length()*20;
+        exit = false;
 
     }
     
       /**
      * Create a new menu Item which exits the game
      * @param index
+     * @param label
      */
-    public BasicMenuItem(int index) {
+    public BasicMenuItem(int index, String label) {
         this.gameController = null;
         this.gameView = null;
         this.index = index;
         this.exit = true;
+        this.text = label;
+        this.width = text.length()*20;
     }
     
     
@@ -85,11 +97,18 @@ public class BasicMenuItem{
      * @param camera The camera rendering the MenuItem
      * @param font
      * @param batch
+     * @param sr
      */
-    public void render(Camera camera, BitmapFont font, SpriteBatch batch) {
+    public void render(Camera camera, BitmapFont font, SpriteBatch batch, ShapeRenderer sr) {
         this.x = ((Gdx.graphics.getWidth()-50)/2);
         this.y = (Gdx.graphics.getHeight()/2-120+index*80);
-        font.draw(batch, Integer.toString(index), x, y);
+        
+        sr.setColor(Color.DARK_GRAY.cpy());
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.rect(x, y, width, height);
+        sr.end();
+        
+        font.draw(batch, text, x, y);
     }
     
 
@@ -103,8 +122,8 @@ public class BasicMenuItem{
         
         return (
             Gdx.input.isButtonPressed(Buttons.LEFT) &&
-            (mouseX >= x && mouseX <= x + 50) &&
-            (mouseY >= y && mouseY <= y + 50)
+            (mouseX >= x && mouseX <= x + width) &&
+            (mouseY >= y && mouseY <= y + height)
         );
     }
 

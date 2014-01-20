@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine;
 
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -106,9 +107,11 @@ public class WEMain extends Game {
     
     @Override
     public void create() {
-        if (mainMenu==null)
+        if (mainMenu==null){
             Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
-        else {
+            //use basic game in future
+            //mainMenu = new BasicMainMenu(gameController, gameViews);
+        } else {
             System.out.println("Initializing main menu...");
             mainMenu.init();
             setScreen(mainMenu);

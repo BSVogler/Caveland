@@ -48,7 +48,6 @@ public class MenuController {
      * Creates a new Controller
      */
     public MenuController() {
-        TextureAtlas texture = new TextureAtlas(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/MainMenu.txt"), true);
                         
         fx = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/click2.wav"));
     }

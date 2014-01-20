@@ -37,6 +37,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
 
@@ -50,6 +51,7 @@ public class MenuView {
     private final OrthographicCamera camera;
     private final BitmapFont font;
     private float a =0;
+    private final ShapeRenderer sr;
     
     /**
      * Creates a View.
@@ -69,6 +71,8 @@ public class MenuView {
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
+        
+        sr = new ShapeRenderer();
     }
 
     void update(float delta) {
@@ -87,7 +91,8 @@ public class MenuView {
         
         //update camera and set the projection matrix
         camera.update();
-        batch.setProjectionMatrix(camera.combined);     
+        batch.setProjectionMatrix(camera.combined);
+        sr.setProjectionMatrix(camera.combined);
         
         // render the lettering
         batch.begin();
@@ -98,7 +103,7 @@ public class MenuView {
         // Draw the menu items
         batch.begin();
         for (BasicMenuItem mI : BasicMainMenu.getMenuItems()) {
-            mI.render(camera, font, batch);
+            mI.render(camera, font, batch, sr);
         }
         batch.end();
         

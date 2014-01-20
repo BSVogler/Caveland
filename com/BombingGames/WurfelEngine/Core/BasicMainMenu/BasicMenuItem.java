@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -56,6 +57,7 @@ public class BasicMenuItem{
     private final String text;
     private final int width;
     private final int height = 50;
+    private static Sound sound;
     
     /**
      * Create a new menu Item and say which texture it should have.
@@ -136,6 +138,9 @@ public class BasicMenuItem{
     }
     
     public void action(){
+        if (sound  != null)
+            sound.play();
+        
         if (exit) {
             Gdx.app.exit();
         } else {
@@ -149,5 +154,9 @@ public class BasicMenuItem{
                 Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public static void setSound(Sound sound) {
+        BasicMenuItem.sound = sound;
     }
 }

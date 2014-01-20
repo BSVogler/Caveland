@@ -32,9 +32,6 @@ import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-
 
 /**
  * The controlelr of the main Menu manages the data.
@@ -42,14 +39,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  */
 public class MenuController {
     
-    private final Sound fx;
-    
     /**
      * Creates a new Controller
      */
     public MenuController() {
-                        
-        fx = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/click2.wav"));
+        BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/click2.wav")));
     }
     
     /**
@@ -58,32 +52,21 @@ public class MenuController {
      */
     public void update(int delta){
         if (BasicMainMenu.getMenuItems()[0].isClicked()){
-                AbstractMainMenu.setLoadMap(true);
-                fx.play();
-                BasicMainMenu.getMenuItems()[0].action();
+            AbstractMainMenu.setLoadMap(true);
+            BasicMainMenu.getMenuItems()[0].action();
         } else if (BasicMainMenu.getMenuItems()[1].isClicked()) { 
                 AbstractMainMenu.setLoadMap(false);
-                fx.play();
                 BasicMainMenu.getMenuItems()[1].action();
             } else if (BasicMainMenu.getMenuItems()[2].isClicked()){
                     AbstractMainMenu.setLoadMap(false);
-                    fx.play();
                     BasicMainMenu.getMenuItems()[2].action();
                 } else if (BasicMainMenu.getMenuItems()[3].isClicked()){
-                    fx.play();
                     BasicMainMenu.getMenuItems()[3].action();
         }
     }
 
     public void show(){
         Gdx.input.setInputProcessor(new InputListener());
-    }
-
-    /**
-     *
-     */
-    public void dispose(){
-        fx.dispose();
     }
 
     private class InputListener implements InputProcessor {

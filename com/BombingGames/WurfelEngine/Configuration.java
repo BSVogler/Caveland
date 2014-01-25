@@ -34,9 +34,87 @@ package com.BombingGames.WurfelEngine;
  * @author Benedikt Vogler
  */
 public class Configuration {
-    public boolean editor = false;
-    public float gravity = 9.18f;
-    public int worldSpinAngle;
+    private final boolean editor = false;
+        /**
+     * The gravity constant in m/s^2
+     */
+    private final float gravity = 1.18f;
+    
+    /**in which direction is the world spinning? This is needed for the light engine.
+     * WEST->SOUTH->EAST = 0
+      * SOUTH->WEST->NORTH = -90
+      * EAST->NORTH->WEST = -180
+       *NORTH->EAST->SOUT = -270
+       **/
+    private final int worldSpinAngle = -80;
+    
+    /**
+     *Set if the map should load or generate new chunks when the camera reaches an end of the map.
+     */
+    private final boolean allowChunkSwitch = true;
+    
+    private final boolean loadMap = false;
+    
+    /**The number of the mapgenerator used.*/
+    private final int chunkgenerator = 1;
+    
+    private final float leAzimutSpeed = 1/64f;
+
+    /**
+     *
+     * @return
+     */
+    public boolean isEditor() {
+        return editor;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getGravity() {
+        return gravity;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getWorldSpinAngle() {
+        return worldSpinAngle;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean ChunkSwitchAllowed() {
+        return allowChunkSwitch;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean shouldLoadMap() {
+        return loadMap;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getChunkGenerator() {
+        return chunkgenerator;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getLEAzimutSpeed() {
+        return leAzimutSpeed;
+    }
     
     
     /**

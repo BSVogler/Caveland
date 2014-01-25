@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 
 
@@ -49,17 +49,17 @@ public class Player extends AbstractCharacter{
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
             (com.badlogic.gdx.backends.openal.Ogg.Sound)
-            WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
         );
         setRunningSound(
             (com.badlogic.gdx.backends.openal.Ogg.Sound)
-            WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg")
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg")
         );
         setJumpingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
-            WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav")
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav")
         );
         setLandingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
-            WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
         );
         
         setTransparent(true);

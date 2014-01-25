@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingController;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
@@ -61,9 +61,9 @@ public class GameplayScreen implements Screen{
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
         loadingController = new LoadingController();
-        loadingController.init(WEMain.getAssetManager());
+        loadingController.init(WE.getAssetManager());
 
-        WEMain.getInstance().setScreen(new LoadingScreen(loadingController));
+        WE.getInstance().setScreen(new LoadingScreen(loadingController));
         
         this.controller = controller;
         this.view = view;
@@ -105,7 +105,7 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
-        Gdx.graphics.setTitle("Wurfelengine V" + WEMain.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
+        Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
     }
 
     @Override

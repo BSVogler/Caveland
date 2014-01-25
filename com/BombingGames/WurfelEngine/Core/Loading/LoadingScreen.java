@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Loading;
 
 import com.BombingGames.WurfelEngine.Core.LoadingBar;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -71,7 +71,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage();
 
         // Get our textureatlas from the manager
-        TextureAtlas atlas = WEMain.getAssetManager().get("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
+        TextureAtlas atlas = WE.getAssetManager().get("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
 
         // Grab the regions from the atlas and create some images
         logo = new Image(atlas.findRegion("libgdx-logo"));
@@ -153,7 +153,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void hide() {
         // Dispose the loading assets as we no longer need them
-        WEMain.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
+        WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
     }
 
     public void pause() {

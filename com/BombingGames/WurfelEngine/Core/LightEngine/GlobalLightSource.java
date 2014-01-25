@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.LightEngine;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -39,7 +40,6 @@ public class GlobalLightSource {
     /**
      *The higher the value the faster/shorter is the day.
      */
-    protected final float AZIMUTH_SPEED = 1/64f;
     private float power;
     private Color tone; //the color of the light
     private float height;
@@ -97,7 +97,7 @@ public class GlobalLightSource {
      * @return
      */
     public float getAzimuthSpeed() {
-        return AZIMUTH_SPEED;
+        return WE.getCurrentConfig().getLEAzimutSpeed();
     }
 
     /**
@@ -142,8 +142,8 @@ public class GlobalLightSource {
      */
     public void update(float delta) {    
         //automove
-        if (AZIMUTH_SPEED != 0) {
-            azimuth += AZIMUTH_SPEED * delta;
+        if (getAzimuthSpeed() != 0) {
+            azimuth += getAzimuthSpeed() * delta;
             height = (float) (amplitude * Math.sin((azimuth + Controller.getMap().getWorldSpinDirection()) * Math.PI / 180));
         }
             

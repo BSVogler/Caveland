@@ -30,7 +30,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
@@ -44,8 +44,6 @@ import javax.swing.JOptionPane;
  * @author Benedikt
  */
 public class Chunk {
-    /**The number of the mapgenerator used.*/
-    private static int generator = 1;
     /**The suffix of a chunk files.*/
     protected static final String CHUNKFILESUFFIX = "wec";
     /**The suffix of the metafile */
@@ -91,7 +89,7 @@ public class Chunk {
         //chunkdata will contain the blocks and objects
         //alternative to chunkdata.length ChunkBlocks
         GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
-        switch (generator){
+        switch (WE.getCurrentConfig().getChunkGenerator()){
             case 0:{//random pillars
                 for (int x=0; x < blocksX; x++){
                     for (int y=0; y < blocksY; y++){
@@ -358,10 +356,10 @@ public class Chunk {
             blocksZString = blocksZString.substring(2, blocksZString.length());
             blocksZ = Integer.parseInt(blocksZString);
         } catch (IOException ex) {
-            if (!WEMain.getInstance().isFullscreen()) {
+            if (!WE.isFullscreen()) {
                 JOptionPane.showMessageDialog(
                     null,
-                    "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WEMain.getWorkingDirectory().getAbsolutePath() + "/map/",
+                    "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/map/",
                     "Loading error",
                      JOptionPane.ERROR_MESSAGE
                 );
@@ -411,22 +409,6 @@ public class Chunk {
         this.data = data;
     }
 
-    /**
-     * Get the number of the algorithm used for creating new worlds
-     * @return 
-     */
-    public static int getGenerator() {
-        return generator;
-    }
-
-    /**
-     * Set the algorithm used for generating chunks.
-     * @param generator 
-     */
-    public static void setGenerator(int generator) {
-        Chunk.generator = generator;
-    }
-    
     public static int getScreenWidth(){
         return blocksX*AbstractGameObject.SCREEN_WIDTH;
     }

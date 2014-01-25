@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.audio.Sound;
@@ -141,13 +141,13 @@ public class BasicMenuItem{
         if (text.equalsIgnoreCase("exit")) {
             Gdx.app.exit();
         } else if (text.equalsIgnoreCase("options")) {
-            WEMain.getInstance().setScreen(new BasicOptionsScreen());
+            WE.getInstance().setScreen(new BasicOptionsScreen());
         }else {
             try {
                 Controller c = getGameController().newInstance();
 
                 View v = getGameView().newInstance();
-                WEMain.initGame(c,v, config);
+                WE.initGame(c,v, config);
                 } catch (InstantiationException ex) {
                 Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {

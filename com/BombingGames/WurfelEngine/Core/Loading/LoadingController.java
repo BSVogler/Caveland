@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Loading;
 
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -70,7 +70,7 @@ public class LoadingController {
     public void update(){
         if (manager.update()) { // Load some, will return true if done loading 
             Gdx.app.log("Loading", "finished");
-            WEMain.startGame();
+            WE.startGame();
         }
 
         // Interpolate the percentage to make it more smooth

@@ -47,14 +47,14 @@ import java.io.File;
  * The Wurfel Engine needs the API libGDX0.9.9
  * @author Benedikt Vogler
  */
-public class WEMain extends Game {
+public class WE extends Game {
     /**
      * The version of the Engine
      */
     public static final String VERSION = "1.2.3";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
-    private static WEMain instance;
+    private static WE instance;
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;
     private static final AssetManager assetManager = new AssetManager();
@@ -65,7 +65,7 @@ public class WEMain extends Game {
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
-    private WEMain(String title, String[] args){       
+    private WE(String title, String[] args){       
         // set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
@@ -123,7 +123,7 @@ public class WEMain extends Game {
      * @see  #launch() 
      */
     public static void setMainMenu(AbstractMainMenu mainMenu) {
-        WEMain.mainMenu = mainMenu;
+        WE.mainMenu = mainMenu;
     }
     
    /**
@@ -132,7 +132,7 @@ public class WEMain extends Game {
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
     public static void construct(String title, String[] args){
-        instance = new WEMain(title,args);
+        instance = new WE(title,args);
     }
     
     /**
@@ -149,7 +149,7 @@ public class WEMain extends Game {
      * Singleton method to get the only living instance.
      * @return the wurfelengine's main class containing everything
      */
-    public static WEMain getInstance(){
+    public static WE getInstance(){
         return instance;
     }
     
@@ -222,9 +222,9 @@ public class WEMain extends Game {
      * @param fullscreen
      */
     public static void setFullscreen(boolean fullscreen) {
-        WEMain.fullscreen = fullscreen;
+        WE.fullscreen = fullscreen;
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
-        Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WEMain.isFullscreen());
+        Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WE.isFullscreen());
     }
     
     public static <T> T getAsset(String filename){
@@ -257,7 +257,7 @@ public class WEMain extends Game {
         }
     }
     
-    public Configuration getCurrentConfig(){
+    public static Configuration getCurrentConfig(){
         return gameplayScreen.getConfig();
     }
 }

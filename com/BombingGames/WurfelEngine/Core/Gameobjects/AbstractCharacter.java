@@ -30,7 +30,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 
 /**
@@ -81,7 +81,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         SPRITESPERDIR = spritesPerDir;
         shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,point.cpy());
         shadow.exist();
-        waterSound =  WEMain.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
+        waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
    
    /**
@@ -156,7 +156,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
 
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
-            if (!onGround()) dir[2] -= Map.GRAVITY*t; //in m/s
+            if (!onGround()) dir[2] -= WE.getCurrentConfig().getGravity()*t; //in m/s
             getPos().setHeight(getPos().getHeight() + dir[2] * GAME_DIMENSION * t); //in m
             
             

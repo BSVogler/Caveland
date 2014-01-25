@@ -33,7 +33,7 @@ import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -225,7 +225,7 @@ public abstract class AbstractGameObject {
         //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {
-            spritesheet = WEMain.getAsset("com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt");
+            spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt");
             for (AtlasRegion region : spritesheet.getRegions()) {
                 region.flip(false, true);
             }

@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -114,7 +114,7 @@ public class MenuView {
         
         font.scale(-0.5f);
         batch.begin();
-        font.drawMultiLine(batch, WEMain.getCredits(), 50, 100);
+        font.drawMultiLine(batch, WE.getCredits(), 50, 100);
         batch.end();
         font.scale(0.5f);
     }

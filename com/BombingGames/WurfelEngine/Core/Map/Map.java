@@ -32,7 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.WEMain;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,54 +42,27 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class Map {
-    /**
-     * The gravity constant in m/s^2
-     */
-    public static final float GRAVITY = WEMain.getInstance().getCurrentConfig().gravity;
-    /**
-     *Set if the map should load or generate new chunks when the camera reaches an end of the map.
-     */
-    public final static boolean ENABLECHUNKSWITCH = true;
-    
     private static int blocksX, blocksY, blocksZ;
         
-    /**in which direction is the world spinning? This is needed for the light engine.
-     * WEST->SOUTH->EAST = 0
-      * SOUTH->WEST->NORTH = -90
-      * EAST->NORTH->WEST = -180
-       *NORTH->EAST->SOUT = -270
-       **/
-    private int worldSpinAngle;
-    
     private final boolean newMap;
     
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
     
     /** the map data are the blocks in their cells */
-    private Cell[][][] data;
+    private final Cell[][][] data;
     
     /** every entity on the map is stored in this field */
     private final ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
-
-    /**
-     *Creates an empty  map. Fill the map with fillWithBlocks(boolean load);
-     * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
-     */
-    public Map(boolean newMap){
-        this(newMap,0);
-    }  
     
     /**
      * Creates an empty map. Fill the map with fillWithBlocks(boolean load);
      * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
-     * @param worldSpinAngle the angle of the "morning" (0° is left).
      * @see fillWithBlocks(boolean load)
      */
-    public Map(boolean newMap, int worldSpinAngle) {
+    public Map(boolean newMap) {
         Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
         this.newMap = newMap;
-        this.worldSpinAngle = worldSpinAngle;
         
         if (!newMap) Chunk.readMapInfo();
         
@@ -190,7 +163,7 @@ public class Map {
      * @param newmiddle newmiddle is 1, 3, 5 or 7
      */
     public void setCenter(int newmiddle){
-        if (ENABLECHUNKSWITCH){
+        if (WE.getCurrentConfig().ChunkSwitchAllowed()){
             Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
@@ -469,7 +442,7 @@ public class Map {
      * @return a number between 0 and 360
      */
     public int getWorldSpinDirection() {
-        return worldSpinAngle;
+        return WE.getCurrentConfig().getWorldSpinAngle();
     }
     
     

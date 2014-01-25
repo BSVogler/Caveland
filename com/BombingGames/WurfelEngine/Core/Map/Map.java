@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class Map {
     /**
      * The gravity constant in m/s^2
      */
-    public static final float GRAVITY = 9.81f;
+    public static final float GRAVITY = WEMain.getInstance().getCurrentConfig().gravity;
     /**
      *Set if the map should load or generate new chunks when the camera reaches an end of the map.
      */
@@ -70,7 +71,7 @@ public class Map {
     
     /** every entity on the map is stored in this field */
     private final ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
-        
+
     /**
      *Creates an empty  map. Fill the map with fillWithBlocks(boolean load);
      * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 

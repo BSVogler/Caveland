@@ -146,8 +146,8 @@ public class WEMain extends Game {
     }
     
     /**
-     * Singleton method to get the only instance.
-     * @return the wurfelengine
+     * Singleton method to get the only living instance.
+     * @return the wurfelengine's main class containing everything
      */
     public static WEMain getInstance(){
         return instance;
@@ -157,14 +157,16 @@ public class WEMain extends Game {
      * Initialize the main game with you custom controller and view. This call shows the loadingScreen.
      * @param controller
      * @param view 
+     * @param config 
      * @see com.BombingGames.WurfelEngine#startGame()
      */
-    public static void initGame(Controller controller, View view){
+    public static void initGame(Controller controller, View view, Configuration config){
         if (instance != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game…");
             gameplayScreen = new GameplayScreen(
                 controller,
-                view
+                view,
+                config
             );
         } else
             Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
@@ -253,5 +255,9 @@ public class WEMain extends Game {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
             return null;
         }
+    }
+    
+    public Configuration getCurrentConfig(){
+        return gameplayScreen.getConfig();
     }
 }

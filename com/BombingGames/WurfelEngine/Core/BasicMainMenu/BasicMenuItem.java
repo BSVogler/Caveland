@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
+import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WEMain;
@@ -57,6 +58,7 @@ public class BasicMenuItem{
     private final int width;
     private final int height = 50;
     private static Sound sound;
+    private Configuration config;
     
     /**
      * Create a new menu Item and say which texture it should have.
@@ -64,15 +66,16 @@ public class BasicMenuItem{
      * @param label
      * @param gameController Your game controller for this menu item
      * @param gameViews Your game view for this menu item
+     * @param config
      */
     @SuppressWarnings("unchecked")
-    public BasicMenuItem(int index, String label, Class gameController, Class gameViews) {
+    public BasicMenuItem(int index, String label, Class gameController, Class gameViews, Configuration config) {
         this.gameController = gameController;
         this.gameView = gameViews;
         this.index = index;
         this.text = label;
         this.width= text.length()*20;
-
+        this.config = config;
     }
     
       /**
@@ -88,9 +91,6 @@ public class BasicMenuItem{
         this.width = text.length()*20;
     }
     
-    
-
-
     /**
      *
      * @param camera The camera rendering the MenuItem
@@ -145,6 +145,7 @@ public class BasicMenuItem{
         }else {
             try {
                 Controller c = getGameController().newInstance();
+
                 View v = getGameView().newInstance();
                 WEMain.initGame(c,v, config);
                 } catch (InstantiationException ex) {

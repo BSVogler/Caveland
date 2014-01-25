@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingController;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.WEMain;
@@ -47,13 +48,15 @@ public class GameplayScreen implements Screen{
     private View view = null;
     private Controller controller = null;
     private final LoadingController loadingController;
+    private final Configuration config;
     
     /**
      * Create the gameplay state.
      * @param controller The controller of this screen.
-     * @param view  The view of this screen.
+     * @param view The user view of this screen.
+     * @param config
      */
-    public GameplayScreen(Controller controller, View view) {
+    public GameplayScreen(Controller controller, View view, Configuration config) {
         Gdx.app.log("GameplayScreen", "Initializing");
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
@@ -64,6 +67,7 @@ public class GameplayScreen implements Screen{
         
         this.controller = controller;
         this.view = view;
+        this.config = config;
     }
              
 
@@ -127,5 +131,8 @@ public class GameplayScreen implements Screen{
     public void dispose() {
         controller.dispose();
     }
-    
+
+    public Configuration getConfig() {
+        return config;
+    }
 }

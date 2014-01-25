@@ -58,7 +58,7 @@ public class Map {
       * EAST->NORTH->WEST = -180
        *NORTH->EAST->SOUT = -270
        **/
-    private int worldSpinDirection;
+    private int worldSpinAngle;
     
     private final boolean newMap;
     
@@ -82,13 +82,13 @@ public class Map {
     /**
      * Creates an empty map. Fill the map with fillWithBlocks(boolean load);
      * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
-     * @param worldSpinDirection the angle of the "morning" (0° is left).
+     * @param worldSpinAngle the angle of the "morning" (0° is left).
      * @see fillWithBlocks(boolean load)
      */
-    public Map(boolean newMap, int worldSpinDirection) {
+    public Map(boolean newMap, int worldSpinAngle) {
         Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
         this.newMap = newMap;
-        this.worldSpinDirection = worldSpinDirection;
+        this.worldSpinAngle = worldSpinAngle;
         
         if (!newMap) Chunk.readMapInfo();
         
@@ -468,7 +468,7 @@ public class Map {
      * @return a number between 0 and 360
      */
     public int getWorldSpinDirection() {
-        return worldSpinDirection;
+        return worldSpinAngle;
     }
     
     

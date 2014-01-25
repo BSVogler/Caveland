@@ -338,7 +338,7 @@ public class Weapon {
         return shooting;
     }
 
-    void trigger() {
+    public void trigger() {
          if (shooting <= 0 && reloading <= 0){
             //if not shootring or loading
             if (shotsLoaded <= 0)//autoreload

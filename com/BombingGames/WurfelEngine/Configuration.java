@@ -38,7 +38,7 @@ public class Configuration {
         /**
      * The gravity constant in m/s^2
      */
-    private final float gravity = 1.18f;
+    private final float gravity = 9.18f;
     
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0
@@ -46,7 +46,7 @@ public class Configuration {
       * EAST->NORTH->WEST = -180
        *NORTH->EAST->SOUT = -270
        **/
-    private final int worldSpinAngle = -80;
+    private final int worldSpinAngle = -40;
     
     /**
      *Set if the map should load or generate new chunks when the camera reaches an end of the map.

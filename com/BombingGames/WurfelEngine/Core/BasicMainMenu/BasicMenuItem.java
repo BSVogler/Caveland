@@ -146,8 +146,10 @@ public class BasicMenuItem{
             try {
                 Controller c = getGameController().newInstance();
                 View v = getGameView().newInstance();
-                WEMain.initGame(c,v);
-            } catch (InstantiationException | IllegalAccessException ex) {
+                WEMain.initGame(c,v, config);
+                } catch (InstantiationException ex) {
+                Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
                 Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

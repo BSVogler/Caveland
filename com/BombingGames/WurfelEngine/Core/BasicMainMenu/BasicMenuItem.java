@@ -53,7 +53,6 @@ public class BasicMenuItem{
     private int x;
     private int y;
     private final int index;
-    private final boolean exit;
     private final String text;
     private final int width;
     private final int height = 50;
@@ -73,7 +72,6 @@ public class BasicMenuItem{
         this.index = index;
         this.text = label;
         this.width= text.length()*20;
-        exit = false;
 
     }
     
@@ -86,7 +84,6 @@ public class BasicMenuItem{
         this.gameController = null;
         this.gameView = null;
         this.index = index;
-        this.exit = true;
         this.text = label;
         this.width = text.length()*20;
     }
@@ -141,16 +138,16 @@ public class BasicMenuItem{
         if (sound  != null)
             sound.play();
         
-        if (exit) {
+        if (text.equalsIgnoreCase("exit")) {
             Gdx.app.exit();
-        } else {
+        } else if (text.equalsIgnoreCase("options")) {
+            WEMain.getInstance().setScreen(new BasicOptionsScreen());
+        }else {
             try {
                 Controller c = getGameController().newInstance();
                 View v = getGameView().newInstance();
                 WEMain.initGame(c,v);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            } catch (InstantiationException | IllegalAccessException ex) {
                 Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

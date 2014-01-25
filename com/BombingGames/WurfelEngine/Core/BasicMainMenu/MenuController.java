@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -38,30 +37,24 @@ import com.badlogic.gdx.InputProcessor;
  * @author Benedikt
  */
 public class MenuController {
+    private final BasicMenuItem[] menuItems;
     
     /**
      * Creates a new Controller
+     * @param menuItems
      */
-    public MenuController() {
+    public MenuController(BasicMenuItem[] menuItems) {
+        this.menuItems = menuItems;
         BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/click2.wav")));
     }
     
     /**
-     * updates game logic
+     * updates screen logic
      * @param delta
      */
     public void update(int delta){
-        if (BasicMainMenu.getMenuItems()[0].isClicked()){
-            AbstractMainMenu.setLoadMap(true);
-            BasicMainMenu.getMenuItems()[0].action();
-        } else if (BasicMainMenu.getMenuItems()[1].isClicked()) { 
-                AbstractMainMenu.setLoadMap(false);
-                BasicMainMenu.getMenuItems()[1].action();
-            } else if (BasicMainMenu.getMenuItems()[2].isClicked()){
-                    AbstractMainMenu.setLoadMap(false);
-                    BasicMainMenu.getMenuItems()[2].action();
-                } else if (BasicMainMenu.getMenuItems()[3].isClicked()){
-                    BasicMainMenu.getMenuItems()[3].action();
+        for (BasicMenuItem basicMenuItem : menuItems) {
+            if (basicMenuItem.isClicked()) basicMenuItem.action();
         }
     }
 
@@ -69,6 +62,10 @@ public class MenuController {
         Gdx.input.setInputProcessor(new InputListener());
     }
 
+    public BasicMenuItem[] getMenuItems() {
+        return menuItems;
+    }
+    
     private class InputListener implements InputProcessor {
 
         @Override

@@ -53,7 +53,7 @@ public class BasicMainMenu extends AbstractMainMenu {
     
     @Override
     public void init(){
-        Controller = new MenuController(); 
+        Controller = new MenuController(menuItems); 
         View = new MenuView();
     }
 
@@ -103,9 +103,5 @@ public class BasicMainMenu extends AbstractMainMenu {
      */
     public static MenuView getView() {
         return View;
-    }
-
-    public static BasicMenuItem[] getMenuItems() {
-        return menuItems;
     }
 }

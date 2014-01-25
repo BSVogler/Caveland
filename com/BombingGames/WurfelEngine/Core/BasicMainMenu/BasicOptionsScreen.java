@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Benedikt Vogler.
+ * Copyright 2014 Benedikt Vogler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.WEMain;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -39,25 +41,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-
-
 /**
- * The View manages the graphical ouput and input.
- * @author Benedikt
+ *
+ * @author Benedikt Vogler
  */
-public class MenuView {
+class BasicOptionsScreen implements Screen {
     private final Sprite lettering;    
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
     private final BitmapFont font;
     private float a =0;
     private final ShapeRenderer sr;
-    
-    /**
-     * Creates a View.
-     */
-    public MenuView(){
-        //load textures
+
+    public BasicOptionsScreen() {
+         //load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
         lettering.setY(50);
@@ -75,18 +72,10 @@ public class MenuView {
         sr = new ShapeRenderer();
     }
 
-    void update(float delta) {
-       a += delta/1000f;
-       if (a>1) a=1;
-    }
-        
-    /**
-     * renders the scene
-     * @param pController
-     */
-    public void render(MenuController pController){
-        //clear & set background to black
-        Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
+    @Override
+    public void render(float delta) {
+         //clear & set background to black
+        Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
@@ -119,5 +108,28 @@ public class MenuView {
         font.scale(0.5f);
     }
 
-}
+    @Override
+    public void resize(int width, int height) {
+    }
 
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void dispose() {
+    }
+    
+}

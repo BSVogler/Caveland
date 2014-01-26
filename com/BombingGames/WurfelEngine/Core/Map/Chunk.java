@@ -423,7 +423,7 @@ public class Chunk {
     }
     
     public static int getGameDepth() {
-        return blocksY*AbstractGameObject.SCREEN_HEIGHT;
+        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
     }
     
         /**

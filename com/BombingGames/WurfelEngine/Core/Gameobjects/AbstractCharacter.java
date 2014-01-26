@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -40,7 +39,7 @@ import com.badlogic.gdx.audio.Sound;
 public abstract class AbstractCharacter extends AbstractEntity {
    private static int soundlimit;//time to pass before new sound can be played
      
-   private final int COLISSIONRADIUS = GAME_DIAGLENGTH/4;
+   private final int COLISSIONRADIUS = GAME_DIAGLENGTH2/2;
    private final int SPRITESPERDIR;
       
    private final float[] dir = {1, 0, 0};

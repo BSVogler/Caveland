@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 
 /**
@@ -227,8 +228,8 @@ public class Point extends AbstractPosition {
     public static Coordinate toCoord(Point pos, boolean depthCheck){
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) (pos.getRelX()) / Block.GAME_DIAGLENGTH,
-            (int) (pos.getRelY()) / Block.GAME_DIAGLENGTH*2,
+            (int) (pos.getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
+            (int) (pos.getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2,//maybe dangerous to optimize code here!
             pos.getHeight(),
             true
         );
@@ -236,8 +237,8 @@ public class Point extends AbstractPosition {
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
-                pos.getRelX() % Block.GAME_DIAGLENGTH,
-                pos.getRelY() % (Block.GAME_DIAGLENGTH)
+                pos.getRelX() % AbstractGameObject.GAME_DIAGLENGTH,
+                pos.getRelY() % (AbstractGameObject.GAME_DIAGLENGTH)
             )
         );
         coords.setRelX(specificCoords.getRelX());

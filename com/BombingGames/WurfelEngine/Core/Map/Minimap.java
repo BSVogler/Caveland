@@ -130,11 +130,11 @@ public class Minimap {
                 float rectX = viewportPosX
                     + ((controller.getPlayer().getPos().getRelX()
                     + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
-                    )/Block.GAME_DIAGSIZE
+                    )/Block.GAME_DIAGLENGTH
                     - 0.5f)
                     * scaleX;
                 float rectY = viewportPosY
-                    + (controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE
+                    + (controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGLENGTH
                     - 0.5f
                     )* scaleY*2;
                 shapeRenderer.translate(rectX, rectY, 0);
@@ -172,10 +172,10 @@ public class Minimap {
             shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(
-                viewportPosX + scaleX * camera.getOutputPosX() / Block.GAME_DIAGSIZE,
-                viewportPosY + 2*scaleY * camera.getOutputPosY() / Block.GAME_DIAGSIZE,
-                scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
-                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
+                viewportPosX + scaleX * camera.getOutputPosX() / Block.GAME_DIAGLENGTH,
+                viewportPosY + 2*scaleY * camera.getOutputPosY() / Block.GAME_DIAGLENGTH,
+                scaleX*camera.get2DWidth() / Block.GAME_DIAGLENGTH,
+                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGLENGTH
             );
 
             //player level getCameras() rectangle
@@ -185,8 +185,8 @@ public class Minimap {
                     viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                     viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
                     + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ Block.SCREEN_DEPTH,
-                    scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
-                    scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
+                    scaleX*camera.get2DWidth() / Block.GAME_DIAGLENGTH,
+                    scaleY*4*camera.get2DHeight() / Block.GAME_DIAGLENGTH
                 );
             }
 
@@ -196,8 +196,8 @@ public class Minimap {
                 viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH,
                 viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
                 + scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ Block.SCREEN_DEPTH,
-                scaleX*camera.get2DWidth() / Block.GAME_DIAGSIZE,
-                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGSIZE
+                scaleX*camera.get2DWidth() / Block.GAME_DIAGLENGTH,
+                scaleY*4*camera.get2DHeight() / Block.GAME_DIAGLENGTH
             );
             shapeRenderer.end();
             
@@ -221,9 +221,9 @@ public class Minimap {
                  int rectX = (int) (viewportPosX
                      + (controller.getPlayer().getPos().getRelX()
                      + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
-                     )/Block.GAME_DIAGSIZE * scaleX);
+                     )/Block.GAME_DIAGLENGTH * scaleX);
                 int rectY = (int) (viewportPosY
-                    + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGSIZE * scaleY*2);
+                    + controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGLENGTH * scaleY*2);
                 
                 view.drawString(
                     controller.getPlayer().getPos().getRelX() +" | "+ controller.getPlayer().getPos().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),

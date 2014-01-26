@@ -58,7 +58,7 @@ public class Coordinate extends AbstractPosition {
             this.y -= getReferenceY() * Chunk.getBlocksY();
         }
         
-        setHeight(z*Block.GAME_DIMENSION);
+        setHeight(z*Block.GAME_EDGELENGTH);
     }
     
      /**
@@ -128,7 +128,7 @@ public class Coordinate extends AbstractPosition {
      * @return
      */
     public int getZ(){
-        return (int) (getHeight() / Block.GAME_DIMENSION);
+        return (int) (getHeight() / Block.GAME_EDGELENGTH);
     }
     
     /**
@@ -177,7 +177,7 @@ public class Coordinate extends AbstractPosition {
      * @param z
      */
     public void setZ(int z){
-        setHeight(z*Block.GAME_DIMENSION);
+        setHeight(z*Block.GAME_EDGELENGTH);
     }
     
 
@@ -223,7 +223,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]*Block.GAME_DIMENSION);
+        setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
         return this;
     }
     
@@ -238,7 +238,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z*Block.GAME_DIMENSION);
+        setHeight(getHeight()+ z*Block.GAME_EDGELENGTH);
         return this;
     }
     

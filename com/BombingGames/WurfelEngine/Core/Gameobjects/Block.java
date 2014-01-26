@@ -500,7 +500,7 @@ public class Block extends AbstractGameObject {
             
             + coords.getHeight()/Math.sqrt(2)//Z
             + coords.getCoord().getCellOffset()[2]/Math.sqrt(2)
-            + (getDimensionZ() - 1) *GAME_DIMENSION/Math.sqrt(2)
+            + (getDimensionZ() - 1) *GAME_EDGELENGTH/Math.sqrt(2)
         );
     }
 

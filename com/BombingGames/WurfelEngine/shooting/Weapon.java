@@ -291,7 +291,7 @@ public class Weapon {
             Bullet bullet;
             
             Point pos = character.getPos().cpy();
-            pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_DIMENSION);
+            pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
             
             if (bulletSprite <0){
                 bullet = (Bullet) AbstractEntity.getInstance(12, 0, pos);

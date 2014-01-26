@@ -68,14 +68,20 @@ public class Point extends AbstractPosition {
        this.y = point.y;
        this.setHeight(point.getHeight());
     }
-    
-    
-    
+
+    /**
+     *
+     * @return
+     */
     @Override
     public Point getPoint() {
        return this;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public Coordinate getCoord() {
         return toCoord(this, false);
@@ -89,10 +95,18 @@ public class Point extends AbstractPosition {
         return new float[]{getRelX(), getRelY(), getHeight()};
     }
 
+    /**
+     *Get the position from left
+     * @return
+     */
     public float getRelX() {
         return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
     }
     
+    /**
+     *Get the position from top.
+     * @return
+     */
     public float getRelY() {
         return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
     }
@@ -105,10 +119,18 @@ public class Point extends AbstractPosition {
         return new float[]{getAbsX(), getAbsY(), getHeight()};
     }
 
+    /**
+     *
+     * @return
+     */
     public float getAbsX() {
         return x + getReferenceX() *Chunk.getGameWidth();
     }
     
+    /**
+     *
+     * @return
+     */
     public float getAbsY() {
         return y + getReferenceY() *Chunk.getGameDepth();
     }
@@ -139,6 +161,10 @@ public class Point extends AbstractPosition {
             return Controller.getMap().getDataClamp(coord);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Point cpy() {
         return new Point(this);
@@ -164,19 +190,31 @@ public class Point extends AbstractPosition {
         );
     }
 
+    /**
+     *
+     * @param vector
+     * @return
+     */
     @Override
     public Point addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]*Block.GAME_DIMENSION);
+        setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
         return this;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     @Override
     public AbstractPosition addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z*Block.GAME_DIMENSION);
+        setHeight(getHeight()+ z*Block.GAME_EDGELENGTH);
         return this;
     }
     
@@ -189,8 +227,8 @@ public class Point extends AbstractPosition {
     public static Coordinate toCoord(Point pos, boolean depthCheck){
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) (pos.getRelX()) / Block.GAME_DIAGSIZE,
-            (int) (pos.getRelY()) / Block.GAME_DIAGSIZE*2,
+            (int) (pos.getRelX()) / Block.GAME_DIAGLENGTH,
+            (int) (pos.getRelY()) / Block.GAME_DIAGLENGTH*2,
             pos.getHeight(),
             true
         );
@@ -198,8 +236,8 @@ public class Point extends AbstractPosition {
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
-                pos.getRelX() % Block.GAME_DIAGSIZE,
-                pos.getRelY() % (Block.GAME_DIAGSIZE)
+                pos.getRelX() % Block.GAME_DIAGLENGTH,
+                pos.getRelY() % (Block.GAME_DIAGLENGTH)
             )
         );
         coords.setRelX(specificCoords.getRelX());

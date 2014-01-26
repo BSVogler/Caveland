@@ -37,7 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
  * @author Benedikt Vogler
  */
 public class Sea extends Block implements IsSelfAware{
-    public static final int WAVE_AMPLITUDE = AbstractGameObject.GAME_DIMENSION-10;
+    public static final int WAVE_AMPLITUDE = AbstractGameObject.GAME_EDGELENGTH-10;
     private static final float wavespeed = 1/700f; //the smaller the slower
     private static float currentX = 0;
     private static final int waveWidth = Map.getBlocksX()/7;

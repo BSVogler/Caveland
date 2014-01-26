@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_HEIGHT;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -418,11 +419,11 @@ public class Chunk {
     }
     
     public static int getGameWidth(){
-        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
     }
     
     public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGSIZE/2;
+        return blocksY*AbstractGameObject.SCREEN_HEIGHT;
     }
     
         /**
@@ -430,6 +431,6 @@ public class Chunk {
      * @return 
      */
     public static int getGameHeight(){
-        return blocksZ*AbstractGameObject.GAME_DIMENSION;
+        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
 }

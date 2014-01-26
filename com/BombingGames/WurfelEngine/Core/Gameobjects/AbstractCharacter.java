@@ -40,7 +40,7 @@ import com.badlogic.gdx.audio.Sound;
 public abstract class AbstractCharacter extends AbstractEntity {
    private static int soundlimit;//time to pass before new sound can be played
      
-   private final int COLISSIONRADIUS = GAME_DIAGSIZE/4;
+   private final int COLISSIONRADIUS = GAME_DIAGLENGTH/4;
    private final int SPRITESPERDIR;
       
    private final float[] dir = {1, 0, 0};
@@ -157,7 +157,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
             if (!onGround()) dir[2] -= WE.getCurrentConfig().getGravity()*t; //in m/s
-            getPos().setHeight(getPos().getHeight() + dir[2] * GAME_DIMENSION * t); //in m
+            getPos().setHeight(getPos().getHeight() + dir[2] * GAME_EDGELENGTH * t); //in m
             
             
             //check new height for colission            
@@ -170,7 +170,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 dir[2] = 0;
                 
                 //set on top of block
-                getPos().setHeight((int)(oldHeight/GAME_DIMENSION)*GAME_DIMENSION);
+                getPos().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
             }
             
             if (!inliquid && getPos().getBlockClamp().isLiquid())//if enterin water

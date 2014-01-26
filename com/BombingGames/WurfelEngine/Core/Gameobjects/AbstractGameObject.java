@@ -73,16 +73,17 @@ public abstract class AbstractGameObject {
     /**A quarter (4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/
     public static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
     
-    /**The real game world dimension in pixel. Usually the use of SCREEN_DEPTH is fine because of the map format every coordinate center is straight.
-        * The value is SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
+    /**The real game world dimension in pixel (edge length). 1 game meter ^= 1 GAME_DIMENSION
+       * Usually the use of SCREEN_DEPTH is enough because of the map format every coordinate center is straight.
+        * The value is calculated by SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
         */
-    public static final int GAME_DIMENSION = (int) (SCREEN_HEIGHT * Math.sqrt(2));
+    public static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
     
     /**
-     * The game size aequivalent to SCREEN_DEPTH.
+     * The game size's aequivalent to SCREEN_DEPTH.
      * The value is GAMEDIMENSION * Math.sqrt(2) which is the same as SCREEN_HEIGHT * 2
      */
-    public static final int GAME_DIAGSIZE = SCREEN_HEIGHT * 2;
+    public static final int GAME_DIAGLENGTH = SCREEN_HEIGHT * 2;
     
     /**the max. amount of different object types*/
     public static final int OBJECTTYPESCOUNT = 99;

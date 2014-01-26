@@ -423,7 +423,7 @@ public class Map {
         for (int i=0;i < numberofblocks; i++){
                 //cellPos[x[i]][y[i]][z[i]][0] = (float) (Math.random()*Block.SCREEN_DEPTH2);
                 //cellPos[x[i]][y[i]][z[i]][1] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                data[x[i]][y[i]][z[i]].setCellOffset(2, (int) (Math.random()*Block.GAME_DIMENSION));//vertical shake
+                data[x[i]][y[i]][z[i]].setCellOffset(2, (int) (Math.random()*Block.GAME_EDGELENGTH));//vertical shake
             
         }
         Controller.requestRecalc();
@@ -531,7 +531,7 @@ public class Map {
      * @return
      */
     public static Point getCenter(){
-        return getCenter(Map.getBlocksZ()*Block.GAME_DIMENSION/2);
+        return getCenter(Map.getBlocksZ()*Block.GAME_EDGELENGTH/2);
     }
     
     /**
@@ -550,7 +550,7 @@ public class Map {
     }
     
     public static int getGameWidth(){
-        return blocksX*AbstractGameObject.GAME_DIAGSIZE;
+        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
     }
     
     /**
@@ -558,7 +558,7 @@ public class Map {
      * @return 
      */
     public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGSIZE;
+        return blocksY*AbstractGameObject.GAME_DIAGLENGTH;
     }
     
     /**
@@ -566,6 +566,6 @@ public class Map {
      * @return 
      */
     public static int getGameHeight(){
-        return blocksZ*AbstractGameObject.GAME_DIMENSION;
+        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
 }

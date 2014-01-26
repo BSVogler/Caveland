@@ -64,7 +64,7 @@ class CharacterShadow extends AbstractEntity {
     @Override
     public void render(View view, WECamera camera, AbstractPosition coords) {
         Color color = PseudoGrey.toColor(
-                (character.getPos().getHeight() - getPos().getHeight())/Block.GAME_DIMENSION
+                (character.getPos().getHeight() - getPos().getHeight())/Block.GAME_EDGELENGTH
                 );//make color out of distance from player
         super.render(view, camera, coords,color);
     }

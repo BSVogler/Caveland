@@ -134,7 +134,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
             pos.getPoint().getRelY()//Y
             
             + pos.getHeight()/Math.sqrt(2)//Z
-            + (getDimensionZ() - 1) * GAME_DIMENSION/6/Math.sqrt(2)
+            + (getDimensionZ() - 1) * GAME_EDGELENGTH/6/Math.sqrt(2)
         );
     }
     
@@ -166,7 +166,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         if (getPos().getHeight() <= 0) return true; //if entity is under the map
         
         //check if one pixel deeper is on ground.
-        int z = (int) ((getPos().getHeight()-1)/GAME_DIMENSION);
+        int z = (int) ((getPos().getHeight()-1)/GAME_EDGELENGTH);
         if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
         
         return

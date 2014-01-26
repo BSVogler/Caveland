@@ -40,9 +40,9 @@ public class Sea extends Block implements IsSelfAware{
     public static final int WAVE_AMPLITUDE = AbstractGameObject.GAME_DIMENSION-10;
     private static final float wavespeed = 1/700f; //the smaller the slower
     private static float currentX = 0;
-    private final int waveWidth = Map.getBlocksX()/7;
+    private static final int waveWidth = Map.getBlocksX()/7;
     
-    private float startvalue;
+    private int startvalue;
     
     private Coordinate coords;
         
@@ -58,7 +58,7 @@ public class Sea extends Block implements IsSelfAware{
         if (coords == null) throw new NullPointerException("No coordinates given to Sea-Block during creation."); 
         
         this.coords = coords;
-        startvalue = (float) (coords.getCellOffset()[2] + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
+        startvalue = (int) (coords.getCellOffset()[2] + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
        
     }
 

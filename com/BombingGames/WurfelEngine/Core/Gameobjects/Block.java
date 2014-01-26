@@ -46,11 +46,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
  */
 public class Block extends AbstractGameObject {
     /**The id of the left side of a block.*/
-    public static final int LEFTSIDE=0;
+    public static final byte LEFTSIDE=0;
     /**The id of the top side of a block.*/
-    public static final int TOPSIDE=1;
+    public static final byte TOPSIDE=1;
     /**The id of the right side of a block.*/
-    public static final int RIGHTSIDE=2;
+    public static final byte RIGHTSIDE=2;
     
     /**
      *
@@ -60,7 +60,7 @@ public class Block extends AbstractGameObject {
     /**Containts the names of the objects. index=id*/
     public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT];
     
-       /** A list containing the offset of the objects. */
+    /** A list containing the offset of the objects. */
     public static final int[][][] OFFSET = new int[OBJECTTYPESCOUNT][VALUESCOUNT][2];
     
     private static final AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}

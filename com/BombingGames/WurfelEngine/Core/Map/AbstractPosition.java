@@ -32,12 +32,12 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 
 /**
- *
+ *A
  * @author Benedikt Vogler
  */
 public abstract class AbstractPosition {
-    private final int referenceX;//top left chunk x coordinate
-    private final int referenceY;//top left chunk Y coordinate
+    private final byte referenceX;//top left chunk x coordinate
+    private final byte referenceY;//top left chunk Y coordinate
     private float height;
 
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractPosition {
      * @param topleftX the chunk's X coordinate of the chunk at the top left
      * @param topleftY the chunk's Y coordinate of the chunk at the top left 
      */
-    public AbstractPosition(int topleftX, int topleftY) {
+    public AbstractPosition(byte topleftX, byte topleftY) {
         this.referenceX = topleftX;
         this.referenceY = topleftY;
     }
@@ -79,7 +79,7 @@ public abstract class AbstractPosition {
     * 
     * @return 
     */
-    protected int getReferenceX() {
+    protected byte getReferenceX() {
         return referenceX;
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractPosition {
      * 
      * @return 
      */
-    protected int getReferenceY() {
+    protected byte getReferenceY() {
         return referenceY;
     }
     

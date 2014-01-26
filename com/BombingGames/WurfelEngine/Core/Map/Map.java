@@ -47,7 +47,7 @@ public class Map {
     private final boolean newMap;
     
     /**A list which has all current nine chunk coordinates in it.*/
-    private final int[][] coordlist = new int[9][2];
+    private final byte[][] coordlist = new byte[9][2];
     
     /** the map data are the blocks in their cells */
     private final Cell[][][] data;
@@ -89,8 +89,8 @@ public class Map {
         //Fill the nine chunks
         int chunkpos = 0;
         
-        for (int y=-1; y < 2; y++)
-            for (int x=-1; x < 2; x++){
+        for (byte y=-1; y < 2; y++)
+            for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
                 insertChunk(chunkpos, new Chunk(chunkpos, x, y, newMap));
@@ -270,7 +270,7 @@ public class Map {
      * @param pos 
      * @return the coordinates of the chunk
      */
-    public int[] getChunkCoords(int pos) {
+    public byte[] getChunkCoords(int pos) {
         return coordlist[pos];
     }
    

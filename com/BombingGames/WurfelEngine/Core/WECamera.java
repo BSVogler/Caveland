@@ -47,7 +47,7 @@ import java.util.ArrayList;
  */
 public class WECamera extends Camera {
     /**
-     *
+     *The deepest layer is an array which stores the information if there should be a tile rendered
      */
     public static final boolean[][] DEEPEST_LAYER_VISIVBILITY = new boolean[Map.getBlocksX()][Map.getBlocksY()];
     

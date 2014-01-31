@@ -84,8 +84,8 @@ public class LightEngine {
 
     /**
      *
-     * @param xPos
-     * @param yPos
+     * @param xPos the x position of the diagrams position
+     * @param yPos the y position of the diagrams position 
      */
     public LightEngine(int xPos, int yPos) {
         this();

@@ -61,6 +61,11 @@ public class Configuration {
     private final float leAzimutSpeed = 1/64f;
 
     /**
+     * The virtual render width (resolution).
+     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
+     */
+    private final int renderResolutionWidth = 1920;
+    /**
      *
      * @return
      */
@@ -121,6 +126,10 @@ public class Configuration {
      * Load engine configuration from a file
      */
     public void loadfromFile(){
+    }
+
+    public int getRenderResolutionWidth() {
+        return renderResolutionWidth;
     }
     
     

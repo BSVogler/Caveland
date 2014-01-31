@@ -68,6 +68,11 @@ public class Configuration {
     
     private final boolean useLightEngine = false;
     
+    /**
+     * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. YOu should shade the blokcs in this case by hand. This can cut performance in half.
+     */
+    private final boolean autoshade = false;
+    
     
     /**
      *
@@ -139,4 +144,10 @@ public class Configuration {
     public boolean useLightEngine() {
         return useLightEngine;
     }
+
+    public boolean shouldAutoShade() {
+        return autoshade;
+    }
+    
+    
 }

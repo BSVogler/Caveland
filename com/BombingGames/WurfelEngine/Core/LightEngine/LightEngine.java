@@ -181,7 +181,7 @@ public class LightEngine {
      * @param side
      * @return a color on the (pseudo) greyscale
      */
-    public Color getColorOfSide(int side){
+    public Color getColor(int side){
         if (side==0) return getGlobalLight().mul(I_0);
             else if (side==1) return getGlobalLight().mul(I_1);
                 else return getGlobalLight().mul(I_2);

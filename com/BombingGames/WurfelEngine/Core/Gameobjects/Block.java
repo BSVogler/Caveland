@@ -368,27 +368,31 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param color when the block has sides it's sides gets shaded using this color.
-     * @param staticShade shade the block static
-     * @param scale the scale of the image
+     * @param color when the block has sides its sides gets shaded using this color.
+     * @param staticShade i don't know what this does. This only makes it a bit brighter???
+     * @param scale the scale factor of the image
      */
     public void renderAt(View view, int xPos, int yPos, Color color, boolean staticShade, float scale) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
                     renderSideAt(view, xPos, yPos, Block.TOPSIDE, color, scale);
-               if (staticShade) {
-                   color = color.add(Color.DARK_GRAY.cpy());
-                   color.clamp();
-               }
-                if (!clippedLeft)
+                
+                if (!clippedLeft) {
+                    if (staticShade) {
+                        color = color.add(Color.DARK_GRAY.cpy());
+                        color.clamp();
+                    }
                     renderSideAt(view, xPos, (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.LEFTSIDE, color, scale);
-                if (staticShade) {
-                    color = color.sub(Color.DARK_GRAY.cpy());
-                    color.clamp();
                 }
-                if (!clippedRight)
+
+                if (!clippedRight) {
+                    if (staticShade) {
+                        color = color.sub(Color.DARK_GRAY.cpy());
+                        color.clamp();
+                    }
                     renderSideAt(view, (int) (xPos+SCREEN_WIDTH2*(1+scale)), (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.RIGHTSIDE, color, scale);
+                }
             } else super.renderAt(view, xPos, yPos, color);
         }
     }
@@ -402,9 +406,21 @@ public class Block extends AbstractGameObject {
      */
     public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb){
         Color color;
-        if (Controller.getLightengine() != null){
-            color = Controller.getLightengine().getColorOfSide(sidenumb);
-        } else color = Color.GRAY.cpy();
+        if (Controller.getLightengine() != null)
+            color = Controller.getLightengine().getColor(sidenumb);
+        else {
+            color = Color.GRAY.cpy();
+            
+            if (WE.getCurrentConfig().shouldAutoShade()){
+                if (sidenumb==0){
+                    color = color.add(Color.DARK_GRAY.cpy());
+                    color.clamp();
+                }else if (sidenumb==2){
+                    color = color.sub(Color.DARK_GRAY.cpy());
+                    color.clamp();
+                }
+            }
+        }
         renderSide(view, camera, coords, sidenumb, color);
     }
 

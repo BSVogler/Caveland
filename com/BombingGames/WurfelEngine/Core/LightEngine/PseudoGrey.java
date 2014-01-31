@@ -37,9 +37,9 @@ import com.badlogic.gdx.graphics.Color;
  * @author Rich Franzen, Benedikt Vogler
  */
 public class PseudoGrey {
-    /**
-     * @param grey
-     * @return 
+    /**Transforms a brightness into a pseudogrey-color.
+     * @param grey the brightness
+     * @return a pseudo-grayscale color
      */
     public static Color toColor(float grey) {
 	int i4k, boost, r, g, b;

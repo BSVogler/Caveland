@@ -29,9 +29,11 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -46,18 +48,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt
  */
 public class View {
-    /**
-     * The virtual render width (resolution).
-     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
-     */
-    public static final int RENDER_RESOLUTION_WIDTH = 1920;
-
     private static BitmapFont font;
     
     private SpriteBatch batch;    
     private ShapeRenderer shapeRenderer;
     
-    private float equalizationScale;
     private Controller controller;
     
     private int drawmode;
@@ -84,10 +79,6 @@ public class View {
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
-        //default rendering size is FullHD
-        equalizationScale = Gdx.graphics.getWidth() / RENDER_RESOLUTION_WIDTH;
-        Gdx.app.debug("View","Scale is:" + Float.toString(equalizationScale));
- 
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
@@ -152,11 +143,11 @@ public class View {
        
 
     /**
-     * The equalizationScale is a factor which the image is scaled by to have the same size on different resolutions.
+     * The equalizationScale is a factor which scales the GUI/HUD to have the same relative size with different resolutions.
      * @return the scale factor
      */
     public float getEqualizationScale() {
-        return equalizationScale;
+        return Gdx.graphics.getWidth() / WE.getCurrentConfig().getRenderResolutionWidth();
     }
 
     
@@ -187,23 +178,25 @@ public class View {
      * @return the relative map coordinates
      */
     public Coordinate ScreenToGameCoords(int x, int y){
-        //find camera
+        //identify clicked camera
         WECamera camera;
         int i = 0;
-         do {          
+        do {          
             camera = controller.getCameras().get(i);
             i++;
-        } while (i < controller.getCameras().size()
-            && !(x > camera.getViewportPosX() && x < camera.getViewportPosX()+camera.getViewportWidth()
-                && y > camera.getViewportPosY() && y < camera.getViewportPosY()+camera.getViewportHeight()));
+        } while (
+                i < controller.getCameras().size()
+                && !(x > camera.getViewportPosX() && x < camera.getViewportPosX()+camera.getViewportWidth()
+                && y > camera.getViewportPosY() && y < camera.getViewportPosY()+camera.getViewportHeight())
+        );
  
-
-        
         return Point.toCoord(
             new Point(
                 ScreenXtoGame(x, camera),
                 ScreenYtoGame(y, camera),
-                Chunk.getGameHeight()-1, true),
+                Chunk.getGameHeight()-1,
+                true
+            ),
             true
         );
     }

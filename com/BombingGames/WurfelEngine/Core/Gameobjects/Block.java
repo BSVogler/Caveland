@@ -453,9 +453,10 @@ public class Block extends AbstractGameObject {
      */
     public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb){
         Color color;
-        if (Controller.getLightengine() != null){
-            color = Controller.getLightengine().getColorOfSide(sidenumb);
-        } else color = Color.GRAY.cpy();
+        if (Controller.getLightengine() != null)
+            color = Controller.getLightengine().getColor(sidenumb);
+        else
+            color = Color.GRAY.cpy();
         renderSideAt(view, xPos, yPos, sidenumb, color, 0);
     }
     /**

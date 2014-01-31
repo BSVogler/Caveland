@@ -526,7 +526,7 @@ public class WECamera extends Camera {
     
     /**
      * Returns the left border of the visible area.
-     * @return 
+     * @return measured in grid-coordinates 
      */
     public int getLeftBorder(){
         leftborder = outputPosX / AbstractGameObject.SCREEN_WIDTH - 1;
@@ -537,7 +537,7 @@ public class WECamera extends Camera {
     
     /**
      * Returns the right border of the visible area.
-     * @return
+     * @return measured in grid-coordinates
      */
     public int getRightBorder(){
         rightborder = (outputPosX + get2DWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
@@ -548,7 +548,7 @@ public class WECamera extends Camera {
     
     /**
      * Returns the top seight border of the deepest groundBlock
-     * @return measured in blocks
+     * @return measured in grid-coordinates
      */
     public int getTopBorder(){    
         topborder = outputPosY / AbstractGameObject.SCREEN_DEPTH2 - 3;
@@ -559,7 +559,7 @@ public class WECamera extends Camera {
     
      /**
      * Returns the bottom seight border y-coordinate of the highest groundBlock
-     * @return measured in blocks
+     * @return measured in grid-coordinates
      */
     public int getBottomBorder(){
         bottomborder = (outputPosY+get2DHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;

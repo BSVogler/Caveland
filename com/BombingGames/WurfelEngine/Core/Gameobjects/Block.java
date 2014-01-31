@@ -369,21 +369,21 @@ public class Block extends AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      * @param color when the block has sides it's sides gets shaded using this color.
-     * @param shade
+     * @param staticShade shade the block static
      * @param scale the scale of the image
      */
-    public void renderAt(View view, int xPos, int yPos, Color color, boolean shade, float scale) {
+    public void renderAt(View view, int xPos, int yPos, Color color, boolean staticShade, float scale) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
                     renderSideAt(view, xPos, yPos, Block.TOPSIDE, color, scale);
-               if (shade) {
+               if (staticShade) {
                    color = color.add(Color.DARK_GRAY.cpy());
                    color.clamp();
                }
                 if (!clippedLeft)
                     renderSideAt(view, xPos, (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.LEFTSIDE, color, scale);
-                if (shade) {
+                if (staticShade) {
                     color = color.sub(Color.DARK_GRAY.cpy());
                     color.clamp();
                 }

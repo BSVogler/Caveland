@@ -45,7 +45,7 @@ public class Point extends AbstractPosition {
      * @param posX
      * @param posY
      * @param height
-     * @param relative 
+     * @param relative true if relative, false if absolute
      */
     public Point(float posX, float posY, float height, boolean relative) {
         super();

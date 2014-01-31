@@ -148,7 +148,7 @@ public abstract class AbstractGameObject {
     public void render(View view, WECamera camera, AbstractPosition pos) {
         Color color = Color.GRAY.cpy();
         if (Controller.getLightengine() != null){
-                color = Controller.getLightengine().getGlobalLight();
+            color = Controller.getLightengine().getGlobalLight();
         }
         render(view, camera, pos, color.mul(lightlevel));
     }
@@ -180,7 +180,7 @@ public abstract class AbstractGameObject {
     public void renderAt(View view, int xPos, int yPos) {
         Color color = Color.GRAY.cpy();
         if (Controller.getLightengine() != null){
-                color = Controller.getLightengine().getGlobalLight();
+            color = Controller.getLightengine().getGlobalLight();
         }
         renderAt(view, xPos, yPos, color);
     }

@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
@@ -79,7 +80,7 @@ public class WECamera extends Camera {
         viewportPosX = x;
         viewportPosY = y;
         
-        equalizationScale = viewportWidth / View.RENDER_RESOLUTION_WIDTH;
+        equalizationScale = viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
                 
 	near = 0;
 	up.set(0, -1, 0);
@@ -506,8 +507,8 @@ public class WECamera extends Camera {
     }
     
     /**
-     * Returns the zoom multiplied by the EqualizationScale
-     * @return 
+     * Returns the zoom multiplied by the EqualizationScale, a scaling factor to achieve the same viewport with every resolution
+     * @return a scaling factor
      */
     public float getTotalScale() {
         return zoom*equalizationScale;
@@ -633,7 +634,7 @@ public class WECamera extends Camera {
     }
     
     /**
-     * Returns the height of the camera output.
+     * Returns the height of the camera output before scaling.
      * To get the real display size multiply it with scale values.
      * @return the value before scaling
      */
@@ -642,7 +643,7 @@ public class WECamera extends Camera {
     }
 
     /**
-     * Returns the width of the camera output before scale.
+     * Returns the width of the camera output before scaling.
      * To get the real display size multiply it with scale value.
      * @return the value before scaling
      */

@@ -65,6 +65,10 @@ public class Configuration {
      * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
      */
     private final int renderResolutionWidth = 1920;
+    
+    private final boolean useLightEngine = false;
+    
+    
     /**
      *
      * @return
@@ -131,6 +135,8 @@ public class Configuration {
     public int getRenderResolutionWidth() {
         return renderResolutionWidth;
     }
-    
-    
+
+    public boolean useLightEngine() {
+        return useLightEngine;
+    }
 }

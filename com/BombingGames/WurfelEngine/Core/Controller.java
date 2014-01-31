@@ -40,6 +40,10 @@ public class Controller {
         newMap();
         fpsdiag = new FPSdiag(10,300);
         
+        if (WE.getCurrentConfig().useLightEngine()){
+            Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        }
+        
         recalcRequested = true;
     }
     
@@ -233,17 +237,6 @@ public class Controller {
     public FPSdiag getFpsdiag() {
         return fpsdiag;
     }
-    
-    /**
-     * Use the light engine
-     * @param xPos the x position of the diagrams position
-     * @param yPos the y position of the diagrams position 
-     */
-    public static void useLightEngine(int xPos, int yPos) {
-        Controller.lightEngine = new LightEngine(xPos, yPos);
-    }
-    
-    
 
     public void dispose(){
         for (AbstractEntity entity :  map.getEntitys()) {

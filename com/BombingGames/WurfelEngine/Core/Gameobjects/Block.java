@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -435,11 +436,11 @@ public class Block extends AbstractGameObject {
     public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb, Color color){
         int xPos = coords.get2DPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0);//right side is  half a block more to the right
         int yPos = coords.get2DPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0);//the top is drawn a quarter blocks higher
-                //uncomment these two lines to add a depth-effect (note that it is very dark and still a prototype)
-//        color.mul((camera.getBottomBorder()-coords.getRelY())
-//            /
-//            (float)(camera.getBottomBorder()-camera.getTopBorder())
-//            );
+        //uncomment these two lines to add a depth-effect (note that it is very dark and still a prototype)
+        int dist = -camera.getTopBorder()+coords.getCoord().getRelY();
+        
+        color.mul((float) (0.5f+1/Math.exp(dist*0.05f-1)));
+        
         renderSideAt(view, xPos, yPos, sidenumb, color, 0);
     }
     

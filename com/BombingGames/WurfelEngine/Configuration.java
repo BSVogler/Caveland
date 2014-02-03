@@ -38,7 +38,7 @@ public class Configuration {
         /**
      * The gravity constant in m/s^2
      */
-    private final float gravity = 9.18f;
+    private final float gravity = 9.81f;
     
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0

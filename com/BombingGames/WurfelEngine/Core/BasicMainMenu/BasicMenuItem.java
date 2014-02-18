@@ -125,11 +125,11 @@ public class BasicMenuItem{
         );
     }
 
-    public Class<Controller> getGameController() {
+    public Class<? extends Controller> getGameController() {
         return gameController;
     }
 
-    public Class<View> getGameView() {
+    public Class<? extends View> getGameView() {
         return gameView;
     }
     

@@ -49,8 +49,8 @@ import java.util.logging.Logger;
  * @author Benedikt
  */
 public class BasicMenuItem{
-    private final Class<Controller> gameController;
-    private final Class<View> gameView;
+    private final Class<? extends Controller> gameController;
+    private final Class<? extends View> gameView;
     private int x;
     private int y;
     private final int index;
@@ -69,8 +69,8 @@ public class BasicMenuItem{
      * @param config
      */
     public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends View> gameView, Configuration config) {
-        this.gameController = (Class<Controller>) gameController;
-        this.gameView = (Class<View>) gameView;
+        this.gameController = gameController;
+        this.gameView = gameView;
         this.index = index;
         this.text = label;
         this.width= text.length()*20;

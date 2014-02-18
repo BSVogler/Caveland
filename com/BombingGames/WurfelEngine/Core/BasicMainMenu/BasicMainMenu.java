@@ -40,6 +40,7 @@ public class BasicMainMenu extends AbstractMainMenu {
     private static MenuView View;
     private static MenuController Controller;
     private static BasicMenuItem[] menuItems;
+    private boolean warning = true;
 
     /**
      * Use this constructor to pass your controller and views in order of the main menu
@@ -60,8 +61,8 @@ public class BasicMainMenu extends AbstractMainMenu {
     @Override
     public void render(float delta) {
         Controller.update((int) (delta*1000));
-        View.render(Controller);
         View.update(delta*1000);
+        View.render(Controller, warning);
     }
 
     @Override
@@ -103,5 +104,9 @@ public class BasicMainMenu extends AbstractMainMenu {
      */
     public static MenuView getView() {
         return View;
+    }
+    
+    public void supressWarning(){
+        warning = false;
     }
 }

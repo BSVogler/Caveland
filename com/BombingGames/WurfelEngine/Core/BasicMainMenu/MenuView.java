@@ -83,8 +83,9 @@ public class MenuView {
     /**
      * renders the scene
      * @param pController
+     * @param warning Render a warning about no custom main menu in use.
      */
-    public void render(MenuController pController){
+    public void render(MenuController pController, boolean warning){
         //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -94,6 +95,7 @@ public class MenuView {
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
         
+                
         // render the lettering
         batch.begin();
         lettering.setColor(1, 1, 1, a);
@@ -110,6 +112,9 @@ public class MenuView {
         batch.begin();
         font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        if (warning) {
+            font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
+        }
         batch.end();
         
         font.scale(-0.5f);

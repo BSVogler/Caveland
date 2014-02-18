@@ -66,7 +66,7 @@ public class Configuration {
      */
     private final int renderResolutionWidth = 1920;
     
-    private final boolean useLightEngine = false;
+    private final boolean useLightEngine = true;
     
     /**
      * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. YOu should shade the blokcs in this case by hand. This can cut performance in half.

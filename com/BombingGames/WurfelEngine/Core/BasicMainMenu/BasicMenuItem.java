@@ -64,14 +64,13 @@ public class BasicMenuItem{
      * Create a new menu Item and say which texture it should have.
      * @param index
      * @param label
-     * @param gameController Your game controller for this menu item
-     * @param gameViews Your game view for this menu item
+     * @param gameController Your game controller class for this menu item
+     * @param gameView Your game view class for this menu item
      * @param config
      */
-    @SuppressWarnings("unchecked")
-    public BasicMenuItem(int index, String label, Class gameController, Class gameViews, Configuration config) {
-        this.gameController = gameController;
-        this.gameView = gameViews;
+    public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends View> gameView, Configuration config) {
+        this.gameController = (Class<Controller>) gameController;
+        this.gameView = (Class<View>) gameView;
         this.index = index;
         this.text = label;
         this.width= text.length()*20;

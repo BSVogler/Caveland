@@ -114,6 +114,7 @@ public class MenuView {
         font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         if (warning) {
             font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
+            font.draw(batch, "You can hide this warning whith BasicMainMenu#supressWarning().", 20, 90);
         }
         batch.end();
         

@@ -156,12 +156,15 @@ public class LoadingScreen implements Screen {
         WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
     }
 
+    @Override
     public void pause() {
     }
 
+    @Override
     public void resume() {
     }
 
+    @Override
     public void dispose() {
     }
 }

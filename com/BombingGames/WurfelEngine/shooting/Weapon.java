@@ -231,7 +231,7 @@ public class Weapon {
      * @param y 
      */
     public void renderBig(View view, int x, int y){
-        Sprite sprite = new Sprite(spritesheetBig.findRegion(""+id));
+        Sprite sprite = new Sprite(spritesheetBig.findRegion(Integer.toString(id)));
         sprite.setX(x);
         sprite.setY(y);
         sprite.scale(scaling);

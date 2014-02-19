@@ -556,5 +556,12 @@ public class Block extends AbstractGameObject {
     public static AtlasRegion[][][] getBlocksprites() {
         return blocksprites;
     }
+    
+    /**
+     * Removes the flag that this block has sides. The default is true.
+     */
+    public void setNoSides(){
+        hasSides=false;
+    }
 
 }

@@ -71,6 +71,7 @@ public class Block extends AbstractGameObject {
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESCOUNT][VALUESCOUNT];
     
+    private static BlockFactory blockFactory;
     
     private boolean liquid;
     private boolean hasSides = true;
@@ -215,8 +216,7 @@ public class Block extends AbstractGameObject {
                     block.hasSides = true;
                     break;
             default:
-                    block = new Block(id); 
-                    block.setTransparent(true);
+                    block = blockFactory.produce(id, value, coords); 
                     break; 
         }
         block.setValue(value);

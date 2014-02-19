@@ -348,4 +348,10 @@ public class Weapon {
                 shoot();  
         }
     }
+
+    public static void setSpritesheetBig(TextureAtlas spritesheetBig) {
+        Weapon.spritesheetBig = spritesheetBig;
+    }
+    
+    
 }

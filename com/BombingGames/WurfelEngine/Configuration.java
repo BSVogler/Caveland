@@ -29,6 +29,9 @@
 
 package com.BombingGames.WurfelEngine;
 
+//import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+//import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
+
 /**
  *The configuration should include most of the game's specific options.
  * @author Benedikt Vogler
@@ -148,6 +151,13 @@ public class Configuration {
     public boolean shouldAutoShade() {
         return autoshade;
     }
+    
+//    @SuppressWarnings("unchecked")
+//    public Class<? extends Block>[] getBlockList(){
+//        Class<? extends Block>[] blocklist = new Class[100];
+//        blocklist[31] = ExplosiveBarrel.class;
+//        return blocklist;
+//    }
     
     
 }

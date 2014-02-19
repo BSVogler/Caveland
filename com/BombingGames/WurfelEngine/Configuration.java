@@ -30,6 +30,9 @@
 package com.BombingGames.WurfelEngine;
 
 //import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+
+import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+
 //import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
 
 /**
@@ -159,5 +162,12 @@ public class Configuration {
 //        return blocklist;
 //    }
     
+    /**
+     * default returns null. If you want to use custom blocks you should override this.
+     * @return null
+     */
+    public BlockFactory getBlockFactoy(){
+        return null;
+    }
     
 }

@@ -36,7 +36,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 
 /**
- *
+ *The loadinbg controller manages the data during the loading process.
  * @author Benedikt Vogler
  */
 public class LoadingController {

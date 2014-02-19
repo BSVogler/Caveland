@@ -104,6 +104,9 @@ public class WE extends Game {
         //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
     }
     
+    /**
+         * You don't have to manually call this method.
+         */
     @Override
     public void create() {
         if (mainMenu==null){

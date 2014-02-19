@@ -120,6 +120,19 @@ public class Block extends AbstractGameObject {
     } 
     
     /**
+     * You can create a basic block if its id is not reserved. Else getInstace() is called.
+     * @param id non-reserved id's=> id>39
+     * @return 
+     */
+    public static Block createBasicInstance(int id){
+        Block block; 
+        if (id>39) 
+            block = new Block(id);
+        else block = getInstance(id);
+        return block;
+    }
+    
+    /**
      *  Create a block. If the block needs to know it's position you have to use <i>getInstance(int id, int value,int x, int y, int z)</i>
      * @param id the block's id
      * @return the wanted block.

@@ -210,24 +210,6 @@ public class Block extends AbstractGameObject {
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;     
-            case 40: block = new EntitySpawner(id, coords);
-                    block.hasSides = true;
-                    break;
-            case 44: block = new Block(id); //textureless
-                    block.hasSides = true;
-                    block.setObstacle(true);
-                    break;      
-            case 70:block = new Block(id); 
-                    block.setTransparent(true);
-                    block.hasSides = false;
-                    break;
-            case 71:block = new ExplosiveBarrel(id, coords);
-                    block.hasSides = false;
-                    break;
-            case 72:block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting
-                    block.setObstacle(true);
-                    block.hasSides = true;
-                    break;
             default:
                     block = blockFactory.produce(id, value, coords); 
                     break; 

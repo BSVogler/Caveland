@@ -49,7 +49,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
      * @param id the id of the explosive barrel
      * @param coords  The coordinates where this object get's placed.
      */
-    protected ExplosiveBarrel(int id, Coordinate coords){
+    public ExplosiveBarrel(int id, Coordinate coords){
         super(id);
         if (coords == null) throw new NullPointerException("No coordinates given to ExplosiveBarrel during creation."); 
         this.coords = coords;

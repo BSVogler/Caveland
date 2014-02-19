@@ -45,7 +45,7 @@ public class AnimatedBlock extends Block implements Animatable{
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time. 
      */
-    protected AnimatedBlock(int id, int[] animationsinformation, boolean autostart, boolean loop){
+    public AnimatedBlock(int id, int[] animationsinformation, boolean autostart, boolean loop){
         super(id);
         this.animationsduration = animationsinformation;
         this.running = autostart;

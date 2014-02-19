@@ -58,7 +58,7 @@ public class Bullet extends AbstractEntity {
    
     public static void init(){
         if (explosionsound == null)
-            explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Game/Sounds/explosion2.ogg");
+            explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
     }
    
     @Override

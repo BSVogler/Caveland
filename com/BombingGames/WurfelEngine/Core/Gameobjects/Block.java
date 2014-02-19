@@ -179,9 +179,9 @@ public class Block extends AbstractGameObject {
                     block.setObstacle(true);
                     break;      
             case 9: if(Gdx.app.getType()==ApplicationType.Android)
-                    block = new Block(id); //static water
+                        block = new Block(id); //static water
                     else
-                    block = new Sea(id, coords); //Sea
+                        block = new Sea(id, coords); //Sea
                     block.liquid = true;
                     block.setTransparent(true);
                     break;

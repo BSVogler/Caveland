@@ -103,7 +103,7 @@ public abstract class AbstractGameObject {
     private static final AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];//{category}{id}{value}
     
     private final int id; 
-    private int value;
+    private byte value;
     private boolean obstacle, transparent, clipped, hidden; 
     private float lightlevel = 0.5f;
     private int dimensionZ = 1;  
@@ -117,7 +117,7 @@ public abstract class AbstractGameObject {
      */
     protected AbstractGameObject(int id, int value) {
         this.id = id;
-        this.value = value;
+        this.value = (byte)value;
     }
     
     /**
@@ -409,7 +409,7 @@ public abstract class AbstractGameObject {
      * @param value
      */
     protected void setValue(int value) {
-        this.value = value;
+        this.value = (byte)value;
     }
 
     /**

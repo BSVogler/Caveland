@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.BombingGames.WurfelEngine.shooting.Bullet;
+import com.badlogic.gdx.Gdx;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -123,7 +124,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
                 break;
              
             default:
-                entity = WE.getCurrentConfig().getEntitiyFactory().produce(id, value, point); 
+                if (WE.getCurrentConfig().getBlockFactoy()!=null){
+                        entity = WE.getCurrentConfig().getEntitiyFactory().produce(id, value, point); 
+                    } else {
+                        Gdx.app.error("Block", "Tried creating of custom block but there was no custom entityfactory found. Tried using a SimpleEntity.");
+                        entity = new SimpleEntity(id);
+                    }
+                
                 break; 
         }
         

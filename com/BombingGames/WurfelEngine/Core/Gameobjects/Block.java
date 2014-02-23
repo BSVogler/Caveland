@@ -209,7 +209,12 @@ public class Block extends AbstractGameObject {
                     block.hasSides = false;
                     break;     
             default:
-                    block = WE.getCurrentConfig().getBlockFactoy().produce(id, value, coords); 
+                    if (WE.getCurrentConfig().getBlockFactoy()!=null){
+                        block = WE.getCurrentConfig().getBlockFactoy().produce(id, value, coords);
+                    } else {
+                        Gdx.app.error("Block", "Tried creating of custom block but there was no custom blockfactory found. Tried using a default block.");
+                        block = new Block(id);
+                    }
                     break; 
         }
         block.setValue(value);

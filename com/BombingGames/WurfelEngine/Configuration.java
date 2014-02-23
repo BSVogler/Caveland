@@ -31,7 +31,10 @@ package com.BombingGames.WurfelEngine;
 
 //import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
 
@@ -155,11 +158,26 @@ public class Configuration {
         return autoshade;
     }
     
+//    /**
+//     * Returns a list containing classes of blocks.
+//     * @return 
+//     */
 //    @SuppressWarnings("unchecked")
 //    public Class<? extends Block>[] getBlockList(){
 //        Class<? extends Block>[] blocklist = new Class[100];
-//        blocklist[31] = ExplosiveBarrel.class;
+//        //blocklist[31] = ExplosiveBarrel.class;
 //        return blocklist;
+//    }
+//    
+//    @SuppressWarnings("unchecked")
+//    public void initBlockList(){
+//        try {
+//            Class<? extends Block>[] blocklist;
+//            blocklist = new Class[100];
+//            blocklist[31] = (Class<? extends Block>) Class.forName("ExplosiveBarrel");
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 //    }
     
     /**

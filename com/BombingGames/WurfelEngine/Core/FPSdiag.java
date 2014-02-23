@@ -38,7 +38,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt Vogler
  */
 public class FPSdiag {
-    private final int[] data = new int[10];
+    private final int[] data = new int[50];
     private float timeSinceUpdate;
     private int field;//the current field number
     private final int xPos, yPos, width;
@@ -52,7 +52,7 @@ public class FPSdiag {
     public FPSdiag(int xPos, int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
-        width = 12;
+        width = 4;
     }
     
     /**
@@ -61,13 +61,13 @@ public class FPSdiag {
      */
     public void update(float delta){
         timeSinceUpdate += delta;
-        if (timeSinceUpdate>1000){//update only every second
+        if (timeSinceUpdate>100){//update only every t ms
             timeSinceUpdate = 0;
             
             field++;//move to next field
             if (field >= data.length) field = 0; //start over           
             
-            data[field] = Gdx.graphics.getFramesPerSecond();//save fps
+            data[field] = (int) (1/Gdx.graphics.getDeltaTime());//save fps
         }
     }
     
@@ -87,14 +87,14 @@ public class FPSdiag {
                     shRenderer.setColor(new Color(1, 0, 1, 0.8f));
                 else
                     shRenderer.setColor(new Color(1, 1, 1, 0.8f));
-                shRenderer.rect(xPos+width*i, yPos-data[i], width-1, data[i]);
+                shRenderer.rect(xPos+width*i, yPos-data[i], width, data[i]);
             }
             shRenderer.end();
 
             //render average
             int avg = getAverage();
             shRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shRenderer.setColor(Color.BLUE);
+            shRenderer.setColor(new Color(1, 0, 1, 0.8f));
             shRenderer.line(xPos, yPos-avg, xPos+width*data.length, yPos-avg);
 
             shRenderer.setColor(Color.GRAY);

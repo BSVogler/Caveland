@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -185,6 +186,14 @@ public class Configuration {
      * @return null
      */
     public BlockFactory getBlockFactoy(){
+        return null;
+    }
+    
+    /**
+     * default returns null. If you want to use custom entitys you should override this.
+     * @return null
+     */
+    public EntityFactory getEntitiyFactory(){
         return null;
     }
     

@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
 import com.BombingGames.WurfelEngine.shooting.Bullet;
 
 /**
@@ -105,22 +106,25 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
             case 15:case 16: case 19:case 20:case 21:
                 entity = new AnimatedEntity(id, value, new int[]{300}, true, false);
             break;         
-            case 40:
-                    entity = new Player(id, point);
-                    break;
-            case 41: //explosion
-                    entity = new AnimatedEntity(
-                                id,
-                                value,
-                                new int[]{700,2000},
-                                true,
-                                false
-                            );
-                    break;
-            case 42: entity = new CharacterShadow(id);
-                    break;
+            case 30:
+                entity = new Player(id, point);
+                break;
+            case 31: //explosion
+                entity = new AnimatedEntity(
+                            id,
+                            value,
+                            new int[]{700,2000},
+                            true,
+                            false
+                        );
+                break;
+            case 32:
+                entity = new CharacterShadow(id);
+                break;
              
-            default: entity = new SimpleEntity(id);
+            default:
+                entity = WE.getCurrentConfig().getEntitiyFactory().produce(id, value, point); 
+                break; 
         }
         
         entity.setPos(point);

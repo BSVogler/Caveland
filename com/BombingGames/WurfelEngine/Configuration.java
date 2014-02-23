@@ -193,7 +193,7 @@ public class Configuration {
      * default returns null. If you want to use custom entitys you should override this.
      * @return null
      */
-    public EntityFactory getEntitiyFactory(){
+    public EntityFactory getEntityFactory(){
         return null;
     }
     

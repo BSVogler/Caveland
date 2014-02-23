@@ -124,10 +124,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
                 break;
              
             default:
-                if (WE.getCurrentConfig().getBlockFactoy()!=null){
-                        entity = WE.getCurrentConfig().getEntitiyFactory().produce(id, value, point); 
+                if (WE.getCurrentConfig().getEntityFactory()!=null){
+                        entity = WE.getCurrentConfig().getEntityFactory().produce(id, value, point); 
                     } else {
-                        Gdx.app.error("Block", "Tried creating of custom block but there was no custom entityfactory found. Tried using a SimpleEntity.");
+                        Gdx.app.error("AbstractEntity", "Tried creating of custom entity but there was no custom entityfactory found. Tried using a SimpleEntity.");
                         entity = new SimpleEntity(id);
                     }
                 

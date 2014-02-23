@@ -81,7 +81,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
                     if (x*x + (y/2)*(y/2)+ z*z >= RADIUS*RADIUS-4 &&
                         x*x + (y/2)*(y/2)+ z*z <= RADIUS*RADIUS){
                         AbstractEntity.getInstance(
-                            41,
+                            31,
                             0,
                             coords.cpy().addVector(new float[]{x, y, z}).getPoint()
                         ).exist();

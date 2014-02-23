@@ -78,7 +78,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
         super(id);
         SPRITESPERDIR = spritesPerDir;
-        shadow = (CharacterShadow) AbstractEntity.getInstance(42,0,point.cpy());
+        shadow = (CharacterShadow) AbstractEntity.getInstance(32,0,point.cpy());
         shadow.exist();
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }

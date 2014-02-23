@@ -55,27 +55,27 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     private Point point;//the position in the map-grid
    
     static {
-        NAMELIST[40] = "player";
-        OFFSET[40][0][0] = 54-80;
-        OFFSET[40][0][1] = 37-40;
-        OFFSET[40][1][0] = 55-80;
-        OFFSET[40][1][1] = 38-40;
-        OFFSET[40][2][0] = 53-80;
-        OFFSET[40][2][1] = 35-40;
-        OFFSET[40][3][0] = 46-80;
-        OFFSET[40][3][1] = 33-40;
-        OFFSET[40][4][0] = 53-80;
-        OFFSET[40][4][1] = 35-40;
-        OFFSET[40][5][0] = 64-80;
-        OFFSET[40][5][1] = 33-40;
-        OFFSET[40][6][0] = 53-80;
-        OFFSET[40][6][1] = 33-40;
-        OFFSET[40][7][0] = 46-80;
-        OFFSET[40][7][1] = 33-40;
-        NAMELIST[41] = "smoke test";
-        NAMELIST[42] = "character shadow";
-        OFFSET[42][0][0] = -80;
-        OFFSET[42][0][1] = 40;
+        NAMELIST[30] = "player";
+        OFFSET[30][0][0] = 54-80;
+        OFFSET[30][0][1] = 37-40;
+        OFFSET[30][1][0] = 55-80;
+        OFFSET[30][1][1] = 38-40;
+        OFFSET[30][2][0] = 53-80;
+        OFFSET[30][2][1] = 35-40;
+        OFFSET[30][3][0] = 46-80;
+        OFFSET[30][3][1] = 33-40;
+        OFFSET[30][4][0] = 53-80;
+        OFFSET[30][4][1] = 35-40;
+        OFFSET[30][5][0] = 64-80;
+        OFFSET[30][5][1] = 33-40;
+        OFFSET[30][6][0] = 53-80;
+        OFFSET[30][6][1] = 33-40;
+        OFFSET[30][7][0] = 46-80;
+        OFFSET[30][7][1] = 33-40;
+        NAMELIST[31] = "smoke test";
+        NAMELIST[32] = "character shadow";
+        OFFSET[32][0][0] = -80;
+        OFFSET[32][0][1] = 40;
     }
     
     private boolean destroy;

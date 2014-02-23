@@ -142,7 +142,7 @@ public class Bullet extends AbstractEntity {
                     if (x*x + (y/2)*(y/2)+ z*z >= explosive*explosive-4 &&
                         x*x + (y/2)*(y/2)+ z*z <= explosive*explosive){
                         AbstractEntity effect = AbstractEntity.getInstance(
-                            41,
+                            31,
                             0,
                             getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint()
                         );

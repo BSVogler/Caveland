@@ -209,16 +209,6 @@
             <filename>sprites/b70-0.png</filename>
             <filename>sprites/b71-0.png</filename>
             <filename>sprites/b71-1.png</filename>
-            <filename>sprites/e40-0.png</filename>
-            <filename>sprites/e40-1.png</filename>
-            <filename>sprites/e40-2.png</filename>
-            <filename>sprites/e40-3.png</filename>
-            <filename>sprites/e40-4.png</filename>
-            <filename>sprites/e40-5.png</filename>
-            <filename>sprites/e40-6.png</filename>
-            <filename>sprites/e40-7.png</filename>
-            <filename>sprites/e41-0.png</filename>
-            <filename>sprites/e41-1.png</filename>
             <filename>sprites/error.png</filename>
             <filename>sprites/b44-0-1.png</filename>
             <filename>sprites/b44-0-2.png</filename>
@@ -226,7 +216,17 @@
             <filename>sprites/b44-1-0.png</filename>
             <filename>sprites/b44-1-1.png</filename>
             <filename>sprites/b44-1-2.png</filename>
-            <filename>sprites/e42-0.png</filename>
+            <filename>sprites/e30-0.png</filename>
+            <filename>sprites/e30-1.png</filename>
+            <filename>sprites/e30-2.png</filename>
+            <filename>sprites/e30-3.png</filename>
+            <filename>sprites/e30-4.png</filename>
+            <filename>sprites/e30-5.png</filename>
+            <filename>sprites/e30-6.png</filename>
+            <filename>sprites/e30-7.png</filename>
+            <filename>sprites/e31-0.png</filename>
+            <filename>sprites/e31-1.png</filename>
+            <filename>sprites/e32-0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

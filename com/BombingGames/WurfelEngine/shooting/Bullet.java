@@ -90,7 +90,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);
-            AbstractEntity.getInstance(16, 0, getPos().cpy()).exist();//spawn blood
+            AbstractEntity.getInstance(46, 0, getPos().cpy()).exist();//spawn blood
             destroy();
         }
     }

@@ -100,38 +100,41 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public static AbstractEntity getInstance(int id, int value, Point point){
         AbstractEntity entity;
         //define the default SideSprites
-        switch (id){
-            case 12:
-                entity = new Bullet(id);
-            break;
-            case 15:case 16: case 19:case 20:case 21:
-                entity = new AnimatedEntity(id, value, new int[]{300}, true, false);
-            break;         
-            case 30:
-                entity = new Player(id, point);
+        if (id<40){
+            switch (id){
+                case 12:
+                    entity = new Bullet(id);
                 break;
-            case 31: //explosion
-                entity = new AnimatedEntity(
-                            id,
-                            value,
-                            new int[]{700,2000},
-                            true,
-                            false
-                        );
+                case 15:case 16: case 19:case 20:case 21:
+                    entity = new AnimatedEntity(id, value, new int[]{300}, true, false);
+                break;         
+                case 30:
+                    entity = new Player(id, point);
+                    break;
+                case 31: //explosion
+                    entity = new AnimatedEntity(
+                                id,
+                                value,
+                                new int[]{700,2000},
+                                true,
+                                false
+                            );
+                    break;
+                case 32:
+                    entity = new CharacterShadow(id);
+                    break;
+
+                default:
+                    entity = new SimpleEntity(id);
                 break;
-            case 32:
-                entity = new CharacterShadow(id);
-                break;
-             
-            default:
-                if (WE.getCurrentConfig().getEntityFactory()!=null){
-                        entity = WE.getCurrentConfig().getEntityFactory().produce(id, value, point); 
-                    } else {
-                        Gdx.app.error("AbstractEntity", "Tried creating of custom entity but there was no custom entityfactory found. Tried using a SimpleEntity.");
-                        entity = new SimpleEntity(id);
-                    }
-                
-                break; 
+            }
+        } else {
+            if (WE.getCurrentConfig().getEntityFactory()!=null){
+                entity = WE.getCurrentConfig().getEntityFactory().produce(id, value, point); 
+            } else {
+                Gdx.app.error("AbstractEntity", "Tried creating of custom entity"+id+" but there was no custom entityfactory found. Tried using a SimpleEntity.");
+                entity = new SimpleEntity(id);
+            }
         }
         
         entity.setPos(point);

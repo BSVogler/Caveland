@@ -41,11 +41,10 @@ import com.badlogic.gdx.math.Interpolation;
  */
 public class LoadingController {
     private float percent;
-    private AssetManager manager;
     
-    public void init(AssetManager manager){
+    public LoadingController(){
         Gdx.app.log("LoadingController", "Initializing");
-        this.manager = manager;
+        AssetManager manager = WE.getAssetManager();
                 
         // Tell the manager to load assets for the loading screen
         manager.load(
@@ -68,13 +67,13 @@ public class LoadingController {
     }
     
     public void update(){
-        if (manager.update()) { // Load some, will return true if done loading 
+        if (WE.getAssetManager().update()) { // Load some, will return true if done loading 
             Gdx.app.log("Loading", "finished");
             WE.startGame();
         }
 
         // Interpolate the percentage to make it more smooth
-        percent = Interpolation.linear.apply(percent, manager.getProgress(), 0.1f);
+        percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.1f);
     }
 
     public float getPercent() {

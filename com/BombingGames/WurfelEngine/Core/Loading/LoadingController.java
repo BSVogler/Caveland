@@ -55,7 +55,7 @@ public class LoadingController {
         
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);       
-        manager.load("com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt", TextureAtlas.class);
+        manager.load(WE.getCurrentConfig().getSpritesheetPath(), TextureAtlas.class);
        // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg", Sound.class);

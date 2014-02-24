@@ -197,4 +197,11 @@ public class Configuration {
         return null;
     }
     
+   /**
+     * You can use your own spritesheet.
+     * @return format like ""com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt""
+     */
+    public String getSpritesheetPath(){
+        return "com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt";
+    }
 }

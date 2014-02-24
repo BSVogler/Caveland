@@ -198,10 +198,10 @@ public class Configuration {
     }
     
    /**
-     * You can use your own spritesheet.
-     * @return format like ""com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt""
+     * You can use your own spritesheet. the suffix will be added
+     * @return format like ""com/BombingGames/WurfelEngine/Core/images/Spritesheet""
      */
     public String getSpritesheetPath(){
-        return "com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt";
+        return "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
     }
 }

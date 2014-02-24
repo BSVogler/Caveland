@@ -68,7 +68,7 @@ public class Configuration {
     /**The number of the mapgenerator used.*/
     private final int chunkgenerator = 1;
     
-    private final float leAzimutSpeed = 1/64f;
+    private final float leAzimutSpeed = 1/128f;
 
     /**
      * The virtual render width (resolution).

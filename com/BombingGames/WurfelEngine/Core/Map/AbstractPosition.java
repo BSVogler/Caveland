@@ -111,6 +111,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *A
@@ -203,6 +204,8 @@ public abstract class AbstractPosition {
     public abstract boolean onLoadedMap();
     
     public abstract AbstractPosition addVector(float[] vector);
+    
+    public abstract AbstractPosition addVector(Vector3 vector);
     
     public abstract AbstractPosition addVector(float x, float y, float z);
 }

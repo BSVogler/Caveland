@@ -112,6 +112,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -282,6 +283,19 @@ public class Point extends AbstractPosition {
         this.x += vector[0];
         this.y += vector[1];
         setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
+        return this;
+    }
+    
+     /**
+     *
+     * @param vector
+     * @return
+     */
+    @Override
+    public Point addVector(Vector3 vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        setHeight(getHeight()+ vector.z*Block.GAME_EDGELENGTH);
         return this;
     }
 

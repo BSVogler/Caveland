@@ -97,7 +97,7 @@ public class Weapon {
                 spread = 0.5f;
                 damage = 1000;
                 bulletSprite = -1;
-                impactSprite=45;
+                impactSprite=15;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/melee.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/wiz.wav"); 
@@ -212,7 +212,7 @@ public class Weapon {
                 spread = 0.4f;
                 damage = 200;
                 bulletSprite = 1;
-                impactSprite=48;
+                impactSprite=18;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/fire.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 

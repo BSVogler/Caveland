@@ -164,8 +164,8 @@ public abstract class AbstractGameObject {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
              
-            int xPos = pos.get2DPosX() + getOffsetX();
-            int yPos = pos.get2DPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY();
+            int xPos = pos.getProjectedPosX() + getOffsetX();
+            int yPos = pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY();
             
             renderAt(view, xPos, yPos, color);
         }

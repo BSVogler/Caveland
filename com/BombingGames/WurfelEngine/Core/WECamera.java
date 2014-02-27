@@ -88,8 +88,8 @@ public class WECamera extends Camera {
 	position.set(equalizationScale*zoom * viewportWidth / 2.0f, equalizationScale*zoom * viewportHeight / 2.0f, 0);        
         
         //set the camera's focus to the center of the map
-        outputPosX = Map.getCenter().get2DPosX() - get2DWidth() / 2;
-        outputPosY = Map.getCenter().get2DPosY() - get2DHeight() / 2;
+        outputPosX = Map.getCenter().getProjectedPosX() - get2DWidth() / 2;
+        outputPosY = Map.getCenter().getProjectedPosY() - get2DHeight() / 2;
         
         groundBlock = Block.getInstance(2);//set the ground level groundBlock
         groundBlock.setSideClipping(0, true);
@@ -136,11 +136,11 @@ public class WECamera extends Camera {
     public void update() {       
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
-            outputPosX = focusCoordinates.get2DPosX() - get2DWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
-            outputPosY = focusCoordinates.get2DPosY() - get2DHeight() / 2;
+            outputPosX = focusCoordinates.getProjectedPosX() - get2DWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
+            outputPosY = focusCoordinates.getProjectedPosY() - get2DHeight() / 2;
         } else if (focusentity != null ){
-            outputPosX = focusentity.getPos().get2DPosX() - get2DWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
-            outputPosY = focusentity.getPos().get2DPosY() - get2DHeight()/2 ;
+            outputPosX = focusentity.getPos().getProjectedPosX() - get2DWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
+            outputPosY = focusentity.getPos().getProjectedPosY() - get2DHeight()/2 ;
         }
         
         position.set(outputPosX+ get2DWidth()/2 , outputPosY+ get2DHeight()/2 , 0); 
@@ -196,8 +196,8 @@ public class WECamera extends Camera {
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
                     if (DEEPEST_LAYER_VISIVBILITY[x][y]){
-                        int xPos = new Coordinate(x, y, -1, true).get2DPosX();//right side is  half a block more to the right
-                        int yPos = new Coordinate(x, y, -1, true).get2DPosY();//the top is drawn a quarter blocks higher
+                        int xPos = new Coordinate(x, y, -1, true).getProjectedPosX();//right side is  half a block more to the right
+                        int yPos = new Coordinate(x, y, -1, true).getProjectedPosY();//the top is drawn a quarter blocks higher
                         groundBlock.renderSideAt(view, xPos, yPos, 1);
                     }
                 }
@@ -232,7 +232,7 @@ public class WECamera extends Camera {
                     if (! blockAtCoord.isHidden()
                         && !blockAtCoord.isClipped()
                         && 
-                            coord.get2DPosY()
+                            coord.getProjectedPosY()
                         <
                             outputPosY + get2DHeight()
                     ) {
@@ -246,7 +246,7 @@ public class WECamera extends Camera {
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
             if (!entity.isHidden() && !entity.isClipped()
                 && 
-                entity.getPos().get2DPosY() < outputPosY + get2DHeight()
+                entity.getPos().getProjectedPosY() < outputPosY + get2DHeight()
                 )
                     depthsort.add(
                         new Renderobject(entity, entity.getPos())

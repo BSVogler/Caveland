@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -80,15 +81,14 @@ public class Player extends AbstractCharacter{
     /**
      * Getting aim relative to middle of view by reading mouse position.
      */
-    public float[] getAiming(){
-       float deltaX = Gdx.input.getX()- camera.getViewportWidth()/2;
-       float deltaY = 2*(Gdx.input.getY()- camera.getViewportHeight()/2); 
-       float length = (float) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-       return new float[]{
-            deltaX/length,
-            deltaY/length,
+    public Vector3 getAiming(){
+        Vector3 aim = new Vector3(
+            Gdx.input.getX()- camera.getViewportWidth()/2,
+            2*(Gdx.input.getY()- camera.getViewportHeight()/2),
             0
-        };
+        );
+        aim.nor();
+        return aim;
     }
 
     public void setCamera(WECamera camera) {

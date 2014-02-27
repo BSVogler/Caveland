@@ -36,6 +36,7 @@ import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -304,9 +305,9 @@ public class Weapon {
                 bullet.setValue(bulletSprite);
             }
             
-            float[] aiming = character.getAiming();
-            aiming[0] += Math.random() * (spread*2) -spread;
-            aiming[1] += Math.random() * (spread*2) -spread;
+            Vector3 aiming = character.getAiming();
+            aiming.x += Math.random() * (spread*2) -spread;
+            aiming.y += Math.random() * (spread*2) -spread;
             bullet.setDirection(aiming);
             bullet.setSpeed(1.8f);
             bullet.setMaxDistance(distance*100+100);

@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *A character is an entity wich can walk around. To control the character you have to set the controls with "setControls(String controls)".
@@ -92,7 +93,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * Defines the direction of the gun - if no gun available - the direction of the head.
      * @return normalized vector with three values
      */
-   public abstract float[] getAiming();
+   public abstract Vector3 getAiming();
     
    /**
      * Jump with a specific speed

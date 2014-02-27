@@ -38,6 +38,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ import java.util.ArrayList;
  */
 public class Bullet extends AbstractEntity {
     private static Sound explosionsound;
-    private float[] dir = new float[3];//movement
+    private Vector3 dir;//movement
     private float speed;
     private int damage;
     private int distance =0;//distance traveled
@@ -71,12 +72,12 @@ public class Bullet extends AbstractEntity {
    
     @Override
     public void update(float delta) {
-        dir[2]=-delta/(float)maxDistance;
+        dir.z=-delta/(float)maxDistance;
         
         float[] mov = new float[]{
-            dir[0]*delta*speed,
-            dir[1]*delta*speed,
-            dir[2]
+            dir.x*delta*speed,
+            dir.y*delta*speed,
+            dir.z
         };
             
         getPos().addVector(mov);
@@ -104,7 +105,7 @@ public class Bullet extends AbstractEntity {
         }
     }
 
-    public void setDirection(float[] dir) {
+    public void setDirection(Vector3 dir) {
         this.dir = dir;
     }
     

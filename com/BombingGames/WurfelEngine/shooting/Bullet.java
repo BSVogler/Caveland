@@ -72,7 +72,7 @@ public class Bullet extends AbstractEntity {
    
     @Override
     public void update(float delta) {
-        dir.z=-delta/(float)maxDistance;
+        //dir.z=-delta/(float)maxDistance;//fall down
         Vector3 dMov = dir.cpy().scl(delta*speed);
             
         getPos().addVector(dMov);

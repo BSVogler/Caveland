@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  *A character is an entity wich can walk around. To control the character you have to set the controls with "setControls(String controls)".
@@ -76,10 +77,9 @@ public abstract class AbstractCharacter extends AbstractEntity {
     * @param point  
     */
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
-        super(id);
+        super(id, point);
         SPRITESPERDIR = spritesPerDir;
-        shadow = (CharacterShadow) AbstractEntity.getInstance(32,0,point.cpy());
-        shadow.exist();
+        shadow = (CharacterShadow) new CharacterShadow(point.cpy()).exist();
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
    
@@ -394,10 +394,11 @@ public abstract class AbstractCharacter extends AbstractEntity {
         } return true;
     }
 
-    @Override
-    public void exist() {
-        super.exist();
+   @Override
+   public AbstractCharacter exist() {
+       super.exist();
        // shadow.exist();
+       return this;
     }
 
     @Override

@@ -29,8 +29,8 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
@@ -113,7 +113,7 @@ public class Weapon {
                 spread = 0.1f;
                 damage = 800;
                 bulletSprite = 0;
-                impactSprite=49;
+                impactSprite=19;
                 
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/shot.wav");
@@ -130,7 +130,7 @@ public class Weapon {
                 spread = 0.4f;
                 bulletSprite = -1;
                 damage = 500;
-                impactSprite=45;
+                impactSprite=15;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/punch.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/melee.wav"); 
@@ -146,7 +146,7 @@ public class Weapon {
                 spread = 0.2f;
                 damage = 400;
                 bulletSprite = 0;
-                impactSprite=49;
+                impactSprite=19;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/shotgun.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 
@@ -162,7 +162,7 @@ public class Weapon {
                 spread = 0.08f;
                 damage = 400;
                 bulletSprite = 0;
-                impactSprite=49;
+                impactSprite=19;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/bust.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 
@@ -179,7 +179,7 @@ public class Weapon {
                 damage = 400;
                 bulletSprite = 3;
                 explode = 1;
-                impactSprite=49;
+                impactSprite=19;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/poop.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 
@@ -196,7 +196,7 @@ public class Weapon {
                 bulletSprite = 2;
                 explode = 2;
                 spread = 0.1f;
-                impactSprite=49;
+                impactSprite=19;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/thump.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 
@@ -282,9 +282,11 @@ public class Weapon {
         shooting = delay;
         shotsLoaded--;
         
+        //muzzle flash
         if (bulletSprite <0)
-            AbstractEntity.getInstance(60, 0, character.getPos()).exist();
-        else AbstractEntity.getInstance(61, 0, character.getPos()).exist();
+            new AnimatedEntity(60, 0, character.getPos(), new int[]{300}, true, false).exist();
+        else
+            new AnimatedEntity(61, 0, character.getPos(), new int[]{300}, true, false).exist();
         
         //shot bullets
         for (int i = 0; i < bps; i++) {
@@ -293,19 +295,19 @@ public class Weapon {
             Point pos = character.getPos().cpy();
             pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
             
-            if (bulletSprite <0){
-                bullet = (Bullet) AbstractEntity.getInstance(12, 0, pos);
-                bullet.setHidden(true);
+            if (bulletSprite < 0){
+                bullet = new Bullet(12, pos);
+                bullet.setValue(0);
+                bullet.setHidden(true);//if melee hide it
             } else{
-                bullet = (Bullet) AbstractEntity.getInstance(12, bulletSprite, pos);
+                bullet = new Bullet(12, pos);
+                bullet.setValue(bulletSprite);
             }
             
             float[] aiming = character.getAiming();
             aiming[0] += Math.random() * (spread*2) -spread;
             aiming[1] += Math.random() * (spread*2) -spread;
-            bullet.setDirection(
-                aiming
-            );
+            bullet.setDirection(aiming);
             bullet.setSpeed(1.2f);
             bullet.setMaxDistance(distance*100+100);
             bullet.setParent(character);
@@ -352,6 +354,12 @@ public class Weapon {
     public static void setSpritesheetBig(TextureAtlas spritesheetBig) {
         Weapon.spritesheetBig = spritesheetBig;
     }
-    
-    
+
+    public void setFire(Sound fire) {
+        this.fire = fire;
+    }
+
+    public void setReload(Sound reload) {
+        this.reload = reload;
+    }
 }

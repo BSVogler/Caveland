@@ -28,14 +28,17 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Map.Point;
+
 
 /**
  *A simple basic entity. You can use it for simple images like an effect.
  * @author  Benedikt Vogler
  */
 public class SimpleEntity extends AbstractEntity {
-    public SimpleEntity(int id) {
-        super(id);
+
+    public SimpleEntity(int id, Point pos) {
+        super(id, pos);
     }
 
     @Override

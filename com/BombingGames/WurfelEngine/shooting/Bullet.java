@@ -31,8 +31,11 @@ package com.BombingGames.WurfelEngine.shooting;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Player;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import java.util.ArrayList;
@@ -52,9 +55,14 @@ public class Bullet extends AbstractEntity {
     private int explosive = 0;
     private int impactSprite;
     
-   public Bullet(int id){
-       super(id);
-   } 
+    /**
+     * 
+     * @param id
+     * @param point 
+     */
+    public Bullet(int id, Point point){
+        super(id, point);
+    } 
    
     public static void init(){
         if (explosionsound == null)
@@ -78,19 +86,20 @@ public class Bullet extends AbstractEntity {
         if (isHidden() && distance > 400)
             destroy();
                 
-        //block hit & spawn effect
+        //block hit -> spawn effect
         if (getPos().onLoadedMap() && getPos().getBlockClamp().isObstacle()){
-            AbstractEntity.getInstance(impactSprite, 0, getPos().cpy()).exist();
+            new AnimatedEntity(impactSprite, 0, getPos().cpy(), new int[]{1000} , true, false).exist();
             destroy();
         }
         
         //check character hit
          //get every character on this coordinate
-        ArrayList<AbstractCharacter> entitylist = Controller.getMap().getAllEntitysOnCoord(getPos().getCoord(), AbstractCharacter.class);
-        entitylist.remove(parent);
+        ArrayList<AbstractCharacter> entitylist;
+        entitylist = Controller.getMap().getAllEntitysOnCoord(getPos().getCoord(), AbstractCharacter.class);
+        entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
-            entitylist.get(0).damage(damage);
-            AbstractEntity.getInstance(46, 0, getPos().cpy()).exist();//spawn blood
+            entitylist.get(0).damage(damage);//damage only the first unit on the list
+            new SimpleEntity(46, getPos().cpy()).exist();//spawn blood
             destroy();
         }
     }
@@ -141,12 +150,14 @@ public class Bullet extends AbstractEntity {
                     //spawn explosion effect
                     if (x*x + (y/2)*(y/2)+ z*z >= explosive*explosive-4 &&
                         x*x + (y/2)*(y/2)+ z*z <= explosive*explosive){
-                        AbstractEntity effect = AbstractEntity.getInstance(
+                        AbstractEntity effect = new AnimatedEntity(
                             31,
                             0,
-                            getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint()
-                        );
-                        effect.exist();
+                            getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint(),
+                            new int[]{700,2000},
+                            true,
+                            false
+                        ).exist();
                         ArrayList<AbstractCharacter> list = Controller.getMap().getAllEntitysOnCoord(effect.getPos().getCoord(), AbstractCharacter.class);
                         for (AbstractCharacter ent : list) {
                             if (!(ent instanceof Player))

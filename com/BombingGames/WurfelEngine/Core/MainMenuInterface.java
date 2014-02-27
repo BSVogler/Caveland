@@ -34,7 +34,7 @@ import com.badlogic.gdx.Screen;
  * The game state of the Main Menu.
  * @author Benedikt
  */
-public interface AbstractMainMenu extends Screen{
+public interface MainMenuInterface extends Screen{
     /**
      * Use init like the constructor. Init gets called when every system is ready.
      */

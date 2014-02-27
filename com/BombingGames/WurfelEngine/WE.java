@@ -28,9 +28,9 @@
  */
 package com.BombingGames.WurfelEngine;
 
-import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
+import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
@@ -56,7 +56,7 @@ public class WE extends Game {
     private static boolean fullscreen = false;
     private static WE instance;
     private static GameplayScreen gameplayScreen;
-    private static AbstractMainMenu mainMenu;
+    private static MainMenuInterface mainMenu;
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
 
@@ -125,7 +125,7 @@ public class WE extends Game {
      * @param mainMenu 
      * @see  #launch() 
      */
-    public static void setMainMenu(AbstractMainMenu mainMenu) {
+    public static void setMainMenu(MainMenuInterface mainMenu) {
         WE.mainMenu = mainMenu;
     }
     

@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
@@ -82,8 +81,8 @@ public class Player extends AbstractCharacter{
      * Getting aim relative to player by reading mouse position.
      */
     public float[] getAiming(){
-       int deltaX = Gdx.input.getX() - this.getPos().getProjectedPosX() - camera.getProjectionPosX();
-       int deltaY = Gdx.input.getY() - this.getPos().getProjectedPosY() - camera.getProjectionPosY(); 
+       int deltaX = Gdx.input.getX() - this.getPos().getProjectedPosX() + camera.getProjectionPosX();
+       int deltaY = Gdx.input.getY() - this.getPos().getProjectedPosY() + camera.getProjectionPosY(); 
        float length = (float) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
        return new float[]{
             deltaX/length,

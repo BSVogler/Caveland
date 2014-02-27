@@ -242,7 +242,6 @@ public abstract class AbstractGameObject {
             pixmap = new Pixmap(
                 Gdx.files.internal(WE.getCurrentConfig().getSpritesheetPath()+".png")
             );
-            //load again for pixmap, allows access to image color data
         }
     }
 

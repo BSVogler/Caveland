@@ -100,7 +100,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
-            new SimpleEntity(46, getPos().cpy()).exist();//spawn blood
+            new SimpleEntity(16, getPos().cpy()).exist();//spawn blood
             destroy();
         }
     }

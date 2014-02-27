@@ -82,11 +82,11 @@ public class Player extends AbstractCharacter{
      */
     public float[] getAiming(){
        float deltaX = Gdx.input.getX()- camera.getViewportWidth()/2;
-       float deltaY = Gdx.input.getY()- camera.getViewportHeight()/2; 
+       float deltaY = 2*(Gdx.input.getY()- camera.getViewportHeight()/2); 
        float length = (float) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
        return new float[]{
             deltaX/length,
-            deltaY*2/length,
+            deltaY/length,
             0
         };
     }

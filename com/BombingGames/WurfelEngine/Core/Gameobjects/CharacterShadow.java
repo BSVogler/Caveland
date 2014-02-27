@@ -42,8 +42,8 @@ import com.badlogic.gdx.graphics.Color;
 class CharacterShadow extends AbstractEntity {
     private AbstractCharacter character;
 
-    protected CharacterShadow(int id) {
-        super(id);
+    protected CharacterShadow(AbstractPosition pos) {
+        super(32, pos.getPoint());
     }
 
     @Override

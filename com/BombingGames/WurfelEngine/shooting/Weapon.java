@@ -29,8 +29,8 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
@@ -282,9 +282,10 @@ public class Weapon {
         shooting = delay;
         shotsLoaded--;
         
+        //muzzle flash
         if (bulletSprite <0)
-            AbstractEntity.getInstance(60, 0, character.getPos()).exist();
-        else AbstractEntity.getInstance(61, 0, character.getPos()).exist();
+            new SimpleEntity(60, character.getPos()).exist();
+        else new SimpleEntity(61,character.getPos()).exist();
         
         //shot bullets
         for (int i = 0; i < bps; i++) {
@@ -293,19 +294,19 @@ public class Weapon {
             Point pos = character.getPos().cpy();
             pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
             
-            if (bulletSprite <0){
-                bullet = (Bullet) AbstractEntity.getInstance(12, 0, pos);
-                bullet.setHidden(true);
+            if (bulletSprite < 0){
+                bullet = new Bullet(12, pos);
+                bullet.setValue(0);
+                bullet.setHidden(true);//if melee hdie it
             } else{
-                bullet = (Bullet) AbstractEntity.getInstance(12, bulletSprite, pos);
+                bullet = new Bullet(12, pos);
+                bullet.setValue(bulletSprite);
             }
             
             float[] aiming = character.getAiming();
             aiming[0] += Math.random() * (spread*2) -spread;
             aiming[1] += Math.random() * (spread*2) -spread;
-            bullet.setDirection(
-                aiming
-            );
+            bullet.setDirection(aiming);
             bullet.setSpeed(1.2f);
             bullet.setMaxDistance(distance*100+100);
             bullet.setParent(character);

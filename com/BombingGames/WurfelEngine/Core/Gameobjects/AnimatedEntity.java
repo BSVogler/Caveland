@@ -28,6 +28,8 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+
 /**
  *An entity wich is animated.
  * @author Benedikt
@@ -42,12 +44,13 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
      * Create an entity with an animation with an array wich has the time of every animation step in ms in it.
      * @param id The id of the object
      * @param value the starting value
+     * @param pos
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time.
      * @param animationsinformation  the time in ms for each animation step
      */
-    public AnimatedEntity(int id, int value, int[] animationsinformation, boolean autostart, boolean loop){
-        super(id);
+    public AnimatedEntity(int id, int value, AbstractPosition pos, int[] animationsinformation, boolean autostart, boolean loop){
+        super(id, pos.getPoint());
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

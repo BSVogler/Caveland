@@ -411,7 +411,7 @@ public abstract class AbstractGameObject {
      * Set the value of the object.
      * @param value
      */
-    protected void setValue(int value) {
+    public void setValue(int value) {
         this.value = (byte)value;
     }
 

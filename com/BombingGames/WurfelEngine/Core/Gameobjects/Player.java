@@ -40,12 +40,11 @@ import com.badlogic.gdx.Gdx;
 public class Player extends AbstractCharacter{   
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
-     * @param id 
      * @param point 
      * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
      */
-    public Player(int id, Point point) {
-        super(id, 1, point);
+    public Player(Point point) {
+        super(30, 1, point);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
             (com.badlogic.gdx.backends.openal.Ogg.Sound)

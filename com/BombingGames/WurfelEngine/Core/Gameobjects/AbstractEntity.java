@@ -33,9 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
-import com.BombingGames.WurfelEngine.shooting.Bullet;
-import com.badlogic.gdx.Gdx;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -84,62 +81,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     /**
      * Create an abstractEntity. You should use Block.getInstance(int) 
      * @param id 
+     * @param point 
      * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
      */
-    protected AbstractEntity(int id){
+    protected AbstractEntity(int id, Point point){
         super(id,0);
-    }
-    
-    /**
-     * Create an entity through this factory method..
-     * @param id the object id of the entity.
-     * @param value The value at start.
-     * @param point The coordiantes where you place it.
-     * @return the entity.
-     */
-    public static AbstractEntity getInstance(int id, int value, Point point){
-        AbstractEntity entity;
-        //define the default SideSprites
-        if (id<40){
-            switch (id){
-                case 12:
-                    entity = new Bullet(id);
-                break;
-                case 15:case 16: case 19:case 20:case 21:
-                    entity = new AnimatedEntity(id, value, new int[]{300}, true, false);
-                break;         
-                case 30:
-                    entity = new Player(id, point);
-                    break;
-                case 31: //explosion
-                    entity = new AnimatedEntity(
-                                id,
-                                value,
-                                new int[]{700,2000},
-                                true,
-                                false
-                            );
-                    break;
-                case 32:
-                    entity = new CharacterShadow(id);
-                    break;
-
-                default:
-                    entity = new SimpleEntity(id);
-                break;
-            }
-        } else {
-            if (WE.getCurrentConfig().getEntityFactory()!=null){
-                entity = WE.getCurrentConfig().getEntityFactory().produce(id, value, point); 
-            } else {
-                Gdx.app.error("AbstractEntity", "Tried creating of custom entity"+id+" but there was no custom entityfactory found. Tried using a SimpleEntity.");
-                entity = new SimpleEntity(id);
-            }
-        }
-        
-        entity.setPos(point);
-        entity.setValue(value);
-        return entity;
+        setPos(point);
     }
     
     @Override
@@ -159,7 +106,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
 
     @Override
-    public void setPos(AbstractPosition pos) {
+    public final void setPos(AbstractPosition pos) {
         this.point = pos.getPoint();
     }
     
@@ -194,9 +141,11 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     
     /**
      * add this entity to the map-> let it exist
+     * @return returns itself
      */
-    public void exist(){
+    public AbstractEntity exist(){
         Controller.getMap().getEntitys().add(this);
+        return this;
     }
   
     /**

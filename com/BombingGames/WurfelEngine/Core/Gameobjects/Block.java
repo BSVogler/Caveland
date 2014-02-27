@@ -435,7 +435,7 @@ public class Block extends AbstractGameObject {
         int xPos = coords.getProjectedPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0);//right side is  half a block more to the right
         int yPos = coords.getProjectedPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0);//the top is drawn a quarter blocks higher
         //uncomment these two lines to add a depth-effect (note that it is very dark and still a prototype)
-        int dist = -camera.getTopBorder()+coords.getCoord().getRelY();
+        int dist = -camera.getVisibleTopBorder()+coords.getCoord().getRelY();
         
         color.mul((float) (0.5f+1/Math.exp(dist*0.05f-1)));
         

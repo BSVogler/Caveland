@@ -60,17 +60,17 @@ public class Controller {
         
         if (ENABLECHUNKSWITCH && cameras.size() >0){
             //earth to right
-            if (cameras.get(0).getLeftBorder() <= 0)
+            if (cameras.get(0).getVisibleLeftBorder() <= 0)
                 map.setCenter(3);
             else //earth to the left
-                if (cameras.get(0).getRightBorder() >= Map.getBlocksX()-1) 
+                if (cameras.get(0).getVisibleRightBorder() >= Map.getBlocksX()-1) 
                     map.setCenter(5);
 
             //scroll up, earth down            
-            if (cameras.get(0).getTopBorder() <= 0)
+            if (cameras.get(0).getVisibleTopBorder() <= 0)
                 map.setCenter(1);
             else //scroll down, earth up
-                if (cameras.get(0).getBottomBorder() >= Map.getBlocksY()-1)
+                if (cameras.get(0).getVisibleBottomBorder() >= Map.getBlocksY()-1)
                 map.setCenter(7);
         }
         

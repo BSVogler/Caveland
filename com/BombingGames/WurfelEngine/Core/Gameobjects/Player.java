@@ -28,7 +28,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 
@@ -37,7 +39,8 @@ import com.badlogic.gdx.Gdx;
  *The Player is a character who can walk.
  * @author Benedikt
  */
-public class Player extends AbstractCharacter{   
+public class Player extends AbstractCharacter{
+    private WECamera camera;
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
      * @param point 
@@ -79,13 +82,17 @@ public class Player extends AbstractCharacter{
      * Getting aim relative to player by reading mouse position.
      */
     public float[] getAiming(){
-       float deltaX =Gdx.input.getX() - this.getPos().get2DPosX();
-       float deltaY =Gdx.input.getY() - this.getPos().get2DPosY(); 
-       float length = (float) Math.sqrt( Math.pow(deltaX,2)+ Math.pow(deltaY,2));
+       int deltaX = Gdx.input.getX() - this.getPos().getProjectedPosX() - camera.getProjectionPosX();
+       int deltaY = Gdx.input.getY() - this.getPos().getProjectedPosY() - camera.getProjectionPosY(); 
+       float length = (float) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
        return new float[]{
             deltaX/length,
             deltaY*2/length,
             0
         };
+    }
+
+    public void setCamera(WECamera camera) {
+        this.camera = camera;
     }
 }

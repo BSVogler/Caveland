@@ -157,7 +157,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenXtoGame(int x, WECamera camera){
-        return x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getOutputPosX();
+        return x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getProjectionPosX();
     }
     
    /**
@@ -167,7 +167,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenYtoGame(int y, WECamera camera){
-        return (y / camera.getTotalScale() + camera.getOutputPosY())*2 - camera.getViewportPosY();
+        return (y / camera.getTotalScale() + camera.getProjectionPosY())*2 - camera.getViewportPosY();
     }
     
     /**

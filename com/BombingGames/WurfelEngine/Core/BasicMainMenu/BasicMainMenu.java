@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
  *This class provides a simple basic main menu if you don't want to set up your own and just want to test your game controllers.
  * @author Benedikt Vogler
  */
-public class BasicMainMenu extends AbstractMainMenu {
+public class BasicMainMenu implements AbstractMainMenu {
  
     private static MenuView View;
     private static MenuController Controller;

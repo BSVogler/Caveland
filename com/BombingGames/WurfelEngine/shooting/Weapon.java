@@ -298,7 +298,7 @@ public class Weapon {
             if (bulletSprite < 0){
                 bullet = new Bullet(12, pos);
                 bullet.setValue(0);
-                bullet.setHidden(true);//if melee hdie it
+                bullet.setHidden(true);//if melee hide it
             } else{
                 bullet = new Bullet(12, pos);
                 bullet.setValue(bulletSprite);

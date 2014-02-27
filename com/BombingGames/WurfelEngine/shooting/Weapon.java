@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.shooting;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
@@ -355,6 +354,12 @@ public class Weapon {
     public static void setSpritesheetBig(TextureAtlas spritesheetBig) {
         Weapon.spritesheetBig = spritesheetBig;
     }
-    
-    
+
+    public void setFire(Sound fire) {
+        this.fire = fire;
+    }
+
+    public void setReload(Sound reload) {
+        this.reload = reload;
+    }
 }

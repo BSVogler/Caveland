@@ -173,7 +173,7 @@ public class Point extends AbstractPosition {
 
     @Override
     public int get2DPosX() {
-        return (int) (getRelX()); //x-coordinate multiplied by it's dimension in this direction
+        return (int) (getRelX()); //just the position as integer
     }
 
     @Override

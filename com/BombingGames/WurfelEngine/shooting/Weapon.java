@@ -308,7 +308,7 @@ public class Weapon {
             aiming[0] += Math.random() * (spread*2) -spread;
             aiming[1] += Math.random() * (spread*2) -spread;
             bullet.setDirection(aiming);
-            bullet.setSpeed(1.2f);
+            bullet.setSpeed(1.8f);
             bullet.setMaxDistance(distance*100+100);
             bullet.setParent(character);
             bullet.setDamage(damage);

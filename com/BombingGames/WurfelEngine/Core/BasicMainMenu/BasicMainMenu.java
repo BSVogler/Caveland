@@ -72,6 +72,7 @@ public class BasicMainMenu implements MainMenuInterface {
     @Override
     public void show() {
         Controller.show();
+        View.show();
     }
 
     @Override

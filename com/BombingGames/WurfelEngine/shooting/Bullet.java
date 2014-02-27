@@ -73,17 +73,12 @@ public class Bullet extends AbstractEntity {
     @Override
     public void update(float delta) {
         dir.z=-delta/(float)maxDistance;
-        
-        float[] mov = new float[]{
-            dir.x*delta*speed,
-            dir.y*delta*speed,
-            dir.z
-        };
+        Vector3 dMov = dir.cpy().scl(delta*speed);
             
-        getPos().addVector(mov);
+        getPos().addVector(dMov);
         
         //only exist specific distance then destroy self
-        distance += Math.sqrt(Math.abs(mov[0])+Math.abs(mov[1])+Math.abs(mov[2]))*delta*speed;
+        distance += dMov.len();
         if (isHidden() && distance > 400)
             destroy();
                 

@@ -95,7 +95,7 @@ public class View {
      *
      * @param delta
      */
-    public void update(int delta){
+    public void update(float delta){
     }
     
     /**

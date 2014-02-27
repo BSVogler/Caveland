@@ -173,13 +173,13 @@ public abstract class AbstractPosition {
     }
     
      /**
-     *Returns the screen x-position where the object is rendered without regarding the camera. It also adds the cell offset.
+     *Returns the projeted (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      * @return
      */
     public abstract int getProjectedPosX();
     
     /**
-     *Returns the screen y-position where the object is rendered without regarding the camera. It also adds the cell offset.
+     *Returns the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      * @return
      */
     public abstract int getProjectedPosY();

@@ -178,7 +178,7 @@ public class Point extends AbstractPosition {
     }
 
     /**
-     *Get the position from left
+     *Get the game world position from left
      * @return
      */
     public float getRelX() {
@@ -186,7 +186,7 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     *Get the position from top.
+     *Get the game world position from top.
      * @return
      */
     public float getRelY() {

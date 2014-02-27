@@ -78,11 +78,11 @@ public class Player extends AbstractCharacter{
     
     @Override
     /**
-     * Getting aim relative to player by reading mouse position.
+     * Getting aim relative to middle of view by reading mouse position.
      */
     public float[] getAiming(){
-       int deltaX = Gdx.input.getX() - this.getPos().getProjectedPosX() + camera.getProjectionPosX();
-       int deltaY = Gdx.input.getY() - this.getPos().getProjectedPosY() + camera.getProjectionPosY(); 
+       float deltaX = Gdx.input.getX()- camera.getViewportWidth()/2;
+       float deltaY = Gdx.input.getY()- camera.getViewportHeight()/2; 
        float length = (float) Math.sqrt(deltaX*deltaX + deltaY*deltaY);
        return new float[]{
             deltaX/length,

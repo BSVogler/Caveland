@@ -155,12 +155,12 @@ public class Weapon {
 
             case 4:
                 name="machine gun";
-                delay = 70;
+                delay = 20;
                 relodingTime =1300;
-                shots = 25;
+                shots = 1000;
                 distance = 10;
                 bps = 1;
-                spread = 0.08f;
+                spread = 0f;
                 damage = 400;
                 bulletSprite = 0;
                 impactSprite=19;
@@ -309,6 +309,7 @@ public class Weapon {
             aiming.y += Math.random() * (spread*2) -spread;
             bullet.setDirection(aiming);
             bullet.setSpeed(1.9f);
+            bullet.setSpeed(0.5f);
             bullet.setMaxDistance(distance*100+100);
             bullet.setParent(character);
             bullet.setDamage(damage);

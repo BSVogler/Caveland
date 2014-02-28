@@ -79,7 +79,7 @@ public class Bullet extends AbstractEntity {
         
         //only exist specific distance then destroy self
         distance += dMov.len();
-        if (isHidden() && distance > 400)
+        if (distance > maxDistance)
             destroy();
                 
         //block hit -> spawn effect

@@ -84,7 +84,8 @@ public class Bullet extends AbstractEntity {
                 
         //block hit -> spawn effect
         if (getPos().onLoadedMap() && getPos().getBlockClamp().isObstacle()){
-            new AnimatedEntity(impactSprite, 0, getPos().cpy(), new int[]{1000} , true, false).exist();
+            if (impactSprite!= 0)
+                new AnimatedEntity(impactSprite, 0, getPos().cpy(), new int[]{1000} , true, false).exist();
             destroy();
         }
         
@@ -174,7 +175,12 @@ public class Bullet extends AbstractEntity {
         super.destroy();
     }
 
-    public void setImpactSprite(int hitSprite) {
-        impactSprite = hitSprite;
+    /**
+     * Set the sprite which get spawned when the bullet hits.
+     * @param id  if you don't want an impact sprite set id to0.
+     */
+    public void setImpactSprite(int id) {
+        impactSprite = id;
+    }
     }
 }

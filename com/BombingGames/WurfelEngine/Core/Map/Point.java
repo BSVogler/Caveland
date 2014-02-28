@@ -282,7 +282,7 @@ public class Point extends AbstractPosition {
     public Point addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
+        setHeight(getHeight()+ vector[2]);
         return this;
     }
     
@@ -295,7 +295,7 @@ public class Point extends AbstractPosition {
     public Point addVector(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
-        setHeight(getHeight()+ vector.z*Block.GAME_EDGELENGTH);
+        setHeight(getHeight()+ vector.z);
         return this;
     }
 
@@ -310,7 +310,7 @@ public class Point extends AbstractPosition {
     public AbstractPosition addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z*Block.GAME_EDGELENGTH);
+        setHeight(getHeight()+ z);
         return this;
     }
     

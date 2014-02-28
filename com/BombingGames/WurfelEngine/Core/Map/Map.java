@@ -471,11 +471,12 @@ public class Map {
      * @param type
      * @return a list with the entitys
      */
-    public <type> ArrayList<type> getAllEntitysOfType(Class<type> type) {
+    @SuppressWarnings("unchecked")
+    public <type> ArrayList<type> getAllEntitysOfType(Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<type>();
 
         for (AbstractEntity entity : entitylist) {//check every entity
-            if (type.isInstance(entity)) {//if the entity has the wanted type
+            if (type.isInstance(entity)) {//if the entity is of the wanted type
                 list.add((type) entity);//add it to list
             }
         }
@@ -510,16 +511,16 @@ public class Map {
      * @param type the class you want to filter.
      * @return a list with the entitys
      */
-    public <type> ArrayList<type> getAllEntitysOnCoord(Coordinate coord, Class<type> type) {
+    @SuppressWarnings("unchecked")
+    public <type> ArrayList<type> getAllEntitysOnCoord(Coordinate coord, Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<type>();
 
         for (AbstractEntity ent : entitylist) {
-            if (Arrays.equals(
-                    ent.getPos().getCoord().getRel(),
-                    coord.getRel()
-                ) && type.isInstance(ent)
+            if (
+                Arrays.equals(ent.getPos().getCoord().getRel(),coord.getRel())//on coordinate?
+                && type.isInstance(ent)//of tipe of filter?
                 ){
-                list.add((type) ent);//add it to list
+                    list.add((type) ent);//add it to list
             } 
         }
 

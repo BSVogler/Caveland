@@ -333,11 +333,11 @@ public class Weapon {
         return shots;
     }
 
-    public int getReloading() {
+    public int getReloadingTime() {
         return reloading;
     }
 
-    public int getShooting() {
+    public int getShootingTime() {
         return shooting;
     }
 

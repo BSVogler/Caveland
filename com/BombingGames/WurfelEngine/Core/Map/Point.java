@@ -274,8 +274,8 @@ public class Point extends AbstractPosition {
     }
 
     /**
-     *
-     * @param vector
+     *Add a vector to the position
+     * @param vector all values in game world values
      * @return
      */
     @Override
@@ -287,8 +287,8 @@ public class Point extends AbstractPosition {
     }
     
      /**
-     *
-     * @param vector
+     *Add a vector to the position
+     * @param vector all values in game world values
      * @return
      */
     @Override
@@ -301,9 +301,9 @@ public class Point extends AbstractPosition {
 
     /**
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x x value to add
+     * @param y y value to add
+     * @param z height to add
      * @return
      */
     @Override

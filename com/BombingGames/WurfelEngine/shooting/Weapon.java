@@ -29,9 +29,7 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -69,6 +67,8 @@ public class Weapon {
     private int shotsLoaded;
     private int reloading;
     private int shooting;
+    private int explode;
+    private Bullet laser;
 
     public static void init(){
         if (spritesheetBig == null) {
@@ -81,7 +81,7 @@ public class Weapon {
 //            }
         }
     }
-    private int explode;
+
     
     public Weapon(int id, AbstractCharacter character) {
         this.id = id;
@@ -274,6 +274,21 @@ public class Weapon {
                     shoot();  
             }
         }
+        if (laser!=null && laser.shouldBeDestroyed()) laser=null;
+        if (laser==null) {
+            laser = new Bullet(12, character.getPos().cpy());
+            laser.setValue(0);
+            laser.setHidden(true);
+
+            laser.setDirection(character.getAiming());
+            laser.setSpeed(7);
+            laser.setMaxDistance(3000);
+            laser.setParent(character);
+            laser.setDamage(0);
+            laser.setExplosive(0);
+            laser.setImpactSprite(16);
+            laser.exist();
+        }
     }
     
     
@@ -293,9 +308,8 @@ public class Weapon {
         for (int i = 0; i < bps; i++) {
             Bullet bullet;
             
-            Point pos = character.getPos().cpy();
             //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
-            bullet = new Bullet(12, pos);
+            bullet = new Bullet(12, character.getPos().cpy());
             
             if (bulletSprite < 0){//if melee hide it
                 bullet.setValue(0);
@@ -308,7 +322,6 @@ public class Weapon {
             aiming.x += Math.random() * (spread*2) -spread;
             aiming.y += Math.random() * (spread*2) -spread;
             bullet.setDirection(aiming);
-            bullet.setSpeed(1.9f);
             bullet.setSpeed(0.5f);
             bullet.setMaxDistance(distance*100+100);
             bullet.setParent(character);
@@ -362,5 +375,9 @@ public class Weapon {
 
     public void setReload(Sound reload) {
         this.reload = reload;
+    }
+    
+    public int getAimDistance(){
+        return laser.getDistance();
     }
 }

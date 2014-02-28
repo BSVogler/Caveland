@@ -182,5 +182,10 @@ public class Bullet extends AbstractEntity {
     public void setImpactSprite(int id) {
         impactSprite = id;
     }
+
+    public int getDistance() {
+        return distance;
     }
+    
+    
 }

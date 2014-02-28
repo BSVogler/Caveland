@@ -294,14 +294,13 @@ public class Weapon {
             Bullet bullet;
             
             Point pos = character.getPos().cpy();
-            pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
+            //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
+            bullet = new Bullet(12, pos);
             
-            if (bulletSprite < 0){
-                bullet = new Bullet(12, pos);
+            if (bulletSprite < 0){//if melee hide it
                 bullet.setValue(0);
-                bullet.setHidden(true);//if melee hide it
+                bullet.setHidden(true);
             } else{
-                bullet = new Bullet(12, pos);
                 bullet.setValue(bulletSprite);
             }
             

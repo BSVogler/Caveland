@@ -79,18 +79,27 @@ public class Player extends AbstractCharacter{
     
     @Override
     /**
-     * Getting aim relative to middle of view by reading mouse position.
+     * Getting aim relative to middle of view by reading mouse position. If no camera is configured it will return null.
      */
     public Vector3 getAiming(){
-        Vector3 aim = new Vector3(
-            Gdx.input.getX()- camera.getViewportWidth()/2,
-            2*(Gdx.input.getY()- camera.getViewportHeight()/2),
-            0
-        );
-        aim.nor();
-        return aim;
+        Vector3 aim = null;
+        if (camera != null){
+            aim = new Vector3(
+                Gdx.input.getX()- camera.getViewportWidth()/2,
+                2*(Gdx.input.getY()- camera.getViewportHeight()/2),
+                0
+            );
+            aim.nor();
+            return aim;
+        }else{
+            return aim;
+        }
     }
 
+    /**
+     *Set the camera which is renderin the player to calculate the aiming. If camera is null 
+     * @param camera 
+     */
     public void setCamera(WECamera camera) {
         this.camera = camera;
     }

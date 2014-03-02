@@ -205,13 +205,16 @@ public class WE extends Game {
             + "Benedikt Vogler"+newline+newline
             + "Programming:"+newline
             + "Benedikt Vogler"+newline+newline
-            + "Art:"+newline
-            + "Benedikt Vogler"+newline
-            + "Pia Lenßen"+newline+newline
+            + "2D Art:"+newline
+            + "Benedikt Vogler"+newline+newline
+            + "3D Art"+newline
+            + "Pia Lenßen"+newline
+            + "Benedikt Vogler"+newline+newline
             + "Sound:"+newline
             + "Benedikt Vogler"+newline+newline
-            + "Quality Assurance"+newline
-            + "Thomas Vogt";
+            + "Quality Assurance:"+newline
+            + "Thomas Vogt"+newline+newline
+            + "Want your name here? Contact me and join us!";
     }
     
    /**

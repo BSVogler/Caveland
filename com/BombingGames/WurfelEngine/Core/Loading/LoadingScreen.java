@@ -34,6 +34,10 @@ public class LoadingScreen implements Screen {
     
     private final LoadingController controller;
 
+    /**
+     *
+     * @param controller
+     */
     public LoadingScreen(LoadingController controller) {
         this.controller = controller;
     }

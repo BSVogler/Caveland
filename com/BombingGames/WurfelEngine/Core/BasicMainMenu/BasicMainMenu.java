@@ -107,6 +107,9 @@ public class BasicMainMenu implements MainMenuInterface {
         return View;
     }
     
+    /**
+     *
+     */
     public void supressWarning(){
         warning = false;
     }

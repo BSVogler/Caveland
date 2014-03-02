@@ -228,6 +228,11 @@ public class Coordinate extends AbstractPosition {
         return this;
     }
     
+    /**
+     *
+     * @param vector
+     * @return
+     */
     @Override
     public Coordinate addVector(Vector3 vector) {
         this.x += vector.x;
@@ -401,14 +406,26 @@ public class Coordinate extends AbstractPosition {
         return new Coordinate(result[0], result[1], result[2], true);
     }
     
+    /**
+     *
+     * @return
+     */
     protected int getX() {
         return x;
     }
 
+    /**
+     *
+     * @return
+     */
     protected int getY() {
         return y;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Point getPoint() {
         return new Point(
@@ -419,6 +436,10 @@ public class Coordinate extends AbstractPosition {
         );
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Coordinate getCoord() {
         return this;
@@ -444,6 +465,4 @@ public class Coordinate extends AbstractPosition {
                - (int) (getHeight() / Math.sqrt(2)) //take axis shortening into account
                + offset;
     }
-
-
 }

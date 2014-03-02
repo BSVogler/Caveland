@@ -310,6 +310,10 @@ public class View {
         return shapeRenderer;
     }
 
+    /**
+     *
+     * @return
+     */
     public Controller getController() {
         return controller;
     }

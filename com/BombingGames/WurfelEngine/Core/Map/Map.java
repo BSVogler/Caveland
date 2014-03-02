@@ -550,6 +550,10 @@ public class Map {
             );
     }
     
+    /**
+     *The width of the map with three chunks in use
+     * @return amount of bluck multiplied by the size in game space.
+     */
     public static int getGameWidth(){
         return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
     }

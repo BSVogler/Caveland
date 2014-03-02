@@ -231,13 +231,18 @@ public class Controller {
     public void setTimespeed(float timespeed) {
         this.timespeed = timespeed;
     }
-    
 
-
+    /**
+     *
+     * @return
+     */
     public FPSdiag getFpsdiag() {
         return fpsdiag;
     }
 
+    /**
+     *
+     */
     public void dispose(){
         for (AbstractEntity entity :  map.getEntitys()) {
             entity.dispose();

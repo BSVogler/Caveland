@@ -70,6 +70,9 @@ public class LoadingController {
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
     }
     
+    /**
+     *
+     */
     public void update(){
         if (WE.getAssetManager().update()) { // Load some, will return true if done loading 
             Gdx.app.log("Loading", "finished");
@@ -80,6 +83,10 @@ public class LoadingController {
         percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.1f);
     }
 
+    /**
+     *
+     * @return
+     */
     public float getPercent() {
         return percent;
     }

@@ -125,14 +125,25 @@ public class BasicMenuItem{
         );
     }
 
+    /**
+     *
+     * @return
+     */
     public Class<? extends Controller> getGameController() {
         return gameController;
     }
 
+    /**
+     *
+     * @return
+     */
     public Class<? extends View> getGameView() {
         return gameView;
     }
     
+    /**
+     *
+     */
     public void action(){
         if (sound  != null)
             sound.play();
@@ -155,6 +166,10 @@ public class BasicMenuItem{
         }
     }
 
+    /**
+     *
+     * @param sound
+     */
     public static void setSound(Sound sound) {
         BasicMenuItem.sound = sound;
     }

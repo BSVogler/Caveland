@@ -146,14 +146,26 @@ public class Configuration {
     public void loadfromFile(){
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRenderResolutionWidth() {
         return renderResolutionWidth;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean useLightEngine() {
         return useLightEngine;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean shouldAutoShade() {
         return autoshade;
     }

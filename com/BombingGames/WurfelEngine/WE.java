@@ -230,6 +230,12 @@ public class WE extends Game {
         Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WE.isFullscreen());
     }
     
+    /**
+     *
+     * @param <T>
+     * @param filename
+     * @return
+     */
     public static <T> T getAsset(String filename){
         return assetManager.get(filename);
     }
@@ -260,6 +266,10 @@ public class WE extends Game {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public static Configuration getCurrentConfig(){
         return gameplayScreen.getConfig();
     }

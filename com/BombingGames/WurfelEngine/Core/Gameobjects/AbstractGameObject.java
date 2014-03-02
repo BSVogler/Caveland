@@ -447,6 +447,9 @@ public abstract class AbstractGameObject {
         return sprites;
     }
     
+    /**
+     *
+     */
     public void dispose(){
         spritesheet.dispose();
         pixmap.dispose();

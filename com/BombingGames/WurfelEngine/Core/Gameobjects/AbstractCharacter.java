@@ -348,13 +348,16 @@ public abstract class AbstractCharacter extends AbstractEntity {
     
    /**
      * Set the value of waterSound
-     *
      * @param waterSound new value of waterSound
      */
     public static void setWaterSound(Sound waterSound) {
         AbstractCharacter.waterSound = waterSound;
     }
     
+    /**
+     *
+     * @param sound
+     */
     public void setDamageSounds(Sound[] sound){
         damageSounds = sound;
     }
@@ -414,8 +417,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public boolean isInLiquid() {
         return inliquid;
     }
-    
-     public void damage(int value) {
+
+    /**
+     *
+     * @param value
+     */
+    public void damage(int value) {
         if (health >0){
             if (damageSounds.length > 0 && soundlimit<=0) {
                 damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
@@ -426,19 +433,34 @@ public abstract class AbstractCharacter extends AbstractEntity {
             health=0;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getHealt() {
        return health;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMana() {
         return mana;
     }
 
+    /**
+     *
+     * @param mana
+     */
     public void setMana(int mana) {
         this.mana = mana;
     }
-    
-   @Override
+
+    /**
+     *
+     */
+    @Override
     public void dispose(){
         fallingSound.dispose();
         jumpingSound.dispose();

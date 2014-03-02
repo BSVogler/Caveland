@@ -58,10 +58,17 @@ public class MenuController {
         }
     }
 
+    /**
+     *
+     */
     public void show(){
         Gdx.input.setInputProcessor(new InputListener());
     }
 
+    /**
+     *
+     * @return
+     */
     public BasicMenuItem[] getMenuItems() {
         return menuItems;
     }

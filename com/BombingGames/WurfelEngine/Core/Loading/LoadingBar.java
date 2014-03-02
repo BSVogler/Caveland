@@ -17,6 +17,10 @@ public class LoadingBar extends Actor {
     TextureRegion reg;
     float stateTime;
 
+    /**
+     *
+     * @param animation
+     */
     public LoadingBar(Animation animation) {
         this.animation = animation;
         reg = animation.getKeyFrame(0);

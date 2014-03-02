@@ -37,6 +37,11 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public class SimpleEntity extends AbstractEntity {
 
+    /**
+     *
+     * @param id
+     * @param pos
+     */
     public SimpleEntity(int id, Point pos) {
         super(id, pos);
     }

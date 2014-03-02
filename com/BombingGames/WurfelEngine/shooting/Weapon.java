@@ -70,6 +70,9 @@ public class Weapon {
     private int explode;
     private Bullet laser;
 
+    /**
+     *
+     */
     public static void init(){
         if (spritesheetBig == null) {
 //            spritesheetBig = WEMain.getAsset("com/BombingGames/WeaponOfChoice/SpritesBig.txt");
@@ -82,7 +85,11 @@ public class Weapon {
         }
     }
 
-    
+    /**
+     *
+     * @param id
+     * @param character
+     */
     public Weapon(int id, AbstractCharacter character) {
         this.id = id;
         this.character = character;
@@ -240,14 +247,26 @@ public class Weapon {
     
     }
 
+    /**
+     *
+     * @return
+     */
     public static TextureAtlas getSpritesheetBig() {
         return spritesheetBig;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @return
+     */
     public static int getScaling() {
         return scaling;
     }
@@ -334,27 +353,49 @@ public class Weapon {
 
     }
     
+    /**
+     *
+     */
     public void reload(){
         reloading =relodingTime;
         if (reload != null) reload.play();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getShotsLoaded() {
         return shotsLoaded;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getShots() {
         return shots;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getReloadingTime() {
         return reloading;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getShootingTime() {
         return shooting;
     }
 
+    /**
+     *
+     */
     public void trigger() {
          if (shooting <= 0 && reloading <= 0){
             //if not shootring or loading
@@ -366,18 +407,34 @@ public class Weapon {
         }
     }
 
+    /**
+     *
+     * @param spritesheetBig
+     */
     public static void setSpritesheetBig(TextureAtlas spritesheetBig) {
         Weapon.spritesheetBig = spritesheetBig;
     }
 
+    /**
+     *
+     * @param fire
+     */
     public void setFire(Sound fire) {
         this.fire = fire;
     }
 
+    /**
+     *
+     * @param reload
+     */
     public void setReload(Sound reload) {
         this.reload = reload;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getAimDistance(){
         return laser.getDistance();
     }

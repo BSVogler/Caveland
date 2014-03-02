@@ -104,16 +104,28 @@ public abstract class AbstractPosition {
      */
     public abstract int getProjectedPosY();
     
+    /**
+     *
+     * @return
+     */
     public abstract Point getPoint();
     
+    /**
+     *
+     * @return
+     */
     public abstract Coordinate getCoord();
     
     /**
      * Get the block at the position. If the coordiante is outside the map return null.
      * @return 
      */
-    public abstract Block getBlock(); 
-    
+    public abstract Block getBlock();
+
+    /**
+     *
+     * @return
+     */
     public abstract AbstractPosition cpy(); 
     
     /**
@@ -122,9 +134,26 @@ public abstract class AbstractPosition {
      */
     public abstract boolean onLoadedMap();
     
+    /**
+     *
+     * @param vector
+     * @return returns itself
+     */
     public abstract AbstractPosition addVector(float[] vector);
     
+    /**
+     *
+     * @param vector
+     * @return returns itself
+     */
     public abstract AbstractPosition addVector(Vector3 vector);
     
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return returns itself
+     */
     public abstract AbstractPosition addVector(float x, float y, float z);
 }

@@ -63,8 +63,11 @@ public class Bullet extends AbstractEntity {
      */
     public Bullet(int id, Point point){
         super(id, point);
-    } 
-   
+    }
+
+    /**
+     *
+     */
     public static void init(){
         if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
@@ -101,32 +104,56 @@ public class Bullet extends AbstractEntity {
         }
     }
 
+    /**
+     *
+     * @param dir
+     */
     public void setDirection(Vector3 dir) {
         this.dir = dir;
     }
     
+    /**
+     *
+     * @param speed
+     */
     public void setSpeed(float speed){
         this.speed = speed;
     }
 
+    /**
+     *
+     * @param parent
+     */
     public void setParent(AbstractCharacter parent) {
         this.parent = parent;
     }
     
+    /**
+     *
+     * @param maxDistance
+     */
     public void setMaxDistance(int maxDistance){
         this.maxDistance = maxDistance;
     }
 
+    /**
+     *
+     * @param damage
+     */
     public void setDamage(int damage) {
         this.damage = damage;
     }
     
+    /**
+     *
+     * @param ex
+     */
     public void setExplosive(int ex){
         explosive = ex;
     }
     
       /**
-     * Explodes the barrel.
+     * Spawns explosion.
      */
     private void explode(){
         for (int x=-explosive; x<explosive; x++)
@@ -183,6 +210,10 @@ public class Bullet extends AbstractEntity {
         impactSprite = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDistance() {
         return distance;
     }

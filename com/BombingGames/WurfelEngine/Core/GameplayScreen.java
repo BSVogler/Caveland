@@ -131,6 +131,10 @@ public class GameplayScreen implements Screen{
         controller.dispose();
     }
 
+    /**
+     *
+     * @return
+     */
     public Configuration getConfig() {
         return config;
     }

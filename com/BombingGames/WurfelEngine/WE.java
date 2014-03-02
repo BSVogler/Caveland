@@ -71,32 +71,34 @@ public class WE extends Game {
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         
         config = new LwjglApplicationConfiguration();
-
+        
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = false;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = 0;
+        config.foregroundFPS = 0;//don't lock FPS
         config.useGL20 = false;
          
         //arguments
-        //you can start the game with a custom resolution
-        if (args.length == 0){
-           config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-        } else {
-            if (args.length > 1){
-                config.width = Integer.parseInt(args[0]);
-                config.height = Integer.parseInt(args[1]);
-                if (args.length >= 3){
-                    config.fullscreen = ("true".equals(args[2]));
+        if (args.length > 0){
+            //look if contains launch parameters
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].equals("-fullscreen")){//start in fullscreen
+                    config.fullscreen = true;
+                } else if (args[i].equals("-windowed")) {//start in windowed mode
+                    config.fullscreen = false;
+                } else if (args[i].equals("-w")){//set the width
+                    config.width = Integer.parseInt(args[i+1]);
+                } else if (args[i].equals("-h")){//set the height
+                    config.height = Integer.parseInt(args[i+1]);
                 }
             }
         }    
         
         config.title = title + " " + config.width + "x"+config.height;
 
-        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfelengine");
+        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfelengine");//set save-folder
         
-        Texture.setEnforcePotImages(false);//allow non-power-of-two textures
+        Texture.setEnforcePotImages(false);//allow non-power-of-two textures on system which support them
        
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
@@ -132,7 +134,7 @@ public class WE extends Game {
    /**
      * Create a new instance of the engine.
      * @param title The title, which is displayed in the window.
-     * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
+     * @param args launch parameters. For a list look in the wiki.
      */
     public static void construct(String title, String[] args){
         instance = new WE(title,args);

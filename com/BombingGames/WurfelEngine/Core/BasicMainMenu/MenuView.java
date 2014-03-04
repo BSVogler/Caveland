@@ -43,7 +43,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
-
 /**
  * The View manages the graphical ouput and input.
  * @author Benedikt
@@ -55,7 +54,7 @@ public class MenuView {
     private final BitmapFont font;
     private float a =0;
     private final ShapeRenderer sr;
-    private MenuController controller;
+    private final MenuController controller;
     
     /**
      * Creates a View.
@@ -138,7 +137,7 @@ public class MenuView {
     }
     
     private class InputListener implements InputProcessor {
-        private MenuController controller;
+        private final MenuController controller;
 
         InputListener(MenuController controller) {
             this.controller = controller;

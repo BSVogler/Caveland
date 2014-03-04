@@ -28,6 +28,8 @@
  */
 package com.BombingGames.WurfelEngine;
 
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
@@ -113,13 +115,17 @@ public class WE extends Game {
     public void create() {
         if (mainMenu==null){
             Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
-            //use basic game in future
-            //mainMenu = new BasicMainMenu(gameController, gameViews);
-        } else {
-            System.out.println("Initializing main menu...");
-            mainMenu.init();
-            setScreen(mainMenu);
+            Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
+            BasicMenuItem[] menuItems = new BasicMenuItem[]{
+                new BasicMenuItem(0, "Test Engine", Controller.class, View.class, new Configuration()),
+                new BasicMenuItem(1, "Options"),
+                new BasicMenuItem(2, "Exit")
+            };   
+            mainMenu = new BasicMainMenu(menuItems);
         }
+        System.out.println("Initializing main menu...");
+        mainMenu.init();
+        setScreen(mainMenu);
     }
 
     /**

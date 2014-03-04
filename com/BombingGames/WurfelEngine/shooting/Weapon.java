@@ -306,7 +306,7 @@ public class Weapon {
             laser.setParent(character);
             laser.setDamage(0);
             laser.setExplosive(0);
-            laser.setImpactSprite(16);
+            laser.setImpactSprite(20);
             laser.exist();
         }
     }

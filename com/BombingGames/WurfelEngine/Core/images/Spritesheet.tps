@@ -236,6 +236,7 @@
             <filename>entities/e31-1.png</filename>
             <filename>entities/e32-0.png</filename>
             <filename>entities/error.png</filename>
+            <filename>entities/e20-0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

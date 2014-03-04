@@ -30,6 +30,8 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -53,11 +55,14 @@ public class MenuView {
     private final BitmapFont font;
     private float a =0;
     private final ShapeRenderer sr;
+    private MenuController controller;
     
     /**
      * Creates a View.
+     * @param controller
      */
-    public MenuView(){
+    protected MenuView(MenuController controller){
+        this.controller = controller;
         //load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
@@ -76,17 +81,16 @@ public class MenuView {
         sr = new ShapeRenderer();
     }
 
-    void update(float delta) {
+    protected void update(float delta) {
        a += delta/1000f;
        if (a>1) a=1;
     }
         
     /**
      * renders the scene
-     * @param pController
      * @param warning Render a warning about no custom main menu in use.
      */
-    public void render(MenuController pController, boolean warning){
+    protected void render(boolean warning){
         //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -126,8 +130,69 @@ public class MenuView {
         font.scale(0.5f);
     }
 
-    void show() {
+    protected void show() {
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/wecursor.png"));
         Gdx.input.setCursorImage(cursor, 0, 0);
+        
+        Gdx.input.setInputProcessor(new InputListener(controller));
     }
+    
+    private class InputListener implements InputProcessor {
+        private MenuController controller;
+
+        InputListener(MenuController controller) {
+            this.controller = controller;
+        }
+        
+        
+
+        @Override
+        public boolean keyDown(int keycode) {
+            if (keycode == Input.Keys.ESCAPE)
+                Gdx.app.exit();
+            if (keycode == Input.Keys.DOWN)
+                BasicMenuItem.setHighlight(BasicMenuItem.getHighlight()+1);
+            if (keycode == Input.Keys.UP)
+                BasicMenuItem.setHighlight(BasicMenuItem.getHighlight()-1);
+            if (keycode == Input.Keys.ENTER)
+                controller.getMenuItems()[BasicMenuItem.getHighlight()].action();
+            return true;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return true;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return true;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return true;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return true;
+        }
+    }
+
 }

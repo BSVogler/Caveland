@@ -49,6 +49,8 @@ import java.util.logging.Logger;
  * @author Benedikt
  */
 public class BasicMenuItem{
+    private static Sound sound;
+    private static int highlight =0;
     private final Class<? extends Controller> gameController;
     private final Class<? extends View> gameView;
     private int x;
@@ -57,7 +59,6 @@ public class BasicMenuItem{
     private final String text;
     private final int width;
     private final int height = 50;
-    private static Sound sound;
     private Configuration config;
     
     /**
@@ -101,7 +102,10 @@ public class BasicMenuItem{
         this.x = ((Gdx.graphics.getWidth()-50)/2);
         this.y = (Gdx.graphics.getHeight()/2-120+index*80);
         
-        sr.setColor(Color.DARK_GRAY.cpy());
+        if (highlight==index)
+            sr.setColor(Color.LIGHT_GRAY.cpy());
+        else 
+            sr.setColor(Color.DARK_GRAY.cpy());
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.rect(x, y, width, height);
         sr.end();
@@ -173,4 +177,14 @@ public class BasicMenuItem{
     public static void setSound(Sound sound) {
         BasicMenuItem.sound = sound;
     }
+
+    public static int getHighlight() {
+        return highlight;
+    }
+
+    public static void setHighlight(int highlight) {
+        BasicMenuItem.highlight = highlight;
+    }
+    
+    
 }

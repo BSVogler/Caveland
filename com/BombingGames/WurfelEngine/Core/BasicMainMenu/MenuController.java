@@ -29,8 +29,6 @@
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 
 /**
  * The controlelr of the main Menu manages the data.
@@ -62,7 +60,7 @@ public class MenuController {
      *
      */
     public void show(){
-        Gdx.input.setInputProcessor(new InputListener());
+
     }
 
     /**
@@ -73,48 +71,4 @@ public class MenuController {
         return menuItems;
     }
     
-    private class InputListener implements InputProcessor {
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if (keycode == Input.Keys.ESCAPE)
-                Gdx.app.exit();
-            return true;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return true;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return true;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return true;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return true;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return true;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return true;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return true;
-        }
     }
-}

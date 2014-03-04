@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 import com.badlogic.gdx.Gdx;
 
 /**
- * The controlelr of the main Menu manages the data.
+ * The controller of the main Menu manages the data.
  * @author Benedikt
  */
 public class MenuController {

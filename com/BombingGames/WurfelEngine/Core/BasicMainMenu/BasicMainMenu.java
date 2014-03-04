@@ -108,7 +108,7 @@ public class BasicMainMenu implements MainMenuInterface {
     }
     
     /**
-     *
+     *If you want to hide the warning message call this method.
      */
     public void supressWarning(){
         warning = false;

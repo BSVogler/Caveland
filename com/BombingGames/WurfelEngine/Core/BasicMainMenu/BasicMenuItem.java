@@ -78,7 +78,7 @@ public class BasicMenuItem{
     }
     
       /**
-     * Create a new menu Item which exits the game
+     * Create a new menu Item which does something specific like exiting or showing the option screen.
      * @param index
      * @param label
      */
@@ -91,7 +91,7 @@ public class BasicMenuItem{
     }
     
     /**
-     *
+     *Renders the menu item.
      * @param camera The camera rendering the MenuItem
      * @param font
      * @param batch

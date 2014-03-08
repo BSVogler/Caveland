@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Loading;
 
+import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -44,9 +45,9 @@ public class LoadingController {
     
     /**
      * 
-     * @param path Path to spritesheet
+     * @param config
      */
-    public LoadingController(String path){
+    public LoadingController(Configuration config){
         Gdx.app.log("LoadingController", "Initializing");
         AssetManager manager = WE.getAssetManager();
                 
@@ -59,7 +60,7 @@ public class LoadingController {
         
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);       
-        manager.load(path+".txt", TextureAtlas.class);
+        manager.load(config.getSpritesheetPath()+".txt", TextureAtlas.class);
        // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg", Sound.class);
@@ -68,7 +69,7 @@ public class LoadingController {
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg", Sound.class);
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
-        WE.getCurrentConfig().initLoadingQueque(manager);
+        config.initLoadingQueque(manager);
     }
     
     /**

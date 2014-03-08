@@ -36,7 +36,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 /**
- * The GameplayScreen State. This is state where the magic happens.
+ * The GameplayScreen State. This is state where the Wurfel Engine magic happens.
  * @author Benedikt
  */
 public class GameplayScreen implements Screen{ 
@@ -54,13 +54,13 @@ public class GameplayScreen implements Screen{
      * Create the gameplay state.
      * @param controller The controller of this screen.
      * @param view The user view of this screen.
-     * @param config
+     * @param config The configuration of the game show in this screen.
      */
     public GameplayScreen(Controller controller, View view, Configuration config) {
         Gdx.app.log("GameplayScreen", "Initializing");
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
-        loadingController = new LoadingController(config.getSpritesheetPath());
+        loadingController = new LoadingController(config);
 
         WE.getInstance().setScreen(new LoadingScreen(loadingController));
         

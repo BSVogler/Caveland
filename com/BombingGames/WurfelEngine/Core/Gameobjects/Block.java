@@ -126,7 +126,7 @@ public class Block extends AbstractGameObject {
         Block block; 
         if (id>39) 
             block = new Block(id);
-        else block = getInstance(id);
+        else block = getInstance(id,0,null);
         return block;
     }
     

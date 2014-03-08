@@ -159,7 +159,6 @@ public class BasicMenuItem{
         }else {
             try {
                 Controller c = getGameController().newInstance();
-
                 View v = getGameView().newInstance();
                 WE.initGame(c,v, config);
             } catch (InstantiationException ex) {

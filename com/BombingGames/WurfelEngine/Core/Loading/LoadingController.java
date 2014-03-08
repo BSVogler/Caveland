@@ -68,6 +68,7 @@ public class LoadingController {
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg", Sound.class);
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
+        WE.getCurrentConfig().initLoadingQueque(manager);
     }
     
     /**

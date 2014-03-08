@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine;
 //import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.badlogic.gdx.assets.AssetManager;
 
 
 
@@ -206,5 +207,14 @@ public class Configuration {
      */
     public String getSpritesheetPath(){
         return "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
+    }
+    
+    /**
+     * Add asstes to loading queque. 
+     * manager.load("com/BombingGames/WeaponOfChoice/Sounds/melee.wav", Sound.class);
+     * @param manager
+     */
+    public void initLoadingQueque(AssetManager manager){
+        
     }
 }

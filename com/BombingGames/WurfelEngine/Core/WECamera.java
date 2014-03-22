@@ -64,8 +64,8 @@ public class WECamera extends Camera {
     private final ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
     
     private final Block groundBlock;
-    
-
+    private boolean toggleChunkSwitch = true;
+        
     /**
      * Creates a camera pointing at the middle of the map.
      * @param x the position in the application window
@@ -80,7 +80,7 @@ public class WECamera extends Camera {
         viewportPosY = y;
         
         equalizationScale = viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
-                
+                        
 	near = 0;
 	up.set(0, -1, 0);
 	direction.set(0, 0, 1);
@@ -132,7 +132,7 @@ public class WECamera extends Camera {
      * Updates the camera.
      */
     @Override
-    public void update() {       
+    public void update() {             
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
             projectionPosX = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
@@ -654,5 +654,13 @@ public class WECamera extends Camera {
      */
     public float getViewportWidth() {
         return viewportWidth;
+    }
+
+    public boolean togglesChunkSwitch() {
+        return toggleChunkSwitch;
+    }
+
+    public void setToggleChunkSwitch(boolean toggleChunkSwitch) {
+        this.toggleChunkSwitch = toggleChunkSwitch;
     }
 }

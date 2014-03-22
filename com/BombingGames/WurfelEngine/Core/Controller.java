@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
  * @author Benedikt Vogler
  */
 public class Controller {
-    private final boolean ENABLECHUNKSWITCH = true;
     private static LightEngine lightEngine;
     private static Map map;
     private static boolean recalcRequested;
@@ -58,20 +57,20 @@ public class Controller {
          //update the log
         GameplayScreen.msgSystem().update(delta);
         
-        if (ENABLECHUNKSWITCH && cameras.size() >0){
-            //earth to right
-            if (cameras.get(0).getVisibleLeftBorder() <= 0)
-                map.setCenter(3);
-            else //earth to the left
-                if (cameras.get(0).getVisibleRightBorder() >= Map.getBlocksX()-1) 
-                    map.setCenter(5);
+        for (WECamera camera : cameras) {
+            if (camera.togglesChunkSwitch()) {
+                //earth to right
+                if (camera.getVisibleLeftBorder() <= 0)
+                    map.setCenter(3);
+                else if (camera.getVisibleRightBorder() >= Map.getBlocksX()-1) 
+                        map.setCenter(5); //earth to the left
 
-            //scroll up, earth down            
-            if (cameras.get(0).getVisibleTopBorder() <= 0)
-                map.setCenter(1);
-            else //scroll down, earth up
-                if (cameras.get(0).getVisibleBottomBorder() >= Map.getBlocksY()-1)
-                map.setCenter(7);
+                //scroll up, earth down            
+                if (camera.getVisibleTopBorder() <= 0)
+                    map.setCenter(1);
+                else if (camera.getVisibleBottomBorder() >= Map.getBlocksY()-1)
+                        map.setCenter(7); //scroll down, earth up
+            }
         }
         
         //update every static update method

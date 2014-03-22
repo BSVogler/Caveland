@@ -56,7 +56,6 @@ public class WECamera extends Camera {
     private final int viewportPosX, viewportPosY;
     
     private int projectionPosX, projectionPosY;
-    private int leftborder, topborder, rightborder, bottomborder;
     private float zoom = 1;
     private float equalizationScale = 1;
     
@@ -221,8 +220,13 @@ public class WECamera extends Camera {
     protected void createDepthList() {
         depthsort.clear();
         
-        for (int x = leftborder; x < rightborder; x++)
-            for (int y = topborder; y < bottomborder; y++){
+        int left = getVisibleLeftBorder();
+        int right = getVisibleRightBorder();
+        int top = getVisibleTopBorder();
+        int bottom = getVisibleBottomBorder();
+        
+        for (int x = left; x < right; x++)
+            for (int y = top; y < bottom; y++){
                 
                 //add blocks
                 for (int z=0; z < Map.getBlocksZ(); z++){
@@ -530,7 +534,7 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates 
      */
     public int getVisibleLeftBorder(){
-        leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH - 1;
+        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH - 1;
         if (leftborder < 0) leftborder= 0;
         
         return leftborder;
@@ -541,7 +545,7 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates
      */
     public int getVisibleRightBorder(){
-        rightborder = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
+        int rightborder = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
         if (rightborder >= Map.getBlocksX()) rightborder = Map.getBlocksX()-1;
 
         return rightborder;
@@ -552,7 +556,7 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates
      */
     public int getVisibleTopBorder(){    
-        topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2 - 3;
+        int topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2 - 3;
         if (topborder < 0) topborder= 0;
         
         return topborder;
@@ -563,8 +567,9 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates
      */
     public int getVisibleBottomBorder(){
-        bottomborder = (projectionPosY+getProjectionHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
+        int bottomborder = (projectionPosY+getProjectionHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
         if (bottomborder >= Map.getBlocksY()) bottomborder = Map.getBlocksY()-1;
+        
         return bottomborder;
     }
     

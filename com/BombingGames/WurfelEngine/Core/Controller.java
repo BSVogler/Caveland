@@ -94,6 +94,7 @@ public class Controller {
                 map.getEntitys().remove(i);
         }
         
+        //update cameras
         for (WECamera camera : cameras) {
             camera.update();
         }

@@ -131,6 +131,7 @@ public abstract class AbstractGameObject {
      * @return
      */
     public abstract char getCategory();
+    
     /**
      * Place you static update methods here.
      * @param delta 

@@ -108,8 +108,14 @@ public class View {
         //Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT); //clearing the screen is ~5-10% slower than without.
         
         //render every camera
-        for (WECamera camera : controller.getCameras()) {
-            camera.render(this, camera);
+        if (controller.getCameras().isEmpty()){
+            Gdx.gl10.glClearColor(0.5f, 1, 0.5f, 1);
+            Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+            drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
+        }else {
+            for (WECamera camera : controller.getCameras()) {
+                camera.render(this, camera);
+            }
         }
         
         

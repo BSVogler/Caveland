@@ -256,7 +256,6 @@ public class Chunk {
             FileHandle path = Gdx.files.internal("map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
             
             Gdx.app.log("Map","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
-            GameplayScreen.msgSystem().add("Load: "+coordX+","+coordY);
             
             if (path.exists()) {
                 //FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");

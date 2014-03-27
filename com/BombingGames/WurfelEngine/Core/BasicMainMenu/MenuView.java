@@ -156,9 +156,9 @@ public class MenuView {
         public boolean keyDown(int keycode) {
             if (keycode == Input.Keys.ESCAPE)
                 Gdx.app.exit();
-            if (keycode == Input.Keys.DOWN)
+            if (keycode == Input.Keys.DOWN && BasicMenuItem.getHighlight() < controller.getMenuItems().length-1)
                 BasicMenuItem.setHighlight(BasicMenuItem.getHighlight()+1);
-            if (keycode == Input.Keys.UP)
+            if (keycode == Input.Keys.UP && BasicMenuItem.getHighlight() > 0)
                 BasicMenuItem.setHighlight(BasicMenuItem.getHighlight()-1);
             if (keycode == Input.Keys.ENTER)
                 controller.getMenuItems()[BasicMenuItem.getHighlight()].action();

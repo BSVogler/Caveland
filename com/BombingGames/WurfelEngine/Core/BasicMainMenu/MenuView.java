@@ -80,6 +80,10 @@ public class MenuView {
         sr = new ShapeRenderer();
     }
 
+    /**
+     *
+     * @param delta
+     */
     protected void update(float delta) {
        a += delta/1000f;
        if (a>1) a=1;
@@ -129,6 +133,9 @@ public class MenuView {
         font.scale(0.5f);
     }
 
+    /**
+     *
+     */
     protected void show() {
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/wecursor.png"));
         Gdx.input.setCursorImage(cursor, 0, 0);

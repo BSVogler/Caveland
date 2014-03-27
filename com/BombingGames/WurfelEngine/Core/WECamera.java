@@ -656,10 +656,18 @@ public class WECamera extends Camera {
         return viewportWidth;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean togglesChunkSwitch() {
         return toggleChunkSwitch;
     }
 
+    /**
+     *
+     * @param toggleChunkSwitch
+     */
     public void setToggleChunkSwitch(boolean toggleChunkSwitch) {
         this.toggleChunkSwitch = toggleChunkSwitch;
     }

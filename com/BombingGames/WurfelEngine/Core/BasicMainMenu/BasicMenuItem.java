@@ -177,10 +177,18 @@ public class BasicMenuItem{
         BasicMenuItem.sound = sound;
     }
 
+    /**
+     *
+     * @return
+     */
     public static int getHighlight() {
         return highlight;
     }
 
+    /**
+     *
+     * @param highlight
+     */
     public static void setHighlight(int highlight) {
         BasicMenuItem.highlight = highlight;
     }

@@ -4,6 +4,8 @@ import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 
 /**
  *A test class for starting the engine.
@@ -19,8 +21,9 @@ public class DesktopLauncher {
         
         BasicMenuItem[] menuItems = new BasicMenuItem[]{
             new BasicMenuItem(0, "Load Map", Controller.class, View.class, new Configuration()),
-            new BasicMenuItem(1, "Options"),
-            new BasicMenuItem(2, "Exit")
+            new BasicMenuItem(1, "Map Editor", MapEditorController.class, MapEditorView.class, new Configuration()),
+            new BasicMenuItem(2, "Options"),
+            new BasicMenuItem(3, "Exit")
         };   
         
         WE.setMainMenu(new BasicMainMenu(menuItems));

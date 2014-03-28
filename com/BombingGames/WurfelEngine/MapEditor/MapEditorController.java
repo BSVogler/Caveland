@@ -47,6 +47,7 @@ public class MapEditorController extends Controller {
     @Override
     public void init() {
         super.init();
+        currentLayer = Map.getBlocksZ();
         
         Gdx.app.log("MapEditorController", "Initializing");
         
@@ -72,8 +73,8 @@ public class MapEditorController extends Controller {
         this.currentLayer = currentLayer;
         
         //clamp
-        if (currentLayer<1) currentLayer=1;//min is 1
-        if (currentLayer >= Map.getBlocksZ()) currentLayer=Map.getBlocksZ();
+        if (currentLayer<1) this.currentLayer=1;//min is 1
+        if (currentLayer >= Map.getBlocksZ()) this.currentLayer=Map.getBlocksZ();
         
         WECamera.setZRenderingLimit(currentLayer);
     }

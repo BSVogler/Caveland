@@ -29,10 +29,14 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -42,18 +46,101 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class MapEditorView extends View {
 
     @Override
+    public void init(Controller controller) {
+        super.init(controller);
+        Gdx.input.setInputProcessor(new InputListener((MapEditorController) controller));
+    }
+
+    
+    @Override
     public void render() {
         super.render();
         ShapeRenderer sh = getShapeRenderer();
-        Gdx.gl10.glLineWidth(4);
-        sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.8f));
+        Gdx.gl.glEnable(GL10.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glLineWidth(4);
+        sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.2f));
+        
         sh.begin(ShapeRenderer.ShapeType.Line);
+        
+        int rightborder = Gdx.graphics.getWidth();
+        int bottomborder = Gdx.graphics.getHeight();
+        int steps  = bottomborder/(Map.getBlocksZ()-1);
+        
         for (int i = 0; i < Map.getBlocksZ()-1; i++) {
-            int rightborder = Gdx.graphics.getWidth();
-            int bottomborder = Gdx.graphics.getHeight();
-            sh.line(rightborder, bottomborder-i*20, rightborder-50, bottomborder-i*20); 
+            sh.line(
+                rightborder,
+                bottomborder-(i+1)*steps,
+                rightborder-50- ( ((MapEditorController) getController()).getCurrentLayer() == i ?40:0),
+                bottomborder-(i+1)*steps); 
         }
+        
         sh.end();
+        Gdx.gl.glDisable(GL10.GL_BLEND);
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        Input input = Gdx.input;
+//        if (input.isKeyPressed(Input.Keys.W))
+//            getController().getCameras().get(0).
+//        input.isKeyPressed(Input.Keys.S),
+//        input.isKeyPressed(Input.Keys.A),
+//        input.isKeyPressed(Input.Keys.D),
+    }
+
+    
+    
+    private static class InputListener implements InputProcessor {
+        private final MapEditorController controller;
+
+        public InputListener(MapEditorController controller) {
+            this.controller = controller;
+        }
+        
+
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            controller.setCurrentLayer(controller.getCurrentLayer()-amount);
+            return true;
+        }
     }
     
 }

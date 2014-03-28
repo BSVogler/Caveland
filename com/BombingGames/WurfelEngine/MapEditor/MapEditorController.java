@@ -30,6 +30,7 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.badlogic.gdx.Gdx;
 
@@ -38,18 +39,44 @@ import com.badlogic.gdx.Gdx;
  * @author Benedikt Vogler
  */
 public class MapEditorController extends Controller {
+    private int currentLayer = 0;
+    private WECamera camera;
+
+
 
     @Override
     public void init() {
-        Gdx.app.log("CustomGameController", "Initializing");
         super.init();
         
-        WECamera camera = new WECamera(
-            0,
-            0,
-            Gdx.graphics.getWidth(), //width
-            Gdx.graphics.getHeight()//height)
-        );
+        Gdx.app.log("MapEditorController", "Initializing");
+        
+        camera = new WECamera();
         addCamera(camera);
     }
+    
+   /**
+     * Get the value of currentLayer
+     *
+     * @return the value of currentLayer
+     */
+    public int getCurrentLayer() {
+        return currentLayer;
+    }
+
+    /**
+     * Set the value of currentLayer
+     *
+     * @param currentLayer new value of currentLayer
+     */
+    public void setCurrentLayer(int currentLayer) {
+        this.currentLayer = currentLayer;
+        
+        //clamp
+        if (currentLayer<1) currentLayer=1;//min is 1
+        if (currentLayer >= Map.getBlocksZ()) currentLayer=Map.getBlocksZ();
+        
+        WECamera.setZRenderingLimit(currentLayer);
+    }
+    
+    
 }

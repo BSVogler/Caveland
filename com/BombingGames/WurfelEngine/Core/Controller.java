@@ -32,7 +32,7 @@ public class Controller {
     private FPSdiag fpsdiag;
 
     /**
-     * This method works like a constructor. Everything is loaded. Set you custom chunk generator before calling this method.
+     * This method works like a constructor. Everything is loaded here.
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");

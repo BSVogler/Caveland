@@ -52,8 +52,8 @@ public class WECamera extends Camera {
      */
     public static final boolean[][] DEEPEST_LAYER_VISIVBILITY = new boolean[Map.getBlocksX()][Map.getBlocksY()];
     
-    /** the position on the screen*/
-    private final int screenPosX, screenPosY;
+    /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
+    private int screenPosX, screenPosY;
     
     /** the position in the game world but projected*/
     private int projectionPosX, projectionPosY;
@@ -65,7 +65,17 @@ public class WECamera extends Camera {
     
     private final Block groundBlock;//the represant of the ground block
     private boolean toggleChunkSwitch = true;
-        
+    private boolean fullWindow = false;
+    
+    
+    /**
+     * Creates a fullscale camera pointing at the middle of the map.
+     */
+    public WECamera(){
+        this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        fullWindow = true;
+    }
+    
     /**
      * Creates a camera pointing at the middle of the map.
      * @param x the position in the application window (viewport position)
@@ -129,7 +139,7 @@ public class WECamera extends Camera {
      * Updates the camera.
      */
     @Override
-    public void update() {             
+    public void update() {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
             projectionPosX = focusCoordinates.getProjectedPosX() - getViewportWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
@@ -668,4 +678,40 @@ public class WECamera extends Camera {
     public void setToggleChunkSwitch(boolean toggleChunkSwitch) {
         this.toggleChunkSwitch = toggleChunkSwitch;
     }
+
+    /**
+     * Does the cameras output cover the whole screen?
+     * @return 
+     */
+    public boolean isFullWindow() {
+        return fullWindow;
+    }
+
+    /**
+     * Set to true if the camera's output should cover the whole window
+     * @param fullWindow 
+     */
+    public void setFullWindow(boolean fullWindow) {
+        this.fullWindow = fullWindow;
+        this.viewportHeight = Gdx.graphics.getHeight();
+        this.viewportWidth = Gdx.graphics.getWidth();
+        this.screenPosX = 0;
+        this.screenPosY = 0;
+    }
+    
+    /**
+     * Should be called when resized
+     * @param width width of window
+     * @param height height of window
+     */
+    public void resize(int width, int height){
+        if (fullWindow){
+            this.viewportWidth = width;
+            this.viewportHeight = height;
+            this.screenPosX = 0;
+            this.screenPosY = 0;
+        }
+    }
+    
+    
 }

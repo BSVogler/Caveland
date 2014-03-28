@@ -248,4 +248,15 @@ public class Controller {
             entity.dispose();
         }
     }
+
+    /**
+     * should be called when the window get resized
+     * @param width
+     * @param height 
+     */
+    void resize(int width, int height) {
+        for (WECamera camera : cameras) {
+            camera.resize(width, height);
+        }
+    }
 }

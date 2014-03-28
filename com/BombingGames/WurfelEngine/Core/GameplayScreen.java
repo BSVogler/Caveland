@@ -106,6 +106,7 @@ public class GameplayScreen implements Screen{
     @Override
     public void resize(int width, int height) {
         Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
+        controller.resize(width, height);
     }
 
     @Override

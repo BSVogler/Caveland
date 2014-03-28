@@ -63,7 +63,7 @@ public class WECamera extends Camera {
     private AbstractEntity focusEntity;
     private final ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
     
-    private final Block groundBlock;
+    private final Block groundBlock;//the represant of the ground block
     private boolean toggleChunkSwitch = true;
         
     /**

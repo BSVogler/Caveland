@@ -66,7 +66,7 @@ public class WECamera extends Camera {
     private final Block groundBlock;//the represant of the ground block
     private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
-    private int zRenderingLimit;
+    private static int zRenderingLimit;//must be static because raytracing is global/static
     
     
     /**
@@ -307,7 +307,7 @@ public class WECamera extends Camera {
         Cell[][][] mapdata = Controller.getMap().getData();
         for (int x=0; x < Map.getBlocksX(); x++)
             for (int y=0; y < Map.getBlocksY(); y++)
-                for (int z=0; z < Map.getBlocksZ(); z++) {
+                for (int z=0; z < zRenderingLimit; z++) {
                     Block block = mapdata[x][y][z].getBlock();
                     
                     boolean notAnalyzable = !block.hasSides()
@@ -317,7 +317,7 @@ public class WECamera extends Camera {
                 
         //send the rays through top of the map
         for (int x=0; x < Map.getBlocksX(); x++)
-            for (int y=0; y < Map.getBlocksY() + Map.getBlocksZ()*2; y++){
+            for (int y=0; y < Map.getBlocksY() + zRenderingLimit*2; y++){
                 traceRay(x,y, 0);
                 traceRay(x,y, 1);
                 traceRay(x,y, 2);
@@ -332,7 +332,7 @@ public class WECamera extends Camera {
      * @param side The side the ray should check
      */
     private static void traceRay(int x, int y, int side){
-        int z = Map.getBlocksZ()-1;//start always from top
+        int z = zRenderingLimit-1;//start always from top
         
         boolean left = true;
         boolean right = true;
@@ -368,7 +368,7 @@ public class WECamera extends Camera {
                     && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z).isLiquid())
                         liquidfilter = true;
 
-                    if (x > 0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                    if (x > 0 && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                         && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
                         leftliquid = true;
 
@@ -380,7 +380,7 @@ public class WECamera extends Camera {
                 } 
 
                 //two blocks hiding the left side
-                if (x > 0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                if (x > 0 && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                     && new Coordinate(x - (y%2 == 0 ? 1:0), y+1, z+1, true).hidingPastBlock())
                     left = false;
                 if (y < Map.getBlocksY()-2
@@ -390,20 +390,20 @@ public class WECamera extends Camera {
 
             } else if (side == 1) {//check top side
                 if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-                    && z+1 < Map.getBlocksZ()
+                    && z+1 < zRenderingLimit
                     && new Coordinate(x, y, z+1, true).hidingPastBlock())
                     break;
 
                 //liquid
                 if (Controller.getMap().getBlock(x, y, z).isLiquid()){
-                    if (z < Map.getBlocksZ()-1 && Controller.getMap().getBlock(x, y, z+1).isLiquid())
+                    if (z < zRenderingLimit-1 && Controller.getMap().getBlock(x, y, z+1).isLiquid())
                         liquidfilter = true;
 
-                    if (x>0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                    if (x>0 && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                         && Controller.getMap().getBlock(x - (y%2 == 0 ? 1:0), y+1, z+1).isLiquid())
                         leftliquid = true;
 
-                    if (x < Map.getBlocksX()-1  && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                    if (x < Map.getBlocksX()-1  && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                         &&  Controller.getMap().getBlock(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
                         rightliquid = true;
 
@@ -411,11 +411,11 @@ public class WECamera extends Camera {
                 }
 
                 //two 0- and 2-sides hiding the side 1
-                if (x>0 && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                if (x>0 && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                     && new Coordinate(x - (y%2 == 0 ? 1:0), y+1, z+1, true).hidingPastBlock())
                     left = false;
 
-                if (x < Map.getBlocksX()-1  && y < Map.getBlocksY()-1 && z < Map.getBlocksZ()-1
+                if (x < Map.getBlocksX()-1  && y < Map.getBlocksY()-1 && z < zRenderingLimit-1
                     && new Coordinate(x + (y%2 == 0 ? 0:1), y+1, z+1, true).hidingPastBlock()
                     )
                     right = false;
@@ -438,7 +438,7 @@ public class WECamera extends Camera {
                         Controller.getMap().getBlock(x, y+2, z).isLiquid())
                         leftliquid = true;
 
-                    if (x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY() && z+1 < Map.getBlocksZ()
+                    if (x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY() && z+1 < zRenderingLimit
                         &&
                         Controller.getMap().getBlock(x + (y%2 == 0 ? 0:1), y+1, z+1).isLiquid())
                         rightliquid = true;
@@ -453,7 +453,7 @@ public class WECamera extends Camera {
                 )
                     left = false;
 
-                if (x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY() && z+1 < Map.getBlocksZ()
+                if (x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY() && z+1 < zRenderingLimit
                     &&
                     new Coordinate(x + (y%2 == 0 ? 0:1), y+1, z+1, true).hidingPastBlock()
                 )
@@ -716,11 +716,21 @@ public class WECamera extends Camera {
         }
     }
 
-    public int getZRenderingLimit() {
+    public static int getZRenderingLimit() {
         return zRenderingLimit;
     }
 
-    public void setZRenderingLimit(int zRenderingLimit) {
-        this.zRenderingLimit = zRenderingLimit;
+    /**
+     * 
+     * @param zRenderingLimit minimum is 1
+     */
+    public static void setZRenderingLimit(int zRenderingLimit) {
+        WECamera.zRenderingLimit = zRenderingLimit;
+        
+        //clamp
+        if (zRenderingLimit >= Map.getBlocksZ()) WECamera.zRenderingLimit=Map.getBlocksZ();
+        if (zRenderingLimit<1) WECamera.zRenderingLimit=1;//min is 1
+        
+        Controller.requestRecalc();
     }
 }

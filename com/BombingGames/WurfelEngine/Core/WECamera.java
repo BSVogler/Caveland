@@ -190,7 +190,7 @@ public class WECamera extends Camera {
             //set up the viewport
             Gdx.gl.glViewport(
                 screenPosX,
-                (int) (Gdx.graphics.getHeight()-viewportHeight-screenPosY),//the parameter for the posY is a bit strange because the y-axis is turned
+                (int) (Gdx.graphics.getHeight()-viewportHeight-screenPosY),//the parameter for the posY is a bit complicated because the y-axis is turned
                 (int) viewportWidth,
                 (int) viewportHeight
             );
@@ -198,7 +198,7 @@ public class WECamera extends Camera {
             view.getBatch().begin();
             view.setDrawmode(GL10.GL_MODULATE);
             
-            //render last layer tiles if visible
+            //render ground layer tiles if visible
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
                     if (DEEPEST_LAYER_VISIVBILITY[x][y]){

@@ -68,8 +68,8 @@ public class WECamera extends Camera {
         
     /**
      * Creates a camera pointing at the middle of the map.
-     * @param x the position in the application window
-     * @param y the position in the application window
+     * @param x the position in the application window (viewport position)
+     * @param y the position in the application window (viewport position)
      * @param width The width of the image the camera creates on the application window (viewport)
      * @param height The height of the image the camera creates on the application window (viewport)
      */
@@ -98,10 +98,10 @@ public class WECamera extends Camera {
    /**
      * Create a camera focusin a specific coordinate. It can later be changed with <i>focusCoordinates()</i>. Screen size does refer to the output of the camera not the real size on the display.
      * @param focus the coordiante where the camera focuses
-     * @param x the position of the output
-     * @param y the position of the output
-     * @param width the width of the output. it can be different than the output on the display because it gets scaled later again.
-     * @param height the height of the output. it can be different than the output on the display because it gets scaled later again.
+     * @param x the position in the application window (viewport position)
+     * @param y the position in the application window (viewport position)
+     * @param width The width of the image the camera creates on the application window (viewport)
+     * @param height The height of the image the camera creates on the application window (viewport)
      */
     public WECamera(Coordinate focus, int x, int y, int width, int height) {
         this(x, y, width, height);   
@@ -114,10 +114,10 @@ public class WECamera extends Camera {
      * Creates a camera focusing an entity.
      * The values are sceen-size and do refer to the output of the camera not the real display size.
      * @param focusentity the entity wich the camera focuses and follows
-     * @param x the position of the output
-     * @param y the position of the output
-     * @param width the screen width
-     * @param height the screen width
+     * @param x the position in the application window (viewport position)
+     * @param y the position in the application window (viewport position)
+     * @param width The width of the image the camera creates on the application window (viewport)
+     * @param height The height of the image the camera creates on the application window (viewport)
      */
     public WECamera(AbstractEntity focusentity, int x, int y, int width, int height) {
         this(x,y,width,height);

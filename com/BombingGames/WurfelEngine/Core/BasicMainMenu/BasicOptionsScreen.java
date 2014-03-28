@@ -29,36 +29,39 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  *
  * @author Benedikt Vogler
  */
-class BasicOptionsScreen implements Screen {
-    private final Sprite lettering;    
+public class BasicOptionsScreen implements Screen {
+    private final Stage stage;
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
     private final BitmapFont font;
-    private float a =0;
-    private final ShapeRenderer sr;
+    private static ShapeRenderer sr;
+    private final RedActor actor;
 
     public BasicOptionsScreen() {
-         //load textures
-        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
-        lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(50);
-        lettering.flip(false, true);
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setInputProcessor(stage);
+        
+        actor = new RedActor();
+        actor.setColor(Color.RED.cpy());
+        actor.setBounds(50, 70, 30, 40);
+        actor.setVisible(true);
+        stage.addActor(actor);
         
         batch = new SpriteBatch();
         
@@ -74,6 +77,8 @@ class BasicOptionsScreen implements Screen {
 
     @Override
     public void render(float delta) {
+    
+        
          //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -83,29 +88,14 @@ class BasicOptionsScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
         
-        // render the lettering
-        batch.begin();
-        lettering.setColor(1, 1, 1, a);
-        lettering.draw(batch);
-        batch.end();
-        
-        // Draw the menu items
-        batch.begin();
-        for (BasicMenuItem mI : BasicMainMenu.getController().getMenuItems()) {
-            mI.render(camera, font, batch, sr);
-        }
-        batch.end();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+        actor.draw(batch, delta);
         
         batch.begin();
         font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
-        
-        font.scale(-0.5f);
-        batch.begin();
-        font.drawMultiLine(batch, WE.getCredits(), 50, 100);
-        batch.end();
-        font.scale(0.5f);
     }
 
     @Override
@@ -130,6 +120,21 @@ class BasicOptionsScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+    }
+
+    private static class RedActor extends Actor {
+
+        @Override
+        public void draw(SpriteBatch batch, float parentAlpha) {
+            sr.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+
+            sr.begin(ShapeType.Filled);
+            sr.rect(getX(), getY(), getWidth(), getHeight());
+            sr.end();
+
+        }
+        
     }
     
 }

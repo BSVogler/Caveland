@@ -202,9 +202,16 @@ public class MsgSystem extends ArrayList<Msg> {
     
     /**
      * Returns the last Message
-     * @return 
+     * @param sender filter by the sender, e.g. if you want the last message of a specific player
+     * @return if there exist no last message of the filter type returns null
      */
-    public Msg getLastMessage(){
-        return get(size()-1);
+    public String getLastMessage(String sender){
+        Msg result = null;
+        int i = size()-1;
+        while (!get(i).getSender().equals(sender) && i>0) {
+            result = get(i);
+            i--;
+        }
+        return result.getMessage();
     }
 }

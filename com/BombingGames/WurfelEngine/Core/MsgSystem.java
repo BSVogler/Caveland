@@ -30,6 +30,8 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
 
 /**
@@ -88,9 +90,8 @@ class Msg {
  */
 public class MsgSystem extends ArrayList<Msg> {
     private int timelastupdate = 0;
-    private boolean waitforinput = false;
-    private final int xPos, yPos;    
-    private String input = "";
+    private boolean acceptingInput = false;
+    private final TextField textinput;
 
     /**
      * 
@@ -98,8 +99,10 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param yPos
      */
     public MsgSystem(int xPos, int yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
+        Skin skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
+        textinput = new TextField("Enter your message here!", skin);
+        textinput.setBounds(xPos, yPos, 400, 50);
+        textinput.setBlinkTime(200);
     }
         
     /**
@@ -146,7 +149,6 @@ public class MsgSystem extends ArrayList<Msg> {
                 Msg temp = get(i);
                 if (temp.getImportance() > 0)
                     temp.setImportance(temp.getImportance()-1); 
-                else remove(i);
             }
         }
     }
@@ -155,10 +157,13 @@ public class MsgSystem extends ArrayList<Msg> {
      * Draws the Messages
      * @param view 
      */
-    public void render(View view){
-        if (waitforinput) view.drawString("MSG:"+input, xPos, yPos);
-        
+    public void render(View view){  
         view.getBatch().begin();
+        
+        if (acceptingInput){
+            //view.drawString("MSG:"+input, xPos, yPos, Color.WHITE.cpy());
+            textinput.draw(view.getBatch(), 1);
+        }
         for (int i=0; i < size(); i++){
             Msg msg = get(i);
             Color color = Color.BLUE.cpy();
@@ -166,22 +171,22 @@ public class MsgSystem extends ArrayList<Msg> {
                 else if ("Warning".equals(msg.getSender())) color = Color.RED.cpy();
             
             //draw
-            view.getFont().setColor(color);
-            view.getFont().draw(view.getBatch(), msg.getMessage(), 10,50+i*20);
+            //view.getFont().setColor(color);
+            //view.getFont().draw(view.getBatch(), msg.getMessage(), 10,50+i*20);
         }
          view.getBatch().end();
     }
 
     /**
-     * 
-     * @param listen
+     * Tell the msg system if it should listen for input.
+     * @param listen If deactivating the input will be saved.
      */
     public void listenForInput(boolean listen) {
-        if (listen != waitforinput && !"".equals(input)) {
-            add(input);
-            input = "";
+        if (listen != acceptingInput && !textinput.getText().isEmpty()) {
+            add(textinput.getText());//add message to message list
+            textinput.setText("");
         }
-        waitforinput = listen;
+        acceptingInput = listen;
     }
     
     /**
@@ -189,15 +194,19 @@ public class MsgSystem extends ArrayList<Msg> {
      * @return
      */
     public boolean isListeningForInput() {
-        return waitforinput;
+        return acceptingInput;
     }
     
     /**
-     *
+     *Add a key to the textbox.
      * @param characterInput
      */
-    public void getInput(char characterInput){
-        input += String.valueOf(characterInput);
+    public void addInput(char characterInput){
+        textinput.setText(textinput.getText()+Character.toString(characterInput));
+//        if (characterInput =='\b')//if backspace remove a letter
+//            input = input.substring(0, input.length()-1);
+//        else
+//            input += String.valueOf(characterInput);
     }
     
     /**
@@ -212,6 +221,6 @@ public class MsgSystem extends ArrayList<Msg> {
             result = get(i);
             i--;
         }
-        return result.getMessage();
+        return (result != null ? result.getMessage() : null);
     }
 }

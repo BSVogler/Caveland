@@ -58,7 +58,6 @@ public class WECamera extends Camera {
     /** the position in the game world but projected*/
     private int projectionPosX, projectionPosY;
     private float zoom = 1;
-    private float equalizationScale = 1;
     
     private Coordinate focusCoordinates;
     private AbstractEntity focusEntity;
@@ -80,13 +79,10 @@ public class WECamera extends Camera {
         screenPosX = x;
         screenPosY = y;
         
-        equalizationScale = viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
-                        
 	near = 0;
 	up.set(0, -1, 0);
 	direction.set(0, 0, 1);
-	position.set(equalizationScale*zoom * viewportWidth / 2.0f, equalizationScale*zoom * viewportHeight / 2.0f, 0);        
-        
+
         //set the camera's focus to the center of the map
         projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
         projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
@@ -148,10 +144,10 @@ public class WECamera extends Camera {
        
         //orthographic camera, libgdx stuff
         projection.setToOrtho(
-            1/(zoom*equalizationScale) * -viewportWidth / 2,
-            1/(zoom*equalizationScale) * viewportWidth / 2,
-            1/(zoom*equalizationScale) * -viewportHeight / 2,
-            1/(zoom*equalizationScale) * viewportHeight / 2,
+            (-viewportWidth / 2)/getScaling(),
+            (viewportWidth / 2)/getScaling(),
+            (-viewportHeight / 2)/getScaling(),
+            (viewportHeight / 2)/getScaling(),
             0,
             Math.abs(far)
         );
@@ -512,11 +508,11 @@ public class WECamera extends Camera {
     }
     
     /**
-     * Returns the zoom multiplied by the EqualizationScale, a scaling factor to achieve the same viewport with every resolution
+     * Returns the zoom multiplied by a scaling factor to achieve the same viewport with every resolution
      * @return a scaling factor
      */
-    public float getTotalScale() {
-        return zoom*equalizationScale;
+    public float getScaling() {
+        return zoom*viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
     }
 
     
@@ -612,7 +608,7 @@ public class WECamera extends Camera {
      * @return in pixels
      */
     public final int getViewportWidth() {
-        return (int) (viewportWidth / getTotalScale());
+        return (int) (viewportWidth / getScaling());
     }
     
   /**
@@ -620,7 +616,7 @@ public class WECamera extends Camera {
     * @return  in pixels
     */
    public final int getViewportHeight() {
-        return (int) (viewportHeight / getTotalScale());
+        return (int) (viewportHeight / getScaling());
     }
 
     /**

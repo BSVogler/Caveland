@@ -85,8 +85,8 @@ public class Player extends AbstractCharacter{
         Vector3 aim = null;
         if (camera != null){
             aim = new Vector3(
-                Gdx.input.getX()- camera.getViewportWidth()/2,
-                2*(Gdx.input.getY()- camera.getViewportHeight()/2),
+                Gdx.input.getX()- camera.getScreenWidth()/2,
+                2*(Gdx.input.getY()- camera.getScreenHeight()/2),
                 0
             );
             aim.nor();

@@ -172,32 +172,32 @@ public class Minimap {
             shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.setColor(Color.GREEN);
             shapeRenderer.rect(
-                viewportPosX + scaleX * camera.getProjectionPosX() / Block.GAME_DIAGLENGTH,
-                viewportPosY + scaleY * camera.getProjectionPosY() / Block.GAME_DIAGLENGTH2,
-                scaleX*camera.getProjectionWidth() / Block.GAME_DIAGLENGTH,
-                scaleY*2*camera.getProjectionHeight() / Block.GAME_DIAGLENGTH2
+                viewportPosX + scaleX * camera.getViewportPosX() / Block.GAME_DIAGLENGTH,
+                viewportPosY + scaleY * camera.getViewportPosY() / Block.GAME_DIAGLENGTH2,
+                scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
+                scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
             );
 
             //player level getCameras() rectangle
             if (controller.getPlayer()!=null){
                 shapeRenderer.setColor(Color.GRAY);
                 shapeRenderer.rect(
-                    viewportPosX + scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-                    viewportPosY + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+                    viewportPosX + scaleX * camera.getViewportPosX() / Block.SCREEN_WIDTH,
+                    viewportPosY + scaleY * camera.getViewportPosY() / Block.SCREEN_DEPTH2
                     + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ Block.SCREEN_DEPTH,
-                    scaleX*camera.getProjectionWidth() / Block.GAME_DIAGLENGTH,
-                    scaleY*2*camera.getProjectionHeight() / Block.GAME_DIAGLENGTH2
+                    scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
+                    scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
                 );
             }
 
             //top level getCameras() rectangle
             shapeRenderer.setColor(Color.WHITE);
             shapeRenderer.rect(
-                viewportPosX + scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-                viewportPosY + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+                viewportPosX + scaleX * camera.getViewportPosX() / Block.SCREEN_WIDTH,
+                viewportPosY + scaleY * camera.getViewportPosY() / Block.SCREEN_DEPTH2
                 + scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ Block.SCREEN_DEPTH,
-                scaleX*camera.getProjectionWidth() / Block.GAME_DIAGLENGTH,
-                scaleY*2*camera.getProjectionHeight() / Block.GAME_DIAGLENGTH2
+                scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
+                scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
             );
             shapeRenderer.end();
             
@@ -237,7 +237,7 @@ public class Minimap {
 
             //camera position
             view.drawString(
-                camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
+                camera.getViewportPosX() +" | "+ camera.getViewportPosY(),
                 viewportPosX ,
                 (int) (viewportPosY + 3*Chunk.getBlocksY()*scaleY + 15),
                 Color.WHITE

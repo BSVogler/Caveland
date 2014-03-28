@@ -53,8 +53,9 @@ public class WECamera extends Camera {
     public static final boolean[][] DEEPEST_LAYER_VISIVBILITY = new boolean[Map.getBlocksX()][Map.getBlocksY()];
     
     /** the position on the screen*/
-    private final int viewportPosX, viewportPosY;
+    private final int screenPosX, screenPosY;
     
+    /** the position in the game world but projected*/
     private int projectionPosX, projectionPosY;
     private float zoom = 1;
     private float equalizationScale = 1;
@@ -70,14 +71,14 @@ public class WECamera extends Camera {
      * Creates a camera pointing at the middle of the map.
      * @param x the position in the application window (viewport position)
      * @param y the position in the application window (viewport position)
-     * @param width The width of the image the camera creates on the application window (viewport)
-     * @param height The height of the image the camera creates on the application window (viewport)
+     * @param width The width of the image (screen size) the camera creates on the application window (viewport)
+     * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
     public WECamera(int x, int y, int width, int height){
         viewportWidth = width;
 	viewportHeight = height;
-        viewportPosX = x;
-        viewportPosY = y;
+        screenPosX = x;
+        screenPosY = y;
         
         equalizationScale = viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
                         
@@ -87,8 +88,8 @@ public class WECamera extends Camera {
 	position.set(equalizationScale*zoom * viewportWidth / 2.0f, equalizationScale*zoom * viewportHeight / 2.0f, 0);        
         
         //set the camera's focus to the center of the map
-        projectionPosX = Map.getCenter().getProjectedPosX() - getProjectionWidth() / 2;
-        projectionPosY = Map.getCenter().getProjectedPosY() - getProjectionHeight() / 2;
+        projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
+        projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
         
         groundBlock = Block.getInstance(2);//set the ground level groundBlock
         groundBlock.setSideClipping(0, true);
@@ -100,8 +101,8 @@ public class WECamera extends Camera {
      * @param focus the coordiante where the camera focuses
      * @param x the position in the application window (viewport position)
      * @param y the position in the application window (viewport position)
-     * @param width The width of the image the camera creates on the application window (viewport)
-     * @param height The height of the image the camera creates on the application window (viewport)
+     * @param width The width of the image (screen size) the camera creates on the application window (viewport)
+     * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
     public WECamera(Coordinate focus, int x, int y, int width, int height) {
         this(x, y, width, height);   
@@ -116,8 +117,8 @@ public class WECamera extends Camera {
      * @param focusentity the entity wich the camera focuses and follows
      * @param x the position in the application window (viewport position)
      * @param y the position in the application window (viewport position)
-     * @param width The width of the image the camera creates on the application window (viewport)
-     * @param height The height of the image the camera creates on the application window (viewport)
+     * @param width The width of the image (screen size) the camera creates on the application window (viewport)
+     * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
     public WECamera(AbstractEntity focusentity, int x, int y, int width, int height) {
         this(x,y,width,height);
@@ -135,14 +136,14 @@ public class WECamera extends Camera {
     public void update() {             
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
-            projectionPosX = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
-            projectionPosY = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
+            projectionPosX = focusCoordinates.getProjectedPosX() - getViewportWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
+            projectionPosY = focusCoordinates.getProjectedPosY() - getViewportHeight() / 2;
         } else if (focusEntity != null ){
-            projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
-            projectionPosY = focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 ;
+            projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
+            projectionPosY = focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 ;
         }
         
-        position.set(projectionPosX+ getProjectionWidth()/2 , projectionPosY+ getProjectionHeight()/2 , 0); 
+        position.set(projectionPosX+ getViewportWidth()/2 , projectionPosY+ getViewportHeight()/2 , 0); 
         view.setToLookAt(position, new Vector3(position).add(direction), up);//move camera to the focus 
        
         //orthographic camera, libgdx stuff
@@ -182,8 +183,8 @@ public class WECamera extends Camera {
              
             //set up the viewport
             Gdx.gl.glViewport(
-                viewportPosX,
-                (int) (Gdx.graphics.getHeight()-viewportHeight-viewportPosY),//the parameter for the posY is a bit strange because the y-axis is turned
+                screenPosX,
+                (int) (Gdx.graphics.getHeight()-viewportHeight-screenPosY),//the parameter for the posY is a bit strange because the y-axis is turned
                 (int) viewportWidth,
                 (int) viewportHeight
             );
@@ -238,7 +239,7 @@ public class WECamera extends Camera {
                         && 
                             coord.getProjectedPosY()
                         <
-                            projectionPosY + getProjectionHeight()
+                            projectionPosY + getViewportHeight()
                     ) {
                         depthsort.add(new Renderobject(blockAtCoord, coord));
                     }
@@ -250,7 +251,7 @@ public class WECamera extends Camera {
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
             if (!entity.isHidden() && !entity.isClipped()
                 && 
-                entity.getPos().getProjectedPosY() < projectionPosY + getProjectionHeight()
+                entity.getPos().getProjectedPosY() < projectionPosY + getViewportHeight()
                 )
                     depthsort.add(
                         new Renderobject(entity, entity.getPos())
@@ -545,7 +546,7 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates
      */
     public int getVisibleRightBorder(){
-        int rightborder = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
+        int rightborder = (projectionPosX + getViewportWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
         if (rightborder >= Map.getBlocksX()) rightborder = Map.getBlocksX()-1;
 
         return rightborder;
@@ -567,7 +568,7 @@ public class WECamera extends Camera {
      * @return measured in grid-coordinates
      */
     public int getVisibleBottomBorder(){
-        int bottomborder = (projectionPosY+getProjectionHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
+        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
         if (bottomborder >= Map.getBlocksY()) bottomborder = Map.getBlocksY()-1;
         
         return bottomborder;
@@ -577,7 +578,7 @@ public class WECamera extends Camera {
      * The Camera Position in the game world.
      * @return in pixels
      */
-    public int getProjectionPosX() {
+    public int getViewportPosX() {
         return projectionPosX;
     }
 
@@ -585,7 +586,7 @@ public class WECamera extends Camera {
      * The Camera left Position in the game world.
      * @param x in pixels
      */
-    public void setProjectionPosX(int x) {
+    public void setViewportPosX(int x) {
         this.projectionPosX = x;
     }
 
@@ -593,7 +594,7 @@ public class WECamera extends Camera {
      * The Camera top-position in the game world.
      * @return in camera position game space
      */
-    public int getProjectionPosY() {
+    public int getViewportPosY() {
         return projectionPosY;
     }
 
@@ -601,7 +602,7 @@ public class WECamera extends Camera {
      * The Camera top-position in the game world.
      * @param y in game space
      */
-    public void setProjectionPosY(int y) {
+    public void setViewportPosY(int y) {
         this.projectionPosY = y;
     }
 
@@ -610,7 +611,7 @@ public class WECamera extends Camera {
      * For screen pixels use <i>ViewportWidth()</i>.
      * @return in pixels
      */
-    public final int getProjectionWidth() {
+    public final int getViewportWidth() {
         return (int) (viewportWidth / getTotalScale());
     }
     
@@ -618,7 +619,7 @@ public class WECamera extends Camera {
     * The amount of pixel which are visible in Y direction (game pixels). For screen pixels use <i>ViewportHeight()</i>.
     * @return  in pixels
     */
-   public final int getProjectionHeight() {
+   public final int getViewportHeight() {
         return (int) (viewportHeight / getTotalScale());
     }
 
@@ -626,16 +627,16 @@ public class WECamera extends Camera {
      * Returns the position of the cameras output (on the screen)
      * @return  in pixels
      */
-    public int getViewportPosX() {
-        return viewportPosX;
+    public int getScreenPosX() {
+        return screenPosX;
     }
 
     /**
      * Returns the position of the camera (on the screen)
      * @return
      */
-    public int getViewportPosY() {
-        return viewportPosY;
+    public int getScreenPosY() {
+        return screenPosY;
     }
     
     /**
@@ -643,7 +644,7 @@ public class WECamera extends Camera {
      * To get the real display size multiply it with scale values.
      * @return the value before scaling
      */
-    public float getViewportHeight() {
+    public float getScreenHeight() {
         return viewportHeight;
     }
 
@@ -652,7 +653,7 @@ public class WECamera extends Camera {
      * To get the real display size multiply it with scale value.
      * @return the value before scaling
      */
-    public float getViewportWidth() {
+    public float getScreenWidth() {
         return viewportWidth;
     }
 

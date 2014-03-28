@@ -167,7 +167,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenXtoGame(int x, WECamera camera){
-        return x / camera.getTotalScale()- camera.getViewportPosX()+ camera.getProjectionPosX();
+        return x / camera.getTotalScale()- camera.getScreenPosX()+ camera.getViewportPosX();
     }
     
    /**
@@ -177,7 +177,7 @@ public class View {
      * @return the relative game coordinate
      */
     public float ScreenYtoGame(int y, WECamera camera){
-        return (y / camera.getTotalScale() + camera.getProjectionPosY())*2 - camera.getViewportPosY();
+        return (y / camera.getTotalScale() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
     /**
@@ -195,8 +195,8 @@ public class View {
             i++;
         } while (
                 i < controller.getCameras().size()
-                && !(x > camera.getViewportPosX() && x < camera.getViewportPosX()+camera.getViewportWidth()
-                && y > camera.getViewportPosY() && y < camera.getViewportPosY()+camera.getViewportHeight())
+                && !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
+                && y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
         );
  
         return Point.toCoord(

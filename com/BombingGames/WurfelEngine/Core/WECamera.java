@@ -60,7 +60,7 @@ public class WECamera extends Camera {
     private float equalizationScale = 1;
     
     private Coordinate focusCoordinates;
-    private AbstractEntity focusentity;
+    private AbstractEntity focusEntity;
     private final ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
     
     private final Block groundBlock;
@@ -107,7 +107,7 @@ public class WECamera extends Camera {
         this(x, y, width, height);   
         GameplayScreen.msgSystem().add("Creating new camera which is focusing a coordinate");
         this.focusCoordinates = focus;
-        this.focusentity = null;
+        this.focusEntity = null;
     }
     
    /**
@@ -124,7 +124,7 @@ public class WECamera extends Camera {
         if (focusentity == null)
             throw new NullPointerException("Parameter 'focusentity' is null");
         GameplayScreen.msgSystem().add("Creating new camera which is focusing an entity: "+focusentity.getName());
-        this.focusentity = focusentity;
+        this.focusEntity = focusentity;
         this.focusCoordinates = null;
     }
     
@@ -137,9 +137,9 @@ public class WECamera extends Camera {
         if (focusCoordinates != null) {
             projectionPosX = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
             projectionPosY = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
-        } else if (focusentity != null ){
-            projectionPosX = focusentity.getPos().getProjectedPosX() - getProjectionWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
-            projectionPosY = focusentity.getPos().getProjectedPosY() - getProjectionHeight()/2 ;
+        } else if (focusEntity != null ){
+            projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
+            projectionPosY = focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 ;
         }
         
         position.set(projectionPosX+ getProjectionWidth()/2 , projectionPosY+ getProjectionHeight()/2 , 0); 
@@ -525,7 +525,7 @@ public class WECamera extends Camera {
      */
     public void focusOnCoords(Coordinate coord){
         focusCoordinates = coord;
-        focusentity = null;
+        focusEntity = null;
     }
     
     

@@ -117,6 +117,7 @@ public class MenuView {
         }
         batch.end();
         
+        //draw warnings
         batch.begin();
         font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());

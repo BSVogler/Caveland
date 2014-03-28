@@ -66,6 +66,7 @@ public class WECamera extends Camera {
     private final Block groundBlock;//the represant of the ground block
     private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
+    private int zRenderingLimit;
     
     
     /**
@@ -100,6 +101,8 @@ public class WECamera extends Camera {
         groundBlock = Block.getInstance(2);//set the ground level groundBlock
         groundBlock.setSideClipping(0, true);
         groundBlock.setSideClipping(2, true);
+        
+        zRenderingLimit = Map.getBlocksZ();
     }
     
    /**
@@ -236,7 +239,7 @@ public class WECamera extends Camera {
             for (int y = top; y < bottom; y++){
                 
                 //add blocks
-                for (int z=0; z < Map.getBlocksZ(); z++){
+                for (int z=0; z < zRenderingLimit; z++){
                     
                     Coordinate coord = new Coordinate(x, y, z, true); 
                     Block blockAtCoord = coord.getBlock();
@@ -712,6 +715,12 @@ public class WECamera extends Camera {
             this.screenPosY = 0;
         }
     }
-    
-    
+
+    public int getZRenderingLimit() {
+        return zRenderingLimit;
+    }
+
+    public void setZRenderingLimit(int zRenderingLimit) {
+        this.zRenderingLimit = zRenderingLimit;
+    }
 }

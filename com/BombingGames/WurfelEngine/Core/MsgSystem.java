@@ -102,8 +102,6 @@ public class MsgSystem extends ArrayList<Msg> {
         this.yPos = yPos;
     }
         
-
-        
     /**
      * Adds a message with the sender "System"
      * @param message
@@ -200,5 +198,13 @@ public class MsgSystem extends ArrayList<Msg> {
      */
     public void getInput(char characterInput){
         input += String.valueOf(characterInput);
+    }
+    
+    /**
+     * Returns the last Message
+     * @return 
+     */
+    public Msg getLastMessage(){
+        return get(size()-1);
     }
 }

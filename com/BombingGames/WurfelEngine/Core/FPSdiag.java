@@ -80,6 +80,7 @@ public class FPSdiag {
             ShapeRenderer shRenderer = view.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
+            Gdx.gl.glLineWidth(1);
             shRenderer.begin(ShapeRenderer.ShapeType.Filled);
             
             for (int i = 0; i < data.length; i++) { //render each field in memory

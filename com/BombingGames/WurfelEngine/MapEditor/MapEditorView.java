@@ -97,11 +97,20 @@ public class MapEditorView extends View {
     public void update(float delta) {
         super.update(delta);
         Input input = Gdx.input;
-//        if (input.isKeyPressed(Input.Keys.W))
-//            getController().getCameras().get(0).
-//        input.isKeyPressed(Input.Keys.S),
-//        input.isKeyPressed(Input.Keys.A),
-//        input.isKeyPressed(Input.Keys.D),
+        int speed;
+        
+        if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))
+            speed = 1600;
+        else speed = 800;
+        
+        if (input.isKeyPressed(Input.Keys.W))
+            getController().getCameras().get(0).move(0, (int) (-delta*speed));
+        if (input.isKeyPressed(Input.Keys.S))
+            getController().getCameras().get(0).move(0, (int) (delta*speed));
+        if (input.isKeyPressed(Input.Keys.A))
+            getController().getCameras().get(0).move((int) -(delta*speed*1.414),0);
+        if (input.isKeyPressed(Input.Keys.D))
+            getController().getCameras().get(0).move((int) (delta*speed*1.414),0);
     }
 
     
@@ -109,7 +118,7 @@ public class MapEditorView extends View {
     private static class InputListener implements InputProcessor {
         private final MapEditorController controller;
 
-        public InputListener(MapEditorController controller) {
+        InputListener(MapEditorController controller) {
             this.controller = controller;
         }
         

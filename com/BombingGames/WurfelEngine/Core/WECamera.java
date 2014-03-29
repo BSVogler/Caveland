@@ -733,4 +733,14 @@ public class WECamera extends Camera {
         
         Controller.requestRecalc();
     }
+    
+    /**
+     * Move x and y coordinate
+     * @param x
+     * @param y 
+     */
+    public void move(int x,int y){
+        this.projectionPosX += x;
+        this.projectionPosY += y;
+    }
 }

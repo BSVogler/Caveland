@@ -29,6 +29,7 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
+import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -39,7 +40,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  *
@@ -51,16 +54,32 @@ public class BasicOptionsScreen implements Screen {
     private final OrthographicCamera camera;
     private final BitmapFont font;
     private static ShapeRenderer sr;
-    private final RedActor actor;
+    private final TestActor actor;
 
     public BasicOptionsScreen() {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(stage);
-        
-        actor = new RedActor();
-        actor.setColor(Color.RED.cpy());
-        actor.setBounds(50, 70, 30, 40);
-        actor.setVisible(true);
+        sr = new ShapeRenderer();
+                
+        actor = new TestActor(new ShapeRenderer());
+        actor.setBounds(200, 200, 400, 400);
+        actor.addListener(
+            new ClickListener() {
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                GameplayScreen.msgSystem().add("mousemoved");
+                return true;
+            }
+            
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    System.out.println("Penis");
+                    actor.setWidth(x+500);
+                    actor.setHeight(y+500);
+                    return false;
+                }
+            }
+        );
         stage.addActor(actor);
         
         batch = new SpriteBatch();
@@ -72,7 +91,7 @@ public class BasicOptionsScreen implements Screen {
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
         
-        sr = new ShapeRenderer();
+
     }
 
     @Override
@@ -88,7 +107,6 @@ public class BasicOptionsScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
         
-        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         
         batch.begin();
@@ -122,18 +140,5 @@ public class BasicOptionsScreen implements Screen {
         stage.dispose();
     }
 
-    private static class RedActor extends Actor {
-
-        @Override
-        public void draw(SpriteBatch batch, float parentAlpha) {
-            sr.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
-
-            sr.begin(ShapeType.Filled);
-            sr.rect(getX(), getY(), getWidth(), getHeight());
-            sr.end();
-
-        }
-        
-    }
     
 }

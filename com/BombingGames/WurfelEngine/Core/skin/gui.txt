@@ -1,0 +1,25 @@
+gui.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+load_button
+  rotate: false
+  xy: 24, 2
+  size: 18, 20
+  orig: 20, 20
+  offset: 2, 0
+  index: -1
+play_button
+  rotate: false
+  xy: 44, 2
+  size: 17, 20
+  orig: 17, 20
+  offset: 0, 0
+  index: -1
+save_button
+  rotate: false
+  xy: 2, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1

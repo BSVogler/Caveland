@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -44,17 +45,24 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt Vogler
  */
 public class MapEditorView extends View {
+    private MapEditorController controller;
 
     @Override
     public void init(Controller controller) {
         super.init(controller);
-        Gdx.input.setInputProcessor(new InputListener((MapEditorController) controller));
+        this.controller = (MapEditorController) controller;
+        
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputListener((MapEditorController) controller));
+        inputMultiplexer.addProcessor(this.controller.getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     
     @Override
     public void render() {
         super.render();
+        controller.getStage().draw();
+        
         ShapeRenderer sh = getShapeRenderer();
         Gdx.gl.glEnable(GL10.GL_BLEND);
         Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);

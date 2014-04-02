@@ -90,7 +90,6 @@ public class BasicOptionsScreen implements Screen {
         
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        actor.draw(batch, delta);
         
         batch.begin();
         font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);

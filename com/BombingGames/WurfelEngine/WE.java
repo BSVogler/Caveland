@@ -109,7 +109,7 @@ public class WE extends Game {
     }
     
     /**
-         * You don't have to manually call this method.
+         * You don't have to manually call this method. Starts init() process
          */
     @Override
     public void create() {

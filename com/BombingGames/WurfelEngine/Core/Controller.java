@@ -236,7 +236,7 @@ public class Controller {
      *
      * @return
      */
-    public FPSdiag getFpsdiag() {
+    public FPSdiag getFPSdiag() {
         return fpsdiag;
     }
 
@@ -254,7 +254,7 @@ public class Controller {
      * @param width
      * @param height 
      */
-    void resize(int width, int height) {
+    private void resize(int width, int height) {
         for (WECamera camera : cameras) {
             camera.resize(width, height);
         }

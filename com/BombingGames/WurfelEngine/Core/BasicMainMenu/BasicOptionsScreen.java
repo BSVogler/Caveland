@@ -38,8 +38,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -96,9 +94,7 @@ public class BasicOptionsScreen implements Screen {
 
     @Override
     public void render(float delta) {
-    
-        
-         //clear & set background to black
+        //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
         

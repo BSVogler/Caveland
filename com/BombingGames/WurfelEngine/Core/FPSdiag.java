@@ -81,6 +81,8 @@ public class FPSdiag {
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
+            
+            //render bars
             shRenderer.begin(ShapeRenderer.ShapeType.Filled);
             
             for (int i = 0; i < data.length; i++) { //render each field in memory
@@ -89,6 +91,14 @@ public class FPSdiag {
                 else
                     shRenderer.setColor(new Color(1, 1, 1, 0.8f));
                 shRenderer.rect(xPos+width*i, yPos-data[i], width, data[i]);
+            }
+            shRenderer.end();
+            
+            shRenderer.begin(ShapeRenderer.ShapeType.Line);
+            
+            for (int i = 0; i < data.length-1; i++) { //render each field in memory
+                shRenderer.setColor(new Color(0, 0, 1, 0.9f));
+                shRenderer.line(xPos+width*i+width/2, yPos-data[i], xPos+width*(i+1.5f), yPos-data[i+1]);
             }
             shRenderer.end();
 

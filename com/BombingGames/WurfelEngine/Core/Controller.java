@@ -23,7 +23,6 @@ public class Controller {
     private static boolean recalcRequested;
     
         
-    private final ArrayList<WECamera> cameras = new ArrayList<WECamera>(6);
     private Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
@@ -57,21 +56,7 @@ public class Controller {
          //update the log
         GameplayScreen.msgSystem().update(delta);
         
-        for (WECamera camera : cameras) {
-            if (camera.togglesChunkSwitch()) {
-                //earth to right
-                if (camera.getVisibleLeftBorder() <= 0)
-                    map.setCenter(3);
-                else if (camera.getVisibleRightBorder() >= Map.getBlocksX()-1) 
-                        map.setCenter(5); //earth to the left
-
-                //scroll up, earth down            
-                if (camera.getVisibleTopBorder() <= 0)
-                    map.setCenter(1);
-                else if (camera.getVisibleBottomBorder() >= Map.getBlocksY()-1)
-                        map.setCenter(7); //scroll down, earth up
-            }
-        }
+        
         
         //update every static update method
         AbstractGameObject.updateStaticUpdates(delta);
@@ -93,10 +78,6 @@ public class Controller {
                 map.getEntitys().remove(i);
         }
         
-        //update cameras
-        for (WECamera camera : cameras) {
-            camera.update();
-        }
         
         fpsdiag.update(delta);
                 
@@ -140,7 +121,9 @@ public class Controller {
      * @return the map
      */
     public static Map getMap() {
-        return map;
+        if (map == null)
+            throw new NullPointerException("There is no map yet.");
+        else return map;
     }
     
     
@@ -169,27 +152,13 @@ public class Controller {
         return minimap;
     }
     
-    /**
-     * Returns a camera.
-     * @return The virtual cameras rendering the scene
-     */
-    public ArrayList<WECamera> getCameras() {
-        return cameras;
-    }
-
-    /**
-     * Add a camera.
-     * @param camera
-     */
-    protected void addCamera(WECamera camera) {
-        this.cameras.add(camera);
-    }
+   
 
     /**
      * Set the minimap-
      * @param minimap
      */
-    protected void setMinimap(Minimap minimap) {
+    public void setMinimap(Minimap minimap) {
         this.minimap = minimap;
     }
 
@@ -246,17 +215,6 @@ public class Controller {
     public void dispose(){
         for (AbstractEntity entity :  map.getEntitys()) {
             entity.dispose();
-        }
-    }
-
-    /**
-     * should be called when the window get resized
-     * @param width
-     * @param height 
-     */
-    public void resize(int width, int height) {
-        for (WECamera camera : cameras) {
-            camera.resize(width, height);
         }
     }
 }

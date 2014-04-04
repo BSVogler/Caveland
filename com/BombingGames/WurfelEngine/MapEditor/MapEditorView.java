@@ -29,12 +29,11 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Configuration;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameControllerWithCamera;
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameViewWithCamera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -55,17 +54,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class MapEditorView extends View {
     private MapEditorController controller;
+    private Stage stage;
+    private WECamera camera;
 
     @Override
     public void init(Controller controller) {
         super.init(controller);
         this.controller = (MapEditorController) controller;
         
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                
+        
         InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputListener((MapEditorController) controller));
-        inputMultiplexer.addProcessor(this.controller.getStage());
+        inputMultiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
         
-        Stage stage = this.controller.getStage();
+        
+        camera = new WECamera();
+        addCamera(camera);
+        
+        
+
         
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
         
@@ -77,7 +86,7 @@ public class MapEditorView extends View {
             new ClickListener() {
              @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.initGame(new GameControllerWithCamera(), new View(), WE.getCurrentConfig());
+                    WE.initGame(new Controller(), new GameViewWithCamera(), WE.getCurrentConfig());
                     return true;
                }
             }
@@ -119,7 +128,7 @@ public class MapEditorView extends View {
     @Override
     public void render() {
         super.render();
-        controller.getStage().draw();
+        stage.draw();
         
         ShapeRenderer sh = getShapeRenderer();
         Gdx.gl.glEnable(GL10.GL_BLEND);
@@ -170,13 +179,13 @@ public class MapEditorView extends View {
         else speed = 800;
         
         if (input.isKeyPressed(Input.Keys.W))
-            getController().getCameras().get(0).move(0, (int) (-delta*speed));
+            camera.move(0, (int) (-delta*speed));
         if (input.isKeyPressed(Input.Keys.S))
-            getController().getCameras().get(0).move(0, (int) (delta*speed));
+            camera.move(0, (int) (delta*speed));
         if (input.isKeyPressed(Input.Keys.A))
-            getController().getCameras().get(0).move((int) -(delta*speed*1.414),0);
+            camera.move((int) -(delta*speed*1.414),0);
         if (input.isKeyPressed(Input.Keys.D))
-            getController().getCameras().get(0).move((int) (delta*speed*1.414),0);
+            camera.move((int) (delta*speed*1.414),0);
     }
 
     

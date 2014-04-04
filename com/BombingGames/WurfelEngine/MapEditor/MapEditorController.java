@@ -32,13 +32,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.WECamera;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  *
@@ -46,10 +40,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class MapEditorController extends Controller {
     private int currentLayer = 0;
-    private WECamera camera;
-    private Stage stage;
-
-
 
     @Override
     public void init() {
@@ -57,12 +47,6 @@ public class MapEditorController extends Controller {
         Gdx.app.log("MapEditorController", "Initializing");
         
         currentLayer = Map.getBlocksZ();
-        
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
-        
-        camera = new WECamera();
-        addCamera(camera);
     }
     
    /**
@@ -88,10 +72,4 @@ public class MapEditorController extends Controller {
         
         WECamera.setZRenderingLimit(currentLayer);
     }
-
-    public Stage getStage() {
-        return stage;
-    }
-    
-    
 }

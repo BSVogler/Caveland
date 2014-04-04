@@ -30,20 +30,18 @@
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 
 /**
  *A simple Controller which adds a camera.
  * @author Benedikt Vogler
  */
-public class GameControllerWithCamera extends Controller {
+public class GameViewWithCamera extends View {
 
     @Override
-    public void init() {
-       super.init();
-       addCamera(new WECamera());
+    public void init(Controller controller) {
+        super.init(controller);
+               addCamera(new WECamera());
     }
-
-    
-    
 }

@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -42,12 +43,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.ArrayList;
 
 /**
  * The View manages everything what should be drawn.
  * @author Benedikt
  */
 public class View {
+    private final ArrayList<WECamera> cameras = new ArrayList<WECamera>(6);//max 6 cameras
+    
     private static BitmapFont font;
     
     private SpriteBatch batch;    
@@ -96,6 +100,28 @@ public class View {
      * @param delta
      */
     public void update(float delta){
+        for (WECamera camera : cameras) {
+            if (camera.togglesChunkSwitch()) {
+                //earth to right
+                if (camera.getVisibleLeftBorder() <= 0)
+                    Controller.getMap().setCenter(3);
+                else
+                    if (camera.getVisibleRightBorder() >= Map.getBlocksX()-1) 
+                        Controller.getMap().setCenter(5); //earth to the left
+
+                //scroll up, earth down            
+                if (camera.getVisibleTopBorder() <= 0)
+                    Controller.getMap().setCenter(1);
+                else
+                    if (camera.getVisibleBottomBorder() >= Map.getBlocksY()-1)
+                        Controller.getMap().setCenter(7); //scroll down, earth up
+            }
+        }
+        
+        //update cameras
+        for (WECamera camera : cameras) {
+            camera.update();
+        }
     }
     
     /**
@@ -108,12 +134,12 @@ public class View {
         //Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT); //clearing the screen is ~5-10% slower than without.
         
         //render every camera
-        if (controller.getCameras().isEmpty()){
+        if (cameras.isEmpty()){
             Gdx.gl10.glClearColor(0.5f, 1, 0.5f, 1);
             Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         }else {
-            for (WECamera camera : controller.getCameras()) {
+            for (WECamera camera : cameras) {
                 camera.render(this, camera);
             }
         }
@@ -191,10 +217,10 @@ public class View {
         WECamera camera;
         int i = 0;
         do {          
-            camera = controller.getCameras().get(i);
+            camera = cameras.get(i);
             i++;
         } while (
-                i < controller.getCameras().size()
+                i < cameras.size()
                 && !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
                 && y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
         );
@@ -322,5 +348,32 @@ public class View {
      */
     public Controller getController() {
         return controller;
+    }
+    
+     /**
+     * Returns a camera.
+     * @return The virtual cameras rendering the scene
+     */
+    public ArrayList<WECamera> getCameras() {
+        return cameras;
+    }
+
+    /**
+     * Add a camera.
+     * @param camera
+     */
+    protected void addCamera(WECamera camera) {
+        this.cameras.add(camera);
+    }
+    
+     /**
+     * should be called when the window get resized
+     * @param width
+     * @param height 
+     */
+    public void resize(int width, int height) {
+        for (WECamera camera : cameras) {
+            camera.resize(width, height);
+        }
     }
 }

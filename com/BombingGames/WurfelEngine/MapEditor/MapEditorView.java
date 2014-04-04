@@ -29,7 +29,10 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.Configuration;
+import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameControllerWithCamera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
@@ -74,7 +77,7 @@ public class MapEditorView extends View {
             new ClickListener() {
              @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    playbutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+                    WE.initGame(new GameControllerWithCamera(), new View(), WE.getCurrentConfig());
                     return true;
                }
             }

@@ -44,7 +44,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
    private final int SPRITESPERDIR;
       
    private final float[] dir = {1, 0, 0};
-   private String controls = "NPC";
 
    /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1**/
    private final int smoothBreaks = 200;
@@ -361,25 +360,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public void setDamageSounds(Sound[] sound){
         damageSounds = sound;
     }
-    
-    
-   /**
-     * Set the controls.
-     * @param controls either "arrows", "WASD" or "NPC"
-     */
-    public void setControls(String controls){
-        if ("arrows".equals(controls) || "WASD".equals(controls) || "NPC".equals(controls))
-            this.controls = controls;
-    }
-    
-   /**
-     * Returns the Controls
-     * @return either "arrows", "WASD" or "NPC"
-     */
-    public String getControls(){
-        return controls;
-    }
-    
+       
     /**
      * Adds horizontal colission check to onGround().
      * @return 

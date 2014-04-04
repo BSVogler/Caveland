@@ -61,53 +61,6 @@ public class MapEditorController extends Controller {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         
-        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
-        
-        //add play button
-        final Image playbutton = new Image(spritesheet.findRegion("play_button"));
-        playbutton.setX(Gdx.graphics.getWidth()-40);
-        playbutton.setY(Gdx.graphics.getHeight()-40);
-        playbutton.addListener(
-            new ClickListener() {
-             @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    playbutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(playbutton);
-        
-         //add play button
-        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
-        loadbutton.setX(Gdx.graphics.getWidth()-80);
-        loadbutton.setY(Gdx.graphics.getHeight()-40);
-        loadbutton.addListener(
-            new ClickListener() {
-             @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    loadbutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(loadbutton);
-        
-         //add play button
-        final Image savebutton = new Image(spritesheet.findRegion("save_button"));
-        savebutton.setX(Gdx.graphics.getWidth()-120);
-        savebutton.setY(Gdx.graphics.getHeight()-40);
-        savebutton.addListener(
-            new ClickListener() {
-             @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    savebutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(savebutton);
-        
         camera = new WECamera();
         addCamera(camera);
     }

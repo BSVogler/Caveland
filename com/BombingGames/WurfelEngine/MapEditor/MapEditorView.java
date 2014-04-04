@@ -32,13 +32,19 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  *
@@ -55,6 +61,55 @@ public class MapEditorView extends View {
         InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputListener((MapEditorController) controller));
         inputMultiplexer.addProcessor(this.controller.getStage());
         Gdx.input.setInputProcessor(inputMultiplexer);
+        
+        Stage stage = this.controller.getStage();
+        
+        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+        
+        //add play button
+        final Image playbutton = new Image(spritesheet.findRegion("play_button"));
+        playbutton.setX(Gdx.graphics.getWidth()-40);
+        playbutton.setY(Gdx.graphics.getHeight()-40);
+        playbutton.addListener(
+            new ClickListener() {
+             @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    playbutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+                    return true;
+               }
+            }
+        );
+        stage.addActor(playbutton);
+        
+         //add play button
+        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
+        loadbutton.setX(Gdx.graphics.getWidth()-80);
+        loadbutton.setY(Gdx.graphics.getHeight()-40);
+        loadbutton.addListener(
+            new ClickListener() {
+             @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    loadbutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+                    return true;
+               }
+            }
+        );
+        stage.addActor(loadbutton);
+        
+         //add play button
+        final Image savebutton = new Image(spritesheet.findRegion("save_button"));
+        savebutton.setX(Gdx.graphics.getWidth()-120);
+        savebutton.setY(Gdx.graphics.getHeight()-40);
+        savebutton.addListener(
+            new ClickListener() {
+             @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    savebutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
+                    return true;
+               }
+            }
+        );
+        stage.addActor(savebutton);
     }
 
     

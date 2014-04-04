@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class LoadingBar extends Actor {
 
-    Animation animation;
-    TextureRegion reg;
-    float stateTime;
+    private final Animation animation;
+    private TextureRegion reg;
+    private float stateTime;
 
     /**
      *

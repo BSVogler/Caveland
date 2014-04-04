@@ -32,6 +32,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.text.NumberFormat;
 
 /**
  *The FPS diagramm collects some fps values and creates a diagram and analyzes it.
@@ -43,6 +44,11 @@ public class FPSdiag {
     private int field;//the current field number
     private final int xPos, yPos, width;
     private boolean visible = true;
+    private StringBuilder memoryText;
+    private long freeMemory;
+    private long allocatedMemory;
+    private long maxMemory;
+    private long usedMemory;
 
     /**
      *
@@ -69,6 +75,22 @@ public class FPSdiag {
             
             data[field] = (int) (1/Gdx.graphics.getDeltaTime());//save fps
         }
+        
+        Runtime runtime = Runtime.getRuntime();
+        NumberFormat format = NumberFormat.getInstance();
+
+        memoryText = new StringBuilder();
+        maxMemory = runtime.maxMemory();
+        allocatedMemory = runtime.totalMemory();
+        freeMemory = runtime.freeMemory();
+        usedMemory = allocatedMemory-freeMemory;
+
+        memoryText.append(format.format(usedMemory / 1024));
+        memoryText.append("/").append(format.format(allocatedMemory / 1024)).append(" MB");
+//        memoryText.append("free: ").append(format.format(freeMemory / 1024));
+//        memoryText.append("allocated: ").append(format.format(allocatedMemory / 1024));
+//        memoryText.append("max: ").append(format.format(maxMemory / 1024));
+//        memoryText.append("total free: ").append(format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024));
     }
     
     /**
@@ -77,46 +99,53 @@ public class FPSdiag {
      */
     public void render(View view){
         if (visible){
-            ShapeRenderer shRenderer = view.getShapeRenderer();
+            ShapeRenderer shr = view.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
             
+            shr.begin(ShapeRenderer.ShapeType.Filled);
             //render bars
-            shRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            
             for (int i = 0; i < data.length; i++) { //render each field in memory
                 if (i == field) //highlight current FPS
-                    shRenderer.setColor(new Color(1, 0, 1, 0.8f));
+                    shr.setColor(new Color(1, 0, 1, 0.8f));
                 else
-                    shRenderer.setColor(new Color(1, 1, 1, 0.8f));
-                shRenderer.rect(xPos+width*i, yPos-data[i], width, data[i]);
+                    shr.setColor(new Color(1, 1, 1, 0.8f));
+                shr.rect(xPos+width*i, yPos-data[i], width, data[i]);
             }
-            shRenderer.end();
             
-            shRenderer.begin(ShapeRenderer.ShapeType.Line);
+            //render RAM
+            shr.setColor(new Color(.2f, 1, .2f, 0.8f));
+            shr.rect(xPos, yPos, usedMemory*width*data.length/allocatedMemory, 20);
+            
+            shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.8f));
+            shr.rect(xPos+usedMemory*width*data.length/allocatedMemory, yPos, (width*data.length-width*data.length*usedMemory/allocatedMemory), 20);
+            
+            shr.end();
+            
+            shr.begin(ShapeRenderer.ShapeType.Line);
             
             for (int i = 0; i < data.length-1; i++) { //render each field in memory
-                shRenderer.setColor(new Color(0, 0, 1, 0.9f));
-                shRenderer.line(xPos+width*i+width/2, yPos-data[i], xPos+width*(i+1.5f), yPos-data[i+1]);
+                shr.setColor(new Color(0, 0, 1, 0.9f));
+                shr.line(xPos+width*i+width/2, yPos-data[i], xPos+width*(i+1.5f), yPos-data[i+1]);
             }
-            shRenderer.end();
 
-            //render average
-            int avg = getAverage();
-            shRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shRenderer.setColor(new Color(1, 0, 1, 0.8f));
-            shRenderer.line(xPos, yPos-avg, xPos+width*data.length, yPos-avg);
+            //render average            
+            shr.setColor(new Color(1, 0, 1, 0.8f));
+            shr.line(xPos, yPos-getAverage(), xPos+width*data.length, yPos-getAverage());
 
-            shRenderer.setColor(Color.GRAY);
-            shRenderer.line(xPos, yPos, xPos+width*data.length, yPos);
-            shRenderer.line(xPos, yPos-30, xPos+width*data.length, yPos-30);
-            shRenderer.line(xPos, yPos-60, xPos+width*data.length, yPos-60);
-            shRenderer.line(xPos, yPos-120, xPos+width*data.length, yPos-120);
+            //render steps
+            shr.setColor(Color.GRAY);
+            shr.line(xPos, yPos, xPos+width*data.length, yPos);
+            shr.line(xPos, yPos-30, xPos+width*data.length, yPos-30);
+            shr.line(xPos, yPos-60, xPos+width*data.length, yPos-60);
+            shr.line(xPos, yPos-120, xPos+width*data.length, yPos-120);
             
-            shRenderer.end();
+            shr.end(); 
+            
+            view.drawString(memoryText.toString(), xPos, yPos);
             Gdx.gl.glDisable(GL10.GL_BLEND);
-     }
+        }
     }
     
     /**

@@ -174,6 +174,10 @@ public class WE extends Game {
     public static void initGame(Controller controller, View view, Configuration config){
         if (instance != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game…");
+            Gdx.app.log("Wurfel Engine", "Using Controller:" + controller.toString());
+            Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
+            Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
+            
             gameplayScreen = new GameplayScreen(
                 controller,
                 view,

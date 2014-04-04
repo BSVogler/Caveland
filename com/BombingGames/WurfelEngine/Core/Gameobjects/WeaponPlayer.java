@@ -36,17 +36,17 @@ import com.badlogic.gdx.math.Vector3;
 
 
 /**
- *The Player is a character who can walk.
+ *The WeaponPlayer is a character who can walk and shoot.
  * @author Benedikt
  */
-public class Player extends AbstractCharacter{
+public class WeaponPlayer extends AbstractCharacter{
     private WECamera camera;
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
      * @param point 
      * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
      */
-    public Player(Point point) {
+    public WeaponPlayer(Point point) {
         super(30, 1, point);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(

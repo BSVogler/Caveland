@@ -254,7 +254,7 @@ public class Controller {
      * @param width
      * @param height 
      */
-    private void resize(int width, int height) {
+    public void resize(int width, int height) {
         for (WECamera camera : cameras) {
             camera.resize(width, height);
         }

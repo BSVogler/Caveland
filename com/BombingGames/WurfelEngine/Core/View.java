@@ -75,6 +75,8 @@ public class View {
         
         this.controller = controller;
         
+        Gdx.input.setInputProcessor(null);
+        
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(true);
         //font.scale(2);

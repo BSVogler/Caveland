@@ -42,6 +42,6 @@ public class GameViewWithCamera extends View {
     @Override
     public void init(Controller controller) {
         super.init(controller);
-               addCamera(new WECamera());
+        addCamera(new WECamera());
     }
 }

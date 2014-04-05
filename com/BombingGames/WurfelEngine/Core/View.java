@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -62,6 +63,7 @@ public class View {
     private int drawmode;
     
     private OrthographicCamera hudCamera;
+    private boolean f5up;
     
     
     /**
@@ -118,6 +120,13 @@ public class View {
             }
             camera.update();
         }
+        
+        //you can toggle the dev menu
+        if (f5up && Gdx.input.isKeyPressed(Keys.F5)) {
+            controller.getFPSdiag().setVisible(!controller.getFPSdiag().isVisible());
+            f5up = false;
+        }
+        f5up = !Gdx.input.isKeyPressed(Keys.F5);
     }
     
     /**

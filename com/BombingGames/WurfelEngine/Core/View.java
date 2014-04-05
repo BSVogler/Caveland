@@ -77,8 +77,8 @@ public class View {
         font = new BitmapFont(true);
         //font.scale(2);
         for (TextureRegion region : font.getRegions()) {
-                region.flip(false, false);
-            }
+            region.flip(false, false);
+        }
         
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
@@ -116,10 +116,6 @@ public class View {
                     if (camera.getVisibleBottomBorder() >= Map.getBlocksY()-1)
                         Controller.getMap().setCenter(7); //scroll down, earth up
             }
-        }
-        
-        //update cameras
-        for (WECamera camera : cameras) {
             camera.update();
         }
     }

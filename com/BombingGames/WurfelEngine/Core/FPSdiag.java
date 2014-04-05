@@ -79,7 +79,7 @@ public class FPSdiag {
         Runtime runtime = Runtime.getRuntime();
         NumberFormat format = NumberFormat.getInstance();
 
-        memoryText = new StringBuilder();
+        memoryText = new StringBuilder(100);
         maxMemory = runtime.maxMemory();
         allocatedMemory = runtime.totalMemory();
         freeMemory = runtime.freeMemory();

@@ -213,7 +213,7 @@ public class Controller {
      *
      */
     public void dispose(){
-        for (AbstractEntity entity :  map.getEntitys()) {
+        for (AbstractEntity entity : map.getEntitys()) {
             entity.dispose();
         }
     }

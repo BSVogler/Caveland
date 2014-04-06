@@ -178,6 +178,7 @@ public class WE extends Game {
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
             
+            if (gameplayScreen != null) gameplayScreen.dispose();
             gameplayScreen = new GameplayScreen(
                 controller,
                 view,

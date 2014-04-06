@@ -2,6 +2,13 @@ gui.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+editor_button
+  rotate: false
+  xy: 2, 24
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
 load_button
   rotate: false
   xy: 24, 2

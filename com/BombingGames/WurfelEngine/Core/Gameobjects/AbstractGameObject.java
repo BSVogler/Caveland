@@ -100,7 +100,7 @@ public abstract class AbstractGameObject {
     /**The sprite texture which contains every object texture*/
     private static TextureAtlas spritesheet;
     private static Pixmap pixmap;
-    private static final AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];//{category}{id}{value}
+    private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];//{category}{id}{value}
     
     private final int id; 
     private byte value;
@@ -237,9 +237,10 @@ public abstract class AbstractGameObject {
                 region.flip(false, true);
             }
         }
+        
+        //load again for pixmap, allows access to image color data;
         if (pixmap == null) {
             //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-            //load again for pixmap, allows access to image color data;
             pixmap = new Pixmap(
                 Gdx.files.internal(WE.getCurrentConfig().getSpritesheetPath()+".png")
             );
@@ -453,6 +454,9 @@ public abstract class AbstractGameObject {
      */
     public static void staticDispose(){
         spritesheet.dispose();
-        pixmap.dispose();
+        spritesheet = null;
+        sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];
+        //pixmap.dispose();
+        pixmap = null;
     }
 }

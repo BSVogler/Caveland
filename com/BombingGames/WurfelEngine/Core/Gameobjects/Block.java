@@ -64,7 +64,7 @@ public class Block extends AbstractGameObject {
     /** A list containing the offset of the objects. */
     public static final int[][][] OFFSET = new int[OBJECTTYPESCOUNT][VALUESCOUNT][2];
     
-    private static final AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
         
     /**
      * a list where a representing color of the block is stored
@@ -570,5 +570,9 @@ public class Block extends AbstractGameObject {
      */
     public void setNoSides(){
         hasSides=false;
+    }
+    
+    public static void staticDispose(){
+        blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
     }
 }

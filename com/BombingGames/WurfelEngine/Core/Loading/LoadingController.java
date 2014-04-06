@@ -57,7 +57,7 @@ public class LoadingController {
         manager.finishLoading();
         
         // Add everything to be loaded, for instance:
-        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);       
+        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(config.getSpritesheetPath()+".txt", TextureAtlas.class);
         manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
         
@@ -93,5 +93,10 @@ public class LoadingController {
      */
     public float getPercent() {
         return percent;
+    }
+    
+    public void dispose(Configuration config){
+        //WE.getAssetManager().unload(config.getSpritesheetPath()+".png");
+        WE.getAssetManager().unload(config.getSpritesheetPath()+".txt");
     }
 }

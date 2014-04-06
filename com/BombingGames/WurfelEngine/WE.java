@@ -203,6 +203,8 @@ public class WE extends Game {
      * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, View view)</i>. This is called after the loading screen.
      */
     public static void showMainMenu(){
+        if (gameplayScreen != null) gameplayScreen.dispose();
+        gameplayScreen = null;
         instance.setScreen(mainMenu);
     }
     

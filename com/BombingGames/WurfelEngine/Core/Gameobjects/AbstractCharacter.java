@@ -270,7 +270,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
             if (soundlimit>0)soundlimit-=delta;
             
             if (health<=0)
-                destroy();
+                dispose();
         }
     }
     
@@ -385,12 +385,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
        return this;
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-        shadow.destroy();
-    } 
-
     /**
      * Is the character standing in a liquid?
      * @return 
@@ -441,8 +435,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
     /**
      *
      */
-    @Override
+   @Override
     public void dispose(){
+        super.dispose();
+        shadow.dispose();
         fallingSound.dispose();
         jumpingSound.dispose();
         waterSound.dispose();

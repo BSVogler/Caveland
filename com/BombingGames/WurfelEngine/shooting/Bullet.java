@@ -33,8 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.WeaponPlayer;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.WeaponPlayer;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -83,13 +83,13 @@ public class Bullet extends AbstractEntity {
         //only exist specific distance then destroy self
         distance += dMov.len();
         if (distance > maxDistance)
-            destroy();
+            dispose();
                 
         //block hit -> spawn effect
         if (getPos().onLoadedMap() && getPos().getBlockClamp().isObstacle()){
             if (impactSprite!= 0)
                 new AnimatedEntity(impactSprite, 0, getPos().cpy(), new int[]{1000} , true, false).exist();
-            destroy();
+            dispose();
         }
         
         //check character hit
@@ -100,7 +100,7 @@ public class Bullet extends AbstractEntity {
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
             new SimpleEntity(16, getPos().cpy()).exist();//spawn blood
-            destroy();
+            dispose();
         }
     }
 
@@ -197,9 +197,9 @@ public class Bullet extends AbstractEntity {
 
     
     @Override
-    public void destroy() {
+    public void dispose() {
         if (explosive>0) explode();
-        super.destroy();
+        super.dispose();
     }
 
     /**

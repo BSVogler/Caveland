@@ -451,7 +451,7 @@ public abstract class AbstractGameObject {
     /**
      *
      */
-    public void dispose(){
+    public static void staticDispose(){
         spritesheet.dispose();
         pixmap.dispose();
     }

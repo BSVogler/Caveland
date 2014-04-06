@@ -183,7 +183,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
    /**
      * Deletes the object from the map. The opposite to exist();
      */
-    public void destroy(){
+    public void dispose(){
         destroy=true;
     }
 

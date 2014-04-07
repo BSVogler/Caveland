@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.2</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine GitHub/com/BombingGames/WurfelEngine/Core/skin/gui.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/skin/gui.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">

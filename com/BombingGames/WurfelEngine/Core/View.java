@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
 
 /**
@@ -77,8 +78,6 @@ public class View {
         
         this.controller = controller;
         
-        Gdx.input.setInputProcessor(null);
-        
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(true);
         //font.scale(2);
@@ -88,6 +87,9 @@ public class View {
         
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
+        
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setInputProcessor(stage);
         
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

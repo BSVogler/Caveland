@@ -42,7 +42,7 @@ public class FPSdiag {
     private final int[] data = new int[50];
     private float timeStepMin;
     private int field;//the current field number
-    private final int xPos, yPos, width;
+    private final int xPos, yPos, width, maxHeight;
     private boolean visible = true;
     private StringBuilder memoryText;
     private long freeMemory;
@@ -59,6 +59,7 @@ public class FPSdiag {
         this.xPos = xPos;
         this.yPos = yPos;
         width = 4;
+        maxHeight=150;   
     }
     
     /**
@@ -105,42 +106,53 @@ public class FPSdiag {
             Gdx.gl.glLineWidth(1);
             
             shr.begin(ShapeRenderer.ShapeType.Filled);
-            //render bars
-            for (int i = 0; i < data.length; i++) { //render each field in memory
-                if (i == field) //highlight current FPS
-                    shr.setColor(new Color(1, 0, 1, 0.8f));
-                else
-                    shr.setColor(new Color(1, 1, 1, 0.8f));
-                shr.rect(xPos+width*i, yPos-data[i], width, data[i]);
-            }
+            //background
+            shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.2f));
+            shr.rect(xPos, yPos, getWidth(), maxHeight);
+            
+            //render current field bar
+            shr.setColor(new Color(1, 0, 1, 0.8f));
+            shr.rect(xPos+width*field, yPos+maxHeight-data[field], width, data[field]);
             
             //render RAM
             shr.setColor(new Color(.2f, 1, .2f, 0.8f));
-            shr.rect(xPos, yPos, usedMemory*width*data.length/allocatedMemory, 20);
+            shr.rect(
+                xPos,
+                yPos,
+                usedMemory*width*data.length/allocatedMemory,
+                20
+            );
             
             shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.8f));
-            shr.rect(xPos+usedMemory*width*data.length/allocatedMemory, yPos, (width*data.length-width*data.length*usedMemory/allocatedMemory), 20);
+            shr.rect(
+                xPos + usedMemory*width*data.length/allocatedMemory,
+                yPos,
+                width*data.length - width*data.length*usedMemory/allocatedMemory,
+                20
+            );
             
             shr.end();
             
+            //render lines
             shr.begin(ShapeRenderer.ShapeType.Line);
+            
+            //render steps
+            shr.setColor(Color.GRAY);
+            shr.line(xPos, yPos+maxHeight, xPos+width*data.length, yPos+maxHeight);
+            shr.line(xPos, yPos+maxHeight-30, xPos+width*data.length, yPos+maxHeight-30);
+            shr.line(xPos, yPos+maxHeight-60, xPos+width*data.length, yPos+maxHeight-60);
+            shr.line(xPos, yPos+maxHeight-120, xPos+width*data.length, yPos+maxHeight-120);
+            
             
             for (int i = 0; i < data.length-1; i++) { //render each field in memory
                 shr.setColor(new Color(0, 0, 1, 0.9f));
-                shr.line(xPos+width*i+width/2, yPos-data[i], xPos+width*(i+1.5f), yPos-data[i+1]);
+                shr.line(xPos+width*i+width/2, yPos-data[i]+maxHeight, xPos+width*(i+1.5f), yPos-data[i+1]+maxHeight);
             }
 
             //render average            
             shr.setColor(new Color(1, 0, 1, 0.8f));
-            shr.line(xPos, yPos-getAverage(), xPos+width*data.length, yPos-getAverage());
+            shr.line(xPos, yPos+maxHeight-getAverage(), xPos+width*data.length, yPos-getAverage()+maxHeight);
 
-            //render steps
-            shr.setColor(Color.GRAY);
-            shr.line(xPos, yPos, xPos+width*data.length, yPos);
-            shr.line(xPos, yPos-30, xPos+width*data.length, yPos-30);
-            shr.line(xPos, yPos-60, xPos+width*data.length, yPos-60);
-            shr.line(xPos, yPos-120, xPos+width*data.length, yPos-120);
-            
             shr.end(); 
             
             view.drawString(memoryText.toString(), xPos, yPos);
@@ -197,11 +209,27 @@ public class FPSdiag {
         this.visible = visible;
     }
 
+    /**
+     *
+     * @return 
+     */
     public int getxPos() {
         return xPos;
     }
 
+    /**
+     * 
+     * @return Y-Up
+     */
     public int getyPos() {
         return yPos;
+    }
+
+    /**
+     * Width of FPS diag.
+     * @return in pixels
+     */
+    public int getWidth() {
+        return width*data.length;
     }
 }

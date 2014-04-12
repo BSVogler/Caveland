@@ -36,7 +36,7 @@ public class Controller {
     public void init(){
         Gdx.app.log("Controller", "Initializing");
         newMap();
-        fpsdiag = new FPSdiag(10,300);
+        fpsdiag = new FPSdiag(10,50);
         
         if (WE.getCurrentConfig().useLightEngine()){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);

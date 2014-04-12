@@ -64,7 +64,6 @@ public class MapEditorView extends View {
         
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 
-        
         InputMultiplexer inputMultiplexer = new InputMultiplexer(new InputListener((MapEditorController) controller));
         inputMultiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(inputMultiplexer);

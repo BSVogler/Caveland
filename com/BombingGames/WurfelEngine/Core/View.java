@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import static com.BombingGames.WurfelEngine.Core.Controller.newMap;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -39,6 +38,8 @@ import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -107,7 +108,7 @@ public class View {
         
         //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.input.setInputProcessor(stage);
+        View.addInputProcessor(stage);
         
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
         
@@ -126,7 +127,6 @@ public class View {
         );
         stage.addActor(editorbutton);
         
-        
         //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -137,8 +137,20 @@ public class View {
         //set up cursor
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
         Gdx.input.setCursorImage(cursor, 8, 8);
-        
-
+    }
+    
+    /**
+     * Add an inputProcessor to the views.
+     * @param processor 
+     */
+    public static void addInputProcessor(InputProcessor processor){
+        if (Gdx.input.getInputProcessor() == null){
+            Gdx.input.setInputProcessor(processor);
+        }else{
+            InputMultiplexer inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
+            inputMultiplexer.addProcessor(processor);
+            Gdx.input.setInputProcessor(inputMultiplexer);
+        }
     }
         
     /**

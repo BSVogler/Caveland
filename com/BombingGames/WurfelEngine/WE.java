@@ -194,6 +194,7 @@ public class WE extends Game {
      * @param view 
      */
     public static void switchSetup(Controller controller, View view){
+        Gdx.input.setInputProcessor(null);
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         controller.init();

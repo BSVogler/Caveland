@@ -85,7 +85,7 @@ public class MapEditorView extends View {
             new ClickListener() {
              @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.initGame(new Controller(), new GameViewWithCamera(), WE.getCurrentConfig());
+                    WE.switchSetup(new Controller(), new GameViewWithCamera());
                     return true;
                }
             }

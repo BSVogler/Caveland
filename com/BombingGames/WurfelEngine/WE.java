@@ -178,7 +178,7 @@ public class WE extends Game {
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
             
-            if (gameplayScreen != null) gameplayScreen.dispose();
+            if (gameplayScreen != null) gameplayScreen.dispose();//remove gameplayscreen if it already exists
             gameplayScreen = new GameplayScreen(
                 controller,
                 view,
@@ -186,6 +186,18 @@ public class WE extends Game {
             );
         } else
             Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
+    }
+    
+    /**
+     * Use this if you want to use different controller and views.
+     * @param controller
+     * @param view 
+     */
+    public static void switchSetup(Controller controller, View view){
+        gameplayScreen.setController(controller);
+        gameplayScreen.setView(view);
+        controller.init();
+        view.init(controller);
     }
     
     /**

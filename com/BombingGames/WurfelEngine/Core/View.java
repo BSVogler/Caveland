@@ -28,11 +28,14 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import static com.BombingGames.WurfelEngine.Core.Controller.newMap;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -42,9 +45,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 
 /**
@@ -70,14 +77,10 @@ public class View {
     
     
     /**
-     *Loades some files and set up everything.
-     * @param controller
+     * Shoud be called before the object get initialized.
+     * Initializes class fields.
      */
-    public void init(Controller controller){
-        Gdx.app.debug("View", "Initializing");
-        
-        this.controller = controller;
-        
+    public static void classInit(){
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(true);
@@ -89,9 +92,40 @@ public class View {
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
+        //load sprites
+        Block.loadSheet();
+    }
+    
+    /**
+     *Loades some files and set up everything.
+     * @param controller
+     */
+    public void init(Controller controller){
+        Gdx.app.debug("View", "Initializing");
+        
+        this.controller = controller;
+        
         //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(stage);
+        
+        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+        
+        //add play button
+        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
+        editorbutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+40);
+        editorbutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
+        editorbutton.addListener(
+            new ClickListener() {
+             @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    WE.switchSetup(new MapEditorController(), new MapEditorView());
+                    return true;
+               }
+            }
+        );
+        stage.addActor(editorbutton);
+        
         
         //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -104,10 +138,9 @@ public class View {
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
         Gdx.input.setCursorImage(cursor, 8, 8);
         
-        //load sprites
-        Block.loadSheet();
+
     }
-    
+        
     /**
      *Updates every camera and everything else which must be updated.
      * @param delta time since last update
@@ -180,6 +213,8 @@ public class View {
         drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
         
         controller.getFPSdiag().render(this);
+        
+        stage.draw();
         
         //scale to fit
         //hudCamera.zoom = 1/equalizationScale;

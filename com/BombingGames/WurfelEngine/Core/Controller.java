@@ -29,13 +29,20 @@ public class Controller {
     private AbstractCharacter player;  
     
     private FPSdiag fpsdiag;
-
+    
+    /**
+     * Shoud be called before the objects get initialized.
+     * Initializes class fields.
+     */
+    public static void classInit(){
+        newMap();
+    }
+    
     /**
      * This method works like a constructor. Everything is loaded here.
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");
-        newMap();
         fpsdiag = new FPSdiag(10,50);
         
         if (WE.getCurrentConfig().useLightEngine()){
@@ -44,7 +51,7 @@ public class Controller {
         
         recalcRequested = true;
     }
-    
+        
      /**
      * Main method which is called every refresh.
      * @param delta time since last call

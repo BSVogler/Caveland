@@ -93,6 +93,16 @@ public class GameplayScreen implements Screen{
     public Controller getController() {
         return controller;
     }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+    
+    
     
     
 
@@ -111,6 +121,8 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void show() {
+        Controller.classInit();
+        View.classInit();
         this.controller.init();
         this.view.init(controller);
     }

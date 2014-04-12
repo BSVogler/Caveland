@@ -344,7 +344,7 @@ public class View {
     } 
 
     /**
-     *
+     *y-down
      * @return
      */
     public SpriteBatch getBatch() {
@@ -352,7 +352,7 @@ public class View {
     }
 
     /**
-     *
+     * Y-down
      * @return
      */
     public ShapeRenderer getShapeRenderer() {

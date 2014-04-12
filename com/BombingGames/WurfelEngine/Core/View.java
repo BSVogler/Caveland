@@ -63,7 +63,9 @@ public class View {
     private int drawmode;
     
     private OrthographicCamera hudCamera;
-    private boolean f5up;
+    private boolean keyF5isUp;
+    
+    private Stage stage;
     
     
     /**
@@ -124,11 +126,11 @@ public class View {
         }
         
         //you can toggle the dev menu
-        if (f5up && Gdx.input.isKeyPressed(Keys.F5)) {
+        if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
             controller.getFPSdiag().setVisible(!controller.getFPSdiag().isVisible());
-            f5up = false;
+            keyF5isUp = false;
         }
-        f5up = !Gdx.input.isKeyPressed(Keys.F5);
+        keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
     }
     
     /**

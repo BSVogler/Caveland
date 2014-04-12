@@ -203,7 +203,7 @@ public class Configuration {
     
    /**
      * You can use your own spritesheet. the suffix will be added
-     * @return format like ""com/BombingGames/WurfelEngine/Core/images/Spritesheet""
+     * @return format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix
      */
     public String getSpritesheetPath(){
         return "com/BombingGames/WurfelEngine/Core/images/Spritesheet";

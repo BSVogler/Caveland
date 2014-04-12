@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.badlogic.gdx.Gdx;
 
@@ -40,6 +41,18 @@ import com.badlogic.gdx.Gdx;
  */
 public class MapEditorController extends Controller {
     private int currentLayer = 0;
+    private final Controller gameplayController;
+    private final View gameplayView;
+
+    /**
+     * 
+     * @param view the old gameplay classes
+     * @param controller the old gameplay classes 
+     */
+    public MapEditorController(View view, Controller controller) {
+        gameplayController = controller;
+        gameplayView = view;
+    }
 
     @Override
     public void init() {
@@ -71,5 +84,13 @@ public class MapEditorController extends Controller {
         if (currentLayer >= Map.getBlocksZ()) this.currentLayer=Map.getBlocksZ();
         
         WECamera.setZRenderingLimit(currentLayer);
+    }
+
+    public Controller getGameplayController() {
+        return gameplayController;
+    }
+
+    public View getGameplayView() {
+        return gameplayView;
     }
 }

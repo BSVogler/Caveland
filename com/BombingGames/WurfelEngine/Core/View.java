@@ -118,9 +118,9 @@ public class View {
         editorbutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
         editorbutton.addListener(
             new ClickListener() {
-             @Override
+                @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.switchSetup(new MapEditorController(), new MapEditorView());
+                    WE.loadEditor();
                     return true;
                }
             }

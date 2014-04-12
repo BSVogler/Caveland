@@ -29,7 +29,6 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameViewWithCamera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -37,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -80,15 +78,7 @@ public class MapEditorView extends View {
         final Image playbutton = new Image(spritesheet.findRegion("play_button"));
         playbutton.setX(Gdx.graphics.getWidth()-40);
         playbutton.setY(Gdx.graphics.getHeight()-40);
-        playbutton.addListener(
-            new ClickListener() {
-             @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.switchSetup(new Controller(), new GameViewWithCamera());
-                    return true;
-               }
-            }
-        );
+        playbutton.addListener(new PlayButton(controller));
         stage.addActor(playbutton);
         
          //add play button
@@ -110,15 +100,7 @@ public class MapEditorView extends View {
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
         savebutton.setX(Gdx.graphics.getWidth()-120);
         savebutton.setY(Gdx.graphics.getHeight()-40);
-        savebutton.addListener(
-            new ClickListener() {
-             @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    savebutton.setColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1);
-                    return true;
-               }
-            }
-        );
+        savebutton.addListener(new PlayButton(controller));
         stage.addActor(savebutton);
     }
 
@@ -239,4 +221,17 @@ public class MapEditorView extends View {
         }
     }
     
+    private static class PlayButton extends ClickListener{
+        private final MapEditorController controller;
+        
+        private PlayButton(Controller controller) {
+            this.controller = (MapEditorController) controller;
+        }
+        
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            WE.switchSetup(controller.getGameplayController(), controller.getGameplayView());
+            return true;
+        }
+    }
 }

@@ -35,6 +35,8 @@ import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -189,16 +191,41 @@ public class WE extends Game {
     }
     
     /**
-     * Use this if you want to use different controller and views.
-     * @param controller
-     * @param view 
+     * Use this if you want to use different controller and views. This reinitializes them.
+     * @param controller the new controller
+     * @param view the new view
      */
-    public static void switchSetup(Controller controller, View view){
+    public static void switchSetupWithInit(Controller controller, View view){
         Gdx.input.setInputProcessor(null);
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         controller.init();
         view.init(controller);
+    }
+    
+    /**
+     * Use this if you want to continue to use a different controller and view.
+     * @param controller the new controller
+     * @param view the new view
+     */
+    public static void switchSetup(Controller controller, View view){
+        Gdx.input.setInputProcessor(null);
+        gameplayScreen.setController(controller);
+        gameplayScreen.setView(view);
+        view.init(controller);
+    }
+    
+    /**
+     * Switch into the map editor
+     */
+    public static void loadEditor(){
+        WE.switchSetupWithInit(
+            new MapEditorController(
+                gameplayScreen.getView(),
+                gameplayScreen.getController()
+            ),
+            new MapEditorView()
+        );
     }
     
     /**

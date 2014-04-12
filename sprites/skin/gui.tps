@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>gui.png</filename>
+        <filename>../../com/BombingGames/WurfelEngine/Core/skin/gui.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>gui.txt</filename>
+                <filename>../../com/BombingGames/WurfelEngine/Core/skin/gui.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -176,6 +176,7 @@
             <filename>play_button.png</filename>
             <filename>save_button.png</filename>
             <filename>editor_button.png</filename>
+            <filename>replay_button.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

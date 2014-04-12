@@ -78,10 +78,10 @@ public class MapEditorView extends View {
         final Image playbutton = new Image(spritesheet.findRegion("play_button"));
         playbutton.setX(Gdx.graphics.getWidth()-40);
         playbutton.setY(Gdx.graphics.getHeight()-40);
-        playbutton.addListener(new PlayButton(controller));
+        playbutton.addListener(new PlayButton(controller, false));
         stage.addActor(playbutton);
         
-         //add play button
+         //add load button
         final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
         loadbutton.setX(Gdx.graphics.getWidth()-80);
         loadbutton.setY(Gdx.graphics.getHeight()-40);
@@ -96,12 +96,19 @@ public class MapEditorView extends View {
         );
         stage.addActor(loadbutton);
         
-         //add play button
+         //add save button
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
         savebutton.setX(Gdx.graphics.getWidth()-120);
         savebutton.setY(Gdx.graphics.getHeight()-40);
-        savebutton.addListener(new PlayButton(controller));
+        savebutton.addListener(new PlayButton(controller,false));
         stage.addActor(savebutton);
+        
+        //add replaybutton
+        final Image replaybutton = new Image(spritesheet.findRegion("replay_button"));
+        replaybutton.setX(Gdx.graphics.getWidth()-160);
+        replaybutton.setY(Gdx.graphics.getHeight()-40);
+        replaybutton.addListener(new PlayButton(controller, true));
+        stage.addActor(replaybutton);
     }
 
     
@@ -223,14 +230,19 @@ public class MapEditorView extends View {
     
     private static class PlayButton extends ClickListener{
         private final MapEditorController controller;
+        private final boolean replay;
         
-        private PlayButton(Controller controller) {
+        private PlayButton(Controller controller, boolean replay) {
             this.controller = (MapEditorController) controller;
+            this.replay = replay;
         }
         
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            WE.switchSetup(controller.getGameplayController(), controller.getGameplayView());
+            if (replay)
+                    WE.switchSetupWithInit(controller.getGameplayController(), controller.getGameplayView());
+                else
+                    WE.switchSetup(controller.getGameplayController(), controller.getGameplayView());
             return true;
         }
     }

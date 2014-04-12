@@ -70,7 +70,7 @@ public class View {
     
     
     /**
-     *
+     *Loades some files and set up everything.
      * @param controller
      */
     public void init(Controller controller){
@@ -78,6 +78,7 @@ public class View {
         
         this.controller = controller;
         
+        //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(true);
         //font.scale(2);
@@ -88,18 +89,22 @@ public class View {
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
+        //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(stage);
         
+        //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         
+        //set up cursor
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
         Gdx.input.setCursorImage(cursor, 8, 8);
         
+        //load sprites
         Block.loadSheet();
     }
     

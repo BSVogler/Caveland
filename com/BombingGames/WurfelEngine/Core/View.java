@@ -102,10 +102,11 @@ public class View {
     }
     
     /**
-     *
-     * @param delta
+     *Updates every camera and everything else which must be updated.
+     * @param delta time since last update
      */
     public void update(float delta){
+        //update cameras
         for (WECamera camera : cameras) {
             if (camera.togglesChunkSwitch()) {
                 //earth to right

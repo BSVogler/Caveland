@@ -40,7 +40,7 @@ import java.text.NumberFormat;
  */
 public class FPSdiag {
     private final int[] data = new int[50];
-    private float timeSinceUpdate;
+    private float timeStepMin;
     private int field;//the current field number
     private final int xPos, yPos, width;
     private boolean visible = true;
@@ -66,9 +66,9 @@ public class FPSdiag {
      * @param delta
      */
     public void update(float delta){
-        timeSinceUpdate += delta;
-        if (timeSinceUpdate>100){//update only every t ms
-            timeSinceUpdate = 0;
+        timeStepMin += delta;
+        if (timeStepMin>100){//update only every t ms
+            timeStepMin = 0;
             
             field++;//move to next field
             if (field >= data.length) field = 0; //start over           
@@ -149,12 +149,21 @@ public class FPSdiag {
     }
     
     /**
-     *
-     * @param pos
-     * @return
+     *Get a recorded FPS value. The time between savings is at least the timeStepMin
+     * @param pos the array position
+     * @return FPS value
+     * @see #getTimeStepMin() 
      */
-    public int getFPS(int pos){
+    public int getSavedFPS(int pos){
         return data[pos];
+    }
+
+    /**
+     * The minimum time between two FPS values.
+     * @return 
+     */
+    public float getTimeStepMin() {
+        return timeStepMin;
     }
     
     /**
@@ -181,10 +190,18 @@ public class FPSdiag {
     }
 
    /**
-    * Set the FPSdiag visible. You must nevertheless call render().
+    * Set the FPSdiag visible. You must nevertheless call render() to let it appear.
     * @param visible 
     */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
     }
 }

@@ -96,7 +96,7 @@ public class View {
         shapeRenderer = new ShapeRenderer();
         
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
-        Gdx.input.setCursorImage(cursor, 0, 0);
+        Gdx.input.setCursorImage(cursor, 8, 8);
         
         Block.loadSheet();
     }

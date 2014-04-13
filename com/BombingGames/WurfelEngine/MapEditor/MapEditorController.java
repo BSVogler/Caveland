@@ -34,6 +34,8 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.badlogic.gdx.Gdx;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,6 +45,10 @@ public class MapEditorController extends Controller {
     private int currentLayer = 0;
     private final Controller gameplayController;
     private final View gameplayView;
+    /**
+     * a clone of the map at the time when last tested.
+     */
+    private Map mapsave;
 
    /**
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
@@ -121,6 +127,10 @@ public class MapEditorController extends Controller {
      * should get called when you leave the editor
      */
     public void exit(){
-        Controller.getMap().fillWithAir();
+        try {
+            mapsave = Controller.getMap().clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

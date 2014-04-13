@@ -41,7 +41,7 @@ import java.util.Arrays;
  *A map stores nine chunks as part of a bigger map. It also contains the entities.
  * @author Benedikt Vogler
  */
-public class Map {
+public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
         
     private final boolean newMap;
@@ -50,7 +50,7 @@ public class Map {
     private final byte[][] coordlist = new byte[9][2];
     
     /** the map data are the blocks in their cells */
-    private final Cell[][][] data;
+    private Cell[][][] data;
     
     /** every entity on the map is stored in this field */
     private final ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
@@ -127,8 +127,8 @@ public class Map {
     
     /**
      * Copies an array with three dimensions. Code by Kevin Brock from http://stackoverflow.com/questions/2068370/efficient-system-arraycopy-on-multidimensional-arrays
-     * @param array
-     * @return The chunk of the array-
+     * @param array the data you want to copy
+     * @return The copy of the array-
      */
     private static Cell[][][] copyOf3Dim(Cell[][][] array) {
         Cell[][][] copy;
@@ -572,5 +572,17 @@ public class Map {
      */
     public static int getGameHeight(){
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
+    }
+
+    /**
+     *Clones the map. Not yet checked if a valid copy.
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    public Map clone() throws CloneNotSupportedException{
+        Map map = (Map) super.clone();
+        map.data = copyOf3Dim(data);//deep copy of the data
+        return map;
     }
 }

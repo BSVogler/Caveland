@@ -177,6 +177,7 @@
             <filename>save_button.png</filename>
             <filename>editor_button.png</filename>
             <filename>replay_button.png</filename>
+            <filename>editorreverse_button.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

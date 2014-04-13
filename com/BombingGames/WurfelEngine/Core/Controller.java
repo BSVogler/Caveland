@@ -21,6 +21,7 @@ public class Controller {
     private static LightEngine lightEngine;
     private static Map map;
     private static boolean recalcRequested;
+    private boolean initalized= false;
     
         
     private Minimap minimap;
@@ -50,6 +51,7 @@ public class Controller {
         }
         
         recalcRequested = true;
+        initalized = true;
     }
         
      /**
@@ -226,4 +228,8 @@ public class Controller {
         AbstractGameObject.staticDispose();
         Block.staticDispose();
     }
+
+    public boolean isInitalized() {
+        return initalized;
+    }    
 }

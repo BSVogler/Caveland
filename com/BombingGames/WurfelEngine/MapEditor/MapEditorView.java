@@ -239,10 +239,13 @@ public class MapEditorView extends View {
         
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            Controller c = controller.getGameplayController();
+            View v = controller.getGameplayView();
+            
             if (replay)
-                    WE.switchSetupWithInit(controller.getGameplayController(), controller.getGameplayView());
+                    WE.switchSetupWithInit(c, v);
                 else
-                    WE.switchSetup(controller.getGameplayController(), controller.getGameplayView());
+                    WE.switchSetup(c, v);
             return true;
         }
     }

@@ -296,7 +296,7 @@ public class Map {
     }
     
      /**
-     * Returns a renderobject of the map.
+     * Returns a block of the map. Clamps the coodinates.
      * @param x If too high or too low, it takes the highest/deepest value possible
      * @param y If too high or too low, it takes the highest/deepest value possible
      * @param z If too high or too low, it takes the highest/deepest value possible
@@ -332,7 +332,7 @@ public class Map {
     }
     
     /**
-     * 
+     * Get a block at a coordinate but clamp it first.
      * @param coords
      * @return
      */

@@ -162,8 +162,10 @@ public class BasicMenuItem{
                 View v = getGameView().newInstance();
                 WE.initGame(c,v, config);
             } catch (InstantiationException ex) {
+                    Gdx.app.error("BasicMenuItem", "Failed intitalizing game by creating new instances of a class.");
                     Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
+                    Gdx.app.error("BasicMenuItem", "Failed intitalizing game.");
                     Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

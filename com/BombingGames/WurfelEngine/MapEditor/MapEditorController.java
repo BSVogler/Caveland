@@ -87,7 +87,7 @@ public class MapEditorController extends Controller {
     }
 
     /**
-     * Set the value of currentLayer
+     * Set the value of currentLayer, the layer until every block gets filtered.
      *
      * @param currentLayer new value of currentLayer
      */
@@ -101,11 +101,26 @@ public class MapEditorController extends Controller {
         WECamera.setZRenderingLimit(currentLayer);
     }
 
+     /**
+     * Get the class which sould be used when playing the game.
+     * @return 
+     */
     public Controller getGameplayController() {
         return gameplayController;
     }
 
+    /**
+     * Get the class which sould be used when playing the game.
+     * @return 
+     */
     public View getGameplayView() {
         return gameplayView;
+    }
+    
+    /**
+     * should get called when you leave the editor
+     */
+    public void exit(){
+        Controller.getMap().fillWithAir();
     }
 }

@@ -122,7 +122,7 @@ public class Controller {
      */
     public static void newMap(){
         map = new Map(!WE.getCurrentConfig().shouldLoadMap());
-        map.fillWithBlocks();
+        map.fillWithAir();
     }
     
     /**

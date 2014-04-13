@@ -56,7 +56,7 @@ public class Map {
     private final ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
     
     /**
-     * Creates an empty map. Fill the map with fillWithBlocks(boolean load);
+     * Creates an empty map. Fill the map with fillWithAir(boolean load);
      * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
      * @see fillWithBlocks(boolean load)
      */
@@ -74,9 +74,9 @@ public class Map {
     }
     
     /**
-     * Fill the data array of the map with blocks. Also resets the cellOffset.
+     * Fill the data array of the map with Cells. Also resets the cellOffset.
      */
-    public void fillWithBlocks(){
+    public void fillWithAir(){
         Gdx.app.debug("Map","Filling the map with air cells...");
         for (Cell[][] x : data) {
             for (Cell[] y : x) {

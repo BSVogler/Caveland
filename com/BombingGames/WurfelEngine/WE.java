@@ -212,6 +212,7 @@ public class WE extends Game {
         Gdx.input.setInputProcessor(null);
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
+        if (!controller.isInitalized()) controller.init();
         view.init(controller);
     }
     

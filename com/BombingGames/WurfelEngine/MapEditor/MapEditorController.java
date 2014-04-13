@@ -44,14 +44,29 @@ public class MapEditorController extends Controller {
     private final Controller gameplayController;
     private final View gameplayView;
 
+   /**
+     * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
+     */
+    public MapEditorController() {
+        gameplayView=new View();
+        gameplayController=new Controller();
+    }
+    
     /**
-     * 
-     * @param view the old gameplay classes
-     * @param controller the old gameplay classes 
+     * Create an editor controller with coressponding gameplay classes.
+     * @param view the old gameplay classes. If "null": the editor then chooses a basic controller.
+     * @param controller the old gameplay classes.  If "null": the editor then chooses a basic view.
      */
     public MapEditorController(View view, Controller controller) {
-        gameplayController = controller;
-        gameplayView = view;
+        if (controller==null)
+            gameplayController = new Controller();
+        else
+            gameplayController = controller;
+        
+        if (view==null)
+            gameplayView = new View();
+        else
+            gameplayView = view;
     }
 
     @Override

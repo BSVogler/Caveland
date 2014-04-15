@@ -35,8 +35,6 @@ import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -222,15 +220,11 @@ public class WE extends Game {
     
     /**
      * Switch into the map editor
+     * @param reverseMap reverse to the map at the point where you exited the editor?
      */
-    public static void loadEditor(){
-        WE.switchSetupWithInit(
-            new MapEditorController(
-                gameplayScreen.getView(),
-                gameplayScreen.getController()
-            ),
-            new MapEditorView()
-        );
+    public static void loadEditor(boolean reverseMap){
+        WE.switchSetupWithInit( gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
+        gameplayScreen.getEditorController().setReverseMap(reverseMap);
     }
     
     /**

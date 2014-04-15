@@ -49,6 +49,7 @@ public class MapEditorController extends Controller {
      * a clone of the map at the time when last tested.
      */
     private Map mapsave;
+    private boolean reverseMap;
 
    /**
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
@@ -88,7 +89,7 @@ public class MapEditorController extends Controller {
     public void enter(){
         Gdx.app.debug("MEController", "entered");
         setTimespeed(0);
-        if (mapsave!=null) Controller.setMap(mapsave);
+        if (reverseMap && mapsave!=null) Controller.setMap(mapsave);
     }
     
    /**
@@ -139,5 +140,9 @@ public class MapEditorController extends Controller {
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void setReverseMap(boolean reverseMap) {
+        this.reverseMap = reverseMap;
     }
 }

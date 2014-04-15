@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- *A point is a single position in the game workd not bound to the grid. Use this for entities.
+ *A point is a single positionin the game workd not bound to the grid. Use this for entities.
  * @author Benedikt Vogler
  * @since WE1.1
  */
@@ -43,11 +43,11 @@ public class Point extends AbstractPosition {
     private float y;
 
     /**
-     * 
-     * @param posX
-     * @param posY
-     * @param height
-     * @param relative true if relative, false if absolute
+     * Creates a point refering to a position in the game world.
+     * @param posX The distance from the left border of the map (game space)
+     * @param posY The distance from the top border of the map (game space)
+     * @param height The distance from ground  (game space)
+     * @param relative true if relative to currently loaded map, false if absolute
      */
     public Point(float posX, float posY, float height, boolean relative) {
         super();
@@ -62,7 +62,7 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     * This constructor copies the values.
+     * Copy-constructor. This constructor copies the values.
      * @param point the source of the copy
      */
     public Point(Point point) {

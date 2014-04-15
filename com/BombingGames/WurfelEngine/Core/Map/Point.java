@@ -34,8 +34,9 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- *
+ *A point is a single position in the game workd not bound to the grid. Use this for entities.
  * @author Benedikt Vogler
+ * @since WE1.1
  */
 public class Point extends AbstractPosition {
     private float x;

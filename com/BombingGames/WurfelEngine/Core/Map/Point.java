@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -87,7 +88,7 @@ public class Point extends AbstractPosition {
      */
     @Override
     public Coordinate getCoord() {
-        return toCoord(this, false);
+        return toCoord(this, false, false);
     }
     
     /**
@@ -238,9 +239,10 @@ public class Point extends AbstractPosition {
      * Game position to game coordinate
      * @param pos the position on the map
      * @param depthCheck when true the coordiantes are checked with depth, use this for "screen to coords". This is only possible if the position are on the map.
+     * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
      * @return 
      */
-    public static Coordinate toCoord(Point pos, boolean depthCheck){
+    public static Coordinate toCoord(Point pos, final boolean depthCheck, final boolean visibilityCheck){
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (pos.getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
@@ -264,9 +266,25 @@ public class Point extends AbstractPosition {
             coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
             //if selection is not found by that specify it
             //trace ray down to bottom. for each step 2 y and 1 z down
-            while (coords.getBlock().isHidden() && coords.getZ()>0) {
-                coords.setRelY(coords.getRelY()-2);
-                coords.setZ(coords.getZ()-1);
+            while (
+                coords.getZ()>0
+                &&
+                (
+                    coords.getBlock().getId() == 0
+                    ||
+                    (
+                        visibilityCheck
+                        &&
+                        (
+                            coords.getBlock().isHidden()
+                            ||
+                            coords.getZ() >= WECamera.getZRenderingLimit()
+                        )
+                    )
+                )
+                ) {
+                    coords.setRelY(coords.getRelY()-2);
+                    coords.setZ(coords.getZ()-1);
             } 
         }
         

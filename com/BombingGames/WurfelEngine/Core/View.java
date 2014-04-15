@@ -310,6 +310,7 @@ public class View {
                 Chunk.getGameHeight()-1,
                 true
             ),
+            true,
             true
         );
     }

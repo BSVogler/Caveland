@@ -73,7 +73,7 @@ public class Point extends AbstractPosition {
     }
 
     /**
-     *
+     *Returns itself.
      * @return
      */
     @Override
@@ -82,7 +82,7 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     *
+     * returns coordinate aquivalent
      * @return
      */
     @Override
@@ -90,7 +90,7 @@ public class Point extends AbstractPosition {
         return toCoord(this, false);
     }
     
-        /**
+    /**
      *
      * @return
      */

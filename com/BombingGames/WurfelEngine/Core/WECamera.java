@@ -716,6 +716,10 @@ public class WECamera extends Camera {
         }
     }
 
+    /**
+     * Must be static because raytracing is static
+     * @return 
+     */
     public static int getZRenderingLimit() {
         return zRenderingLimit;
     }

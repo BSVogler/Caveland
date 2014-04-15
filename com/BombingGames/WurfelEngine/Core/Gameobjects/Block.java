@@ -240,8 +240,11 @@ public class Block extends AbstractGameObject {
         if (blocksprites[id][value][side] == null){ //load if not already loaded
             AtlasRegion sprite = getSpritesheet().findRegion(CATEGORY+Integer.toString(id)+"-"+value+"-"+side);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
+                
                 Gdx.app.debug("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
+                
                 sprite = getSpritesheet().findRegion(CATEGORY+"0-0-"+side);
+                
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");
                     if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");

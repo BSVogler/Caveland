@@ -31,6 +31,8 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Configuration;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingController;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -47,6 +49,8 @@ public class GameplayScreen implements Screen{
     
     private View view = null;
     private Controller controller = null;
+    private MapEditorController editorController;
+    private MapEditorView editorView;
     private final LoadingController loadingController;
     private final Configuration config;
     
@@ -154,5 +158,30 @@ public class GameplayScreen implements Screen{
      */
     public Configuration getConfig() {
         return config;
+    }
+
+    /**
+     * lazy init
+     * @return 
+     */
+    public MapEditorController getEditorController() {
+        if (editorController==null){
+            editorController = new MapEditorController(
+                   view,
+                   controller
+               );
+        }
+        return editorController;
+    }
+
+   /**
+    * lazy init
+    * @return 
+    */
+    public MapEditorView getEditorView() {
+         if (editorView==null){
+            editorView = new MapEditorView();
+        }
+        return editorView;
     }
 }

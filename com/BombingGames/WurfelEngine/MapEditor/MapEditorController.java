@@ -83,6 +83,14 @@ public class MapEditorController extends Controller {
         currentLayer = Map.getBlocksZ();
     }
     
+
+    @Override
+    public void enter(){
+        Gdx.app.debug("MEController", "entered");
+        setTimespeed(0);
+        if (mapsave!=null) Controller.setMap(mapsave);
+    }
+    
    /**
      * Get the value of currentLayer
      *

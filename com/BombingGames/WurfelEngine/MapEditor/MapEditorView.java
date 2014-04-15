@@ -217,11 +217,9 @@ public class MapEditorView extends View {
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
             } else {//right click
-                if (Controller.getMap().getBlock(coords).getId() == 0){
-                    Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
-                    requestRecalc();
-                   // gras2.play();
-                }
+                Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
+                requestRecalc();
+               // gras2.play();
             }    
             return false;
         }

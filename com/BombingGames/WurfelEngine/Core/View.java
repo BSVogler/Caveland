@@ -287,7 +287,7 @@ public class View {
      * Returns the coordinates belonging to a point on the screen.
      * @param x the x position on the screen
      * @param y the y position on the screen
-     * @return the relative map coordinates
+     * @return the map coordinates
      */
     public Coordinate screenToGameCoords(int x, int y){
         //identify clicked camera

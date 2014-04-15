@@ -47,7 +47,7 @@ public class Point extends AbstractPosition {
      * @param posX The distance from the left border of the map (game space)
      * @param posY The distance from the top border of the map (game space)
      * @param height The distance from ground  (game space)
-     * @param relative true if relative to currently loaded map, false if absolute
+     * @param relative  <b>true</b> if <b>relative</b> to currently loaded map, <b>false</b> if <b>absolute</b> (relative to map with chunk 0,0 in its center)
      */
     public Point(float posX, float posY, float height, boolean relative) {
         super();

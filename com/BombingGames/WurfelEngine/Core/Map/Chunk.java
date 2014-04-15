@@ -441,8 +441,8 @@ public class Chunk {
     }
     
         /**
-     * Game size
-     * @return 
+     * The height of the map.
+     * @return in game size
      */
     public static int getGameHeight(){
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;

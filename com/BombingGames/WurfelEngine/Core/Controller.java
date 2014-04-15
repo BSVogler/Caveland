@@ -231,5 +231,15 @@ public class Controller {
 
     public boolean isInitalized() {
         return initalized;
-    }    
+    }  
+    
+        /**
+     * should be called when entered
+     */
+    public void enter(){}
+    
+    /**
+     * should get called when you leave the editor
+     */
+    public void exit(){}
 }

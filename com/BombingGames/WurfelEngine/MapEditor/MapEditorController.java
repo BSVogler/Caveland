@@ -123,10 +123,9 @@ public class MapEditorController extends Controller {
         return gameplayView;
     }
     
-    /**
-     * should get called when you leave the editor
-     */
+    @Override
     public void exit(){
+        Gdx.app.debug("MEController", "exited");
         try {
             mapsave = Controller.getMap().clone();
         } catch (CloneNotSupportedException ex) {

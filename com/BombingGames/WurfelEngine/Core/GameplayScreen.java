@@ -127,6 +127,7 @@ public class GameplayScreen implements Screen{
         View.classInit();
         this.controller.init();
         this.view.init(controller);
+        controller.enter();
     }
 
     @Override

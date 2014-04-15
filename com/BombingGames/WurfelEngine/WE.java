@@ -202,6 +202,7 @@ public class WE extends Game {
         gameplayScreen.setView(view);
         controller.init();
         view.init(controller);
+        controller.enter();
     }
     
     /**
@@ -211,10 +212,12 @@ public class WE extends Game {
      */
     public static void switchSetup(Controller controller, View view){
         Gdx.input.setInputProcessor(null);
+        gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         if (!controller.isInitalized()) controller.init();
         view.init(controller);
+        controller.enter();
     }
     
     /**

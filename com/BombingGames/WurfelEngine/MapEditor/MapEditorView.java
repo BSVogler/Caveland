@@ -260,8 +260,6 @@ public class MapEditorView extends View {
             Controller c = controller.getGameplayController();
             View v = controller.getGameplayView();
             
-            controller.exit();
-            
             if (replay)
                     WE.switchSetupWithInit(c, v);
                 else

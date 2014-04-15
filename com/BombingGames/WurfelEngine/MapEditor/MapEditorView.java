@@ -30,6 +30,9 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
@@ -62,7 +65,7 @@ public class MapEditorView extends View {
         
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                
-        View.addInputProcessor(new InputListener(this.controller));
+        View.addInputProcessor(new InputListener(this.controller, this));
         View.addInputProcessor(stage);
         
         
@@ -179,9 +182,11 @@ public class MapEditorView extends View {
     
     private static class InputListener implements InputProcessor {
         private final MapEditorController controller;
+        private final MapEditorView view;
 
-        InputListener(MapEditorController controller) {
+        InputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
+            this.view = view;
         }
         
 
@@ -203,6 +208,21 @@ public class MapEditorView extends View {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            Coordinate coords = view.screenToGameCoords(screenX,screenY);
+            if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+            
+            if (button == 0){ //left click
+                Controller.getMap().setData(coords, Block.getInstance(0));
+                requestRecalc();
+                //getCameras().get(0).traceRayTo(coords, true);
+                //gras1.play();
+            } else {//right click
+                if (Controller.getMap().getBlock(coords).getId() == 0){
+                    Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
+                    requestRecalc();
+                   // gras2.play();
+                }
+            }    
             return false;
         }
 

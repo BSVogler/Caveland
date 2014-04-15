@@ -263,13 +263,11 @@ public class Point extends AbstractPosition {
         if (depthCheck && pos.onLoadedMap()) {
             coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
             //if selection is not found by that specify it
-            if (coords.getBlock().isHidden()){
-                //trace ray down to bottom. for each step 2 y and 1 z down
-                do {
-                    coords.setRelY(coords.getRelY()-2);
-                    coords.setZ(coords.getZ()-1);
-                } while (coords.getBlock().isHidden() && coords.getZ()>0);
-            }
+            //trace ray down to bottom. for each step 2 y and 1 z down
+            while (coords.getBlock().isHidden() && coords.getZ()>0) {
+                coords.setRelY(coords.getRelY()-2);
+                coords.setZ(coords.getZ()-1);
+            } 
         }
         
         return coords;

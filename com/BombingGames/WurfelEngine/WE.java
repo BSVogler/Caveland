@@ -50,6 +50,7 @@ import java.io.File;
  *The Main class of the engine. To create a new engine use  {@link com.BombingGames.WurfelEngine#construct(java.lang.String, java.lang.String[]) WurfelEngine.construct}
  * The Wurfel Engine needs the API libGDX0.9.9
  * @author Benedikt Vogler
+ * @version 1.2.8
  */
 public class WE extends Game {
     /**

@@ -302,6 +302,7 @@ public class View {
                 && y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
         );
  
+        //find coordinate
         return Point.toCoord(
             new Point(
                 screenXtoGame(x, camera),

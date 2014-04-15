@@ -439,9 +439,9 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public void dispose(){
         super.dispose();
         shadow.dispose();
-        fallingSound.dispose();
-        jumpingSound.dispose();
-        waterSound.dispose();
-        runningSound.dispose();
+        if (fallingSound!= null) fallingSound.dispose();
+        if (jumpingSound!= null) jumpingSound.dispose();
+        if (waterSound!= null) waterSound.dispose();
+        if (runningSound!= null) runningSound.dispose();
     }
 }

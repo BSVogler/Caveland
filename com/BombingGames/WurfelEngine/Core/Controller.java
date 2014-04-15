@@ -134,7 +134,10 @@ public class Controller {
             throw new NullPointerException("There is no map yet.");
         else return map;
     }
-    
+
+    public static void setMap(Map map) {
+        Controller.map = map;
+    }
     
     /**
      * Returns the player

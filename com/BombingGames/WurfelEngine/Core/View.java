@@ -269,7 +269,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float ScreenXtoGame(int x, WECamera camera){
+    public float screenXtoGame(int x, WECamera camera){
         return x / camera.getScaling()- camera.getScreenPosX()+ camera.getViewportPosX();
     }
     
@@ -279,7 +279,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float ScreenYtoGame(int y, WECamera camera){
+    public float screenYtoGame(int y, WECamera camera){
         return (y / camera.getScaling() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
@@ -289,7 +289,7 @@ public class View {
      * @param y the y position on the screen
      * @return the relative map coordinates
      */
-    public Coordinate ScreenToGameCoords(int x, int y){
+    public Coordinate screenToGameCoords(int x, int y){
         //identify clicked camera
         WECamera camera;
         int i = 0;
@@ -304,8 +304,8 @@ public class View {
  
         return Point.toCoord(
             new Point(
-                ScreenXtoGame(x, camera),
-                ScreenYtoGame(y, camera),
+                screenXtoGame(x, camera),
+                screenYtoGame(y, camera),
                 Chunk.getGameHeight()-1,
                 true
             ),

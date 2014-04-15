@@ -80,7 +80,6 @@ public class MapEditorController extends Controller {
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-        
         currentLayer = Map.getBlocksZ();
     }
     
@@ -89,7 +88,10 @@ public class MapEditorController extends Controller {
     public void enter(){
         Gdx.app.debug("MEController", "entered");
         setTimespeed(0);
-        if (reverseMap && mapsave!=null) Controller.setMap(mapsave);
+        if (reverseMap && mapsave!=null)
+            Controller.setMap(mapsave);
+        else
+            mapsave=null;
     }
     
    /**

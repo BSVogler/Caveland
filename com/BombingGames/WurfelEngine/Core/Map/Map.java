@@ -53,7 +53,7 @@ public class Map implements Cloneable {
     private Cell[][][] data;
     
     /** every entity on the map is stored in this field */
-    private final ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
+    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
     
     /**
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
@@ -584,5 +584,11 @@ public class Map implements Cloneable {
         Map map = (Map) super.clone();
         map.data = copyOf3Dim(data);//deep copy of the data
         return map;
+    }
+    
+    public static void disposeClass(){
+        for (AbstractEntity entity : entitylist) {
+            entity.dispose();
+        }
     }
 }

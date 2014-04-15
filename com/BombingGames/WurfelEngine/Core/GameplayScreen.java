@@ -145,7 +145,7 @@ public class GameplayScreen implements Screen{
     @Override
     public void dispose() {
         loadingController.dispose(config);
-        controller.dispose();
+        Controller.disposeClass();
     }
 
     /**

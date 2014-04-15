@@ -221,10 +221,8 @@ public class Controller {
     /**
      *
      */
-    public void dispose(){
-        for (AbstractEntity entity : map.getEntitys()) {
-            entity.dispose();
-        }
+    public static void disposeClass(){
+        Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
         Block.staticDispose();
     }

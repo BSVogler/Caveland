@@ -126,11 +126,11 @@ public class Map implements Cloneable {
     
     
     /**
-     * Copies an array with three dimensions. Code by Kevin Brock from http://stackoverflow.com/questions/2068370/efficient-system-arraycopy-on-multidimensional-arrays
+     * Copies an array with three dimensions. Deep copy until the cells content of cells shallow copy.
      * @param array the data you want to copy
      * @return The copy of the array-
      */
-    private static Cell[][][] copyOf3Dim(Cell[][][] array) {
+    private static Cell[][][] copyCells(Cell[][][] array) {
         Cell[][][] copy = new Cell[array.length][][];
         for (int i = 0; i < array.length; i++) {
             copy[i] = new Cell[array[i].length][];
@@ -140,6 +140,26 @@ public class Map implements Cloneable {
                     array[i][j], 0, copy[i][j], 0, 
                     array[i][j].length
                 );
+            }
+        }
+        return copy;
+    } 
+    
+    /**
+     * Copies an array with three dimensions. Deep copy using clone. Probably slower.
+     * @param array the data you want to copy
+     * @return The copy of the array-
+     */
+    private static Cell[][][] copyCellsDeeper(Cell[][][] array) throws CloneNotSupportedException {
+        Cell[][][] copy = new Cell[array.length][][];
+        for (int x = 0; x < array.length; x++) {
+            copy[x] = new Cell[array[x].length][];
+            
+            for (int y = 0; y < array[x].length; y++) {
+                copy[x][y] = new Cell[array[x][y].length];
+                for (int z = 0; z < array[x][y].length; z++) {
+                    copy[x][y][z] = array[x][y][z].clone();
+                }
             }
         }
         return copy;
@@ -169,7 +189,7 @@ public class Map implements Cloneable {
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
                 //make a chunk of the data
-                Cell blockData_copy[][][] = copyOf3Dim(data);
+                Cell blockData_copy[][][] = copyCells(data);
                 
                 for (int pos=0; pos<9; pos++){
                     //refresh coordinates
@@ -566,7 +586,7 @@ public class Map implements Cloneable {
     public static int getGameDepth() {
         return blocksY*AbstractGameObject.GAME_DIAGLENGTH;
     }
-    
+
     /**
      * Game size
      * @return 
@@ -583,10 +603,10 @@ public class Map implements Cloneable {
     @Override
     public Map clone() throws CloneNotSupportedException{
         Map map = (Map) super.clone();
-        map.data = copyOf3Dim(data);//deep copy of the data
+        map.data = copyCellsDeeper(data);//deep copy of the data
         return map;
     }
-    
+
     public static void disposeClass(){
         for (AbstractEntity entity : entitylist) {
             entity.dispose();

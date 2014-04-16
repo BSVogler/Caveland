@@ -223,8 +223,8 @@ public class WE extends Game {
      * @param reverseMap reverse to the map at the point where you exited the editor?
      */
     public static void loadEditor(boolean reverseMap){
-        WE.switchSetupWithInit( gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
         gameplayScreen.getEditorController().setReverseMap(reverseMap);
+        WE.switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
     }
     
     /**

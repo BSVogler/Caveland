@@ -44,7 +44,7 @@ import com.badlogic.gdx.assets.AssetManager;
  * @author Benedikt Vogler
  */
 public class Configuration {
-        /**
+    /**
      * The gravity constant in m/s^2
      */
     private final float gravity = 9.81f;
@@ -104,7 +104,7 @@ public class Configuration {
      *
      * @return
      */
-    public boolean ChunkSwitchAllowed() {
+    public boolean isChunkSwitchAllowed() {
         return allowChunkSwitch;
     }
 

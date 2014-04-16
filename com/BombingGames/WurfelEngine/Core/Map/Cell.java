@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
  * A cell is field in the map containing a block. It can have an offset.
  * @author Benedikt Vogler
  */
-public class Cell {
+public class Cell implements Cloneable {
     private Block block;
     private int[] cellOffset = new int[]{0, 0,0};
 
@@ -112,5 +112,16 @@ public class Cell {
     public void setCellOffset(int field, int offset) {
         this.cellOffset[field] = offset;
     }
+
+    @Override
+    protected Cell clone() throws CloneNotSupportedException {
+        Cell clone = (Cell) super.clone();
+        //clone.block = block;
+        //clone.cellOffset = cellOffset;
+        return clone;
+        
+    }
+    
+    
 
 }

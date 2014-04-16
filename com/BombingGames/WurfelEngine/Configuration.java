@@ -164,8 +164,8 @@ public class Configuration {
     }
 
     /**
-     *
-     * @return
+     *Make one site brigher the other side darker. Use this if you do not use the light engine and you sprites are not pre-lit.
+     * @return if it should autoshade it should return true
      */
     public boolean shouldAutoShade() {
         return autoshade;

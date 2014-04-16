@@ -29,15 +29,9 @@
 
 package com.BombingGames.WurfelEngine;
 
-//import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.badlogic.gdx.assets.AssetManager;
 
-
-
-
-//import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
 
 /**
  *The configuration should include most of the game's specific options.
@@ -77,9 +71,6 @@ public class Configuration {
     
     private final boolean useLightEngine = true;
     
-    /**
-     * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. YOu should shade the blokcs in this case by hand. This can cut performance in half.
-     */
     private final boolean autoshade = false;
     
     
@@ -156,7 +147,7 @@ public class Configuration {
     }
 
     /**
-     *Make one site brigher the other side darker. Use this if you do not use the light engine and you sprites are not pre-lit.
+     * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. You should shade the blocks in this case by hand (pre-lit). This can cut performance in half.
      * @return if it should autoshade it should return true
      */
     public boolean shouldAutoShade() {
@@ -186,8 +177,8 @@ public class Configuration {
 //    }
     
     /**
-     * default returns null. If you want to use custom blocks you should override this.
-     * @return null
+     * If you want to use custom blocks you should override this.
+     * @return default is null
      */
     public BlockFactory getBlockFactoy(){
         return null;

@@ -183,12 +183,12 @@ public class MapEditorView extends View {
     private static class InputListener implements InputProcessor {
         private final MapEditorController controller;
         private final MapEditorView view;
+        private int buttondown =-1;
 
         InputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
             this.view = view;
         }
-        
 
 
         @Override
@@ -211,12 +211,14 @@ public class MapEditorView extends View {
             Coordinate coords = view.screenToGameCoords(screenX,screenY);
             if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
             
-            if (button == 0){ //left click
+            buttondown=button;
+            
+            if (button == 1){ //right click
                 Controller.getMap().setData(coords, Block.getInstance(0));
                 requestRecalc();
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
-            } else {//right click
+            } else {//left click
                 Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
                 requestRecalc();
                // gras2.play();
@@ -226,11 +228,24 @@ public class MapEditorView extends View {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            buttondown = -1;
             return false;
         }
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
+            if (buttondown== 1){
+                Coordinate coords = view.screenToGameCoords(screenX,screenY);
+                if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+                Controller.getMap().setData(coords, Block.getInstance(0));
+                requestRecalc();
+            } else if (buttondown== 0){
+                 Coordinate coords = view.screenToGameCoords(screenX,screenY);
+                if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+                Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
+                requestRecalc();
+               // gras2.play();
+            }   
             return false;
         }
 

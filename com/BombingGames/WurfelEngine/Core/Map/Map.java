@@ -154,7 +154,7 @@ public class Map implements Cloneable {
     }
     
     /**
-     * Reorgnanises the map and sets the new middle chunk to param newmiddle.
+     * Reorganises the map and sets the new middle chunk to param newmiddle.
      * Move all chunks when loading or creating a new piece of the map
      *    |0|1|2|
      *     -------------

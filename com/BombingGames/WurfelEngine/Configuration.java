@@ -44,7 +44,6 @@ import com.badlogic.gdx.assets.AssetManager;
  * @author Benedikt Vogler
  */
 public class Configuration {
-    private final boolean editor = false;
         /**
      * The gravity constant in m/s^2
      */
@@ -84,13 +83,6 @@ public class Configuration {
     private final boolean autoshade = false;
     
     
-    /**
-     *
-     * @return
-     */
-    public boolean isEditor() {
-        return editor;
-    }
 
     /**
      *

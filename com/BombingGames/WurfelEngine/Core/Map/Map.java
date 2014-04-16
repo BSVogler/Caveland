@@ -184,7 +184,7 @@ public class Map implements Cloneable {
      * @param newmiddle newmiddle is 1, 3, 5 or 7
      */
     public void setCenter(int newmiddle){
-        if (WE.getCurrentConfig().ChunkSwitchAllowed()){
+        if (WE.getCurrentConfig().isChunkSwitchAllowed()){
             Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 

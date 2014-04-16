@@ -85,7 +85,7 @@ public class WE extends Game {
         if (args.length > 0){
             //look if contains launch parameters
             for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("-fullscreen")){//start in fullscreen
+                if (args[i].equals("-fullscreen") || args[i].equals("-f")){//start in fullscreen
                     config.fullscreen = true;
                 } else if (args[i].equals("-windowed")) {//start in windowed mode
                     config.fullscreen = false;

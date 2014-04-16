@@ -18,17 +18,17 @@ editorreverse_button
   index: -1
 load_button
   rotate: false
-  xy: 2, 46
+  xy: 22, 46
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
 play_button
   rotate: false
-  xy: 22, 46
-  size: 17, 20
-  orig: 17, 20
-  offset: 0, 0
+  xy: 2, 46
+  size: 18, 20
+  orig: 20, 20
+  offset: 1, 0
   index: -1
 replay_button
   rotate: false

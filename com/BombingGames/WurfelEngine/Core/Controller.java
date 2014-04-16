@@ -135,7 +135,9 @@ public class Controller {
     }
 
     public static void setMap(Map map) {
+        Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
+        requestRecalc();
     }
     
     /**

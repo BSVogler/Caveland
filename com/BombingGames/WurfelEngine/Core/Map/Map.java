@@ -131,14 +131,15 @@ public class Map implements Cloneable {
      * @return The copy of the array-
      */
     private static Cell[][][] copyOf3Dim(Cell[][][] array) {
-        Cell[][][] copy;
-        copy = new Cell[array.length][][];
+        Cell[][][] copy = new Cell[array.length][][];
         for (int i = 0; i < array.length; i++) {
             copy[i] = new Cell[array[i].length][];
             for (int j = 0; j < array[i].length; j++) {
                 copy[i][j] = new Cell[array[i][j].length];
-                System.arraycopy(array[i][j], 0, copy[i][j], 0, 
-                    array[i][j].length);
+                System.arraycopy(
+                    array[i][j], 0, copy[i][j], 0, 
+                    array[i][j].length
+                );
             }
         }
         return copy;

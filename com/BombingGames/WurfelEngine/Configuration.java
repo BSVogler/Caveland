@@ -145,6 +145,14 @@ public class Configuration {
     public boolean useLightEngine() {
         return useLightEngine;
     }
+    
+    /**
+     *Should the blocks get rendered with fog?
+     * @return
+     */
+    public boolean useFog() {
+        return true;
+    }
 
     /**
      * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. You should shade the blocks in this case by hand (pre-lit). This can cut performance in half.

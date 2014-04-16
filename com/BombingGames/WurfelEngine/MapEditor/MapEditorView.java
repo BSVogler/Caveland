@@ -72,6 +72,8 @@ public class MapEditorView extends View {
         camera = new WECamera();
         addCamera(camera);
         
+        hideEditorButtons();
+        
         
 
         

@@ -108,37 +108,7 @@ public class View {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         View.addInputProcessor(stage);
         
-        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
-        
-        //add editor button
-        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
-        editorbutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+40);
-        editorbutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
-        editorbutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(false);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(editorbutton);
-        
-        //add reverse editor button
-        final Image editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-        editorreversebutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+80);
-        editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
-        editorreversebutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(true);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(editorreversebutton);
+        showEditorButtons();
         
         //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -454,5 +424,43 @@ public class View {
         for (WECamera camera : cameras) {
             camera.resize(width, height);
         }
+    }
+    
+    public final void hideEditorButtons(){
+        stage.clear();
+    }
+    
+    public final void showEditorButtons(){
+        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+        
+        //add editor button
+        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
+        editorbutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+40);
+        editorbutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
+        editorbutton.addListener(
+            new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    WE.loadEditor(false);
+                    return true;
+               }
+            }
+        );
+        stage.addActor(editorbutton);
+        
+        //add reverse editor button
+        final Image editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
+        editorreversebutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+80);
+        editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
+        editorreversebutton.addListener(
+            new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    WE.loadEditor(true);
+                    return true;
+               }
+            }
+        );
+        stage.addActor(editorreversebutton);
     }
 }

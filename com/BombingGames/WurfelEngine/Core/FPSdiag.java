@@ -100,10 +100,15 @@ public class FPSdiag {
      */
     public void render(View view){
         if (visible){
+            //draw FPS-String
+            view.drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
+            
+            //draw diagramm
             ShapeRenderer shr = view.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
+            
             
             shr.begin(ShapeRenderer.ShapeType.Filled);
             //background

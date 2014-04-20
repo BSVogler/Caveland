@@ -205,8 +205,6 @@ public class View {
             Gdx.graphics.getHeight()
         );
         
-        drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
-        
         controller.getFPSdiag().render(this);
         
         stage.draw();

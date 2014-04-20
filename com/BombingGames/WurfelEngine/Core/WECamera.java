@@ -176,7 +176,6 @@ public class WECamera extends Camera {
     
    @Override
     public void update(boolean updateFrustum) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     /**
@@ -185,7 +184,7 @@ public class WECamera extends Camera {
      * @param camera  
      */
     public void render(View view, WECamera camera) {
-        if (Controller.getMap() != null) {  
+        if (Controller.getMap() != null) { //render only if map exists 
             
             view.getBatch().setProjectionMatrix(combined);
              

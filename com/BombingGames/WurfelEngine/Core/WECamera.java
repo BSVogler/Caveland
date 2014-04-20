@@ -203,19 +203,17 @@ public class WECamera extends Camera {
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
                     if (bottomLayerVisibility[x][y]){
-                        int xPos = new Coordinate(x, y, -1, true).getProjectedPosX();//right side is  half a block more to the right
-                        int yPos = new Coordinate(x, y, -1, true).getProjectedPosY();//the top is drawn a quarter blocks higher
-                        groundBlock.render(view, this, new Coordinate(x, y, -1, true));
+                       groundBlock.render(view, this, new Coordinate(x, y, -1, true));
                     }
                 }
             }
             
             //render map
-            ArrayList<Renderobject> depthlist = createDepthList();
+            ArrayList<RenderDataObject> depthlist = createDepthList();
             
             //render vom bottom to top
-            for (Renderobject renderobject : depthlist) {
-                renderobject.getObject().render(view, camera, renderobject.getCoords()); 
+            for (RenderDataObject renderobject : depthlist) {
+                renderobject.getGameObject().render(view, camera, renderobject.getCoords()); 
             }
             
             view.getBatch().end();
@@ -226,8 +224,8 @@ public class WECamera extends Camera {
      * Fills the map into a list and sorts it in the order of the rendering, called the "depthlist".
      * @return 
      */
-    protected ArrayList<Renderobject> createDepthList() {
-        ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
+    protected ArrayList<RenderDataObject> createDepthList() {
+        ArrayList<RenderDataObject> depthsort = new ArrayList<RenderDataObject>();
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();
@@ -249,7 +247,7 @@ public class WECamera extends Camera {
                         <
                             projectionPosY + getViewportHeight()
                     ) {
-                        depthsort.add(new Renderobject(blockAtCoord, coord));
+                        depthsort.add(new RenderDataObject(blockAtCoord, coord));
                     }
                 }
             }
@@ -262,7 +260,7 @@ public class WECamera extends Camera {
                 entity.getPos().getProjectedPosY() < projectionPosY + getViewportHeight()
                 )
                     depthsort.add(
-                        new Renderobject(entity, entity.getPos())
+                        new RenderDataObject(entity, entity.getPos())
                     );
         }
         //sort the list
@@ -278,7 +276,7 @@ public class WECamera extends Camera {
      * @param low the lower border
      * @param high the higher border
      */
-    private ArrayList<Renderobject> sortDepthList(ArrayList<Renderobject> depthsort, int low, int high) {
+    private ArrayList<RenderDataObject> sortDepthList(ArrayList<RenderDataObject> depthsort, int low, int high) {
         int left = low;
         int right = high;
         int middle = depthsort.get((low+high)/2).getDepth();
@@ -288,7 +286,7 @@ public class WECamera extends Camera {
             while(depthsort.get(right).getDepth() > middle) right--;
 
             if (left <= right) {
-                Renderobject tmp = depthsort.set(left, depthsort.get(right));
+                RenderDataObject tmp = depthsort.set(left, depthsort.get(right));
                 depthsort.set(right, tmp);
                 left++; 
                 right--;

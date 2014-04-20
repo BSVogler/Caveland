@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
  *Saves the information for the rendering. This class is only used in the rendering process.
  * @author Benedikt
  */
-public class Renderobject {
+public class RenderDataObject {
     private final AbstractPosition pos;
     private final int depth;
     private final AbstractGameObject content;
@@ -45,7 +45,7 @@ public class Renderobject {
          * @param object 
          * @param pos The coordinates where the object should be rendered
          */
-    protected Renderobject(AbstractGameObject object, AbstractPosition pos) {
+    protected RenderDataObject(AbstractGameObject object, AbstractPosition pos) {
         this.pos = pos;
         this.depth = object.getDepth(pos);
         content = object;
@@ -72,7 +72,7 @@ public class Renderobject {
      *
      * @return
      */
-    public AbstractGameObject getObject() {
+    public AbstractGameObject getGameObject() {
         return content;
     }
 

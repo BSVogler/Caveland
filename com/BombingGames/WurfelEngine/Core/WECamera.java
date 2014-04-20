@@ -205,7 +205,7 @@ public class WECamera extends Camera {
                     if (bottomLayerVisibility[x][y]){
                         int xPos = new Coordinate(x, y, -1, true).getProjectedPosX();//right side is  half a block more to the right
                         int yPos = new Coordinate(x, y, -1, true).getProjectedPosY();//the top is drawn a quarter blocks higher
-                        groundBlock.renderSideAt(view, xPos, yPos, 1);
+                        groundBlock.render(view, this, new Coordinate(x, y, -1, true));
                     }
                 }
             }

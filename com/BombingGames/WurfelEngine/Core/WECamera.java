@@ -62,11 +62,6 @@ public class WECamera extends Camera {
     private Coordinate focusCoordinates;
     private AbstractEntity focusEntity;
     
-    /**
-     * an orderer list containing every object what should be rendered
-     */
-    private final ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
-    
     private final Block groundBlock;//the represant of the bottom layer (ground) block
     private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
@@ -217,10 +212,10 @@ public class WECamera extends Camera {
             }
             
             //render map
-            createDepthList();
+            ArrayList<Renderobject> depthlist = createDepthList();
             
             //render vom bottom to top
-            for (Renderobject renderobject : depthsort) {
+            for (Renderobject renderobject : depthlist) {
                 renderobject.getObject().render(view, camera, renderobject.getCoords()); 
             }
             
@@ -230,9 +225,10 @@ public class WECamera extends Camera {
   
      /**
      * Fills the map into a list and sorts it in the order of the rendering, called the "depthlist".
+     * @return 
      */
-    protected void createDepthList() {
-        depthsort.clear();
+    protected ArrayList<Renderobject> createDepthList() {
+        ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();
@@ -272,8 +268,9 @@ public class WECamera extends Camera {
         }
         //sort the list
         if (depthsort.size()>0)
-            sortDepthList(0, depthsort.size()-1);
+            depthsort = sortDepthList(depthsort, 0, depthsort.size()-1);
         else Gdx.app.error("WECamera", "depthsort is empty");
+        return depthsort;
     }
     
     /**
@@ -282,7 +279,7 @@ public class WECamera extends Camera {
      * @param low the lower border
      * @param high the higher border
      */
-    private void sortDepthList(int low, int high) {
+    private ArrayList<Renderobject> sortDepthList(ArrayList<Renderobject> depthsort, int low, int high) {
         int left = low;
         int right = high;
         int middle = depthsort.get((low+high)/2).getDepth();
@@ -299,8 +296,10 @@ public class WECamera extends Camera {
             }
         }
 
-        if(low < right) sortDepthList(low, right);
-        if(left < high) sortDepthList(left, high);
+        if(low < right) sortDepthList(depthsort,low, right);
+        if(left < high) sortDepthList(depthsort,left, high);
+        
+        return depthsort;
     }
         
     /**

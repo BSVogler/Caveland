@@ -306,24 +306,26 @@ public class WECamera extends Camera {
      */
     protected static void raytracing(){ 
         //set visibility of every groundBlock to false, except blocks with offset
-        Cell[][][] mapdata = Controller.getMap().getData();
-        for (int x=0; x < Map.getBlocksX(); x++)
-            for (int y=0; y < Map.getBlocksY(); y++)
-                for (int z=0; z < zRenderingLimit; z++) {
-                    Block block = mapdata[x][y][z].getBlock();
-                    
-                    boolean notAnalyzable = !block.hasSides()
-                        || new Coordinate(x,y,z, true).hasOffset();//Blocks with offset are not in the grid, so can not be analysed => always visible
-                    block.setClipped(!notAnalyzable);
-                }
-                
-        //send the rays through top of the map
-        for (int x=0; x < Map.getBlocksX(); x++)
-            for (int y=0; y < Map.getBlocksY() + zRenderingLimit*2; y++){
-                traceRay(x,y, 0);
-                traceRay(x,y, 1);
-                traceRay(x,y, 2);
-            }     
+        if (zRenderingLimit>0) {
+            Cell[][][] mapdata = Controller.getMap().getData();
+            for (int x=0; x < Map.getBlocksX(); x++)
+                for (int y=0; y < Map.getBlocksY(); y++)
+                    for (int z=0; z < zRenderingLimit; z++) {
+                        Block block = mapdata[x][y][z].getBlock();
+
+                        boolean notAnalyzable = !block.hasSides()
+                            || new Coordinate(x,y,z, true).hasOffset();//Blocks with offset are not in the grid, so can not be analysed => always visible
+                        block.setClipped(!notAnalyzable);
+                    }
+
+            //send the rays through top of the map
+            for (int x=0; x < Map.getBlocksX(); x++)
+                for (int y=0; y < Map.getBlocksY() + zRenderingLimit*2; y++){
+                    traceRay(x,y, 0);
+                    traceRay(x,y, 1);
+                    traceRay(x,y, 2);
+                }     
+        }
     }
     
     /**
@@ -734,8 +736,10 @@ public class WECamera extends Camera {
         WECamera.zRenderingLimit = zRenderingLimit;
         
         //clamp
-        if (zRenderingLimit >= Map.getBlocksZ()) WECamera.zRenderingLimit=Map.getBlocksZ();
-        if (zRenderingLimit<1) WECamera.zRenderingLimit=1;//min is 1
+        if (zRenderingLimit >= Map.getBlocksZ())
+            WECamera.zRenderingLimit=Map.getBlocksZ();
+        else if (zRenderingLimit<0)
+                WECamera.zRenderingLimit=0;//min is 0
         
         Controller.requestRecalc();
     }

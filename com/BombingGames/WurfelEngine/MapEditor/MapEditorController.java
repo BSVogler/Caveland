@@ -112,8 +112,10 @@ public class MapEditorController extends Controller {
         this.currentLayer = currentLayer;
         
         //clamp
-        if (currentLayer<1) this.currentLayer=1;//min is 1
-        if (currentLayer >= Map.getBlocksZ()) this.currentLayer=Map.getBlocksZ();
+        if (currentLayer<0)
+            this.currentLayer=0;//min is 1
+        else if (currentLayer >= Map.getBlocksZ())
+            this.currentLayer=Map.getBlocksZ();
         
         WECamera.setZRenderingLimit(currentLayer);
     }

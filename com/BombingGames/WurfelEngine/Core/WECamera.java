@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
@@ -61,6 +62,7 @@ public class WECamera extends Camera {
     
     private Coordinate focusCoordinates;
     private AbstractEntity focusEntity;
+    private int[] relativeChunk;
     
     private final Block groundBlock;//the represant of the bottom layer (ground) block
     private boolean toggleChunkSwitch = true;
@@ -88,6 +90,8 @@ public class WECamera extends Camera {
 	viewportHeight = height;
         screenPosX = x;
         screenPosY = y;
+        
+        relativeChunk = Controller.getMap().getChunkCoords((byte) 0);
         
 	near = 0;
 	up.set(0, -1, 0);
@@ -149,6 +153,14 @@ public class WECamera extends Camera {
         } else if (focusEntity != null ){
             projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
             projectionPosY = focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 ;
+        } else {
+            //update camera's position according to relativeChunk
+            int[] currentChunks = Controller.getMap().getChunkCoords(0);
+            projectionPosX += (relativeChunk[0]-currentChunks[0])*Chunk.getGameWidth();
+            projectionPosY += (relativeChunk[1]-currentChunks[1])*Chunk.getGameHeight();
+            
+            //update relativeChunk
+            relativeChunk = currentChunks;
         }
         
         position.set(projectionPosX+ getViewportWidth()/2 , projectionPosY+ getViewportHeight()/2 , 0); 

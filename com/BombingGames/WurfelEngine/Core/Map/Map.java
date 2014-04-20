@@ -47,7 +47,7 @@ public class Map implements Cloneable {
     private final boolean newMap;
     
     /**A list which has all current nine chunk coordinates in it.*/
-    private final byte[][] coordlist = new byte[9][2];
+    private final int[][] coordlist = new int[9][2];
     
     /** the map data are the blocks in their cells */
     private Cell[][][] data;
@@ -93,7 +93,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk(chunkpos, new Chunk(chunkpos, x, y, newMap));
+                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, newMap));
                 chunkpos++;
         }
        
@@ -206,7 +206,7 @@ public class Map implements Cloneable {
                                     newMap
                                 );
                     }
-                    insertChunk(pos,chunk);
+                    insertChunk((byte) pos,chunk);
                 }
 
                 Controller.requestRecalc();
@@ -273,7 +273,7 @@ public class Map implements Cloneable {
      * @param pos The position in the grid
      * @param chunk The chunk you want to insert
      */
-    private void insertChunk(int pos, Chunk chunk) {
+    private void insertChunk(byte pos, Chunk chunk) {
         for (int x=0;x < Chunk.getBlocksX(); x++)
             for (int y=0;y < Chunk.getBlocksY();y++) {
                 System.arraycopy(
@@ -291,7 +291,7 @@ public class Map implements Cloneable {
      * @param pos 
      * @return the coordinates of the chunk
      */
-    public byte[] getChunkCoords(int pos) {
+    public int[] getChunkCoords(int pos) {
         return coordlist[pos];
     }
    

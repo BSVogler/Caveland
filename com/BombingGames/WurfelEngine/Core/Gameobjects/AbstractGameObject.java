@@ -417,7 +417,7 @@ public abstract class AbstractGameObject {
     }
 
     /**
-     * Hide this object and prevent it from beeing rendered. Don't use this to hide objects. This data is only for rendering data and view specific not for gameworld information. This should be just used for setting during the rendering process.
+     * Hide this object and prevent it from beeing rendered. Don't use this to hide objects as "invisible". This method is only for the rendering process  and view specific not for gameworld information. This should be just used for clipping during the rendering process.
      * @param clipped Sets the visibility.
      * @see com.BombingGames.Game.Gameobjects.AbstractGameObject#setHidden(boolean) 
      */

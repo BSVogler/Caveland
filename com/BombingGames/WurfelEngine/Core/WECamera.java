@@ -50,7 +50,7 @@ public class WECamera extends Camera {
     /**
      *The deepest layer is an array which stores the information if there should be a tile rendered
      */
-    public static final boolean[][] DEEPEST_LAYER_VISIVBILITY = new boolean[Map.getBlocksX()][Map.getBlocksY()];
+    private static final boolean[][] bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
     
     /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
     private int screenPosX, screenPosY;
@@ -61,9 +61,13 @@ public class WECamera extends Camera {
     
     private Coordinate focusCoordinates;
     private AbstractEntity focusEntity;
+    
+    /**
+     * an orderer list containing every object what should be rendered
+     */
     private final ArrayList<Renderobject> depthsort = new ArrayList<Renderobject>();
     
-    private final Block groundBlock;//the represant of the ground block
+    private final Block groundBlock;//the represant of the bottom layer (ground) block
     private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
     private static int zRenderingLimit;//must be static because raytracing is global/static
@@ -204,7 +208,7 @@ public class WECamera extends Camera {
             //render ground layer tiles if visible
             for (int x = 0; x < Map.getBlocksX(); x++) {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
-                    if (DEEPEST_LAYER_VISIVBILITY[x][y]){
+                    if (bottomLayerVisibility[x][y]){
                         int xPos = new Coordinate(x, y, -1, true).getProjectedPosX();//right side is  half a block more to the right
                         int yPos = new Coordinate(x, y, -1, true).getProjectedPosY();//the top is drawn a quarter blocks higher
                         groundBlock.renderSideAt(view, xPos, yPos, 1);
@@ -468,7 +472,7 @@ public class WECamera extends Camera {
             && (left || right) //left or right still visible
             && (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset()));
         
-        DEEPEST_LAYER_VISIVBILITY[x][y] =
+        bottomLayerVisibility[x][y] =
             (z <= 0)
             && (left || right) //left or right still visible
             && (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset());

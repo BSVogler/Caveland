@@ -305,8 +305,8 @@ public class WECamera extends Camera {
      * Filters every Block (and side) wich is not visible. Boosts rendering speed.
      */
     protected static void raytracing(){ 
-        //set visibility of every groundBlock to false, except blocks with offset
         if (zRenderingLimit>0) {
+            //set visibility of every groundBlock to false, except blocks with offset
             Cell[][][] mapdata = Controller.getMap().getData();
             for (int x=0; x < Map.getBlocksX(); x++)
                 for (int y=0; y < Map.getBlocksY(); y++)
@@ -325,6 +325,12 @@ public class WECamera extends Camera {
                     traceRay(x,y, 1);
                     traceRay(x,y, 2);
                 }     
+        } else {
+            for (boolean[] x : bottomLayerVisibility) {
+                for (int y = 0; y < x.length; y++) {
+                    x[y] = true;
+                }
+            }
         }
     }
     

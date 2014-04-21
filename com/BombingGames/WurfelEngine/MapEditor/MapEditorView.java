@@ -34,11 +34,13 @@ import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -73,6 +75,10 @@ public class MapEditorView extends View {
         addCamera(camera);
         
         hideEditorButtons();
+        
+        controller.setMinimap(
+            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,10)
+        );
         
         
 
@@ -195,6 +201,9 @@ public class MapEditorView extends View {
 
         @Override
         public boolean keyDown(int keycode) {
+            if (keycode == Keys.M){
+                controller.getMinimap().toggleVisibility();
+            }
             return false;
         }
 

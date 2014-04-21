@@ -399,7 +399,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     public void damage(int value) {
         if (health >0){
-            if (damageSounds.length > 0 && soundlimit<=0) {
+            if (damageSounds != null && soundlimit<=0) {
                 damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
                 soundlimit = 100;
             }

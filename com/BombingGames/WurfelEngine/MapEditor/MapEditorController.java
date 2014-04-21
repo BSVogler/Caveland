@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WECamera;
 import com.badlogic.gdx.Gdx;
@@ -55,25 +56,24 @@ public class MapEditorController extends Controller {
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
      */
     public MapEditorController() {
-        gameplayView=new View();
-        gameplayController=new Controller();
+        this(null, null);
     }
     
     /**
      * Create an editor controller with coressponding gameplay classes.
-     * @param view the old gameplay classes. If "null": the editor then chooses a basic controller.
-     * @param controller the old gameplay classes.  If "null": the editor then chooses a basic view.
+     * @param gameplayView the old gameplay classes. If "null": the editor then chooses a basic controller.
+     * @param gameplayController the old gameplay classes.  If "null": the editor then chooses a basic view.
      */
-    public MapEditorController(View view, Controller controller) {
-        if (controller==null)
-            gameplayController = new Controller();
+    public MapEditorController(View gameplayView, Controller gameplayController) {
+        if (gameplayController == null)
+            this.gameplayController = new Controller();
         else
-            gameplayController = controller;
+            this.gameplayController = gameplayController;
         
-        if (view==null)
-            gameplayView = new View();
+        if (gameplayView == null)
+            this.gameplayView = new View();
         else
-            gameplayView = view;
+            this.gameplayView = gameplayView;
     }
 
     @Override

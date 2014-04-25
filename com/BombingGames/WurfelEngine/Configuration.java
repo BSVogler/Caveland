@@ -40,63 +40,29 @@ import com.badlogic.gdx.assets.AssetManager;
 public class Configuration {
     /**
      * The gravity constant in m/s^2
+     * @return default is 9.81m/s^2
      */
-    private final float gravity = 9.81f;
-    
+    public float getGravity() {
+        return 9.81f;
+    }
+
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0
       * SOUTH->WEST->NORTH = -90
       * EAST->NORTH->WEST = -180
        *NORTH->EAST->SOUT = -270
-       **/
-    private final int worldSpinAngle = -40;
-    
-    /**
-     *Set if the map should load or generate new chunks when the camera reaches an end of the map.
-     */
-    private final boolean allowChunkSwitch = true;
-    
-    private final boolean loadMap = false;
-    
-    /**The number of the mapgenerator used.*/
-    private final int chunkgenerator = 1;
-    
-    private final float leAzimutSpeed = 1/128f;
-
-    /**
-     * The virtual render width (resolution).
-     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
-     */
-    private final int renderResolutionWidth = 1920;
-    
-    private final boolean useLightEngine = true;
-    
-    private final boolean autoshade = false;
-    
-    
-
-    /**
-     *
-     * @return
-     */
-    public float getGravity() {
-        return gravity;
-    }
-
-    /**
-     *
-     * @return
+     * @return in degrees
      */
     public int getWorldSpinAngle() {
-        return worldSpinAngle;
+        return -40;
     }
 
     /**
-     *
+     *Set if the map should load or generate new chunks when the camera reaches an end of the map.
      * @return
      */
     public boolean isChunkSwitchAllowed() {
-        return allowChunkSwitch;
+        return true;
     }
 
     /**
@@ -104,15 +70,15 @@ public class Configuration {
      * @return
      */
     public boolean shouldLoadMap() {
-        return loadMap;
+        return false;
     }
 
     /**
-     *
+     *The number of the mapgenerator used.
      * @return
      */
     public int getChunkGenerator() {
-        return chunkgenerator;
+        return 1;
     }
 
     /**
@@ -120,7 +86,7 @@ public class Configuration {
      * @return
      */
     public float getLEAzimutSpeed() {
-        return leAzimutSpeed;
+        return 1/128f;
     }
     
     
@@ -131,11 +97,12 @@ public class Configuration {
     }
 
     /**
-     *
+     * The virtual render width (resolution).
+     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
      * @return
      */
     public int getRenderResolutionWidth() {
-        return renderResolutionWidth;
+        return 1920;
     }
 
     /**
@@ -143,7 +110,7 @@ public class Configuration {
      * @return
      */
     public boolean useLightEngine() {
-        return useLightEngine;
+        return true;
     }
     
     /**
@@ -159,7 +126,7 @@ public class Configuration {
      * @return if it should autoshade it should return true
      */
     public boolean shouldAutoShade() {
-        return autoshade;
+        return false;
     }
     
 //    /**

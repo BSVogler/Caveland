@@ -147,11 +147,12 @@ public abstract class AbstractGameObject {
      * @param camera The camera rendering the scene
      */
     public void render(View view, WECamera camera, AbstractPosition pos) {
-        Color color = Color.GRAY.cpy();
-        if (Controller.getLightengine() != null){
-            color = Controller.getLightengine().getGlobalLight();
-        }
-        render(view, camera, pos, color.mul(lightlevel));
+        render(
+            view,
+            camera,
+            pos,
+            (Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()).mul(lightlevel)
+        );
     }
     
      /**
@@ -164,11 +165,13 @@ public abstract class AbstractGameObject {
     public void render(View view, WECamera camera, AbstractPosition pos, Color color) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
-             
-            int xPos = pos.getProjectedPosX() + getOffsetX();
-            int yPos = pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY();
-            
-            renderAt(view, xPos, yPos, color);
+                         
+            renderAt(
+                view,
+                pos.getProjectedPosX() + getOffsetX(),
+                pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY(),
+                color
+            );
         }
     }
     
@@ -179,11 +182,12 @@ public abstract class AbstractGameObject {
      * @param yPos rendering position
      */
     public void renderAt(View view, int xPos, int yPos) {
-        Color color = Color.GRAY.cpy();
-        if (Controller.getLightengine() != null){
-            color = Controller.getLightengine().getGlobalLight();
-        }
-        renderAt(view, xPos, yPos, color);
+        renderAt(
+            view,
+            xPos,
+            yPos,
+            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()
+        );
     }
     
     /**

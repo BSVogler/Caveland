@@ -342,7 +342,8 @@ public class Block extends AbstractGameObject {
                     renderSide(view, camera, coords, Block.LEFTSIDE);
                 if (!clippedRight)
                     renderSide(view, camera, coords, Block.RIGHTSIDE);
-            } else super.render(view, camera, coords);
+            } else
+                super.render(view, camera, coords);
         }
     }
     
@@ -362,7 +363,8 @@ public class Block extends AbstractGameObject {
                     renderSideAt(view, xPos, yPos+SCREEN_WIDTH4, Block.LEFTSIDE);
                 if (!clippedRight)
                     renderSideAt(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Block.RIGHTSIDE);
-                } else super.renderAt(view, xPos, yPos);
+                } else
+                    super.renderAt(view, xPos, yPos);
         }
     }
 
@@ -441,14 +443,24 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      */
     public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb, Color color){
-        int xPos = coords.getProjectedPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0);//right side is  half a block more to the right
-        int yPos = coords.getProjectedPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0);//the top is drawn a quarter blocks higher
         if (WE.getCurrentConfig().useFog()){
-            int dist = -camera.getVisibleTopBorder()+coords.getCoord().getRelY();
-            color.mul((float) (0.5f+1/Math.exp(dist*0.05f-1)));
+            color.mul(
+                (float) (0.5f+Math.exp(
+                -(
+                    (-camera.getVisibleTopBorder()+coords.getCoord().getRelY())*0.05f-1
+                )
+            ))
+            );
         }
         
-        renderSideAt(view, xPos, yPos, sidenumb, color, 0);
+        renderSideAt(
+            view,
+            coords.getProjectedPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0),//right side is  half a block more to the right,
+            coords.getProjectedPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0),//the top is drawn a quarter blocks higher,
+            sidenumb,
+            color,
+            0
+        );
     }
     
     /**
@@ -459,12 +471,13 @@ public class Block extends AbstractGameObject {
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
     public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb){
-        Color color;
-        if (Controller.getLightengine() != null)
-            color = Controller.getLightengine().getColor(sidenumb);
-        else
-            color = Color.GRAY.cpy();
-        renderSideAt(view, xPos, yPos, sidenumb, color, 0);
+        renderSideAt(view,
+            xPos,
+            yPos,
+            sidenumb,
+            Controller.getLightengine() != null ? Controller.getLightengine().getColor(sidenumb) : Color.GRAY.cpy(),
+            0
+        );
     }
     /**
      * Draws a side of a block at a custom position. Apllies color before rendering and takes the lightlevel into account.

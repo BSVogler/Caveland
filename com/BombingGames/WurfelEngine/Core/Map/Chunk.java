@@ -74,7 +74,7 @@ public class Chunk {
     * @param coordY 
     * @param newMap load from HD(true) or generate new (false)?
     */
-    public Chunk(int pos, int coordX, int coordY, boolean newMap){
+    public Chunk(final int pos, final int coordX, final int coordY, final boolean newMap){
         this();
 
         if (newMap)

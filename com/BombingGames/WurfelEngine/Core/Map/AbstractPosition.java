@@ -46,7 +46,7 @@ public abstract class AbstractPosition {
      * @param topleftX the chunk's X coordinate of the chunk at the top left
      * @param topleftY the chunk's Y coordinate of the chunk at the top left 
      */
-    public AbstractPosition(int topleftX, int topleftY) {
+    public AbstractPosition(final int topleftX, final int topleftY) {
         this.referenceX = topleftX;
         this.referenceY = topleftY;
     }

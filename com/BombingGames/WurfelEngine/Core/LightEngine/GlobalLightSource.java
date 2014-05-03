@@ -112,7 +112,7 @@ public class GlobalLightSource {
      *The Latitude posiiton. 
      * @param height
      */
-    public void setHeight(float height) {
+    public void setHeight(final float height) {
         if (height >= 360) {
             this.height = height % 360;
         } else if (this.height < 0) this.height += 360; 
@@ -122,7 +122,7 @@ public class GlobalLightSource {
      *The longitudinal position
      * @param azimuth
      */
-    public void setAzimuth(float azimuth) {
+    public void setAzimuth(final float azimuth) {
         if (azimuth >= 360) {
             this.azimuth = azimuth % 360;
         } else if (this.azimuth < 0) this.azimuth += 360;
@@ -132,7 +132,7 @@ public class GlobalLightSource {
      *
      * @param tone
      */
-    public void setTone(Color tone) {
+    public void setTone(final Color tone) {
         this.tone = tone;
     }
 

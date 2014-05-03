@@ -28,11 +28,11 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -122,7 +122,7 @@ public class Block extends AbstractGameObject {
      * @param id non-reserved id's=> id>39
      * @return 
      */
-    public static Block createBasicInstance(int id){
+    public static Block createBasicInstance(final int id){
         Block block; 
         if (id>39) 
             block = new Block(id);
@@ -135,7 +135,7 @@ public class Block extends AbstractGameObject {
      * @param id the block's id
      * @return the wanted block.
      */
-    public static Block getInstance(int id){
+    public static Block getInstance(final int id){
         return getInstance(id,0,null);
     }
     
@@ -145,7 +145,7 @@ public class Block extends AbstractGameObject {
      * @param value it's value
      * @return the wanted block.
      */
-    public static Block getInstance(int id, int value){
+    public static Block getInstance(final int id, final int value){
         return getInstance(id,value,null);
     }
     
@@ -156,7 +156,7 @@ public class Block extends AbstractGameObject {
      * @param coords the coordinates where the block is going to be places. If the block does not need this information it can be null.
      * @return the Block
      */
-    public static Block getInstance(int id, int value, Coordinate coords){
+    public static Block getInstance(final int id, final int value, final Coordinate coords){
         Block block;
         //define the default SideSprites
         switch (id){
@@ -234,7 +234,7 @@ public class Block extends AbstractGameObject {
      * @param side Which side? (0 - 2)
      * @return an sprite of the side
      */
-    public static AtlasRegion getBlockSprite(int id, int value, int side) {
+    public static AtlasRegion getBlockSprite(final int id, final int value, final int side) {
         if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
         
         if (blocksprites[id][value][side] == null){ //load if not already loaded
@@ -265,7 +265,7 @@ public class Block extends AbstractGameObject {
      * @param value the value of the block.
      * @return a color representing the block
      */
-    public static Color getRepresentingColor(int id, int value){
+    public static Color getRepresentingColor(final int id, final int value){
         if (colorlist[id][value] == null){ //if not in list, add it to the list
             colorlist[id][value] = new Color();
             int colorInt;
@@ -307,7 +307,7 @@ public class Block extends AbstractGameObject {
      * @param clipped When it is set to false, every side will also get clipped..
      */
     @Override
-    public void setClipped(boolean clipped) {
+    public void setClipped(final boolean clipped) {
         super.setClipped(clipped);
         if (clipped) {
             clippedLeft = true;
@@ -321,7 +321,7 @@ public class Block extends AbstractGameObject {
      * @param side 0 = left, 1 = top, 2 = right
      * @param clipping true when it should be clipped.
      */
-    public void setSideClipping(int side, boolean clipping) {
+    public void setSideClipping(final int side, final boolean clipping) {
         if (!clipping) this.setClipped(false);
         
         if (side==0)
@@ -333,7 +333,7 @@ public class Block extends AbstractGameObject {
     }
     
     @Override
-    public void render(final View view, final Camera camera, AbstractPosition coords) {
+    public void render(final View view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -354,7 +354,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      */
     @Override
-    public void renderAt(final View view, int xPos, int yPos) {
+    public void renderAt(final View view, final int xPos, final int yPos) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -369,7 +369,7 @@ public class Block extends AbstractGameObject {
     }
 
     @Override
-    public void renderAt(View view, int xPos, int yPos, Color color) {
+    public void renderAt(final View view, final int xPos, final int yPos, final Color color) {
         renderAt(view, xPos, yPos, color, Controller.getLightengine() == null, 0);
     }
     
@@ -382,7 +382,7 @@ public class Block extends AbstractGameObject {
      * @param staticShade i don't know what this does. This only makes it a bit brighter???
      * @param scale the scale factor of the image
      */
-    public void renderAt(View view, int xPos, int yPos, Color color, boolean staticShade, float scale) {
+    public void renderAt(final View view, final int xPos, final int yPos, Color color, final boolean staticShade, final float scale) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -414,7 +414,7 @@ public class Block extends AbstractGameObject {
      * @param coords the coordinates where the side is rendered 
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final Camera camera, AbstractPosition coords, final int sidenumb){
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int sidenumb){
         Color color;
         if (Controller.getLightengine() != null)
             color = Controller.getLightengine().getColor(sidenumb);
@@ -442,7 +442,7 @@ public class Block extends AbstractGameObject {
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
      */
-    public void renderSide(final View view, final Camera camera, AbstractPosition coords, final int sidenumb, Color color){
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int sidenumb, final Color color){
         if (WE.getCurrentConfig().useFog()){
             color.mul(
                 (float) (0.5f+Math.exp(
@@ -470,7 +470,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb){
+    public void renderSideAt(final View view, final int xPos, final int yPos, final int sidenumb){
         renderSideAt(view,
             xPos,
             yPos,
@@ -488,7 +488,7 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale if you want to scale it up use scale > 0 else < 0 scales down
      */
-    public void renderSideAt(final View view, int xPos, int yPos, final int sidenumb, Color color, float scale){
+    public void renderSideAt(final View view, final int xPos, final int yPos, final int sidenumb, Color color, final float scale){
         Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), sidenumb));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {
@@ -531,7 +531,7 @@ public class Block extends AbstractGameObject {
     
 
     @Override
-    public int getDepth(AbstractPosition coords){
+    public int getDepth(final AbstractPosition coords){
         return (int) (
             coords.getCoord().getRelY() *(Block.SCREEN_DEPTH+1)//Y
             + coords.getCoord().getCellOffset()[1]

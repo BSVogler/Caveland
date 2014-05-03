@@ -55,7 +55,7 @@ public class Sea extends Block implements IsSelfAware{
      * @param id
      * @param coords
      */
-    public Sea(int id, Coordinate coords) {
+    public Sea(final int id, Coordinate coords) {
         super(id);
         setTransparent(true);
         

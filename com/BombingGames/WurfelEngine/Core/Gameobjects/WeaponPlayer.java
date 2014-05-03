@@ -28,8 +28,8 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -47,7 +47,7 @@ public class WeaponPlayer extends AbstractCharacter{
      * @param point 
      * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
      */
-    public WeaponPlayer(Point point) {
+    public WeaponPlayer(final Point point) {
         super(30, 1, point);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(

@@ -40,7 +40,7 @@ public class WorkingDirectory {
      * @param applicationName
      * @return
      */
-    public static File getWorkingDirectory(String applicationName) {
+    public static File getWorkingDirectory(final String applicationName) {
         String userHome = System.getProperty("user.home", ".");
         File workingDirectory;
         switch (getPlatform()) {

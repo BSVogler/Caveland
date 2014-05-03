@@ -185,10 +185,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 0
             };
 
-            //if movement allowed => move player   
+                //if movement allowed => move player
             if (! horizontalColission(getPos().cpy().addVector(dMove)) ) {                
-                getPos().addVector(dMove);
-            }
+                    getPos().addVector(dMove);
+                }
 
             //graphic
             if (dir[0] < -Math.sin(Math.PI/3)){
@@ -368,13 +368,13 @@ public abstract class AbstractCharacter extends AbstractEntity {
     @Override
     public boolean onGround() {
         if (getPos().getHeight() > 0){
-            getPos().setHeight(getPos().getHeight()-1);
-
-            boolean colission = getPos().getBlockClamp().isObstacle() || horizontalColission(getPos());
-            getPos().setHeight(getPos().getHeight()+1);
-
-            //if standing on ground on own or neighbour block then true
-            return (super.onGround() || colission);
+                getPos().setHeight(getPos().getHeight()-1);
+                
+                boolean colission = getPos().getBlockClamp().isObstacle() || horizontalColission(getPos());
+                getPos().setHeight(getPos().getHeight()+1);
+                
+                //if standing on ground on own or neighbour block then true
+                return (super.onGround() || colission);
         } return true;
     }
 

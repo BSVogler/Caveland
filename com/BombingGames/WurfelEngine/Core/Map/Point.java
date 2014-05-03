@@ -242,7 +242,7 @@ public class Point extends AbstractPosition {
      * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
      * @return 
      */
-    public static Coordinate toCoord(Point pos, final boolean depthCheck, final boolean visibilityCheck){
+    public static Coordinate toCoord(final Point pos, final boolean depthCheck, final boolean visibilityCheck){
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (pos.getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,

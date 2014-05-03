@@ -58,7 +58,7 @@ public class Minimap {
      * @param outputX the output-position of the minimap (distance to left)
      * @param outputY  the output-position of the minimap (distance to top)
      */
-    public Minimap(Controller controller, Camera camera, int outputX, int outputY) {
+    public Minimap(final Controller controller, final Camera camera, final int outputX, final int outputY) {
         if (controller == null || camera == null) throw new NullPointerException("Parameter controller or camera is null");
         this.posX = outputX;
         this.posY = outputY;
@@ -96,7 +96,7 @@ public class Minimap {
      * Renders the Minimap.
      * @param view the view using this render method 
      */
-    public void render(View view) {
+    public void render(final View view) {
         if (visible) {
             //this needs offscreen rendering for a single call with a recalc
             int viewportPosX = posX;

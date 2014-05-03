@@ -363,7 +363,7 @@ public class Coordinate extends AbstractPosition {
      * @param neighbourSide the side number of the given coordinates
      * @return The coordinates of the neighbour.
      */
-    public Coordinate neighbourSidetoCoords(int neighbourSide) {
+    public Coordinate neighbourSidetoCoords(final int neighbourSide) {
         int[] result = new int[3];
         switch (neighbourSide) {
             case 0:

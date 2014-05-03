@@ -60,7 +60,7 @@ public class Map implements Cloneable {
      * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
      * @see fillWithBlocks(boolean load)
      */
-    public Map(boolean newMap) {
+    public Map(final boolean newMap) {
         Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
         this.newMap = newMap;
         
@@ -130,7 +130,7 @@ public class Map implements Cloneable {
      * @param array the data you want to copy
      * @return The copy of the array-
      */
-    private static Cell[][][] copyCells(Cell[][][] array) {
+    private static Cell[][][] copyCells(final Cell[][][] array) {
         Cell[][][] copy = new Cell[array.length][][];
         for (int i = 0; i < array.length; i++) {
             copy[i] = new Cell[array[i].length][];
@@ -150,7 +150,7 @@ public class Map implements Cloneable {
      * @param array the data you want to copy
      * @return The copy of the array-
      */
-    private static Cell[][][] copyCellsDeeper(Cell[][][] array) throws CloneNotSupportedException {
+    private static Cell[][][] copyCellsDeeper(final Cell[][][] array) throws CloneNotSupportedException {
         Cell[][][] copy = new Cell[array.length][][];
         for (int x = 0; x < array.length; x++) {
             copy[x] = new Cell[array[x].length][];
@@ -183,7 +183,7 @@ public class Map implements Cloneable {
      *    |6|7|8|
      * @param newmiddle newmiddle is 1, 3, 5 or 7
      */
-    public void setCenter(int newmiddle){
+    public void setCenter(final int newmiddle){
         if (WE.getCurrentConfig().isChunkSwitchAllowed()){
             Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
@@ -222,7 +222,7 @@ public class Map implements Cloneable {
      * @param newmiddle the newmiddle the chunkswitch is made to
      * @return 
      */
-     private boolean isMovingChunkPossible(int pos, int newmiddle){
+     private boolean isMovingChunkPossible(final int pos, final int newmiddle){
         boolean result = true; 
         switch (newmiddle){
             case 1: if ((pos==0) || (pos==1) || (pos==2)) result = false;
@@ -246,7 +246,7 @@ public class Map implements Cloneable {
      * @param offsetData the offset data
      * @param pos The chunk number where the chunk is located
      */ 
-    private Chunk copyChunk(Cell[][][] cellData, int pos) {
+    private Chunk copyChunk(final Cell[][][] cellData, final int pos) {
         Chunk chunk = new Chunk();
         //copy the data in two loops and then do an arraycopy
         for (int x = Chunk.getBlocksX()*(pos % 3);
@@ -273,7 +273,7 @@ public class Map implements Cloneable {
      * @param pos The position in the grid
      * @param chunk The chunk you want to insert
      */
-    private void insertChunk(byte pos, Chunk chunk) {
+    private void insertChunk(final byte pos, final Chunk chunk) {
         for (int x=0;x < Chunk.getBlocksX(); x++)
             for (int y=0;y < Chunk.getBlocksY();y++) {
                 System.arraycopy(
@@ -291,7 +291,7 @@ public class Map implements Cloneable {
      * @param pos 
      * @return the coordinates of the chunk
      */
-    public int[] getChunkCoords(int pos) {
+    public int[] getChunkCoords(final int pos) {
         return coordlist[pos];
     }
    
@@ -303,7 +303,7 @@ public class Map implements Cloneable {
      * @param z position
      * @return the single renderobject you wanted
      */
-    public Block getBlock(int x, int y, int z){
+    public Block getBlock(final int x, final int y, final int z){
         return data[x][y][z].getBlock();  
     }
     
@@ -312,7 +312,7 @@ public class Map implements Cloneable {
      * @param coord
      * @return
      */
-    public Block getBlock(Coordinate coord){
+    public Block getBlock(final Coordinate coord){
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getBlock();  
     }
     
@@ -357,7 +357,7 @@ public class Map implements Cloneable {
      * @param coords
      * @return
      */
-    public Block getDataClamp(Coordinate coords) {
+    public Block getDataClamp(final Coordinate coords) {
         return getBlockClamp(coords.getRelX(), coords.getRelY(), coords.getZ());
     }
     
@@ -371,7 +371,7 @@ public class Map implements Cloneable {
      * @param z position
      * @param block  
      */
-    public void setData(int x, int y, int z, Block block){
+    public void setData(final int x, final int y, final int z, final Block block){
         data[x][y][z].setBlock(block);
     }
     
@@ -380,7 +380,7 @@ public class Map implements Cloneable {
      * @param coords
      * @param block
      */
-    public void setData(Coordinate coords, Block block) {
+    public void setData(final Coordinate coords, final Block block) {
         data[coords.getRelX()][coords.getRelY()][coords.getZ()].setBlock(block);
     }
         
@@ -389,7 +389,7 @@ public class Map implements Cloneable {
      * @param coords
      * @param block
      */
-    public void setDataSafe(int[] coords, Block block) {       
+    public void setDataSafe(final int[] coords, final Block block) {       
         if (coords[0] >= blocksX){
             coords[0] = blocksX-1;
         } else if( coords[0]<0 ){
@@ -416,7 +416,7 @@ public class Map implements Cloneable {
      * @param coord 
      * @param block
      */
-    public void setDataSafe(Coordinate coord, Block block) {        
+    public void setDataSafe(final Coordinate coord, final Block block) {        
         setDataSafe(new int[]{
             coord.getRelX(),
             coord.getRelY(),
@@ -429,7 +429,7 @@ public class Map implements Cloneable {
      * a method who gives random blocks offset
      * @param numberofblocks the amount of moved blocks
      */
-    public void earthquake(int numberofblocks){
+    public void earthquake(final int numberofblocks){
         int[] x = new int[numberofblocks];
         int[] y = new int[numberofblocks];
         int[] z = new int[numberofblocks];
@@ -472,7 +472,7 @@ public class Map implements Cloneable {
      * @param coord
      * @return
      */
-    public int[] getCellOffset(Coordinate coord) {
+    public int[] getCellOffset(final Coordinate coord) {
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getCellOffset();
     }   
     
@@ -482,7 +482,7 @@ public class Map implements Cloneable {
      * @param field 0 = X, 1 = y, 2 = z
      * @param value the value you want to set the field
      */
-    public void setCelloffset(Coordinate coord, int field, int value){
+    public void setCelloffset(final Coordinate coord, final int field, final int value){
         data[coord.getRelX()][coord.getRelY()][coord.getZClamp()].setCellOffset(field, value);
     }
     
@@ -492,9 +492,9 @@ public class Map implements Cloneable {
      * @param type
      * @return a list with the entitys
      */
-    @SuppressWarnings("unchecked")
-    public <type> ArrayList<type> getAllEntitysOfType(Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<type>();
+    @SuppressWarnings({"unchecked"})
+    public <type> ArrayList<type> getAllEntitysOfType(final Class<? extends AbstractEntity> type) {
+        ArrayList<type> list = new ArrayList<type>(30);//defautl size 30
 
         for (AbstractEntity entity : entitylist) {//check every entity
             if (type.isInstance(entity)) {//if the entity is of the wanted type
@@ -509,8 +509,8 @@ public class Map implements Cloneable {
      * @param coord
      * @return a list with the entitys
      */
-    public ArrayList<AbstractEntity> getAllEntitysOnCoord(Coordinate coord) {
-        ArrayList<AbstractEntity> list = new ArrayList<AbstractEntity>();
+    public ArrayList<AbstractEntity> getAllEntitysOnCoord(final Coordinate coord) {
+        ArrayList<AbstractEntity> list = new ArrayList<AbstractEntity>(5);//defautl size 5
 
         for (AbstractEntity ent : entitylist) {
             if (Arrays.equals(
@@ -530,11 +530,11 @@ public class Map implements Cloneable {
      * @param <type> the class you want to filter.
      * @param coord the coord where you want to get every entity from
      * @param type the class you want to filter.
-     * @return a list with the entitys
+     * @return a list with the entitys of the wanted type
      */
     @SuppressWarnings("unchecked")
-    public <type> ArrayList<type> getAllEntitysOnCoord(Coordinate coord, Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<type>();
+    public <type> ArrayList<type> getAllEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
+        ArrayList<type> list = new ArrayList<type>(5);
 
         for (AbstractEntity ent : entitylist) {
             if (
@@ -561,7 +561,7 @@ public class Map implements Cloneable {
      * @param height You custom height.
      * @return
      */
-    public static Point getCenter(float height){
+    public static Point getCenter(final float height){
         return
             new Point(
                 Chunk.getGameWidth()*1.5f,

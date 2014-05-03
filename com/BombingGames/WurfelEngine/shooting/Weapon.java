@@ -293,7 +293,7 @@ public class Weapon {
                     shoot();  
             }
         }
-        if (laser!=null && laser.shouldBeDestroyed())
+        if (laser!=null && laser.shouldBeDisposed())
             laser=null;
         if (laser==null) {
             laser = new Bullet(12, character.getPos().cpy());

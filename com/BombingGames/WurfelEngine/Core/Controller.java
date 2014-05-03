@@ -82,10 +82,7 @@ public class Controller {
         //update every entity
         for (int i = 0; i < map.getEntitys().size(); i++) {
             map.getEntitys().get(i).update(delta);
-        }
-       
-        for (int i = map.getEntitys().size()-1; i >= 0; i--) {
-            if (map.getEntitys().get(i).shouldBeDestroyed())
+            if (map.getEntitys().get(i).shouldBeDisposed())
                 map.getEntitys().remove(i);
         }
         

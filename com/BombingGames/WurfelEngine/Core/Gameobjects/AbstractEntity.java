@@ -76,7 +76,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         OFFSET[32][0][1] = 40;
     }
     
-    private boolean destroy;
+    private boolean dispose;
    
     /**
      * Create an abstractEntity. You should use Block.getInstance(int) 
@@ -184,14 +184,14 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * Deletes the object from the map. The opposite to exist();
      */
     public void dispose(){
-        destroy=true;
+        dispose=true;
     }
 
     /**
      *
      * @return
      */
-    public boolean shouldBeDestroyed() {
-        return destroy;
+    public boolean shouldBeDisposed() {
+        return dispose;
     }
 }

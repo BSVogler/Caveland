@@ -237,7 +237,7 @@ public class WECamera extends Camera {
      * @return 
      */
     protected ArrayList<RenderDataObject> createDepthList() {
-        ArrayList<RenderDataObject> depthsort = new ArrayList<RenderDataObject>();
+        ArrayList<RenderDataObject> depthsort = new ArrayList<RenderDataObject>(100);//start by size 100
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();

@@ -101,13 +101,13 @@ public class Camera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public Camera(int x, int y, int width, int height){
+    public Camera(final int x, final int y, final int width, final int height){
         screenWidth = width;
 	screenHeight = height;
         screenPosX = x;
         screenPosY = y;
         
-        relativeChunk = Controller.getMap().getChunkCoords((byte) 0);
+        relativeChunk = Controller.getMap().getChunkCoords(0);
         
         //set the camera's focus to the center of the map
         projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
@@ -128,7 +128,7 @@ public class Camera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public Camera(Coordinate focus, int x, int y, int width, int height) {
+    public Camera(final Coordinate focus, final int x, final int y, final int width, final int height) {
         this(x, y, width, height);   
         GameplayScreen.msgSystem().add("Creating new camera which is focusing a coordinate");
         this.focusCoordinates = focus;
@@ -144,7 +144,7 @@ public class Camera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public Camera(AbstractEntity focusentity, int x, int y, int width, int height) {
+    public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height) {
         this(x,y,width,height);
         if (focusentity == null)
             throw new NullPointerException("Parameter 'focusentity' is null");
@@ -203,9 +203,9 @@ public class Camera{
      * @param view
      * @param camera  
      */
-    public void render(View view, Camera camera) {
+    public void render(final View view, final Camera camera) {
         if (Controller.getMap() != null) { //render only if map exists 
-            
+
             view.getBatch().setProjectionMatrix(combined);
              
             //set up the viewport

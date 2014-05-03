@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
 
@@ -50,17 +51,17 @@ public class WeaponPlayer extends AbstractCharacter{
         super(30, 1, point);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
-            (com.badlogic.gdx.backends.openal.Ogg.Sound)
+            (Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
         );
         setRunningSound(
-            (com.badlogic.gdx.backends.openal.Ogg.Sound)
+            (Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg")
         );
-        setJumpingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
+        setJumpingSound((Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav")
         );
-        setLandingSound((com.badlogic.gdx.backends.openal.Wav.Sound)
+        setLandingSound((Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
         );
         

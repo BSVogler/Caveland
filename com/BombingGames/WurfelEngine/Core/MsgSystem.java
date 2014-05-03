@@ -78,7 +78,7 @@ class Msg {
      * Sets the importance
      * @param imp
      */
-    public void setImportance(int imp){
+    public void setImportance(final int imp){
         if ((imp>=0) && (imp<=100))
             importance = imp;    
     }
@@ -98,7 +98,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param xPos
      * @param yPos
      */
-    public MsgSystem(int xPos, int yPos) {
+    public MsgSystem(final int xPos, final int yPos) {
         Skin skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         textinput = new TextField("Enter your message here!", skin);
         textinput.setBounds(xPos, yPos, 400, 50);
@@ -109,7 +109,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * Adds a message with the sender "System"
      * @param message
      */
-    public void add(String message) {
+    public void add(final String message) {
         add(new Msg(message, "System", 100));
         Gdx.app.debug("System",message);
     }
@@ -119,7 +119,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param message
      * @param sender
      */
-    public void add(String message, String sender){
+    public void add(final String message, final String sender){
         add(new Msg(message, sender, 100));
         Gdx.app.debug(sender,message);
     }
@@ -130,7 +130,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param sender
      * @param importance
      */
-    public void add(String message, String sender, int importance){
+    public void add(final String message, final String sender, final int importance){
         add(new Msg(message, sender, importance));
         Gdx.app.debug(sender,message);
     }
@@ -157,7 +157,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * Draws the Messages
      * @param view 
      */
-    public void render(View view){  
+    public void render(final View view){  
         view.getBatch().begin();
         
         if (acceptingInput){
@@ -181,7 +181,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * Tell the msg system if it should listen for input.
      * @param listen If deactivating the input will be saved.
      */
-    public void listenForInput(boolean listen) {
+    public void listenForInput(final boolean listen) {
         if (listen != acceptingInput && !textinput.getText().isEmpty()) {
             add(textinput.getText());//add message to message list
             textinput.setText("");
@@ -201,7 +201,7 @@ public class MsgSystem extends ArrayList<Msg> {
      *Add a key to the textbox.
      * @param characterInput
      */
-    public void addInput(char characterInput){
+    public void addInput(final char characterInput){
         textinput.setText(textinput.getText()+Character.toString(characterInput));
 //        if (characterInput =='\b')//if backspace remove a letter
 //            input = input.substring(0, input.length()-1);
@@ -214,7 +214,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param sender filter by the sender, e.g. if you want the last message of a specific player
      * @return if there exist no last message of the filter type returns null
      */
-    public String getLastMessage(String sender){
+    public String getLastMessage(final String sender){
         Msg result = null;
         int i = size()-1;
         while (!get(i).getSender().equals(sender) && i>0) {

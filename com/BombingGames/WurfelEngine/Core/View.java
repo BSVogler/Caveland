@@ -99,7 +99,7 @@ public class View {
      *Loades some files and set up everything.
      * @param controller
      */
-    public void init(Controller controller){
+    public void init(final Controller controller){
         Gdx.app.debug("View", "Initializing");
         
         this.controller = controller;
@@ -126,7 +126,7 @@ public class View {
      * Add an inputProcessor to the views.
      * @param processor 
      */
-    public static void addInputProcessor(InputProcessor processor){
+    public static void addInputProcessor(final InputProcessor processor){
         if (Gdx.input.getInputProcessor() == null){
             Gdx.input.setInputProcessor(processor);
         }else{
@@ -237,7 +237,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float screenXtoGame(int x, Camera camera){
+    public float screenXtoGame(final int x, final Camera camera){
         return x / camera.getScaling()- camera.getScreenPosX()+ camera.getViewportPosX();
     }
     
@@ -247,7 +247,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float screenYtoGame(int y, Camera camera){
+    public float screenYtoGame(final int y, final Camera camera){
         return (y / camera.getScaling() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
@@ -257,7 +257,7 @@ public class View {
      * @param y the y position on the screen
      * @return the map coordinates
      */
-    public Coordinate screenToGameCoords(int x, int y){
+    public Coordinate screenToGameCoords(final int x, final int y){
         //identify clicked camera
         Camera camera;
         int i = 0;
@@ -304,7 +304,7 @@ public class View {
      *
      * @param drawmode
      */
-    public void setDrawmode(int drawmode) {
+    public void setDrawmode(final int drawmode) {
         if (drawmode != this.drawmode){
             this.drawmode = drawmode;
             batch.end();
@@ -321,7 +321,7 @@ public class View {
      * @param xPos
      * @param yPos
      */
-    public void drawString(String msg, int xPos, int yPos) {
+    public void drawString(final String msg, final int xPos, final int yPos) {
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         batch.begin();
         font.draw(batch, msg, xPos, yPos);
@@ -335,7 +335,7 @@ public class View {
      * @param yPos
      * @param color
      */
-    public void drawString(String msg, int xPos, int yPos, Color color) {
+    public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         font.setColor(color);
         batch.begin();
@@ -350,7 +350,7 @@ public class View {
      * @param yPos space from top
      * @param color the colro of the text.
      */
-    public void drawText(String text, int xPos, int yPos, Color color){
+    public void drawText(final String text, final int xPos, final int yPos, final Color color){
         Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         font.setColor(Color.BLACK);
         font.setScale(0.51f);
@@ -409,7 +409,7 @@ public class View {
      * Add a camera.
      * @param camera
      */
-    protected void addCamera(Camera camera) {
+    protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
     }
     
@@ -418,7 +418,7 @@ public class View {
      * @param width
      * @param height 
      */
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         for (Camera camera : cameras) {
             camera.resize(width, height);
         }

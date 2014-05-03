@@ -160,7 +160,7 @@ public class Controller {
      * Set the minimap-
      * @param minimap
      */
-    public void setMinimap(Minimap minimap) {
+    public void setMinimap(final Minimap minimap) {
         this.minimap = minimap;
     }
 

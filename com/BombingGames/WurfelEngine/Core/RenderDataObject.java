@@ -45,7 +45,7 @@ public class RenderDataObject {
          * @param object 
          * @param pos The coordinates where the object should be rendered
          */
-    protected RenderDataObject(AbstractGameObject object, AbstractPosition pos) {
+    protected RenderDataObject(final AbstractGameObject object, final AbstractPosition pos) {
         this.pos = pos;
         this.depth = object.getDepth(pos);
         content = object;

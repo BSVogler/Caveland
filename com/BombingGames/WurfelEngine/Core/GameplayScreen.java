@@ -60,7 +60,7 @@ public class GameplayScreen implements Screen{
      * @param view The user view of this screen.
      * @param config The configuration of the game show in this screen.
      */
-    public GameplayScreen(Controller controller, View view, Configuration config) {
+    public GameplayScreen(final Controller controller, final View view, final Configuration config) {
         Gdx.app.log("GameplayScreen", "Initializing");
         msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
@@ -100,11 +100,11 @@ public class GameplayScreen implements Screen{
         return controller;
     }
 
-    public void setView(View view) {
+    public void setView(final View view) {
         this.view = view;
     }
 
-    public void setController(Controller controller) {
+    public void setController(final Controller controller) {
         this.controller = controller;
     }
     
@@ -113,14 +113,14 @@ public class GameplayScreen implements Screen{
     
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         controller.update(delta*1000);
         view.update(delta);
         view.render();
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
         view.resize(width, height);
     }

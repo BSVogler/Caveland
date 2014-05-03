@@ -68,7 +68,7 @@ public class WE extends Game {
      * @param title The title, which is displayed in the window.
      * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
      */
-    private WE(String title, String[] args){       
+    private WE(String title, final String[] args){       
         // set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
@@ -134,7 +134,7 @@ public class WE extends Game {
      * @param mainMenu 
      * @see  #launch() 
      */
-    public static void setMainMenu(MainMenuInterface mainMenu) {
+    public static void setMainMenu(final MainMenuInterface mainMenu) {
         WE.mainMenu = mainMenu;
     }
     
@@ -143,7 +143,7 @@ public class WE extends Game {
      * @param title The title, which is displayed in the window.
      * @param args launch parameters. For a list look in the wiki.
      */
-    public static void construct(String title, String[] args){
+    public static void construct(final String title, final String[] args){
         instance = new WE(title,args);
     }
     
@@ -172,7 +172,7 @@ public class WE extends Game {
      * @param config 
      * @see com.BombingGames.WurfelEngine#startGame()
      */
-    public static void initGame(Controller controller, View view, Configuration config){
+    public static void initGame(final Controller controller, final View view, final Configuration config){
         if (instance != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game…");
             Gdx.app.log("Wurfel Engine", "Using Controller:" + controller.toString());
@@ -194,7 +194,7 @@ public class WE extends Game {
      * @param controller the new controller
      * @param view the new view
      */
-    public static void switchSetupWithInit(Controller controller, View view){
+    public static void switchSetupWithInit(final Controller controller, final View view){
         Gdx.input.setInputProcessor(null);
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
@@ -208,7 +208,7 @@ public class WE extends Game {
      * @param controller the new controller
      * @param view the new view
      */
-    public static void switchSetup(Controller controller, View view){
+    public static void switchSetup(final Controller controller, final View view){
         Gdx.input.setInputProcessor(null);
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
@@ -281,7 +281,7 @@ public class WE extends Game {
      *You can switch to fullscreen. It only works if the current window resolution is supported by your hardware.
      * @param fullscreen
      */
-    public static void setFullscreen(boolean fullscreen) {
+    public static void setFullscreen(final boolean fullscreen) {
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
         WE.fullscreen = Gdx.graphics.isFullscreen();
         Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WE.isFullscreen());

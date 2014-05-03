@@ -55,7 +55,7 @@ public class FPSdiag {
      * @param xPos the position of the diagram from left
      * @param yPos the position of the diagram (its bottom)
      */
-    public FPSdiag(int xPos, int yPos) {
+    public FPSdiag(final int xPos, final int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
         width = 4;
@@ -98,7 +98,7 @@ public class FPSdiag {
      *Renders the diagramm
      * @param view
      */
-    public void render(View view){
+    public void render(final View view){
         if (visible){
             //draw FPS-String
             view.drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
@@ -210,7 +210,7 @@ public class FPSdiag {
     * Set the FPSdiag visible. You must nevertheless call render() to let it appear.
     * @param visible 
     */
-    public void setVisible(boolean visible) {
+    public void setVisible(final boolean visible) {
         this.visible = visible;
     }
 

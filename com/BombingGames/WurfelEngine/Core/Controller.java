@@ -123,6 +123,10 @@ public class Controller {
         else return map;
     }
 
+    /**
+     *
+     * @param map
+     */
     public static void setMap(Map map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
@@ -220,6 +224,10 @@ public class Controller {
         Block.staticDispose();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isInitalized() {
         return initalized;
     }  

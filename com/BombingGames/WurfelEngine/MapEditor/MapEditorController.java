@@ -146,6 +146,10 @@ public class MapEditorController extends Controller {
         }
     }
 
+    /**
+     *
+     * @param reverseMap
+     */
     public void setReverseMap(boolean reverseMap) {
         this.reverseMap = reverseMap;
     }

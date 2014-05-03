@@ -589,6 +589,9 @@ public class Block extends AbstractGameObject {
         hasSides=false;
     }
     
+    /**
+     *
+     */
     public static void staticDispose(){
         blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
     }

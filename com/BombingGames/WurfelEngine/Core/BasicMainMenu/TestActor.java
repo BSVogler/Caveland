@@ -40,6 +40,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class TestActor extends Actor {
     private final ShapeRenderer sr;
 
+    /**
+     *
+     * @param sr
+     */
     public TestActor(ShapeRenderer sr) {
         this.sr = sr;
     }

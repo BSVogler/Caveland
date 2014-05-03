@@ -100,10 +100,18 @@ public class GameplayScreen implements Screen{
         return controller;
     }
 
+    /**
+     *
+     * @param view
+     */
     public void setView(final View view) {
         this.view = view;
     }
 
+    /**
+     *
+     * @param controller
+     */
     public void setController(final Controller controller) {
         this.controller = controller;
     }

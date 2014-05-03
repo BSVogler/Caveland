@@ -113,6 +113,11 @@ public class Cell implements Cloneable {
         this.cellOffset[field] = offset;
     }
 
+    /**
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
     @Override
     protected Cell clone() throws CloneNotSupportedException {
         Cell clone = (Cell) super.clone();

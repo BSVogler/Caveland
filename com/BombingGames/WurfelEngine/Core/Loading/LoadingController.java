@@ -95,6 +95,10 @@ public class LoadingController {
         return percent;
     }
     
+    /**
+     *
+     * @param config
+     */
     public void dispose(Configuration config){
         //WE.getAssetManager().unload(config.getSpritesheetPath()+".png");
         WE.getAssetManager().unload(config.getSpritesheetPath()+".txt");

@@ -424,10 +424,16 @@ public class View {
         }
     }
     
+    /**
+     *
+     */
     public final void hideEditorButtons(){
         stage.clear();
     }
     
+    /**
+     *
+     */
     public final void showEditorButtons(){
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
         

@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -47,11 +46,28 @@ import java.util.ArrayList;
  *Creates a virtual camera wich displays the game world on the viewport.  
  * @author Benedikt Vogler
  */
-public class WECamera extends Camera {
+public class WECamera{
     /**
      *The deepest layer is an array which stores the information if there should be a tile rendered
      */
     private static final boolean[][] bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
+    
+    /** the position of the camera **/
+    private final Vector3 position = new Vector3();
+    /** the unit length direction vector of the camera **/
+    private final Vector3 direction = new Vector3(0, 0, 1);
+    /** the unit length up vector of the camera **/
+    private final Vector3 up = new Vector3(0, -1, 0);
+
+    /** the projection matrix **/
+    private final Matrix4 projection = new Matrix4();
+    /** the view matrix **/
+    private final Matrix4 view = new Matrix4();
+    /** the combined projection and view matrix **/
+    private final Matrix4 combined = new Matrix4();
+
+    /** the viewport width&height **/
+    private float screenWidth,screenHeight;
     
     /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
     private int screenPosX, screenPosY;
@@ -86,17 +102,13 @@ public class WECamera extends Camera {
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
     public WECamera(int x, int y, int width, int height){
-        viewportWidth = width;
-	viewportHeight = height;
+        screenWidth = width;
+	screenHeight = height;
         screenPosX = x;
         screenPosY = y;
         
         relativeChunk = Controller.getMap().getChunkCoords((byte) 0);
         
-	near = 0;
-	up.set(0, -1, 0);
-	direction.set(0, 0, 1);
-
         //set the camera's focus to the center of the map
         projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
         projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
@@ -144,7 +156,6 @@ public class WECamera extends Camera {
      /**
      * Updates the camera.
      */
-    @Override
     public void update() {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
@@ -168,26 +179,23 @@ public class WECamera extends Camera {
        
         //orthographic camera, libgdx stuff
         projection.setToOrtho(
-            (-viewportWidth / 2)/getScaling(),
-            (viewportWidth / 2)/getScaling(),
-            (-viewportHeight / 2)/getScaling(),
-            (viewportHeight / 2)/getScaling(),
+            (-screenWidth / 2)/getScaling(),
+            (screenWidth / 2)/getScaling(),
+            (-screenHeight / 2)/getScaling(),
+            (screenHeight / 2)/getScaling(),
             0,
-            Math.abs(far)
+            1
         );
         
         //set up projection matrices
         combined.set(projection);
         Matrix4.mul(combined.val, view.val);
 
-        invProjectionView.set(combined);
-        Matrix4.inv(invProjectionView.val);
-        frustum.update(invProjectionView);
-        apply(Gdx.gl10);//don't know what this does
-    }
-    
-   @Override
-    public void update(boolean updateFrustum) {
+        //don't know what this does
+	Gdx.gl10.glMatrixMode(GL10.GL_PROJECTION);
+	Gdx.gl10.glLoadMatrixf(projection.val, 0);
+	Gdx.gl10.glMatrixMode(GL10.GL_MODELVIEW);
+	Gdx.gl10.glLoadMatrixf(view.val, 0);
     }
     
     /**
@@ -203,9 +211,9 @@ public class WECamera extends Camera {
             //set up the viewport
             Gdx.gl.glViewport(
                 screenPosX,
-                (int) (Gdx.graphics.getHeight()-viewportHeight-screenPosY),//the parameter for the posY is a bit complicated because the y-axis is turned
-                (int) viewportWidth,
-                (int) viewportHeight
+                (int) (Gdx.graphics.getHeight()-screenHeight-screenPosY),//the parameter for the posY is a bit complicated because the y-axis is turned
+                (int) screenWidth,
+                (int) screenHeight
             );
             
             view.getBatch().begin();
@@ -545,7 +553,7 @@ public class WECamera extends Camera {
      * @return a scaling factor
      */
     public float getScaling() {
-        return zoom*viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
+        return zoom*screenWidth / WE.getCurrentConfig().getRenderResolutionWidth();
     }
 
     
@@ -641,7 +649,7 @@ public class WECamera extends Camera {
      * @return in pixels
      */
     public final int getViewportWidth() {
-        return (int) (viewportWidth / getScaling());
+        return (int) (screenWidth / getScaling());
     }
     
   /**
@@ -649,7 +657,7 @@ public class WECamera extends Camera {
     * @return  in pixels
     */
    public final int getViewportHeight() {
-        return (int) (viewportHeight / getScaling());
+        return (int) (screenHeight / getScaling());
     }
 
     /**
@@ -674,7 +682,7 @@ public class WECamera extends Camera {
      * @return the value before scaling
      */
     public float getScreenHeight() {
-        return viewportHeight;
+        return screenHeight;
     }
 
     /**
@@ -683,7 +691,7 @@ public class WECamera extends Camera {
      * @return the value before scaling
      */
     public float getScreenWidth() {
-        return viewportWidth;
+        return screenWidth;
     }
 
     /**
@@ -716,8 +724,8 @@ public class WECamera extends Camera {
      */
     public void setFullWindow(boolean fullWindow) {
         this.fullWindow = fullWindow;
-        this.viewportHeight = Gdx.graphics.getHeight();
-        this.viewportWidth = Gdx.graphics.getWidth();
+        this.screenHeight = Gdx.graphics.getHeight();
+        this.screenWidth = Gdx.graphics.getWidth();
         this.screenPosX = 0;
         this.screenPosY = 0;
     }
@@ -729,8 +737,8 @@ public class WECamera extends Camera {
      */
     public void resize(int width, int height){
         if (fullWindow){
-            this.viewportWidth = width;
-            this.viewportHeight = height;
+            this.screenWidth = width;
+            this.screenHeight = height;
             this.screenPosX = 0;
             this.screenPosY = 0;
         }

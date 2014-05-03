@@ -58,12 +58,15 @@ public class Controller {
      * @param delta time since last call
      */
     public void update(float delta) {
+        fpsdiag.update(delta);
+        
+        //aply game world speed
         delta *= timespeed;
+        
         if (lightEngine != null) lightEngine.update(delta);
         
          //update the log
         GameplayScreen.msgSystem().update(delta);
-        
         
         
         //update every static update method
@@ -86,8 +89,6 @@ public class Controller {
                 map.getEntitys().remove(i);
         }
         
-        
-        fpsdiag.update(delta);
                 
         //recalculates the light if requested
         recalcIfRequested();

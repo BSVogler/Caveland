@@ -46,7 +46,7 @@ import java.util.ArrayList;
  *Creates a virtual camera wich displays the game world on the viewport.  
  * @author Benedikt Vogler
  */
-public class WECamera{
+public class Camera{
     /**
      *The deepest layer is an array which stores the information if there should be a tile rendered
      */
@@ -89,7 +89,7 @@ public class WECamera{
     /**
      * Creates a fullscale camera pointing at the middle of the map.
      */
-    public WECamera(){
+    public Camera(){
         this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         fullWindow = true;
     }
@@ -101,7 +101,7 @@ public class WECamera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public WECamera(int x, int y, int width, int height){
+    public Camera(int x, int y, int width, int height){
         screenWidth = width;
 	screenHeight = height;
         screenPosX = x;
@@ -128,7 +128,7 @@ public class WECamera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public WECamera(Coordinate focus, int x, int y, int width, int height) {
+    public Camera(Coordinate focus, int x, int y, int width, int height) {
         this(x, y, width, height);   
         GameplayScreen.msgSystem().add("Creating new camera which is focusing a coordinate");
         this.focusCoordinates = focus;
@@ -144,7 +144,7 @@ public class WECamera{
      * @param width The width of the image (screen size) the camera creates on the application window (viewport)
      * @param height The height of the image (screen size) the camera creates on the application window (viewport)
      */
-    public WECamera(AbstractEntity focusentity, int x, int y, int width, int height) {
+    public Camera(AbstractEntity focusentity, int x, int y, int width, int height) {
         this(x,y,width,height);
         if (focusentity == null)
             throw new NullPointerException("Parameter 'focusentity' is null");
@@ -203,7 +203,7 @@ public class WECamera{
      * @param view
      * @param camera  
      */
-    public void render(View view, WECamera camera) {
+    public void render(View view, Camera camera) {
         if (Controller.getMap() != null) { //render only if map exists 
             
             view.getBatch().setProjectionMatrix(combined);
@@ -757,13 +757,13 @@ public class WECamera{
      * @param zRenderingLimit minimum is 1
      */
     public static void setZRenderingLimit(int zRenderingLimit) {
-        WECamera.zRenderingLimit = zRenderingLimit;
+        Camera.zRenderingLimit = zRenderingLimit;
         
         //clamp
         if (zRenderingLimit >= Map.getBlocksZ())
-            WECamera.zRenderingLimit=Map.getBlocksZ();
+            Camera.zRenderingLimit=Map.getBlocksZ();
         else if (zRenderingLimit<0)
-                WECamera.zRenderingLimit=0;//min is 0
+                Camera.zRenderingLimit=0;//min is 0
         
         Controller.requestRecalc();
     }

@@ -32,7 +32,7 @@ import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -62,7 +62,7 @@ class CharacterShadow extends AbstractEntity {
     }
 
     @Override
-    public void render(View view, WECamera camera, AbstractPosition coords) {
+    public void render(View view, Camera camera, AbstractPosition coords) {
         Color color = PseudoGrey.toColor(
                 (character.getPos().getHeight() - getPos().getHeight())/Block.GAME_EDGELENGTH
                 );//make color out of distance from player

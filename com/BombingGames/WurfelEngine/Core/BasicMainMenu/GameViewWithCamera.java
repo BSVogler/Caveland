@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 
 /**
  *A simple Controller which adds a camera.
@@ -42,6 +42,6 @@ public class GameViewWithCamera extends View {
     @Override
     public void init(Controller controller) {
         super.init(controller);
-        addCamera(new WECamera());
+        addCamera(new Camera());
     }
 }

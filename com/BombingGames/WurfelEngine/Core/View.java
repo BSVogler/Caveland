@@ -58,7 +58,7 @@ import java.util.ArrayList;
  * @author Benedikt
  */
 public class View {
-    private final ArrayList<WECamera> cameras = new ArrayList<WECamera>(6);//max 6 cameras
+    private final ArrayList<Camera> cameras = new ArrayList<Camera>(6);//max 6 cameras
     
     private static BitmapFont font;
     
@@ -142,7 +142,7 @@ public class View {
      */
     public void update(float delta){
         //update cameras
-        for (WECamera camera : cameras) {
+        for (Camera camera : cameras) {
             if (camera.togglesChunkSwitch()) {
                 //earth to right
                 if (camera.getVisibleLeftBorder() <= 0)
@@ -184,7 +184,7 @@ public class View {
             Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         }else {
-            for (WECamera camera : cameras) {
+            for (Camera camera : cameras) {
                 camera.render(this, camera);
             }
         }
@@ -237,7 +237,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float screenXtoGame(int x, WECamera camera){
+    public float screenXtoGame(int x, Camera camera){
         return x / camera.getScaling()- camera.getScreenPosX()+ camera.getViewportPosX();
     }
     
@@ -247,7 +247,7 @@ public class View {
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
-    public float screenYtoGame(int y, WECamera camera){
+    public float screenYtoGame(int y, Camera camera){
         return (y / camera.getScaling() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
@@ -259,7 +259,7 @@ public class View {
      */
     public Coordinate screenToGameCoords(int x, int y){
         //identify clicked camera
-        WECamera camera;
+        Camera camera;
         int i = 0;
         do {          
             camera = cameras.get(i);
@@ -401,7 +401,7 @@ public class View {
      * Returns a camera.
      * @return The virtual cameras rendering the scene
      */
-    public ArrayList<WECamera> getCameras() {
+    public ArrayList<Camera> getCameras() {
         return cameras;
     }
 
@@ -409,7 +409,7 @@ public class View {
      * Add a camera.
      * @param camera
      */
-    protected void addCamera(WECamera camera) {
+    protected void addCamera(Camera camera) {
         this.cameras.add(camera);
     }
     
@@ -419,7 +419,7 @@ public class View {
      * @param height 
      */
     public void resize(int width, int height) {
-        for (WECamera camera : cameras) {
+        for (Camera camera : cameras) {
             camera.resize(width, height);
         }
     }

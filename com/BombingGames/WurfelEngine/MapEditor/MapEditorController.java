@@ -33,7 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.badlogic.gdx.Gdx;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +117,7 @@ public class MapEditorController extends Controller {
         else if (currentLayer >= Map.getBlocksZ())
             this.currentLayer=Map.getBlocksZ();
         
-        WECamera.setZRenderingLimit(currentLayer);
+        Camera.setZRenderingLimit(currentLayer);
     }
 
      /**

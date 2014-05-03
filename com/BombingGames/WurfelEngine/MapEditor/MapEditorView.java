@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -58,7 +58,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MapEditorView extends View {
     private MapEditorController controller;
     private Stage stage;
-    private WECamera camera;
+    private Camera camera;
 
     @Override
     public void init(Controller controller) {
@@ -71,7 +71,7 @@ public class MapEditorView extends View {
         View.addInputProcessor(stage);
         
         
-        camera = new WECamera();
+        camera = new Camera();
         addCamera(camera);
         
         hideEditorButtons();

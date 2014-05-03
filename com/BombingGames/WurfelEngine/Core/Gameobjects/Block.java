@@ -32,7 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -333,7 +333,7 @@ public class Block extends AbstractGameObject {
     }
     
     @Override
-    public void render(final View view, final WECamera camera, AbstractPosition coords) {
+    public void render(final View view, final Camera camera, AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -414,7 +414,7 @@ public class Block extends AbstractGameObject {
      * @param coords the coordinates where the side is rendered 
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb){
+    public void renderSide(final View view, final Camera camera, AbstractPosition coords, final int sidenumb){
         Color color;
         if (Controller.getLightengine() != null)
             color = Controller.getLightengine().getColor(sidenumb);
@@ -442,7 +442,7 @@ public class Block extends AbstractGameObject {
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
      */
-    public void renderSide(final View view, final WECamera camera, AbstractPosition coords, final int sidenumb, Color color){
+    public void renderSide(final View view, final Camera camera, AbstractPosition coords, final int sidenumb, Color color){
         if (WE.getCurrentConfig().useFog()){
             color.mul(
                 (float) (0.5f+Math.exp(

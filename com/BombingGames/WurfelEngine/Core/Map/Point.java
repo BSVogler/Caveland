@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -278,7 +278,7 @@ public class Point extends AbstractPosition {
                         (
                             coords.getBlock().isHidden()
                             ||
-                            coords.getZ() >= WECamera.getZRenderingLimit()
+                            coords.getZ() >= Camera.getZRenderingLimit()
                         )
                     )
                 )

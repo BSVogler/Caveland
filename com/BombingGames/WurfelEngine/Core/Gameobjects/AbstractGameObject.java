@@ -32,7 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -146,7 +146,7 @@ public abstract class AbstractGameObject {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
-    public void render(View view, WECamera camera, AbstractPosition pos) {
+    public void render(View view, Camera camera, AbstractPosition pos) {
         render(
             view,
             camera,
@@ -162,7 +162,7 @@ public abstract class AbstractGameObject {
      * @param camera The camera rendering the scene
      * @param color  custom blending color
      */
-    public void render(View view, WECamera camera, AbstractPosition pos, Color color) {
+    public void render(View view, Camera camera, AbstractPosition pos, Color color) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
                          

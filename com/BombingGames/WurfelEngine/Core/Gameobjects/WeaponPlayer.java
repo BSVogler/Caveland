@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
@@ -40,7 +40,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt
  */
 public class WeaponPlayer extends AbstractCharacter{
-    private WECamera camera;
+    private Camera camera;
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
      * @param point 
@@ -100,7 +100,7 @@ public class WeaponPlayer extends AbstractCharacter{
      *Set the camera which is renderin the player to calculate the aiming. If camera is null 
      * @param camera 
      */
-    public void setCamera(WECamera camera) {
+    public void setCamera(Camera camera) {
         this.camera = camera;
     }
 }

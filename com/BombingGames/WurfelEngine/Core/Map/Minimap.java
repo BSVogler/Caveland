@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.WECamera;
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -47,7 +47,7 @@ public class Minimap {
     private final float renderSize = (float) (scaleX/Math.sqrt(2));
     
     private Controller controller;
-    private WECamera camera;
+    private Camera camera;
     private final Color[][] mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
     private boolean visible;
 
@@ -58,7 +58,7 @@ public class Minimap {
      * @param outputX the output-position of the minimap (distance to left)
      * @param outputY  the output-position of the minimap (distance to top)
      */
-    public Minimap(Controller controller, WECamera camera, int outputX, int outputY) {
+    public Minimap(Controller controller, Camera camera, int outputX, int outputY) {
         if (controller == null || camera == null) throw new NullPointerException("Parameter controller or camera is null");
         this.posX = outputX;
         this.posY = outputY;

@@ -89,7 +89,7 @@ public class Controller {
                 
         //recalculates the light if requested
         if (recalcRequested) {
-            WECamera.raytracing();
+            Camera.raytracing();
             LightEngine.calcSimpleLight();
             if (minimap != null)minimap.buildMinimap();
             recalcRequested = false;

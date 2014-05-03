@@ -88,7 +88,12 @@ public class Controller {
         
                 
         //recalculates the light if requested
-        recalcIfRequested();
+        if (recalcRequested) {
+            WECamera.raytracing();
+            LightEngine.calcSimpleLight();
+            if (minimap != null)minimap.buildMinimap();
+            recalcRequested = false;
+        }
     }
 
     
@@ -98,20 +103,6 @@ public class Controller {
     public static void requestRecalc(){
         Gdx.app.debug("Controller", "A recalc was requested.");
         recalcRequested = true;
-    }
-    
-    /**
-     * When the recalc was requested it calls raytracing and light recalculing. This method should be called every update.
-     * Request a recalc with <i>reuqestRecalc()</i>. 
-     */
-    public void recalcIfRequested(){
-        if (recalcRequested) {
-            Gdx.app.log("Controller", "Recalcing.");
-            WECamera.raytracing();
-            LightEngine.calcSimpleLight();
-            if (minimap != null) minimap.buildMinimap();
-            recalcRequested = false;
-        }
     }
     
     /**

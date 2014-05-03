@@ -282,8 +282,8 @@ public class WE extends Game {
      * @param fullscreen
      */
     public static void setFullscreen(boolean fullscreen) {
-        WE.fullscreen = fullscreen;
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
+        WE.fullscreen = Gdx.graphics.isFullscreen();
         Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WE.isFullscreen());
     }
     

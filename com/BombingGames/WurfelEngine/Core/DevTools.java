@@ -258,11 +258,12 @@ public class DevTools {
     }
     
       /**
-     *
+     *Does only sth. if a button is null.
      * @param view
      */
-    private final void showEditorButtons(final View view){
-            TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+    private void showEditorButtons(final View view){
+        if (editorbutton==null && editorreversebutton==null){    
+        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
 
             //add editor button
             editorbutton = new Image(spritesheet.findRegion("editor_button"));
@@ -293,5 +294,6 @@ public class DevTools {
                 }
             );
             view.getStage().addActor(editorreversebutton);
+        }
     }
 }

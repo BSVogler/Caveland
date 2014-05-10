@@ -272,7 +272,7 @@ public class DevTools {
 
             //add editor button
             editorbutton = new Image(spritesheet.findRegion("editor_button"));
-            editorbutton.setX(xPos+width+80);
+            editorbutton.setX(xPos+width+40);
             editorbutton.setY(yPos);
             editorbutton.addListener(
                 new ClickListener() {

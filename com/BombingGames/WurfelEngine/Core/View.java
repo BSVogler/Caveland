@@ -189,36 +189,40 @@ public class View {
             }
         }
         
+        //render load screen
+        if (controller.getLoadMenu().isOpen()){
+            controller.getLoadMenu().render(this);
+        }
+        
         
         //render HUD
-        // hudCamera.zoom = 1/equalizationScale;
-        hudCamera.update();
-        hudCamera.apply(Gdx.gl10);
-         
-        batch.setProjectionMatrix(hudCamera.combined);
-        shapeRenderer.setProjectionMatrix(hudCamera.combined);
-        
-        Gdx.gl.glViewport(
-            0,
-            0,
-            Gdx.graphics.getWidth(),
-            Gdx.graphics.getHeight()
-        );
-        
-        controller.getFPSdiag().render(this);
-        
-        stage.draw();
-        
-        //scale to fit
-        //hudCamera.zoom = 1/equalizationScale;
-        
-        if (Controller.getLightengine() != null)
-            Controller.getLightengine().render(this);
-        
-        if (controller.getMinimap() != null)
-            controller.getMinimap().render(this); 
-        
-        GameplayScreen.msgSystem().render(this);
+        {
+            // hudCamera.zoom = 1/equalizationScale;
+            hudCamera.update();
+            hudCamera.apply(Gdx.gl10);
+
+            batch.setProjectionMatrix(hudCamera.combined);
+            shapeRenderer.setProjectionMatrix(hudCamera.combined);
+
+            //set vieport of hud to cover whole window
+            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+
+            controller.getFPSdiag().render(this);
+
+            //render buttons
+            stage.draw();
+
+            //scale to fit
+            //hudCamera.zoom = 1/equalizationScale;
+
+            if (Controller.getLightengine() != null)
+                Controller.getLightengine().render(this);
+
+            if (controller.getMinimap() != null)
+                controller.getMinimap().render(this); 
+
+            GameplayScreen.msgSystem().render(this);
+        }
     }
        
 

@@ -30,6 +30,8 @@ public class Controller {
     
     private FPSdiag fpsdiag;
     
+    private LoadMenu loadMenu;
+    
     /**
      * Shoud be called before the objects get initialized.
      * Initializes class fields.
@@ -37,6 +39,7 @@ public class Controller {
     public static void classInit(){
         newMap();
     }
+
     
     /**
      * This method works like a constructor. Everything is loaded here.
@@ -222,6 +225,15 @@ public class Controller {
     public FPSdiag getFPSdiag() {
         return fpsdiag;
     }
+    
+
+    /**
+     *
+     * @return
+     */
+    public LoadMenu getLoadMenu() {
+        return loadMenu;
+    }
 
     /**
      *
@@ -249,4 +261,6 @@ public class Controller {
      * should get called when you leave the editor
      */
     public void exit(){}
+
+
 }

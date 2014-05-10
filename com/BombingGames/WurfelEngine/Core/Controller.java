@@ -45,7 +45,7 @@ public class Controller {
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");
-        devtools = new DevTools(this, 10,50);
+        devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
         
         if (WE.getCurrentConfig().useLightEngine()){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);

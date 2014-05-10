@@ -138,7 +138,11 @@ public class Controller {
      * @return the player
      */
     public AbstractCharacter getPlayer() {
-        return player;
+        if (player==null)
+            throw new NullPointerException("Controller has no player.");
+        else {
+            return player;
+        }
     }
 
    /**
@@ -146,8 +150,12 @@ public class Controller {
      * @param player 
      */
     public void setPlayer(AbstractCharacter player) {
-        this.player = player;
-        player.exist();
+        if (player==null)
+            throw new NullPointerException("No player was passed.");
+        else {
+            this.player = player;
+            player.exist();
+        }
     }   
     
     /**

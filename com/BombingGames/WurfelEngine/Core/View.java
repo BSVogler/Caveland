@@ -305,7 +305,7 @@ public class View {
     }
 
     /**
-     *
+     *The batch must be began before claling this method.
      * @param drawmode
      */
     public void setDrawmode(final int drawmode) {
@@ -326,8 +326,8 @@ public class View {
      * @param yPos
      */
     public void drawString(final String msg, final int xPos, final int yPos) {
-        Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         batch.begin();
+        setDrawmode(GL10.GL_MODULATE);
         font.draw(batch, msg, xPos, yPos);
         batch.end();
     }
@@ -340,9 +340,9 @@ public class View {
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
-        Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         font.setColor(color);
         batch.begin();
+        setDrawmode(GL10.GL_MODULATE);
         font.draw(batch, msg, xPos, yPos);
         batch.end();
     }
@@ -355,10 +355,10 @@ public class View {
      * @param color the colro of the text.
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
-        Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
         font.setColor(Color.BLACK);
         font.setScale(0.51f);
         batch.begin();
+        setDrawmode(GL10.GL_MODULATE);
         font.drawMultiLine(batch, text, xPos, yPos);
         batch.end();
         

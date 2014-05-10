@@ -74,8 +74,6 @@ public class MapEditorView extends View {
         camera = new Camera();
         addCamera(camera);
         
-        hideEditorButtons();
-        
         controller.setMinimap(
             new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,10)
         );

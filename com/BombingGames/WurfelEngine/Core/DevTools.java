@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -55,6 +56,8 @@ public class DevTools {
     private long maxMemory;
     private long usedMemory;
     private final Controller controller;
+    private Image editorbutton;
+    private Image editorreversebutton;
 
     /**
      *
@@ -108,6 +111,14 @@ public class DevTools {
      */
     public void render(final View view){
         if (visible){
+            
+            if (view instanceof MapEditorView) {
+                view.getStage().getActors().removeValue(editorbutton, false);
+                view.getStage().getActors().removeValue(editorreversebutton, false);
+            } else {
+                showEditorButtons(view);
+            }
+            
             //draw FPS-String
             view.drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
             
@@ -250,37 +261,37 @@ public class DevTools {
      *
      * @param view
      */
-    public final void showEditorButtons(final View view){
-        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
-        
-        //add editor button
-        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
-        editorbutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+40);
-        editorbutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
-        editorbutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(false);
-                    return true;
-               }
-            }
-        );
-        view.getStage().addActor(editorbutton);
-        
-        //add reverse editor button
-        final Image editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-        editorreversebutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+80);
-        editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
-        editorreversebutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(true);
-                    return true;
-               }
-            }
-        );
-        view.getStage().addActor(editorreversebutton);
+    private final void showEditorButtons(final View view){
+            TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+
+            //add editor button
+            editorbutton = new Image(spritesheet.findRegion("editor_button"));
+            editorbutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+40);
+            editorbutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+            editorbutton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        WE.loadEditor(false);
+                        return true;
+                   }
+                }
+            );
+            view.getStage().addActor(editorbutton);
+
+            //add reverse editor button
+            editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
+            editorreversebutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+80);
+            editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+            editorreversebutton.addListener(
+                new ClickListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        WE.loadEditor(true);
+                        return true;
+                   }
+                }
+            );
+            view.getStage().addActor(editorreversebutton);
     }
 }

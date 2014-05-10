@@ -44,13 +44,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 
 /**
@@ -107,8 +103,6 @@ public class View {
         //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         View.addInputProcessor(stage);
-        
-        controller.getDevTools().showEditorButtons(this);
         
         //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -427,13 +421,6 @@ public class View {
         for (Camera camera : cameras) {
             camera.resize(width, height);
         }
-    }
-    
-    /**
-     *
-     */
-    public final void hideEditorButtons(){
-        stage.clear();
     }
 
     public Stage getStage() {

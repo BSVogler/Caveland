@@ -99,7 +99,7 @@ public class WE extends Game {
         
         config.title = title + " " + config.width + "x"+config.height;
 
-        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfelengine");//set save-folder
+        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
         
         Texture.setEnforcePotImages(false);//allow non-power-of-two textures on system which support them
        

@@ -30,20 +30,40 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.io.File;
 
 /**
  *
  * @author Benedikt Vogler
  */
-class LoadMenu {
+public class LoadMenu {
     private boolean open;
+    private final static int margin = 0;
     
     public void render(View view) {
         ShapeRenderer sh = view.getShapeRenderer();
         sh.begin(ShapeRenderer.ShapeType.Filled);
-        sh.rect(100, 100, Gdx.graphics.getWidth()-100, Gdx.graphics.getWidth()-100);
+        sh.rect(margin, margin, Gdx.graphics.getWidth()-margin*2, Gdx.graphics.getHeight()-margin*2);
         sh.end();
+        
+        int i=0;
+        File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
+        for (final File fileEntry : wd.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                System.out.println(fileEntry.getName());
+                view.drawString(fileEntry.getName(), margin+50, margin+i*50, Color.WHITE.cpy());
+                view.drawString("asdasdasdasdasdasd", margin+50, margin+50+i*50, Color.RED.cpy());
+                view.drawText("rand", (int) (Math.random()*Gdx.graphics.getWidth()), (int) (Math.random()*Gdx.graphics.getHeight()), Color.BLUE.cpy());
+                i++;
+                //listFilesForFolder(fileEntry);
+            } else {
+                //System.out.println(fileEntry.getName());
+            }
+        }
+            
+        
     }
     
     public boolean isOpen() {

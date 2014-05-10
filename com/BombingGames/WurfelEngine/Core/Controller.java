@@ -29,7 +29,6 @@ public class Controller {
     private AbstractCharacter player;  
     
     private FPSdiag fpsdiag;
-    
     private LoadMenu loadMenu;
     
     /**
@@ -228,10 +227,11 @@ public class Controller {
     
 
     /**
-     *
+     *Get a menu which can be used for loading maps.
      * @return
      */
     public LoadMenu getLoadMenu() {
+        if (loadMenu==null) loadMenu = new LoadMenu();//lazy init
         return loadMenu;
     }
 

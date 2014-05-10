@@ -75,7 +75,12 @@ public class MapEditorView extends View {
         addCamera(camera);
         
         controller.setMinimap(
-            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,10)
+            new Minimap(
+                controller,
+                getCameras().get(0),
+                Gdx.graphics.getWidth() - 400,
+                Gdx.graphics.getHeight()-10
+            )
         );
         
         
@@ -127,8 +132,8 @@ public class MapEditorView extends View {
         sh.begin(ShapeRenderer.ShapeType.Line);
         
         int rightborder = Gdx.graphics.getWidth();
-        int bottomborder = Gdx.graphics.getHeight();
-        int steps = bottomborder/(Map.getBlocksZ()+1);
+        int topBorder = Gdx.graphics.getHeight();
+        int steps = topBorder/(Map.getBlocksZ()+1);
         
         for (int i = 1; i < Map.getBlocksZ()+1; i++) {
             if (((MapEditorController) getController()).getCurrentLayer() == i )
@@ -137,18 +142,18 @@ public class MapEditorView extends View {
                 sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.5f));
             sh.line(
                 rightborder,
-                bottomborder-i*steps,
+                i*steps,
                 rightborder-50- ( ((MapEditorController) getController()).getCurrentLayer() == i ?40:0),
-                bottomborder-i*steps
+                i*steps
             );
             
             //"shadow"
             sh.setColor(Color.DARK_GRAY.cpy().sub(0, 0, 0,0.5f));
             sh.line(
                 rightborder,
-                bottomborder-i*steps+3,
+                i*steps+3,
                 rightborder-50- ( ((MapEditorController) getController()).getCurrentLayer() == i ?40:0),
-                bottomborder-i*steps+3
+                i*steps+3
             ); 
         }
         

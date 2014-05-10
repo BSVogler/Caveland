@@ -132,11 +132,16 @@ public class DevTools {
             shr.begin(ShapeRenderer.ShapeType.Filled);
             //background
             shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.2f));
-            shr.rect(xPos, yPos, getWidth(), maxHeight);
+            shr.rect(xPos, yPos, getWidth(), -maxHeight);
             
             //render current field bar
             shr.setColor(new Color(1, 0, 1, 0.8f));
-            shr.rect(xPos+width*field, yPos+maxHeight-data[field], width, data[field]);
+            shr.rect(
+                xPos+width*field,
+                yPos-maxHeight,
+                width,
+                data[field]
+            );
             
             //render RAM
             shr.setColor(new Color(.2f, 1, .2f, 0.8f));
@@ -144,7 +149,7 @@ public class DevTools {
                 xPos,
                 yPos,
                 usedMemory*width*data.length/allocatedMemory,
-                20
+                -20
             );
             
             shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.8f));
@@ -152,7 +157,7 @@ public class DevTools {
                 xPos + usedMemory*width*data.length/allocatedMemory,
                 yPos,
                 width*data.length - width*data.length*usedMemory/allocatedMemory,
-                20
+                -20
             );
             
             shr.end();
@@ -162,20 +167,20 @@ public class DevTools {
             
             //render steps
             shr.setColor(Color.GRAY);
-            shr.line(xPos, yPos+maxHeight, xPos+width*data.length, yPos+maxHeight);
-            shr.line(xPos, yPos+maxHeight-30, xPos+width*data.length, yPos+maxHeight-30);
-            shr.line(xPos, yPos+maxHeight-60, xPos+width*data.length, yPos+maxHeight-60);
-            shr.line(xPos, yPos+maxHeight-120, xPos+width*data.length, yPos+maxHeight-120);
+            shr.line(xPos, yPos-maxHeight, xPos+width*data.length, yPos-maxHeight);
+            shr.line(xPos, yPos-maxHeight+30, xPos+width*data.length, yPos-maxHeight+30);
+            shr.line(xPos, yPos-maxHeight+60, xPos+width*data.length, yPos-maxHeight+60);
+            shr.line(xPos, yPos-maxHeight+120, xPos+width*data.length, yPos-maxHeight+120);
             
             
             for (int i = 0; i < data.length-1; i++) { //render each field in memory
                 shr.setColor(new Color(0, 0, 1, 0.9f));
-                shr.line(xPos+width*i+width/2, yPos-data[i]+maxHeight, xPos+width*(i+1.5f), yPos-data[i+1]+maxHeight);
+                shr.line(xPos+width*i+width/2, yPos+data[i]-maxHeight, xPos+width*(i+1.5f), yPos+data[i+1]-maxHeight);
             }
 
             //render average            
             shr.setColor(new Color(1, 0, 1, 0.8f));
-            shr.line(xPos, yPos+maxHeight-getAverage(), xPos+width*data.length, yPos-getAverage()+maxHeight);
+            shr.line(xPos, yPos-maxHeight+getAverage(), xPos+width*data.length, yPos+getAverage()-maxHeight);
 
             shr.end(); 
             
@@ -267,8 +272,8 @@ public class DevTools {
 
             //add editor button
             editorbutton = new Image(spritesheet.findRegion("editor_button"));
-            editorbutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+40);
-            editorbutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+            editorbutton.setX(xPos+width+80);
+            editorbutton.setY(yPos);
             editorbutton.addListener(
                 new ClickListener() {
                     @Override
@@ -282,8 +287,8 @@ public class DevTools {
 
             //add reverse editor button
             editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-            editorreversebutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+80);
-            editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+            editorreversebutton.setX(xPos+width+80);
+            editorreversebutton.setY(yPos);
             editorreversebutton.addListener(
                 new ClickListener() {
                     @Override

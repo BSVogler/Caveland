@@ -78,11 +78,9 @@ public class View {
     public static void classInit(){
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
-        font = new BitmapFont(true);
+        font = new BitmapFont(false);
         //font.scale(2);
-        for (TextureRegion region : font.getRegions()) {
-            region.flip(false, false);
-        }
+
         
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
@@ -101,12 +99,12 @@ public class View {
         this.controller = controller;
         
         //set up stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage = new Stage();
         View.addInputProcessor(stage);
         
         //set up renderer
-        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        hudCamera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();

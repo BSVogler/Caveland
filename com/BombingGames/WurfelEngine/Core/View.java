@@ -367,6 +367,7 @@ public class View {
         batch.begin();
         font.drawMultiLine(batch, text, xPos, yPos);
         batch.end();
+        font.setScale(1f);
     }
     
     /**

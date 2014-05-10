@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.WeaponPlayer;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -185,7 +185,7 @@ public class Bullet extends AbstractEntity {
                         ArrayList<AbstractCharacter> list;
                         list = Controller.getMap().getAllEntitysOnCoord(effect.getPos().getCoord(), AbstractCharacter.class);
                         for (AbstractCharacter ent : list) {
-                            if (!(ent instanceof WeaponPlayer))
+                            if (!(ent instanceof PlayerWithWeapon))
                                 ent.damage(1000);
                         }
                     }

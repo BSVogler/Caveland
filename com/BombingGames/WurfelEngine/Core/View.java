@@ -108,7 +108,7 @@ public class View {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         View.addInputProcessor(stage);
         
-        showEditorButtons();
+        controller.getDevTools().showEditorButtons(this);
         
         //set up renderer
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -163,7 +163,7 @@ public class View {
         
         //you can toggle the dev menu
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
-            controller.getFPSdiag().setVisible(!controller.getFPSdiag().isVisible());
+            controller.getDevTools().setVisible(!controller.getDevTools().isVisible());
             keyF5isUp = false;
         }
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
@@ -207,7 +207,7 @@ public class View {
             //set vieport of hud to cover whole window
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-            controller.getFPSdiag().render(this);
+            controller.getDevTools().render(this);
 
             //render buttons
             stage.draw();
@@ -435,41 +435,8 @@ public class View {
     public final void hideEditorButtons(){
         stage.clear();
     }
-    
-    /**
-     *
-     */
-    public final void showEditorButtons(){
-        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
-        
-        //add editor button
-        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
-        editorbutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+40);
-        editorbutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
-        editorbutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(false);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(editorbutton);
-        
-        //add reverse editor button
-        final Image editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-        editorreversebutton.setX(controller.getFPSdiag().getxPos()+controller.getFPSdiag().getWidth()+80);
-        editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getFPSdiag().getyPos());
-        editorreversebutton.addListener(
-            new ClickListener() {
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    WE.loadEditor(true);
-                    return true;
-               }
-            }
-        );
-        stage.addActor(editorreversebutton);
+
+    public Stage getStage() {
+        return stage;
     }
 }

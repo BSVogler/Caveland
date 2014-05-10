@@ -28,7 +28,7 @@ public class Controller {
     private float timespeed = 1;
     private AbstractCharacter player;  
     
-    private FPSdiag fpsdiag;
+    private DevTools devtools;
     private LoadMenu loadMenu;
     
     /**
@@ -45,7 +45,7 @@ public class Controller {
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");
-        fpsdiag = new FPSdiag(10,50);
+        devtools = new DevTools(this, 10,50);
         
         if (WE.getCurrentConfig().useLightEngine()){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
@@ -60,7 +60,7 @@ public class Controller {
      * @param delta time since last call
      */
     public void update(float delta) {
-        fpsdiag.update(delta);
+        devtools.update(delta);
         
         //aply game world speed
         delta *= timespeed;
@@ -221,8 +221,8 @@ public class Controller {
      *
      * @return
      */
-    public FPSdiag getFPSdiag() {
-        return fpsdiag;
+    public DevTools getDevTools() {
+        return devtools;
     }
     
 
@@ -262,5 +262,6 @@ public class Controller {
      */
     public void exit(){}
 
+    
 
 }

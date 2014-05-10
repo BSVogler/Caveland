@@ -28,17 +28,22 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.text.NumberFormat;
 
 /**
  *The FPS diagramm collects some fps values and creates a diagram and analyzes it.
  * @author Benedikt Vogler
  */
-public class FPSdiag {
+public class DevTools {
     private final int[] data = new int[50];
     private float timeStepMin;
     private int field;//the current field number
@@ -49,13 +54,16 @@ public class FPSdiag {
     private long allocatedMemory;
     private long maxMemory;
     private long usedMemory;
+    private final Controller controller;
 
     /**
      *
+     * @param controller
      * @param xPos the position of the diagram from left
      * @param yPos the position of the diagram (its bottom)
      */
-    public FPSdiag(final int xPos, final int yPos) {
+    public DevTools(final Controller controller, final int xPos, final int yPos) {
+        this.controller = controller;
         this.xPos = xPos;
         this.yPos = yPos;
         width = 4;
@@ -236,5 +244,43 @@ public class FPSdiag {
      */
     public int getWidth() {
         return width*data.length;
+    }
+    
+      /**
+     *
+     * @param view
+     */
+    public final void showEditorButtons(final View view){
+        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+        
+        //add editor button
+        final Image editorbutton = new Image(spritesheet.findRegion("editor_button"));
+        editorbutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+40);
+        editorbutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+        editorbutton.addListener(
+            new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    WE.loadEditor(false);
+                    return true;
+               }
+            }
+        );
+        view.getStage().addActor(editorbutton);
+        
+        //add reverse editor button
+        final Image editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
+        editorreversebutton.setX(controller.getDevTools().getxPos()+controller.getDevTools().getWidth()+80);
+        editorreversebutton.setY(Gdx.graphics.getHeight()-controller.getDevTools().getyPos());
+        editorreversebutton.addListener(
+            new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    WE.loadEditor(true);
+                    return true;
+               }
+            }
+        );
+        view.getStage().addActor(editorreversebutton);
     }
 }

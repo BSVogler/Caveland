@@ -40,7 +40,7 @@ import java.io.File;
  */
 public class LoadMenu {
     private boolean open;
-    private final static int margin = 0;
+    private final static int margin = 100;
     
     public void render(View view) {
         ShapeRenderer sh = view.getShapeRenderer();
@@ -52,10 +52,7 @@ public class LoadMenu {
         File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
         for (final File fileEntry : wd.listFiles()) {
             if (fileEntry.isDirectory()) {
-                System.out.println(fileEntry.getName());
-                view.drawString(fileEntry.getName(), margin+50, margin+i*50, Color.WHITE.cpy());
-                view.drawString("asdasdasdasdasdasd", margin+50, margin+50+i*50, Color.RED.cpy());
-                view.drawText("rand", (int) (Math.random()*Gdx.graphics.getWidth()), (int) (Math.random()*Gdx.graphics.getHeight()), Color.BLUE.cpy());
+                view.drawString(fileEntry.getName(), margin+50, Gdx.graphics.getHeight()-margin-i*50, Color.WHITE.cpy());
                 i++;
                 //listFilesForFolder(fileEntry);
             } else {

@@ -178,19 +178,13 @@ public class View {
             Gdx.gl10.glClearColor(0.5f, 1, 0.5f, 1);
             Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
-        }else {
+        } else {
             for (Camera camera : cameras) {
                 camera.render(this, camera);
             }
         }
-        
-        //render load screen
-        if (controller.getLoadMenu().isOpen()){
-            controller.getLoadMenu().render(this);
-        }
-        
-        
-        //render HUD
+               
+        //render HUD and GUI
         {
             // hudCamera.zoom = 1/equalizationScale;
             hudCamera.update();
@@ -202,6 +196,14 @@ public class View {
             //set vieport of hud to cover whole window
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
+            //end of setup
+            
+            //render load screen
+            if (controller.getLoadMenu().isOpen()){
+                controller.getLoadMenu().render(this);
+            }
+            
+            
             controller.getDevTools().render(this);
 
             //render buttons

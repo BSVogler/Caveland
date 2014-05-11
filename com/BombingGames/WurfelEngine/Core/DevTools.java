@@ -204,7 +204,7 @@ public class DevTools {
                     xPos+width*data.length,
                     yPos-maxHeight+avg*3000
                 );
-                view.drawString("d: "+avg*1000, xPos, (int) (yPos-maxHeight+avg*3000),new Color(0, 0.3f, 0.8f, 0.7f));
+                view.drawString("d: "+Float.toString(avg*1000).substring(0, 5), xPos, (int) (yPos-maxHeight+avg*3000),new Color(0, 0.3f, 0.8f, 0.7f));
             }
             
            

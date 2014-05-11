@@ -36,10 +36,10 @@ public class Controller {
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");
-        if (devtools == null) devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
-        if (map==null) newMap();
+        if (Controller.devtools == null) devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
+        if (Controller.map==null) newMap();
         
-        if (WE.getCurrentConfig().useLightEngine()){
+        if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         }
         

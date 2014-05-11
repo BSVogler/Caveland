@@ -20,32 +20,24 @@ public class Controller {
     private static LightEngine lightEngine;
     private static Map map;
     private static boolean recalcRequested;
+    private static DevTools devtools;
     private boolean initalized= false;
+
     
-        
     private Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
     private AbstractCharacter player;  
     
-    private DevTools devtools;
     private LoadMenu loadMenu;
-    
-    /**
-     * Shoud be called before the objects get initialized.
-     * Initializes class fields.
-     */
-    public static void classInit(){
-        newMap();
-    }
-
     
     /**
      * This method works like a constructor. Everything is loaded here.
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");
-        devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
+        if (devtools == null) devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
+        if (map==null) newMap();
         
         if (WE.getCurrentConfig().useLightEngine()){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
@@ -60,7 +52,7 @@ public class Controller {
      * @param delta time since last call
      */
     public void update(float delta) {
-        devtools.update(delta);
+        if (devtools!=null) devtools.update(delta);
         
         //aply game world speed
         delta *= timespeed;

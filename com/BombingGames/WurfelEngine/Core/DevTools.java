@@ -45,10 +45,11 @@ import java.text.NumberFormat;
  * @author Benedikt Vogler
  */
 public class DevTools {
-    private final int[] data = new int[50];
+    public static final int width=2;
+    private final float[] data = new float[100];
+    private final int xPos, yPos, maxHeight;
     private float timeStepMin;
     private int field;//the current field number
-    private final int xPos, yPos, width, maxHeight;
     private boolean visible = true;
     private StringBuilder memoryText;
     private long freeMemory;
@@ -69,7 +70,6 @@ public class DevTools {
         this.controller = controller;
         this.xPos = xPos;
         this.yPos = yPos;
-        width = 4;
         maxHeight=150;   
     }
     
@@ -79,13 +79,13 @@ public class DevTools {
      */
     public void update(float delta){
         timeStepMin += delta;
-        if (timeStepMin>100){//update only every t ms
+        if (timeStepMin>50){//update only every t ms
             timeStepMin = 0;
             
             field++;//move to next field
             if (field >= data.length) field = 0; //start over           
             
-            data[field] = (int) (1/Gdx.graphics.getDeltaTime());//save fps
+            data[field] = Gdx.graphics.getDeltaTime();//save delta time
         }
         
         Runtime runtime = Runtime.getRuntime();
@@ -140,7 +140,7 @@ public class DevTools {
                 xPos+width*field,
                 yPos-maxHeight,
                 width,
-                data[field]
+                getSavedFPS(field)
             );
             
             //render RAM
@@ -175,12 +175,25 @@ public class DevTools {
             
             for (int i = 0; i < data.length-1; i++) { //render each field in memory
                 shr.setColor(new Color(0, 0, 1, 0.9f));
-                shr.line(xPos+width*i+width/2, yPos+data[i]-maxHeight, xPos+width*(i+1.5f), yPos+data[i+1]-maxHeight);
+                shr.line(
+                    xPos+width*i+width/2,
+                    yPos+getSavedFPS(i)-maxHeight,
+                    xPos+width*(i+1.5f),
+                    yPos+getSavedFPS(i+1)-maxHeight
+                );
             }
 
             //render average            
             shr.setColor(new Color(1, 0, 1, 0.8f));
-            shr.line(xPos, yPos-maxHeight+getAverage(), xPos+width*data.length, yPos+getAverage()-maxHeight);
+            float avg = getAverage();
+            if (avg>0) {
+                shr.line(
+                    xPos,
+                    yPos-maxHeight+1/avg,
+                    xPos+width*data.length,
+                    yPos-maxHeight+1/avg
+                );
+            }
 
             shr.end(); 
             
@@ -196,7 +209,10 @@ public class DevTools {
      * @see #getTimeStepMin() 
      */
     public int getSavedFPS(int pos){
-        return data[pos];
+        if (data[pos]==0)
+            return 0;
+        else
+            return (int) (1/data[pos]);
     }
 
     /**
@@ -208,11 +224,11 @@ public class DevTools {
     }
     
     /**
-     *Returns the average value.
+     *Returns the average delta time.
      * @return
      */
-    public int getAverage(){
-        int avg = 0;
+    public float getAverage(){
+        float avg = 0;
         int length = 0;
         for (float fps : data) {
             avg += fps;

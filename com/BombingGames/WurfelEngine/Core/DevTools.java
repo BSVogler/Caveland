@@ -293,42 +293,46 @@ public class DevTools {
     }
     
       /**
-     *Does only sth. if a button is null.
-     * @param view
+     *Adds the buttons to the satage if missing
+     * @param view The view which renders the buttons.
      */
     private void showEditorButtons(final View view){
         if (editorbutton==null && editorreversebutton==null){    
-        TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
-
-            //add editor button
-            editorbutton = new Image(spritesheet.findRegion("editor_button"));
-            editorbutton.setX(xPos+width+40);
-            editorbutton.setY(yPos);
-            editorbutton.addListener(
-                new ClickListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        WE.loadEditor(false);
-                        return true;
-                   }
-                }
-            );
-            view.getStage().addActor(editorbutton);
-
-            //add reverse editor button
-            editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-            editorreversebutton.setX(xPos+width+80);
-            editorreversebutton.setY(yPos);
-            editorreversebutton.addListener(
-                new ClickListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        WE.loadEditor(true);
-                        return true;
-                   }
-                }
-            );
-            view.getStage().addActor(editorreversebutton);
+            TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+            
+            if (editorbutton==null){
+                //add editor button
+                editorbutton = new Image(spritesheet.findRegion("editor_button"));
+                editorbutton.setX(xPos+width+40);
+                editorbutton.setY(yPos);
+                editorbutton.addListener(
+                    new ClickListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            WE.loadEditor(false);
+                            return true;
+                       }
+                    }
+                );
+            }
+            
+            if (editorreversebutton==null){
+                //add reverse editor button
+                editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
+                editorreversebutton.setX(xPos+width+80);
+                editorreversebutton.setY(yPos);
+                editorreversebutton.addListener(
+                    new ClickListener() {
+                        @Override
+                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                            WE.loadEditor(true);
+                            return true;
+                       }
+                    }
+                );
+            }
         }
+        view.getStage().addActor(editorbutton);
+        view.getStage().addActor(editorreversebutton);
     }
 }

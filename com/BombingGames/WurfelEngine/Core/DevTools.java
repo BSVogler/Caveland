@@ -120,7 +120,7 @@ public class DevTools {
             }
             
             //draw FPS-String
-            view.drawString("FPS:"+ Gdx.graphics.getFramesPerSecond(), 10, 10);
+            view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 10, 10);
             
             //draw diagramm
             ShapeRenderer shr = view.getShapeRenderer();

@@ -104,6 +104,14 @@ public class Configuration {
     public int getRenderResolutionWidth() {
         return 1920;
     }
+    
+   /**
+    * clearing the screen is ~5-10% slower than without.
+    * @return 
+    */
+    public boolean clearBeforeRendering(){
+        return true;
+    }
 
     /**
      *

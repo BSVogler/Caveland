@@ -167,9 +167,12 @@ public class View {
     public void render(){       
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-        //Gdx.gl10.glClearColor(0, 0, 0, 1);
-        //Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT); //clearing the screen is ~5-10% slower than without.
-        
+        //clear screen if wished
+        if (WE.getCurrentConfig().clearBeforeRendering()){
+            Gdx.gl10.glClearColor(0, 0, 0, 1);
+            Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        }
+
         //render every camera
         if (cameras.isEmpty()){
             Gdx.gl10.glClearColor(0.5f, 1, 0.5f, 1);

@@ -172,8 +172,8 @@ public class DevTools {
             shr.line(xPos, yPos-maxHeight+60, xPos+width*data.length, yPos-maxHeight+60);
             shr.line(xPos, yPos-maxHeight+120, xPos+width*data.length, yPos-maxHeight+120);
             
-            
-            for (int i = 0; i < data.length-1; i++) { //render each field in memory
+            //render each FPS field in memory
+            for (int i = 0; i < data.length-1; i++) {
                 shr.setColor(new Color(0, 0, 1, 0.9f));
                 shr.line(
                     xPos+width*i+width/2,
@@ -182,18 +182,32 @@ public class DevTools {
                     yPos+getSavedFPS(i+1)-maxHeight
                 );
             }
+            
+            //render average FPS         
 
-            //render average            
-            shr.setColor(new Color(1, 0, 1, 0.8f));
             float avg = getAverage();
             if (avg>0) {
+                //FPS
+               shr.setColor(new Color(1, 0, 1, 0.8f));
                 shr.line(
                     xPos,
                     yPos-maxHeight+1/avg,
                     xPos+width*data.length,
                     yPos-maxHeight+1/avg
                 );
+                
+                 //delta values
+                shr.setColor(new Color(0, 0.3f, 0.8f, 0.7f));
+                shr.line(
+                    xPos,
+                    yPos-maxHeight+avg*3000,
+                    xPos+width*data.length,
+                    yPos-maxHeight+avg*3000
+                );
+                view.drawString("d: "+avg*1000, xPos, (int) (yPos-maxHeight+avg*3000),new Color(0, 0.3f, 0.8f, 0.7f));
             }
+            
+           
 
             shr.end(); 
             

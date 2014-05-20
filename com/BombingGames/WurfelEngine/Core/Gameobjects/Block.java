@@ -53,11 +53,6 @@ public class Block extends AbstractGameObject {
     /**The id of the right side of a block.*/
     public static final byte RIGHTSIDE=2;
     
-    /**
-     *
-     */
-    public static final char CATEGORY = 'b';
-    
     /**Containts the names of the objects. index=id*/
     public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT];
     
@@ -238,12 +233,12 @@ public class Block extends AbstractGameObject {
         if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
         
         if (blocksprites[id][value][side] == null){ //load if not already loaded
-            AtlasRegion sprite = getSpritesheet().findRegion(CATEGORY+Integer.toString(id)+"-"+value+"-"+side);
+            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
                 
-                Gdx.app.debug("debug", CATEGORY+Integer.toString(id)+"-"+value +"-"+ side +" not found");
+                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side +" not found");
                 
-                sprite = getSpritesheet().findRegion(CATEGORY+"0-0-"+side);
+                sprite = getSpritesheet().findRegion("b0-0-"+side);
                 
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");
@@ -276,7 +271,7 @@ public class Block extends AbstractGameObject {
                 colorInt = getPixmap().getPixel(
                     texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()-SCREEN_DEPTH4);
             } else {
-                AtlasRegion texture = getSprite(CATEGORY, id, value);
+                AtlasRegion texture = getSprite('b', id, value);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
                     texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()-SCREEN_DEPTH2);
@@ -548,7 +543,7 @@ public class Block extends AbstractGameObject {
      */
     @Override
     public char getCategory() {
-        return CATEGORY;
+        return 'b';
     }
 
     @Override

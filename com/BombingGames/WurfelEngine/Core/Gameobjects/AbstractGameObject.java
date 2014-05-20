@@ -28,11 +28,11 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -258,7 +258,7 @@ public abstract class AbstractGameObject {
      * @param value the value of the object
      * @return 
      */
-    public static AtlasRegion getSprite(char category, int id, int value) {
+    public static AtlasRegion getSprite(final char category, final int id, final int value) {
         if (spritesheet == null) return null;
         if (sprites[category][id][value] == null){ //load if not already loaded
             AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);

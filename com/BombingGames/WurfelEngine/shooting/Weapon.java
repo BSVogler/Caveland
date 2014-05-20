@@ -47,7 +47,7 @@ public class Weapon {
     private final int id;
     private String name;
 
-    private AbstractCharacter character;//the char holding the weapon
+    private AbstractCharacter character;//the character holding the weapon
     
     //sound
     private Sound fire;

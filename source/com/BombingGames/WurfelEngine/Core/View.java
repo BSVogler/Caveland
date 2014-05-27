@@ -46,7 +46,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
@@ -103,6 +102,7 @@ public class View {
         //set up stage
         stage = new Stage();
         View.addInputProcessor(stage);
+        GameplayScreen.msgSystem().viewInit(this);
         
         //set up renderer
         hudCamera = new OrthographicCamera();

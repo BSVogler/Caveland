@@ -103,9 +103,19 @@ public class MsgSystem {
      */
     public MsgSystem(final int xPos, final int yPos) {
         Skin skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
-        textinput = new TextField("Enter your message here!", skin);
-        textinput.setBounds(xPos, yPos, 400, 50);
-        textinput.setBlinkTime(200);
+        textinput = new TextField("Click to enter text!", skin);
+        textinput.setBounds(xPos-200, yPos, 400, 50);
+        textinput.setBlinkTime(0.2f);
+        textinput.setCursorPosition(1);
+        textinput.setVisible(false);
+    }
+    
+    /**
+     * "Handshake" with the view rendering the scene. This will add the GUI to the stage.
+     * @param view the view managing the input and rendering it
+     */
+    public void viewInit(View view){
+        view.getStage().addActor(textinput);
     }
         
     /**
@@ -162,10 +172,6 @@ public class MsgSystem {
     public void render(final View view){  
         view.getBatch().begin();
         
-        if (active){
-            //view.drawString("MSG:"+input, xPos, yPos, Color.WHITE.cpy());
-            textinput.draw(view.getBatch(), 1);
-        }
         for (int i=0; i < messages.size(); i++){
             Msg msg = messages.get(i);
             Color color = Color.BLUE.cpy();
@@ -183,12 +189,13 @@ public class MsgSystem {
      * Tell the msg system if it should listen for input.
      * @param active If deactivating the input will be saved.
      */
-    public void show(final boolean active) {
-        if (active != this.active && !textinput.getText().isEmpty()) {
+    public void setActive(final boolean active) {
+        if (!active && !textinput.getText().isEmpty()) {
             add(textinput.getText());//add message to message list
             textinput.setText("");
         }
         this.active = active;
+        textinput.setVisible(active);
     }
     
     /**

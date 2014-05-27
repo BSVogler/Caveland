@@ -64,9 +64,10 @@ public class GameplayScreen implements Screen{
      */
     public GameplayScreen(final Controller controller, final View view, final Configuration config) {
         Gdx.app.log("GameplayScreen", "Initializing");
-        msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, 3*Gdx.graphics.getHeight()/4);
 
         Gdx.input.setInputProcessor(null);
+        
+        msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
         
         loadingController = new LoadingController(config);
 

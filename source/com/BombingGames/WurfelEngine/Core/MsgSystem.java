@@ -37,63 +37,64 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
 
 /**
- * A message is put into the MsgSystem. It contains the message, the sender and the importance.
- * @author Benedikt
- */
-class Msg {
-    private final String fmessage;
-    private String sender = "System";
-    private int importance = 1;
-    
-    
-    protected Msg(String pmessage, String psender, int imp) {
-        fmessage = pmessage;
-        sender = psender;
-        importance = imp;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public String getMessage(){
-        return fmessage;    
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public String getSender(){
-        return sender;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public int getImportance(){
-        return importance;
-    }
-  
-    /**
-     * Sets the importance
-     * @param imp
-     */
-    public void setImportance(final int imp){
-        if ((imp>=0) && (imp<=100))
-            importance = imp;    
-    }
-}
-
-/**
  *The message system can manage&show messages (Msg).
  * @author Benedikt
  */
-public class MsgSystem extends ArrayList<Msg> {
+public class MsgSystem {
     private int timelastupdate = 0;
-    private boolean acceptingInput = false;
+    private boolean active = false;
     private final TextField textinput;
+    private final ArrayList<Msg> messages = new ArrayList<Msg>(20);  
+    
+    /**
+     * A message is put into the MsgSystem. It contains the message, the sender and the importance.
+     * @author Benedikt
+     */
+    private class Msg {
+        private final String fmessage;
+        private String sender = "System";
+        private int importance = 1;
+
+
+        protected Msg(String pmessage, String psender, int imp) {
+            fmessage = pmessage;
+            sender = psender;
+            importance = imp;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public String getMessage(){
+            return fmessage;    
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public String getSender(){
+            return sender;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public int getImportance(){
+            return importance;
+        }
+
+        /**
+         * Sets the importance
+         * @param imp
+         */
+        public void setImportance(final int imp){
+            if ((imp>=0) && (imp<=100))
+                importance = imp;    
+        }
+    }
 
     /**
      * 
@@ -112,7 +113,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param message
      */
     public void add(final String message) {
-        add(new Msg(message, "System", 100));
+        messages.add(new Msg(message, "System", 100));
         Gdx.app.debug("System",message);
     }
     
@@ -122,7 +123,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param sender
      */
     public void add(final String message, final String sender){
-        add(new Msg(message, sender, 100));
+        messages.add(new Msg(message, sender, 100));
         Gdx.app.debug(sender,message);
     }
     
@@ -133,7 +134,7 @@ public class MsgSystem extends ArrayList<Msg> {
      * @param importance
      */
     public void add(final String message, final String sender, final int importance){
-        add(new Msg(message, sender, importance));
+        messages.add(new Msg(message, sender, importance));
         Gdx.app.debug(sender,message);
     }
     
@@ -147,11 +148,10 @@ public class MsgSystem extends ArrayList<Msg> {
        //derease importance every 30ms
        if (timelastupdate >= 30) {
             timelastupdate = 0;
-            for (int i=0; i < size(); i++) {
-                Msg temp = get(i);
-                if (temp.getImportance() > 0)
-                    temp.setImportance(temp.getImportance()-1); 
-            }
+           for (Msg m : messages) {
+               if (m.getImportance() > 0)
+                   m.setImportance(m.getImportance()-1);
+           }
         }
     }
     
@@ -162,12 +162,12 @@ public class MsgSystem extends ArrayList<Msg> {
     public void render(final View view){  
         view.getBatch().begin();
         
-        if (acceptingInput){
+        if (active){
             //view.drawString("MSG:"+input, xPos, yPos, Color.WHITE.cpy());
             textinput.draw(view.getBatch(), 1);
         }
-        for (int i=0; i < size(); i++){
-            Msg msg = get(i);
+        for (int i=0; i < messages.size(); i++){
+            Msg msg = messages.get(i);
             Color color = Color.BLUE.cpy();
             if ("System".equals(msg.getSender())) color = Color.GREEN.cpy();
                 else if ("Warning".equals(msg.getSender())) color = Color.RED.cpy();
@@ -181,22 +181,22 @@ public class MsgSystem extends ArrayList<Msg> {
 
     /**
      * Tell the msg system if it should listen for input.
-     * @param listen If deactivating the input will be saved.
+     * @param active If deactivating the input will be saved.
      */
-    public void listenForInput(final boolean listen) {
-        if (listen != acceptingInput && !textinput.getText().isEmpty()) {
+    public void show(final boolean active) {
+        if (active != this.active && !textinput.getText().isEmpty()) {
             add(textinput.getText());//add message to message list
             textinput.setText("");
         }
-        acceptingInput = listen;
+        this.active = active;
     }
     
     /**
      * 
      * @return
      */
-    public boolean isListeningForInput() {
-        return acceptingInput;
+    public boolean isActive() {
+        return active;
     }
     
     /**
@@ -218,9 +218,9 @@ public class MsgSystem extends ArrayList<Msg> {
      */
     public String getLastMessage(final String sender){
         Msg result = null;
-        int i = size()-1;
-        while (!get(i).getSender().equals(sender) && i>0) {
-            result = get(i);
+        int i = messages.size()-1;
+        while (!messages.get(i).getSender().equals(sender) && i>0) {
+            result = messages.get(i);
             i--;
         }
         return (result != null ? result.getMessage() : null);

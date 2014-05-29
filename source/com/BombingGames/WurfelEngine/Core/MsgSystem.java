@@ -53,32 +53,18 @@ public class MsgSystem {
      * @author Benedikt
      */
     private class Msg {
-        private final String fmessage;
+        private final String message;
         private String sender = "System";
         private int importance = 1;
 
 
         protected Msg(String pmessage, String psender, int imp) {
-            fmessage = pmessage;
+            message = pmessage;
             sender = psender;
             importance = imp;
         }
 
-        /**
-         * 
-         * @return
-         */
-        public String getMessage(){
-            return fmessage;    
-        }
-
-        /**
-         * 
-         * @return
-         */
-        public String getSender(){
-            return sender;
-        }
+      
 
         /**
          * 
@@ -175,15 +161,16 @@ public class MsgSystem {
     public void render(final View view){  
         view.getBatch().begin();
         
-        for (int i=0; i < messages.size(); i++){
-            Msg msg = messages.get(i);
+        int y=0;
+        for (Msg msg : messages) {
             Color color = Color.BLUE.cpy();
-            if ("System".equals(msg.getSender())) color = Color.GREEN.cpy();
-                else if ("Warning".equals(msg.getSender())) color = Color.RED.cpy();
+            if ("System".equals(msg.sender)) color = Color.GREEN.cpy();
+                else if ("Warning".equals(msg.sender)) color = Color.RED.cpy();
             
             //draw
             view.getFont().setColor(color);
-            view.getFont().draw(view.getBatch(), msg.getMessage(), 10,50+i*20);
+            view.getFont().draw(view.getBatch(), msg.sender+": "+msg.message, 10,50+y);
+            y+=20;
         }
          view.getBatch().end();
     }
@@ -194,7 +181,7 @@ public class MsgSystem {
      */
     public void setActive(final boolean active) {
         if (!active && !textinput.getText().isEmpty()) {
-            add(textinput.getText());//add message to message list
+            add(textinput.getText(), "Console");//add message to message list
             textinput.setText("");
         }
         this.active = active;
@@ -212,26 +199,25 @@ public class MsgSystem {
     }
     
     /**
-     * 
-     * @return 
+     * Returns the last Message
+     * @return  if there exist no last message it returns an empty string
      */
     public String getLastMessage(){
-        return messages.get(messages.size()-1).getMessage();
+        String tmp = messages.get(messages.size()-1).message;
+        return tmp!=null ? tmp : "";
     }
     
     /**
      * Returns the last Message
      * @param sender filter by the sender, e.g. if you want the last message of a specific player
-     * @return if there exist no last message of the filter type returns null
+     * @return if there exist no last message it returns an empty string
      */
     public String getLastMessage(final String sender){
-        Msg result = null;
         int i = messages.size()-1;
-        while (!messages.get(i).getSender().equals(sender) && i>0) {
-            result = messages.get(i);
+        while (i>=0 && !messages.get(i).sender.equals(sender)) {
             i--;
         }
-        return (result != null ? result.getMessage() : null);
+        return i>=0 ? messages.get(i).message : "";
     }
     
     public void setText(String text){

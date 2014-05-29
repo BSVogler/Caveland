@@ -163,7 +163,7 @@ public class View {
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
         
         if (GameplayScreen.msgSystem().isActive() && Gdx.input.isKeyPressed(Keys.UP))
-            GameplayScreen.msgSystem().setText(GameplayScreen.msgSystem().getLastMessage());
+            GameplayScreen.msgSystem().setText(GameplayScreen.msgSystem().getLastMessage("Console"));
     }
     
     /**

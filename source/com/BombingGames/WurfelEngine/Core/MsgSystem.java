@@ -210,7 +210,15 @@ public class MsgSystem {
     public boolean isActive() {
         return active;
     }
-        
+    
+    /**
+     * 
+     * @return 
+     */
+    public String getLastMessage(){
+        return messages.get(messages.size()-1).getMessage();
+    }
+    
     /**
      * Returns the last Message
      * @param sender filter by the sender, e.g. if you want the last message of a specific player
@@ -224,5 +232,10 @@ public class MsgSystem {
             i--;
         }
         return (result != null ? result.getMessage() : null);
+    }
+    
+    public void setText(String text){
+        textinput.setText(text);
+        textinput.setCursorPosition(textinput.getText().length());
     }
 }

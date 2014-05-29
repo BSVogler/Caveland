@@ -210,19 +210,7 @@ public class MsgSystem {
     public boolean isActive() {
         return active;
     }
-    
-    /**
-     *Add a key to the textbox.
-     * @param characterInput
-     */
-    public void addInput(final char characterInput){
-        textinput.setText(textinput.getText()+Character.toString(characterInput));
-//        if (characterInput =='\b')//if backspace remove a letter
-//            input = input.substring(0, input.length()-1);
-//        else
-//            input += String.valueOf(characterInput);
-    }
-    
+        
     /**
      * Returns the last Message
      * @param sender filter by the sender, e.g. if you want the last message of a specific player

@@ -238,6 +238,12 @@ public class MsgSystem {
         }else if (command.equals("lightengine")){ 
             Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
             return true;
+        }else if (command.equals("quit")){ 
+            Gdx.app.exit();
+            return true;
+        } else if (command.equals("menu")){ 
+            WE.showMainMenu();
+            return true;
         }
         return false;    
     }

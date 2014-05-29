@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Configuration;
+import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;

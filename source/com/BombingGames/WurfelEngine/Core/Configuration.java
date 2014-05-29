@@ -29,10 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine;
+package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 

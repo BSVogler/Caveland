@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Loading;
 
-import com.BombingGames.WurfelEngine.Configuration;
+import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

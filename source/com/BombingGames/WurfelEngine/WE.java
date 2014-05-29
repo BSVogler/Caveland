@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine;
 
+import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Controller;

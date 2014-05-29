@@ -173,9 +173,9 @@ public class GameplayScreen implements Screen{
     public MapEditorController getEditorController() {
         if (editorController==null){
             editorController = new MapEditorController(
-                   view,
-                   controller
-               );
+                view,
+                controller
+            );
         }
         return editorController;
     }

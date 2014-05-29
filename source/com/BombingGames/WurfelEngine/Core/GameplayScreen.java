@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Loading.LoadingController;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;

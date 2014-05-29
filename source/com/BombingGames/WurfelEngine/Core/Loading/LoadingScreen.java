@@ -4,12 +4,16 @@
 
 package com.BombingGames.WurfelEngine.Core.Loading;
 
+import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -31,15 +35,40 @@ public class LoadingScreen implements Screen {
     private float startX, endX;
 
     private Actor loadingBar;
+    private float percent;
     
-    private final LoadingController controller;
+    private final Configuration config;
 
     /**
      *
-     * @param controller
+     * @param config
      */
-    public LoadingScreen(LoadingController controller) {
-        this.controller = controller;
+    public LoadingScreen(final Configuration config) {
+        Gdx.app.log("LoadingScreen", "Initializing");
+        AssetManager manager = WE.getAssetManager();
+                
+        // Tell the manager to load assets for the loading screen
+        manager.load("com/BombingGames/WurfelEngine/Core/Loading/loading.pack",TextureAtlas.class);
+        // Wait until they are finished loading
+        manager.finishLoading();
+        
+        // Add everything to be loaded, for instance:
+        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+        manager.load(config.getSpritesheetPath()+".txt", TextureAtlas.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
+        
+       // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg", Sound.class);
+        //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
+        
+        //load files from config
+        config.initLoadingQueque(manager);
+        this.config = config;
     }
 
     
@@ -113,15 +142,21 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-         controller.update();
+        if (WE.getAssetManager().update()) { // Load some, will return true if done loading 
+            Gdx.app.log("Loading", "finished");
+            WE.startGame();
+        }
+
+        // Interpolate the percentage to make it more smooth
+        percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.1f);
         
         // Clear the screen
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         // Update positions (and size) to match the percentage
-        loadingBarHidden.setX(startX + endX * controller.getPercent());
+        loadingBarHidden.setX(startX + endX * percent);
         loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setWidth(450 - 450 * controller.getPercent());
+        loadingBg.setWidth(450 - 450 * percent);
         loadingBg.invalidate();
 
         // Show the loading screen
@@ -145,5 +180,6 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void dispose() {
+        WE.getAssetManager().unload(config.getSpritesheetPath()+".txt");
     }
 }

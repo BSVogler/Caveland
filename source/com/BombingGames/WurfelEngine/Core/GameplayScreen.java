@@ -52,7 +52,6 @@ public class GameplayScreen implements Screen{
     private Controller controller = null;
     private MapEditorController editorController;
     private MapEditorView editorView;
-    private final LoadingController loadingController;
     private final Configuration config;
     
     /**
@@ -66,11 +65,9 @@ public class GameplayScreen implements Screen{
 
         Gdx.input.setInputProcessor(null);
         
-        msgSystem = new MsgSystem(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        msgSystem = new MsgSystem(this, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
         
-        loadingController = new LoadingController(config);
-
-        WE.getInstance().setScreen(new LoadingScreen(loadingController));
+        WE.getInstance().setScreen(new LoadingScreen(config));
         
         this.controller = controller;
         this.view = view;
@@ -158,7 +155,6 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void dispose() {
-        loadingController.dispose(config);
         Controller.disposeClass();
     }
 

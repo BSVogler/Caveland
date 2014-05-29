@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class MsgSystem {
     private int timelastupdate = 0;
     private Stage stage;
-    private Controller ctrl;
+    private final GameplayScreen gameplay;
     private boolean active = false;
     private final TextField textinput;
     private final ArrayList<Msg> messages = new ArrayList<Msg>(20);  
@@ -88,10 +88,12 @@ public class MsgSystem {
 
     /**
      * 
+     * @param gameplay
      * @param xPos
      * @param yPos
      */
-    public MsgSystem(final int xPos, final int yPos) {
+    public MsgSystem(final GameplayScreen gameplay, final int xPos, final int yPos) {
+        this.gameplay = gameplay;
         Skin skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);

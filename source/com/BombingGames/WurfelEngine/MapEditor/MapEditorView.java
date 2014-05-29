@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
@@ -172,14 +173,16 @@ public class MapEditorView extends View {
             speed = 1600;
         else speed = 800;
         
-        if (input.isKeyPressed(Input.Keys.W))
-            camera.move(0, (int) (-delta*speed));
-        if (input.isKeyPressed(Input.Keys.S))
-            camera.move(0, (int) (delta*speed));
-        if (input.isKeyPressed(Input.Keys.A))
-            camera.move((int) -(delta*speed*1.414),0);
-        if (input.isKeyPressed(Input.Keys.D))
-            camera.move((int) (delta*speed*1.414),0);
+        if (!GameplayScreen.msgSystem().isActive()){
+            if (input.isKeyPressed(Input.Keys.W))
+                camera.move(0, (int) (-delta*speed));
+            if (input.isKeyPressed(Input.Keys.S))
+                camera.move(0, (int) (delta*speed));
+            if (input.isKeyPressed(Input.Keys.A))
+                camera.move((int) -(delta*speed*1.414),0);
+            if (input.isKeyPressed(Input.Keys.D))
+                camera.move((int) (delta*speed*1.414),0);
+        }
     }
 
     

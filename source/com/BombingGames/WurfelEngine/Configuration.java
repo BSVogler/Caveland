@@ -32,6 +32,8 @@
 package com.BombingGames.WurfelEngine;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 
 
@@ -184,5 +186,9 @@ public class Configuration {
      */
     public void initLoadingQueque(AssetManager manager){
         
+    }
+    
+    public int getConsoleKey(){
+        return Keys.ENTER;
     }
 }

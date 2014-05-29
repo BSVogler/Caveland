@@ -31,36 +31,17 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 
 /**
  *A simple Controller which adds a camera.
  * @author Benedikt Vogler
  */
 public class GameViewWithCamera extends View {
-    private boolean keyEnterIsUp;
     
     @Override
     public void init(Controller controller) {
         super.init(controller);
         addCamera(new Camera());
     }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
-        
-        if (keyEnterIsUp && Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            GameplayScreen.msgSystem().setActive(!GameplayScreen.msgSystem().isActive());
-            keyEnterIsUp = false;
-        }
-        keyEnterIsUp = !Gdx.input.isKeyPressed(Input.Keys.ENTER);
-
-        
-    }
-    
-    
 }

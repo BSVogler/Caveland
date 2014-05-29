@@ -68,6 +68,7 @@ public class View {
     
     private OrthographicCamera hudCamera;
     private boolean keyF5isUp;
+    private boolean keyConsoleIsUp;
     
     private Stage stage;
     
@@ -155,12 +156,19 @@ public class View {
             camera.update();
         }
         
-        //you can toggle the dev menu
+        // toggle the dev menu?
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
             controller.getDevTools().setVisible(!controller.getDevTools().isVisible());
             keyF5isUp = false;
         }
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
+        
+        //open close console/chat box
+        if (keyConsoleIsUp && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
+            GameplayScreen.msgSystem().setActive(!GameplayScreen.msgSystem().isActive());
+            keyConsoleIsUp = false;
+        }
+        keyConsoleIsUp = !Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
         
         if (GameplayScreen.msgSystem().isActive() && Gdx.input.isKeyPressed(Keys.UP))
             GameplayScreen.msgSystem().setText(GameplayScreen.msgSystem().getLastMessage("Console"));

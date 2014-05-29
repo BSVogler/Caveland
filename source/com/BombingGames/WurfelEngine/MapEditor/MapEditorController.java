@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,22 +119,6 @@ public class MapEditorController extends Controller {
         
         Camera.setZRenderingLimit(currentLayer);
     }
-
-     /**
-     * Get the class which sould be used when playing the game.
-     * @return 
-     */
-    public Controller getGameplayController() {
-        return gameplayController;
-    }
-
-    /**
-     * Get the class which sould be used when playing the game.
-     * @return 
-     */
-    public View getGameplayView() {
-        return gameplayView;
-    }
     
     @Override
     public void exit(){
@@ -151,5 +136,17 @@ public class MapEditorController extends Controller {
      */
     public void setReverseMap(boolean reverseMap) {
         this.reverseMap = reverseMap;
+    }
+    
+    /**
+     * Leave editor
+     * @param replay true when everything should be reloaded, else just a switch to last status
+     */
+    public void switchToGame(boolean replay){
+            if (replay)
+                WE.switchSetupWithInit(gameplayController, gameplayView);
+            else
+                WE.switchSetup(gameplayController, gameplayView);
+    
     }
 }

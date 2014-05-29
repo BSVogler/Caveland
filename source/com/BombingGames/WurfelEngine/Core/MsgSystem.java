@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
  */
 public class MsgSystem {
     private int timelastupdate = 0;
+    private Stage stage;
     private boolean active = false;
     private final TextField textinput;
     private final ArrayList<Msg> messages = new ArrayList<Msg>(20);  
@@ -115,7 +117,8 @@ public class MsgSystem {
      * @param view the view managing the input and rendering it
      */
     public void viewInit(View view){
-        view.getStage().addActor(textinput);
+        stage = view.getStage();
+        stage.addActor(textinput);
     }
         
     /**
@@ -196,6 +199,8 @@ public class MsgSystem {
         }
         this.active = active;
         textinput.setVisible(active);
+        if (active && stage!=null)
+            stage.setKeyboardFocus(textinput);
     }
     
     /**

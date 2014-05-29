@@ -234,7 +234,7 @@ public class MsgSystem {
             WE.loadEditor(true);
             return true;
         }else if (command.equals("lightengine")){ 
-            Controller.getLightengine().RenderData(!Controller.getLightengine().isRenderingData());
+            Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
             return true;
         }
         return false;    

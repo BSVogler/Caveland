@@ -247,7 +247,7 @@ public class LightEngine {
      *Should diagrams be rendered showing the data of the LE.
      * @param render
      */
-    public void RenderData(boolean render) {
+    public void renderData(boolean render) {
         this.renderData = render;
     }
     

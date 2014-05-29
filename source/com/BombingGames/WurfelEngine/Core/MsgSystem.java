@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 public class MsgSystem {
     private int timelastupdate = 0;
     private Stage stage;
+    private Controller ctrl;
     private boolean active = false;
     private final TextField textinput;
     private final ArrayList<Msg> messages = new ArrayList<Msg>(20);  
@@ -182,6 +184,8 @@ public class MsgSystem {
     public void setActive(final boolean active) {
         if (!active && !textinput.getText().isEmpty()) {
             add(textinput.getText(), "Console");//add message to message list
+            if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))
+                add("Failed executing command.", "System");    
             textinput.setText("");
         }
         this.active = active;
@@ -223,5 +227,16 @@ public class MsgSystem {
     public void setText(String text){
         textinput.setText(text);
         textinput.setCursorPosition(textinput.getText().length());
+    }
+    
+    public boolean executeCommand(String command){
+        if (command.equals("editor")){
+            WE.loadEditor(true);
+            return true;
+        }else if (command.equals("lightengine")){ 
+            Controller.getLightengine().RenderData(!Controller.getLightengine().isRenderingData());
+            return true;
+        }
+        return false;    
     }
 }

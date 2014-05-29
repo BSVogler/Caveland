@@ -105,10 +105,10 @@ public class MsgSystem {
      */
     public MsgSystem(final int xPos, final int yPos) {
         Skin skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
-        textinput = new TextField("Click to enter text!", skin);
+        textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
-        textinput.setCursorPosition(1);
+        textinput.setCursorPosition(0);
         textinput.setVisible(false);
     }
     

@@ -123,6 +123,7 @@ public class MapEditorView extends View {
         super.render();
         stage.draw();
         
+        //draw layer navigation  on right side
         ShapeRenderer sh = getShapeRenderer();
         Gdx.gl.glEnable(GL10.GL_BLEND);
         Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);

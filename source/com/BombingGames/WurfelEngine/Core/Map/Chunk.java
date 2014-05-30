@@ -296,9 +296,9 @@ public class Chunk {
                             }
 
                             data[x][y][z] = new Cell(
-                                        Integer.parseInt(line.substring(0,posdots)),
-                                        Integer.parseInt(line.substring(posdots+1, posend)),
-                                        new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, z, true)
+                                Integer.parseInt(line.substring(0,posdots)),
+                                Integer.parseInt(line.substring(posdots+1, posend)),
+                                new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, z, true)
                             );
                             x++;
                             line.delete(0,posend+1);
@@ -327,8 +327,8 @@ public class Chunk {
     public static void readMapInfo(){
         BufferedReader bufRead;
         try {
-            FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-            //File path = new File(WurfelEngine.getWorkingDirectory().getAbsolutePath() + "/map/map."+METAFILESUFFIX);
+            //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
+            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/map/map."+METAFILESUFFIX);
             Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
             bufRead =  path.reader(1024);
             String mapname = bufRead.readLine();

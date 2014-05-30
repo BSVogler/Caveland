@@ -136,23 +136,23 @@ public class LightEngine {
 
         
         I_spec1 = (float) (
-                            sunlightBrightness
-                            * k_specular
-                            * Math.pow(
-                                Math.sin(sun.getHeight()*Math.PI/180)*Math.sin(sun.getAzimuth()*Math.PI/180)/ Math.sqrt(2)//y
-                              + Math.sin((sun.getHeight()-90)*Math.PI/180)/ Math.sqrt(2)//z
-                            ,n_spec)
-                            *(n_spec+2)/(2*Math.PI)
-                        );
-         I_spec1 +=(float) (
-                        moonlightBrightness
-                        * k_specular
-                        * Math.pow(
-                            Math.sin((moon.getHeight())*Math.PI/180)*Math.sin((moon.getAzimuth())*Math.PI/180)/Math.sqrt(2)//y
-                          + Math.sin((moon.getHeight()-90)*Math.PI/180)/Math.sqrt(2)//z
-                        ,n_spec)
-                        *(n_spec+2)/(2*Math.PI)
-                        );
+            sunlightBrightness
+            * k_specular
+            * Math.pow(
+                Math.sin(sun.getHeight()*Math.PI/180)*Math.sin(sun.getAzimuth()*Math.PI/180)/ Math.sqrt(2)//y
+              + Math.sin((sun.getHeight()-90)*Math.PI/180)/ Math.sqrt(2)//z
+            ,n_spec)
+            *(n_spec+2)/(2*Math.PI)
+        );
+        I_spec1 +=(float) (
+            moonlightBrightness
+            * k_specular
+            * Math.pow(
+                Math.sin((moon.getHeight())*Math.PI/180)*Math.sin((moon.getAzimuth())*Math.PI/180)/Math.sqrt(2)//y
+              + Math.sin((moon.getHeight()-90)*Math.PI/180)/Math.sqrt(2)//z
+            ,n_spec)
+            *(n_spec+2)/(2*Math.PI)
+        );
          
       //it is impossible to get specular light with a GlobalLightSource over the horizon on side 0 and 2. Just left in case it someday may help somebody.
         //        I_spec2 =(int) (

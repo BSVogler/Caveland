@@ -244,7 +244,15 @@ public class MsgSystem {
         } else if (command.equals("menu")){ 
             WE.showMainMenu();
             return true;
+        } else if (command.startsWith("gamespeed")){ 
+            try {
+                gameplay.getController().setTimespeed(Float.parseFloat(command.substring(10)));
+                return true;
+            } catch(NumberFormatException e) {
+                add("Tried using value: "+command.substring(10)+". Please enter float value in format like \"0.5\" ", "Warning");
+            }
         }
+        
         return false;    
     }
 }

@@ -70,9 +70,9 @@ public class Chunk {
     /**
     *Creates a chunk.
     * @param pos the position of the chunk. Value between 0-8
-    * @param coordX 
-    * @param coordY 
-    * @param newMap load from HD(true) or generate new (false)?
+    * @param coordX the chunk coordinate
+    * @param coordY the chunk coordinate
+    * @param newMap load from HD(false) or generate new (true)?
     */
     public Chunk(final int pos, final int coordX, final int coordY, final boolean newMap){
         this();

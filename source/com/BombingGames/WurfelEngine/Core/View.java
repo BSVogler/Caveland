@@ -124,7 +124,7 @@ public class View {
     public static void addInputProcessor(final InputProcessor processor){
         if (Gdx.input.getInputProcessor() == null){
             Gdx.input.setInputProcessor(processor);
-        }else{
+        }else{//use multiplexer if more than one input processor
             InputMultiplexer inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
             inputMultiplexer.addProcessor(processor);
             Gdx.input.setInputProcessor(inputMultiplexer);

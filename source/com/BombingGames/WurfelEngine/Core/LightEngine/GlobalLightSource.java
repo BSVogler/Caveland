@@ -86,7 +86,7 @@ public class GlobalLightSource {
 
     /**
      *
-     * @return
+     * @return in degrees 0-360°
      */
     public float getAzimuth() {
         return azimuth;
@@ -110,7 +110,7 @@ public class GlobalLightSource {
 
     /**
      *The Latitude posiiton. 
-     * @param height
+     * @param height in degrees 0-360°
      */
     public void setHeight(final float height) {
         if (height >= 360) {
@@ -120,7 +120,7 @@ public class GlobalLightSource {
 
     /**
      *The longitudinal position
-     * @param azimuth
+     * @param azimuth in degrees 0-360°
      */
     public void setAzimuth(final float azimuth) {
         if (azimuth >= 360) {

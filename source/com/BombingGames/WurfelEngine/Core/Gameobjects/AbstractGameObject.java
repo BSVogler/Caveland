@@ -457,7 +457,8 @@ public abstract class AbstractGameObject {
      *
      */
     public static void staticDispose(){
-        spritesheet.dispose();
+        spritesheet.dispose();//is this line needed?
+        WE.getAssetManager().unload(WE.getCurrentConfig().getSpritesheetPath()+".txt");
         spritesheet = null;
         sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];
         //pixmap.dispose();

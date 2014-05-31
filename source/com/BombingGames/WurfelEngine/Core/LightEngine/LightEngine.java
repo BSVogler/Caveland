@@ -41,14 +41,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 /**
  *This Light engine calculates phong shading for three normals over the day.
  * @author Benedikt Vogler
- * @version 1.1.2
+ * @version 1.1.3
  * @since  WE1.1
  */
 public class LightEngine {
     /**
      * The Version of the light engine.
      */
-    public static final String Version = "1.1.2";
+    public static final String Version = "1.1.3";
     
     private boolean renderData = false;
     //diagramm data

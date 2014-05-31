@@ -53,7 +53,7 @@ public class LightEngine {
     private boolean renderData = false;
     //diagramm data
     private int posX = 250;
-    private int posY = 250;
+    private int posY = Gdx.graphics.getHeight()-250;
     private final int size = 500;
     
     //ambient light
@@ -86,8 +86,8 @@ public class LightEngine {
 
     /**
      *
-     * @param xPos the x position of the diagrams position
-     * @param yPos the y position of the diagrams position 
+     * @param xPos the x position of the diagrams position (center)
+     * @param yPos the y position of the diagrams position (center) 
      */
     public LightEngine(int xPos, int yPos) {
         this();
@@ -275,42 +275,35 @@ public class LightEngine {
             shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.circle(posX, posY, size);
-            shapeRenderer.end();
+
             
             //cut through
-            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.translate(posX, posY, 0);
             shapeRenderer.scale(1f, (0.5f), 1f);
             shapeRenderer.circle(0, 0, size);
-            shapeRenderer.end();
             shapeRenderer.scale(1f, (2), 1f);
             shapeRenderer.translate(-posX, -posY, 0);
             
             //perfect/correct line
             shapeRenderer.setColor(Color.ORANGE);
             if ((sun.getMaxAngle()/90f-0.5f) != 0) {
-                shapeRenderer.begin(ShapeType.Line);
                 shapeRenderer.translate(posX, posY, 0);
-                                shapeRenderer.rotate(0, 0, 1, Controller.getMap().getWorldSpinDirection());
+                shapeRenderer.rotate(0, 0, 1, -Controller.getMap().getWorldSpinDirection());
                 shapeRenderer.scale(1f, (sun.getMaxAngle()/90f-0.5f), 1f);
                 shapeRenderer.circle(0, 0, size);
-                shapeRenderer.end();
                 shapeRenderer.scale(1f, (1/(sun.getMaxAngle()/90f-0.5f)), 1f);
-                shapeRenderer.rotate(0, 0, 1, -Controller.getMap().getWorldSpinDirection());
+                shapeRenderer.rotate(0, 0, 1, +Controller.getMap().getWorldSpinDirection());
                 shapeRenderer.translate(-posX, -posY, 0);
             } else {
-                shapeRenderer.begin(ShapeType.Line);
                 shapeRenderer.line(posX-size, posY, posX+size, posY);
-                shapeRenderer.end();
             }
             
             //sun position
             //longitude
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.begin(ShapeType.Line);
             shapeRenderer.line(
                 posX +(int) (size* Math.sin((sun.getAzimuth()-90)*Math.PI/180)),
-                posY +(int) (size/2*Math.cos((sun.getAzimuth()-90)*Math.PI/180)),
+                posY -(int) (size/2*Math.cos((sun.getAzimuth()-90)*Math.PI/180)),
                 posX,
                 posY
             );
@@ -319,7 +312,7 @@ public class LightEngine {
             shapeRenderer.setColor(Color.MAGENTA);
             shapeRenderer.line(
                 posX +(int) (size * Math.sin((sun.getHeight()-90)*Math.PI/180)),
-                posY -(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
+                posY +(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
                 posX,
                 posY
             );
@@ -328,7 +321,7 @@ public class LightEngine {
             shapeRenderer.setColor(Color.YELLOW);
             shapeRenderer.line(
                 posX +(int) ( size*Math.sin((sun.getAzimuth()+90)*Math.PI/180) * Math.sin((sun.getHeight()-90)*Math.PI/180) ),
-                posY -(int) ( size/2*Math.sin((sun.getAzimuth())*Math.PI/180) * Math.sin((sun.getHeight()-90)*Math.PI/180)) -(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
+                posY +(int) ( size/2*Math.sin((sun.getAzimuth())*Math.PI/180) * Math.sin((sun.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
                 posX,
                 posY
              );
@@ -336,51 +329,55 @@ public class LightEngine {
             shapeRenderer.setColor(Color.BLUE);
             shapeRenderer.line(
                 posX +(int) ( size*Math.sin((moon.getAzimuth()+90)*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180) ),
-                posY -(int) ( size/2*Math.sin((moon.getAzimuth())*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180)) -(int) (size/2*Math.sin((moon.getHeight())*Math.PI/180)),
+                posY +(int) ( size/2*Math.sin((moon.getAzimuth())*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((moon.getHeight())*Math.PI/180)),
                 posX,
                 posY
              );
              shapeRenderer.end();
 
-            view.drawString("Lat: "+sun.getHeight(), 600, 110, Color.WHITE);
-            view.drawString("Long: "+sun.getAzimuth(), 600, 100, Color.WHITE);
-            view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, 120, Color.WHITE);
-            view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, 130, Color.WHITE);
-            view.drawString("LightColor: "+getGlobalLight().toString(), 600, 140, Color.WHITE);
+            int y = Gdx.graphics.getHeight()-150;
+            view.drawString("Lat: "+sun.getHeight(), 600, y, Color.WHITE);
+            view.drawString("Long: "+sun.getAzimuth(), 600, y+=10, Color.WHITE);
+            view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, y+=10, Color.WHITE);
+            view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
+            view.drawString("LightColor: "+getGlobalLight().toString(), 600, y+=10, Color.WHITE);
             shapeRenderer.begin(ShapeType.Filled);
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rect(600, 160, 70, 70);
+            shapeRenderer.rect(600, y+=10, 70, 70);
             shapeRenderer.setColor(getGlobalLight());
-            shapeRenderer.rect(610, 170, 50, 50);
+            shapeRenderer.rect(610, y+=10, 50, 50);
 
              //info bars
             
             //left side
-            view.drawText(I_ambient+"\n+"+I_diff0+"\n+"+ I_spec0+"\n="+I_0, (int) (I_0*size), 100, Color.WHITE);
+            y = Gdx.graphics.getHeight()-100;
+            view.drawText(I_ambient+"\n+"+I_diff0+"\n+"+ I_spec0+"\n="+I_0, (int) (I_0*size), y, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.rect(0, 100, I_ambient*size, 10);
+            shapeRenderer.rect(0, y, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(I_ambient*size, 100, I_diff0*size, 8);
+            shapeRenderer.rect(I_ambient*size, y, I_diff0*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.rect((I_ambient+I_diff0)*size, 100, I_spec0*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff0)*size, y, I_spec0*size, 6);
 
             //top side
-            view.drawText(I_ambient+"\n+"+I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), 180, Color.WHITE);
+            y = Gdx.graphics.getHeight()-180;
+            view.drawText(I_ambient+"\n+"+I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), y, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.rect(0, 180, I_ambient*size, 10);
+            shapeRenderer.rect(0, y, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(I_ambient*size, 180, I_diff1*size, 8);
+            shapeRenderer.rect(I_ambient*size, y, I_diff1*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.rect((I_ambient+I_diff1)*size, 180, I_spec1*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff1)*size, y, I_spec1*size, 6);
 
             //right side
-            view.drawText(I_ambient+"\n+"+I_diff2+"\n+"+ I_spec2+"\n="+I_2, (int) (I_2*size), 260, Color.WHITE);
+            y = Gdx.graphics.getHeight()-260;
+            view.drawText(I_ambient+"\n+"+I_diff2+"\n+"+ I_spec2+"\n="+I_2, (int) (I_2*size), y, Color.WHITE);
             shapeRenderer.setColor(Color.GREEN);
-            shapeRenderer.rect(0, 260, I_ambient*size, 10);
+            shapeRenderer.rect(0, y, I_ambient*size, 10);
             shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(I_ambient*size, 260, I_diff2*size, 8);
+            shapeRenderer.rect(I_ambient*size, y, I_diff2*size, 8);
             shapeRenderer.setColor(Color.BLUE);
-            shapeRenderer.rect((I_ambient+I_diff2)*size, 260, I_spec2*size, 6);
+            shapeRenderer.rect((I_ambient+I_diff2)*size, y, I_spec2*size, 6);
             
             shapeRenderer.end();
         }

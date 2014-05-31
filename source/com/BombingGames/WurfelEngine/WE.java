@@ -177,12 +177,12 @@ public class WE extends Game {
      */
     public static void initGame(final Controller controller, final View view, final Configuration config){
         if (instance != null) {
-            Gdx.app.log("Wurfel Engine", "Initializing game…");
-            Gdx.app.log("Wurfel Engine", "Using Controller:" + controller.toString());
+            Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
             
-            if (gameplayScreen != null) gameplayScreen.dispose();//remove gameplayscreen if it already exists
+            if (gameplayScreen != null)
+                gameplayScreen.dispose();//remove gameplayscreen if it already exists
             gameplayScreen = new GameplayScreen(
                 controller,
                 view,

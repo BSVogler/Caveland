@@ -188,8 +188,8 @@ public class MsgSystem {
             add(textinput.getText(), "Console");//add message to message list
             if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))
                 add("Failed executing command.", "System");    
-            textinput.setText("");
         }
+        if (active && this.active!=active) textinput.setText("");//clear if openend
         this.active = active;
         textinput.setVisible(active);
         if (active && stage!=null)

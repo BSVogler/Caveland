@@ -610,9 +610,10 @@ public class Map implements Cloneable {
     /**
      *
      */
-    public static void disposeClass(){
+    public static void staticDispose(){
         for (AbstractEntity entity : entitylist) {
             entity.dispose();
         }
+        
     }
 }

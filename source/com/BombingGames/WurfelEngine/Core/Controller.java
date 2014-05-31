@@ -264,7 +264,7 @@ public class Controller {
         Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
         Block.staticDispose();
-        Map.disposeClass();
+        Map.staticDispose();
         map = null;
         lightEngine = null;
     }

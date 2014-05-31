@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 
 /**
@@ -125,6 +126,11 @@ public class GameplayScreen implements Screen{
         controller.update(delta);
         view.update(delta);
         view.render();
+        msgSystem.update(delta);
+
+        
+        if (GameplayScreen.msgSystem().isActive() && Gdx.input.isKeyPressed(Input.Keys.UP))
+            GameplayScreen.msgSystem().setText(GameplayScreen.msgSystem().getLastMessage("Console"));
     }
 
     @Override
@@ -155,6 +161,7 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void dispose() {
+        msgSystem.dispose();
         Controller.disposeClass();
     }
 

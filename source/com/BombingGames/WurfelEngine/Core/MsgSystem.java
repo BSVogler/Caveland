@@ -48,7 +48,9 @@ public class MsgSystem {
     private final GameplayScreen gameplay;
     private boolean active = false;
     private final TextField textinput;
-    private final ArrayList<Msg> messages = new ArrayList<Msg>(20);  
+    private final ArrayList<Msg> messages = new ArrayList<Msg>(20); 
+    private boolean keyConsoleDown;
+    private boolean disposed;
     
     /**
      * A message is put into the MsgSystem. It contains the message, the sender and the importance.
@@ -142,19 +144,28 @@ public class MsgSystem {
     }
     
     /**
-     * Updates the Message System
+     * Updates the Message System.
      * @param delta
      */
     public void update(float delta){
        timelastupdate += delta;
        
-       //derease importance every 30ms
-       if (timelastupdate >= 30) {
-            timelastupdate = 0;
-           for (Msg m : messages) {
-               if (m.getImportance() > 0)
-                   m.setImportance(m.getImportance()-1);
-           }
+        //open close console/chat box
+        if (keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
+            setActive(!active);//toggle
+            keyConsoleDown = true;
+        }
+        if (!disposed){
+            keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
+       
+            //decrease importance every 30ms
+            if (timelastupdate >= 30) {
+                 timelastupdate = 0;
+                for (Msg m : messages) {
+                    if (m.getImportance() > 0)
+                        m.setImportance(m.getImportance()-1);
+                }
+             }
         }
     }
     
@@ -262,5 +273,9 @@ public class MsgSystem {
         }
         
         return false;    
+    }
+
+    public void dispose(){
+        disposed = true;
     }
 }

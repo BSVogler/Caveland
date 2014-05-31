@@ -174,6 +174,7 @@ public class LightEngine {
         if (Gdx.input.isButtonPressed(0)&& renderData){
             //sun.setHeight(sun.getHeight()+Gdx.input.getDeltaY()*30f);
             sun.setAzimuth(Gdx.input.getX());
+            moon.setAzimuth(Gdx.input.getX()-180);
         }
     }
     

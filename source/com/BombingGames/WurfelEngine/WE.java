@@ -331,6 +331,7 @@ public class WE extends Game {
      * @return
      */
     public static Configuration getCurrentConfig(){
+        if (gameplayScreen==null) throw new NullPointerException("No gameplay screen loaded.");
         return gameplayScreen.getConfig();
     }
 }

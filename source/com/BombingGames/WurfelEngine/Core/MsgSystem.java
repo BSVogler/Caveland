@@ -235,7 +235,7 @@ public class MsgSystem {
         if (command.equals("editor")){
             WE.loadEditor(true);
             return true;
-        }else if (command.equals("lightengine")){ 
+        }else if (command.equals("le") || command.equals("lightengine")){ 
             Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
             return true;
         }else if (command.equals("quit")){ 

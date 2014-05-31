@@ -113,9 +113,9 @@ public class GlobalLightSource {
      * @param height in degrees 0-360°
      */
     public void setHeight(final float height) {
-        if (height >= 360) {
-            this.height = height % 360;
-        } else if (this.height < 0) this.height += 360; 
+        this.height = height % 360;
+        if (this.height < 0)
+            this.height += 360;
     }
 
     /**
@@ -123,9 +123,9 @@ public class GlobalLightSource {
      * @param azimuth in degrees 0-360°
      */
     public void setAzimuth(final float azimuth) {
-        if (azimuth >= 360) {
-            this.azimuth = azimuth % 360;
-        } else if (this.azimuth < 0) this.azimuth += 360;
+        this.azimuth = azimuth % 360;
+        if (this.azimuth < 0)
+            this.azimuth += 360;
     }
 
     /**

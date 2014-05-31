@@ -342,42 +342,42 @@ public class LightEngine {
             view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
             view.drawString("LightColor: "+getGlobalLight().toString(), 600, y+=10, Color.WHITE);
             shR.begin(ShapeType.Filled);
-            shR.setColor(Color.WHITE);
-            shR.rect(600, y+=10, 70, 70);
-            shR.setColor(getGlobalLight());
-            shR.rect(610, y+=10, 50, 50);
+                shR.setColor(Color.WHITE);
+                shR.rect(600, y+=10, 70, 70);
+                shR.setColor(getGlobalLight());
+                shR.rect(610, y+=10, 50, 50);
 
-             //info bars
-            
-            //left side
-            y = Gdx.graphics.getHeight()-100;
-            view.drawText(I_ambient+"\n+"+I_diff0+"\n+"+ I_spec0+"\n="+I_0, (int) (I_0*size), y, Color.WHITE);
-            shR.setColor(Color.GREEN);
-            shR.rect(0, y, I_ambient*size, 10);
-            shR.setColor(Color.RED);
-            shR.rect(I_ambient*size, y, I_diff0*size, 8);
-            shR.setColor(Color.BLUE);
-            shR.rect((I_ambient+I_diff0)*size, y, I_spec0*size, 6);
+                 //info bars
 
-            //top side
-            y = Gdx.graphics.getHeight()-180;
-            view.drawText(I_ambient+"\n+"+I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), y, Color.WHITE);
-            shR.setColor(Color.GREEN);
-            shR.rect(0, y, I_ambient*size, 10);
-            shR.setColor(Color.RED);
-            shR.rect(I_ambient*size, y, I_diff1*size, 8);
-            shR.setColor(Color.BLUE);
-            shR.rect((I_ambient+I_diff1)*size, y, I_spec1*size, 6);
+                //left side
+                y = Gdx.graphics.getHeight()-100;
+                view.drawText(I_ambient+"\n+"+I_diff0+"\n+"+ I_spec0+"\n="+I_0, (int) (I_0*size), y, Color.WHITE);
+                shR.setColor(Color.GREEN);
+                shR.rect(0, y, I_ambient*size, 10);
+                shR.setColor(Color.RED);
+                shR.rect(I_ambient*size, y, I_diff0*size, 8);
+                shR.setColor(Color.BLUE);
+                shR.rect((I_ambient+I_diff0)*size, y, I_spec0*size, 6);
 
-            //right side
-            y = Gdx.graphics.getHeight()-260;
-            view.drawText(I_ambient+"\n+"+I_diff2+"\n+"+ I_spec2+"\n="+I_2, (int) (I_2*size), y, Color.WHITE);
-            shR.setColor(Color.GREEN);
-            shR.rect(0, y, I_ambient*size, 10);
-            shR.setColor(Color.RED);
-            shR.rect(I_ambient*size, y, I_diff2*size, 8);
-            shR.setColor(Color.BLUE);
-            shR.rect((I_ambient+I_diff2)*size, y, I_spec2*size, 6);
+                //top side
+                y = Gdx.graphics.getHeight()-180;
+                view.drawText(I_ambient+"\n+"+I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), y, Color.WHITE);
+                shR.setColor(Color.GREEN);
+                shR.rect(0, y, I_ambient*size, 10);
+                shR.setColor(Color.RED);
+                shR.rect(I_ambient*size, y, I_diff1*size, 8);
+                shR.setColor(Color.BLUE);
+                shR.rect((I_ambient+I_diff1)*size, y, I_spec1*size, 6);
+
+                //right side
+                y = Gdx.graphics.getHeight()-260;
+                view.drawText(I_ambient+"\n+"+I_diff2+"\n+"+ I_spec2+"\n="+I_2, (int) (I_2*size), y, Color.WHITE);
+                shR.setColor(Color.GREEN);
+                shR.rect(0, y, I_ambient*size, 10);
+                shR.setColor(Color.RED);
+                shR.rect(I_ambient*size, y, I_diff2*size, 8);
+                shR.setColor(Color.BLUE);
+                shR.rect((I_ambient+I_diff2)*size, y, I_spec2*size, 6);
             
             shR.end();
         }

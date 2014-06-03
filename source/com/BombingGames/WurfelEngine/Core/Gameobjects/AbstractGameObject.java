@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -155,6 +156,23 @@ public abstract class AbstractGameObject {
         );
     }
     
+    /**
+     * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
+     * @param pos the coordinates where the object should be rendered
+     * @param view the view using this render method
+     * @param camera The camera rendering the scene
+     * @param scale
+     */
+    public void render(View view, Camera camera, AbstractPosition pos, float scale) {
+        render(
+            view,
+            camera,
+            pos,
+            (Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()).mul(lightlevel),
+            scale
+        );
+    }
+    
      /**
      * Draws an object if it is not hidden and not clipped.
      * @param pos the coordinates where the object is rendered
@@ -163,13 +181,27 @@ public abstract class AbstractGameObject {
      * @param color  custom blending color
      */
     public void render(View view, Camera camera, AbstractPosition pos, Color color) {
+        //render(view, camera, pos, color, pos.getPoint().getHeight()/(Map.getGameHeight()/8));
+        render(view, camera, pos, color, 0);
+    }
+    
+         /**
+     * Draws an object if it is not hidden and not clipped.
+     * @param pos the coordinates where the object is rendered
+     * @param view the view using this render method
+     * @param camera The camera rendering the scene
+     * @param color  custom blending color
+     * @param scale
+     */
+    public void render(View view, Camera camera, AbstractPosition pos, Color color, float scale) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
             render(
                 view,
                 pos.getProjectedPosX() + getOffsetX(),
                 pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY(),
-                color
+                color,
+                scale
             );
         }
     }
@@ -185,7 +217,25 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()
+            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy(),
+            0
+        );
+    }
+    
+    /**
+     * Renders at a custom position with the global light.
+     * @param view the view using this render method
+     * @param xPos rendering position
+     * @param yPos rendering position
+     * @param scale
+     */
+    public void render(View view, int xPos, int yPos, float scale) {
+        render(
+            view,
+            xPos,
+            yPos,
+            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy(),
+            scale
         );
     }
     
@@ -195,10 +245,12 @@ public abstract class AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      * @param color  custom blending color
+     * @param scale relative value
      */
-    public void render(View view, int xPos, int yPos, Color color) {
+    public void render(View view, int xPos, int yPos, Color color, float scale) {
         Sprite sprite = new Sprite(getSprite(getCategory(), id, value));
         sprite.setPosition(xPos, yPos);
+        sprite.scale(scale);
         
         prepareColor(view, color);
 

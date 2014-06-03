@@ -31,7 +31,9 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
@@ -330,15 +332,17 @@ public class Block extends AbstractGameObject {
     @Override
     public void render(final View view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
+            //float scale = coords.getCoord().getZ()/(Map.getBlocksZ()/8)-0.5f;
+            float scale =0;
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, camera, coords, Block.TOPSIDE);
+                    renderSide(view, camera, coords, Block.TOPSIDE, scale);
                 if (!clippedLeft)
-                    renderSide(view, camera, coords, Block.LEFTSIDE);
+                    renderSide(view, camera, coords, Block.LEFTSIDE, scale);
                 if (!clippedRight)
-                    renderSide(view, camera, coords, Block.RIGHTSIDE);
+                    renderSide(view, camera, coords, Block.RIGHTSIDE, scale);
             } else
-                super.render(view, camera, coords);
+                super.render(view, camera, coords, scale);
         }
     }
     
@@ -353,19 +357,19 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSideAt(view, xPos, yPos, Block.TOPSIDE);
+                    renderSide(view, xPos, yPos, Block.TOPSIDE);
                 if (!clippedLeft)
-                    renderSideAt(view, xPos, yPos+SCREEN_WIDTH4, Block.LEFTSIDE);
+                    renderSide(view, xPos, yPos+SCREEN_WIDTH4, Block.LEFTSIDE);
                 if (!clippedRight)
-                    renderSideAt(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Block.RIGHTSIDE);
+                    renderSide(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Block.RIGHTSIDE);
                 } else
                     super.render(view, xPos, yPos);
         }
     }
 
     @Override
-    public void render(final View view, final int xPos, final int yPos, final Color color) {
-        render(view, xPos, yPos, color, Controller.getLightengine() == null, 0);
+    public void render(final View view, final int xPos, final int yPos, final Color color, float scale) {
+        render(view, xPos, yPos, color, Controller.getLightengine() == null, scale);
     }
     
     /**
@@ -381,14 +385,14 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSideAt(view, xPos, yPos, Block.TOPSIDE, color, scale);
+                    renderSide(view, xPos, yPos, Block.TOPSIDE, color, scale);
                 
                 if (!clippedLeft) {
                     if (staticShade) {
                         color = color.add(Color.DARK_GRAY.cpy());
                         color.clamp();
                     }
-                    renderSideAt(view, xPos, (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.LEFTSIDE, color, scale);
+                    renderSide(view, xPos, (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.LEFTSIDE, color, scale);
                 }
 
                 if (!clippedRight) {
@@ -396,9 +400,9 @@ public class Block extends AbstractGameObject {
                         color = color.sub(Color.DARK_GRAY.cpy());
                         color.clamp();
                     }
-                    renderSideAt(view, (int) (xPos+SCREEN_WIDTH2*(1+scale)), (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.RIGHTSIDE, color, scale);
+                    renderSide(view, (int) (xPos+SCREEN_WIDTH2*(1+scale)), (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.RIGHTSIDE, color, scale);
                 }
-            } else super.render(view, xPos, yPos, color);
+            } else super.render(view, xPos, yPos, color, scale);
         }
     }
        
@@ -407,26 +411,36 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param coords the coordinates where the side is rendered 
-     * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
+     * @param scale
      */
-    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int sidenumb){
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int side, float scale){
         Color color;
         if (Controller.getLightengine() != null)
-            color = Controller.getLightengine().getColor(sidenumb);
+            color = Controller.getLightengine().getColor(side);
         else {
             color = Color.GRAY.cpy();
             
             if (WE.getCurrentConfig().shouldAutoShade()){
-                if (sidenumb==0){
+                if (side==0){
                     color = color.add(Color.DARK_GRAY.cpy());
                     color.clamp();
-                }else if (sidenumb==2){
+                }else if (side==2){
                     color = color.sub(Color.DARK_GRAY.cpy());
                     color.clamp();
                 }
             }
         }
-        renderSide(view, camera, coords, sidenumb, color);
+        
+        //add fog
+        if (WE.getCurrentConfig().useFog()){
+            color.mul(
+                (float) (0.5f+Math.exp(
+                    (-camera.getVisibleTopBorder()+coords.getCoord().getRelY())*-0.05f+1
+                ))
+            );
+        }
+        renderSide(view, camera, coords, side, color,scale);
     }
 
     /**
@@ -434,27 +448,18 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param coords the coordinates where to render 
-     * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
+     * @param scale
      */
-    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int sidenumb, final Color color){
-        if (WE.getCurrentConfig().useFog()){
-            color.mul(
-                (float) (0.5f+Math.exp(
-                -(
-                    (-camera.getVisibleTopBorder()+coords.getCoord().getRelY())*0.05f-1
-                )
-            ))
-            );
-        }
-        
-        renderSideAt(
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int side, final Color color, final float scale){
+        renderSide(
             view,
-            coords.getProjectedPosX() + ( sidenumb == 2 ? SCREEN_WIDTH2 : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() + ( sidenumb != 1 ? SCREEN_WIDTH4 : 0),//the top is drawn a quarter blocks higher,
-            sidenumb,
+            coords.getProjectedPosX() + ( side == 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getProjectedPosY() + ( side != 1 ? (int) (SCREEN_WIDTH4*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            side,
             color,
-            0
+            scale
         );
     }
     
@@ -465,8 +470,8 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSideAt(final View view, final int xPos, final int yPos, final int sidenumb){
-        renderSideAt(view,
+    public void renderSide(final View view, final int xPos, final int yPos, final int sidenumb){
+        renderSide(view,
             xPos,
             yPos,
             sidenumb,
@@ -481,9 +486,9 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
-     * @param scale if you want to scale it up use scale > 0 else < 0 scales down
+     * @param scale if you want to scale it up use scale > 0 else negative values scales down
      */
-    public void renderSideAt(final View view, final int xPos, final int yPos, final int sidenumb, Color color, final float scale){
+    public void renderSide(final View view, final int xPos, final int yPos, final int sidenumb, Color color, final float scale){
         Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), sidenumb));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {

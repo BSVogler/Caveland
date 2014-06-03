@@ -165,8 +165,7 @@ public abstract class AbstractGameObject {
     public void render(View view, Camera camera, AbstractPosition pos, Color color) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
-                         
-            renderAt(
+            render(
                 view,
                 pos.getProjectedPosX() + getOffsetX(),
                 pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY(),
@@ -181,8 +180,8 @@ public abstract class AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      */
-    public void renderAt(View view, int xPos, int yPos) {
-        renderAt(
+    public void render(View view, int xPos, int yPos) {
+        render(
             view,
             xPos,
             yPos,
@@ -197,7 +196,7 @@ public abstract class AbstractGameObject {
      * @param yPos rendering position
      * @param color  custom blending color
      */
-    public void renderAt(View view, int xPos, int yPos, Color color) {
+    public void render(View view, int xPos, int yPos, Color color) {
         Sprite sprite = new Sprite(getSprite(getCategory(), id, value));
         sprite.setPosition(xPos, yPos);
         

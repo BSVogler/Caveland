@@ -345,11 +345,11 @@ public class Block extends AbstractGameObject {
     /**
      * Render the whole block at a custom position and checks for clipping and hidden.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position (screen)
+     * @param yPos rendering position (screen)
      */
     @Override
-    public void renderAt(final View view, final int xPos, final int yPos) {
+    public void render(final View view, final int xPos, final int yPos) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -359,17 +359,17 @@ public class Block extends AbstractGameObject {
                 if (!clippedRight)
                     renderSideAt(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Block.RIGHTSIDE);
                 } else
-                    super.renderAt(view, xPos, yPos);
+                    super.render(view, xPos, yPos);
         }
     }
 
     @Override
-    public void renderAt(final View view, final int xPos, final int yPos, final Color color) {
-        renderAt(view, xPos, yPos, color, Controller.getLightengine() == null, 0);
+    public void render(final View view, final int xPos, final int yPos, final Color color) {
+        render(view, xPos, yPos, color, Controller.getLightengine() == null, 0);
     }
     
     /**
-     * Renders a block at a custom position with a scale.
+     * Renders the whole block at a custom position with a scale.
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
@@ -377,7 +377,7 @@ public class Block extends AbstractGameObject {
      * @param staticShade i don't know what this does. This only makes it a bit brighter???
      * @param scale the scale factor of the image
      */
-    public void renderAt(final View view, final int xPos, final int yPos, Color color, final boolean staticShade, final float scale) {
+    public void render(final View view, final int xPos, final int yPos, Color color, final boolean staticShade, final float scale) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -398,7 +398,7 @@ public class Block extends AbstractGameObject {
                     }
                     renderSideAt(view, (int) (xPos+SCREEN_WIDTH2*(1+scale)), (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.RIGHTSIDE, color, scale);
                 }
-            } else super.renderAt(view, xPos, yPos, color);
+            } else super.render(view, xPos, yPos, color);
         }
     }
        

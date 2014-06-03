@@ -432,7 +432,7 @@ public class Weapon {
     }
     
     /**
-     *
+     *Get the distance to impact point.
      * @return
      */
     public int getAimDistance(){

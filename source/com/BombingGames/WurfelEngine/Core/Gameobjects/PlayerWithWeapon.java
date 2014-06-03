@@ -78,10 +78,12 @@ public class PlayerWithWeapon extends AbstractCharacter{
         super.jump(5);
     }
     
-    @Override
+
     /**
      * Getting aim relative to middle of view by reading mouse position. If no camera is configured it will return null.
+     * @return 
      */
+    @Override
     public Vector3 getAiming(){
         Vector3 aim = null;
         if (camera != null){
@@ -90,8 +92,7 @@ public class PlayerWithWeapon extends AbstractCharacter{
                 2*(Gdx.input.getY()- camera.getScreenHeight()/2),
                 0
             );
-            aim.nor();
-            return aim;
+            return aim.nor();
         }else{
             return aim;
         }

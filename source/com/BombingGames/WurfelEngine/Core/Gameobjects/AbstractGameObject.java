@@ -259,7 +259,7 @@ public abstract class AbstractGameObject {
     }
     
     /**
-     * Transform the color that it works with the blending mode which is also set in this method.
+     * Transform the color that it works with the blending mode which is also set in this method. Spritebatch must be began first.
      * @param view
      * @param color a tint in which the sprite should be rendered
      */

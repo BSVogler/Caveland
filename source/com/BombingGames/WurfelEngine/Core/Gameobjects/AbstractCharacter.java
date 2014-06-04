@@ -43,7 +43,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    private final int COLISSIONRADIUS = GAME_DIAGLENGTH2/2;
    private final int SPRITESPERDIR;
       
-   private final float[] dir = {1, 0, 0};
+   private final Vector3 dir = new Vector3(1, 0, 0);
 
    /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1**/
    private final int smoothBreaks = 200;
@@ -100,7 +100,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     public void jump(float velo) {
         if (onGround()) {
-            dir[2] = velo;
+            dir.z = velo;
             if (jumpingSound != null) jumpingSound.play();
         }
     }
@@ -119,13 +119,13 @@ public abstract class AbstractCharacter extends AbstractEntity {
             speed = walkingspeed;
 
             //update the movement vector
-            dir[0] = 0;
-            dir[1] = 0;
+            dir.x = 0;
+            dir.y = 0;
 
-            if (up)    dir[1] = -1;
-            if (down)  dir[1] = 1;
-            if (left)  dir[0] = -1;
-            if (right) dir[0] = 1;
+            if (up)    dir.y = -1;
+            if (down)  dir.y = 1;
+            if (left)  dir.x = -1;
+            if (right) dir.x = 1;
         }
    }
     
@@ -143,29 +143,29 @@ public abstract class AbstractCharacter extends AbstractEntity {
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (getPos().onLoadedMap()) {
-            //scale that the velocity vector is always an unit vector (only x and y)
-            double vectorLenght = Math.sqrt(dir[0]*dir[0] + dir[1]*dir[1]);
+            //normalyze only x and y
+            double vectorLenght = Math.sqrt(dir.x*dir.x + dir.y*dir.y);
             if (vectorLenght > 0){
-                dir[0] /= vectorLenght;
-                dir[1] /= vectorLenght;
+                dir.x /= vectorLenght;
+                dir.y /= vectorLenght;
             }
 
             float oldHeight = getPos().getHeight();
 
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
-            if (!onGround()) dir[2] -= WE.getCurrentConfig().getGravity()*t; //in m/s
-            getPos().setHeight(getPos().getHeight() + dir[2] * GAME_EDGELENGTH * t); //in m
+            if (!onGround()) dir.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
+            getPos().setHeight(getPos().getHeight() + dir.z * GAME_EDGELENGTH * t); //in m
             
             
             //check new height for colission            
             //land if standing in or under 0-level or there is an obstacle
-            if (dir[2] < 0 && onGround()){
+            if (dir.z < 0 && onGround()){
                 if (landingSound != null)
                     landingSound.play();//play landing sound
                 if (fallingSound != null)
                     fallingSound.stop();//stop falling sound
-                dir[2] = 0;
+                dir.z = 0;
                 
                 //set on top of block
                 getPos().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
@@ -180,8 +180,8 @@ public abstract class AbstractCharacter extends AbstractEntity {
             /*HORIZONTAL MOVEMENT*/
             //calculate new position
             float[] dMove = new float[]{
-                delta * speed * dir[0],
-                delta * speed * dir[1],
+                delta * speed * dir.x,
+                delta * speed * dir.y,
                 0
             };
 
@@ -191,28 +191,28 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 }
 
             //graphic
-            if (dir[0] < -Math.sin(Math.PI/3)){
+            if (dir.x < -Math.sin(Math.PI/3)){
                 setValue(1);//west
             } else {
-                if (dir[0] < - 0.5){
+                if (dir.x < - 0.5){
                     //y
-                    if (dir[1]<0){
+                    if (dir.y<0){
                         setValue(2);//north-west
                     } else {
                         setValue(0);//south-east
                     }
                 } else {
-                    if (dir[0] <  0.5){
+                    if (dir.x <  0.5){
                         //y
-                        if (dir[1]<0){
+                        if (dir.y<0){
                             setValue(3);//north
                         }else{
                             setValue(7);//south
                         }
                     }else {
-                        if (dir[0] < Math.sin(Math.PI/3)) {
+                        if (dir.x < Math.sin(Math.PI/3)) {
                             //y
-                            if (dir[1] < 0){
+                            if (dir.y < 0){
                                 setValue(4);//north-east
                             } else{
                                 setValue(6);//sout-east
@@ -257,7 +257,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
 
             //should the fallingsound be played?
             if (fallingSound != null) {
-                if (dir[2] < -1) {
+                if (dir.z < -1) {
                     if (!fallingSoundPlaying){
                         fallingSound.play();
                         fallingSoundPlaying = true;
@@ -307,7 +307,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * @return normalized vector
      */
     public Vector3 getDirectionVector(){
-        return new Vector3(dir).nor();
+        return dir.nor();
     }
 
     /**

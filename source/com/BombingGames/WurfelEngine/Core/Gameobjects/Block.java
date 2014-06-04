@@ -332,7 +332,7 @@ public class Block extends AbstractGameObject {
     @Override
     public void render(final View view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
-            //float scale = coords.getCoord().getZ()/(Map.getBlocksZ()/8)-0.5f;
+            //float scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             float scale =0;
             if (hasSides) {
                 if (!clippedTop)
@@ -385,14 +385,21 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, xPos, yPos, Block.TOPSIDE, color, scale);
+                    renderSide(view, xPos-SCREEN_WIDTH2, (int) (yPos-(SCREEN_HEIGHT+SCREEN_HEIGHT2)*(1+scale)), Block.TOPSIDE, color, scale);
                 
                 if (!clippedLeft) {
                     if (staticShade) {
                         color = color.add(Color.DARK_GRAY.cpy());
                         color.clamp();
                     }
-                    renderSide(view, xPos, (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.LEFTSIDE, color, scale);
+                    renderSide(
+                        view,
+                        xPos-SCREEN_WIDTH2,
+                        (int) (yPos-SCREEN_HEIGHT*(1+scale)),
+                        Block.LEFTSIDE,
+                        color,
+                        scale
+                    );
                 }
 
                 if (!clippedRight) {
@@ -400,9 +407,16 @@ public class Block extends AbstractGameObject {
                         color = color.sub(Color.DARK_GRAY.cpy());
                         color.clamp();
                     }
-                    renderSide(view, (int) (xPos+SCREEN_WIDTH2*(1+scale)), (int) (yPos+SCREEN_WIDTH4*(1+scale)), Block.RIGHTSIDE, color, scale);
+                    renderSide(
+                        view,
+                        xPos,
+                        (int) (yPos-SCREEN_HEIGHT*(1+scale)),
+                        Block.RIGHTSIDE,
+                        color,
+                        scale
+                    );
                 }
-            } else super.render(view, xPos, yPos, color, scale);
+            } else super.render(view, xPos, yPos-SCREEN_HEIGHT2, color, scale);
         }
     }
        
@@ -456,8 +470,8 @@ public class Block extends AbstractGameObject {
     public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int side, final Color color, final float scale){
         renderSide(
             view,
-            coords.getProjectedPosX() + ( side == 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() + ( side != 1 ? (int) (SCREEN_WIDTH4*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getProjectedPosX() - ( side != 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getProjectedPosY() -SCREEN_HEIGHT2+ ( side != 1 ? (int) (SCREEN_WIDTH4*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale

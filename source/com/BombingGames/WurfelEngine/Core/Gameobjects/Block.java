@@ -369,7 +369,7 @@ public class Block extends AbstractGameObject {
 
     @Override
     public void render(final View view, final int xPos, final int yPos, final Color color, float scale) {
-        render(view, xPos, yPos, color, Controller.getLightengine() == null, scale);
+        render(view, xPos, yPos, color, scale, Controller.getLightengine() == null);
     }
     
     /**
@@ -381,7 +381,7 @@ public class Block extends AbstractGameObject {
      * @param staticShade i don't know what this does. This only makes it a bit brighter???
      * @param scale the scale factor of the image
      */
-    public void render(final View view, final int xPos, final int yPos, Color color, final boolean staticShade, final float scale) {
+    public void render(final View view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)

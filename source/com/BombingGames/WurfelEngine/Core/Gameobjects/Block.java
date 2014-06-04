@@ -436,10 +436,11 @@ public class Block extends AbstractGameObject {
         if (WE.getCurrentConfig().useFog()){
             color.mul(
                 (float) (0.5f+Math.exp(
-                    (-camera.getVisibleTopBorder()+coords.getCoord().getRelY())*-0.05f+1
+                    (camera.getVisibleTopBorder()-coords.getCoord().getRelY())*0.05f+1
                 ))
             );
         }
+        
         renderSide(view, camera, coords, side, color,scale);
     }
 

@@ -74,12 +74,12 @@ public class Map implements Cloneable {
         blocksZ = Chunk.getBlocksZ();
         data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
         
-        generator = new Generator() {
-            @Override
-            public int generate(int x, int y, int z) {
-                return 0;
-            }
-        };
+        for (int x=0; x < blocksX; x++)
+            for (int y=0; y < blocksY; y++)
+                for (int z=0; z < blocksZ; z++)
+                    data[x][y][z] = new Cell();
+        
+        generator = new IslandGenerator();
     }
     
     /**

@@ -117,43 +117,6 @@ public class Chunk {
                 break;
             }
                 
-            case 1: {//islands
-                //water
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        
-                        data[x][y][0] = new Cell(8);
-                        data[x][y][1] = new Cell(9, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 1, true));
-                        data[x][y][2] = new Cell(9, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 2, true));
-                    }
-                
-                //mountain
-                int mountainx = (int) (Math.random()*blocksX-1);
-                int mountainy = (int) (Math.random()*blocksY-1);
-                
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        int height = blocksZ-1- Math.abs(mountainy-y)- Math.abs(mountainx-x);
-                        if (height>0){
-                            for (int z=0; z < height; z++) {
-                                if (height > 2)
-                                    data[x][y][z] = new Cell(2);
-                                else
-                                    data[x][y][z] = new Cell(8);
-                                    
-                            }
-                            if (height > 2)
-                                    data[x][y][height] = new Cell(1);
-                                else
-                                    data[x][y][height] = new Cell(8);
-                            
-                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
-                            if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);
-                        }
-                    }
-                break;
-            }
-                
             case 2: {//flat block (grass?)
                 for (int x=0; x < blocksX; x++)
                     for (int y=0; y < blocksY; y++){

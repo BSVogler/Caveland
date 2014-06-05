@@ -100,6 +100,18 @@ public class Map implements Cloneable {
         Gdx.app.log("Map","...Finished filling the map");
     }
     
+    public void fillWith(Generator generator){
+        int chunkpos = 0;
+        for (byte y=-1; y < 2; y++)
+               for (byte x=-1; x < 2; x++){
+                   coordlist[chunkpos][0] = x;
+                   coordlist[chunkpos][1] = y;  
+                   insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
+                   chunkpos++;
+           }
+    }
+ 
+    
      /**
      * Returns the amount of Blocks inside the map in x-direction.
      * @return

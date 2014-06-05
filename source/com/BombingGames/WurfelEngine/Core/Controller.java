@@ -135,6 +135,15 @@ public class Controller {
     public static void newMap(){
         map = new Map(!WE.getCurrentConfig().shouldLoadMap());
         map.fillWithAir();
+    
+    /**
+     * Creates a new Map.
+     * @param generator
+     */
+    public static void newMap(Generator generator){
+        map = new Map(false);
+        map.fillWith(generator);
+        requestRecalc();
     }
     
     /**

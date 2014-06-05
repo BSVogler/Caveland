@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -261,6 +262,16 @@ public class MsgSystem {
             return true;
         }else if(command.equals("help") || command.equals("about") || command.equals("credits")){
             add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
+            return true;
+        }else if(command.equals("newmap")){
+            Generator a = new Generator() {
+                
+                @Override
+                public int generate(int x, int y, int z) {
+                    return 0;
+                }
+            };
+            Controller.newMap(a);
             return true;
         }else if(command.equals("minimap")){
             if (gameplay.getController().getMinimap()==null){

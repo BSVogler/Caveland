@@ -170,18 +170,18 @@ public class MapEditorView extends View {
         int speed;
         
         if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-            speed = 1600;
-        else speed = 800;
+            speed = 1;
+        else speed = 2;
         
         if (!GameplayScreen.msgSystem().isActive()){
             if (input.isKeyPressed(Input.Keys.W))
-                camera.move(0, (int) (-delta*speed));
+                camera.move(0, (int) (-delta/speed));
             if (input.isKeyPressed(Input.Keys.S))
-                camera.move(0, (int) (delta*speed));
+                camera.move(0, (int) (delta/speed));
             if (input.isKeyPressed(Input.Keys.A))
-                camera.move((int) -(delta*speed*1.414),0);
+                camera.move((int) -(delta/speed*1.414),0);
             if (input.isKeyPressed(Input.Keys.D))
-                camera.move((int) (delta*speed*1.414),0);
+                camera.move((int) (delta/speed*1.414),0);
         }
     }
 

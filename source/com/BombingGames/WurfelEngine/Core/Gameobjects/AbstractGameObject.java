@@ -181,8 +181,13 @@ public abstract class AbstractGameObject {
      * @param color  custom blending color
      */
     public void render(View view, Camera camera, AbstractPosition pos, Color color) {
-        //render(view, camera, pos, color, pos.getPoint().getHeight()/(Map.getGameHeight()/8));
-        render(view, camera, pos, color, 0);
+        render(
+            view,
+            camera,
+            pos,
+            color,
+            (WE.getCurrentConfig().useScalePrototype()) ? pos.getPoint().getHeight()/(Map.getGameHeight()) : 0
+        );
     }
     
          /**

@@ -332,8 +332,9 @@ public class Block extends AbstractGameObject {
     @Override
     public void render(final View view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
-            //float scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             float scale =0;
+            if (WE.getCurrentConfig().useScalePrototype())
+                scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
                 if (!clippedTop)
                     renderSide(view, camera, coords, Block.TOPSIDE, scale);

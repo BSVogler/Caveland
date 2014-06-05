@@ -190,4 +190,8 @@ public class Configuration {
     public int getConsoleKey(){
         return Keys.ENTER;
     }
+    
+    public boolean useScalePrototype(){
+        return false;
+    }
 }

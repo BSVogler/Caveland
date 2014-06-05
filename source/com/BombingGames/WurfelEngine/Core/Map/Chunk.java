@@ -93,7 +93,10 @@ public class Chunk {
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = new Cell(generator.generate(x+blocksX*coordX,y+blocksY*coordY,z),0, new Coordinate(x+blocksX*coordX, y+blocksY*coordY, z, false));
+                    data[x][y][z] = new Cell(
+                        generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
+                        0,
+                        new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
     }
     
     /**

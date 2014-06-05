@@ -288,7 +288,6 @@ public class Camera{
         //sort the list
         if (depthsort.size()>0)
             depthsort = sortDepthList(depthsort, 0, depthsort.size()-1);
-        else Gdx.app.error("WECamera", "depthsort is empty");
         return depthsort;
     }
     

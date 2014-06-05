@@ -50,26 +50,27 @@ public class IslandGenerator implements Generator {
     
 
     @Override
-    public int generate(int x, int y, int z) {
-        //water
+    public int generate(int x, int y, int z) {  
         if (z==0) return 8;
-        if (z==1 || z==2) return 9;
-                
+        
         int height = Chunk.getBlocksZ()-1- Math.abs(mountainY-y)- Math.abs(mountainX-x);
-        if (height>0 && z<height){
-            if (height > 2)
+        if (height>0 && z<height){//part of mountain?
+            if (height-1 == z && z>2)
+                return 1;//grass on top
+            
+            if (z > 2)
                 return 2;
             else
-                return 8;
+                return 8;//sand
         }
-                    
-//        if (height > 2)
-//            return 1;
-//        else return 8;
-                            
+
+        //water
+        if (z==1 || z==2) return 9;
+               
         return 0;
-                            //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
-                            //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);
+        
+        //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
+        //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);
     }
     
 }

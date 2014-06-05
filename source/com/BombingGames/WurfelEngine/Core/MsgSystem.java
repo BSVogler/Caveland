@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -257,6 +258,13 @@ public class MsgSystem {
             return true;
         }else if(command.equals("help") || command.equals("about") || command.equals("credits")){
             add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
+            return true;
+        }else if(command.equals("minimap")){
+            if (gameplay.getController().getMinimap()==null){
+                add("No minimap found. Creating new", "System");
+                gameplay.getController().setMinimap(new Minimap(gameplay.getController(), gameplay.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
+            }
+            gameplay.getController().getMinimap().toggleVisibility();
             return true;
         }else if (command.startsWith("gamespeed")){
             if (command.length()==9){

@@ -55,7 +55,7 @@ public class Map implements Cloneable {
     private Generator generator;
     
     /** every entity on the map is stored in this field */
-    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<>();
+    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<>(20);
     
     /**
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
@@ -91,7 +91,7 @@ public class Map implements Cloneable {
                for (byte x=-1; x < 2; x++){
                    coordlist[chunkpos][0] = x;
                    coordlist[chunkpos][1] = y;  
-                   insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
+                   insertChunk((byte) chunkpos, new Chunk(x, y, generator));
                    chunkpos++;
            }
     }
@@ -102,7 +102,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
+                insertChunk((byte) chunkpos, new Chunk(x, y, generator));
                 chunkpos++;
            }
     }

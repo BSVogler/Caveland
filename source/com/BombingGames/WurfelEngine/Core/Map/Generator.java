@@ -39,9 +39,9 @@ public interface Generator {
     
     /**
      * Define which block should appear at which coordinate.
-     * @param x coordiante relative to chunk/map?
-     * @param y coordiante relative to chunk/map?
-     * @param z coordiante relative to chunk/map?
+     * @param x absolute coord
+     * @param y absolute coord
+     * @param z absolute coord
      * @return
      */
     public abstract int generate(int x, int y, int z);   

@@ -84,17 +84,16 @@ public class Chunk {
     
         /**
     *Creates a chunk.
-    * @param pos the position of the chunk. Value between 0-8
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
      * @param generator
     */
-    public Chunk(final int pos, final int coordX, final int coordY, final Generator generator){
+    public Chunk(final int coordX, final int coordY, final Generator generator){
         this();
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = new Cell(generator.generate(x,y,z),0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 2, true));
+                    data[x][y][z] = new Cell(generator.generate(x+blocksX*coordX,y+blocksY*coordY,z),0, new Coordinate(x+blocksX*coordX, y+blocksY*coordY, z, false));
     }
     
     /**

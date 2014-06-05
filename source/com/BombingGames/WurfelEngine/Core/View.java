@@ -132,9 +132,9 @@ public class View {
         
     /**
      *Updates every camera and everything else which must be updated.
-     * @param delta time since last update
+     * @param delta time since last update in ms.
      */
-    public void update(float delta){
+    public void update(final float delta){
         //update cameras
         for (Camera camera : cameras) {
             if (camera.togglesChunkSwitch()) {

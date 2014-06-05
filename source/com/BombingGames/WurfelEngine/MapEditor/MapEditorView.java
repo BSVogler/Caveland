@@ -164,7 +164,7 @@ public class MapEditorView extends View {
     }
 
     @Override
-    public void update(float delta) {
+    public void update(final float delta) {
         super.update(delta);
         Input input = Gdx.input;
         int speed;

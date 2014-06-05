@@ -29,8 +29,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.BombingGames.WurfelEngine.Core.Map.Generators;
 
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import static com.BombingGames.WurfelEngine.Core.Map.Chunk.getBlocksZ;
 
 /**

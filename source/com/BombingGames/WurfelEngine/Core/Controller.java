@@ -189,11 +189,12 @@ public class Controller {
    
 
     /**
-     * Set the minimap-
+     * Set the minimap and "builds it"
      * @param minimap
      */
     public void setMinimap(final Minimap minimap) {
         this.minimap = minimap;
+        minimap.buildMinimap();
     }
 
     /**

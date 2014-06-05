@@ -256,6 +256,9 @@ public class MsgSystem {
         } else if (command.equals("menu")){ 
             WE.showMainMenu();
             return true;
+        } else if (command.equals("fullscreen")){ 
+            WE.setFullscreen(!WE.isFullscreen());
+            return true;
         }else if(command.equals("help") || command.equals("about") || command.equals("credits")){
             add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
             return true;

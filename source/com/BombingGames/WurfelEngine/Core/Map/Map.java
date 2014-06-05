@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -88,11 +89,11 @@ public class Map implements Cloneable {
     public void fill(){
     int chunkpos = 0;
         for (byte y=-1; y < 2; y++)
-               for (byte x=-1; x < 2; x++){
-                   coordlist[chunkpos][0] = x;
-                   coordlist[chunkpos][1] = y;  
-                   insertChunk((byte) chunkpos, new Chunk(x, y, generator));
-                   chunkpos++;
+            for (byte x=-1; x < 2; x++){
+                coordlist[chunkpos][0] = x;
+                coordlist[chunkpos][1] = y;  
+                insertChunk((byte) chunkpos, new Chunk(x, y, generator));
+                chunkpos++;
            }
     }
     
@@ -126,7 +127,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, newMap));
+                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, newMap, generator));
                 chunkpos++;
         }
        
@@ -236,7 +237,8 @@ public class Map implements Cloneable {
                         chunk = new Chunk(pos,
                                     coordlist[pos][0],
                                     coordlist[pos][1],
-                                    newMap
+                                    newMap,
+                                    generator
                                 );
                     }
                     insertChunk((byte) pos,chunk);

@@ -73,13 +73,13 @@ public class Chunk {
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
     * @param newMap load from HD(false) or generate new (true)?
+     * @param generator
     */
-    public Chunk(final int pos, final int coordX, final int coordY, final boolean newMap){
+    public Chunk(final int pos, final int coordX, final int coordY, final boolean newMap, final Generator generator){
         this();
 
-        if (newMap)
-            generate(pos, coordX, coordY);
-        else load(pos, coordX, coordY);
+        if (newMap || !load(pos, coordX, coordY))
+            fill(coordX, coordY, generator);
     }
     
         /**
@@ -90,147 +90,25 @@ public class Chunk {
     */
     public Chunk(final int coordX, final int coordY, final Generator generator){
         this();
+        fill(coordX, coordY, generator);
+    }
+    
+    private void fill(final int coordX, final int coordY, final Generator generator){
+        GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = new Cell(
                         generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
                         0,
-                        new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
+                        new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
+                    );
     }
     
     /**
-     * Generates new content for a chunk.
-     */  
-    private void generate(int pos, int coordX, int coordY){
-        //chunkdata will contain the blocks and objects
-        //alternative to chunkdata.length ChunkBlocks
-        GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
-        switch (WE.getCurrentConfig().getChunkGenerator()){
-            case 0:{//random pillars
-                for (int x=0; x < blocksX; x++){
-                    for (int y=0; y < blocksY; y++){
-                        int height = (int) (Math.random()*blocksZ-1)+1;
-                        for (int z=0; z < height; z++){
-                            data[x][y][z] = new Cell(2);
-                            }
-                        data[x][y][height] = new Cell(1);
-                    }
-                }
-                break;
-            }
-                
-            case 2: {//flat block (grass?)
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        if (blocksZ>1){
-                            int z;
-                            for (z=0; z < blocksZ/2; z++){
-                                data[x][y][z] = new Cell(2);
-                            }
-                            data[x][y][z-1] = new Cell(1);
-                        }else data[x][y][0] = new Cell(2);
-                    }
-                break;
-            }
-                
-            case 3: {//flat gras with one random pillar per chunk
-                int pillarx = (int) (Math.random()*blocksX-1);
-                int pillary = (int) (Math.random()*blocksY-1);
-                //pillar
-                for (int z=0; z < blocksZ; z++) data[pillarx][pillary][z] = new Cell(1);
-                
-                //flat grass
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        data[x][y][0] = new Cell(2);
-                        data[x][y][1] = new Cell(3);
-                    }
-                break;
-            }
-                
-            case 4: {//explosive barrel test
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++)
-                        for (int z=0; z < blocksZ-1; z++){
-                            if (z!=blocksZ-2)
-                                 data[x][y][z] = new Cell(2);
-                            else data[x][y][z] = new Cell(1);
-                    }
-            }
-            break;
-                
-            case 5: {//animation test                
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        data[x][y][0] = new Cell(72);
-                    }
-                //data[blocksX/2][blocksY/2][2].newBlock(72);//animation test
-                //data[blocksX/2][blocksY/2][1].newBlock(2);
-                
-                break;
-            } 
-            case 6: {//every block                
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        data[x][y][0] = new Cell(y, 0, new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, 0, true));
-                    }
-                break;
-            }
-             case 7: {//flat grass
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        if (blocksZ>1){
-                            int z;
-                            for (z=0; z < blocksZ/2; z++){
-                                data[x][y][z] = new Cell(9);
-                            }
-                        }else data[x][y][0] = new Cell(9);
-                    }
-                break;
-            }
-            case 8: {//flat gras with one special block
-                //flat grass
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        data[x][y][0] = new Cell(2);
-                        data[x][y][1] = new Cell(3);
-                    }
-                
-                int specialx = (int) (Math.random()*blocksX-1);
-                int specialy = (int) (Math.random()*blocksY-1);
-                //special block
-                data[specialx][specialy][1] = new Cell(40, 0, new Coordinate(specialx + pos % 3 * blocksX, specialy + pos / 3 * blocksY, 1, true));
-                break;
-            }
-                
-            case 9:{//white noise
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        int height = (int) (Math.random()*blocksZ-1)+1;
-                        for (int z=0; z < height; z++){
-                            data[x][y][z] = new Cell(44,0);
-                        }
-                    }
-                break;
-            }    
-                
-           case 10: {//air
-                for (int x=0; x < blocksX; x++)
-                    for (int y=0; y < blocksY; y++){
-                        for (int z=0; z < blocksZ; z++){
-                            data[x][y][z] = new Cell(0);
-                        }
-                    }
-                break;
-            }
-        }
-    }
-
-    /**
      * Trys to load a chunk from disk.
      */
-    private void load(int pos, int coordX, int coordY){
+    private boolean load(int pos, int coordX, int coordY){
         //Reading map files test
         try {
             FileHandle path = Gdx.files.internal("map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
@@ -292,13 +170,14 @@ public class Chunk {
                     lastline = bufRead.readLine();
                     z++;
                 } while (lastline != null);
+                return true;
             } else {
                 Gdx.app.log("Map","...but it could not be found.");
-                generate(pos, coordX, coordY);
             }
         } catch (IOException ex) {
             Gdx.app.error("Map","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
         }
+        return false;
     }
     
     /**

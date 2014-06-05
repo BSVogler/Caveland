@@ -249,7 +249,7 @@ public class MsgSystem {
         }else if (command.equals("le") || command.equals("lightengine")){ 
             Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
             return true;
-        }else if (command.equals("quit")){ 
+        }else if (command.equals("quit") ||command.equals("exit")){ 
             Gdx.app.exit();
             return true;
         } else if (command.equals("menu")){ 

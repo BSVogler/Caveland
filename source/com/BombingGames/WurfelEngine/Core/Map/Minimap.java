@@ -171,7 +171,7 @@ public class Minimap {
                 posX + scaleX * camera.getViewportPosX() / Block.GAME_DIAGLENGTH,
                 posY - scaleY * camera.getViewportPosY() / Block.GAME_DIAGLENGTH2,
                 scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
-                scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
+                -scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
             );
 
             //player level getCameras() rectangle

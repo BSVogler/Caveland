@@ -43,7 +43,7 @@ public class Coordinate extends AbstractPosition {
     private int y; //saved as relative
     
     /**
-     * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
+     * Creates a coordiante refering to a position on the map.
      * @param x The x value as coordinate.
      * @param y The y value as coordinate.
      * @param z The z value as coordinate.

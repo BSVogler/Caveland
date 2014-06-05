@@ -56,7 +56,7 @@ public class Chunk {
     private Cell data[][][];
   
     /**
-     * Creates a Chunk filled with air
+     * Creates a Chunk filled with empty cells (likely air).
      */
     public Chunk() {
         data = new Cell[blocksX][blocksY][blocksZ];

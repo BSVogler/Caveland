@@ -55,7 +55,7 @@ public class Map implements Cloneable {
     private Generator generator;
     
     /** every entity on the map is stored in this field */
-    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
+    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<>();
     
     /**
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
@@ -531,7 +531,7 @@ public class Map implements Cloneable {
      */
     @SuppressWarnings({"unchecked"})
     public <type> ArrayList<type> getAllEntitysOfType(final Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<type>(30);//defautl size 30
+        ArrayList<type> list = new ArrayList<>(30);//defautl size 30
 
         for (AbstractEntity entity : entitylist) {//check every entity
             if (type.isInstance(entity)) {//if the entity is of the wanted type
@@ -547,7 +547,7 @@ public class Map implements Cloneable {
      * @return a list with the entitys
      */
     public ArrayList<AbstractEntity> getAllEntitysOnCoord(final Coordinate coord) {
-        ArrayList<AbstractEntity> list = new ArrayList<AbstractEntity>(5);//defautl size 5
+        ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity ent : entitylist) {
             if (Arrays.equals(
@@ -571,7 +571,7 @@ public class Map implements Cloneable {
      */
     @SuppressWarnings("unchecked")
     public <type> ArrayList<type> getAllEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<type>(5);
+        ArrayList<type> list = new ArrayList<>(5);
 
         for (AbstractEntity ent : entitylist) {
             if (

@@ -158,15 +158,11 @@ public class Controller {
     }
     
     /**
-     * Returns the player
-     * @return the player
+     * Returns the player.
+     * @return the player. If no player returns null.
      */
     public AbstractCharacter getPlayer() {
-        if (player==null)
-            throw new NullPointerException("Controller has no player.");
-        else {
-            return player;
-        }
+        return player;
     }
 
    /**

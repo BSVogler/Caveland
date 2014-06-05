@@ -170,8 +170,8 @@ public class MapEditorView extends View {
         int speed;
         
         if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-            speed = 1;
-        else speed = 2;
+            speed = 2;
+        else speed = 4;
         
         if (!GameplayScreen.msgSystem().isActive()){
             if (input.isKeyPressed(Input.Keys.W))

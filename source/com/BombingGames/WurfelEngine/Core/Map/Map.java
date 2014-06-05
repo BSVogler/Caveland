@@ -52,6 +52,8 @@ public class Map implements Cloneable {
     /** the map data are the blocks in their cells */
     private Cell[][][] data;
     
+    private Generator generator;
+    
     /** every entity on the map is stored in this field */
     private final static ArrayList<AbstractEntity> entitylist = new ArrayList<AbstractEntity>();
     
@@ -71,8 +73,39 @@ public class Map implements Cloneable {
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
         data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
+        
+        generator = new Generator() {
+            @Override
+            public int generate(int x, int y, int z) {
+                return 0;
+            }
+        };
     }
     
+    /**
+     *If no custom generor set will use air.
+     */
+    public void fill(){
+    int chunkpos = 0;
+        for (byte y=-1; y < 2; y++)
+               for (byte x=-1; x < 2; x++){
+                   coordlist[chunkpos][0] = x;
+                   coordlist[chunkpos][1] = y;  
+                   insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
+                   chunkpos++;
+           }
+    }
+    
+    public void fill(Generator generator){
+        int chunkpos = 0;
+        for (byte y=-1; y < 2; y++)
+            for (byte x=-1; x < 2; x++){
+                coordlist[chunkpos][0] = x;
+                coordlist[chunkpos][1] = y;  
+                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
+                chunkpos++;
+           }
+    }
     /**
      * Fill the data array of the map with Cells. Also resets the cellOffset.
      */
@@ -99,18 +132,6 @@ public class Map implements Cloneable {
        
         Gdx.app.log("Map","...Finished filling the map");
     }
-    
-    public void fillWith(Generator generator){
-        int chunkpos = 0;
-        for (byte y=-1; y < 2; y++)
-               for (byte x=-1; x < 2; x++){
-                   coordlist[chunkpos][0] = x;
-                   coordlist[chunkpos][1] = y;  
-                   insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, generator));
-                   chunkpos++;
-           }
-    }
- 
     
      /**
      * Returns the amount of Blocks inside the map in x-direction.
@@ -437,6 +458,10 @@ public class Map implements Cloneable {
         );
     }
     
+    public void setGenerator(Generator generator) {
+        this.generator = generator;
+    }
+    
     /**
      * a method who gives random blocks offset
      * @param numberofblocks the amount of moved blocks
@@ -606,7 +631,7 @@ public class Map implements Cloneable {
     public static int getGameHeight(){
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
-
+        
     /**
      *Clones the map. Not yet checked if a valid copy.
      * @return
@@ -626,6 +651,8 @@ public class Map implements Cloneable {
         for (AbstractEntity entity : entitylist) {
             entity.dispose();
         }
-        
     }
+
+
+    
 }

@@ -271,7 +271,8 @@ public class MsgSystem {
                     return 0;
                 }
             };
-            Controller.newMap(a);
+            Controller.getMap().setGenerator(a);
+            Controller.newMap();
             return true;
         }else if(command.equals("minimap")){
             if (gameplay.getController().getMinimap()==null){

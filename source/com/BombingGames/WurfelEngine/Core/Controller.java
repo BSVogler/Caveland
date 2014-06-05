@@ -30,13 +30,12 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
-import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
@@ -131,21 +130,21 @@ public class Controller {
     }
     
     /**
-     * Creates a new Map.
+     * Creates a new Map using it's generator.
      */
     public static void newMap(){
         map = new Map(!WE.getCurrentConfig().shouldLoadMap());
-        map.fillWithAir();
+        map.fill();
         requestRecalc();
     }
     
     /**
      * Creates a new Map.
-     * @param generator
+     * @param generator using this generator
      */
     public static void newMap(Generator generator){
-        map = new Map(false);
-        map.fillWith(generator);
+        map = new Map(!WE.getCurrentConfig().shouldLoadMap());
+        map.fill(generator);
         requestRecalc();
     }
     

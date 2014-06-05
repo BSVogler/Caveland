@@ -471,7 +471,7 @@ public class Block extends AbstractGameObject {
         renderSide(
             view,
             coords.getProjectedPosX() - ( side != 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() -SCREEN_HEIGHT2+ ( side != 1 ? (int) (SCREEN_WIDTH4*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getProjectedPosY() -SCREEN_HEIGHT-SCREEN_HEIGHT2+ ( side != 1 ? (int) (SCREEN_HEIGHT2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale

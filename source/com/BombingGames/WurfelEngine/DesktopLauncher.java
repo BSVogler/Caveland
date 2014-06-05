@@ -30,10 +30,10 @@
  */
 package com.BombingGames.WurfelEngine;
 
-import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameViewWithCamera;
+import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;

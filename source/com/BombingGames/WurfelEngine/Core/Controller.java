@@ -30,11 +30,13 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
@@ -73,7 +75,6 @@ public class Controller {
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         }
         
-        recalcRequested = true;
         initalized = true;
     }
         
@@ -135,6 +136,8 @@ public class Controller {
     public static void newMap(){
         map = new Map(!WE.getCurrentConfig().shouldLoadMap());
         map.fillWithAir();
+        requestRecalc();
+    }
     
     /**
      * Creates a new Map.

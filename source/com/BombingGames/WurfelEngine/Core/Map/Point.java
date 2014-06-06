@@ -28,10 +28,10 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -139,20 +139,23 @@ public class Point extends AbstractPosition {
         return y + getReferenceY() *Chunk.getGameDepth();
     }
     
+    @Override
+    public Block getBlock() {
+        return getCoord().getBlock();
+    }
     
       /**
      *
      * @return
      */
     @Override
-    public Block getBlock(){
+    public Block getBlockSafe(){
         if (onLoadedMap())
             return getCoord().getBlock();
         else return null;
     }
     
 
-    
     /**
      *
      * @return

@@ -256,12 +256,17 @@ public class Coordinate extends AbstractPosition {
         return this;
     }
     
-    /**
-     *
+    @Override
+    public Block getBlock(){
+        return Controller.getMap().getBlock(this);
+    }
+    
+        /**
+     *Checks of coordinates are valid before fetching the Block.
      * @return
      */
     @Override
-    public Block getBlock(){
+    public Block getBlockSafe(){
         if (onLoadedMap())
             return Controller.getMap().getBlock(this);
         else return null;
@@ -271,7 +276,7 @@ public class Coordinate extends AbstractPosition {
      *
      * @return
      */
-    public Block getBlockSafe(){
+    public Block getBlockClamp(){
         return Controller.getMap().getDataClamp(this);
     }
     
@@ -474,8 +479,8 @@ public class Coordinate extends AbstractPosition {
             x=Map.getBlocksX()-1;
         else
             if (x<0) x=0;
-        if (y>=Map.getBlocksX())
-            y=Map.getBlocksX()-1;
+        if (y>=Map.getBlocksY())
+            y=Map.getBlocksY()-1;
         else if (y<0)
             y=0;
     }

@@ -285,18 +285,18 @@ public abstract class AbstractCharacter extends AbstractEntity {
     
         //check for movement in y
         //top corner
-        if (pos.cpy().addVector(0, - COLISSIONRADIUS, 0).getCoord().getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(0, - COLISSIONRADIUS, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(0, COLISSIONRADIUS, 0).getCoord().getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(0, COLISSIONRADIUS, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.cpy().addVector(-COLISSIONRADIUS, 0, 0).getCoord().getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(-COLISSIONRADIUS, 0, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(COLISSIONRADIUS, 0, 0).getCoord().getBlockSafe().isObstacle())
+        if (pos.cpy().addVector(COLISSIONRADIUS, 0, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         
         return colission;

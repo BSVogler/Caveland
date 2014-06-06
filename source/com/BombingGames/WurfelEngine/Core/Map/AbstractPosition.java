@@ -117,10 +117,18 @@ public abstract class AbstractPosition {
     public abstract Coordinate getCoord();
     
     /**
-     * Get the block at the position. If the coordiante is outside the map return null.
+     * Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
      * @return 
+     * @see AbstractPosition#getBlockSafe() 
      */
     public abstract Block getBlock();
+    
+    /**
+     * Get the block at the position. If the coordiante is outside the map return null. Slower than getBlock().
+     * @return
+     *  @see AbstractPosition#getBlock() 
+     */
+    public abstract Block getBlockSafe();
 
     /**
      *

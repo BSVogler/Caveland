@@ -55,7 +55,7 @@ import java.util.ArrayList;
  * @author Benedikt
  */
 public class View {
-    private final ArrayList<Camera> cameras = new ArrayList<Camera>(6);//max 6 cameras
+    private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     private static BitmapFont font;
     

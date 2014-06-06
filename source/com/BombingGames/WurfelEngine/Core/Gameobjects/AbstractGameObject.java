@@ -86,7 +86,7 @@ public abstract class AbstractGameObject {
      */
     public static final int GAME_DIAGLENGTH = SCREEN_HEIGHT * 2;
     
-    /**Half of GAME_DIAGLENGTH
+    /**Half of GAME_DIAGLENGTH<br />
      * This is in the normal case aqueivalent to SCREEN_HEIGHT.
      */
     public static final int GAME_DIAGLENGTH2 = SCREEN_HEIGHT;

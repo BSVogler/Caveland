@@ -50,7 +50,7 @@ public class MsgSystem {
     private final GameplayScreen gameplay;
     private boolean active = false;
     private final TextField textinput;
-    private final ArrayList<Msg> messages = new ArrayList<Msg>(20); 
+    private final ArrayList<Msg> messages = new ArrayList<>(20); 
     private boolean keyConsoleDown;
     private boolean disposed;
     
@@ -181,8 +181,14 @@ public class MsgSystem {
         int y=0;
         for (Msg msg : messages) {
             Color color = Color.BLUE.cpy();
-            if ("System".equals(msg.sender)) color = Color.GREEN.cpy();
-                else if ("Warning".equals(msg.sender)) color = Color.RED.cpy();
+            if (null != msg.sender) switch (msg.sender) {
+                case "System":
+                    color = Color.GREEN.cpy();
+                    break;
+                case "Warning":
+                    color = Color.RED.cpy();
+                    break;
+            }
             
             //draw
             view.getFont().setColor(color);
@@ -245,43 +251,50 @@ public class MsgSystem {
     }
     
     public boolean executeCommand(String command){
-        if (command.equals("editor")){
-            WE.loadEditor(true);
-            return true;
-        }else if (command.equals("le") || command.equals("lightengine")){ 
-            Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
-            return true;
-        }else if (command.equals("quit") ||command.equals("exit")){ 
-            Gdx.app.exit();
-            return true;
-        } else if (command.equals("menu")){ 
-            WE.showMainMenu();
-            return true;
-        } else if (command.equals("fullscreen")){ 
-            WE.setFullscreen(!WE.isFullscreen());
-            return true;
-        }else if(command.equals("help") || command.equals("about") || command.equals("credits")){
-            add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
-            return true;
-        }else if(command.equals("newmap")){
-            Generator a = new Generator() {
-                
-                @Override
-                public int generate(int x, int y, int z) {
-                    return 0;
+        switch (command) {
+            case "editor":
+                WE.loadEditor(true);
+                return true;
+            case "le":
+            case "lightengine":
+                Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
+                return true;
+            case "quit":
+            case "exit":
+                Gdx.app.exit();
+                return true;
+            case "menu":
+                WE.showMainMenu();
+                return true;
+            case "fullscreen":
+                WE.setFullscreen(!WE.isFullscreen());
+                return true;
+            case "help":
+            case "about":
+            case "credits":
+                add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
+                return true;
+            case "newmap":
+                Generator a = new Generator() {
+                    
+                    @Override
+                    public int generate(int x, int y, int z) {
+                        return 0;
+                    }
+                };
+                Controller.getMap().setGenerator(a);
+                Controller.newMap();
+                return true;
+            case "minimap":
+                if (gameplay.getController().getMinimap()==null){
+                    add("No minimap found. Creating new", "System");
+                    gameplay.getController().setMinimap(new Minimap(gameplay.getController(), gameplay.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
                 }
-            };
-            Controller.getMap().setGenerator(a);
-            Controller.newMap();
-            return true;
-        }else if(command.equals("minimap")){
-            if (gameplay.getController().getMinimap()==null){
-                add("No minimap found. Creating new", "System");
-                gameplay.getController().setMinimap(new Minimap(gameplay.getController(), gameplay.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
-            }
-            gameplay.getController().getMinimap().toggleVisibility();
-            return true;
-        }else if (command.startsWith("gamespeed")){
+                gameplay.getController().getMinimap().toggleVisibility();
+                return true;
+        }
+        
+        if (command.startsWith("gamespeed")){
             if (command.length()==9){
                 add("Gamespeed: "+gameplay.getController().getTimespeed(), "System");
                 return true;

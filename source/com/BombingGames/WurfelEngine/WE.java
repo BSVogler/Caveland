@@ -88,14 +88,24 @@ public class WE extends Game {
         if (args.length > 0){
             //look if contains launch parameters
             for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("-fullscreen") || args[i].equals("-f")){//start in fullscreen
-                    config.fullscreen = true;
-                } else if (args[i].equals("-windowed")) {//start in windowed mode
-                    config.fullscreen = false;
-                } else if (args[i].equals("-w")){//set the width
-                    config.width = Integer.parseInt(args[i+1]);
-                } else if (args[i].equals("-h")){//set the height
-                    config.height = Integer.parseInt(args[i+1]);
+                switch (args[i]) {
+                    case "-fullscreen":
+                    case "-f":
+                        //start in fullscreen
+                        config.fullscreen = true;
+                        break;
+                    case "-windowed":
+                        //start in windowed mode
+                        config.fullscreen = false;
+                        break;
+                    case "-w":
+                        //set the width
+                        config.width = Integer.parseInt(args[i+1]);
+                        break;
+                    case "-h":
+                        //set the height
+                        config.height = Integer.parseInt(args[i+1]);
+                        break;
                 }
             }
         }    

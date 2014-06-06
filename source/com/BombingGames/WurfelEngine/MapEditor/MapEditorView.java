@@ -247,9 +247,9 @@ public class MapEditorView extends View {
         public boolean touchDragged(int screenX, int screenY, int pointer) {
             int id = 0;
             if (buttondown== 1){
-                id = 1;
-            } else if (buttondown== 0){
                 id = 0;
+            } else if (buttondown== 0){
+                id = 1;
                // gras2.play();
             }   
             Coordinate coords = view.screenToGameCoords(screenX,screenY);

@@ -108,11 +108,11 @@ public class Minimap {
                 for (int y = 0; y < Map.getBlocksY(); y++) {
                     sh.setColor(mapdata[x][y]);//get color
                     float rectX = posX + (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
-                    float rectY = posY - y*scaleY;
+                    float rectY = posY - (y+1)*scaleY;
                     
                     sh.translate(rectX, rectY, 0);
                     sh.rotate(0, 0, 1, 45);
-                    sh.rect(0,0,renderSize,-renderSize); 
+                    sh.rect(0,0,renderSize,renderSize); 
                     sh.rotate(0, 0, 1, -45);
                     sh.translate(-rectX, -rectY, 0);
                 }

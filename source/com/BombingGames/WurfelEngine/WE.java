@@ -50,14 +50,14 @@ import java.io.File;
 /**
  *The Main class of the engine. To create a new engine use  {@link com.BombingGames.WurfelEngine#construct(java.lang.String, java.lang.String[]) WurfelEngine.construct}
  * The Wurfel Engine needs Java >1.7 and the API libGDX0.9.9
- * @author Benedikt Vogler
- * @version 1.2.18
+ * @author Benedikt S. Vogler
+ * @version 1.2.49
  */
 public class WE extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.2.18";    
+    public static final String VERSION = "1.2.19";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WE instance;

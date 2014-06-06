@@ -287,7 +287,7 @@ public class Camera{
         }
         //sort the list
         if (depthsort.size()>0)
-            depthsort = sortDepthList(depthsort, 0, depthsort.size()-1);
+            return sortDepthList(depthsort, 0, depthsort.size()-1);
         return depthsort;
     }
     
@@ -573,7 +573,7 @@ public class Camera{
      * @return measured in grid-coordinates 
      */
     public int getVisibleLeftBorder(){
-        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH - 1;
+        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH;
         if (leftborder < 0) return 0;
         
         return leftborder;

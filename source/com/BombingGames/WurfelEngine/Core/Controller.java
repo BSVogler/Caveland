@@ -125,7 +125,7 @@ public class Controller {
      * Informs the map that a recalc is requested. It will do it in the next update. This method  to limit update calls to to per frame
      */
     public static void requestRecalc(){
-        Gdx.app.debug("Controller", "A recalc was requested.");
+        //Gdx.app.debug("Controller", "A recalc was requested.");
         recalcRequested = true;
     }
     

@@ -465,4 +465,18 @@ public class Coordinate extends AbstractPosition {
                - (int) (getHeight() / Math.sqrt(2)) //take axis shortening into account
                + offset;
     }
+
+    /**
+     * Clamps x and y coordiantes if outside of map.
+     */
+    public void clampToMap() {
+        if (x>=Map.getBlocksX())
+            x=Map.getBlocksX()-1;
+        else
+            if (x<0) x=0;
+        if (y>=Map.getBlocksX())
+            y=Map.getBlocksX()-1;
+        else if (y<0)
+            y=0;
+    }
 }

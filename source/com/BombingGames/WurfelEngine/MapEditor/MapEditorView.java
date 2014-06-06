@@ -219,6 +219,7 @@ public class MapEditorView extends View {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Coordinate coords = view.screenToGameCoords(screenX,screenY);
+            coords.clampToMap();
             if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
             
             buttondown=button;
@@ -244,18 +245,18 @@ public class MapEditorView extends View {
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
+            int id = 0;
             if (buttondown== 1){
-                Coordinate coords = view.screenToGameCoords(screenX,screenY);
-                if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
-                Controller.getMap().setData(coords, Block.getInstance(0));
-                requestRecalc();
+                id = 1;
             } else if (buttondown== 0){
-                 Coordinate coords = view.screenToGameCoords(screenX,screenY);
-                if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
-                Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
-                requestRecalc();
+                id = 0;
                // gras2.play();
             }   
+            Coordinate coords = view.screenToGameCoords(screenX,screenY);
+            coords.clampToMap();
+            if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+            Controller.getMap().setData(coords, Block.getInstance(id,0,coords));
+            requestRecalc();
             return false;
         }
 

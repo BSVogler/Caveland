@@ -42,6 +42,12 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 public class Configuration {
     /**
+     * Load engine configuration from a file
+     */
+    public void loadfromFile(){
+    }
+    
+    /**
      * The gravity constant in m/s^2
      * @return default is 9.81m/s^2
      */
@@ -92,12 +98,6 @@ public class Configuration {
         return 1/128f;
     }
     
-    
-    /**
-     * Load engine configuration from a file
-     */
-    public void loadfromFile(){
-    }
 
     /**
      * The virtual render width (resolution).

@@ -66,6 +66,7 @@ public class MapEditorView extends View {
         
         camera = new Camera();
         addCamera(camera);
+        View.addInputProcessor(new InputListener(this.controller, this));
         
         controller.setMinimap(
             new Minimap(

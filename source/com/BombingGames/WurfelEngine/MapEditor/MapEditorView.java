@@ -43,10 +43,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -58,6 +55,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MapEditorView extends View {
     private MapEditorController controller;
     private Camera camera;
+    
+    private Navigation nav;
 
     @Override
     public void init(Controller controller) {
@@ -77,6 +76,7 @@ public class MapEditorView extends View {
             )
         );
         
+        nav = new Navigation();
         
 
         
@@ -115,44 +115,7 @@ public class MapEditorView extends View {
     @Override
     public void render() {
         super.render();
-        
-        //draw layer navigation  on right side
-        ShapeRenderer sh = getShapeRenderer();
-        Gdx.gl.glEnable(GL10.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glLineWidth(3);
-
-        
-        sh.begin(ShapeRenderer.ShapeType.Line);
-        
-        int rightborder = Gdx.graphics.getWidth();
-        int topBorder = Gdx.graphics.getHeight();
-        int steps = topBorder/(Map.getBlocksZ()+1);
-        
-        for (int i = 1; i < Map.getBlocksZ()+1; i++) {
-            if (((MapEditorController) getController()).getCurrentLayer() == i )
-                sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0,0.1f));
-            else 
-                sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.5f));
-            sh.line(
-                rightborder,
-                i*steps,
-                rightborder-50- ( ((MapEditorController) getController()).getCurrentLayer() == i ?40:0),
-                i*steps
-            );
-            
-            //"shadow"
-            sh.setColor(Color.DARK_GRAY.cpy().sub(0, 0, 0,0.5f));
-            sh.line(
-                rightborder,
-                i*steps+3,
-                rightborder-50- ( ((MapEditorController) getController()).getCurrentLayer() == i ?40:0),
-                i*steps+3
-            ); 
-        }
-        
-        sh.end();
-        Gdx.gl.glDisable(GL10.GL_BLEND);
+        nav.render(this);
     }
 
     @Override

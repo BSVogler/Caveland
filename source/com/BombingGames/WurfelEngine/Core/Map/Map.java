@@ -587,8 +587,8 @@ public class Map implements Cloneable {
         return list;
     }
     
-        /**
-     *Returns a coordinate pointing to the absolute(?) center of the map. Height is half the map's height.
+    /**
+     *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
      * @return
      */
     public static Point getCenter(){
@@ -596,7 +596,7 @@ public class Map implements Cloneable {
     }
     
     /**
-     *Returns a corodinate pointing to the absolute(?) center of the map.
+     *Returns a corodinate pointing to the absolute center of the map.
      * @param height You custom height.
      * @return
      */

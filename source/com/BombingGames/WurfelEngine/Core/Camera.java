@@ -168,12 +168,12 @@ public class Camera{
             projectionPosY = focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 ;
         } else {
             //update camera's position according to relativeChunk
-            int[] currentChunks = Controller.getMap().getChunkCoords(0).clone();
-            projectionPosX += (relativeChunk[0]-currentChunks[0])*Chunk.getGameWidth();
-            projectionPosY += (relativeChunk[1]-currentChunks[1])*Chunk.getGameHeight();
+            int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);
+            projectionPosX += (relativeChunk[0]-currentTopLeftChunk[0])*Chunk.getGameWidth();
+            projectionPosY += (relativeChunk[1]-currentTopLeftChunk[1])*Chunk.getGameHeight();
             
             //update relativeChunk
-            relativeChunk = currentChunks;
+            relativeChunk = currentTopLeftChunk.clone();
         }
         
         position.set(projectionPosX+ getViewportWidth()/2 , projectionPosY+ getViewportHeight()/2 , 0); 

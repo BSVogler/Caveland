@@ -102,6 +102,7 @@ public abstract class AbstractGameObject {
     private static TextureAtlas spritesheet;
     private static Pixmap pixmap;
     private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];//{category}{id}{value}
+    private static int drawCalls =0;
     
     private final int id; 
     private byte value;
@@ -261,6 +262,7 @@ public abstract class AbstractGameObject {
 
         sprite.setColor(color);
         sprite.draw(view.getBatch());
+        drawCalls++;
     }
     
     /**
@@ -508,6 +510,29 @@ public abstract class AbstractGameObject {
     public static AtlasRegion[][][] getSprites() {
         return sprites;
     }
+
+    /**
+     * Reset couner for this frame
+     */
+    public static void resetDrawCalls() {
+        AbstractGameObject.drawCalls = 0;
+    }
+
+    /**
+     * Maybe not quite correct. A single block has only one drawcall even it should consist of three.
+     * @return 
+     */
+    public static int getDrawCalls() {
+        return drawCalls;
+    }
+    
+    /**
+     * When calling sprite.draw this hsould also be called for statistics.
+     */
+    protected void increaseDrawCalls(){
+        drawCalls++;
+    }
+    
     
     /**
      *

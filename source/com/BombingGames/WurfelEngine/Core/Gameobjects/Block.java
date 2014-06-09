@@ -538,7 +538,7 @@ public class Block extends AbstractGameObject {
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  
         sprite.draw(view.getBatch());
-    
+        increaseDrawCalls();
     }
 
     @Override

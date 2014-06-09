@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -135,6 +136,8 @@ public class View {
      * @param delta time since last update in ms.
      */
     public void update(final float delta){
+        AbstractGameObject.resetDrawCalls();
+        
         //update cameras
         for (Camera camera : cameras) {
             if (camera.togglesChunkSwitch()) {

@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -122,7 +123,8 @@ public class DevTools {
             }
             
             //draw FPS-String
-            view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 10, 10);
+            view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 15, 15);
+            view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30);
             
             //draw diagramm
             ShapeRenderer shr = view.getShapeRenderer();

@@ -69,7 +69,7 @@ public class Camera{
     private final Matrix4 combined = new Matrix4();
 
     /** the viewport width&height **/
-    private float screenWidth,screenHeight;
+    private int screenWidth,screenHeight;
     
     /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
     private int screenPosX, screenPosY;
@@ -213,9 +213,9 @@ public class Camera{
             //set up the viewport
             Gdx.gl.glViewport(
                 screenPosX,
-                (int) (Gdx.graphics.getHeight()-screenHeight-screenPosY),//the parameter for the posY is a bit complicated because the y-axis is turned
-                (int) screenWidth,
-                (int) screenHeight
+                Gdx.graphics.getHeight()-screenHeight-screenPosY,
+                screenWidth,
+                screenHeight
             );
             
             view.getBatch().begin();

@@ -61,11 +61,11 @@ public class MapEditorView extends View {
     @Override
     public void init(Controller controller) {
         super.init(controller);
+        Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        camera = new Camera();
-        addCamera(camera);
         View.addInputProcessor(new InputListener(this.controller, this));
+        addCamera(camera = new Camera());
         
         controller.setMinimap(
             new Minimap(
@@ -123,14 +123,16 @@ public class MapEditorView extends View {
         super.update(delta);
         Input input = Gdx.input;
         
+        //update focusentity
         controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 0, 1));
         
+        //manage camera speed
         int speed;
-        
         if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             speed = 2;
         else speed = 4;
         
+        //manage camera movement
         if (!GameplayScreen.msgSystem().isActive()){
             if (input.isKeyPressed(Input.Keys.W))
                 camera.move(0, (int) (-delta/speed));

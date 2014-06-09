@@ -272,7 +272,7 @@ public class MsgSystem {
             case "help":
             case "about":
             case "credits":
-                add("Wurfel Engine Version:"+WE.VERSION+"\n"+WE.getCredits(), "System");
+                add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
             case "newmap":
                 Generator a = new Generator() {
@@ -291,6 +291,10 @@ public class MsgSystem {
                     gameplay.getController().setMinimap(new Minimap(gameplay.getController(), gameplay.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
                 }
                 gameplay.getController().getMinimap().toggleVisibility();
+                return true;
+            case "devtools":
+            case "dev":
+                gameplay.getController().getDevTools().setVisible(!gameplay.getController().getDevTools().isVisible());
                 return true;
         }
         

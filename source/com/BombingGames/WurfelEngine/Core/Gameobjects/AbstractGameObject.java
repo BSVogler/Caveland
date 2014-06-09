@@ -66,7 +66,7 @@ public abstract class AbstractGameObject {
     public static final int SCREEN_WIDTH4 = SCREEN_WIDTH / 4;
     
     /**
-     * The width (x-axis) of the sprite size
+     * The height (y-axis) of the sprite size
      */
     public static final int SCREEN_HEIGHT = 80;
     /**The half (2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/

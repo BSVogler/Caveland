@@ -32,44 +32,47 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import java.io.File;
 
 /**
- *
+ *A menu for choosing a map.
  * @author Benedikt Vogler
  */
 public class LoadMenu {
-    private boolean open;
+    private Window window;
     private final static int margin = 100;
-    
-    public void render(View view) {
-        ShapeRenderer sh = view.getShapeRenderer();
-        sh.begin(ShapeRenderer.ShapeType.Filled);
-        sh.rect(margin, margin, Gdx.graphics.getWidth()-margin*2, Gdx.graphics.getHeight()-margin*2);
-        sh.end();
-        
-        int i=0;
-        File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
-        for (final File fileEntry : wd.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                view.drawString(fileEntry.getName(), margin+50, Gdx.graphics.getHeight()-margin-i*50, Color.WHITE.cpy());
-                i++;
-                //listFilesForFolder(fileEntry);
-            } else {
-                //System.out.println(fileEntry.getName());
-            }
-        }
-            
-        
+
+    public void viewInit(View view){
+        window = new Window("Choose a map", view.getSkin());
+        window.setWidth(Gdx.graphics.getWidth()-margin*2);
+        window.setHeight(Gdx.graphics.getHeight()-margin*2);
+        window.setKeepWithinStage(true);
+        window.setModal(true);
+        window.setVisible(false);
+        view.getStage().addActor(window);
     }
     
     public boolean isOpen() {
-       return open;
+       return window.isVisible();
     }
 
     public void setOpen(boolean open) {
-        this.open = open;
+        window.setVisible(open);
+
+        if (open){
+            int i=0;
+            File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
+            for (final File fileEntry : wd.listFiles()) {
+                if (fileEntry.isDirectory()) {
+                    window.add(fileEntry.getName());
+                    i++;
+                    //listFilesForFolder(fileEntry);
+                } else {
+                    //System.out.println(fileEntry.getName());
+                }
+            }
+        }
     }
 }

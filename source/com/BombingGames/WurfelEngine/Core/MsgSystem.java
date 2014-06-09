@@ -105,13 +105,14 @@ public class MsgSystem {
      */
     public void viewInit(View view, final int xPos, final int yPos){
         stage = view.getStage();
-        stage.addActor(textinput);
         
         textinput = new TextField("", view.getSkin());
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
+        
+        stage.addActor(textinput);
     }
         
     /**

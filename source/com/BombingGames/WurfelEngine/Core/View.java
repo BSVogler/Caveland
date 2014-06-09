@@ -102,19 +102,20 @@ public class View {
         
         this.controller = controller;
         
-        //set up stage
-        stage = new Stage();
-        View.addInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
-        
-        GameplayScreen.msgSystem().viewInit(this,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
-        
         //set up renderer
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        
+        //set up stage
+        stage = new Stage();
+        View.addInputProcessor(stage);
+        skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
+        
+        controller.getLoadMenu().viewInit(this);
+        GameplayScreen.msgSystem().viewInit(this,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
         
         //set up cursor
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
@@ -206,12 +207,6 @@ public class View {
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
             //end of setup
-            
-            //render load screen
-            if (controller.getLoadMenu().isOpen()){
-                controller.getLoadMenu().render(this);
-            }
-            
             
             controller.getDevTools().render(this);
 

@@ -48,7 +48,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -58,19 +57,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class MapEditorView extends View {
     private MapEditorController controller;
-    private Stage stage;
     private Camera camera;
 
     @Override
     public void init(Controller controller) {
         super.init(controller);
-        this.controller = (MapEditorController) controller;
-        
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-               
-        View.addInputProcessor(new InputListener(this.controller, this));
-        View.addInputProcessor(stage);
-        
+        this.controller = (MapEditorController) controller;     
         
         camera = new Camera();
         addCamera(camera);
@@ -94,35 +86,34 @@ public class MapEditorView extends View {
         playbutton.setX(Gdx.graphics.getWidth()-40);
         playbutton.setY(Gdx.graphics.getHeight()-40);
         playbutton.addListener(new PlayButton(controller, false));
-        stage.addActor(playbutton);
+        getStage().addActor(playbutton);
         
          //add load button
         final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
         loadbutton.setX(Gdx.graphics.getWidth()-80);
         loadbutton.setY(Gdx.graphics.getHeight()-40);
         loadbutton.addListener(new LoadButton(controller));
-        stage.addActor(loadbutton);
+        getStage().addActor(loadbutton);
         
          //add save button
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
         savebutton.setX(Gdx.graphics.getWidth()-120);
         savebutton.setY(Gdx.graphics.getHeight()-40);
         savebutton.addListener(new PlayButton(controller,false));
-        stage.addActor(savebutton);
+        getStage().addActor(savebutton);
         
         //add replaybutton
         final Image replaybutton = new Image(spritesheet.findRegion("replay_button"));
         replaybutton.setX(Gdx.graphics.getWidth()-160);
         replaybutton.setY(Gdx.graphics.getHeight()-40);
         replaybutton.addListener(new PlayButton(controller, true));
-        stage.addActor(replaybutton);
+        getStage().addActor(replaybutton);
     }
 
     
     @Override
     public void render() {
         super.render();
-        stage.draw();
         
         //draw layer navigation  on right side
         ShapeRenderer sh = getShapeRenderer();

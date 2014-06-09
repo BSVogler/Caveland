@@ -49,6 +49,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +72,7 @@ public class View {
     private boolean keyF5isUp;
     
     private Stage stage;
+    private Skin skin;
     
     
     /**
@@ -83,7 +85,7 @@ public class View {
         font = new BitmapFont(false);
         //font.scale(2);
 
-        
+
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
@@ -103,7 +105,9 @@ public class View {
         //set up stage
         stage = new Stage();
         View.addInputProcessor(stage);
-        GameplayScreen.msgSystem().viewInit(this);
+        skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
+        
+        GameplayScreen.msgSystem().viewInit(this,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
         
         //set up renderer
         hudCamera = new OrthographicCamera();
@@ -434,4 +438,9 @@ public class View {
     public Stage getStage() {
         return stage;
     }
+
+    public Skin getSkin() {
+        return skin;
+    }
+    
 }

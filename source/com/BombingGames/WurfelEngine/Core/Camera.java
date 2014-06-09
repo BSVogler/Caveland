@@ -265,9 +265,13 @@ public class Camera{
                     if (! blockAtCoord.isHidden()
                         && !blockAtCoord.isClipped()
                         && 
-                            coord.getProjectedPosY()
-                        <
-                            projectionPosY + getViewportHeight()
+                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
+                            <
+                            (projectionPosY + getViewportHeight())//camera's bottom
+                        && 
+                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT/2)//bottom of sprite
+                            >
+                            (projectionPosY)//camera's top
                     ) {
                         depthsort.add(new RenderDataObject(blockAtCoord, coord));
                     }

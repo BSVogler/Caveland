@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>Spritesheet.png</filename>
+        <filename>../../source/com/BombingGames/WurfelEngine/Core/images/Spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>Spritesheet.txt</filename>
+                <filename>../../source/com/BombingGames/WurfelEngine/Core/images/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

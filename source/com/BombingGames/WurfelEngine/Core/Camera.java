@@ -265,13 +265,14 @@ public class Camera{
                     if (! blockAtCoord.isHidden()
                         && !blockAtCoord.isClipped()
                         && 
+                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT/2)//bottom of sprite
+                            >
+                            projectionPosY//camera's top
+                        && 
                             (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
                             <
                             (projectionPosY + getViewportHeight())//camera's bottom
-                        && 
-                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT/2)//bottom of sprite
-                            >
-                            (projectionPosY)//camera's top
+
                     ) {
                         depthsort.add(new RenderDataObject(blockAtCoord, coord));
                     }
@@ -291,13 +292,14 @@ public class Camera{
         }
         //sort the list
         if (depthsort.size()>0)
-            return sortDepthList(depthsort, 0, depthsort.size()-1);
+            return sortDepthList(depthsort);
         return depthsort;
     }
     
     /**
      * Using Quicksort to sort.
      * From small to big values.
+     * @param depthsort the unsorted list
      * @param low the lower border
      * @param high the higher border
      */
@@ -323,7 +325,27 @@ public class Camera{
         
         return depthsort;
     }
-        
+    
+    /**
+     *  Using InsertionSort to sort. Needs further testing but actually a bit slower than quicksort because data ist almost presorted.
+     * @param depthsort unsorted list
+     * @return sorted list
+     * @since 1.2.20
+     */
+    private ArrayList<RenderDataObject> sortDepthList(ArrayList<RenderDataObject> depthsort) {
+        int i, j; 
+        RenderDataObject newValue;
+        for (i = 1; i < depthsort.size(); i++) {
+            newValue = depthsort.get(i);
+            j = i;
+            while (j > 0 && depthsort.get(j - 1).getDepth() > newValue.getDepth()) {
+                  depthsort.set(j, depthsort.get(j - 1));
+                  j--;
+            }
+            depthsort.set(j,newValue);
+        }
+        return depthsort;
+    }
     /**
      * Filters every Block (and side) wich is not visible. Boosts rendering speed.
      */

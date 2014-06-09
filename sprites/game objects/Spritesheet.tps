@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.3.2</string>
+        <string>3.3.4</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/game objects/Spritesheet.tps</string>
         <key>autoSDSettings</key>
@@ -243,6 +243,7 @@
             <filename>entities/e32-0.png</filename>
             <filename>entities/error.png</filename>
             <filename>entities/e20-0.png</filename>
+            <filename>entities/e13-0.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

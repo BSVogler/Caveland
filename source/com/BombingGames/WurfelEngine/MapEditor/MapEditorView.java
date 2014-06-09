@@ -167,6 +167,9 @@ public class MapEditorView extends View {
     public void update(final float delta) {
         super.update(delta);
         Input input = Gdx.input;
+        
+        controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 0, 1));
+        
         int speed;
         
         if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))

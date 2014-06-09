@@ -452,23 +452,18 @@ public class Coordinate extends AbstractPosition {
     
     @Override
     public int getProjectedPosX() {
-        int offset = 0;
-        if (getZ()>=0)
-            offset = getCellOffset()[0];
         return getRelX() * Block.SCREEN_WIDTH //x-coordinate multiplied by it's dimension in this direction
                + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
-               + offset;
+               + getCellOffset()[0];
     }
 
     @Override
     public int getProjectedPosY() {
-        int offset = 0;
-        if (getZ()>=0)
-            offset = getCellOffset()[1] / 2 //add the objects position inside this coordinate
-                    - (int) (getCellOffset()[2] / Math.sqrt(2)); //add the objects position inside this coordinate
-        return getRelY() * Block.SCREEN_DEPTH2 //y-coordinate * the tile's half size size
-               - (int) (getHeight() / Math.sqrt(2)) //take axis shortening into account
-               + offset;
+        return (int) (getRelY() * Block.SCREEN_DEPTH2 //y-coordinate * the tile's half size size
+            - getHeight() *0.7071067811865475f //subtract height and take axis shortening into account
+            + getCellOffset()[1] / 2 //add the objects y position inside this coordinate
+            - getCellOffset()[2] *0.7071067811865475f //subtract the objects z position inside this coordinate;
+            );
     }
 
     /**

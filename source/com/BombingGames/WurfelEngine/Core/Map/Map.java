@@ -28,11 +28,11 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class Map implements Cloneable {
     private Generator generator;
     
     /** every entity on the map is stored in this field */
-    private final static ArrayList<AbstractEntity> entitylist = new ArrayList<>(20);
+    private final static ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
     
     /**
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
@@ -490,11 +490,11 @@ public class Map implements Cloneable {
     }
     
     /**
-     * Returns the entitylist
+     * Returns the entityList
      * @return
      */
     public ArrayList<AbstractEntity> getEntitys() {
-        return entitylist;
+        return entityList;
     }
 
     /**
@@ -532,10 +532,10 @@ public class Map implements Cloneable {
      * @return a list with the entitys
      */
     @SuppressWarnings({"unchecked"})
-    public <type> ArrayList<type> getAllEntitysOfType(final Class<? extends AbstractEntity> type) {
+    public <type extends AbstractEntity> ArrayList<type> getAllEntitysOfType(final Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<>(30);//defautl size 30
 
-        for (AbstractEntity entity : entitylist) {//check every entity
+        for (AbstractEntity entity : entityList) {//check every entity
             if (type.isInstance(entity)) {//if the entity is of the wanted type
                 list.add((type) entity);//add it to list
             }
@@ -551,7 +551,7 @@ public class Map implements Cloneable {
     public ArrayList<AbstractEntity> getAllEntitysOnCoord(final Coordinate coord) {
         ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
-        for (AbstractEntity ent : entitylist) {
+        for (AbstractEntity ent : entityList) {
             if (Arrays.equals(
                     ent.getPos().getCoord().getRel(),
                     coord.getRel()
@@ -575,7 +575,7 @@ public class Map implements Cloneable {
     public <type> ArrayList<type> getAllEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<>(5);
 
-        for (AbstractEntity ent : entitylist) {
+        for (AbstractEntity ent : entityList) {
             if (
                 Arrays.equals(ent.getPos().getCoord().getRel(),coord.getRel())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
@@ -650,7 +650,7 @@ public class Map implements Cloneable {
      *
      */
     public static void staticDispose(){
-        for (AbstractEntity entity : entitylist) {
+        for (AbstractEntity entity : entityList) {
             entity.dispose();
         }
     }

@@ -32,7 +32,13 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import java.io.File;
 
@@ -41,16 +47,65 @@ import java.io.File;
  * @author Benedikt Vogler
  */
 public class LoadMenu {
-    private Window window;
     private final static int margin = 100;
+    private Window window;
+    private TextField textSearch;
+    private Table content;
 
     public void viewInit(View view){
-        window = new Window("Choose a map", view.getSkin());
+        Skin skin = view.getSkin();
+        window = new Window("Choose a map", skin);
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
+        window.setX(margin);
+        window.setY(margin);
         window.setKeepWithinStage(true);
         window.setModal(true);
         window.setVisible(false);
+        window.setMovable(false);
+
+        // The window shall fill the whole window:
+        //window.setFillParent(true);
+
+        // This table groups the Search label and the TextField used to gather
+        // the search criteria:
+        Table search = new Table();
+        search.add(new Label("Search", skin)).spaceRight(10f);
+
+        textSearch = new TextField("Not implemented yet", skin);
+
+        // This event waits untilk the RETURN key is pressed to reorganize the
+        // intens inside the grid:
+        textSearch.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                //if (keycode == Input.Keys.ENTER)
+                    //rearrangeTable();
+
+                // Gdx.app.log("KEY", String.valueOf(keycode));
+
+                return super.keyDown(event, keycode);
+            }
+        });
+
+        search.add(textSearch).minSize(400f, 15f);
+
+        // The search field will be aligned at the right of the window:
+        window.add(search).right();
+        window.row();
+
+        //rearrangeTable();
+
+        content = new Table(skin);
+        // Prepares the scroll manager:
+        ScrollPane scroll = new ScrollPane(content, skin);
+
+        // Only scroll vertically:
+        scroll.setScrollingDisabled(true, false);
+
+        window.add(scroll).fill().expand();
+        window.row();
+        
         view.getStage().addActor(window);
     }
     
@@ -66,7 +121,8 @@ public class LoadMenu {
             File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
             for (final File fileEntry : wd.listFiles()) {
                 if (fileEntry.isDirectory()) {
-                    window.add(fileEntry.getName());
+                    content.add(fileEntry.getName());
+                    content.row();
                     i++;
                     //listFilesForFolder(fileEntry);
                 } else {

@@ -105,6 +105,9 @@ public class View implements Manager {
         
         this.controller = controller;
         
+        //clear old stuff
+        cameras.clear();
+        
         //set up renderer
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

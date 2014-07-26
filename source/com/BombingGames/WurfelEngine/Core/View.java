@@ -297,7 +297,7 @@ public class View implements Manager {
      * 
      * @return
      */
-    public BitmapFont getFont() {
+    public static BitmapFont getFont() {
         return font;
     }
 

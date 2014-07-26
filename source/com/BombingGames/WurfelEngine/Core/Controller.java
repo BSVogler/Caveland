@@ -281,6 +281,7 @@ public class Controller implements Manager {
      *
      * @return
      */
+    @Override
     public boolean isInitalized() {
         return initalized;
     }  
@@ -288,6 +289,7 @@ public class Controller implements Manager {
         /**
      * should be called when entered
      */
+    @Override
     public void enter(){}
     
     /**

@@ -231,10 +231,10 @@ public class Camera{
             }
             
             //render map
-            ArrayList<RenderDataObject> depthlist = createDepthList();
+            ArrayList<RenderDataDTO> depthlist = createDepthList();
             
             //render vom bottom to top
-            for (RenderDataObject renderobject : depthlist) {
+            for (RenderDataDTO renderobject : depthlist) {
                 renderobject.getGameObject().render(view, camera, renderobject.getCoords()); 
             }
             
@@ -246,8 +246,8 @@ public class Camera{
      * Fills the map into a list and sorts it in the order of the rendering, called the "depthlist".
      * @return 
      */
-    protected ArrayList<RenderDataObject> createDepthList() {
-        ArrayList<RenderDataObject> depthsort = new ArrayList<>(100);//start by size 100
+    protected ArrayList<RenderDataDTO> createDepthList() {
+        ArrayList<RenderDataDTO> depthsort = new ArrayList<>(100);//start by size 100
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();
@@ -274,7 +274,7 @@ public class Camera{
                             (projectionPosY + getViewportHeight())//camera's bottom
 
                     ) {
-                        depthsort.add(new RenderDataObject(blockAtCoord, coord));
+                        depthsort.add(new RenderDataDTO(blockAtCoord, coord));
                     }
                 }
             }
@@ -287,7 +287,7 @@ public class Camera{
                 entity.getPos().getProjectedPosY() < projectionPosY + getViewportHeight()
                 )
                     depthsort.add(
-                        new RenderDataObject(entity, entity.getPos())
+                        new RenderDataDTO(entity, entity.getPos())
                     );
         }
         //sort the list
@@ -303,7 +303,7 @@ public class Camera{
      * @param low the lower border
      * @param high the higher border
      */
-    private ArrayList<RenderDataObject> sortDepthList(ArrayList<RenderDataObject> depthsort, int low, int high) {
+    private ArrayList<RenderDataDTO> sortDepthList(ArrayList<RenderDataDTO> depthsort, int low, int high) {
         int left = low;
         int right = high;
         int middle = depthsort.get((low+high)/2).getDepth();
@@ -313,7 +313,7 @@ public class Camera{
             while(depthsort.get(right).getDepth() > middle) right--;
 
             if (left <= right) {
-                RenderDataObject tmp = depthsort.set(left, depthsort.get(right));
+                RenderDataDTO tmp = depthsort.set(left, depthsort.get(right));
                 depthsort.set(right, tmp);
                 left++; 
                 right--;
@@ -332,9 +332,9 @@ public class Camera{
      * @return sorted list
      * @since 1.2.20
      */
-    private ArrayList<RenderDataObject> sortDepthList(ArrayList<RenderDataObject> depthsort) {
+    private ArrayList<RenderDataDTO> sortDepthList(ArrayList<RenderDataDTO> depthsort) {
         int i, j; 
-        RenderDataObject newValue;
+        RenderDataDTO newValue;
         for (i = 1; i < depthsort.size(); i++) {
             newValue = depthsort.get(i);
             j = i;

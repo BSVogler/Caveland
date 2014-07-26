@@ -96,7 +96,7 @@ public class View implements Manager {
     }
     
     /**
-     *Loades some files and set up everything.
+     *Loades some files and set up everything. This should be done after creating and linking the view.
      * @param controller
      */
     public void init(final Controller controller){

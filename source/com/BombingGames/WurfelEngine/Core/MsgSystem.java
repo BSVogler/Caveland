@@ -38,6 +38,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  *The message system can manage&show messages (Msg).
@@ -298,6 +299,15 @@ public class MsgSystem {
                 return true;
         }
         
+        
+        if (command.startsWith("loadmap")){
+            StringTokenizer st = new StringTokenizer(command, " ");
+            st.nextToken();
+            
+            Controller.loadMap(st.nextToken());
+            return true;
+        }
+         
         if (command.startsWith("gamespeed")){
             if (command.length()==9){
                 add("Gamespeed: "+gameplay.getController().getTimespeed(), "System");

@@ -72,13 +72,13 @@ public class Chunk {
     * @param pos the position of the chunk. Value between 0-8
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
-    * @param newMap load from HD(false) or generate new (true)?
+     * @param mapname
      * @param generator
     */
-    public Chunk(final int pos, final int coordX, final int coordY, final boolean newMap, final Generator generator){
+    public Chunk(final int pos, final int coordX, final int coordY, final String mapname, final Generator generator){
         this();
 
-        if (newMap || !load(pos, coordX, coordY))
+        if (!load(pos, coordX, coordY))
             fill(coordX, coordY, generator);
     }
     
@@ -182,48 +182,52 @@ public class Chunk {
     
     /**
      * reads the map info file and sets the size of the chunk
+     * @param mapName
      */
-    public static void readMapInfo(){
+    public static void readMapInfo(String mapName){
         BufferedReader bufRead;
-        try {
+
             //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/map/map."+METAFILESUFFIX);
-            Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
-            bufRead =  path.reader(1024);
-            String mapname = bufRead.readLine();
-            mapname = mapname.substring(2, mapname.length());
-            Gdx.app.log("Map","Loading map: "+mapname);
-            GameplayScreen.msgSystem().add("Loading map: "+mapname);   
-            
-            String mapversion = bufRead.readLine(); 
-            mapversion = mapversion.substring(2, mapversion.length());
-            Gdx.app.log("Map","Map Version:"+mapversion);
-            
-            String blocksXString = bufRead.readLine();
-            Gdx.app.debug("Map","sizeX:"+blocksXString);
-            blocksXString = blocksXString.substring(2, blocksXString.length());
-            blocksX = Integer.parseInt(blocksXString);
-            
-            String blocksYString = bufRead.readLine();
-            Gdx.app.debug("Map","sizeY:"+blocksYString);
-            blocksYString = blocksYString.substring(2, blocksYString.length());
-            blocksY = Integer.parseInt(blocksYString);
-            
-            String blocksZString = bufRead.readLine();
-            Gdx.app.debug("Map","sizeZ:"+blocksZString);
-            blocksZString = blocksZString.substring(2, blocksZString.length());
-            blocksZ = Integer.parseInt(blocksZString);
-        } catch (IOException ex) {
-            if (!WE.isFullscreen()) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/map/",
-                    "Loading error",
-                     JOptionPane.ERROR_MESSAGE
-                );
-            }
-             Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/map/"+mapName+"."+METAFILESUFFIX);
+            if (path.exists()){
+                Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
+                try {
+                    bufRead =  path.reader(1024);
+                    String mapnameInFile = bufRead.readLine();
+                    mapnameInFile = mapnameInFile.substring(2, mapnameInFile.length());
+                    Gdx.app.log("Map","Loading map: "+mapnameInFile);
+                    GameplayScreen.msgSystem().add("Loading map: "+mapnameInFile);   
+
+                    String mapversion = bufRead.readLine(); 
+                    mapversion = mapversion.substring(2, mapversion.length());
+                    Gdx.app.log("Map","Map Version:"+mapversion);
+
+                    String blocksXString = bufRead.readLine();
+                    Gdx.app.debug("Map","sizeX:"+blocksXString);
+                    blocksXString = blocksXString.substring(2, blocksXString.length());
+                    blocksX = Integer.parseInt(blocksXString);
+
+                    String blocksYString = bufRead.readLine();
+                    Gdx.app.debug("Map","sizeY:"+blocksYString);
+                    blocksYString = blocksYString.substring(2, blocksYString.length());
+                    blocksY = Integer.parseInt(blocksYString);
+
+                    String blocksZString = bufRead.readLine();
+                    Gdx.app.debug("Map","sizeZ:"+blocksZString);
+                    blocksZString = blocksZString.substring(2, blocksZString.length());
+                    blocksZ = Integer.parseInt(blocksZString);
+                } catch (IOException ex) {
+                    if (!WE.isFullscreen()) {
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/map/",
+                            "Loading error",
+                             JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                    Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else Gdx.app.debug("Chunk", "Map named \""+ mapName +"\" could not be found.");
     }
     
         /**

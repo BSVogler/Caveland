@@ -45,7 +45,7 @@ import java.util.Arrays;
 public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
         
-    private final boolean newMap;
+    private final String mapname;
     
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
@@ -60,14 +60,14 @@ public class Map implements Cloneable {
     
     /**
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
-     * @param newMap when "true" a new map will be generated, when "false" a map will be loaded from disk 
+     * @param name if available on disk it will be load
      * @see fillWithBlocks(boolean load)
      */
-    public Map(final boolean newMap) {
-        Gdx.app.debug("Map","Should the Engine generate a new map: "+newMap);
-        this.newMap = newMap;
+    public Map(final String name) {
+        Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
+        this.mapname = name;
         
-        if (!newMap) Chunk.readMapInfo();
+        Chunk.readMapInfo(name);
         
         //save chunk size, which are now loaded
         blocksX = Chunk.getBlocksX()*3;
@@ -127,7 +127,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, newMap, generator));
+                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, mapname, generator));
                 chunkpos++;
         }
        
@@ -237,7 +237,7 @@ public class Map implements Cloneable {
                         chunk = new Chunk(pos,
                                     coordlist[pos][0],
                                     coordlist[pos][1],
-                                    newMap,
+                                    mapname,
                                     generator
                                 );
                     }

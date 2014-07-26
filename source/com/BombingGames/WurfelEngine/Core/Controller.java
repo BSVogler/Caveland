@@ -133,7 +133,7 @@ public class Controller implements Manager {
      * Creates a new Map using it's generator.
      */
     public static void newMap(){
-        map = new Map(!WE.getCurrentConfig().shouldLoadMap());
+        map = new Map("nonameset");
         map.fill();
         requestRecalc();
     }
@@ -143,8 +143,14 @@ public class Controller implements Manager {
      * @param generator using this generator
      */
     public static void newMap(Generator generator){
-        map = new Map(!WE.getCurrentConfig().shouldLoadMap());
+        map = new Map("nonameset");
         map.fill(generator);
+        requestRecalc();
+    }
+    
+    public static void loadMap(String name){
+        map = new Map(name);
+        map.fill();
         requestRecalc();
     }
     

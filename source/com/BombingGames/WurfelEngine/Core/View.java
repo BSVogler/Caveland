@@ -56,7 +56,7 @@ import java.util.ArrayList;
  * The View manages everything what should be drawn.
  * @author Benedikt
  */
-public class View {
+public class View implements Manager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     private static BitmapFont font;
@@ -73,6 +73,8 @@ public class View {
     
     private Stage stage;
     private Skin skin;
+    
+    private boolean initalized;
     
     
     /**
@@ -120,6 +122,8 @@ public class View {
         //set up cursor
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
         Gdx.input.setCursorImage(cursor, 8, 8);
+        
+        initalized = true;
     }
     
     /**
@@ -436,6 +440,14 @@ public class View {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public boolean isInitalized() {
+        return initalized;
+    }
+
+    @Override
+    public void enter() {
     }
     
 }

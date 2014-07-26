@@ -47,7 +47,7 @@ import javax.swing.JOptionPane;
  *A controller manages the map and the game data.
  * @author Benedikt Vogler
  */
-public class Controller {
+public class Controller implements Manager {
     private static LightEngine lightEngine;
     private static Map map;
     private static boolean recalcRequested;

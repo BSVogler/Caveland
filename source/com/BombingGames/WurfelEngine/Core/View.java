@@ -73,6 +73,7 @@ public class View implements Manager {
     
     private Stage stage;
     private Skin skin;
+    private Pixmap cursor;
     
     private boolean initalized;
     
@@ -113,15 +114,13 @@ public class View implements Manager {
         
         //set up stage
         stage = new Stage();
-        View.addInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
+        //laod cursor
+        cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
+
         controller.getLoadMenu().viewInit(this);
         GameplayScreen.msgSystem().viewInit(this,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
-        
-        //set up cursor
-        Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
-        Gdx.input.setCursorImage(cursor, 8, 8);
         
         initalized = true;
     }
@@ -442,12 +441,15 @@ public class View implements Manager {
         return skin;
     }
 
+    @Override
     public boolean isInitalized() {
         return initalized;
     }
 
     @Override
     public void enter() {
+        View.addInputProcessor(stage);
+        Gdx.input.setCursorImage(cursor, 8, 8);
     }
     
 }

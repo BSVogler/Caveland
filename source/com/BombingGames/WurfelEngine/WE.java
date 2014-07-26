@@ -208,12 +208,17 @@ public class WE extends Game {
      * @param view the new view
      */
     public static void switchSetupWithInit(final Controller controller, final View view){
+        Gdx.app.log("Wurfel Engine", "Switching setup and ReInit using Controller:" + controller.toString());
+        Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
         Gdx.input.setInputProcessor(null);
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
+        //initialize
         controller.init();
         view.init(controller);
+        //enter
         controller.enter();
+        view.enter();
     }
     
     /**
@@ -222,12 +227,17 @@ public class WE extends Game {
      * @param view the new view
      */
     public static void switchSetup(final Controller controller, final View view){
+        Gdx.app.log("Wurfel Engine", "Switching setup using Controller:" + controller.toString());
+        Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
         Gdx.input.setInputProcessor(null);
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
+        //init if not initialized
         if (!controller.isInitalized()) controller.init();
-        view.init(controller);
+        if (!view.isInitalized()) view.init(controller);
+        //enter
+        view.enter();
         controller.enter();
     }
     

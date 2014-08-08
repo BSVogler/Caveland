@@ -455,7 +455,7 @@ public class View implements Manager {
 
     @Override
     public void enter() {
-        View.addInputProcessor(stage);
+        View.addInputProcessor(stage);//the input processor must be added every time because they are only 
         Gdx.input.setCursorImage(cursor, 8, 8);
     }
     

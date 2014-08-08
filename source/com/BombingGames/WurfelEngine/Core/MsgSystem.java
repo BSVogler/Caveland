@@ -46,7 +46,7 @@ import java.util.StringTokenizer;
  */
 public class MsgSystem {
     private int timelastupdate = 0;
-    private Stage stage;
+    private Stage stageRef;//the reference to the view's stage
     private final GameplayScreen gameplay;
     private boolean active = false;
     private TextField textinput;
@@ -99,13 +99,13 @@ public class MsgSystem {
     }
     
     /**
-     * "Handshake" with the view rendering the scene. This will add the GUI to the stage.
+     * "Handshake" with the view rendering the scene. This will add the GUI to the stageRef.
      * @param view the view managing the input and rendering it
      * @param xPos
      * @param yPos
      */
     public void viewInit(View view, final int xPos, final int yPos){
-        stage = view.getStage();
+        stageRef = view.getStage();
         
         textinput = new TextField("", view.getSkin());
         textinput.setBounds(xPos-200, yPos, 400, 50);
@@ -113,7 +113,7 @@ public class MsgSystem {
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        stage.addActor(textinput);
+        stageRef.addActor(textinput);
     }
         
     /**
@@ -215,8 +215,8 @@ public class MsgSystem {
 
         this.active = active;
         textinput.setVisible(active);
-        if (active && stage!=null)
-            stage.setKeyboardFocus(textinput);
+        if (active && stageRef!=null)
+            stageRef.setKeyboardFocus(textinput);
     }
     
     /**

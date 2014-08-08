@@ -158,7 +158,7 @@ public class MsgSystem {
             setActive(!active);//toggle
             keyConsoleDown = true;
         }
-        if (!disposed){
+        if (!disposed){//prevent updates when it's disposed
             keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
        
             //decrease importance every 30ms
@@ -204,12 +204,15 @@ public class MsgSystem {
      * @param active If deactivating the input will be saved.
      */
     public void setActive(final boolean active) {
-        if (!active && !textinput.getText().isEmpty()) {
+        if (!active && !textinput.getText().isEmpty()) {//message entered?
             add(textinput.getText(), "Console");//add message to message list
-            if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))
+            if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
                 add("Failed executing command.", "System");    
+        } else {
+            if (active && this.active!=active)//window should be opened?
+                textinput.setText("");//clear if openend
         }
-        if (active && this.active!=active) textinput.setText("");//clear if openend
+
         this.active = active;
         textinput.setVisible(active);
         if (active && stage!=null)
@@ -217,7 +220,7 @@ public class MsgSystem {
     }
     
     /**
-     * 
+     * Is the window open?
      * @return
      */
     public boolean isActive() {
@@ -251,6 +254,11 @@ public class MsgSystem {
         textinput.setCursorPosition(textinput.getText().length());
     }
     
+    /**
+     * Tries executing a command
+     * @param command
+     * @return 
+     */
     public boolean executeCommand(String command){
         switch (command) {
             case "editor":

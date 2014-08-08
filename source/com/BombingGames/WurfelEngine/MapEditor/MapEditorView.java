@@ -64,7 +64,7 @@ public class MapEditorView extends View {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        View.addInputProcessor(new InputListener(this.controller, this));
+        View.addInputProcessor(new MapEditorInputListener(this.controller, this));
         addCamera(camera = new Camera());
         
         controller.setMinimap(
@@ -147,12 +147,12 @@ public class MapEditorView extends View {
 
     
     
-    private static class InputListener implements InputProcessor {
+    private static class MapEditorInputListener implements InputProcessor {
         private final MapEditorController controller;
         private final MapEditorView view;
         private int buttondown =-1;
 
-        InputListener(MapEditorController controller, MapEditorView view) {
+        MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
             this.view = view;
         }

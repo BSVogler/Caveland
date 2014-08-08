@@ -436,6 +436,10 @@ public class View implements Manager {
         }
     }
 
+    /**
+     * The libGDX scene2d stage
+     * @return 
+     */
     public Stage getStage() {
         return stage;
     }

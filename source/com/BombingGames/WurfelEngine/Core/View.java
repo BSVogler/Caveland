@@ -133,6 +133,15 @@ public class View implements Manager {
     }
     
     /**
+     * Resets the input processors.
+     */
+    public static void resetInputProcessors() {
+        Gdx.input.setInputProcessor(null);
+        inpMulPlex = null;
+        inactiveInpProcssrs = null;
+    }
+    
+    /**
      * Add an inputProcessor to the views.
      * @param processor 
      */

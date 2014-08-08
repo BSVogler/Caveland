@@ -210,7 +210,7 @@ public class WE extends Game {
     public static void switchSetupWithInit(final Controller controller, final View view){
         Gdx.app.debug("Wurfel Engine", "Switching setup and ReInit using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
-        Gdx.input.setInputProcessor(null);
+        View.resetInputProcessors();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
@@ -229,7 +229,7 @@ public class WE extends Game {
     public static void switchSetup(final Controller controller, final View view){
         Gdx.app.debug("Wurfel Engine", "Switching setup using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
-        Gdx.input.setInputProcessor(null);
+        View.resetInputProcessors();
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);

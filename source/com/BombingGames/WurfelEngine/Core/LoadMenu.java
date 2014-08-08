@@ -47,11 +47,15 @@ import java.io.File;
  * @author Benedikt Vogler
  */
 public class LoadMenu {
-    private final static int margin = 100;
+    private final static int margin = 100;//the space to the screen corners.
     private Window window;
     private TextField textSearch;
     private Table content;
 
+    /**
+     * Setups the window.
+     * @param view 
+     */
     public void viewInit(View view){
         Skin skin = view.getSkin();
         window = new Window("Choose a map", skin);
@@ -109,6 +113,10 @@ public class LoadMenu {
         view.getStage().addActor(window);
     }
     
+    /**
+     * Returns if the window is opened.
+     * @return 
+     */
     public boolean isOpen() {
        return window.isVisible();
     }

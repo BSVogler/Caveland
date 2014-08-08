@@ -50,6 +50,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 
 /**
@@ -60,6 +61,9 @@ public class View implements Manager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     private static BitmapFont font;
+    
+    private static InputMultiplexer inpMulPlex;
+    private static Array<InputProcessor> inactiveInpProcssrs;
     
     private SpriteBatch batch;    
     private ShapeRenderer shapeRenderer;
@@ -136,9 +140,32 @@ public class View implements Manager {
         if (Gdx.input.getInputProcessor() == null){
             Gdx.input.setInputProcessor(processor);
         }else{//use multiplexer if more than one input processor
-            InputMultiplexer inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
-            inputMultiplexer.addProcessor(processor);
-            Gdx.input.setInputProcessor(inputMultiplexer);
+            inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
+            inpMulPlex.addProcessor(processor);
+            Gdx.input.setInputProcessor(inpMulPlex);
+        }
+    }
+    
+    /**
+     * Deactivates every input processor but one.
+     * @param processor the processor you want to "filter"
+     * @see #unfocusInputProcessor() 
+     * @since V1.2.21
+     */
+    public static void focusInputProcessor(final InputProcessor processor){
+        inactiveInpProcssrs = inpMulPlex.getProcessors();
+        inpMulPlex.clear();
+        inpMulPlex.addProcessor(processor);
+    }
+    
+    /**
+     * Reset that every input processor works again.
+     * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
+     * @since V1.2.21
+     */
+    public static void unfocusInputProcessor(){
+        for (InputProcessor ip : inactiveInpProcssrs) {
+            inpMulPlex.addProcessor(ip);
         }
     }
         

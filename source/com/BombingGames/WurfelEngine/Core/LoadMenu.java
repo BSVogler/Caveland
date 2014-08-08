@@ -34,6 +34,8 @@ package com.BombingGames.WurfelEngine.Core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -51,20 +53,24 @@ public class LoadMenu {
     private Window window;
     private TextField textSearch;
     private Table content;
+    private Skin skinRef;
+    private Stage stageRef;
 
     /**
      * Setups the window.
      * @param view 
      */
     public void viewInit(View view){
-        Skin skin = view.getSkin();
-        window = new Window("Choose a map", skin);
+        skinRef = view.getSkin();
+        stageRef = view.getStage();
+        
+        window = new Window("Choose a map", skinRef);
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
         window.setX(margin);
         window.setY(margin);
         window.setKeepWithinStage(true);
-        window.setModal(true);
+        window.setModal(true);//problem: only affects the stage
         window.setVisible(false);
         window.setMovable(false);
 
@@ -74,16 +80,16 @@ public class LoadMenu {
         // This table groups the Search label and the TextField used to gather
         // the search criteria:
         Table search = new Table();
-        search.add(new Label("Search", skin)).spaceRight(10f);
+        search.add(new Label("Search", skinRef)).spaceRight(10f);
 
-        textSearch = new TextField("Not implemented yet", skin);
+        textSearch = new TextField("Not implemented yet", skinRef);
 
         // This event waits untilk the RETURN key is pressed to reorganize the
         // intens inside the grid:
         textSearch.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                //if (keycode == Input.Keys.ENTER)
+                //if (keycode 1== Input.Keys.ENTER)
                     //rearrangeTable();
 
                 // Gdx.app.log("KEY", String.valueOf(keycode));
@@ -100,9 +106,9 @@ public class LoadMenu {
 
         //rearrangeTable();
 
-        content = new Table(skin);
+        content = new Table(skinRef);
         // Prepares the scroll manager:
-        ScrollPane scroll = new ScrollPane(content, skin);
+        ScrollPane scroll = new ScrollPane(content, skinRef);
 
         // Only scroll vertically:
         scroll.setScrollingDisabled(true, false);
@@ -121,15 +127,23 @@ public class LoadMenu {
        return window.isVisible();
     }
 
+    /**
+     * Open/close the window
+     * @param open 
+     */
     public void setOpen(boolean open) {
-        window.setVisible(open);
-
-        if (open){
+        if (!window.isVisible()){
             int i=0;
             File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
             for (final File fileEntry : wd.listFiles()) {
                 if (fileEntry.isDirectory()) {
                     content.add(fileEntry.getName());
+                    
+                    //debug
+                    content.add(
+                        new Button(skinRef)
+                    );
+                    
                     content.row();
                     i++;
                     //listFilesForFolder(fileEntry);
@@ -137,6 +151,9 @@ public class LoadMenu {
                     //System.out.println(fileEntry.getName());
                 }
             }
-        }
+            View.focusInputProcessor(stageRef);
+        }else
+            View.unfocusInputProcessor();
+        window.setVisible(open);
     }
 }

@@ -44,6 +44,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -55,6 +56,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MapEditorView extends View {
     private MapEditorController controller;
     private Camera camera;
+    private int cameraspeed =1;
+    private Vector2 camermove; 
     
     private Navigation nav;
 
@@ -66,6 +69,7 @@ public class MapEditorView extends View {
         
         View.addInputProcessor(new MapEditorInputListener(this.controller, this));
         addCamera(camera = new Camera());
+        camermove = new Vector2();
         
         controller.setMinimap(
             new Minimap(
@@ -111,6 +115,13 @@ public class MapEditorView extends View {
         getStage().addActor(replaybutton);
     }
 
+    protected void setCameraSpeed(int speed){
+        cameraspeed = speed;
+    }
+    
+    protected void setCameraMoveVector(float x,float y){
+        camermove = new Vector2(x, y);
+    }
     
     @Override
     public void render() {
@@ -121,28 +132,11 @@ public class MapEditorView extends View {
     @Override
     public void update(final float delta) {
         super.update(delta);
-        Input input = Gdx.input;
         
         //update focusentity
         controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 0, 1));
         
-        //manage camera speed
-        int speed;
-        if (input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-            speed = 2;
-        else speed = 4;
-        
-        //manage camera movement
-        if (!GameplayScreen.msgSystem().isActive()){
-            if (input.isKeyPressed(Input.Keys.W))
-                camera.move(0, (int) (-delta/speed));
-            if (input.isKeyPressed(Input.Keys.S))
-                camera.move(0, (int) (delta/speed));
-            if (input.isKeyPressed(Input.Keys.A))
-                camera.move((int) -(delta/speed*1.414),0);
-            if (input.isKeyPressed(Input.Keys.D))
-                camera.move((int) (delta/speed*1.414),0);
-        }
+        camera.move((int) (camermove.x*cameraspeed), (int) (camermove.y*cameraspeed));
     }
 
     
@@ -163,11 +157,38 @@ public class MapEditorView extends View {
             if (keycode == Keys.M){
                 controller.getMinimap().toggleVisibility();
             }
+            
+            //manage camera speed
+            if (keycode == Keys.SHIFT_LEFT)
+                view.setCameraSpeed(4);
+        
+        //manage camera movement
+        if (!GameplayScreen.msgSystem().isActive()){
+            if (keycode == Input.Keys.W)
+                view.setCameraMoveVector(0, -1);
+            if (keycode == Input.Keys.S)
+                view.setCameraMoveVector(0, 1);
+            if (keycode == Input.Keys.A)
+                view.setCameraMoveVector(-1, 0);
+            if (keycode == Input.Keys.D)
+                view.setCameraMoveVector(1, 0);
+        }
+        
             return false;
         }
 
         @Override
         public boolean keyUp(int keycode) {
+            if (keycode == Keys.SHIFT_LEFT)
+                view.setCameraSpeed(2);
+            
+             if (keycode == Input.Keys.W
+                 || keycode == Input.Keys.A
+                 || keycode == Input.Keys.S
+                 || keycode == Input.Keys.D
+                 )
+                view.setCameraMoveVector(0, 0);
+            
             return false;
         }
 

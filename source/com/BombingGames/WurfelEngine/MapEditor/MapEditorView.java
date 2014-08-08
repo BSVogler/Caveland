@@ -56,7 +56,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MapEditorView extends View {
     private MapEditorController controller;
     private Camera camera;
-    private int cameraspeed =1;
+    private float cameraspeed =0.5f;
     private Vector2 camermove; 
     
     private Navigation nav;
@@ -115,7 +115,7 @@ public class MapEditorView extends View {
         getStage().addActor(replaybutton);
     }
 
-    protected void setCameraSpeed(int speed){
+    protected void setCameraSpeed(float speed){
         cameraspeed = speed;
     }
     
@@ -136,7 +136,7 @@ public class MapEditorView extends View {
         //update focusentity
         controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 0, 1));
         
-        camera.move((int) (camermove.x*cameraspeed), (int) (camermove.y*cameraspeed));
+        camera.move((int) (camermove.x*cameraspeed*delta), (int) (camermove.y*cameraspeed*delta));
     }
 
     
@@ -160,7 +160,7 @@ public class MapEditorView extends View {
             
             //manage camera speed
             if (keycode == Keys.SHIFT_LEFT)
-                view.setCameraSpeed(4);
+                view.setCameraSpeed(1);
         
         //manage camera movement
         if (!GameplayScreen.msgSystem().isActive()){
@@ -180,7 +180,7 @@ public class MapEditorView extends View {
         @Override
         public boolean keyUp(int keycode) {
             if (keycode == Keys.SHIFT_LEFT)
-                view.setCameraSpeed(2);
+                view.setCameraSpeed(0.5f);
             
              if (keycode == Input.Keys.W
                  || keycode == Input.Keys.A

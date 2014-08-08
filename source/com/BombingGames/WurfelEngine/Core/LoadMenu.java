@@ -110,7 +110,7 @@ public class LoadMenu {
         window.add(scroll).fill().expand();
         window.row();
         
-        view.getStage().addActor(window);
+        view.getStage().addActor(window);//add the window to the view's stage.
     }
     
     /**

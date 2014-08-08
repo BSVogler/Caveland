@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
 public class MsgSystem {
     private int timelastupdate = 0;
     private Stage stageRef;//the reference to the view's stage
-    private final GameplayScreen gameplay;
+    private final GameplayScreen gameplayRef;//the reference to the associated gameplay
     private boolean active = false;
     private TextField textinput;
     private final ArrayList<Msg> messages = new ArrayList<>(20); 
@@ -95,7 +95,7 @@ public class MsgSystem {
      * @param gameplay
      */
     public MsgSystem(final GameplayScreen gameplay) {
-        this.gameplay = gameplay;
+        this.gameplayRef = gameplay;
     }
     
     /**
@@ -295,15 +295,15 @@ public class MsgSystem {
                 Controller.newMap();
                 return true;
             case "minimap":
-                if (gameplay.getController().getMinimap()==null){
+                if (gameplayRef.getController().getMinimap()==null){
                     add("No minimap found. Creating new", "System");
-                    gameplay.getController().setMinimap(new Minimap(gameplay.getController(), gameplay.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
+                    gameplayRef.getController().setMinimap(new Minimap(gameplayRef.getController(), gameplayRef.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
                 }
-                gameplay.getController().getMinimap().toggleVisibility();
+                gameplayRef.getController().getMinimap().toggleVisibility();
                 return true;
             case "devtools":
             case "dev":
-                gameplay.getController().getDevTools().setVisible(!gameplay.getController().getDevTools().isVisible());
+                gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
                 return true;
         }
         
@@ -318,11 +318,11 @@ public class MsgSystem {
          
         if (command.startsWith("gamespeed")){
             if (command.length()==9){
-                add("Gamespeed: "+gameplay.getController().getTimespeed(), "System");
+                add("Gamespeed: "+gameplayRef.getController().getTimespeed(), "System");
                 return true;
             } else {
                 try {
-                    gameplay.getController().setTimespeed(Float.parseFloat(command.substring(10)));
+                    gameplayRef.getController().setTimespeed(Float.parseFloat(command.substring(10)));
                     return true;
                 } catch(NumberFormatException e) {
                     add("Tried using value: "+command.substring(10)+". Please enter float value in format like \"0.5\" ", "Warning");

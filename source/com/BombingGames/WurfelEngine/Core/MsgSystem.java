@@ -192,8 +192,8 @@ public class MsgSystem {
             }
             
             //draw
-            view.getFont().setColor(color);
-            view.getFont().drawMultiLine(view.getBatch(), msg.sender+": "+msg.message, 10,50+y);
+            View.getFont().setColor(color);
+            View.getFont().drawMultiLine(view.getBatch(), msg.sender+": "+msg.message, 10,50+y);
             y+=20;
         }
          view.getBatch().end();

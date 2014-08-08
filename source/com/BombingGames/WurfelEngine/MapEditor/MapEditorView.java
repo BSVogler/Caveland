@@ -67,7 +67,6 @@ public class MapEditorView extends View {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        View.addInputProcessor(new MapEditorInputListener(this.controller, this));
         addCamera(camera = new Camera());
         camermove = new Vector2();
         
@@ -281,5 +280,11 @@ public class MapEditorView extends View {
             controller.getLoadMenu().setOpen(true);
             return true;
         }
+    }
+
+    @Override
+    public void enter() {
+        super.enter();
+        View.addInputProcessor(new MapEditorInputListener(this.controller, this));
     }
 }

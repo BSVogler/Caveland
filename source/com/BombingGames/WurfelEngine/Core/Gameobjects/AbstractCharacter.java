@@ -65,7 +65,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    private int health = 1000;
    private int mana = 1000;
        
-   private final CharacterShadow shadow;
+   private final EntityShadow shadow;
    
    private int walkingAnimationCounter;
 
@@ -78,7 +78,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
         super(id, point);
         this.spritesPerDir = spritesPerDir;
-        shadow = (CharacterShadow) new CharacterShadow(point.cpy()).exist();
+        shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
    

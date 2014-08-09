@@ -39,10 +39,10 @@ import com.badlogic.gdx.graphics.Color;
  *
  * @author Benedikt Vogler
  */
-class CharacterShadow extends AbstractEntity {
-    private AbstractCharacter character;
+class EntityShadow extends AbstractEntity {
+    private AbstractEntity character;
 
-    protected CharacterShadow(AbstractPosition pos) {
+    protected EntityShadow(AbstractPosition pos) {
         super(32, pos.getPoint());
     }
 
@@ -50,7 +50,7 @@ class CharacterShadow extends AbstractEntity {
     public void update(float delta) {
     }
     
-    public void update(float delta, AbstractCharacter character){
+    public void update(float delta, AbstractEntity character){
         this.character = character;
         Coordinate tmpPos = character.getPos().getCoord().cpy();
         tmpPos.setZ(tmpPos.getZ());

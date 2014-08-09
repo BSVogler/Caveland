@@ -79,6 +79,7 @@ public class Controller implements Manager {
         if (map == null){
             map = new Map("no name set", generator);
             map.fill();
+            requestRecalc();
         }
         
         if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){

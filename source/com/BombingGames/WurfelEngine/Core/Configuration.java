@@ -32,6 +32,8 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 
@@ -41,6 +43,7 @@ import com.badlogic.gdx.assets.AssetManager;
  * @author Benedikt Vogler
  */
 public class Configuration {
+    private final Generator generator = new IslandGenerator();
     /**
      * Load engine configuration from a file
      */
@@ -83,11 +86,11 @@ public class Configuration {
     }
 
     /**
-     *The number of the mapgenerator used.
+     *The map generator
      * @return
      */
-    public int getChunkGenerator() {
-        return 1;
+    public Generator getChunkGenerator() {
+        return generator;
     }
 
     /**

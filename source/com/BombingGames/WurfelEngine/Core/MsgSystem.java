@@ -203,7 +203,7 @@ public class MsgSystem {
      * Tell the msg system if it should listen for input.
      * @param active If deactivating the input will be saved.
      */
-    public void setActive(final boolean active) {
+    private void setActive(final boolean active) {
         if (!active && !textinput.getText().isEmpty()) {//message entered?
             add(textinput.getText(), "Console");//add message to message list
             if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it

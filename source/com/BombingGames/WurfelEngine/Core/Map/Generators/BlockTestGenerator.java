@@ -34,7 +34,7 @@ package com.BombingGames.WurfelEngine.Core.Map.Generators;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 
 /**
- *
+ *A generator which uses every block.
  * @author Benedikt Vogler
  */
 public class BlockTestGenerator implements Generator{

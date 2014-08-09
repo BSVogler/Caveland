@@ -32,7 +32,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 /**
- *
+ *An interface for a map generator.
  * @author Benedikt Vogler
  */
 public interface Generator {
@@ -42,7 +42,7 @@ public interface Generator {
      * @param x absolute coord
      * @param y absolute coord
      * @param z absolute coord
-     * @return
+     * @return the block which belongs to the given coordinates
      */
     public abstract int generate(int x, int y, int z);   
 }

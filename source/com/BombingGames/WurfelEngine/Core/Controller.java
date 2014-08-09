@@ -63,7 +63,7 @@ public class Controller implements Manager {
     private LoadMenu loadMenu;
     
     /**
-     * This method works like a constructor. Everything is loaded here.
+     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
     public void init(){
         Gdx.app.log("Controller", "Initializing");

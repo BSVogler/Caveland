@@ -51,7 +51,7 @@ public class BenchmarkBall extends AbstractEntity {
     
     @Override
     public void update(float delta) {
-        getPos().addVector(movement);
+        getPos().addVector(movement.cpy().scl(delta));
         movement.z -= WE.getCurrentConfig().getGravity()*delta;
         //hit floor
         if (onGround()){

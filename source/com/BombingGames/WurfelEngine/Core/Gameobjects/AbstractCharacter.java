@@ -40,8 +40,8 @@ import com.badlogic.gdx.math.Vector3;
 public abstract class AbstractCharacter extends AbstractEntity {
    private static int soundlimit;//time to pass before new sound can be played
      
-   private final int COLISSIONRADIUS = GAME_DIAGLENGTH2/2;
-   private final int SPRITESPERDIR;
+   private final int colissionRadius = GAME_DIAGLENGTH2/2;
+   private final int spritesPerDir;
       
    private final Vector3 dir = new Vector3(1, 0, 0);
 
@@ -77,7 +77,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
     */
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
         super(id, point);
-        SPRITESPERDIR = spritesPerDir;
+        this.spritesPerDir = spritesPerDir;
         shadow = (CharacterShadow) new CharacterShadow(point.cpy()).exist();
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
@@ -223,7 +223,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
                     }
                 }
             }
-            if (SPRITESPERDIR==3){
+            if (spritesPerDir==3){
                 //animation
                 walkingAnimationCounter += delta*speed*4;
                 if (walkingAnimationCounter > 1000) walkingAnimationCounter=0;    
@@ -285,18 +285,18 @@ public abstract class AbstractCharacter extends AbstractEntity {
     
         //check for movement in y
         //top corner
-        if (pos.cpy().addVector(0, - COLISSIONRADIUS, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(0, - colissionRadius, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(0, COLISSIONRADIUS, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(0, colissionRadius, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.cpy().addVector(-COLISSIONRADIUS, 0, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(-colissionRadius, 0, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(COLISSIONRADIUS, 0, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(colissionRadius, 0, 0).getCoord().getBlockClamp().isObstacle())
             colission = true;
         
         return colission;

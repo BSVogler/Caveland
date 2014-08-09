@@ -308,10 +308,8 @@ public class MsgSystem {
                 gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
                 return true;
             case "benchmark":
-                for (int i = 0; i < 10; i++) {
-                    new BenchmarkBall(Map.getCenter()).exist();
-                }
-                add("Spawned 10 Benchmakr balls.", "System");
+                new BenchmarkBall(Map.getCenter(Map.getGameHeight())).exist();
+                //add("Spawned a benchmark ball.", "System");
                 return true;
         }
         

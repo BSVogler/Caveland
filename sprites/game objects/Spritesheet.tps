@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.3.4</string>
+        <string>3.4.0</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/game objects/Spritesheet.tps</string>
         <key>autoSDSettings</key>
@@ -154,6 +154,8 @@
         <false/>
         <key>trimSpriteNames</key>
         <true/>
+        <key>prependSmartFolderName</key>
+        <false/>
         <key>cleanTransparentPixels</key>
         <true/>
         <key>globalSpriteSettings</key>
@@ -177,73 +179,8 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>blocks/b0-0-0.png</filename>
-            <filename>blocks/b0-0-1.png</filename>
-            <filename>blocks/b0-0-2.png</filename>
-            <filename>blocks/b1-0-0.png</filename>
-            <filename>blocks/b1-0-1.png</filename>
-            <filename>blocks/b1-0-2.png</filename>
-            <filename>blocks/b2-0-0.png</filename>
-            <filename>blocks/b2-0-1.png</filename>
-            <filename>blocks/b2-0-2.png</filename>
-            <filename>blocks/b3-0-0.png</filename>
-            <filename>blocks/b3-0-1.png</filename>
-            <filename>blocks/b3-0-2.png</filename>
-            <filename>blocks/b4-0-0.png</filename>
-            <filename>blocks/b4-0-1.png</filename>
-            <filename>blocks/b4-0-2.png</filename>
-            <filename>blocks/b5-0-0.png</filename>
-            <filename>blocks/b5-0-1.png</filename>
-            <filename>blocks/b5-0-2.png</filename>
-            <filename>blocks/b6-0-0.png</filename>
-            <filename>blocks/b6-0-1.png</filename>
-            <filename>blocks/b6-0-2.png</filename>
-            <filename>blocks/b7-0-0.png</filename>
-            <filename>blocks/b7-0-1.png</filename>
-            <filename>blocks/b7-0-2.png</filename>
-            <filename>blocks/b8-0-0.png</filename>
-            <filename>blocks/b8-0-1.png</filename>
-            <filename>blocks/b8-0-2.png</filename>
-            <filename>blocks/b9-0-0.png</filename>
-            <filename>blocks/b9-0-1.png</filename>
-            <filename>blocks/b9-0-2.png</filename>
-            <filename>blocks/b20-0-0.png</filename>
-            <filename>blocks/b20-0-1.png</filename>
-            <filename>blocks/b20-0-2.png</filename>
-            <filename>blocks/b34-0.png</filename>
-            <filename>blocks/b35-0.png</filename>
-            <filename>blocks/b44-0-0.png</filename>
-            <filename>blocks/b44-0-1.png</filename>
-            <filename>blocks/b44-0-2.png</filename>
-            <filename>blocks/b44-1-0.png</filename>
-            <filename>blocks/b44-1-1.png</filename>
-            <filename>blocks/b44-1-2.png</filename>
-            <filename>blocks/b70-0.png</filename>
-            <filename>blocks/b71-0.png</filename>
-            <filename>blocks/b71-1.png</filename>
-            <filename>entities/e12-0.png</filename>
-            <filename>entities/e12-1.png</filename>
-            <filename>entities/e12-2.png</filename>
-            <filename>entities/e12-3.png</filename>
-            <filename>entities/e15-0.png</filename>
-            <filename>entities/e16-0.png</filename>
-            <filename>entities/e17-0.png</filename>
-            <filename>entities/e18-0.png</filename>
-            <filename>entities/e19-0.png</filename>
-            <filename>entities/e30-0.png</filename>
-            <filename>entities/e30-1.png</filename>
-            <filename>entities/e30-2.png</filename>
-            <filename>entities/e30-3.png</filename>
-            <filename>entities/e30-4.png</filename>
-            <filename>entities/e30-5.png</filename>
-            <filename>entities/e30-6.png</filename>
-            <filename>entities/e30-7.png</filename>
-            <filename>entities/e31-0.png</filename>
-            <filename>entities/e31-1.png</filename>
-            <filename>entities/e32-0.png</filename>
-            <filename>entities/error.png</filename>
-            <filename>entities/e20-0.png</filename>
-            <filename>entities/e13-0.png</filename>
+            <filename>entities</filename>
+            <filename>blocks</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

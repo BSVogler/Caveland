@@ -115,7 +115,7 @@ public class Camera{
         projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
         projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
         
-        groundBlock = Block.getInstance(2);//set the ground level groundBlock
+        groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//set the ground level groundBlock
         groundBlock.setSideClipping(0, true);
         groundBlock.setSideClipping(2, true);
         

@@ -197,4 +197,12 @@ public class Configuration {
     public boolean useScalePrototype(){
         return false;
     }
+    
+    /**
+     * The id of the ground block.
+     * @return 
+     */
+    public int groundBlockID(){
+        return 2;
+    }
 }

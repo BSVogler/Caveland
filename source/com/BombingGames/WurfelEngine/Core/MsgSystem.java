@@ -30,7 +30,9 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -304,6 +306,12 @@ public class MsgSystem {
             case "devtools":
             case "dev":
                 gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
+                return true;
+            case "benchmark":
+                for (int i = 0; i < 10; i++) {
+                    new BenchmarkBall(Map.getCenter()).exist();
+                }
+                add("Spawned 10 Benchmakr balls.", "System");
                 return true;
         }
         

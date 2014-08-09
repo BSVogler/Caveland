@@ -42,8 +42,8 @@ import com.badlogic.gdx.math.Vector3;
 public class BenchmarkBall extends AbstractEntity {
     private Vector3 movement;
 
-    public BenchmarkBall(int id, Point point) {
-        super(id, point);
+    public BenchmarkBall(Point point) {
+        super(21, point);
         movement = new Vector3((float) Math.random(), (float) Math.random(), -1);
         movement.nor();
     }

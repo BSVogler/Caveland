@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
@@ -91,7 +90,7 @@ public class Map implements Cloneable {
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = new Cell();
         
-        if (generator==null) generator = new AirGenerator();
+        if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
         this.generator = generator;
     }
     

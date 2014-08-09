@@ -66,15 +66,26 @@ public class Controller implements Manager {
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
     public void init(){
+        init(null);
+    }
+    
+    /**
+     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
+     * @param generator Set the map generator you want to use.
+     */
+    public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
         if (Controller.devtools == null) devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
-        if (Controller.map==null) newMap();
+        if (map == null){
+            map = new Map("no name set", generator);
+            map.fill();
+        }
         
         if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         }
         
-        initalized = true;
+        initalized = true;    
     }
         
      /**
@@ -130,7 +141,7 @@ public class Controller implements Manager {
     }
     
     /**
-     * Creates a new Map using it's generator.
+     * Creates a new Map using it's generator. Does a recalc.
      */
     public static void newMap(){
         map = new Map("nonameset");

@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -59,11 +60,21 @@ public class Map implements Cloneable {
     private final static ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
     
     /**
-     * Creates an empty map. Fill the map with fillWithAir(boolean load);
+     * Creates an empty map.
      * @param name if available on disk it will be load
      * @see fillWithBlocks(boolean load)
      */
     public Map(final String name) {
+        this(name, new AirGenerator());
+    }
+    
+    /**
+     * Creates an empty map. Fill the map with fillWithAir(boolean load);
+     * @param name if available on disk it will be load
+     * @param generator
+     * @see fillWithBlocks(boolean load)
+     */
+    public Map(final String name, Generator generator) {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
         this.mapname = name;
         
@@ -80,7 +91,8 @@ public class Map implements Cloneable {
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = new Cell();
         
-        generator = new IslandGenerator();
+        if (generator==null) generator = new AirGenerator();
+        this.generator = generator;
     }
     
     /**

@@ -41,24 +41,31 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class BenchmarkBall extends AbstractEntity {
     private Vector3 movement;
+    private final EntityShadow shadow;
 
     public BenchmarkBall(Point point) {
         super(21, point);
-        movement = new Vector3((float) Math.random(), (float) Math.random(), -1);
+        movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1);
         movement.nor();
+        shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
     }
        
     
     @Override
     public void update(float delta) {
         getPos().addVector(movement.cpy().scl(delta));
-        movement.z -= WE.getCurrentConfig().getGravity()*delta;
+        float t = delta/1000f; //t = time in s
+        movement.z -= WE.getCurrentConfig().getGravity()*t;
         //hit floor
         if (onGround()){
-            movement = new Vector3((float) Math.random(), (float) Math.random(), 1);
-            movement.nor();
+            jump();
         }
-        
+        shadow.update(delta, this);
     }
-    
+
+    public void jump() {
+        movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, 2);
+        //if (get != null) jumpingSound.play();
+    }
+ 
 }

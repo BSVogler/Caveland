@@ -41,7 +41,9 @@ public class BlockTestGenerator implements Generator{
 
     @Override
     public int generate(int x, int y, int z) {
-        return Math.abs(y);
+        if (z==0) return Math.abs(y);
+        else
+            return 0;
     }
     
 }

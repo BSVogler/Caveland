@@ -82,7 +82,7 @@ public class Camera{
     private AbstractEntity focusEntity;
     private int[] relativeChunk;
     
-    private final Block groundBlock;//the represant of the bottom layer (ground) block
+    private final Block groundBlock;//the representative of the bottom layer (ground) block
     private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
     private static int zRenderingLimit;//must be static because raytracing is global/static

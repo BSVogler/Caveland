@@ -254,21 +254,21 @@ public class Camera{
         int top = getVisibleTopBorder();
         int bottom = getVisibleBottomBorder();
         
-        for (int x = left; x < right; x++)
+        for (int x = left; x < right; x++)//only objects in view frustum
             for (int y = top; y < bottom; y++){
                 
                 //add blocks
-                for (int z=0; z < zRenderingLimit; z++){
+                for (int z=0; z < zRenderingLimit; z++){//add vertical unti renderlimit
                     
                     Coordinate coord = new Coordinate(x, y, z, true); 
                     Block blockAtCoord = coord.getBlock();
-                    if (! blockAtCoord.isHidden()
-                        && !blockAtCoord.isClipped()
-                        && 
+                    if (! blockAtCoord.isHidden()//render if not hidden
+                        && !blockAtCoord.isClipped() //nor clipped
+                        &&                          //inside view frustum?
                             (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT/2)//bottom of sprite
                             >
                             projectionPosY//camera's top
-                        && 
+                        &&                                  //inside view frustum?
                             (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
                             <
                             (projectionPosY + getViewportHeight())//camera's bottom

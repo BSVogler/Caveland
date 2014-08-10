@@ -222,10 +222,22 @@ public class Camera{
             view.setDrawmode(GL10.GL_MODULATE);
             
             //render ground layer tiles if visible
-            for (int x = 0; x < Map.getBlocksX(); x++) {
-                for (int y = 0; y < Map.getBlocksY(); y++) {
+            int left = getVisibleLeftBorder();
+            int right = getVisibleRightBorder();
+            int top = getVisibleTopBorder();
+            int bottom = getVisibleBottomBorder();
+        
+            for (int x = left; x < right; x++) {
+                for (int y = top; y < bottom; y++) {
                     if (bottomLayerVisibility[x][y]){
-                       groundBlock.render(view, this, new Coordinate(x, y, -1, true));
+                        Coordinate tmpCoord = new Coordinate(x, y, -1, true);
+                        if (//inside view frustum?
+                            (tmpCoord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
+                            <
+                            (projectionPosY + getViewportHeight())//camera's bottom
+                        ) {
+                            groundBlock.render(view, this, tmpCoord);
+                        }
                     }
                 }
             }

@@ -47,7 +47,7 @@ public class Configuration {
     /**
      * Load engine configuration from a file
      */
-    public void loadfromFile(){
+    public void loadConfigFromFile(){
     }
     
     /**

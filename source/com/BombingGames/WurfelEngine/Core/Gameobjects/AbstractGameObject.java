@@ -257,19 +257,26 @@ public abstract class AbstractGameObject {
     public void render(View view, int xPos, int yPos, Color color, float scale) {
         AtlasRegion texture = getSprite(getCategory(), id, value);
         Sprite sprite = new Sprite(texture);
-        sprite.setPosition(xPos+texture.offsetX, yPos-texture.offsetY);
+        sprite.setPosition(xPos+texture.offsetX-SCREEN_WIDTH2, yPos+texture.offsetY-SCREEN_HEIGHT-SCREEN_DEPTH2);
         sprite.scale(scale);
         
         prepareColor(view, color);
 
         sprite.setColor(color);
+        sprite.draw(view.getBatch());
         if (WE.getCurrentConfig().debugObjects()){
             ShapeRenderer sh = view.getIgShRender();
             sh.begin(ShapeRenderer.ShapeType.Line);
-            sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
+            sh.rect(xPos+texture.offsetX-SCREEN_WIDTH2, yPos+texture.offsetY-SCREEN_HEIGHT-SCREEN_DEPTH2, sprite.getWidth(), sprite.getHeight());
+            sh.line(xPos-SCREEN_WIDTH2, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos+SCREEN_DEPTH2);
+            sh.line(xPos-SCREEN_WIDTH2, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos-SCREEN_DEPTH2);
+            //bounding box
+            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
+            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
+            sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+            sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
             sh.end();
         }
-        sprite.draw(view.getBatch());
 
         drawCalls++;
     }

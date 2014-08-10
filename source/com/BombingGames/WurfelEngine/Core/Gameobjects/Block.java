@@ -375,7 +375,14 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, xPos-SCREEN_WIDTH2, (int) (yPos-(SCREEN_HEIGHT+SCREEN_HEIGHT2)*(1+scale)), Block.TOPSIDE, color, scale);
+                    renderSide(
+                        view,
+                        xPos-SCREEN_WIDTH2,
+                        (int) (yPos-(SCREEN_HEIGHT2+SCREEN_DEPTH2)*(1+scale)),
+                        Block.TOPSIDE,
+                        color,
+                        scale
+                    );
                 
                 if (!clippedLeft) {
                     if (staticShade) {
@@ -385,7 +392,7 @@ public class Block extends AbstractGameObject {
                     renderSide(
                         view,
                         xPos-SCREEN_WIDTH2,
-                        (int) (yPos-SCREEN_HEIGHT*(1+scale)),
+                        (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
                         Block.LEFTSIDE,
                         color,
                         scale
@@ -400,7 +407,7 @@ public class Block extends AbstractGameObject {
                     renderSide(
                         view,
                         xPos,
-                        (int) (yPos-SCREEN_HEIGHT*(1+scale)),
+                        (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
                         Block.RIGHTSIDE,
                         color,
                         scale
@@ -460,8 +467,8 @@ public class Block extends AbstractGameObject {
     public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final int side, final Color color, final float scale){
         renderSide(
             view,
-            coords.getProjectedPosX() - ( side != 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() -SCREEN_HEIGHT-SCREEN_HEIGHT2+ ( side != 1 ? (int) (SCREEN_HEIGHT2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getProjectedPosX() - SCREEN_WIDTH2 + ( side == 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getProjectedPosY() - SCREEN_HEIGHT - ( side == 1 ? (int) (SCREEN_DEPTH2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale

@@ -463,7 +463,7 @@ public class Coordinate extends AbstractPosition {
     @Override
     public int getProjectedPosY() {
         return (int) (getRelY() * AbstractGameObject.SCREEN_DEPTH2 //x-coordinate multiplied by half of the projected size in y direction
-            + AbstractGameObject.SCREEN_DEPTH //add half tile for center 
+            + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             - getHeight() *0.7071067811865475f //subtract height and take axis shortening into account
             + (getZ()>=0 ?  //read cell offset if inside map
                 + getCellOffset()[1] / 2 //add the objects y position inside this coordinate

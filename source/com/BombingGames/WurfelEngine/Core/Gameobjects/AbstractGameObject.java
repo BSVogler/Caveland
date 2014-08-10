@@ -193,7 +193,7 @@ public abstract class AbstractGameObject {
     
          /**
      * Draws an object if it is not hidden and not clipped.
-     * @param pos the coordinates where the object is rendered
+     * @param pos the posiiton where the object is rendered. The center of the object.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param color  custom blending color

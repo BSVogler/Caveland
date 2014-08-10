@@ -93,14 +93,14 @@ public abstract class AbstractPosition {
     }
     
      /**
-     *Returns the projeted (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
-     * @return
+     *
+     * @return Returns the center of the projeted (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
     public abstract int getProjectedPosX();
     
     /**
-     *Returns the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
-     * @return
+     *
+     * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
     public abstract int getProjectedPosY();
     
@@ -117,8 +117,8 @@ public abstract class AbstractPosition {
     public abstract Coordinate getCoord();
     
     /**
-     * Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
-     * @return 
+     * 
+     * @return Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
      * @see AbstractPosition#getBlockSafe() 
      */
     public abstract Block getBlock();

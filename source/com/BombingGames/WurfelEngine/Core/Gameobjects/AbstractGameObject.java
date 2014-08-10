@@ -42,6 +42,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  *An object is something wich can be found in the game world.
@@ -262,7 +263,14 @@ public abstract class AbstractGameObject {
         prepareColor(view, color);
 
         sprite.setColor(color);
+        if (WE.getCurrentConfig().debugObjects()){
+            ShapeRenderer sh = view.getIgShRender();
+            sh.begin(ShapeRenderer.ShapeType.Line);
+            sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
+            sh.end();
+        }
         sprite.draw(view.getBatch());
+
         drawCalls++;
     }
     

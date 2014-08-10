@@ -41,6 +41,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  * A Block is a wonderful piece of information and a geometrical object.
@@ -526,6 +527,14 @@ public class Block extends AbstractGameObject {
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  
         sprite.draw(view.getBatch());
+        
+        if (WE.getCurrentConfig().debugObjects()){
+            ShapeRenderer sh = view.getIgShRender();
+            sh.begin(ShapeRenderer.ShapeType.Line);
+            sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
+            sh.end();
+        }
+        
         increaseDrawCalls();
     }
 

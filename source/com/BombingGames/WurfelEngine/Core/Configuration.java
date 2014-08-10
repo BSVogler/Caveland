@@ -213,4 +213,13 @@ public class Configuration {
     public int groundBlockID(){
         return 2;
     }
+    
+    /**
+     * 
+     * @return Render box around sprites?
+     */
+    public boolean debugObjects(){
+        return false;
+    }
+    
 }

@@ -96,7 +96,7 @@ public class Block extends AbstractGameObject {
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
      * @param id
-     *  @see com.BombingGames.Game.Gameobjects.Block#getInstance() 
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance() 
      */
     protected Block(int id){
         super(id,0);

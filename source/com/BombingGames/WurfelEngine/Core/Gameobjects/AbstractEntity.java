@@ -57,7 +57,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * Create an abstractEntity. You should use Block.getInstance(int) 
      * @param id 
      * @param point 
-     * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractEntity(int id, Point point){
         super(id,0);

@@ -112,10 +112,10 @@ public abstract class AbstractGameObject {
 
     
     /**
-     * Creates an object. Use getInterface() to create blocks or entitys.
+     * Creates an object. Use getInstance() to create blocks or entitys.
      * @param id the id of the object
      * @param value 
-     * @see com.BombingGames.Game.Gameobjects.Block#getInstance() 
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(int id, int value) {
         this.id = id;
@@ -470,7 +470,7 @@ public abstract class AbstractGameObject {
     /**
      * Hide this object and prevent it from beeing rendered. Don't use this to hide objects as "invisible". This method is only for the rendering process  and view specific not for gameworld information. This should be just used for clipping during the rendering process.
      * @param clipped Sets the visibility.
-     * @see com.BombingGames.Game.Gameobjects.AbstractGameObject#setHidden(boolean) 
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject#setHidden(boolean) 
      */
     public void setClipped(boolean clipped) {
         this.clipped = clipped;

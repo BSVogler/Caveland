@@ -61,7 +61,7 @@ public class Map implements Cloneable {
     /**
      * Creates an empty map.
      * @param name if available on disk it will be load
-     * @see fillWithBlocks(boolean load)
+     * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public Map(final String name) {
         this(name, new AirGenerator());
@@ -71,7 +71,7 @@ public class Map implements Cloneable {
      * Creates an empty map. Fill the map with fillWithAir(boolean load);
      * @param name if available on disk it will be load
      * @param generator
-     * @see fillWithBlocks(boolean load)
+     * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public Map(final String name, Generator generator) {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
@@ -372,7 +372,7 @@ public class Map implements Cloneable {
      * @param y If too high or too low, it takes the highest/deepest value possible
      * @param z If too high or too low, it takes the highest/deepest value possible
      * @return A single Block at the wanted coordinates.
-     * @see com.BombingGames.Game.Map#getData(int, int, int) 
+     * @see com.BombingGames.WurfelEngine.Core.Map.Map#getDataClamp(com.BombingGames.WurfelEngine.Core.Map.Coordinate)
      */
     public Block getBlockClamp(int x, int y, int z){
         if (x >= blocksX){

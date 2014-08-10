@@ -84,7 +84,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
-     * @see com.BombingGames.Game.Gameobjects.AbstractCharacter#jump(float)
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter#jump(float)
      */
     public abstract void jump();
    

@@ -33,8 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -212,7 +212,7 @@ public class Bullet extends AbstractEntity {
 
     /**
      *
-     * @return
+     * @return the distance traveled.
      */
     public int getDistance() {
         return distance;

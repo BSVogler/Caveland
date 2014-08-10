@@ -320,7 +320,7 @@ public class Coordinate extends AbstractPosition {
     
     /**
      * Returns the field-id where the coordiantes are inside in relation to the current field. Field id count clockwise, starting with the top with 0.
-     * If you want to get the neighbour you can use neighbourSidetoCoords(Coordinate coords, int sideID) with the second parameter found by this function.
+     * If you want to get the neighbour you can use {@link #neighbourSidetoCoords(int)} with the parameter found by this function.
      * The numbering of the sides:<br>
      * 7 \ 0 / 1<br>
      * -------<br>
@@ -330,7 +330,7 @@ public class Coordinate extends AbstractPosition {
      * @param x game-space-coordinates, value in pixels
      * @param y game-space-coordinates, value in pixels
      * @return Returns the fieldnumber of the coordinates. 8 is the field itself.
-     * @see com.BombingGames.Game.Gameobjects.AbstractGameObject#neighbourSidetoCoords(com.BombingGames.EngineCore.Map.Coordinate, int)
+     * @see #neighbourSidetoCoords(int)
      */
     public static int getNeighbourSide(float x, float y) {       
         int result = 8;//standard result

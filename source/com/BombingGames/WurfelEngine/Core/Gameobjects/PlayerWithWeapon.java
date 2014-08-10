@@ -44,8 +44,8 @@ public class PlayerWithWeapon extends AbstractCharacter{
     private Camera camera;
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
-     * @param point 
-     * @see com.BombingGames.Game.Gameobjects.Block#getInstance(int) 
+     * @param point the position of the player
+     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     public PlayerWithWeapon(final Point point) {
         super(30, 1, point);

@@ -48,7 +48,7 @@ import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
 
 /**
- *The Main class of the engine. To create a new engine use  {@link com.BombingGames.WurfelEngine#construct(java.lang.String, java.lang.String[]) WurfelEngine.construct}
+ *The Main class of the engine. To create a new engine use  {@link com.BombingGames.WurfelEngine.WE#construct(java.lang.String, java.lang.String[]) }
  * The Wurfel Engine needs Java >1.7 and the API libGDX0.9.9
  * @author Benedikt S. Vogler
  * @version 1.2.22
@@ -162,7 +162,7 @@ public class WE extends Game {
     
     /**
      * Start the engine. You have to pass a main menu first.
-     * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.BasicMainMenu) 
+     * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
      */
     public static void launch(){
         System.out.println("Launching engine...");
@@ -183,7 +183,7 @@ public class WE extends Game {
      * @param controller
      * @param view 
      * @param config 
-     * @see com.BombingGames.WurfelEngine#startGame()
+     * @see com.BombingGames.WurfelEngine.WE#startGame()
      */
     public static void initGame(final Controller controller, final View view, final Configuration config){
         if (instance != null) {
@@ -311,10 +311,10 @@ public class WE extends Game {
     }
     
     /**
-     *
+     *Get an asset from the asset manager
      * @param <T>
-     * @param filename
-     * @return
+     * @param filename the name of the file
+     * @return returns the asset
      */
     public static <T> T getAsset(String filename){
         return assetManager.get(filename);
@@ -348,7 +348,7 @@ public class WE extends Game {
     
     /**
      *
-     * @return
+     * @return the config in use
      */
     public static Configuration getCurrentConfig(){
         if (gameplayScreen==null) throw new NullPointerException("No gameplay screen loaded.");

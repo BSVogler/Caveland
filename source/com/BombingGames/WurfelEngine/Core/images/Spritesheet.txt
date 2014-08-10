@@ -468,7 +468,7 @@ e32-0
   rotate: false
   xy: 810, 283
   size: 160, 80
-  orig: 160, 80
+  orig: 160, 160
   offset: 0, 0
   index: -1
 error

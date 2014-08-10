@@ -157,6 +157,10 @@ public class MapEditorController extends Controller {
     
     }
 
+    /**
+     *Get the entity laying under the cursor.
+     * @return
+     */
     public AbstractEntity getFocusentity() {
         return focusentity;
     }

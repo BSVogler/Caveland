@@ -31,7 +31,6 @@
 
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -48,6 +47,10 @@ public class BenchmarkBall extends AbstractEntity {
     private static float timer=0;
     private static float timeTillBall=1000;
 
+    /**
+     *Creates a Benchmark ball.
+     * @param point
+     */
     public BenchmarkBall(Point point) {
         super(21, point);
         movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1);

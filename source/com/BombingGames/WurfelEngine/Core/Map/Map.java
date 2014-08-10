@@ -108,6 +108,10 @@ public class Map implements Cloneable {
            }
     }
     
+    /**
+     *
+     * @param generator
+     */
     public void fill(Generator generator){
         int chunkpos = 0;
         for (byte y=-1; y < 2; y++)
@@ -471,6 +475,10 @@ public class Map implements Cloneable {
         );
     }
     
+    /**
+     *
+     * @param generator
+     */
     public void setGenerator(Generator generator) {
         this.generator = generator;
     }

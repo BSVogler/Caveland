@@ -114,10 +114,19 @@ public class MapEditorView extends View {
         getStage().addActor(replaybutton);
     }
 
+    /**
+     *
+     * @param speed
+     */
     protected void setCameraSpeed(float speed){
         cameraspeed = speed;
     }
     
+    /**
+     *
+     * @param x
+     * @param y
+     */
     protected void setCameraMoveVector(float x,float y){
         camermove = new Vector2(x, y);
     }
@@ -282,6 +291,9 @@ public class MapEditorView extends View {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void enter() {
         super.enter();

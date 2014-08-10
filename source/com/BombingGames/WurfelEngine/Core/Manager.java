@@ -32,11 +32,20 @@
 package com.BombingGames.WurfelEngine.Core;
 
 /**
- *
+ *A test to groud view and controllers. May be deleted again if useless.
  * @author Benedikt Vogler
+ * @since 1.2.
  */
 public interface Manager {
     
+    /**
+     *Should be called when the manager becomes active
+     */
     public abstract void enter();
+
+    /**
+     *
+     * @return
+     */
     public boolean isInitalized();
 }

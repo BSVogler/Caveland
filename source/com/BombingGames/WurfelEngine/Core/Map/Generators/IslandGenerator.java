@@ -33,16 +33,18 @@ package com.BombingGames.WurfelEngine.Core.Map.Generators;
 
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
-import static com.BombingGames.WurfelEngine.Core.Map.Chunk.getBlocksZ;
 
 /**
- *
+ *Fenerates islands
  * @author Benedikt Vogler
  */
 public class IslandGenerator implements Generator {
     private int mountainX;
     private int mountainY;
 
+    /**
+     *
+     */
     public IslandGenerator() {
         //mountain
         mountainX = (int) (Math.random()*Chunk.getBlocksX()-1);

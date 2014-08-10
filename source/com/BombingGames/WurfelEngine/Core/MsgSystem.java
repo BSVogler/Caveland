@@ -251,6 +251,10 @@ public class MsgSystem {
         return i>=0 ? messages.get(i).message : "";
     }
     
+    /**
+     *Set the text in the box.
+     * @param text
+     */
     public void setText(String text){
         textinput.setText(text);
         textinput.setCursorPosition(textinput.getText().length());
@@ -339,6 +343,9 @@ public class MsgSystem {
         return false;    
     }
 
+    /**
+     *
+     */
     public void dispose(){
         disposed = true;
     }

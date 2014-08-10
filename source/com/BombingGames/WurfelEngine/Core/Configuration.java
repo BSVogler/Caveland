@@ -190,10 +190,18 @@ public class Configuration {
         
     }
     
+    /**
+     *Get the key which opens the console.
+     * @return
+     */
     public int getConsoleKey(){
         return Keys.ENTER;
     }
     
+    /**
+     * True if some depth prototype should be activated.
+     * @return 
+     */
     public boolean useScalePrototype(){
         return false;
     }

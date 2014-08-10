@@ -44,6 +44,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class Navigation {
     
+    /**
+     *
+     * @param view
+     */
     protected void render(View view){
             //draw layer navigation  on right side
             ShapeRenderer sh = view.getShapeRenderer();

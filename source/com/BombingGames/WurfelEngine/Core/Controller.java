@@ -160,6 +160,10 @@ public class Controller implements Manager {
         requestRecalc();
     }
     
+    /**
+     * Tries loading a map.
+     * @param name the name of the map
+     */
     public static void loadMap(String name){
         map = new Map(name);
         map.fill();

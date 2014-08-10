@@ -480,15 +480,26 @@ public class View implements Manager {
         return stage;
     }
 
+    /**
+     *
+     * @return
+     */
     public Skin getSkin() {
         return skin;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isInitalized() {
         return initalized;
     }
 
+    /**
+     *
+     */
     @Override
     public void enter() {
         View.addInputProcessor(stage);//the input processor must be added every time because they are only 

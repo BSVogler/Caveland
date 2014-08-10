@@ -48,6 +48,10 @@ import java.text.NumberFormat;
  * @author Benedikt Vogler
  */
 public class DevTools {
+
+    /**
+     *The visualised width of every data
+     */
     public static final int width=2;
     private final float[] data = new float[100];
     private final int xPos, yPos, maxHeight;

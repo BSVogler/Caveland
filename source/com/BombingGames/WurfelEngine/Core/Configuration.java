@@ -191,24 +191,24 @@ public class Configuration {
     }
     
     /**
-     *Get the key which opens the console.
-     * @return
+     *
+     * @return Get the key which opens the console.
      */
     public int getConsoleKey(){
         return Keys.ENTER;
     }
     
     /**
-     * True if some depth prototype should be activated.
-     * @return 
+     *
+     * @return True if some depth prototype should be activated.
      */
     public boolean useScalePrototype(){
         return false;
     }
     
     /**
-     * The id of the ground block.
-     * @return 
+     * 
+     * @return The id of the ground block.
      */
     public int groundBlockID(){
         return 2;

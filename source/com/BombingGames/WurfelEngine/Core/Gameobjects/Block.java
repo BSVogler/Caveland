@@ -57,9 +57,6 @@ public class Block extends AbstractGameObject {
     /**Containts the names of the objects. index=id*/
     public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT];
     
-    /** A list containing the offset of the objects. */
-    public static final int[][][] OFFSET = new int[OBJECTTYPESCOUNT][VALUESCOUNT][2];
-    
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
         
     /**
@@ -90,17 +87,9 @@ public class Block extends AbstractGameObject {
         NAMELIST[33] = "crate";
         NAMELIST[34] = "flower";
         NAMELIST[35] = "round bush";
-        OFFSET[34][0][0] = 71;
-        OFFSET[34][0][1] = 78;
-        OFFSET[35][0][0] = 22;
-        OFFSET[35][0][1] = 2;
         NAMELIST[50] = "strewbed";
         NAMELIST[70] = "campfire";
         NAMELIST[71] = "explosive barrel";
-        OFFSET[71][0][0] = 35;
-        OFFSET[71][0][1] = 16;
-        OFFSET[71][1][0] = 39;
-        OFFSET[71][1][1] = 19;
         NAMELIST[72] = "animation test";
     }
     
@@ -570,24 +559,6 @@ public class Block extends AbstractGameObject {
     public String getName() {
         return NAMELIST[getId()];
     }
-
-    /**
-     *Returning the
-     * @return
-     */
-    @Override
-    public int getOffsetX() {
-        return OFFSET[getId()][getValue()][0];
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public int getOffsetY() {
-        return OFFSET[getId()][getValue()][1];
-    } 
 
     /**
      *

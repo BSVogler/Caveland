@@ -42,33 +42,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     /**Containts the names of the objects. index=id*/
     public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT]; 
     
-    /** A list containing the offset of the objects. */
-    public static final int[][][] OFFSET = new int[OBJECTTYPESCOUNT][VALUESCOUNT][2];
-    
     private Point point;//the position in the map-grid
    
     static {
         NAMELIST[30] = "player";
-        OFFSET[30][0][0] = 54-80;
-        OFFSET[30][0][1] = 37-40;
-        OFFSET[30][1][0] = 55-80;
-        OFFSET[30][1][1] = 38-40;
-        OFFSET[30][2][0] = 53-80;
-        OFFSET[30][2][1] = 35-40;
-        OFFSET[30][3][0] = 46-80;
-        OFFSET[30][3][1] = 33-40;
-        OFFSET[30][4][0] = 53-80;
-        OFFSET[30][4][1] = 35-40;
-        OFFSET[30][5][0] = 64-80;
-        OFFSET[30][5][1] = 33-40;
-        OFFSET[30][6][0] = 53-80;
-        OFFSET[30][6][1] = 33-40;
-        OFFSET[30][7][0] = 46-80;
-        OFFSET[30][7][1] = 33-40;
+      
         NAMELIST[31] = "smoke test";
         NAMELIST[32] = "character shadow";
-        OFFSET[32][0][0] = -80;
-        OFFSET[32][0][1] = 40;
     }
     
     private boolean dispose;
@@ -160,24 +140,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public String getName() {
         return NAMELIST[getId()];
     }
-    
-    /**
-     *The offset is the offset of the sprite image.
-     * @return
-     */
-    @Override
-    public int getOffsetX() {
-        return OFFSET[getId()][getValue()][0];
-    }
-
-    /**
-     *The offset is the offset of the sprite image.
-     * @return
-     */
-    @Override
-    public int getOffsetY() {
-        return OFFSET[getId()][getValue()][1];
-    } 
     
    /**
      * Deletes the object from the map. The opposite to exist();

@@ -204,8 +204,8 @@ public abstract class AbstractGameObject {
         if (!hidden && !clipped) {             
             render(
                 view,
-                pos.getProjectedPosX() + getOffsetX(),
-                pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT + getOffsetY(),
+                pos.getProjectedPosX(),
+                pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT,
                 color,
                 scale
             );
@@ -254,8 +254,9 @@ public abstract class AbstractGameObject {
      * @param scale relative value
      */
     public void render(View view, int xPos, int yPos, Color color, float scale) {
-        Sprite sprite = new Sprite(getSprite(getCategory(), id, value));
-        sprite.setPosition(xPos, yPos);
+        AtlasRegion texture = getSprite(getCategory(), id, value);
+        Sprite sprite = new Sprite(texture);
+        sprite.setPosition(xPos+texture.offsetX, yPos-texture.offsetY);
         sprite.scale(scale);
         
         prepareColor(view, color);
@@ -384,18 +385,6 @@ public abstract class AbstractGameObject {
      */
     public abstract String getName();
     
-    /**
-     *Get the offset of the sprite. Center is top left corner.
-     * @return
-     */
-    public abstract int getOffsetX();
-    
-    /**
-     *Get the offset of the sprite. Center is top left corner.
-     * @return
-     */
-    public abstract int getOffsetY();
-
     /**
      * Get the value. It is like a sub-id and can identify the status.
      * @return

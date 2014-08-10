@@ -111,15 +111,15 @@ b34-0
   rotate: false
   xy: 161, 982
   size: 26, 42
-  orig: 26, 42
-  offset: 70, -78
+  orig: 160, 160
+  offset: 70, 40
   index: -1
 b35-0
   rotate: false
   xy: 84, 696
   size: 120, 154
-  orig: 120, 154
-  offset: 21, -1
+  orig: 160, 160
+  offset: 21, 5
   index: -1
 b4-0-0
   rotate: false
@@ -251,22 +251,22 @@ b70-0
   rotate: false
   xy: 69, 513
   size: 154, 160
-  orig: 154, 160
+  orig: 160, 160
   offset: 6, 0
   index: -1
 b71-0
   rotate: false
   xy: 161, 851
   size: 84, 130
-  orig: 84, 130
-  offset: 38, -17
+  orig: 160, 160
+  offset: 38, 13
   index: -1
 b71-1
   rotate: false
   xy: 205, 674
   size: 84, 122
-  orig: 84, 122
-  offset: 38, -20
+  orig: 160, 160
+  offset: 38, 18
   index: -1
 b8-0-0
   rotate: false
@@ -335,8 +335,8 @@ e12-3
   rotate: false
   xy: 188, 982
   size: 32, 34
-  orig: 32, 34
-  offset: 8, -9
+  orig: 50, 50
+  offset: 8, 7
   index: -1
 e13-0
   rotate: false
@@ -370,14 +370,14 @@ e18-0
   rotate: false
   xy: 917, 0
   size: 80, 70
-  orig: 80, 70
-  offset: 0, -4
+  orig: 80, 80
+  offset: 0, 6
   index: -1
 e19-0
   rotate: false
   xy: 95, 674
   size: 23, 21
-  orig: 23, 21
+  orig: 25, 21
   offset: 0, 0
   index: -1
 e20-0
@@ -391,64 +391,64 @@ e21-0
   rotate: false
   xy: 548, 363
   size: 100, 100
-  orig: 100, 100
-  offset: 29, -29
+  orig: 160, 160
+  offset: 29, 31
   index: -1
 e30-0
   rotate: false
   xy: 0, 177
   size: 52, 176
-  orig: 52, 176
-  offset: 54, -36
+  orig: 160, 240
+  offset: 54, 28
   index: -1
 e30-1
   rotate: false
   xy: 43, 702
   size: 40, 170
-  orig: 40, 170
-  offset: 55, -38
+  orig: 160, 240
+  offset: 55, 32
   index: -1
 e30-2
   rotate: false
   xy: 53, 177
   size: 54, 174
-  orig: 54, 174
-  offset: 52, -34
+  orig: 160, 240
+  offset: 52, 32
   index: -1
 e30-3
   rotate: false
   xy: 0, 529
   size: 68, 172
-  orig: 68, 172
-  offset: 46, -32
+  orig: 160, 240
+  offset: 46, 36
   index: -1
 e30-4
   rotate: false
   xy: 55, 0
   size: 54, 174
-  orig: 54, 174
-  offset: 53, -34
+  orig: 160, 240
+  offset: 53, 32
   index: -1
 e30-5
   rotate: false
   xy: 0, 702
   size: 42, 172
-  orig: 42, 172
-  offset: 63, -33
+  orig: 160, 240
+  offset: 63, 35
   index: -1
 e30-6
   rotate: false
   xy: 0, 0
   size: 54, 176
-  orig: 54, 176
-  offset: 52, -33
+  orig: 160, 240
+  offset: 52, 31
   index: -1
 e30-7
   rotate: false
   xy: 0, 354
   size: 68, 174
-  orig: 68, 174
-  offset: 46, -33
+  orig: 160, 240
+  offset: 46, 33
   index: -1
 e31-0
   rotate: false

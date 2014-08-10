@@ -67,6 +67,7 @@ public class View implements Manager {
     
     private SpriteBatch batch;    
     private ShapeRenderer shapeRenderer;
+    private ShapeRenderer igShRenderer;
     
     private Controller controller;
     
@@ -117,6 +118,7 @@ public class View implements Manager {
         hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         batch = new SpriteBatch();
+        igShRenderer = new ShapeRenderer();
         shapeRenderer = new ShapeRenderer();
         
         //set up stage
@@ -243,6 +245,7 @@ public class View implements Manager {
             hudCamera.apply(Gdx.gl10);
 
             batch.setProjectionMatrix(hudCamera.combined);
+            igShRenderer.setProjectionMatrix(hudCamera.combined);
             shapeRenderer.setProjectionMatrix(hudCamera.combined);
 
             //set vieport of hud to cover whole window
@@ -429,6 +432,10 @@ public class View implements Manager {
         return batch;
     }
 
+    public ShapeRenderer getIgShRender() {
+        return igShRenderer;
+    }
+    
     /**
      * Y-down
      * @return

@@ -209,7 +209,7 @@ public class Camera{
         if (Controller.getMap() != null) { //render only if map exists 
 
             view.getBatch().setProjectionMatrix(combined);
-             
+            view.getIgShRender().setProjectionMatrix(combined); 
             //set up the viewport
             Gdx.gl.glViewport(
                 screenPosX,

@@ -429,13 +429,13 @@ public class Coordinate extends AbstractPosition {
 
     /**
      *
-     * @return
+     * @return the coordiante's origin is the center
      */
     @Override
     public Point getPoint() {
         return new Point(
-            x*Block.SCREEN_WIDTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
-            y*Block.SCREEN_DEPTH,
+            x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
+            y*Block.GAME_DIAGLENGTH2,
             getHeight(),
             true
         );
@@ -453,7 +453,7 @@ public class Coordinate extends AbstractPosition {
     @Override
     public int getProjectedPosX() {
         return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
-                + AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
+                //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
                 + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
                 + (getZ()>=0 ?   //read cell offset if inside map
                     getCellOffset()[0]
@@ -463,7 +463,7 @@ public class Coordinate extends AbstractPosition {
     @Override
     public int getProjectedPosY() {
         return (int) (getRelY() * AbstractGameObject.SCREEN_DEPTH2 //x-coordinate multiplied by half of the projected size in y direction
-            + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
+           // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             - getHeight() *0.7071067811865475f //subtract height and take axis shortening into account
             + (getZ()>=0 ?  //read cell offset if inside map
                 + getCellOffset()[1] / 2 //add the objects y position inside this coordinate

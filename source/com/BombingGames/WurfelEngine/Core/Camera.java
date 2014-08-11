@@ -39,7 +39,9 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -249,8 +251,16 @@ public class Camera{
             for (RenderDataDTO renderobject : depthlist) {
                 renderobject.getGameObject().render(view, camera, renderobject.getCoords()); 
             }
-            
             view.getBatch().end();
+
+            //outline map
+            if (WE.getCurrentConfig().debugObjects()){
+                view.getBatch().end();
+                view.getIgShRender().setColor(Color.RED.cpy());
+                view.getIgShRender().begin(ShapeRenderer.ShapeType.Line);
+                view.getIgShRender().rect(0, 0, Map.getGameWidth(), Map.getGameDepth()/2);
+                view.getIgShRender().end();
+            }
         }
     }
   

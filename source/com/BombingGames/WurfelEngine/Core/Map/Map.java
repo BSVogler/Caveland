@@ -642,7 +642,7 @@ public class Map implements Cloneable {
      * @return 
      */
     public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGLENGTH;
+        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
     }
 
     /**

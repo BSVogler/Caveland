@@ -205,26 +205,30 @@ public class Minimap {
 //                    + scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2),
 //                    Color.BLACK
 //                );
-                            
+
             if (controller.getPlayer()!=null){
+
+                Point tmpPos = controller.getPlayer().getPos();
                 //player coordinate
                 view.drawString(
-                    controller.getPlayer().getPos().getCoord().getRelX() +" | "+ controller.getPlayer().getPos().getCoord().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
-                    (int) (posX + (controller.getPlayer().getPos().getCoord().getRelX() + (controller.getPlayer().getPos().getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (posY - controller.getPlayer().getPos().getCoord().getRelY() * scaleY + 10),
+                    tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
+                    (int) (posX + (tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
+                    (int) (posY - tmpPos.getCoord().getRelY() * scaleY + 10),
                     Color.RED
                 );
-                 int rectX = (int) (posX
-                     + (controller.getPlayer().getPos().getRelX()
-                     + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
-                     )/Block.GAME_DIAGLENGTH * scaleX);
+                int rectX = (int) (
+                    posX
+                    + (tmpPos.getRelX()
+                        + (tmpPos.getCoord().getRelY()%2==1?0.5f:0)
+                      ) / Block.GAME_DIAGLENGTH * scaleX
+                );
                 int rectY = (int) (
                     posY
-                    - controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGLENGTH2 * scaleY
+                    - tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY
                 );
                 
                 view.drawString(
-                    controller.getPlayer().getPos().getRelX() +" | "+ controller.getPlayer().getPos().getRelY() +" | "+ (int) controller.getPlayer().getPos().getHeight(),
+                    tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
                     rectX,
                     rectY,
                     Color.RED

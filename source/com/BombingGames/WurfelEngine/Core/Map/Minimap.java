@@ -50,6 +50,7 @@ public class Minimap {
     private Camera camera;
     private final Color[][] mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
     private boolean visible;
+    private int highestLevel;
 
     /**
      * Create a minimap.
@@ -76,17 +77,32 @@ public class Minimap {
      * Updates the minimap- Should only be done after changing the map.
      */
     public void buildMinimap(){
-        for (int x = 0; x < Map.getBlocksX(); x++) {
-            for (int y = 0; y < Map.getBlocksY(); y++) {
+        highestLevel = 0;
+        int[][] topTileZ = new int[Map.getBlocksX()][Map.getBlocksY()];
+        
+        //fing top tile
+        for (int x = 0; x < mapdata.length; x++) {
+            for (int y = 0; y < mapdata[x].length; y++) {
                 int z = Map.getBlocksZ() -1;//start at top
-                Block block = new Coordinate(x, y, z, true).getBlock();
-                while ( z>0 && block.getId() ==0 ) {
-                    z--;//find topmost block
-                    block = new Coordinate(x, y, z, true).getBlock();
+                while ( z>0 && Controller.getMap().getBlock(x, y, z).getId() ==0 ) {
+                    z--;//find topmost block in row
                 }
-                mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue()).cpy();
-                mapdata[x][y].a = 1;
-                mapdata[x][y].mul(1.3f).mul(z/(float)Map.getBlocksZ());
+
+                topTileZ[x][y] = z;
+                if (z>highestLevel)
+                    highestLevel=z; 
+            }
+        }
+            
+        //set color
+        for (int x = 0; x < mapdata.length; x++) {
+            for (int y = 0; y < mapdata[x].length; y++) {
+                Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
+                if (block.getId()!=0)
+                    mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue()).cpy();
+                else mapdata[x][y] = new Color();//make air black
+                mapdata[x][y].mul(1.5f*topTileZ[x][y]/(float)highestLevel);
+                mapdata[x][y].a = 1; //full alpha level
             }
         }
     }

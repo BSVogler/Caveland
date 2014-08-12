@@ -435,6 +435,10 @@ public class View implements Manager {
         return batch;
     }
 
+    /**
+     *
+     * @return
+     */
     public ShapeRenderer getIgShRender() {
         return igShRenderer;
     }
@@ -490,6 +494,10 @@ public class View implements Manager {
         return stage;
     }
     
+    /**
+     *
+     * @return
+     */
     public static Stage getStaticStage() {
         return staticStage;
     }

@@ -131,6 +131,10 @@ public class MapEditorView extends View {
         camermove = new Vector2(x, y);
     }
     
+    /**
+     *
+     * @return
+     */
     protected Vector2 getCameraMoveVector(){
         return camermove;
     }

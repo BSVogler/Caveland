@@ -74,7 +74,7 @@ public class BenchmarkBall extends AbstractEntity {
         movement.z -= WE.getCurrentConfig().getGravity()*delta/1000f;
         
         if (onGround()){ //hit floor
-            movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, 4);
+            movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -movement.z);
         }
         
         shadow.update(delta, this);

@@ -249,27 +249,49 @@ public abstract class AbstractGameObject {
     /**
      * Renders at a custom position with a custom light.
      * @param view
-     * @param xPos rendering position
-     * @param yPos rendering position
-     * @param color  custom blending color
+     * @param xPos rendering position, center of sprite (screen space?)
+     * @param yPos rendering position, center of sprite (screen space?)
+     * @param color custom blending color
      * @param scale relative value
      */
     public void render(View view, int xPos, int yPos, Color color, float scale) {
         AtlasRegion texture = getSprite(getCategory(), id, value);
         Sprite sprite = new Sprite(texture);
-        sprite.setPosition(xPos+texture.offsetX-SCREEN_WIDTH2, yPos+texture.offsetY-SCREEN_HEIGHT-SCREEN_DEPTH2);
-        sprite.scale(scale);
+        sprite.setPosition(
+            xPos+texture.offsetX-texture.originalWidth/2,
+            yPos+texture.offsetY-SCREEN_HEIGHT-SCREEN_DEPTH2 +(SCREEN_HEIGHT2+SCREEN_DEPTH2-texture.originalHeight/2)
+        );
         
+        sprite.scale(scale);
         prepareColor(view, color);
 
         sprite.setColor(color);
         sprite.draw(view.getBatch());
+        
+        
         if (WE.getCurrentConfig().debugObjects()){
             ShapeRenderer sh = view.getIgShRender();
             sh.begin(ShapeRenderer.ShapeType.Line);
-            sh.rect(xPos+texture.offsetX-SCREEN_WIDTH2, yPos+texture.offsetY-SCREEN_HEIGHT-SCREEN_DEPTH2, sprite.getWidth(), sprite.getHeight());
-            sh.line(xPos-SCREEN_WIDTH2, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos+SCREEN_DEPTH2);
-            sh.line(xPos-SCREEN_WIDTH2, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos-SCREEN_DEPTH2);
+            //sprite outline
+            sh.rect(
+                sprite.getX(),
+                sprite.getY(),
+                sprite.getWidth(),
+                sprite.getHeight()
+            );
+            //crossing lines
+            sh.line(
+                xPos-SCREEN_WIDTH2,
+                yPos-SCREEN_DEPTH2,
+                xPos+SCREEN_WIDTH2,
+                yPos+SCREEN_DEPTH2
+            );
+            sh.line(
+                xPos-SCREEN_WIDTH2,
+                yPos+SCREEN_DEPTH2,
+                xPos+SCREEN_WIDTH2,
+                yPos-SCREEN_DEPTH2
+            );
             //bounding box
             sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
             sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);

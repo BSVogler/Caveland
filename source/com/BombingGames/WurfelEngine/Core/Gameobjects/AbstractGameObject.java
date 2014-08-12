@@ -109,7 +109,7 @@ public abstract class AbstractGameObject {
     private byte value;
     private boolean obstacle, transparent, clipped, hidden; 
     private float lightlevel = 0.5f;
-    private int dimensionZ = 1;  
+    private int dimensionZ = GAME_EDGELENGTH;  
 
     
     /**
@@ -206,7 +206,7 @@ public abstract class AbstractGameObject {
             render(
                 view,
                 pos.getProjectedPosX(),
-                pos.getProjectedPosY() - (dimensionZ - 1) * SCREEN_HEIGHT,
+                pos.getProjectedPosY(),
                 color,
                 scale
             );

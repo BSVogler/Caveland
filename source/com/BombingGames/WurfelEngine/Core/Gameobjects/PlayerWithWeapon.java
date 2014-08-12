@@ -67,7 +67,7 @@ public class PlayerWithWeapon extends AbstractCharacter{
         
         setTransparent(true);
         setObstacle(true);
-        setDimensionZ(2);
+        setDimensionZ(AbstractGameObject.GAME_EDGELENGTH*2);
     }   
 
     /**

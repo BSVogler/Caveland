@@ -70,7 +70,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
             pos.getPoint().getRelY()//Y
             
             + pos.getHeight()/Math.sqrt(2)//Z
-            + (getDimensionZ() - 1) * GAME_EDGELENGTH/6/Math.sqrt(2)
+            + getDimensionZ()/Math.sqrt(2)
         );
     }
     

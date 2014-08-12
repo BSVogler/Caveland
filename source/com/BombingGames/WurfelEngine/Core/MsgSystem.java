@@ -268,7 +268,8 @@ public class MsgSystem {
                 return true;
             case "le":
             case "lightengine":
-                Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
+                if (Controller.getLightengine()!=null)
+                    Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
                 return true;
             case "quit":
             case "exit":

@@ -131,6 +131,10 @@ public class MapEditorView extends View {
         camermove = new Vector2(x, y);
     }
     
+    protected Vector2 getCameraMoveVector(){
+        return camermove;
+    }
+    
     @Override
     public void render() {
         super.render();
@@ -173,13 +177,13 @@ public class MapEditorView extends View {
         //manage camera movement
         if (!GameplayScreen.msgSystem().isActive()){
             if (keycode == Input.Keys.W)
-                view.setCameraMoveVector(0, -1);
+                view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
             if (keycode == Input.Keys.S)
-                view.setCameraMoveVector(0, 1);
+                view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
             if (keycode == Input.Keys.A)
-                view.setCameraMoveVector(-1, 0);
+                view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
             if (keycode == Input.Keys.D)
-                view.setCameraMoveVector(1, 0);
+                view.setCameraMoveVector(1, view.getCameraMoveVector().y);
         }
         
             return false;
@@ -190,12 +194,16 @@ public class MapEditorView extends View {
             if (keycode == Keys.SHIFT_LEFT)
                 view.setCameraSpeed(0.5f);
             
-             if (keycode == Input.Keys.W
-                 || keycode == Input.Keys.A
+            if (keycode == Input.Keys.W
                  || keycode == Input.Keys.S
+                )
+                view.setCameraMoveVector(view.getCameraMoveVector().x, 0);
+            
+            if (keycode == Input.Keys.A
                  || keycode == Input.Keys.D
-                 )
-                view.setCameraMoveVector(0, 0);
+                )
+                view.setCameraMoveVector(0, view.getCameraMoveVector().y);
+             
             
             return false;
         }

@@ -620,7 +620,7 @@ public class Camera{
      * @return measured in grid-coordinates 
      */
     public int getVisibleLeftBorder(){
-        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH-1;
+        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH;
         if (leftborder < 0) return 0;//clamp
         
         return leftborder;
@@ -631,7 +631,7 @@ public class Camera{
      * @return measured in grid-coordinates
      */
     public int getVisibleRightBorder(){
-        int rightborder = (projectionPosX + getViewportWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
+        int rightborder = (projectionPosX + getViewportWidth()) / AbstractGameObject.SCREEN_WIDTH + 2;
         if (rightborder >= Map.getBlocksX()) return Map.getBlocksX()-1;//clamp
 
         return rightborder;
@@ -642,7 +642,7 @@ public class Camera{
      * @return measured in grid-coordinates
      */
     public int getVisibleTopBorder(){    
-        int topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2-2;
+        int topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2-1;
         if (topborder < 0) return 0;
         
         return topborder;
@@ -653,7 +653,7 @@ public class Camera{
      * @return measured in grid-coordinates, relative to map
      */
     public int getVisibleBottomBorder(){
-        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2-1;
+        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
         if (bottomborder >= Map.getBlocksY()) return Map.getBlocksY()-1;//clamp
         
         return bottomborder;

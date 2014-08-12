@@ -40,8 +40,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *A controller manages the map and the game data.
@@ -246,21 +244,6 @@ public class Controller implements Manager {
         return timespeed;
     }
 
-    /**
-     *
-     */
-    public void setTimespeed() {
-        JFrame frame = new JFrame("InputDialog Example #2");
-        try {
-            this.timespeed = Float.parseFloat(JOptionPane.showInputDialog(frame, "Use dot as separator.", "Set the speed of time", JOptionPane.QUESTION_MESSAGE));
-        } catch(NumberFormatException e) {
-            this.timespeed = 1;
-            Gdx.app.error("JFrame", "Invalid nubmer entered: "+e.toString());
-        } catch(NullPointerException e){
-            Gdx.app.debug("JFrame", "Canceled: "+e.toString());
-        }
-    }
-    
     /**
      *
      * @param timespeed

@@ -255,7 +255,6 @@ public class Camera{
 
             //outline map
             if (WE.getCurrentConfig().debugObjects()){
-                view.getBatch().end();
                 view.getIgShRender().setColor(Color.RED.cpy());
                 view.getIgShRender().begin(ShapeRenderer.ShapeType.Line);
                 view.getIgShRender().rect(0, 0, Map.getGameWidth(), Map.getGameDepth()/2);

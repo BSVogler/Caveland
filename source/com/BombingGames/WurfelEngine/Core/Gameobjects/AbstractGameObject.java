@@ -259,7 +259,8 @@ public abstract class AbstractGameObject {
         Sprite sprite = new Sprite(texture);
         sprite.setPosition(
             xPos+texture.offsetX-texture.originalWidth/2,
-            yPos+texture.offsetY-texture.originalHeight
+            yPos-SCREEN_HEIGHT-SCREEN_DEPTH2+texture.offsetY+
+                (SCREEN_HEIGHT+SCREEN_DEPTH-texture.originalHeight)
         );
         
         sprite.scale(scale);

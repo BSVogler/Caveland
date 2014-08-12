@@ -77,6 +77,7 @@ public class View implements Manager {
     private boolean keyF5isUp;
     
     private Stage stage;
+    private static Stage staticStage = new Stage();
     private Skin skin;
     private Pixmap cursor;
     
@@ -99,6 +100,7 @@ public class View implements Manager {
         
         //load sprites
         Block.loadSheet();
+        addInputProcessor(staticStage);
     }
     
     /**
@@ -141,6 +143,7 @@ public class View implements Manager {
         Gdx.input.setInputProcessor(null);
         inpMulPlex = null;
         inactiveInpProcssrs = null;
+        addInputProcessor(staticStage);
     }
     
     /**
@@ -271,7 +274,6 @@ public class View implements Manager {
         }
     }
        
-
     /**
      * The equalizationScale is a factor which scales the GUI/HUD to have the same relative size with different resolutions.
      * @return the scale factor
@@ -485,6 +487,10 @@ public class View implements Manager {
      */
     public Stage getStage() {
         return stage;
+    }
+    
+    public static Stage getStaticStage() {
+        return staticStage;
     }
 
     /**

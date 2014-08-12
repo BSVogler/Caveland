@@ -126,6 +126,7 @@ public class GameplayScreen implements Screen{
         controller.update(delta);
         view.update(delta);
         view.render();
+        View.getStaticStage().draw();
         msgSystem.update(delta);
 
         
@@ -198,4 +199,5 @@ public class GameplayScreen implements Screen{
         }
         return editorView;
     }
+    
 }

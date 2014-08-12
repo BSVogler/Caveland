@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -48,7 +47,6 @@ import java.util.StringTokenizer;
  */
 public class MsgSystem {
     private int timelastupdate = 0;
-    private Stage stageRef;//the reference to the view's stage
     private final GameplayScreen gameplayRef;//the reference to the associated gameplay
     private boolean active = false;
     private TextField textinput;
@@ -101,21 +99,19 @@ public class MsgSystem {
     }
     
     /**
-     * "Handshake" with the view rendering the scene. This will add the GUI to the stageRef.
+     * "Handshake" with the view rendering the scene. This will add the GUI to the gameplay stage.
      * @param view the view managing the input and rendering it
      * @param xPos
      * @param yPos
      */
     public void viewInit(View view, final int xPos, final int yPos){
-        stageRef = view.getStage();
-        
         textinput = new TextField("", view.getSkin());
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        stageRef.addActor(textinput);
+        View.getStaticStage().addActor(textinput);
     }
         
     /**
@@ -198,7 +194,7 @@ public class MsgSystem {
             View.getFont().drawMultiLine(view.getBatch(), msg.sender+": "+msg.message, 10,50+y);
             y+=20;
         }
-         view.getBatch().end();
+        view.getBatch().end();
     }
 
     /**
@@ -217,8 +213,8 @@ public class MsgSystem {
 
         this.active = active;
         textinput.setVisible(active);
-        if (active && stageRef!=null)
-            stageRef.setKeyboardFocus(textinput);
+        if (active && View.getStaticStage()!=null)
+            View.getStaticStage().setKeyboardFocus(textinput);
     }
     
     /**

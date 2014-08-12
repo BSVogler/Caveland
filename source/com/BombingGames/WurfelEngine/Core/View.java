@@ -288,7 +288,7 @@ public class View implements Manager {
      * Reverts the perspective and transforms it into a coordiante which can be used in the game logic.
      * @param x the x position on the screen
      * @param camera the camera where the position is on
-     * @return the relative game coordinate
+     * @return the relative (to current loaded map) game coordinate
      */
     public float screenXtoGame(final int x, final Camera camera){
         return x / camera.getScaling()- camera.getScreenPosX()+ camera.getViewportPosX();

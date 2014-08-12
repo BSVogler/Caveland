@@ -38,7 +38,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -53,7 +52,6 @@ public class LoadMenu {
     private Window window;
     private TextField textSearch;
     private Table content;
-    private Skin skinRef;
     private Stage stageRef;
 
     /**
@@ -61,10 +59,9 @@ public class LoadMenu {
      * @param view 
      */
     public void viewInit(View view){
-        skinRef = view.getSkin();
         stageRef = view.getStage();
         
-        window = new Window("Choose a map", skinRef);
+        window = new Window("Choose a map", View.getSkin());
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
         window.setX(margin);
@@ -80,9 +77,9 @@ public class LoadMenu {
         // This table groups the Search label and the TextField used to gather
         // the search criteria:
         Table search = new Table();
-        search.add(new Label("Search", skinRef)).spaceRight(10f);
+        search.add(new Label("Search", View.getSkin())).spaceRight(10f);
 
-        textSearch = new TextField("Not implemented yet", skinRef);
+        textSearch = new TextField("Not implemented yet", View.getSkin());
 
         // This event waits untilk the RETURN key is pressed to reorganize the
         // intens inside the grid:
@@ -106,9 +103,9 @@ public class LoadMenu {
 
         //rearrangeTable();
 
-        content = new Table(skinRef);
+        content = new Table(View.getSkin());
         // Prepares the scroll manager:
-        ScrollPane scroll = new ScrollPane(content, skinRef);
+        ScrollPane scroll = new ScrollPane(content, View.getSkin());
 
         // Only scroll vertically:
         scroll.setScrollingDisabled(true, false);
@@ -141,7 +138,7 @@ public class LoadMenu {
                     
                     //debug
                     content.add(
-                        new Button(skinRef)
+                        new Button(View.getSkin())
                     );
                     
                     content.row();

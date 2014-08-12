@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -48,7 +49,6 @@ import java.util.StringTokenizer;
 public class MsgSystem {
     private int timelastupdate = 0;
     private final GameplayScreen gameplayRef;//the reference to the associated gameplay
-    private boolean active = false;
     private TextField textinput;
     private final ArrayList<Msg> messages = new ArrayList<>(20); 
     private boolean keyConsoleDown;
@@ -100,12 +100,12 @@ public class MsgSystem {
     
     /**
      * "Handshake" with the view rendering the scene. This will add the GUI to the gameplay stage.
-     * @param view the view managing the input and rendering it
+     * @param skin
      * @param xPos
      * @param yPos
      */
-    public void viewInit(View view, final int xPos, final int yPos){
-        textinput = new TextField("", view.getSkin());
+    public void viewInit(Skin skin, final int xPos, final int yPos){
+        textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
         textinput.setCursorPosition(0);
@@ -153,7 +153,7 @@ public class MsgSystem {
        
         //open close console/chat box
         if (keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
-            setActive(!active);//toggle
+            setActive(!textinput.isVisible());//toggle
             keyConsoleDown = true;
         }
         if (!disposed){//prevent updates when it's disposed
@@ -207,14 +207,14 @@ public class MsgSystem {
             if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
                 add("Failed executing command.", "System");    
         } else {
-            if (active && this.active!=active)//window should be opened?
+            if (active && !textinput.isVisible()){//window should be opened?
                 textinput.setText("");//clear if openend
+                if (View.getStaticStage()!=null)
+                    View.getStaticStage().setKeyboardFocus(textinput);
+                }
         }
 
-        this.active = active;
         textinput.setVisible(active);
-        if (active && View.getStaticStage()!=null)
-            View.getStaticStage().setKeyboardFocus(textinput);
     }
     
     /**
@@ -222,7 +222,7 @@ public class MsgSystem {
      * @return
      */
     public boolean isActive() {
-        return active;
+        return textinput.isVisible();
     }
     
     /**

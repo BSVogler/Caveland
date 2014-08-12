@@ -78,7 +78,7 @@ public class View implements Manager {
     
     private Stage stage;
     private static Stage staticStage = new Stage();
-    private Skin skin;
+    private static Skin skin;
     private Pixmap cursor;
     
     private boolean initalized;
@@ -101,6 +101,8 @@ public class View implements Manager {
         //load sprites
         Block.loadSheet();
         addInputProcessor(staticStage);
+        skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
+        GameplayScreen.msgSystem().viewInit(skin,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
     }
     
     /**
@@ -125,13 +127,11 @@ public class View implements Manager {
         
         //set up stage
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
         //laod cursor
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
 
         controller.getLoadMenu().viewInit(this);
-        GameplayScreen.msgSystem().viewInit(this,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
         
         initalized = true;
     }
@@ -497,7 +497,7 @@ public class View implements Manager {
      *
      * @return
      */
-    public Skin getSkin() {
+    public static Skin getSkin() {
         return skin;
     }
 

@@ -381,6 +381,7 @@ public class LightEngine {
                 shR.rect((I_ambient+I_diff2)*size, y, I_spec2*size, 6);
             
             shR.end();
+            Gdx.gl10.glLineWidth(1);
         }
     }
 }

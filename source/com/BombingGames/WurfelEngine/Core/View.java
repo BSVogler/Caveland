@@ -250,6 +250,7 @@ public class View implements Manager {
             batch.setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
             shapeRenderer.setProjectionMatrix(hudCamera.combined);
+            Gdx.gl10.glLineWidth(1);
 
             //set vieport of hud to cover whole window
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());

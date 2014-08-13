@@ -150,7 +150,7 @@ public class MapEditorView extends View {
         super.update(delta);
         
         //update focusentity
-        controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 0, 1));
+        controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 2, 1));
         
         camera.move((int) (camermove.x*cameraspeed*delta), (int) (camermove.y*cameraspeed*delta));
     }

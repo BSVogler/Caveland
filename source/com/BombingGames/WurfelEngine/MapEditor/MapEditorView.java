@@ -219,9 +219,7 @@ public class MapEditorView extends View {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = view.screenToGameCoords(screenX,screenY);
-            coords.clampToMap();
-            if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+            Coordinate coords = controller.getFocusentity().getPos().getCoord();
             
             buttondown=button;
             

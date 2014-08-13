@@ -249,7 +249,7 @@ public class Point extends AbstractPosition {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (pos.getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (pos.getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+3,//maybe dangerous to optimize code here!
+            (int) (pos.getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
             pos.getHeight(),
             true
         );

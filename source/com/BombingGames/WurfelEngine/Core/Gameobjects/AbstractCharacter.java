@@ -34,7 +34,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- *A character is an entity wich can walk around. To control the character you have to set the controls with "setControls(String controls)".
+ *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
  * @author Benedikt
  */
 public abstract class AbstractCharacter extends AbstractEntity {

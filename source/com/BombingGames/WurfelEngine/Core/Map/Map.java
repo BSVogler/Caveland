@@ -32,9 +32,12 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import static com.BombingGames.WurfelEngine.Core.Map.Chunk.METAFILESUFFIX;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -59,25 +62,28 @@ public class Map implements Cloneable {
     private final static ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
     
     /**
-     * Creates an empty map.
+     * Loads a map.
      * @param name if available on disk it will be load
+     * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public Map(final String name) {
+    public Map(final String name) throws IOException{
         this(name, new AirGenerator());
     }
     
     /**
-     * Creates an empty map. Fill the map with fillWithAir(boolean load);
+     * Loads a map. Fill the map with {@link #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) }
      * @param name if available on disk it will be load
      * @param generator
+     * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public Map(final String name, Generator generator) {
+    public Map(final String name, Generator generator) throws IOException {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
         this.mapname = name;
         
         Chunk.readMapInfo(name);
+        
         
         //save chunk size, which are now loaded
         blocksX = Chunk.getBlocksX()*3;
@@ -92,6 +98,17 @@ public class Map implements Cloneable {
         
         if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
         this.generator = generator;
+    }
+    
+    /**
+     * Should create a new map file.
+     * @param mapName
+     * @return 
+     * @throws java.io.IOException 
+     */
+    public static boolean createMapFile(final String mapName) throws IOException {
+        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+mapName+"."+METAFILESUFFIX);
+        throw new IOException("not implemented yet");
     }
     
     /**

@@ -40,6 +40,9 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *A controller manages the map and the game data.
@@ -73,11 +76,24 @@ public class Controller implements Manager {
      */
     public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
-        if (Controller.devtools == null) devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
+        if (Controller.devtools == null)
+            devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
+        
         if (map == null){
-            map = new Map("no name set", generator);
-            map.fill();
-            requestRecalc();
+            try {
+                map = new Map("map", generator);
+                map.fill();
+                requestRecalc();
+            } catch (IOException ex) {
+                Gdx.app.error("Controller", "Map default could not be loaded.");
+                try {
+                    Map.createMapFile("default");
+                } catch (IOException ex1) {
+                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
+                    WE.showMainMenu();
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
         }
         
         if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){
@@ -140,29 +156,11 @@ public class Controller implements Manager {
     }
     
     /**
-     * Creates a new Map using it's generator. Does a recalc.
-     */
-    public static void newMap(){
-        map = new Map("nonameset");
-        map.fill();
-        requestRecalc();
-    }
-    
-    /**
-     * Creates a new Map.
-     * @param generator using this generator
-     */
-    public static void newMap(Generator generator){
-        map = new Map("nonameset");
-        map.fill(generator);
-        requestRecalc();
-    }
-    
-    /**
      * Tries loading a map.
      * @param name the name of the map
+     * @throws java.io.IOException
      */
-    public static void loadMap(String name){
+    public static void loadMap(String name) throws IOException {
         map = new Map(name);
         map.fill();
         requestRecalc();

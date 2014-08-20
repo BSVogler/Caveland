@@ -39,6 +39,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -286,17 +287,6 @@ public class MsgSystem {
             case "credits":
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
-            case "newmap":
-                Generator a = new Generator() {
-                    
-                    @Override
-                    public int generate(int x, int y, int z) {
-                        return 0;
-                    }
-                };
-                Controller.getMap().setGenerator(a);
-                Controller.newMap();
-                return true;
             case "minimap":
                 if (gameplayRef.getController().getMinimap()==null){
                     add("No minimap found. Creating new", "System");
@@ -319,8 +309,35 @@ public class MsgSystem {
             StringTokenizer st = new StringTokenizer(command, " ");
             st.nextToken();
             
-            Controller.loadMap(st.nextToken());
+            try {
+                Controller.loadMap(st.nextToken());
+            } catch (IOException ex) {
+                add("Map could not be loaded.", "Warning");
+                return false;
+            }
             return true;
+        }
+        
+        if (command.startsWith("newmap")){
+            StringTokenizer st = new StringTokenizer(command, " ");
+            st.nextToken();
+            String mapname = st.nextToken();
+            
+            Generator a = new Generator() {
+
+                @Override
+                public int generate(int x, int y, int z) {
+                    return 0;
+                }
+            };
+            Controller.getMap().setGenerator(a);
+            try {
+                Map.createMapFile(mapname);
+            } catch (IOException ex) {
+                add("Map could not be created.", "Warning");
+                return false;
+            }
+            return executeCommand("loadmap " +mapname);
         }
          
         if (command.startsWith("gamespeed")){

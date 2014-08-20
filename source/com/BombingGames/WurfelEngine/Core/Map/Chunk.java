@@ -35,9 +35,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  * A Chunk is filled with many Blocks and is a part of the map.
@@ -183,12 +180,13 @@ public class Chunk {
     /**
      * reads the map info file and sets the size of the chunk
      * @param mapName
+     * @throws java.io.IOException
      */
-    public static void readMapInfo(String mapName){
+    public static void readMapInfo(String mapName) throws IOException {
         BufferedReader bufRead;
 
             //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/map/"+mapName+"."+METAFILESUFFIX);
+            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+mapName+"/map."+METAFILESUFFIX);
             if (path.exists()){
                 Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
                 try {
@@ -217,17 +215,14 @@ public class Chunk {
                     blocksZString = blocksZString.substring(2, blocksZString.length());
                     blocksZ = Integer.parseInt(blocksZString);
                 } catch (IOException ex) {
-                    if (!WE.isFullscreen()) {
-                        JOptionPane.showMessageDialog(
-                            null,
-                            "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/map/",
-                            "Loading error",
-                             JOptionPane.ERROR_MESSAGE
-                        );
-                    }
-                    Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new IOException(
+                        "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/maps/<mapname>"
+                    );
                 }
-            } else Gdx.app.debug("Chunk", "Map named \""+ mapName +"\" could not be found.");
+            } else {
+                Gdx.app.error("Chunk", "Map named \""+ mapName +"\" could not be found. Path:"+ path);
+                throw new IOException("Map named \""+ mapName +"\" could not be found. Path:"+ path);
+            }
     }
     
         /**

@@ -309,10 +309,11 @@ public class MsgSystem {
             StringTokenizer st = new StringTokenizer(command, " ");
             st.nextToken();
             
+            String mapname = st.nextToken();
             try {
-                Controller.loadMap(st.nextToken());
+                Controller.loadMap(mapname);
             } catch (IOException ex) {
-                add("Map could not be loaded.", "Warning");
+                add("Map "+mapname+"could not be loaded.", "Warning");
                 return false;
             }
             return true;

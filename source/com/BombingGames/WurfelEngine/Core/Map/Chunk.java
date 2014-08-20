@@ -179,7 +179,7 @@ public class Chunk {
     
     /**
      * reads the map info file and sets the size of the chunk
-     * @param mapName
+     * @param mapName filename
      * @throws java.io.IOException
      */
     public static void readMapInfo(String mapName) throws IOException {
@@ -193,12 +193,11 @@ public class Chunk {
                     bufRead =  path.reader(1024);
                     String mapnameInFile = bufRead.readLine();
                     mapnameInFile = mapnameInFile.substring(2, mapnameInFile.length());
-                    Gdx.app.log("Chunk","Loading map: "+mapnameInFile);
-                    GameplayScreen.msgSystem().add("Loading map: "+mapnameInFile);   
+                    GameplayScreen.msgSystem().add("Loading map called: "+mapnameInFile);   
 
                     String mapversion = bufRead.readLine(); 
                     mapversion = mapversion.substring(2, mapversion.length());
-                    Gdx.app.log("Chunk","Map Version:"+mapversion);
+                    GameplayScreen.msgSystem().add("Map Version:"+mapversion, "System");
 
                     String blocksXString = bufRead.readLine();
                     Gdx.app.debug("Chunk","sizeX:"+blocksXString);

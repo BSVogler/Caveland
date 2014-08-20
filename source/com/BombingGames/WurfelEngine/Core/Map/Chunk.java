@@ -188,30 +188,30 @@ public class Chunk {
             //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
             FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+mapName+"/map."+METAFILESUFFIX);
             if (path.exists()){
-                Gdx.app.log("Map","Trying to load Map Info from \"" + path.path() + "\"");
+                Gdx.app.log("Chunk","Trying to load Map Info from \"" + path.path() + "\"");
                 try {
                     bufRead =  path.reader(1024);
                     String mapnameInFile = bufRead.readLine();
                     mapnameInFile = mapnameInFile.substring(2, mapnameInFile.length());
-                    Gdx.app.log("Map","Loading map: "+mapnameInFile);
+                    Gdx.app.log("Chunk","Loading map: "+mapnameInFile);
                     GameplayScreen.msgSystem().add("Loading map: "+mapnameInFile);   
 
                     String mapversion = bufRead.readLine(); 
                     mapversion = mapversion.substring(2, mapversion.length());
-                    Gdx.app.log("Map","Map Version:"+mapversion);
+                    Gdx.app.log("Chunk","Map Version:"+mapversion);
 
                     String blocksXString = bufRead.readLine();
-                    Gdx.app.debug("Map","sizeX:"+blocksXString);
+                    Gdx.app.debug("Chunk","sizeX:"+blocksXString);
                     blocksXString = blocksXString.substring(2, blocksXString.length());
                     blocksX = Integer.parseInt(blocksXString);
 
                     String blocksYString = bufRead.readLine();
-                    Gdx.app.debug("Map","sizeY:"+blocksYString);
+                    Gdx.app.debug("Chunk","sizeY:"+blocksYString);
                     blocksYString = blocksYString.substring(2, blocksYString.length());
                     blocksY = Integer.parseInt(blocksYString);
 
                     String blocksZString = bufRead.readLine();
-                    Gdx.app.debug("Map","sizeZ:"+blocksZString);
+                    Gdx.app.debug("Chunk","sizeZ:"+blocksZString);
                     blocksZString = blocksZString.substring(2, blocksZString.length());
                     blocksZ = Integer.parseInt(blocksZString);
                 } catch (IOException ex) {

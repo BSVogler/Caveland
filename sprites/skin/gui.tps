@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.3.2</string>
+        <string>3.4.0</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/skin/gui.tps</string>
         <key>autoSDSettings</key>
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../com/BombingGames/WurfelEngine/Core/skin/gui.png</filename>
+        <filename>../../source/com/BombingGames/WurfelEngine/Core/skin/gui.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../com/BombingGames/WurfelEngine/Core/skin/gui.txt</filename>
+                <filename>../../source/com/BombingGames/WurfelEngine/Core/skin/gui.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -148,6 +148,8 @@
         <key>autoAliasEnabled</key>
         <true/>
         <key>trimSpriteNames</key>
+        <false/>
+        <key>prependSmartFolderName</key>
         <false/>
         <key>cleanTransparentPixels</key>
         <true/>
@@ -172,12 +174,12 @@
         </struct>
         <key>fileList</key>
         <array>
+            <filename>editor_button.png</filename>
+            <filename>editorreverse_button.png</filename>
             <filename>load_button.png</filename>
             <filename>play_button.png</filename>
-            <filename>save_button.png</filename>
-            <filename>editor_button.png</filename>
             <filename>replay_button.png</filename>
-            <filename>editorreverse_button.png</filename>
+            <filename>save_button.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

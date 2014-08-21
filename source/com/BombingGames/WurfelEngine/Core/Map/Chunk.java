@@ -65,7 +65,7 @@ public class Chunk {
     }
     
     /**
-    *Creates a chunk.
+    *Creates a chunk. Tries loading and if this fails it generates a new one.
     * @param pos the position of the chunk. Value between 0-8
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate

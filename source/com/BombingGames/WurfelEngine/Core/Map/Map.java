@@ -74,8 +74,8 @@ public class Map implements Cloneable {
     /**
      * Loads a map. Fill the map with {@link #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) }
      * @param name if available on disk it will be load
-     * @param generator
-     * @throws java.io.IOException
+     * @param generator the generator used for generating new chunks
+     * @throws java.io.IOException thrown if there is no full read/write access to the map file
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public Map(final String name, Generator generator) throws IOException {
@@ -112,10 +112,10 @@ public class Map implements Cloneable {
     }
     
     /**
-     *If no custom generor set will use air.
+     *Fills the map with blocks. If no custom generator is set it will use air.
      */
     public void fill(){
-    int chunkpos = 0;
+        int chunkpos = 0;
         for (byte y=-1; y < 2; y++)
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;

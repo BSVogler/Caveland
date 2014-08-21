@@ -322,7 +322,11 @@ public class MsgSystem {
         if (command.startsWith("newmap")){
             StringTokenizer st = new StringTokenizer(command, " ");
             st.nextToken();
-            String mapname = st.nextToken();
+            String mapname;
+            if (st.hasMoreTokens())
+                mapname = st.nextToken();
+            else
+                return false;
             
             Generator a = new Generator() {
 

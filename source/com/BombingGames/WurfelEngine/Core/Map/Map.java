@@ -48,7 +48,7 @@ import java.util.Arrays;
 public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
         
-    private final String mapname;
+    private final String filename;
     
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
@@ -80,7 +80,7 @@ public class Map implements Cloneable {
      */
     public Map(final String name, Generator generator) throws IOException {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
-        this.mapname = name;
+        this.filename = name;
         
         Chunk.readMapInfo(name);
         
@@ -120,7 +120,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(x, y, generator));
+                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
                 chunkpos++;
            }
     }
@@ -135,7 +135,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(x, y, generator));
+                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
                 chunkpos++;
            }
     }
@@ -159,7 +159,7 @@ public class Map implements Cloneable {
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(chunkpos, x, y, mapname, generator));
+                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
                 chunkpos++;
         }
        
@@ -266,12 +266,12 @@ public class Map implements Cloneable {
                     if (isMovingChunkPossible(pos, newmiddle)){
                         chunk = copyChunk(blockData_copy, pos - 4 + newmiddle);
                     } else {
-                        chunk = new Chunk(pos,
-                                    coordlist[pos][0],
-                                    coordlist[pos][1],
-                                    mapname,
-                                    generator
-                                );
+                        chunk = new Chunk(
+                            filename,
+                            coordlist[pos][0],
+                            coordlist[pos][1],
+                            generator
+                        );
                     }
                     insertChunk((byte) pos,chunk);
                 }
@@ -669,6 +669,16 @@ public class Map implements Cloneable {
     public static int getGameHeight(){
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
+
+    /**
+     * The name of the map on the file.
+     * @return 
+     */
+    public String getFilename() {
+        return filename;
+    }
+    
+    
         
     /**
      *Clones the map. Not yet checked if a valid copy.

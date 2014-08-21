@@ -65,31 +65,36 @@ public class Chunk {
     }
     
     /**
-    *Creates a chunk. Tries loading and if this fails it generates a new one.
-    * @param pos the position of the chunk. Value between 0-8
+    *Creates a chunk by trieng to load and if this fails it generates a new one.
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
-     * @param mapname
+     * @param mapname filename
      * @param generator
     */
-    public Chunk(final int pos, final int coordX, final int coordY, final String mapname, final Generator generator){
+    public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
         this();
-
-        if (!load(pos, coordX, coordY))
+        Gdx.app.debug("Chunk", "Creating chunk"+coordX+","+coordY);
+        if (!load(mapname, coordX, coordY))
             fill(coordX, coordY, generator);
     }
     
-        /**
-    *Creates a chunk.
+    /**
+    *Creates a chunk by generating a new one.
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
-     * @param generator
+    * @param generator
     */
     public Chunk(final int coordX, final int coordY, final Generator generator){
         this();
         fill(coordX, coordY, generator);
     }
     
+    /**
+     * 
+     * @param coordX
+     * @param coordY
+     * @param generator 
+     */
     private void fill(final int coordX, final int coordY, final Generator generator){
         GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
         for (int x=0; x < blocksX; x++)
@@ -103,12 +108,16 @@ public class Chunk {
     }
     
     /**
-     * Trys to load a chunk from disk.
+     * Tries to load a chunk from disk.
      */
-    private boolean load(int pos, int coordX, int coordY){
+    private boolean load(final String mapname, int coordX, int coordY){
         //Reading map files test
         try {
-            FileHandle path = Gdx.files.internal("map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+            //FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+            FileHandle path = new FileHandle(
+                WE.getWorkingDirectory().getAbsolutePath()
+                    + "/maps/"+mapname+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
+            );
             
             Gdx.app.log("Map","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
             
@@ -153,7 +162,7 @@ public class Chunk {
                             data[x][y][z] = new Cell(
                                 Integer.parseInt(line.substring(0,posdots)),
                                 Integer.parseInt(line.substring(posdots+1, posend)),
-                                new Coordinate(x + pos % 3 * blocksX, y + pos / 3 * blocksY, z, true)
+                                new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
                             );
                             x++;
                             line.delete(0,posend+1);

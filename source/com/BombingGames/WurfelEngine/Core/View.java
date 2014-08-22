@@ -165,9 +165,9 @@ public class View implements Manager {
      * @since V1.2.21
      */
     public static void focusInputProcessor(final InputProcessor processor){
-        inactiveInpProcssrs = inpMulPlex.getProcessors();
-        inpMulPlex.clear();
-        inpMulPlex.addProcessor(processor);
+        inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
+        Gdx.input.setInputProcessor(null); //reset
+        addInputProcessor(processor);//add the focus
     }
     
     /**
@@ -176,8 +176,10 @@ public class View implements Manager {
      * @since V1.2.21
      */
     public static void unfocusInputProcessor(){
+        Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
+        Gdx.input.setInputProcessor(null); //reset
         for (InputProcessor ip : inactiveInpProcssrs) {
-            inpMulPlex.addProcessor(ip);
+            addInputProcessor(ip);
         }
     }
         

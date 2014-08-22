@@ -653,7 +653,7 @@ public class Camera{
      * @return measured in grid-coordinates, relative to map
      */
     public int getVisibleBottomBorder(){
-        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2;
+        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2+2;
         if (bottomborder >= Map.getBlocksY()) return Map.getBlocksY()-1;//clamp
         
         return bottomborder;

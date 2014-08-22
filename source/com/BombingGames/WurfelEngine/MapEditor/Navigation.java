@@ -39,7 +39,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- *
+ *A bar which schows the current fitlering level.
  * @author Benedikt Vogler
  */
 public class Navigation {

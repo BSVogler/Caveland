@@ -156,7 +156,9 @@ public class MapEditorView extends View {
     }
 
     
-    
+    /**
+     * Manages the key inpts when in mapeditor view.
+     */
     private static class MapEditorInputListener implements InputProcessor {
         private final MapEditorController controller;
         private final MapEditorView view;

@@ -136,7 +136,7 @@ public class LoadMenu {
             File mapsFolder = WorkingDirectory.getMapsFolder();
             for (final File fileEntry : mapsFolder.listFiles()) {
                 if (fileEntry.isDirectory()) {
-                    content.add(fileEntry.getName());
+                    content.add(new MapCellActor(fileEntry.getName()));
                     
                     //debug
                     content.add(

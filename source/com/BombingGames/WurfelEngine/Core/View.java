@@ -128,7 +128,7 @@ public class View implements Manager {
         //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);//spawn at fullscreen
         
-        //laod cursor
+        //load cursor
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
 
         initalized = true;
@@ -252,7 +252,7 @@ public class View implements Manager {
             shapeRenderer.setProjectionMatrix(hudCamera.combined);
             Gdx.gl10.glLineWidth(1);
 
-            //set vieport of hud to cover whole window
+            //set viewport of hud to cover whole window
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
             //end of setup

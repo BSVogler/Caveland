@@ -131,8 +131,6 @@ public class View implements Manager {
         //laod cursor
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
 
-        controller.getLoadMenu().viewInit(this);
-        
         initalized = true;
     }
     

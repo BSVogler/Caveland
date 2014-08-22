@@ -96,7 +96,7 @@ public class MapEditorView extends View {
         final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
         loadbutton.setX(Gdx.graphics.getWidth()-80);
         loadbutton.setY(Gdx.graphics.getHeight()-40);
-        loadbutton.addListener(new LoadButton(controller));
+        loadbutton.addListener(new LoadButton(this,controller));
         getStage().addActor(loadbutton);
         
          //add save button
@@ -291,14 +291,16 @@ public class MapEditorView extends View {
     
     private static class LoadButton extends ClickListener{
         private final MapEditorController controller;
+        private MapEditorView view;
         
-        private LoadButton(Controller controller) {
+        private LoadButton(View view,Controller controller) {
             this.controller = (MapEditorController) controller;
+            this.view = (MapEditorView) view;
         }
         
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            controller.getLoadMenu().setOpen(true);
+            controller.getLoadMenu().setOpen(view, true);
             return true;
         }
     }

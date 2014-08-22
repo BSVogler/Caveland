@@ -55,6 +55,7 @@ public class LoadMenu {
     private TextField textSearch;
     private Table content;
     private Stage stageRef;
+    private boolean initialized = false;
 
     /**
      * Setups the window.
@@ -128,9 +129,11 @@ public class LoadMenu {
 
     /**
      * Open/close the window
+     * @param view if not intialized it initializes it.
      * @param open 
      */
-    public void setOpen(boolean open) {
+    public void setOpen(View view, boolean open) {
+        if (!initialized) viewInit(view);
         if (!window.isVisible()){
             int i=0;
             File mapsFolder = WorkingDirectory.getMapsFolder();

@@ -88,4 +88,12 @@ public class WorkingDirectory {
     private static enum OS {
             linux, solaris, windows, macos, unknown;
     }
+    
+    /**
+     * Get the folder where the maps are stored.
+     * @return 
+     */
+    public static File getMapsFolder(){
+        return new File(getWorkingDirectory("Wurfel Engine"),"maps");
+    }
 }

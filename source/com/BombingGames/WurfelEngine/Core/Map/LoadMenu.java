@@ -133,8 +133,8 @@ public class LoadMenu {
     public void setOpen(boolean open) {
         if (!window.isVisible()){
             int i=0;
-            File wd = WorkingDirectory.getWorkingDirectory("Wurfel Engine");
-            for (final File fileEntry : wd.listFiles()) {
+            File mapsFolder = WorkingDirectory.getMapsFolder();
+            for (final File fileEntry : mapsFolder.listFiles()) {
                 if (fileEntry.isDirectory()) {
                     content.add(fileEntry.getName());
                     

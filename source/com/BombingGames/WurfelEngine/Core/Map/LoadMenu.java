@@ -34,6 +34,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -117,6 +119,7 @@ public class LoadMenu {
         window.row();
         
         view.getStage().addActor(window);//add the window to the view's stage.
+        initialized=true;
     }
     
     /**
@@ -129,8 +132,8 @@ public class LoadMenu {
 
     /**
      * Open/close the window
-     * @param view if not intialized it initializes it.
-     * @param open 
+     * @param view if not intialized it initializes it. can be null if definetly initialized.
+     * @param open should be open or closed?
      */
     public void setOpen(View view, boolean open) {
         if (initialized || open){//if initialized or should be opened
@@ -154,10 +157,65 @@ public class LoadMenu {
                         //System.out.println(fileEntry.getName());
                     }
                 }
-                View.focusInputProcessor(stageRef);
-            }else
+                View.focusInputProcessor(new LoadMenuListener(this));
+            }else{
                 View.unfocusInputProcessor();
+            }
             window.setVisible(open);
         }
     }
+    
+    private static class LoadMenuListener implements InputProcessor{
+        private LoadMenu parent;
+
+        protected LoadMenuListener(LoadMenu parent) {
+            this.parent = parent;
+        }
+
+        
+        @Override
+        public boolean keyDown(int keycode) {
+            Gdx.app.debug("LoadMenu", "Still active");
+            if (keycode == Input.Keys.ESCAPE){
+                parent.setOpen(null, false);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return false;
+        }
+    }
 }
+

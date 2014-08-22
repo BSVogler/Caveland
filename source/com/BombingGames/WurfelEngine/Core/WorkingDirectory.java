@@ -33,14 +33,14 @@ package com.BombingGames.WurfelEngine.Core;
 import java.io.File;
 
 /**
- * A class which helps getting OS specific information
- * @author Martin Brunokowsky
+ * A class which helps getting OS specific information.
+ * @author Martin Brunokowsky, Benedikt S. Vogler
  */
 public class WorkingDirectory {
     /**
-     *
+     * 
      * @param applicationName
-     * @return
+     * @return Get the folder where the data is stored.
      */
     public static File getWorkingDirectory(final String applicationName) {
         String userHome = System.getProperty("user.home", ".");
@@ -68,6 +68,10 @@ public class WorkingDirectory {
         return workingDirectory;
     }
 
+    /**
+     * 
+     * @return the os
+     */
     private static OS getPlatform() {
             String osName = System.getProperty("os.name").toLowerCase();
             if (osName.contains("win"))
@@ -90,8 +94,9 @@ public class WorkingDirectory {
     }
     
     /**
-     * Get the folder where the maps are stored.
-     * @return 
+     * 
+     * @return Get the folder where the maps are stored.
+     * @since 
      */
     public static File getMapsFolder(){
         return new File(getWorkingDirectory("Wurfel Engine"),"maps");

@@ -77,7 +77,7 @@ public class View implements Manager {
     private boolean keyF5isUp;
     
     private Stage stage;
-    private static Stage staticStage = new Stage();
+    private static Stage staticStage = new Stage();//the stage used for view-independetn things
     private static Skin skin;
     private Pixmap cursor;
     
@@ -496,7 +496,7 @@ public class View implements Manager {
     
     /**
      *
-     * @return
+     * @return a view independent stage
      */
     public static Stage getStaticStage() {
         return staticStage;

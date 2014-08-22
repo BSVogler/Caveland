@@ -590,7 +590,7 @@ public class Camera{
     
     /**
      * Returns the zoomfactor.
-     * @return
+     * @return zoomfactor applied on teh game world
      */
     public float getZoom() {
         return zoom;
@@ -598,7 +598,7 @@ public class Camera{
     
     /**
      * Returns the zoom multiplied by a scaling factor to achieve the same viewport with every resolution
-     * @return a scaling factor
+     * @return a scaling factor applied on the screen
      */
     public float getScaling() {
         return zoom*screenWidth / WE.getCurrentConfig().getRenderResolutionWidth();

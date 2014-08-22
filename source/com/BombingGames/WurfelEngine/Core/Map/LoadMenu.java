@@ -133,29 +133,31 @@ public class LoadMenu {
      * @param open 
      */
     public void setOpen(View view, boolean open) {
-        if (!initialized) viewInit(view);
-        if (!window.isVisible()){
-            int i=0;
-            File mapsFolder = WorkingDirectory.getMapsFolder();
-            for (final File fileEntry : mapsFolder.listFiles()) {
-                if (fileEntry.isDirectory()) {
-                    content.add(new MapCellActor(fileEntry.getName()));
-                    
-                    //debug
-                    content.add(
-                        new Button(View.getSkin())
-                    );
-                    
-                    content.row();
-                    i++;
-                    //listFilesForFolder(fileEntry);
-                } else {
-                    //System.out.println(fileEntry.getName());
+        if (initialized || open){//if initialized or should be opened
+            if (!initialized) viewInit(view);
+            if (!window.isVisible()){//opening
+                int i=0;
+                File mapsFolder = WorkingDirectory.getMapsFolder();
+                for (final File fileEntry : mapsFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        content.add(new MapCellActor(fileEntry.getName()));
+
+                        //debug
+                        content.add(
+                            new Button(View.getSkin())
+                        );
+
+                        content.row();
+                        i++;
+                        //listFilesForFolder(fileEntry);
+                    } else {
+                        //System.out.println(fileEntry.getName());
+                    }
                 }
-            }
-            View.focusInputProcessor(stageRef);
-        }else
-            View.unfocusInputProcessor();
-        window.setVisible(open);
+                View.focusInputProcessor(stageRef);
+            }else
+                View.unfocusInputProcessor();
+            window.setVisible(open);
+        }
     }
 }

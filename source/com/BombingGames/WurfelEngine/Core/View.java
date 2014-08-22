@@ -77,7 +77,7 @@ public class View implements Manager {
     private boolean keyF5isUp;
     
     private Stage stage;
-    private static Stage staticStage = new Stage();//the stage used for view-independetn things
+    private static Stage staticStage;//the stage used for view-independetn things
     private static Skin skin;
     private Pixmap cursor;
     
@@ -100,6 +100,7 @@ public class View implements Manager {
         
         //load sprites
         Block.loadSheet();
+        staticStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         addInputProcessor(staticStage);
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         GameplayScreen.msgSystem().viewInit(skin,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
@@ -118,15 +119,14 @@ public class View implements Manager {
         cameras.clear();
         
         //set up renderer
-        hudCamera = new OrthographicCamera();
-        hudCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         batch = new SpriteBatch();
         igShRenderer = new ShapeRenderer();
         shapeRenderer = new ShapeRenderer();
         
         //set up stage
-        stage = new Stage();
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);//spawn at fullscreen
         
         //laod cursor
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
@@ -484,6 +484,10 @@ public class View implements Manager {
         for (Camera camera : cameras) {
             camera.resize(width, height);
         }
+        stage.setViewport(width, height);
+        staticStage.setViewport(width, height);
+        hudCamera.setToOrtho(false, width, height);
+        Gdx.gl.glViewport(0, 0, width,height);
     }
 
     /**

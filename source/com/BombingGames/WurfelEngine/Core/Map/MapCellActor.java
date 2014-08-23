@@ -42,13 +42,9 @@ import java.io.IOException;
  * @author Benedikt Vogler
  */
 public class MapCellActor extends TextButton {
-    private String descr="No desc found.";
-    private String fileName;
-    
 
     public MapCellActor(String fileName) {
         super("",View.getSkin());
-        this.fileName = fileName;
         //read description and map name
         setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
@@ -59,20 +55,21 @@ public class MapCellActor extends TextButton {
             setText("/"+fileName+"/ "+meta.getMapName());
             if (!"".equals(meta.getDescription()))
                 add(meta.getDescription());
-            else
+            else{
                 add("no description found");
+            }
         } catch (IOException ex) {
             setText("/"+fileName+"/ Error reading file");
+            setColor(Color.GRAY.cpy());
         }
     }
 
     
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
         View.getFont().setColor(Color.GRAY.cpy());
-
-        
+        super.draw(batch, parentAlpha);
+                
         //missing: background
         //selection?
     }

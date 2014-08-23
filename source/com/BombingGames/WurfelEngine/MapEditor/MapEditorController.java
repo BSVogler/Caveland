@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.logging.Level;
@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 public class MapEditorController extends Controller {
     private int currentLayer = 0;
     private final Controller gameplayController;
-    private final View gameplayView;
+    private final GameView gameplayView;
     /**
      * a clone of the map at the time when last tested.
      */
@@ -68,14 +68,14 @@ public class MapEditorController extends Controller {
      * @param gameplayView the old gameplay classes. If "null": the editor then chooses a basic controller.
      * @param gameplayController the old gameplay classes.  If "null": the editor then chooses a basic view.
      */
-    public MapEditorController(View gameplayView, Controller gameplayController) {
+    public MapEditorController(GameView gameplayView, Controller gameplayController) {
         if (gameplayController == null)
             this.gameplayController = new Controller();
         else
             this.gameplayController = gameplayController;
         
         if (gameplayView == null)
-            this.gameplayView = new View();
+            this.gameplayView = new GameView();
         else
             this.gameplayView = gameplayView;
     }

@@ -29,14 +29,12 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -48,20 +46,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class BasicOptionsScreen implements Screen {
     private final Stage stage;
-    private final SpriteBatch batch;
     private final OrthographicCamera camera;
-    private final BitmapFont font;
-    private static ShapeRenderer sr;
     private final TestActor actor;
 
     /**
      *
      */
     public BasicOptionsScreen() {
-        batch = new SpriteBatch();
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, View.getBatch());
         Gdx.input.setInputProcessor(stage);
-        sr = new ShapeRenderer();
                 
         actor = new TestActor(new ShapeRenderer());
         actor.setBounds(200, 200, 400, 400);
@@ -88,29 +81,27 @@ public class BasicOptionsScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
-        font.setColor(Color.WHITE);
-        
-
     }
 
     @Override
     public void render(float delta) {
+        WE.getConsole().update(delta*1000f);
+        
         //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
+        View.getBatch().setProjectionMatrix(camera.combined);
+        View.getShapeRenderer().setProjectionMatrix(camera.combined);
         
-        
-        batch.begin();
         stage.draw();
-        font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-        font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        batch.end();
+        View.getBatch().begin();
+        View.getFont().draw(View.getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+        View.getFont().draw(View.getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        View.getBatch().end();
+        WE.getConsole().render(View.getBatch());
     }
 
     @Override

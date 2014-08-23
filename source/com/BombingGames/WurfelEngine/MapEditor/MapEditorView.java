@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -52,7 +52,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  *
  * @author Benedikt Vogler
  */
-public class MapEditorView extends View {
+public class MapEditorView extends GameView {
     private MapEditorController controller;
     private Camera camera;
     private float cameraspeed =0.5f;
@@ -290,7 +290,7 @@ public class MapEditorView extends View {
         private final MapEditorController controller;
         private MapEditorView view;
         
-        private LoadButton(View view,Controller controller) {
+        private LoadButton(GameView view,Controller controller) {
             this.controller = (MapEditorController) controller;
             this.view = (MapEditorView) view;
         }
@@ -308,6 +308,6 @@ public class MapEditorView extends View {
     @Override
     public void enter() {
         super.enter();
-        View.addInputProcessor(new MapEditorInputListener(this.controller, this));
+        GameView.addInputProcessor(new MapEditorInputListener(this.controller, this));
     }
 }

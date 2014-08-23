@@ -30,6 +30,8 @@
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
+import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.WE;
 
 /**
  *This class provides a simple basic main menu if you don't want to set up your own and just want to test your game controllers.
@@ -60,9 +62,12 @@ public class BasicMainMenu implements MainMenuInterface {
 
     @Override
     public void render(float delta) {
+        WE.getConsole().update(delta*1000f);
         controller.update((int) (delta*1000));
         view.update(delta*1000);
         view.render(warning);
+        WE.getConsole().render(View.getBatch());
+        View.getStaticStage().draw();
     }
 
     @Override

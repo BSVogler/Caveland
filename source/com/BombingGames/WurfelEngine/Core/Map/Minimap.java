@@ -30,6 +30,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
    
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
@@ -112,11 +113,11 @@ public class Minimap {
      * Renders the Minimap.
      * @param view the view using this render method 
      */
-    public void render(final View view) {
+    public void render(final GameView view) {
         if (visible) {
             //this needs offscreen rendering for a single call with a recalc
             
-            ShapeRenderer sh = view.getShapeRenderer();
+            ShapeRenderer sh = View.getShapeRenderer();
                         
             //render the map
             sh.begin(ShapeType.Filled);

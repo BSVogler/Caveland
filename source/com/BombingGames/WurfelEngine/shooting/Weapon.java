@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.shooting;
 
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
@@ -240,12 +241,12 @@ public class Weapon {
      * @param x
      * @param y 
      */
-    public void renderBig(View view, int x, int y){
+    public void renderBig(GameView view, int x, int y){
         Sprite sprite = new Sprite(spritesheetBig.findRegion(Integer.toString(id)));
         sprite.setX(x);
         sprite.setY(y);
         sprite.scale(scaling);
-        sprite.draw(view.getBatch());
+        sprite.draw(View.getBatch());
     
     }
 

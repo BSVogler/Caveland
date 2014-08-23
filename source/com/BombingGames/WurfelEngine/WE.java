@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -66,7 +67,7 @@ public class WE extends Game {
     private static MainMenuInterface mainMenu;
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
-    private static Console console;  
+    private static Console console;
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -133,7 +134,7 @@ public class WE extends Game {
             Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
             Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
             BasicMenuItem[] menuItems = new BasicMenuItem[]{
-                new BasicMenuItem(0, "Test Engine", Controller.class, View.class, new Configuration()),
+                new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
                 new BasicMenuItem(1, "Options"),
                 new BasicMenuItem(2, "Exit")
             };   
@@ -141,9 +142,11 @@ public class WE extends Game {
         }
         System.out.println("Initializing main menu...");
         mainMenu.init();
+        View.classInit();
         setScreen(mainMenu);
         
         console = new Console();
+        console.init(View.getSkin(),Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
     }
 
     /**
@@ -189,7 +192,7 @@ public class WE extends Game {
      * @param config 
      * @see com.BombingGames.WurfelEngine.WE#startGame()
      */
-    public static void initGame(final Controller controller, final View view, final Configuration config){
+    public static void initGame(final Controller controller, final GameView view, final Configuration config){
         if (instance != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
@@ -212,10 +215,10 @@ public class WE extends Game {
      * @param controller the new controller
      * @param view the new view
      */
-    public static void switchSetupWithInit(final Controller controller, final View view){
+    public static void switchSetupWithInit(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup and ReInit using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
-        View.resetInputProcessors();
+        GameView.resetInputProcessors();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
@@ -231,10 +234,10 @@ public class WE extends Game {
      * @param controller the new controller
      * @param view the new view
      */
-    public static void switchSetup(final Controller controller, final View view){
+    public static void switchSetup(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
-        View.resetInputProcessors();
+        GameView.resetInputProcessors();
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
@@ -256,7 +259,7 @@ public class WE extends Game {
     }
     
     /**
-     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, View view)</i>. This is called after the loading screen.
+     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, GameView view)</i>. This is called after the loading screen.
      */
     public static void startGame(){
         if (instance != null) {
@@ -267,7 +270,7 @@ public class WE extends Game {
     }
     
      /**
-     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, View view)</i>. This is called after the loading screen.
+     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, GameView view)</i>. This is called after the loading screen.
      */
     public static void showMainMenu(){
         if (gameplayScreen != null) gameplayScreen.dispose();
@@ -356,7 +359,8 @@ public class WE extends Game {
      * @return the config in use
      */
     public static Configuration getCurrentConfig(){
-        if (gameplayScreen==null) throw new NullPointerException("No gameplay screen loaded.");
+        if (gameplayScreen==null)
+            return new Configuration();
         return gameplayScreen.getConfig();
     }
     

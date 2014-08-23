@@ -31,13 +31,13 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.GameView;
 
 /**
  *A simple Controller which adds a camera.
  * @author Benedikt Vogler
  */
-public class GameViewWithCamera extends View {
+public class GameViewWithCamera extends GameView {
     
     @Override
     public void init(Controller controller) {

@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.LightEngine;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -265,11 +266,11 @@ public class LightEngine {
      *Shows the data of the light engine in diagramms.
      * @param view 
      */
-    public void render(View view){
+    public void render(GameView view){
         if (renderData) {
             
             //g.setLineWidth(2);
-            ShapeRenderer shR = view.getShapeRenderer();
+            ShapeRenderer shR = View.getShapeRenderer();
             
             //surrounding sphere
             Gdx.gl10.glLineWidth(2);

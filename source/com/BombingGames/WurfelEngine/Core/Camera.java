@@ -207,10 +207,10 @@ public class Camera{
      * @param view
      * @param camera  
      */
-    public void render(final View view, final Camera camera) {
+    public void render(final GameView view, final Camera camera) {
         if (Controller.getMap() != null) { //render only if map exists 
 
-            view.getBatch().setProjectionMatrix(combined);
+            View.getBatch().setProjectionMatrix(combined);
             view.getIgShRender().setProjectionMatrix(combined); 
             //set up the viewport
             Gdx.gl.glViewport(
@@ -220,7 +220,7 @@ public class Camera{
                 screenHeight
             );
             
-            view.getBatch().begin();
+            View.getBatch().begin();
             view.setDrawmode(GL10.GL_MODULATE);
             
             //render ground layer tiles if visible
@@ -251,7 +251,7 @@ public class Camera{
             for (RenderDataDTO renderobject : depthlist) {
                 renderobject.getGameObject().render(view, camera, renderobject.getCoords()); 
             }
-            view.getBatch().end();
+            View.getBatch().end();
 
             //outline map
             if (WE.getCurrentConfig().debugObjects()){
@@ -692,8 +692,8 @@ public class Camera{
     }
 
     /**
-     * The amount of pixel which are visible in Y direction (game pixels). It should be equal View.RENDER_RESOLUTION_WIDTH
-     * For screen pixels use <i>ViewportWidth()</i>.
+     * The amount of pixel which are visible in Y direction (game pixels). It should be equal GameView.RENDER_RESOLUTION_WIDTH
+ For screen pixels use <i>ViewportWidth()</i>.
      * @return in pixels
      */
     public final int getViewportWidth() {

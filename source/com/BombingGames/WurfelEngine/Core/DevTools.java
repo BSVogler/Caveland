@@ -116,7 +116,7 @@ public class DevTools {
      *Renders the diagramm
      * @param view
      */
-    public void render(final View view){
+    public void render(final GameView view){
         if (visible){
             
             if (view instanceof MapEditorView) {
@@ -131,7 +131,7 @@ public class DevTools {
             view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30);
             
             //draw diagramm
-            ShapeRenderer shr = view.getShapeRenderer();
+            ShapeRenderer shr = View.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
@@ -308,7 +308,7 @@ public class DevTools {
      *Adds the buttons to the satage if missing
      * @param view The view which renders the buttons.
      */
-    private void showEditorButtons(final View view){
+    private void showEditorButtons(final GameView view){
         if (editorbutton==null && editorreversebutton==null){    
             TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
             

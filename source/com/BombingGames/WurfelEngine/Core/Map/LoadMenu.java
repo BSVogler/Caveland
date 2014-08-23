@@ -31,6 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
@@ -62,7 +63,7 @@ public class LoadMenu {
      * Setups the window.
      * @param view 
      */
-    public void init(View view){
+    public void init(GameView view){
         stageRef = view.getStage();
         
         window = new Window("Choose a map", View.getSkin());
@@ -134,7 +135,7 @@ public class LoadMenu {
      * @param view if not intialized it initializes it. can be null if definetly initialized.
      * @param open should be open or closed?
      */
-    public void setOpen(View view, boolean open) {
+    public void setOpen(GameView view, boolean open) {
         if (initialized || open){//if initialized or should be opened
             if (!initialized) init(view);
             if (!window.isVisible()){//opening
@@ -151,10 +152,10 @@ public class LoadMenu {
                         //System.out.println(fileEntry.getName());
                     }
                 }
-                View.focusInputProcessor(new LoadMenuListener(this));
+                GameView.focusInputProcessor(new LoadMenuListener(this));
             }else{ //closing
                 content.clear();
-                View.unfocusInputProcessor();
+                GameView.unfocusInputProcessor();
             }
             window.setVisible(open);
         }

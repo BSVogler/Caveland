@@ -47,7 +47,7 @@ public class GameplayScreen implements Screen{
      * Contains the Message System
      */
     
-    private View view = null;
+    private GameView view = null;
     private Controller controller = null;
     private MapEditorController editorController;
     private MapEditorView editorView;
@@ -59,7 +59,7 @@ public class GameplayScreen implements Screen{
      * @param view The user view of this screen.
      * @param config The configuration of the game show in this screen.
      */
-    public GameplayScreen(final Controller controller, final View view, final Configuration config) {
+    public GameplayScreen(final Controller controller, final GameView view, final Configuration config) {
         Gdx.app.log("GameplayScreen", "Initializing");
 
         Gdx.input.setInputProcessor(null);
@@ -77,7 +77,7 @@ public class GameplayScreen implements Screen{
      *
      * @return
      */
-    public View getView() {
+    public GameView getView() {
         return view;
     }
 
@@ -93,7 +93,7 @@ public class GameplayScreen implements Screen{
      *
      * @param view
      */
-    public void setView(final View view) {
+    public void setView(final GameView view) {
         this.view = view;
     }
 
@@ -110,10 +110,11 @@ public class GameplayScreen implements Screen{
     public void render(float delta) {
         delta *= 1000;
         controller.update(delta);
+        WE.getConsole().update(delta);
         view.update(delta);
         view.render();
         View.getStaticStage().draw();
-        WE.getConsole().update(delta);
+
 
         
         if (WE.getConsole().isActive() && Gdx.input.isKeyPressed(Input.Keys.UP))
@@ -128,7 +129,7 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void show() {
-        View.classInit();
+        GameView.classInit();
         this.controller.init();
         this.view.init(controller);
         controller.enter();

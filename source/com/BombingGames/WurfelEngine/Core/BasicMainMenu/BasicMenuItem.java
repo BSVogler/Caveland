@@ -30,7 +30,7 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -52,7 +52,7 @@ public class BasicMenuItem{
     private static Sound sound;
     private static int highlight =0;
     private final Class<? extends Controller> gameController;
-    private final Class<? extends View> gameView;
+    private final Class<? extends GameView> gameView;
     private int x;
     private int y;
     private final int index;
@@ -69,7 +69,7 @@ public class BasicMenuItem{
      * @param gameView Your game view class for this menu item
      * @param config
      */
-    public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends View> gameView, Configuration config) {
+    public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends GameView> gameView, Configuration config) {
         this.gameController = gameController;
         this.gameView = gameView;
         this.index = index;
@@ -141,7 +141,7 @@ public class BasicMenuItem{
      *
      * @return
      */
-    public Class<? extends View> getGameView() {
+    public Class<? extends GameView> getGameView() {
         return gameView;
     }
     
@@ -159,7 +159,7 @@ public class BasicMenuItem{
         }else {
             try {
                 Controller c = getGameController().newInstance();
-                View v = getGameView().newInstance();
+                GameView v = getGameView().newInstance();
                 WE.initGame(c,v, config);
             } catch (InstantiationException ex) {
                     Gdx.app.error("BasicMenuItem", "Failed intitalizing game by creating new instances of a class.");

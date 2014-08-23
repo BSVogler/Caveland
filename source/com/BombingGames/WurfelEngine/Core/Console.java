@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class Console {
      * @param xPos
      * @param yPos
      */
-    public void viewInit(Skin skin, final int xPos, final int yPos){
+    public void init(Skin skin, final int xPos, final int yPos){
         textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
@@ -153,15 +154,14 @@ public class Console {
     
     /**
      * Updates the Message System.
-     * @param delta
+     * @param delta time in ms
      */
     public void update(float delta){
        timelastupdate += delta;
        
         //open close console/chat box
-        if (keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
             setActive(!textinput.isVisible());//toggle
-            keyConsoleDown = true;
         }
         if (!disposed){//prevent updates when it's disposed
             keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
@@ -179,10 +179,10 @@ public class Console {
     
     /**
      * Draws the Messages
-     * @param view 
+     * @param batch
      */
-    public void render(final View view){  
-        view.getBatch().begin();
+    public void render(final SpriteBatch batch){  
+        batch.begin();
         
         int y=0;
         for (Line msg : messages) {
@@ -198,10 +198,10 @@ public class Console {
             
             //draw
             View.getFont().setColor(color);
-            View.getFont().drawMultiLine(view.getBatch(), msg.sender+": "+msg.message, 10,50+y);
+            View.getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
             y+=20;
         }
-        view.getBatch().end();
+        batch.end();
     }
 
     /**
@@ -220,7 +220,6 @@ public class Console {
                     View.getStaticStage().setKeyboardFocus(textinput);
                 }
         }
-
         textinput.setVisible(active);
     }
     

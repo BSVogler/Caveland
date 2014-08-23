@@ -371,4 +371,15 @@ public class WE extends Game {
     public static Console getConsole() {
         return console;
     }
+    
+        /**
+     * updates and render the global things e.g. the console
+     * @param delta time in ms
+     */
+    public static void updateAndRender(float delta) {
+        console.update(delta);
+        View.getStaticStage().act(delta);
+        console.render(View.getBatch());
+        View.getStaticStage().draw();
+    }
 }

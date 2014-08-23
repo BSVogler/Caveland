@@ -30,7 +30,6 @@
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 
 /**
@@ -62,12 +61,10 @@ public class BasicMainMenu implements MainMenuInterface {
 
     @Override
     public void render(float delta) {
-        WE.getConsole().update(delta*1000f);
-        controller.update((int) (delta*1000));
-        view.update(delta*1000);
+        controller.update((int) (delta*1000f));
+        view.update(delta*1000f);
         view.render(warning);
-        WE.getConsole().render(View.getBatch());
-        View.getStaticStage().draw();
+        WE.updateAndRender(delta*1000f);
     }
 
     @Override

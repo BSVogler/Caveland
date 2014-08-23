@@ -252,8 +252,6 @@ public class GameView implements Manager {
 
             if (controller.getMinimap() != null)
                 controller.getMinimap().render(this); 
-
-            WE.getConsole().render(View.getBatch());
         }
     }
        

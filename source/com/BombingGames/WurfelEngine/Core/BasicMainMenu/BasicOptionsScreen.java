@@ -85,8 +85,6 @@ public class BasicOptionsScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        WE.getConsole().update(delta*1000f);
-        
         //clear & set background to black
         Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -101,7 +99,7 @@ public class BasicOptionsScreen implements Screen {
         View.getFont().draw(View.getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         View.getFont().draw(View.getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         View.getBatch().end();
-        WE.getConsole().render(View.getBatch());
+        WE.updateAndRender(delta*1000f);
     }
 
     @Override

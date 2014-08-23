@@ -42,7 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
- *A view which is not dependend on the currently active game.
+ *A view which is not dependend on the currently active game. Singleton.
  * @author Benedikt Vogler
  */
 public class EngineView {
@@ -53,7 +53,7 @@ public class EngineView {
     private static Skin skin;
     private static Pixmap cursor;
     
-    public static void classInit(){
+    public static void init(){
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(false);
@@ -103,7 +103,7 @@ public class EngineView {
      *
      * @return a view independent stage
      */
-    public static Stage getStaticStage() {
+    public static Stage getStage() {
         return staticStage;
     }
 

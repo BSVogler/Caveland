@@ -119,7 +119,7 @@ public class Console {
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        EngineView.getStaticStage().addActor(textinput);
+        EngineView.getStage().addActor(textinput);
     }
         
     /**
@@ -216,8 +216,8 @@ public class Console {
         } else {
             if (active && !textinput.isVisible()){//window should be opened?
                 textinput.setText("");//clear if openend
-                if (EngineView.getStaticStage()!=null)
-                    EngineView.getStaticStage().setKeyboardFocus(textinput);
+                if (EngineView.getStage()!=null)
+                    EngineView.getStage().setKeyboardFocus(textinput);
                 }
         }
         textinput.setVisible(active);

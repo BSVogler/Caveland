@@ -142,7 +142,7 @@ public class WE extends Game {
         }
         System.out.println("Initializing main menu...");
         mainMenu.init();
-        EngineView.classInit();
+        EngineView.init();
         setScreen(mainMenu);
         
         console = new Console();
@@ -378,8 +378,8 @@ public class WE extends Game {
      */
     public static void updateAndRender(float delta) {
         console.update(delta);
-        EngineView.getStaticStage().act(delta);
+        EngineView.getStage().act(delta);
         console.render(EngineView.getBatch());
-        EngineView.getStaticStage().draw();
+        EngineView.getStage().draw();
     }
 }

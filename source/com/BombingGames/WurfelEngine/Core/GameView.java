@@ -123,7 +123,7 @@ public class GameView implements Manager {
         Gdx.input.setInputProcessor(null);
         inpMulPlex = null;
         inactiveInpProcssrs = null;
-        addInputProcessor(EngineView.getStaticStage());
+        addInputProcessor(EngineView.getStage());
     }
     
     /**
@@ -445,7 +445,7 @@ public class GameView implements Manager {
             camera.resize(width, height);
         }
         stage.setViewport(width, height);
-        EngineView.getStaticStage().setViewport(width, height);
+        EngineView.getStage().setViewport(width, height);
         hudCamera.setToOrtho(false, width, height);
         Gdx.gl.glViewport(0, 0, width,height);
     }

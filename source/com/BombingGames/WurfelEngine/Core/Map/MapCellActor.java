@@ -34,28 +34,29 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class MapCellActor extends Actor {
+public class MapCellActor extends TextButton {
     private String descr="No desc found.";
     private String mapName="no map name found";
     private String fileName;
-    private static MapCellActor selection;//selected item in list
     
 
     public MapCellActor(String fileName) {
+        super("",View.getSkin());
         this.fileName = fileName;
         //read description and map name
-        setColor(Color.RED.cpy());
+        setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
-        setWidth(150);
-        setHeight(50);
-        if (selection == null)
-            selection = this;
+        setSize(150, 50);
+        setText("<"+fileName+"> "+mapName);
+        //add();
+        //new Text
+        add(descr);
     }
 
     
@@ -63,8 +64,7 @@ public class MapCellActor extends Actor {
     public void draw(SpriteBatch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         View.getFont().setColor(Color.GRAY.cpy());
-        View.getFont().draw(batch, "<"+fileName+">"+mapName, 20, 30);
-        View.getFont().draw(batch, descr, 20, 10);
+
         
         //missing: background
         //selection?

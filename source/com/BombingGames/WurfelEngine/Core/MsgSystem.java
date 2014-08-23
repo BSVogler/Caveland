@@ -40,7 +40,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
@@ -51,7 +51,7 @@ public class MsgSystem {
     private int timelastupdate = 0;
     private final GameplayScreen gameplayRef;//the reference to the associated gameplay
     private TextField textinput;
-    private final ArrayList<Msg> messages = new ArrayList<>(20); 
+    private final Stack<Msg> messages; 
     private boolean keyConsoleDown;
     private boolean disposed;
     
@@ -96,6 +96,7 @@ public class MsgSystem {
      * @param gameplay
      */
     public MsgSystem(final GameplayScreen gameplay) {
+        this.messages = new Stack<>();
         this.gameplayRef = gameplay;
     }
     

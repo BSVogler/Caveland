@@ -145,11 +145,6 @@ public class LoadMenu {
                     if (fileEntry.isDirectory()) {
                         content.add(new MapCellActor(fileEntry.getName()));
 
-                        //debug
-                        content.add(
-                            new Button(View.getSkin())
-                        );
-
                         content.row();
                         i++;
                         //listFilesForFolder(fileEntry);

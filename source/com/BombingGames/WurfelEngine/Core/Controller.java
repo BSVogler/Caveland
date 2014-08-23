@@ -49,7 +49,7 @@ import java.util.logging.Logger;
  *A controller manages the map and the game data.
  * @author Benedikt Vogler
  */
-public class Controller implements Manager {
+public class Controller implements GameManager {
     private static LightEngine lightEngine;
     private static Map map;
     private static boolean recalcRequested;

@@ -53,7 +53,7 @@ import java.util.ArrayList;
  * The GameView manages everything what should be drawn in an active game.
  * @author Benedikt
  */
-public class GameView implements Manager {
+public class GameView implements GameManager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     

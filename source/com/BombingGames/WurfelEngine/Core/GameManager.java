@@ -32,11 +32,11 @@
 package com.BombingGames.WurfelEngine.Core;
 
 /**
- *A test to groud view and controllers. May be deleted again if useless.
+ *A test to group view and controllers. May be deleted again if useless.
  * @author Benedikt Vogler
  * @since 1.2.
  */
-public interface Manager {
+public interface GameManager {
     
     /**
      *Should be called when the manager becomes active

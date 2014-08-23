@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Configuration;
+import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
@@ -65,6 +66,7 @@ public class WE extends Game {
     private static MainMenuInterface mainMenu;
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
+    private static Console console;  
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -140,6 +142,8 @@ public class WE extends Game {
         System.out.println("Initializing main menu...");
         mainMenu.init();
         setScreen(mainMenu);
+        
+        console = new Console();
     }
 
     /**
@@ -198,6 +202,7 @@ public class WE extends Game {
                 view,
                 config
             );
+            getConsole().setGameplayRef(gameplayScreen);
         } else
             Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
     }
@@ -353,5 +358,13 @@ public class WE extends Game {
     public static Configuration getCurrentConfig(){
         if (gameplayScreen==null) throw new NullPointerException("No gameplay screen loaded.");
         return gameplayScreen.getConfig();
+    }
+    
+    /**
+     * Returns the Console. Use {@link com.BombingGames.WurfelEngine.Core.Console#add(java.lang.String) }to add messages to the console.
+     * @return The console.
+     */
+    public static Console getConsole() {
+        return console;
     }
 }

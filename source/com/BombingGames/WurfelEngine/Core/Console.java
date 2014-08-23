@@ -44,14 +44,14 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- *The message system can manage&show messages (Msg).
+ *The message system can manage&show messages (Line).
  * @author Benedikt
  */
 public class Console {
     private int timelastupdate = 0;
     private GameplayScreen gameplayRef;//the reference to the associated gameplay
     private TextField textinput;
-    private final Stack<Msg> messages; 
+    private final Stack<Line> messages; 
     private boolean keyConsoleDown;
     private boolean disposed;
     
@@ -59,13 +59,13 @@ public class Console {
      * A message is put into the Console. It contains the message, the sender and the importance.
      * @author Benedikt
      */
-    private class Msg {
+    private class Line {
         private final String message;
         private String sender = "System";
         private int importance = 1;
 
 
-        protected Msg(String pmessage, String psender, int imp) {
+        protected Line(String pmessage, String psender, int imp) {
             message = pmessage;
             sender = psender;
             importance = imp;
@@ -126,7 +126,7 @@ public class Console {
      * @param message
      */
     public void add(final String message) {
-        messages.add(new Msg(message, "System", 100));
+        messages.add(new Line(message, "System", 100));
         Gdx.app.debug("System",message);
     }
     
@@ -136,7 +136,7 @@ public class Console {
      * @param sender
      */
     public void add(final String message, final String sender){
-        messages.add(new Msg(message, sender, 100));
+        messages.add(new Line(message, sender, 100));
         Gdx.app.debug(sender,message);
     }
     
@@ -147,7 +147,7 @@ public class Console {
      * @param importance
      */
     public void add(final String message, final String sender, final int importance){
-        messages.add(new Msg(message, sender, importance));
+        messages.add(new Line(message, sender, importance));
         Gdx.app.debug(sender,message);
     }
     
@@ -169,7 +169,7 @@ public class Console {
             //decrease importance every 30ms
             if (timelastupdate >= 30) {
                  timelastupdate = 0;
-                for (Msg m : messages) {
+                for (Line m : messages) {
                     if (m.getImportance() > 0)
                         m.setImportance(m.getImportance()-1);
                 }
@@ -185,7 +185,7 @@ public class Console {
         view.getBatch().begin();
         
         int y=0;
-        for (Msg msg : messages) {
+        for (Line msg : messages) {
             Color color = Color.BLUE.cpy();
             if (null != msg.sender) switch (msg.sender) {
                 case "System":

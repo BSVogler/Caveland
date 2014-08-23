@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
@@ -181,18 +180,16 @@ public class MapEditorView extends View {
                 view.setCameraSpeed(1);
         
         //manage camera movement
-        if (!GameplayScreen.msgSystem().isActive()){
-            if (keycode == Input.Keys.W)
-                view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
-            if (keycode == Input.Keys.S)
-                view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
-            if (keycode == Input.Keys.A)
-                view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
-            if (keycode == Input.Keys.D)
-                view.setCameraMoveVector(1, view.getCameraMoveVector().y);
-        }
+        if (keycode == Input.Keys.W)
+            view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
+        if (keycode == Input.Keys.S)
+            view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
+        if (keycode == Input.Keys.A)
+            view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
+        if (keycode == Input.Keys.D)
+            view.setCameraMoveVector(1, view.getCameraMoveVector().y);
         
-            return false;
+        return false;
         }
 
         @Override

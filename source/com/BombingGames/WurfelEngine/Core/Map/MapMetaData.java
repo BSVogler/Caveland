@@ -31,7 +31,6 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import static com.BombingGames.WurfelEngine.Core.Map.Chunk.METAFILESUFFIX;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -67,11 +66,11 @@ public class MapMetaData {
                 bufRead =  path.reader(1024);
                 mapName = bufRead.readLine();
                 mapName = mapName.substring(2, mapName.length());
-                GameplayScreen.msgSystem().add("Loading map called: "+mapName);   
+                WE.getConsole().add("Loading map called: "+mapName);   
 
                 mapversion = bufRead.readLine(); 
                 mapversion = mapversion.substring(2, mapversion.length());
-                GameplayScreen.msgSystem().add("Map Version:"+mapversion, "System");
+                WE.getConsole().add("Map Version:"+mapversion, "System");
 
                 String blocksXString = bufRead.readLine();
                 Gdx.app.debug("Chunk","sizeX:"+blocksXString);

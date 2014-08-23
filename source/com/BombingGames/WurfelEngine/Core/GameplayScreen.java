@@ -46,7 +46,6 @@ public class GameplayScreen implements Screen{
   /**
      * Contains the Message System
      */
-    private static Console msgSystem;    
     
     private View view = null;
     private Controller controller = null;
@@ -67,22 +66,12 @@ public class GameplayScreen implements Screen{
         
         WE.getInstance().setScreen(new LoadingScreen(config));
         
-        msgSystem = new Console(this);
-        
         
         this.controller = controller;
         this.view = view;
         this.config = config;
     }
              
-
-    /**
-     * Returns the Message System. Use .add() to add messages to the msgSystem.
-     * @return The msgSystem.
-     */
-    public static Console msgSystem() {
-        return msgSystem;
-    }
 
     /**
      *
@@ -117,9 +106,6 @@ public class GameplayScreen implements Screen{
     }
     
     
-    
-    
-
     @Override
     public void render(float delta) {
         delta *= 1000;
@@ -127,11 +113,11 @@ public class GameplayScreen implements Screen{
         view.update(delta);
         view.render();
         View.getStaticStage().draw();
-        msgSystem.update(delta);
+        WE.getConsole().update(delta);
 
         
-        if (GameplayScreen.msgSystem().isActive() && Gdx.input.isKeyPressed(Input.Keys.UP))
-            GameplayScreen.msgSystem().setText(GameplayScreen.msgSystem().getLastMessage("Console"));
+        if (WE.getConsole().isActive() && Gdx.input.isKeyPressed(Input.Keys.UP))
+            WE.getConsole().setText(WE.getConsole().getLastMessage("Console"));
     }
 
     @Override
@@ -163,7 +149,6 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void dispose() {
-        msgSystem.dispose();
         Controller.disposeClass();
     }
 

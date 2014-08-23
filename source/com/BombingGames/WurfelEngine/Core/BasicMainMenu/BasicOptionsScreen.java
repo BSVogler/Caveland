@@ -29,7 +29,7 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -58,7 +58,8 @@ public class BasicOptionsScreen implements Screen {
      *
      */
     public BasicOptionsScreen() {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch = new SpriteBatch();
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);
         Gdx.input.setInputProcessor(stage);
         sr = new ShapeRenderer();
                 
@@ -68,7 +69,7 @@ public class BasicOptionsScreen implements Screen {
             new ClickListener() {
             @Override
             public boolean mouseMoved(InputEvent event, float x, float y) {
-                GameplayScreen.msgSystem().add("mousemoved");
+                WE.getConsole().add("mousemoved");
                 return true;
             }
             
@@ -82,8 +83,6 @@ public class BasicOptionsScreen implements Screen {
             }
         );
         stage.addActor(actor);
-        
-        batch = new SpriteBatch();
         
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -106,9 +105,9 @@ public class BasicOptionsScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
         
-        stage.draw();
         
         batch.begin();
+        stage.draw();
         font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();

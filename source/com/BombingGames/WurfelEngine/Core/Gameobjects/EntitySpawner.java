@@ -29,9 +29,9 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.WE;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -85,7 +85,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
 
     private void trigger() {
-        GameplayScreen.msgSystem().add("You are standing on: " + coords.getRelX() +"," + coords.getRelY() +","+ coords.getZ(), "System");
+        WE.getConsole().add("You are standing on: " + coords.getRelX() +"," + coords.getRelY() +","+ coords.getZ(), "System");
         new AnimatedEntity(
             31,
             0,

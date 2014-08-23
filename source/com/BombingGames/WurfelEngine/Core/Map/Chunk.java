@@ -29,7 +29,6 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -102,7 +101,7 @@ public class Chunk {
      * @param generator 
      */
     private void fill(final int coordX, final int coordY, final Generator generator){
-        GameplayScreen.msgSystem().add("Creating new chunk: "+coordX+", "+ coordY);
+        WE.getConsole().add("Creating new chunk: "+coordX+", "+ coordY);
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)

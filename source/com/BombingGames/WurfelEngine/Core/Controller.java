@@ -117,7 +117,7 @@ public class Controller implements Manager {
         if (lightEngine != null) lightEngine.update(delta);
         
          //update the log
-        GameplayScreen.msgSystem().update(delta);
+        WE.getConsole().update(delta);
         
         
         //update every static update method

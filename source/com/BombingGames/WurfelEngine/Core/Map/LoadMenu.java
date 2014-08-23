@@ -152,7 +152,8 @@ public class LoadMenu {
                     }
                 }
                 View.focusInputProcessor(new LoadMenuListener(this));
-            }else{
+            }else{ //closing
+                content.clear();
                 View.unfocusInputProcessor();
             }
             window.setVisible(open);

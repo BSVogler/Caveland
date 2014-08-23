@@ -44,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 /**
  *A view which is not dependend on the currently active game. Singleton.
  * @author Benedikt Vogler
+ * @since 1.2.26
  */
 public class EngineView {
     private static SpriteBatch batch;    
@@ -82,7 +83,7 @@ public class EngineView {
         return font;
     }
     
-        /**
+    /**
      *y-down
      * @return
      */
@@ -90,7 +91,7 @@ public class EngineView {
         return batch;
     }
     
-        /**
+    /**
      * Y-down
      * @return
      */
@@ -115,6 +116,10 @@ public class EngineView {
         return skin;
     }
 
+    /**
+     * 
+     * @return 
+     */
     static Pixmap getCursor() {
         return cursor;
     }

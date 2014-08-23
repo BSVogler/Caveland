@@ -33,7 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -246,7 +246,7 @@ public class Weapon {
         sprite.setX(x);
         sprite.setY(y);
         sprite.scale(scaling);
-        sprite.draw(View.getBatch());
+        sprite.draw(EngineView.getBatch());
     
     }
 

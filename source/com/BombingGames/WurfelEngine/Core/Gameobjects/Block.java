@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -534,7 +534,7 @@ public class Block extends AbstractGameObject {
 //        color.a = 1; 
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  
-        sprite.draw(View.getBatch());
+        sprite.draw(EngineView.getBatch());
         
         if (WE.getCurrentConfig().debugObjects()){
             ShapeRenderer sh = view.getIgShRender();

@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -268,7 +268,7 @@ public abstract class AbstractGameObject {
         prepareColor(view, color);
 
         sprite.setColor(color);
-        sprite.draw(View.getBatch());
+        sprite.draw(EngineView.getBatch());
         
         
         if (WE.getCurrentConfig().debugObjects()){

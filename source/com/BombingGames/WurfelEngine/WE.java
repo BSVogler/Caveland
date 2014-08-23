@@ -38,7 +38,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -142,11 +142,11 @@ public class WE extends Game {
         }
         System.out.println("Initializing main menu...");
         mainMenu.init();
-        View.classInit();
+        EngineView.classInit();
         setScreen(mainMenu);
         
         console = new Console();
-        console.init(View.getSkin(),Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        console.init(EngineView.getSkin(),Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
     }
 
     /**
@@ -378,8 +378,8 @@ public class WE extends Game {
      */
     public static void updateAndRender(float delta) {
         console.update(delta);
-        View.getStaticStage().act(delta);
-        console.render(View.getBatch());
-        View.getStaticStage().draw();
+        EngineView.getStaticStage().act(delta);
+        console.render(EngineView.getBatch());
+        EngineView.getStaticStage().draw();
     }
 }

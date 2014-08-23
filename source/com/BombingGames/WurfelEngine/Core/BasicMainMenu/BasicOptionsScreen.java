@@ -29,7 +29,7 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -53,7 +53,7 @@ public class BasicOptionsScreen implements Screen {
      *
      */
     public BasicOptionsScreen() {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, View.getBatch());
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());
         Gdx.input.setInputProcessor(stage);
                 
         actor = new TestActor(new ShapeRenderer());
@@ -91,14 +91,14 @@ public class BasicOptionsScreen implements Screen {
         
         //update camera and set the projection matrix
         camera.update();
-        View.getBatch().setProjectionMatrix(camera.combined);
-        View.getShapeRenderer().setProjectionMatrix(camera.combined);
+        EngineView.getBatch().setProjectionMatrix(camera.combined);
+        EngineView.getShapeRenderer().setProjectionMatrix(camera.combined);
         
         stage.draw();
-        View.getBatch().begin();
-        View.getFont().draw(View.getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-        View.getFont().draw(View.getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        View.getBatch().end();
+        EngineView.getBatch().begin();
+        EngineView.getFont().draw(EngineView.getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+        EngineView.getFont().draw(EngineView.getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        EngineView.getBatch().end();
         WE.updateAndRender(delta*1000f);
     }
 

@@ -119,7 +119,7 @@ public class Console {
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        View.getStaticStage().addActor(textinput);
+        EngineView.getStaticStage().addActor(textinput);
     }
         
     /**
@@ -197,8 +197,8 @@ public class Console {
             }
             
             //draw
-            View.getFont().setColor(color);
-            View.getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
+            EngineView.getFont().setColor(color);
+            EngineView.getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
             y+=20;
         }
         batch.end();
@@ -216,8 +216,8 @@ public class Console {
         } else {
             if (active && !textinput.isVisible()){//window should be opened?
                 textinput.setText("");//clear if openend
-                if (View.getStaticStage()!=null)
-                    View.getStaticStage().setKeyboardFocus(textinput);
+                if (EngineView.getStaticStage()!=null)
+                    EngineView.getStaticStage().setKeyboardFocus(textinput);
                 }
         }
         textinput.setVisible(active);

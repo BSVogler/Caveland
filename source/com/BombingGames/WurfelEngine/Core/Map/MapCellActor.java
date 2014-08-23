@@ -31,7 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -44,7 +44,7 @@ import java.io.IOException;
 public class MapCellActor extends TextButton {
 
     public MapCellActor(String fileName) {
-        super("",View.getSkin());
+        super("",EngineView.getSkin());
         //read description and map name
         setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
@@ -67,7 +67,7 @@ public class MapCellActor extends TextButton {
     
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
-        View.getFont().setColor(Color.GRAY.cpy());
+        EngineView.getFont().setColor(Color.GRAY.cpy());
         super.draw(batch, parentAlpha);
                 
         //missing: background

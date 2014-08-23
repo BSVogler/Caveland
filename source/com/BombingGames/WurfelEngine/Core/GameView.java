@@ -108,7 +108,7 @@ public class GameView implements Manager {
         igShRenderer = new ShapeRenderer();
         
         //set up stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, View.getBatch());//spawn at fullscreen
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());//spawn at fullscreen
         
         //load cursor
 
@@ -123,7 +123,7 @@ public class GameView implements Manager {
         Gdx.input.setInputProcessor(null);
         inpMulPlex = null;
         inactiveInpProcssrs = null;
-        addInputProcessor(View.getStaticStage());
+        addInputProcessor(EngineView.getStaticStage());
     }
     
     /**
@@ -229,9 +229,9 @@ public class GameView implements Manager {
             hudCamera.update();
             hudCamera.apply(Gdx.gl10);
 
-            View.getBatch().setProjectionMatrix(hudCamera.combined);
+            EngineView.getBatch().setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
-            View.getShapeRenderer().setProjectionMatrix(hudCamera.combined);
+            EngineView.getShapeRenderer().setProjectionMatrix(hudCamera.combined);
             Gdx.gl10.glLineWidth(1);
 
             //set viewport of hud to cover whole window
@@ -333,11 +333,11 @@ public class GameView implements Manager {
     public void setDrawmode(final int drawmode) {
         if (drawmode != this.drawmode){
             this.drawmode = drawmode;
-            View.getBatch().end();
+            EngineView.getBatch().end();
             //GameObject.getSpritesheet().getFullImage().endUse();
             Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, drawmode);
             //GameObject.getSpritesheet().getFullImage().startUse();
-            View.getBatch().begin();
+            EngineView.getBatch().begin();
         }
     }
 
@@ -348,10 +348,10 @@ public class GameView implements Manager {
      * @param yPos
      */
     public void drawString(final String msg, final int xPos, final int yPos) {
-        View.getBatch().begin();
+        EngineView.getBatch().begin();
         setDrawmode(GL10.GL_MODULATE);
-        View.getFont().draw(View.getBatch(), msg, xPos, yPos);
-        View.getBatch().end();
+        EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
+        EngineView.getBatch().end();
     }
     
     /**
@@ -362,11 +362,11 @@ public class GameView implements Manager {
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
-        View.getBatch().setColor(color);
-        View.getBatch().begin();
+        EngineView.getBatch().setColor(color);
+        EngineView.getBatch().begin();
         setDrawmode(GL10.GL_MODULATE);
-        View.getFont().draw(View.getBatch(), msg, xPos, yPos);
-        View.getBatch().end();
+        EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
+        EngineView.getBatch().end();
     }
     
     /**
@@ -377,19 +377,19 @@ public class GameView implements Manager {
      * @param color the colro of the text.
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
-        View.getFont().setColor(Color.BLACK);
-        View.getFont().setScale(0.51f);
-        View.getBatch().begin();
+        EngineView.getFont().setColor(Color.BLACK);
+        EngineView.getFont().setScale(0.51f);
+        EngineView.getBatch().begin();
         setDrawmode(GL10.GL_MODULATE);
-        View.getFont().drawMultiLine(View.getBatch(), text, xPos, yPos);
-        View.getBatch().end();
+        EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
+        EngineView.getBatch().end();
         
-        View.getFont().setColor(Color.WHITE);
-        View.getFont().setScale(0.5f);
-        View.getBatch().begin();
-        View.getFont().drawMultiLine(View.getBatch(), text, xPos, yPos);
-        View.getBatch().end();
-        View.getFont().setScale(1f);
+        EngineView.getFont().setColor(Color.WHITE);
+        EngineView.getFont().setScale(0.5f);
+        EngineView.getBatch().begin();
+        EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
+        EngineView.getBatch().end();
+        EngineView.getFont().setScale(1f);
     }
     
     /**
@@ -445,7 +445,7 @@ public class GameView implements Manager {
             camera.resize(width, height);
         }
         stage.setViewport(width, height);
-        View.getStaticStage().setViewport(width, height);
+        EngineView.getStaticStage().setViewport(width, height);
         hudCamera.setToOrtho(false, width, height);
         Gdx.gl.glViewport(0, 0, width,height);
     }
@@ -474,7 +474,7 @@ public class GameView implements Manager {
     @Override
     public void enter() {
         GameView.addInputProcessor(stage);//the input processor must be added every time because they are only 
-        Gdx.input.setCursorImage(View.getCursor(), 8, 8);
+        Gdx.input.setCursorImage(EngineView.getCursor(), 8, 8);
     }
     
 }

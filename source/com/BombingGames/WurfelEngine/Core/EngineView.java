@@ -42,10 +42,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
- *A view which is not dependend on the currently active game
+ *A view which is not dependend on the currently active game.
  * @author Benedikt Vogler
  */
-public class View {
+public class EngineView {
     private static SpriteBatch batch;    
     private static ShapeRenderer shapeRenderer;
     private static BitmapFont font;
@@ -68,9 +68,9 @@ public class View {
         addInputProcessor(staticStage);
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
-                batch = new SpriteBatch();
-                        shapeRenderer = new ShapeRenderer();
-                                cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
     }
     
     

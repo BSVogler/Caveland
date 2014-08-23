@@ -210,7 +210,7 @@ public class Camera{
     public void render(final GameView view, final Camera camera) {
         if (Controller.getMap() != null) { //render only if map exists 
 
-            View.getBatch().setProjectionMatrix(combined);
+            EngineView.getBatch().setProjectionMatrix(combined);
             view.getIgShRender().setProjectionMatrix(combined); 
             //set up the viewport
             Gdx.gl.glViewport(
@@ -220,7 +220,7 @@ public class Camera{
                 screenHeight
             );
             
-            View.getBatch().begin();
+            EngineView.getBatch().begin();
             view.setDrawmode(GL10.GL_MODULATE);
             
             //render ground layer tiles if visible
@@ -251,7 +251,7 @@ public class Camera{
             for (RenderDataDTO renderobject : depthlist) {
                 renderobject.getGameObject().render(view, camera, renderobject.getCoords()); 
             }
-            View.getBatch().end();
+            EngineView.getBatch().end();
 
             //outline map
             if (WE.getCurrentConfig().debugObjects()){

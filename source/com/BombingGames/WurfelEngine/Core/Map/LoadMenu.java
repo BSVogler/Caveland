@@ -32,7 +32,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -66,7 +66,7 @@ public class LoadMenu {
     public void init(GameView view){
         stageRef = view.getStage();
         
-        window = new Window("Choose a map", View.getSkin());
+        window = new Window("Choose a map", EngineView.getSkin());
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
         window.setX(margin);
@@ -82,9 +82,9 @@ public class LoadMenu {
         // This table groups the Search label and the TextField used to gather
         // the search criteria:
         Table search = new Table();
-        search.add(new Label("Search", View.getSkin())).spaceRight(10f);
+        search.add(new Label("Search", EngineView.getSkin())).spaceRight(10f);
 
-        textSearch = new TextField("Not implemented yet", View.getSkin());
+        textSearch = new TextField("Not implemented yet", EngineView.getSkin());
 
         // This event waits untilk the RETURN key is pressed to reorganize the
         // intens inside the grid:
@@ -108,9 +108,9 @@ public class LoadMenu {
 
         //rearrangeTable();
 
-        content = new Table(View.getSkin());
+        content = new Table(EngineView.getSkin());
         // Prepares the scroll manager:
-        ScrollPane scroll = new ScrollPane(content, View.getSkin());
+        ScrollPane scroll = new ScrollPane(content, EngineView.getSkin());
 
         // Only scroll vertically:
         scroll.setScrollingDisabled(true, false);

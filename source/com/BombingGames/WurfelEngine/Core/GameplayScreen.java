@@ -112,7 +112,7 @@ public class GameplayScreen implements Screen{
         controller.update(delta);
         view.update(delta);
         view.render();
-        View.getStaticStage().draw();
+        EngineView.getStaticStage().draw();
 
         if (WE.getConsole().isActive() && Gdx.input.isKeyPressed(Input.Keys.UP))
             WE.getConsole().setText(WE.getConsole().getLastMessage("Console"));

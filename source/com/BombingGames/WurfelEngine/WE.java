@@ -35,10 +35,10 @@ import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -53,13 +53,13 @@ import java.io.File;
  *The Main class of the engine. To create a new engine use  {@link com.BombingGames.WurfelEngine.WE#construct(java.lang.String, java.lang.String[]) }
  * The Wurfel Engine needs Java >1.7 and the API libGDX0.9.9
  * @author Benedikt S. Vogler
- * @version 1.2.25
+ * @version 1.2.26
  */
 public class WE extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.2.25";    
+    public static final String VERSION = "1.2.26";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WE instance;

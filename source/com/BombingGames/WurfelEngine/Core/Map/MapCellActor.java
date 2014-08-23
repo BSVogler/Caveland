@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import java.io.IOException;
 
 /**
  *
@@ -42,7 +43,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  */
 public class MapCellActor extends TextButton {
     private String descr="No desc found.";
-    private String mapName="no map name found";
     private String fileName;
     
 
@@ -53,10 +53,17 @@ public class MapCellActor extends TextButton {
         setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
         setSize(150, 50);
-        setText("<"+fileName+"> "+mapName);
-        //add();
-        //new Text
-        add(descr);
+        MapMetaData meta;
+        try {
+            meta = new MapMetaData(fileName);
+            setText("/"+fileName+"/ "+meta.getMapName());
+            if (!"".equals(meta.getDescription()))
+                add(meta.getDescription());
+            else
+                add("no description found");
+        } catch (IOException ex) {
+            setText("/"+fileName+"/ Error reading file");
+        }
     }
 
     

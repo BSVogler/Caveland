@@ -40,7 +40,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- *
+ *A class to read the meta file.
  * @author Benedikt Vogler
  */
 public class MapMetaData {
@@ -49,6 +49,7 @@ public class MapMetaData {
     private int chunkBlocksZ;
     private String mapversion;
     private String mapName;
+    private String description = "";
    
     /**
      * reads the map info file and sets the size of the chunk
@@ -115,5 +116,9 @@ public class MapMetaData {
 
     public String getMapName() {
         return mapName;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

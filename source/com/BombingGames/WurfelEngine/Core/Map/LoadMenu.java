@@ -63,7 +63,7 @@ public class LoadMenu {
      * Setups the window.
      * @param view 
      */
-    public void viewInit(View view){
+    public void init(View view){
         stageRef = view.getStage();
         
         window = new Window("Choose a map", View.getSkin());
@@ -137,7 +137,7 @@ public class LoadMenu {
      */
     public void setOpen(View view, boolean open) {
         if (initialized || open){//if initialized or should be opened
-            if (!initialized) viewInit(view);
+            if (!initialized) init(view);
             if (!window.isVisible()){//opening
                 int i=0;
                 File mapsFolder = WorkingDirectory.getMapsFolder();

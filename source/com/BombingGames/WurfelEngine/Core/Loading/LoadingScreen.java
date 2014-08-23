@@ -172,7 +172,9 @@ public class LoadingScreen implements Screen {
     @Override
     public void hide() {
         // Dispose the loading assets as we no longer need them
-        WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
+        if (!WE.getCurrentConfig().preventUnloading()){
+            WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
+        }
     }
 
     @Override

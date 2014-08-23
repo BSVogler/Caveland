@@ -222,4 +222,12 @@ public class Configuration {
         return false;
     }
     
+    /**
+     * increases memory usage by not unloading data. Increases loading speed. May cause problems on low memory devices.
+     * @return true if keeps the data
+     */
+    public boolean preventUnloading(){
+        return true;
+    }
+    
 }

@@ -49,6 +49,12 @@ public class Chunk {
     private static int blocksX = 10;
     private static int blocksY = 40;//blocksY must be even number
     private static int blocksZ = 10;
+
+    protected static void setDimensions(MapMetaData meta) {
+        blocksX = meta.getChunkBlocksX();
+        blocksY = meta.getChunkBlocksY();
+        blocksZ = meta.getChunkBlocksZ();
+    }
     
     private Cell data[][][];
   
@@ -186,52 +192,6 @@ public class Chunk {
         return false;
     }
     
-    /**
-     * reads the map info file and sets the size of the chunk
-     * @param mapName filename
-     * @throws java.io.IOException
-     */
-    public static void readMapInfo(String mapName) throws IOException {
-        BufferedReader bufRead;
-
-            //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-            FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+mapName+"/map."+METAFILESUFFIX);
-            if (path.exists()){
-                Gdx.app.log("Chunk","Trying to load Map Info from \"" + path.path() + "\"");
-                try {
-                    bufRead =  path.reader(1024);
-                    String mapnameInFile = bufRead.readLine();
-                    mapnameInFile = mapnameInFile.substring(2, mapnameInFile.length());
-                    GameplayScreen.msgSystem().add("Loading map called: "+mapnameInFile);   
-
-                    String mapversion = bufRead.readLine(); 
-                    mapversion = mapversion.substring(2, mapversion.length());
-                    GameplayScreen.msgSystem().add("Map Version:"+mapversion, "System");
-
-                    String blocksXString = bufRead.readLine();
-                    Gdx.app.debug("Chunk","sizeX:"+blocksXString);
-                    blocksXString = blocksXString.substring(2, blocksXString.length());
-                    blocksX = Integer.parseInt(blocksXString);
-
-                    String blocksYString = bufRead.readLine();
-                    Gdx.app.debug("Chunk","sizeY:"+blocksYString);
-                    blocksYString = blocksYString.substring(2, blocksYString.length());
-                    blocksY = Integer.parseInt(blocksYString);
-
-                    String blocksZString = bufRead.readLine();
-                    Gdx.app.debug("Chunk","sizeZ:"+blocksZString);
-                    blocksZString = blocksZString.substring(2, blocksZString.length());
-                    blocksZ = Integer.parseInt(blocksZString);
-                } catch (IOException ex) {
-                    throw new IOException(
-                        "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/maps/<mapname>"
-                    );
-                }
-            } else {
-                Gdx.app.error("Chunk", "Map named \""+ mapName +"\" could not be found. Path:"+ path);
-                throw new IOException("Map named \""+ mapName +"\" could not be found. Path:"+ path);
-            }
-    }
     
         /**
      * The amount of blocks in X direction

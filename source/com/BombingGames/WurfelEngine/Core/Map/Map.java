@@ -82,7 +82,7 @@ public class Map implements Cloneable {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
         this.filename = name;
         
-        Chunk.readMapInfo(name);
+        Chunk.setDimensions(new MapMetaData(name));
         
         
         //save chunk size, which are now loaded

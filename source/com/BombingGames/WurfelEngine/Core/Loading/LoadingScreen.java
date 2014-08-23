@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -48,7 +49,7 @@ public class LoadingScreen implements Screen {
         AssetManager manager = WE.getAssetManager();
                 
         // Tell the manager to load assets for the loading screen
-        manager.load("com/BombingGames/WurfelEngine/Core/Loading/loading.pack",TextureAtlas.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/Loading/loading.txt", TextureAtlas.class);
         // Wait until they are finished loading
         manager.finishLoading();
         
@@ -79,17 +80,21 @@ public class LoadingScreen implements Screen {
         stage = new Stage();
 
         // Get our textureatlas from the manager
-        TextureAtlas atlas = WE.getAssetManager().get("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
-
+        TextureAtlas GUItexture = WE.getAsset("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");
         // Grab the regions from the atlas and create some images
-        logo = new Image(atlas.findRegion("libgdx-logo"));
-        loadingFrame = new Image(atlas.findRegion("loading-frame"));
-        loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
-        screenBg = new Image(atlas.findRegion("screen-bg"));
-        loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
+        logo = new Image(GUItexture.findRegion("banner_medium"));
+        loadingFrame = new Image(GUItexture.findRegion("loading-frame"));
+        loadingBarHidden = new Image(GUItexture.findRegion("loading-bar-hidden"));
+        screenBg = new Image(GUItexture.findRegion("screen-bg"));
+        loadingBg = new Image(GUItexture.findRegion("loading-frame-bg"));
 
-        // Add the loading bar animation
-        Animation anim = new Animation(0.05f, atlas.findRegions("loading-bar-anim") );
+      // Add the loading bar animation
+        AtlasRegion[] anitextures = new AtlasRegion[3];
+        anitextures[0] = GUItexture.findRegion("loading_bar1");
+        anitextures[1] = GUItexture.findRegion("loading_bar2");
+        anitextures[2] = GUItexture.findRegion("loading_bar3");
+        
+        Animation anim = new Animation(0.2f, anitextures);
         anim.setPlayMode(Animation.LOOP_REVERSED);
         loadingBar = new LoadingBar(anim);
 
@@ -108,8 +113,8 @@ public class LoadingScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         // Set our screen to always be XXX x 480 in size
-        width = 480 * width / height;
-        height = 480;
+        //width = 1920;
+        //height = 1080;
         stage.setViewport(width , height, false);
 
         // Make the background fill the screen
@@ -148,7 +153,7 @@ public class LoadingScreen implements Screen {
         }
 
         // Interpolate the percentage to make it more smooth
-        percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.1f);
+        percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.5f);
         
         // Clear the screen
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -167,7 +172,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void hide() {
         // Dispose the loading assets as we no longer need them
-        WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
+        //WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.pack");
     }
 
     @Override

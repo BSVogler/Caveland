@@ -4,42 +4,42 @@ filter: Linear,Linear
 repeat: none
 editor_button
   rotate: false
-  xy: 2, 2
+  xy: 1, 1
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 editorreverse_button
   rotate: false
-  xy: 24, 2
+  xy: 1, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 load_button
   rotate: false
-  xy: 2, 46
+  xy: 43, 1
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
 play_button
   rotate: false
-  xy: 22, 46
+  xy: 22, 22
   size: 18, 20
   orig: 20, 20
   offset: 1, 0
   index: -1
 replay_button
   rotate: false
-  xy: 2, 24
+  xy: 1, 43
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 save_button
   rotate: false
-  xy: 24, 24
+  xy: 22, 1
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

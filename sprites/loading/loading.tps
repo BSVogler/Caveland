@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.4.0</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/skin/gui.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/loading/loading.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/WurfelEngine/Core/skin/gui.png</filename>
+        <filename>../../source/com/BombingGames/WurfelEngine/Core/Loading/loading.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/BombingGames/WurfelEngine/Core/skin/gui.txt</filename>
+                <filename>../../source/com/BombingGames/WurfelEngine/Core/Loading/loading.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -162,7 +162,7 @@
             <key>innerPadding</key>
             <uint>0</uint>
             <key>extrude</key>
-            <uint>0</uint>
+            <uint>1</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>

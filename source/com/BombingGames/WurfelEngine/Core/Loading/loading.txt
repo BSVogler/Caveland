@@ -1,5 +1,5 @@
 loading.png
-format: RGBA8888
+format: RGBA4444
 filter: Linear,Linear
 repeat: none
 banner_medium
@@ -53,7 +53,7 @@ loading_bar3
   index: -1
 screen-bg
   rotate: false
-  xy: 48, 248
+  xy: 40, 248
   size: 5, 5
   orig: 5, 5
   offset: 0, 0

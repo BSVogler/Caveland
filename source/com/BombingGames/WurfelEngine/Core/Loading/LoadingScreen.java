@@ -37,7 +37,7 @@ public class LoadingScreen implements Screen {
     private Actor loadingBar;
     private float percent;
     
-    private final Configuration config;
+    private final Configuration configRef;
 
     /**
      *
@@ -66,9 +66,9 @@ public class LoadingScreen implements Screen {
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg", Sound.class);
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
         
-        //load files from config
+        //load files from configRef
         config.initLoadingQueque(manager);
-        this.config = config;
+        this.configRef = config;
     }
 
     
@@ -180,6 +180,6 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void dispose() {
-        WE.getAssetManager().unload(config.getSpritesheetPath()+".txt");
+        WE.getAssetManager().unload(configRef.getSpritesheetPath()+".txt");
     }
 }

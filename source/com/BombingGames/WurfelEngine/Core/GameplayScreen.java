@@ -46,7 +46,7 @@ public class GameplayScreen implements Screen{
   /**
      * Contains the Message System
      */
-    private static MsgSystem msgSystem;    
+    private static Console msgSystem;    
     
     private View view = null;
     private Controller controller = null;
@@ -67,7 +67,7 @@ public class GameplayScreen implements Screen{
         
         WE.getInstance().setScreen(new LoadingScreen(config));
         
-        msgSystem = new MsgSystem(this);
+        msgSystem = new Console(this);
         
         
         this.controller = controller;
@@ -80,7 +80,7 @@ public class GameplayScreen implements Screen{
      * Returns the Message System. Use .add() to add messages to the msgSystem.
      * @return The msgSystem.
      */
-    public static MsgSystem msgSystem() {
+    public static Console msgSystem() {
         return msgSystem;
     }
 

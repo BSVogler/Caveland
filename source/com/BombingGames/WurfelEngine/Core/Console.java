@@ -47,16 +47,16 @@ import java.util.StringTokenizer;
  *The message system can manage&show messages (Msg).
  * @author Benedikt
  */
-public class MsgSystem {
+public class Console {
     private int timelastupdate = 0;
-    private final GameplayScreen gameplayRef;//the reference to the associated gameplay
+    private GameplayScreen gameplayRef;//the reference to the associated gameplay
     private TextField textinput;
     private final Stack<Msg> messages; 
     private boolean keyConsoleDown;
     private boolean disposed;
     
     /**
-     * A message is put into the MsgSystem. It contains the message, the sender and the importance.
+     * A message is put into the Console. It contains the message, the sender and the importance.
      * @author Benedikt
      */
     private class Msg {
@@ -93,12 +93,17 @@ public class MsgSystem {
 
     /**
      * 
-     * @param gameplay
      */
-    public MsgSystem(final GameplayScreen gameplay) {
+    public Console() {
         this.messages = new Stack<>();
-        this.gameplayRef = gameplay;
     }
+
+    public void setGameplayRef(GameplayScreen gameplayRef) {
+        this.gameplayRef = gameplayRef;
+    }
+    
+    
+    
     
     /**
      * "Handshake" with the view rendering the scene. This will add the GUI to the gameplay stage.

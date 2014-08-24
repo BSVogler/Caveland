@@ -101,7 +101,7 @@ public class Console {
         this.messages = new Stack<>();
         textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
-        textinput.setBlinkTime(0.2f);
+        textinput.setBlinkTime(0.3f);
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         

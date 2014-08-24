@@ -31,8 +31,9 @@
 
 package com.BombingGames.WurfelEngine.Core;
 
-import static com.BombingGames.WurfelEngine.Core.GameView.addInputProcessor;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,6 +41,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *A view which is not dependend on the currently active game. Singleton.
@@ -53,6 +55,8 @@ public class EngineView {
     private static Stage staticStage;//the stage used for view-independetn things
     private static Skin skin;
     private static Pixmap cursor;
+    private static InputMultiplexer inpMulPlex;
+    private static Array<InputProcessor> inactiveInpProcssrs;
     
     public static void init(){
         //set up font
@@ -74,6 +78,54 @@ public class EngineView {
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
     }
     
+    /**
+     * Resets the input processors.
+     */
+    public static void resetInputProcessors() {
+        Gdx.input.setInputProcessor(null);
+        inpMulPlex = null;
+        inactiveInpProcssrs = null;
+        addInputProcessor(EngineView.getStage());
+    }
+    
+    /**
+     * Add an inputProcessor to the views.
+     * @param processor 
+     */
+    public static void addInputProcessor(final InputProcessor processor){
+        if (Gdx.input.getInputProcessor() == null){
+            Gdx.input.setInputProcessor(processor);
+        }else{//use multiplexer if more than one input processor
+            inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
+            inpMulPlex.addProcessor(processor);
+            Gdx.input.setInputProcessor(inpMulPlex);
+        }
+    }
+    
+    /**
+     * Deactivates every input processor but one.
+     * @param processor the processor you want to "filter"
+     * @see #unfocusInputProcessor() 
+     * @since V1.2.21
+     */
+    public static void focusInputProcessor(final InputProcessor processor){
+        inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
+        Gdx.input.setInputProcessor(null); //reset
+        addInputProcessor(processor);//add the focus
+    }
+    
+    /**
+     * Reset that every input processor works again.
+     * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
+     * @since V1.2.21
+     */
+    public static void unfocusInputProcessor(){
+        Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
+        Gdx.input.setInputProcessor(null); //reset
+        for (InputProcessor ip : inactiveInpProcssrs) {
+            addInputProcessor(ip);
+        }
+    }
     
     /**
      * 

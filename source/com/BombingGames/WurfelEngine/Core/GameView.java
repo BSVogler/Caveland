@@ -39,14 +39,11 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 
 /**
@@ -56,9 +53,6 @@ import java.util.ArrayList;
 public class GameView implements GameManager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
-    
-    private static InputMultiplexer inpMulPlex;
-    private static Array<InputProcessor> inactiveInpProcssrs;
     
     private ShapeRenderer igShRenderer;
     
@@ -116,55 +110,6 @@ public class GameView implements GameManager {
         initalized = true;
     }
     
-    /**
-     * Resets the input processors.
-     */
-    public static void resetInputProcessors() {
-        Gdx.input.setInputProcessor(null);
-        inpMulPlex = null;
-        inactiveInpProcssrs = null;
-        addInputProcessor(EngineView.getStage());
-    }
-    
-    /**
-     * Add an inputProcessor to the views.
-     * @param processor 
-     */
-    public static void addInputProcessor(final InputProcessor processor){
-        if (Gdx.input.getInputProcessor() == null){
-            Gdx.input.setInputProcessor(processor);
-        }else{//use multiplexer if more than one input processor
-            inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
-            inpMulPlex.addProcessor(processor);
-            Gdx.input.setInputProcessor(inpMulPlex);
-        }
-    }
-    
-    /**
-     * Deactivates every input processor but one.
-     * @param processor the processor you want to "filter"
-     * @see #unfocusInputProcessor() 
-     * @since V1.2.21
-     */
-    public static void focusInputProcessor(final InputProcessor processor){
-        inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
-        Gdx.input.setInputProcessor(null); //reset
-        addInputProcessor(processor);//add the focus
-    }
-    
-    /**
-     * Reset that every input processor works again.
-     * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
-     * @since V1.2.21
-     */
-    public static void unfocusInputProcessor(){
-        Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
-        Gdx.input.setInputProcessor(null); //reset
-        for (InputProcessor ip : inactiveInpProcssrs) {
-            addInputProcessor(ip);
-        }
-    }
-        
     /**
      *Updates every camera and everything else which must be updated.
      * @param delta time since last update in ms.
@@ -473,7 +418,7 @@ public class GameView implements GameManager {
      */
     @Override
     public void enter() {
-        GameView.addInputProcessor(stage);//the input processor must be added every time because they are only 
+        EngineView.addInputProcessor(stage);//the input processor must be added every time because they are only 
         Gdx.input.setCursorImage(EngineView.getCursor(), 8, 8);
     }
     

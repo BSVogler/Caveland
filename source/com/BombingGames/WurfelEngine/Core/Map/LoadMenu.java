@@ -31,8 +31,8 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.EngineView;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -152,10 +152,10 @@ public class LoadMenu {
                         //System.out.println(fileEntry.getName());
                     }
                 }
-                GameView.focusInputProcessor(new LoadMenuListener(this));
+                EngineView.focusInputProcessor(new LoadMenuListener(this));
             }else{ //closing
                 content.clear();
-                GameView.unfocusInputProcessor();
+                EngineView.unfocusInputProcessor();
             }
             window.setVisible(open);
         }

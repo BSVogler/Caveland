@@ -124,6 +124,7 @@ public class GameplayScreen implements Screen{
 
     @Override
     public void show() {
+        EngineView.resetInputProcessors();
         GameView.classInit();
         this.controller.init();
         this.view.init(controller);

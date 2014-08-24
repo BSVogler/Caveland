@@ -52,12 +52,12 @@ public class MenuView {
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
     private final BitmapFont font;
-    private float a =0;
+    private float alpha =0;
     private final ShapeRenderer sr;
     private final MenuController controller;
     
     /**
-     * Creates a View.
+     * Creates alpha View.
      * @param controller
      */
     protected MenuView(MenuController controller){
@@ -85,13 +85,13 @@ public class MenuView {
      * @param delta
      */
     protected void update(float delta) {
-       a += delta/1000f;
-       if (a>1) a=1;
+       alpha += delta/1000f;
+       if (alpha>1) alpha=1;
     }
         
     /**
      * renders the scene
-     * @param warning Render a warning about no custom main menu in use.
+     * @param warning Render alpha warning about no custom main menu in use.
      */
     protected void render(boolean warning){
         //clear & set background to black
@@ -106,7 +106,7 @@ public class MenuView {
                 
         // render the lettering
         batch.begin();
-        lettering.setColor(1, 1, 1, a);
+        lettering.setColor(1, 1, 1, alpha);
         lettering.draw(batch);
         batch.end();
         

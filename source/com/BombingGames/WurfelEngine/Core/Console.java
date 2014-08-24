@@ -105,7 +105,7 @@ public class Console {
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        EngineView.getStage().addActor(textinput);
+        EngineView.getStage().addActor(textinput);//add it to the global stage
     }
 
     public void setGameplayRef(GameplayScreen gameplayRef) {

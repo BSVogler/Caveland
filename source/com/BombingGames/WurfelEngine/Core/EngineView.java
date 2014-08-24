@@ -52,13 +52,14 @@ public class EngineView {
     private static SpriteBatch batch;    
     private static ShapeRenderer shapeRenderer;
     private static BitmapFont font;
-    private static Stage staticStage;//the stage used for view-independetn things
+    private static Stage stage;//the stage used for view-independetn things
     private static Skin skin;
     private static Pixmap cursor;
     private static InputMultiplexer inpMulPlex;
     private static Array<InputProcessor> inactiveInpProcssrs;
     
     public static void init(){
+        Gdx.app.debug("EngineView","Initializing...");
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(false);
@@ -69,8 +70,9 @@ public class EngineView {
         //font.scale(-0.5f);
         
         //load sprites
-        staticStage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        addInputProcessor(staticStage);
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        Gdx.input.setInputProcessor(stage);
+
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
         batch = new SpriteBatch();
@@ -93,13 +95,9 @@ public class EngineView {
      * @param processor 
      */
     public static void addInputProcessor(final InputProcessor processor){
-        if (Gdx.input.getInputProcessor() == null){
-            Gdx.input.setInputProcessor(processor);
-        }else{//use multiplexer if more than one input processor
-            inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
-            inpMulPlex.addProcessor(processor);
-            Gdx.input.setInputProcessor(inpMulPlex);
-        }
+        inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
+        inpMulPlex.addProcessor(processor);
+        Gdx.input.setInputProcessor(inpMulPlex);
     }
     
     /**
@@ -110,7 +108,7 @@ public class EngineView {
      */
     public static void focusInputProcessor(final InputProcessor processor){
         inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
-        Gdx.input.setInputProcessor(null); //reset
+        Gdx.input.setInputProcessor(stage); //reset
         addInputProcessor(processor);//add the focus
     }
     
@@ -121,7 +119,7 @@ public class EngineView {
      */
     public static void unfocusInputProcessor(){
         Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
-        Gdx.input.setInputProcessor(null); //reset
+        Gdx.input.setInputProcessor(stage); //reset
         for (InputProcessor ip : inactiveInpProcssrs) {
             addInputProcessor(ip);
         }
@@ -157,7 +155,7 @@ public class EngineView {
      * @return a view independent stage
      */
     public static Stage getStage() {
-        return staticStage;
+        return stage;
     }
 
     /**

@@ -54,7 +54,6 @@ public class Console {
     private TextField textinput;
     private final Stack<Line> messages; 
     private boolean keyConsoleDown;
-    private boolean disposed;
     
     /**
      * A message is put into the Console. It contains the message, the sender and the importance.
@@ -154,18 +153,16 @@ public class Console {
         if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
             setActive(!textinput.isVisible());//toggle
         }
-        if (!disposed){//prevent updates when it's disposed
-            keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
-       
-            //decrease importance every 30ms
-            if (timelastupdate >= 30) {
-                 timelastupdate = 0;
-                for (Line m : messages) {
-                    if (m.getImportance() > 0)
-                        m.setImportance(m.getImportance()-1);
-                }
-             }
-        }
+        keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
+
+        //decrease importance every 30ms
+        if (timelastupdate >= 30) {
+             timelastupdate = 0;
+            for (Line m : messages) {
+                if (m.getImportance() > 0)
+                    m.setImportance(m.getImportance()-1);
+            }
+         }
     }
     
     /**
@@ -356,12 +353,5 @@ public class Console {
         }
         
         return false;    
-    }
-
-    /**
-     *
-     */
-    public void dispose(){
-        disposed = true;
     }
 }

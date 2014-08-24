@@ -204,9 +204,8 @@ public class Console {
         } else {
             if (active && !textinput.isVisible()){//window should be opened?
                 textinput.setText("");//clear if openend
-                if (EngineView.getStage()!=null)
-                    EngineView.getStage().setKeyboardFocus(textinput);
-                }
+                EngineView.getStage().setKeyboardFocus(textinput);
+            }
         }
         textinput.setVisible(active);
     }

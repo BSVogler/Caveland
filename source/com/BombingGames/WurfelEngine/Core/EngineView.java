@@ -84,7 +84,7 @@ public class EngineView {
      * Resets the input processors.
      */
     public static void resetInputProcessors() {
-        Gdx.input.setInputProcessor(null);
+        Gdx.input.setInputProcessor(stage);
         inpMulPlex = null;
         inactiveInpProcssrs = null;
         addInputProcessor(EngineView.getStage());

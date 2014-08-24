@@ -36,8 +36,11 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.io.IOException;
@@ -54,6 +57,7 @@ public class Console {
     private TextField textinput;
     private final Stack<Line> messages; 
     private boolean keyConsoleDown;
+    private StageInputProcessor inputprocessor;
     
     /**
      * A message is put into the Console. It contains the message, the sender and the importance.
@@ -197,17 +201,40 @@ public class Console {
      * @param active If deactivating the input will be saved.
      */
     private void setActive(final boolean active) {
-        if (!active && !textinput.getText().isEmpty()) {//message entered?
-            add(textinput.getText(), "Console");//add message to message list
-            if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
-                add("Failed executing command.", "System");    
+        if (active && !textinput.isVisible()){//window should be opened?
+            inputprocessor = new StageInputProcessor(this);
+            EngineView.getStage().addListener(inputprocessor);
+            EngineView.getStage().setKeyboardFocus(textinput);
+        }else {
+            EngineView.getStage().removeListener(inputprocessor);
+            EngineView.getStage().setKeyboardFocus(null);
+            setText(textinput.getText().substring(0, textinput.getText().length()-1));//hack to prevent the key to open/clsoe to appear
+        }
+        textinput.setVisible(active);
+    }
+    
+    
+    /**
+     * Fire on close, clear on open.
+     * @param active 
+     */
+    public void setActiveAsChat(final boolean active){
+        if (!active && !textinput.getText().isEmpty()) {//message entered and closing?
+            enter();
         } else {
             if (active && !textinput.isVisible()){//window should be opened?
                 textinput.setText("");//clear if openend
-                EngineView.getStage().setKeyboardFocus(textinput);
             }
         }
+        setActive(active);
         textinput.setVisible(active);
+    }
+    
+    public void enter(){
+        add(textinput.getText(), "Console");//add message to message list
+        if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
+            add("Failed executing command.", "System");    
+        setText("");
     }
     
     /**
@@ -223,7 +250,7 @@ public class Console {
      * @return  if there exist no last message it returns an empty string
      */
     public String getLastMessage(){
-        String tmp = messages.get(messages.size()-1).message;
+        String tmp = messages.lastElement().message;
         return tmp!=null ? tmp : "";
     }
     
@@ -352,5 +379,24 @@ public class Console {
         }
         
         return false;    
+    }
+    
+    private class StageInputProcessor extends InputListener {
+        Console parent;
+
+        private StageInputProcessor(Console parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public boolean keyDown(InputEvent event, int keycode){
+            if (keycode == Keys.UP){
+                parent.setText(parent.getLastMessage());
+            }
+            if (keycode == Keys.ENTER){
+                parent.enter();
+            }
+            return true;
+        }
     }
 }

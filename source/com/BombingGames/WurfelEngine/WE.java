@@ -278,6 +278,7 @@ public class WE extends Game {
     public static void showMainMenu(){
         if (gameplayScreen != null) gameplayScreen.dispose();
         gameplayScreen = null;
+        EngineView.resetInputProcessors();
         instance.setScreen(mainMenu);
     }
     

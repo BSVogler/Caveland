@@ -94,25 +94,12 @@ public class Console {
 
     /**
      * 
-     */
-    public Console() {
-        this.messages = new Stack<>();
-    }
-
-    public void setGameplayRef(GameplayScreen gameplayRef) {
-        this.gameplayRef = gameplayRef;
-    }
-    
-    
-    
-    
-    /**
-     * "Handshake" with the view rendering the scene. This will add the GUI to the gameplay stage.
      * @param skin
      * @param xPos
      * @param yPos
      */
-    public void init(Skin skin, final int xPos, final int yPos){
+    public Console(Skin skin, final int xPos, final int yPos) {
+        this.messages = new Stack<>();
         textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.2f);
@@ -120,6 +107,10 @@ public class Console {
         textinput.setVisible(false);
         
         EngineView.getStage().addActor(textinput);
+    }
+
+    public void setGameplayRef(GameplayScreen gameplayRef) {
+        this.gameplayRef = gameplayRef;
     }
         
     /**

@@ -145,8 +145,11 @@ public class WE extends Game {
         EngineView.init();
         setScreen(mainMenu);
         
-        console = new Console();
-        console.init(EngineView.getSkin(),Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        console = new Console(
+            EngineView.getSkin(),
+            Gdx.graphics.getWidth()/2,
+            Gdx.graphics.getHeight()/4
+        );
     }
 
     /**

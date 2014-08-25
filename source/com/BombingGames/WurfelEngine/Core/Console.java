@@ -329,13 +329,7 @@ public class Console {
             st.nextToken();
             
             String mapname = st.nextToken();
-            try {
-                Controller.loadMap(mapname);
-            } catch (IOException ex) {
-                add("Map "+mapname+"could not be loaded.", "Warning");
-                return false;
-            }
-            return true;
+            return Controller.loadMap(mapname);
         }
         
         if (command.startsWith("newmap")){

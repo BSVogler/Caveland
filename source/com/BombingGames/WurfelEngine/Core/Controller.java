@@ -155,12 +155,18 @@ public class Controller implements GameManager {
     /**
      * Tries loading a map.
      * @param name the name of the map
-     * @throws java.io.IOException
+     * @return returns true if the map could be laoded and false if it failed
      */
-    public static void loadMap(String name) throws IOException {
-        map = new Map(name);
-        map.fill();
-        requestRecalc();
+    public static boolean loadMap(String name) {
+        try {
+            map = new Map(name);
+            map.fill();
+            requestRecalc();
+            return true;
+        } catch (IOException ex) {
+            WE.getConsole().add("Map "+name+"could not be loaded.", "Warning");
+            return false;
+        }
     }
     
     /**

@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -58,14 +57,13 @@ public class LoadMenu {
     private Table content;
     private Stage stageRef;
     private boolean initialized = false;
+    private LoadMenuListener listener;
 
     /**
      * Setups the window.
      * @param view 
      */
     public void init(GameView view){
-        stageRef = view.getStage();
-        
         window = new Window("Choose a map", EngineView.getSkin());
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
@@ -74,8 +72,9 @@ public class LoadMenu {
         window.setKeepWithinStage(true);
         window.setModal(true);//problem: only affects the stage
         window.setVisible(false);
-        window.setMovable(false);
+        window.setMovable(true);
 
+        stageRef = view.getStage();
         // The window shall fill the whole window:
         //window.setFillParent(true);
 
@@ -152,65 +151,32 @@ public class LoadMenu {
                         //System.out.println(fileEntry.getName());
                     }
                 }
-                EngineView.focusInputProcessor(new LoadMenuListener(this));
+                listener = new LoadMenuListener(this);
+                stageRef.addListener(listener);
+                EngineView.focusInputProcessor(stageRef);
             }else{ //closing
                 content.clear();
+                stageRef.removeListener(listener);
                 EngineView.unfocusInputProcessor();
             }
             window.setVisible(open);
         }
     }
     
-    private static class LoadMenuListener implements InputProcessor{
-        private LoadMenu parent;
-
+    private static class LoadMenuListener extends InputListener{
+        private final LoadMenu parent;
+        
         protected LoadMenuListener(LoadMenu parent) {
             this.parent = parent;
         }
 
-        
         @Override
-        public boolean keyDown(int keycode) {
+        public boolean keyDown(InputEvent event, int keycode) {
             Gdx.app.debug("LoadMenu", "Still active");
             if (keycode == Input.Keys.ESCAPE){
                 parent.setOpen(null, false);
             }
-            return false;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return false;
+            return true;
         }
     }
 }

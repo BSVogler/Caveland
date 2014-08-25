@@ -106,6 +106,11 @@ public class Map implements Cloneable {
     public static void createMapFile(final String mapName) throws IOException {
         MapMetaData meta = new MapMetaData();
         meta.setFileName(mapName);
+        meta.setChunkBlocksX(10);
+        meta.setChunkBlocksY(40);
+        meta.setChunkBlocksZ(10);
+        meta.setMapName("Dies ist eine Testmap");
+        meta.setDescription("testen und so");
         meta.write();
     }
     

@@ -149,9 +149,6 @@ public class MapEditorView extends GameView {
     public void update(final float delta) {
         super.update(delta);
         
-        //update focusentity
-        controller.getFocusentity().setPos(screenToGameCoords(Gdx.input.getX(),Gdx.input.getY()).addVector(0, 2, 1));
-        
         camera.move((int) (camermove.x*cameraspeed*delta), (int) (camermove.y*cameraspeed*delta));
     }
 
@@ -261,6 +258,10 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
+            //update focusentity
+            controller.getFocusentity().setPos(
+                view.screenToGameCoords(screenX,screenY).addVector(0, 2, 1)
+            );
             return false;
         }
 

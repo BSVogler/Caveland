@@ -342,14 +342,14 @@ public class Console {
             else
                 return false;
             
-            Generator a = new Generator() {
-
-                @Override
-                public int generate(int x, int y, int z) {
-                    return 0;
-                }
-            };
-            Controller.getMap().setGenerator(a);
+//            Generator generator = new Generator() {
+//
+//                @Override
+//                public int generate(int x, int y, int z) {
+//                    return 0;
+//                }
+//            };
+//            Controller.getMap().setGenerator(generator);
             try {
                 Map.createMapFile(mapname);
             } catch (IOException ex) {

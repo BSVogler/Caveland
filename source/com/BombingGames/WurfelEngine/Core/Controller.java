@@ -164,7 +164,7 @@ public class Controller implements GameManager {
             requestRecalc();
             return true;
         } catch (IOException ex) {
-            WE.getConsole().add("Map "+name+"could not be loaded.", "Warning");
+            WE.getConsole().add(ex.getMessage(), "Warning");
             return false;
         }
     }

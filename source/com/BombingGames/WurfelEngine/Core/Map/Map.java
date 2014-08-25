@@ -32,11 +32,9 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import static com.BombingGames.WurfelEngine.Core.Map.Chunk.METAFILESUFFIX;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,12 +101,12 @@ public class Map implements Cloneable {
     /**
      * Should create a new map file.
      * @param mapName
-     * @return 
      * @throws java.io.IOException 
      */
-    public static boolean createMapFile(final String mapName) throws IOException {
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+mapName+"."+METAFILESUFFIX);
-        throw new IOException("not implemented yet");
+    public static void createMapFile(final String mapName) throws IOException {
+        MapMetaData meta = new MapMetaData();
+        meta.setFileName(mapName);
+        meta.write();
     }
     
     /**

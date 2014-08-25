@@ -31,7 +31,6 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
@@ -353,7 +352,7 @@ public class Console {
             try {
                 Map.createMapFile(mapname);
             } catch (IOException ex) {
-                add("Map could not be created.", "Warning");
+                add(ex.getMessage(), "Warning");
                 return false;
             }
             return executeCommand("loadmap " +mapname);

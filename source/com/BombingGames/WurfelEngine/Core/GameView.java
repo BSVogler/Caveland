@@ -117,6 +117,8 @@ public class GameView implements GameManager {
     public void update(final float delta){
         AbstractGameObject.resetDrawCalls();
         
+        stage.act(delta);
+        
         //update cameras
         for (Camera camera : cameras) {
             if (camera.togglesChunkSwitch()) {

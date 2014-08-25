@@ -382,19 +382,19 @@ public class Console {
     }
     
     private class StageInputProcessor extends InputListener {
-        Console parent;
+        private Console parentRef;
 
         private StageInputProcessor(Console parent) {
-            this.parent = parent;
+            this.parentRef = parent;
         }
 
         @Override
         public boolean keyDown(InputEvent event, int keycode){
             if (keycode == Keys.UP){
-                parent.setText(parent.getLastMessage());
+                parentRef.setText(parentRef.getLastMessage());
             }
             if (keycode == Keys.ENTER){
-                parent.enter();
+                parentRef.enter();
             }
             return true;
         }

@@ -81,14 +81,11 @@ public class Controller implements GameManager {
             devtools = new DevTools(this, 10,Gdx.graphics.getHeight()-50);
         
         if (map == null){
-            try {
-                map = new Map("map", generator);
-                map.fill();
-                requestRecalc();
-            } catch (IOException ex) {
+            if (!loadMap("default")) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
                 try {
                     Map.createMapFile("default");
+                    loadMap("default");
                 } catch (IOException ex1) {
                     Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
                     WE.showMainMenu();

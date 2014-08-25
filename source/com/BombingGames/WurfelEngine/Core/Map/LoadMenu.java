@@ -142,7 +142,7 @@ public class LoadMenu {
                 File mapsFolder = WorkingDirectory.getMapsFolder();
                 for (final File fileEntry : mapsFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
-                        content.add(new MapCellActor(fileEntry.getName()));
+                        content.add(new MapButton(fileEntry.getName()));
 
                         content.row();
                         i++;

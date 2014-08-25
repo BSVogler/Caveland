@@ -41,9 +41,9 @@ import java.io.IOException;
  *
  * @author Benedikt Vogler
  */
-public class MapCellActor extends TextButton {
+public class MapButton extends TextButton {
 
-    public MapCellActor(String fileName) {
+    public MapButton(String fileName) {
         super("",EngineView.getSkin());
         //read description and map name
         setColor(Color.LIGHT_GRAY.cpy());

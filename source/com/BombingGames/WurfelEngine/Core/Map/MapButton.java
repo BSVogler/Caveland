@@ -31,10 +31,13 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import java.io.IOException;
 
 /**
@@ -62,6 +65,7 @@ public class MapButton extends TextButton {
             setText("/"+fileName+"/ Error reading file");
             setColor(Color.GRAY.cpy());
         }
+        addListener(new ButtonChangeListener(this));
     }
 
     
@@ -72,6 +76,19 @@ public class MapButton extends TextButton {
                 
         //missing: background
         //selection?
+    }
+
+    private static class ButtonChangeListener extends ChangeListener {
+        private final MapButton parent;
+
+        protected ButtonChangeListener(MapButton parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+            Controller.loadMap(parent.getName());
+        }
     }
     
     

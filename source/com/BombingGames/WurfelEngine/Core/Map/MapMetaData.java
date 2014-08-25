@@ -49,7 +49,15 @@ public class MapMetaData {
     private String mapversion;
     private String mapName;
     private String description = "";
+    private String fileName;
+
+    /**
+     * Creates an empty objects.
+     */
+    public MapMetaData() {
+    }
    
+    
     /**
      * reads the map info file and sets the size of the chunk
      * @param fileName filename
@@ -57,6 +65,7 @@ public class MapMetaData {
      */
     public MapMetaData(String fileName) throws IOException {
         BufferedReader bufRead;
+        this.fileName = fileName;
 
         //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
         FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/map."+METAFILESUFFIX);
@@ -90,13 +99,52 @@ public class MapMetaData {
                 throw new IOException(
                     "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/maps/<mapname>"
                 );
+            } catch (NullPointerException ex){
+                throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is corrupt.");
             }
         } else {
             Gdx.app.error("Chunk", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
             throw new IOException("Map named \""+ fileName +"\" could not be found. Path:"+ path);
         }
     }
+    
+    public boolean write() throws IOException{
+        if ("".equals(fileName)) return false;
+        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
+        if (!path.exists()) path.mkdirs();//create fiel if it is missing
+        path.child("map."+METAFILESUFFIX).file().createNewFile();
+        return true;
+    }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setChunkBlocksX(int chunkBlocksX) {
+        this.chunkBlocksX = chunkBlocksX;
+    }
+
+    public void setChunkBlocksY(int chunkBlocksY) {
+        this.chunkBlocksY = chunkBlocksY;
+    }
+
+    public void setChunkBlocksZ(int chunkBlocksZ) {
+        this.chunkBlocksZ = chunkBlocksZ;
+    }
+
+    public void setMapversion(String mapversion) {
+        this.mapversion = mapversion;
+    }
+
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
     public int getChunkBlocksX() {
         return chunkBlocksX;
     }

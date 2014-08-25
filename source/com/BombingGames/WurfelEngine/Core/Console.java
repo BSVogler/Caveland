@@ -386,7 +386,7 @@ public class Console {
         @Override
         public boolean keyDown(InputEvent event, int keycode){
             if (keycode == Keys.UP){
-                parentRef.setText(parentRef.getLastMessage());
+                parentRef.setText(parentRef.getLastMessage("Console"));
             }
             if (keycode == Keys.ENTER){
                 parentRef.enter();

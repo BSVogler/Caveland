@@ -37,12 +37,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  *A class to read the meta file.
  * @author Benedikt Vogler
  */
 public class MapMetaData {
+    public static final String VERSION = "0.12";
     private int chunkBlocksX;
     private int chunkBlocksY;
     private int chunkBlocksZ;
@@ -72,35 +74,32 @@ public class MapMetaData {
         if (path.exists()){
             Gdx.app.log("Chunk","Trying to load Map Info from \"" + path.path() + "\"");
             try {
-                bufRead =  path.reader(1024);
+                bufRead =  path.reader(1024, "UTF8");
                 mapName = bufRead.readLine();
-                mapName = mapName.substring(2, mapName.length());
                 WE.getConsole().add("Loading map called: "+mapName);   
 
                 mapversion = bufRead.readLine(); 
-                mapversion = mapversion.substring(2, mapversion.length());
                 WE.getConsole().add("Map Version:"+mapversion, "System");
 
                 String blocksXString = bufRead.readLine();
                 Gdx.app.debug("Chunk","sizeX:"+blocksXString);
-                blocksXString = blocksXString.substring(2, blocksXString.length());
                 chunkBlocksX = Integer.parseInt(blocksXString);
 
                 String blocksYString = bufRead.readLine();
                 Gdx.app.debug("Chunk","sizeY:"+blocksYString);
-                blocksYString = blocksYString.substring(2, blocksYString.length());
                 chunkBlocksY = Integer.parseInt(blocksYString);
 
                 String blocksZString = bufRead.readLine();
                 Gdx.app.debug("Chunk","sizeZ:"+blocksZString);
-                blocksZString = blocksZString.substring(2, blocksZString.length());
                 chunkBlocksZ = Integer.parseInt(blocksZString);
             } catch (IOException ex) {
                 throw new IOException(
                     "The meta file could not be read. It must be named 'map."+ Chunk.METAFILESUFFIX + "' and must be at the maps directory:"+ WE.getWorkingDirectory().getAbsolutePath() + "/maps/<mapname>"
                 );
-            } catch (NullPointerException ex){
-                throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is corrupt.");
+            } catch (NullPointerException ex) {
+                throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is  corrupt or outdated.");
+            } catch (NumberFormatException ex) {
+                throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is corrupt or outdated.");
             }
         } else {
             Gdx.app.error("Chunk", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
@@ -112,7 +111,19 @@ public class MapMetaData {
         if ("".equals(fileName)) return false;
         FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
         if (!path.exists()) path.mkdirs();//create fiel if it is missing
-        path.child("map."+METAFILESUFFIX).file().createNewFile();
+        FileHandle meta = path.child("map."+METAFILESUFFIX);
+        String lineFeed = System.getProperty("line.separator");
+        
+        meta.file().createNewFile();
+        Writer writer = meta.writer(false, "UTF8");
+        writer.write(mapName+lineFeed);
+        writer.write(VERSION+lineFeed);
+        writer.write(Integer.toString(chunkBlocksX)+lineFeed);
+        writer.write(Integer.toString(chunkBlocksY)+lineFeed);
+        writer.write(Integer.toString(chunkBlocksZ)+lineFeed);
+        writer.write("0,0"+lineFeed);
+        writer.write(description+lineFeed);
+        writer.close();
         return true;
     }
 

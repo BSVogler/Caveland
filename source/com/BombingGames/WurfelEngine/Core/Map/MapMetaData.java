@@ -107,6 +107,12 @@ public class MapMetaData {
         }
     }
     
+    /**
+     * Writes the data in a folder at the working directory.
+     * @return
+     * @throws IOException 
+     * @since v1.2.28
+     */
     public boolean write() throws IOException{
         if ("".equals(fileName)) return false;
         FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
@@ -115,15 +121,17 @@ public class MapMetaData {
         String lineFeed = System.getProperty("line.separator");
         
         meta.file().createNewFile();
-        Writer writer = meta.writer(false, "UTF8");
-        writer.write(mapName+lineFeed);
-        writer.write(VERSION+lineFeed);
-        writer.write(Integer.toString(chunkBlocksX)+lineFeed);
-        writer.write(Integer.toString(chunkBlocksY)+lineFeed);
-        writer.write(Integer.toString(chunkBlocksZ)+lineFeed);
-        writer.write("0,0"+lineFeed);
-        writer.write(description+lineFeed);
-        writer.close();
+        try (Writer writer = meta.writer(false, "UTF8")) {
+            writer.write(mapName+lineFeed);
+            writer.write(VERSION+lineFeed);
+            writer.write(Integer.toString(chunkBlocksX)+lineFeed);
+            writer.write(Integer.toString(chunkBlocksY)+lineFeed);
+            writer.write(Integer.toString(chunkBlocksZ)+lineFeed);
+            writer.write("0,0"+lineFeed);
+            writer.write(description+lineFeed);
+        } catch (IOException ex){
+            throw ex;
+        }
         return true;
     }
 

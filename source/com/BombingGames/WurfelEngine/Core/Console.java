@@ -306,6 +306,7 @@ public class Console {
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
             case "minimap":
+                if (gameplayRef==null) return false;
                 if (gameplayRef.getController().getMinimap()==null){
                     add("No minimap found. Creating new", "System");
                     gameplayRef.getController().setMinimap(new Minimap(gameplayRef.getController(), gameplayRef.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
@@ -314,6 +315,7 @@ public class Console {
                 return true;
             case "devtools":
             case "dev":
+                if (gameplayRef==null) return false;
                 gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
                 return true;
             case "benchmark":

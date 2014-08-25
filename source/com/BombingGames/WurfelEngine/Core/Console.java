@@ -58,7 +58,11 @@ public class Console {
     private final Stack<Line> messages; 
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
+    private Modes mode;
     
+    private enum Modes {
+        Chat, Console
+    }
     /**
      * A message is put into the Console. It contains the message, the sender and the importance.
      * @author Benedikt
@@ -155,7 +159,7 @@ public class Console {
        
         //open close console/chat box
         if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
-            setActive(!textinput.isVisible());//toggle
+            setActive(Modes.Console, !textinput.isVisible());//toggle
         }
         keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
 
@@ -200,7 +204,18 @@ public class Console {
      * Tell the msg system if it should listen for input.
      * @param active If deactivating the input will be saved.
      */
-    private void setActive(final boolean active) {
+    private void setActive(Modes mode, final boolean active) {
+        this.mode = mode;
+        if (mode == Modes.Chat) {
+            if (!active && !textinput.getText().isEmpty()) {//message entered and closing?
+                enter();
+            } else {
+                if (active && !textinput.isVisible()){//window should be opened?
+                    textinput.setText("");//clear if openend
+                }
+            }
+        }
+        
         if (active && !textinput.isVisible()){//window should be opened?
             inputprocessor = new StageInputProcessor(this);
             EngineView.getStage().addListener(inputprocessor);
@@ -213,26 +228,10 @@ public class Console {
         textinput.setVisible(active);
     }
     
-    
-    /**
-     * Fire on close, clear on open.
-     * @param active 
-     */
-    public void setActiveAsChat(final boolean active){
-        if (!active && !textinput.getText().isEmpty()) {//message entered and closing?
-            enter();
-        } else {
-            if (active && !textinput.isVisible()){//window should be opened?
-                textinput.setText("");//clear if openend
-            }
-        }
-        setActive(active);
-        textinput.setVisible(active);
-    }
-    
     public void enter(){
         add(textinput.getText(), "Console");//add message to message list
-        if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
+        //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
+        if (mode==Modes.Console && !executeCommand(textinput.getText()))    
             add("Failed executing command.", "System");    
         setText("");
     }

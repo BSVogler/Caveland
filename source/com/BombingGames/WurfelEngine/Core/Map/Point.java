@@ -88,7 +88,24 @@ public class Point extends AbstractPosition {
      */
     @Override
     public Coordinate getCoord() {
-        return toCoord(this, false, false);
+        //find out where the position is (basic)
+        Coordinate coords = new Coordinate(
+            (int) (getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
+            (int) (getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
+            getHeight(),
+            true
+        );
+       
+        //find the specific coordinate (detail)
+        Coordinate specificCoords = coords.neighbourSidetoCoords(
+            Coordinate.getNeighbourSide(
+                getRelX() % AbstractGameObject.GAME_DIAGLENGTH,
+                getRelY() % (AbstractGameObject.GAME_DIAGLENGTH)
+            )
+        );
+        coords.setRelX(specificCoords.getRelX());
+        coords.setRelY(specificCoords.getRelY());
+        return coords; 
     }
     
     /**
@@ -239,58 +256,37 @@ public class Point extends AbstractPosition {
     }
     
         /**
-     * Game position to game coordinate
-     * @param pos the position on the map
-     * @param depthCheck when true the coordiantes are checked with depth, use this for "screen to coords". This is only possible if the position are on the map.
+     * Trace a ray down to find the deepest point.
      * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
      * @return 
      */
-    public static Coordinate toCoord(final Point pos, final boolean depthCheck, final boolean visibilityCheck){
-        //find out where the position is (basic)
-        Coordinate coords = new Coordinate(
-            (int) (pos.getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (pos.getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
-            pos.getHeight(),
-            true
-        );
-       
-        //find the specific coordinate (detail)
-        Coordinate specificCoords = coords.neighbourSidetoCoords(
-            Coordinate.getNeighbourSide(
-                pos.getRelX() % AbstractGameObject.GAME_DIAGLENGTH,
-                pos.getRelY() % (AbstractGameObject.GAME_DIAGLENGTH)
-            )
-        );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY());
+    public Point traceRay(final boolean visibilityCheck){
+        setHeight(Chunk.getGameHeight()-1);
+        y +=getHeight()*2;
         
-        //trace ray down if wanted
-        if (depthCheck && pos.onLoadedMap()) {
-            coords.setRelY(coords.getRelY() + (depthCheck? coords.getZ()*2 : 0));
-            //if selection is not found by that specify it
-            //trace ray down to bottom. for each step 2 y and 1 z down
+            //trace ray down to bottom.
             while (
-                coords.getZ()>0
+                getHeight()>0
                 &&
                 (
-                    coords.getBlock().getId() == 0
+                    onLoadedMap() && getBlock().getId() == 0
                     ||
                     (
                         visibilityCheck
                         &&
                         (
-                            coords.getBlock().isHidden()
+                            onLoadedMap() && getBlock().isHidden()
                             ||
-                            coords.getZ() >= Camera.getZRenderingLimit()
+                            getHeight() >= Camera.getZRenderingLimit() * Block.GAME_EDGELENGTH
                         )
                     )
                 )
                 ) {
-                    coords.setRelY(coords.getRelY()-2);
-                    coords.setZ(coords.getZ()-1);
+                    // for each step 2 y and 1 z down
+                    y = getRelY()-Block.GAME_DIAGLENGTH*2;
+                    setHeight(getHeight()-Block.GAME_EDGELENGTH);
             } 
-        }
         
-        return coords;
+        return this;
     }
 }

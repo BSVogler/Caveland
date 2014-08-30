@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -248,9 +247,9 @@ public class MapEditorView extends GameView {
                 id = 1;
                // gras2.play();
             }   
-            Coordinate coords = view.screenToGameCoords(screenX,screenY);
-            coords.clampToMap();
-            if (coords.getZ() < Map.getBlocksZ()-1) coords.addVector(0, 0, 1);
+            Coordinate coords = view.screenToGame(screenX,screenY).getCoord().clampToMap();
+            
+            controller.getFocusentity().setPos(coords);
             Controller.getMap().setData(coords, Block.getInstance(id,0,coords));
             requestRecalc();
             return false;
@@ -260,7 +259,7 @@ public class MapEditorView extends GameView {
         public boolean mouseMoved(int screenX, int screenY) {
             //update focusentity
             controller.getFocusentity().setPos(
-                view.screenToGameCoords(screenX,screenY).addVector(0, 2, 1)
+                view.screenToGame(screenX,screenY)
             );
             return false;
         }

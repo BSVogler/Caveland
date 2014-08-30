@@ -474,6 +474,7 @@ public class Coordinate extends AbstractPosition {
 
     /**
      * Clamps x and y coordiantes if outside of map.
+     * @return 
      */
     public Coordinate clampToMap() {
         if (x>=Map.getBlocksX())

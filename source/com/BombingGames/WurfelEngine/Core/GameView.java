@@ -32,8 +32,6 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Map.Chunk;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -231,13 +229,14 @@ public class GameView implements GameManager {
         return (y / camera.getScaling() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
+    
     /**
-     * Returns the coordinates belonging to a point on the screen.
+     * Returns the position belonging to a point on the screen.
      * @param x the x position on the screen
      * @param y the y position on the screen
-     * @return the map coordinates
+     * @return the position on the map. Deepest layer.
      */
-    public Coordinate screenToGameCoords(final int x, final int y){
+    public Point screenToGame(final int x, final int y){
         //identify clicked camera
         Camera camera;
         int i = 0;
@@ -251,16 +250,12 @@ public class GameView implements GameManager {
         );
  
         //find coordinate
-        return Point.toCoord(
-            new Point(
+        return new Point(
                 screenXtoGame(x, camera),
                 screenYtoGame(y, camera),
-                Chunk.getGameHeight()-1,
+                0,
                 true
-            ),
-            true,
-            true
-        );
+            ).traceRay(true);
     }
     
 

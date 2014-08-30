@@ -39,7 +39,13 @@ package com.BombingGames.WurfelEngine.Core;
 public interface GameManager {
     
     /**
-     *Should be called when the manager becomes active
+     *Overriding method should contain what should happen when the manager becomes active.
+     */
+    public abstract void onEnter();
+    
+    /**
+     * Should be called when the manager becomes active. Calls {@link  #onEnter()}.
+     * @see #onEnter() 
      */
     public abstract void enter();
 

@@ -289,11 +289,17 @@ public class Controller implements GameManager {
         return initalized;
     }  
     
-        /**
-     * should be called when entered
-     */
+    
     @Override
-    public void enter(){}
+    public void onEnter(){
+        
+    }
+    
+    @Override
+    public final void enter() {
+        onEnter();
+    }
+    
     
     /**
      * should get called when you leave the editor

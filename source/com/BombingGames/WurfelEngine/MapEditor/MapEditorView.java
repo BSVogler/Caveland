@@ -304,12 +304,8 @@ public class MapEditorView extends GameView {
         }
     }
 
-    /**
-     *
-     */
     @Override
-    public void enter() {
-        super.enter();
+    public void onEnter() {
         EngineView.addInputProcessor(new MapEditorInputListener(this.controller, this));
     }
 }

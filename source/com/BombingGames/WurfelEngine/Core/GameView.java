@@ -415,13 +415,20 @@ public class GameView implements GameManager {
         return initalized;
     }
 
-    /**
-     *
+ 
+   /**
+     *override to specify what should happen when the mangager becomes active
      */
     @Override
-    public void enter() {
+    public void onEnter(){
+        
+    }
+    
+    @Override
+    public final void enter() {
         EngineView.addInputProcessor(stage);//the input processor must be added every time because they are only 
         Gdx.input.setCursorImage(EngineView.getCursor(), 8, 8);
+        onEnter();
     }
     
 }

@@ -261,31 +261,37 @@ public class Point extends AbstractPosition {
      * @return 
      */
     public Point traceRay(final boolean visibilityCheck){
-        setHeight(Chunk.getGameHeight()-1);
-        y +=getHeight()*2;
+        float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-getHeight();
+        setHeight(getHeight()+deltaZ);
+        y +=deltaZ/Math.sqrt(2)*2;
         
-            //trace ray down to bottom.
-            while (
+        //trace ray down to bottom.
+        while (
+            getHeight()>Chunk.getGameHeight()
+            ||
+            (
                 getHeight()>0
                 &&
                 (
-                    onLoadedMap() && getBlock().getId() == 0
+                    getBlock().getId() == 0
                     ||
                     (
                         visibilityCheck
                         &&
                         (
-                            onLoadedMap() && getBlock().isHidden()
+                            getBlock().isHidden()
                             ||
                             getHeight() >= Camera.getZRenderingLimit() * Block.GAME_EDGELENGTH
                         )
                     )
                 )
-                ) {
-                    // for each step 2 y and 1 z down
-                    y = getRelY()-Block.GAME_DIAGLENGTH*2;
-                    setHeight(getHeight()-Block.GAME_EDGELENGTH);
-            } 
+            )
+            ) {
+               // Gdx.app.debug("Point", "y: "+y+" z: "+getHeight());
+                // for each step 2 y and 1 z down
+                y -= Block.GAME_DIAGLENGTH;
+                setHeight(getHeight()-Block.GAME_EDGELENGTH);
+        } 
         
         return this;
     }

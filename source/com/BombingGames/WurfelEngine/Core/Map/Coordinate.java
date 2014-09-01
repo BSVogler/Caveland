@@ -35,7 +35,8 @@ import com.badlogic.gdx.math.Vector3;
 
 /**
  *A coordinate is a reference to a specific cell in the map. The coordinate can transfer between relative and absolute coordiantes.
- * Relative coordinates are similar to the currently loaded map array. Absolute coordinates  are indipendent of the current map but to acces them you must have the chunk thet the coordiantes are in the currently loaded chunks.
+ * Relative coordinates are similar to the currently loaded map array. Absolute coordinates are indipendent of the current map but to acces them you must have the chunk where the coordiantes are pointing to loaded.
+ * The coordinate uses a continously height value. The Z coordinate value can be calculated. 
  * @author Benedikt Vogler
  */
 public class Coordinate extends AbstractPosition {
@@ -133,7 +134,7 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *Checks if the calculated value is valid and clamps it to the map dimensions.
+     *Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
      * @return
      * @see #getZ() 
      */

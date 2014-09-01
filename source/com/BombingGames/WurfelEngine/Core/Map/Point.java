@@ -258,7 +258,7 @@ public class Point extends AbstractPosition {
         /**
      * Trace a ray down to find the deepest point.
      * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
-     * @return 
+     * @return itself
      */
     public Point traceRay(final boolean visibilityCheck){
         float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-getHeight();

@@ -249,7 +249,7 @@ public class GameView implements GameManager {
                 && y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
         );
  
-        //find coordinate
+        //find points
         return new Point(
                 screenXtoGame(x, camera),
                 screenYtoGame(y, camera),

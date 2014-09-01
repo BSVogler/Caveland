@@ -44,7 +44,7 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
      * Create an entity with an animation with an array wich has the time of every animation step in ms in it.
      * @param id The id of the object
      * @param value the starting value
-     * @param pos
+     * @param pos the position of the entity
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time.
      * @param animationsinformation  the time in ms for each animation step

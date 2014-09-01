@@ -45,9 +45,9 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
      * @param id The id of the object
      * @param value the starting value
      * @param pos the position of the entity
-     * @param  autostart True when it should automatically start.
-     * @param loop Set to true when it should loop, when false it stops after one time.
      * @param animationsinformation  the time in ms for each animation step
+     * @param autostart True when it should automatically start.
+     * @param loop Set to true when it should loop, when false it stops after one time.
      */
     public AnimatedEntity(int id, int value, AbstractPosition pos, int[] animationsinformation, boolean autostart, boolean loop){
         super(id, pos.getPoint());

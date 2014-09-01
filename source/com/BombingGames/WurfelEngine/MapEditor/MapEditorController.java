@@ -32,8 +32,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -54,7 +53,7 @@ public class MapEditorController extends Controller {
      */
     private Map mapsave;
     private boolean reverseMap;
-    private AbstractEntity focusentity;
+    private Selection focusentity;
 
    /**
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
@@ -85,7 +84,7 @@ public class MapEditorController extends Controller {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
         currentLayer = Map.getBlocksZ();
-        focusentity = new SimpleEntity(13, new Point(0, 0, Map.getBlocksZ()-1, true));
+        focusentity = new Selection(new Point(0, 0, Map.getBlocksZ()-1, true));
         //focusentity.setPositionY(Block.DIM2+1f);
         focusentity.exist();
     }
@@ -161,7 +160,7 @@ public class MapEditorController extends Controller {
      *Get the entity laying under the cursor.
      * @return
      */
-    public AbstractEntity getFocusentity() {
+    public Selection getFocusentity() {
         return focusentity;
     }
     

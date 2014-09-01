@@ -42,6 +42,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Point extends AbstractPosition {
     private float x;
     private float y;
+    private int normal;
 
     /**
      * Creates a point refering to a position in the game world.
@@ -295,4 +296,14 @@ public class Point extends AbstractPosition {
         
         return this;
     }
+
+    /**
+     * if this point lays on the edge of a block
+     * @return 0 - left, 1 - top, 2 - right
+     */
+    public int getNormal() {
+        return normal;
+    }
+    
+    
 }

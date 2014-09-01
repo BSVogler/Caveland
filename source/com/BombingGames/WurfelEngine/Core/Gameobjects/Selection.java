@@ -31,8 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 
 /**
@@ -44,25 +43,23 @@ public class Selection extends AbstractEntity {
     
     public Selection(Point point) {
         super(13, point);
-        normal = (AnimatedEntity) new AnimatedEntity(14, 0, point.cpy(), new int[]{5,5}, true, true).exist();
+        normal = (AnimatedEntity) new AnimatedEntity(14, 0, getPos(), new int[]{5,5}, true, true).exist();
     }
 
     @Override
     public void update(float delta) {
-        if (getPos().getNormal()==0)
-            normal.setPos(getPos().cpy().addVector(-40, 0, 0));
-        else if (getPos().getNormal()==1)
-            normal.setPos(getPos().cpy().addVector(0, 0, 40));
-            else if (getPos().getNormal()==2)
-                normal.setPos(getPos().cpy().addVector(40, 0, 0));
+        
+//        if (normal.getPos().getNormal()==0)
+//            normal.setPos(normal.getPos().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
+//        else if (normal.getPos().getNormal()==1)
+//            normal.setPos(normal.getPos().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
+//            else if (normal.getPos().getNormal()==2)
+//                normal.setPos(normal.getPos().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
     }
 
     @Override
-    public void render(GameView view, Camera camera) {
-        super.render(view, camera);
-        normal.render(view, camera);
+    public void setPos(AbstractPosition pos) {
+        super.setPos(pos.getCoord());
+        normal.setPos(pos.cpy().addVector(0, 0, 1));
     }
-    
-    
-    
 }

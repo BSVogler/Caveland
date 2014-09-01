@@ -62,7 +62,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     protected AbstractEntity(int id, Point point){
         super(id,0);
-        setPos(point);
+        this.point = point;
     }
     
     @Override
@@ -82,7 +82,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
 
     @Override
-    public final void setPos(AbstractPosition pos) {
+    public void setPos(AbstractPosition pos) {
         this.point = pos.getPoint();
     }
     

@@ -106,6 +106,7 @@ public class Point extends AbstractPosition {
         );
         coords.setRelX(specificCoords.getRelX());
         coords.setRelY(specificCoords.getRelY());
+        coords.setZ(coords.getZ());//remove floating
         return coords; 
     }
     

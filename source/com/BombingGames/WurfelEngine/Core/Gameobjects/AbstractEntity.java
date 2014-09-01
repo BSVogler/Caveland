@@ -28,7 +28,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -153,5 +155,14 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     public boolean shouldBeDisposed() {
         return dispose;
+    }
+    
+    /**
+     * renders using it's saved postion
+     * @param view
+     * @param camera 
+     */
+    public void render(GameView view, Camera camera){
+        super.render(view, camera, point);
     }
 }

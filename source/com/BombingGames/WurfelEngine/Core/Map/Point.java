@@ -290,8 +290,8 @@ public class Point extends AbstractPosition {
             ) {
                // Gdx.app.debug("Point", "y: "+y+" z: "+getHeight());
                 // for each step 2 y and 1 z down
-                y -= Block.GAME_DIAGLENGTH;
-                setHeight(getHeight()-Block.GAME_EDGELENGTH);
+                y -= Block.GAME_DIAGLENGTH/4f;
+                setHeight(getHeight()-Block.GAME_EDGELENGTH/4f);
         } 
         
         return this;

@@ -215,16 +215,30 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = controller.getFocusentity().getPos().getCoord().clampToMap();
+            controller.getFocusentity().setPos(
+                view.screenToGame(screenX,screenY)
+            );
+            Coordinate coords = controller.getFocusentity().getPos().getCoord();
             
             buttondown=button;
             
             if (button == 1){ //right click
                 Controller.getMap().setData(coords, Block.getInstance(0));
+                
+                coords.clampToMap();
                 requestRecalc();
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
             } else {//left click
+                if (controller.getFocusentity().getPos().getNormal()==0)
+                    coords = coords.neighbourSidetoCoords(5);
+                else if (controller.getFocusentity().getPos().getNormal()==1)
+                    coords.addVector(0, 0, 1);
+                else if (controller.getFocusentity().getPos().getNormal()==2)
+                    coords = coords.neighbourSidetoCoords(3);
+
+                coords.clampToMap();
+                
                 Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
                 requestRecalc();
                // gras2.play();

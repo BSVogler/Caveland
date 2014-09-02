@@ -32,6 +32,8 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -41,6 +43,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
 
@@ -229,14 +232,13 @@ public class GameView implements GameManager {
         return (y / camera.getScaling() + camera.getViewportPosY())*2 - camera.getScreenPosY();
     }
     
-    
     /**
-     * Returns the position belonging to a point on the screen.
-     * @param x the x position on the screen
-     * @param y the y position on the screen
-     * @return the position on the map. Deepest layer.
+     * Returns deepest layer
+     * @param x
+     * @param y
+     * @return 
      */
-    public Point screenToGame(final int x, final int y){
+     public Point screenToGameFlat(final int x, final int y){
         //identify clicked camera
         Camera camera;
         int i = 0;
@@ -255,11 +257,23 @@ public class GameView implements GameManager {
                 screenYtoGame(y, camera),
                 0,
                 true
-            ).traceRay(true);
+            );
+    }
+     
+    /**
+     * Returns the position belonging to a point on the screen. Does raytracing to find the intersection.
+     * @param x the x position on the screen
+     * @param y the y position on the screen
+     * @return the position on the map. Deepest layer.
+     */
+    public Intersection screenToGameRaytracing(final int x, final int y){
+        Point p = screenToGameFlat(x,y);
+        float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
+        p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
+
+        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000);
     }
     
-
-
     /**
      *
      * @return

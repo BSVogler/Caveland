@@ -29,37 +29,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Selection extends AbstractEntity {
-    private AnimatedEntity normal;
-    
-    public Selection(Point point) {
-        super(13, point);
-        normal = (AnimatedEntity) new AnimatedEntity(14, 0, getPos(), new int[]{5,5}, true, true).exist();
+public class Intersection {
+    private Vector3 normal;
+    private Point point;
+
+    public Intersection(Point point, Vector3 normal) {
+        this.normal = normal;
+        this.point = point;
     }
 
-    @Override
-    public void update(float delta) {
-        
-//        if (normal.getPos().getNormal()==0)
-//            normal.setPos(normal.getPos().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
-//        else if (normal.getPos().getNormal()==1)
-//            normal.setPos(normal.getPos().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
-//            else if (normal.getPos().getNormal()==2)
-//                normal.setPos(normal.getPos().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
+    Intersection() {
+        normal=null;
+        point=null;
     }
 
-    @Override
-    public void setPos(AbstractPosition pos) {
-        super.setPos(pos.getCoord().getPoint().addVector(0, 20, 0));
-        normal.setPos(pos.cpy().addVector(0, 0, 1));
+    public Vector3 getNormal() {
+        return normal;
+    }
+
+    public Point getPoint() {
+        return point;
     }
 }

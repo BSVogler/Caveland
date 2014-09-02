@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -44,6 +45,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -159,6 +161,7 @@ public class MapEditorView extends GameView {
         private final MapEditorController controller;
         private final MapEditorView view;
         private int buttondown =-1;
+        private int layerSelection;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
@@ -215,21 +218,23 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            controller.getFocusentity().setPos(
-                view.screenToGame(screenX,screenY)
-            );
             Coordinate coords = controller.getFocusentity().getPos().getCoord();
             
             buttondown=button;
             
-            if (button == 1){ //right click
-                Controller.getMap().setData(coords, Block.getInstance(0));
-                
+            if (button == 1){
+                //right click
                 coords.clampToMap();
-                requestRecalc();
+                Controller.getMap().setData(
+                    coords,
+                    Block.getInstance(0)
+                );
+                
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
-            } else {//left click
+            } else { //left click
+                Vector3 normal = view.screenToGameRaytracing(screenX, screenY).getNormal();
+                Gdx.app.debug("normal", "is: "+normal.toString());
                 if (controller.getFocusentity().getPos().getNormal()==0)
                     coords = coords.neighbourSidetoCoords(5);
                 else if (controller.getFocusentity().getPos().getNormal()==1)
@@ -237,12 +242,12 @@ public class MapEditorView extends GameView {
                 else if (controller.getFocusentity().getPos().getNormal()==2)
                     coords = coords.neighbourSidetoCoords(3);
 
-                coords.clampToMap();
-                
+                coords.clampToMapIncludingZ();
                 Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
-                requestRecalc();
                // gras2.play();
-            }    
+            }   
+            layerSelection = coords.getZ();
+            requestRecalc();
             return false;
         }
 
@@ -260,10 +265,17 @@ public class MapEditorView extends GameView {
             } else if (buttondown== 0){
                 id = 1;
                // gras2.play();
-            }   
-            Coordinate coords = view.screenToGame(screenX,screenY).getCoord().clampToMap();
+            }  
             
-            controller.getFocusentity().setPos(coords);
+            //update focusentity
+            Point p = view.screenToGameRaytracing(screenX, screenY).getPoint().getPoint();
+                
+            if (p != null){
+               controller.getFocusentity().setPos(p);
+            }
+            
+            Coordinate coords = controller.getFocusentity().getPos().getCoord();
+            coords.setZ(layerSelection);
             Controller.getMap().setData(coords, Block.getInstance(id,0,coords));
             requestRecalc();
             return false;
@@ -272,9 +284,11 @@ public class MapEditorView extends GameView {
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
             //update focusentity
-            controller.getFocusentity().setPos(
-                view.screenToGame(screenX,screenY)
-            );
+            Point p = view.screenToGameRaytracing(screenX, screenY).getPoint();
+                
+            if (p != null){
+               controller.getFocusentity().setPos(p);
+            }
             return false;
         }
 

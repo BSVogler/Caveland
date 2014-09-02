@@ -258,10 +258,12 @@ public class Point extends AbstractPosition {
     
         /**
      * Trace a ray down to find the deepest point.
+     * @param dir direction of the ray
      * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
      * @return itself
+     * @deprecated 
      */
-    public Point traceRay(final boolean visibilityCheck){
+    public Point traceRay(Vector3 dir, final boolean visibilityCheck){
         float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-getHeight();
         setHeight(getHeight()+deltaZ);
         y +=deltaZ/Math.sqrt(2)*2;
@@ -300,6 +302,7 @@ public class Point extends AbstractPosition {
     /**
      * if this point lays on the edge of a block
      * @return 0 - left, 1 - top, 2 - right
+     * @deprecated 
      */
     public int getNormal() {
         //get center of coord
@@ -315,6 +318,150 @@ public class Point extends AbstractPosition {
             return 0;
         else return 1;
     }
+    
+    /**
+     * Call the callback with (x,y,z,value,normal) of all blocks along the line
+ segment from point 'origin' in vector direction 'direction' of length
+ 'radius'. 'radius' may be infinite.
+
+ 'normal' is the normal vector of the normal of that block that was entered.
+ It should not be used after the callback returns.
+ 
+ If the callback returns a true value, the traversal will be stopped.
+     * @param direction
+     * @param radius
+     * @return
+     * @since 1.2.29
+     */
+    public Intersection raycast(Vector3 direction, float radius) {
+        // From "A Fast Voxel Traversal Algorithm for Ray Tracing"
+        // by John Amanatides and Andrew Woo, 1987
+        // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
+        // <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.3443>
+        // Extensions to the described algorithm:
+        //   • Imposed a distance limit.
+        //   • The normal passed through to reach the current cube is provided to
+        //     the callback.
+
+        // The foundation of this algorithm is a parameterized representation of
+        // the provided ray,
+        //                    origin + t * direction,
+        // except that t is not actually stored; rather, at any given point in the
+        // traversal, we keep track of the *greater* t values which we would have
+        // if we took a step sufficient to cross a cube boundary along that axis
+        // (i.e. change the integer part of the coordinate) in the variables
+        // tMaxX, tMaxY, and tMaxZ.
+
+        // Cube containing origin point.
+        float curX = (float) Math.floor(x);
+        float curY = (float) Math.floor(y);
+        float curZ = (float) Math.floor(getHeight());
+        // Break out direction vector.
+        float dx = direction.x;
+        float dy = direction.y;
+        float dz = direction.z;
+        // Direction to increment x,y,z when stepping.
+        float stepX = Math.signum(dx);
+        float stepY = Math.signum(dy);
+        float stepZ = Math.signum(dz);
+        // See description above. The initial values depend on the fractional
+        // part of the origin.
+        float tMaxX = intbound(x, dx);
+        float tMaxY = intbound(y, dy);
+        float tMaxZ = intbound(getHeight(), dz);
+        // The change in t when taking a step (always positive).
+        float tDeltaX = stepX/dx;
+        float tDeltaY = stepY/dy;
+        float tDeltaZ = stepZ/dz;
+        // Buffer for reporting faces to the callback.
+        Vector3 normal = new Vector3();
+
+        // Avoids an infinite loop.
+        if (dx == 0 && dy == 0 && dz == 0)
+          throw new Error("Raycast in zero direction!");
+
+        // Rescale from units of 1 cube-edge to units of 'direction' so we can
+        // compare with 't'.
+        radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
+
+        while (/* ray has not gone past bounds of world */
+               (stepX > 0 ? curX < Map.getGameWidth() : curX >= 0) &&
+               (stepY > 0 ? curY < Map.getGameDepth() : curY >= 0) &&
+               (stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0)) {
+
+            // Invoke the callback, unless we are not *yet* within the bounds of the
+            // world.
+            if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight()))
+                if (new Point(curX, curY, curZ, true).getBlock().getId() != 0)
+                    return new Intersection(new Point(curX, curY, curZ, true),normal);
+
+            // tMaxX stores the t-value at which we cross a cube boundary along the
+            // X axis, and similarly for Y and Z. Therefore, choosing the least tMax
+            // chooses the closest cube boundary. Only the first case of the four
+            // has been commented in detail.
+            if (tMaxX < tMaxY) {
+                if (tMaxX < tMaxZ) {
+                    if (tMaxX > radius) break;
+                    // Update which cube we are now in.
+                    curX += stepX;
+                    // Adjust tMaxX to the next X-oriented boundary crossing.
+                    tMaxX += tDeltaX;
+                    // Record the normal vector of the cube normal we entered.
+                    normal.x = -stepX;
+                    normal.y = 0;
+                    normal.z = 0;
+                } else {
+                    if (tMaxZ > radius) break;
+                    curZ += stepZ;
+                    tMaxZ += tDeltaZ;
+                    normal.x = 0;
+                    normal.y = 0;
+                    normal.z = -stepZ;
+                }
+            } else {
+                if (tMaxY < tMaxZ) {
+                    if (tMaxY > radius) break;
+                    curY += stepY;
+                    tMaxY += tDeltaY;
+                    normal.x = 0;
+                    normal.y = -stepY;
+                    normal.z = 0;
+                } else {
+                  // Identical to the second case, repeated for simplicity in
+                  // the conditionals.
+                  if (tMaxZ > radius) break;
+                  curZ += stepZ;
+                  tMaxZ += tDeltaZ;
+                  normal.x = 0;
+                  normal.y = 0;
+                  normal.z = -stepZ;
+                }
+            }
+        }
+        return new Intersection();
+    }
+
+    /**
+     * Find the smallest positive t such that s+t*ds is an integer.
+     * @param s
+     * @param ds
+     * @return 
+     * @since 1.2.29
+     */
+private int intbound(float s, float ds) {
+
+    if (ds < 0) {
+        return intbound(-s, -ds);
+    } else {
+        s = mod(s, 1);
+        // problem is now s+t*ds = 1
+        return (int) ((1-s)/ds);
+    }
+}
+
+private float mod(float value, int modulus) {
+    return (value % modulus + modulus) % modulus;
+}
     
     
 }

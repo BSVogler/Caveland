@@ -493,4 +493,24 @@ public class Coordinate extends AbstractPosition {
             y=0;
         return this;
     }
+    
+    /**
+     * 
+     * @return 
+     * @since 1.2.29
+     */
+    public Coordinate clampToMapIncludingZ() {
+        if (x>=Map.getBlocksX())
+            x=Map.getBlocksX()-1;
+        else
+            if (x<0) x=0;
+        if (y>=Map.getBlocksY())
+            y=Map.getBlocksY()-1;
+        else if (y<0)
+            y=0;
+        setZ(getZClamp());
+        return this;
+    }
+    
+    
 }

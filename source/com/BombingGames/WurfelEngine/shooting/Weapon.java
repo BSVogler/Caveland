@@ -28,12 +28,12 @@
  */
 package com.BombingGames.WurfelEngine.shooting;
 
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -71,7 +71,6 @@ public class Weapon {
     private int reloading;
     private int shooting;
     private int explode;
-    private Bullet laser;
 
     /**
      *
@@ -296,22 +295,22 @@ public class Weapon {
                     shoot();  
             }
         }
-        if (laser!=null && laser.shouldBeDisposed())
-            laser=null;
-        if (laser==null) {
-            laser = new Bullet(12, character.getPos().cpy());
-            laser.setValue(0);
-            laser.setHidden(true);
-
-            laser.setDirection(character.getAiming());
-            laser.setSpeed(7);
-            laser.setMaxDistance(3000);
-            laser.setParent(character);
-            laser.setDamage(0);
-            laser.setExplosive(0);
-            laser.setImpactSprite(20);
-            laser.exist();
-        }
+//        if (laser!=null && laser.shouldBeDisposed())
+//            laser=null;
+//        if (laser==null) {
+//            laser = new Bullet(12, character.getPos().cpy());
+//            laser.setValue(0);
+//            laser.setHidden(true);
+//
+//            laser.setDirection(character.getAiming());
+//            laser.setSpeed(7);
+//            laser.setMaxDistance(3000);
+//            laser.setParent(character);
+//            laser.setDamage(0);
+//            laser.setExplosive(0);
+//            laser.setImpactSprite(20);
+//            laser.exist();
+//        }
     }
     
     
@@ -437,11 +436,11 @@ public class Weapon {
         this.reload = reload;
     }
     
-    /**
-     *Get the distance to impact point.
-     * @return
-     */
-    public int getAimDistance(){
-        return laser.getDistance();
-    }
+//    /**
+//     *Get the distance to impact point.
+//     * @return
+//     */
+//    public int getAimDistance(){
+//        return laser.getDistance();
+//    }
 }

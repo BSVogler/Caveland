@@ -32,7 +32,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 
 /**
- *A block factory is class which constructs custom blocks when calling getInstance().
+ *A block factory instance is a class which constructs custom blocks when calling getInstance().
  * @author Benedikt Vogler
  */
 public interface BlockFactory {

@@ -41,17 +41,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  * @author Benedikt
  */
 public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
-    /**Containts the names of the objects. index=id*/
-    public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT]; 
-    
     private Point point;//the position in the map-grid
-   
-    static {
-        NAMELIST[30] = "player";
-      
-        NAMELIST[31] = "smoke test";
-        NAMELIST[32] = "character shadow";
-    }
     
     private boolean dispose;
    
@@ -139,7 +129,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     
     @Override
     public String getName() {
-        return NAMELIST[getId()];
+        return "feature not supported yet";
     }
     
    /**

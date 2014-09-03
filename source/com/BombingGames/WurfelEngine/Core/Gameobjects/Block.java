@@ -30,11 +30,11 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -57,7 +57,6 @@ public class Block extends AbstractGameObject {
     public static final byte RIGHTSIDE=2;
     
     /**Containts the names of the objects. index=id*/
-    public static final String[] NAMELIST = new String[OBJECTTYPESCOUNT];
     
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
         
@@ -71,29 +70,6 @@ public class Block extends AbstractGameObject {
     private boolean clippedRight = false;
     private boolean clippedTop = false;
     private boolean clippedLeft = false;
-    
-    static {
-        NAMELIST[0] = "air";
-        NAMELIST[1] = "grass";
-        NAMELIST[2] = "dirt";
-        NAMELIST[3] = "stone";
-        NAMELIST[4] = "asphalt";
-        NAMELIST[5] = "cobblestone";
-        NAMELIST[6] = "pavement";
-        NAMELIST[7] = "concrete";
-        NAMELIST[8] = "sand";
-        NAMELIST[9] = "water";
-        NAMELIST[20] = "red brick wall";
-        NAMELIST[30] = "fence";
-        NAMELIST[32] = "sandbags";
-        NAMELIST[33] = "crate";
-        NAMELIST[34] = "flower";
-        NAMELIST[35] = "round bush";
-        NAMELIST[50] = "strewbed";
-        NAMELIST[70] = "campfire";
-        NAMELIST[71] = "explosive barrel";
-        NAMELIST[72] = "animation test";
-    }
     
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
@@ -572,11 +548,6 @@ public class Block extends AbstractGameObject {
         return 'b';
     }
 
-    @Override
-    public String getName() {
-        return NAMELIST[getId()];
-    }
-
     /**
      *
      * @return
@@ -597,5 +568,10 @@ public class Block extends AbstractGameObject {
      */
     public static void staticDispose(){
         blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
+    }
+
+    @Override
+    public String getName() {
+        return "feature not supported yet";
     }
 }

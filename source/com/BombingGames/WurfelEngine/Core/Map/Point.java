@@ -391,9 +391,12 @@ public class Point extends AbstractPosition {
 
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
-            if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight()))
-                if (new Point(curX, curY, curZ, true).getBlockClamp().getId() != 0)
+            if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
+                Block block = new Point(curX, curY, curZ, true).getBlockSafe();
+                if (block == null) break;
+                if (block.getId() != 0)
                     return new Intersection(new Point(curX, curY, curZ, true),normal);
+            }
 
             // tMaxX stores the t-value at which we cross a cube boundary along the
             // X axis, and similarly for Y and Z. Therefore, choosing the least tMax

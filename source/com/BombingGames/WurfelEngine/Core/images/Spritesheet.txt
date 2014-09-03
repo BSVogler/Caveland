@@ -313,9 +313,9 @@ b9-0-2
 e12-0
   rotate: false
   xy: 119, 336
-  size: 7, 6
-  orig: 7, 6
-  offset: 0, 0
+  size: 8, 6
+  orig: 160, 160
+  offset: 75, 77
   index: -1
 e12-1
   rotate: false
@@ -398,8 +398,8 @@ e20-0
   rotate: false
   xy: 119, 343
   size: 6, 6
-  orig: 6, 6
-  offset: 0, 0
+  orig: 160, 160
+  offset: 77, 77
   index: -1
 e21-0
   rotate: false

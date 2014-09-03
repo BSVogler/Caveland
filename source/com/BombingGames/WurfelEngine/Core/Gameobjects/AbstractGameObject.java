@@ -143,6 +143,36 @@ public abstract class AbstractGameObject {
     public static void updateStaticUpdates(float delta){
         Sea.staticUpdate(delta);
     }
+    
+     /**
+     *
+     * @return
+     */
+    public static AtlasRegion[][][] getSprites() {
+        return sprites;
+    }
+
+    /**
+     * Reset couner for this frame
+     */
+    public static void resetDrawCalls() {
+        AbstractGameObject.drawCalls = 0;
+    }
+
+    /**
+     * Maybe not quite correct. A single block has only one drawcall even it should consist of three.
+     * @return 
+     */
+    public static int getDrawCalls() {
+        return drawCalls;
+    }
+    
+    /**
+     * When calling sprite.draw this hsould also be called for statistics.
+     */
+    protected void increaseDrawCalls(){
+        drawCalls++;
+    }
         
     /**
      * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
@@ -531,37 +561,6 @@ public abstract class AbstractGameObject {
         this.dimensionZ = dimensionZ;
     }
 
-    /**
-     *
-     * @return
-     */
-    public static AtlasRegion[][][] getSprites() {
-        return sprites;
-    }
-
-    /**
-     * Reset couner for this frame
-     */
-    public static void resetDrawCalls() {
-        AbstractGameObject.drawCalls = 0;
-    }
-
-    /**
-     * Maybe not quite correct. A single block has only one drawcall even it should consist of three.
-     * @return 
-     */
-    public static int getDrawCalls() {
-        return drawCalls;
-    }
-    
-    /**
-     * When calling sprite.draw this hsould also be called for statistics.
-     */
-    protected void increaseDrawCalls(){
-        drawCalls++;
-    }
-    
-    
     /**
      *
      */

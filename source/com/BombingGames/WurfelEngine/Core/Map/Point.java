@@ -249,7 +249,7 @@ public class Point extends AbstractPosition {
      * @return
      */
     @Override
-    public AbstractPosition addVector(float x, float y, float z) {
+    public Point addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
         setHeight(getHeight()+ z);
@@ -330,7 +330,7 @@ public class Point extends AbstractPosition {
  If the callback returns a true value, the traversal will be stopped.
      * @param direction
      * @param radius
-     * @return
+     * @return can return <i>null</i> if not hitting anything
      * @since 1.2.29
      */
     public Intersection raycast(Vector3 direction, float radius) {

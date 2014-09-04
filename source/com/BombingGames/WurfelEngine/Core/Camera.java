@@ -347,7 +347,7 @@ public class Camera{
     }
     
     /**
-     *  Using InsertionSort to sort. Needs further testing but actually a bit slower than quicksort because data ist almost presorted.
+     *  Using InsertionSort to sort. Needs further testing but actually a bit faster than quicksort because data ist almost presorted.
      * @param depthsort unsorted list
      * @return sorted list
      * @since 1.2.20

@@ -203,7 +203,7 @@ public class Point extends AbstractPosition {
     @Override
     public int getProjectedPosY() {
         return (int) (getRelY() / 2) //add the objects position inside this coordinate
-               - (int) (getHeight() / Math.sqrt(2)); //take z-axis shortening into account
+               - (int) (getHeight() / 0.7071067811865475f); //take z-axis shortening into account
     }
 
     @Override

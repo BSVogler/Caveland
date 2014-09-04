@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -333,8 +332,7 @@ public class Weapon {
             //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
             bullet = new Bullet(
                 12,
-                (Point) (character.getPos().cpy()).addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)
-            );
+                character.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
             
             if (bulletSprite < 0){//if melee hide it
                 bullet.setValue(0);

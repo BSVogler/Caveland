@@ -187,7 +187,7 @@ public abstract class AbstractGameObject {
             pos,
             (
                 Controller.getLightEngine() != null
-                ? Controller.getLightEngine().getAmbient()
+                ? Controller.getLightEngine().getColor()
                 : Color.GRAY.cpy()).mul(lightlevel
             )
         );
@@ -205,7 +205,7 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            (Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy()).mul(lightlevel),
+            (Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy()).mul(lightlevel),
             scale
         );
     }
@@ -261,7 +261,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy(),
+            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy(),
             0
         );
     }
@@ -278,7 +278,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy(),
+            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy(),
             scale
         );
     }

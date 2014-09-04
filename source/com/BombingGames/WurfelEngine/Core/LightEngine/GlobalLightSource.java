@@ -38,11 +38,18 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class GlobalLightSource {   
     /**
-     *The higher the value the faster/shorter is the day.
+     *The brightness of the light source
      */
     private float power;
     private Color tone; //the color of the light
+    private Color ambient;
+    /**
+     * current height above horizon
+     */
     private float height;
+    /**
+     * current angle
+     */
     private float azimuth;
     private final int amplitude; //the max possible angle (from horizon) the sun can has
 
@@ -51,17 +58,19 @@ public class GlobalLightSource {
      * @param azimuth The starting position.
      * @param height The starting position.
      * @param color the starting color of the light. With this parameter you controll its brightness.
+     * @param ambient
      * @param amplitudeHeight the maximum degree during a day the LightSource rises
      */
-    public GlobalLightSource(float azimuth, float height, Color color, int amplitudeHeight) {
+    public GlobalLightSource(float azimuth, float height, Color color, Color ambient, int amplitudeHeight) {
         this.azimuth = azimuth;
         this.height = height;
         this.tone = color;
+        this.ambient = ambient;
         this.amplitude = amplitudeHeight;
     }
 
     /**
-     * A light source shines can shine brighter and darker. This amplitude is called power. What it real emits says the brightness.
+     * A light source shines can shine brighter and darker. This amplitude is called power. What it real emits says the resulting light.
      * @return a value between 0 and 1
      */
     public float getPower() {
@@ -73,7 +82,7 @@ public class GlobalLightSource {
      * @return
      */
     public Color getTone() {
-        return tone;
+        return tone.cpy();
     }
 
     /**
@@ -155,9 +164,10 @@ public class GlobalLightSource {
             else if (height < amplitude/2) 
                     power = (float) (0.5f + 0.5f*Math.sin(height * Math.PI/amplitude)); //morning   & evening
         
-
-        if (power > 1) power=1;
-        if (power < 0) power=0;    
+        //clamp
+        if (power > 1f) power=1f;
+        if (power < 0f) power=0f;  
+        //power =1f;
         
         //if (azimuth>180+IGLPrototype.TWISTDIRECTION)
         //color = new Color(127 + (int) (power * 128), 255, 255);
@@ -167,9 +177,17 @@ public class GlobalLightSource {
 
     /**
      * Returns the light the GLS emits.
-     * @return 
+     * @return applied with pseudogray
      */
     public Color getLight() {
-        return getTone().cpy().mul(power);
+        return tone.cpy().mul(PseudoGrey.toColor(power));
+    }
+    
+        /**
+     * Returns the ambient the GLS emits.
+     * @return applied with pseudogray
+     */
+    public Color getAmbient() {
+        return ambient.cpy().mul(PseudoGrey.toColor(power));
     }
 }

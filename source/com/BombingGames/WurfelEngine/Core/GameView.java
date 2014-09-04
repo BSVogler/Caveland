@@ -334,18 +334,17 @@ public class GameView implements GameManager {
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
         EngineView.getFont().setColor(Color.BLACK);
-        EngineView.getFont().setScale(0.51f);
+        EngineView.getFont().setScale(1.01f);
         EngineView.getBatch().begin();
         setDrawmode(GL10.GL_MODULATE);
         EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
         EngineView.getBatch().end();
         
         EngineView.getFont().setColor(Color.WHITE);
-        EngineView.getFont().setScale(0.5f);
+        EngineView.getFont().setScale(1f);
         EngineView.getBatch().begin();
         EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
         EngineView.getBatch().end();
-        EngineView.getFont().setScale(1f);
     }
     
     /**

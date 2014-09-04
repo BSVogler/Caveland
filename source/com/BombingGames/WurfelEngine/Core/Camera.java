@@ -302,7 +302,7 @@ public class Camera{
             for (int y = top; y < bottom; y++){
                 
                 //add blocks
-                for (int z=0; z < zRenderingLimit; z++){//add vertical unti renderlimit
+                for (int z=0; z < zRenderingLimit; z++){//add vertical until renderlimit
                     
                     Coordinate coord = new Coordinate(x, y, z, true); 
                     Block blockAtCoord = coord.getBlock();

@@ -212,7 +212,6 @@ public class Point extends AbstractPosition {
             getPoint().getRelY()//Y
             
             + getHeight()/0.7071067811865475f//Z
-         //   + getDimensionZ()/Math.sqrt(2)
         );
     }
 

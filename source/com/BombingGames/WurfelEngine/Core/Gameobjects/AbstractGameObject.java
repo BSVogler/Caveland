@@ -442,13 +442,6 @@ public abstract class AbstractGameObject {
     }
 
     /**
-     * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
-     * @param pos 
-     * @return the depth in game size
-     */
-    public abstract int getDepth(AbstractPosition pos);
-    
-    /**
      * Returns the name of the object
      * @return the name of the object
      */

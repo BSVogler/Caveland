@@ -477,6 +477,18 @@ public class Coordinate extends AbstractPosition {
             :0)
         );
     }
+    
+    @Override
+    public int getDepth(){
+        return (int) (
+            getRelY() *(Block.SCREEN_DEPTH)//Y
+            + getCellOffset()[1]
+            
+            + getHeight()/0.7071067811865475f//Z
+            + getCellOffset()[2]/0.7071067811865475f
+           // + getDimensionZ()/Math.sqrt(2)
+        );
+    }
 
     /**
      * Clamps x and y coordiantes if outside of map.

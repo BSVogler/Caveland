@@ -55,16 +55,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         this.point = point;
     }
     
-    @Override
-    public int getDepth(AbstractPosition pos){
-        return (int) (
-            pos.getPoint().getRelY()//Y
-            
-            + pos.getHeight()/Math.sqrt(2)//Z
-            + getDimensionZ()/Math.sqrt(2)
-        );
-    }
-    
     //IsSelfAware implementation
     @Override
     public Point getPos() {

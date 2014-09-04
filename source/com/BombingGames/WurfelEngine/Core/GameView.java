@@ -122,7 +122,7 @@ public class GameView implements GameManager {
         
         //update cameras
         for (Camera camera : cameras) {
-            if (camera.togglesChunkSwitch()) {
+            if (WE.getCurrentConfig().isChunkSwitchAllowed()) {
                 //earth to right
                 if (camera.getVisibleLeftBorder() <= 0)
                     Controller.getMap().setCenter(3);

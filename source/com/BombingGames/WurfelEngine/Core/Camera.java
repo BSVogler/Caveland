@@ -85,7 +85,6 @@ public class Camera{
     private int[] relativeChunk;
     
     private final Block groundBlock;//the representative of the bottom layer (ground) block
-    private boolean toggleChunkSwitch = true;
     private boolean fullWindow = false;
     private static int zRenderingLimit;//must be static because raytracing is global/static
     
@@ -740,22 +739,6 @@ public class Camera{
      */
     public float getScreenWidth() {
         return screenWidth;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean togglesChunkSwitch() {
-        return toggleChunkSwitch;
-    }
-
-    /**
-     *
-     * @param toggleChunkSwitch
-     */
-    public void setToggleChunkSwitch(boolean toggleChunkSwitch) {
-        this.toggleChunkSwitch = toggleChunkSwitch;
     }
 
     /**

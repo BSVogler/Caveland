@@ -126,14 +126,6 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *The z value is absolute even when used as relative coordinate because there are no chunks in Z direction.
-     * @return game coordinate
-     */
-    public int getZ(){
-        return (int) (getHeight() / Block.GAME_EDGELENGTH);
-    }
-    
-    /**
      *Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
      * @return
      * @see #getZ() 

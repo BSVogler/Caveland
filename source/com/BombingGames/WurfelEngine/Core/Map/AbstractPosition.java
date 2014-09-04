@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.badlogic.gdx.math.Vector3;
 
@@ -75,6 +76,14 @@ public abstract class AbstractPosition {
      */
     public void setHeight(float height) {
         this.height = height;
+    }
+    
+    /**
+     *The z coordinate is absolute even when used as relative coordinate because there are no chunks in Z direction.
+     * @return game coordinate
+     */
+    public int getZ(){
+        return (int) (height / GAME_EDGELENGTH);
     }
     
    /**

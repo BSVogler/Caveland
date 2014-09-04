@@ -88,6 +88,29 @@ public class Camera{
     private boolean fullWindow = false;
     private static int zRenderingLimit;//must be static because raytracing is global/static
     
+        /**
+     * Must be static because raytracing is static
+     * @return 
+     */
+    public static int getZRenderingLimit() {
+        return zRenderingLimit;
+    }
+
+    /**
+     * 
+     * @param zRenderingLimit minimum is 1
+     */
+    public static void setZRenderingLimit(int zRenderingLimit) {
+        Camera.zRenderingLimit = zRenderingLimit;
+        
+        //clamp
+        if (zRenderingLimit >= Map.getBlocksZ())
+            Camera.zRenderingLimit=Map.getBlocksZ();
+        else if (zRenderingLimit<0)
+                Camera.zRenderingLimit=0;//min is 0
+        
+        Controller.requestRecalc();
+    }
     
     /**
      * Creates a fullscale camera pointing at the middle of the map.
@@ -775,30 +798,6 @@ public class Camera{
         }
     }
 
-    /**
-     * Must be static because raytracing is static
-     * @return 
-     */
-    public static int getZRenderingLimit() {
-        return zRenderingLimit;
-    }
-
-    /**
-     * 
-     * @param zRenderingLimit minimum is 1
-     */
-    public static void setZRenderingLimit(int zRenderingLimit) {
-        Camera.zRenderingLimit = zRenderingLimit;
-        
-        //clamp
-        if (zRenderingLimit >= Map.getBlocksZ())
-            Camera.zRenderingLimit=Map.getBlocksZ();
-        else if (zRenderingLimit<0)
-                Camera.zRenderingLimit=0;//min is 0
-        
-        Controller.requestRecalc();
-    }
-    
     /**
      * Move x and y coordinate
      * @param x

@@ -60,4 +60,10 @@ public class Intersection {
     public Point getPoint() {
         return point;
     }
+
+    public float getDistance() {
+        return distance;
+    }
+    
+    
 }

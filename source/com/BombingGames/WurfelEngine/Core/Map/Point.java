@@ -401,11 +401,12 @@ public class Point extends AbstractPosition {
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
-                Block block = new Point(curX, curY, curZ, true).getBlockSafe();
+                Point interectpoint = new Point(curX, curY, curZ, true);
+                Block block = interectpoint.getBlockSafe();
                 if (block == null) break;//check if outside of map
                 if (block.getId() != 0){
                     //Gdx.app.debug("normal", "is:"+normal);
-                    return new Intersection(new Point(curX, curY, curZ, true),normal);
+                    return new Intersection(interectpoint, normal, this.distance(interectpoint));
                 }
             }
 
@@ -475,6 +476,13 @@ private int intbound(float s, float ds) {
 
 private float mod(float value, int modulus) {
     return (value % modulus + modulus) % modulus;
+}
+
+public float distance(Point point) {
+    float dX = x-point.x;
+    float dY = y-point.x;
+    float dZ = getHeight()-point.getHeight();
+    return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
 }
     
     

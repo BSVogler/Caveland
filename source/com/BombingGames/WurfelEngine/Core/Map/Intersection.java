@@ -40,10 +40,12 @@ import com.badlogic.gdx.math.Vector3;
 public class Intersection {
     private Vector3 normal;
     private Point point;
+    private float distance;
 
-    public Intersection(Point point, Vector3 normal) {
+    public Intersection(Point point, Vector3 normal, float distance) {
         this.normal = normal;
         this.point = point;
+        this.distance = distance;
     }
 
     Intersection() {

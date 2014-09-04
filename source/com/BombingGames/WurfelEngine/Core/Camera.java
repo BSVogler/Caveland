@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -185,11 +186,11 @@ public class Camera{
     public void update() {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
-            projectionPosX = focusCoordinates.getProjectedPosX() - getViewportWidth() / 2 - AbstractGameObject.SCREEN_DEPTH2;
+            projectionPosX = focusCoordinates.getProjectedPosX() - getViewportWidth() / 2;
             projectionPosY = focusCoordinates.getProjectedPosY() - getViewportHeight() / 2;
         } else if (focusEntity != null ){
-            projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2 + AbstractGameObject.SCREEN_DEPTH2;            
-            projectionPosY = focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 ;
+            projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2;            
+            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 -focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
         } else {
             //update camera's position according to relativeChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);

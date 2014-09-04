@@ -393,15 +393,17 @@ public class Point extends AbstractPosition {
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
                 Block block = new Point(curX, curY, curZ, true).getBlockSafe();
-                if (block == null) break;
-                if (block.getId() != 0)
+                if (block == null) break;//check if outside of map
+                if (block.getId() != 0){
+                    //Gdx.app.debug("normal", "is:"+normal);
                     return new Intersection(new Point(curX, curY, curZ, true),normal);
+                }
             }
 
-            // tMaxX stores the t-value at which we cross a cube boundary along the
-            // X axis, and similarly for Y and Z. Therefore, choosing the least tMax
-            // chooses the closest cube boundary. Only the first case of the four
-            // has been commented in detail.
+            /*tMaxX stores the t-value at which we cross a cube boundary along the
+             X axis, and similarly for Y and Z. Therefore, choosing the least tMax
+            chooses the closest cube boundary. Only the first case of the four
+            has been commented in detail.*/
             if (tMaxX < tMaxY) {
                 if (tMaxX < tMaxZ) {
                     if (tMaxX > radius) break;

@@ -234,7 +234,6 @@ public class MapEditorView extends GameView {
                 //gras1.play();
             } else { //left click
                 Vector3 normal = view.screenToGameRaytracing(screenX, screenY).getNormal();
-                Gdx.app.debug("normal", "is: "+normal.toString());
                 if (controller.getFocusentity().getPos().getNormal()==0)
                     coords = coords.neighbourSidetoCoords(5);
                 else if (controller.getFocusentity().getPos().getNormal()==1)

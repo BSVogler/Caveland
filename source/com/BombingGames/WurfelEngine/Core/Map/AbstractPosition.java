@@ -93,25 +93,25 @@ public abstract class AbstractPosition {
     }
     
      /**
-     *
+     * Calculate projected position.
      * @return Returns the center of the projected (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
     public abstract int getProjectedPosX();
     
     /**
-     *
+     * Calculate projected position.
      * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
     public abstract int getProjectedPosY();
     
     /**
-     *
+     * If needed calculates it.
      * @return
      */
     public abstract Point getPoint();
     
     /**
-     *
+     * If needed calculates it.
      * @return
      */
     public abstract Coordinate getCoord();

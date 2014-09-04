@@ -40,7 +40,8 @@ public abstract class AbstractPosition {
     private final int referenceX;//top left chunk x coordinate
     private final int referenceY;//top left chunk Y coordinate
     private float height;
-
+    public static final float SQRT2 = 1.4142135623730950488016887242096980785696718753769480f;
+    public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
     /**
      * With custom reference
      * @param topleftX the chunk's X coordinate of the chunk at the top left

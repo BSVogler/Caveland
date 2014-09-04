@@ -185,7 +185,11 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            (Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()).mul(lightlevel)
+            (
+                Controller.getLightEngine() != null
+                ? Controller.getLightEngine().getAmbient()
+                : Color.GRAY.cpy()).mul(lightlevel
+            )
         );
     }
     
@@ -201,7 +205,7 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            (Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy()).mul(lightlevel),
+            (Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy()).mul(lightlevel),
             scale
         );
     }
@@ -219,7 +223,9 @@ public abstract class AbstractGameObject {
             camera,
             pos,
             color,
-            (WE.getCurrentConfig().useScalePrototype()) ? pos.getPoint().getHeight()/(Map.getGameHeight()) : 0
+            WE.getCurrentConfig().useScalePrototype()//if using scale prototype scale the objects
+                ? pos.getPoint().getHeight()/(Map.getGameHeight())
+                : 0
         );
     }
     
@@ -255,7 +261,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy(),
+            Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy(),
             0
         );
     }
@@ -272,7 +278,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightengine() != null ? Controller.getLightengine().getGlobalLight() : Color.GRAY.cpy(),
+            Controller.getLightEngine() != null ? Controller.getLightEngine().getAmbient() : Color.GRAY.cpy(),
             scale
         );
     }

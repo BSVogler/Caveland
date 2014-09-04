@@ -230,7 +230,7 @@ public class Controller implements GameManager {
      *
      * @return
      */
-    public static LightEngine getLightengine() {
+    public static LightEngine getLightEngine() {
         return lightEngine;
     }
 

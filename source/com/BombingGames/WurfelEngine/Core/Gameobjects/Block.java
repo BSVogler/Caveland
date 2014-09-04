@@ -299,7 +299,7 @@ public class Block extends AbstractGameObject {
     public void render(final GameView view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
             float scale =0;
-            if (WE.getCurrentConfig().useScalePrototype())
+            if (WE.getCurrentConfig().useScalePrototype())  //scale if the prototype is activated
                 scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
                 if (!clippedTop)
@@ -336,7 +336,7 @@ public class Block extends AbstractGameObject {
 
     @Override
     public void render(final GameView view, final int xPos, final int yPos, final Color color, float scale) {
-        render(view, xPos, yPos, color, scale, Controller.getLightengine() == null);
+        render(view, xPos, yPos, color, scale, Controller.getLightEngine() == null);
     }
     
     /**
@@ -404,8 +404,8 @@ public class Block extends AbstractGameObject {
      */
     public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final int side, float scale){
         Color color;
-        if (Controller.getLightengine() != null)
-            color = Controller.getLightengine().getColor(side);
+        if (Controller.getLightEngine() != null)
+            color = Controller.getLightEngine().getColor(side);
         else {
             color = Color.GRAY.cpy();
             
@@ -464,7 +464,7 @@ public class Block extends AbstractGameObject {
             xPos,
             yPos,
             sidenumb,
-            Controller.getLightengine() != null ? Controller.getLightengine().getColor(sidenumb) : Color.GRAY.cpy(),
+            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(sidenumb) : Color.GRAY.cpy(),
             0
         );
     }

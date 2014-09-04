@@ -42,14 +42,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 /**
  *This Light engine calculates phong shading for three normals over the day.
  * @author Benedikt Vogler
- * @version 1.1.3
+ * @version 1.1.4
  * @since  WE1.1
  */
 public class LightEngine {
     /**
      * The Version of the light engine.
      */
-    public static final String Version = "1.1.3";
+    public static final String Version = "1.1.4";
     
     private boolean renderData = false;
     //diagramm data
@@ -193,17 +193,17 @@ public class LightEngine {
      * @return a color on the (pseudo) greyscale
      */
     public Color getColor(int side){
-        if (side==0) return getGlobalLight().mul(I_0);
-            else if (side==1) return getGlobalLight().mul(I_1);
-                else return getGlobalLight().mul(I_2);
+        if (side==0) return getAmbient().mul(I_0);
+            else if (side==1) return getAmbient().mul(I_1);
+                else return getAmbient().mul(I_2);
     }
     
     /**
-     * Returns the sum of every light
+     * Returns the sum of every light source
      * @return a color with a tone
      */
-    public Color getGlobalLight(){
-        return sun.getLight().cpy().add(moon.getLight());
+    public Color getAmbient(){
+        return sun.getLight().cpy().add(moon.getLight());//sun+moon
     }
     
      /**
@@ -342,11 +342,11 @@ public class LightEngine {
             view.drawString("Long: "+sun.getAzimuth(), 600, y+=10, Color.WHITE);
             view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, y+=10, Color.WHITE);
             view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
-            view.drawString("LightColor: "+getGlobalLight().toString(), 600, y+=10, Color.WHITE);
+            view.drawString("LightColor: "+getAmbient().toString(), 600, y+=10, Color.WHITE);
             shR.begin(ShapeType.Filled);
                 shR.setColor(Color.WHITE);
                 shR.rect(600, y+=10, 70, 70);
-                shR.setColor(getGlobalLight());
+                shR.setColor(getAmbient());
                 shR.rect(610, y+=10, 50, 50);
 
                  //info bars

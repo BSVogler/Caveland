@@ -195,8 +195,8 @@ public class GameView implements GameManager {
             //scale to fit
             //hudCamera.zoom = 1/equalizationScale;
 
-            if (Controller.getLightengine() != null)
-                Controller.getLightengine().render(this);
+            if (Controller.getLightEngine() != null)
+                Controller.getLightEngine().render(this);
 
             if (controller.getMinimap() != null)
                 controller.getMinimap().render(this); 

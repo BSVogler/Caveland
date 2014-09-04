@@ -286,8 +286,8 @@ public class Console {
                 return true;
             case "le":
             case "lightengine":
-                if (Controller.getLightengine()!=null)
-                    Controller.getLightengine().renderData(!Controller.getLightengine().isRenderingData());
+                if (Controller.getLightEngine()!=null)
+                    Controller.getLightEngine().renderData(!Controller.getLightEngine().isRenderingData());
                 return true;
             case "quit":
             case "exit":

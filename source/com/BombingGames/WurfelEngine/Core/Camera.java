@@ -329,6 +329,8 @@ public class Camera{
             if (!entity.isHidden() && !entity.isClipped()
                 && 
                 entity.getPos().getProjectedPosY() < projectionPosY + getViewportHeight()
+                &&
+                entity.getPos().getZ() < zRenderingLimit
                 )
                     depthsort.add(
                         new RenderDataDTO(entity, entity.getPos())

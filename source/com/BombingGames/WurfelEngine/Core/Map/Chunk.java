@@ -124,7 +124,7 @@ public class Chunk {
                     + "/maps/"+mapname+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
             );
             
-            Gdx.app.log("Map","Trying to load Chunk: "+ coordX + ", "+ coordY + " from \"" + path.path() + "\"");
+            Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY + "\"");
             
             if (path.exists()) {
                 //FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
@@ -183,10 +183,10 @@ public class Chunk {
                 } while (lastline != null);
                 return true;
             } else {
-                Gdx.app.log("Map","...but it could not be found.");
+                Gdx.app.log("Chunk",coordX + ","+ coordY +"could not be found.");
             }
         } catch (IOException ex) {
-            Gdx.app.error("Map","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
+            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
         }
         return false;
     }

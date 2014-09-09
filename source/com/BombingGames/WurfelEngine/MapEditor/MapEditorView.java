@@ -267,7 +267,7 @@ public class MapEditorView extends GameView {
             }  
             
             //update focusentity
-            Point p = view.screenToGameRaytracing(screenX, screenY).getPoint().getPoint();
+            Point p = view.screenToGameRaytracing(screenX, screenY).getPoint();
                 
             if (p != null){
                controller.getFocusentity().setPos(p);

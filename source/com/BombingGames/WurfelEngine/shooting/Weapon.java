@@ -47,7 +47,7 @@ public class Weapon {
     private static final int scaling = 2;
     
     private final int id;
-    private String name;
+    private final String name;
 
     private AbstractCharacter character;//the character holding the weapon
     
@@ -56,19 +56,20 @@ public class Weapon {
     private Sound reload;
     
     //stats
-    private int delay;
-    private int shots;
-    private int relodingTime;
-    private int distance;
-    private int bps;//bullets per shot
-    private float spread;
-    private int damage;
-    private int bulletSprite;
-    private int impactSprite;
+    private final int delayBetweenShots;
+    private final int shots;
+    private final int relodingTime;
+    private final int distance;
+    private final int bps;//bullets per shot
+    private final float spread;
+    private final int damage;
+    private final int bulletSprite;
+    private final int impactSprite;
     
     private int shotsLoaded;
     private int reloading;
-    private int shooting;
+    /** The current time delayBetweenShots between shots*/
+    private float bulletDelay;
     private int explode;
 
     /**
@@ -98,7 +99,7 @@ public class Weapon {
         switch (id){
             case 0:
                 name="katana";
-                delay = 900;
+                delayBetweenShots = 900;
                 relodingTime =0;
                 shots = 1;
                 distance = 0;
@@ -114,7 +115,7 @@ public class Weapon {
                 
             case 1:
                 name="pistol";
-                delay = 400;
+                delayBetweenShots = 400;
                 relodingTime =1000;
                 shots = 7;
                 distance = 10;
@@ -131,7 +132,7 @@ public class Weapon {
                 
             case 2:
                 name="fist";
-                delay = 500;
+                delayBetweenShots = 500;
                 relodingTime =0;
                 shots = 1;
                 distance = 0;
@@ -147,7 +148,7 @@ public class Weapon {
                 
             case 3:
                 name="shotgun";
-                delay = 600;
+                delayBetweenShots = 600;
                 relodingTime =1300;
                 shots = 2;
                 distance = 5;
@@ -163,7 +164,7 @@ public class Weapon {
 
             case 4:
                 name="machine gun";
-                delay = 20;
+                delayBetweenShots = 20;
                 relodingTime =1300;
                 shots = 1000;
                 distance = 10;
@@ -179,7 +180,7 @@ public class Weapon {
                                  
             case 5:
                 name="poop";
-                delay = 900;
+                delayBetweenShots = 900;
                 relodingTime =500;
                 shots = 1;
                 distance = 3;
@@ -196,7 +197,7 @@ public class Weapon {
                 
             case 6:
                 name="rocket launcher";
-                delay = 0;
+                delayBetweenShots = 0;
                 relodingTime =1500;
                 shots = 1;
                 distance = 5;
@@ -213,7 +214,7 @@ public class Weapon {
                 
             case 7:
                 name="fire launcher";
-                delay = 40;
+                delayBetweenShots = 40;
                 relodingTime =1700;
                 shots = 50;
                 distance = 3;
@@ -225,10 +226,18 @@ public class Weapon {
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/fire.wav");
                 //reload = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/reload.wav"); 
-            break;     
-                
-
-           
+            break; 
+                default:
+                    name="pistol";
+                    delayBetweenShots = 400;
+                    relodingTime =1000;
+                    shots = 7;
+                    distance = 10;
+                    bps = 1;
+                    spread = 0.1f;
+                    damage = 800;
+                    bulletSprite = 0;
+                    impactSprite=19;
         }
         shotsLoaded = shots; //fully loaded
     }
@@ -274,25 +283,19 @@ public class Weapon {
     
     /**
      * Manages the weapon
-     * @param trigger Is the trigger down?
-     * @param delta
+     * @param delta t in ms
      */
-    public void update(boolean trigger, float delta){
-        if (shooting > 0){
-            shooting-=delta;
+    public void update(float delta){
+        if (bulletDelay > 0)
+            bulletDelay-=delta;
+        if (reloading >= 0) {
+            reloading-=delta;
+            if (reloading<=0)//finished reloading
+                shotsLoaded = shots;
         } else {
-            if (reloading >= 0) {
-                reloading-=delta;
-                if (reloading<=0)//finished reloading
-                    shotsLoaded = shots;
-            } else {
-                //if not shootring or loading
-                if (shotsLoaded <= 0)//autoreload
-                    reload();
-
-                if (trigger && shotsLoaded>0)
-                    shoot();  
-            }
+            //if not shooting or loading
+            if (bulletDelay <= 0 && shotsLoaded <= 0)//autoreload
+                reload();
         }
 //        if (laser!=null && laser.shouldBeDisposed())
 //            laser=null;
@@ -313,47 +316,48 @@ public class Weapon {
     }
     
     
-    private void shoot(){
-        if (fire != null) fire.play();
-                
-        shooting = delay;
-        shotsLoaded--;
-        
-        //muzzle flash
-        if (bulletSprite <0)
-            new AnimatedEntity(60, 0, character.getPos(), new int[]{300}, true, false).exist();
-        else
-            new AnimatedEntity(61, 0, character.getPos(), new int[]{300}, true, false).exist();
-        
-        //shot bullets
-        for (int i = 0; i < bps; i++) {
-            Bullet bullet;
-            
-            //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
-            bullet = new Bullet(
-                12,
-                character.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
-            
-            if (bulletSprite < 0){//if melee hide it
-                bullet.setValue(0);
-                bullet.setHidden(true);
-            } else{
-                bullet.setValue(bulletSprite);
-            }
-            
-            Vector3 aiming = character.getAiming();
-            aiming.x += Math.random() * (spread*2) -spread;
-            aiming.y += Math.random() * (spread*2) -spread;
-            bullet.setDirection(aiming);
-            bullet.setSpeed(2f);
-            bullet.setMaxDistance(distance*100+100);
-            bullet.setParent(character);
-            bullet.setDamage(damage);
-            bullet.setExplosive(explode);
-            bullet.setImpactSprite(impactSprite);
-            bullet.exist(); 
-        }
+    public void shoot(){
+        if (shotsLoaded>0 && bulletDelay <= 0 && reloading <= 0){
+            if (fire != null) fire.play();
 
+            bulletDelay = delayBetweenShots;
+            shotsLoaded--;
+
+            //muzzle flash
+            if (bulletSprite <0)
+                new AnimatedEntity(60, 0, character.getPos(), new int[]{300}, true, false).exist();
+            else
+                new AnimatedEntity(61, 0, character.getPos(), new int[]{300}, true, false).exist();
+
+            //shot bullets
+            for (int i = 0; i < bps; i++) {
+                Bullet bullet;
+
+                //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
+                bullet = new Bullet(
+                    12,
+                    character.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+
+                if (bulletSprite < 0){//if melee hide it
+                    bullet.setValue(0);
+                    bullet.setHidden(true);
+                } else{
+                    bullet.setValue(bulletSprite);
+                }
+
+                Vector3 aiming = character.getAiming();
+                aiming.x += Math.random() * (spread*2) -spread;
+                aiming.y += Math.random() * (spread*2) -spread;
+                bullet.setDirection(aiming);
+                bullet.setSpeed(2f);
+                bullet.setMaxDistance(distance*100+100);
+                bullet.setParent(character);
+                bullet.setDamage(damage);
+                bullet.setExplosive(explode);
+                bullet.setImpactSprite(impactSprite);
+                bullet.exist(); 
+            }
+        }
     }
     
     /**
@@ -386,28 +390,6 @@ public class Weapon {
      */
     public int getReloadingTime() {
         return reloading;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getShootingTime() {
-        return shooting;
-    }
-
-    /**
-     *
-     */
-    public void trigger() {
-         if (shooting <= 0 && reloading <= 0){
-            //if not shootring or loading
-            if (shotsLoaded <= 0)//autoreload
-                reload();
-
-            if (shotsLoaded>0)
-                shoot();  
-        }
     }
 
     /**

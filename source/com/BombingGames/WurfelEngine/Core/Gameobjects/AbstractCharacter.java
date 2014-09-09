@@ -130,8 +130,8 @@ public abstract class AbstractCharacter extends AbstractEntity {
    }
     
    /**
-     * Updates the charackter.
-     * @param delta time since last update
+     * Updates the character.
+     * @param delta time since last update in ms
      */
     @Override
     public void update(float delta) {

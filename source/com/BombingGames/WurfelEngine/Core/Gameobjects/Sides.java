@@ -31,6 +31,8 @@
 
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.badlogic.gdx.math.Vector3;
+
 /**
  *
  * @author Benedikt Vogler
@@ -46,6 +48,14 @@ public enum Sides {
 
     public int getCode() {
         return code;
+    }
+    
+    public static Sides normalToSide(Vector3 normal){
+        if (normal.z>0)
+            return TOP;
+        else if (normal.x<0)
+            return LEFT;
+        else return RIGHT;
     }
     
 }

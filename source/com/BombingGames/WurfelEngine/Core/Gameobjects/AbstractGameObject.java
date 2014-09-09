@@ -236,7 +236,7 @@ public abstract class AbstractGameObject {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param color  custom blending color
-     * @param scale
+     * @param scale relative value
      */
     public void render(GameView view, Camera camera, AbstractPosition pos, Color color, float scale) {
         //draw the object except not clipped ones
@@ -272,7 +272,7 @@ public abstract class AbstractGameObject {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param scale
+     * @param scale relative value
      */
     public void render(GameView view, int xPos, int yPos, float scale) {
         render(
@@ -368,7 +368,7 @@ public abstract class AbstractGameObject {
     /**
      * Load the spritesheet from memory.
      */
-    public static void loadSheet()  {
+    public static void loadSheet() {
         //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {

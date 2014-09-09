@@ -406,7 +406,7 @@ public class Point extends AbstractPosition {
                 if (block == null) break;//check if outside of map
                 if (block.getId() != 0){
                     //Gdx.app.debug("normal", "is:"+normal);
-                    return new Intersection(interectpoint, normal, this.distance(interectpoint));
+                    return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
                 }
             }
 
@@ -478,7 +478,12 @@ private float mod(float value, int modulus) {
     return (value % modulus + modulus) % modulus;
 }
 
-public float distance(Point point) {
+/**
+ * 
+ * @param point
+ * @return the distance from this point to the other point
+ */
+public float distanceTo(Point point) {
     float dX = x-point.x;
     float dY = y-point.x;
     float dZ = getHeight()-point.getHeight();

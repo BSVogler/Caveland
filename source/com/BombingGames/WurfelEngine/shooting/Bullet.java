@@ -79,6 +79,7 @@ public class Bullet extends AbstractEntity {
         Vector3 dMov = dir.cpy().scl(delta*speed);
         //dMov.z /= 1.414213562f;//mixed screen and game space together?
         getPos().addVector(dMov);
+        setRotation(getRotation()+delta);
         
         //only exist specific distance then destroy self
         distance += dMov.len();

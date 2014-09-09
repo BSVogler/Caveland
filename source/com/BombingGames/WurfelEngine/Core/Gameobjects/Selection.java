@@ -63,4 +63,17 @@ public class Selection extends AbstractEntity {
         setHidden(getPos().getHeight()<0);
         normal.setPos(pos.cpy().addVector(0, 1, 0));
     }
+    
+    /**
+     *
+     * @param side
+     */
+    public void setNormal(Sides side){
+        if (side == Sides.LEFT)
+            normal.setRotation(-120);
+        else if (side == Sides.TOP)
+            normal.setRotation(0);
+        if (side == Sides.RIGHT)
+            normal.setRotation(120);
+    }
 }

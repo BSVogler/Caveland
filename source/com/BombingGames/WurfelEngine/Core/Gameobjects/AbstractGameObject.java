@@ -463,6 +463,11 @@ public abstract class AbstractGameObject {
     public int getValue() {
         return value;
     }
+
+    public float getRotation() {
+        return rotation;
+    }
+    
     
     /**
      * Returns true, when set as hidden. Hidden objects are not rendered even when they are clipped ("clipped" by the meaning of the raytracing).
@@ -547,7 +552,10 @@ public abstract class AbstractGameObject {
         this.hidden = hidden;
     }
 
-
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+    
     /**
      *
      */

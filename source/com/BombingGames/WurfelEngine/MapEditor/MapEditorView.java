@@ -35,6 +35,7 @@ import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -234,11 +235,11 @@ public class MapEditorView extends GameView {
                 //gras1.play();
             } else { //left click
                 Vector3 normal = view.screenToGameRaytracing(screenX, screenY).getNormal();
-                if (controller.getFocusentity().getPos().getNormal()==Block.LEFTSIDE)
+                if (controller.getFocusentity().getPos().getNormal()==Sides.LEFT)
                     coords = coords.neighbourSidetoCoords(5);
-                else if (controller.getFocusentity().getPos().getNormal()==Block.TOPSIDE)
+                else if (controller.getFocusentity().getPos().getNormal()==Sides.TOP)
                     coords.addVector(0, 0, 1);
-                else if (controller.getFocusentity().getPos().getNormal()==Block.RIGHTSIDE)
+                else if (controller.getFocusentity().getPos().getNormal()==Sides.RIGHT)
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();

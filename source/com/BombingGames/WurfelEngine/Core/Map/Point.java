@@ -32,6 +32,8 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -313,7 +315,7 @@ public class Point extends AbstractPosition {
      * @return 0 - left, 1 - top, 2 - right
      * @deprecated 
      */
-    public int getNormal() {
+    public Sides getNormal() {
         //get center of coord
         Point point = getCoord().getPoint();
         //vector from center to point
@@ -322,10 +324,10 @@ public class Point extends AbstractPosition {
         Vector3 centerEdge = new Vector3(0,Block.GAME_DIAGLENGTH2,Block.GAME_EDGELENGTH/2);
         centerEdge.nor();
         if (vec.z>centerEdge.z)
-            return Block.TOPSIDE;
+            return Sides.TOP;
         if (vec.x<0)
-            return Block.LEFTSIDE;
-        else return Block.TOPSIDE;
+            return Sides.LEFT;
+        else return Sides.RIGHT;
     }
     
     /**

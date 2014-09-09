@@ -49,12 +49,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt Vogler
  */
 public class Block extends AbstractGameObject {
-    /**The id of the left side of a block.*/
-    public static final byte LEFTSIDE=0;
-    /**The id of the top side of a block.*/
-    public static final byte TOPSIDE=1;
-    /**The id of the right side of a block.*/
-    public static final byte RIGHTSIDE=2;
     
     /**Containts the names of the objects. index=id*/
     
@@ -194,29 +188,29 @@ public class Block extends AbstractGameObject {
      *  Returns a sprite sprite of a specific side of the block
      * @param id the id of the block
      * @param value the value of teh block
-     * @param side Which side? (0 - 2)
+     * @param side Which side?
      * @return an sprite of the side
      */
-    public static AtlasRegion getBlockSprite(final int id, final int value, final int side) {
+    public static AtlasRegion getBlockSprite(final int id, final int value, final Sides side) {
         if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
         
-        if (blocksprites[id][value][side] == null){ //load if not already loaded
-            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side);
+        if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
+            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side.getCode());
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
                 
-                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side +" not found");
+                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
                 
-                sprite = getSpritesheet().findRegion("b0-0-"+side);
+                sprite = getSpritesheet().findRegion("b0-0-"+side.getCode());
                 
                 if (sprite == null) {//load generic error sprite if category sprite failed
                     sprite = getSpritesheet().findRegion("error");
                     if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
                 }
             }
-            blocksprites[id][value][side] = sprite;
+            blocksprites[id][value][side.getCode()] = sprite;
             return sprite;
         } else {
-            return blocksprites[id][value][side];
+            return blocksprites[id][value][side.getCode()];
         }
     }
     
@@ -234,7 +228,7 @@ public class Block extends AbstractGameObject {
             int colorInt;
             
             if (Block.getInstance(id,value, new Coordinate(0,0,0,false)).hasSides){    
-                AtlasRegion texture = getBlockSprite(id, value, 1);
+                AtlasRegion texture = getBlockSprite(id, value, Sides.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
                     texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()-SCREEN_DEPTH4);
@@ -284,14 +278,14 @@ public class Block extends AbstractGameObject {
      * @param side 0 = left, 1 = top, 2 = right
      * @param clipping true when it should be clipped.
      */
-    public void setSideClipping(final int side, final boolean clipping) {
+    public void setSideClipping(final Sides side, final boolean clipping) {
         if (!clipping) this.setClipped(false);
         
-        if (side==0)
+        if (side==Sides.LEFT)
             clippedLeft = clipping;
-        else if (side==1)
+        else if (side==Sides.TOP)
             clippedTop = clipping;
-                else if (side==2)
+                else if (side==Sides.RIGHT)
                     clippedRight = clipping;
     }
     
@@ -303,11 +297,11 @@ public class Block extends AbstractGameObject {
                 scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, camera, coords, Block.TOPSIDE, scale);
+                    renderSide(view, camera, coords, Sides.TOP, scale);
                 if (!clippedLeft)
-                    renderSide(view, camera, coords, Block.LEFTSIDE, scale);
+                    renderSide(view, camera, coords, Sides.LEFT, scale);
                 if (!clippedRight)
-                    renderSide(view, camera, coords, Block.RIGHTSIDE, scale);
+                    renderSide(view, camera, coords, Sides.RIGHT, scale);
             } else
                 super.render(view, camera, coords, scale);
         }
@@ -324,11 +318,11 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, xPos, yPos, Block.TOPSIDE);
+                    renderSide(view, xPos, yPos, Sides.TOP);
                 if (!clippedLeft)
-                    renderSide(view, xPos, yPos+SCREEN_WIDTH4, Block.LEFTSIDE);
+                    renderSide(view, xPos, yPos+SCREEN_WIDTH4, Sides.LEFT);
                 if (!clippedRight)
-                    renderSide(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Block.RIGHTSIDE);
+                    renderSide(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Sides.RIGHT);
                 } else
                     super.render(view, xPos, yPos);
         }
@@ -356,7 +350,7 @@ public class Block extends AbstractGameObject {
                         view,
                         xPos-SCREEN_WIDTH2,
                         (int) (yPos-(SCREEN_HEIGHT2+SCREEN_DEPTH2)*(1+scale)),
-                        Block.TOPSIDE,
+                        Sides.TOP,
                         color,
                         scale
                     );
@@ -370,7 +364,7 @@ public class Block extends AbstractGameObject {
                         view,
                         xPos-SCREEN_WIDTH2,
                         (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
-                        Block.LEFTSIDE,
+                        Sides.LEFT,
                         color,
                         scale
                     );
@@ -385,7 +379,7 @@ public class Block extends AbstractGameObject {
                         view,
                         xPos,
                         (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
-                        Block.RIGHTSIDE,
+                        Sides.RIGHT,
                         color,
                         scale
                     );
@@ -402,7 +396,7 @@ public class Block extends AbstractGameObject {
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param scale
      */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final int side, float scale){
+    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
         Color color;
         if (Controller.getLightEngine() != null)
             color = Controller.getLightEngine().getColor(side);
@@ -410,10 +404,10 @@ public class Block extends AbstractGameObject {
             color = Color.GRAY.cpy();
             
             if (WE.getCurrentConfig().shouldAutoShade()){
-                if (side==0){
+                if (side==Sides.LEFT){
                     color = color.add(Color.DARK_GRAY.cpy());
                     color.clamp();
-                }else if (side==2){
+                }else if (side==Sides.RIGHT){
                     color = color.sub(Color.DARK_GRAY.cpy());
                     color.clamp();
                 }
@@ -441,11 +435,11 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale
      */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final int side, final Color color, final float scale){
+    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
         renderSide(
             view,
-            coords.getProjectedPosX() - SCREEN_WIDTH2 + ( side == 2 ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() - SCREEN_HEIGHT - ( side == 1 ? (int) (SCREEN_DEPTH2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getProjectedPosX() - SCREEN_WIDTH2 + ( side == Sides.RIGHT ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getProjectedPosY() - SCREEN_HEIGHT - ( side == Sides.TOP ? (int) (SCREEN_DEPTH2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale
@@ -459,7 +453,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final int sidenumb){
+    public void renderSide(final GameView view, final int xPos, final int yPos, final Sides sidenumb){
         renderSide(view,
             xPos,
             yPos,
@@ -473,12 +467,12 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
      * @param scale if you want to scale it up use scale > 0 else negative values scales down
      */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final int sidenumb, Color color, final float scale){
-        Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), sidenumb));
+    public void renderSide(final GameView view, final int xPos, final int yPos, final Sides side, Color color, final float scale){
+        Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), side));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {
             sprite.setOrigin(0, 0);
@@ -491,22 +485,22 @@ public class Block extends AbstractGameObject {
         
         sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right
         
-        //color.mul(getLightlevel()*2-((sidenumb == 2)?0.01f:0));
+        //color.mul(getLightlevel()*2-((side == 2)?0.01f:0));
         //color.a = 1; 
         sprite.getVertices()[SpriteBatch.C1] = color.toFloatBits();//top left
 
         
-//        if (sidenumb == 2)
+//        if (side == 2)
 //            color.mul(0.93f);
-//        else if (sidenumb == 0)
+//        else if (side == 0)
 //            color.mul(0.92f);
 //        color.a = 1; 
 
         sprite.getVertices()[SpriteBatch.C2] = color.toFloatBits();//bottom left
         
-//        if (sidenumb == 2)
+//        if (side == 2)
 //            color.mul(0.97f);
-//        else if (sidenumb == 0) color.mul(1);
+//        else if (side == 0) color.mul(1);
 //        color.a = 1; 
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  

@@ -33,6 +33,8 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -141,8 +143,8 @@ public class Camera{
         projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
         
         groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//set the ground level groundBlock
-        groundBlock.setSideClipping(0, true);
-        groundBlock.setSideClipping(2, true);
+        groundBlock.setSideClipping(Sides.LEFT, true);
+        groundBlock.setSideClipping(Sides.RIGHT, true);
         
         zRenderingLimit = Map.getBlocksZ();
     }
@@ -412,9 +414,9 @@ public class Camera{
             //send the rays through top of the map
             for (int x=0; x < Map.getBlocksX(); x++)
                 for (int y=0; y < Map.getBlocksY() + zRenderingLimit*2; y++){
-                    traceRay(x,y, 0);
-                    traceRay(x,y, 1);
-                    traceRay(x,y, 2);
+                    traceRay(x,y, Sides.LEFT);
+                    traceRay(x,y, Sides.TOP);
+                    traceRay(x,y, Sides.RIGHT);
                 }     
         } else {
             for (boolean[] x : bottomLayerVisibility) {
@@ -432,7 +434,7 @@ public class Camera{
      * @param y The starting y-coordinate.
      * @param side The side the ray should check
      */
-    private static void traceRay(int x, int y, int side){
+    private static void traceRay(int x, int y, Sides side){
         int z = zRenderingLimit-1;//start always from top
         
         boolean left = true;
@@ -456,7 +458,7 @@ public class Camera{
             y -= 2;
             z--;
 
-            if (side == 0){
+            if (side == Sides.LEFT){
                 //direct neighbour groundBlock on left hiding the complete left side
                 if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && x > 0 && y < Map.getBlocksY()-1
@@ -489,7 +491,7 @@ public class Camera{
                     )
                     right = false;
 
-            } else if (side == 1) {//check top side
+            } else if (side == Sides.TOP) {//check top side
                 if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && z+1 < zRenderingLimit
                     && new Coordinate(x, y, z+1, true).hidingPastBlock())
@@ -521,7 +523,7 @@ public class Camera{
                     )
                     right = false;
 
-            } else if (side==2){
+            } else if (side==Sides.RIGHT){
                 //block on right hiding the whole right side
                 if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
                     && x+1 < Map.getBlocksX() && y+1 < Map.getBlocksY()
@@ -597,13 +599,13 @@ public class Camera{
         
         //trace rays
         if (neighbours){
-            traceRay(coords[0] - (coords[1]%2 == 0 ? 1:0), coords[1]-1, Block.RIGHTSIDE);
-            traceRay(coords[0] + (coords[1]%2 == 0 ? 0:1), coords[1]-1, Block.LEFTSIDE);
-            traceRay(coords[0], coords[1]+2, Block.TOPSIDE);
+            traceRay(coords[0] - (coords[1]%2 == 0 ? 1:0), coords[1]-1, Sides.RIGHT);
+            traceRay(coords[0] + (coords[1]%2 == 0 ? 0:1), coords[1]-1, Sides.LEFT);
+            traceRay(coords[0], coords[1]+2, Sides.TOP);
         }
-        traceRay(coords[0], coords[1], Block.LEFTSIDE);
-        traceRay(coords[0], coords[1], Block.TOPSIDE);             
-        traceRay(coords[0], coords[1], Block.RIGHTSIDE);
+        traceRay(coords[0], coords[1], Sides.LEFT);
+        traceRay(coords[0], coords[1], Sides.TOP);             
+        traceRay(coords[0], coords[1], Sides.RIGHT);
     }
     /**
      * Set the zoom factor and regenerates the sprites.

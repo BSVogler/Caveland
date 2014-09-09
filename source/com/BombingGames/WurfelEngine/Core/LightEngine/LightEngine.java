@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.badlogic.gdx.Gdx;
@@ -206,10 +207,10 @@ public class LightEngine {
      * @param normal 0 left 1 top or 2 right
      * @return pseudoGrey color
      */
-    public Color getColor(int normal){
-          if (normal==0)
+    public Color getColor(Sides normal){
+          if (normal==Sides.LEFT)
             return getAmbient().add(getDiff(normal));
-            else if (normal==1)
+            else if (normal==Sides.TOP)
                 return getAmbient().add(getDiff(normal)).add(getSpec(normal));
                 else
                     return getAmbient().add(getDiff(normal));
@@ -220,10 +221,10 @@ public class LightEngine {
      * @param normal 0 left 1 top or 2 right
      * @return pseudoGrey color
      */
-     private Color getDiff(int normal){
-        if (normal==0)
+     private Color getDiff(Sides normal){
+        if (normal==Sides.LEFT)
             return getEmittingLights().mul(I_diff0);
-        else if (normal==1)
+        else if (normal==Sides.TOP)
             return getEmittingLights().mul(I_diff1);//only top side can have specular light
         else
             return getEmittingLights().mul(I_diff2);
@@ -234,10 +235,10 @@ public class LightEngine {
      * @param normal 0 left 1 top or 2 right
      * @return pseudoGrey color
      */
-     private Color getSpec(int normal){
-        if (normal==0)
+     private Color getSpec(Sides normal){
+        if (normal==Sides.LEFT)
             return Color.BLACK.cpy();
-        else if (normal==1)
+        else if (normal==Sides.TOP)
             return getEmittingLights().mul(I_spec1);
         else
             return Color.BLACK.cpy();
@@ -408,11 +409,11 @@ public class LightEngine {
                  //draw result
                 shR.setColor(Color.WHITE);
                 shR.rect(770, y-10, 70, 70);
-                shR.setColor(getColor(0));
+                shR.setColor(getColor(Sides.LEFT));
                 shR.rect(780, y, 25, 30);
-                shR.setColor(getColor(1));
+                shR.setColor(getColor(Sides.TOP));
                 shR.rect(780, y+25, 50, 25);
-                shR.setColor(getColor(2));
+                shR.setColor(getColor(Sides.RIGHT));
                 shR.rect(805, y, 25, 30);
                 
                 shR.setColor(getColor());

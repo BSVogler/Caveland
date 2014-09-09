@@ -54,7 +54,7 @@ public class BasicOptionsScreen implements Screen {
      */
     public BasicOptionsScreen() {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());
-        Gdx.input.setInputProcessor(stage);
+        EngineView.addInputProcessor(stage);
                 
         actor = new TestActor(new ShapeRenderer());
         actor.setBounds(200, 200, 400, 400);

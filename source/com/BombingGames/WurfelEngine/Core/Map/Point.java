@@ -33,7 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -403,12 +403,17 @@ public class Point extends AbstractPosition {
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
-                Point interectpoint = new Point(curX, curY, curZ, true);
-                Block block = interectpoint.getBlockSafe();
+                Point isectP = new Point(curX, curY, curZ, true);
+                Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
                 if (block.getId() != 0){
-                    //Gdx.app.debug("normal", "is:"+normal);
-                    return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
+                    
+                    if (isectP.getRelX() % Block.GAME_DIAGLENGTH < Block.GAME_DIAGLENGTH2) {
+                        normal.y = 0;
+                        normal.x = -1;
+                    }
+                    Gdx.app.debug("normal", "is:"+normal);
+                    return new Intersection(isectP, normal, this.distanceTo(isectP));
                 }
             }
 
@@ -455,6 +460,7 @@ public class Point extends AbstractPosition {
                 }
             }
         }
+        //ground hit, must be 0,0,1
         if (curZ <= 0){
             Point interectpoint = new Point(curX, curY, curZ, true);
             return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));

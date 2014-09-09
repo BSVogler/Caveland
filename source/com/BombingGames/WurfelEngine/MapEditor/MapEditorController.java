@@ -53,7 +53,7 @@ public class MapEditorController extends Controller {
      */
     private Map mapsave;
     private boolean reverseMap;
-    private Selection focusentity;
+    private Selection SelectionEntity;
 
    /**
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
@@ -84,9 +84,9 @@ public class MapEditorController extends Controller {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
         currentLayer = Map.getBlocksZ();
-        focusentity = new Selection(new Point(0, 0, Map.getBlocksZ()-1, true));
+        SelectionEntity = new Selection(new Point(0, 0, Map.getBlocksZ()-1, true));
         //focusentity.setPositionY(Block.DIM2+1f);
-        focusentity.exist();
+        SelectionEntity.exist();
     }
     
 
@@ -160,8 +160,8 @@ public class MapEditorController extends Controller {
      *Get the entity laying under the cursor.
      * @return
      */
-    public Selection getFocusentity() {
-        return focusentity;
+    public Selection getSelectionEntity() {
+        return SelectionEntity;
     }
     
     

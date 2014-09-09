@@ -110,7 +110,6 @@ public abstract class AbstractGameObject {
     private byte value;
     private boolean obstacle, transparent, clipped, hidden; 
     private float lightlevel = 0.5f;
-    private int dimensionZ = GAME_EDGELENGTH;  
     private float rotation;
 
     
@@ -465,14 +464,6 @@ public abstract class AbstractGameObject {
         return value;
     }
     
-        /**
-     * 
-     * @return
-     */
-    public int getDimensionZ() {
-        return dimensionZ;
-    }
-
     /**
      * Returns true, when set as hidden. Hidden objects are not rendered even when they are clipped ("clipped" by the meaning of the raytracing).
      * @return if the object is invisible
@@ -556,13 +547,6 @@ public abstract class AbstractGameObject {
         this.hidden = hidden;
     }
 
-    /**
-     * Set the height of the object.
-     * @param dimensionZ
-     */
-    public void setDimensionZ(int dimensionZ) {
-        this.dimensionZ = dimensionZ;
-    }
 
     /**
      *

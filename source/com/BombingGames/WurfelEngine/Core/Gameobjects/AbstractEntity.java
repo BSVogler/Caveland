@@ -42,7 +42,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
     private Point point;//the position in the map-grid
-    
+    private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
    
     /**
@@ -120,6 +120,22 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     @Override
     public String getName() {
         return "feature not supported yet";
+    }
+    
+     /**
+     * Set the height of the object.
+     * @param dimensionZ
+     */
+    public void setDimensionZ(int dimensionZ) {
+        this.dimensionZ = dimensionZ;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int getDimensionZ() {
+        return dimensionZ;
     }
     
    /**

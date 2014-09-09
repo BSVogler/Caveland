@@ -106,6 +106,7 @@ public class PlayerWithWeapon extends AbstractCharacter{
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (weapon != null) weapon.update(delta);
         Point raycast = getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(getAiming(), 5000).getPoint();
         if (raycast!=null)
             laserdot.setPos(raycast);

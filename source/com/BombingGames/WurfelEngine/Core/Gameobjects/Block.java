@@ -52,12 +52,12 @@ public class Block extends AbstractGameObject {
     
     /**Containts the names of the objects. index=id*/
     
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
         
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] colorlist = new Color[OBJECTTYPESCOUNT][VALUESCOUNT];
+    private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
     
     private boolean liquid;
     private boolean hasSides = true;
@@ -339,13 +339,13 @@ public class Block extends AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      * @param color when the block has sides its sides gets shaded using this color.
-     * @param staticShade i don't know what this does. This only makes it a bit brighter???
+     * @param staticShade makes one side brighter, opposite side darker
      * @param scale the scale factor of the image
      */
     public void render(final GameView view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
-                if (!clippedTop)
+                if (!clippedTop) {
                     renderSide(
                         view,
                         xPos-SCREEN_WIDTH2,
@@ -354,6 +354,7 @@ public class Block extends AbstractGameObject {
                         color,
                         scale
                     );
+                }
                 
                 if (!clippedLeft) {
                     if (staticShade) {
@@ -384,7 +385,8 @@ public class Block extends AbstractGameObject {
                         scale
                     );
                 }
-            } else super.render(view, xPos, yPos-SCREEN_HEIGHT2, color, scale);
+            } else
+                super.render(view, xPos, yPos-SCREEN_HEIGHT2, color, scale);
         }
     }
        
@@ -550,7 +552,7 @@ public class Block extends AbstractGameObject {
      *
      */
     public static void staticDispose(){
-        blocksprites = new AtlasRegion[OBJECTTYPESCOUNT][VALUESCOUNT][3];//{id}{value}{side}
+        blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
     }
 
     @Override

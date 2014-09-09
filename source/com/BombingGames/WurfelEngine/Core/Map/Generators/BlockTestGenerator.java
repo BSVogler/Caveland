@@ -31,7 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Map.Generators;
 
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.OBJECTTYPESCOUNT;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.OBJECTTYPESNUM;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 
 /**
@@ -42,7 +42,7 @@ public class BlockTestGenerator implements Generator{
 
     @Override
     public int generate(int x, int y, int z) {
-        if (z==0) return Math.abs(y) % OBJECTTYPESCOUNT;
+        if (z==0) return Math.abs(y) % OBJECTTYPESNUM;
         else
             return 0;
     }

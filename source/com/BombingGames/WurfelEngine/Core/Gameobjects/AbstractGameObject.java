@@ -94,16 +94,16 @@ public abstract class AbstractGameObject {
     public static final int GAME_DIAGLENGTH2 = SCREEN_HEIGHT;
     
     /**the max. amount of different object types*/
-    public static final int OBJECTTYPESCOUNT = 99;
+    public static final int OBJECTTYPESNUM = 99;
       /**the max. amount of different values*/
-    public static final int VALUESCOUNT = 25;
+    public static final int VALUESNUM = 25;
     
 
         
     /**The sprite texture which contains every object texture*/
     private static TextureAtlas spritesheet;
     private static Pixmap pixmap;
-    private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];//{category}{id}{value}
+    private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
     private static int drawCalls =0;
     
     private final int id; 
@@ -569,7 +569,7 @@ public abstract class AbstractGameObject {
         spritesheet.dispose();//is this line needed?
         WE.getAssetManager().unload(WE.getCurrentConfig().getSpritesheetPath()+".txt");
         spritesheet = null;
-        sprites = new AtlasRegion['z'][OBJECTTYPESCOUNT][VALUESCOUNT];
+        sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];
         //pixmap.dispose();
         pixmap = null;
     }

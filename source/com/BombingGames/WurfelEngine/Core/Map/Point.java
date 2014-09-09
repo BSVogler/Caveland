@@ -453,7 +453,12 @@ public class Point extends AbstractPosition {
                 }
             }
         }
-        return new Intersection();
+        if (curZ <= 0){
+            Point interectpoint = new Point(curX, curY, curZ, true);
+            return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
+        }
+        else
+            return new Intersection();
     }
 
     /**

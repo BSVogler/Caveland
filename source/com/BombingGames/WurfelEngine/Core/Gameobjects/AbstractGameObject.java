@@ -111,6 +111,7 @@ public abstract class AbstractGameObject {
     private boolean obstacle, transparent, clipped, hidden; 
     private float lightlevel = 0.5f;
     private int dimensionZ = GAME_EDGELENGTH;  
+    private float rotation;
 
     
     /**
@@ -299,6 +300,7 @@ public abstract class AbstractGameObject {
             yPos-SCREEN_HEIGHT-SCREEN_DEPTH2+texture.offsetY+
                 (SCREEN_HEIGHT+SCREEN_DEPTH-texture.originalHeight)
         );
+        sprite.rotate(rotation);
         
         sprite.scale(scale);
         prepareColor(view, color);

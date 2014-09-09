@@ -83,7 +83,11 @@ public abstract class AbstractPosition {
      * @return game coordinate
      */
     public int getZ(){
-        return (int) (height / GAME_EDGELENGTH);
+        float tmp = height / GAME_EDGELENGTH;
+        if (tmp<0)
+            return -1;
+        else
+            return (int) tmp;
     }
     
    /**

@@ -224,7 +224,7 @@ public class MapEditorView extends GameView {
             
             if (button == 1){
                 //right click
-                coords.clampToMap();
+                coords.clampToMapIncludingZ();
                 Controller.getMap().setData(
                     coords,
                     Block.getInstance(0)

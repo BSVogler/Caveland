@@ -59,7 +59,8 @@ public class Selection extends AbstractEntity {
 
     @Override
     public void setPos(AbstractPosition pos) {
-        super.setPos(pos.getCoord().getPoint().addVector(0, 20, 0));
-        normal.setPos(pos.cpy().addVector(0, 0, 1));
+        super.setPos( pos.getCoord());
+        setHidden(getPos().getHeight()<0);
+        normal.setPos(pos.cpy().addVector(0, 1, 0));
     }
 }

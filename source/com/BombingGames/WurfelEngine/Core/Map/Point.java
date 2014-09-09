@@ -83,7 +83,7 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     * returns coordinate aquivalent
+     * returns coordinate aquivalent. Removes floating of block.
      * @return
      */
     @Override

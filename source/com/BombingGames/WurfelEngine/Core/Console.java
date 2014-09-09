@@ -327,9 +327,11 @@ public class Console {
         if (command.startsWith("loadmap")){
             StringTokenizer st = new StringTokenizer(command, " ");
             st.nextToken();
+            if (!st.hasMoreElements()) return false;
             
             String mapname = st.nextToken();
-            return Controller.loadMap(mapname);
+            if (mapname.length()>0)
+                return Controller.loadMap(mapname);
         }
         
         if (command.startsWith("newmap")){

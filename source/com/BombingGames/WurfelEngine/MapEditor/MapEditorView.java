@@ -234,11 +234,11 @@ public class MapEditorView extends GameView {
                 //gras1.play();
             } else { //left click
                 Vector3 normal = view.screenToGameRaytracing(screenX, screenY).getNormal();
-                if (controller.getFocusentity().getPos().getNormal()==0)
+                if (controller.getFocusentity().getPos().getNormal()==Block.LEFTSIDE)
                     coords = coords.neighbourSidetoCoords(5);
-                else if (controller.getFocusentity().getPos().getNormal()==1)
+                else if (controller.getFocusentity().getPos().getNormal()==Block.TOPSIDE)
                     coords.addVector(0, 0, 1);
-                else if (controller.getFocusentity().getPos().getNormal()==2)
+                else if (controller.getFocusentity().getPos().getNormal()==Block.RIGHTSIDE)
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();

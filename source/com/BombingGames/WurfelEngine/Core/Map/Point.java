@@ -322,10 +322,10 @@ public class Point extends AbstractPosition {
         Vector3 centerEdge = new Vector3(0,Block.GAME_DIAGLENGTH2,Block.GAME_EDGELENGTH/2);
         centerEdge.nor();
         if (vec.z>centerEdge.z)
-            return 1;
+            return Block.TOPSIDE;
         if (vec.x<0)
-            return 0;
-        else return 1;
+            return Block.LEFTSIDE;
+        else return Block.TOPSIDE;
     }
     
     /**

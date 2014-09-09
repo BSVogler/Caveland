@@ -176,6 +176,73 @@ public abstract class AbstractGameObject {
     }
         
     /**
+     * Load the spritesheet from memory.
+     */
+    public static void loadSheet() {
+        //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
+        Gdx.app.log("AGameObject", "getting spritesheet");
+        if (spritesheet == null) {
+            spritesheet = WE.getAsset(WE.getCurrentConfig().getSpritesheetPath()+".txt");
+            for (AtlasRegion region : spritesheet.getRegions()) {
+                region.flip(false, true);
+            }
+        }
+        
+        //load again for pixmap, allows access to image color data;
+        if (pixmap == null) {
+            //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+            pixmap = new Pixmap(
+                Gdx.files.internal(WE.getCurrentConfig().getSpritesheetPath()+".png")
+            );
+        }
+    }
+
+    /**
+     * Returns a sprite texture. You may use your own method like in <i>Block</i>.
+     * @param category the category of the sprite e.g. "b" for blocks
+     * @param id the id of the object
+     * @param value the value of the object
+     * @return 
+     */
+    public static AtlasRegion getSprite(final char category, final int id, final int value) {
+        if (spritesheet == null) return null;
+        if (sprites[category][id][value] == null){ //load if not already loaded
+            AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
+            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
+                Gdx.app.debug("Spritesheet", category+Integer.toString(id)+"-"+value + " not found");
+                sprite = getSpritesheet().findRegion(category+"0-0");
+                if (sprite == null) {//load generic error sprite if category sprite failed
+                    sprite = getSpritesheet().findRegion("error");
+                    if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
+                }
+            }
+            sprites[category][id][value] = sprite;
+            return sprite;
+        } else {
+            return sprites[category][id][value];
+        }
+    }
+
+
+    //getter & setter
+    
+     /**
+     * Returns the spritesheet used for rendering.
+     * @return the spritesheet used by the objects
+     */
+    public static TextureAtlas getSpritesheet() {
+        return spritesheet;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Pixmap getPixmap() {
+        return pixmap;
+    }
+    
+    /**
      * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
      * @param pos the coordinates where the object should be rendered
      * @param view the view using this render method
@@ -365,72 +432,7 @@ public abstract class AbstractGameObject {
         color.a = 1;
     }
     
-    /**
-     * Load the spritesheet from memory.
-     */
-    public static void loadSheet() {
-        //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
-        Gdx.app.log("AGameObject", "getting spritesheet");
-        if (spritesheet == null) {
-            spritesheet = WE.getAsset(WE.getCurrentConfig().getSpritesheetPath()+".txt");
-            for (AtlasRegion region : spritesheet.getRegions()) {
-                region.flip(false, true);
-            }
-        }
-        
-        //load again for pixmap, allows access to image color data;
-        if (pixmap == null) {
-            //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-            pixmap = new Pixmap(
-                Gdx.files.internal(WE.getCurrentConfig().getSpritesheetPath()+".png")
-            );
-        }
-    }
-
-    /**
-     * Returns a sprite texture. You may use your own method like in <i>Block</i>.
-     * @param category the category of the sprite e.g. "b" for blocks
-     * @param id the id of the object
-     * @param value the value of the object
-     * @return 
-     */
-    public static AtlasRegion getSprite(final char category, final int id, final int value) {
-        if (spritesheet == null) return null;
-        if (sprites[category][id][value] == null){ //load if not already loaded
-            AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
-            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                Gdx.app.debug("Spritesheet", category+Integer.toString(id)+"-"+value + " not found");
-                sprite = getSpritesheet().findRegion(category+"0-0");
-                if (sprite == null) {//load generic error sprite if category sprite failed
-                    sprite = getSpritesheet().findRegion("error");
-                    if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
-                }
-            }
-            sprites[category][id][value] = sprite;
-            return sprite;
-        } else {
-            return sprites[category][id][value];
-        }
-    }
-
-
-    //getter & setter
     
-     /**
-     * Returns the spritesheet used for rendering.
-     * @return the spritesheet used by the objects
-     */
-    public static TextureAtlas getSpritesheet() {
-        return spritesheet;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public static Pixmap getPixmap() {
-        return pixmap;
-    }
     
     /**
      * returns the id of a object

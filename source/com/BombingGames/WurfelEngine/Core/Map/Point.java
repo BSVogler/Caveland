@@ -395,7 +395,6 @@ public class Point extends AbstractPosition {
                         normal.y = 0;
                         normal.x = -1;
                     }
-                    Gdx.app.debug("normal", "is:"+normal);
                     return new Intersection(isectP, normal, this.distanceTo(isectP));
                 }
             }

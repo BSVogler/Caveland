@@ -307,26 +307,6 @@ public class Point extends AbstractPosition {
         
         return this;
     }
-
-    /**
-     * if this point lays on the edge of a block
-     * @return 0 - left, 1 - top, 2 - right
-     * @deprecated 
-     */
-    public Sides getNormal() {
-        //get center of coord
-        Point point = getCoord().getPoint();
-        //vector from center to point
-        Vector3 vec = new Vector3(x-point.x,y-point.y,getHeight()-point.getHeight());
-        vec.nor();
-        Vector3 centerEdge = new Vector3(0,Block.GAME_DIAGLENGTH2,Block.GAME_EDGELENGTH/2);
-        centerEdge.nor();
-        if (vec.z>centerEdge.z)
-            return Sides.TOP;
-        if (vec.x<0)
-            return Sides.LEFT;
-        else return Sides.RIGHT;
-    }
     
     /**
      * Call the callback with (x,y,z,value,normal) of all blocks along the line

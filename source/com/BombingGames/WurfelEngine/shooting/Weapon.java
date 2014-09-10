@@ -49,7 +49,7 @@ public class Weapon {
     private final int id;
     private final String name;
 
-    private AbstractCharacter character;//the character holding the weapon
+    private AbstractCharacter parent;//the parent holding the weapon
     
     //sound
     private Sound fire;
@@ -90,11 +90,12 @@ public class Weapon {
     /**
      *
      * @param id
-     * @param character
+     * @param parent
      */
-    public Weapon(int id, AbstractCharacter character) {
+    public Weapon(int id, AbstractCharacter parent) {
         this.id = id;
-        this.character = character;
+        this.parent = parent;
+        
         
         switch (id){
             case 0:
@@ -300,14 +301,14 @@ public class Weapon {
 //        if (laser!=null && laser.shouldBeDisposed())
 //            laser=null;
 //        if (laser==null) {
-//            laser = new Bullet(12, character.getPos().cpy());
+//            laser = new Bullet(12, parent.getPos().cpy());
 //            laser.setValue(0);
 //            laser.setHidden(true);
 //
-//            laser.setDirection(character.getAiming());
+//            laser.setDirection(parent.getAiming());
 //            laser.setSpeed(7);
 //            laser.setMaxDistance(3000);
-//            laser.setParent(character);
+//            laser.setParent(parent);
 //            laser.setDamage(0);
 //            laser.setExplosive(0);
 //            laser.setImpactSprite(20);
@@ -325,9 +326,9 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new AnimatedEntity(60, 0, character.getPos(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(60, 0, parent.getPos(), new int[]{300}, true, false).exist();
             else
-                new AnimatedEntity(61, 0, character.getPos(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(61, 0, parent.getPos(), new int[]{300}, true, false).exist();
 
             //shot bullets
             for (int i = 0; i < bps; i++) {
@@ -336,7 +337,7 @@ public class Weapon {
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
                 bullet = new Bullet(
                     12,
-                    character.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+                    parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue(0);
@@ -345,13 +346,13 @@ public class Weapon {
                     bullet.setValue(bulletSprite);
                 }
 
-                Vector3 aiming = character.getAiming();
+                Vector3 aiming = parent.getAiming();
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
                 bullet.setDirection(aiming);
                 bullet.setSpeed(2f);
                 bullet.setMaxDistance(distance*100+100);
-                bullet.setParent(character);
+                bullet.setParent(parent);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);

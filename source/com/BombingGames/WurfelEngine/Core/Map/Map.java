@@ -265,16 +265,25 @@ public class Map implements Cloneable {
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
                 //make a chunk of the data
-                Cell blockData_copy[][][] = copyCells(data);
+                Cell[][][] dataCopy = copyCells(data);
                 
                 for (int pos=0; pos<9; pos++){
+                     //save
+                    if (isMovingOutside(pos, newmiddle)){
+                        try {
+                            copyChunk(dataCopy, pos).save(filename, coordlist[pos][0], coordlist[pos][1]);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
                     //refresh coordinates
                     coordlist[pos][0] += (newmiddle == 3 ? -1 : (newmiddle == 5 ? 1 : 0));
                     coordlist[pos][1] += (newmiddle == 1 ? -1 : (newmiddle == 7 ? 1 : 0));
 
                     Chunk chunk;
                     if (isMovingChunkPossible(pos, newmiddle)){
-                        chunk = copyChunk(blockData_copy, pos - 4 + newmiddle);
+                        chunk = copyChunk(dataCopy, pos - 4 + newmiddle);
                     } else {
                         chunk = new Chunk(
                             filename,
@@ -312,6 +321,30 @@ public class Map implements Cloneable {
             break;
                 
             case 7: if ((pos==6) || (pos==7) || (pos==8)) result = false;
+            break;
+        } 
+        return result;
+    }
+     
+     /**
+      * is the chunk moving from the map and overriden?
+      * @param pos
+      * @param newmiddle
+      * @return 
+      */
+    private boolean isMovingOutside(final int pos, final int newmiddle){
+        boolean result = false; 
+        switch (newmiddle){
+            case 1: if ((pos==6) || (pos==7) || (pos==8)) result = true;
+            break;
+            
+            case 3: if ((pos==2) || (pos==5) || (pos==8)) result = true;
+            break;  
+                
+            case 5: if ((pos==0) || (pos==3) || (pos==6)) result = true;
+            break;
+                
+            case 7: if ((pos==0) || (pos==1) || (pos==2)) result = true;
             break;
         } 
         return result;

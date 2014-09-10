@@ -47,7 +47,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -235,12 +234,12 @@ public class MapEditorView extends GameView {
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
             } else { //left click
-                Vector3 normal = view.screenToGameRaytracing(screenX, screenY).getNormal();
-                if (controller.getSelectionEntity().getPos().getNormal()==Sides.LEFT)
+                Sides normal = Sides.normalToSide(view.screenToGameRaytracing(screenX, screenY).getNormal());
+                if (normal==Sides.LEFT)
                     coords = coords.neighbourSidetoCoords(5);
-                else if (controller.getSelectionEntity().getPos().getNormal()==Sides.TOP)
+                else if (normal==Sides.TOP)
                     coords.addVector(0, 0, 1);
-                else if (controller.getSelectionEntity().getPos().getNormal()==Sides.RIGHT)
+                else if (normal==Sides.RIGHT)
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();

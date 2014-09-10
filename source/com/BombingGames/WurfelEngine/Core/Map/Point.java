@@ -341,7 +341,7 @@ public class Point extends AbstractPosition {
  If the callback returns a true value, the traversal will be stopped.
      * @param direction
      * @param radius
-     * @return can return <i>null</i> if not hitting anything
+     * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
     public Intersection raycast(Vector3 direction, float radius) {

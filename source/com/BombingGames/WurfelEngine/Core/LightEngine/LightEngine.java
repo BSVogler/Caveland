@@ -41,7 +41,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 /**
- *This Light engine calculates phong shading for three normals over the day.
+ * This Light engine calculates phong shading for three normals over the day.
  * @author Benedikt Vogler
  * @version 1.1.5
  * @since  WE1.1
@@ -210,10 +210,10 @@ public class LightEngine {
     public Color getColor(Sides normal){
           if (normal==Sides.LEFT)
             return getAmbient().add(getDiff(normal));
-            else if (normal==Sides.TOP)
-                return getAmbient().add(getDiff(normal)).add(getSpec(normal));
-                else
-                    return getAmbient().add(getDiff(normal));
+        else if (normal==Sides.TOP)
+            return getAmbient().add(getDiff(normal)).add(getSpec(normal));
+        else
+            return getAmbient().add(getDiff(normal));
     }
     
     /**

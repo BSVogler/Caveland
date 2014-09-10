@@ -105,7 +105,7 @@ public class MapEditorView extends GameView {
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
         savebutton.setX(Gdx.graphics.getWidth()-120);
         savebutton.setY(Gdx.graphics.getHeight()-40);
-        savebutton.addListener(new PlayButton(controller,false));
+        savebutton.addListener(new SaveButton());
         getStage().addActor(savebutton);
         
         //add replaybutton
@@ -328,6 +328,15 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             controller.getLoadMenu().setOpen(view, true);
+            return true;
+        }
+    }
+    
+    private static class SaveButton extends ClickListener{
+        
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            Controller.getMap().save();
             return true;
         }
     }

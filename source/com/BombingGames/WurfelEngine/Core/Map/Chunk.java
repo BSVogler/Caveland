@@ -34,6 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * A Chunk is filled with many Blocks and is a part of the map.
@@ -115,13 +116,13 @@ public class Chunk {
     /**
      * Tries to load a chunk from disk.
      */
-    private boolean load(final String mapname, int coordX, int coordY){
+    private boolean load(final String fileName, int coordX, int coordY){
         //Reading map files test
         try {
             //FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
             FileHandle path = new FileHandle(
                 WE.getWorkingDirectory().getAbsolutePath()
-                    + "/maps/"+mapname+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
+                    + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
             );
             
             Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY + "\"");
@@ -183,15 +184,48 @@ public class Chunk {
                 } while (lastline != null);
                 return true;
             } else {
-                Gdx.app.log("Chunk",coordX + ","+ coordY +"could not be found.");
+                Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
             }
         } catch (IOException ex) {
-            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + "failed: "+ex);
+            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
+        } catch (StringIndexOutOfBoundsException ex) {
+            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
         }
         return false;
     }
     
-    
+    /**
+     * 
+     * @param fileName
+     * @param coordX
+     * @param coordY
+     * @return 
+     * @throws java.io.IOException 
+     */
+    public boolean save(String fileName, int coordX, int coordY) throws IOException {
+        if ("".equals(fileName)) return false;
+        Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
+        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+        String lineFeed = System.getProperty("line.separator");
+        
+        path.file().createNewFile();
+        try (Writer writer = path.writer(false, "UTF8")) {
+            for (int z = 0; z < blocksZ; z++) {
+                writer.write("//"+z+lineFeed);
+                for (int y = 0; y < blocksY; y++) {
+                    String line = "";
+                    for (int x = 0; x < blocksX; x++) {
+                        line +=data[x][y][z].getBlock().getId()+":"+data[x][y][z].getBlock().getValue()+" ";  
+                    }
+                    writer.write(line+lineFeed);
+                }
+                writer.write(lineFeed);
+            }
+        } catch (IOException ex){
+            throw ex;
+        }
+        return true;
+    }
         /**
      * The amount of blocks in X direction
      * @return 

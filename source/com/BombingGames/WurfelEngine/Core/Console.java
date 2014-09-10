@@ -312,6 +312,8 @@ public class Console {
                 }
                 gameplayRef.getController().getMinimap().toggleVisibility();
                 return true;
+            case "save":
+                return Controller.getMap().save();
             case "devtools":
             case "dev":
                 if (gameplayRef==null) return false;

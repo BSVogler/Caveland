@@ -38,6 +38,8 @@ import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *A map stores nine chunks as part of a bigger map. It also contains the entities.
@@ -58,6 +60,10 @@ public class Map implements Cloneable {
     
     /** every entity on the map is stored in this field */
     private final static ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
+    /**
+     * holds the metadata of the map
+     */
+    private final MapMetaData meta;
     
     /**
      * Loads a map.
@@ -79,8 +85,8 @@ public class Map implements Cloneable {
     public Map(final String name, Generator generator) throws IOException {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
         this.filename = name;
-        
-        Chunk.setDimensions(new MapMetaData(name));
+        meta = new MapMetaData(name);
+        Chunk.setDimensions(meta);
         
         
         //save chunk size, which are now loaded
@@ -89,10 +95,11 @@ public class Map implements Cloneable {
         blocksZ = Chunk.getBlocksZ();
         data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
         
-        for (int x=0; x < blocksX; x++)
-            for (int y=0; y < blocksY; y++)
-                for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = new Cell();
+        for (Cell[][] x : data)
+            for (Cell[] y : x)
+                for (int z = 0; z < y.length; z++) {
+                    y[z] = new Cell();
+                }
         
         if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
         this.generator = generator;
@@ -155,16 +162,16 @@ public class Map implements Cloneable {
             }   
         }
         
-        //Fill the nine chunks
-        int chunkpos = 0;
-        
-        for (byte y=-1; y < 2; y++)
-            for (byte x=-1; x < 2; x++){
-                coordlist[chunkpos][0] = x;
-                coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
-                chunkpos++;
-        }
+//        //Fill the nine chunks
+//        int chunkpos = 0;
+//        
+//        for (byte y=-1; y < 2; y++)
+//            for (byte x=-1; x < 2; x++){
+//                coordlist[chunkpos][0] = x;
+//                coordlist[chunkpos][1] = y;  
+//                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
+//                chunkpos++;
+//        }
        
         Gdx.app.log("Map","...Finished filling the map");
     }
@@ -680,6 +687,12 @@ public class Map implements Cloneable {
     public String getFilename() {
         return filename;
     }
+
+    public MapMetaData getMeta() {
+        return meta;
+    }
+    
+    
     
     
         
@@ -702,6 +715,27 @@ public class Map implements Cloneable {
         for (AbstractEntity entity : entityList) {
             entity.dispose();
         }
+    }
+
+    /**
+     * saves every chunk on the map
+     * @return 
+     */
+    public boolean save() {
+        for (int pos=0; pos<9; pos++){
+            try {
+                Chunk chunk = copyChunk(data, pos);
+                chunk.save(
+                    filename,
+                    coordlist[pos][0],
+                    coordlist[pos][1]
+                );
+            } catch (IOException ex) {
+                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        }
+        return true;
     }
 
 

@@ -187,4 +187,8 @@ public class MapMetaData {
     public String getDescription() {
         return description;
     }
+
+    public String getFileName() {
+        return fileName;
+    }
 }

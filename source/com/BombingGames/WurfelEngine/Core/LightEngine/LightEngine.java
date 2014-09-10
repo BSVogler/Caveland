@@ -43,14 +43,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 /**
  * This Light engine calculates phong shading for three normals over the day.
  * @author Benedikt Vogler
- * @version 1.1.5
+ * @version 1.1.6
  * @since  WE1.1
  */
 public class LightEngine {
     /**
      * The Version of the light engine.
      */
-    public static final String Version = "1.1.5";
+    public static final String Version = "1.1.6";
     
     private boolean renderData = false;
     //diagramm data
@@ -194,12 +194,17 @@ public class LightEngine {
     }
     
         /**
-     * Get's average color. 
+     * Gets average color. 
      * @return pseudoGrey color
      * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
      */
     public Color getColor(){
-        return getAmbient().add(getEmittingTone());
+        return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
+        //more precise (?) but slower
+//        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;
+//        float g = (getColor(Sides.LEFT).g + getColor(Sides.TOP).g + getColor(Sides.RIGHT).g)/3f;
+//        float b = (getColor(Sides.LEFT).b + getColor(Sides.TOP).b + getColor(Sides.RIGHT).b)/3f;
+//        return new Color(r,g,b,1);
     }
         
     /**
@@ -254,19 +259,11 @@ public class LightEngine {
     }
     
     /**
-     * Mix of both light sources. USed for diff and spec.
+     * Mix of both light sources. Used for diff and spec.
      * @return a color with a tone
      */
     private Color getEmittingLights(){
         return sun.getLight().add(moon.getLight());//sun+moon
-    }
-    
-     /**
-     * Mix of both light sources. USed for diff and spec.
-     * @return a color with a tone
-     */
-    private Color getEmittingTone(){
-        return sun.getTone().add(moon.getTone()).mul(getBrightness());//sun+moon
     }
     
      /**
@@ -397,12 +394,16 @@ public class LightEngine {
                 shR.rect(600, y+=10, 70, 70);
                 shR.setColor(getAmbient());
                 shR.rect(610, y+=10, 50, 50);
+                 shR.setColor(moon.getAmbient());
+                shR.rect(600, y, 20, 25);
+                shR.setColor(sun.getAmbient());
+                shR.rect(600, y+25, 20, 25);
                 
                 view.drawText("+", 670, y+25, Color.WHITE);
                 //draw emmittinlights
                 shR.setColor(Color.WHITE);
                 shR.rect(680, y-10, 70, 70);
-                shR.setColor(getEmittingTone());
+                shR.setColor(getEmittingLights().mul( getBrightness()));
                 shR.rect(690, y, 50, 50);
                 
                 view.drawText("=", 760, y+25, Color.WHITE);
@@ -412,12 +413,12 @@ public class LightEngine {
                 shR.setColor(getColor(Sides.LEFT));
                 shR.rect(780, y, 25, 30);
                 shR.setColor(getColor(Sides.TOP));
-                shR.rect(780, y+25, 50, 25);
+                shR.rect(780, y+25, 50, 30);
                 shR.setColor(getColor(Sides.RIGHT));
                 shR.rect(805, y, 25, 30);
                 
                 shR.setColor(getColor());
-                shR.rect(800, y+15, 10, 10);
+                shR.rect(800, y+20, 15, 15);
 
 
                  //info bars

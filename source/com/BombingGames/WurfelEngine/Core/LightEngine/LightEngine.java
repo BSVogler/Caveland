@@ -196,7 +196,7 @@ public class LightEngine {
         /**
      * Get's average color. 
      * @return pseudoGrey color
-     * @see #getColor(int) 
+     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
      */
     public Color getColor(){
         return getAmbient().add(getEmittingTone());
@@ -218,7 +218,7 @@ public class LightEngine {
     
     /**
      * 
-     * @param normal 0 left 1 top or 2 right
+     * @param normal
      * @return pseudoGrey color
      */
      private Color getDiff(Sides normal){
@@ -232,7 +232,7 @@ public class LightEngine {
      
     /**
      * 
-     * @param normal 0 left 1 top or 2 right
+     * @param normal
      * @return pseudoGrey color
      */
      private Color getSpec(Sides normal){

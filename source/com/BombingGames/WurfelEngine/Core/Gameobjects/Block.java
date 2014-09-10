@@ -399,21 +399,15 @@ public class Block extends AbstractGameObject {
      * @param scale
      */
     public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
-        Color color;
-        if (Controller.getLightEngine() != null)
-            color = Controller.getLightEngine().getColor(side);
-        else {
-            color = Color.GRAY.cpy();
-            
-            if (WE.getCurrentConfig().shouldAutoShade()){
-                if (side==Sides.LEFT){
-                    color = color.add(Color.DARK_GRAY.cpy());
-                    color.clamp();
-                }else if (side==Sides.RIGHT){
-                    color = color.sub(Color.DARK_GRAY.cpy());
-                    color.clamp();
-                }
+        Color color = Color.GRAY.cpy();
+        if (WE.getCurrentConfig().shouldAutoShade()){
+            if (side==Sides.LEFT){
+                color = color.add(Color.DARK_GRAY.cpy());
+            }else if (side==Sides.RIGHT){
+                color = color.sub(Color.DARK_GRAY.cpy());
             }
+        } else if (Controller.getLightEngine() != null){
+            color = Controller.getLightEngine().getColor(side);
         }
         
         //add fog

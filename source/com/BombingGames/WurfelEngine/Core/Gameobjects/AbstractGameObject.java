@@ -252,11 +252,12 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            (
-                Controller.getLightEngine() != null
-                ? Controller.getLightEngine().getColor()
-                : Color.GRAY.cpy()).mul(lightlevel
-            )
+            WE.getCurrentConfig().shouldAutoShade()
+                ? Color.GRAY.cpy()
+                :
+                    Controller.getLightEngine() != null
+                        ? Controller.getLightEngine().getColor()
+                        : Color.GRAY.cpy()
         );
     }
     
@@ -272,7 +273,12 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            (Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy()).mul(lightlevel),
+            WE.getCurrentConfig().shouldAutoShade()
+                ? Color.GRAY.cpy()
+                :
+                    Controller.getLightEngine() != null
+                        ? Controller.getLightEngine().getColor()
+                        : Color.GRAY.cpy(),
             scale
         );
     }
@@ -328,7 +334,12 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy(),
+            WE.getCurrentConfig().shouldAutoShade()
+                ? Color.GRAY.cpy()
+                :
+                    Controller.getLightEngine() != null
+                        ? Controller.getLightEngine().getColor()
+                        : Color.GRAY.cpy(),
             0
         );
     }
@@ -345,7 +356,12 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(): Color.GRAY.cpy(),
+            WE.getCurrentConfig().shouldAutoShade()
+                ? Color.GRAY.cpy()
+                :
+                    Controller.getLightEngine() != null
+                        ? Controller.getLightEngine().getColor()
+                        : Color.GRAY.cpy(),
             scale
         );
     }

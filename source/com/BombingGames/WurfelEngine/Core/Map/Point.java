@@ -408,7 +408,12 @@ public class Point extends AbstractPosition {
                 if (block == null) break;//check if outside of map
                 if (block.getId() != 0){
                     
-                    if (isectP.getRelX() % Block.GAME_DIAGLENGTH < Block.GAME_DIAGLENGTH2) {
+                    if (
+                        (isectP.getRelX() -(isectP.getCoord().getRelY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
+                        % Block.GAME_DIAGLENGTH
+                        <
+                        Block.GAME_DIAGLENGTH2
+                    ) {
                         normal.y = 0;
                         normal.x = -1;
                     }

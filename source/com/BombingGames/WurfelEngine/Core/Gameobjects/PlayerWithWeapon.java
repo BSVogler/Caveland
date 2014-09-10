@@ -44,7 +44,7 @@ import com.badlogic.gdx.math.Vector3;
 public class PlayerWithWeapon extends AbstractCharacter{
     private Camera camera;
     private Weapon weapon;
-    private AbstractEntity laserdot;
+
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
      * @param point the position of the player
@@ -71,8 +71,6 @@ public class PlayerWithWeapon extends AbstractCharacter{
         setTransparent(true);
         setObstacle(true);
         setDimensionZ(AbstractGameObject.GAME_EDGELENGTH*2);
-        
-        laserdot = new SimpleEntity(20, getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
     }   
 
     /**
@@ -107,9 +105,6 @@ public class PlayerWithWeapon extends AbstractCharacter{
     public void update(float delta) {
         super.update(delta);
         if (weapon != null) weapon.update(delta);
-        Point raycast = getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(getAiming(), 5000).getPoint();
-        if (raycast!=null)
-            laserdot.setPos(raycast);
     }
     
     

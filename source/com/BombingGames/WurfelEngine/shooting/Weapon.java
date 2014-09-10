@@ -31,8 +31,11 @@ package com.BombingGames.WurfelEngine.shooting;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.backends.openal.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -71,7 +74,9 @@ public class Weapon {
     /** The current time delayBetweenShots between shots*/
     private float bulletDelay;
     private int explode;
+    private AbstractEntity laserdot;
 
+    
     /**
      *
      */
@@ -96,6 +101,7 @@ public class Weapon {
         this.id = id;
         this.parent = parent;
         
+        laserdot = new SimpleEntity(20, parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
         
         switch (id){
             case 0:
@@ -298,6 +304,10 @@ public class Weapon {
             if (bulletDelay <= 0 && shotsLoaded <= 0)//autoreload
                 reload();
         }
+        
+        Point raycast = parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000).getPoint();
+        if (raycast!=null)
+            laserdot.setPos(raycast);
 //        if (laser!=null && laser.shouldBeDisposed())
 //            laser=null;
 //        if (laser==null) {
@@ -385,6 +395,10 @@ public class Weapon {
         return shots;
     }
 
+    public String getName() {
+        return name;
+    }
+
     /**
      *
      * @return
@@ -424,4 +438,13 @@ public class Weapon {
 //    public int getAimDistance(){
 //        return laser.getDistance();
 //    }
+
+
+    /**
+     * returns the position of the laserdot, the point where the aiming impacts
+     * @return a copy
+     */
+    public Point getImpactPoint() {
+        return laserdot.getPos().cpy();
+    }
 }

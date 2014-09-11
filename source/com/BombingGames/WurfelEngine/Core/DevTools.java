@@ -63,18 +63,15 @@ public class DevTools {
     private long allocatedMemory;
     private long maxMemory;
     private long usedMemory;
-    private final Controller controller;
     private Image editorbutton;
     private Image editorreversebutton;
 
     /**
      *
-     * @param controller
      * @param xPos the position of the diagram from left
      * @param yPos the position of the diagram (its bottom)
      */
-    public DevTools(final Controller controller, final int xPos, final int yPos) {
-        this.controller = controller;
+    public DevTools(final int xPos, final int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
         maxHeight=150;   

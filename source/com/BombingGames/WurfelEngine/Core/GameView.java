@@ -354,14 +354,6 @@ public class GameView implements GameManager {
         EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
         EngineView.getBatch().end();
     }
-    
-    /**
-     *
-     * @return
-     */
-    public OrthographicCamera getHudCamera() {
-        return hudCamera;
-    } 
 
 
 

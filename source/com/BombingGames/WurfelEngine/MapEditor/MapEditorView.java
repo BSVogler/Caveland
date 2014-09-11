@@ -57,6 +57,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class MapEditorView extends GameView {
     private MapEditorController controller;
+    /**
+     * the camera rendering the sceen
+     */
     private Camera camera;
     private float cameraspeed =0.5f;
     /**
@@ -65,6 +68,7 @@ public class MapEditorView extends GameView {
     private Vector2 camermove; 
     
     private Navigation nav;
+    private BlockSelector bselector;
 
     @Override
     public void init(Controller controller) {
@@ -85,6 +89,8 @@ public class MapEditorView extends GameView {
         );
         
         nav = new Navigation();
+        bselector = new BlockSelector();
+        getStage().addActor(bselector);
         
 
         //setup GUI
@@ -293,6 +299,11 @@ public class MapEditorView extends GameView {
                controller.getSelectionEntity().setPos( intersect.getPoint() );
                controller.getSelectionEntity().setNormal( Sides.normalToSide( intersect.getNormal() ) );
             }
+            
+            if (screenX<100)
+                view.bselector.show();
+            else if (screenX > view.bselector.getWidth())
+                view.bselector.hide();
             return false;
         }
 

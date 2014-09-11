@@ -222,7 +222,9 @@ public class Console {
         }else {
             EngineView.getStage().removeListener(inputprocessor);
             EngineView.getStage().setKeyboardFocus(null);
-            setText(textinput.getText().substring(0, textinput.getText().length()-1));//hack to prevent the key to open/clsoe to appear
+            String inputText = textinput.getText();
+            if (inputText.length()>0) inputText = inputText.substring(0, textinput.getText().length()-1);
+            setText(inputText);//hack to prevent the key to open/clsoe to appear
         }
         textinput.setVisible(active);
     }

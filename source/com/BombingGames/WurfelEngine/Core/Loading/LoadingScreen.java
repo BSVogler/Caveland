@@ -167,6 +167,7 @@ public class LoadingScreen implements Screen {
         // Show the loading screen
         stage.act();
         stage.draw();
+        WE.updateAndRender(delta*1000f);
     }
 
     @Override

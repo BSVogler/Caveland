@@ -65,6 +65,9 @@ public class GameView implements GameManager {
     private OrthographicCamera hudCamera;
     private boolean keyF5isUp;
     
+    /**
+     * game related stage. e.g. holds hud and gui
+     */
     private Stage stage;
     private SpriteBatch batch;
     
@@ -418,6 +421,10 @@ public class GameView implements GameManager {
         return stage;
     }
 
+    /**
+     * Game view dependent batch
+     * @return 
+     */
     public SpriteBatch getBatch() {
         return batch;
     }

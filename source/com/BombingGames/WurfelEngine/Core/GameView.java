@@ -215,7 +215,7 @@ public class GameView implements GameManager {
      * @return the scale factor
      */
     public float getEqualizationScale() {
-        return Gdx.graphics.getWidth() / WE.getCurrentConfig().getRenderResolutionWidth();
+        return hudCamera.viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
     }
 
     

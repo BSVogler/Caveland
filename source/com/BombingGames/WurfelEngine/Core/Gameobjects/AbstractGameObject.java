@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
@@ -391,7 +390,7 @@ public abstract class AbstractGameObject {
         prepareColor(view, color);
 
         sprite.setColor(color);
-        sprite.draw(EngineView.getBatch());
+        sprite.draw(view.getBatch());
         
         
         if (WE.getCurrentConfig().debugObjects()){
@@ -438,12 +437,12 @@ public abstract class AbstractGameObject {
         //float brightness = (color.r+color.g+color.b)/3;
         
         if (brightness > 0.5f){
-            view.setDrawmode(GL10.GL_ADD);
+            view.setDrawmode(view.getBatch(), GL10.GL_ADD);
             color.r -= .5f;
             color.g -= .5f;
             color.b -= .5f;
         } else {
-            view.setDrawmode(GL10.GL_MODULATE);
+            view.setDrawmode(view.getBatch(), GL10.GL_MODULATE);
             color.mul(2);
         }
         color.clamp();

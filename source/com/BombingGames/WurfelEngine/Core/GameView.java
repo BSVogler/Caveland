@@ -42,6 +42,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -65,6 +66,8 @@ public class GameView implements GameManager {
     private boolean keyF5isUp;
     
     private Stage stage;
+    private SpriteBatch batch;
+    
         
     private boolean initalized;
     
@@ -105,6 +108,7 @@ public class GameView implements GameManager {
         //set up stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());//spawn at fullscreen
         
+        batch = new SpriteBatch();
         //load cursor
 
 
@@ -177,7 +181,7 @@ public class GameView implements GameManager {
             hudCamera.update();
             hudCamera.apply(Gdx.gl10);
 
-            EngineView.getBatch().setProjectionMatrix(hudCamera.combined);
+            getBatch().setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
             EngineView.getShapeRenderer().setProjectionMatrix(hudCamera.combined);
             Gdx.gl10.glLineWidth(1);
@@ -284,16 +288,17 @@ public class GameView implements GameManager {
 
     /**
      *The batch must be began before claling this method.
+     * @param batch
      * @param drawmode
      */
-    public void setDrawmode(final int drawmode) {
+    public void setDrawmode(final SpriteBatch batch, final int drawmode) {
         if (drawmode != this.drawmode){
             this.drawmode = drawmode;
-            EngineView.getBatch().end();
+            batch.end();
             //GameObject.getSpritesheet().getFullImage().endUse();
             Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, drawmode);
             //GameObject.getSpritesheet().getFullImage().startUse();
-            EngineView.getBatch().begin();
+            batch.begin();
         }
     }
 
@@ -305,7 +310,7 @@ public class GameView implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos) {
         EngineView.getBatch().begin();
-        setDrawmode(GL10.GL_MODULATE);
+        setDrawmode(batch, GL10.GL_MODULATE);
         EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
         EngineView.getBatch().end();
     }
@@ -320,7 +325,7 @@ public class GameView implements GameManager {
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
         EngineView.getBatch().setColor(color);
         EngineView.getBatch().begin();
-        setDrawmode(GL10.GL_MODULATE);
+        setDrawmode(batch, GL10.GL_MODULATE);
         EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
         EngineView.getBatch().end();
     }
@@ -336,7 +341,7 @@ public class GameView implements GameManager {
         EngineView.getFont().setColor(Color.BLACK);
         EngineView.getFont().setScale(1.01f);
         EngineView.getBatch().begin();
-        setDrawmode(GL10.GL_MODULATE);
+        setDrawmode(batch, GL10.GL_MODULATE);
         EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
         EngineView.getBatch().end();
         
@@ -412,6 +417,11 @@ public class GameView implements GameManager {
     public Stage getStage() {
         return stage;
     }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+    
 
 
     /**

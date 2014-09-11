@@ -44,7 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 /**
- *A view which is not dependend on the currently active game. Singleton.
+ * A view which is not dependend on the currently active game. Singleton.
  * @author Benedikt Vogler
  * @since 1.2.26
  */

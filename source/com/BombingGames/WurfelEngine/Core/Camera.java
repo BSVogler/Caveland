@@ -34,7 +34,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -235,7 +234,7 @@ public class Camera{
     public void render(final GameView view, final Camera camera) {
         if (Controller.getMap() != null) { //render only if map exists 
 
-            EngineView.getBatch().setProjectionMatrix(combined);
+            view.getBatch().setProjectionMatrix(combined);
             view.getIgShRender().setProjectionMatrix(combined); 
             //set up the viewport
             Gdx.gl.glViewport(
@@ -245,8 +244,8 @@ public class Camera{
                 screenHeight
             );
             
-            EngineView.getBatch().begin();
-            view.setDrawmode(GL10.GL_MODULATE);
+            view.getBatch().begin();
+            view.setDrawmode(view.getBatch(), GL10.GL_MODULATE);
             
             //render ground layer tiles if visible
             int left = getVisibleLeftBorder();
@@ -276,7 +275,7 @@ public class Camera{
             for (RenderDataDTO renderobject : depthlist) {
                 renderobject.getGameObject().render(view, camera, renderobject.getPos()); 
             }
-            EngineView.getBatch().end();
+            view.getBatch().end();
 
             //outline map
             if (WE.getCurrentConfig().debugObjects()){

@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -500,7 +499,7 @@ public class Block extends AbstractGameObject {
 //        color.a = 1; 
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  
-        sprite.draw(EngineView.getBatch());
+        sprite.draw(view.getBatch());
         
         if (WE.getCurrentConfig().debugObjects()){
             ShapeRenderer sh = view.getIgShRender();

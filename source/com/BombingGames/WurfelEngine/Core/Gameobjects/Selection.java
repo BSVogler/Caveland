@@ -43,7 +43,12 @@ public class Selection extends AbstractEntity {
     
     public Selection(Point point) {
         super(13, point);
-        normal = (AnimatedEntity) new AnimatedEntity(14, 0, getPos(), new int[]{5,5}, true, true).exist();
+        setLightlevel(10);
+        
+        normal = new AnimatedEntity(14, 0, getPos(), new int[]{200,200}, true, true);
+        normal.ignoreGameSpeed(true);
+        normal.setLightlevel(10);
+        normal.exist();
     }
 
     @Override

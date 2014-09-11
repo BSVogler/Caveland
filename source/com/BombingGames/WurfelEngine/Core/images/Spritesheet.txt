@@ -357,7 +357,7 @@ e14-1
   xy: 143, 851
   size: 142, 150
   orig: 160, 160
-  offset: 16, 0
+  offset: 11, 0
   index: -1
 e15-0
   rotate: false

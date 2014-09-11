@@ -59,6 +59,9 @@ public class MapEditorView extends GameView {
     private MapEditorController controller;
     private Camera camera;
     private float cameraspeed =0.5f;
+    /**
+     * vector holding information about movement of the camera
+     */
     private Vector2 camermove; 
     
     private Navigation nav;
@@ -84,7 +87,7 @@ public class MapEditorView extends GameView {
         nav = new Navigation();
         
 
-        
+        //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
         
         //add play button

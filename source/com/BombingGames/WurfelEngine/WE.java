@@ -238,8 +238,8 @@ public class WE extends Game {
      * @param view the new view
      */
     public static void switchSetup(final Controller controller, final GameView view){
-        Gdx.app.debug("Wurfel Engine", "Switching setup using Controller:" + controller.toString());
-        Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
+        Gdx.app.debug("Wurfel Engine", "Switching setup using Controller: " + controller.toString());
+        Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
         EngineView.resetInputProcessors();
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);

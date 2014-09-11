@@ -180,7 +180,7 @@ public class GameView implements GameManager {
                
         //render HUD and GUI
         {
-            // hudCamera.zoom = 1/equalizationScale;
+            hudCamera.zoom = 1/getEqualizationScale();
             hudCamera.update();
             hudCamera.apply(Gdx.gl10);
 

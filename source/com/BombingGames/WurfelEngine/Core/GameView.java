@@ -397,7 +397,7 @@ public class GameView implements GameManager {
      */
     public void resize(final int width, final int height) {
         for (Camera camera : cameras) {
-            camera.resize(width, height);
+            camera.resize(width, height);//resizes cameras to fullscreen?
         }
         stage.setViewport(width, height);
         hudCamera.setToOrtho(false, width, height);

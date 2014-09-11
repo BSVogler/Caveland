@@ -108,7 +108,7 @@ public abstract class AbstractGameObject {
     private final int id; 
     private byte value;
     private boolean obstacle, transparent, clipped, hidden; 
-    private float lightlevel = 0.5f;
+    private float lightlevel = 1f;
     private float rotation;
 
     
@@ -386,10 +386,11 @@ public abstract class AbstractGameObject {
                 (SCREEN_HEIGHT+SCREEN_DEPTH-texture.originalHeight)
         );
         
-
+        color.mul(getLightlevel());
         prepareColor(view, color);
 
         sprite.setColor(color);
+
         sprite.draw(view.getBatch());
         
         
@@ -522,8 +523,8 @@ public abstract class AbstractGameObject {
 
     /**
      * Set the brightness of the object.
-     * The lightlevel is a number between 0 and 1. 1 is full bright. 0 is black.
-     * @param lightlevel
+     * The lightlevel is a scaling factor between.
+     * @param lightlevel  1 is full bright. 0 is black.
      */
     public void setLightlevel(float lightlevel) {
         this.lightlevel = lightlevel;

@@ -280,7 +280,7 @@ public class LightEngine {
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
                     for (int level = topmost; level >= 0; level--){
-                        Controller.getMap().getBlock(x,y,level).setLightlevel(.25f + .25f*level / (float) topmost);
+                        Controller.getMap().getBlock(x,y,level).setLightlevel(.5f + .5f*level / (float) topmost);
                     }
                 }
             }

@@ -474,7 +474,7 @@ public class Block extends AbstractGameObject {
             sprite.scale(scale);
         }
         
-        color.mul(getLightlevel()*2);
+        color.mul(getLightlevel());
         
         prepareColor(view, color);
         

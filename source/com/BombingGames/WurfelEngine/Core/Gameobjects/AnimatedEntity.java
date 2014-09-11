@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.badlogic.gdx.Gdx;
 
 /**
  *An entity wich is animated.
@@ -39,6 +40,10 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
     private float counter = 0;
     private boolean running;
     private final boolean loop;
+    /**
+     * ignores game time speed.
+     */
+    private boolean updateIgnoringGameTime;
     
    /**
      * Create an entity with an animation with an array wich has the time of every animation step in ms in it.
@@ -63,7 +68,10 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
     @Override
     public void update(float delta) {
         if (running) {
-            counter += delta;
+            if (updateIgnoringGameTime)
+                counter += Gdx.graphics.getDeltaTime()*1000f;
+            else 
+                counter += delta;
             if (counter >= animationsduration[getValue()]){
                 setValue(getValue()+1);
                 counter=0;
@@ -88,4 +96,14 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
     public void stop() {
         running = false;
     }
+
+    /**
+     * ignores the delta time of the game world. use this if you want to have an animation independent of game speed (e.g. slow motion.)
+     * @param ignore true ignores game time
+     */
+    public void ignoreGameSpeed(boolean ignore) {
+        this.updateIgnoringGameTime = ignore;
+    }
+    
+    
 }

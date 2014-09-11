@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
  */
 public class AnimatedEntity extends AbstractEntity implements Animatable {
     private final int[] animationsduration;
-    private int counter = 0;
+    private float counter = 0;
     private boolean running;
     private final boolean loop;
     

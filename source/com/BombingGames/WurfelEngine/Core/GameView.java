@@ -52,15 +52,13 @@ import java.util.ArrayList;
  * The GameView manages everything what should be drawn in an active game.
  * @author Benedikt
  */
-public class GameView implements GameManager {
+public class GameView extends View implements GameManager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     
     private ShapeRenderer igShRenderer;
     
     private Controller controller;
-    
-    private int drawmode;
     
     private OrthographicCamera hudCamera;
     private boolean keyF5isUp;
@@ -109,7 +107,7 @@ public class GameView implements GameManager {
         igShRenderer = new ShapeRenderer();
         
         //set up stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());//spawn at fullscreen
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());//spawn at fullscreen
         
         batch = new SpriteBatch();
         //load cursor
@@ -186,7 +184,7 @@ public class GameView implements GameManager {
 
             batch.setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
-            EngineView.getShapeRenderer().setProjectionMatrix(hudCamera.combined);
+            WE.getEngineView().getShapeRenderer().setProjectionMatrix(hudCamera.combined);
             Gdx.gl10.glLineWidth(1);
 
             //set viewport of hud to cover whole window
@@ -282,30 +280,6 @@ public class GameView implements GameManager {
     }
     
     /**
-     *
-     * @return
-     */
-    public int getDrawmode() {
-        return drawmode;
-    }
-
-    /**
-     *The batch must be began before claling this method.
-     * @param batch
-     * @param drawmode
-     */
-    public void setDrawmode(final SpriteBatch batch, final int drawmode) {
-        if (drawmode != this.drawmode){
-            this.drawmode = drawmode;
-            batch.end();
-            //GameObject.getSpritesheet().getFullImage().endUse();
-            Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, drawmode);
-            //GameObject.getSpritesheet().getFullImage().startUse();
-            batch.begin();
-        }
-    }
-
-    /**
      *Draw a string using the last active color.
      * @param msg
      * @param xPos
@@ -314,7 +288,7 @@ public class GameView implements GameManager {
     public void drawString(final String msg, final int xPos, final int yPos) {
         batch.begin();
         setDrawmode(batch, GL10.GL_MODULATE);
-        EngineView.getFont().draw(batch, msg, xPos, yPos);
+        WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         batch.end();
     }
     
@@ -329,7 +303,7 @@ public class GameView implements GameManager {
         batch.setColor(color);
         batch.begin();
         setDrawmode( batch, GL10.GL_MODULATE);
-        EngineView.getFont().draw( batch, msg, xPos, yPos);
+        WE.getEngineView().getFont().draw( batch, msg, xPos, yPos);
         batch.end();
     }
     
@@ -341,17 +315,17 @@ public class GameView implements GameManager {
      * @param color the colro of the text.
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
-        EngineView.getFont().setColor(Color.BLACK);
-        EngineView.getFont().setScale(1.01f);
+        WE.getEngineView().getFont().setColor(Color.BLACK);
+        WE.getEngineView().getFont().setScale(1.01f);
         batch.begin();
         setDrawmode(batch, GL10.GL_MODULATE);
-        EngineView.getFont().drawMultiLine(batch, text, xPos, yPos);
+        WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
         batch.end();
         
-        EngineView.getFont().setColor(Color.WHITE);
-        EngineView.getFont().setScale(1f);
+        WE.getEngineView().getFont().setColor(Color.WHITE);
+        WE.getEngineView().getFont().setScale(1f);
         batch.begin();
-        EngineView.getFont().drawMultiLine(batch, text, xPos, yPos);
+        WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
         batch.end();
     }
 
@@ -361,7 +335,8 @@ public class GameView implements GameManager {
      *
      * @return
      */
-    public ShapeRenderer getIgShRender() {
+    @Override
+    public ShapeRenderer getShapeRenderer() {
         return igShRenderer;
     }
     
@@ -415,6 +390,7 @@ public class GameView implements GameManager {
      * Game view dependent batch
      * @return 
      */
+    @Override
     public SpriteBatch getBatch() {
         return batch;
     }
@@ -441,8 +417,8 @@ public class GameView implements GameManager {
     
     @Override
     public final void enter() {
-        EngineView.addInputProcessor(stage);//the input processor must be added every time because they are only 
-        Gdx.input.setCursorImage(EngineView.getCursor(), 8, 8);
+        WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
+        Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
         onEnter();
     }
     

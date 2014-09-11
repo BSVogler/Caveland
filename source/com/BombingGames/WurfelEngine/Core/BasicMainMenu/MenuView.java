@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -142,7 +141,7 @@ public class MenuView {
         Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/wecursor.png"));
         Gdx.input.setCursorImage(cursor, 0, 0);
         
-        EngineView.addInputProcessor(new InputListener(controller));
+        WE.getEngineView().addInputProcessor(new InputListener(controller));
     }
     
     private class InputListener implements InputProcessor {

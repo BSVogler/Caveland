@@ -31,9 +31,9 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -64,7 +64,7 @@ public class LoadMenu {
      * @param view 
      */
     public void init(GameView view){
-        window = new Window("Choose a map", EngineView.getSkin());
+        window = new Window("Choose a map", WE.getEngineView().getSkin());
         window.setWidth(Gdx.graphics.getWidth()-margin*2);
         window.setHeight(Gdx.graphics.getHeight()-margin*2);
         window.setX(margin);
@@ -81,9 +81,9 @@ public class LoadMenu {
         // This table groups the Search label and the TextField used to gather
         // the search criteria:
         Table search = new Table();
-        search.add(new Label("Search", EngineView.getSkin())).spaceRight(10f);
+        search.add(new Label("Search", WE.getEngineView().getSkin())).spaceRight(10f);
 
-        textSearch = new TextField("Not implemented yet", EngineView.getSkin());
+        textSearch = new TextField("Not implemented yet", WE.getEngineView().getSkin());
 
         // This event waits untilk the RETURN key is pressed to reorganize the
         // intens inside the grid:
@@ -107,9 +107,9 @@ public class LoadMenu {
 
         //rearrangeTable();
 
-        content = new Table(EngineView.getSkin());
+        content = new Table(WE.getEngineView().getSkin());
         // Prepares the scroll manager:
-        ScrollPane scroll = new ScrollPane(content, EngineView.getSkin());
+        ScrollPane scroll = new ScrollPane(content, WE.getEngineView().getSkin());
 
         // Only scroll vertically:
         scroll.setScrollingDisabled(true, false);
@@ -153,11 +153,11 @@ public class LoadMenu {
                 }
                 listener = new LoadMenuListener(this);
                 stageRef.addListener(listener);
-                EngineView.focusInputProcessor(stageRef);
+                WE.getEngineView().focusInputProcessor(stageRef);
             }else{ //closing
                 content.clear();
                 stageRef.removeListener(listener);
-                EngineView.unfocusInputProcessor();
+                WE.getEngineView().unfocusInputProcessor();
             }
             window.setVisible(open);
         }

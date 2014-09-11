@@ -30,10 +30,10 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -246,7 +246,7 @@ public abstract class AbstractGameObject {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
-    public void render(GameView view, Camera camera, AbstractPosition pos) {
+    public void render(View view, Camera camera, AbstractPosition pos) {
         render(
             view,
             camera,
@@ -267,7 +267,7 @@ public abstract class AbstractGameObject {
      * @param camera The camera rendering the scene
      * @param scale
      */
-    public void render(GameView view, Camera camera, AbstractPosition pos, float scale) {
+    public void render(View view, Camera camera, AbstractPosition pos, float scale) {
         render(
             view,
             camera,
@@ -289,7 +289,7 @@ public abstract class AbstractGameObject {
      * @param camera The camera rendering the scene
      * @param color  custom blending color
      */
-    public void render(GameView view, Camera camera, AbstractPosition pos, Color color) {
+    public void render(View view, Camera camera, AbstractPosition pos, Color color) {
         render(
             view,
             camera,
@@ -309,7 +309,7 @@ public abstract class AbstractGameObject {
      * @param color  custom blending color
      * @param scale relative value
      */
-    public void render(GameView view, Camera camera, AbstractPosition pos, Color color, float scale) {
+    public void render(View view, Camera camera, AbstractPosition pos, Color color, float scale) {
         //draw the object except not clipped ones
         if (!hidden && !clipped) {             
             render(
@@ -328,7 +328,7 @@ public abstract class AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      */
-    public void render(GameView view, int xPos, int yPos) {
+    public void render(View view, int xPos, int yPos) {
         render(
             view,
             xPos,
@@ -350,7 +350,7 @@ public abstract class AbstractGameObject {
      * @param yPos rendering position
      * @param scale relative value
      */
-    public void render(GameView view, int xPos, int yPos, float scale) {
+    public void render(View view, int xPos, int yPos, float scale) {
         render(
             view,
             xPos,
@@ -373,7 +373,7 @@ public abstract class AbstractGameObject {
      * @param color custom blending color
      * @param scale relative value
      */
-    public void render(GameView view, int xPos, int yPos, Color color, float scale) {
+    public void render(View view, int xPos, int yPos, Color color, float scale) {
         AtlasRegion texture = getSprite(getCategory(), id, value);
         Sprite sprite = new Sprite(texture);
         sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT+SCREEN_DEPTH2);
@@ -395,7 +395,7 @@ public abstract class AbstractGameObject {
         
         
         if (WE.getCurrentConfig().debugObjects()){
-            ShapeRenderer sh = view.getIgShRender();
+            ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);
             //sprite outline
             sh.rect(
@@ -433,10 +433,10 @@ public abstract class AbstractGameObject {
      * @param view
      * @param color a tint in which the sprite should be rendered
      */
-    public void prepareColor(GameView view, Color color){
+    public void prepareColor(View view, Color color){
         float brightness = PseudoGrey.toFloat(color);
         //float brightness = (color.r+color.g+color.b)/3;
-        
+    
         if (brightness > 0.5f){
             view.setDrawmode(view.getBatch(), GL10.GL_ADD);
             color.r -= .5f;

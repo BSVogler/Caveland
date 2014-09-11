@@ -29,7 +29,6 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -53,8 +52,8 @@ public class BasicOptionsScreen implements Screen {
      *
      */
     public BasicOptionsScreen() {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, EngineView.getBatch());
-        EngineView.addInputProcessor(stage);
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());
+        WE.getEngineView().addInputProcessor(stage);
                 
         actor = new TestActor(new ShapeRenderer());
         actor.setBounds(200, 200, 400, 400);
@@ -91,14 +90,14 @@ public class BasicOptionsScreen implements Screen {
         
         //update camera and set the projection matrix
         camera.update();
-        EngineView.getBatch().setProjectionMatrix(camera.combined);
-        EngineView.getShapeRenderer().setProjectionMatrix(camera.combined);
+        WE.getEngineView().getBatch().setProjectionMatrix(camera.combined);
+        WE.getEngineView().getShapeRenderer().setProjectionMatrix(camera.combined);
         
         stage.draw();
-        EngineView.getBatch().begin();
-        EngineView.getFont().draw(EngineView.getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-        EngineView.getFont().draw(EngineView.getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        EngineView.getBatch().end();
+        WE.getEngineView().getBatch().begin();
+        WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+        WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        WE.getEngineView().getBatch().end();
         WE.updateAndRender(delta*1000f);
     }
 

@@ -235,7 +235,7 @@ public class Camera{
         if (Controller.getMap() != null) { //render only if map exists 
 
             view.getBatch().setProjectionMatrix(combined);
-            view.getIgShRender().setProjectionMatrix(combined); 
+            view.getShapeRenderer().setProjectionMatrix(combined); 
             //set up the viewport
             Gdx.gl.glViewport(
                 screenPosX,
@@ -279,10 +279,10 @@ public class Camera{
 
             //outline map
             if (WE.getCurrentConfig().debugObjects()){
-                view.getIgShRender().setColor(Color.RED.cpy());
-                view.getIgShRender().begin(ShapeRenderer.ShapeType.Line);
-                view.getIgShRender().rect(0, 0, Map.getGameWidth(), Map.getGameDepth()/2);
-                view.getIgShRender().end();
+                view.getShapeRenderer().setColor(Color.RED.cpy());
+                view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+                view.getShapeRenderer().rect(0, 0, Map.getGameWidth(), Map.getGameDepth()/2);
+                view.getShapeRenderer().end();
             }
         }
     }

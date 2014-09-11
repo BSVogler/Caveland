@@ -68,6 +68,7 @@ public class WE extends Game {
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
     private static Console console;
+    private static EngineView engineView;
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -142,11 +143,11 @@ public class WE extends Game {
         }
         Gdx.app.debug("WE","Initializing main menu...");
         mainMenu.init();
-        EngineView.init();
+        engineView.init();
         setScreen(mainMenu);
         
         console = new Console(
-            EngineView.getSkin(),
+            engineView.getSkin(),
             Gdx.graphics.getWidth()/2,
             Gdx.graphics.getHeight()/4
         );
@@ -221,7 +222,7 @@ public class WE extends Game {
     public static void switchSetupWithInit(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup and ReInit using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
-        EngineView.resetInputProcessors();
+        engineView.resetInputProcessors();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
@@ -240,7 +241,7 @@ public class WE extends Game {
     public static void switchSetup(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup using Controller: " + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
-        EngineView.resetInputProcessors();
+        engineView.resetInputProcessors();
         gameplayScreen.getController().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
@@ -278,7 +279,7 @@ public class WE extends Game {
     public static void showMainMenu(){
         if (gameplayScreen != null) gameplayScreen.dispose();
         gameplayScreen = null;
-        EngineView.resetInputProcessors();
+        engineView.resetInputProcessors();
         instance.setScreen(mainMenu);
     }
     
@@ -375,6 +376,12 @@ public class WE extends Game {
     public static Console getConsole() {
         return console;
     }
+
+    public static EngineView getEngineView() {
+        return engineView;
+    }
+    
+    
     
         /**
      * updates and render the global things e.g. the console
@@ -382,8 +389,8 @@ public class WE extends Game {
      */
     public static void updateAndRender(float delta) {
         console.update(delta);
-        EngineView.getStage().act(delta);
-        console.render(EngineView.getBatch());
-        EngineView.getStage().draw();
+        engineView.getStage().act(delta);
+        console.render(engineView.getBatch());
+        engineView.getStage().draw();
     }
 }

@@ -30,10 +30,10 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -289,7 +289,7 @@ public class Block extends AbstractGameObject {
     }
     
     @Override
-    public void render(final GameView view, final Camera camera, final AbstractPosition coords) {
+    public void render(final View view, final Camera camera, final AbstractPosition coords) {
         if (!isClipped() && !isHidden()) {
             float scale =0;
             if (WE.getCurrentConfig().useScalePrototype())  //scale if the prototype is activated
@@ -313,7 +313,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position (screen)
      */
     @Override
-    public void render(final GameView view, final int xPos, final int yPos) {
+    public void render(final View view, final int xPos, final int yPos) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
@@ -328,7 +328,7 @@ public class Block extends AbstractGameObject {
     }
 
     @Override
-    public void render(final GameView view, final int xPos, final int yPos, final Color color, float scale) {
+    public void render(final View view, final int xPos, final int yPos, final Color color, float scale) {
         render(view, xPos, yPos, color, scale, Controller.getLightEngine() == null);
     }
     
@@ -341,7 +341,7 @@ public class Block extends AbstractGameObject {
      * @param staticShade makes one side brighter, opposite side darker
      * @param scale the scale factor of the image
      */
-    public void render(final GameView view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
+    public void render(final View view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop) {
@@ -397,7 +397,7 @@ public class Block extends AbstractGameObject {
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param scale
      */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
         Color color = Color.GRAY.cpy();
         if (WE.getCurrentConfig().shouldAutoShade()){
             if (side==Sides.LEFT){
@@ -430,7 +430,7 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale
      */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
+    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
         renderSide(
             view,
             coords.getProjectedPosX() - SCREEN_WIDTH2 + ( side == Sides.RIGHT ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
@@ -448,7 +448,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Sides sidenumb){
+    public void renderSide(final View view, final int xPos, final int yPos, final Sides sidenumb){
         renderSide(view,
             xPos,
             yPos,
@@ -466,7 +466,7 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale if you want to scale it up use scale > 0 else negative values scales down
      */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Sides side, Color color, final float scale){
+    public void renderSide(final View view, final int xPos, final int yPos, final Sides side, Color color, final float scale){
         Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), side));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {
@@ -502,7 +502,7 @@ public class Block extends AbstractGameObject {
         sprite.draw(view.getBatch());
         
         if (WE.getCurrentConfig().debugObjects()){
-            ShapeRenderer sh = view.getIgShRender();
+            ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();

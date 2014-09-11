@@ -313,7 +313,7 @@ public class LightEngine {
         if (renderData) {
             
             //g.setLineWidth(2);
-            ShapeRenderer shR = view.getIgShRender();
+            ShapeRenderer shR = view.getShapeRenderer();
             
             //surrounding sphere
             Gdx.gl10.glLineWidth(2);

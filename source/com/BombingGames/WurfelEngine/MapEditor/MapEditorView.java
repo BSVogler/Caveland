@@ -32,7 +32,6 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
@@ -357,6 +356,6 @@ public class MapEditorView extends GameView {
 
     @Override
     public void onEnter() {
-        EngineView.addInputProcessor(new MapEditorInputListener(this.controller, this));
+        WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
     }
 }

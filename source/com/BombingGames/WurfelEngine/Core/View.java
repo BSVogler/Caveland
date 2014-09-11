@@ -29,67 +29,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import java.io.IOException;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class MapButton extends TextButton {
-
-    public MapButton(String fileName) {
-        super("",WE.getEngineView().getSkin());
-        //read description and map name
-        setColor(Color.LIGHT_GRAY.cpy());
-        setName(fileName);
-        setSize(150, 50);
-        MapMetaData meta;
-        try {
-            meta = new MapMetaData(fileName);
-            setText("/"+fileName+"/ "+meta.getMapName());
-            if (!"".equals(meta.getDescription()))
-                add(meta.getDescription());
-            else{
-                add("no description found");
-            }
-        } catch (IOException ex) {
-            setText("/"+fileName+"/ Error reading file");
-            setColor(Color.GRAY.cpy());
-        }
-        addListener(new ButtonChangeListener(this));
-    }
-
+public abstract class View {
+    private int drawmode;
     
-    @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
-        WE.getEngineView().getFont().setColor(Color.GRAY.cpy());
-        super.draw(batch, parentAlpha);
-                
-        //missing: background
-        //selection?
-    }
-
-    private static class ButtonChangeListener extends ChangeListener {
-        private final MapButton parent;
-
-        protected ButtonChangeListener(MapButton parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-            Controller.loadMap(parent.getName());
-        }
-    }
     
+    public abstract SpriteBatch getBatch();
+    public abstract ShapeRenderer getShapeRenderer();
+
+    /**
+     *
+     * @return
+     */
+    public int getDrawmode() {
+        return drawmode;
+    }
+
+    /**
+     *The batch must be began before claling this method.
+     * @param batch
+     * @param drawmode
+     */
+    public void setDrawmode(final SpriteBatch batch, final int drawmode) {
+        if (drawmode != this.drawmode){
+            this.drawmode = drawmode;
+            batch.end();
+            //GameObject.getSpritesheet().getFullImage().endUse();
+            Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, drawmode);
+            //GameObject.getSpritesheet().getFullImage().startUse();
+            batch.begin();
+        }
+    }
     
 }

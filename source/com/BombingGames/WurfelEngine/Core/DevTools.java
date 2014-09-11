@@ -117,8 +117,8 @@ public class DevTools {
         if (visible){
             
             if (view instanceof MapEditorView) {
-                EngineView.getStage().getActors().removeValue(editorbutton, false);
-                EngineView.getStage().getActors().removeValue(editorreversebutton, false);
+                WE.getEngineView().getStage().getActors().removeValue(editorbutton, false);
+                WE.getEngineView().getStage().getActors().removeValue(editorreversebutton, false);
             } else {
                 showEditorButtons(view);
             }
@@ -128,7 +128,7 @@ public class DevTools {
             view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30);
             
             //draw diagramm
-            ShapeRenderer shr = EngineView.getShapeRenderer();
+            ShapeRenderer shr = WE.getEngineView().getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);

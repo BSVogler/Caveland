@@ -48,17 +48,17 @@ import com.badlogic.gdx.utils.Array;
  * @author Benedikt Vogler
  * @since 1.2.26
  */
-public class EngineView {
-    private static SpriteBatch batch;    
-    private static ShapeRenderer shapeRenderer;
-    private static BitmapFont font;
-    private static Stage stage;//the stage used for view-independetn things
-    private static Skin skin;
-    private static Pixmap cursor;
-    private static InputMultiplexer inpMulPlex;
-    private static Array<InputProcessor> inactiveInpProcssrs;
+public class EngineView extends View {
+    private SpriteBatch batch;    
+    private ShapeRenderer shapeRenderer;
+    private BitmapFont font;
+    private Stage stage;//the stage used for view-independetn things
+    private Skin skin;
+    private Pixmap cursor;
+    private InputMultiplexer inpMulPlex;
+    private Array<InputProcessor> inactiveInpProcssrs;
     
-    public static void init(){
+    public void init(){
         Gdx.app.debug("EngineView","Initializing...");
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
@@ -83,18 +83,18 @@ public class EngineView {
     /**
      * Resets the input processors.
      */
-    public static void resetInputProcessors() {
+    public void resetInputProcessors() {
         Gdx.input.setInputProcessor(stage);
         inpMulPlex = null;
         inactiveInpProcssrs = null;
-        addInputProcessor(EngineView.getStage());
+        addInputProcessor(getStage());
     }
     
     /**
      * Add an inputProcessor to the views.
      * @param processor 
      */
-    public static void addInputProcessor(final InputProcessor processor){
+    public void addInputProcessor(final InputProcessor processor){
         inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
         inpMulPlex.addProcessor(processor);
         Gdx.input.setInputProcessor(inpMulPlex);
@@ -106,7 +106,7 @@ public class EngineView {
      * @see #unfocusInputProcessor() 
      * @since V1.2.21
      */
-    public static void focusInputProcessor(final InputProcessor processor){
+    public void focusInputProcessor(final InputProcessor processor){
         inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
         Gdx.input.setInputProcessor(stage); //reset
         addInputProcessor(processor);//add the focus
@@ -117,7 +117,7 @@ public class EngineView {
      * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
      * @since V1.2.21
      */
-    public static void unfocusInputProcessor(){
+    public void unfocusInputProcessor(){
         Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
         Gdx.input.setInputProcessor(stage); //reset
         for (InputProcessor ip : inactiveInpProcssrs) {
@@ -129,7 +129,7 @@ public class EngineView {
      * 
      * @return
      */
-    public static BitmapFont getFont() {
+    public BitmapFont getFont() {
         return font;
     }
     
@@ -137,7 +137,8 @@ public class EngineView {
      *y-down
      * @return
      */
-    public static SpriteBatch getBatch() {
+    @Override
+    public SpriteBatch getBatch() {
         return batch;
     }
     
@@ -145,7 +146,8 @@ public class EngineView {
      * Y-down
      * @return
      */
-    public static ShapeRenderer getShapeRenderer() {
+    @Override
+    public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
     
@@ -154,7 +156,7 @@ public class EngineView {
      *
      * @return a view independent stage
      */
-    public static Stage getStage() {
+    public Stage getStage() {
         return stage;
     }
 
@@ -162,7 +164,7 @@ public class EngineView {
      *
      * @return
      */
-    public static Skin getSkin() {
+    public Skin getSkin() {
         return skin;
     }
 
@@ -170,7 +172,7 @@ public class EngineView {
      * 
      * @return 
      */
-    static Pixmap getCursor() {
+    public Pixmap getCursor() {
         return cursor;
     }
     

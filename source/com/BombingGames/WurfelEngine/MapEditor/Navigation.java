@@ -50,7 +50,7 @@ public class Navigation {
      */
     protected void render(GameView view){
             //draw layer navigation  on right side
-            ShapeRenderer sh = view.getIgShRender();
+            ShapeRenderer sh = view.getShapeRenderer();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(3);

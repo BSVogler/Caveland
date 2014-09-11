@@ -112,7 +112,7 @@ public class Console {
         textinput.setCursorPosition(0);
         textinput.setVisible(false);
         
-        EngineView.getStage().addActor(textinput);//add it to the global stage
+        WE.getEngineView().getStage().addActor(textinput);//add it to the global stage
     }
 
     public void setGameplayRef(GameplayScreen gameplayRef) {
@@ -192,8 +192,8 @@ public class Console {
             }
             
             //draw
-            EngineView.getFont().setColor(color);
-            EngineView.getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
+            WE.getEngineView().getFont().setColor(color);
+            WE.getEngineView().getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
             y+=20;
         }
         batch.end();
@@ -217,11 +217,11 @@ public class Console {
         
         if (active && !textinput.isVisible()){//window should be opened?
             inputprocessor = new StageInputProcessor(this);
-            EngineView.getStage().addListener(inputprocessor);
-            EngineView.getStage().setKeyboardFocus(textinput);
+            WE.getEngineView().getStage().addListener(inputprocessor);
+            WE.getEngineView().getStage().setKeyboardFocus(textinput);
         }else {
-            EngineView.getStage().removeListener(inputprocessor);
-            EngineView.getStage().setKeyboardFocus(null);
+            WE.getEngineView().getStage().removeListener(inputprocessor);
+            WE.getEngineView().getStage().setKeyboardFocus(null);
             String inputText = textinput.getText();
             if (inputText.length()>0) inputText = inputText.substring(0, textinput.getText().length()-1);
             setText(inputText);//hack to prevent the key to open/clsoe to appear

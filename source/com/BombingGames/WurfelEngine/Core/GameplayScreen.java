@@ -111,7 +111,7 @@ public class GameplayScreen implements Screen{
         controller.update(delta);
         view.update(delta);
         view.render();
-        EngineView.getStage().draw();
+        WE.getEngineView().getStage().draw();
 
         WE.updateAndRender(delta);
     }
@@ -121,12 +121,12 @@ public class GameplayScreen implements Screen{
         Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
         view.resize(width, height);
         Gdx.gl.glViewport(0, 0, width,height);
-        EngineView.getStage().setViewport(width, height);
+        WE.getEngineView().getStage().setViewport(width, height);
     }
 
     @Override
     public void show() {
-        EngineView.resetInputProcessors();
+        WE.getEngineView().resetInputProcessors();
         GameView.classInit();
         this.controller.init();
         this.view.init(controller);

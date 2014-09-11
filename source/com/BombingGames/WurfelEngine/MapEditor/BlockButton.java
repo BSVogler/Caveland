@@ -31,69 +31,39 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class BlockSelector extends Table {
+public class BlockButton extends Button {
+    private Block block;
 
-    public BlockSelector() {
+    public BlockButton(int id) {
+        super(WE.getEngineView().getSkin());
+        this.block = Block.getInstance(id,0,new Coordinate(0, 0, 0, true));
+        setHeight(160);
+        setWidth(160);
+        setBounds(0, 0, 160, 160);
+    }
 
-        Table table = new Table();
-        table.pad(10).defaults().expandX().space(4);
-        for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
-            table.row();
-            table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 
-            Button button = new BlockButton(i);
-            //button.setStyle(style);
-            table.add(button);
-
-            table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
-        }
-        final ScrollPane scroll = new ScrollPane(table, WE.getEngineView().getSkin());
-        setWidth(400);
-        setHeight(Gdx.graphics.getHeight()-100);
-        setColor(Color.RED);
-        setPosition(-300, 0);
-        add(scroll).expand().fill().colspan(4);
-        addListener(new BlockSelIP(this));
+    @Override
+    public void draw(SpriteBatch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        block.render(WE.getEngineView(), (int) getX(), (int) getY(), Color.GRAY.cpy(), 0, true);
     }
     
-    public void show(){
-        setX(0);
-    }
     
-    public void hide(){
-        setX(-getWidth()*2/3f);
-    }
+   
     
-     private class BlockSelIP extends InputListener {
-        private BlockSelector parentRef;
-
-        private BlockSelIP(BlockSelector parent) {
-            this.parentRef = parent;
-        }
-
-        @Override
-        public boolean mouseMoved(InputEvent event, float x, float y) {
-            parentRef.show();
-            return false;
-        }
-        
-    }
+  
+    
     
 }

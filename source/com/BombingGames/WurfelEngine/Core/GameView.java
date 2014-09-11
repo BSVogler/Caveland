@@ -313,7 +313,7 @@ public class GameView implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos) {
         EngineView.getBatch().begin();
-        setDrawmode(batch, GL10.GL_MODULATE);
+        setDrawmode(EngineView.getBatch(), GL10.GL_MODULATE);
         EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
         EngineView.getBatch().end();
     }
@@ -328,7 +328,7 @@ public class GameView implements GameManager {
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
         EngineView.getBatch().setColor(color);
         EngineView.getBatch().begin();
-        setDrawmode(batch, GL10.GL_MODULATE);
+        setDrawmode(EngineView.getBatch(), GL10.GL_MODULATE);
         EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
         EngineView.getBatch().end();
     }

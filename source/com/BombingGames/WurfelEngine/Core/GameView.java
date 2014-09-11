@@ -184,7 +184,7 @@ public class GameView implements GameManager {
             hudCamera.update();
             hudCamera.apply(Gdx.gl10);
 
-            getBatch().setProjectionMatrix(hudCamera.combined);
+            batch.setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
             EngineView.getShapeRenderer().setProjectionMatrix(hudCamera.combined);
             Gdx.gl10.glLineWidth(1);
@@ -312,10 +312,10 @@ public class GameView implements GameManager {
      * @param yPos
      */
     public void drawString(final String msg, final int xPos, final int yPos) {
-        EngineView.getBatch().begin();
-        setDrawmode(EngineView.getBatch(), GL10.GL_MODULATE);
-        EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
-        EngineView.getBatch().end();
+        batch.begin();
+        setDrawmode(batch, GL10.GL_MODULATE);
+        EngineView.getFont().draw(batch, msg, xPos, yPos);
+        batch.end();
     }
     
     /**
@@ -326,11 +326,11 @@ public class GameView implements GameManager {
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
-        EngineView.getBatch().setColor(color);
-        EngineView.getBatch().begin();
-        setDrawmode(EngineView.getBatch(), GL10.GL_MODULATE);
-        EngineView.getFont().draw(EngineView.getBatch(), msg, xPos, yPos);
-        EngineView.getBatch().end();
+        batch.setColor(color);
+        batch.begin();
+        setDrawmode( batch, GL10.GL_MODULATE);
+        EngineView.getFont().draw( batch, msg, xPos, yPos);
+        batch.end();
     }
     
     /**
@@ -343,16 +343,16 @@ public class GameView implements GameManager {
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
         EngineView.getFont().setColor(Color.BLACK);
         EngineView.getFont().setScale(1.01f);
-        EngineView.getBatch().begin();
+        batch.begin();
         setDrawmode(batch, GL10.GL_MODULATE);
-        EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
-        EngineView.getBatch().end();
+        EngineView.getFont().drawMultiLine(batch, text, xPos, yPos);
+        batch.end();
         
         EngineView.getFont().setColor(Color.WHITE);
         EngineView.getFont().setScale(1f);
-        EngineView.getBatch().begin();
-        EngineView.getFont().drawMultiLine(EngineView.getBatch(), text, xPos, yPos);
-        EngineView.getBatch().end();
+        batch.begin();
+        EngineView.getFont().drawMultiLine(batch, text, xPos, yPos);
+        batch.end();
     }
 
 

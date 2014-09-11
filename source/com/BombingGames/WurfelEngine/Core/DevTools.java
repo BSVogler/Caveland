@@ -117,8 +117,8 @@ public class DevTools {
         if (visible){
             
             if (view instanceof MapEditorView) {
-                view.getStage().getActors().removeValue(editorbutton, false);
-                view.getStage().getActors().removeValue(editorreversebutton, false);
+                EngineView.getStage().getActors().removeValue(editorbutton, false);
+                EngineView.getStage().getActors().removeValue(editorreversebutton, false);
             } else {
                 showEditorButtons(view);
             }

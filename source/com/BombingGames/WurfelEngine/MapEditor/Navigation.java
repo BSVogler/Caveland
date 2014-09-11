@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -51,7 +50,7 @@ public class Navigation {
      */
     protected void render(GameView view){
             //draw layer navigation  on right side
-            ShapeRenderer sh = EngineView.getShapeRenderer();
+            ShapeRenderer sh = view.getIgShRender();
             Gdx.gl.glEnable(GL10.GL_BLEND);
             Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(3);

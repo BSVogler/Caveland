@@ -53,7 +53,7 @@ public class BlockSelector extends Table {
 
         Table table = new Table();
         table.pad(10).defaults().expandX().space(4);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
             table.row();
             table.add(new Label(Integer.toString(i), EngineView.getSkin())).expandX().fillX();
 

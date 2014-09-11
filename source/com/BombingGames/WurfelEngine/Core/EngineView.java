@@ -58,7 +58,7 @@ public class EngineView extends View {
     private InputMultiplexer inpMulPlex;
     private Array<InputProcessor> inactiveInpProcssrs;
     
-    public void init(){
+    public EngineView(){
         Gdx.app.debug("EngineView","Initializing...");
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font

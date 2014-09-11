@@ -143,7 +143,7 @@ public class WE extends Game {
         }
         Gdx.app.debug("WE","Initializing main menu...");
         mainMenu.init();
-        engineView.init();
+        engineView = new EngineView();
         setScreen(mainMenu);
         
         console = new Console(

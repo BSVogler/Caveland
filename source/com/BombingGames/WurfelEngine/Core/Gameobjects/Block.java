@@ -169,7 +169,7 @@ public class Block extends AbstractGameObject {
                     if (WE.getCurrentConfig().getBlockFactoy()!=null){
                         block = WE.getCurrentConfig().getBlockFactoy().produce(id, value, coords);
                     } else {
-                        Gdx.app.error("Block", "Tried creating of custom block but there was no custom blockfactory found. Tried using a default block.");
+                        Gdx.app.error("Block", "No custom blockFactory found for "+id+". Using a default block instead.");
                         block = new Block(id);
                     }
                 } else {

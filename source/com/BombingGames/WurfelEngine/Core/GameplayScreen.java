@@ -120,6 +120,8 @@ public class GameplayScreen implements Screen{
     public void resize(final int width, final int height) {
         Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
         view.resize(width, height);
+        Gdx.gl.glViewport(0, 0, width,height);
+        EngineView.getStage().setViewport(width, height);
     }
 
     @Override

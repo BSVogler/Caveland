@@ -400,9 +400,7 @@ public class GameView implements GameManager {
             camera.resize(width, height);
         }
         stage.setViewport(width, height);
-        EngineView.getStage().setViewport(width, height);
         hudCamera.setToOrtho(false, width, height);
-        Gdx.gl.glViewport(0, 0, width,height);
     }
 
     /**

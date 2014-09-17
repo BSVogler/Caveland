@@ -36,34 +36,24 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class BlockButton extends Button {
+public class BlockDrawable extends TextureRegionDrawable {
     private Block block;
 
-    public BlockButton(int id) {
-        super(WE.getEngineView().getSkin());
+    public BlockDrawable(int id) {
         this.block = Block.getInstance(id,0,new Coordinate(0, 0, 0, true));
-        setHeight(160);
-        setWidth(160);
-        setBounds(0, 0, 160, 160);
     }
+
 
 
     @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        block.render(WE.getEngineView(), (int) getX(), (int) getY(), Color.GRAY.cpy(), 0, true);
+    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+        block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), -0.8f, true);
     }
-    
-    
-   
-    
-  
-    
     
 }

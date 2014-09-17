@@ -43,6 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
  *
@@ -58,7 +59,8 @@ public class BlockSelector extends Table {
             table.row();
             table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 
-            Button button = new BlockButton(i);
+            Drawable dbl = new BlockDrawable(i);
+            Button button = new Button(dbl);
             //button.setStyle(style);
             table.add(button);
 

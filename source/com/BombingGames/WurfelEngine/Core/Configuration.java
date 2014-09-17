@@ -124,7 +124,7 @@ public class Configuration {
      * @return
      */
     public boolean useLightEngine() {
-        return false;
+        return true;
     }
     
     /**
@@ -140,7 +140,7 @@ public class Configuration {
      * @return if it should autoshade it should return true
      */
     public boolean shouldAutoShade() {
-        return true;
+        return false;
     }
     
 //    /**
@@ -219,7 +219,7 @@ public class Configuration {
      * @return Render box around sprites?
      */
     public boolean debugObjects(){
-        return false;
+        return true;
     }
     
     /**

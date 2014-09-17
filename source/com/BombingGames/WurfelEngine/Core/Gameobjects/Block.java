@@ -317,11 +317,11 @@ public class Block extends AbstractGameObject {
         if (!isClipped() && !isHidden()) {
             if (hasSides) {
                 if (!clippedTop)
-                    renderSide(view, xPos, yPos, Sides.TOP);
+                    renderSide(view, xPos, yPos+(SCREEN_HEIGHT+SCREEN_DEPTH), Sides.TOP);
                 if (!clippedLeft)
-                    renderSide(view, xPos, yPos+SCREEN_WIDTH4, Sides.LEFT);
+                    renderSide(view, xPos, yPos, Sides.LEFT);
                 if (!clippedRight)
-                    renderSide(view, xPos+SCREEN_WIDTH2, yPos+SCREEN_WIDTH4, Sides.RIGHT);
+                    renderSide(view, xPos+SCREEN_WIDTH2, yPos, Sides.RIGHT);
                 } else
                     super.render(view, xPos, yPos);
         }
@@ -348,7 +348,7 @@ public class Block extends AbstractGameObject {
                     renderSide(
                         view,
                         (int) (xPos-SCREEN_WIDTH2*(1+scale)),
-                        (int) (yPos-(SCREEN_HEIGHT2+SCREEN_DEPTH2)*(1+scale)),
+                        (int) (yPos+SCREEN_HEIGHT*(1+scale)),
                         Sides.TOP,
                         color,
                         scale
@@ -363,7 +363,7 @@ public class Block extends AbstractGameObject {
                     renderSide(
                         view,
                         (int) (xPos-SCREEN_WIDTH2*(1+scale)),
-                        (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
+                        yPos,
                         Sides.LEFT,
                         color,
                         scale
@@ -378,7 +378,7 @@ public class Block extends AbstractGameObject {
                     renderSide(
                         view,
                         xPos,
-                        (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
+                        yPos,
                         Sides.RIGHT,
                         color,
                         scale
@@ -413,7 +413,7 @@ public class Block extends AbstractGameObject {
         if (WE.getCurrentConfig().useFog()){
             color.mul(
                 (float) (0.5f+Math.exp(
-                    (camera.getVisibleTopBorder()-coords.getCoord().getRelY())*0.05f+1
+                    (camera.getVisibleBackBorder()-coords.getCoord().getRelY())*0.05f+1
                 ))
             );
         }
@@ -434,7 +434,7 @@ public class Block extends AbstractGameObject {
         renderSide(
             view,
             coords.getProjectedPosX() - SCREEN_WIDTH2 + ( side == Sides.RIGHT ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getProjectedPosY() - SCREEN_HEIGHT - ( side == Sides.TOP ? (int) (SCREEN_DEPTH2*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getProjectedPosY() - SCREEN_HEIGHT + ( side == Sides.TOP ? (int) (SCREEN_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale

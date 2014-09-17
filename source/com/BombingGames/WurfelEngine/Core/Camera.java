@@ -61,9 +61,9 @@ public class Camera{
     /** the position of the camera **/
     private final Vector3 position = new Vector3();
     /** the unit length direction vector of the camera **/
-    private final Vector3 direction = new Vector3(0, 0, 1);
+    private final Vector3 direction = new Vector3(0, 0, -1);
     /** the unit length up vector of the camera **/
-    private final Vector3 up = new Vector3(0, -1, 0);
+    private final Vector3 up = new Vector3(0, 1, 0);
 
     /** the projection matrix **/
     private final Matrix4 projection = new Matrix4();
@@ -78,7 +78,7 @@ public class Camera{
     /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
     private int screenPosX, screenPosY;
     
-    /** the position in the game world but projected*/
+    /** the position in the game world but projected. Y-up*/
     private int projectionPosX, projectionPosY;
     private float zoom = 1;
     
@@ -141,8 +141,8 @@ public class Camera{
         fixChunk = Controller.getMap().getChunkCoords(0);
         
         //set the camera's focus to the center of the map
-        projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
-        projectionPosY = Map.getCenter().getProjectedPosY() - getViewportHeight() / 2;
+        projectionPosX = Map.getCenter().getProjectedPosX() - getProjectionWidth() / 2;
+        projectionPosY = Map.getCenter().getProjectedPosY() - getProjectionHeight() / 2;
         
         groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//set the ground level groundBlock
         groundBlock.setSideClipping(Sides.LEFT, true);
@@ -190,11 +190,11 @@ public class Camera{
     public void update() {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
-            projectionPosX = focusCoordinates.getProjectedPosX() - getViewportWidth() / 2;
-            projectionPosY = focusCoordinates.getProjectedPosY() - getViewportHeight() / 2;
+            projectionPosX = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2;
+            projectionPosY = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
         } else if (focusEntity != null ){
-            projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2;            
-            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 -focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
+            projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2;            
+            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 -focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
         } else {
             //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);
@@ -205,7 +205,7 @@ public class Camera{
             fixChunk = currentTopLeftChunk.clone();
         }
         
-        position.set(projectionPosX+ getViewportWidth()/2 , projectionPosY+ getViewportHeight()/2 , 0); 
+        position.set(projectionPosX+ getProjectionWidth()/2 , projectionPosY+ getProjectionHeight()/2 , 0); 
         view.setToLookAt(position, new Vector3(position).add(direction), up);//move camera to the focus 
        
         //orthographic camera, libgdx stuff
@@ -253,17 +253,17 @@ public class Camera{
             //render ground layer tiles if visible
             int left = getVisibleLeftBorder();
             int right = getVisibleRightBorder();
-            int top = getVisibleBackBorder();
-            int bottom = getVisibleFrontBorder();
+            int back = getVisibleBackBorder();
+            int front = getVisibleFrontBorder();
         
             for (int x = left; x < right; x++) {
-                for (int y = top; y < bottom; y++) {
+                for (int y = back; y < front; y++) {
                     if (bottomLayerVisibility[x][y]){
                         Coordinate tmpCoord = new Coordinate(x, y, -1, true);
                         if (//inside view frustum?
                             (tmpCoord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
                             <
-                            (projectionPosY + getViewportHeight())//camera's bottom
+                            (projectionPosY + getProjectionHeight())//camera's bottom
                         ) {
                             groundBlock.render(view, this, tmpCoord);
                         }
@@ -299,11 +299,11 @@ public class Camera{
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();
-        int top = getVisibleBackBorder();
-        int bottom = getVisibleFrontBorder();
+        int back = getVisibleBackBorder();
+        int front = getVisibleFrontBorder();
         
         for (int x = left; x < right; x++)//only objects in view frustum
-            for (int y = top; y < bottom; y++){
+            for (int y = back; y < front; y++){
                 
                 //add blocks
                 for (int z=0; z < zRenderingLimit; z++){//add vertical until renderlimit
@@ -313,13 +313,13 @@ public class Camera{
                     if (! blockAtCoord.isHidden()//render if not hidden
                         && !blockAtCoord.isClipped() //nor clipped
                         &&                          //inside view frustum?
-                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT/2)//bottom of sprite
+                            (projectionPosY + getProjectionHeight())//camera's top
                             >
-                            projectionPosY//camera's top
+                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
                         &&                                  //inside view frustum?
-                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
-                            <
-                            (projectionPosY + getViewportHeight())//camera's bottom
+                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+                            >
+                            projectionPosY//camera's bottom
 
                     ) {
                         depthsort.add(new RenderDataDTO(blockAtCoord, coord));
@@ -332,7 +332,7 @@ public class Camera{
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
             if (!entity.isHidden() && !entity.isClipped()
                 && 
-                entity.getPos().getProjectedPosY() < projectionPosY + getViewportHeight()
+                entity.getPos().getProjectedPosY() < projectionPosY + getProjectionHeight()
                 &&
                 entity.getPos().getZ() < zRenderingLimit
                 )
@@ -649,10 +649,10 @@ public class Camera{
      * @return measured in grid-coordinates 
      */
     public int getVisibleLeftBorder(){
-        int leftborder = projectionPosX / AbstractGameObject.SCREEN_WIDTH;
-        if (leftborder < 0) return 0;//clamp
+        int left = projectionPosX / AbstractGameObject.SCREEN_WIDTH;
+        if (left < 0) return 0;//clamp
         
-        return leftborder;
+        return left;
     }
     
     /**
@@ -660,10 +660,10 @@ public class Camera{
      * @return measured in grid-coordinates
      */
     public int getVisibleRightBorder(){
-        int rightborder = (projectionPosX + getViewportWidth()) / AbstractGameObject.SCREEN_WIDTH + 2;
-        if (rightborder >= Map.getBlocksX()) return Map.getBlocksX()-1;//clamp
+        int right = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 2;
+        if (right >= Map.getBlocksX()) return Map.getBlocksX()-1;//clamp
 
-        return rightborder;
+        return right;
     }
     
     /**
@@ -671,10 +671,10 @@ public class Camera{
      * @return measured in grid-coordinates
      */
     public int getVisibleBackBorder(){    
-        int topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2-1;
-        if (topborder < 0) return 0;//clamp
+        int back = Map.getBlocksY()-1-((projectionPosY+getProjectionHeight()) / AbstractGameObject.SCREEN_DEPTH2)-3;
+        if (back < 0) return 0;//clamp
         
-        return topborder;
+        return back;
     }
     
      /**
@@ -682,25 +682,25 @@ public class Camera{
      * @return measured in grid-coordinates, relative to map
      */
     public int getVisibleFrontBorder(){
-        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ()*2+2;
-        if (bottomborder >= Map.getBlocksY()) return Map.getBlocksY()-1;//clamp
+        int front = Map.getBlocksY()-1-((projectionPosY) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ()*2)+2;
+        if (front >= Map.getBlocksY()) return Map.getBlocksY()-1;//clamp
         
-        return bottomborder;
+        return front;
     }
     
   /**
      * The Camera Position in the game world.
-     * @return in pixels
+     * @return game in pixels
      */
-    public int getViewportPosX() {
+    public int getProjectionPosX() {
         return projectionPosX;
     }
 
     /**
      * The Camera left Position in the game world.
-     * @param x in pixels
+     * @param x game in pixels
      */
-    public void setViewportPosX(int x) {
+    public void setProjectionPosX(int x) {
         this.projectionPosX = x;
     }
 
@@ -708,7 +708,7 @@ public class Camera{
      * The Camera top-position in the game world.
      * @return in camera position game space
      */
-    public int getViewportPosY() {
+    public int getProjectionPosY() {
         return projectionPosY;
     }
 
@@ -716,7 +716,7 @@ public class Camera{
      * The Camera top-position in the game world.
      * @param y in game space
      */
-    public void setViewportPosY(int y) {
+    public void setProjectionPosY(int y) {
         this.projectionPosY = y;
     }
 
@@ -725,15 +725,15 @@ public class Camera{
  For screen pixels use <i>ViewportWidth()</i>.
      * @return in pixels
      */
-    public final int getViewportWidth() {
+    public final int getProjectionWidth() {
         return (int) (screenWidth / getScaling());
     }
     
   /**
     * The amount of pixel which are visible in Y direction (game pixels). For screen pixels use <i>ViewportHeight()</i>.
-    * @return  in pixels
+    * @return in pixels
     */
-   public final int getViewportHeight() {
+   public final int getProjectionHeight() {
         return (int) (screenHeight / getScaling());
     }
 

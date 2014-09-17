@@ -202,8 +202,8 @@ public class Point extends AbstractPosition {
 
     @Override
     public int getProjectedPosY() {
-        return (int) (getRelY() / 2) //add the objects position inside this coordinate
-               - (int) (getHeight() * SQRT12); //take z-axis shortening into account
+        return (int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
+               + (int) (getHeight() * SQRT12); //take z-axis shortening into account
     }
     
     @Override

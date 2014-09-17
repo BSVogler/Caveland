@@ -75,10 +75,10 @@ public class Selection extends AbstractEntity {
      */
     public void setNormal(Sides side){
         if (side == Sides.LEFT)
-            normal.setRotation(-120);
+            normal.setRotation(120);
         else if (side == Sides.TOP)
             normal.setRotation(0);
         if (side == Sides.RIGHT)
-            normal.setRotation(120);
+            normal.setRotation(-120);
     }
 }

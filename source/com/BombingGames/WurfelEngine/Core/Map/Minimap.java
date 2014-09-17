@@ -192,54 +192,48 @@ public class Minimap {
                 -scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
             );
             
+            //ground level
             sh.setColor(Color.GREEN);
+            sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
             sh.rect(
-                scaleX * camera.getViewportPosX() / Block.GAME_DIAGLENGTH,
-                -scaleY * camera.getViewportPosY() / Block.GAME_DIAGLENGTH2,
-                scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
-                -scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
+                scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+                scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
+                scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+                scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
             );
 
             //player level getCameras() rectangle
             if (controller.getPlayer()!=null){
                 sh.setColor(Color.GRAY);
                 sh.rect(
-                    scaleX * camera.getViewportPosX() / Block.SCREEN_WIDTH,
-                    - scaleY * camera.getViewportPosY() / Block.SCREEN_DEPTH2
-                        - scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT2)/ Block.SCREEN_DEPTH,
-                    scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
-                    scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
+                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+                        + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
                 );
             }
 
             //top level getCameras() rectangle
             sh.setColor(Color.WHITE);
             sh.rect(
-                scaleX * camera.getViewportPosX() / Block.SCREEN_WIDTH,
-                - scaleY * camera.getViewportPosY() / Block.SCREEN_DEPTH2
-                    - scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_DEPTH2)/ Block.SCREEN_DEPTH,
-                scaleX*camera.getViewportWidth() / Block.GAME_DIAGLENGTH,
-                scaleY*2*camera.getViewportHeight() / Block.GAME_DIAGLENGTH2
+                scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+                scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+                    -scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+                scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+                scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
             );
+            sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
             sh.end();
             
-//            view.drawString(
-//                    camera.getOutputPosX()+" | "+ camera.getOutputPosY(),
-//                    (int) (viewportPosX + scaleX * camera.getOutputPosX() / Block.SCREEN_WIDTH
-//                    + scaleX*camera.get2DWidth() / Block.SCREEN_WIDTH),
-//                    (int) (viewportPosY + scaleY * camera.getOutputPosY() / Block.SCREEN_DEPTH2
-//                    + scaleY*camera.get2DHeight() / Block.SCREEN_DEPTH2),
-//                    Color.BLACK
-//                );
-
             if (controller.getPlayer()!=null){
 
                 Point tmpPos = controller.getPlayer().getPos();
                 //player coordinate
                 view.drawString(
                     tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    (int) (posX + (tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (posY - tmpPos.getCoord().getRelY() * scaleY + 10),
+                    (int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
+                    (int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
                     Color.RED
                 );
                 int rectX = (int) (
@@ -251,17 +245,17 @@ public class Minimap {
                 
                 view.drawString(
                     tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    rectX,
-                    rectY,
+                    posX+rectX,
+                    posY+rectY,
                     Color.RED
                 );
             }
 
             //camera position
             view.drawString(
-                camera.getViewportPosX() +" | "+ camera.getViewportPosY(),
-                0,
-                (int) (- 3*Chunk.getBlocksY()*scaleY + 15),
+                camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
+                posX,
+                (int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
                 Color.WHITE
             );
             sh.translate(-posX, -posY, 0);

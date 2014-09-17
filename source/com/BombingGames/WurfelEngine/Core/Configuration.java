@@ -74,7 +74,7 @@ public class Configuration {
      * @return
      */
     public boolean isChunkSwitchAllowed() {
-        return true;
+        return false;
     }
 
     /**
@@ -124,7 +124,7 @@ public class Configuration {
      * @return
      */
     public boolean useLightEngine() {
-        return true;
+        return false;
     }
     
     /**
@@ -140,7 +140,7 @@ public class Configuration {
      * @return if it should autoshade it should return true
      */
     public boolean shouldAutoShade() {
-        return false;
+        return true;
     }
     
 //    /**

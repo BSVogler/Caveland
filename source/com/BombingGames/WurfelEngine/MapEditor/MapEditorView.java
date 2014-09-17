@@ -87,6 +87,8 @@ public class MapEditorView extends GameView {
             )
         );
         
+        controller.getMinimap().toggleVisibility();
+        
         nav = new Navigation();
         bselector = new BlockSelector();
         getStage().addActor(bselector);
@@ -190,9 +192,9 @@ public class MapEditorView extends GameView {
         
         //manage camera movement
         if (keycode == Input.Keys.W)
-            view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
-        if (keycode == Input.Keys.S)
             view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
+        if (keycode == Input.Keys.S)
+            view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
         if (keycode == Input.Keys.A)
             view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
         if (keycode == Input.Keys.D)

@@ -228,13 +228,13 @@ public class GameView extends View implements GameManager {
     }
     
    /**
-     * Reverts the perspective and transforms it into a coordiante which can be used in the game logic.
-     * @param y the y position on the screen
+     * Reverts the projection and transforms it into a coordiante which can be used in the game logic.
+     * @param y the y position on the screen. y down
      * @param camera the camera where the position is on
      * @return the relative game coordinate
      */
     public float screenYtoGame(final int y, final Camera camera){
-        return (y / camera.getScaling() + camera.getProjectionPosY())*2 - camera.getScreenPosY();
+        return Map.getGameDepth()-camera.getProjectionPosY()*2 +(y*2 / camera.getScaling())- camera.getScreenPosY()-camera.getScreenHeight()*2;
     }
     
     /**

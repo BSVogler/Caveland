@@ -347,7 +347,7 @@ public class Block extends AbstractGameObject {
                 if (!clippedTop) {
                     renderSide(
                         view,
-                        xPos-SCREEN_WIDTH2,
+                        (int) (xPos-SCREEN_WIDTH2*(1+scale)),
                         (int) (yPos-(SCREEN_HEIGHT2+SCREEN_DEPTH2)*(1+scale)),
                         Sides.TOP,
                         color,
@@ -362,7 +362,7 @@ public class Block extends AbstractGameObject {
                     }
                     renderSide(
                         view,
-                        xPos-SCREEN_WIDTH2,
+                        (int) (xPos-SCREEN_WIDTH2*(1+scale)),
                         (int) (yPos-SCREEN_HEIGHT2*(1+scale)),
                         Sides.LEFT,
                         color,

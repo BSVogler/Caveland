@@ -100,8 +100,9 @@ public class Weapon {
     public Weapon(int id, AbstractCharacter parent) {
         this.id = id;
         this.parent = parent;
-        
-        laserdot = new SimpleEntity(20, parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
+        if (parent != null) {
+            laserdot = new SimpleEntity(20, parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
+        }
         
         switch (id){
             case 0:

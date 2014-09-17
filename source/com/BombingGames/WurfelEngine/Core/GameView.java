@@ -194,17 +194,19 @@ public class GameView extends View implements GameManager {
             
             controller.getDevTools().render(this);
 
+            if (controller.getMinimap() != null)
+                controller.getMinimap().render(this); 
+             
+            if (Controller.getLightEngine() != null)
+                Controller.getLightEngine().render(this);
+            
+            
             //render buttons
             stage.draw();
 
             //scale to fit
             //hudCamera.zoom = 1/equalizationScale;
 
-            if (Controller.getLightEngine() != null)
-                Controller.getLightEngine().render(this);
-
-            if (controller.getMinimap() != null)
-                controller.getMinimap().render(this); 
         }
     }
        

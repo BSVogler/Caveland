@@ -44,6 +44,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     private Point point;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
+    private boolean existing;
    
     /**
      * Create an abstractEntity.
@@ -104,7 +105,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     public AbstractEntity exist(){
         Controller.getMap().getEntitys().add(this);
+        existing =true;
         return this;
+    }
+    
+    public boolean existing(){
+        return existing;
     }
   
     /**
@@ -130,6 +136,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         this.dimensionZ = dimensionZ;
     }
     
+    
     /**
      * 
      * @return
@@ -143,6 +150,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     public void dispose(){
         dispose=true;
+        existing=false;
     }
 
     /**

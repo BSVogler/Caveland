@@ -84,7 +84,10 @@ public class Camera{
     
     private Coordinate focusCoordinates;
     private AbstractEntity focusEntity;
-    private int[] relativeChunk;
+    /**
+     * a chunk with an "anchor point"
+     */
+    private int[] fixChunk;
     
     private final Block groundBlock;//the representative of the bottom layer (ground) block
     private boolean fullWindow = false;
@@ -135,7 +138,7 @@ public class Camera{
         screenPosX = x;
         screenPosY = y;
         
-        relativeChunk = Controller.getMap().getChunkCoords(0);
+        fixChunk = Controller.getMap().getChunkCoords(0);
         
         //set the camera's focus to the center of the map
         projectionPosX = Map.getCenter().getProjectedPosX() - getViewportWidth() / 2;
@@ -193,13 +196,13 @@ public class Camera{
             projectionPosX = focusEntity.getPos().getProjectedPosX() - getViewportWidth()/2;            
             projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getViewportHeight()/2 -focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
         } else {
-            //update camera's position according to relativeChunk
+            //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);
-            projectionPosX += (relativeChunk[0]-currentTopLeftChunk[0])*Chunk.getGameWidth();
-            projectionPosY += (relativeChunk[1]-currentTopLeftChunk[1])*Chunk.getGameHeight();
+            projectionPosX += (fixChunk[0]-currentTopLeftChunk[0])*Chunk.getGameWidth();
+            projectionPosY += (fixChunk[1]-currentTopLeftChunk[1])*Chunk.getGameHeight();
             
-            //update relativeChunk
-            relativeChunk = currentTopLeftChunk.clone();
+            //update fixChunk
+            fixChunk = currentTopLeftChunk.clone();
         }
         
         position.set(projectionPosX+ getViewportWidth()/2 , projectionPosY+ getViewportHeight()/2 , 0); 
@@ -250,8 +253,8 @@ public class Camera{
             //render ground layer tiles if visible
             int left = getVisibleLeftBorder();
             int right = getVisibleRightBorder();
-            int top = getVisibleTopBorder();
-            int bottom = getVisibleBottomBorder();
+            int top = getVisibleBackBorder();
+            int bottom = getVisibleFrontBorder();
         
             for (int x = left; x < right; x++) {
                 for (int y = top; y < bottom; y++) {
@@ -296,8 +299,8 @@ public class Camera{
         
         int left = getVisibleLeftBorder();
         int right = getVisibleRightBorder();
-        int top = getVisibleTopBorder();
-        int bottom = getVisibleBottomBorder();
+        int top = getVisibleBackBorder();
+        int bottom = getVisibleFrontBorder();
         
         for (int x = left; x < right; x++)//only objects in view frustum
             for (int y = top; y < bottom; y++){
@@ -667,9 +670,9 @@ public class Camera{
      * Returns the top seight border of the deepest groundBlock
      * @return measured in grid-coordinates
      */
-    public int getVisibleTopBorder(){    
+    public int getVisibleBackBorder(){    
         int topborder = projectionPosY / AbstractGameObject.SCREEN_DEPTH2-1;
-        if (topborder < 0) return 0;
+        if (topborder < 0) return 0;//clamp
         
         return topborder;
     }
@@ -678,8 +681,8 @@ public class Camera{
      * Returns the bottom seight border y-coordinate of the highest groundBlock
      * @return measured in grid-coordinates, relative to map
      */
-    public int getVisibleBottomBorder(){
-        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 + Map.getBlocksZ()*2+2;
+    public int getVisibleFrontBorder(){
+        int bottomborder = (projectionPosY+getViewportHeight()) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ()*2+2;
         if (bottomborder >= Map.getBlocksY()) return Map.getBlocksY()-1;//clamp
         
         return bottomborder;

@@ -136,10 +136,10 @@ public class GameView extends View implements GameManager {
                         Controller.getMap().setCenter(5); //earth to the left
 
                 //scroll up, earth down            
-                if (camera.getVisibleTopBorder() <= 0)
+                if (camera.getVisibleBackBorder() <= 0)
                     Controller.getMap().setCenter(1);
                 else
-                    if (camera.getVisibleBottomBorder() >= Map.getBlocksY()-1)
+                    if (camera.getVisibleFrontBorder() >= Map.getBlocksY()-1)
                         Controller.getMap().setCenter(7); //scroll down, earth up
             }
             camera.update();

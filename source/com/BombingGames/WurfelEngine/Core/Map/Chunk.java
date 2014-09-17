@@ -190,7 +190,10 @@ public class Chunk {
             Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
         } catch (StringIndexOutOfBoundsException ex) {
             Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+        } catch (ArrayIndexOutOfBoundsException ex){
+            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
         }
+        
         return false;
     }
     

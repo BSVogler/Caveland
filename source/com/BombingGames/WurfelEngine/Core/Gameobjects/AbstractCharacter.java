@@ -378,13 +378,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
         } return true;
     }
 
-   @Override
-   public AbstractCharacter exist() {
-       super.exist();
-       // shadow.exist();
-       return this;
-    }
-
     /**
      * Is the character standing in a liquid?
      * @return 

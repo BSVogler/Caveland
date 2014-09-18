@@ -112,9 +112,13 @@ public class GameView extends View implements GameManager {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());//spawn at fullscreen
         
         batch = new SpriteBatch();
+        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.glsl").readString();
+        //shader = new ShaderProgram(vertexShader, fragmentShader);//does not compile??? bug in libGDX?
         batch.setShader(shader);
-        //load cursor
+        
 
+        //load cursor
 
         initalized = true;
     }

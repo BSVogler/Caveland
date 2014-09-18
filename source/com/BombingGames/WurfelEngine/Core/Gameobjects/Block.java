@@ -226,16 +226,16 @@ public class Block extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (Block.getInstance(id,value, new Coordinate(0,0,0,false)).hasSides){    
+            if (Block.getInstance(id,value, new Coordinate(0,0,0,false)).hasSides){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Sides.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
-                    texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()-SCREEN_DEPTH4);
+                    texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()+SCREEN_DEPTH4);
             } else {
                 AtlasRegion texture = getSprite('b', id, value);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
-                    texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()-SCREEN_DEPTH2);
+                    texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()+SCREEN_DEPTH2);
             }
             Color.rgba8888ToColor(colorlist[id][value], colorInt);
             return colorlist[id][value]; 

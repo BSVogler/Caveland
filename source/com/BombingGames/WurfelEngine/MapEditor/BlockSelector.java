@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -54,42 +53,49 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 public class BlockSelector extends Table {
     private Table table;
     private Selection selection;
+    ScrollPane scroll; 
     
     public BlockSelector(Selection selection) {
         this.selection = selection;
-        table = new Table();
-        table.pad(10).defaults().expandX().space(4);
         
-        final ScrollPane scroll = new ScrollPane(table, WE.getEngineView().getSkin());
         setWidth(400);
         setHeight(Gdx.graphics.getHeight()-100);
-        setColor(Color.RED);
         setPosition(-300, 0);
-        add(scroll).expand().fill().colspan(4);
         addListener(new BlockSelInpListener(this));
     }
     
     public void show(){
         setX(0);
-        if (!table.hasChildren()){
-            for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
-                table.row();
-                table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
+        if (!hasChildren()){
+            table = new Table();
+            table.pad(10).defaults().expandX().space(4);
 
-                Drawable dbl = new BlockDrawable(i);
-                Button button = new Button(dbl);
-                button.addListener(new ButtonListener(i));
-                //button.setStyle(style);
-                table.add(button);
+            scroll = new ScrollPane(table, WE.getEngineView().getSkin());
+            add(scroll).expand().fill();
 
-                table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
+            if (!table.hasChildren()){
+                for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+                    table.row();
+                    table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
+
+                    Drawable dbl = new BlockDrawable(i);
+                    Button button = new Button(dbl);
+                    button.addListener(new ButtonListener(i, button));
+                    //button.setStyle(style);
+                    table.add(button);
+
+                    table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
+                }
             }
         }
     }
     
     public void hide(){
         setX(-getWidth()*2/3f);
-        table.clear();
+        if (hasChildren()){
+            scroll.clearListeners();
+            clear();
+        }
     }
 
      private class BlockSelInpListener extends InputListener {
@@ -105,10 +111,13 @@ public class BlockSelector extends Table {
             return false;
         }
     }
-     private class ButtonListener extends ClickListener {
+     
+    private class ButtonListener extends ClickListener {
          private int id;
-        ButtonListener(int id){
+         private Button parent; 
+        ButtonListener(int id, Button parent){
             this.id = id;
+            this.parent = parent;
         }
                 
         @Override

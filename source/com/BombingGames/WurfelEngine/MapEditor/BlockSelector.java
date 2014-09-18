@@ -50,43 +50,47 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * @author Benedikt Vogler
  */
 public class BlockSelector extends Table {
-
+    private Table table;
+    
     public BlockSelector() {
-
-        Table table = new Table();
+        table = new Table();
         table.pad(10).defaults().expandX().space(4);
-        for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
-            table.row();
-            table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
-
-            Drawable dbl = new BlockDrawable(i);
-            Button button = new Button(dbl);
-            //button.setStyle(style);
-            table.add(button);
-
-            table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
-        }
+        
         final ScrollPane scroll = new ScrollPane(table, WE.getEngineView().getSkin());
         setWidth(400);
         setHeight(Gdx.graphics.getHeight()-100);
         setColor(Color.RED);
         setPosition(-300, 0);
         add(scroll).expand().fill().colspan(4);
-        addListener(new BlockSelIP(this));
+        addListener(new BlockSelInpListener(this));
     }
     
     public void show(){
         setX(0);
+        if (!table.hasChildren()){
+            for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+                table.row();
+                table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
+
+                Drawable dbl = new BlockDrawable(i);
+                Button button = new Button(dbl);
+                //button.setStyle(style);
+                table.add(button);
+
+                table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
+            }
+        }
     }
     
     public void hide(){
         setX(-getWidth()*2/3f);
+        table.clear();
     }
-    
-     private class BlockSelIP extends InputListener {
+
+     private class BlockSelInpListener extends InputListener {
         private BlockSelector parentRef;
 
-        private BlockSelIP(BlockSelector parent) {
+        private BlockSelInpListener(BlockSelector parent) {
             this.parentRef = parent;
         }
 
@@ -95,7 +99,6 @@ public class BlockSelector extends Table {
             parentRef.show();
             return false;
         }
-        
     }
     
 }

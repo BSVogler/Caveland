@@ -85,5 +85,6 @@ public class Navigation {
 
             sh.end();
             Gdx.gl.glDisable(GL10.GL_BLEND);
+            Gdx.gl.glLineWidth(1);
         }
 }

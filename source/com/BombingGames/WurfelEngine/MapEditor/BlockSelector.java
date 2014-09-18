@@ -46,7 +46,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
- *
+ * A table containing all blocks where you can choose your block.
  * @author Benedikt Vogler
  */
 public class BlockSelector extends Table {

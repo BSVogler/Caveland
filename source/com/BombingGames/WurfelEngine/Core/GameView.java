@@ -43,6 +43,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -68,6 +69,7 @@ public class GameView extends View implements GameManager {
      */
     private Stage stage;
     private SpriteBatch batch;
+    private ShaderProgram shader;
     
         
     private boolean initalized;
@@ -110,6 +112,7 @@ public class GameView extends View implements GameManager {
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());//spawn at fullscreen
         
         batch = new SpriteBatch();
+        batch.setShader(shader);
         //load cursor
 
 
@@ -395,6 +398,11 @@ public class GameView extends View implements GameManager {
     @Override
     public SpriteBatch getBatch() {
         return batch;
+    }
+    
+    @Override
+    public ShaderProgram getShader() {
+        return shader;
     }
     
 

@@ -34,6 +34,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -46,6 +47,7 @@ public abstract class View {
     
     public abstract SpriteBatch getBatch();
     public abstract ShapeRenderer getShapeRenderer();
+    public abstract ShaderProgram getShader();
 
     /**
      *

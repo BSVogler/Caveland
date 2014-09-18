@@ -38,6 +38,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -49,7 +50,8 @@ import com.badlogic.gdx.utils.Array;
  * @since 1.2.26
  */
 public class EngineView extends View {
-    private SpriteBatch batch;    
+    private SpriteBatch batch;  
+    private ShaderProgram shader;
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
     private Stage stage;//the stage used for view-independetn things
@@ -141,6 +143,12 @@ public class EngineView extends View {
     public SpriteBatch getBatch() {
         return batch;
     }
+
+    @Override
+    public ShaderProgram getShader() {
+        return shader;
+    }
+    
     
     /**
      * Y-down
@@ -150,6 +158,8 @@ public class EngineView extends View {
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
+    
+    
     
         
     /**

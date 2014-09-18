@@ -373,14 +373,15 @@ public abstract class AbstractGameObject {
     public void render(View view, int xPos, int yPos, Color color, float scale) {
         AtlasRegion texture = getSprite(getCategory(), id, value);
         Sprite sprite = new Sprite(texture);
-        sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT+SCREEN_DEPTH2);
+        sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT4);
         sprite.rotate(rotation);
         sprite.scale(scale);
         
         sprite.setPosition(
             xPos+texture.offsetX-texture.originalWidth/2,
-            yPos-SCREEN_HEIGHT-SCREEN_DEPTH2+texture.offsetY+
-                (SCREEN_HEIGHT+SCREEN_DEPTH-texture.originalHeight)
+            yPos//center
+                -SCREEN_HEIGHT2
+                +texture.offsetY
         );
         
         color.mul(getLightlevel());

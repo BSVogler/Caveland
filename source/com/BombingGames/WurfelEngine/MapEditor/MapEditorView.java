@@ -125,6 +125,9 @@ public class MapEditorView extends GameView {
         replaybutton.setY(Gdx.graphics.getHeight()-40);
         replaybutton.addListener(new PlayButton(controller, true));
         getStage().addActor(replaybutton);
+        
+        if (Controller.getLightEngine() != null)
+            Controller.getLightEngine().setToNoon();
     }
 
     /**

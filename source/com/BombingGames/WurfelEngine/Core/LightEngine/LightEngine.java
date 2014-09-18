@@ -447,4 +447,14 @@ public class LightEngine {
             Gdx.gl10.glLineWidth(1);
         }
     }
+    
+    public void setToNoon(){
+        sun.setAzimuth(90);
+        moon.setAzimuth(270);
+    }
+    
+    public void setToNight(){
+        sun.setAzimuth(270);
+        moon.setAzimuth(90);
+    }
 }

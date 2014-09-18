@@ -40,10 +40,12 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public class Selection extends AbstractEntity {
     private AnimatedEntity normal;
+    private Block color;
     
     public Selection(Point point) {
         super(13, point);
         setLightlevel(10);
+        color = Block.getInstance(1);
         
         normal = new AnimatedEntity(14, 0, getPos(), new int[]{200,200}, true, true);
         normal.ignoreGameSpeed(true);
@@ -67,6 +69,14 @@ public class Selection extends AbstractEntity {
         super.setPos( pos.getCoord());
         setHidden(getPos().getHeight()<0);
         normal.setPos(pos.cpy().addVector(0, 1, 0));
+    }
+    
+    public void setColor(int id, int value) {
+        this.color = Block.getInstance(id,  value, getPos().getCoord());
+    }
+
+    public Block getColor() {
+        return color;
     }
     
     /**

@@ -42,6 +42,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -233,7 +234,7 @@ public class MapEditorView extends GameView {
             
             buttondown=button;
             
-            if (button == 1){
+            if (button == Buttons.RIGHT){
                 //right click
                 coords.clampToMapIncludingZ();
                 Controller.getMap().setData(
@@ -243,7 +244,12 @@ public class MapEditorView extends GameView {
                 
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
-            } else { //left click
+            } else if (button==Buttons.MIDDLE){//middle mouse button
+                
+                Block block = coords.getBlock();
+                controller.getSelectionEntity().setColor(block.getId(), block.getValue());
+                
+            } else if (button==Buttons.LEFT){ //left click
                 Sides normal = Sides.normalToSide(view.screenToGameRaytracing(screenX, screenY).getNormal());
                 if (normal==Sides.LEFT)
                     coords = coords.neighbourSidetoCoords(5);
@@ -253,7 +259,7 @@ public class MapEditorView extends GameView {
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();
-                Controller.getMap().setData(coords, Block.getInstance(1,0,coords));
+                Controller.getMap().setData(coords, controller.getSelectionEntity().getColor());
                // gras2.play();
             }   
             layerSelection = coords.getZ();
@@ -269,13 +275,6 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            int id = 0;
-            if (buttondown== 1){
-                id = 0;
-            } else if (buttondown== 0){
-                id = 1;
-               // gras2.play();
-            }  
             
             //update focusentity
             Point p = view.screenToGameRaytracing(screenX, screenY).getPoint();
@@ -286,7 +285,13 @@ public class MapEditorView extends GameView {
             
             Coordinate coords = controller.getSelectionEntity().getPos().getCoord();
             coords.setZ(layerSelection);
-            Controller.getMap().setData(coords, Block.getInstance(id,0,coords));
+            
+            if (buttondown==Buttons.LEFT){
+                Controller.getMap().setData(coords, controller.getSelectionEntity().getColor());
+            } else if (buttondown == Buttons.RIGHT) {
+                Controller.getMap().setData(coords, Block.getInstance(0));
+            } else return false;
+            
             requestRecalc();
             return false;
         }

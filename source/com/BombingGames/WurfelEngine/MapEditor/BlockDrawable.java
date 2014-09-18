@@ -44,7 +44,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class BlockDrawable extends TextureRegionDrawable {
     private Block block;
-
+    private float size = -0.6f;
+    
     public BlockDrawable(int id) {
         this.block = Block.getInstance(id,0,new Coordinate(0, 0, 0, true));
     }
@@ -53,7 +54,16 @@ public class BlockDrawable extends TextureRegionDrawable {
 
     @Override
     public void draw(SpriteBatch batch, float x, float y, float width, float height) {
-        block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), -0.8f, true);
+        block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
     }
-    
+
+    @Override
+    public float getMinHeight() {
+        return (Block.SCREEN_HEIGHT+Block.SCREEN_DEPTH)*(1f+size);
+    }
+
+    @Override
+    public float getMinWidth() {
+        return Block.SCREEN_WIDTH*(1f+size);
+    }
 }

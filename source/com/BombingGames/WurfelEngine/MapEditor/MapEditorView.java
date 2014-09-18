@@ -91,7 +91,7 @@ public class MapEditorView extends GameView {
         controller.getMinimap().toggleVisibility();
         
         nav = new Navigation();
-        bselector = new BlockSelector();
+        bselector = new BlockSelector(this.controller.getSelectionEntity());
         getStage().addActor(bselector);
         
 

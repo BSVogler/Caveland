@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -43,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
@@ -51,8 +53,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  */
 public class BlockSelector extends Table {
     private Table table;
+    private Selection selection;
     
-    public BlockSelector() {
+    public BlockSelector(Selection selection) {
+        this.selection = selection;
         table = new Table();
         table.pad(10).defaults().expandX().space(4);
         
@@ -74,6 +78,7 @@ public class BlockSelector extends Table {
 
                 Drawable dbl = new BlockDrawable(i);
                 Button button = new Button(dbl);
+                button.addListener(new ButtonListener(i));
                 //button.setStyle(style);
                 table.add(button);
 
@@ -100,5 +105,16 @@ public class BlockSelector extends Table {
             return false;
         }
     }
+     private class ButtonListener extends ClickListener {
+         private int id;
+        ButtonListener(int id){
+            this.id = id;
+        }
+                
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            selection.setColor(id, 0);
+        };
+     }
     
 }

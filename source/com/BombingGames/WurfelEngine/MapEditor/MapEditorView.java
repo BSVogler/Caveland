@@ -34,11 +34,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -177,10 +176,12 @@ public class MapEditorView extends GameView {
         private final MapEditorView view;
         private int buttondown =-1;
         private int layerSelection;
+        private Selection selection;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
             this.view = view;
+            selection = controller.getSelectionEntity();
         }
 
 
@@ -233,7 +234,7 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = controller.getSelectionEntity().getPos().getCoord();
+            Coordinate coords = selection.getPos().getCoord();
             
             buttondown=button;
             
@@ -248,7 +249,7 @@ public class MapEditorView extends GameView {
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
             } else if (button==Buttons.MIDDLE){//middle mouse button
-                
+                coords.clampToMapIncludingZ();
                 Block block = coords.getBlock();
                 controller.getSelectionEntity().setColor(block.getId(), block.getValue());
                 
@@ -273,18 +274,15 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             buttondown = -1;
+            
+            selection.update(view, screenX, screenY);
+            
             return false;
         }
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-            
-            //update focusentity
-            Point p = view.screenToGameRaytracing(screenX, screenY).getPoint();
-                
-            if (p != null){
-               controller.getSelectionEntity().setPos(p);
-            }
+           selection.update(view, screenX, screenY);
             
             Coordinate coords = controller.getSelectionEntity().getPos().getCoord();
             coords.setZ(layerSelection);
@@ -301,13 +299,7 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
-            //update focusentity
-            Intersection intersect = view.screenToGameRaytracing(screenX, screenY);
-                
-            if (intersect.getPoint() != null){
-               controller.getSelectionEntity().setPos( intersect.getPoint() );
-               controller.getSelectionEntity().setNormal( Sides.normalToSide( intersect.getNormal() ) );
-            }
+            selection.update(view, screenX, screenY);
             
             if (screenX<100)
                 view.bselector.show();

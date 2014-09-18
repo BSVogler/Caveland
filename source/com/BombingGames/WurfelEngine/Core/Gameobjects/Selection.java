@@ -31,7 +31,9 @@
 
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 
 /**
@@ -75,6 +77,10 @@ public class Selection extends AbstractEntity {
         this.color = Block.getInstance(id,  value, getPos().getCoord());
     }
 
+    /**
+     * Get the block of the tool.
+     * @return 
+     */
     public Block getColor() {
         return color;
     }
@@ -90,5 +96,20 @@ public class Selection extends AbstractEntity {
             normal.setRotation(0);
         if (side == Sides.RIGHT)
             normal.setRotation(-120);
+    }
+    
+    /**
+     * 
+     * @param view
+     * @param screenX
+     * @param screenY 
+     */
+    public void update(GameView view, int screenX, int screenY){
+        Intersection intersect = view.screenToGameRaytracing(screenX, screenY);
+                
+            if (intersect.getPoint() != null){
+               setPos( intersect.getPoint() );
+               setNormal( Sides.normalToSide( intersect.getNormal() ) );
+            }
     }
 }

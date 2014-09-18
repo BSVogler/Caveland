@@ -116,8 +116,8 @@ public class Map implements Cloneable {
         meta.setChunkBlocksX(10);
         meta.setChunkBlocksY(40);
         meta.setChunkBlocksZ(10);
-        meta.setMapName("Dies ist eine Testmap");
-        meta.setDescription("testen und so");
+        meta.setMapName(mapName);
+        meta.setDescription("No description set");
         meta.write();
     }
     

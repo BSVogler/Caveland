@@ -51,7 +51,7 @@ public class Minimap {
     private Camera camera;
     private final Color[][] mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
     private boolean visible;
-    private int highestLevel;
+    private int maximumZ;
 
     /**
      * Create a minimap.
@@ -78,31 +78,37 @@ public class Minimap {
      * Updates the minimap- Should only be done after changing the map.
      */
     public void buildMinimap(){
-        highestLevel = 0;
+        maximumZ = 0;
         int[][] topTileZ = new int[Map.getBlocksX()][Map.getBlocksY()];
         
         //fing top tile
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
                 int z = Map.getBlocksZ() -1;//start at top
-                while ( z>0 && Controller.getMap().getBlock(x, y, z).getId() ==0 ) {
+                while ( z>-1 && Controller.getMap().getBlock(x, y, z).getId() ==0 ) {
                     z--;//find topmost block in row
                 }
 
                 topTileZ[x][y] = z;
-                if (z>highestLevel)
-                    highestLevel=z; 
+                if (z>maximumZ)
+                    maximumZ=z; 
             }
         }
             
         //set color
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
-                Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
-                if (block.getId()!=0)
-                    mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue()).cpy();
-                else mapdata[x][y] = new Color();//make air black
-                mapdata[x][y].mul(1.5f*topTileZ[x][y]/(float)highestLevel);
+
+                if (topTileZ[x][y]<0)//ground floor
+                    mapdata[x][y] = Block.getRepresentingColor(WE.getCurrentConfig().groundBlockID(), 0);
+                else {
+                    Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
+                    if (block.getId()!=0)
+                        mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue());
+                    else 
+                        mapdata[x][y] = new Color();//make air black
+                } 
+                mapdata[x][y].mul(1.5f*(topTileZ[x][y]+2)/(float)(maximumZ+1));
                 mapdata[x][y].a = 1; //full alpha level
             }
         }

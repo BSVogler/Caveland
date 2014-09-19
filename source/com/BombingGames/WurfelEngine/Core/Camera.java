@@ -256,8 +256,8 @@ public class Camera{
             int back = getVisibleBackBorder();
             int front = getVisibleFrontBorder();
         
-            for (int x = left; x < right; x++) {
-                for (int y = back; y < front; y++) {
+            for (int x = left; x <= right; x++) {
+                for (int y = back; y <= front; y++) {
                     if (bottomLayerVisibility[x][y]){
                         Coordinate tmpCoord = new Coordinate(x, y, -1, true);
                         if (//inside view frustum?
@@ -302,8 +302,8 @@ public class Camera{
         int back = getVisibleBackBorder();
         int front = getVisibleFrontBorder();
         
-        for (int x = left; x < right; x++)//only objects in view frustum
-            for (int y = back; y < front; y++){
+        for (int x = left; x <= right; x++)//only objects in view frustum
+            for (int y = back; y <= front; y++){
                 
                 //add blocks
                 for (int z=0; z < zRenderingLimit; z++){//add vertical until renderlimit
@@ -660,7 +660,7 @@ public class Camera{
      * @return measured in grid-coordinates
      */
     public int getVisibleRightBorder(){
-        int right = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 2;
+        int right = (projectionPosX + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 1;
         if (right >= Map.getBlocksX()) return Map.getBlocksX()-1;//clamp
 
         return right;

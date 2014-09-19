@@ -194,7 +194,7 @@ public class Minimap {
             sh.rect(
                 scaleX * camera.getVisibleLeftBorder(),
                 -scaleY * camera.getVisibleBackBorder(),
-                scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()),
+                scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
                 -scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
             );
             

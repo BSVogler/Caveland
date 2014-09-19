@@ -43,6 +43,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 public class Selection extends AbstractEntity {
     private AnimatedEntity normal;
     private Block color;
+    private Sides normalSide;
     
     public Selection(Point point) {
         super(13, point);
@@ -90,6 +91,7 @@ public class Selection extends AbstractEntity {
      * @param side
      */
     public void setNormal(Sides side){
+        normalSide = side;
         if (side == Sides.LEFT)
             normal.setRotation(120);
         else if (side == Sides.TOP)
@@ -97,12 +99,16 @@ public class Selection extends AbstractEntity {
         if (side == Sides.RIGHT)
             normal.setRotation(-120);
     }
+
+    public Sides getNormalSides() {
+        return normalSide;
+    }
     
     /**
-     * 
+     * Updates thhe selection using the screen position of the cursor.
      * @param view
-     * @param screenX
-     * @param screenY 
+     * @param screenX cursor position
+     * @param screenY cursor position
      */
     public void update(GameView view, int screenX, int screenY){
         Intersection intersect = view.screenToGameRaytracing(screenX, screenY);

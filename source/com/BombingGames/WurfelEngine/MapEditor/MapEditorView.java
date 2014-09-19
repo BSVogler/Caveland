@@ -254,7 +254,7 @@ public class MapEditorView extends GameView {
                 controller.getSelectionEntity().setColor(block.getId(), block.getValue());
                 
             } else if (button==Buttons.LEFT){ //left click
-                Sides normal = Sides.normalToSide(view.screenToGameRaytracing(screenX, screenY).getNormal());
+                Sides normal = selection.getNormalSides();
                 if (normal==Sides.LEFT)
                     coords = coords.neighbourSidetoCoords(5);
                 else if (normal==Sides.TOP)

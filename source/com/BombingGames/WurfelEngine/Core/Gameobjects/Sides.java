@@ -46,6 +46,10 @@ public enum Sides {
         code = c;
     }
 
+    /**
+     * The side as integer.
+     * @return 
+     */
     public int getCode() {
         return code;
     }

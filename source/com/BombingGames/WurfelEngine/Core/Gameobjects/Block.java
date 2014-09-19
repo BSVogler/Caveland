@@ -219,7 +219,7 @@ public class Block extends AbstractGameObject {
      * Returns a color representing the block. Picks from the sprite sprite.
      * @param id id of the Block
      * @param value the value of the block.
-     * @return a color representing the block
+     * @return copy of a color representing the block
      */
     public static Color getRepresentingColor(final int id, final int value){
         if (colorlist[id][value] == null){ //if not in list, add it to the list
@@ -238,8 +238,8 @@ public class Block extends AbstractGameObject {
                     texture.getRegionX()+SCREEN_DEPTH2, texture.getRegionY()+SCREEN_DEPTH2);
             }
             Color.rgba8888ToColor(colorlist[id][value], colorInt);
-            return colorlist[id][value]; 
-        } else return colorlist[id][value]; //return value when in list
+            return colorlist[id][value].cpy(); 
+        } else return colorlist[id][value].cpy(); //return value when in list
     }
 
     /**

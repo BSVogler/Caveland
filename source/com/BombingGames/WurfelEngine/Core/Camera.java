@@ -103,7 +103,7 @@ public class Camera{
 
     /**
      * 
-     * @param zRenderingLimit minimum is 1
+     * @param zRenderingLimit minimum is 0
      */
     public static void setZRenderingLimit(int zRenderingLimit) {
         Camera.zRenderingLimit = zRenderingLimit;

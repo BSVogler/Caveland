@@ -34,8 +34,9 @@ package com.BombingGames.WurfelEngine.Core.Map.Generators;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 
 /**
- *
+ * A simple generator who returns only air.
  * @author Benedikt Vogler
+ * @see com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator
  */
 public class AirGenerator implements Generator {
 

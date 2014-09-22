@@ -49,7 +49,7 @@ public class Minimap {
     
     private Controller controller;
     private Camera camera;
-    private final Color[][] mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
+    private Color[][] mapdata;
     private boolean visible;
     private int maximumZ;
 
@@ -66,18 +66,19 @@ public class Minimap {
         this.posY = outputY;
         this.controller = controller;
         this.camera = camera;
-        
-        for (int x = 0; x < Map.getBlocksX(); x++) {
-            for (int y = 0; y < Map.getBlocksY(); y++) {
-                mapdata[x][y] = new Color();
-            }
-        }
     }
     
     /**
      * Updates the minimap- Should only be done after changing the map.
      */
     public void buildMinimap(){
+        mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
+        for (int x = 0; x < Map.getBlocksX(); x++) {
+            for (int y = 0; y < Map.getBlocksY(); y++) {
+                mapdata[x][y] = new Color();
+            }
+        }
+        
         maximumZ = 0;
         int[][] topTileZ = new int[Map.getBlocksX()][Map.getBlocksY()];
         

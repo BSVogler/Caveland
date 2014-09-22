@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -93,6 +94,7 @@ public class Map implements Cloneable {
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
+        Camera.setZRenderingLimit(blocksZ);
         data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
         
         for (Cell[][] x : data)
@@ -113,9 +115,9 @@ public class Map implements Cloneable {
     public static void createMapFile(final String mapName) throws IOException {
         MapMetaData meta = new MapMetaData();
         meta.setFileName(mapName);
-        meta.setChunkBlocksX(10);
-        meta.setChunkBlocksY(40);
-        meta.setChunkBlocksZ(10);
+        meta.setChunkBlocksX(5);
+        meta.setChunkBlocksY(5);
+        meta.setChunkBlocksZ(5);
         meta.setMapName(mapName);
         meta.setDescription("No description set");
         meta.write();

@@ -194,7 +194,7 @@ public class Camera{
             projectionPosY = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
         } else if (focusEntity != null ){
             projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2;            
-            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 -focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
+            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
         } else {
             //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);

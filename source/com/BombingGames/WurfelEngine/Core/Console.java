@@ -31,6 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
+import com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
@@ -282,7 +283,8 @@ public class Console {
      * @return 
      */
     public boolean executeCommand(String command){
-        switch (command) {
+        StringTokenizer st = new StringTokenizer(command, " ");
+        switch (st.nextToken()) {
             case "editor":
                 WE.loadEditor(true);
                 return true;
@@ -314,6 +316,10 @@ public class Console {
                 }
                 gameplayRef.getController().getMinimap().toggleVisibility();
                 return true;
+            case "clearmap":
+                Controller.getMap().fillWithAir();
+                Controller.requestRecalc();
+                return true;
             case "save":
                 return Controller.getMap().save();
             case "devtools":
@@ -327,10 +333,18 @@ public class Console {
                 return true;
         }
         
+        if (command.startsWith("fillmap")) {
+            int id = 2;
+            if (st.hasMoreElements()){
+                id = Integer.valueOf(st.nextToken());  
+            }
+            
+            Controller.getMap().fill(new FullMapGenerator(id), false);
+            Controller.requestRecalc();
+            return true;
+        }
         
         if (command.startsWith("loadmap")){
-            StringTokenizer st = new StringTokenizer(command, " ");
-            st.nextToken();
             if (!st.hasMoreElements()) return false;
             
             String mapname = st.nextToken();
@@ -339,7 +353,6 @@ public class Console {
         }
         
         if (command.startsWith("newmap")){
-            StringTokenizer st = new StringTokenizer(command, " ");
             st.nextToken();
             String mapname;
             if (st.hasMoreTokens())

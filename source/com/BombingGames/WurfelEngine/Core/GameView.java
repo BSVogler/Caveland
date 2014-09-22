@@ -285,7 +285,7 @@ public class GameView extends View implements GameManager {
         float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
         p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
 
-        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000);
+        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, true, false);
     }
     
     /**

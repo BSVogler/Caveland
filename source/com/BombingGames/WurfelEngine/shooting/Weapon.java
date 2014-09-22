@@ -306,7 +306,7 @@ public class Weapon {
                 reload();
         }
         
-        Point raycast = parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000).getPoint();
+        Point raycast = parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000, false, false).getPoint();
         if (raycast!=null)
             laserdot.setPos(raycast);
 //        if (laser!=null && laser.shouldBeDisposed())

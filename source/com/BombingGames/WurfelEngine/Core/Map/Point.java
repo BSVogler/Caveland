@@ -267,7 +267,17 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     * Call the callback with (x,y,z,value,normal) of all blocks along the line
+     * Trace a ray through the map until ray hits non air block.
+     * 
+     * @param direction direction of the ray
+     * @param radius the distane after which it should stop.
+     * @param onlyVisible only intersect if true with block which are redered (not clipped)
+     * @param onlySolid only intersect if true with block which are not transparent =solid
+     * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
+     * @since 1.2.29
+     */
+    public Intersection raycast(Vector3 direction, float radius, boolean onlyVisible, boolean onlySolid) {
+      /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length
  'radius'. 'radius' may be infinite.
 
@@ -275,12 +285,7 @@ public class Point extends AbstractPosition {
  It should not be used after the callback returns.
  
  If the callback returns a true value, the traversal will be stopped.
-     * @param direction
-     * @param radius
-     * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
-     * @since 1.2.29
      */
-    public Intersection raycast(Vector3 direction, float radius) {
         // From "A Fast Voxel Traversal Algorithm for Ray Tracing"
         // by John Amanatides and Andrew Woo, 1987
         // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
@@ -342,8 +347,11 @@ public class Point extends AbstractPosition {
                 Point isectP = new Point(curX, curY, curZ, true);
                 Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
-                if (block.getId() != 0){
-                    
+                //intersect?
+                if ((!onlyVisible || (onlyVisible && (curZ < Camera.getZRenderingLimit()*Block.GAME_EDGELENGTH && !block.isClipped())))
+                    && (!onlySolid || (onlySolid && !block.isTransparent()))
+                    && block.getId() != 0){
+                    //correct normal
                     if (
                         (isectP.getRelX() -(isectP.getCoord().getRelY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
                         % Block.GAME_DIAGLENGTH

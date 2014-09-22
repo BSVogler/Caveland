@@ -56,7 +56,7 @@ public class Camera{
     /**
      *The deepest layer is an array which stores the information if there should be a tile rendered
      */
-    private static final boolean[][] bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
+    private static boolean[][] bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
     
     /** the position of the camera **/
     private final Vector3 position = new Vector3();
@@ -399,7 +399,9 @@ public class Camera{
     /**
      * Filters every Block (and side) wich is not visible. Boosts rendering speed.
      */
-    protected static void rayCastingClipping(){ 
+    protected static void rayCastingClipping(){
+        bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
+        
         if (zRenderingLimit>0) {
             //set visibility of every groundBlock to false, except blocks with offset
             Cell[][][] mapdata = Controller.getMap().getData();

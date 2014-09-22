@@ -74,7 +74,7 @@ public class Configuration {
      * @return
      */
     public boolean isChunkSwitchAllowed() {
-        return false;
+        return true;
     }
 
     /**

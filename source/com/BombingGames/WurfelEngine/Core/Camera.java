@@ -416,9 +416,9 @@ public class Camera{
             //send the rays through top of the map
             for (int x=0; x < Map.getBlocksX(); x++)
                 for (int y=0; y < Map.getBlocksY() + zRenderingLimit*2; y++){
-                    traceRay(x,y, Sides.LEFT);
-                    traceRay(x,y, Sides.TOP);
-                    traceRay(x,y, Sides.RIGHT);
+                    castRay(x,y, Sides.LEFT);
+                    castRay(x,y, Sides.TOP);
+                    castRay(x,y, Sides.RIGHT);
                 }     
         } else {
             for (boolean[] x : bottomLayerVisibility) {
@@ -436,7 +436,7 @@ public class Camera{
      * @param y The starting y-coordinate.
      * @param side The side the ray should check
      */
-    private static void traceRay(int x, int y, Sides side){
+    private static void castRay(int x, int y, Sides side){
         int z = zRenderingLimit-1;//start always from top
         
         boolean left = true;
@@ -601,13 +601,13 @@ public class Camera{
         
         //trace rays
         if (neighbours){
-            traceRay(coords[0] - (coords[1]%2 == 0 ? 1:0), coords[1]-1, Sides.RIGHT);
-            traceRay(coords[0] + (coords[1]%2 == 0 ? 0:1), coords[1]-1, Sides.LEFT);
-            traceRay(coords[0], coords[1]+2, Sides.TOP);
+            castRay(coords[0] - (coords[1]%2 == 0 ? 1:0), coords[1]-1, Sides.RIGHT);
+            castRay(coords[0] + (coords[1]%2 == 0 ? 0:1), coords[1]-1, Sides.LEFT);
+            castRay(coords[0], coords[1]+2, Sides.TOP);
         }
-        traceRay(coords[0], coords[1], Sides.LEFT);
-        traceRay(coords[0], coords[1], Sides.TOP);             
-        traceRay(coords[0], coords[1], Sides.RIGHT);
+        castRay(coords[0], coords[1], Sides.LEFT);
+        castRay(coords[0], coords[1], Sides.TOP);             
+        castRay(coords[0], coords[1], Sides.RIGHT);
     }
     /**
      * Set the zoom factor and regenerates the sprites.

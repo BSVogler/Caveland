@@ -115,9 +115,9 @@ public class Map implements Cloneable {
     public static void createMapFile(final String mapName) throws IOException {
         MapMetaData meta = new MapMetaData();
         meta.setFileName(mapName);
-        meta.setChunkBlocksX(100);
-        meta.setChunkBlocksY(100);
-        meta.setChunkBlocksZ(100);
+        meta.setChunkBlocksX(10);
+        meta.setChunkBlocksY(40);
+        meta.setChunkBlocksZ(25);
         meta.setMapName(mapName);
         meta.setDescription("No description set");
         meta.write();

@@ -71,7 +71,7 @@ public class Chunk {
     }
     
     /**
-    *Creates a chunk by trieng to load and if this fails it generates a new one.
+    *Creates a chunk by trying to load and if this fails it generates a new one.
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
      * @param mapname filename

@@ -91,10 +91,10 @@ public class Camera{
     
     private final Block groundBlock;//the representative of the bottom layer (ground) block
     private boolean fullWindow = false;
-    private static int zRenderingLimit;//must be static because raytracing is global/static
+    private static int zRenderingLimit;//must be static because rayCastingClipping is global/static
     
         /**
-     * Must be static because raytracing is static
+     * Must be static because rayCastingClipping is static
      * @return 
      */
     public static int getZRenderingLimit() {
@@ -399,7 +399,7 @@ public class Camera{
     /**
      * Filters every Block (and side) wich is not visible. Boosts rendering speed.
      */
-    protected static void raytracing(){ 
+    protected static void rayCastingClipping(){ 
         if (zRenderingLimit>0) {
             //set visibility of every groundBlock to false, except blocks with offset
             Cell[][][] mapdata = Controller.getMap().getData();
@@ -431,7 +431,7 @@ public class Camera{
     
     /**
     * Traces a single ray.
-    * This costs less performance than a whole raytracing.
+    * This costs less performance than a whole rayCastingClipping.
      * @param x The starting x-coordinate.
      * @param y The starting y-coordinate.
      * @param side The side the ray should check
@@ -580,7 +580,7 @@ public class Camera{
     }
     
     /**
-     * Traces the ray to a specific groundBlock. This is like the raytracing but only a single ray.
+     * Traces the ray to a specific groundBlock. This is like the rayCastingClipping but only a single ray.
      * @param coord The coordinate where the ray should point to.
      * @param neighbours True when neighbours groundBlock also should be scanned
      */

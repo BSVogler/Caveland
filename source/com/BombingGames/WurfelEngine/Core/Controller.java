@@ -133,7 +133,7 @@ public class Controller implements GameManager {
                 
         //recalculates the light if requested
         if (recalcRequested) {
-            Camera.raytracing();
+            Camera.rayCastingClipping();
             LightEngine.calcSimpleLight();
             if (minimap != null)minimap.buildMinimap();
             recalcRequested = false;

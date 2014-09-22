@@ -140,6 +140,21 @@ public class Coordinate extends AbstractPosition {
                 return tmpZ;
     }
     
+        /**
+     *
+     * @return
+     */
+    public int[] getRel(){
+        return new int[]{getRelX(), getRelY(), getZ()};
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int[] getAbs(){
+        return new int[]{getAbsX(), getAbsY(), getZ()};
+    }
     
    /**
      *
@@ -192,21 +207,7 @@ public class Coordinate extends AbstractPosition {
         Controller.getMap().setData(this, block);
     }
     
-    /**
-     *
-     * @return
-     */
-    public int[] getRel(){
-        return new int[]{getRelX(), getRelY(), getZ()};
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public int[] getAbs(){
-        return new int[]{getAbsX(), getAbsY(), getZ()};
-    }
+
     
     /**
      * Add a vector to the coordinates. If you just want the result and don't change the coordiantes use addVectorCpy.

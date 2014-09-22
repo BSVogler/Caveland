@@ -353,7 +353,6 @@ public class Console {
         }
         
         if (command.startsWith("newmap")){
-            st.nextToken();
             String mapname;
             if (st.hasMoreTokens())
                 mapname = st.nextToken();

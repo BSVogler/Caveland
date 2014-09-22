@@ -266,49 +266,6 @@ public class Point extends AbstractPosition {
         return this;
     }
     
-        /**
-     * Trace a ray down to find the deepest point.
-     * @param dir direction of the ray
-     * @param visibilityCheck if this is true the depth check requires the blocks to be invisibble to pass through. If false only will go through air (=ignore rendering)
-     * @return itself
-     * @deprecated 
-     */
-    public Point traceRay(Vector3 dir, final boolean visibilityCheck){
-        float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-getHeight();
-        setHeight(getHeight()+deltaZ);
-        y +=deltaZ/Math.sqrt(2)*2;
-        
-        //trace ray down to bottom.
-        while (
-            getHeight()>Chunk.getGameHeight()
-            ||
-            (
-                getHeight()>0
-                &&
-                (
-                    getBlock().getId() == 0
-                    ||
-                    (
-                        visibilityCheck
-                        &&
-                        (
-                            getBlock().isHidden()
-                            ||
-                            getHeight() >= Camera.getZRenderingLimit() * Block.GAME_EDGELENGTH
-                        )
-                    )
-                )
-            )
-            ) {
-               // Gdx.app.debug("Point", "y: "+y+" z: "+getHeight());
-                // for each step 2 y and 1 z down
-                y -= Block.GAME_DIAGLENGTH/4f;
-                setHeight(getHeight()-Block.GAME_EDGELENGTH/4f);
-        } 
-        
-        return this;
-    }
-    
     /**
      * Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length

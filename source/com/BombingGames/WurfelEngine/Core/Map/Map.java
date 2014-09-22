@@ -125,19 +125,12 @@ public class Map implements Cloneable {
      *Fills the map with blocks. If no custom generator is set it will use air.
      */
     public void fill(){
-        int chunkpos = 0;
-        for (byte y=-1; y < 2; y++)
-            for (byte x=-1; x < 2; x++){
-                coordlist[chunkpos][0] = x;
-                coordlist[chunkpos][1] = y;  
-                insertChunk((byte) chunkpos, new Chunk(filename, x, y, generator));
-                chunkpos++;
-           }
+        fill(generator);
     }
     
     /**
-     *
-     * @param generator
+     * Fills the map without overriding the map generator.
+     * @param generator the custom generator
      */
     public void fill(Generator generator){
         int chunkpos = 0;
@@ -536,7 +529,7 @@ public class Map implements Cloneable {
     }
     
     /**
-     *
+     * Set the generator used for generating maps
      * @param generator
      */
     public void setGenerator(Generator generator) {

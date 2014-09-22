@@ -75,7 +75,7 @@ public class Camera{
     /** the viewport width&height **/
     private int screenWidth,screenHeight;
     
-    /** the position on the screen (viewportWidth/Height ist the aequivalent)*/
+    /** the position on the screen (viewportWidth/Height ist the affiliated)*/
     private int screenPosX, screenPosY;
     
     /** the position in the game world but projected. Y-up*/

@@ -283,6 +283,7 @@ public class Console {
      * @return 
      */
     public boolean executeCommand(String command){
+        if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
         switch (st.nextToken()) {
             case "editor":

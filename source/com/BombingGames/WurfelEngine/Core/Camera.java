@@ -432,8 +432,8 @@ public class Camera{
     /**
     * Traces a single ray.
     * This costs less performance than a whole rayCastingClipping.
-     * @param x The starting x-coordinate.
-     * @param y The starting y-coordinate.
+     * @param x The starting x-coordinate on top of the map.
+     * @param y The starting y-coordinate on top of the map.
      * @param side The side the ray should check
      */
     private static void castRay(int x, int y, Sides side){

@@ -157,7 +157,7 @@ public class Controller implements GameManager {
     public static boolean loadMap(String name) {
         try {
             map = new Map(name);
-            map.fill();
+            map.fill(true);
             requestRecalc();
             return true;
         } catch (IOException ex) {

@@ -53,7 +53,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 public class BlockSelector extends Table {
     private Table table;
     private Selection selection;
-    ScrollPane scroll; 
+    private ScrollPane scroll; 
     
     /**
      *

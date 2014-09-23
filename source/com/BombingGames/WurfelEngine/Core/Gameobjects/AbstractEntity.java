@@ -35,23 +35,12 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
 public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
-	/**
-	 * direction of movement
-	 */
-	private Vector3 movement;
-	/**
-	 * movement speed
-	 */
-	private float speed;
-	private boolean floating = false;
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
@@ -65,20 +54,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     protected AbstractEntity(int id, Point point){
         super(id,0);
         this.position = point;
-		floating = true;
-		movement = new Vector3(0,0,0);
     }
 
-	@Override
-	public void update(float delta) {
-		getPosition().addVector(movement.cpy().scl(delta*speed));
-		if (!floating){
-			movement.z -= WE.getCurrentConfig().getGravity()*delta/1000f;
-		}
-	}
-
-	
-    
     //IsSelfAware implementation
     @Override
     public Point getPosition() {
@@ -89,7 +66,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void setPosition(AbstractPosition pos) {
         this.position = pos.getPoint();
     }
-    
+
     /**
      * 
      * @param height 
@@ -160,31 +137,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         this.dimensionZ = dimensionZ;
     }
 
-	/**
-	 *  Is the object be affected by gravity?
-	 * @return 
-	 */
-	public boolean isFloating() {
-		return floating;
-	}
-
-	/**
-	 * Should the object be affected by gravity?
-	 * @param floating 
-	 */
-	public void setFloating(boolean floating) {
-		this.floating = floating;
-	}
-
-	public Vector3 getMovement() {
-		return movement;
-	}
-
-	public void setMovement(Vector3 movement) {
-		this.movement = movement;
-	}
-    
-    
     /**
      * 
      * @return

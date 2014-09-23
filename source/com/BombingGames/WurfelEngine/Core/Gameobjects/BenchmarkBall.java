@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
@@ -42,7 +41,6 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class BenchmarkBall extends AbstractEntity {
-    private Vector3 movement;
     private final EntityShadow shadow;
     private static float timer=0;
     private static float timeTillBall=1000;
@@ -53,14 +51,14 @@ public class BenchmarkBall extends AbstractEntity {
      */
     public BenchmarkBall(Point point) {
         super(21, point);
-        movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1);
-        movement.nor();
+		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
         shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
     }
        
     
     @Override
     public void update(float delta) {
+		super.update(delta);
         timer+=delta;
         if (timer >timeTillBall){
             if (Gdx.graphics.getDeltaTime()<0.013f)//over 60 FPS
@@ -71,11 +69,8 @@ public class BenchmarkBall extends AbstractEntity {
         timeTillBall-=delta/5000000f;
      
         
-        getPos().addVector(movement.cpy().scl(delta/4f));
-        movement.z -= WE.getCurrentConfig().getGravity()*delta/1000f;
-        
         if (onGround()){ //hit floor
-            movement = new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -movement.z);
+            setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -getMovement().z));
         }
         
         shadow.update(delta, this);

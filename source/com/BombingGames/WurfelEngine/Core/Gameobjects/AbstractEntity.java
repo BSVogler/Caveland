@@ -35,13 +35,24 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
 public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
-    private Point point;//the position in the map-grid
+	/**
+	 * direction of movement
+	 */
+	private Vector3 movement;
+	/**
+	 * movement speed
+	 */
+	private float speed;
+	private boolean floating = false;
+    private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean existing;
@@ -53,18 +64,30 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     protected AbstractEntity(int id, Point point){
         super(id,0);
-        this.point = point;
+        this.position = point;
+		floating = true;
+		movement = new Vector3(0,0,0);
     }
+
+	@Override
+	public void update(float delta) {
+		getPosition().addVector(movement.cpy().scl(delta*speed));
+		if (!floating){
+			movement.z -= WE.getCurrentConfig().getGravity()*delta/1000f;
+		}
+	}
+
+	
     
     //IsSelfAware implementation
     @Override
-    public Point getPos() {
-        return point;
+    public Point getPosition() {
+        return position;
     }
 
     @Override
-    public void setPos(AbstractPosition pos) {
-        this.point = pos.getPoint();
+    public void setPosition(AbstractPosition pos) {
+        this.position = pos.getPoint();
     }
     
     /**
@@ -72,7 +95,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @param height 
      */
     public void setHeight(float height) {
-        point.setHeight(height);
+        position.setHeight(height);
     }
     
   
@@ -81,17 +104,17 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @return true when on the ground
      */
     public boolean onGround(){
-        if (getPos().getHeight() <= 0) return true; //if entity is under the map
+        if (getPosition().getHeight() <= 0) return true; //if entity is under the map
         
-        if (getPos().getHeight()>Map.getGameHeight()){
+        if (getPosition().getHeight()>Map.getGameHeight()){
             //check if one pixel deeper is on ground.
-            int z = (int) ((getPos().getHeight()-1)/GAME_EDGELENGTH);
+            int z = (int) ((getPosition().getHeight()-1)/GAME_EDGELENGTH);
             if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
 
             return
                 new Coordinate(
-                    point.getCoord().getRelX(),
-                    point.getCoord().getRelY(),
+                    position.getCoord().getRelX(),
+                    position.getCoord().getRelY(),
                     z,
                     true
                 ).getBlock().isObstacle();
@@ -110,17 +133,14 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
     
     /**
-     *
+     *Is the object active on the map?
      * @return
      */
     public boolean existing(){
         return existing;
     }
   
-    /**
-     *
-     * @return
-     */
+
     @Override
     public char getCategory() {
         return 'e';
@@ -139,6 +159,30 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void setDimensionZ(int dimensionZ) {
         this.dimensionZ = dimensionZ;
     }
+
+	/**
+	 *  Is the object be affected by gravity?
+	 * @return 
+	 */
+	public boolean isFloating() {
+		return floating;
+	}
+
+	/**
+	 * Should the object be affected by gravity?
+	 * @param floating 
+	 */
+	public void setFloating(boolean floating) {
+		this.floating = floating;
+	}
+
+	public Vector3 getMovement() {
+		return movement;
+	}
+
+	public void setMovement(Vector3 movement) {
+		this.movement = movement;
+	}
     
     
     /**
@@ -171,6 +215,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @param camera 
      */
     public void render(GameView view, Camera camera){
-        super.render(view, camera, point);
+        super.render(view, camera, position);
     }
 }

@@ -43,8 +43,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
    private final int colissionRadius = GAME_DIAGLENGTH2/2;
    private final int spritesPerDir;
       
-   private final Vector3 dir = new Vector3(1, 0, 0);
-
    /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1**/
    private final int smoothBreaks = 200;
       
@@ -72,7 +70,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    /**
     * Constructor of AbstractCharacter.
     * @param id
-    * @param spritesPerDir The number of animation sprites per walking direction
+    * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
     * @param point  
     */
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
@@ -100,7 +98,9 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     public void jump(float velo) {
         if (onGround()) {
-            dir.z = velo;
+			Vector3 tmp = getMovement();
+			tmp.z = velo;
+            setMovement(tmp);
             if (jumpingSound != null) jumpingSound.play();
         }
     }
@@ -117,7 +117,8 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed) {
         if (up || down || left || right){
             speed = walkingspeed;
-
+			
+			Vector3 dir = getMovement();
             //update the movement vector
             dir.x = 0;
             dir.y = 0;
@@ -143,6 +144,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (getPosition().onLoadedMap()) {
+			Vector3 dir = getMovement();
             //normalyze only x and y
             double vectorLenght = Math.sqrt(dir.x*dir.x + dir.y*dir.y);
             if (vectorLenght > 0){
@@ -302,14 +304,6 @@ public abstract class AbstractCharacter extends AbstractEntity {
         return colission;
     }
     
-    /**
-     * Returns a  vector wich contains the movement directions.
-     * @return normalized vector
-     */
-    public Vector3 getDirectionVector(){
-        return dir.nor();
-    }
-
     /**
      * Sets the sound to be played when falling.
      * @param fallingSound

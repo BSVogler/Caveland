@@ -96,7 +96,7 @@ public class PlayerWithWeapon extends AbstractCharacter{
                 0
             );
         }else{
-            aim = getDirectionVector();
+            aim = getMovement().nor();
         }
         return aim.nor();
     }

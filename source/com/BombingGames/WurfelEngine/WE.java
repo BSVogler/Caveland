@@ -377,6 +377,10 @@ public class WE extends Game {
         return console;
     }
 
+    /**
+     * Get the view independent view.
+     * @return
+     */
     public static EngineView getEngineView() {
         return engineView;
     }

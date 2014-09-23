@@ -116,6 +116,10 @@ public class Console {
         WE.getEngineView().getStage().addActor(textinput);//add it to the global stage
     }
 
+    /**
+     *
+     * @param gameplayRef
+     */
     public void setGameplayRef(GameplayScreen gameplayRef) {
         this.gameplayRef = gameplayRef;
     }
@@ -230,6 +234,9 @@ public class Console {
         textinput.setVisible(active);
     }
     
+    /**
+     *
+     */
     public void enter(){
         add(textinput.getText(), "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it

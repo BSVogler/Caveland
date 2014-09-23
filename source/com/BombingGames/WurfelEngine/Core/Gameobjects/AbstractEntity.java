@@ -109,6 +109,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         return this;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean existing(){
         return existing;
     }

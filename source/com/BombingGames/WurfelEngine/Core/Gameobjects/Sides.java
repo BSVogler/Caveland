@@ -39,7 +39,17 @@ import com.badlogic.gdx.math.Vector3;
  */
 public enum Sides {
     /**The id of the left side of a block.*/
-    LEFT(0), TOP(1), RIGHT(2);
+    LEFT(0),
+
+    /**
+     *
+     */
+    TOP(1),
+
+    /**
+     *
+     */
+    RIGHT(2);
     private int code;
 
     private Sides(int c) {
@@ -54,6 +64,11 @@ public enum Sides {
         return code;
     }
     
+    /**
+     *
+     * @param normal
+     * @return
+     */
     public static Sides normalToSide(Vector3 normal){
         if (normal.z>0)
             return TOP;

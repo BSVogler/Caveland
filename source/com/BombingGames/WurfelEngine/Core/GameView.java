@@ -404,6 +404,10 @@ public class GameView extends View implements GameManager {
         return batch;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public ShaderProgram getShader() {
         return shader;

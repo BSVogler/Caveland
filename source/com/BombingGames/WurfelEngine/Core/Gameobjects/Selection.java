@@ -45,6 +45,10 @@ public class Selection extends AbstractEntity {
     private Block color;
     private Sides normalSide;
     
+    /**
+     *
+     * @param point
+     */
     public Selection(Point point) {
         super(13, point);
         setLightlevel(10);
@@ -74,6 +78,11 @@ public class Selection extends AbstractEntity {
         normal.setPos(pos.cpy().addVector(0, 1, 0));
     }
     
+    /**
+     *
+     * @param id
+     * @param value
+     */
     public void setColor(int id, int value) {
         this.color = Block.getInstance(id,  value, getPos().getCoord());
     }
@@ -100,6 +109,10 @@ public class Selection extends AbstractEntity {
             normal.setRotation(-120);
     }
 
+    /**
+     *
+     * @return
+     */
     public Sides getNormalSides() {
         return normalSide;
     }

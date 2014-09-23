@@ -60,6 +60,9 @@ public class EngineView extends View {
     private InputMultiplexer inpMulPlex;
     private Array<InputProcessor> inactiveInpProcssrs;
     
+    /**
+     *
+     */
     public EngineView(){
         Gdx.app.debug("EngineView","Initializing...");
         //set up font
@@ -144,6 +147,10 @@ public class EngineView extends View {
         return batch;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public ShaderProgram getShader() {
         return shader;

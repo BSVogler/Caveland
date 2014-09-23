@@ -327,7 +327,9 @@ public class Weapon {
 //        }
     }
     
-    
+    /**
+     *
+     */
     public void shoot(){
         if (shotsLoaded>0 && bulletDelay <= 0 && reloading <= 0){
             if (fire != null) fire.play();
@@ -396,6 +398,10 @@ public class Weapon {
         return shots;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }

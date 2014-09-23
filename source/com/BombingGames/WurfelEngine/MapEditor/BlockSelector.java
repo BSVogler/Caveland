@@ -55,6 +55,10 @@ public class BlockSelector extends Table {
     private Selection selection;
     ScrollPane scroll; 
     
+    /**
+     *
+     * @param selection
+     */
     public BlockSelector(Selection selection) {
         this.selection = selection;
         
@@ -64,6 +68,9 @@ public class BlockSelector extends Table {
         addListener(new BlockSelInpListener(this));
     }
     
+    /**
+     *
+     */
     public void show(){
         setX(0);
         if (!hasChildren()){
@@ -90,6 +97,9 @@ public class BlockSelector extends Table {
         }
     }
     
+    /**
+     *
+     */
     public void hide(){
         setX(-getWidth()*2/3f);
         if (hasChildren()){

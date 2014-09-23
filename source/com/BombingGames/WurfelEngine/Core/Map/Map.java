@@ -721,6 +721,10 @@ public class Map implements Cloneable {
         return filename;
     }
 
+    /**
+     *
+     * @return
+     */
     public MapMetaData getMeta() {
         return meta;
     }

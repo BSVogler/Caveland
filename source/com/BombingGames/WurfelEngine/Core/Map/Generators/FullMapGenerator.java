@@ -41,6 +41,10 @@ import com.BombingGames.WurfelEngine.Core.Map.Generator;
 public class FullMapGenerator implements Generator {
     private final int id;
 
+    /**
+     *
+     * @param id
+     */
     public FullMapGenerator(int id) {
         this.id = id;
     }

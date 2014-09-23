@@ -44,6 +44,10 @@ import java.io.Writer;
  * @author Benedikt Vogler
  */
 public class MapMetaData {
+
+    /**
+     *
+     */
     public static final String VERSION = "0.12";
     private int chunkBlocksX;
     private int chunkBlocksY;
@@ -135,59 +139,114 @@ public class MapMetaData {
         return true;
     }
 
+    /**
+     *
+     * @param fileName
+     */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     *
+     * @param chunkBlocksX
+     */
     public void setChunkBlocksX(int chunkBlocksX) {
         this.chunkBlocksX = chunkBlocksX;
     }
 
+    /**
+     *
+     * @param chunkBlocksY
+     */
     public void setChunkBlocksY(int chunkBlocksY) {
         this.chunkBlocksY = chunkBlocksY;
     }
 
+    /**
+     *
+     * @param chunkBlocksZ
+     */
     public void setChunkBlocksZ(int chunkBlocksZ) {
         this.chunkBlocksZ = chunkBlocksZ;
     }
 
+    /**
+     *
+     * @param mapversion
+     */
     public void setMapversion(String mapversion) {
         this.mapversion = mapversion;
     }
 
+    /**
+     *
+     * @param mapName
+     */
     public void setMapName(String mapName) {
         this.mapName = mapName;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    
+    /**
+     *
+     * @return
+     */
     public int getChunkBlocksX() {
         return chunkBlocksX;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getChunkBlocksY() {
         return chunkBlocksY;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getChunkBlocksZ() {
         return chunkBlocksZ;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMapversion() {
         return mapversion;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMapName() {
         return mapName;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFileName() {
         return fileName;
     }

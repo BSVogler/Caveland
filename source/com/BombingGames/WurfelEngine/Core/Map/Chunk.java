@@ -50,6 +50,10 @@ public class Chunk {
     private static int blocksY = 40;//blocksY must be even number
     private static int blocksZ = 10;
 
+    /**
+     *
+     * @param meta
+     */
     protected static void setDimensions(MapMetaData meta) {
         blocksX = meta.getChunkBlocksX();
         blocksY = meta.getChunkBlocksY();

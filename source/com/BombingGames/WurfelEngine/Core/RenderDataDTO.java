@@ -67,6 +67,10 @@ public class RenderDataDTO {
         );
     }
 
+    /**
+     *
+     * @return
+     */
     public AbstractPosition getPos() {
         return pos;
     }

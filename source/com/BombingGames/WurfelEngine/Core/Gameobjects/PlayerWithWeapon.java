@@ -118,6 +118,10 @@ public class PlayerWithWeapon extends AbstractCharacter{
         this.camera = camera;
     }
 
+    /**
+     *
+     * @return
+     */
     public Weapon getWeapon() {
         return weapon;
     }

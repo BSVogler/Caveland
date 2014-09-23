@@ -46,6 +46,10 @@ import java.io.IOException;
  */
 public class MapButton extends TextButton {
 
+    /**
+     *
+     * @param fileName
+     */
     public MapButton(String fileName) {
         super("",WE.getEngineView().getSkin());
         //read description and map name

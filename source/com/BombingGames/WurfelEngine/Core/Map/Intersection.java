@@ -42,6 +42,12 @@ public class Intersection {
     private Point point;
     private float distance;
 
+    /**
+     *
+     * @param point
+     * @param normal
+     * @param distance
+     */
     public Intersection(Point point, Vector3 normal, float distance) {
         this.normal = normal;
         this.point = point;
@@ -53,14 +59,26 @@ public class Intersection {
         point=null;
     }
 
+    /**
+     *
+     * @return
+     */
     public Vector3 getNormal() {
         return normal;
     }
 
+    /**
+     *
+     * @return
+     */
     public Point getPoint() {
         return point;
     }
 
+    /**
+     *
+     * @return
+     */
     public float getDistance() {
         return distance;
     }

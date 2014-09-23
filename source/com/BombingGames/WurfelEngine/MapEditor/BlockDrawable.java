@@ -46,6 +46,10 @@ public class BlockDrawable extends TextureRegionDrawable {
     private Block block;
     private float size = -0.6f;
     
+    /**
+     *
+     * @param id
+     */
     public BlockDrawable(int id) {
         this.block = Block.getInstance(id,0,new Coordinate(0, 0, 0, true));
     }
@@ -57,11 +61,19 @@ public class BlockDrawable extends TextureRegionDrawable {
         block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public float getMinHeight() {
         return (Block.SCREEN_HEIGHT+Block.SCREEN_DEPTH)*(1f+size);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public float getMinWidth() {
         return Block.SCREEN_WIDTH*(1f+size);

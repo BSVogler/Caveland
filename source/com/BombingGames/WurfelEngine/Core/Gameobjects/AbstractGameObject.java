@@ -45,12 +45,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- *An object is something wich can be found in the game world.
+ *An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
 public abstract class AbstractGameObject {
-    /**Screen SCREEN_DEPTH of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
-     * In game coordinates this is also the dimension from top to bottom.*/
+    /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
+     */
     public static final int SCREEN_DEPTH = 80;
     /**The half (1/2) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/2*/
     public static final int SCREEN_DEPTH2 = SCREEN_DEPTH / 2;
@@ -75,22 +75,21 @@ public abstract class AbstractGameObject {
     /**A quarter (1/4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/
     public static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
     
-    /**The real game world dimension in pixel (edge length). 1 game meter ^= 1 GAME_DIMENSION
-    * Usually the use of SCREEN_DEPTH is enough because of the map format every coordinate center is straight.
-    * The value is calculated by SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
-    */
+    /**
+     * The game spaces dimension in pixel (edge length). 1 game meter ^= 1 GAME_EDGELENGTH
+     * The value is calculated by SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
+     */
     public static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
     
     /**
-     * The game size's aequivalent to SCREEN_DEPTH.
-     * The value is GAMEDIMENSION * Math.sqrt(2) which is the same as SCREEN_HEIGHT * 2
+     * The game space dimension size's aequivalent to SCREEN_DEPTH or SCREEN_WIDTH.
+     * Because the x axis is not shortened those two are equal.
      */
-    public static final int GAME_DIAGLENGTH = SCREEN_HEIGHT * 2;
+    public static final int GAME_DIAGLENGTH = SCREEN_WIDTH;
     
-    /**Half of GAME_DIAGLENGTH<br />
-     * This is in the normal case aqueivalent to SCREEN_HEIGHT.
+    /**Half (1/2) of GAME_DIAGLENGTH
      */
-    public static final int GAME_DIAGLENGTH2 = SCREEN_HEIGHT;
+    public static final int GAME_DIAGLENGTH2 = SCREEN_WIDTH2;
     
     /**the max. amount of different object types*/
     public static final int OBJECTTYPESNUM = 99;
@@ -481,6 +480,10 @@ public abstract class AbstractGameObject {
         return value;
     }
 
+    /**
+     * Returns the rotation of the object.
+     * @return
+     */
     public float getRotation() {
         return rotation;
     }
@@ -569,6 +572,10 @@ public abstract class AbstractGameObject {
         this.hidden = hidden;
     }
 
+    /**
+     *
+     * @param rotation set the rotation in degrees.
+     */
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }

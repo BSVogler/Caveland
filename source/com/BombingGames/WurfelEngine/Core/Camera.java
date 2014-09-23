@@ -87,7 +87,8 @@ public class Camera{
     /**
      * a chunk with an "anchor point"
      */
-    private int[] fixChunk;
+    private int fixChunkX;
+    private int fixChunkY;
     
     private final Block groundBlock;//the representative of the bottom layer (ground) block
     private boolean fullWindow = false;
@@ -138,7 +139,8 @@ public class Camera{
         screenPosX = x;
         screenPosY = y;
         
-        fixChunk = Controller.getMap().getChunkCoords(0);
+        fixChunkX = Controller.getMap().getChunkCoords(0)[0];
+        fixChunkY = Controller.getMap().getChunkCoords(0)[1];
         
         //set the camera's focus to the center of the map
         projectionPosX = Map.getCenter().getProjectedPosX() - getProjectionWidth() / 2;
@@ -206,11 +208,12 @@ public class Camera{
         } else {
             //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);
-            projectionPosX += (fixChunk[0]-currentTopLeftChunk[0])*Chunk.getGameWidth();
-            projectionPosY += (fixChunk[1]-currentTopLeftChunk[1])*Chunk.getGameHeight();
+            projectionPosX += (fixChunkX-currentTopLeftChunk[0])*Chunk.getGameWidth();
+            projectionPosY += (fixChunkY-currentTopLeftChunk[1])*Chunk.getGameHeight();
             
             //update fixChunk
-            fixChunk = currentTopLeftChunk.clone();
+            fixChunkX = currentTopLeftChunk[0];
+            fixChunkY = currentTopLeftChunk[1];
         }
         
         position.set(projectionPosX+ getProjectionWidth()/2 , projectionPosY+ getProjectionHeight()/2 , 0); 

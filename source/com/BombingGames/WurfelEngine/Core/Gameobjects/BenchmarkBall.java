@@ -41,7 +41,6 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class BenchmarkBall extends AbstractCharacter {
-    private final EntityShadow shadow;
     private static float timer=0;
     private static float timeTillBall=1000;
 
@@ -52,7 +51,6 @@ public class BenchmarkBall extends AbstractCharacter {
     public BenchmarkBall(Point point) {
         super(21, 0, point);
 		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
-        shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
 		setFloating(false);
     }
        
@@ -73,8 +71,6 @@ public class BenchmarkBall extends AbstractCharacter {
         if (onGround()){ //hit floor
             jump();
         }
-        
-        shadow.update(delta, this);
     }
 
 	@Override

@@ -209,7 +209,7 @@ public class Camera{
             //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);
             projectionPosX += (fixChunkX-currentTopLeftChunk[0])*Chunk.getGameWidth();
-            projectionPosY += (fixChunkY-currentTopLeftChunk[1])*Chunk.getGameHeight();
+            projectionPosY -= (fixChunkY-currentTopLeftChunk[1])*Chunk.getGameHeight();
             
             //update fixChunk
             fixChunkX = currentTopLeftChunk[0];

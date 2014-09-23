@@ -331,7 +331,7 @@ public class MapEditorView extends GameView {
         }
     }
     
-    private static class LoadButton extends ClickListener{
+    private class LoadButton extends ClickListener{
         private final MapEditorController controller;
         private MapEditorView view;
         
@@ -342,7 +342,7 @@ public class MapEditorView extends GameView {
         
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            controller.getLoadMenu().setOpen(view, true);
+            getLoadMenu().setOpen(view, true);
             return true;
         }
     }

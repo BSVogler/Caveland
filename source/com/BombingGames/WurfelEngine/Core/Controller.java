@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
-import com.BombingGames.WurfelEngine.Core.Map.LoadMenu;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
@@ -61,8 +60,6 @@ public class Controller implements GameManager {
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
     private AbstractCharacter player;  
-    
-    private LoadMenu loadMenu;
     
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
@@ -258,15 +255,6 @@ public class Controller implements GameManager {
         return devtools;
     }
     
-
-    /**
-     *Get a menu which can be used for loading maps.
-     * @return
-     */
-    public LoadMenu getLoadMenu() {
-        if (loadMenu==null) loadMenu = new LoadMenu();//lazy init
-        return loadMenu;
-    }
 
     /**
      *

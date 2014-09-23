@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
+import com.BombingGames.WurfelEngine.Core.Map.LoadMenu;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -70,6 +71,8 @@ public class GameView extends View implements GameManager {
     private Stage stage;
     private SpriteBatch batch;
     private ShaderProgram shader;
+    
+    private LoadMenu loadMenu;
     
         
     private boolean initalized;
@@ -366,6 +369,15 @@ public class GameView extends View implements GameManager {
         return cameras;
     }
 
+    /**
+     *Get a menu which can be used for loading maps.
+     * @return
+     */
+    public LoadMenu getLoadMenu() {
+        if (loadMenu==null) loadMenu = new LoadMenu(this);//lazy init
+        return loadMenu;
+    }
+    
     /**
      * Add a camera.
      * @param camera

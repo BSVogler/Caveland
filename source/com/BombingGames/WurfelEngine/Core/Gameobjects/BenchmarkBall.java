@@ -68,9 +68,7 @@ public class BenchmarkBall extends AbstractMovableEntity {
         timeTillBall-=delta/5000000f;
      
         
-        if (onGround()){ //hit floor
-            jump();
-        }
+        if (onGround()) jump();
     }
 
 	@Override

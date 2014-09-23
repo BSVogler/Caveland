@@ -113,7 +113,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
 	
     /**
      * Defines the direction of the gun - if no gun available - the direction of the head.
-     * @return normalized vector with three values
+     * @return  If not overwritten returning movement.
      */
    public Vector3 getAiming(){
 	   return movement;

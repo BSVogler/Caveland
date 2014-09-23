@@ -37,20 +37,20 @@ import com.badlogic.gdx.math.Vector3;
  *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
  * @author Benedikt
  */
-public abstract class AbstractCharacter extends AbstractEntity {
+public abstract class AbstractMovableEntity extends AbstractEntity {
    private static int soundlimit;//time to pass before new sound can be played
      
    private final int colissionRadius = GAME_DIAGLENGTH2/2;
    private final int spritesPerDir;
       
-   /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1**/
-   private final int smoothBreaks = 200;
+   /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
+   private int friction = 0;
       
 	/**
 	 * direction of movement
 	 */
 	private Vector3 movement;
-   /**The walking/running speed of the character. provides a factor for the movement vector*/
+   /**The walking/running speed of the character. provides a factor for the horizontal part of the movement vector*/
 	private float speed;
 	private boolean coliding;
 	/**
@@ -83,27 +83,24 @@ public abstract class AbstractCharacter extends AbstractEntity {
     * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
     * @param point  
     */
-   protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
+   protected AbstractMovableEntity(final int id, final int spritesPerDir, Point point) {
         super(id, point);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
+		speed = 0.5f;
         shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
+		coliding = true;
+		floating = false;
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
    
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
-     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter#jump(float)
+     * @see #jump(float)
      */
     public abstract void jump();
    
-    /**
-     * Defines the direction of the gun - if no gun available - the direction of the head.
-     * @return normalized vector with three values
-     */
-   public abstract Vector3 getAiming();
-    
-   /**
+	/**
      * Jump with a specific speed
      * @param velo the velocity in m/s
      */
@@ -113,31 +110,15 @@ public abstract class AbstractCharacter extends AbstractEntity {
             if (jumpingSound != null) jumpingSound.play();
         }
     }
-
-    
-   /**
-     * Lets the player walk.
-     * @param up move up?
-     * @param down move down?
-     * @param left move left?
-     *  @param right move right?
-     * @param walkingspeed the higher the speed the bigger the steps. Should be in m/s.
+	
+    /**
+     * Defines the direction of the gun - if no gun available - the direction of the head.
+     * @return normalized vector with three values
      */
-    public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed) {
-        if (up || down || left || right){
-            speed = walkingspeed;
-			
-			Vector3 dir = getMovement();
-            //update the movement vector
-            dir.x = 0;
-            dir.y = 0;
+   public Vector3 getAiming(){
+	   return movement;
+   };
 
-            if (up)    dir.y = -1;
-            if (down)  dir.y = 1;
-            if (left)  dir.x = -1;
-            if (right) dir.x = 1;
-        }
-   }
     
    /**
      * Updates the character.
@@ -196,14 +177,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
 					0
 				};
 
-				if (coliding){
-						//if movement allowed => move player
-					if (! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
-							getPosition().addVector(dMove);
-						}
-				} else {
-					getPosition().addVector(dMove);
-				}
+				//if movement allowed => move
+				if (!coliding || ! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+						getPosition().addVector(dMove);
+					}
 
             /* update sprite*/
 			if (spritesPerDir>0) {
@@ -255,8 +232,10 @@ public abstract class AbstractCharacter extends AbstractEntity {
             shadow.update(delta, this);
 
             //slow walking down
-            if (speed > 0) speed -= delta/ smoothBreaks;
-            if (speed < 0) speed = 0;
+			if (friction>0) {
+				if (speed > 0) speed -= delta/ friction;
+				if (speed < 0) speed = 0;
+			}
             
             /* SOUNDS */
             //should the runningsound be played?
@@ -358,7 +337,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      * @param waterSound new value of waterSound
      */
     public static void setWaterSound(Sound waterSound) {
-        AbstractCharacter.waterSound = waterSound;
+        AbstractMovableEntity.waterSound = waterSound;
     }
     
     /**
@@ -376,6 +355,15 @@ public abstract class AbstractCharacter extends AbstractEntity {
 	public void setMovement(Vector3 movement) {
 		this.movement = movement;
 	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+	
 
 	public boolean isColiding() {
 		return coliding;
@@ -464,6 +452,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public void setMana(int mana) {
         this.mana = mana;
     }
+
+	public void setFriction(int friction) {
+		this.friction = friction;
+	}
+	
+	
 
     /**
      *

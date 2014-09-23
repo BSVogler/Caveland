@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractMovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
@@ -51,7 +51,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private int damage;
     private int distance =0;//distance traveled
-    private AbstractCharacter parent;//no self shooting
+    private AbstractMovableEntity parent;//no self shooting
     private int maxDistance = 1000;//default maxDistance
     private int explosive = 0;
     private int impactSprite;
@@ -95,8 +95,8 @@ public class Bullet extends AbstractEntity {
         
         //check character hit
          //get every character on this coordinate
-        ArrayList<AbstractCharacter> entitylist;
-        entitylist = Controller.getMap().getAllEntitysOnCoord(getPosition().getCoord(), AbstractCharacter.class);
+        ArrayList<AbstractMovableEntity> entitylist;
+        entitylist = Controller.getMap().getAllEntitysOnCoord(getPosition().getCoord(), AbstractMovableEntity.class);
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
@@ -125,7 +125,7 @@ public class Bullet extends AbstractEntity {
      *
      * @param parent
      */
-    public void setParent(AbstractCharacter parent) {
+    public void setParent(AbstractMovableEntity parent) {
         this.parent = parent;
     }
     
@@ -183,9 +183,9 @@ public class Bullet extends AbstractEntity {
                             true,
                             false
                         ).exist();
-                        ArrayList<AbstractCharacter> list;
-                        list = Controller.getMap().getAllEntitysOnCoord(effect.getPosition().getCoord(), AbstractCharacter.class);
-                        for (AbstractCharacter ent : list) {
+                        ArrayList<AbstractMovableEntity> list;
+                        list = Controller.getMap().getAllEntitysOnCoord(effect.getPosition().getCoord(), AbstractMovableEntity.class);
+                        for (AbstractMovableEntity ent : list) {
                             if (!(ent instanceof PlayerWithWeapon))
                                 ent.damage(1000);
                         }

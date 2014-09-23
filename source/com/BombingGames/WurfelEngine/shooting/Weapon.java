@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractMovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
@@ -52,7 +52,7 @@ public class Weapon {
     private final int id;
     private final String name;
 
-    private AbstractCharacter parent;//the parent holding the weapon
+    private AbstractMovableEntity parent;//the parent holding the weapon
     
     //sound
     private Sound fire;
@@ -97,7 +97,7 @@ public class Weapon {
      * @param id
      * @param parent
      */
-    public Weapon(int id, AbstractCharacter parent) {
+    public Weapon(int id, AbstractMovableEntity parent) {
         this.id = id;
         this.parent = parent;
         if (parent != null) {

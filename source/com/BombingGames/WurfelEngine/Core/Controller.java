@@ -30,9 +30,9 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractCharacter;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
@@ -59,7 +59,7 @@ public class Controller implements GameManager {
     private Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
-    private AbstractCharacter player;  
+    private Controllable player;  
     
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
@@ -187,7 +187,7 @@ public class Controller implements GameManager {
      * Returns the player.
      * @return the player. If no player returns null.
      */
-    public AbstractCharacter getPlayer() {
+    public Controllable getPlayer() {
         return player;
     }
 
@@ -195,7 +195,7 @@ public class Controller implements GameManager {
      * Sets a player 
      * @param player 
      */
-    public void setPlayer(AbstractCharacter player) {
+    public void setPlayer(Controllable player) {
         if (player==null)
             throw new NullPointerException("No player was passed.");
         else {

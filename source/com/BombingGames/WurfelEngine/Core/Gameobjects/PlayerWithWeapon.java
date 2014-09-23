@@ -41,7 +41,7 @@ import com.badlogic.gdx.math.Vector3;
  *The WeaponPlayer is a character who can walk and shoot.
  * @author Benedikt
  */
-public class PlayerWithWeapon extends AbstractCharacter{
+public class PlayerWithWeapon extends Controllable {
     private Camera camera;
     private Weapon weapon;
 

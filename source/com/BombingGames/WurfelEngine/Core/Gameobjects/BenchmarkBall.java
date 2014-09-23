@@ -80,11 +80,4 @@ public class BenchmarkBall extends AbstractMovableEntity {
 		tmp.y = (float) Math.random()-0.5f;
 		super.jump(-tmp.z);
 	}
-
-	@Override
-	public Vector3 getAiming() {
-		return getMovement();
-	}
-
- 
 }

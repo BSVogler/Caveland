@@ -374,7 +374,7 @@ public class GameView extends View implements GameManager {
      * @return
      */
     public LoadMenu getLoadMenu() {
-        if (loadMenu==null) loadMenu = new LoadMenu(this);//lazy init
+        if (loadMenu==null) loadMenu = new LoadMenu();//lazy init
         return loadMenu;
     }
     

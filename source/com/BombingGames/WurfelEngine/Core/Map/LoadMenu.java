@@ -50,30 +50,35 @@ import java.io.File;
  *A menu for choosing a map.
  * @author Benedikt Vogler
  */
-public class LoadMenu {
+public class LoadMenu extends Window {
     private final static int margin = 100;//the space to the screen corners.
-    private Window window;
     private TextField textSearch;
     private Table content;
+    private ScrollPane scroll;
     private Stage stageRef;
     private boolean initialized = false;
     private LoadMenuListener listener;
 
-    /**
+        /**
      * Setups the window.
+     */
+    public LoadMenu() {
+        super("Choose a map", WE.getEngineView().getSkin());
+    }
+
+    /**
+     * 
      * @param view 
      */
     public void init(GameView view){
-        window = new Window("Choose a map", WE.getEngineView().getSkin());
-        window.setWidth(Gdx.graphics.getWidth()-margin*2);
-        window.setHeight(Gdx.graphics.getHeight()-margin*2);
-        window.setX(margin);
-        window.setY(margin);
-        window.setKeepWithinStage(true);
-        window.setModal(true);//problem: only affects the stage
-        window.setVisible(false);
-        window.setMovable(true);
-
+        setWidth(Gdx.graphics.getWidth()-margin*2);
+        setHeight(Gdx.graphics.getHeight()-margin*2);
+        setX(margin);
+        setY(margin);
+        setKeepWithinStage(true);
+        setModal(true);//problem: only affects the stage
+        setVisible(false);
+        setMovable(true);
         stageRef = view.getStage();
         // The window shall fill the whole window:
         //window.setFillParent(true);
@@ -102,33 +107,25 @@ public class LoadMenu {
         search.add(textSearch).minSize(400f, 15f);
 
         // The search field will be aligned at the right of the window:
-        window.add(search).right();
-        window.row();
+        add(search).right();
+        row();
 
         //rearrangeTable();
 
         content = new Table(WE.getEngineView().getSkin());
         // Prepares the scroll manager:
-        ScrollPane scroll = new ScrollPane(content, WE.getEngineView().getSkin());
+        scroll = new ScrollPane(content, WE.getEngineView().getSkin());
 
         // Only scroll vertically:
         scroll.setScrollingDisabled(true, false);
 
-        window.add(scroll).fill().expand();
-        window.row();
+        add(scroll).fill().expand();
+        row();
         
-        stageRef.addActor(window);//add the window to the view's stage.
+        stageRef.addActor(this);//add the window to the view's stage.
         initialized=true;
     }
     
-    /**
-     * Returns if the window is opened.
-     * @return 
-     */
-    public boolean isOpen() {
-       return window.isVisible();
-    }
-
     /**
      * Open/close the window
      * @param view if not intialized it initializes it. can be null if definetly initialized.
@@ -137,7 +134,7 @@ public class LoadMenu {
     public void setOpen(GameView view, boolean open) {
         if (initialized || open){//if initialized or should be opened
             if (!initialized) init(view);
-            if (!window.isVisible()){//opening
+            if (!isVisible()){//opening
                 int i=0;
                 File mapsFolder = WorkingDirectory.getMapsFolder();
                 for (final File fileEntry : mapsFolder.listFiles()) {
@@ -159,10 +156,15 @@ public class LoadMenu {
                 clearListeners();
                 scroll.clearListeners();
                 stageRef.removeListener(listener);
+                initialized=false;
                 WE.getEngineView().unfocusInputProcessor();
             }
-            window.setVisible(open);
+            setVisible(open);
         }
+    }
+    
+    public void close(){
+        setOpen(null, false);
     }
     
     private static class LoadMenuListener extends InputListener{
@@ -174,9 +176,8 @@ public class LoadMenu {
 
         @Override
         public boolean keyDown(InputEvent event, int keycode) {
-            Gdx.app.debug("LoadMenu", "Still active");
             if (keycode == Input.Keys.ESCAPE){
-                parent.setOpen(null, false);
+                parent.close();
             }
             return true;
         }

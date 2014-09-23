@@ -190,11 +190,19 @@ public class Camera{
     public void update() {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
+            //update camera's position according to focusCoordinates
             projectionPosX = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2;
             projectionPosY = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
+            
         } else if (focusEntity != null ){
+            //update camera's position according to focusEntity
             projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2;            
-            projectionPosY = (int) (focusEntity.getPos().getProjectedPosY() - getProjectionHeight()/2 +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2);
+            projectionPosY = (int) (
+                focusEntity.getPos().getProjectedPosY()
+                - getProjectionHeight()/2
+                +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
+            );
+            
         } else {
             //update camera's position according to fixChunk
             int[] currentTopLeftChunk = Controller.getMap().getChunkCoords(0);

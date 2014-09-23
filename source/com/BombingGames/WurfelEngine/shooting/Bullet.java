@@ -78,7 +78,7 @@ public class Bullet extends AbstractEntity {
         //dir.z=-delta/(float)maxDistance;//fall down
         Vector3 dMov = dir.cpy().scl(delta*speed);
         //dMov.z /= 1.414213562f;//mixed screen and game space together?
-        getPos().addVector(dMov);
+        getPosition().addVector(dMov);
         setRotation(getRotation()+delta);
         
         //only exist specific distance then destroy self
@@ -87,20 +87,20 @@ public class Bullet extends AbstractEntity {
             dispose();
                 
         //block hit -> spawn effect
-        if (getPos().onLoadedMap() && getPos().getBlockClamp().isObstacle()){
+        if (getPosition().onLoadedMap() && getPosition().getBlockClamp().isObstacle()){
             if (impactSprite!= 0)
-                new AnimatedEntity(impactSprite, 0, getPos().cpy(), new int[]{1000} , true, false).exist();
+                new AnimatedEntity(impactSprite, 0, getPosition().cpy(), new int[]{1000} , true, false).exist();
             dispose();
         }
         
         //check character hit
          //get every character on this coordinate
         ArrayList<AbstractCharacter> entitylist;
-        entitylist = Controller.getMap().getAllEntitysOnCoord(getPos().getCoord(), AbstractCharacter.class);
+        entitylist = Controller.getMap().getAllEntitysOnCoord(getPosition().getCoord(), AbstractCharacter.class);
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
-            new SimpleEntity(16, getPos().cpy()).exist();//spawn blood
+            new SimpleEntity(16, getPosition().cpy()).exist();//spawn blood
             dispose();
         }
     }
@@ -163,7 +163,7 @@ public class Bullet extends AbstractEntity {
                     //place air
                      if (x*x + (y/2)*(y/2)+ z*z < explosive*explosive){
                         Controller.getMap().setDataSafe(
-                            getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
+                            getPosition().getCoord().cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
                         );
                      }
                 }
@@ -178,13 +178,13 @@ public class Bullet extends AbstractEntity {
                         AbstractEntity effect = new AnimatedEntity(
                             31,
                             0,
-                            getPos().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint(),
+                            getPosition().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint(),
                             new int[]{700,2000},
                             true,
                             false
                         ).exist();
                         ArrayList<AbstractCharacter> list;
-                        list = Controller.getMap().getAllEntitysOnCoord(effect.getPos().getCoord(), AbstractCharacter.class);
+                        list = Controller.getMap().getAllEntitysOnCoord(effect.getPosition().getCoord(), AbstractCharacter.class);
                         for (AbstractCharacter ent : list) {
                             if (!(ent instanceof PlayerWithWeapon))
                                 ent.damage(1000);

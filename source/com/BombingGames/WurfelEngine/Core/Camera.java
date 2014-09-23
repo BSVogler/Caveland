@@ -198,9 +198,9 @@ public class Camera{
             
         } else if (focusEntity != null ){
             //update camera's position according to focusEntity
-            projectionPosX = focusEntity.getPos().getProjectedPosX() - getProjectionWidth()/2;            
+            projectionPosX = focusEntity.getPosition().getProjectedPosX() - getProjectionWidth()/2;            
             projectionPosY = (int) (
-                focusEntity.getPos().getProjectedPosY()
+                focusEntity.getPosition().getProjectedPosY()
                 - getProjectionHeight()/2
                 +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
             );
@@ -343,12 +343,12 @@ public class Camera{
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
             if (!entity.isHidden() && !entity.isClipped()
                 && 
-                entity.getPos().getProjectedPosY() < projectionPosY + getProjectionHeight()
+                entity.getPosition().getProjectedPosY() < projectionPosY + getProjectionHeight()
                 &&
-                entity.getPos().getZ() < zRenderingLimit
+                entity.getPosition().getZ() < zRenderingLimit
                 )
                     depthsort.add(
-                        new RenderDataDTO(entity, entity.getPos())
+                        new RenderDataDTO(entity, entity.getPosition())
                     );
         }
         //sort the list

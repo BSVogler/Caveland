@@ -54,7 +54,7 @@ public class Selection extends AbstractEntity {
         setLightlevel(10);
         color = Block.getInstance(1);
         
-        normal = new AnimatedEntity(14, 0, getPos(), new int[]{200,200}, true, true);
+        normal = new AnimatedEntity(14, 0, getPosition(), new int[]{200,200}, true, true);
         normal.ignoreGameSpeed(true);
         normal.setLightlevel(10);
         normal.exist();
@@ -63,19 +63,19 @@ public class Selection extends AbstractEntity {
     @Override
     public void update(float delta) {
         
-//        if (normal.getPos().getNormal()==0)
-//            normal.setPos(normal.getPos().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
-//        else if (normal.getPos().getNormal()==1)
-//            normal.setPos(normal.getPos().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
-//            else if (normal.getPos().getNormal()==2)
-//                normal.setPos(normal.getPos().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
+//        if (normal.getPosition().getNormal()==0)
+//            normal.setPosition(normal.getPosition().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
+//        else if (normal.getPosition().getNormal()==1)
+//            normal.setPosition(normal.getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
+//            else if (normal.getPosition().getNormal()==2)
+//                normal.setPosition(normal.getPosition().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
     }
 
     @Override
-    public void setPos(AbstractPosition pos) {
-        super.setPos( pos.getCoord());
-        setHidden(getPos().getHeight()<0);
-        normal.setPos(pos.cpy().addVector(0, 1, 0));
+    public void setPosition(AbstractPosition pos) {
+        super.setPosition( pos.getCoord());
+        setHidden(getPosition().getHeight()<0);
+        normal.setPosition(pos.cpy().addVector(0, 1, 0));
     }
     
     /**
@@ -84,7 +84,7 @@ public class Selection extends AbstractEntity {
      * @param value
      */
     public void setColor(int id, int value) {
-        this.color = Block.getInstance(id,  value, getPos().getCoord());
+        this.color = Block.getInstance(id,  value, getPosition().getCoord());
     }
 
     /**
@@ -127,7 +127,7 @@ public class Selection extends AbstractEntity {
         Intersection intersect = view.screenToGameRaytracing(screenX, screenY);
                 
             if (intersect.getPoint() != null){
-               setPos( intersect.getPoint() );
+               setPosition( intersect.getPoint() );
                setNormal( Sides.normalToSide( intersect.getNormal() ) );
             }
     }

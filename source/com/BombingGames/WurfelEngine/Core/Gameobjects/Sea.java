@@ -67,12 +67,12 @@ public class Sea extends Block implements IsSelfAware{
     }
 
     @Override
-    public Coordinate getPos() {
+    public Coordinate getPosition() {
         return coords;
     }
 
     @Override
-    public void setPos(AbstractPosition pos) {
+    public void setPosition(AbstractPosition pos) {
         this.coords = pos.getCoord();
     }
 

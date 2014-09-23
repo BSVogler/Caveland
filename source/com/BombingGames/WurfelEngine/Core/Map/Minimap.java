@@ -151,13 +151,13 @@ public class Minimap {
                 color.a = 0.8f;
                 sh.setColor(color);
                 float rectX = 
-                    + ((controller.getPlayer().getPos().getRelX()
-                    + (controller.getPlayer().getPos().getCoord().getRelY()%2==1?0.5f:0)
+                    + ((controller.getPlayer().getPosition().getRelX()
+                    + (controller.getPlayer().getPosition().getCoord().getRelY()%2==1?0.5f:0)
                     )/Block.GAME_DIAGLENGTH
                     - 0.5f)
                     * scaleX;
                 float rectY = 
-                    - (controller.getPlayer().getPos().getRelY()/Block.GAME_DIAGLENGTH
+                    - (controller.getPlayer().getPosition().getRelY()/Block.GAME_DIAGLENGTH
                     + 0.5f
                     )* scaleY*2;
                 sh.translate(rectX, rectY, 0);
@@ -215,7 +215,7 @@ public class Minimap {
                 sh.rect(
                     scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
                     + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-                        + scaleY *2*(controller.getPlayer().getPos().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
                     scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
                     scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
                 );
@@ -235,7 +235,7 @@ public class Minimap {
             
             if (controller.getPlayer()!=null){
 
-                Point tmpPos = controller.getPlayer().getPos();
+                Point tmpPos = controller.getPlayer().getPosition();
                 //player coordinate
                 view.drawString(
                     tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),

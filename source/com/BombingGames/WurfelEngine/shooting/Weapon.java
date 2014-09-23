@@ -101,7 +101,7 @@ public class Weapon {
         this.id = id;
         this.parent = parent;
         if (parent != null) {
-            laserdot = new SimpleEntity(20, parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
+            laserdot = new SimpleEntity(20, parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
         }
         
         switch (id){
@@ -306,13 +306,13 @@ public class Weapon {
                 reload();
         }
         
-        Point raycast = parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000, false, false).getPoint();
+        Point raycast = parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000, false, false).getPoint();
         if (raycast!=null)
-            laserdot.setPos(raycast);
+            laserdot.setPosition(raycast);
 //        if (laser!=null && laser.shouldBeDisposed())
 //            laser=null;
 //        if (laser==null) {
-//            laser = new Bullet(12, parent.getPos().cpy());
+//            laser = new Bullet(12, parent.getPosition().cpy());
 //            laser.setValue(0);
 //            laser.setHidden(true);
 //
@@ -339,9 +339,9 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new AnimatedEntity(60, 0, parent.getPos(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(60, 0, parent.getPosition(), new int[]{300}, true, false).exist();
             else
-                new AnimatedEntity(61, 0, parent.getPos(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(61, 0, parent.getPosition(), new int[]{300}, true, false).exist();
 
             //shot bullets
             for (int i = 0; i < bps; i++) {
@@ -350,7 +350,7 @@ public class Weapon {
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
                 bullet = new Bullet(
                     12,
-                    parent.getPos().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+                    parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue(0);
@@ -452,6 +452,6 @@ public class Weapon {
      * @return a copy
      */
     public Point getImpactPoint() {
-        return laserdot.getPos().cpy();
+        return laserdot.getPosition().cpy();
     }
 }

@@ -66,11 +66,11 @@ public class EntitySpawner extends Block implements IsSelfAware {
         
         //check every character if standing on top
         int i = 0;
-        while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPos().getCoord().getRel(), coordsOnTop)){
+        while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)){
             i++;
         }
         
-        if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPos().getCoord().getRel(), coordsOnTop)) {
+        if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)) {
             if (up) trigger();
             up = false;
         } else {
@@ -79,7 +79,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
     }
 
     @Override
-    public AbstractPosition getPos() {
+    public AbstractPosition getPosition() {
         return coords;
     }
 
@@ -97,7 +97,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
     }
 
     @Override
-    public void setPos(AbstractPosition pos) {
+    public void setPosition(AbstractPosition pos) {
         coords = pos.getCoord();
     }
 }

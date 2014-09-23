@@ -142,7 +142,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
         if (health < 0) health = 0;
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (getPos().onLoadedMap()) {
+        if (getPosition().onLoadedMap()) {
             //normalyze only x and y
             double vectorLenght = Math.sqrt(dir.x*dir.x + dir.y*dir.y);
             if (vectorLenght > 0){
@@ -150,12 +150,12 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 dir.y /= vectorLenght;
             }
 
-            float oldHeight = getPos().getHeight();
+            float oldHeight = getPosition().getHeight();
 
             /*VERTICAL MOVEMENT*/
             float t = delta/1000f; //t = time in s
             if (!onGround()) dir.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
-            getPos().setHeight(getPos().getHeight() + dir.z * GAME_EDGELENGTH * t); //in m
+            getPosition().setHeight(getPosition().getHeight() + dir.z * GAME_EDGELENGTH * t); //in m
             
             
             //check new height for colission            
@@ -168,13 +168,13 @@ public abstract class AbstractCharacter extends AbstractEntity {
                 dir.z = 0;
                 
                 //set on top of block
-                getPos().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+                getPosition().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
             }
             
-            if (!inliquid && getPos().getBlockClamp().isLiquid())//if enterin water
+            if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
                 waterSound.play();
             
-            inliquid = getPos().getBlockClamp().isLiquid();//save if in water
+            inliquid = getPosition().getBlockClamp().isLiquid();//save if in water
 
 
             /*HORIZONTAL MOVEMENT*/
@@ -186,8 +186,8 @@ public abstract class AbstractCharacter extends AbstractEntity {
             };
 
                 //if movement allowed => move player
-            if (! horizontalColission(getPos().cpy().addVector(dMove)) ) {                
-                    getPos().addVector(dMove);
+            if (! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+                    getPosition().addVector(dMove);
                 }
 
             //graphic
@@ -367,11 +367,11 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     @Override
     public boolean onGround() {
-        if (getPos().getHeight() > 0){
-                getPos().setHeight(getPos().getHeight()-1);
+        if (getPosition().getHeight() > 0){
+                getPosition().setHeight(getPosition().getHeight()-1);
                 
-                boolean colission = getPos().getBlockClamp().isObstacle() || horizontalColission(getPos());
-                getPos().setHeight(getPos().getHeight()+1);
+                boolean colission = getPosition().getBlockClamp().isObstacle() || horizontalColission(getPosition());
+                getPosition().setHeight(getPosition().getHeight()+1);
                 
                 //if standing on ground on own or neighbour block then true
                 return (super.onGround() || colission);

@@ -234,7 +234,7 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = selection.getPos().getCoord();
+            Coordinate coords = selection.getPosition().getCoord();
             
             buttondown=button;
             
@@ -284,7 +284,7 @@ public class MapEditorView extends GameView {
         public boolean touchDragged(int screenX, int screenY, int pointer) {
            selection.update(view, screenX, screenY);
             
-            Coordinate coords = controller.getSelectionEntity().getPos().getCoord();
+            Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
             coords.setZ(layerSelection);
             
             if (buttondown==Buttons.LEFT){

@@ -39,11 +39,11 @@ public interface IsSelfAware{
      * Return the coordinates of the SelfAware object.
      * @return the coordinates where the object is located
      */
-    public AbstractPosition getPos();
+    public AbstractPosition getPosition();
     
     /**
      * Set the coordinates without safety check.
      * @param pos the coordinates you want to set
      */
-    public void setPos(AbstractPosition pos);
+    public void setPosition(AbstractPosition pos);
 }

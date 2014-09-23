@@ -52,19 +52,19 @@ class EntityShadow extends AbstractEntity {
     
     public void update(float delta, AbstractEntity character){
         this.character = character;
-        Coordinate tmpPos = character.getPos().getCoord().cpy();
+        Coordinate tmpPos = character.getPosition().getCoord().cpy();
         tmpPos.setZ(tmpPos.getZ());
         while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlockClamp().isTransparent())
             tmpPos.addVector(new float[]{0, 0, -1});
         
-        setPos(character.getPos().cpy());
-        getPos().setHeight(tmpPos.getHeight());
+        setPosition(character.getPosition().cpy());
+        getPosition().setHeight(tmpPos.getHeight());
     }
 
     @Override
     public void render(View view, Camera camera, AbstractPosition coords) {
         Color color = PseudoGrey.toColor(
-                (character.getPos().getHeight() - getPos().getHeight())/Block.GAME_EDGELENGTH
+                (character.getPosition().getHeight() - getPosition().getHeight())/Block.GAME_EDGELENGTH
                 );//make color out of distance from player
         super.render(view, camera, coords,color);
     }

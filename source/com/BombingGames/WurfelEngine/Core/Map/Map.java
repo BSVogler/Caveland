@@ -632,7 +632,7 @@ public class Map implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (Arrays.equals(
-                    ent.getPos().getCoord().getRel(),
+                    ent.getPosition().getCoord().getRel(),
                     coord.getRel()
                 )
                 ){
@@ -656,7 +656,7 @@ public class Map implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (
-                Arrays.equals(ent.getPos().getCoord().getRel(),coord.getRel())//on coordinate?
+                Arrays.equals(ent.getPosition().getCoord().getRel(),coord.getRel())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
                 ){
                     list.add((type) ent);//add it to list

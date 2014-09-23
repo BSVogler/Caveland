@@ -200,8 +200,8 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *
-     * @param block
+     *Set a block in the map where the coordinate is pointing to.
+     * @param block the block you want to set.
      */
     public void setBlock(Block block){
         Controller.getMap().setData(this, block);

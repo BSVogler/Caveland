@@ -40,7 +40,7 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class BenchmarkBall extends AbstractEntity {
+public class BenchmarkBall extends AbstractCharacter {
     private final EntityShadow shadow;
     private static float timer=0;
     private static float timeTillBall=1000;
@@ -50,9 +50,10 @@ public class BenchmarkBall extends AbstractEntity {
      * @param point
      */
     public BenchmarkBall(Point point) {
-        super(21, point);
+        super(21, 0, point);
 		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
         shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
+		setFloating(false);
     }
        
     
@@ -70,11 +71,24 @@ public class BenchmarkBall extends AbstractEntity {
      
         
         if (onGround()){ //hit floor
-            setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -getMovement().z));
+            jump();
         }
         
         shadow.update(delta, this);
     }
+
+	@Override
+	public void jump() {
+		Vector3 tmp = getMovement();
+		tmp.x = (float) Math.random()-0.5f;
+		tmp.y = (float) Math.random()-0.5f;
+		super.jump(-tmp.z);
+	}
+
+	@Override
+	public Vector3 getAiming() {
+		return getMovement();
+	}
 
  
 }

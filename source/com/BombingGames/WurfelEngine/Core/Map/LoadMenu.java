@@ -155,7 +155,9 @@ public class LoadMenu {
                 stageRef.addListener(listener);
                 WE.getEngineView().focusInputProcessor(stageRef);
             }else{ //closing
-                content.clear();
+                clear();
+                clearListeners();
+                scroll.clearListeners();
                 stageRef.removeListener(listener);
                 WE.getEngineView().unfocusInputProcessor();
             }

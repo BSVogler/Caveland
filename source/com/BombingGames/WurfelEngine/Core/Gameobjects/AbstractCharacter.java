@@ -46,8 +46,18 @@ public abstract class AbstractCharacter extends AbstractEntity {
    /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1**/
    private final int smoothBreaks = 200;
       
+	/**
+	 * direction of movement
+	 */
+	private Vector3 movement;
    /**The walking/running speed of the character. provides a factor for the movement vector*/
-   private float speed;
+	private float speed;
+	private boolean coliding;
+	/**
+	 * affected by gractiy
+	 */
+	private boolean floating;
+	
    private Sound fallingSound;
    
    private static Sound waterSound;
@@ -76,6 +86,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
    protected AbstractCharacter(final int id, final int spritesPerDir, Point point) {
         super(id, point);
         this.spritesPerDir = spritesPerDir;
+		movement = new Vector3(0,0,0);
         shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
@@ -98,9 +109,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
      */
     public void jump(float velo) {
         if (onGround()) {
-			Vector3 tmp = getMovement();
-			tmp.z = velo;
-            setMovement(tmp);
+			movement.z = velo;
             if (jumpingSound != null) jumpingSound.play();
         }
     }
@@ -144,95 +153,101 @@ public abstract class AbstractCharacter extends AbstractEntity {
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (getPosition().onLoadedMap()) {
-			Vector3 dir = getMovement();
-            //normalyze only x and y
-            double vectorLenght = Math.sqrt(dir.x*dir.x + dir.y*dir.y);
-            if (vectorLenght > 0){
-                dir.x /= vectorLenght;
-                dir.y /= vectorLenght;
-            }
-
-            float oldHeight = getPosition().getHeight();
 
             /*VERTICAL MOVEMENT*/
-            float t = delta/1000f; //t = time in s
-            if (!onGround()) dir.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
-            getPosition().setHeight(getPosition().getHeight() + dir.z * GAME_EDGELENGTH * t); //in m
-            
-            
-            //check new height for colission            
-            //land if standing in or under 0-level or there is an obstacle
-            if (dir.z < 0 && onGround()){
-                if (landingSound != null)
-                    landingSound.play();//play landing sound
-                if (fallingSound != null)
-                    fallingSound.stop();//stop falling sound
-                dir.z = 0;
-                
-                //set on top of block
-                getPosition().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
-            }
-            
-            if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
-                waterSound.play();
-            
-            inliquid = getPosition().getBlockClamp().isLiquid();//save if in water
+				float oldHeight = getPosition().getHeight();
+				float t = delta/1000f; //t = time in s
+				if (!floating)
+					if (!onGround()) movement.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
+				getPosition().setHeight(getPosition().getHeight() + movement.z * GAME_EDGELENGTH * t); //in m
 
 
-            /*HORIZONTAL MOVEMENT*/
-            //calculate new position
-            float[] dMove = new float[]{
-                delta * speed * dir.x,
-                delta * speed * dir.y,
-                0
-            };
+				//check new height for colission            
+				//land if standing in or under 0-level or there is an obstacle
+				if (movement.z < 0 && onGround()){
+					if (landingSound != null)
+						landingSound.play();//play landing sound
+					if (fallingSound != null)
+						fallingSound.stop();//stop falling sound
+					movement.z = 0;
 
-                //if movement allowed => move player
-            if (! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
-                    getPosition().addVector(dMove);
-                }
+					//set on top of block
+					getPosition().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+				}
 
-            //graphic
-            if (dir.x < -Math.sin(Math.PI/3)){
-                setValue(1);//west
-            } else {
-                if (dir.x < - 0.5){
-                    //y
-                    if (dir.y<0){
-                        setValue(2);//north-west
-                    } else {
-                        setValue(0);//south-east
-                    }
-                } else {
-                    if (dir.x <  0.5){
-                        //y
-                        if (dir.y<0){
-                            setValue(3);//north
-                        }else{
-                            setValue(7);//south
-                        }
-                    }else {
-                        if (dir.x < Math.sin(Math.PI/3)) {
-                            //y
-                            if (dir.y < 0){
-                                setValue(4);//north-east
-                            } else{
-                                setValue(6);//sout-east
-                            }
-                        } else{
-                            setValue(5);//east
-                        }
-                    }
-                }
-            }
-            if (spritesPerDir==3){
-                //animation
-                walkingAnimationCounter += delta*speed*4;
-                if (walkingAnimationCounter > 1000) walkingAnimationCounter=0;    
+				if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
+					waterSound.play();
 
-                if (walkingAnimationCounter >750) setValue(getValue()+16);
-                else if (walkingAnimationCounter >250 && walkingAnimationCounter <500) setValue(getValue()+8);
-            }
+				inliquid = getPosition().getBlockClamp().isLiquid();//save if in water
+
+
+			/*HORIZONTAL MOVEMENT*/
+				//normalize horizontal movement
+				double vectorLenght = Math.sqrt(movement.x*movement.x + movement.y*movement.y);
+				if (vectorLenght > 0){
+					movement.x /= vectorLenght;
+					movement.y /= vectorLenght;
+				}
+
+				//calculate new position
+				float[] dMove = new float[]{
+					delta * speed * movement.x,
+					delta * speed * movement.y,
+					0
+				};
+
+				if (coliding){
+						//if movement allowed => move player
+					if (! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+							getPosition().addVector(dMove);
+						}
+				} else {
+					getPosition().addVector(dMove);
+				}
+
+            /* update sprite*/
+			if (spritesPerDir>0) {
+				if (movement.x < -Math.sin(Math.PI/3)){
+					setValue(1);//west
+				} else {
+					if (movement.x < - 0.5){
+						//y
+						if (movement.y<0){
+							setValue(2);//north-west
+						} else {
+							setValue(0);//south-east
+						}
+					} else {
+						if (movement.x <  0.5){
+							//y
+							if (movement.y<0){
+								setValue(3);//north
+							}else{
+								setValue(7);//south
+							}
+						}else {
+							if (movement.x < Math.sin(Math.PI/3)) {
+								//y
+								if (movement.y < 0){
+									setValue(4);//north-east
+								} else{
+									setValue(6);//sout-east
+								}
+							} else{
+								setValue(5);//east
+							}
+						}
+					}
+				}
+				if (spritesPerDir==3){
+					//animation
+					walkingAnimationCounter += delta*speed*4;
+					if (walkingAnimationCounter > 1000) walkingAnimationCounter=0;    
+
+					if (walkingAnimationCounter >750) setValue(getValue()+16);
+					else if (walkingAnimationCounter >250 && walkingAnimationCounter <500) setValue(getValue()+8);
+				}
+			}
 
             //uncomment this line to see where to player stands:
             //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
@@ -259,7 +274,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
 
             //should the fallingsound be played?
             if (fallingSound != null) {
-                if (dir.z < -1) {
+                if (movement.z < -1) {
                     if (!fallingSoundPlaying){
                         fallingSound.play();
                         fallingSoundPlaying = true;
@@ -278,8 +293,7 @@ public abstract class AbstractCharacter extends AbstractEntity {
     
     /**
      * check for horizontal colission
-     * @param newx the new x position
-     * @param newy the new y position
+	 * @param pos the new position
      * @return 
      */
     private boolean horizontalColission(Point pos){
@@ -354,7 +368,39 @@ public abstract class AbstractCharacter extends AbstractEntity {
     public void setDamageSounds(Sound[] sound){
         damageSounds = sound;
     }
+
+	public Vector3 getMovement() {
+		return movement;
+	}
+
+	public void setMovement(Vector3 movement) {
+		this.movement = movement;
+	}
+
+	public boolean isColiding() {
+		return coliding;
+	}
+
+	public void setColiding(boolean coliding) {
+		this.coliding = coliding;
+	}
        
+	/**
+	 *  Is the object be affected by gravity?
+	 * @return 
+	 */
+	public boolean isFloating() {
+		return floating;
+	}
+
+	/**
+	 * Should the object be affected by gravity?
+	 * @param floating 
+	 */
+	public void setFloating(boolean floating) {
+		this.floating = floating;
+	}
+	
     /**
      * Adds horizontal colission check to onGround().
      * @return 

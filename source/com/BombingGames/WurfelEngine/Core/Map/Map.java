@@ -116,8 +116,8 @@ public class Map implements Cloneable {
         MapMetaData meta = new MapMetaData();
         meta.setFileName(mapName);
         meta.setChunkBlocksX(10);
-        meta.setChunkBlocksY(40);
-        meta.setChunkBlocksZ(25);
+        meta.setChunkBlocksY(45);
+        meta.setChunkBlocksZ(20);
         meta.setMapName(mapName);
         meta.setDescription("No description set");
         meta.write();

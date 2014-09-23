@@ -129,7 +129,7 @@ public abstract class AbstractGameObject {
     public abstract void update(float delta);
     
     /**
-     *
+     * Get the category letter for accessing sprites.
      * @return
      */
     public abstract char getCategory();

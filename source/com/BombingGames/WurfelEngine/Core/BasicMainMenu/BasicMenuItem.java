@@ -56,39 +56,39 @@ public class BasicMenuItem{
     private int x;
     private int y;
     private final int index;
-    private final String text;
+    private final String label;
     private final int width;
     private final int height = 50;
     private Configuration config;
     
     /**
-     * Create a new menu Item and say which texture it should have.
-     * @param index
-     * @param label
+     * Create a new menu Item which can launch a game.
+     * @param index the index of the button
+     * @param label the string displayed by the button. If "exit" or "options" they change their behaviour.
      * @param gameController Your game controller class for this menu item
      * @param gameView Your game view class for this menu item
-     * @param config
+     * @param config the game configuration used with this button
      */
     public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends GameView> gameView, Configuration config) {
         this.gameController = gameController;
         this.gameView = gameView;
         this.index = index;
-        this.text = label;
-        this.width= text.length()*20;
+        this.label = label;
+        this.width= this.label.length()*20;
         this.config = config;
     }
     
       /**
      * Create a new menu Item which does something specific like exiting or showing the option screen.
-     * @param index
-     * @param label
+     * @param index the index of the button
+     * @param label the string displayed by the button. If "exit" or "options" they cahnge they behaviour.
      */
     public BasicMenuItem(int index, String label) {
         this.gameController = null;
         this.gameView = null;
         this.index = index;
-        this.text = label;
-        this.width = text.length()*20;
+        this.label = label;
+        this.width = this.label.length()*20;
     }
     
     /**
@@ -110,12 +110,12 @@ public class BasicMenuItem{
         sr.rect(x, y, width, height);
         sr.end();
         
-        font.draw(batch, text, x, y);
+        font.draw(batch, label, x, y);
     }
     
 
     /**
-     * Check if ithe mouse clicked the menuItem.
+     * Check if the mouse clicked the menuItem.
      * @return
      */
     public boolean isClicked() {
@@ -152,9 +152,9 @@ public class BasicMenuItem{
         if (sound  != null)
             sound.play();
         
-        if (text.equalsIgnoreCase("exit")) {
+        if (label.equalsIgnoreCase("exit")) {
             Gdx.app.exit();
-        } else if (text.equalsIgnoreCase("options")) {
+        } else if (label.equalsIgnoreCase("options")) {
             WE.getInstance().setScreen(new BasicOptionsScreen());
         }else {
             try {

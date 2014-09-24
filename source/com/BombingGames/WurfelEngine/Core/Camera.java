@@ -230,11 +230,11 @@ public class Camera {
             1
         );
         
-        //set up projection matrices
+        //set up projection matrix
         combined.set(projection);
         Matrix4.mul(combined.val, view.val);
 
-        //don't know what this does
+        //don't know what this does, maybe on old gfx 
 		Gdx.gl10.glMatrixMode(GL10.GL_PROJECTION);
 		Gdx.gl10.glLoadMatrixf(projection.val, 0);
 		Gdx.gl10.glMatrixMode(GL10.GL_MODELVIEW);

@@ -52,7 +52,7 @@ import java.util.ArrayList;
  *Creates a virtual camera wich displays the game world on the viewport.  
  * @author Benedikt Vogler
  */
-public class Camera{
+public class Camera {
     /**
      *The deepest layer is an array which stores the information if there should be a tile rendered
      */

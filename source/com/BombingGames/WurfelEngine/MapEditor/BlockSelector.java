@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -52,15 +51,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  */
 public class BlockSelector extends Table {
     private Table table;
-    private Selection selection;
     private ScrollPane scroll; 
+	private final ColorGUI colorGUI;
     
     /**
      *
-     * @param selection
+     * @param colorGUI
      */
-    public BlockSelector(Selection selection) {
-        this.selection = selection;
+    public BlockSelector(ColorGUI colorGUI) {
+        this.colorGUI = colorGUI;
         
         setWidth(400);
         setHeight(Gdx.graphics.getHeight()-100);
@@ -132,7 +131,7 @@ public class BlockSelector extends Table {
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            selection.setColor(id, 0);
+            colorGUI.setBlock(id, 0);
         };
      }
     

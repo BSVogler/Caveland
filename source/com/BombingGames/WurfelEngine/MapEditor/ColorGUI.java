@@ -28,77 +28,61 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 
 /**
- *
+ * Shows the current "color"(block) selection in the editor.
  * @author Benedikt Vogler
  */
-public class BlockDrawable extends TextureRegionDrawable {
-    private Block block;
-    private float size = -0.5f;
-    
-    /**
-     *
-     * @param id
-     */
-    public BlockDrawable(int id) {
-        this.block = Block.getInstance(id,0);
-    }
-
-	BlockDrawable(int id, int value) {
-		this.block = Block.getInstance(id,value);
-	}
+public class ColorGUI extends WidgetGroup {
+	private int id;
+	private int value;
+	private Image image;
 
 
-
-    @Override
-    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
-        block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
-    }
-
-	@Override
-	public float getLeftWidth() {
-		return Block.SCREEN_WIDTH2*(1f+size);
+	public ColorGUI() {
+		image = new Image(new BlockDrawable(2));
+		image.setPosition(Gdx.graphics.getWidth()-200, 500);
+		addActor(image);
 	}
 	
-	@Override
-	public float getRightWidth() {
-		return Block.SCREEN_WIDTH2*(1f+size);
+
+	void setBlock(int id, int value) {
+		this.id = id;
+		this.value = value;
+		image.setDrawable(new BlockDrawable(id,value));
 	}
 
-	@Override
-	public float getTopHeight() {
-		return (Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH2)*(1f+size);
+	public int getId() {
+		return id;
 	}
 
-	@Override
-	public float getBottomHeight() {
-		return (Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH2)*(1f+size);
+	public void setId(int id) {
+		this.id = id;
+		image.setDrawable(new BlockDrawable(id,value));
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+		image.setDrawable(new BlockDrawable(id,value));
 	}
 	
-    /**
-     *
-     * @return
-     */
-    @Override
-    public float getMinHeight() {
-        return (Block.SCREEN_HEIGHT+Block.SCREEN_DEPTH)*(1f+size);
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public float getMinWidth() {
-        return Block.SCREEN_WIDTH*(1f+size);
-    }
+	/**
+	 * 
+	 * @param coord the position of the block instance
+	 * @return a new Block instance of the selected id and value.
+	 */
+	public Block getBlock(Coordinate coord){
+		return Block.getInstance(id, value, coord);
+	}
 }

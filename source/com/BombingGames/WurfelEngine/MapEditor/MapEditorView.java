@@ -89,8 +89,9 @@ public class MapEditorView extends GameView {
         
         controller.getMinimap().toggleVisibility();
         
-        bselector = new BlockSelector(this.controller.getSelectionEntity());
+        bselector = new BlockSelector(colorGUI);
         getStage().addActor(bselector);
+		getStage().addActor(colorGUI);
         
 
         //setup GUI
@@ -170,7 +171,7 @@ public class MapEditorView extends GameView {
     /**
      * Manages the key inpts when in mapeditor view.
      */
-    private static class MapEditorInputListener implements InputProcessor {
+    private class MapEditorInputListener implements InputProcessor {
         private final MapEditorController controller;
         private final MapEditorView view;
         private int buttondown =-1;
@@ -250,7 +251,7 @@ public class MapEditorView extends GameView {
             } else if (button==Buttons.MIDDLE){//middle mouse button
                 coords.clampToMapIncludingZ();
                 Block block = coords.getBlock();
-                controller.getSelectionEntity().setColor(block.getId(), block.getValue());
+                colorGUI.setBlock(block.getId(), block.getValue());
                 
             } else if (button==Buttons.LEFT){ //left click
                 Sides normal = selection.getNormalSides();
@@ -262,7 +263,7 @@ public class MapEditorView extends GameView {
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();
-                Controller.getMap().setData(coords, controller.getSelectionEntity().getColor());
+                Controller.getMap().setData(coords, colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord()));
                // gras2.play();
             }   
             layerSelection = coords.getZ();
@@ -287,7 +288,7 @@ public class MapEditorView extends GameView {
             coords.setZ(layerSelection);
             
             if (buttondown==Buttons.LEFT){
-                Controller.getMap().setData(coords, controller.getSelectionEntity().getColor());
+                Controller.getMap().setData(coords, colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord()));
             } else if (buttondown == Buttons.RIGHT) {
                 Controller.getMap().setData(coords, Block.getInstance(0));
             } else return false;

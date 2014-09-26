@@ -42,7 +42,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public class Selection extends AbstractEntity {
     private AnimatedEntity normal;
-    private Block color;
     private Sides normalSide;
     
     /**
@@ -52,7 +51,6 @@ public class Selection extends AbstractEntity {
     public Selection(Point point) {
         super(13, point);
         setLightlevel(10);
-        color = Block.getInstance(1);
         
         normal = new AnimatedEntity(14, 0, getPosition(), new int[]{200,200}, true, true);
         normal.ignoreGameSpeed(true);
@@ -77,24 +75,7 @@ public class Selection extends AbstractEntity {
         setHidden(getPosition().getHeight()<0);
         normal.setPosition(pos.cpy().addVector(0, 1, 0));
     }
-    
-    /**
-     *
-     * @param id
-     * @param value
-     */
-    public void setColor(int id, int value) {
-        this.color = Block.getInstance(id,  value, getPosition().getCoord());
-    }
-
-    /**
-     * Get the block of the tool.
-     * @return 
-     */
-    public Block getColor() {
-        return color;
-    }
-    
+        
     /**
      *
      * @param side

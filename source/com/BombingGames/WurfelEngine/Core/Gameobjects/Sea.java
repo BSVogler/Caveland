@@ -58,11 +58,10 @@ public class Sea extends Block implements IsSelfAware{
     public Sea(final int id, Coordinate coords) {
         super(id);
         setTransparent(true);
-        
-        if (coords == null) throw new NullPointerException("No coordinates given to Sea-Block during creation."); 
-        
+                
         this.coords = coords;
-        startvalue = (int) (coords.getCellOffset()[2] + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
+        if (coords!=null)
+			startvalue = (int) (coords.getCellOffset()[2] + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
        
     }
 
@@ -78,12 +77,14 @@ public class Sea extends Block implements IsSelfAware{
 
     @Override
     public void update(float delta) {
-        coords.setCellOffsetZ(
-            (int) (startvalue +
-                Math.sin(
-                    (currentX-coords.getRelX()-coords.getRelY())
-                        * Math.PI/waveWidth
-                )*WAVE_AMPLITUDE));
+		if (coords!=null){
+			coords.setCellOffsetZ(
+				(int) (startvalue +
+					Math.sin(
+						(currentX-coords.getRelX()-coords.getRelY())
+							* Math.PI/waveWidth
+					)*WAVE_AMPLITUDE));
+		}
     }
     
     /**

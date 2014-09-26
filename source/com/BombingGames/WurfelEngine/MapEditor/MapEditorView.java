@@ -64,10 +64,11 @@ public class MapEditorView extends GameView {
     /**
      * vector holding information about movement of the camera
      */
-    private Vector2 camermove; 
+    private Vector2 camermove = new Vector2(); 
     
-    private Navigation nav;
+    private Navigation nav = new Navigation();
     private BlockSelector bselector;
+	private ColorGUI colorGUI = new ColorGUI();
 
     @Override
     public void init(Controller controller) {
@@ -76,7 +77,6 @@ public class MapEditorView extends GameView {
         this.controller = (MapEditorController) controller;     
         
         addCamera(camera = new Camera());
-        camermove = new Vector2();
         
         controller.setMinimap(
             new Minimap(
@@ -89,7 +89,6 @@ public class MapEditorView extends GameView {
         
         controller.getMinimap().toggleVisibility();
         
-        nav = new Navigation();
         bselector = new BlockSelector(this.controller.getSelectionEntity());
         getStage().addActor(bselector);
         

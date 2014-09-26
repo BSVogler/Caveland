@@ -80,11 +80,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	public float getBottomHeight() {
 		return (Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH2)*(1f+size);
 	}
-
 	
-	
-	
-
     /**
      *
      * @return

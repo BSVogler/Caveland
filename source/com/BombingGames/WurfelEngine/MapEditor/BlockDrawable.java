@@ -54,6 +54,12 @@ public class BlockDrawable extends TextureRegionDrawable {
     }
 
 	BlockDrawable(int id, int value) {
+	/**
+	 * 
+	 * @param id block id
+	 * @param value block value
+	 * @param size relative size
+	 */
 		this.block = Block.getInstance(id,value);
 	}
 

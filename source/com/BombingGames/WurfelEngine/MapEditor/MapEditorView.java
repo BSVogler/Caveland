@@ -68,7 +68,7 @@ public class MapEditorView extends GameView {
     
     private Navigation nav = new Navigation();
     private BlockSelector bselector;
-	private ColorGUI colorGUI = new ColorGUI();
+	private ColorGUI colorGUI;
 
     @Override
     public void init(Controller controller) {
@@ -89,9 +89,11 @@ public class MapEditorView extends GameView {
         
         controller.getMinimap().toggleVisibility();
         
+		colorGUI = new ColorGUI(getStage());
+		getStage().addActor(colorGUI);
         bselector = new BlockSelector(colorGUI);
         getStage().addActor(bselector);
-		getStage().addActor(colorGUI);
+
         
 
         //setup GUI

@@ -32,9 +32,13 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.badlogic.gdx.Gdx;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /**
  * Shows the current "color"(block) selection in the editor.
@@ -46,9 +50,10 @@ public class ColorGUI extends WidgetGroup {
 	private Image image;
 
 
-	public ColorGUI() {
-		image = new Image(new BlockDrawable(2));
-		image.setPosition(Gdx.graphics.getWidth()-200, 500);
+	public ColorGUI(Stage stage) {
+		setPosition(stage.getWidth()-200, stage.getHeight()-300);
+		image = new Image(new BlockDrawable(id,value,-0.4f));
+		image.setPosition(50, 60);
 		addActor(image);
 		Slider slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
@@ -60,7 +65,7 @@ public class ColorGUI extends WidgetGroup {
 	void setBlock(int id, int value) {
 		this.id = id;
 		this.value = value;
-		image.setDrawable(new BlockDrawable(id,value));
+		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
 	public int getId() {
@@ -69,7 +74,7 @@ public class ColorGUI extends WidgetGroup {
 
 	public void setId(int id) {
 		this.id = id;
-		image.setDrawable(new BlockDrawable(id,value));
+		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
 	public int getValue() {
@@ -78,7 +83,7 @@ public class ColorGUI extends WidgetGroup {
 
 	public void setValue(int value) {
 		this.value = value;
-		image.setDrawable(new BlockDrawable(id,value));
+		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 	
 	/**

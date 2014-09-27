@@ -51,7 +51,6 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
      */
     public ExplosiveBarrel(int id, Coordinate coords){
         super(id);
-        if (coords == null) throw new NullPointerException("No coordinates given to ExplosiveBarrel during creation."); 
         this.coords = coords;
         setObstacle(true);
         if (explosionsound == null)

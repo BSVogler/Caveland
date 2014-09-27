@@ -50,7 +50,6 @@ public class EntitySpawner extends Block implements IsSelfAware {
      */
     public EntitySpawner(int id, Coordinate coords){
         super(id);
-        if (coords == null) throw new NullPointerException("No coordinates given to EntitySpawner during creation."); 
         this.coords = coords;
         setObstacle(true);
     }
@@ -58,24 +57,26 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
     @Override
     public void update(float delta) {
-        int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getRel();
-        
-        //get every character
-        ArrayList<AbstractMovableEntity> entitylist;
-        entitylist = Controller.getMap().getAllEntitysOfType(AbstractMovableEntity.class);
-        
-        //check every character if standing on top
-        int i = 0;
-        while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)){
-            i++;
-        }
-        
-        if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)) {
-            if (up) trigger();
-            up = false;
-        } else {
-            up = true;
-        }
+		if (coords!=null){
+			int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getRel();
+
+			//get every character
+			ArrayList<AbstractMovableEntity> entitylist;
+			entitylist = Controller.getMap().getAllEntitysOfType(AbstractMovableEntity.class);
+
+			//check every character if standing on top
+			int i = 0;
+			while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)){
+				i++;
+			}
+
+			if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)) {
+				if (up) trigger();
+				up = false;
+			} else {
+				up = true;
+			}
+		}
     }
 
     @Override

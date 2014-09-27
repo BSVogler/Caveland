@@ -226,6 +226,7 @@ public class WE extends Game {
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
+		Controller.getMap().getEntitys().clear();
         controller.init();
         view.init(controller);
         //enter

@@ -175,7 +175,7 @@ public class Point extends AbstractPosition {
      * @return
      */
     public Block getBlockClamp(){
-        Coordinate coord = getCoord();
+        Coordinate coord = getCoord().clampToMap();
         if (coord.getZ() >= Chunk.getGameHeight())
             return Block.getInstance(0);
         else

@@ -162,10 +162,6 @@ public class Point extends AbstractPosition {
         return getCoord().getBlock();
     }
     
-      /**
-     *
-     * @return
-     */
     @Override
     public Block getBlockSafe(){
         if (onLoadedMap())
@@ -175,7 +171,7 @@ public class Point extends AbstractPosition {
     
 
     /**
-     *
+     *Gets the block at the position but clamps coordinate before.
      * @return
      */
     public Block getBlockClamp(){

@@ -43,7 +43,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
    private final int colissionRadius = GAME_DIAGLENGTH2/2;
    private final int spritesPerDir;
       
-   /** Set value how fast the character brakes or slides. 1 is "immediately". The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
+   /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
    private int friction = 0;
       
 	/**
@@ -453,6 +453,10 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
         this.mana = mana;
     }
 
+	/**
+	 * autoamtically slows speed down.
+	 * @param friction The higher the value, the more "slide". If =0 friciton is disabled.
+	 */
 	public void setFriction(int friction) {
 		this.friction = friction;
 	}

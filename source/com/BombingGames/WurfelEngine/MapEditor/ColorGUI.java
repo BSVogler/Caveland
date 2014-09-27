@@ -50,6 +50,10 @@ public class ColorGUI extends WidgetGroup {
 		image = new Image(new BlockDrawable(2));
 		image.setPosition(Gdx.graphics.getWidth()-200, 500);
 		addActor(image);
+		Slider slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
+		slider.setPosition(0, 20);
+		slider.addListener(new ChangeListenerImpl(this));
+		addActor(slider);
 	}
 	
 
@@ -84,5 +88,18 @@ public class ColorGUI extends WidgetGroup {
 	 */
 	public Block getBlock(Coordinate coord){
 		return Block.getInstance(id, value, coord);
+	}
+
+	private static class ChangeListenerImpl extends ChangeListener {
+		private ColorGUI parent;
+
+		ChangeListenerImpl(ColorGUI parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+			parent.setValue((int) ((Slider)actor).getValue());
+		}
 	}
 }

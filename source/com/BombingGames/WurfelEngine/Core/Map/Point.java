@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -441,6 +442,19 @@ private float mod(float value, int modulus) {
  * @return the distance from this point to the other point
  */
 public float distanceTo(Point point) {
+    float dX = x-point.x;
+    float dY = y-point.x;
+    float dZ = getHeight()-point.getHeight();
+    return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+}
+
+/**
+ * 
+ * @param object
+ * @return the distance from this point to the other object
+ */
+public float distanceTo(IsSelfAware object) {
+	Point point = object.getPosition().getPoint();
     float dX = x-point.x;
     float dY = y-point.x;
     float dZ = getHeight()-point.getHeight();

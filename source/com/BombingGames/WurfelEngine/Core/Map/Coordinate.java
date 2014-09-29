@@ -456,7 +456,7 @@ public class Coordinate extends AbstractPosition {
      * @return a list with the entitys
      */
     public ArrayList<AbstractEntity> getEntitiesInside() {
-       return Controller.getMap().getAllEntitysOnCoord(this);
+       return Controller.getMap().getEntitysOnCoord(this);
     }
     
       /**
@@ -466,7 +466,7 @@ public class Coordinate extends AbstractPosition {
      * @return a list with the entitys of the wanted type
      */
     public <type> ArrayList<type> getEntitysInside(final Class<? extends AbstractEntity> type) {
-        return Controller.getMap().getAllEntitysOnCoord(this, type);
+        return Controller.getMap().getEntitysOnCoord(this, type);
     }
     
     @Override

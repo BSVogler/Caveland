@@ -96,7 +96,7 @@ public class Bullet extends AbstractEntity {
         //check character hit
          //get every character on this coordinate
         ArrayList<AbstractMovableEntity> entitylist;
-        entitylist = Controller.getMap().getAllEntitysOnCoord(getPosition().getCoord(), AbstractMovableEntity.class);
+        entitylist = Controller.getMap().getEntitysOnCoord(getPosition().getCoord(), AbstractMovableEntity.class);
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
@@ -184,7 +184,7 @@ public class Bullet extends AbstractEntity {
                             false
                         ).exist();
                         ArrayList<AbstractMovableEntity> list;
-                        list = Controller.getMap().getAllEntitysOnCoord(effect.getPosition().getCoord(), AbstractMovableEntity.class);
+                        list = Controller.getMap().getEntitysOnCoord(effect.getPosition().getCoord(), AbstractMovableEntity.class);
                         for (AbstractMovableEntity ent : list) {
                             if (!(ent instanceof PlayerWithWeapon))
                                 ent.damage(1000);

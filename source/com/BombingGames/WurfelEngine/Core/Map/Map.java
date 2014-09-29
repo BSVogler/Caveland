@@ -627,7 +627,7 @@ public class Map implements Cloneable {
      * @param coord
      * @return a list with the entitys
      */
-    public ArrayList<AbstractEntity> getAllEntitysOnCoord(final Coordinate coord) {
+    public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
         ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity ent : entityList) {
@@ -651,7 +651,7 @@ public class Map implements Cloneable {
      * @return a list with the entitys of the wanted type
      */
     @SuppressWarnings("unchecked")
-    public <type> ArrayList<type> getAllEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
+    public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<>(5);
 
         for (AbstractEntity ent : entityList) {

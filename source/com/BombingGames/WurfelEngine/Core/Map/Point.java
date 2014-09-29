@@ -443,7 +443,7 @@ private float mod(float value, int modulus) {
  */
 public float distanceTo(Point point) {
     float dX = x-point.x;
-    float dY = y-point.x;
+    float dY = y-point.y;
     float dZ = getHeight()-point.getHeight();
     return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
 }
@@ -456,7 +456,7 @@ public float distanceTo(Point point) {
 public float distanceTo(IsSelfAware object) {
 	Point point = object.getPosition().getPoint();
     float dX = x-point.x;
-    float dY = y-point.x;
+    float dY = y-point.y;
     float dZ = getHeight()-point.getHeight();
     return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
 }

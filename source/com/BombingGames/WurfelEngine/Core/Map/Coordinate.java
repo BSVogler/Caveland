@@ -29,9 +29,11 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 
 /**
  *A coordinate is a reference to a specific cell in the map. The coordinate can transfer between relative and absolute coordiantes.
@@ -447,6 +449,24 @@ public class Coordinate extends AbstractPosition {
     @Override
     public Coordinate getCoord() {
         return this;
+    }
+	
+	 /**
+     * Get every entity on a coord.
+     * @return a list with the entitys
+     */
+    public ArrayList<AbstractEntity> getEntitiesInside() {
+       return Controller.getMap().getAllEntitysOnCoord(this);
+    }
+    
+      /**
+     * Get every entity on this coord of the wanted type
+     * @param <type> the class you want to filter.
+     * @param type the class you want to filter.
+     * @return a list with the entitys of the wanted type
+     */
+    public <type> ArrayList<type> getEntitysInside(final Class<? extends AbstractEntity> type) {
+        return Controller.getMap().getAllEntitysOnCoord(this, type);
     }
     
     @Override

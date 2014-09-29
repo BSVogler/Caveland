@@ -390,7 +390,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
 	}
 	
     /**
-     * Adds horizontal colission check to onGround().
+     * Checks if standing on blocks.
      * @return 
      */
     @Override

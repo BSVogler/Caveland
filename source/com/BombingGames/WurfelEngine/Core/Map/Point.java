@@ -298,6 +298,19 @@ public class Point extends AbstractPosition {
         setHeight(getHeight()+ z);
         return this;
     }
+	
+	/**
+	 * Relative to the current coordiante field set the offset.
+	 * @param x offset from origin
+	 * @param y offset from origin 
+	 * @param z offset from origin 
+	 */
+	public void setPositionRelativeToCoord(float x, float y, float z) {
+		Point origin = getCoord().getPoint(); 
+		this.x = origin.x +x;
+		this.y = origin.y +y;
+		setHeight(origin.getHeight() +z);
+	}
     
     /**
      * Trace a ray through the map until ray hits non air block.

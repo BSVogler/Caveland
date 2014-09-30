@@ -422,7 +422,6 @@ public class Point extends AbstractPosition {
      * @since 1.2.29
      */
 private int intbound(float s, float ds) {
-
     if (ds < 0) {
         return intbound(-s, -ds);
     } else {

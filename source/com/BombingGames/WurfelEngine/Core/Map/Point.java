@@ -134,7 +134,43 @@ public class Point extends AbstractPosition {
         return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
     }
     
-            /**
+	/**
+	 * 
+	 * @return  the offset to the coordiantes center.
+	 */
+	public float getRelToCoordX(){
+		return x - getCoord().getPoint().x;
+	}
+	
+	/**
+	 * 
+	 * @return  the offset to the coordiantes center.
+	 */
+	public float getRelToCoordY(){
+		return y - getCoord().getPoint().y;
+	}
+	
+	/**
+	 * 
+	 * @return the offset to the coordiantes center.
+	 */
+	public float getRelToCoordZ(){
+		return getHeight() - getZ()*Block.GAME_EDGELENGTH;
+	}
+	
+	/**
+	 * 
+	 * @return the offset to the coordiantes center.
+	 */
+	public Vector3 getRelToCoord(){
+		return new Vector3(
+			getRelToCoordX(),
+			getRelToCoordY(),
+			getRelToCoordZ()
+		);
+	}
+	
+    /**
      *
      * @return
      */

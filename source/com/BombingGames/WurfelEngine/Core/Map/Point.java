@@ -457,44 +457,42 @@ public class Point extends AbstractPosition {
      * @return 
      * @since 1.2.29
      */
-private int intbound(float s, float ds) {
-    if (ds < 0) {
-        return intbound(-s, -ds);
-    } else {
-        s = mod(s, 1);
-        // problem is now s+t*ds = 1
-        return (int) ((1-s)/ds);
-    }
-}
+	private int intbound(float s, float ds) {
+		if (ds < 0) {
+			return intbound(-s, -ds);
+		} else {
+			s = mod(s, 1);
+			// problem is now s+t*ds = 1
+			return (int) ((1-s)/ds);
+		}
+	}
 
-private float mod(float value, int modulus) {
-    return (value % modulus + modulus) % modulus;
-}
+	private float mod(float value, int modulus) {
+		return (value % modulus + modulus) % modulus;
+	}
 
-/**
- * 
- * @param point
- * @return the distance from this point to the other point
- */
-public float distanceTo(Point point) {
-    float dX = x-point.x;
-    float dY = y-point.y;
-    float dZ = getHeight()-point.getHeight();
-    return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
-}
+	/**
+	 * 
+	 * @param point
+	 * @return the distance from this point to the other point
+	 */
+	public float distanceTo(Point point) {
+		float dX = x-point.x;
+		float dY = y-point.y;
+		float dZ = getHeight()-point.getHeight();
+		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+	}
 
-/**
- * 
- * @param object
- * @return the distance from this point to the other object
- */
-public float distanceTo(IsSelfAware object) {
-	Point point = object.getPosition().getPoint();
-    float dX = x-point.x;
-    float dY = y-point.y;
-    float dZ = getHeight()-point.getHeight();
-    return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
-}
-    
-    
+	/**
+	 * 
+	 * @param object
+	 * @return the distance from this point to the other object
+	 */
+	public float distanceTo(IsSelfAware object) {
+		Point point = object.getPosition().getPoint();
+		float dX = x-point.x;
+		float dY = y-point.y;
+		float dZ = getHeight()-point.getHeight();
+		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+	}
 }

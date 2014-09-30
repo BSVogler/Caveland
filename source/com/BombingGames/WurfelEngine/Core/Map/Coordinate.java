@@ -36,8 +36,8 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- *A coordinate is a reference to a specific cell in the map. The coordinate can transfer between relative and absolute coordiantes.
- * Relative coordinates are similar to the currently loaded map array. Absolute coordinates are indipendent of the current map but to acces them you must have the chunk where the coordiantes are pointing to loaded.
+ * A coordinate is a reference to a specific cell in the map. The coordinate can transcode between relative and absolute coordinates.<br />
+ * Relative coordinates are similar to the map array. Absolute coordinates are indipendent of the current map but to access them you must have the chunk where the coordiantes are pointing to in memory.<br />
  * The coordinate uses a continously height value. The Z coordinate value can be calculated. 
  * @author Benedikt Vogler
  */
@@ -46,7 +46,7 @@ public class Coordinate extends AbstractPosition {
     private int y; //saved as relative
     
     /**
-     * Creates a coordiante refering to a position on the map.
+     * Creates a coordiante refering to the given position on the map.
      * @param x The x value as coordinate.
      * @param y The y value as coordinate.
      * @param z The z value as coordinate.

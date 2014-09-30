@@ -128,33 +128,33 @@ public abstract class AbstractPosition {
     
     /**
      * If needed calculates it.
-     * @return
+     * @return the point representation
      */
     public abstract Point getPoint();
     
     /**
      * If needed calculates it.
-     * @return
+     * @return the coordinate representation
      */
     public abstract Coordinate getCoord();
     
     /**
      * 
      * @return Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
-     * @see AbstractPosition#getBlockSafe() 
+     * @see #getBlockSafe() 
      */
     public abstract Block getBlock();
     
     /**
-     * Get the block at the position. Slower than getBlock().
-     * @return If the coordiante is outside the map return null.
-     *  @see AbstractPosition#getBlock() 
+     * Slower than getBlock().
+     * @return Get the block at the position. If the coordiante is outside the map return null. 
+     *  @see #getBlock() 
      */
     public abstract Block getBlockSafe();
 
     /**
      *
-     * @return
+     * @return a copy of the object.
      */
     public abstract AbstractPosition cpy(); 
     
@@ -179,10 +179,10 @@ public abstract class AbstractPosition {
     public abstract AbstractPosition addVector(Vector3 vector);
     
     /**
-     *
-     * @param x
-     * @param y
-     * @param z
+     * Add a vector to the position. Implementation may differ.
+     * @param x  Dependent on implementation.
+     * @param y Dependent on implementation.
+     * @param z Dependent on implementation.
      * @return returns itself
      */
     public abstract AbstractPosition addVector(float x, float y, float z);

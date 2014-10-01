@@ -88,7 +88,10 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
 		speed = 0.5f;
-        shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
+        if (point != null)
+			shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
+		else
+			shadow = null;
 		coliding = true;
 		floating = false;
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
@@ -133,7 +136,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
         if (health < 0) health = 0;
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (getPosition().onLoadedMap()) {
+        if (getPosition()!= null && getPosition().onLoadedMap()) {
 
             /*VERTICAL MOVEMENT*/
 				float oldHeight = getPosition().getHeight();
@@ -229,7 +232,8 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
             //uncomment this line to see where to player stands:
             //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
 
-            shadow.update(delta, this);
+            if (shadow != null)
+				shadow.update(delta, this);
 
             //slow walking down
 			if (friction>0) {

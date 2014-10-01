@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -73,7 +74,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
    private int health = 1000;
    private int mana = 1000;
        
-   private final EntityShadow shadow;
+   private EntityShadow shadow;
    
    private int walkingAnimationCounter;
 
@@ -464,9 +465,17 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
 	public void setFriction(int friction) {
 		this.friction = friction;
 	}
+	/**
+	 * 
+	 * @param pos 
+	 */
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		if (getPosition() == null)
+			shadow = (EntityShadow) new EntityShadow(pos.cpy()).exist();
+		super.setPosition(pos);
+	}
 	
-	
-
     /**
      *
      */

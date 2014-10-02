@@ -160,7 +160,7 @@ public class Block extends AbstractGameObject {
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;
-            case 35: block = new Block(id); //bush
+            case 35: case 36: block = new Block(id); //bush
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;     

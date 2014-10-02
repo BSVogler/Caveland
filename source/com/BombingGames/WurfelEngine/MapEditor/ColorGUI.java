@@ -36,6 +36,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -48,6 +49,7 @@ public class ColorGUI extends WidgetGroup {
 	private int id;
 	private int value;
 	private Image image;
+	private Label label;
 
 
 	public ColorGUI(Stage stage) {
@@ -59,12 +61,15 @@ public class ColorGUI extends WidgetGroup {
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
+		label = new Label(Integer.toString(id) + " - "+ Integer.toString(value), WE.getEngineView().getSkin());
+		addActor(label);
 	}
 	
 
 	void setBlock(int id, int value) {
 		this.id = id;
 		this.value = value;
+		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
@@ -74,6 +79,7 @@ public class ColorGUI extends WidgetGroup {
 
 	public void setId(int id) {
 		this.id = id;
+		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
@@ -83,6 +89,7 @@ public class ColorGUI extends WidgetGroup {
 
 	public void setValue(int value) {
 		this.value = value;
+		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 	

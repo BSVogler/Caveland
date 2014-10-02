@@ -42,7 +42,7 @@ public class Explosion extends AbstractEntity {
                      }
                 }
         
-         for (int x=-radius; x<radius; x++)
+        for (int x=-radius; x<radius; x++)
             for (int y=-radius*2; y<radius*2; y++)
                 for (int z=-radius; z<radius; z++){
                     
@@ -59,8 +59,8 @@ public class Explosion extends AbstractEntity {
                         ).spawn();
                     }
                 }
-         explosionsound.play();
-         Controller.requestRecalc();
+        explosionsound.play();
+        Controller.requestRecalc();
 		return this;
 	}
 }

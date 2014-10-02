@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
@@ -39,8 +38,6 @@ import com.badlogic.gdx.audio.Sound;
  * @author Benedikt
  */
 public class ExplosiveBarrel extends Block implements IsSelfAware {
-    /**Defines the radius of the explosion.*/
-    public static final int RADIUS = 3;
     private Coordinate coords;
     private static Sound explosionsound;
 
@@ -56,41 +53,12 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
         if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
     }
-    
+   
     /**
      * Explodes the barrel.
      */
     public void explode(){
-        for (int x=-RADIUS; x<RADIUS; x++)
-            for (int y=-RADIUS*2; y<RADIUS*2; y++)
-                for (int z=-RADIUS; z<RADIUS; z++){
-                    //place air
-                     if (x*x + (y/2)*(y/2)+ z*z < RADIUS*RADIUS){
-                        Controller.getMap().setDataSafe(
-                            coords.cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
-                        );
-                     }
-                }
-        
-         for (int x=-RADIUS; x<RADIUS; x++)
-            for (int y=-RADIUS*2; y<RADIUS*2; y++)
-                for (int z=-RADIUS; z<RADIUS; z++){
-                    
-                    //spawn effect
-                    if (x*x + (y/2)*(y/2)+ z*z >= RADIUS*RADIUS-4 &&
-                        x*x + (y/2)*(y/2)+ z*z <= RADIUS*RADIUS){
-                        new AnimatedEntity(
-                            31,
-                            0,
-                            coords.cpy().addVector(new float[]{x, y, z}),
-                            new int[]{700,2000},
-                            true,
-                            false
-                        ).exist();
-                    }
-                }
-         explosionsound.play();
-         Controller.requestRecalc();
+        new Explosion(getPosition().getPoint(),3).exist();
     }
 
     @Override

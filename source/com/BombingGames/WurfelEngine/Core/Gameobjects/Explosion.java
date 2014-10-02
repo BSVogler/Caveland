@@ -61,6 +61,7 @@ public class Explosion extends AbstractEntity {
                 }
         explosionsound.play();
         Controller.requestRecalc();
+		dispose();
 		return this;
 	}
 }

@@ -219,10 +219,6 @@ public class Point extends AbstractPosition {
             return Controller.getMap().getDataClamp(coord);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public Point cpy() {
         return new Point(this);

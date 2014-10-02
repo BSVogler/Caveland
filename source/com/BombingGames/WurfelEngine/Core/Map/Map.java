@@ -495,7 +495,7 @@ public class Map implements Cloneable {
     }
         
    /**
-     * Set a block with safety checks.
+     * Set a block with safety checks (clamping to map).
      * @param coords
      * @param block
      */
@@ -522,7 +522,7 @@ public class Map implements Cloneable {
     }
     
     /**
-     * Set a block with safety checks.
+     * Set a block with safety checks (clamping to map).
      * @param coord 
      * @param block
      */

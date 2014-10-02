@@ -127,13 +127,13 @@ public abstract class AbstractPosition {
     public abstract int getProjectedPosY();
     
     /**
-     * If needed calculates it.
+     * If needed calculates it and creates new instance else return itself.
      * @return the point representation
      */
     public abstract Point getPoint();
     
     /**
-     * If needed calculates it.
+     * If needed calculates it and creates new instance else return itself.
      * @return the coordinate representation
      */
     public abstract Coordinate getCoord();

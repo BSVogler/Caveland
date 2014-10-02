@@ -1,6 +1,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -33,46 +34,45 @@ public class Explosion extends AbstractEntity {
 	public AbstractEntity spawn() {
 		super.spawn();
 		//replace blocks by air
-		for (int x=-radius; x<radius; x++)
-            for (int y=-radius*2; y<radius*2; y++)
+		for (int x=-radius; x<radius; x++){
+            for (int y=-radius*2; y<radius*2; y++) {
                 for (int z=-radius; z<radius; z++){
+					Coordinate pos = getPosition().cpy().getCoord().addVector(x, y, z);
                     //place air
                      if (x*x + (y/2)*(y/2)+ z*z < radius*radius){
                         Controller.getMap().setDataSafe(
-                            getPosition().cpy().getCoord().addVector(x, y, z) , Block.getInstance(0)
+                            pos , Block.getInstance(0)
                         );
-                     }
-                }
-        
-        for (int x=-radius; x<radius; x++)
-            for (int y=-radius*2; y<radius*2; y++)
-                for (int z=-radius; z<radius; z++){
-                    
-                    //spawn effect
-                    if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
-                        x*x + (y/2)*(y/2)+ z*z <= radius*radius){
-						AbstractEntity effect = new AnimatedEntity(
-							31,
-							0,
-							getPosition().cpy().getCoord().addVector(x, y, z),
-							new int[]{700,2000},
-							true,
-							false
-						).spawn();
+						
 						//get every entity which is attacked
                         ArrayList<AbstractMovableEntity> list =
 							Controller.getMap().getEntitysOnCoord(
-								effect.getPosition().getCoord(),
+								pos,
 								AbstractMovableEntity.class
 							);
                         for (AbstractMovableEntity ent : list) {
                             if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
                                 ent.damage(1000);
                         }
-                    }
-                }
-        explosionsound.play();
-        Controller.requestRecalc();
+					 }
+        
+                    //spawn effect
+                    if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
+                        x*x + (y/2)*(y/2)+ z*z <= radius*radius){
+						new AnimatedEntity(
+							31,
+							0,
+							pos,
+							new int[]{700,2000},
+							true,
+							false
+						).spawn();
+					}
+				}
+			}	
+		}
+		explosionsound.play();
+		Controller.requestRecalc();
 		dispose();
 		return this;
 	}

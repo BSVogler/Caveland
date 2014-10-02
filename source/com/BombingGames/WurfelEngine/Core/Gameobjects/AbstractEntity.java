@@ -147,6 +147,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     
    /**
      * Deletes the object from the map. The opposite to exist();
+	 * @see #shouldBeDisposed() 
      */
     public void dispose(){
         dispose=true;
@@ -154,8 +155,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return true if disposing next tick
+	 * @see #dispose() 
      */
     public boolean shouldBeDisposed() {
         return dispose;

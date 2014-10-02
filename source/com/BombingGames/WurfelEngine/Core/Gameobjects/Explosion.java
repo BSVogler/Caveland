@@ -31,13 +31,14 @@ public class Explosion extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn() {
 		super.spawn();
+		//replace blocks by air
 		for (int x=-radius; x<radius; x++)
             for (int y=-radius*2; y<radius*2; y++)
                 for (int z=-radius; z<radius; z++){
                     //place air
                      if (x*x + (y/2)*(y/2)+ z*z < radius*radius){
                         Controller.getMap().setDataSafe(
-                            getPosition().cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
+                            getPosition().cpy().getCoord().addVector(x, y, z) , Block.getInstance(0)
                         );
                      }
                 }
@@ -52,7 +53,7 @@ public class Explosion extends AbstractEntity {
                         new AnimatedEntity(
                             31,
                             0,
-                            getPosition().cpy().addVector(new float[]{x, y, z}),
+                            getPosition().cpy().addVector(x, y, z),
                             new int[]{700,2000},
                             true,
                             false

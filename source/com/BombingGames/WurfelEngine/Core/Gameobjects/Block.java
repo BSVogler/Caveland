@@ -160,10 +160,16 @@ public class Block extends AbstractGameObject {
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;
-            case 35: case 36: block = new Block(id); //bush
+            case 35: block = new Block(id); //bush
                     block.setTransparent(true);
                     block.hasSides = false;
-                    break;     
+                    break;
+			case 36:
+					block = new Block(id); //tree
+                    block.setTransparent(true);
+                    block.hasSides = false;
+					block.setObstacle(true);
+				break;
             default:
                 if (id > 39) {
                     if (WE.getCurrentConfig().getBlockFactoy()!=null){

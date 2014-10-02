@@ -39,7 +39,7 @@ public class Explosion extends AbstractEntity {
                 for (int z=-radius; z<radius; z++){
 					Coordinate pos = getPosition().cpy().getCoord().addVector(x, y, z);
                     //place air
-                     if (x*x + (y/2)*(y/2)+ z*z < radius*radius){
+                     if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){
                         Controller.getMap().setDataSafe(
                             pos , Block.getInstance(0)
                         );

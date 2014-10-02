@@ -66,6 +66,15 @@ public class ColorGUI extends WidgetGroup {
 	}
 	
 
+	public int getId() {
+		return id;
+	}
+		
+	public int getValue() {
+		return value;
+	}	
+	
+	
 	void setBlock(int id, int value) {
 		this.id = id;
 		this.value = value;
@@ -73,18 +82,10 @@ public class ColorGUI extends WidgetGroup {
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void setId(int id) {
 		this.id = id;
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
-	}
-
-	public int getValue() {
-		return value;
 	}
 
 	public void setValue(int value) {

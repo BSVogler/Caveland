@@ -53,7 +53,7 @@ public class Explosion extends AbstractEntity {
                         new AnimatedEntity(
                             31,
                             0,
-                            getPosition().cpy().addVector(x, y, z),
+                            getPosition().cpy().getCoord().addVector(x, y, z),
                             new int[]{700,2000},
                             true,
                             false

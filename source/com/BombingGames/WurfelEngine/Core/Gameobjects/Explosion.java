@@ -29,8 +29,8 @@ public class Explosion extends AbstractEntity {
 	 * @return 
 	 */
 	@Override
-	public AbstractEntity exist() {
-		super.exist();
+	public AbstractEntity spawn() {
+		super.spawn();
 		for (int x=-radius; x<radius; x++)
             for (int y=-radius*2; y<radius*2; y++)
                 for (int z=-radius; z<radius; z++){
@@ -56,7 +56,7 @@ public class Explosion extends AbstractEntity {
                             new int[]{700,2000},
                             true,
                             false
-                        ).exist();
+                        ).spawn();
                     }
                 }
          explosionsound.play();

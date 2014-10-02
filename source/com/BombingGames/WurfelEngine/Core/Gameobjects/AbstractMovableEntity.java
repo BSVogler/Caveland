@@ -90,7 +90,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
 		movement = new Vector3(0,0,0);
 		speed = 0.5f;
         if (point != null)
-			shadow = (EntityShadow) new EntityShadow(point.cpy()).exist();
+			shadow = (EntityShadow) new EntityShadow(point.cpy()).spawn();
 		else
 			shadow = null;
 		coliding = true;
@@ -472,7 +472,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
 	@Override
 	public void setPosition(AbstractPosition pos) {
 		if (getPosition() == null)
-			shadow = (EntityShadow) new EntityShadow(pos.cpy()).exist();
+			shadow = (EntityShadow) new EntityShadow(pos.cpy()).spawn();
 		super.setPosition(pos);
 	}
 	

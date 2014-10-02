@@ -101,7 +101,7 @@ public class Weapon {
         this.id = id;
         this.parent = parent;
         if (parent != null) {
-            laserdot = new SimpleEntity(20, parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).exist();
+            laserdot = new SimpleEntity(20, parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).spawn();
         }
         
         switch (id){
@@ -323,7 +323,7 @@ public class Weapon {
 //            laser.setDamage(0);
 //            laser.setExplosive(0);
 //            laser.setImpactSprite(20);
-//            laser.exist();
+//            laser.spawn();
 //        }
     }
     
@@ -339,9 +339,9 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new AnimatedEntity(60, 0, parent.getPosition(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(60, 0, parent.getPosition(), new int[]{300}, true, false).spawn();
             else
-                new AnimatedEntity(61, 0, parent.getPosition(), new int[]{300}, true, false).exist();
+                new AnimatedEntity(61, 0, parent.getPosition(), new int[]{300}, true, false).spawn();
 
             //shot bullets
             for (int i = 0; i < bps; i++) {
@@ -369,7 +369,7 @@ public class Weapon {
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
-                bullet.exist(); 
+                bullet.spawn(); 
             }
         }
     }

@@ -200,7 +200,7 @@ public class Controller implements GameManager {
             throw new NullPointerException("No player was passed.");
         else {
             this.player = player;
-            player.exist();
+            player.spawn();
         }
     }   
     

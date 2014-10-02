@@ -100,10 +100,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
     
     /**
-     * add this entity to the map-> let it exist
+     * add this entity to the map-> let it spawn
      * @return returns itself
      */
-    public AbstractEntity exist(){
+    public AbstractEntity spawn(){
         Controller.getMap().getEntitys().add(this);
         existing =true;
         return this;
@@ -113,7 +113,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      *Is the object active on the map?
      * @return
      */
-    public boolean existing(){
+    public boolean spawned(){
         return existing;
     }
   
@@ -146,7 +146,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     }
     
    /**
-     * Deletes the object from the map. The opposite to exist();
+     * Deletes the object from the map. The opposite to spawn();
 	 * @see #shouldBeDisposed() 
      */
     public void dispose(){

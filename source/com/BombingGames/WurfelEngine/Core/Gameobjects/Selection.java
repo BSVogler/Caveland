@@ -55,7 +55,7 @@ public class Selection extends AbstractEntity {
         normal = new AnimatedEntity(14, 0, getPosition(), new int[]{200,200}, true, true);
         normal.ignoreGameSpeed(true);
         normal.setLightlevel(10);
-        normal.exist();
+        normal.spawn();
     }
 
     @Override

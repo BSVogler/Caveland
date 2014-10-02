@@ -81,7 +81,7 @@ public class Bullet extends AbstractEntity {
         getPosition().addVector(dMov);
         setRotation(getRotation()+delta);
         
-        //only exist specific distance then destroy self
+        //only spawn specific distance then destroy self
         distance += dMov.len();
         if (distance > maxDistance)
             dispose();
@@ -89,7 +89,7 @@ public class Bullet extends AbstractEntity {
         //block hit -> spawn effect
         if (getPosition().onLoadedMap() && getPosition().getBlockClamp().isObstacle()){
             if (impactSprite!= 0)
-                new AnimatedEntity(impactSprite, 0, getPosition().cpy(), new int[]{1000} , true, false).exist();
+                new AnimatedEntity(impactSprite, 0, getPosition().cpy(), new int[]{1000} , true, false).spawn();
             dispose();
         }
         
@@ -100,7 +100,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
-            new SimpleEntity(16, getPosition().cpy()).exist();//spawn blood
+            new SimpleEntity(16, getPosition().cpy()).spawn();//spawn blood
             dispose();
         }
     }
@@ -182,7 +182,7 @@ public class Bullet extends AbstractEntity {
                             new int[]{700,2000},
                             true,
                             false
-                        ).exist();
+                        ).spawn();
                         ArrayList<AbstractMovableEntity> list;
                         list = Controller.getMap().getEntitysOnCoord(effect.getPosition().getCoord(), AbstractMovableEntity.class);
                         for (AbstractMovableEntity ent : list) {

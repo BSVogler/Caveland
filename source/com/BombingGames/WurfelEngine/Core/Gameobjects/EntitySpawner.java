@@ -94,7 +94,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
             new int[]{700,2000},
             true,
             false
-        ).exist();
+        ).spawn();
     }
 
     @Override

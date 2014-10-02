@@ -255,7 +255,7 @@ public class Console {
     
     /**
      * Returns the last Message
-     * @return  if there exist no last message it returns an empty string
+     * @return  if there spawn no last message it returns an empty string
      */
     public String getLastMessage(){
         String tmp = messages.lastElement().message;
@@ -265,7 +265,7 @@ public class Console {
     /**
      * Returns the last Message
      * @param sender filter by the sender, e.g. if you want the last message of a specific player
-     * @return if there exist no last message it returns an empty string
+     * @return if there spawn no last message it returns an empty string
      */
     public String getLastMessage(final String sender){
         int i = messages.size()-1;
@@ -336,7 +336,7 @@ public class Console {
                 gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
                 return true;
             case "benchmark":
-                new BenchmarkBall(Map.getCenter(Map.getGameHeight())).exist();
+                new BenchmarkBall(Map.getCenter(Map.getGameHeight())).spawn();
                 //add("Spawned a benchmark ball.", "System");
                 return true;
         }

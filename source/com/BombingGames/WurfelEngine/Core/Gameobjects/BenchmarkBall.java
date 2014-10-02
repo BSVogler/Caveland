@@ -62,7 +62,7 @@ public class BenchmarkBall extends AbstractMovableEntity {
         if (timer >timeTillBall){
             if (Gdx.graphics.getDeltaTime()<0.013f)//over 60 FPS
                 new BenchmarkBall(Map.getCenter(Map.getGameHeight()-2*GAME_EDGELENGTH
-                )).exist();
+                )).spawn();
             timer=0;
         }
         timeTillBall-=delta/5000000f;

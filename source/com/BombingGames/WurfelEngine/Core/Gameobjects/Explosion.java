@@ -25,7 +25,7 @@ public class Explosion extends AbstractEntity {
 	}
 
 	/**
-	 * explosdes
+	 * explodes
 	 * @return 
 	 */
 	@Override

@@ -29,11 +29,10 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractMovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractMovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -156,50 +155,13 @@ public class Bullet extends AbstractEntity {
       /**
      * Spawns explosion.
      */
-    private void explode(){
-        for (int x=-explosive; x<explosive; x++)
-            for (int y=-explosive*2; y<explosive*2; y++)
-                for (int z=-explosive; z<explosive; z++){
-                    //place air
-                     if (x*x + (y/2)*(y/2)+ z*z < explosive*explosive){
-                        Controller.getMap().setDataSafe(
-                            getPosition().getCoord().cpy().addVector(new float[]{x, y, z}).getCoord() , Block.getInstance(0)
-                        );
-                     }
-                }
-        
-         for (int x=-explosive; x<explosive; x++)
-            for (int y=-explosive*2; y<explosive*2; y++)
-                for (int z=-explosive; z<explosive; z++){
-                    
-                    //spawn explosion effect
-                    if (x*x + (y/2)*(y/2)+ z*z >= explosive*explosive-4 &&
-                        x*x + (y/2)*(y/2)+ z*z <= explosive*explosive){
-                        AbstractEntity effect = new AnimatedEntity(
-                            31,
-                            0,
-                            getPosition().getCoord().cpy().addVector(new float[]{x, y, z}).getPoint(),
-                            new int[]{700,2000},
-                            true,
-                            false
-                        ).spawn();
-                        ArrayList<AbstractMovableEntity> list;
-                        list = Controller.getMap().getEntitysOnCoord(effect.getPosition().getCoord(), AbstractMovableEntity.class);
-                        for (AbstractMovableEntity ent : list) {
-                            if (!(ent instanceof PlayerWithWeapon))
-                                ent.damage(1000);
-                        }
-                    }
-                    
-                }
-         if (explosionsound != null) explosionsound.play();
-         Controller.requestRecalc();
+    private void explode(int radius){
+       new Explosion(getPosition(),radius).spawn();
     }
 
-    
     @Override
     public void dispose() {
-        if (explosive>0) explode();
+        if (explosive>0) explode(3);
         super.dispose();
     }
 

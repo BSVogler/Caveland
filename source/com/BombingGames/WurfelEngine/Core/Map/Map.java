@@ -60,7 +60,7 @@ public class Map implements Cloneable {
     private Generator generator;
     
     /** every entity on the map is stored in this field */
-    private final static ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
+    private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
     /**
      * holds the metadata of the map
      */
@@ -734,15 +734,19 @@ public class Map implements Cloneable {
      */
     @Override
     public Map clone() throws CloneNotSupportedException{
-        Map map = (Map) super.clone();
-        map.data = copyCellsDeeper(data);//deep copy of the data
-        return map;
+        Map clone = (Map) super.clone();
+        clone.data = copyCellsDeeper(data);//deep copy of the data
+		clone.entityList = new ArrayList<>(entityList.size());
+		for (AbstractEntity entity : entityList) {
+			clone.entityList.add((AbstractEntity) entity.clone());
+		}
+        return clone;
     }
 
     /**
      *
      */
-    public static void staticDispose(){
+    public void dispose(){
         for (AbstractEntity entity : entityList) {
             entity.dispose();
         }

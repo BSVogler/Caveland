@@ -40,7 +40,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
+public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware, Cloneable {
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
@@ -171,4 +171,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void render(GameView view, Camera camera){
         super.render(view, camera, position);
     }
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 }

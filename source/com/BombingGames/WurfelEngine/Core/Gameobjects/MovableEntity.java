@@ -82,21 +82,26 @@ public class MovableEntity extends AbstractEntity {
     * Constructor of AbstractCharacter.
     * @param id
     * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
-    * @param point  
     */
-   protected MovableEntity(final int id, final int spritesPerDir, Point point) {
-        super(id, point);
+   protected MovableEntity(final int id, final int spritesPerDir) {
+        super(id);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
 		speed = 0.5f;
-        if (point != null)
-			shadow = (EntityShadow) new EntityShadow(point.cpy()).spawn();
-		else
-			shadow = null;
+        
 		coliding = true;
 		floating = false;
         waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		if (point != null)
+			shadow = (EntityShadow) new EntityShadow().spawn(point.cpy());
+		else
+			shadow = null;
+		return super.spawn(point);
+	}
    
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
@@ -474,7 +479,7 @@ public class MovableEntity extends AbstractEntity {
 	@Override
 	public void setPosition(AbstractPosition pos) {
 		if (getPosition() == null)
-			shadow = (EntityShadow) new EntityShadow(pos.cpy()).spawn();
+			shadow = (EntityShadow) new EntityShadow().spawn((Point) pos.cpy());
 		super.setPosition(pos);
 	}
 	

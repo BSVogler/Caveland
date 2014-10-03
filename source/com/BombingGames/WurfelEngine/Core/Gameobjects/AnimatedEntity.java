@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -49,13 +48,12 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
      * Create an entity with an animation with an array wich has the time of every animation step in ms in it.
      * @param id The id of the object
      * @param value the starting value
-     * @param pos the position of the entity
      * @param animationsinformation  the time in ms for each animation step
      * @param autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time.
      */
-    public AnimatedEntity(int id, int value, AbstractPosition pos, int[] animationsinformation, boolean autostart, boolean loop){
-        super(id, pos.getPoint());
+    public AnimatedEntity(int id, int value, int[] animationsinformation, boolean autostart, boolean loop){
+        super(id);
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

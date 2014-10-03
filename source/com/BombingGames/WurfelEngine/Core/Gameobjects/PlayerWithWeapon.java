@@ -29,7 +29,6 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.BombingGames.WurfelEngine.shooting.Weapon;
 import com.badlogic.gdx.Gdx;
@@ -47,11 +46,10 @@ public class PlayerWithWeapon extends Controllable {
 
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
-     * @param point the position of the player
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
-    public PlayerWithWeapon(final Point point) {
-        super(30, 1, point);
+    public PlayerWithWeapon() {
+        super(30, 1);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
             (Sound)

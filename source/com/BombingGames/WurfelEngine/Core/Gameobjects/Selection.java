@@ -46,17 +46,23 @@ public class Selection extends AbstractEntity {
     
     /**
      *
-     * @param point
      */
-    public Selection(Point point) {
-        super(13, point);
+    public Selection() {
+        super(13);
         setLightlevel(10);
         
-        normal = new AnimatedEntity(14, 0, getPosition(), new int[]{200,200}, true, true);
+        normal = new AnimatedEntity(14, 0, new int[]{200,200}, true, true);
         normal.ignoreGameSpeed(true);
         normal.setLightlevel(10);
-        normal.spawn();
     }
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		normal.spawn(point);
+		return super.spawn(point);
+	}
+	
+	
 
     @Override
     public void update(float delta) {

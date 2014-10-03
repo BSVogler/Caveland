@@ -90,11 +90,10 @@ public class EntitySpawner extends Block implements IsSelfAware {
         new AnimatedEntity(
             31,
             0,
-            coords.cpy().addVector(0, 2, 1),
             new int[]{700,2000},
             true,
             false
-        ).spawn();
+        ).spawn(coords.cpy().addVector(0, 2, 1).getPoint());
     }
 
     @Override

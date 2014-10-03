@@ -84,9 +84,9 @@ public class MapEditorController extends Controller {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
         currentLayer = Map.getBlocksZ();
-        SelectionEntity = new Selection(new Point(0, 0, Map.getBlocksZ()-1, true));
+        SelectionEntity = new Selection();
         //focusentity.setPositionY(Block.DIM2+1f);
-        SelectionEntity.spawn();
+        SelectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1, true));
     }
     
 

@@ -30,11 +30,10 @@ package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
@@ -60,8 +59,8 @@ public class Bullet extends AbstractEntity {
      * @param id
      * @param point 
      */
-    public Bullet(int id, Point point){
-        super(id, point);
+    public Bullet(int id){
+        super(id);
     }
 
     /**
@@ -88,7 +87,7 @@ public class Bullet extends AbstractEntity {
         //block hit -> spawn effect
         if (getPosition().onLoadedMap() && getPosition().getBlockClamp().isObstacle()){
             if (impactSprite!= 0)
-                new AnimatedEntity(impactSprite, 0, getPosition().cpy(), new int[]{1000} , true, false).spawn();
+                new AnimatedEntity(impactSprite, 0, new int[]{1000} , true, false).spawn(getPosition().cpy());
             dispose();
         }
         
@@ -99,7 +98,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
-            new SimpleEntity(16, getPosition().cpy()).spawn();//spawn blood
+            new SimpleEntity(16).spawn(getPosition().cpy());//spawn blood
             dispose();
         }
     }
@@ -156,7 +155,7 @@ public class Bullet extends AbstractEntity {
      * Spawns explosion.
      */
     private void explode(int radius){
-       new Explosion(getPosition(),radius).spawn();
+       new Explosion(radius).spawn(getPosition());
     }
 
     @Override

@@ -49,11 +49,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     /**
      * Create an abstractEntity.
      * @param id 
-     * @param point 
      */
-    protected AbstractEntity(int id, Point point){
+    protected AbstractEntity(int id){
         super(id,0);
-        this.position = point;
     }
 
     //IsSelfAware implementation

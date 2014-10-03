@@ -58,7 +58,7 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
      * Explodes the barrel.
      */
     public void explode(){
-        new Explosion(getPosition().getPoint(),3).spawn();
+        new Explosion(3).spawn(getPosition().getPoint());
     }
 
     @Override

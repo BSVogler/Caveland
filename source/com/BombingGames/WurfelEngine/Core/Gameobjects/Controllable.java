@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -39,8 +38,8 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Controllable extends MovableEntity {
 
-	public Controllable(int id, int spritesPerDir, Point point) {
-		super(id, spritesPerDir, point);
+	public Controllable(int id, int spritesPerDir) {
+		super(id, spritesPerDir);
 		setFriction(200);
 	}
 	

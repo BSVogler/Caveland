@@ -323,6 +323,7 @@ public class Coordinate extends AbstractPosition {
      * 6 | 8 | 2<br>
      * -------<br>
      * 5 / 4 \ 3<br>
+	 * O(const)
      * @param x game-space-coordinates, value in pixels
      * @param y game-space-coordinates, value in pixels
      * @return Returns the fieldnumber of the coordinates. 8 is the field itself.
@@ -366,6 +367,7 @@ public class Coordinate extends AbstractPosition {
      * 6 | 8 | 2<br>
      * -------<br>
      * 5 / 4 \ 3<br>
+	 * O(const)
      * @param neighbourSide the side number of the given coordinates
      * @return The coordinates of the neighbour.
      */
@@ -540,7 +542,9 @@ public class Coordinate extends AbstractPosition {
 	 * destroys the block at the current position, replacing by air. Calls onDestroy()
 	 */
 	public void destroy() {
-		Controller.getMap().getBlock(this).onDestroy(this);
-		Controller.getMap().setDataSafe(this, Block.getInstance(0));
+		if (onLoadedMap()) {
+			Controller.getMap().getBlock(this).onDestroy(this);
+			Controller.getMap().setData(this, Block.getInstance(0));
+		}
 	}
 }

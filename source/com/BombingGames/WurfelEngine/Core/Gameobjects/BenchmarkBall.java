@@ -32,7 +32,6 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
@@ -46,10 +45,9 @@ public class BenchmarkBall extends MovableEntity {
 
     /**
      *Creates a Benchmark ball.
-     * @param point
      */
-    public BenchmarkBall(Point point) {
-        super(21, 0, point);
+    public BenchmarkBall() {
+        super(21, 0);
 		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
 		setFloating(false);
     }
@@ -61,8 +59,7 @@ public class BenchmarkBall extends MovableEntity {
         timer+=delta;
         if (timer >timeTillBall){
             if (Gdx.graphics.getDeltaTime()<0.013f)//over 60 FPS
-                new BenchmarkBall(Map.getCenter(Map.getGameHeight()-2*GAME_EDGELENGTH
-                )).spawn();
+                new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()-2*GAME_EDGELENGTH));
             timer=0;
         }
         timeTillBall-=delta/5000000f;

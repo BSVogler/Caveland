@@ -29,10 +29,10 @@
 package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -101,7 +101,7 @@ public class Weapon {
         this.id = id;
         this.parent = parent;
         if (parent != null) {
-            laserdot = new SimpleEntity(20, parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)).spawn();
+            laserdot = new SimpleEntity(20).spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
         }
         
         switch (id){
@@ -339,9 +339,9 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new AnimatedEntity(60, 0, parent.getPosition(), new int[]{300}, true, false).spawn();
+                new AnimatedEntity(60, 0, new int[]{300}, true, false).spawn(parent.getPosition());
             else
-                new AnimatedEntity(61, 0, parent.getPosition(), new int[]{300}, true, false).spawn();
+                new AnimatedEntity(61, 0, new int[]{300}, true, false).spawn(parent.getPosition());
 
             //shot bullets
             for (int i = 0; i < bps; i++) {
@@ -349,8 +349,8 @@ public class Weapon {
 
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
                 bullet = new Bullet(
-                    12,
-                    parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+                    12
+                    );
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue(0);
@@ -369,7 +369,7 @@ public class Weapon {
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
-                bullet.spawn(); 
+                bullet.spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)); 
             }
         }
     }

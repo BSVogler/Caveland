@@ -15,8 +15,8 @@ public class Explosion extends AbstractEntity {
 	private final int radius;
 	private static Sound explosionsound;
 
-	public Explosion(Point pos, int radius) {
-		super(0, pos);
+	public Explosion(int radius) {
+		super(0);
 		this.radius = radius;
 		if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
@@ -30,41 +30,41 @@ public class Explosion extends AbstractEntity {
 	 * explodes
 	 * @return 
 	 */
+	
 	@Override
-	public AbstractEntity spawn() {
-		super.spawn();
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
 		//replace blocks by air
 		for (int x=-radius; x<radius; x++){
-            for (int y=-radius*2; y<radius*2; y++) {
-                for (int z=-radius; z<radius; z++){
+			for (int y=-radius*2; y<radius*2; y++) {
+				for (int z=-radius; z<radius; z++){
 					Coordinate pos = getPosition().cpy().getCoord().addVector(x, y, z);
-                    //place air
-                     if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){
-                        pos.destroy();
+					//place air
+					if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){
+						pos.destroy();
 						
 						//get every entity which is attacked
-                        ArrayList<MovableEntity> list =
+						ArrayList<MovableEntity> list =
 							Controller.getMap().getEntitysOnCoord(
 								pos,
 								MovableEntity.class
 							);
-                        for (MovableEntity ent : list) {
-                            if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
-                                ent.damage(1000);
-                        }
-					 }
-        
-                    //spawn effect
-                    if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
-                        x*x + (y/2)*(y/2)+ z*z <= radius*radius){
+						for (MovableEntity ent : list) {
+							if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
+								ent.damage(1000);
+						}
+					}
+					
+					//spawn effect
+					if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
+						x*x + (y/2)*(y/2)+ z*z <= radius*radius){
 						new AnimatedEntity(
 							31,
 							0,
-							pos,
 							new int[]{700,2000},
 							true,
 							false
-						).spawn();
+						).spawn(pos.getPoint());
 					}
 				}
 			}	

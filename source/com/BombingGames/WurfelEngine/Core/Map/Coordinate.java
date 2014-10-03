@@ -559,7 +559,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void destroy() {
 		if (onLoadedMap()) {
-			Controller.getMap().getBlock(this).onDestroy(this);
+			Controller.getMap().getBlock(this).onDestroy(this);//call destruction method
 			Controller.getMap().setData(this, Block.getInstance(0));
 		}
 	}

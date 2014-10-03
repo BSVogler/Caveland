@@ -73,6 +73,7 @@ public class MovableEntity extends AbstractEntity {
    private boolean inliquid;
    private int health = 1000;
    private int mana = 1000;
+   private boolean indestructible = false;
        
    private EntityShadow shadow;
    
@@ -277,7 +278,7 @@ public class MovableEntity extends AbstractEntity {
             }
             if (soundlimit>0)soundlimit-=delta;
             
-            if (health<=0)
+            if (health<=0 && !indestructible)
                 dispose();
         }
     }
@@ -431,16 +432,26 @@ public class MovableEntity extends AbstractEntity {
      * @param value
      */
     public void damage(int value) {
-        if (health >0){
-            if (damageSounds != null && soundlimit<=0) {
-                damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
-                soundlimit = 100;
-            }
-            health -= value;
-        } else
-            health=0;
+		if (!indestructible) {
+			if (health >0){
+				if (damageSounds != null && soundlimit<=0) {
+					damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
+					soundlimit = 100;
+				}
+				health -= value;
+			} else
+				health=0;
+		}
     }
 
+	public boolean isIndestructible() {
+		return indestructible;
+	}
+
+	public void setIndestructible(boolean indestructible) {
+		this.indestructible = indestructible;
+	}
+	
     /**
      *
      * @return

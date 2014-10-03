@@ -159,10 +159,18 @@ public abstract class AbstractPosition {
     public abstract AbstractPosition cpy(); 
     
     /**
-     * Checks if the position is on the chunks currently in memory.
+     * Checks if the position is on the chunks currently in memory. Horizontal checks only.
+     * @return 
+     */
+    public abstract boolean onLoadedMapHorizontal();
+	
+	/**
+     * Checks if the position is on the chunks currently in memory. Chgecks all axis'.
      * @return 
      */
     public abstract boolean onLoadedMap();
+	
+	
     
     /**
      *

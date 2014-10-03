@@ -144,7 +144,7 @@ public class MovableEntity extends AbstractEntity {
         if (health < 0) health = 0;
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (getPosition()!= null && getPosition().onLoadedMap()) {
+        if (getPosition()!= null && getPosition().onLoadedMapHorizontal()) {
 
             /*VERTICAL MOVEMENT*/
 				float oldHeight = getPosition().getHeight();

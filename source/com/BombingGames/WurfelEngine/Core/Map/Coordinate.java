@@ -263,7 +263,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Block getBlockSafe(){
-        if (onLoadedMap())
+        if (onLoadedMapHorizontal())
             return Controller.getMap().getBlock(this);
         else return null;
     }
@@ -301,7 +301,21 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     * Checks if the coordiantes are accessable with the currently loaded Chunks.
+     * Checks if the coordiantes are accessable with the currently loaded Chunks (horizontal only).
+     * @return 
+     */
+    @Override
+    public boolean onLoadedMapHorizontal(){
+        return (
+            getRelX() >= 0
+            && getRelX() < Map.getBlocksX()
+            && getRelY() >= 0
+            && getRelY() < Map.getBlocksY()
+        );
+    }
+	
+	 /**
+     * Checks if the coordiantes are accessable with the currently loaded Chunks (x,y,z).
      * @return 
      */
     @Override
@@ -311,9 +325,11 @@ public class Coordinate extends AbstractPosition {
             && getRelX() < Map.getBlocksX()
             && getRelY() >= 0
             && getRelY() < Map.getBlocksY()
+			&& getZ() >= 0
+			&& getZ() < Map.getBlocksZ()
         );
     }
-    
+
     /**
      * Returns the field-id where the coordiantes are inside in relation to the current field. Field id count clockwise, starting with the top with 0.
      * If you want to get the neighbour you can use {@link #neighbourSidetoCoords(int)} with the parameter found by this function.

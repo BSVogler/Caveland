@@ -437,26 +437,20 @@ public class Map implements Cloneable {
     public Block getBlockClamp(int x, int y, int z){
         if (x >= blocksX){
             x = blocksX-1;
-            Gdx.app.error("Map","X:"+x);
         } else if( x<0 ){
             x = 0;
-            Gdx.app.error("Map","X:"+x);
         }
         
         if (y >= blocksY){
             y = blocksY-1;
-            Gdx.app.debug("Map","Y:"+y);
         } else if( y < 0 ){
             y = 0;
-            Gdx.app.error("Map","Y:"+y);
         }
         
         if (z >= blocksZ){
             z = blocksZ-1;
-            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         } else if( z < 0 ){
             z = 0;
-            Gdx.app.error("Map","Z:"+z+">="+blocksZ);
         }
         
         return data[x][y][z].getBlock();    

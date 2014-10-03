@@ -99,10 +99,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     
     /**
      * add this entity to the map-> let it spawn
+	 * @param point
      * @return returns itself
      */
-    public AbstractEntity spawn(){
+    public AbstractEntity spawn(Point point){
         Controller.getMap().getEntitys().add(this);
+		position = point;
         spawned =true;
         return this;
     }

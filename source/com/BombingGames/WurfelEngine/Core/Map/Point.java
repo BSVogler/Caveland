@@ -85,7 +85,8 @@ public class Point extends AbstractPosition {
     
     /**
      * returns coordinate aquivalent. Removes floating of block.
-     * @return
+	 * Looks complicated but is O(const)
+     * @return coordinate aquivalent
      */
     @Override
     public Coordinate getCoord() {

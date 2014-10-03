@@ -360,6 +360,17 @@ public class WE extends Game {
         }
     }
     
+	/**
+	 * 
+	 * @return 
+	 * @since 1.3.4
+	 */
+	public static boolean editorHasMapCopy(){
+		if (gameplayScreen!=null && gameplayScreen.getEditorController()!=null)
+			return gameplayScreen.getEditorController().hasMapSave();
+		return false;
+	}
+	
     /**
      *
      * @return the config in use

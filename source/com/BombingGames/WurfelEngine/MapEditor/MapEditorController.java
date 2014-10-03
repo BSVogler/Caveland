@@ -94,10 +94,10 @@ public class MapEditorController extends Controller {
     public void onEnter(){
         Gdx.app.debug("MEController", "entered");
         setTimespeed(0);
-        if (reverseMap && mapsave!=null)
+        if (reverseMap && mapsave != null)
             Controller.setMap(mapsave);
         else
-            mapsave=null;
+            mapsave = null;
     }
     
    /**
@@ -164,5 +164,9 @@ public class MapEditorController extends Controller {
             Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+	
+	public boolean hasMapSave(){
+		return mapsave != null;
+	}
     
 }

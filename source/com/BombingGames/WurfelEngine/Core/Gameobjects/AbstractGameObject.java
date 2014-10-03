@@ -370,59 +370,61 @@ public abstract class AbstractGameObject {
      * @param scale relative value
      */
     public void render(View view, int xPos, int yPos, Color color, float scale) {
-        AtlasRegion texture = getSprite(getCategory(), id, value);
-        Sprite sprite = new Sprite(texture);
-        sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT2+texture.offsetY);
-        sprite.rotate(rotation);
-        sprite.scale(scale);
-        
-        sprite.setPosition(
-            xPos+texture.offsetX-texture.originalWidth/2,
-            yPos//center
-                -SCREEN_HEIGHT2
-                +texture.offsetY
-        );
-        
-        color.mul(getLightlevel());
-        prepareColor(view, color);
+		if (id != 0){
+			AtlasRegion texture = getSprite(getCategory(), id, value);
+			Sprite sprite = new Sprite(texture);
+			sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT2+texture.offsetY);
+			sprite.rotate(rotation);
+			sprite.scale(scale);
 
-        sprite.setColor(color);
+			sprite.setPosition(
+				xPos+texture.offsetX-texture.originalWidth/2,
+				yPos//center
+					-SCREEN_HEIGHT2
+					+texture.offsetY
+			);
 
-        sprite.draw(view.getBatch());
-        
-        
-        if (WE.getCurrentConfig().debugObjects()){
-            ShapeRenderer sh = view.getShapeRenderer();
-            sh.begin(ShapeRenderer.ShapeType.Line);
-            //sprite outline
-            sh.rect(
-                sprite.getX(),
-                sprite.getY(),
-                sprite.getWidth(),
-                sprite.getHeight()
-            );
-            //crossing lines
-            sh.line(
-                xPos-SCREEN_WIDTH2,
-                yPos-SCREEN_DEPTH2,
-                xPos+SCREEN_WIDTH2,
-                yPos+SCREEN_DEPTH2
-            );
-            sh.line(
-                xPos-SCREEN_WIDTH2,
-                yPos+SCREEN_DEPTH2,
-                xPos+SCREEN_WIDTH2,
-                yPos-SCREEN_DEPTH2
-            );
-            //bounding box
-            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
-            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
-            sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-            sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-            sh.end();
-        }
+			color.mul(getLightlevel());
+			prepareColor(view, color);
 
-        drawCalls++;
+			sprite.setColor(color);
+
+			sprite.draw(view.getBatch());
+
+
+			if (WE.getCurrentConfig().debugObjects()){
+				ShapeRenderer sh = view.getShapeRenderer();
+				sh.begin(ShapeRenderer.ShapeType.Line);
+				//sprite outline
+				sh.rect(
+					sprite.getX(),
+					sprite.getY(),
+					sprite.getWidth(),
+					sprite.getHeight()
+				);
+				//crossing lines
+				sh.line(
+					xPos-SCREEN_WIDTH2,
+					yPos-SCREEN_DEPTH2,
+					xPos+SCREEN_WIDTH2,
+					yPos+SCREEN_DEPTH2
+				);
+				sh.line(
+					xPos-SCREEN_WIDTH2,
+					yPos+SCREEN_DEPTH2,
+					xPos+SCREEN_WIDTH2,
+					yPos-SCREEN_DEPTH2
+				);
+				//bounding box
+				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
+				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
+				sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+				sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+				sh.end();
+			}
+
+			drawCalls++;
+		}
     }
     
     /**

@@ -503,9 +503,6 @@ public class MovableEntity extends AbstractEntity {
 	public void onCollide() {
 	}
 	
-    /**
-     *
-     */
    @Override
     public void dispose(){
         super.dispose();

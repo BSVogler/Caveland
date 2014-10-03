@@ -262,8 +262,8 @@ public class Controller implements GameManager {
         Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
         Block.staticDispose();
-        Map.staticDispose();
-        map = null;
+        map.dispose();
+		map = null;
         lightEngine = null;
     }
 

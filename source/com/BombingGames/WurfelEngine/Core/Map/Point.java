@@ -249,7 +249,7 @@ public class Point extends AbstractPosition {
     @Override
     public boolean onLoadedMap() {
         return (
-            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X
+            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
             && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
             && getCoord().onLoadedMap()//do extended check
         );

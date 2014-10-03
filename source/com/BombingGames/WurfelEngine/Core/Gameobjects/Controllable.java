@@ -37,7 +37,7 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class Controllable extends AbstractMovableEntity {
+public class Controllable extends MovableEntity {
 
 	public Controllable(int id, int spritesPerDir, Point point) {
 		super(id, spritesPerDir, point);
@@ -69,7 +69,7 @@ public class Controllable extends AbstractMovableEntity {
    }
 	@Override
 	public void jump() {
-		super.jump(1);
+		jump(1);
 	}
 
 	@Override

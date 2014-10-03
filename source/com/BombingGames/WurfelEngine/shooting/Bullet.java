@@ -30,7 +30,7 @@ package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractMovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
@@ -50,7 +50,7 @@ public class Bullet extends AbstractEntity {
     private float speed;
     private int damage;
     private int distance =0;//distance traveled
-    private AbstractMovableEntity parent;//no self shooting
+    private MovableEntity parent;//no self shooting
     private int maxDistance = 1000;//default maxDistance
     private int explosive = 0;
     private int impactSprite;
@@ -94,8 +94,8 @@ public class Bullet extends AbstractEntity {
         
         //check character hit
          //get every character on this coordinate
-        ArrayList<AbstractMovableEntity> entitylist;
-        entitylist = Controller.getMap().getEntitysOnCoord(getPosition().getCoord(), AbstractMovableEntity.class);
+        ArrayList<MovableEntity> entitylist;
+        entitylist = Controller.getMap().getEntitysOnCoord(getPosition().getCoord(), MovableEntity.class);
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
@@ -124,7 +124,7 @@ public class Bullet extends AbstractEntity {
      *
      * @param parent
      */
-    public void setParent(AbstractMovableEntity parent) {
+    public void setParent(MovableEntity parent) {
         this.parent = parent;
     }
     

@@ -61,8 +61,8 @@ public class EntitySpawner extends Block implements IsSelfAware {
 			int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getRel();
 
 			//get every character
-			ArrayList<AbstractMovableEntity> entitylist;
-			entitylist = Controller.getMap().getAllEntitysOfType(AbstractMovableEntity.class);
+			ArrayList<MovableEntity> entitylist;
+			entitylist = Controller.getMap().getAllEntitysOfType(MovableEntity.class);
 
 			//check every character if standing on top
 			int i = 0;

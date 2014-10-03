@@ -38,7 +38,7 @@ import com.badlogic.gdx.math.Vector3;
  *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
  * @author Benedikt
  */
-public abstract class AbstractMovableEntity extends AbstractEntity {
+public class MovableEntity extends AbstractEntity {
    private static int soundlimit;//time to pass before new sound can be played
      
    private final int colissionRadius = GAME_DIAGLENGTH2/2;
@@ -84,7 +84,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
     * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
     * @param point  
     */
-   protected AbstractMovableEntity(final int id, final int spritesPerDir, Point point) {
+   protected MovableEntity(final int id, final int spritesPerDir, Point point) {
         super(id, point);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
@@ -102,7 +102,9 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
      * @see #jump(float)
      */
-    public abstract void jump();
+    public void jump(){
+		//jump(0);
+	};
    
 	/**
      * Jump with a specific speed
@@ -342,7 +344,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity {
      * @param waterSound new value of waterSound
      */
     public static void setWaterSound(Sound waterSound) {
-        AbstractMovableEntity.waterSound = waterSound;
+        MovableEntity.waterSound = waterSound;
     }
     
     /**

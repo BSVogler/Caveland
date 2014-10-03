@@ -78,7 +78,7 @@ public class PlayerWithWeapon extends Controllable {
      */
     @Override
     public void jump() {
-        super.jump(5);
+        jump(5);
     }
     
 

@@ -40,7 +40,7 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class BenchmarkBall extends AbstractMovableEntity {
+public class BenchmarkBall extends MovableEntity {
     private static float timer=0;
     private static float timeTillBall=1000;
 

@@ -736,10 +736,11 @@ public class Map implements Cloneable {
     public Map clone() throws CloneNotSupportedException{
         Map clone = (Map) super.clone();
         clone.data = copyCellsDeeper(data);//deep copy of the data
-		clone.entityList = new ArrayList<>(entityList.size());
-		for (AbstractEntity entity : entityList) {
-			clone.entityList.add((AbstractEntity) entity.clone());
-		}
+		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
+//		clone.entityList = new ArrayList<>(entityList.size());
+//		for (AbstractEntity entity : entityList) {
+//			clone.entityList.add((AbstractEntity) entity.clone());
+//		}
         return clone;
     }
 

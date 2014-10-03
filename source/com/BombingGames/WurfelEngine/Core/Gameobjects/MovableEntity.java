@@ -158,6 +158,7 @@ public class MovableEntity extends AbstractEntity {
 				//check new height for colission            
 				//land if standing in or under 0-level or there is an obstacle
 				if (movement.z < 0 && onGround()){
+					onCollide();
 					if (landingSound != null)
 						landingSound.play();//play landing sound
 					if (fallingSound != null)
@@ -192,7 +193,9 @@ public class MovableEntity extends AbstractEntity {
 				//if movement allowed => move
 				if (!coliding || ! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
 						getPosition().addVector(dMove);
-					}
+				} else {
+					onCollide();
+				}
 
             /* update sprite*/
 			if (spritesPerDir>0) {
@@ -492,6 +495,12 @@ public class MovableEntity extends AbstractEntity {
 		if (getPosition() == null)
 			shadow = (EntityShadow) new EntityShadow().spawn((Point) pos.cpy());
 		super.setPosition(pos);
+	}
+	
+	/**
+	 * called when in contact with floor or wall. Should be overriden.
+	 */
+	public void onCollide() {
 	}
 	
     /**

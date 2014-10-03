@@ -535,6 +535,12 @@ public class Coordinate extends AbstractPosition {
         setZ(getZClamp());
         return this;
     }
-    
-    
+
+	/**
+	 * destroys the block at the current position, replacing by air. Calls onDestroy()
+	 */
+	public void destroy() {
+		Controller.getMap().getBlock(this).onDestroy(this);
+		Controller.getMap().setDataSafe(this, Block.getInstance(0));
+	}
 }

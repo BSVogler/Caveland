@@ -558,4 +558,11 @@ public class Block extends AbstractGameObject {
     public String getName() {
         return "feature not supported yet";
     }
+
+	/**
+	 * Overwrite to define what should happen if the block is getting destroyed?
+	 * @param pos the position of the block, can be null if not needed
+	 */
+	public void onDestroy(AbstractPosition pos) {
+	}
 }

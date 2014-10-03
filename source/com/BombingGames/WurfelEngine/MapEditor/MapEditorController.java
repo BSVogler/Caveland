@@ -126,15 +126,6 @@ public class MapEditorController extends Controller {
         Camera.setZRenderingLimit(currentLayer);
     }
     
-    @Override
-    public void exit(){
-        Gdx.app.debug("MEController", "exited");
-        try {
-            mapsave = Controller.getMap().clone();
-        } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     /**
      *
@@ -149,11 +140,10 @@ public class MapEditorController extends Controller {
      * @param replay true when everything should be reloaded, else just a switch to last status
      */
     public void switchToGame(boolean replay){
-            if (replay)
-                WE.switchSetupWithInit(gameplayController, gameplayView);
-            else
-                WE.switchSetup(gameplayController, gameplayView);
-    
+		if (replay)
+			WE.switchSetupWithInit(gameplayController, gameplayView);
+		else
+			WE.switchSetup(gameplayController, gameplayView);
     }
 
     /**
@@ -164,5 +154,15 @@ public class MapEditorController extends Controller {
         return SelectionEntity;
     }
     
+	
+	@Override
+    public void exit(){
+        Gdx.app.debug("MEController", "exited");
+        try {
+            mapsave = Controller.getMap().clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }

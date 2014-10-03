@@ -512,7 +512,6 @@ public class MovableEntity extends AbstractEntity {
         shadow.dispose();
         if (fallingSound!= null) fallingSound.dispose();
         if (jumpingSound!= null) jumpingSound.dispose();
-        if (waterSound!= null) waterSound.dispose();
         if (runningSound!= null) runningSound.dispose();
     }
 }

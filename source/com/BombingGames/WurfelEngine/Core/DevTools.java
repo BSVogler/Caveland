@@ -306,7 +306,7 @@ public class DevTools {
      * @param view The view which renders the buttons.
      */
     private void showEditorButtons(final GameView view){
-        if (editorbutton==null && editorreversebutton==null){    
+        if (editorbutton==null || editorreversebutton==null){    
             TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
             
             if (editorbutton==null){
@@ -324,24 +324,26 @@ public class DevTools {
                     }
                 );
             }
+			view.getStage().addActor(editorbutton);
             
-            if (editorreversebutton==null){
-                //add reverse editor button
-                editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-                editorreversebutton.setX(xPos+width+80);
-                editorreversebutton.setY(yPos);
-                editorreversebutton.addListener(
-                    new ClickListener() {
-                        @Override
-                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                            WE.loadEditor(true);
-                            return true;
-                       }
-                    }
-                );
-            }
-        }
-        view.getStage().addActor(editorbutton);
-        view.getStage().addActor(editorreversebutton);
+			if (WE.editorHasMapCopy()){
+				if (editorreversebutton==null){
+					//add reverse editor button
+					editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
+					editorreversebutton.setX(xPos+width+80);
+					editorreversebutton.setY(yPos);
+					editorreversebutton.addListener(
+						new ClickListener() {
+							@Override
+							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+								WE.loadEditor(true);
+								return true;
+						   }
+						}
+					);
+				}
+				view.getStage().addActor(editorreversebutton);	
+			}
+		}
     }
 }

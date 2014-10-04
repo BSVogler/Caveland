@@ -271,13 +271,16 @@ public class Camera {
             for (int x = left; x <= right; x++) {
                 for (int y = back; y <= front; y++) {
                     if (bottomLayerVisibility[x][y]){
-                        Coordinate tmpCoord = new Coordinate(x, y, -1, true);
-                        if (//inside view frustum?
-                            (tmpCoord.getProjectedPosY()- Block.SCREEN_HEIGHT*3/2)//top of sprite
-                            <
-                            (position.y + getProjectionHeight())//camera's bottom
+                        Coordinate coord = new Coordinate(x, y, -1, true);
+                        if (                          (position.y + getProjectionHeight())//camera's top
+                            >
+                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
+                        &&                                  //inside view frustum?
+                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+                            >
+                            position.y//camera's bottom
                         ) {
-                            groundBlock.render(view, this, tmpCoord);
+                            groundBlock.render(view, this, coord);
                         }
                     }
                 }
@@ -332,7 +335,6 @@ public class Camera {
                             (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
                             >
                             position.y//camera's bottom
-
                     ) {
                         depthsort.add(new RenderDataDTO(blockAtCoord, coord));
                     }

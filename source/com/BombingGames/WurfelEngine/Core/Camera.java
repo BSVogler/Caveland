@@ -342,11 +342,17 @@ public class Camera {
         //add entitys
         for (int i=0; i< Controller.getMap().getEntitys().size(); i++) {
             AbstractEntity entity = Controller.getMap().getEntitys().get(i);
-            if (!entity.isHidden() && !entity.isClipped()
-                && 
-                entity.getPosition().getProjectedPosY() < position.y + getProjectionHeight()
+             if (! entity.isHidden()
+				&& ! entity.isClipped()
                 &&
-                entity.getPosition().getZ() < zRenderingLimit
+					(position.y + getProjectionHeight())
+					>
+					(entity.getPosition().getProjectedPosY()- Block.SCREEN_HEIGHT*2)
+				&&
+					(entity.getPosition().getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+					>
+					position.y
+                && entity.getPosition().getZ() < zRenderingLimit
                 )
                     depthsort.add(
                         new RenderDataDTO(entity, entity.getPosition())

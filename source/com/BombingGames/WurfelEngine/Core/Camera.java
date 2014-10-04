@@ -306,7 +306,7 @@ public class Camera {
      * Fills the map into a list and sorts it in the order of the rendering, called the "depthlist".
      * @return 
      */
-    protected ArrayList<RenderDataDTO> createDepthList() {
+    private ArrayList<RenderDataDTO> createDepthList() {
         ArrayList<RenderDataDTO> depthsort = new ArrayList<>(100);//start by size 100
         
         int left = getVisibleLeftBorder();

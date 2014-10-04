@@ -96,12 +96,12 @@ public class MovableEntity extends AbstractEntity {
     }
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public MovableEntity spawn(Point point) {
 		if (point != null)
 			shadow = (EntityShadow) new EntityShadow().spawn(point.cpy());
 		else
 			shadow = null;
-		return super.spawn(point);
+		return (MovableEntity) super.spawn(point);
 	}
    
    /**

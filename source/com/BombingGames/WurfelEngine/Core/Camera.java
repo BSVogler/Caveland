@@ -352,6 +352,14 @@ public class Camera {
 					(entity.getPosition().getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
 					>
 					position.y
+				&&
+					(proX+ Block.SCREEN_WIDTH)//right side
+					>
+					position.x
+				&&
+					(proX)//left
+					<
+					position.x + getProjectionWidth()
                 && entity.getPosition().getZ() < zRenderingLimit
                 )
                     depthsort.add(

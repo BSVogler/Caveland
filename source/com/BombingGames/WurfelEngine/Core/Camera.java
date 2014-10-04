@@ -272,7 +272,8 @@ public class Camera {
                 for (int y = back; y <= front; y++) {
                     if (bottomLayerVisibility[x][y]){
                         Coordinate coord = new Coordinate(x, y, -1, true);
-                        if (                          (position.y + getProjectionHeight())//camera's top
+                        if (
+							(position.y + getProjectionHeight())//camera's top
                             >
                             (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
                         &&                                  //inside view frustum?

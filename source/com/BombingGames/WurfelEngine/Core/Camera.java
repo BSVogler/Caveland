@@ -750,8 +750,7 @@ public class Camera {
     }
 
     /**
-     * The amount of pixel which are visible in Y direction (game pixels). It should be equal GameView.RENDER_RESOLUTION_WIDTH
- For screen pixels use <i>ViewportWidth()</i>.
+     * The amount of pixel which are visible in Y direction (projection dimension). It should be equal {@link com.BombingGames.WurfelEngine.Core.Configuration#getRenderResolutionWidth()}. For screen pixels use  {@link #getScreenWidth()}.
      * @return in pixels
      */
     public final int getProjectionWidth() {
@@ -759,7 +758,7 @@ public class Camera {
     }
     
   /**
-    * The amount of pixel which are visible in Y direction (game pixels). For screen pixels use <i>ViewportHeight()</i>.
+    * The amount of pixel which are visible in Y direction (projection dimension, game dimension). For screen pixels use {@link #getScreenHeight() }.
     * @return in pixels
     */
    public final int getProjectionHeight() {

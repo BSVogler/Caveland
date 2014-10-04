@@ -30,10 +30,12 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 
 /**
  *A point is a single position in the game world not bound to the grid. Use this for entities.
@@ -511,5 +513,21 @@ public class Point extends AbstractPosition {
 	public float distanceTo(IsSelfAware object) {
 		return distanceTo(object.getPosition().getPoint());
 	}
+	
+	/**
+	 * get entities in radius
+	 * @param radius in game dimension pixels
+	 * @return every entitie in radius
+	 */
+	public ArrayList<AbstractEntity> getEntitiesNearby(float radius){
+		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
+
+        for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+            if (distanceTo(entity.getPosition().getPoint()) < radius){
+                result.add(entity);
+            } 
+        }
+
+        return result;
 	}
 }

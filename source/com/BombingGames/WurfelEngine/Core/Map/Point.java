@@ -509,10 +509,7 @@ public class Point extends AbstractPosition {
 	 * @return the distance from this point to the other object
 	 */
 	public float distanceTo(IsSelfAware object) {
-		Point point = object.getPosition().getPoint();
-		float dX = x-point.x;
-		float dY = y-point.y;
-		float dZ = getHeight()-point.getHeight();
-		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+		return distanceTo(object.getPosition().getPoint());
+	}
 	}
 }

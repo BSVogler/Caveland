@@ -514,6 +514,28 @@ public class Point extends AbstractPosition {
 		return distanceTo(object.getPosition().getPoint());
 	}
 	
+	
+		/**
+	 * checks only x and y.
+	 * @param point
+	 * @return the distance from this point to the other point only regarding horizontal components.
+	 */
+	public float distanceToHorizontal(Point point) {
+		float dX = x-point.x;
+		float dY = y-point.y;
+		return (float) Math.sqrt(dX*dX+dY*dY);
+	}
+	
+	/**
+	 *  checks only x and y.
+	 * @param object
+	 * @return the distance from this point to the other point only regarding horizontal components.
+	 */
+	public float distanceToHorizontal(IsSelfAware object) {
+		return distanceToHorizontal(object.getPosition().getPoint());
+	}
+	
+	
 	/**
 	 * get entities in radius
 	 * @param radius in game dimension pixels

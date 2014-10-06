@@ -11,6 +11,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -57,6 +58,7 @@ public class LoadingScreen implements Screen {
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(config.getSpritesheetPath()+".txt", TextureAtlas.class);
         manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
+		manager.load("com/BombingGames/WurfelEngine/Core/images/bloodblur.png", Texture.class);
         
        // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg", Sound.class);

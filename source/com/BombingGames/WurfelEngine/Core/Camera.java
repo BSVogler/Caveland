@@ -43,6 +43,8 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -93,6 +95,10 @@ public class Camera {
     private final Block groundBlock;//the representative of the bottom layer (ground) block
     private boolean fullWindow = false;
     
+	/**
+	 * the opacity of thedamage overlay
+	 */
+	private float damageoverlay = 0;
         /**
      * Must be static because rayCastingClipping is static
      * @return 
@@ -304,6 +310,18 @@ public class Camera {
                 view.getShapeRenderer().end();
             }
         }
+		
+		if (damageoverlay > 0.0f){
+			WE.getEngineView().getBatch().begin();
+            view.setDrawmode(WE.getEngineView().getBatch(), GL10.GL_MODULATE);
+			Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
+			Sprite overlay = new Sprite(texture);
+			overlay.setOrigin(0, 0);
+			overlay.scale(1.4f);
+			overlay.setColor(1, 0, 0, damageoverlay);
+			overlay.draw(WE.getEngineView().getBatch());
+			WE.getEngineView().getBatch().end();
+		}
     }
   
      /**
@@ -845,4 +863,14 @@ public class Camera {
         this.position.x += x;
         this.position.y += y;
     }
+
+	/**
+	 * 
+	 * @param opacity 
+	 */
+	public void setDamageoverlayOpacity(float opacity) {
+		this.damageoverlay = opacity;
+	}
+	
+	
 }

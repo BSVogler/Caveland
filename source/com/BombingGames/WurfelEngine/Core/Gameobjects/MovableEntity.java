@@ -464,7 +464,7 @@ public class MovableEntity extends AbstractEntity {
     }
 
     /**
-     *
+     * called when gets damage
      * @param value
      */
     public void damage(int value) {

@@ -391,9 +391,10 @@ public abstract class AbstractGameObject {
 
 			sprite.draw(view.getBatch());
 
-
 			if (WE.getCurrentConfig().debugObjects()){
+				view.setDrawmode(view.getBatch(), GL10.GL_ADD);
 				ShapeRenderer sh = view.getShapeRenderer();
+				sh.setColor(Color.BLACK.cpy());
 				sh.begin(ShapeRenderer.ShapeType.Line);
 				//sprite outline
 				sh.rect(

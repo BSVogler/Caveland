@@ -30,8 +30,12 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -285,7 +289,36 @@ public class MovableEntity extends AbstractEntity {
                 dispose();
         }
     }
+
+	@Override
+	public void render(View view, int xPos, int yPos, Color color, float scale) {
+		if (WE.getCurrentConfig().debugObjects()){
+				view.setDrawmode(view.getBatch(), GL10.GL_ADD);
+				ShapeRenderer sh = view.getShapeRenderer();
+				sh.begin(ShapeRenderer.ShapeType.Filled);
+				sh.setColor(Color.GREEN);
+				//life
+				sh.rect(
+					xPos-Block.SCREEN_WIDTH2,
+					yPos+Block.SCREEN_HEIGHT,
+					getHealt()*Block.SCREEN_WIDTH/1000,
+					5
+				);
+				sh.setColor(Color.BLUE);
+				sh.rect(
+					xPos-Block.SCREEN_WIDTH2,
+					yPos+Block.SCREEN_HEIGHT-6,
+					getMana()*Block.SCREEN_WIDTH/1000,
+					5
+				);
+				
+				sh.end();
+			}
+		super.render(view, xPos, yPos, color, scale);
+	}
     
+	
+	
     /**
      * check for horizontal colission
 	 * @param pos the new position
@@ -457,7 +490,7 @@ public class MovableEntity extends AbstractEntity {
 	
     /**
      *
-     * @return
+     * @return from maximum 1000
      */
     public int getHealt() {
        return health;
@@ -465,7 +498,7 @@ public class MovableEntity extends AbstractEntity {
 
     /**
      *
-     * @return
+     * @return from maximum 1000
      */
     public int getMana() {
         return mana;

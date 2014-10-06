@@ -42,30 +42,33 @@ import com.badlogic.gdx.graphics.Color;
 class EntityShadow extends AbstractEntity {
     private AbstractEntity character;
 
-    protected EntityShadow() {
-        super(32);
+    protected EntityShadow(AbstractEntity character) {
+		super(32);
+		this.character = character;
     }
 
     @Override
     public void update(float delta) {
-    }
-    
-    public void update(float delta, AbstractEntity character){
-        this.character = character;
-        Coordinate tmpPos = character.getPosition().getCoord().cpy();
-        tmpPos.setZ(tmpPos.getZ());
-        while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlockClamp().isTransparent())
-            tmpPos.addVector(new float[]{0, 0, -1});
-        
-        setPosition(character.getPosition().cpy());
-        getPosition().setHeight(tmpPos.getHeight());
+		if (character==null)
+			dispose();
+		else {
+			Coordinate tmpPos = character.getPosition().getCoord().cpy();
+			tmpPos.setZ(tmpPos.getZ());
+			while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlockClamp().isTransparent())
+				tmpPos.addVector(new float[]{0, 0, -1});
+
+			setPosition(character.getPosition().cpy());
+			getPosition().setHeight(tmpPos.getHeight());
+		}
     }
 
     @Override
     public void render(View view, Camera camera, AbstractPosition coords) {
-        Color color = PseudoGrey.toColor(
-                (character.getPosition().getHeight() - getPosition().getHeight())/Block.GAME_EDGELENGTH
-                );//make color out of distance from player
-        super.render(view, camera, coords,color);
+		if (!shouldBeDisposed()){
+			Color color = PseudoGrey.toColor(
+					(character.getPosition().getHeight() - getPosition().getHeight())/Block.GAME_EDGELENGTH
+					);//make color out of distance from player
+			super.render(view, camera, coords,color);
+		}
     }
 }

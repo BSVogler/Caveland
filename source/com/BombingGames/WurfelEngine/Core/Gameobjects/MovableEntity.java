@@ -98,7 +98,7 @@ public class MovableEntity extends AbstractEntity {
 	@Override
 	public MovableEntity spawn(Point point) {
 		if (point != null)
-			shadow = (EntityShadow) new EntityShadow().spawn(point.cpy());
+			shadow = (EntityShadow) new EntityShadow(this).spawn(point.cpy());
 		else
 			shadow = null;
 		return (MovableEntity) super.spawn(point);
@@ -245,7 +245,7 @@ public class MovableEntity extends AbstractEntity {
             //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
 
             if (shadow != null)
-				shadow.update(delta, this);
+				shadow.update(delta);
 
             //slow walking down
 			if (friction>0) {
@@ -493,7 +493,7 @@ public class MovableEntity extends AbstractEntity {
 	@Override
 	public void setPosition(AbstractPosition pos) {
 		if (getPosition() == null)
-			shadow = (EntityShadow) new EntityShadow().spawn((Point) pos.cpy());
+			shadow = (EntityShadow) new EntityShadow(this).spawn((Point) pos.cpy());
 		super.setPosition(pos);
 	}
 	

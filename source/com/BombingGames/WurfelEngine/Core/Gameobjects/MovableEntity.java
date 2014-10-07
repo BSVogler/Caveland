@@ -42,7 +42,7 @@ import com.badlogic.gdx.math.Vector3;
  *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
  * @author Benedikt
  */
-public class MovableEntity extends AbstractEntity {
+public class MovableEntity extends AbstractEntity implements Cloneable {
    private static int soundlimit;//time to pass before new sound can be played
      
    private final int colissionRadius = GAME_DIAGLENGTH2/2;
@@ -96,8 +96,20 @@ public class MovableEntity extends AbstractEntity {
         
 		coliding = true;
 		floating = false;
-        waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
+        if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
     }
+   
+	protected MovableEntity(MovableEntity entity) {
+		super(entity.getId());
+		this.spritesPerDir = entity.spritesPerDir;
+		movement = entity.movement;
+		friction = entity.friction;
+		speed = entity.speed;
+        
+		coliding = entity.coliding;
+		floating = entity.floating;
+		if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
+	}
 
 	@Override
 	public MovableEntity spawn(Point point) {
@@ -555,4 +567,9 @@ public class MovableEntity extends AbstractEntity {
         if (jumpingSound!= null) jumpingSound.dispose();
         if (runningSound!= null) runningSound.dispose();
     }
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException{
+		return new MovableEntity(this);
+	}
 }

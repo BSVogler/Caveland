@@ -106,6 +106,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         Controller.getMap().getEntitys().add(this);
 		position = point;
         spawned =true;
+		dispose = false;
         return this;
     }
     

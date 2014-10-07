@@ -473,7 +473,7 @@ public class Block extends AbstractGameObject {
      * @param scale if you want to scale it up use scale > 0 else negative values scales down
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Sides side, Color color, final float scale){
-        Sprite sprite = new Sprite(getBlockSprite(getId(), getValue(), side));
+        Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {
             sprite.setOrigin(0, 0);

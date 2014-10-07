@@ -109,7 +109,8 @@ public abstract class AbstractGameObject {
     private boolean obstacle, transparent, clipped, hidden; 
     private float lightlevel = 1f;
     private float rotation;
-
+	private int graphicsID;
+	
     
     /**
      * Creates an object. Use getInstance() to create blocks or entitys.
@@ -119,6 +120,7 @@ public abstract class AbstractGameObject {
      */
     protected AbstractGameObject(int id, int value) {
         this.id = id;
+		this.graphicsID = id;
         this.value = (byte)value;
     }
     
@@ -371,7 +373,7 @@ public abstract class AbstractGameObject {
      */
     public void render(View view, int xPos, int yPos, Color color, float scale) {
 		if (id != 0){
-			AtlasRegion texture = getSprite(getCategory(), id, value);
+			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT2+texture.offsetY);
 			sprite.rotate(rotation);
@@ -459,6 +461,14 @@ public abstract class AbstractGameObject {
     public int getId() {
         return this.id;
     }
+
+	/**
+	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
+	 * @return 
+	 */
+	public int getSpriteId() {
+		return graphicsID;
+	}
 
     /**
      * How bright is the object?
@@ -583,6 +593,15 @@ public abstract class AbstractGameObject {
         this.rotation = rotation;
     }
     
+	/**
+	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
+	 * @param id 
+	 */
+	public void setGraphicsId(int id) {
+		graphicsID = id;
+	}
+	
+	
     /**
      *
      */

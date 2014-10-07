@@ -296,12 +296,28 @@ public class GameView extends View implements GameManager {
      * @param msg
      * @param xPos
      * @param yPos
+	 * @deprecated 
      */
+	@Deprecated
     public void drawString(final String msg, final int xPos, final int yPos) {
         batch.begin();
         setDrawmode(batch, GL10.GL_MODULATE);
         WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         batch.end();
+    }
+	
+	    /**
+     *Draw a string using the last active color.
+     * @param msg
+     * @param xPos
+     * @param yPos
+	 * @param openbatch treu if begin/end shoould be called
+     */
+    public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
+        if (openbatch) batch.begin();
+        setDrawmode(batch, GL10.GL_MODULATE);
+        WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
+        if (openbatch) batch.end();
     }
     
     /**

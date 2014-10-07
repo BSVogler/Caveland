@@ -548,8 +548,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	 */
 	@Override
 	public void setPosition(AbstractPosition pos) {
-		if (getPosition() == null)
-			shadow = (EntityShadow) new EntityShadow(this).spawn((Point) pos.cpy());
+		if (shadow != null)
+			shadow.setPosition(pos.cpy());
 		super.setPosition(pos);
 	}
 	

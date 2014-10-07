@@ -479,6 +479,17 @@ public class MovableEntity extends AbstractEntity {
 				health=0;
 		}
     }
+	
+	/**
+	 * heals the entity
+	 * @param value 
+	 */
+	public void heal(float value) {
+		if (health>1000)
+			health=1000;
+		else
+			health+=value;
+	}
 
 	public boolean isIndestructible() {
 		return indestructible;

@@ -29,7 +29,7 @@
 
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -47,17 +47,16 @@ public class TestActor extends Actor {
     public TestActor(ShapeRenderer sr) {
         this.sr = sr;
     }
-    
-        @Override
-        public void draw(SpriteBatch batch, float parentAlpha) {
-            //float gray = (float) Math.random();
-            float gray = 0.5f;
-            sr.setColor(gray, gray, gray, 1);
 
-            sr.begin(ShapeRenderer.ShapeType.Filled);
-            sr.rect(getX(), getY(), getWidth(), getHeight());
-            sr.end();
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        //float gray = (float) Math.random();
+        float gray = 0.5f;
+        sr.setColor(gray, gray, gray, 1);
 
-        }
-        
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.rect(getX(), getY(), getWidth(), getHeight());
+        sr.end();
+    }
     }

@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -129,8 +129,8 @@ public class DevTools {
             
             //draw diagramm
             ShapeRenderer shr = WE.getEngineView().getShapeRenderer();
-            Gdx.gl.glEnable(GL10.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL10.GL_SRC_ALPHA,GL10.GL_ONE_MINUS_SRC_ALPHA);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
             
             
@@ -221,7 +221,7 @@ public class DevTools {
             shr.end(); 
             
             view.drawString(memoryText.toString(), xPos, yPos);
-            Gdx.gl.glDisable(GL10.GL_BLEND);
+            Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }
     

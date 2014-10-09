@@ -316,7 +316,7 @@ public class LightEngine {
             ShapeRenderer shR = view.getShapeRenderer();
             
             //surrounding sphere
-            Gdx.gl10.glLineWidth(2);
+            Gdx.gl20.glLineWidth(2);
             shR.setColor(Color.BLACK);
             shR.begin(ShapeType.Line);
                 shR.circle(posX, posY, size);
@@ -444,7 +444,7 @@ public class LightEngine {
                 shR.rect(0, y, I_diff2*size, 8);
             
             shR.end();
-            Gdx.gl10.glLineWidth(1);
+            Gdx.gl20.glLineWidth(1);
         }
     }
     

@@ -34,7 +34,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
@@ -67,7 +67,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 
 
     @Override
-    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+    public void draw(Batch batch, float x, float y, float width, float height) {
         block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
     }
 

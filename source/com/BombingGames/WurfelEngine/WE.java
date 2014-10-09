@@ -46,7 +46,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
 
 /**
@@ -59,7 +58,7 @@ public class WE extends Game {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.3.5";    
+    public static final String VERSION = "1.3.6";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
     private static WE instance;
@@ -86,7 +85,6 @@ public class WE extends Game {
         config.fullscreen = true;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
         config.foregroundFPS = 0;//don't lock FPS
-        config.useGL20 = false;
          
         //arguments
         if (args.length > 0){
@@ -118,8 +116,6 @@ public class WE extends Game {
 
         workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
         
-        Texture.setEnforcePotImages(false);//allow non-power-of-two textures on system which support them
-       
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS

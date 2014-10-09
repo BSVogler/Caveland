@@ -32,12 +32,13 @@ package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
  *
@@ -52,7 +53,7 @@ public class BasicOptionsScreen implements Screen {
      *
      */
     public BasicOptionsScreen() {
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
         WE.getEngineView().addInputProcessor(stage);
                 
         actor = new TestActor(new ShapeRenderer());
@@ -85,8 +86,8 @@ public class BasicOptionsScreen implements Screen {
     @Override
     public void render(float delta) {
         //clear & set background to black
-        Gdx.gl10.glClearColor( 0f, 1f, 0f, 1f );
-        Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl20.glClearColor( 0f, 1f, 0f, 1f );
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
         camera.update();
@@ -95,8 +96,8 @@ public class BasicOptionsScreen implements Screen {
         
         stage.draw();
         WE.getEngineView().getBatch().begin();
-        WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-        WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
         WE.updateAndRender(delta*1000f);
     }

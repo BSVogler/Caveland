@@ -34,7 +34,6 @@ import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
@@ -305,7 +304,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	@Override
 	public void render(View view, int xPos, int yPos, Color color, float scale) {
 		if (WE.getCurrentConfig().debugObjects()){
-				view.setDrawmode(view.getBatch(), GL10.GL_ADD);
 				ShapeRenderer sh = view.getShapeRenderer();
 				sh.begin(ShapeRenderer.ShapeType.Filled);
 				sh.setColor(Color.GREEN);

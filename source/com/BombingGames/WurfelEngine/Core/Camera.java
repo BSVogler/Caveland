@@ -42,7 +42,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -140,7 +140,7 @@ public class Camera {
      */
     public Camera(final int x, final int y, final int width, final int height){
         screenWidth = width;
-	screenHeight = height;
+		screenHeight = height;
         screenPosX = x;
         screenPosY = y;
         
@@ -236,15 +236,20 @@ public class Camera {
             1
         );
         
-        //set up projection matrix
+        
+        //set up projection matrices
         combined.set(projection);
         Matrix4.mul(combined.val, view.val);
 
-        //don't know what this does, maybe on old gfx 
-		Gdx.gl10.glMatrixMode(GL10.GL_PROJECTION);
-		Gdx.gl10.glLoadMatrixf(projection.val, 0);
-		Gdx.gl10.glMatrixMode(GL10.GL_MODELVIEW);
-		Gdx.gl10.glLoadMatrixf(view.val, 0);
+        //don't know what this does
+	//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
+	//Gdx.gl20.glLoadMatrixf(projection.val, 0);
+	//Gdx.gl20.glMatrixMode(GL20.GL_MODELVIEW);
+	//Gdx.gl20.glLoadMatrixf(view.val, 0);
+        
+      
+        //invProjectionView.set(combined);
+        //Matrix4.inv(invProjectionView.val);
     }
     
     /**
@@ -265,8 +270,14 @@ public class Camera {
                 screenHeight
             );
             
+                        
+            //render map
+            ArrayList<RenderDataDTO> depthlist = createDepthList();
+            
             view.getBatch().begin();
-            view.setDrawmode(view.getBatch(), GL10.GL_MODULATE);
+            //view.setDrawmode(GL10.GL_MODULATE);
+			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality  
+			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR); 
             
             //render ground layer tiles if visible
             int left = getVisibleLeftBorder();
@@ -292,13 +303,10 @@ public class Camera {
                     }
                 }
             }
-            
-            //render map
-            ArrayList<RenderDataDTO> depthlist = createDepthList();
-            
+
             //render vom bottom to top
             for (RenderDataDTO renderobject : depthlist) {
-                renderobject.getGameObject().render(view, camera, renderobject.getPos()); 
+                renderobject.getGameObject().render(view, camera, renderobject.getPosition()); 
             }
             view.getBatch().end();
 
@@ -313,7 +321,6 @@ public class Camera {
 		
 		if (damageoverlay > 0.0f){
 			WE.getEngineView().getBatch().begin();
-            view.setDrawmode(WE.getEngineView().getBatch(), GL10.GL_MODULATE);
 			Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
 			Sprite overlay = new Sprite(texture);
 			overlay.setOrigin(0, 0);

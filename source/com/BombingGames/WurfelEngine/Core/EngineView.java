@@ -43,6 +43,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * A view which is not dependend on the currently active game. Singleton.
@@ -75,12 +76,13 @@ public class EngineView extends View {
         //font.scale(-0.5f);
         
         //load sprites
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
         batch = new SpriteBatch();
+
         shapeRenderer = new ShapeRenderer();
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
     }
@@ -192,5 +194,4 @@ public class EngineView extends View {
     public Pixmap getCursor() {
         return cursor;
     }
-    
 }

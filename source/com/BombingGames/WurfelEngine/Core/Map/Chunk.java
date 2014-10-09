@@ -124,7 +124,7 @@ public class Chunk {
         //Reading map files test
         try {
             //FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
-            FileHandle path = new FileHandle(
+            FileHandle path = Gdx.files.absolute(
                 WE.getWorkingDirectory().getAbsolutePath()
                     + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
             );

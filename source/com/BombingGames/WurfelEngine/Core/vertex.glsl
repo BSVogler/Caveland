@@ -13,7 +13,8 @@ varying vec2 v_texCoords;
 
 
 void main() {
-    v_color = a_color* vec4(u_red, u_green, u_blue, 1);
+    v_color = a_color*gl_Color*2.0;
+	v_color[3] = a_color[3];
     v_texCoords = a_texCoord0;
 
     gl_Position = u_projTrans * a_position;

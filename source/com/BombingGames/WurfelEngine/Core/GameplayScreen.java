@@ -121,7 +121,7 @@ public class GameplayScreen implements Screen{
         Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
         view.resize(width, height);
         Gdx.gl.glViewport(0, 0, width,height);
-        WE.getEngineView().getStage().setViewport(width, height);
+        //WE.getEngineView().getStage().setViewport(width, height);
     }
 
     @Override

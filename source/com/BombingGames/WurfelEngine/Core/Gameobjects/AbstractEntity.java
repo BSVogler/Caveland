@@ -137,7 +137,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void setDimensionZ(int dimensionZ) {
         this.dimensionZ = dimensionZ;
     }
-
     /**
      * 
      * @return

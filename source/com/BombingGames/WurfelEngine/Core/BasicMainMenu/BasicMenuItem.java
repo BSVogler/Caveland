@@ -109,8 +109,9 @@ public class BasicMenuItem{
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.rect(x, y, width, height);
         sr.end();
-        
+        batch.begin();
         font.draw(batch, label, x, y);
+		batch.end();
     }
     
 

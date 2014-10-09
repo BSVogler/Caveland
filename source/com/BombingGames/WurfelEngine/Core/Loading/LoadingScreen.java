@@ -10,7 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Class under public domain. Modified for own needs. This class renders a loading screen.
@@ -79,7 +80,7 @@ public class LoadingScreen implements Screen {
     @Override
     public void show() {       
         // Initialize the stage where we will place everything
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
 
         // Get our textureatlas from the manager
         TextureAtlas GUItexture = WE.getAsset("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");
@@ -97,7 +98,7 @@ public class LoadingScreen implements Screen {
         anitextures[2] = GUItexture.findRegion("loading_bar3");
         
         Animation anim = new Animation(0.2f, anitextures);
-        anim.setPlayMode(Animation.LOOP_REVERSED);
+        anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
         loadingBar = new LoadingBar(anim);
 
         // Or if you only need a static bar, you can do
@@ -117,7 +118,7 @@ public class LoadingScreen implements Screen {
         // Set our screen to always be XXX x 480 in size
         //width = 1920;
         //height = 1080;
-        stage.setViewport(width , height, false);
+        //stage.setViewport(new StretchViewport(width , height));
 
         // Make the background fill the screen
         screenBg.setSize(width, height);
@@ -158,7 +159,7 @@ public class LoadingScreen implements Screen {
         percent = Interpolation.linear.apply(percent, WE.getAssetManager().getProgress(), 0.5f);
         
         // Clear the screen
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update positions (and size) to match the percentage
         loadingBarHidden.setX(startX + endX * percent);

@@ -30,14 +30,12 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -386,75 +384,47 @@ public abstract class AbstractGameObject {
 					+texture.offsetY
 			);
 
-			color.mul(getLightlevel());
-			prepareColor(view, color);
-
 			sprite.setColor(color);
-
 			sprite.draw(view.getBatch());
-
-			if (WE.getCurrentConfig().debugObjects()){
-				view.setDrawmode(view.getBatch(), GL10.GL_ADD);
-				ShapeRenderer sh = view.getShapeRenderer();
-				sh.setColor(Color.BLACK.cpy());
-				sh.begin(ShapeRenderer.ShapeType.Line);
-				//sprite outline
-				sh.rect(
-					sprite.getX(),
-					sprite.getY(),
-					sprite.getWidth(),
-					sprite.getHeight()
-				);
-				//crossing lines
-				sh.line(
-					xPos-SCREEN_WIDTH2,
-					yPos-SCREEN_DEPTH2,
-					xPos+SCREEN_WIDTH2,
-					yPos+SCREEN_DEPTH2
-				);
-				sh.line(
-					xPos-SCREEN_WIDTH2,
-					yPos+SCREEN_DEPTH2,
-					xPos+SCREEN_WIDTH2,
-					yPos-SCREEN_DEPTH2
-				);
-				//bounding box
-				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
-				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
-				sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-				sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-				sh.end();
-			}
+        
+        if (WE.getCurrentConfig().debugObjects()){
+            ShapeRenderer sh = view.getShapeRenderer();
+            sh.begin(ShapeRenderer.ShapeType.Line);
+            //sprite outline
+            sh.rect(
+                sprite.getX(),
+                sprite.getY(),
+                sprite.getWidth(),
+                sprite.getHeight()
+            );
+            //crossing lines
+            sh.line(
+                xPos-SCREEN_WIDTH2,
+                yPos-SCREEN_DEPTH2,
+                xPos+SCREEN_WIDTH2,
+                yPos+SCREEN_DEPTH2
+            );
+            sh.line(
+                xPos-SCREEN_WIDTH2,
+                yPos+SCREEN_DEPTH2,
+                xPos+SCREEN_WIDTH2,
+                yPos-SCREEN_DEPTH2
+            );
+            //bounding box
+            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
+            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
+            sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+            sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+            sh.end();
+        }
 
 			drawCalls++;
 		}
     }
     
-    /**
-     * Transform the color that it works with the blending mode which is also set in this method. Spritebatch must be began first.
-     * @param view
-     * @param color a tint in which the sprite should be rendered
-     */
-    public void prepareColor(View view, Color color){
-        float brightness = PseudoGrey.toFloat(color);
-        //float brightness = (color.r+color.g+color.b)/3;
-    
-        if (brightness > 0.5f){
-            view.setDrawmode(view.getBatch(), GL10.GL_ADD);
-            color.r -= .5f;
-            color.g -= .5f;
-            color.b -= .5f;
-        } else {
-            view.setDrawmode(view.getBatch(), GL10.GL_MODULATE);
-            color.mul(2);
-        }
-        color.clamp();
-        color.a = 1;
-    }
-    
-    
-    
-    /**
+    //getter & setter
+
+	/**
      * returns the id of a object
      * @return getId
      */

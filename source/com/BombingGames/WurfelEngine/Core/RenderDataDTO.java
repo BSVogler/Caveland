@@ -71,7 +71,7 @@ public class RenderDataDTO {
      *
      * @return
      */
-    public AbstractPosition getPos() {
+    public AbstractPosition getPosition() {
         return pos;
     }
     

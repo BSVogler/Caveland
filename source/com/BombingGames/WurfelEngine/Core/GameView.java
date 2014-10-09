@@ -41,13 +41,14 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.ArrayList;
 
 /**
@@ -98,6 +99,7 @@ public class GameView extends View implements GameManager {
      * @param controller
      */
     public void init(final Controller controller){
+        super.init();
         Gdx.app.debug("View", "Initializing");
         
         this.controller = controller;
@@ -112,14 +114,12 @@ public class GameView extends View implements GameManager {
         igShRenderer = new ShapeRenderer();
         
         //set up stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, WE.getEngineView().getBatch());//spawn at fullscreen
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
+        
         
         batch = new SpriteBatch();
-        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.glsl").readString();
-        //shader = new ShaderProgram(vertexShader, fragmentShader);//does not compile??? bug in libGDX?
-        batch.setShader(shader);
-        
+        batch.setShader(getShader());
+        //load cursor
 
         //load cursor
 
@@ -171,14 +171,14 @@ public class GameView extends View implements GameManager {
         
         //clear screen if wished
         if (WE.getCurrentConfig().clearBeforeRendering()){
-            Gdx.gl10.glClearColor(0, 0, 0, 1);
-            Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+            Gdx.gl20.glClearColor(0, 0, 0, 1);
+            Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
 
         //render every camera
         if (cameras.isEmpty()){
-            Gdx.gl10.glClearColor(0.5f, 1, 0.5f, 1);
-            Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+            Gdx.gl20.glClearColor(0.5f, 1, 0.5f, 1);
+            Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         } else {
             for (Camera camera : cameras) {
@@ -190,12 +190,13 @@ public class GameView extends View implements GameManager {
         {
             hudCamera.zoom = 1/getEqualizationScale();
             hudCamera.update();
-            hudCamera.apply(Gdx.gl10);
+            //hudCamera.apply(Gdx.gl20);
 
             batch.setProjectionMatrix(hudCamera.combined);
             igShRenderer.setProjectionMatrix(hudCamera.combined);
+
             WE.getEngineView().getShapeRenderer().setProjectionMatrix(hudCamera.combined);
-            Gdx.gl10.glLineWidth(1);
+            Gdx.gl20.glLineWidth(1);
 
             //set viewport of hud to cover whole window
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -301,7 +302,6 @@ public class GameView extends View implements GameManager {
 	@Deprecated
     public void drawString(final String msg, final int xPos, final int yPos) {
         batch.begin();
-        setDrawmode(batch, GL10.GL_MODULATE);
         WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         batch.end();
     }
@@ -315,9 +315,9 @@ public class GameView extends View implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
         if (openbatch) batch.begin();
-        setDrawmode(batch, GL10.GL_MODULATE);
         WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         if (openbatch) batch.end();
+            WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
     }
     
     /**
@@ -330,8 +330,7 @@ public class GameView extends View implements GameManager {
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
         batch.setColor(color);
         batch.begin();
-        setDrawmode( batch, GL10.GL_MODULATE);
-        WE.getEngineView().getFont().draw( batch, msg, xPos, yPos);
+            WE.getEngineView().getFont().draw( batch, msg, xPos, yPos);
         batch.end();
     }
     
@@ -346,7 +345,6 @@ public class GameView extends View implements GameManager {
         WE.getEngineView().getFont().setColor(Color.BLACK);
         WE.getEngineView().getFont().setScale(1.01f);
         batch.begin();
-        setDrawmode(batch, GL10.GL_MODULATE);
         WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
         batch.end();
         
@@ -411,7 +409,8 @@ public class GameView extends View implements GameManager {
         for (Camera camera : cameras) {
             camera.resize(width, height);//resizes cameras to fullscreen?
         }
-        stage.setViewport(width, height);
+        //stage.setViewport(new StretchViewport(width, height));
+        //EngineView.getStage().setViewport(new StretchViewport(width, height));
         hudCamera.setToOrtho(false, width, height);
     }
 
@@ -442,7 +441,6 @@ public class GameView extends View implements GameManager {
     }
     
 
-
     /**
      *
      * @return
@@ -467,5 +465,6 @@ public class GameView extends View implements GameManager {
         Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
         onEnter();
     }
-    
+	
+	
 }

@@ -32,7 +32,6 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -42,48 +41,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt Vogler
  */
 public abstract class View {
-    private int drawmode;
-    
-    /**
-     *
-     * @return
-     */
+    private static ShaderProgram shader;
     public abstract SpriteBatch getBatch();
-
-    /**
-     *
-     * @return
-     */
     public abstract ShapeRenderer getShapeRenderer();
 
-    /**
-     *
-     * @return
-     */
-    public abstract ShaderProgram getShader();
-
-    /**
-     *
-     * @return
-     */
-    public int getDrawmode() {
-        return drawmode;
+    public void init(){
+        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.glsl").readString();
+        shader = new ShaderProgram(vertexShader, fragmentShader);
     }
-
-    /**
-     *The batch must be began before claling this method.
-     * @param batch
-     * @param drawmode
-     */
-    public void setDrawmode(final SpriteBatch batch, final int drawmode) {
-        if (drawmode != this.drawmode){
-            this.drawmode = drawmode;
-            batch.end();
-            //GameObject.getSpritesheet().getFullImage().endUse();
-            Gdx.gl10.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, drawmode);
-            //GameObject.getSpritesheet().getFullImage().startUse();
-            batch.begin();
-        }
+    
+    public ShaderProgram getShader() {
+        return shader;
     }
     
 }

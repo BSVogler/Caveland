@@ -74,27 +74,27 @@ public class MapMetaData {
         this.fileName = fileName;
 
         //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/map."+METAFILESUFFIX);
+        FileHandle path = Gdx.files.absolute(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/map."+METAFILESUFFIX);
         if (path.exists()){
-            Gdx.app.log("Chunk","Trying to load Map Info from \"" + path.path() + "\"");
+            Gdx.app.log("MapMetaData","Trying to load Map Info from \"" + path.path() + "\"");
             try {
                 bufRead =  path.reader(1024, "UTF8");
                 mapName = bufRead.readLine();
-                WE.getConsole().add("Loading map called: "+mapName);   
+                Gdx.app.debug("MapMetaData","Map name: "+mapName);   
 
                 mapversion = bufRead.readLine(); 
-                WE.getConsole().add("Map Version:"+mapversion, "System");
+                Gdx.app.debug("MapMetaData","Version:"+mapversion);
 
                 String blocksXString = bufRead.readLine();
-                Gdx.app.debug("Chunk","sizeX:"+blocksXString);
+                Gdx.app.debug("MapMetaData","sizeX:"+blocksXString);
                 chunkBlocksX = Integer.parseInt(blocksXString);
 
                 String blocksYString = bufRead.readLine();
-                Gdx.app.debug("Chunk","sizeY:"+blocksYString);
+                Gdx.app.debug("MapMetaData","sizeY:"+blocksYString);
                 chunkBlocksY = Integer.parseInt(blocksYString);
 
                 String blocksZString = bufRead.readLine();
-                Gdx.app.debug("Chunk","sizeZ:"+blocksZString);
+                Gdx.app.debug("MapMetaData","sizeZ:"+blocksZString);
                 chunkBlocksZ = Integer.parseInt(blocksZString);
             } catch (IOException ex) {
                 throw new IOException(
@@ -106,7 +106,7 @@ public class MapMetaData {
                 throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is corrupt or outdated.");
             }
         } else {
-            Gdx.app.error("Chunk", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
+            Gdx.app.error("MapMetaData", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
             throw new IOException("Map named \""+ fileName +"\" could not be found. Path:"+ path);
         }
     }
@@ -119,12 +119,12 @@ public class MapMetaData {
      */
     public boolean write() throws IOException{
         if ("".equals(fileName)) return false;
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
+        FileHandle path =  Gdx.files.external(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
         if (!path.exists()) path.mkdirs();//create fiel if it is missing
         FileHandle meta = path.child("map."+METAFILESUFFIX);
         String lineFeed = System.getProperty("line.separator");
         
-        meta.file().createNewFile();
+        //meta..createNewFile();
         try (Writer writer = meta.writer(false, "UTF8")) {
             writer.write(mapName+lineFeed);
             writer.write(VERSION+lineFeed);

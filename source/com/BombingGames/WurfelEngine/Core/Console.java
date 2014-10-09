@@ -184,23 +184,23 @@ public class Console {
     public void render(final SpriteBatch batch){  
         batch.begin();
         
-        int y=0;
-        for (Line msg : messages) {
-            Color color = Color.BLUE.cpy();
-            if (null != msg.sender) switch (msg.sender) {
-                case "System":
-                    color = Color.GREEN.cpy();
-                    break;
-                case "Warning":
-                    color = Color.RED.cpy();
-                    break;
+            int y=0;
+            for (Line msg : messages) {
+                Color color = Color.BLUE.cpy();
+                if (null != msg.sender) switch (msg.sender) {
+                    case "System":
+                        color = Color.GREEN.cpy();
+                        break;
+                    case "Warning":
+                        color = Color.RED.cpy();
+                        break;
+                }
+
+                //draw
+                WE.getEngineView().getFont().setColor(color);
+                WE.getEngineView().getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
+                y+=20;
             }
-            
-            //draw
-            WE.getEngineView().getFont().setColor(color);
-            WE.getEngineView().getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
-            y+=20;
-        }
         batch.end();
     }
 

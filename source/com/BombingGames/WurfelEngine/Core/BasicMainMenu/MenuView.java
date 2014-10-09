@@ -33,7 +33,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -95,8 +95,8 @@ public class MenuView {
      */
     protected void render(boolean warning){
         //clear & set background to black
-        Gdx.gl10.glClearColor( 0f, 0f, 0f, 1f );
-        Gdx.gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
+        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
         camera.update();
@@ -106,30 +106,28 @@ public class MenuView {
                 
         // render the lettering
         batch.begin();
-        lettering.setColor(1, 1, 1, alpha);
-        lettering.draw(batch);
+            //lettering.setColor(1, 1, 1, alpha);
+            lettering.draw(batch);
         batch.end();
         
         // Draw the menu items
-        batch.begin();
         for (BasicMenuItem mI : BasicMainMenu.getController().getMenuItems()) {
             mI.render(camera, font, batch, sr);
         }
-        batch.end();
         
         //draw warnings
         batch.begin();
-        font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-        font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        if (warning) {
-            font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
-            font.draw(batch, "You can hide this warning whith BasicMainMenu#supressWarning().", 20, 90);
-        }
+            font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+            font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+            if (warning) {
+                font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
+                font.draw(batch, "You can hide this warning whith BasicMainMenu#supressWarning().", 20, 90);
+            }
         batch.end();
         
         font.scale(-0.5f);
         batch.begin();
-        font.drawMultiLine(batch, WE.getCredits(), 50, 100);
+            font.drawMultiLine(batch, WE.getCredits(), 50, 100);
         batch.end();
         font.scale(0.5f);
     }

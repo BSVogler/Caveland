@@ -191,13 +191,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 
 
 			/*HORIZONTAL MOVEMENT*/
-				//normalize horizontal movement
-				double vectorLenght = Math.sqrt(movement.x*movement.x + movement.y*movement.y);
-				if (vectorLenght > 0){
-					movement.x /= vectorLenght;
-					movement.y /= vectorLenght;
-				}
-
 				//calculate new position
 				float[] dMove = new float[]{
 					delta * speed * movement.x,
@@ -411,7 +404,16 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 		return movement;
 	}
 
+	/**
+	 * normalises x and y
+	 * @param movement 
+	 */
 	public void setMovement(Vector3 movement) {
+	    double len = Math.sqrt(movement.x*movement.x+movement.y*movement.y);
+		if (len != 0f && len != 1f) {
+			movement.x /= len;
+			movement.y /= len;
+		}
 		this.movement = movement;
 	}
 

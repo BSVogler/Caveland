@@ -79,6 +79,10 @@ public abstract class AbstractGameObject {
      */
     public static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
     
+	    /**
+     * Half (1/2) of GAME_EDGELENGTH
+     */
+    public static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     /**
      * The game space dimension size's aequivalent to SCREEN_DEPTH or SCREEN_WIDTH.
      * Because the x axis is not shortened those two are equal.

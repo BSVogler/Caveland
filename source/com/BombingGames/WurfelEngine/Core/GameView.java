@@ -44,7 +44,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -71,7 +70,6 @@ public class GameView extends View implements GameManager {
      */
     private Stage stage;
     private SpriteBatch batch;
-    private ShaderProgram shader;
     
     private LoadMenu loadMenu;
     
@@ -119,8 +117,6 @@ public class GameView extends View implements GameManager {
         
         batch = new SpriteBatch();
         batch.setShader(getShader());
-        //load cursor
-
         //load cursor
 
         initalized = true;
@@ -431,16 +427,6 @@ public class GameView extends View implements GameManager {
         return batch;
     }
     
-    /**
-     *
-     * @return
-     */
-    @Override
-    public ShaderProgram getShader() {
-        return shader;
-    }
-    
-
     /**
      *
      * @return

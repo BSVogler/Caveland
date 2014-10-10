@@ -860,6 +860,11 @@ public class Camera {
             this.screenPosY = 0;
         }
     }
+	
+	public void setScreenSize(int width, int height) {
+		this.screenWidth = width;
+		this.screenHeight = height;
+	}
 
     /**
      * Move x and y coordinate

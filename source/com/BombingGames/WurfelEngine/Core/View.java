@@ -42,6 +42,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public abstract class View {
     private static ShaderProgram shader;
+	
     public abstract SpriteBatch getBatch();
     public abstract ShapeRenderer getShapeRenderer();
 

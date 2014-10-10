@@ -66,6 +66,7 @@ public class Minimap {
         this.posX = outputX;
         this.posY = outputY;
         this.camera = camera;
+		trackedEnt = new ArrayList<>();
     }
 
 	/**

@@ -80,7 +80,6 @@ public class MapEditorView extends GameView {
         
         controller.setMinimap(
             new Minimap(
-                controller,
                 getCameras().get(0),
                 Gdx.graphics.getWidth() - 400,
                 Gdx.graphics.getHeight()-10

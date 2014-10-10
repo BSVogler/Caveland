@@ -31,11 +31,13 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import java.util.ArrayList;
 
 /**
  *A minimap is a view that draws the map from top in a small window.
@@ -47,26 +49,35 @@ public class Minimap {
     private final float scaleY = scaleX/2;
     private final float renderSize = (float) (scaleX/Math.sqrt(2));
     
-    private Controller controller;
     private Camera camera;
     private Color[][] mapdata;
     private boolean visible;
     private int maximumZ;
+	private ArrayList<AbstractEntity> trackedEnt;
 
     /**
      * Create a minimap.
-     * @param controller the controller wich should be represented
      * @param camera the camera wich should be represented on the minimap
      * @param outputX the output-position of the minimap (distance to left)
      * @param outputY  the output-position of the minimap (distance from bottom)
      */
-    public Minimap(final Controller controller, final Camera camera, final int outputX, final int outputY) {
-        if (controller == null || camera == null) throw new NullPointerException("Parameter controller or camera is null");
+    public Minimap(final Camera camera, final int outputX, final int outputY) {
+        if (camera == null) throw new NullPointerException("Camera is null");
         this.posX = outputX;
         this.posY = outputY;
-        this.controller = controller;
         this.camera = camera;
     }
+
+	/**
+	 * 
+	 * @param trackedEnt 
+	 */
+	public void setTrackedEnt(ArrayList<AbstractEntity> trackedEnt) {
+		this.trackedEnt = trackedEnt;
+	}
+	
+	
+	
     
     /**
      * Updates the minimap- Should only be done after changing the map.
@@ -145,27 +156,50 @@ public class Minimap {
             sh.end();
             
             sh.begin(ShapeType.Line);
-            //show player position
-            if (controller.getPlayer()!=null){
-                Color color = Color.BLUE.cpy();
-                color.a = 0.8f;
-                sh.setColor(color);
-                float rectX = 
-                    + ((controller.getPlayer().getPosition().getRelX()
-                    + (controller.getPlayer().getPosition().getCoord().getRelY()%2==1?0.5f:0)
-                    )/Block.GAME_DIAGLENGTH
-                    - 0.5f)
-                    * scaleX;
-                float rectY = 
-                    - (controller.getPlayer().getPosition().getRelY()/Block.GAME_DIAGLENGTH
-                    + 0.5f
-                    )* scaleY*2;
-                sh.translate(rectX, rectY, 0);
-                sh.rotate(0, 0, 1, 45);
-                sh.rect(0,0,renderSize,-renderSize);
-                sh.rotate(0, 0, 1, -45);
-                sh.translate(-rectX, -rectY, 0);
-            }
+			
+			for (AbstractEntity ent : trackedEnt) {
+				
+				//show entity position
+				Color color = Color.BLUE.cpy();
+				color.a = 0.8f;
+				sh.setColor(color);
+				float rectX = 
+					+ ((ent.getPosition().getRelX()
+					+ (ent.getPosition().getCoord().getRelY()%2==1?0.5f:0)
+					)/Block.GAME_DIAGLENGTH
+					- 0.5f)
+					* scaleX;
+				float rectY = 
+					- (ent.getPosition().getRelY()/Block.GAME_DIAGLENGTH
+					+ 0.5f
+					)* scaleY*2;
+				sh.translate(rectX, rectY, 0);
+				sh.rotate(0, 0, 1, 45);
+				sh.rect(0,0,renderSize,-renderSize);
+				sh.rotate(0, 0, 1, -45);
+				sh.translate(-rectX, -rectY, 0);
+				
+				 Point tmpPos = ent.getPosition();
+                //player coordinate
+                view.drawString(
+                    tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
+                    (int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
+                    (int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
+                    Color.RED
+                );
+                rectX = (int) (
+                    (tmpPos.getRelX()
+                        + (tmpPos.getCoord().getRelY()%2==1 ? 0.5f : 0)
+                      ) / Block.GAME_DIAGLENGTH * scaleX
+                );
+                rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
+                
+                view.drawString(tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
+                    (int) (posX+rectX),
+					(int) (posY+rectY),
+                    Color.RED
+                );
+			}
             
             //Chunk outline
             sh.setColor(Color.BLACK);
@@ -210,16 +244,16 @@ public class Minimap {
             );
 
             //player level getCameras() rectangle
-            if (controller.getPlayer()!=null){
-                sh.setColor(Color.GRAY);
-                sh.rect(
-                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-                );
-            }
+//            if (controller.getPlayer()!=null){
+//                sh.setColor(Color.GRAY);
+//                sh.rect(
+//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+//                );
+//            }
 
             //top level getCameras() rectangle
             sh.setColor(Color.WHITE);
@@ -233,30 +267,6 @@ public class Minimap {
             sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
             sh.end();
             
-            if (controller.getPlayer()!=null){
-
-                Point tmpPos = controller.getPlayer().getPosition();
-                //player coordinate
-                view.drawString(
-                    tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    (int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
-                    Color.RED
-                );
-                int rectX = (int) (
-                    (tmpPos.getRelX()
-                        + (tmpPos.getCoord().getRelY()%2==1?0.5f:0)
-                      ) / Block.GAME_DIAGLENGTH * scaleX
-                );
-                int rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
-                
-                view.drawString(
-                    tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    posX+rectX,
-                    posY+rectY,
-                    Color.RED
-                );
-            }
 
             //camera position
             view.drawString(

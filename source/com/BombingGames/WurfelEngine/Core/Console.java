@@ -320,7 +320,13 @@ public class Console {
                 if (gameplayRef==null) return false;
                 if (gameplayRef.getController().getMinimap()==null){
                     add("No minimap found. Creating new", "System");
-                    gameplayRef.getController().setMinimap(new Minimap(gameplayRef.getController(), gameplayRef.getView().getCameras().get(0), 0, Gdx.graphics.getHeight()));
+                    gameplayRef.getController().setMinimap(
+						new Minimap(
+							gameplayRef.getView().getCameras().get(0),
+							0,
+							Gdx.graphics.getHeight()
+						)
+					);
                 }
                 gameplayRef.getController().getMinimap().toggleVisibility();
                 return true;

@@ -814,7 +814,7 @@ public class Camera {
      * To get the real display size multiply it with scale values.
      * @return the value before scaling
      */
-    public float getScreenHeight() {
+    public int getScreenHeight() {
         return screenHeight;
     }
 
@@ -823,7 +823,7 @@ public class Camera {
      * To get the real display size multiply it with scale value.
      * @return the value before scaling
      */
-    public float getScreenWidth() {
+    public int getScreenWidth() {
         return screenWidth;
     }
 

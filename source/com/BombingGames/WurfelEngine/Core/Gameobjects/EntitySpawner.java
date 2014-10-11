@@ -62,7 +62,7 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
 			//get every character
 			ArrayList<MovableEntity> entitylist;
-			entitylist = Controller.getMap().getAllEntitysOfType(MovableEntity.class);
+			entitylist = Controller.getMap().getEntitys(MovableEntity.class);
 
 			//check every character if standing on top
 			int i = 0;

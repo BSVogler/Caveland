@@ -552,4 +552,24 @@ public class Point extends AbstractPosition {
 
         return result;
 	}
+	
+	/**
+	 * get entities in radius
+	 * @param <type>
+	 * @param radius in game dimension pixels
+	 * @param type
+	 * @return every entitie in radius
+	 */
+	@SuppressWarnings("unchecked")
+	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type){
+		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
+
+        for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
+            if (distanceTo(entity.getPosition().getPoint()) < radius){
+                result.add((type) entity);
+            } 
+        }
+
+        return result;
+	}
 }

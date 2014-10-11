@@ -569,6 +569,24 @@ public class Map implements Cloneable {
     public ArrayList<AbstractEntity> getEntitys() {
         return entityList;
     }
+	
+     /**
+     * Find every instance of a special class e.g. find every AbstractCharacter
+     * @param <type>
+     * @param type
+     * @return a list with the entitys
+     */
+    @SuppressWarnings({"unchecked"})
+    public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<? extends AbstractEntity> type) {
+        ArrayList<type> list = new ArrayList<>(30);//defautl size 30
+
+        for (AbstractEntity entity : entityList) {//check every entity
+            if (type.isInstance(entity)) {//if the entity is of the wanted type
+                list.add((type) entity);//add it to list
+            }
+        }
+        return list;
+    }
 
     /**
      *Returns the degree of the world spin. This changes where the sun rises and falls.
@@ -599,24 +617,6 @@ public class Map implements Cloneable {
     }
     
      /**
-     * Find every instance of a special class e.g. find every AbstractCharacter
-     * @param <type>
-     * @param type
-     * @return a list with the entitys
-     */
-    @SuppressWarnings({"unchecked"})
-    public <type extends AbstractEntity> ArrayList<type> getAllEntitysOfType(final Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<>(30);//defautl size 30
-
-        for (AbstractEntity entity : entityList) {//check every entity
-            if (type.isInstance(entity)) {//if the entity is of the wanted type
-                list.add((type) entity);//add it to list
-            }
-        }
-        return list;
-    }
-    
-     /**
      * Get every entity on a coord.
      * @param coord
      * @return a list with the entitys
@@ -644,7 +644,7 @@ public class Map implements Cloneable {
      * @param type the class you want to filter.
      * @return a list with the entitys of the wanted type
      */
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
         ArrayList<type> list = new ArrayList<>(5);
 

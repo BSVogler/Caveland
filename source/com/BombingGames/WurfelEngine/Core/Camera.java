@@ -195,8 +195,9 @@ public class Camera {
     
      /**
      * Updates the camera.
+	 * @param delta
      */
-    public void update() {   
+    public void update(float delta) {   
         //refrehs the camera's position in the game world
         if (focusCoordinates != null) {
             //update camera's position according to focusCoordinates

@@ -148,7 +148,7 @@ public class GameView extends View implements GameManager {
                     if (camera.getVisibleFrontBorder() >= Map.getBlocksY()-1)
                         Controller.getMap().setCenter(7); //scroll down, earth up
             }
-            camera.update();
+            camera.update(delta);
         }
         
         // toggle the dev menu?

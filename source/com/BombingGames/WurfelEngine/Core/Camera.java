@@ -47,6 +47,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -122,6 +123,9 @@ public class Camera {
         
         Controller.requestRecalc();
     }
+	private Vector2 screenshake = new Vector2(0, 0);
+	private float shakeAmplitude;
+	private float shakeTime;
     
     /**
      * Creates a fullscale camera pointing at the middle of the map.
@@ -223,6 +227,22 @@ public class Camera {
             fixChunkX = currentTopLeftChunk[0];
             fixChunkY = currentTopLeftChunk[1];
         }
+		
+		//aplly screen shake
+		if (shakeTime>0) {
+			screenshake.x = (float) (Math.random()*shakeAmplitude-shakeAmplitude/2);
+			screenshake.y = (float) (Math.random()*shakeAmplitude-shakeAmplitude/2);
+			shakeTime-=delta;
+		} else {
+			screenshake.x=0;
+			screenshake.y=0;
+		}
+
+		position.x+=screenshake.x;
+		position.y+=screenshake.y;
+		
+		
+		
         
 		Vector3 tmp = position.cpy().add(getProjectionWidth()/2,getProjectionHeight()/2,0);
         view.setToLookAt(tmp, tmp.cpy().add(direction), up);//move camera to the focus 
@@ -883,6 +903,11 @@ public class Camera {
 	 */
 	public void setDamageoverlayOpacity(float opacity) {
 		this.damageoverlay = opacity;
+	}
+	
+	public void shake(float amplitude, float time){
+		shakeAmplitude = amplitude;
+		shakeTime = time;
 	}
 	
 	

@@ -235,7 +235,7 @@ public class Console {
     }
     
     /**
-     *
+     *when a message is entered
      */
     public void enter(){
         add(textinput.getText(), "Console");//add message to message list
@@ -344,9 +344,25 @@ public class Console {
             case "benchmark":
                 new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()));
                 //add("Spawned a benchmark ball.", "System");
-                return true;
+                return true;				
         }
         
+		if (command.startsWith("screenshake")){
+			int id = 0;
+            if (st.hasMoreElements()){
+                id = Integer.valueOf(st.nextToken());  
+            }
+			float amp = 10;
+			if (st.hasMoreElements()){
+                amp = Float.valueOf(st.nextToken());  
+            }
+			float t = 500;
+			if (st.hasMoreElements()){
+                t = Float.valueOf(st.nextToken());  
+            }
+			gameplayRef.getView().getCameras().get(id).shake(amp, t);
+		}
+		
         if (command.startsWith("fillmap")) {
             int id = 2;
             if (st.hasMoreElements()){

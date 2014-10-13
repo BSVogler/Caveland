@@ -166,7 +166,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 				float oldHeight = getPosition().getHeight();
 				float t = delta/1000f; //t = time in s
 				if (!floating)
-					if (!onGround()) movement.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
+					if (!onGround())
+						movement.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
 				getPosition().setHeight(getPosition().getHeight() + movement.z * GAME_EDGELENGTH * t); //in m
 
 

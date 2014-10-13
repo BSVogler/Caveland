@@ -536,6 +536,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
         this.mana = mana;
     }
 
+	public int getFriction() {
+		return friction;
+	}
+
 	/**
 	 * autoamtically slows speed down.
 	 * @param friction The higher the value, the more "slide". If =0 friciton is disabled.

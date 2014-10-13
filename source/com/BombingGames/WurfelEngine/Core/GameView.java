@@ -62,7 +62,7 @@ public class GameView extends View implements GameManager {
     
     private Controller controller;
     
-    private OrthographicCamera hudCamera;
+    private OrthographicCamera libGDXcamera;
     private boolean keyF5isUp;
     
     /**
@@ -106,7 +106,7 @@ public class GameView extends View implements GameManager {
         cameras.clear();
         
         //set up renderer
-        hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
 
         igShRenderer = new ShapeRenderer();
@@ -184,14 +184,14 @@ public class GameView extends View implements GameManager {
                
         //render HUD and GUI
         {
-            hudCamera.zoom = 1/getEqualizationScale();
-            hudCamera.update();
+            libGDXcamera.zoom = 1/getEqualizationScale();
+            libGDXcamera.update();
             //hudCamera.apply(Gdx.gl20);
 
-            batch.setProjectionMatrix(hudCamera.combined);
-            igShRenderer.setProjectionMatrix(hudCamera.combined);
+            batch.setProjectionMatrix(libGDXcamera.combined);
+            igShRenderer.setProjectionMatrix(libGDXcamera.combined);
 
-            WE.getEngineView().getShapeRenderer().setProjectionMatrix(hudCamera.combined);
+            WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
             Gdx.gl20.glLineWidth(1);
 
             //set viewport of hud to cover whole window
@@ -222,7 +222,7 @@ public class GameView extends View implements GameManager {
      * @return the scale factor
      */
     public float getEqualizationScale() {
-        return hudCamera.viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
+        return libGDXcamera.viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
     }
 
     
@@ -407,7 +407,7 @@ public class GameView extends View implements GameManager {
         }
         //stage.setViewport(new StretchViewport(width, height));
         //EngineView.getStage().setViewport(new StretchViewport(width, height));
-        hudCamera.setToOrtho(false, width, height);
+        libGDXcamera.setToOrtho(false, width, height);
     }
 
     /**

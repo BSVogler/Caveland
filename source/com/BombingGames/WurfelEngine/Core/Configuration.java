@@ -182,7 +182,7 @@ public class Configuration {
     }
     
     /**
-     * Add asstes to loading queque. 
+     * Add asstes to loading queque. <br />
      * e.g. manager.load("com/BombingGames/WeaponOfChoice/Sounds/melee.wav", Sound.class);
      * @param manager
      */

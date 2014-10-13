@@ -556,11 +556,14 @@ public class Coordinate extends AbstractPosition {
 
 	/**
 	 * destroys the block at the current position, replacing by air. Calls onDestroy()
+	 * @return true if destroyed, false if nothing destroyed
 	 */
-	public void destroy() {
-		if (onLoadedMap()) {
+	public boolean destroy() {
+		if (onLoadedMap() && Controller.getMap().getBlock(this).getId()!=0) {
 			Controller.getMap().getBlock(this).onDestroy(this);//call destruction method
 			Controller.getMap().setData(this, Block.getInstance(0));
+			return true;
 		}
+		else return false;
 	}
 }

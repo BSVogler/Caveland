@@ -34,6 +34,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,6 +61,11 @@ public class EngineView extends View {
     private Pixmap cursor;
     private InputMultiplexer inpMulPlex;
     private Array<InputProcessor> inactiveInpProcssrs;
+	/**
+	 * loudness of the musicLoudness 0-1
+	 */
+	private float musicLoudness = 1;
+	private Music music;
     
     /**
      *
@@ -168,9 +174,6 @@ public class EngineView extends View {
         return shapeRenderer;
     }
     
-    
-    
-        
     /**
      *
      * @return a view independent stage
@@ -194,4 +197,23 @@ public class EngineView extends View {
     public Pixmap getCursor() {
         return cursor;
     }
+
+	public float getMusicLoudness() {
+		return musicLoudness;
+	}
+
+	public void setMusicLoudness(float loudness) {
+		this.musicLoudness = loudness;
+		if (music!=null)
+			music.setVolume(musicLoudness);
+	}
+	
+	public void setMusic(String path){
+		if (Gdx.files.internal(path).exists()){
+			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));
+			music.setVolume(musicLoudness);
+			music.play();
+		}
+	}
+		
 }

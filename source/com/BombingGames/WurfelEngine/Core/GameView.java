@@ -107,7 +107,6 @@ public class GameView extends View implements GameManager {
         
         //set up renderer
         libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
 
         igShRenderer = new ShapeRenderer();
         
@@ -120,6 +119,8 @@ public class GameView extends View implements GameManager {
         //load cursor
 
         initalized = true;
+		
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
     
     /**

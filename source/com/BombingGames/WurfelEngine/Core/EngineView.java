@@ -204,15 +204,19 @@ public class EngineView extends View {
 
 	public void setMusicLoudness(float loudness) {
 		this.musicLoudness = loudness;
-		if (music!=null)
+		if (music!=null){
 			music.setVolume(musicLoudness);
+			if (musicLoudness==0) music.stop();
+		}
 	}
 	
 	public void setMusic(String path){
 		if (Gdx.files.internal(path).exists()){
 			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));
 			music.setVolume(musicLoudness);
-			music.play();
+			music.setLooping(true);
+			if (musicLoudness>0)
+				music.play();
 		}
 	}
 		

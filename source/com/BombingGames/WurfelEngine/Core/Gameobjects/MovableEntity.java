@@ -301,13 +301,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(Color.GREEN);
-			//life
+			//life bar
 			sh.rect(
 				xPos-Block.SCREEN_WIDTH2,
 				yPos+Block.SCREEN_HEIGHT,
 				getHealt()*Block.SCREEN_WIDTH/1000,
 				5
 			);
+			//mana bar
 			sh.setColor(Color.BLUE);
 			sh.rect(
 				xPos-Block.SCREEN_WIDTH2,

@@ -1,5 +1,6 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -14,12 +15,19 @@ import java.util.ArrayList;
 public class Explosion extends AbstractEntity {
 	private final int radius;
 	private static Sound explosionsound;
+	private Camera camera;
 
-	public Explosion(int radius) {
+	/**
+	 * 
+	 * @param radius the radius in game world blocks
+	 * @param camera can be null. used for screen shake
+	 */
+	public Explosion(int radius, Camera camera) {
 		super(0);
 		this.radius = radius;
 		if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
+		this.camera = camera;
     }
 
 	@Override
@@ -69,6 +77,9 @@ public class Explosion extends AbstractEntity {
 				}
 			}	
 		}
+		
+		if (camera!=null)
+			camera.shake(radius*100/3f, 100);
 		explosionsound.play();
 		Controller.requestRecalc();
 		dispose();

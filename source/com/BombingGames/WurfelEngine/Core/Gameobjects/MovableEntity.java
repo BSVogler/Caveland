@@ -298,26 +298,26 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	@Override
 	public void render(View view, int xPos, int yPos, Color color, float scale) {
 		if (WE.getCurrentConfig().debugObjects()){
-				ShapeRenderer sh = view.getShapeRenderer();
-				sh.begin(ShapeRenderer.ShapeType.Filled);
-				sh.setColor(Color.GREEN);
-				//life
-				sh.rect(
-					xPos-Block.SCREEN_WIDTH2,
-					yPos+Block.SCREEN_HEIGHT,
-					getHealt()*Block.SCREEN_WIDTH/1000,
-					5
-				);
-				sh.setColor(Color.BLUE);
-				sh.rect(
-					xPos-Block.SCREEN_WIDTH2,
-					yPos+Block.SCREEN_HEIGHT-6,
-					getMana()*Block.SCREEN_WIDTH/1000,
-					5
-				);
-				
-				sh.end();
-			}
+			ShapeRenderer sh = view.getShapeRenderer();
+			sh.begin(ShapeRenderer.ShapeType.Filled);
+			sh.setColor(Color.GREEN);
+			//life
+			sh.rect(
+				xPos-Block.SCREEN_WIDTH2,
+				yPos+Block.SCREEN_HEIGHT,
+				getHealt()*Block.SCREEN_WIDTH/1000,
+				5
+			);
+			sh.setColor(Color.BLUE);
+			sh.rect(
+				xPos-Block.SCREEN_WIDTH2,
+				yPos+Block.SCREEN_HEIGHT-6,
+				getMana()*Block.SCREEN_WIDTH/1000,
+				5
+			);
+
+			sh.end();
+		}
 		super.render(view, xPos, yPos, color, scale);
 	}
     

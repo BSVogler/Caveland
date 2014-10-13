@@ -406,4 +406,14 @@ public class WE extends Game {
         console.render(engineView.getBatch());
         engineView.getStage().draw();
     }
+
+	/**
+	 * should rarely used because allows global access
+	 * @return 
+	 */
+	public static GameplayScreen getGameplay() {
+		return gameplayScreen;
+	}
+	
+	
 }

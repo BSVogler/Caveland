@@ -158,8 +158,10 @@ public class GameView extends View implements GameManager {
             keyF5isUp = false;
         }
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
+		
+		if (controller.getMinimap() != null && controller.getMinimap().isNeedingRebuild()) controller.getMinimap().buildMinimap(this);
     }
-    
+	    
     /**
      * Main method which is called every time and renders everything.
      */

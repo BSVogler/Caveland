@@ -55,7 +55,7 @@ public class Controller implements GameManager {
     private boolean initalized= false;
 
     
-    private Minimap minimap;
+    private static Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
     
@@ -130,7 +130,6 @@ public class Controller implements GameManager {
         if (recalcRequested) {
             Camera.rayCastingClipping();
             LightEngine.calcSimpleLight();
-            if (minimap != null)minimap.buildMinimap();
             recalcRequested = false;
         }
     }
@@ -142,7 +141,12 @@ public class Controller implements GameManager {
     public static void requestRecalc(){
         //Gdx.app.debug("Controller", "A recalc was requested.");
         recalcRequested = true;
+		if (minimap != null) minimap.needsRebuild();
     }
+	
+	public boolean isRecalcRequested() {
+		return recalcRequested;
+	}
     
     /**
      * Tries loading a map.
@@ -196,8 +200,7 @@ public class Controller implements GameManager {
      * @param minimap
      */
     public void setMinimap(final Minimap minimap) {
-        this.minimap = minimap;
-        minimap.buildMinimap();
+        Controller.minimap = minimap;
     }
 
     /**
@@ -270,7 +273,6 @@ public class Controller implements GameManager {
      * should get called when you leave the editor
      */
     public void exit(){}
-
     
 
 }

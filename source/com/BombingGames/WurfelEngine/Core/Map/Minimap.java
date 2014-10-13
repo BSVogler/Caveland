@@ -35,6 +35,9 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import java.util.ArrayList;
@@ -54,6 +57,9 @@ public class Minimap {
     private boolean visible;
     private int maximumZ;
 	private ArrayList<AbstractEntity> trackedEnt;
+	private FrameBuffer fbo;
+	private TextureRegion fboRegion;
+	private boolean needsrebuild;
 
     /**
      * Create a minimap.
@@ -67,6 +73,7 @@ public class Minimap {
         this.posY = outputY;
         this.camera = camera;
 		trackedEnt = new ArrayList<>(1);
+		needsrebuild=true;
     }
 
 	/**
@@ -82,8 +89,9 @@ public class Minimap {
     
     /**
      * Updates the minimap- Should only be done after changing the map.
+	 * @param view
      */
-    public void buildMinimap(){
+    public void buildMinimap(GameView view){
         mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
         for (int x = 0; x < Map.getBlocksX(); x++) {
             for (int y = 0; y < Map.getBlocksY(); y++) {
@@ -125,126 +133,128 @@ public class Minimap {
                 mapdata[x][y].a = 1; //full alpha level
             }
         }
-    }
-    
-    
-    /**
-     * Renders the Minimap.
-     * @param view the view using this render method 
-     */
-    public void render(final GameView view) {
-        if (visible) {
-            //this needs offscreen rendering for a single call with a recalc
-            
-            ShapeRenderer sh = WE.getEngineView().getShapeRenderer();
-            sh.translate(posX, posY, 0);  
-            
-            //render the map
-            sh.begin(ShapeType.Filled);
-            for (int x = 0; x < Map.getBlocksX(); x++) {
-                for (int y = 0; y < Map.getBlocksY(); y++) {
-                    sh.setColor(mapdata[x][y]);//get color
-                    float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
-                    float rectY = - (y+1)*scaleY;
-                    
-                    sh.translate(rectX, rectY, 0);
-                    sh.rotate(0, 0, 1, 45);
-                    sh.rect(0,0,renderSize,renderSize); 
-                    sh.rotate(0, 0, 1, -45);
-                    sh.translate(-rectX, -rectY, 0);
-                }
-            }
-            sh.end();
-            
-            sh.begin(ShapeType.Line);
-			
-			for (AbstractEntity ent : trackedEnt) {
-				
-				//show entity position
-				Color color = Color.BLUE.cpy();
-				color.a = 0.8f;
-				sh.setColor(color);
-				float rectX = 
-					+ ((ent.getPosition().getRelX()
-					+ (ent.getPosition().getCoord().getRelY()%2==1?0.5f:0)
-					)/Block.GAME_DIAGLENGTH
-					- 0.5f)
-					* scaleX;
-				float rectY = 
-					- (ent.getPosition().getRelY()/Block.GAME_DIAGLENGTH
-					+ 0.5f
-					)* scaleY*2;
+		
+		//render map to frame buffer
+		fbo = new FrameBuffer(
+			Pixmap.Format.RGBA8888,
+			(int) (mapdata.length*scaleX),
+			(int) (mapdata[0].length*scaleY),
+			false
+		);
+		
+		fboRegion = new TextureRegion(fbo.getColorBufferTexture());
+        fboRegion.flip(false, true);
+		
+		fbo.bind();
+		ShapeRenderer sh = WE.getEngineView().getShapeRenderer();
+		sh.translate(posX, posY, 0);  
+
+		//render the map
+		sh.begin(ShapeType.Filled);
+		for (int x = 0; x < Map.getBlocksX(); x++) {
+			for (int y = 0; y < Map.getBlocksY(); y++) {
+				sh.setColor(mapdata[x][y]);//get color
+				float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
+				float rectY = - (y+1)*scaleY;
+
 				sh.translate(rectX, rectY, 0);
 				sh.rotate(0, 0, 1, 45);
-				sh.rect(0,0,renderSize,-renderSize);
+				sh.rect(0,0,renderSize,renderSize); 
 				sh.rotate(0, 0, 1, -45);
 				sh.translate(-rectX, -rectY, 0);
-				
-				 Point tmpPos = ent.getPosition();
-                //player coordinate
-                view.drawString(
-                    tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    (int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
-                    (int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
-                    Color.RED
-                );
-                rectX = (int) (
-                    (tmpPos.getRelX()
-                        + (tmpPos.getCoord().getRelY()%2==1 ? 0.5f : 0)
-                      ) / Block.GAME_DIAGLENGTH * scaleX
-                );
-                rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
-                
-                view.drawString(tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
-                    (int) (posX+rectX),
-					(int) (posY+rectY),
-                    Color.RED
-                );
 			}
-            
-            //Chunk outline
-            sh.setColor(Color.BLACK);
-            for (int chunk = 0; chunk < 9; chunk++) {
-                sh.rect(
-                    chunk%3 *(Chunk.getBlocksX()*scaleX),
-                    - chunk/3*(Chunk.getBlocksY()*scaleY),
-                    Chunk.getBlocksX()*scaleX,
-                    -Chunk.getBlocksY()*scaleY
-                );
-            }
-            sh.end();
+		}
+		sh.end();
 
-            //chunk coordinates
-            for (int chunk = 0; chunk < 9; chunk++) {
-                view.drawString(
-                    Controller.getMap().getChunkCoords(chunk)[0] +" | "+ Controller.getMap().getChunkCoords(chunk)[1],
-                    (int) (posX + 10 + chunk%3 *Chunk.getBlocksX()*scaleX),
-                    (int) (posY - 10 - chunk/3 *(Chunk.getBlocksY()*scaleY)),
-                    Color.BLACK
-                );
-            }
+		sh.begin(ShapeType.Line);
 
-            //bottom getCameras() rectangle
-            sh.begin(ShapeType.Line);
-            sh.setColor(Color.RED);
-            sh.rect(
-                scaleX * camera.getVisibleLeftBorder(),
-                -scaleY * camera.getVisibleBackBorder(),
-                scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
-                -scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
-            );
-            
-            //ground level
-            sh.setColor(Color.GREEN);
-            sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
-            sh.rect(
-                scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-                scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
-                scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-                scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-            );
+		for (AbstractEntity ent : trackedEnt) {
 
-            //player level getCameras() rectangle
+			//show entity position
+			Color color = Color.BLUE.cpy();
+			color.a = 0.8f;
+			sh.setColor(color);
+			float rectX = 
+				+ ((ent.getPosition().getRelX()
+				+ (ent.getPosition().getCoord().getRelY()%2==1?0.5f:0)
+				)/Block.GAME_DIAGLENGTH
+				- 0.5f)
+				* scaleX;
+			float rectY = 
+				- (ent.getPosition().getRelY()/Block.GAME_DIAGLENGTH
+				+ 0.5f
+				)* scaleY*2;
+			sh.translate(rectX, rectY, 0);
+			sh.rotate(0, 0, 1, 45);
+			sh.rect(0,0,renderSize,-renderSize);
+			sh.rotate(0, 0, 1, -45);
+			sh.translate(-rectX, -rectY, 0);
+
+			 Point tmpPos = ent.getPosition();
+			//player coordinate
+			view.drawString(
+				tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
+				(int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
+				(int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
+				Color.RED
+			);
+			rectX = (int) (
+				(tmpPos.getRelX()
+					+ (tmpPos.getCoord().getRelY()%2==1 ? 0.5f : 0)
+				  ) / Block.GAME_DIAGLENGTH * scaleX
+			);
+			rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
+
+			view.drawString(tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
+				(int) (posX+rectX),
+				(int) (posY+rectY),
+				Color.RED
+			);
+		}
+
+		//Chunk outline
+		sh.setColor(Color.BLACK);
+		for (int chunk = 0; chunk < 9; chunk++) {
+			sh.rect(
+				chunk%3 *(Chunk.getBlocksX()*scaleX),
+				- chunk/3*(Chunk.getBlocksY()*scaleY),
+				Chunk.getBlocksX()*scaleX,
+				-Chunk.getBlocksY()*scaleY
+			);
+		}
+		sh.end();
+
+		//chunk coordinates
+		for (int chunk = 0; chunk < 9; chunk++) {
+			view.drawString(
+				Controller.getMap().getChunkCoords(chunk)[0] +" | "+ Controller.getMap().getChunkCoords(chunk)[1],
+				(int) (posX + 10 + chunk%3 *Chunk.getBlocksX()*scaleX),
+				(int) (posY - 10 - chunk/3 *(Chunk.getBlocksY()*scaleY)),
+				Color.BLACK
+			);
+		}
+
+		//bottom getCameras() rectangle
+		sh.begin(ShapeType.Line);
+		sh.setColor(Color.RED);
+		sh.rect(
+			scaleX * camera.getVisibleLeftBorder(),
+			-scaleY * camera.getVisibleBackBorder(),
+			scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
+			-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
+		);
+
+		//ground level
+		sh.setColor(Color.GREEN);
+		sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
+		sh.rect(
+			scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+			scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
+			scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+			scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+		);
+
+		//player level getCameras() rectangle
 //            if (controller.getPlayer()!=null){
 //                sh.setColor(Color.GRAY);
 //                sh.rect(
@@ -256,27 +266,44 @@ public class Minimap {
 //                );
 //            }
 
-            //top level getCameras() rectangle
-            sh.setColor(Color.WHITE);
-            sh.rect(
-                scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-                scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-                    -scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-                scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-                scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-            );
-            sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
-            sh.end();
-            
+		//top level getCameras() rectangle
+		sh.setColor(Color.WHITE);
+		sh.rect(
+			scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+			scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+				-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+			scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+			scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+		);
+		sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
+		sh.end();
 
-            //camera position
-            view.drawString(
-                camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
-                posX,
-                (int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
-                Color.WHITE
-            );
-            sh.translate(-posX, -posY, 0);
+
+		//camera position
+		view.drawString(
+			camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
+			posX,
+			(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
+			Color.WHITE
+		);
+		sh.translate(-posX, -posY, 0);
+		fbo.end();
+		needsrebuild= false;
+    }
+    
+    /**
+     * Renders the Minimap.
+     * @param view the view using this render method 
+     */
+    public void render(final GameView view) {
+        if (visible) {
+            //this needs offscreen rendering for a single call with a recalc
+			if (fboRegion!=null){
+				view.getBatch().begin();
+				view.getBatch().draw(fboRegion, posX, posY);
+				view.getBatch().end();
+			}
+            
         }
     }
     
@@ -288,4 +315,12 @@ public class Minimap {
         visible = !visible;
         return visible;
     }
+
+	public boolean isNeedingRebuild() {
+		return needsrebuild;
+	}
+	
+	public void needsRebuild() {
+		needsrebuild = true;
+	}
 }

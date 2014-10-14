@@ -195,7 +195,7 @@ public class Configuration {
      * @return Get the key which opens the console.
      */
     public int getConsoleKey(){
-        return Keys.SLASH;
+        return Keys.F1;
     }
     
     /**

@@ -224,12 +224,10 @@ public class Console {
             inputprocessor = new StageInputProcessor(this);
             WE.getEngineView().getStage().addListener(inputprocessor);
             WE.getEngineView().getStage().setKeyboardFocus(textinput);
+			
         }else {
             WE.getEngineView().getStage().removeListener(inputprocessor);
             WE.getEngineView().getStage().setKeyboardFocus(null);
-            String inputText = textinput.getText();
-            if (inputText.length()>0) inputText = inputText.substring(0, textinput.getText().length()-1);
-            setText(inputText);//hack to prevent the key to open/clsoe to appear
         }
         textinput.setVisible(active);
     }

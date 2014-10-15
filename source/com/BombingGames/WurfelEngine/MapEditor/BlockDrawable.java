@@ -68,7 +68,9 @@ public class BlockDrawable extends TextureRegionDrawable {
 
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
-        block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
+		if (block.getId()!=0) {
+			block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
+		}
     }
 
 	@Override

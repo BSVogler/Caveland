@@ -363,8 +363,7 @@ public class Block extends AbstractGameObject {
                 
                 if (!clippedLeft) {
                     if (staticShade) {
-                        color = color.add(Color.DARK_GRAY.cpy());
-                        color.clamp();
+                        color = color.cpy().add(Color.DARK_GRAY.cpy());
                     }
                     renderSide(
                         view,
@@ -378,8 +377,7 @@ public class Block extends AbstractGameObject {
 
                 if (!clippedRight) {
                     if (staticShade) {
-                        color = color.sub(Color.DARK_GRAY.cpy());
-                        color.clamp();
+                        color = color.cpy().sub(Color.DARK_GRAY.cpy());
                     }
                     renderSide(
                         view,

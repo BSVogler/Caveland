@@ -377,12 +377,12 @@ public class Coordinate extends AbstractPosition {
     }
 
     /**
-     * Get the neighbour coordinates of the neighbour of the coords you give.
-     * 7 \ 0 / 1<br>
-     * -------<br>
-     * 6 | 8 | 2<br>
-     * -------<br>
-     * 5 / 4 \ 3<br>
+     * Get the neighbour coordinates of the neighbour of the coords you give.<br />
+     * 7 \ 0 / 1<br />
+     * -------<br />
+     * 6 | 8 | 2<br />
+     * -------<br />
+     * 5 / 4 \ 3<br />
 	 * O(const)
      * @param neighbourSide the side number of the given coordinates
      * @return The coordinates of the neighbour.

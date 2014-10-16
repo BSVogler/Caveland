@@ -78,7 +78,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * Is the entity laying/standing on the ground?
      * @return true when on the ground
      */
-    public boolean onGround(){
+    public boolean isOnGround(){
         if (getPosition().getHeight() <= 0) return true; //if entity is under the map
         
         if (getPosition().getHeight()>Map.getGameHeight()){

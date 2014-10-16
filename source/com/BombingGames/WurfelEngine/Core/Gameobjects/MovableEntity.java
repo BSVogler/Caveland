@@ -132,7 +132,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      * @param velo the velocity in m/s
      */
     public void jump(float velo) {
-        if (onGround()) {
+        if (isOnGround()) {
 			movement.z = velo;
             if (jumpingSound != null) jumpingSound.play();
         }
@@ -166,14 +166,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 				float oldHeight = getPosition().getHeight();
 				float t = delta/1000f; //t = time in s
 				if (!floating)
-					if (!onGround())
+					if (!isOnGround())
 						movement.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
 				getPosition().setHeight(getPosition().getHeight() + movement.z * GAME_EDGELENGTH * t); //in m
 
 
 				//check new height for colission            
 				//land if standing in or under 0-level or there is an obstacle
-				if (movement.z < 0 && onGround()){
+				if (movement.z < 0 && isOnGround()){
 					onCollide();
 					if (landingSound != null)
 						landingSound.play();//play landing sound
@@ -457,7 +457,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      * @return 
      */
     @Override
-    public boolean onGround() {
+    public boolean isOnGround() {
         if (getPosition().getHeight() > 0){
                 getPosition().setHeight(getPosition().getHeight()-1);
                 
@@ -465,7 +465,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
                 getPosition().setHeight(getPosition().getHeight()+1);
                 
                 //if standing on ground on own or neighbour block then true
-                return (super.onGround() || colission);
+                return (super.isOnGround() || colission);
         } return true;
     }
 

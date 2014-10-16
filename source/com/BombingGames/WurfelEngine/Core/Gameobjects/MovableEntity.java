@@ -132,10 +132,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      * @param velo the velocity in m/s
      */
     public void jump(float velo) {
-        if (isOnGround()) {
-			movement.z = velo;
-            if (jumpingSound != null) jumpingSound.play();
-        }
+		movement.z = velo;
+		if (jumpingSound != null) jumpingSound.play();
     }
 	
     /**

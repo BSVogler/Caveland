@@ -48,8 +48,8 @@ public class PlayerWithWeapon extends Controllable {
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
-    public PlayerWithWeapon() {
-        super(30, 1);
+    public PlayerWithWeapon(int spritesPerDir) {
+        super(30, spritesPerDir);
         Gdx.app.debug("Player", "Creating player");
         setFallingSound(
             (Sound)

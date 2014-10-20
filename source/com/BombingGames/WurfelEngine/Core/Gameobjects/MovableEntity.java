@@ -107,6 +107,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
         
 		coliding = entity.coliding;
 		floating = entity.floating;
+		collectable = entity.collectable;
 		if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
 	}
 

@@ -569,4 +569,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	public boolean isCollectable() {
 		return collectable;
 	}
+
+	public void setCollectable(boolean collectable) {
+		this.collectable = collectable;
+	}
 }

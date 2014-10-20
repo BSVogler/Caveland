@@ -112,6 +112,10 @@ public abstract class AbstractGameObject {
     private float lightlevel = 1f;
     private float rotation;
 	private int graphicsID;
+	/**
+	 * number between 0 and 1000
+	 */
+	private float health = 1000;
 	
     
     /**
@@ -587,4 +591,23 @@ public abstract class AbstractGameObject {
         //pixmap.dispose();
         pixmap = null;
     }
+
+	   /**
+     *
+     * @return from maximum 1000
+     */
+	public float getHealth() {
+		return health;
+	}
+
+	/**
+	 * clamps to [0..1000]
+	 * @param health 
+	 */
+	public void setHealth(float health) {
+		if (health>1000)health=1000;
+		if (health<0)health=0;
+		this.health = health;
+	}
+	
 }

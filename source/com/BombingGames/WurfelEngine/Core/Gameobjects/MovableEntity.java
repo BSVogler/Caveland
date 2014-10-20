@@ -74,7 +74,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 
 
    private boolean inliquid;
-   private int health = 1000;
    private int mana = 1000;
    private boolean indestructible = false;
        
@@ -154,9 +153,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
     public void update(float delta) {
         //clamp health & mana
         if (mana > 1000) mana = 1000;
-        if (health > 1000) health = 1000;
         if (mana < 0) mana = 0;
-        if (health < 0) health = 0;
+
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (getPosition()!= null && getPosition().onLoadedMapHorizontal()) {
@@ -289,7 +287,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
             }
             if (soundlimit>0)soundlimit-=delta;
             
-            if (health<=0 && !indestructible)
+            if (getHealth()<=0 && !indestructible)
                 dispose();
         }
     }
@@ -304,7 +302,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 			sh.rect(
 				xPos-Block.SCREEN_WIDTH2,
 				yPos+Block.SCREEN_HEIGHT,
-				getHealt()*Block.SCREEN_WIDTH/1000,
+				getHealth()*Block.SCREEN_WIDTH/1000,
 				5
 			);
 			//mana bar
@@ -482,14 +480,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      */
     public void damage(int value) {
 		if (!indestructible) {
-			if (health >0){
+			if (getHealth() >0){
 				if (damageSounds != null && soundlimit<=0) {
 					damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
 					soundlimit = 100;
 				}
-				health -= value;
+				setHealth(getHealth()-value);
 			} else
-				health=0;
+				setHealth(0);
 		}
     }
 	
@@ -498,10 +496,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	 * @param value 
 	 */
 	public void heal(float value) {
-		if (health>1000)
-			health=1000;
-		else
-			health+=value;
+		if (getHealth()<1000)
+			setHealth(getHealth()+value);
 	}
 
 	public boolean isIndestructible() {
@@ -512,14 +508,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 		this.indestructible = indestructible;
 	}
 	
-    /**
-     *
-     * @return from maximum 1000
-     */
-    public int getHealt() {
-       return health;
-    }
-
     /**
      *
      * @return from maximum 1000

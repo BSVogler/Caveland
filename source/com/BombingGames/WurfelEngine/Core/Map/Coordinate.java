@@ -559,11 +559,29 @@ public class Coordinate extends AbstractPosition {
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (onLoadedMap() && Controller.getMap().getBlock(this).getId()!=0) {
-			Controller.getMap().getBlock(this).onDestroy(this);//call destruction method
-			Controller.getMap().setData(this, Block.getInstance(0));
+		if (onLoadedMap() && getBlock().getId()!=0) {
+			getBlock().onDestroy(this);//call destruction method
+			setBlock(Block.getInstance(0));
 			return true;
 		}
 		else return false;
+	}
+	
+		/**
+	 * returns true if block got damaged
+	 * @param amount
+	 * @return 
+	 */
+	public boolean damage(float amount) {
+		if (onLoadedMap()) {
+			Block block = getBlock();
+			if (block.getId()!=0) {
+				block.setHealth(block.getHealth()-amount);
+				if (block.getHealth()<=0)
+					destroy();
+				return true;
+			}
+		}
+		return false;
 	}
 }

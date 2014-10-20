@@ -81,6 +81,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
    private EntityShadow shadow;
    
    private int walkingAnimationCounter;
+	private boolean collectable;
 
    /**
     * Constructor of AbstractCharacter.
@@ -575,5 +576,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	@Override
 	public MovableEntity clone() throws CloneNotSupportedException{
 		return new MovableEntity(this);
+	}
+
+	public boolean isCollectable() {
+		return collectable;
 	}
 }

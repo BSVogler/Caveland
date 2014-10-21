@@ -359,13 +359,8 @@ public class Camera {
     private ArrayList<RenderDataDTO> createDepthList() {
         ArrayList<RenderDataDTO> depthsort = new ArrayList<>(100);//start by size 100
         
-        int left = getVisibleLeftBorder();
-        int right = getVisibleRightBorder();
-        int back = getVisibleBackBorder();
-        int front = getVisibleFrontBorder();
-        
-        for (int x = left; x <= right; x++)//only objects in view frustum
-            for (int y = back; y <= front; y++){
+        for (int x = getVisibleLeftBorder(), right = getVisibleRightBorder(); x <= right; x++)//only objects in view frustum
+            for (int y = getVisibleBackBorder(), front = getVisibleFrontBorder(); y <= front; y++){
                 
                 //add blocks
                 for (int z=0; z < zRenderingLimit; z++){//add vertical until renderlimit

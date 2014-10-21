@@ -398,11 +398,11 @@ public class Camera {
 					>
 					position.y
 				&&
-					(proX+ Block.SCREEN_WIDTH)//right side
+					(proX+ Block.SCREEN_WIDTH)//right side of sprite
 					>
 					position.x
 				&&
-					(proX)//left
+					(proX- Block.SCREEN_WIDTH2)//left side of sprite
 					<
 					position.x + getProjectionWidth()
                 && entity.getPosition().getZ() < zRenderingLimit

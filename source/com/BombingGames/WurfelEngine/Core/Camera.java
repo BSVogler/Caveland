@@ -119,7 +119,12 @@ public class Camera {
 	 * the opacity of thedamage overlay
 	 */
 	private float damageoverlay = 0;
-
+	
+	private Vector2 screenshake = new Vector2(0, 0);
+	private float shakeAmplitude;
+	private float shakeTime;
+	private final GameView gameView;
+	
 	/**
 	 * Must be static because rayCastingClipping is static
 	 *
@@ -144,9 +149,6 @@ public class Camera {
 		}
 		Controller.requestRecalc();
 	}
-	private Vector2 screenshake = new Vector2(0, 0);
-	private float shakeAmplitude;
-	private float shakeTime;
 
 	/**
 	 * Creates a fullscale camera pointing at the middle of the map.

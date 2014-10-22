@@ -37,7 +37,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- *
+ * A view is an object which renders the data.
  * @author Benedikt Vogler
  */
 public abstract class View {

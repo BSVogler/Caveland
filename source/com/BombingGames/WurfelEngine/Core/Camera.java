@@ -152,9 +152,10 @@ public class Camera {
 
 	/**
 	 * Creates a fullscale camera pointing at the middle of the map.
+	 * @param view
 	 */
-	public Camera() {
-		this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	public Camera(GameView view) {
+		this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), view);
 		fullWindow = true;
 	}
 
@@ -167,8 +168,10 @@ public class Camera {
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
+	 * @param view
 	 */
-	public Camera(final int x, final int y, final int width, final int height) {
+	public Camera(final int x, final int y, final int width, final int height, GameView view) {
+		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
 		screenPosX = x;
@@ -178,8 +181,8 @@ public class Camera {
 		fixChunkY = Controller.getMap().getChunkCoords(0)[1];
 
 		//set the camera's focus to the center of the map
-		position.x = Map.getCenter().getProjectedPosX() - getProjectionWidth() / 2;
-		position.y = Map.getCenter().getProjectedPosY() - getProjectionHeight() / 2;
+		position.x = Map.getCenter().getProjectedPosX(view) - getProjectionWidth() / 2;
+		position.y = Map.getCenter().getProjectedPosY(view) - getProjectionHeight() / 2;
 		position.z = 0;
 
 		groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//set the ground level groundBlock
@@ -201,9 +204,10 @@ public class Camera {
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
+	 * @param view
 	 */
-	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height) {
-		this(x, y, width, height);
+	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height, GameView view) {
+		this(x, y, width, height, view);
 		WE.getConsole().add("Creating new camera which is focusing a coordinate");
 		this.focusCoordinates = focus;
 		this.focusEntity = null;
@@ -220,9 +224,10 @@ public class Camera {
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
+	 * @param view
 	 */
-	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height) {
-		this(x, y, width, height);
+	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height, GameView view) {
+		this(x, y, width, height, view);
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
 		}
@@ -240,14 +245,14 @@ public class Camera {
 		//refrehs the camera's position in the game world
 		if (focusCoordinates != null) {
 			//update camera's position according to focusCoordinates
-			position.x = focusCoordinates.getProjectedPosX() - getProjectionWidth() / 2;
-			position.y = focusCoordinates.getProjectedPosY() - getProjectionHeight() / 2;
+			position.x = focusCoordinates.getProjectedPosX(gameView) - getProjectionWidth() / 2;
+			position.y = focusCoordinates.getProjectedPosY(gameView) - getProjectionHeight() / 2;
 
 		} else if (focusEntity != null) {
 			//update camera's position according to focusEntity
-            position.x = focusEntity.getPosition().getProjectedPosX() - getProjectionWidth() / 2;            
+            position.x = focusEntity.getPosition().getProjectedPosX(gameView) - getProjectionWidth() / 2;            
             position.y = (int) (
-                focusEntity.getPosition().getProjectedPosY()
+                focusEntity.getPosition().getProjectedPosY(gameView)
                 - getProjectionHeight()/2
                 +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
             );
@@ -342,9 +347,9 @@ public class Camera {
                         if (
 							(position.y + getProjectionHeight())//camera's top
                             >
-                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
+                            (coord.getProjectedPosY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
                         &&                                  //inside view frustum?
-                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+                            (coord.getProjectedPosY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
                             >
                             position.y//camera's bottom
 							) {
@@ -404,9 +409,9 @@ public class Camera {
                         &&                          //inside view frustum?
 						(position.y + getProjectionHeight())//camera's top
                             >
-                            (coord.getProjectedPosY()- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
+                            (coord.getProjectedPosY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
                         &&                                  //inside view frustum?
-                            (coord.getProjectedPosY()+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+                            (coord.getProjectedPosY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
                             >
                             position.y//camera's bottom
 						) {
@@ -418,8 +423,8 @@ public class Camera {
 
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-			int proX = entity.getPosition().getProjectedPosX();
-			int proY = entity.getPosition().getProjectedPosY();
+			int proX = entity.getPosition().getProjectedPosX(gameView);
+			int proY = entity.getPosition().getProjectedPosY(gameView);
             if (! entity.isHidden()
 				&& ! entity.isClipped()
                 &&

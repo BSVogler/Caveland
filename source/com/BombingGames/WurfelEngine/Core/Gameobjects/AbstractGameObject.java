@@ -318,8 +318,8 @@ public abstract class AbstractGameObject {
         if (!hidden && !clipped) {             
             render(
                 view,
-                pos.getProjectedPosX(),
-                pos.getProjectedPosY(),
+                pos.getProjectedPosX(view),
+                pos.getProjectedPosY(view),
                 color,
                 scale
             );

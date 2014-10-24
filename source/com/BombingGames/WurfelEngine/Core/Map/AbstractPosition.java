@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -116,15 +117,17 @@ public abstract class AbstractPosition {
     
      /**
      * Calculate projected position.
+	 * @param View
      * @return Returns the center of the projected (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getProjectedPosX();
+    public abstract int getProjectedPosX(View View);
     
     /**
      * Calculate projected position.
+	 * @param View
      * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getProjectedPosY();
+    public abstract int getProjectedPosY(View View);
     
     /**
      * If needed calculates it and creates new instance else return itself.

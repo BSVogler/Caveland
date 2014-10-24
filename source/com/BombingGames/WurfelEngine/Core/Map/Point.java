@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -228,12 +229,12 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public int getProjectedPosX() {
+    public int getProjectedPosX(View View) {
         return (int) (getRelX()); //just the position as integer
     }
 
     @Override
-    public int getProjectedPosY() {
+    public int getProjectedPosY(View View) {
         return (int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
                + (int) (getHeight() * SQRT12) //take z-axis shortening into account
             +AbstractGameObject.SCREEN_HEIGHT2-AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates

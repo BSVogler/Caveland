@@ -76,7 +76,7 @@ public class MapEditorView extends GameView {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        addCamera(camera = new Camera());
+        addCamera(camera = new Camera(this));
         
         controller.setMinimap(
             new Minimap(

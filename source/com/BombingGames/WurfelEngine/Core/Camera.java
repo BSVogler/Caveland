@@ -1032,6 +1032,7 @@ public class Camera {
 		clipping[x][y][z+1][1]=clipped;
 		clipping[x][y][z+1][2]=clipped;
 	}
+	
 	/**
 	 * get the clipping of a coordinate
 	 * @param coords

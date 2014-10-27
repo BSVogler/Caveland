@@ -414,7 +414,15 @@ public class Camera {
                             (coord.getProjectedPosY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
                             >
                             position.y//camera's bottom
-						) {
+						&&
+							(coord.getProjectedPosX(gameView)+ Block.SCREEN_WIDTH)//right side of sprite
+							>
+							position.x
+						&&
+							(coord.getProjectedPosX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
+							<
+							position.x + getProjectionWidth()
+					) {
 						depthsort.add(new RenderDataDTO(blockAtCoord, coord));
 					}
 				}

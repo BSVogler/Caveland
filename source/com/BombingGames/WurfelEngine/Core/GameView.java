@@ -192,7 +192,6 @@ public class GameView extends View implements GameManager {
         {
             libGDXcamera.zoom = 1/getEqualizationScale();
             libGDXcamera.update();
-            //hudCamera.apply(Gdx.gl20);
 
             batch.setProjectionMatrix(libGDXcamera.combined);
             igShRenderer.setProjectionMatrix(libGDXcamera.combined);
@@ -291,7 +290,7 @@ public class GameView extends View implements GameManager {
         float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
         p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
 
-        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, true, false);
+        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera
     }
     
     /**
@@ -402,6 +401,7 @@ public class GameView extends View implements GameManager {
      */
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
+		Controller.getMap().addCamera(camera);
     }
     
      /**

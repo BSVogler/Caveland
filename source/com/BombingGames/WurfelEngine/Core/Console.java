@@ -330,7 +330,6 @@ public class Console {
                 return true;
             case "clearmap":
                 Controller.getMap().fillWithAir();
-                Controller.requestRecalc();
                 return true;
             case "save":
                 return Controller.getMap().save();
@@ -368,7 +367,6 @@ public class Console {
             }
             
             Controller.getMap().fill(new FullMapGenerator(id), false);
-            Controller.requestRecalc();
             return true;
         }
         

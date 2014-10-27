@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -254,7 +255,9 @@ public class Coordinate extends AbstractPosition {
     
     @Override
     public Block getBlock(){
-        return Controller.getMap().getBlock(this);
+		if (getHeight()<0)
+			return Controller.getMap().getGroundBlock();
+		else return Controller.getMap().getBlock(this);
     }
     
         /**
@@ -488,8 +491,8 @@ public class Coordinate extends AbstractPosition {
     }
     
     @Override
-        return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
     public int getProjectedPosX(View View) {
+		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
                 + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
                 + (getZ()>=0 ?   //read cell offset if inside map
@@ -498,8 +501,8 @@ public class Coordinate extends AbstractPosition {
     }
 
     @Override
-        return (int) ((Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
     public int getProjectedPosY(View View) {
+		return (int) ((Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             + getHeight() *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
             + (getZ()>=0 ?  //read cell offset if inside map
@@ -513,10 +516,13 @@ public class Coordinate extends AbstractPosition {
     public int getDepth(){
         return (int) (
             getRelY() *Block.SCREEN_DEPTH//Y
-            + getCellOffset()[1]
             
             + getHeight()*AbstractPosition.SQRT2//Z
-            + getCellOffset()[2]*AbstractPosition.SQRT2
+            + (getZ()>=0 ?
+			    getCellOffset()[1]
+				+getCellOffset()[2]*AbstractPosition.SQRT2
+				:0
+			)
         );
     }
 

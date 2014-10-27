@@ -108,7 +108,7 @@ public abstract class AbstractGameObject {
     
     private final int id; 
     private byte value;
-    private boolean obstacle, transparent, clipped, hidden; 
+    private boolean obstacle, transparent, hidden; 
     private float lightlevel = 1f;
     private float rotation;
 	private int graphicsID;
@@ -245,7 +245,7 @@ public abstract class AbstractGameObject {
     }
     
     /**
-     * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
+     * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden.
      * @param pos the coordinates where the object should be rendered
      * @param view the view using this render method
      * @param camera The camera rendering the scene
@@ -314,8 +314,8 @@ public abstract class AbstractGameObject {
      * @param scale relative value
      */
     public void render(View view, Camera camera, AbstractPosition pos, Color color, float scale) {
-        //draw the object except not clipped ones
-        if (!hidden && !clipped) {             
+        //draw the object except hidden ones
+        if (!hidden) {             
             render(
                 view,
                 pos.getProjectedPosX(view),
@@ -505,15 +505,6 @@ public abstract class AbstractGameObject {
     }
 
     /**
-     * Is the object clipped?
-     * @return true when clipped
-     */
-    public boolean isClipped() {
-        return clipped;
-    }
-
-
-    /**
      * Set the brightness of the object.
      * The lightlevel is a scaling factor between.
      * @param lightlevel  1 is full bright. 0 is black.
@@ -546,14 +537,6 @@ public abstract class AbstractGameObject {
         this.value = (byte)value;
     }
 
-    /**
-     * Hide this object and prevent it from beeing rendered. Don't use this to hide objects as "invisible". This method is only for the rendering process  and view specific not for gameworld information. This should be just used for clipping during the rendering process.
-     * @param clipped Sets the visibility.
-     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject#setHidden(boolean) 
-     */
-    public void setClipped(boolean clipped) {
-        this.clipped = clipped;
-    }
 
     /**
      * Hide an object. It won't be rendered even if it is clipped.

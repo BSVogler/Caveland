@@ -62,9 +62,12 @@ public class Camera {
 	 * The deepest layer is an array which stores the information if there
 	 * should be a tile rendered
 	 */
-	private static boolean[][] bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
-
-	private static int zRenderingLimit;//must be static because rayCastingClipping is global/static
+	private int zRenderingLimit;
+	
+	/**
+	 * [x][y][z][normal]. to fit z starting at -1, the z axis is shifted by one.
+	 */
+	private boolean[][][][] clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 
 	/**
 	 * the position of the camera projected. Y-up*
@@ -93,12 +96,12 @@ public class Camera {
 	private final Matrix4 combined = new Matrix4();
 
 	/**
-	 * the viewport width&height *
+	 * the viewport width&height. Origin top left.
 	 */
 	private int screenWidth, screenHeight;
 
 	/**
-	 * the position on the screen (viewportWidth/Height ist the affiliated)
+	 * the position on the screen (viewportWidth/Height ist the affiliated). Origin top left.
 	 */
 	private int screenPosX, screenPosY;
 
@@ -112,66 +115,36 @@ public class Camera {
 	private int fixChunkX;
 	private int fixChunkY;
 
-	private final Block groundBlock;//the representative of the bottom layer (ground) block
 	private boolean fullWindow = false;
 
 	/**
 	 * the opacity of thedamage overlay
 	 */
-	private float damageoverlay = 0;
+	private float damageoverlay = 0f;
 	
 	private Vector2 screenshake = new Vector2(0, 0);
 	private float shakeAmplitude;
 	private float shakeTime;
-	private final GameView gameView;
 	
-	/**
-	 * Must be static because rayCastingClipping is static
-	 *
-	 * @return
-	 */
-	public static int getZRenderingLimit() {
-		return zRenderingLimit;
-	}
-
-	/**
-	 *
-	 * @param zRenderingLimit minimum is 0
-	 */
-	public static void setZRenderingLimit(int zRenderingLimit) {
-		Camera.zRenderingLimit = zRenderingLimit;
-
-		//clamp
-		if (zRenderingLimit >= Map.getBlocksZ()) {
-			Camera.zRenderingLimit = Map.getBlocksZ();
-		} else if (zRenderingLimit < 0) {
-			Camera.zRenderingLimit = 0;//min is 0
-		}
-		Controller.requestRecalc();
-	}
-
-	/**
-	 * Creates a fullscale camera pointing at the middle of the map.
-	 * @param view
-	 */
-	public Camera(GameView view) {
-		this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), view);
-		fullWindow = true;
-	}
-
+	private final GameView gameView;
+	private final Controller gameController;
+	private boolean recalcRequested;
+	
 	/**
 	 * Creates a camera pointing at the middle of the map.
 	 *
-	 * @param x the position in the application window (viewport position)
-	 * @param y the position in the application window (viewport position)
+	 * @param x the position in the application window (viewport position). Origin top left
+	 * @param y the position in the application window (viewport position). Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param view
+	 * @param controller
 	 */
-	public Camera(final int x, final int y, final int width, final int height, GameView view) {
+	public Camera(final int x, final int y, final int width, final int height, GameView view, Controller controller) {
 		gameView = view;
+		gameController = controller;
 		screenWidth = width;
 		screenHeight = height;
 		screenPosX = x;
@@ -185,11 +158,17 @@ public class Camera {
 		position.y = Map.getCenter().getProjectedPosY(view) - getProjectionHeight() / 2;
 		position.z = 0;
 
-		groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//set the ground level groundBlock
-		groundBlock.setSideClipping(Sides.LEFT, true);
-		groundBlock.setSideClipping(Sides.RIGHT, true);
-
 		zRenderingLimit = Map.getBlocksZ();
+	}
+	
+	/**
+	 * Creates a fullscale camera pointing at the middle of the map.
+	 * @param view
+	 * @param controller
+	 */
+	public Camera(GameView view, Controller controller) {
+		this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), view, controller);
+		fullWindow = true;
 	}
 
 	/**
@@ -198,16 +177,17 @@ public class Camera {
 	 * the camera not the real size on the display.
 	 *
 	 * @param focus the coordiante where the camera focuses
-	 * @param x the position in the application window (viewport position)
-	 * @param y the position in the application window (viewport position)
+	 * @param x the position in the application window (viewport position). Origin top left
+	 * @param y the position in the application window (viewport position). Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param view
+	 * @param controller
 	 */
-	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height, GameView view) {
-		this(x, y, width, height, view);
+	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height, GameView view, Controller controller) {
+		this(x, y, width, height, view, controller);
 		WE.getConsole().add("Creating new camera which is focusing a coordinate");
 		this.focusCoordinates = focus;
 		this.focusEntity = null;
@@ -218,16 +198,17 @@ public class Camera {
 	 * refer to the output of the camera not the real display size.
 	 *
 	 * @param focusentity the entity wich the camera focuses and follows
-	 * @param x the position in the application window (viewport position)
-	 * @param y the position in the application window (viewport position)
+	 * @param x the position in the application window (viewport position). Origin top left
+	 * @param y the position in the application window (viewport position). Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param view
+	 * @param controller
 	 */
-	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height, GameView view) {
-		this(x, y, width, height, view);
+	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height, GameView view, Controller controller) {
+		this(x, y, width, height, view, controller);
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
 		}
@@ -297,6 +278,11 @@ public class Camera {
 		//set up projection matrices
 		combined.set(projection);
 		Matrix4.mul(combined.val, view.val);
+		
+		if (recalcRequested){
+			rayCastingClipping();
+			recalcRequested = false;
+		}
 
         //don't know what this does
 		//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
@@ -330,39 +316,14 @@ public class Camera {
 			ArrayList<RenderDataDTO> depthlist = createDepthList();
 
 			view.getBatch().begin();
-			//view.setDrawmode(GL10.GL_MODULATE);
-			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality  
-			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR); 
+				//view.setDrawmode(GL10.GL_MODULATE);
+				Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality  
+				//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR); 
 
-			//render ground layer tiles if visible
-			int left = getVisibleLeftBorder();
-			int right = getVisibleRightBorder();
-			int back = getVisibleBackBorder();
-			int front = getVisibleFrontBorder();
-
-			for (int x = left; x <= right; x++) {
-				for (int y = back; y <= front; y++) {
-					if (bottomLayerVisibility[x][y]) {
-						Coordinate coord = new Coordinate(x, y, -1, true);
-                        if (
-							(position.y + getProjectionHeight())//camera's top
-                            >
-                            (coord.getProjectedPosY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
-                        &&                                  //inside view frustum?
-                            (coord.getProjectedPosY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
-                            >
-                            position.y//camera's bottom
-							) {
-							groundBlock.render(view, this, coord);
-						}
-					}
+				//render vom bottom to top
+				for (RenderDataDTO renderobject : depthlist) {
+					renderobject.getGameObject().render(view, camera, renderobject.getPosition());
 				}
-			}
-
-			//render vom bottom to top
-			for (RenderDataDTO renderobject : depthlist) {
-				renderobject.getGameObject().render(view, camera, renderobject.getPosition());
-			}
 			view.getBatch().end();
 
 			//outline map
@@ -376,14 +337,16 @@ public class Camera {
 
 		if (damageoverlay > 0.0f) {
 			WE.getEngineView().getBatch().begin();
-			Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
-			Sprite overlay = new Sprite(texture);
-			overlay.setOrigin(0, 0);
-			overlay.scale(1.4f);
-			overlay.setColor(1, 0, 0, damageoverlay);
-			overlay.draw(WE.getEngineView().getBatch());
+				Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
+				Sprite overlay = new Sprite(texture);
+				overlay.setOrigin(0, 0);
+				overlay.scale(1.4f);
+				overlay.setColor(1, 0, 0, damageoverlay);
+				overlay.draw(WE.getEngineView().getBatch());
 			WE.getEngineView().getBatch().end();
 		}
+		
+		view.drawString("z level: " + zRenderingLimit, screenPosX+200, screenPosY+100, true);
 	}
 
 	/**
@@ -395,17 +358,14 @@ public class Camera {
 	private ArrayList<RenderDataDTO> createDepthList() {
 		ArrayList<RenderDataDTO> depthsort = new ArrayList<>(100);//start by size 100
 
-		for (int x = getVisibleLeftBorder(), right = getVisibleRightBorder(); x <= right; x++)//only objects in view frustum
-		{
-			for (int y = getVisibleBackBorder(), front = getVisibleFrontBorder(); y <= front; y++) {
-
-				//add blocks
-				for (int z = 0; z < zRenderingLimit; z++) {//add vertical until renderlimit
+		for (int x = 0, right = Map.getBlocksX(); x < right; x++) {//only objects in view frustum
+			for (int y = 0, front = Map.getBlocksY(); y < front; y++) {
+				for (int z = -1; z < zRenderingLimit; z++) {//add vertical until renderlimit
 
 					Coordinate coord = new Coordinate(x, y, z, true);
 					Block blockAtCoord = coord.getBlock();
                     if (!blockAtCoord.isHidden()//render if not hidden
-						&& !blockAtCoord.isClipped() //nor clipped
+						&& !isCompletelyClipped(coord) //nor clipped
                         &&                          //inside view frustum?
 						(position.y + getProjectionHeight())//camera's top
                             >
@@ -434,7 +394,6 @@ public class Camera {
 			int proX = entity.getPosition().getProjectedPosX(gameView);
 			int proY = entity.getPosition().getProjectedPosY(gameView);
             if (! entity.isHidden()
-				&& ! entity.isClipped()
                 &&
 					(position.y + getProjectionHeight())
 					>
@@ -525,36 +484,34 @@ public class Camera {
 	 * Filters every Block (and side) wich is not visible. Boosts rendering
 	 * speed.
 	 */
-	protected static void rayCastingClipping() {
-		bottomLayerVisibility = new boolean[Map.getBlocksX()][Map.getBlocksY()];
-
+	public void rayCastingClipping() {
+		System.out.println("doing clipping");
 		if (zRenderingLimit > 0) {
-			//set visibility of every groundBlock to false, except blocks with offset
+			//set clipping of every block to true, except blocks with offset
 			Cell[][][] mapdata = Controller.getMap().getData();
-			for (int x = 0; x < Map.getBlocksX(); x++) {
-				for (int y = 0; y < Map.getBlocksY(); y++) {
+			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
+				for (int y = 0, maxY =Map.getBlocksY(); y < maxY; y++) {
+					clipping[x][y][0][0] = true;//clip left side
+					clipping[x][y][0][1] = false;//render only top
+					clipping[x][y][0][2] = true;//clip right side
 					for (int z = 0; z < zRenderingLimit; z++) {
 						Block block = mapdata[x][y][z].getBlock();
-
-						boolean notAnalyzable = !block.hasSides()
-							|| new Coordinate(x, y, z, true).hasOffset();//Blocks with offset are not in the grid, so can not be analysed => always visible
-						block.setClipped(!notAnalyzable);
+						setClipped(
+							x,
+							y,
+							z,
+							!block.hasSides() || new Coordinate(x, y, z, true).hasOffset()
+						);
 					}
 				}
 			}
 
 			//send the rays through top of the map
-			for (int x = 0; x < Map.getBlocksX(); x++) {
-				for (int y = 0; y < Map.getBlocksY() + zRenderingLimit * 2; y++) {
+			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
+				for (int y = 0, maxY =Map.getBlocksY(); y < maxY + zRenderingLimit * 2; y++) {
 					castRay(x, y, Sides.LEFT);
 					castRay(x, y, Sides.TOP);
 					castRay(x, y, Sides.RIGHT);
-				}
-			}
-		} else {
-			for (boolean[] x : bottomLayerVisibility) {
-				for (int y = 0; y < x.length; y++) {
-					x[y] = true;
 				}
 			}
 		}
@@ -568,7 +525,7 @@ public class Camera {
 	 * @param y The starting y-coordinate on top of the map.
 	 * @param side The side the ray should check
 	 */
-	private static void castRay(int x, int y, Sides side) {
+	private void castRay(int x, int y, Sides side) {
 		int z = zRenderingLimit - 1;//start always from top
 
 		boolean left = true;
@@ -728,19 +685,19 @@ public class Camera {
 				}
 			}
 
-			if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())) { //unless both sides are clipped don't clip the whole groundBlock
+			if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())) { //unless both sides are clipped don't clip the whole block
 				liquidfilter = false;
-				Controller.getMap().getBlock(x, y, z).setSideClipping(side, false);
+				clipping[x][y][z+1][side.getCode()] = false;
 			}
 		} while (y > 1 && z > 0 //not on bottom of map
 			&& (left || right) //left or right still visible
 			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset())
 		);
 
-        bottomLayerVisibility[x][y] =
-            (z <= 0)
-			&& (left || right) //left or right still visible
-			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset());
+//        clipping[x][y][0][1] =
+//            (z <= 0)
+//			&& (left || right) //left or right still visible
+//			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset());
 	}
 
 	/**
@@ -750,12 +707,15 @@ public class Camera {
 	 * @param coord The coordinate where the ray should point to.
 	 * @param neighbours True when neighbours groundBlock also should be scanned
 	 */
-	public static void traceRayTo(Coordinate coord, boolean neighbours) {
+	public void traceRayTo(Coordinate coord, boolean neighbours) {
 		Block block = coord.getBlock();
 		int[] coords = coord.getRel();
 
 		//Blocks with offset are not in the grid, so can not be calculated => always visible
-		block.setClipped(
+		setClipped(
+			coord.getRelX(),
+			coord.getRelY(),
+			coord.getZ(),
 			!block.hasSides() || coord.hasOffset()
 		);
 
@@ -788,7 +748,7 @@ public class Camera {
 	/**
 	 * Returns the zoomfactor.
 	 *
-	 * @return zoomfactor applied on teh game world
+	 * @return zoomfactor applied on the game world
 	 */
 	public float getZoom() {
 		return zoom;
@@ -802,6 +762,32 @@ public class Camera {
 	 */
 	public float getScaling() {
 		return zoom * screenWidth / WE.getCurrentConfig().getRenderResolutionWidth();
+	}
+	
+	/**
+	 * 
+	 * @return The highest level wich is rendered.
+	 */
+	public int getZRenderingLimit() {
+		return zRenderingLimit;
+	}
+
+	/**
+	 *
+	 * @param limit minimum is 0
+	 */
+	public void setZRenderingLimit(int limit) {
+		if (limit != zRenderingLimit)
+			requestRecalc();
+		
+		zRenderingLimit = limit;
+
+		//clamp
+		if (limit >= Map.getBlocksZ()) {
+			zRenderingLimit = Map.getBlocksZ();
+		} else if (limit < 0) {
+			zRenderingLimit = 0;//min is 0
+		}
 	}
 
 	/**
@@ -1024,9 +1010,60 @@ public class Camera {
 		this.damageoverlay = opacity;
 	}
 
+	/**
+	 * shakes the screen
+	 * @param amplitude
+	 * @param time 
+	 */
 	public void shake(float amplitude, float time) {
 		shakeAmplitude = amplitude;
 		shakeTime = time;
+	}
+
+	/**
+	 * set every site to clipped
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param clipped 
+	 */
+	private void setClipped(int x, int y, int z, boolean clipped) {
+		clipping[x][y][z+1][0]=clipped;
+		clipping[x][y][z+1][1]=clipped;
+		clipping[x][y][z+1][2]=clipped;
+	}
+	/**
+	 * get the clipping of a coordinate
+	 * @param coords
+	 * @return true if clipped
+	 */
+	public boolean[] getClipping(Coordinate coords) {
+		return clipping[coords.getRelX()][coords.getRelY()][coords.getZ()+1];
+	}
+
+	/**
+	 * is a coordiante clipped somewhere?
+	 * @param coord
+	 * @return 
+	 */
+	public boolean isClipped(Coordinate coord) {
+		boolean[] tmp = getClipping(coord);
+		return (tmp[0] || tmp[1] || tmp[2]);
+	}
+	
+	/**
+	 * is a coordiante completely clipped
+	 * @param coord
+	 * @return 
+	 */
+	public boolean isCompletelyClipped(Coordinate coord) {
+		boolean[] tmp = getClipping(coord);
+		return (tmp[0] && tmp[1] && tmp[2]);
+	}
+
+	public void requestRecalc() {
+		recalcRequested = true;
+		System.out.println("requested recalc");
 	}
 
 }

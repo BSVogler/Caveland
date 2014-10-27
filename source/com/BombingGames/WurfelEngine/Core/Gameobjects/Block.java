@@ -60,9 +60,6 @@ public class Block extends AbstractGameObject {
     
     private boolean liquid;
     private boolean hasSides = true;
-    private boolean clippedRight = false;
-    private boolean clippedTop = false;
-    private boolean clippedLeft = false;
     
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
@@ -264,48 +261,18 @@ public class Block extends AbstractGameObject {
         return hasSides;
     } 
     
-        /**
-     * 
-     * @param clipped When it is set to false, every side will also get clipped..
-     */
-    @Override
-    public void setClipped(final boolean clipped) {
-        super.setClipped(clipped);
-        if (clipped) {
-            clippedLeft = true;
-            clippedTop = true;
-            clippedRight = true;
-        }
-    }
-    
-    /**
-     * Make a side (in)clipping. If one side is clipping, the whole block is clipping.
-     * @param side 0 = left, 1 = top, 2 = right
-     * @param clipping true when it should be clipped.
-     */
-    public void setSideClipping(final Sides side, final boolean clipping) {
-        if (!clipping) this.setClipped(false);
-        
-        if (side==Sides.LEFT)
-            clippedLeft = clipping;
-        else if (side==Sides.TOP)
-            clippedTop = clipping;
-                else if (side==Sides.RIGHT)
-                    clippedRight = clipping;
-    }
-    
     @Override
     public void render(final View view, final Camera camera, final AbstractPosition coords) {
-        if (!isClipped() && !isHidden()) {
+        if (!isHidden()) {
             float scale =0;
             if (WE.getCurrentConfig().useScalePrototype())  //scale if the prototype is activated
                 scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
-                if (!clippedTop)
+                if (!camera.getClipping(coords.getCoord())[1])
                     renderSide(view, camera, coords, Sides.TOP, scale);
-                if (!clippedLeft)
+                if (!camera.getClipping(coords.getCoord())[0])
                     renderSide(view, camera, coords, Sides.LEFT, scale);
-                if (!clippedRight)
+                if (!camera.getClipping(coords.getCoord())[2])
                     renderSide(view, camera, coords, Sides.RIGHT, scale);
             } else
                 super.render(view, camera, coords, scale);
@@ -313,23 +280,21 @@ public class Block extends AbstractGameObject {
     }
     
     /**
-     * Render the whole block at a custom position and checks for clipping and hidden.
+     * Render the whole block at a custom position. Checks if hidden.
      * @param view the view using this render method
      * @param xPos rendering position (screen)
      * @param yPos rendering position (screen)
      */
     @Override
     public void render(final View view, final int xPos, final int yPos) {
-        if (!isClipped() && !isHidden()) {
+        if (!isHidden()) {
             if (hasSides) {
-                if (!clippedTop)
-                    renderSide(view, xPos, yPos+(SCREEN_HEIGHT+SCREEN_DEPTH), Sides.TOP);
-                if (!clippedLeft)
-                    renderSide(view, xPos, yPos, Sides.LEFT);
-                if (!clippedRight)
-                    renderSide(view, xPos+SCREEN_WIDTH2, yPos, Sides.RIGHT);
-                } else
-                    super.render(view, xPos, yPos);
+				renderSide(view, xPos, yPos+(SCREEN_HEIGHT+SCREEN_DEPTH), Sides.TOP);
+				renderSide(view, xPos, yPos, Sides.LEFT);
+				renderSide(view, xPos+SCREEN_WIDTH2, yPos, Sides.RIGHT);
+			} else {
+				super.render(view, xPos, yPos);
+			}
         }
     }
 
@@ -348,46 +313,40 @@ public class Block extends AbstractGameObject {
      * @param scale the scale factor of the image
      */
     public void render(final View view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
-        if (!isClipped() && !isHidden()) {
+        if (!isHidden()) {
             if (hasSides) {
-                if (!clippedTop) {
-                    renderSide(
-                        view,
-                        (int) (xPos-SCREEN_WIDTH2*(1+scale)),
-                        (int) (yPos+SCREEN_HEIGHT*(1+scale)),
-                        Sides.TOP,
-                        color,
-                        scale
-                    );
-                }
-                
-                if (!clippedLeft) {
-                    if (staticShade) {
-                        color = color.cpy().add(Color.DARK_GRAY.cpy());
-                    }
-                    renderSide(
-                        view,
-                        (int) (xPos-SCREEN_WIDTH2*(1+scale)),
-                        yPos,
-                        Sides.LEFT,
-                        color,
-                        scale
-                    );
-                }
+				renderSide(
+					view,
+					(int) (xPos-SCREEN_WIDTH2*(1+scale)),
+					(int) (yPos+SCREEN_HEIGHT*(1+scale)),
+					Sides.TOP,
+					color,
+					scale
+				);
 
-                if (!clippedRight) {
-                    if (staticShade) {
-                        color = color.cpy().sub(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0);
-                    }
-                    renderSide(
-                        view,
-                        xPos,
-                        yPos,
-                        Sides.RIGHT,
-                        color,
-                        scale
-                    );
-                }
+				if (staticShade) {
+					color = color.cpy().add(Color.DARK_GRAY.cpy());
+				}
+				renderSide(
+					view,
+					(int) (xPos-SCREEN_WIDTH2*(1+scale)),
+					yPos,
+					Sides.LEFT,
+					color,
+					scale
+				);
+
+				if (staticShade) {
+					color = color.cpy().sub(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0);
+				}
+				renderSide(
+					view,
+					xPos,
+					yPos,
+					Sides.RIGHT,
+					color,
+					scale
+				);
             } else
                 super.render(view, xPos, yPos-SCREEN_HEIGHT2, color, scale);
         }

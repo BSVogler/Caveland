@@ -29,10 +29,10 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -54,6 +54,7 @@ public class Map implements Cloneable {
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
     
+	private final Block groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//the representative of the bottom layer (ground) block
     /** the map data are the blocks in their cells */
     private Cell[][][] data;
     
@@ -65,6 +66,11 @@ public class Map implements Cloneable {
      * holds the metadata of the map
      */
     private final MapMetaData meta;
+	
+	
+	private boolean modified;
+	private Minimap minimap;
+	private ArrayList<Camera> cameras = new ArrayList<>(2);
     
     /**
      * Loads a map.
@@ -94,7 +100,6 @@ public class Map implements Cloneable {
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
-        Camera.setZRenderingLimit(blocksZ);
         data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
         
         for (Cell[][] x : data)
@@ -107,6 +112,14 @@ public class Map implements Cloneable {
         this.generator = generator;
     }
     
+	public void update(float delta){
+	
+		if (modified){
+			onModified();
+			modified = false;
+		}
+	}
+	
     /**
      * Should create a new map file.
      * @param mapName
@@ -148,6 +161,7 @@ public class Map implements Cloneable {
                     insertChunk(chunkpos, new Chunk(x, y, generator));
                 chunkpos++;
            }
+		modified = true;
     }
     /**
      * Fill the data array of the map with Cells. Also resets the cellOffset.
@@ -173,6 +187,7 @@ public class Map implements Cloneable {
 //                chunkpos++;
 //        }
        
+		modified = true;
         Gdx.app.log("Map","...Finished filling the map");
     }
     
@@ -295,7 +310,7 @@ public class Map implements Cloneable {
                     insertChunk((byte) pos,chunk);
                 }
 
-                Controller.requestRecalc();
+                modified();
             } else {
                 Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
             }
@@ -477,6 +492,7 @@ public class Map implements Cloneable {
      */
     public void setData(final int x, final int y, final int z, final Block block){
         data[x][y][z].setBlock(block);
+		modified();
     }
     
     /**
@@ -486,6 +502,7 @@ public class Map implements Cloneable {
      */
     public void setData(final Coordinate coords, final Block block) {
         data[coords.getRelX()][coords.getRelY()][coords.getZ()].setBlock(block);
+		modified();
     }
         
    /**
@@ -559,7 +576,7 @@ public class Map implements Cloneable {
                 data[x[i]][y[i]][z[i]].setCellOffset(2, (int) (Math.random()*Block.GAME_EDGELENGTH));//vertical shake
             
         }
-        Controller.requestRecalc();
+		modified();
     }
     
     /**
@@ -722,10 +739,7 @@ public class Map implements Cloneable {
     public MapMetaData getMeta() {
         return meta;
     }
-    
-    
-    
-    
+
         
     /**
      *Clones the map. Not yet checked if a valid copy.
@@ -774,6 +788,43 @@ public class Map implements Cloneable {
         return true;
     }
 
+	/**
+	 * set the modified flag to true. usually not manually called.
+	 */
+	public void modified(){
+		this.modified = true;
+	}
+	
+	/**
+	 * 
+	 * @return returns the modified flag
+	 */
+	public boolean isModified(){
+		return modified;
+	}
 
+	/**
+	 * called when the map is modified
+	 */
+	private void onModified() {
+		//recalculates the light if requested
+		if (minimap != null) minimap.needsRebuild();
+		for (Camera camera : cameras) {
+			camera.requestRecalc();
+		}
+		LightEngine.calcSimpleLight();
+	}
+	
+	public void addCamera(Camera camera){
+		cameras.add(camera);
+	}
+
+	public void setMinimap(Minimap minimap) {
+		this.minimap = minimap;
+	}
+
+	public Block getGroundBlock() {
+		return groundBlock;
+	}
     
 }

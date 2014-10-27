@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import static com.BombingGames.WurfelEngine.Core.Controller.requestRecalc;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
@@ -76,7 +75,7 @@ public class MapEditorView extends GameView {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        addCamera(camera = new Camera(this));
+        addCamera(camera = new Camera(this, controller));
         
         controller.setMinimap(
             new Minimap(
@@ -166,6 +165,7 @@ public class MapEditorView extends GameView {
         super.update(delta);
         
         camera.move((int) (camermove.x*cameraspeed*delta), (int) (camermove.y*cameraspeed*delta));
+		camera.setZRenderingLimit(controller.getCurrentLayer());
     }
 
     
@@ -253,7 +253,6 @@ public class MapEditorView extends GameView {
                 coords.clampToMapIncludingZ();
                 Block block = coords.getBlock();
                 colorGUI.setBlock(block.getId(), block.getValue());
-                
             } else if (button==Buttons.LEFT){ //left click
                 Sides normal = selection.getNormalSides();
                 if (normal==Sides.LEFT)
@@ -268,7 +267,6 @@ public class MapEditorView extends GameView {
                // gras2.play();
             }   
             layerSelection = coords.getZ();
-            requestRecalc();
             return false;
         }
 
@@ -283,7 +281,7 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-           selection.update(view, screenX, screenY);
+			selection.update(view, screenX, screenY);
             
             Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
             coords.setZ(layerSelection);
@@ -294,7 +292,6 @@ public class MapEditorView extends GameView {
                 Controller.getMap().setData(coords, Block.getInstance(0));
             } else return false;
             
-            requestRecalc();
             return false;
         }
 

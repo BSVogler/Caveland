@@ -50,7 +50,6 @@ import java.util.logging.Logger;
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
     private static Map map;
-    private static boolean recalcRequested;
     private static DevTools devtools;
     private boolean initalized= false;
 
@@ -88,6 +87,8 @@ public class Controller implements GameManager {
                 }
             }
         }
+		
+		map.setMinimap(minimap);
         
         if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
@@ -125,29 +126,9 @@ public class Controller implements GameManager {
                 map.getEntitys().remove(i);
         }
         
-                
-        //recalculates the light if requested
-        if (recalcRequested) {
-            Camera.rayCastingClipping();
-            LightEngine.calcSimpleLight();
-            recalcRequested = false;
-        }
+        getMap().update(delta);
     }
 
-    
-     /**
-     * Informs the map that a recalc is requested. It will do it in the next update. This method  to limit update calls to to per frame
-     */
-    public static void requestRecalc(){
-        //Gdx.app.debug("Controller", "A recalc was requested.");
-        recalcRequested = true;
-		if (minimap != null) minimap.needsRebuild();
-    }
-	
-	public boolean isRecalcRequested() {
-		return recalcRequested;
-	}
-    
     /**
      * Tries loading a map.
      * @param name the name of the map
@@ -157,7 +138,6 @@ public class Controller implements GameManager {
         try {
             map = new Map(name);
             map.fill(true);
-            requestRecalc();
             return true;
         } catch (IOException ex) {
             WE.getConsole().add(ex.getMessage(), "Warning");
@@ -182,7 +162,7 @@ public class Controller implements GameManager {
     public static void setMap(Map map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
-        requestRecalc();
+        map.modified();
     }
     
     /**

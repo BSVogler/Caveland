@@ -327,12 +327,12 @@ public class Point extends AbstractPosition {
      * 
      * @param direction direction of the ray
      * @param radius the distane after which it should stop.
-     * @param onlyVisible only intersect if true with block which are redered (not clipped)
+     * @param camera if set only intersect with blocks which are rendered (not clipped). ignoring clipping if <i>null</i>
      * @param onlySolid only intersect if true with block which are not transparent =solid
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-    public Intersection raycast(Vector3 direction, float radius, boolean onlyVisible, boolean onlySolid) {
+    public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
       /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length
  'radius'. 'radius' may be infinite.
@@ -404,9 +404,15 @@ public class Point extends AbstractPosition {
                 Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
                 //intersect?
-                if ((!onlyVisible || (onlyVisible && (curZ < Camera.getZRenderingLimit()*Block.GAME_EDGELENGTH && !block.isClipped())))
+                if ((
+					camera==null
+					||
+					(
+						(curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH && !camera.isClipped(isectP.getCoord())))
+					)
                     && (!onlySolid || (onlySolid && !block.isTransparent()))
-                    && block.getId() != 0){
+                    && block.getId() != 0
+				){
                     //correct normal
                     if (
                         (isectP.getRelX() -(isectP.getCoord().getRelY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))

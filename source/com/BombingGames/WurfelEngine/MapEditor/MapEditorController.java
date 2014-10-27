@@ -29,7 +29,6 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
@@ -122,8 +121,6 @@ public class MapEditorController extends Controller {
             this.currentLayer=0;//min is 1
         else if (currentLayer >= Map.getBlocksZ())
             this.currentLayer=Map.getBlocksZ();
-        
-        Camera.setZRenderingLimit(currentLayer);
     }
     
 

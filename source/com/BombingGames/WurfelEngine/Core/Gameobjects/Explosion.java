@@ -81,7 +81,6 @@ public class Explosion extends AbstractEntity {
 		if (camera!=null)
 			camera.shake(radius*100/3f, 100);
 		explosionsound.play();
-		Controller.requestRecalc();
 		dispose();
 		return this;
 	}

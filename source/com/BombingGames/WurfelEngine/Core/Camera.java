@@ -375,7 +375,7 @@ public class Camera {
                             >
                             position.y//camera's bottom
 						&&
-							(coord.getProjectedPosX(gameView)+ Block.SCREEN_WIDTH)//right side of sprite
+							(coord.getProjectedPosX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
 							>
 							position.x
 						&&
@@ -403,7 +403,7 @@ public class Camera {
 					>
 					position.y
 				&&
-					(proX+ Block.SCREEN_WIDTH)//right side of sprite
+					(proX+ Block.SCREEN_WIDTH2)//right side of sprite
 					>
 					position.x
 				&&

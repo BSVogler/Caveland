@@ -457,6 +457,9 @@ public class GameView extends View implements GameManager {
     public final void enter() {
         WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
         Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
+		for (Camera camera : cameras) {
+			camera.requestRecalc();
+		}
         onEnter();
     }
 	

@@ -1042,9 +1042,10 @@ public class Camera {
 	}
 
 	/**
-	 * is a coordiante clipped somewhere?
+	 * 
 	 * @param coord
-	 * @return 
+	 * @return is a coordiante clipped somewhere? 
+	 * @since 1.3.10
 	 */
 	public boolean isClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);
@@ -1052,9 +1053,10 @@ public class Camera {
 	}
 	
 	/**
-	 * is a coordiante completely clipped
+	 * 
 	 * @param coord
-	 * @return 
+	 * @return is a coordiante completely clipped
+	 * @since 1.3.10
 	 */
 	public boolean isCompletelyClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);

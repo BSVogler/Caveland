@@ -316,7 +316,10 @@ public class GameView extends View implements GameManager {
 	 * @param openbatch treu if begin/end shoould be called
      */
     public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
-        if (openbatch) batch.begin();
+        if (openbatch) {
+			batch.setProjectionMatrix(libGDXcamera.combined);
+			batch.begin();
+		}
 			WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         if (openbatch) batch.end();
     }

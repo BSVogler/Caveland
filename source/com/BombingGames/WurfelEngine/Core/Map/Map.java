@@ -429,6 +429,8 @@ public class Map implements Cloneable {
      * @return the single renderobject you wanted
      */
     public Block getBlock(final int x, final int y, final int z){
+		if (z<0)
+			return groundBlock;
         return data[x][y][z].getBlock();  
     }
     
@@ -620,6 +622,7 @@ public class Map implements Cloneable {
      * @return
      */
     public int[] getCellOffset(final Coordinate coord) {
+		if (coord.getHeight()<0) return new int[3];
         return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getCellOffset();
     }   
     

@@ -808,6 +808,7 @@ public class Map implements Cloneable {
 	 */
 	private void onModified() {
 		//recalculates the light if requested
+		Gdx.app.debug("Map", "modified");
 		if (minimap != null) minimap.needsRebuild();
 		for (Camera camera : cameras) {
 			camera.requestRecalc();

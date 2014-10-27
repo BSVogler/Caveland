@@ -280,6 +280,7 @@ public class Camera {
 		Matrix4.mul(combined.val, view.val);
 		
 		if (recalcRequested){
+			Gdx.app.debug("Camera", "a recalc is being done…");
 			rayCastingClipping();
 			recalcRequested = false;
 		}
@@ -1066,7 +1067,6 @@ public class Camera {
 
 	public void requestRecalc() {
 		recalcRequested = true;
-		System.out.println("requested recalc");
 	}
 
 }

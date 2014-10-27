@@ -314,9 +314,8 @@ public class GameView extends View implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
         if (openbatch) batch.begin();
-        WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
+			WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
         if (openbatch) batch.end();
-            WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
     }
     
     /**

@@ -62,6 +62,9 @@ public class GameView extends View implements GameManager {
     
     private Controller controller;
     
+	/**
+	 * a camera rendering the gui and hud
+	 */
     private OrthographicCamera libGDXcamera;
     private boolean keyF5isUp;
     

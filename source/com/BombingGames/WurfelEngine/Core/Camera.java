@@ -695,10 +695,9 @@ public class Camera {
 			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset())
 		);
 
-//        clipping[x][y][0][1] =
-//            (z <= 0)
-//			&& (left || right) //left or right still visible
-//			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset());
+        clipping[x][y][0][1] =
+            (z <= -1)
+			&& (left || right); //left or right still visible
 	}
 
 	/**

@@ -265,10 +265,13 @@ public class Coordinate extends AbstractPosition {
 
    /**
      * The block hides the past block when it has sides and is not transparent (like normal block)
+	 * @param x offset in coords
+	 * @param y offset in coords
+	 * @param z offset in coords
      * @return true when hiding the past Block
      */
-    public boolean hidingPastBlock(){
-		Block block = getBlock();
+    public boolean hidingPastBlock(int x, int y, int z){
+		Block block = Controller.getMap().getBlock(getRelX()+x, getRelY()+y, getZ()+z);
         return (block.hasSides() && ! block.isTransparent());
     }
     

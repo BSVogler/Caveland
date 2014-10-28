@@ -553,15 +553,17 @@ public class Camera {
 
 		y += 2;
 		z++;
+		Coordinate currentCor;
 		do {
 			y -= 2;
 			z--;
 
+			currentCor = new Coordinate(x, y, z, true);
 			if (side == Sides.LEFT) {
 				//direct neighbour groundBlock on left hiding the complete left side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
 					&& x > 0 && y < Map.getBlocksY() - 1
-					&& new Coordinate(x - (y % 2 == 0 ? 1 : 0), y + 1, z, true).hidingPastBlock()) {
+					&& currentCor.hidingPastBlock(-(y % 2 == 0 ? 1 : 0), 1, 0)) {
 					break; //stop ray
 				}
 				//liquid
@@ -591,12 +593,12 @@ public class Camera {
 
 				//two blocks hiding the left side
 				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& new Coordinate(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock(- (y % 2 == 0 ? 1 : 0), 1, 1)
 				) {
 					left = false;
 				}
 				if (y < Map.getBlocksY() - 2
-					&& new Coordinate(x, y + 2, z, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock(0, 2, 0)
 				) {
 					right = false;
 				}
@@ -604,7 +606,7 @@ public class Camera {
 			} else if (side == Sides.TOP) {//check top side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
 					&& z + 1 < zRenderingLimit
-					&& new Coordinate(x, y, z + 1, true).hidingPastBlock()) {
+					&& currentCor.hidingPastBlock(0,0,1)) {
 					break;
 				}
 
@@ -633,13 +635,13 @@ public class Camera {
 
 				//two 0- and 2-sides hiding the side 1
 				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& new Coordinate(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock(- (y % 2 == 0 ? 1 : 0),1, 1)
 				) {
 					left = false;
 				}
 
 				if (x < Map.getBlocksX() - 1 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& new Coordinate(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1,1)
 				) {
 					right = false;
 				}
@@ -648,7 +650,7 @@ public class Camera {
 				//block on right hiding the whole right side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
 					&& x + 1 < Map.getBlocksX() && y + 1 < Map.getBlocksY()
-					&& new Coordinate(x + (y % 2 == 0 ? 0 : 1), y + 1, z, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 0)
 				) {
 					break;
 				}
@@ -680,13 +682,13 @@ public class Camera {
 
 				//two blocks hiding the right side
 				if (y + 2 < Map.getBlocksY()
-					&& new Coordinate(x, y + 2, z, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock(0,2,0)
 				) {
 					left = false;
 				}
 
 				if (x + 1 < Map.getBlocksX() && y + 1 < Map.getBlocksY() && z + 1 < zRenderingLimit
-					&& new Coordinate(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1, true).hidingPastBlock()
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
 				) {
 					right = false;
 				}

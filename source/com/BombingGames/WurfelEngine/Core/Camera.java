@@ -366,7 +366,7 @@ public class Camera {
 					Coordinate coord = new Coordinate(x, y, z, true);
 					Block blockAtCoord = coord.getBlock();
                     if (!blockAtCoord.isHidden()//render if not hidden
-						&& !isCompletelyClipped(coord) //nor clipped
+						&& !isCompletelyClipped(coord) //nor completely clipped
                         &&                          //inside view frustum?
 						(position.y + getProjectionHeight())//camera's top
                             >
@@ -531,9 +531,12 @@ public class Camera {
 
 		boolean left = true;
 		boolean right = true;
+		/**
+		 * true if entered a liquid
+		 */
+		boolean liquidfilter = false;
 		boolean leftliquid = false;
 		boolean rightliquid = false;
-		boolean liquidfilter = false;
 
 		//bring ray to start position
 		if (y > Map.getBlocksY() - 1) {

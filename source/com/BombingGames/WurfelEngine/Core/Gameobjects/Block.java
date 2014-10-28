@@ -262,17 +262,18 @@ public class Block extends AbstractGameObject {
     } 
     
     @Override
-    public void render(final View view, final Camera camera, final AbstractPosition coords) {
+    public void render(final View view, final Camera camera, final AbstractPosition pos) {
         if (!isHidden()) {
             float scale =0;
+			Coordinate coords = pos.getCoord();
             if (WE.getCurrentConfig().useScalePrototype())  //scale if the prototype is activated
-                scale = (coords.getCoord().getZ()/(float) (Map.getBlocksZ()));
+                scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
-                if (!camera.getClipping(coords.getCoord())[1])
+                if (!camera.getClipping(coords)[1])
                     renderSide(view, camera, coords, Sides.TOP, scale);
-                if (!camera.getClipping(coords.getCoord())[0])
+                if (!camera.getClipping(coords)[0])
                     renderSide(view, camera, coords, Sides.LEFT, scale);
-                if (!camera.getClipping(coords.getCoord())[2])
+                if (!camera.getClipping(coords)[2])
                     renderSide(view, camera, coords, Sides.RIGHT, scale);
             } else
                 super.render(view, camera, coords, scale);

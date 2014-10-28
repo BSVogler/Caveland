@@ -229,14 +229,26 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public int getProjectedPosX(View View) {
+    public int getProjectedPosX(View view) {
         return (int) (getRelX()); //just the position as integer
     }
 
     @Override
-    public int getProjectedPosY(View View) {
-        return (int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
-               + (int) (getHeight() * SQRT12) //take z-axis shortening into account
+    public int getProjectedPosY(View view) {
+        return (
+				view.getOrientation()==0
+				?
+					(int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
+				:
+					(
+						view.getOrientation()==2
+						?
+							(int) ((getRelY()) / 2) //add the objects position inside this coordinate
+						:
+							0
+					)
+			)
+            + (int) (getHeight() * SQRT12) //take z-axis shortening into account
             +AbstractGameObject.SCREEN_HEIGHT2-AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates
     }
     

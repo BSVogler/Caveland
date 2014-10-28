@@ -45,6 +45,8 @@ public abstract class View {
 	
     public abstract SpriteBatch getBatch();
     public abstract ShapeRenderer getShapeRenderer();
+	
+	private int orientation = 0;
 
     public void init(){
         String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.glsl").readString();
@@ -55,5 +57,24 @@ public abstract class View {
     public ShaderProgram getShader() {
         return shader;
     }
+	
+	/**
+	 * Get the value of orientation
+	 *
+	 * @return the value of orientation
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
+	/**
+	 * Set the 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
+	 *
+	 * @param orientation new value of orientation
+	 */
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
+	
     
 }

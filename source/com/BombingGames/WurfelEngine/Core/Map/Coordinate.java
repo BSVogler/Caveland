@@ -469,15 +469,29 @@ public class Coordinate extends AbstractPosition {
     }
     
     @Override
-    public int getProjectedPosX(View View) {
+    public int getProjectedPosX(View view) {
 		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
                 + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override
-    public int getProjectedPosY(View View) {
-		return (int) ((Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
+    public int getProjectedPosY(View view) {
+		return (int) (
+			(
+				view.getOrientation()==0
+				?
+					(Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
+				:
+					(
+						view.getOrientation()==2
+						?
+							getRelY() * AbstractGameObject.SCREEN_DEPTH2
+						:
+							0
+					)
+			)
+				
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             + getHeight() *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
         );

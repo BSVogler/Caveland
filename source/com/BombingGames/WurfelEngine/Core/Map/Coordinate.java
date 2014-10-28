@@ -294,7 +294,8 @@ public class Coordinate extends AbstractPosition {
      * @return true when hiding the past Block
      */
     public boolean hidingPastBlock(){
-        return (getBlock().hasSides() && ! getBlock().isTransparent() && ! hasOffset());
+		Block block = getBlock();
+        return (block.hasSides() && ! block.isTransparent() && ! hasOffset());
     }
     
     /** @return a copy of this coordinate */

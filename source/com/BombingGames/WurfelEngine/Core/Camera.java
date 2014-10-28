@@ -698,12 +698,12 @@ public class Camera {
 				liquidfilter = false;
 				clipping[x][y][z+1][side.getCode()] = false;
 			}
-		} while (y > 1 && z > 0 //not on bottom of map
+		} while (y > 1 && z > -1 //not on bottom of map
 			&& (left || right) //left or right still visible
-			&& (!new Coordinate(x, y, z, true).hidingPastBlock())
+			&& (!currentCor.hidingPastBlock(0,0,0))
 		);
 
-        clipping[x][y][0][1] = (z <= -1) && (left || right); //left or right still visible
+        clipping[x][y][0][1] = !((z <= -1) && (left || right)); //left or right still visible
 	}
 	
 	/**

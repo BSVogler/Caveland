@@ -14,7 +14,7 @@ varying vec2 v_texCoords;
 
 void main() {
     v_color = a_color*gl_Color*2.0;//multiply by 2 and use vertex color
-	v_color.a = gl_Color.a;//use alpha of texture
+	//v_color.a = gl_Color.a;//use alpha of texture
     v_texCoords = a_texCoord0;
 
     gl_Position = u_projTrans * a_position;

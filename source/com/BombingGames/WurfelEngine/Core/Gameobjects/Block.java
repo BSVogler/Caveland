@@ -438,7 +438,7 @@ public class Block extends AbstractGameObject {
             sprite.scale(scale);
         }
         
-        color.mul(getLightlevel());
+        color.mul(getLightlevel(), getLightlevel(), getLightlevel(), 1);//darken
         
         sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right
         

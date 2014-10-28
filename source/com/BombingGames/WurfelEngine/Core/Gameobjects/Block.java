@@ -375,15 +375,14 @@ public class Block extends AbstractGameObject {
         
         //add fog
         if (WE.getCurrentConfig().useFog()){
-			float tmpA = color.a;
             color.mul(
                 (float) (0.5f+Math.exp(
                     (camera.getVisibleBackBorder()-coords.getCoord().getRelY())*0.05f+1
                 ))
             );
-			color.a = tmpA;
         }
         
+		color.a = 1;//prevent changes because of color operations
         renderSide(view, camera, coords, side, color,scale);
     }
 

@@ -49,6 +49,7 @@ public class Sea extends Block implements IsSelfAware{
     private int startvalue;
     
     private Coordinate coords;
+	private int offsetY;
         
     /**
      *
@@ -61,7 +62,7 @@ public class Sea extends Block implements IsSelfAware{
                 
         this.coords = coords;
         if (coords!=null)
-			startvalue = (int) (coords.getCellOffset()[2] + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
+			startvalue = (int) (offsetY + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
        
     }
 
@@ -78,12 +79,12 @@ public class Sea extends Block implements IsSelfAware{
     @Override
     public void update(float delta) {
 		if (coords!=null){
-			coords.setCellOffsetZ(
+			offsetY =
 				(int) (startvalue +
 					Math.sin(
 						(currentX-coords.getRelX()-coords.getRelY())
 							* Math.PI/waveWidth
-					)*WAVE_AMPLITUDE));
+					)*WAVE_AMPLITUDE);
 		}
     }
     

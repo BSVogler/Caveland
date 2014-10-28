@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
-import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
@@ -113,11 +112,11 @@ public class Controller implements GameManager {
         AbstractGameObject.updateStaticUpdates(delta);
         
         //update every block on the map
-        Cell[][][] mapdata = map.getData();
+        Block[][][] mapdata = map.getData();
         for (int x=0, maxX=Map.getBlocksX(); x < maxX; x++)
             for (int y=0, maxY = Map.getBlocksY(); y < maxY; y++)
                 for (int z=0, maxZ=Map.getBlocksZ(); z < maxZ; z++)
-                    mapdata[x][y][z].getBlock().update(delta);
+                    mapdata[x][y][z].update(delta);
         
         //update every entity
         for (int i = 0; i < map.getEntitys().size(); i++) {

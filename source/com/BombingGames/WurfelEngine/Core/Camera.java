@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Cell;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -489,7 +488,6 @@ public class Camera {
 		System.out.println("doing clipping");
 		if (zRenderingLimit > 0) {
 			//prepare clipping
-			Cell[][][] mapdata = Controller.getMap().getData();
 			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
 				for (int y = 0, maxY =Map.getBlocksY(); y < maxY; y++) {
 					//ground layer
@@ -499,7 +497,6 @@ public class Camera {
 					
 					//clip by default
 					for (int z = 0; z < zRenderingLimit; z++) {
-						Block block = mapdata[x][y][z].getBlock();
 						setClipped(
 							x,
 							y,

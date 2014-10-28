@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -60,18 +61,18 @@ public class Chunk {
         blocksZ = meta.getChunkBlocksZ();
     }
     
-    private Cell data[][][];
+    private Block data[][][];
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
      */
     public Chunk() {
-        data = new Cell[blocksX][blocksY][blocksZ];
+        data = new Block[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = new Cell();
+                    data[x][y][z] = Block.getInstance(0);
     }
     
     /**
@@ -110,7 +111,7 @@ public class Chunk {
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = new Cell(
+                    data[x][y][z] = Block.getInstance(
                         generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
                         0,
                         new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
@@ -169,7 +170,7 @@ public class Chunk {
                                 posend++;
                             }
 
-                            data[x][y][z] = new Cell(
+                            data[x][y][z] = Block.getInstance(
                                 Integer.parseInt(line.substring(0,posdots)),
                                 Integer.parseInt(line.substring(posdots+1, posend)),
                                 new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
@@ -222,7 +223,7 @@ public class Chunk {
                 for (int y = 0; y < blocksY; y++) {
                     String line = "";
                     for (int x = 0; x < blocksX; x++) {
-                        line +=data[x][y][z].getBlock().getId()+":"+data[x][y][z].getBlock().getValue()+" ";  
+                        line +=data[x][y][z].getId()+":"+data[x][y][z].getValue()+" ";  
                     }
                     writer.write(line+lineFeed);
                 }
@@ -262,7 +263,7 @@ public class Chunk {
      * Returns the data of the chunk
      * @return 
      */
-    public Cell[][][] getData() {
+    public Block[][][] getData() {
         return data;
     }
 
@@ -270,7 +271,7 @@ public class Chunk {
      * 
      * @param data
      */
-    public void setData(Cell[][][] data) {
+    public void setData(Block[][][] data) {
         this.data = data;
     }
 

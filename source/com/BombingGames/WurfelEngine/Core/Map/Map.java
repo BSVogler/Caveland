@@ -56,7 +56,7 @@ public class Map implements Cloneable {
     
 	private final Block groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//the representative of the bottom layer (ground) block
     /** the map data are the blocks in their cells */
-    private Cell[][][] data;
+    private Block[][][] data;
     
     private Generator generator;
     
@@ -100,12 +100,12 @@ public class Map implements Cloneable {
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
-        data = new Cell[blocksX][blocksY][blocksZ];//create Array where the data is stored
+        data = new Block[blocksX][blocksY][blocksZ];//create Array where the data is stored
         
-        for (Cell[][] x : data)
-            for (Cell[] y : x)
+        for (Block[][] x : data)
+            for (Block[] y : x)
                 for (int z = 0; z < y.length; z++) {
-                    y[z] = new Cell();
+                    y[z] = Block.getInstance(0);
                 }
         
         if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
@@ -166,14 +166,14 @@ public class Map implements Cloneable {
 		modified = true;
     }
     /**
-     * Fill the data array of the map with Cells. Also resets the cellOffset.
+     * Fill the data array of the map with Blocks. Also resets the cellOffset.
      */
     public void fillWithAir(){
         Gdx.app.debug("Map","Filling the map with air cells...");
-        for (Cell[][] x : data) {
-            for (Cell[] y : x) {
+        for (Block[][] x : data) {
+            for (Block[] y : x) {
                 for (int z = 0; z < y.length; z++) {
-                    y[z] = new Cell();
+                    y[z] = Block.getInstance(0);
                 }
             }   
         }
@@ -223,12 +223,12 @@ public class Map implements Cloneable {
      * @param array the data you want to copy
      * @return The copy of the array-
      */
-    private static Cell[][][] copyCells(final Cell[][][] array) {
-        Cell[][][] copy = new Cell[array.length][][];
+    private static Block[][][] copyBlocks(final Block[][][] array) {
+        Block[][][] copy = new Block[array.length][][];
         for (int i = 0; i < array.length; i++) {
-            copy[i] = new Cell[array[i].length][];
+            copy[i] = new Block[array[i].length][];
             for (int j = 0; j < array[i].length; j++) {
-                copy[i][j] = new Cell[array[i][j].length];
+                copy[i][j] = new Block[array[i][j].length];
                 System.arraycopy(
                     array[i][j], 0, copy[i][j], 0, 
                     array[i][j].length
@@ -237,32 +237,12 @@ public class Map implements Cloneable {
         }
         return copy;
     } 
-    
-    /**
-     * Copies an array with three dimensions. Deep copy using clone. Probably slower.
-     * @param array the data you want to copy
-     * @return The copy of the array-
-     */
-    private static Cell[][][] copyCellsDeeper(final Cell[][][] array) throws CloneNotSupportedException {
-        Cell[][][] copy = new Cell[array.length][][];
-        for (int x = 0; x < array.length; x++) {
-            copy[x] = new Cell[array[x].length][];
             
-            for (int y = 0; y < array[x].length; y++) {
-                copy[x][y] = new Cell[array[x][y].length];
-                for (int z = 0; z < array[x][y].length; z++) {
-                    copy[x][y][z] = array[x][y][z].clone();
-                }
-            }
-        }
-        return copy;
-    } 
-        
     /**
      * Get the data of the map
      * @return
      */
-    public Cell[][][] getData() {
+    public Block[][][] getData() {
         return data;
     }
     
@@ -282,7 +262,7 @@ public class Map implements Cloneable {
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
                 //make a chunk of the data
-                Cell[][][] dataCopy = copyCells(data);
+                Block[][][] dataCopy = copyBlocks(data);
                 
                 for (int pos=0; pos<9; pos++){
                      //save
@@ -373,7 +353,7 @@ public class Map implements Cloneable {
      * @param offsetData the offset data
      * @param pos The chunk number where the chunk is located
      */ 
-    private Chunk copyChunk(final Cell[][][] cellData, final int pos) {
+    private Chunk copyChunk(final Block[][][] cellData, final int pos) {
         Chunk chunk = new Chunk();
         //copy the data in two loops and then do an arraycopy
         for (int x = Chunk.getBlocksX()*(pos % 3);
@@ -433,7 +413,7 @@ public class Map implements Cloneable {
     public Block getBlock(final int x, final int y, final int z){
 		if (z<0)
 			return groundBlock;
-        return data[x][y][z].getBlock();  
+        return data[x][y][z];  
     }
     
     /**
@@ -442,7 +422,7 @@ public class Map implements Cloneable {
      * @return
      */
     public Block getBlock(final Coordinate coord){
-        return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getBlock();  
+        return data[coord.getRelX()][coord.getRelY()][coord.getZ()];  
     }
     
      /**
@@ -472,7 +452,7 @@ public class Map implements Cloneable {
             z = 0;
         }
         
-        return data[x][y][z].getBlock();    
+        return data[x][y][z];    
     }
     
     /**
@@ -495,7 +475,7 @@ public class Map implements Cloneable {
      * @param block  
      */
     public void setData(final int x, final int y, final int z, final Block block){
-        data[x][y][z].setBlock(block);
+        data[x][y][z] = block;
 		modified();
     }
     
@@ -505,7 +485,7 @@ public class Map implements Cloneable {
      * @param block
      */
     public void setData(final Coordinate coords, final Block block) {
-        data[coords.getRelX()][coords.getRelY()][coords.getZ()].setBlock(block);
+        data[coords.getRelX()][coords.getRelY()][coords.getZ()] = block;
 		modified();
     }
         
@@ -533,7 +513,7 @@ public class Map implements Cloneable {
             coords[2] = 0;
         }
         
-        data[coords[0]][coords[1]][coords[2]].setBlock(block);
+        data[coords[0]][coords[1]][coords[2]] = block;
     }
     
     /**
@@ -708,14 +688,12 @@ public class Map implements Cloneable {
      */
     @Override
     public Map clone() throws CloneNotSupportedException{
-        Map clone = (Map) super.clone();
-        clone.data = copyCellsDeeper(data);//deep copy of the data
 		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
 //		clone.entityList = new ArrayList<>(entityList.size());
 //		for (AbstractEntity entity : entityList) {
 //			clone.entityList.add((AbstractEntity) entity.clone());
 //		}
-        return clone;
+        return (Map) super.clone();
     }
 
     /**

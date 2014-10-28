@@ -703,7 +703,7 @@ public class Camera {
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);
 
-        clipping[x][y][0][1] = !((z <= -1) && (left || right)); //left or right still visible
+        clipping[x][y][0][1] = !((z <= -1) && (left || right)); //hit ground level and left or right still visible
 	}
 	
 	/**

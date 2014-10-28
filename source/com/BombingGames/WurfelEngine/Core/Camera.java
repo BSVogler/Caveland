@@ -563,7 +563,7 @@ public class Camera {
 				//direct neighbour groundBlock on left hiding the complete left side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
 					&& x > 0 && y < Map.getBlocksY() - 1
-					&& currentCor.hidingPastBlock(-(y % 2 == 0 ? 1 : 0), 1, 0)) {
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 0)) {
 					break; //stop ray
 				}
 				//liquid
@@ -593,7 +593,7 @@ public class Camera {
 
 				//two blocks hiding the left side
 				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock(- (y % 2 == 0 ? 1 : 0), 1, 1)
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
 				}
@@ -606,7 +606,7 @@ public class Camera {
 			} else if (side == Sides.TOP) {//check top side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
 					&& z + 1 < zRenderingLimit
-					&& currentCor.hidingPastBlock(0,0,1)) {
+					&& currentCor.hidingPastBlock(0, 0, 1)) {
 					break;
 				}
 
@@ -635,13 +635,13 @@ public class Camera {
 
 				//two 0- and 2-sides hiding the side 1
 				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock(- (y % 2 == 0 ? 1 : 0),1, 1)
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
 				}
 
 				if (x < Map.getBlocksX() - 1 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1,1)
+					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
 				) {
 					right = false;
 				}
@@ -682,7 +682,7 @@ public class Camera {
 
 				//two blocks hiding the right side
 				if (y + 2 < Map.getBlocksY()
-					&& currentCor.hidingPastBlock(0,2,0)
+					&& currentCor.hidingPastBlock(0, 2, 0)
 				) {
 					left = false;
 				}
@@ -700,7 +700,7 @@ public class Camera {
 			}
 		} while (y > 1 && z > -1 //not on bottom of map
 			&& (left || right) //left or right still visible
-			&& (!currentCor.hidingPastBlock(0,0,0))
+			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);
 
         clipping[x][y][0][1] = !((z <= -1) && (left || right)); //left or right still visible

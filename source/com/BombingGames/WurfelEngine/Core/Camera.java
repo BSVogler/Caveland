@@ -497,14 +497,14 @@ public class Camera {
 					clipping[x][y][0][1] = false;//render only top
 					clipping[x][y][0][2] = true;//clip right side
 					
-					//clip blocks with offset
+					//clip by default
 					for (int z = 0; z < zRenderingLimit; z++) {
 						Block block = mapdata[x][y][z].getBlock();
 						setClipped(
 							x,
 							y,
 							z,
-							!new Coordinate(x, y, z, true).hasOffset()
+							true
 						);
 					}
 				}
@@ -698,7 +698,7 @@ public class Camera {
 			}
 		} while (y > 1 && z > 0 //not on bottom of map
 			&& (left || right) //left or right still visible
-			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset())
+			&& (!new Coordinate(x, y, z, true).hidingPastBlock())
 		);
 
         clipping[x][y][0][1] = (z <= -1) && (left || right); //left or right still visible
@@ -712,15 +712,14 @@ public class Camera {
 	 * @param neighbours True when neighbours groundBlock also should be scanned
 	 */
 	public void traceRayTo(Coordinate coord, boolean neighbours) {
-		Block block = coord.getBlock();
 		int[] coords = coord.getRel();
 
-		//Blocks with offset are not in the grid, so can not be calculated => always visible
+		//default not clipped
 		setClipped(
 			coord.getRelX(),
 			coord.getRelY(),
 			coord.getZ(),
-			!block.hasSides() || coord.hasOffset()
+			true
 		);
 
 		//find start position

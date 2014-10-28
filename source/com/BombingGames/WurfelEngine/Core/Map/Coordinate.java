@@ -159,15 +159,6 @@ public class Coordinate extends AbstractPosition {
         return new int[]{getAbsX(), getAbsY(), getZ()};
     }
     
-   /**
-     *
-     * @return an array with the offset of the cell
-     */
-    public int[] getCellOffset(){
-        return Controller.getMap().getCellOffset(this);
-    }
- 
-    
     /**
      *Set the coordiantes X component.
      * @param x
@@ -193,14 +184,6 @@ public class Coordinate extends AbstractPosition {
     }
     
 
-    
-    /**
-     *Set the vertical offset in the cell, where the coordiante is pointing at.
-     * @param height
-     */
-    public void setCellOffsetZ(int height){
-        Controller.getMap().setCelloffset(this, 2, height);
-    }
     
     /**
      *Set a block in the map where the coordinate is pointing to.
@@ -280,22 +263,13 @@ public class Coordinate extends AbstractPosition {
     }
     
 
-    
-    /**
-     * Has the object an offset (pos vector)?
-     * @return when it has offset true, else false
-     */
-    public boolean hasOffset() {
-        return getCellOffset()[0] != 0 || getCellOffset()[1] != 0 || getCellOffset()[2] != 0;
-    }
-    
    /**
      * The block hides the past block when it has sides and is not transparent (like normal block)
      * @return true when hiding the past Block
      */
     public boolean hidingPastBlock(){
 		Block block = getBlock();
-        return (block.hasSides() && ! block.isTransparent() && ! hasOffset());
+        return (block.hasSides() && ! block.isTransparent());
     }
     
     /** @return a copy of this coordinate */
@@ -495,10 +469,7 @@ public class Coordinate extends AbstractPosition {
     public int getProjectedPosX(View View) {
 		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2 //offset by y
-                + (getZ()>=0 ?   //read cell offset if inside map
-                    getCellOffset()[0]
-                : 0);
+                + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override
@@ -506,10 +477,6 @@ public class Coordinate extends AbstractPosition {
 		return (int) ((Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             + getHeight() *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
-            + (getZ()>=0 ?  //read cell offset if inside map
-                + getCellOffset()[1] / 2 //add the objects y position inside this coordinate
-                - getCellOffset()[2] *AbstractPosition.SQRT12 //subtract the objects z position inside this coordinate;
-            :0)
         );
     }
     
@@ -519,11 +486,6 @@ public class Coordinate extends AbstractPosition {
             getRelY() *Block.SCREEN_DEPTH//Y
             
             + getHeight()*AbstractPosition.SQRT2//Z
-            + (getZ()>=0 ?
-			    getCellOffset()[1]
-				+getCellOffset()[2]*AbstractPosition.SQRT2
-				:0
-			)
         );
     }
 

@@ -557,31 +557,6 @@ public class Map implements Cloneable {
     }
     
     /**
-     * a method who gives random blocks offset
-     * @param numberofblocks the amount of moved blocks
-     */
-    public void earthquake(final int numberofblocks){
-        int[] x = new int[numberofblocks];
-        int[] y = new int[numberofblocks];
-        int[] z = new int[numberofblocks];
-        
-        //pick random blocks 
-        for (int i=0;i<numberofblocks;i++){
-            x[i] = (int) (Math.random()*blocksX-1);
-            y[i] = (int) (Math.random()*blocksY-1);
-            z[i] = (int) (Math.random()*blocksZ-1);
-        }
-        
-        for (int i=0;i < numberofblocks; i++){
-                //cellPos[x[i]][y[i]][z[i]][0] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                //cellPos[x[i]][y[i]][z[i]][1] = (float) (Math.random()*Block.SCREEN_DEPTH2);
-                data[x[i]][y[i]][z[i]].setCellOffset(2, (int) (Math.random()*Block.GAME_EDGELENGTH));//vertical shake
-            
-        }
-		modified();
-    }
-    
-    /**
      * Returns the entityList
      * @return
      */
@@ -615,26 +590,6 @@ public class Map implements Cloneable {
         return WE.getCurrentConfig().getWorldSpinAngle();
     }
     
-    
-    /**
-     *
-     * @param coord
-     * @return
-     */
-    public int[] getCellOffset(final Coordinate coord) {
-		if (coord.getHeight()<0) return new int[3];
-        return data[coord.getRelX()][coord.getRelY()][coord.getZ()].getCellOffset();
-    }   
-    
-    /**
-     *Set the offset in one cell. 
-     * @param coord the cell
-     * @param field 0 = X, 1 = y, 2 = z
-     * @param value the value you want to set the field
-     */
-    public void setCelloffset(final Coordinate coord, final int field, final int value){
-        data[coord.getRelX()][coord.getRelY()][coord.getZClamp()].setCellOffset(field, value);
-    }
     
      /**
      * Get every entity on a coord.

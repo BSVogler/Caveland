@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
  */
 public class Cell implements Cloneable {
     private Block block;
-    private int[] cellOffset = new int[]{0, 0,0};
 
     /**
      *Create a new cell containing air.
@@ -86,31 +85,6 @@ public class Cell implements Cloneable {
      */
     public void setBlock(Block block) {
         this.block = block;
-    }
-
-    /**
-     *The cell offset has it's center in the top left corner.
-     * @return
-     */
-    public int[] getCellOffset() {
-        return cellOffset;
-    }
-
-    /**
-     *The cell offset has it's center in the top left corner.
-     * @param cellOffset
-     */
-    public void setCellOffset(int[] cellOffset) {
-        this.cellOffset = cellOffset;
-    }
-
-    /**
-     *
-     * @param field
-     * @param offset
-     */
-    public void setCellOffset(int field, int offset) {
-        this.cellOffset[field] = offset;
     }
 
     /**

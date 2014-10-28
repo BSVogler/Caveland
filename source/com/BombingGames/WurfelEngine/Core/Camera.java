@@ -716,7 +716,7 @@ public class Camera {
 	public void traceRayTo(Coordinate coord, boolean neighbours) {
 		int[] coords = coord.getRel();
 
-		//default not clipped
+		//default  clipped
 		setClipped(
 			coord.getRelX(),
 			coord.getRelY(),

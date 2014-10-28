@@ -46,6 +46,9 @@ public abstract class View {
     public abstract SpriteBatch getBatch();
     public abstract ShapeRenderer getShapeRenderer();
 	
+	/**
+	 * @since v1.3.12
+	 */
 	private int orientation = 0;
 
     public void init(){
@@ -62,6 +65,7 @@ public abstract class View {
 	 * Get the value of orientation
 	 *
 	 * @return the value of orientation
+	 * @since v1.3.12
 	 */
 	public int getOrientation() {
 		return orientation;
@@ -71,6 +75,7 @@ public abstract class View {
 	 * Set the 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
 	 *
 	 * @param orientation new value of orientation
+	 * @since v1.3.12
 	 */
 	public void setOrientation(int orientation) {
 		this.orientation = orientation;

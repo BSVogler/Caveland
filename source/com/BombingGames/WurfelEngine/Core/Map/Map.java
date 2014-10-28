@@ -110,6 +110,7 @@ public class Map implements Cloneable {
         
         if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
         this.generator = generator;
+		modified = true;
     }
     
 	public void update(float delta){
@@ -142,6 +143,7 @@ public class Map implements Cloneable {
      */
     public void fill(boolean allowLoading){
         fill(generator, allowLoading);
+		modified = true;
     }
     
     /**

@@ -695,11 +695,9 @@ public class Camera {
 			&& (!new Coordinate(x, y, z, true).hidingPastBlock() || new Coordinate(x, y, z, true).hasOffset())
 		);
 
-        clipping[x][y][0][1] =
-            (z <= -1)
-			&& (left || right); //left or right still visible
+        clipping[x][y][0][1] = (z <= -1) && (left || right); //left or right still visible
 	}
-
+	
 	/**
 	 * Traces the ray to a specific groundBlock. This is like the
 	 * rayCastingClipping but only a single ray.

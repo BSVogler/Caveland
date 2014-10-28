@@ -504,7 +504,7 @@ public class Camera {
 							x,
 							y,
 							z,
-							!block.hasSides() || new Coordinate(x, y, z, true).hasOffset()
+							!new Coordinate(x, y, z, true).hasOffset()
 						);
 					}
 				}

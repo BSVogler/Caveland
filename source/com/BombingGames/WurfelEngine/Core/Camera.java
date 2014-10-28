@@ -488,13 +488,16 @@ public class Camera {
 	public void rayCastingClipping() {
 		System.out.println("doing clipping");
 		if (zRenderingLimit > 0) {
-			//set clipping of every block to true, except blocks with offset
+			//prepare clipping
 			Cell[][][] mapdata = Controller.getMap().getData();
 			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
 				for (int y = 0, maxY =Map.getBlocksY(); y < maxY; y++) {
+					//ground layer
 					clipping[x][y][0][0] = true;//clip left side
 					clipping[x][y][0][1] = false;//render only top
 					clipping[x][y][0][2] = true;//clip right side
+					
+					//clip blocks with offset
 					for (int z = 0; z < zRenderingLimit; z++) {
 						Block block = mapdata[x][y][z].getBlock();
 						setClipped(

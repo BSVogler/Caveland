@@ -255,7 +255,19 @@ public class Point extends AbstractPosition {
     @Override
     public int getDepth(View view){
         return (int) (
-            getPoint().getRelY()//Y
+			(
+				view.getOrientation()==0
+				?
+					getPoint().getRelY()//Y
+				:
+					(
+						view.getOrientation()==2
+						?
+							Map.getGameDepth()-getPoint().getRelY()//Y
+						:
+							0
+					)
+			)
             
             + getHeight()*SQRT2//Z
         );

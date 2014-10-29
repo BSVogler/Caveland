@@ -184,7 +184,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 				}
 
 				if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
-					waterSound.play();
+					if (waterSound!=null) waterSound.play();
 
 				inliquid = getPosition().getBlockClamp().isLiquid();//save if in water
 

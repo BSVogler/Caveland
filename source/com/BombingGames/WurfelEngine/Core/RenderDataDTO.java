@@ -55,10 +55,11 @@ public class RenderDataDTO {
 
     /**
      * Returns the depth of the object.
+	 * @param view
      * @return
      */
-    public int getDepth() {
-        return (int) (pos.getDepth()
+    public int getDepth(View view) {
+        return (int) (pos.getDepth(view)
             + (
             object instanceof AbstractEntity
                 ? ((AbstractEntity)object).getDimensionZ()/1.414213562f

@@ -253,7 +253,7 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public int getDepth(){
+    public int getDepth(View view){
         return (int) (
             getPoint().getRelY()//Y
             

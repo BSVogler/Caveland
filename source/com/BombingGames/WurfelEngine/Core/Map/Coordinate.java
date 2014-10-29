@@ -498,7 +498,7 @@ public class Coordinate extends AbstractPosition {
     }
     
     @Override
-    public int getDepth(){
+    public int getDepth(View view){
         return (int) (
             getRelY() *Block.SCREEN_DEPTH//Y
             

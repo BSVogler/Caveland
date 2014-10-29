@@ -433,11 +433,11 @@ public class Camera {
 	private ArrayList<RenderDataDTO> sortDepthList(ArrayList<RenderDataDTO> depthsort, int low, int high) {
 		int left = low;
 		int right = high;
-		int middle = depthsort.get((low + high) / 2).getDepth();
+		int middle = depthsort.get((low + high) / 2).getDepth(gameView);
 
         while (left <= right){    
-            while(depthsort.get(left).getDepth() < middle) left++; 
-            while(depthsort.get(right).getDepth() > middle) right--;
+            while(depthsort.get(left).getDepth(gameView) < middle) left++; 
+            while(depthsort.get(right).getDepth(gameView) > middle) right--;
 
 			if (left <= right) {
 				RenderDataDTO tmp = depthsort.set(left, depthsort.get(right));
@@ -471,7 +471,7 @@ public class Camera {
 		for (i = 1; i < depthsort.size(); i++) {
 			newValue = depthsort.get(i);
 			j = i;
-			while (j > 0 && depthsort.get(j - 1).getDepth() > newValue.getDepth()) {
+			while (j > 0 && depthsort.get(j - 1).getDepth(gameView) > newValue.getDepth(gameView)) {
 				depthsort.set(j, depthsort.get(j - 1));
 				j--;
 			}

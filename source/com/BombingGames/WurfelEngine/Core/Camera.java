@@ -695,7 +695,7 @@ public class Camera {
 				liquidfilter = false;
 				clipping[x][y][z+1][side.getCode()] = false;
 			}
-		} while (y > 1 && z > -1 //not on bottom of map
+		} while (y > 1 && z > -1 //not on back or bottom of map
 			&& (left || right) //left or right still visible
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);

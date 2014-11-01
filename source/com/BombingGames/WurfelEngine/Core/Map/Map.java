@@ -268,7 +268,7 @@ public class Map implements Cloneable {
                      //save
                     if (isMovingOutside(pos, newmiddle)){
                         try {
-                            copyChunk(dataCopy, pos).save(filename, coordlist[pos][0], coordlist[pos][1]);
+                            copyChunk(dataCopy, pos).save(filename, pos);
                         } catch (IOException ex) {
                             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -616,6 +616,31 @@ public class Map implements Cloneable {
 
         return list;
     }
+	
+	/**
+	 * Get every entity on a chunk
+	 * @param pos the chunk position 0-8
+	 * @return 
+	 */
+	public ArrayList<AbstractEntity> getEntitysOnChunk(int pos){
+		 ArrayList<AbstractEntity> list = new ArrayList<>(10);
+
+        for (AbstractEntity ent : entityList) {
+            if (
+					ent.getPosition().getRelX()>pos%3 *Chunk.getGameWidth()//left chunk border
+                &&
+					ent.getPosition().getRelX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
+				&&	
+					ent.getPosition().getRelY()>(pos/3)*Chunk.getGameDepth()//top chunk border
+				&& 
+					ent.getPosition().getRelY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
+            ){
+				list.add(ent);//add it to list
+            } 
+        }
+
+        return list;
+	}
     
     /**
      *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
@@ -715,8 +740,7 @@ public class Map implements Cloneable {
                 Chunk chunk = copyChunk(data, pos);
                 chunk.save(
                     filename,
-                    coordlist[pos][0],
-                    coordlist[pos][1]
+					pos
                 );
             } catch (IOException ex) {
                 Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);

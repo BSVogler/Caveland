@@ -28,6 +28,8 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
@@ -36,6 +38,7 @@ import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 
 /**
  * A Chunk is filled with many Blocks and is a part of the map.
@@ -204,16 +207,17 @@ public class Chunk {
     
     /**
      * 
-     * @param fileName
-     * @param coordX
-     * @param coordY
+     * @param fileName the map name on disk
+
+	 * @param pos position on map in memory
      * @return 
      * @throws java.io.IOException 
      */
-    public boolean save(String fileName, int coordX, int coordY) throws IOException {
+    public boolean save(String fileName, int pos) throws IOException {
         if ("".equals(fileName)) return false;
-        Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+		int coords[] = Controller.getMap().getChunkCoords(pos);
+        Gdx.app.log("Chunk","Saving "+coords[0] + ","+ coords[1] +".");
+        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coords[0]+","+coords[1]+"."+CHUNKFILESUFFIX);
         String lineFeed = System.getProperty("line.separator");
         
         path.file().createNewFile();
@@ -229,7 +233,14 @@ public class Chunk {
                 }
                 writer.write(lineFeed);
             }
-        } catch (IOException ex){
+		
+			//save entities
+			writer.write("entities"+lineFeed);
+			ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
+			for (AbstractEntity ent : entities){
+				ent.save(writer);
+			}
+		} catch (IOException ex){
             throw ex;
         }
         return true;

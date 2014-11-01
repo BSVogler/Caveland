@@ -35,6 +35,8 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -171,4 +173,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void render(GameView view, Camera camera){
         super.render(view, camera, position);
     }
+
+	public void save(Writer writer) throws IOException  {
+		String lineFeed = System.getProperty("line.separator");
+
+		writer.write(
+			getId() + " " + getValue() +" " + getPosition().getAbsX() + " "+ getPosition().getAbsX() + " " + getPosition().getZ()
+		);
+		writer.write(lineFeed);
+	}
 }

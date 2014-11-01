@@ -43,9 +43,14 @@ import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.io.File;
 
 /**
@@ -68,6 +73,7 @@ public class WE extends Game {
     private static LwjglApplicationConfiguration config;
     private static Console console;
     private static EngineView engineView;
+	private boolean skipintro =false;
 
     /**
      * Create the Engine. Don't use this constructor. Use construct() instead. 
@@ -108,6 +114,9 @@ public class WE extends Game {
                         //set the height
                         config.height = Integer.parseInt(args[i+1]);
                         break;
+					case "-skipintro":
+						skipintro=true;
+                        break;
                 }
             }
         }    
@@ -127,26 +136,32 @@ public class WE extends Game {
          */
     @Override
     public void create() {
-        if (mainMenu==null){
-            Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
-            Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
-            BasicMenuItem[] menuItems = new BasicMenuItem[]{
-                new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
-                new BasicMenuItem(1, "Options"),
-                new BasicMenuItem(2, "Exit")
-            };   
-            mainMenu = new BasicMainMenu(menuItems);
-        }
-        Gdx.app.debug("WE","Initializing main menu...");
-        mainMenu.init();
-        engineView = new EngineView();
-        setScreen(mainMenu);
-        
-        console = new Console(
-            engineView.getSkin(),
-            Gdx.graphics.getWidth()/2,
-            Gdx.graphics.getHeight()/4
-        );
+		if (!skipintro)
+			setScreen(new WurfelEngineIntro());
+			
+		if (mainMenu==null){
+			Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
+			Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
+			BasicMenuItem[] menuItems = new BasicMenuItem[]{
+				new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
+				new BasicMenuItem(1, "Options"),
+				new BasicMenuItem(2, "Exit")
+			};   
+			mainMenu = new BasicMainMenu(menuItems);
+		}
+		Gdx.app.debug("WE","Initializing main menu...");
+		mainMenu.init();
+		engineView = new EngineView();
+
+		console = new Console(
+			engineView.getSkin(),
+			Gdx.graphics.getWidth()/2,
+			Gdx.graphics.getHeight()/4
+		);
+
+		if (skipintro){
+			setScreen(mainMenu);
+		}
     }
 
     /**
@@ -413,6 +428,80 @@ public class WE extends Game {
 	 */
 	public static GameplayScreen getGameplay() {
 		return gameplayScreen;
+	}
+
+	private static class WurfelEngineIntro implements Screen {
+		private final Sprite lettering;
+		private final SpriteBatch batch;
+		private float alpha =0;
+		private boolean increase =true;
+
+		WurfelEngineIntro() {
+			batch = new SpriteBatch();
+			lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
+			lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
+			lettering.setY((Gdx.graphics.getHeight() - lettering.getHeight())/2);
+			//lettering.flip(false, true);
+		}
+
+		@Override
+		public void render(float delta) {
+			if (increase){
+				if (alpha>=1){
+					alpha=1;
+					increase=false;
+				} else
+					alpha += delta;
+				drawLettering();
+			} else 
+				if (alpha<=0){
+					alpha=0;
+					dispose();
+				} else {
+					alpha -= delta;
+					drawLettering();
+				}
+					
+			WE.updateAndRender(delta*1000f);
+		}
+		
+		void drawLettering(){
+			lettering.setColor(1f, 1f, 1f, alpha);
+						
+			//clear & set background to black
+			Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
+			Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+			batch.begin();
+			lettering.draw(batch);
+			batch.end();
+		}
+
+		@Override
+		public void resize(int width, int height) {
+		}
+
+		@Override
+		public void show() {
+			Gdx.app.debug("Intro", "Showing intro…");
+		}
+
+		@Override
+		public void hide() {
+		}
+
+		@Override
+		public void pause() {
+		}
+
+		@Override
+		public void resume() {
+		}
+
+		@Override
+		public void dispose() {
+			WE.showMainMenu();
+		}
 	}
 	
 	

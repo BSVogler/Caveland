@@ -30,7 +30,15 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.badlogic.gdx.Gdx;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * A class which helps getting OS specific information.
@@ -96,9 +104,57 @@ public class WorkingDirectory {
     /**
      * 
      * @return Get the folder where the maps are stored.
-     * @since 
+     * @since 1.2.X
      */
     public static File getMapsFolder(){
         return new File(getWorkingDirectory("Wurfel Engine"),"maps");
     }
+	
+	/**
+	 * unpacks a map to working directory
+	 * @param foldername the name of the map folder. Will be created if non existend.
+	 * @param source msut be a zip file without ".foldername" files
+	 * @return trlue if everything went okay
+	 * @since 1.3.13
+	 */
+	public static boolean unpackMap(String foldername, InputStream source) {
+		File dest = new File(getMapsFolder().getAbsolutePath()+"/"+foldername+"/");
+		//if directory not exists, create it
+		if(!dest.exists()){
+		   dest.mkdirs();
+		   Gdx.app.log("WorkingDirectoy", "created map at "+ dest);
+		}
+
+		//Gdx.app.log("WorkingDirectoy", "coping chunks into "+ dest);
+		//buffer for read and write data to file
+		byte[] buffer = new byte[1024];
+		try (ZipInputStream zis = new ZipInputStream(source)) {
+			ZipEntry ze = zis.getNextEntry();
+			while(ze != null){
+				String file = ze.getName();
+				File newFile = new File(dest.getParent() + File.separator + file);
+				System.out.println("Unzipping to "+newFile.getAbsolutePath());
+
+				if (newFile.isDirectory()) {
+					//ingore directorys in zip
+				} else {
+					try (FileOutputStream fos = new FileOutputStream(newFile)) {
+						int len;
+						while ((len = zis.read(buffer)) > 0) {
+							fos.write(buffer, 0, len);
+						}
+					}
+				}
+				//close this ZipEntry
+				zis.closeEntry();
+				ze = zis.getNextEntry();
+			}
+			//close last ZipEntry
+			zis.closeEntry();
+			source.close();
+		} catch (IOException ex) {
+			Logger.getLogger(WorkingDirectory.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return true;
+	}
 }

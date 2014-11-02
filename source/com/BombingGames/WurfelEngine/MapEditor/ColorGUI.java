@@ -100,7 +100,7 @@ public class ColorGUI extends WidgetGroup {
 	 * @return a new Block instance of the selected id and value.
 	 */
 	public Block getBlock(Coordinate coord){
-		return Block.getInstance(id, value, coord);
+		return Block.getInstance(id, value);
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {

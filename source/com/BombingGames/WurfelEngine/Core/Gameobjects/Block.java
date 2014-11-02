@@ -79,7 +79,7 @@ public class Block extends AbstractGameObject {
         Block block; 
         if (id>39) 
             block = new Block(id);
-        else block = getInstance(id,0,null);
+        else block = getInstance(id,0);
         return block;
     }
     
@@ -89,27 +89,16 @@ public class Block extends AbstractGameObject {
      * @return the wanted block.
      */
     public static Block getInstance(final int id){
-        return getInstance(id,0,null);
-    }
-    
-    /**
-     * Create a block. If the block needs to know it's position you have to use <i>getInstance(int id, int value,int x, int y, int z)</i>
-     * @param id the block's id
-     * @param value it's value
-     * @return the wanted block.
-     */
-    public static Block getInstance(final int id, final int value){
-        return getInstance(id,value,null);
+        return getInstance(id,0);
     }
     
     /**
      * Create a block through this factory method. If the block needs to know it's position you have to use this method and give the coordinates.
      * @param id the id of the block
      * @param value the value of the block, which is like a sub-id
-     * @param coords the coordinates where the block is going to be places. If the block does not need this information it can be null.
      * @return the Block
      */
-    public static Block getInstance(final int id, final int value, final Coordinate coords){
+    public static Block getInstance(final int id, final int value){
         Block block;
         //define the default SideSprites
         switch (id){
@@ -146,7 +135,7 @@ public class Block extends AbstractGameObject {
             case 9: if(Gdx.app.getType()==ApplicationType.Android)
                         block = new Block(id); //static water
                     else
-                        block = new Sea(id, coords); //Sea
+                        block = new Sea(id); //Sea
                     block.liquid = true;
                     block.setTransparent(true);
                     break;
@@ -170,7 +159,7 @@ public class Block extends AbstractGameObject {
             default:
                 if (id > 39) {
                     if (WE.getCurrentConfig().getBlockFactoy()!=null){
-                        block = WE.getCurrentConfig().getBlockFactoy().produce(id, value, coords);
+                        block = WE.getCurrentConfig().getBlockFactoy().produce(id, value);
                     } else {
                         Gdx.app.error("Block", "No custom blockFactory found for "+id+". Using a default block instead.");
                         block = new Block(id);
@@ -185,6 +174,15 @@ public class Block extends AbstractGameObject {
         return block;
     }  
     
+		/**
+	 * places the object on the map. You should extend this to get the coordinate if {@link IsSelfAware}.
+	 * @param coord the position on the map
+	 * @return itself
+	 */
+	public Block spawn(Coordinate coord){
+		Controller.getMap().setData(coord, this);
+		return this;
+	};
     
      /**
      *  Returns a sprite sprite of a specific side of the block
@@ -229,7 +227,7 @@ public class Block extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (Block.getInstance(id,value, new Coordinate(0,0,0,false)).hasSides){//if has sides, take top block    
+            if (Block.getInstance(id,value).hasSides){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Sides.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(

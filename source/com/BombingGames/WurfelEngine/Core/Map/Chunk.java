@@ -114,11 +114,10 @@ public class Chunk {
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = Block.getInstance(
+                    Block.getInstance(
                         generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
-                        0,
-                        new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
-                    );
+                        0
+					).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
     }
     
     /**
@@ -197,11 +196,10 @@ public class Chunk {
 											posend++;
 										}
 
-										data[x][y][z] = Block.getInstance(
+										Block.getInstance(
 											Integer.parseInt(line.substring(0,posdots)),
-											Integer.parseInt(line.substring(posdots+1, posend)),
-											new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
-										);
+											Integer.parseInt(line.substring(posdots+1, posend))
+										).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
 										x++;
 										line.delete(0,posend+1);
 									} while (x < blocksX);

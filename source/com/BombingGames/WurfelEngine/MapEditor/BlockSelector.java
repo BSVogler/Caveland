@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -90,7 +89,7 @@ public class BlockSelector extends Table {
                     //button.setStyle(style);
                     table.add(button);
 
-                    table.add(new Label(Block.getInstance(i, 0, new Coordinate(0, 0, 0, true)).getName(), WE.getEngineView().getSkin()));
+                    table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
                 }
             }
         }

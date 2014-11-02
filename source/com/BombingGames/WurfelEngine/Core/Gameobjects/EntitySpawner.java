@@ -46,11 +46,9 @@ public class EntitySpawner extends Block implements IsSelfAware {
     /**
      *
      * @param id
-     * @param coords
      */
-    public EntitySpawner(int id, Coordinate coords){
+    public EntitySpawner(int id){
         super(id);
-        this.coords = coords;
         setObstacle(true);
     }
     
@@ -100,4 +98,10 @@ public class EntitySpawner extends Block implements IsSelfAware {
     public void setPosition(AbstractPosition pos) {
         coords = pos.getCoord();
     }
+	
+	@Override
+	public Block spawn(Coordinate coord) {
+		setPosition(coord);
+		return this;
+	}
 }

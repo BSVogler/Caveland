@@ -44,11 +44,9 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
     /**
      * Create a explosive barrel.
      * @param id the id of the explosive barrel
-     * @param coords  The coordinates where this object get's placed.
      */
-    public ExplosiveBarrel(int id, Coordinate coords){
+    public ExplosiveBarrel(int id){
         super(id);
-        this.coords = coords;
         setObstacle(true);
         if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
@@ -68,6 +66,14 @@ public class ExplosiveBarrel extends Block implements IsSelfAware {
 
     @Override
     public void setPosition(AbstractPosition pos) {
-        this.coords = pos.getCoord();
+        coords = pos.getCoord();
     }
+
+	@Override
+	public Block spawn(Coordinate coord) {
+		setPosition(coord);
+		return this;
+	}
+	
+	
 }

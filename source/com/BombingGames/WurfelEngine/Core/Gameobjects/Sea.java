@@ -54,13 +54,11 @@ public class Sea extends Block implements IsSelfAware{
     /**
      *
      * @param id
-     * @param coords
      */
-    public Sea(final int id, Coordinate coords) {
+    public Sea(final int id) {
         super(id);
         setTransparent(true);
                 
-        this.coords = coords;
         if (coords!=null)
 			startvalue = (int) (offsetY + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
        
@@ -73,7 +71,7 @@ public class Sea extends Block implements IsSelfAware{
 
     @Override
     public void setPosition(AbstractPosition pos) {
-        this.coords = pos.getCoord();
+        coords = pos.getCoord();
     }
 
     @Override
@@ -95,5 +93,10 @@ public class Sea extends Block implements IsSelfAware{
     public static void staticUpdate(float delta){
         currentX += delta*wavespeed;
     }
-
+	
+	@Override
+	public Block spawn(Coordinate coords) {
+		this.coords = coords;
+		return this;
+	}
 }

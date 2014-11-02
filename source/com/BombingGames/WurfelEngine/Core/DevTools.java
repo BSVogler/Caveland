@@ -124,8 +124,8 @@ public class DevTools {
             }
             
             //draw FPS-String
-            view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 15, 15);
-            view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30);
+            view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 15, 15,true);
+            view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30,true);
             
             //draw diagramm
             ShapeRenderer shr = WE.getEngineView().getShapeRenderer();
@@ -220,7 +220,7 @@ public class DevTools {
 
             shr.end(); 
             
-            view.drawString(memoryText.toString(), xPos, yPos);
+            view.drawString(memoryText.toString(), xPos, yPos, true);
             Gdx.gl.glDisable(GL20.GL_BLEND);
         }
     }

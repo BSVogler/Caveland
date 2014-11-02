@@ -125,82 +125,110 @@ public class Chunk {
      * Tries to load a chunk from disk.
      */
     private boolean load(final String fileName, int coordX, int coordY){
-        //Reading map files test
-        try {
-            //FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
-            FileHandle path = Gdx.files.absolute(
-                WE.getWorkingDirectory().getAbsolutePath()
-                    + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
-            );
-            
-            Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY + "\"");
-            
-            if (path.exists()) {
-                //FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
-                //BufferedReader bufRead = new BufferedReader(input);
-                BufferedReader bufRead = path.reader(30000);//normal chunk file is around 17.000byte
 
-                StringBuilder line;
-                //jump over first line to prevent problems with length byte
-                bufRead.readLine();
+		//FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+		FileHandle path = Gdx.files.absolute(
+			WE.getWorkingDirectory().getAbsolutePath()
+				+ "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
+		);
 
+		Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY + "\"");
 
-                int z = 0;
-                int x;
-                int y;
-                String lastline;
+		if (path.exists()) {
+			//Reading map files test
+			try {
+				//FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
+				//BufferedReader bufRead = new BufferedReader(input);
+				BufferedReader bufRead = path.reader(30000);//normal chunk file is around 17.000 byte
 
-                //finish a layer
-                do {
-                    line = new StringBuilder(1);
-                    line.append(bufRead.readLine());
-                    
-                    if ((line.charAt(1) == '/') && (line.charAt(2) == '/')){//jump over optional comment line
-                        line = new StringBuilder(1);
-                        line.append(bufRead.readLine());
-                    }
+				//jump over first line to prevent problems with length byte
+				bufRead.readLine();
 
-                    //Ebene
-                    y = 0;
-                    do{
-                        x = 0;
+				int z = 0;
+				int x;
+				int y;
+				boolean loadingEntities = false;//flag if entitie part has begun
+				
+				String bufLine = bufRead.readLine();
+				
+				//read a line
+				while (bufLine != null) {
+					if (bufLine.length()>0){
+						StringBuilder line = new StringBuilder(1);
+						line.append(bufLine);
 
-                        do{
-                            int posdots = line.indexOf(":");
+						//jump over optional comment line
+						if (
+							line.length() > 0
+							&& line.charAt(0) == '/'
+							&& line.charAt(1) == '/'
+						){
+							Gdx.app.debug("Chunk",line.toString());
+							line = new StringBuilder(1);
+							line.append(bufRead.readLine());//read next row
+						}
+						
+						if (loadingEntities==false && line.toString().startsWith("entities") ){
+								loadingEntities=true;
+								Gdx.app.debug("Chunk","loading entities");
+						}
 
-                            int posend = 1;
-                            while ((posend < -1+line.length()) && (line.charAt(posend)!= ' '))  {
-                                posend++;
-                            }
+						if (loadingEntities){
+							//ignore entities at the moment
+						} else {
+							//if layer is empty, fill with air
+							if (line.charAt(0) == 'l' ){
+								for (int elx = 0; elx < blocksX; elx++) {
+									for (int ely = 0; ely < blocksY; ely++) {
+										data[elx][ely][z] = Block.getInstance(0);
+									}
+								}
+							} else {
+								//fill layer block by block
+								y = 0;
+								do{
+									x = 0;
 
-                            data[x][y][z] = Block.getInstance(
-                                Integer.parseInt(line.substring(0,posdots)),
-                                Integer.parseInt(line.substring(posdots+1, posend)),
-                                new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
-                            );
-                            x++;
-                            line.delete(0,posend+1);
-                        } while (x < blocksX);
+									do{
+										int posdots = line.indexOf(":");
 
-                        line = new StringBuilder(1);
-                        line.append(bufRead.readLine());
+										int posend = 1;
+										while ((posend < -1+line.length()) && (line.charAt(posend)!= ' '))  {
+											posend++;
+										}
 
-                        y++;
-                    } while (y < blocksY);
-                    lastline = bufRead.readLine();
-                    z++;
-                } while (lastline != null);
-                return true;
-            } else {
-                Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
-            }
-        } catch (IOException ex) {
-            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
-        } catch (StringIndexOutOfBoundsException ex) {
-            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-        } catch (ArrayIndexOutOfBoundsException ex){
-            Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
-        }
+										data[x][y][z] = Block.getInstance(
+											Integer.parseInt(line.substring(0,posdots)),
+											Integer.parseInt(line.substring(posdots+1, posend)),
+											new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false)
+										);
+										x++;
+										line.delete(0,posend+1);
+									} while (x < blocksX);
+
+									line = new StringBuilder(1);
+									line.append(bufRead.readLine());//read next row
+
+									y++;
+								} while (y < blocksY);
+							}
+							z++;
+						}
+					}
+					//read next line
+					bufLine = bufRead.readLine();
+				}
+				return true;
+			} catch (IOException ex) {
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
+			} catch (StringIndexOutOfBoundsException ex) {
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+			} catch (ArrayIndexOutOfBoundsException ex){
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
+			}
+		} else {
+			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
+		}
         
         return false;
     }
@@ -221,17 +249,30 @@ public class Chunk {
         String lineFeed = System.getProperty("line.separator");
         
         path.file().createNewFile();
-        try (Writer writer = path.writer(false, "UTF8")) {
+        try (Writer writer = path.writer(false, "UTF8")) {		
             for (int z = 0; z < blocksZ; z++) {
-                writer.write("//"+z+lineFeed);
-                for (int y = 0; y < blocksY; y++) {
-                    String line = "";
-                    for (int x = 0; x < blocksX; x++) {
-                        line +=data[x][y][z].getId()+":"+data[x][y][z].getValue()+" ";  
-                    }
-                    writer.write(line+lineFeed);
-                }
-                writer.write(lineFeed);
+				//check if layer is empty
+				boolean dirty = false;
+				for (int x = 0; x < blocksX; x++) {
+					for (int y = 0; y < blocksY; y++) {
+						if (data[x][y][z].getId() != 0)
+							dirty=true;
+					}
+				}
+				
+				writer.write("//"+z+lineFeed);
+				if (dirty)
+					for (int y = 0; y < blocksY; y++) {
+						String line = "";
+						for (int x = 0; x < blocksX; x++) {
+							line +=data[x][y][z].getId()+":"+data[x][y][z].getValue()+" ";  
+						}
+						writer.write(line+lineFeed);
+					}
+				else {
+					writer.write('l'+lineFeed);
+				}
+				writer.write(lineFeed);
             }
 		
 			//save entities

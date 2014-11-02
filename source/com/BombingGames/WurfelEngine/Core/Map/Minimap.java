@@ -146,7 +146,7 @@ public class Minimap {
         fboRegion.flip(false, true);
 		
 		fbo.bind();
-		ShapeRenderer sh = WE.getEngineView().getShapeRenderer();
+		ShapeRenderer sh = view.getShapeRenderer();
 		sh.translate(posX, posY, 0);  
 
 		//render the map

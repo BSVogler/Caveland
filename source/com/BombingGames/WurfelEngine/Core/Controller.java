@@ -71,7 +71,7 @@ public class Controller implements GameManager {
     public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
         if (Controller.devtools == null)
-            devtools = new DevTools( 10, Gdx.graphics.getHeight()-50 );
+            devtools = new DevTools( 10, 50 );
         
         if (map == null){
             if (!loadMap("default")) {

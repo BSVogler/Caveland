@@ -191,12 +191,11 @@ public class GameView extends View implements GameManager {
         //render HUD and GUI
         {
             libGDXcamera.zoom = 1/getEqualizationScale();
-            libGDXcamera.update();
-
+            libGDXcamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             batch.setProjectionMatrix(libGDXcamera.combined);
             igShRenderer.setProjectionMatrix(libGDXcamera.combined);
 
-            WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
+            //WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
             Gdx.gl20.glLineWidth(1);
 
             //set viewport of hud to cover whole window
@@ -212,13 +211,8 @@ public class GameView extends View implements GameManager {
             if (Controller.getLightEngine() != null)
                 Controller.getLightEngine().render(this);
             
-            
             //render buttons
             stage.draw();
-
-            //scale to fit
-            //hudCamera.zoom = 1/equalizationScale;
-
         }
     }
        
@@ -402,6 +396,8 @@ public class GameView extends View implements GameManager {
         //stage.setViewport(new StretchViewport(width, height));
         //EngineView.getStage().setViewport(new StretchViewport(width, height));
         libGDXcamera.setToOrtho(false, width, height);
+		libGDXcamera.zoom = 1/getEqualizationScale();
+        libGDXcamera.update();
     }
 
     /**

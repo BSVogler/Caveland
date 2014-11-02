@@ -54,7 +54,7 @@ public class DevTools {
      */
     public static final int width=2;
     private final float[] data = new float[100];
-    private final int xPos, yPos, maxHeight;
+    private final int leftOffset, topOffset, maxHeight;
     private float timeStepMin;
     private int field;//the current field number
     private boolean visible = true;
@@ -69,11 +69,11 @@ public class DevTools {
     /**
      *
      * @param xPos the position of the diagram from left
-     * @param yPos the position of the diagram (its bottom)
+     * @param yPos the position of the diagram from top
      */
     public DevTools(final int xPos, final int yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.leftOffset = xPos;
+        this.topOffset = yPos;
         maxHeight=150;   
     }
     
@@ -128,7 +128,7 @@ public class DevTools {
             view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30,true);
             
             //draw diagramm
-            ShapeRenderer shr = WE.getEngineView().getShapeRenderer();
+            ShapeRenderer shr = view.getShapeRenderer();
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
             Gdx.gl.glLineWidth(1);
@@ -137,6 +137,9 @@ public class DevTools {
             shr.begin(ShapeRenderer.ShapeType.Filled);
             //background
             shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.2f));
+			int xPos = leftOffset;
+			int yPos = (int) (Gdx.graphics.getHeight()/view.getEqualizationScale()-topOffset);
+			
             shr.rect(xPos, yPos, getWidth(), -maxHeight);
             
             //render current field bar
@@ -281,16 +284,16 @@ public class DevTools {
      *
      * @return 
      */
-    public int getxPos() {
-        return xPos;
+    public int getLeftOffset() {
+        return leftOffset;
     }
 
     /**
      * 
      * @return Y-Up
      */
-    public int getyPos() {
-        return yPos;
+    public int getTopOffset() {
+        return topOffset;
     }
 
     /**
@@ -312,8 +315,8 @@ public class DevTools {
             if (editorbutton==null){
                 //add editor button
                 editorbutton = new Image(spritesheet.findRegion("editor_button"));
-                editorbutton.setX(xPos+width+40);
-                editorbutton.setY(yPos);
+                editorbutton.setX(leftOffset+width+40);
+                editorbutton.setY(Gdx.graphics.getHeight()-topOffset);
                 editorbutton.addListener(
                     new ClickListener() {
                         @Override
@@ -330,8 +333,8 @@ public class DevTools {
 				if (editorreversebutton==null){
 					//add reverse editor button
 					editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-					editorreversebutton.setX(xPos+width+80);
-					editorreversebutton.setY(yPos);
+					editorreversebutton.setX(leftOffset+width+80);
+					editorreversebutton.setY(Gdx.graphics.getHeight()-topOffset);
 					editorreversebutton.addListener(
 						new ClickListener() {
 							@Override

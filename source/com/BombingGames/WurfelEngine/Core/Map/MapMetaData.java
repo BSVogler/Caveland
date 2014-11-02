@@ -32,10 +32,12 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import static com.BombingGames.WurfelEngine.Core.Map.Chunk.METAFILESUFFIX;
+import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -119,9 +121,9 @@ public class MapMetaData {
      */
     public boolean write() throws IOException{
         if ("".equals(fileName)) return false;
-        FileHandle path =  Gdx.files.external(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/");
-        if (!path.exists()) path.mkdirs();//create fiel if it is missing
-        FileHandle meta = path.child("map."+METAFILESUFFIX);
+        File path = new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/");
+        if (!path.exists()) path.mkdir();//create folder if it is missing
+        FileHandle meta = new FileHandle(path+"/map."+METAFILESUFFIX);
         String lineFeed = System.getProperty("line.separator");
         
         //meta..createNewFile();
@@ -133,6 +135,7 @@ public class MapMetaData {
             writer.write(Integer.toString(chunkBlocksZ)+lineFeed);
             writer.write("0,0"+lineFeed);
             writer.write(description+lineFeed);
+			writer.close();
         } catch (IOException ex){
             throw ex;
         }

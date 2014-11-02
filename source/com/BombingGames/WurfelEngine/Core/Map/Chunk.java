@@ -168,8 +168,8 @@ public class Chunk {
 						}
 						
 						if (loadingEntities==false && line.toString().startsWith("entities") ){
-								loadingEntities=true;
-								Gdx.app.debug("Chunk","loading entities");
+							loadingEntities=true;
+							Gdx.app.debug("Chunk","loading entities");
 						}
 
 						if (loadingEntities){

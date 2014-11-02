@@ -293,20 +293,6 @@ public class GameView extends View implements GameManager {
         return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera
     }
     
-    /**
-     *Draw a string using the last active color.
-     * @param msg
-     * @param xPos
-     * @param yPos
-	 * @deprecated 
-     */
-	@Deprecated
-    public void drawString(final String msg, final int xPos, final int yPos) {
-        batch.begin();
-        WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
-        batch.end();
-    }
-	
 	    /**
      *Draw a string using the last active color.
      * @param msg

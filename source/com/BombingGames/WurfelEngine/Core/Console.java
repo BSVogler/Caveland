@@ -395,11 +395,11 @@ public class Console {
 //            Controller.getMap().setGenerator(generator);
             try {
                 Map.createMapFile(mapname);
+				return executeCommand("loadmap " +mapname);
             } catch (IOException ex) {
                 add(ex.getMessage(), "Warning");
                 return false;
             }
-            return executeCommand("loadmap " +mapname);
         }
          
         if (command.startsWith("gamespeed")){

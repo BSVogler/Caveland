@@ -789,5 +789,17 @@ public class Map implements Cloneable {
 	public Block getGroundBlock() {
 		return groundBlock;
 	}
+
+	public void print() {
+		for (int z = 0; z < blocksZ; z++) {
+			for (int y = 0; y < blocksY; y++) {
+				for (int x = 0; x < blocksX; x++) {
+					System.out.print(data[x][y][z].getId() + " ");
+				}
+				System.out.print("\n");
+			}
+				System.out.print("\n\n");
+		}
+	}
     
 }

@@ -341,7 +341,10 @@ public class Console {
             case "benchmark":
                 new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()));
                 //add("Spawned a benchmark ball.", "System");
-                return true;				
+                return true;
+			case "printmap":
+				Controller.getMap().print();
+				return true;
         }
         
 		if (command.startsWith("screenshake")){

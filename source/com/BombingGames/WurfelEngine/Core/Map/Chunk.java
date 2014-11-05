@@ -196,10 +196,10 @@ public class Chunk {
 											posend++;
 										}
 
-										Block.getInstance(
+										data[x][y][z] = Block.getInstance(
 											Integer.parseInt(line.substring(0,posdots)),
 											Integer.parseInt(line.substring(posdots+1, posend))
-										).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
+										);
 										x++;
 										line.delete(0,posend+1);
 									} while (x < blocksX);
@@ -364,4 +364,22 @@ public class Chunk {
     public static int getGameHeight(){
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
+	
+	/**
+	 * print the chunk to console
+	 */
+	public void print() {
+		for (int z = 0; z < blocksZ; z++) {
+			for (int y = 0; y < blocksY; y++) {
+				for (int x = 0; x < blocksX; x++) {
+					if (data[x][y][z].getId()==0)
+						System.out.print("  ");
+					else
+						System.out.print(data[x][y][z].getId() + " ");
+				}
+				System.out.print("\n");
+			}
+				System.out.print("\n\n");
+		}
+	}
 }

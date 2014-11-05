@@ -84,7 +84,7 @@ public class Map implements Cloneable {
     
     /**
      * Loads a map. Fill the map with {@link #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) }
-     * @param name if available on disk it will be load
+     * @param name if available on disk it will load the meta file
      * @param generator the generator used for generating new chunks
      * @throws java.io.IOException thrown if there is no full read/write access to the map file
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 

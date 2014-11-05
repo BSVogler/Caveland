@@ -162,7 +162,6 @@ public class Chunk {
 							&& line.charAt(0) == '/'
 							&& line.charAt(1) == '/'
 						){
-							Gdx.app.debug("Chunk",line.toString());
 							line = new StringBuilder(1);
 							line.append(bufRead.readLine());//read next row
 						}

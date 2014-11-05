@@ -57,7 +57,7 @@ public class AnimatedBlock extends Block implements Animatable{
      * @param delta the time wich has passed since last update
      */
     @Override
-    public void update(float delta) {
+    public void update(float delta, int x, int y, int z) {
         if (running) {
             counter += delta;
             if (counter >= animationsduration[getValue()]){

@@ -175,7 +175,7 @@ public class Block extends AbstractGameObject {
     }  
     
 		/**
-	 * places the object on the map. You should extend this to get the coordinate if {@link IsSelfAware}.
+	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}.
 	 * @param coord the position on the map
 	 * @return itself
 	 */
@@ -472,8 +472,14 @@ public class Block extends AbstractGameObject {
         increaseDrawCalls();
     }
 
-    @Override
-    public void update(float delta) {
+	/**
+	 * Update the block.
+	 * @param delta time in ms since last update
+	 * @param x relative pos
+	 * @param y relative pos
+	 * @param z relative pos
+	 */
+    public void update(float delta, int x, int y, int z) {
     }
     
 

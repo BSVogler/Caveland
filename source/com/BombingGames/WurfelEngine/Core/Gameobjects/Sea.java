@@ -75,7 +75,7 @@ public class Sea extends Block implements IsSelfAware{
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float delta, int x, int y, int z) {
 		if (coords!=null){
 			offsetY =
 				(int) (startvalue +

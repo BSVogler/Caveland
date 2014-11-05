@@ -116,7 +116,7 @@ public class Controller implements GameManager {
         for (int x=0, maxX=Map.getBlocksX(); x < maxX; x++)
             for (int y=0, maxY = Map.getBlocksY(); y < maxY; y++)
                 for (int z=0, maxZ=Map.getBlocksZ(); z < maxZ; z++)
-                    mapdata[x][y][z].update(delta);
+                    mapdata[x][y][z].update(delta, x, y, z);
         
         //update every entity
         for (int i = 0; i < map.getEntitys().size(); i++) {

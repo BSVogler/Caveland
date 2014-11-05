@@ -56,6 +56,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         super(id,0);
     }
 
+	/**
+     * Updates the logic of the object.
+     * @param delta time since last update
+     */
+    public abstract void update(float delta);
+	
     //IsSelfAware implementation
     @Override
     public Point getPosition() {

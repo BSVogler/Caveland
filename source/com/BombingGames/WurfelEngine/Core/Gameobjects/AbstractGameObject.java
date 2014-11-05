@@ -131,12 +131,6 @@ public abstract class AbstractGameObject {
     }
     
     /**
-     * Updates the logic of the object.
-     * @param delta time since last update
-     */
-    public abstract void update(float delta);
-    
-    /**
      * Get the category letter for accessing sprites.
      * @return
      */

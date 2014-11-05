@@ -790,6 +790,9 @@ public class Map implements Cloneable {
 		return groundBlock;
 	}
 
+	/**
+	 * prints the map to console
+	 */
 	public void print() {
 		for (int z = 0; z < blocksZ; z++) {
 			for (int y = 0; y < blocksY; y++) {

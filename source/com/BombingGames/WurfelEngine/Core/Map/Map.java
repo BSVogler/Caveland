@@ -794,7 +794,10 @@ public class Map implements Cloneable {
 		for (int z = 0; z < blocksZ; z++) {
 			for (int y = 0; y < blocksY; y++) {
 				for (int x = 0; x < blocksX; x++) {
-					System.out.print(data[x][y][z].getId() + " ");
+					if (data[x][y][z].getId()==0)
+						System.out.print("  ");
+					else
+						System.out.print(data[x][y][z].getId() + " ");
 				}
 				System.out.print("\n");
 			}

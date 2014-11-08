@@ -1,0 +1,372 @@
+/*
+ * Copyright 2013 Benedikt Vogler.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, 
+ *   this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice, 
+ *   this list of conditions and the following disclaimer in the documentation 
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of Bombing Games nor Benedikt Vogler nor the names of its contributors 
+ *   may be used to endorse or promote products derived from this software without specific
+ *   prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+package com.BombingGames.Caveland.Game;
+
+import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.Caveland.GameObjects.Lore;
+import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.Controller;
+import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
+import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
+
+
+/**
+ *
+ * @author Benedikt
+ */
+public class CustomGameView extends GameView{
+	private float timeContextDown = 0;
+	private boolean contextDown;
+	
+	
+    @Override
+    public void init(Controller controller) {
+        super.init(controller);
+        Gdx.app.debug("CustomGameView", "Initializing");
+         
+        Camera camera = new Camera(
+            getPlayer(0),
+            0, //left
+            0, //top
+            Gdx.graphics.getWidth(), //width
+            Gdx.graphics.getHeight(),//height
+			this,
+			controller
+        );
+		camera.setFullWindow(true);
+        addCamera(camera);
+		
+        ((PlayerWithWeapon) getPlayer(0)).setCamera(camera);
+		
+		//WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld2.mp3");
+        
+        
+//        controller.setMinimap(
+//            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,Gdx.graphics.getHeight()-10)
+//        );
+    }
+
+	public CustomPlayer getPlayer(int id){
+		return ((CustomGameController) getController()).getPlayer(id);
+	}
+	
+	@Override
+    public void onEnter() {
+        WE.getEngineView().addInputProcessor(new InputListener(this));
+		if (Controllers.getControllers().size > 0){
+			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(0),0));
+		}
+		if (Controllers.getControllers().size > 1){
+			getCameras().get(0).setFullWindow(false);
+			getCameras().get(0).setScreenSize(1920, getCameras().get(0).getScreenHeight()/2);
+			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
+			Camera camera = new Camera(player, 0, 540, 1920, 540, this, getController());
+			addCamera(camera);
+			player.setCamera(camera);
+			Controllers.getControllers().get(1).addListener(new XboxListener(this,player,1));
+		}
+    }
+	
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        //get input and do actions
+        Input input = Gdx.input;
+        
+            //walk
+            if (getPlayer(0) != null){
+				
+                getPlayer(0).walk(
+                    input.isKeyPressed(Input.Keys.W),
+                    input.isKeyPressed(Input.Keys.S),
+                    input.isKeyPressed(Input.Keys.A),
+                    input.isKeyPressed(Input.Keys.D),
+                    .5f+(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 0.25f: 0)
+                );
+            } else {
+                //update camera position
+                Camera camera = getCameras().get(0);
+                camera.move(
+                    (input.isKeyPressed(Input.Keys.D)? 3: 0)
+                    - (input.isKeyPressed(Input.Keys.A)? 3: 0),
+                    - (input.isKeyPressed(Input.Keys.W)? 3: 0)
+                    + (input.isKeyPressed(Input.Keys.S)? 3: 0)
+                );
+            }
+			
+			if (XboxListener.speed[0]!=-1)
+				getPlayer(0).setSpeed(XboxListener.speed[0]);
+					
+			if (contextDown)
+				timeContextDown+=delta;
+			
+			if (timeContextDown>400){
+				ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
+				if (loren.size()>0)
+					getPlayer(0).getInventory().addAll(loren.get(0).getContent());
+			}
+				
+	}
+
+	@Override
+	public void render() {
+		super.render();
+		getBatch().begin();
+		getPlayer(0).getInventory().render(this);
+		getPlayer(1).getInventory().render(this);
+		getBatch().end();
+	}
+
+	
+	
+
+
+	private static class XboxListener implements ControllerListener {
+		private final Controllable controllable;
+		public static float[] speed = new float[]{-1,-1};
+		private int id;
+		private final CustomGameView parent;
+
+		XboxListener(CustomGameView parent, Controllable controllable, int id) {
+			this.controllable = controllable;
+			this.id=id;
+			this.parent = parent;
+		}
+
+		@Override
+		public void connected(com.badlogic.gdx.controllers.Controller controller) {
+		}
+
+		@Override
+		public void disconnected(com.badlogic.gdx.controllers.Controller controller) {
+		}
+
+		@Override
+		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
+			if (buttonCode==13)//A
+				controllable.jump();
+			
+			if (buttonCode==11) //X
+				((CustomPlayer) controllable).attack();
+			
+			if (buttonCode==12)//B
+				((CustomPlayer) controllable).throwItem();
+			
+			if (buttonCode==14) //14=Y
+				parent.contextDown = true;
+			
+			if (buttonCode==8)//???
+				((CustomPlayer) controllable).getInventory().switchItems(true);
+			
+			if (buttonCode==9)//???
+				((CustomPlayer) controllable).getInventory().switchItems(false);
+			return false;
+		}
+
+		@Override
+		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
+			if (buttonCode==14){ //14=Y
+				parent.contextDown = false;
+				parent.timeContextDown =0;
+			}
+			return true;
+		}
+
+		@Override
+		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
+				speed[id] = 
+					(Math.abs(controller.getAxis(2))
+				   +Math.abs(controller.getAxis(3)))/2;
+				if (speed[id] < 0.2f){
+					if (speed[id] > 0.1f) {
+						controllable.setMovement(
+							new Vector3(
+								controller.getAxis(2),
+								controller.getAxis(3),
+								controllable.getMovement().z
+							)
+						);
+					}
+					speed[id] = 0;
+				} else {
+					controllable.setMovement(
+						new Vector3(
+							controller.getAxis(2),
+							controller.getAxis(3),
+							controllable.getMovement().z
+						)
+					);
+				}
+			return false;
+		}
+
+		@Override
+		public boolean povMoved(com.badlogic.gdx.controllers.Controller controller, int povCode, PovDirection value) {
+			return false;
+		}
+
+		@Override
+		public boolean xSliderMoved(com.badlogic.gdx.controllers.Controller controller, int sliderCode, boolean value) {
+			return false;
+		}
+
+		@Override
+		public boolean ySliderMoved(com.badlogic.gdx.controllers.Controller controller, int sliderCode, boolean value) {
+			return false;
+		}
+
+		@Override
+		public boolean accelerometerMoved(com.badlogic.gdx.controllers.Controller controller, int accelerometerCode, Vector3 value) {
+			return false;
+		}
+	}
+    
+    private class InputListener implements InputProcessor {
+		CustomGameView parent;
+
+		InputListener(CustomGameView parent) {
+			this.parent = parent;
+		}
+		
+		
+	
+		
+
+        @Override
+        public boolean keyDown(int keycode) {
+            if (!WE.getConsole().isActive()) {
+                //toggle minimap
+                 if (keycode == Input.Keys.M && getController().getMinimap() != null){
+                     getController().getMinimap().toggleVisibility();
+                 }
+                 //toggle fullscreen
+                 if (keycode == Input.Keys.F){
+                     WE.setFullscreen(!WE.isFullscreen());
+                 }
+
+                 //toggle eathquake
+                 if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
+					 parent.contextDown = true;
+//   getMap().earthquake(5000);
+                 }
+
+                 //pause
+                 //time is set 0 but the game keeps running
+                   if (keycode == Input.Keys.P) {
+                     getController().setTimespeed(0);
+                  } 
+
+                 //reset zoom
+                 if (keycode == Input.Keys.Z) {
+                     getCameras().get(0).setZoom(1);
+                     WE.getConsole().add("Zoom reset");
+                  }  
+
+                 //show/hide light engine
+                 if (keycode == Input.Keys.L) {
+                     if (getLightEngine() != null) getLightEngine().renderData(!getLightEngine().isRenderingData());
+                  } 
+
+                 if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
+                     WE.showMainMenu();
+				 
+				if (keycode==Input.Keys.NUM_1)
+					parent.getPlayer(0).getInventory().switchItems(true);
+			
+				if (keycode==Input.Keys.NUM_2)
+					parent.getPlayer(0).getInventory().switchItems(false);
+				
+				if (keycode==Input.Keys.SPACE)
+					parent.getPlayer(0).jump();
+				
+				if (keycode==Input.Keys.E || keycode==Input.Keys.Q)
+					if (parent.getOrientation()==0)
+						parent.setOrientation(2);
+					else 
+						parent.setOrientation(0);
+				
+            }
+            
+            return true;            
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+			if (button ==Buttons.RIGHT)getPlayer(0).throwItem();
+			if (button ==Buttons.LEFT) getPlayer(0).attack();
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount/100f);
+            
+            WE.getConsole().add("Zoom: " + getCameras().get(0).getZoom());   
+            return true;
+        }
+    }
+}

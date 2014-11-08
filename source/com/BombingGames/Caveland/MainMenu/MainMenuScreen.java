@@ -30,7 +30,8 @@
  */
 package com.BombingGames.Caveland.MainMenu;
 
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
+import com.BombingGames.Caveland.Game.CustomGameController;
+import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -42,13 +43,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class MainMenuScreen implements MainMenuInterface {
-	private final BasicMenuItem[] menuItems;
+	private final TextButton[] menuItems = new TextButton[3];
+	private Stage stage;
 	private ShapeRenderer shr;
 	private Sprite lettering;    
     private Texture background;
@@ -57,15 +64,54 @@ public class MainMenuScreen implements MainMenuInterface {
     private BitmapFont font;
     private float alpha =0;
 
-	public MainMenuScreen(BasicMenuItem[] menuItems) {
-		this.menuItems = menuItems;
-		
-		
-		
-	}
+
 
 	@Override
 	public void init() {
+		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+        WE.getEngineView().addInputProcessor(stage);
+		
+		menuItems[0]=new TextButton("Start", WE.getEngineView().getSkin());
+		menuItems[0].setPosition(stage.getWidth()/2, 500);
+		//start the game
+		menuItems[0].addListener(
+			new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					WE.initGame(new CustomGameController(), new CustomGameView(), WE.getCurrentConfig());
+				}
+			}
+		);
+		
+		menuItems[1]=new TextButton("Credits", WE.getEngineView().getSkin());
+		menuItems[1].setPosition(stage.getWidth()/2, 400);
+		menuItems[1].addListener(
+			new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					WE.getInstance().setScreen(new CreditsScreen());
+				}
+			}
+		);
+		
+		menuItems[2]=new TextButton("Exit", WE.getEngineView().getSkin());
+		menuItems[2].setPosition(stage.getWidth()/2, 300);
+		menuItems[2].addListener(
+			new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					Gdx.app.exit();
+				}
+			}
+		);
+		
+		for (TextButton menuItem : menuItems) {
+			stage.addActor(menuItem);
+		}
+		
 		//load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
@@ -93,9 +139,7 @@ public class MainMenuScreen implements MainMenuInterface {
 	public void render(float delta) {
 		delta *=1000;//in ms 
 		//update
-		for (BasicMenuItem basicMenuItem : menuItems) {
-            if (basicMenuItem.isClicked()) basicMenuItem.action();
-        }
+		
 		
 		alpha += delta/1000f;
 		if (alpha>1) alpha=1;
@@ -124,13 +168,11 @@ public class MainMenuScreen implements MainMenuInterface {
 			lettering.setColor(1, 1, 1, alpha);
 			lettering.draw(batch);
 
-			// Draw the menu items
-			for (BasicMenuItem mI : menuItems) {
-				mI.render(camera, font, batch, shr);
-			}
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 			font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
+		
+		stage.draw();
         
         font.scale(-0.5f);
         batch.begin();

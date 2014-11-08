@@ -44,5 +44,38 @@ public class Caveland {
 			);
 		}
     }
+
+	public static String getCredits(){
+		return "Credits\n" +
+			"\n" +
+			"ein Spiel von\n" +
+			"Benedikt S. Vogler\n" +
+			"\n" +
+			"Graphik\n" +
+			"Frederic Brückner\n" +
+			"\n" +
+			"Musik & Sound\n" +
+			"Felix von Dohlen\n" +
+			"Marcel Gohsen\n" +
+			"\n" +
+			"Qualitätssicherung\n" +
+			"Thomas Vogt\n" +
+			"\n" +
+			"Hintergrund Geschichte\n" +
+			"Felix Günther\n" +
+			"\n" +
+			"Web Development\n" +
+			"René Weißer\n" +
+			"\n" +
+			"Speziellen Dank an\n" +
+			"Vanya Gercheva\n" +
+			"Ulrike Vogler\n" +
+			"Gereon Vogler\n" +
+			"Bernhard Vogler\n" +
+			"Pia Lenßen\n" +
+			"reddit.com/r/Gamedev\n" +
+			"Bauhaus Universität Weimar";
+	
+	}	
     
 }

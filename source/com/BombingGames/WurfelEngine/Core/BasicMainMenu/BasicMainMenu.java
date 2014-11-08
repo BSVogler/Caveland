@@ -40,7 +40,7 @@ public class BasicMainMenu implements MainMenuInterface {
  
     private static MenuView view;
     private static MenuController controller;
-    private static BasicMenuItem[] menuItems;
+    private BasicMenuItem[] menuItems;
     private boolean warning = true;
 
     /**
@@ -49,7 +49,7 @@ public class BasicMainMenu implements MainMenuInterface {
 
      */
     public BasicMainMenu(BasicMenuItem[] menuItems) {
-        BasicMainMenu.menuItems = menuItems;
+        this.menuItems = menuItems;
     }
     
     

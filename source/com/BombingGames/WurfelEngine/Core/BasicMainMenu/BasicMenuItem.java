@@ -48,7 +48,7 @@ import java.util.logging.Logger;
  *A menu item is an object wich can be placed on a menu.
  * @author Benedikt
  */
-public class BasicMenuItem{
+public class BasicMenuItem {
     private static Sound sound;
     private static int highlight =0;
     private final Class<? extends Controller> gameController;
@@ -106,12 +106,12 @@ public class BasicMenuItem{
             sr.setColor(Color.LIGHT_GRAY.cpy());
         else 
             sr.setColor(Color.DARK_GRAY.cpy());
+		batch.end();
         sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.rect(x, y, width, height);
         sr.end();
-        batch.begin();
+		batch.begin();
         font.draw(batch, label, x, y);
-		batch.end();
     }
     
 

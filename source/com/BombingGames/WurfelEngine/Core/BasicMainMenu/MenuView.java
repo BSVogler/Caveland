@@ -108,28 +108,25 @@ public class MenuView {
         batch.begin();
             //lettering.setColor(1, 1, 1, alpha);
             lettering.draw(batch);
-        batch.end();
         
-        // Draw the menu items
-        for (BasicMenuItem mI : BasicMainMenu.getController().getMenuItems()) {
-            mI.render(camera, font, batch, sr);
-        }
+			// Draw the menu items
+			for (BasicMenuItem mI : BasicMainMenu.getController().getMenuItems()) {
+				mI.render(camera, font, batch, sr);
+			}
         
-        //draw warnings
-        batch.begin();
+			//draw warnings
             font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
             font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
             if (warning) {
                 font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
                 font.draw(batch, "You can hide this warning whith BasicMainMenu#supressWarning().", 20, 90);
             }
-        batch.end();
         
-        font.scale(-0.5f);
-        batch.begin();
-            font.drawMultiLine(batch, WE.getCredits(), 50, 100);
-        batch.end();
-        font.scale(0.5f);
+        
+			font.scale(-0.5f);
+			font.drawMultiLine(batch, WE.getCredits(), 50, 100);
+			font.scale(0.5f);
+		batch.end();
     }
 
     /**

@@ -149,9 +149,10 @@ public class WE extends Game {
 			};   
 			mainMenu = new BasicMainMenu(menuItems);
 		}
+		engineView = new EngineView();
+		
 		Gdx.app.debug("WE","Initializing main menu...");
 		mainMenu.init();
-		engineView = new EngineView();
 
 		console = new Console(
 			engineView.getSkin(),

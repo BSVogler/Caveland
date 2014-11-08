@@ -34,7 +34,6 @@ import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -52,11 +51,11 @@ public class MainMenuScreen implements MainMenuInterface {
 	private final BasicMenuItem[] menuItems;
 	private ShapeRenderer shr;
 	private Sprite lettering;    
-    private Sprite background;
+    private Texture background;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private BitmapFont font;
-    private float a =0;
+    private float alpha =0;
 
 	public MainMenuScreen(BasicMenuItem[] menuItems) {
 		this.menuItems = menuItems;
@@ -68,16 +67,16 @@ public class MainMenuScreen implements MainMenuInterface {
 	@Override
 	public void init() {
 		//load textures
-		FileHandle file = Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png");
-        lettering = new Sprite(new Texture(file));
+        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
         lettering.setY(50);
         lettering.flip(false, true);
         
-        background = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.png")));
-        background.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        background.setY(50);
-        background.flip(false, true);
+        background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.png"));
+		
+        //background.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
+        //background.setY(50);
+        //background.flip(false, true);
         
         batch = new SpriteBatch();
 		shr = new ShapeRenderer();
@@ -92,13 +91,14 @@ public class MainMenuScreen implements MainMenuInterface {
 
 	@Override
 	public void render(float delta) {
+		delta *=1000;//in ms 
 		//update
 		for (BasicMenuItem basicMenuItem : menuItems) {
             if (basicMenuItem.isClicked()) basicMenuItem.action();
         }
 		
-		a += delta/1000f;
-		if (a>1) a=1;
+		alpha += delta/1000f;
+		if (alpha>1) alpha=1;
 		
 		//render
 		 //clear & set background to black
@@ -112,15 +112,16 @@ public class MainMenuScreen implements MainMenuInterface {
         
         //Background        
         batch.begin();
-			for (int x = 0; x-1 < Gdx.graphics.getWidth()/background.getWidth(); x++) {
-				for (int y = 0; y-1 < Gdx.graphics.getHeight()/background.getHeight(); y++) {
-					background.setPosition(x*background.getWidth(), y*background.getHeight());
-					background.draw(batch);
-				}
-			}
+			batch.draw(background, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
+//			for (int x = 0; x-1 < Gdx.graphics.getWidth()/background.getWidth(); x++) {
+//				for (int y = 0; y-1 < Gdx.graphics.getHeight()/background.getHeight(); y++) {
+//					background.setPosition(x*background.getWidth(), y*background.getHeight());
+//					background.draw(batch);
+//				}
+//			}
         
 			// render the lettering
-			lettering.setColor(1, 1, 1, a);
+			lettering.setColor(1, 1, 1, alpha);
 			lettering.draw(batch);
 
 			// Draw the menu items

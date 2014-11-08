@@ -5,7 +5,7 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.Caveland.Game.GunTestController;
 import com.BombingGames.Caveland.Game.GunTestView;
 import com.BombingGames.Caveland.Game.SplitScreenView;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
+import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
@@ -23,6 +23,7 @@ public class Caveland {
      */
     public static void main(String[] args) {
         WE.construct("Wurfelengine V" + WE.VERSION, args);
+		
         
         BasicMenuItem[] menuItems = new BasicMenuItem[]{
             new BasicMenuItem(0, "Load Map", CustomGameController.class, CustomGameView.class, new CustomConfiguration()),
@@ -33,7 +34,7 @@ public class Caveland {
             new BasicMenuItem(6, "Exit")
         };   
         
-        WE.setMainMenu(new BasicMainMenu(menuItems));
+        WE.setMainMenu(new MainMenuScreen(menuItems));
         WE.launch();
 		if (!new File(WorkingDirectory.getMapsFolder()+"/default").exists()){
 			InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/BombingGames/Caveland/defaultmap.zip");

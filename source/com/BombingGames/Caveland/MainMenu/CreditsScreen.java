@@ -34,6 +34,7 @@ import com.BombingGames.Caveland.Caveland;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -71,6 +72,11 @@ public class CreditsScreen extends WEScreen {
 
     @Override
     public void renderImpl(float delta) {
+		//update
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			WE.showMainMenu();
+		
+		//render
         //clear & set background to black
         Gdx.gl20.glClearColor(0.75f, 0.63f, 0.36f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);

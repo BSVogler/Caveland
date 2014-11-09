@@ -175,7 +175,7 @@ public class Block extends AbstractGameObject {
     }  
     
 		/**
-	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}.
+	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}. Block may be placed without this method call.
 	 * @param coord the position on the map
 	 * @return itself
 	 */

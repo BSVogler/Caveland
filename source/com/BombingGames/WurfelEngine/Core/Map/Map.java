@@ -773,7 +773,7 @@ public class Map implements Cloneable {
 		Gdx.app.debug("Map", "modified");
 		if (minimap != null) minimap.needsRebuild();
 		for (Camera camera : cameras) {
-			camera.requestRecalc();
+			camera.rayCastingClipping();
 		}
 		LightEngine.calcSimpleLight();
 	}

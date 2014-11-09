@@ -127,7 +127,6 @@ public class Camera {
 	
 	private final GameView gameView;
 	private final Controller gameController;
-	private boolean recalcRequested;
 	
 	/**
 	 * Creates a camera pointing at the middle of the map.
@@ -278,12 +277,6 @@ public class Camera {
 		combined.set(projection);
 		Matrix4.mul(combined.val, view.val);
 		
-		if (recalcRequested){
-			Gdx.app.debug("Camera", "a recalc is being done…");
-			rayCastingClipping();
-			recalcRequested = false;
-		}
-
         //don't know what this does
 		//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
 		//Gdx.gl20.glLoadMatrixf(projection.val, 0);
@@ -485,7 +478,7 @@ public class Camera {
 	 * speed.
 	 */
 	public void rayCastingClipping() {
-		System.out.println("doing clipping");
+		System.out.println("Doing rayCastingClipping.");
 		if (zRenderingLimit > 0) {
 			//prepare clipping
 			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
@@ -779,16 +772,18 @@ public class Camera {
 	 * @param limit minimum is 0
 	 */
 	public void setZRenderingLimit(int limit) {
-		if (limit != zRenderingLimit)
-			requestRecalc();
+		if (limit != zRenderingLimit){//only if it differs
 		
-		zRenderingLimit = limit;
+			zRenderingLimit = limit;
 
-		//clamp
-		if (limit >= Map.getBlocksZ()) {
-			zRenderingLimit = Map.getBlocksZ();
-		} else if (limit < 0) {
-			zRenderingLimit = 0;//min is 0
+			//clamp
+			if (limit >= Map.getBlocksZ()) {
+				zRenderingLimit = Map.getBlocksZ();
+			} else if (limit < 0) {
+				zRenderingLimit = 0;//min is 0
+			}
+			
+			rayCastingClipping();
 		}
 	}
 
@@ -1065,12 +1060,4 @@ public class Camera {
 		boolean[] tmp = getClipping(coord);
 		return (tmp[0] && tmp[1] && tmp[2]);
 	}
-
-	/**
-	 * recalcualtes the camera on next check
-	 */
-	public void requestRecalc() {
-		recalcRequested = true;
-	}
-
 }

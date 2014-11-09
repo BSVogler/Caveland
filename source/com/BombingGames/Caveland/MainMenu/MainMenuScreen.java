@@ -36,7 +36,6 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -69,7 +68,6 @@ public class MainMenuScreen extends AbstractMainMenu {
     private BitmapFont font;
     private float alpha =0;
 	private int selectionIndex =0;
-
 
 
 	@Override
@@ -222,29 +220,21 @@ public class MainMenuScreen extends AbstractMainMenu {
 	
 	private class InputListener implements InputProcessor {
 
-		private InputListener() {
-		}
-        
-        
-
         @Override
         public boolean keyDown(int keycode) {
-            if (keycode == Input.Keys.ESCAPE)
-                Gdx.app.exit();
-			
-            if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S){
+            if (keycode == Keys.DOWN || keycode == Keys.S){
                 selectionIndex++;
 				if (selectionIndex>=menuItems.length)
 					selectionIndex=0;
 			}
 			
-            if (keycode == Input.Keys.UP || keycode == Input.Keys.W){
+            if (keycode == Keys.UP || keycode == Keys.W){
 				selectionIndex--;
 				if (selectionIndex<0)
 					selectionIndex=menuItems.length-1;
 			}
 			
-            if (keycode == Input.Keys.ENTER || Gdx.input.isKeyPressed(Keys.SPACE))
+            if (keycode == Keys.ENTER || Gdx.input.isKeyPressed(Keys.SPACE))
                 menuItems[selectionIndex].fire(new ChangeEvent());
 			
             return true;

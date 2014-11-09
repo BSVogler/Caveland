@@ -48,6 +48,7 @@ import java.util.logging.Logger;
  */
 public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
+	private static ArrayList<Camera> cameras = new ArrayList<>(2);
         
     private final String filename;
     
@@ -70,7 +71,6 @@ public class Map implements Cloneable {
 	
 	private boolean modified;
 	private Minimap minimap;
-	private ArrayList<Camera> cameras = new ArrayList<>(2);
     
     /**
      * Loads a map.

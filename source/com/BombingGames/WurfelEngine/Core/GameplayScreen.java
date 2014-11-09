@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
@@ -110,6 +111,7 @@ public class GameplayScreen implements Screen{
         delta *= 1000;
         controller.update(delta);
         view.update(delta);
+		getMap().update(delta);//hack to prevent 1-frame lag by too late write access via view update
         view.render();
         WE.getEngineView().getStage().draw();
 

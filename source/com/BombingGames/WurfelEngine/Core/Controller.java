@@ -124,8 +124,6 @@ public class Controller implements GameManager {
             if (map.getEntitys().get(i).shouldBeDisposed())
                 map.getEntitys().remove(i);
         }
-        
-        getMap().update(delta);
     }
 
     /**

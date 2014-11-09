@@ -139,6 +139,9 @@ public class GameView extends View implements GameManager {
         stage.act(delta);
         
         //update cameras
+		/**
+		 * problem! Write acces in view. causes 1 frame hack without hacks.
+		 */
         for (Camera camera : cameras) {
             if (WE.getCurrentConfig().isChunkSwitchAllowed()) {
                 //earth to right

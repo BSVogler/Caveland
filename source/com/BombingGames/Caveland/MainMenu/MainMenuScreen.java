@@ -205,9 +205,6 @@ public class MainMenuScreen extends AbstractMainMenu {
         font.drawMultiLine(batch, WE.getCredits(), 50, 100);
         batch.end();
         font.scale(0.5f);
-		
-		WE.updateAndRender(delta);
-		
 	}
 
 	@Override

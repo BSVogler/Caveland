@@ -149,7 +149,7 @@ public class LoadingScreen extends WEScreen {
     }
 
     @Override
-    public void render(float delta) {
+    public void renderImpl(float delta) {
         if (WE.getAssetManager().update()) { // Load some, will return true if done loading 
             Gdx.app.log("Loading", "finished");
             WE.startGame();
@@ -170,7 +170,6 @@ public class LoadingScreen extends WEScreen {
         // Show the loading screen
         stage.act();
         stage.draw();
-        WE.updateAndRender(delta*1000f);
     }
 
     @Override

@@ -40,9 +40,17 @@ import com.badlogic.gdx.Screen;
 public abstract class WEScreen implements Screen {
 
 	@Override
-	public void render(float delta){
+	public final void render(float delta){
+		delta *= 1000;
+		renderImpl(delta);
 		WE.updateAndRender(delta);
 	}
+	
+	/**
+	 * 
+	 * @param delta time in ms 
+	 */
+	public abstract void renderImpl(float delta);
 
 	
 	

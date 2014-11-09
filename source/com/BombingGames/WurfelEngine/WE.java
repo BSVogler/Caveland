@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine;
 
+import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.Configuration;
@@ -38,13 +39,11 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
-import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -69,7 +68,7 @@ public class WE {
     private static boolean fullscreen = false;
     private static WEGame game;
     private static GameplayScreen gameplayScreen;
-    private static MainMenuInterface mainMenu;
+    private static AbstractMainMenu mainMenu;
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
     private static Console console;
@@ -80,7 +79,7 @@ public class WE {
      * @param mainMenu 
      * @see  #launch() 
      */
-    public static void setMainMenu(final MainMenuInterface mainMenu) {
+    public static void setMainMenu(final AbstractMainMenu mainMenu) {
         WE.mainMenu = mainMenu;
     }
     
@@ -337,7 +336,7 @@ public class WE {
 		return gameplayScreen;
 	}
 
-	private static class WurfelEngineIntro implements Screen {
+	private static class WurfelEngineIntro extends WEScreen {
 		private final Sprite lettering;
 		private final SpriteBatch batch;
 		private float alpha =0;
@@ -352,7 +351,7 @@ public class WE {
 		}
 
 		@Override
-		public void render(float delta) {
+		public void renderImpl(float delta) {
 			if (increase){
 				if (alpha>=1){
 					alpha=1;
@@ -368,8 +367,6 @@ public class WE {
 					alpha -= delta;
 					drawLettering();
 				}
-					
-			WE.updateAndRender(delta*1000f);
 		}
 		
 		void drawLettering(){

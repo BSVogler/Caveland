@@ -29,14 +29,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package com.BombingGames.WurfelEngine.Core;
- 
-import com.badlogic.gdx.Screen;
 
 /**
  * The game state of the Main Menu.
  * @author Benedikt
  */
-public interface MainMenuInterface extends Screen{
+public abstract class AbstractMainMenu extends WEScreen {
     /**
      * Use init like the constructor. Init gets called when every system is ready.
      */

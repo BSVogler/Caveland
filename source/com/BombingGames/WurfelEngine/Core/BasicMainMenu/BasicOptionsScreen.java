@@ -84,7 +84,7 @@ public class BasicOptionsScreen extends WEScreen {
     }
 
     @Override
-    public void render(float delta) {
+    public void renderImpl(float delta) {
         //clear & set background to black
         Gdx.gl20.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -99,7 +99,6 @@ public class BasicOptionsScreen extends WEScreen {
 		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
-        WE.updateAndRender(delta*1000f);
     }
 
     @Override

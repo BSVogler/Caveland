@@ -33,7 +33,7 @@ package com.BombingGames.Caveland.MainMenu;
 import com.BombingGames.Caveland.CustomConfiguration;
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
-import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
+import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -56,7 +56,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  *
  * @author Benedikt Vogler
  */
-public class MainMenuScreen implements MainMenuInterface {
+public class MainMenuScreen extends AbstractMainMenu {
 	private final TextButton[] menuItems = new TextButton[3];
 	private Stage stage;
 	private ShapeRenderer shr;

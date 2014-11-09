@@ -5,9 +5,9 @@
 package com.BombingGames.WurfelEngine.Core.Loading;
 
 import com.BombingGames.WurfelEngine.Core.Configuration;
+import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * Class under public domain. Modified for own needs. This class renders a loading screen.
  * @author Mats Svensson, Benedikt Vogler
  */
-public class LoadingScreen implements Screen {
+public class LoadingScreen extends WEScreen {
 
     private Stage stage;
 

@@ -31,9 +31,9 @@
 package com.BombingGames.Caveland.MainMenu;
 
 import com.BombingGames.Caveland.Caveland;
+import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -45,7 +45,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  *
  * @author Benedikt Vogler
  */
-public class CreditsScreen implements Screen {
+public class CreditsScreen extends WEScreen {
     private final Stage stage;
     private final OrthographicCamera camera;
     //private final TestActor actor;

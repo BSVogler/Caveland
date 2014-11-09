@@ -156,7 +156,7 @@ public class BasicMenuItem {
         if (label.equalsIgnoreCase("exit")) {
             Gdx.app.exit();
         } else if (label.equalsIgnoreCase("options")) {
-            WE.getInstance().setScreen(new BasicOptionsScreen());
+            WE.setScreen(new BasicOptionsScreen());
         }else {
             try {
                 Controller c = getGameController().newInstance();

@@ -39,6 +39,7 @@ import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
+import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -59,112 +60,21 @@ import java.io.File;
  * @author Benedikt S. Vogler
  * @version 1.3.16
  */
-public class WE extends Game {
+public class WE {
     /**
      * The version of the Engine
      */
     public static final String VERSION = "1.3.16";    
     private static File workingDirectory;
     private static boolean fullscreen = false;
-    private static WE instance;
+    private static WEGame game;
     private static GameplayScreen gameplayScreen;
     private static MainMenuInterface mainMenu;
     private static final AssetManager assetManager = new AssetManager();
     private static LwjglApplicationConfiguration config;
     private static Console console;
     private static EngineView engineView;
-	private boolean skipintro =false;
-
-    /**
-     * Create the Engine. Don't use this constructor. Use construct() instead. 
-     * @param title The title, which is displayed in the window.
-     * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
-     */
-    private WE(String title, final String[] args){       
-        // set the name of the application menu item on mac
-        if (System.getProperty("os.name").toLowerCase().contains("mac"))
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
-        
-        config = new LwjglApplicationConfiguration();
-        
-        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-        config.fullscreen = true;
-        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = 0;//don't lock FPS
-         
-        //arguments
-        if (args.length > 0){
-            //look if contains launch parameters
-            for (int i = 0; i < args.length; i++) {
-                switch (args[i]) {
-                    case "-fullscreen":
-                    case "-f":
-                        //start in fullscreen
-                        config.fullscreen = true;
-                        break;
-                    case "-windowed":
-                        //start in windowed mode
-                        config.fullscreen = false;
-                        break;
-                    case "-w":
-                        //set the width
-                        config.width = Integer.parseInt(args[i+1]);
-                        break;
-                    case "-h":
-                        //set the height
-                        config.height = Integer.parseInt(args[i+1]);
-                        break;
-					case "-skipintro":
-						skipintro=true;
-                        break;
-                }
-            }
-        }    
-        
-        config.title = title + " " + config.width + "x"+config.height;
-
-        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
-        
-        //LIBGDX: no equivalent found in libGDX yet
-        //setUpdateOnlyWhenVisible(true);        
-        //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
-        //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
-    }
-    
-    /**
-         * You don't have to manually call this method. Starts init() process
-         */
-    @Override
-    public void create() {
-		if (!skipintro)
-			setScreen(new WurfelEngineIntro());
-			
-		if (mainMenu==null){
-			Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
-			Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
-			BasicMenuItem[] menuItems = new BasicMenuItem[]{
-				new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
-				new BasicMenuItem(1, "Options"),
-				new BasicMenuItem(2, "Exit")
-			};   
-			mainMenu = new BasicMainMenu(menuItems);
-		}
-		engineView = new EngineView();
-		
-		Gdx.app.debug("WE","Initializing main menu...");
-		mainMenu.init();
-
-		console = new Console(
-			engineView.getSkin(),
-			Gdx.graphics.getWidth()/2,
-			Gdx.graphics.getHeight()/4
-		);
-
-		if (skipintro){
-			setScreen(mainMenu);
-		}
-    }
-
+	
     /**
      * Pass the mainMenu which get's displayed when you call launch().
      * @param mainMenu 
@@ -180,8 +90,12 @@ public class WE extends Game {
      * @param args launch parameters. For a list look in the wiki.
      */
     public static void construct(final String title, final String[] args){
-        instance = new WE(title,args);
+        game = new WEGame(title,args);
     }
+	
+	public static void setScreen(WEScreen screen){
+		game.setScreen(screen);
+	}
     
     /**
      * Start the engine. You have to pass a main menu first.
@@ -189,16 +103,8 @@ public class WE extends Game {
      */
     public static void launch(){
         System.out.println("Launching engine...");
-        LwjglApplication application = new LwjglApplication(instance, config);
+        LwjglApplication application = new LwjglApplication(game, config);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-    }
-    
-    /**
-     * Singleton method to get the only living instance.
-     * @return the wurfelengine's main class containing everything
-     */
-    public static WE getInstance(){
-        return instance;
     }
     
     /**
@@ -209,7 +115,7 @@ public class WE extends Game {
      * @see com.BombingGames.WurfelEngine.WE#startGame()
      */
     public static void initGame(final Controller controller, final GameView view, final Configuration config){
-        if (instance != null) {
+        if (game != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
@@ -280,9 +186,9 @@ public class WE extends Game {
      * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, GameView view)</i>. This is called after the loading screen.
      */
     public static void startGame(){
-        if (instance != null) {
+        if (game != null) {
             Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
-            instance.setScreen(gameplayScreen);
+            game.setScreen(gameplayScreen);
         } else
             Gdx.app.error("Wurfel Engine", "You should call initGame first.");
     }
@@ -294,7 +200,7 @@ public class WE extends Game {
         if (gameplayScreen != null) gameplayScreen.dispose();
         gameplayScreen = null;
         engineView.resetInputProcessors();
-        instance.setScreen(mainMenu);
+        game.setScreen(mainMenu);
     }
     
     /**
@@ -352,7 +258,7 @@ public class WE extends Game {
      * @return true when running in fullscreen, false if in window mode
      */
     public static boolean isFullscreen() {
-         if (instance != null) {
+         if (game != null) {
             return fullscreen;
         } else {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
@@ -365,7 +271,7 @@ public class WE extends Game {
      * @return the asset manager.
      */
     public static AssetManager getAssetManager() {
-        if (instance != null) {
+        if (game != null) {
             return assetManager;
         } else {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
@@ -504,6 +410,99 @@ public class WE extends Game {
 			WE.showMainMenu();
 		}
 	}
+
+	private static class WEGame extends Game {
+		private boolean skipintro =false;
+
+		/**
+		 * Create the Engine. Don't use this constructor. Use construct() instead. 
+		 * @param title The title, which is displayed in the window.
+		 * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
+		 */
+		private WEGame(String title, final String[] args) {
+        // set the name of the application menu item on mac
+        if (System.getProperty("os.name").toLowerCase().contains("mac"))
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
+        
+        config = new LwjglApplicationConfiguration();
+        
+        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
+        config.fullscreen = true;
+        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
+        config.foregroundFPS = 0;//don't lock FPS
+         
+        //arguments
+        if (args.length > 0){
+            //look if contains launch parameters
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "-fullscreen":
+                    case "-f":
+                        //start in fullscreen
+                        config.fullscreen = true;
+                        break;
+                    case "-windowed":
+                        //start in windowed mode
+                        config.fullscreen = false;
+                        break;
+                    case "-w":
+                        //set the width
+                        config.width = Integer.parseInt(args[i+1]);
+                        break;
+                    case "-h":
+                        //set the height
+                        config.height = Integer.parseInt(args[i+1]);
+                        break;
+					case "-skipintro":
+						skipintro=true;
+                        break;
+                }
+            }
+        }    
+        
+        config.title = title + " " + config.width + "x"+config.height;
+
+        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
+        
+        //LIBGDX: no equivalent found in libGDX yet
+        //setUpdateOnlyWhenVisible(true);        
+        //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
+        //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
+    }
+
+		@Override
+		public void create() {
+			if (!skipintro)
+				game.setScreen(new WurfelEngineIntro());
+			
+			if (mainMenu==null){
+				Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
+				Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
+				BasicMenuItem[] menuItems = new BasicMenuItem[]{
+					new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
+					new BasicMenuItem(1, "Options"),
+					new BasicMenuItem(2, "Exit")
+				};   
+				mainMenu = new BasicMainMenu(menuItems);
+			}
+			engineView = new EngineView();
+
+			Gdx.app.debug("WE","Initializing main menu...");
+			mainMenu.init();
+
+			console = new Console(
+				engineView.getSkin(),
+				Gdx.graphics.getWidth()/2,
+				Gdx.graphics.getHeight()/4
+			);
+
+			if (skipintro){
+				setScreen(mainMenu);
+			}
+		}
+	}
+	
+	
 	
 	
 }

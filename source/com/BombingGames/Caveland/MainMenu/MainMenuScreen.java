@@ -95,7 +95,7 @@ public class MainMenuScreen implements MainMenuInterface {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.getInstance().setScreen(new CreditsScreen());
+					WE.setScreen(new CreditsScreen());
 				}
 			}
 		);
@@ -206,6 +206,8 @@ public class MainMenuScreen implements MainMenuInterface {
         font.drawMultiLine(batch, WE.getCredits(), 50, 100);
         batch.end();
         font.scale(0.5f);
+		
+		WE.updateAndRender(delta);
 		
 	}
 

@@ -36,13 +36,12 @@ import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 
 /**
  * The GameplayScreen State. This is state where the Wurfel Engine magic happens.
  * @author Benedikt
  */
-public class GameplayScreen implements Screen{ 
+public class GameplayScreen extends WEScreen { 
   /**
      * Contains the Message System
      */
@@ -64,7 +63,7 @@ public class GameplayScreen implements Screen{
 
         Gdx.input.setInputProcessor(null);
         
-        WE.getInstance().setScreen(new LoadingScreen(config));
+        WE.setScreen(new LoadingScreen(config));
         
         
         this.controller = controller;

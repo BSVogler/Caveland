@@ -140,8 +140,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 	}
 
 	@Override
-	public void render(float delta) {
-		delta *=1000;//in ms 
+	public void renderImpl(float delta) {
 		//update
 
 		alpha += delta/1000f;

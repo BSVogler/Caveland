@@ -60,8 +60,8 @@ public class BasicMainMenu extends AbstractMainMenu {
 
     @Override
     public void renderImpl(float delta) {
-        controller.update((int) (delta*1000f));
-        view.update(delta*1000f);
+        controller.update(delta);
+        view.update(delta);
         view.render(warning);
     }
 

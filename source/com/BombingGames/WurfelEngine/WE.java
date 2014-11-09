@@ -357,14 +357,14 @@ public class WE {
 					alpha=1;
 					increase=false;
 				} else
-					alpha += delta;
+					alpha += delta/1000f;
 				drawLettering();
 			} else 
 				if (alpha<=0){
 					alpha=0;
 					dispose();
 				} else {
-					alpha -= delta;
+					alpha -= delta/1000f;
 					drawLettering();
 				}
 		}

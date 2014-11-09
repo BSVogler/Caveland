@@ -82,7 +82,7 @@ public class MenuView {
 
     /**
      *
-     * @param delta
+     * @param delta time in ms
      */
     protected void update(float delta) {
        alpha += delta/1000f;

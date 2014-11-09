@@ -50,7 +50,7 @@ public class MenuController {
      * updates screen logic
      * @param delta
      */
-    public void update(int delta){
+    public void update(float delta){
         for (BasicMenuItem basicMenuItem : menuItems) {
             if (basicMenuItem.isClicked()) basicMenuItem.action();
         }

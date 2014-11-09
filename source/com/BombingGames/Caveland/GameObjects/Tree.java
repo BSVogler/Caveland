@@ -25,13 +25,19 @@ public class Tree extends Block implements IsSelfAware {
 		setNoSides();
 		setObstacle(true);
 		setTransparent(true);
-		if (pos!=null){
-			if (value==0)//if root
-				Block.getInstance(72,1).spawn(pos.cpy().addVector(0, 0, 1));
-			if (value==1)
-				setHidden(true);
-		}
 	}
+
+	@Override
+	public void update(float delta, int x, int y, int z) {
+		super.update(delta, x, y, z);
+		Coordinate top = new Coordinate(x, y, z+1, true);
+		if (getValue()==0 && top.getBlock().getId() != getId())//if root
+				Block.getInstance(72,1).spawn(top);
+		if (getValue()==1)
+			setHidden(true);
+	}
+	
+	
 
 	@Override
 	public void onDestroy(AbstractPosition pos) {

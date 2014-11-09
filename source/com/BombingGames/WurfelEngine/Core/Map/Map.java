@@ -725,8 +725,8 @@ public class Map implements Cloneable {
      *
      */
     public void dispose(){
-        for (AbstractEntity entity : entityList) {
-            entity.dispose();
+        for (int i = 0; i < entityList.size(); i++) {
+			entityList.get(i).dispose();
         }
     }
 

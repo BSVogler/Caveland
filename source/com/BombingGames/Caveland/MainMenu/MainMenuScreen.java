@@ -36,6 +36,7 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -48,6 +49,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -64,6 +66,7 @@ public class MainMenuScreen implements MainMenuInterface {
     private OrthographicCamera camera;
     private BitmapFont font;
     private float alpha =0;
+	private int selectionIndex =0;
 
 
 
@@ -140,10 +143,33 @@ public class MainMenuScreen implements MainMenuInterface {
 	public void render(float delta) {
 		delta *=1000;//in ms 
 		//update
-		
-		
+
 		alpha += delta/1000f;
 		if (alpha>1) alpha=1;
+		
+		if (Gdx.input.isKeyPressed(Keys.ENTER) || Gdx.input.isKeyPressed(Keys.SPACE)){
+			menuItems[selectionIndex].fire(new ChangeEvent());
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.DOWN) || Gdx.input.isKeyJustPressed(Keys.S)){
+			selectionIndex++;
+			if (selectionIndex>=menuItems.length)
+				selectionIndex=0;
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.UP) || Gdx.input.isKeyJustPressed(Keys.W)){
+			selectionIndex--;
+			if (selectionIndex<0)
+				selectionIndex=menuItems.length-1;
+		}
+		
+		for (int i = 0; i < menuItems.length; i++) {
+			TextButton menuItem = menuItems[i];
+			if 	(i==selectionIndex)
+				menuItem.setColor(1, 0, 0, 1);
+			else menuItem.setColor(1, 1, 1, 1);
+		}
+		
 		
 		//render
 		 //clear & set background to black

@@ -36,7 +36,9 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -73,7 +75,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 	@Override
 	public void init() {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
-        WE.getEngineView().addInputProcessor(stage);
 		
 		menuItems[0]=new TextButton("Start", WE.getEngineView().getSkin());
 		menuItems[0].setPosition(stage.getWidth()/2, 500);
@@ -137,6 +138,7 @@ public class MainMenuScreen extends AbstractMainMenu {
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
+		
 	}
 
 	@Override
@@ -146,21 +148,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alpha += delta/1000f;
 		if (alpha>1) alpha=1;
 		
-		if (Gdx.input.isKeyPressed(Keys.ENTER) || Gdx.input.isKeyPressed(Keys.SPACE)){
-			menuItems[selectionIndex].fire(new ChangeEvent());
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.DOWN) || Gdx.input.isKeyJustPressed(Keys.S)){
-			selectionIndex++;
-			if (selectionIndex>=menuItems.length)
-				selectionIndex=0;
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.UP) || Gdx.input.isKeyJustPressed(Keys.W)){
-			selectionIndex--;
-			if (selectionIndex<0)
-				selectionIndex=menuItems.length-1;
-		}
 		
 		for (int i = 0; i < menuItems.length; i++) {
 			TextButton menuItem = menuItems[i];
@@ -213,6 +200,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void show() {
+		WE.getEngineView().addInputProcessor(stage);
+		WE.getEngineView().addInputProcessor(new InputListener());
 	}
 
 	@Override
@@ -230,5 +219,72 @@ public class MainMenuScreen extends AbstractMainMenu {
 	@Override
 	public void dispose() {
 	}
+	
+	private class InputListener implements InputProcessor {
+
+		private InputListener() {
+		}
+        
+        
+
+        @Override
+        public boolean keyDown(int keycode) {
+            if (keycode == Input.Keys.ESCAPE)
+                Gdx.app.exit();
+			
+            if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S){
+                selectionIndex++;
+				if (selectionIndex>=menuItems.length)
+					selectionIndex=0;
+			}
+			
+            if (keycode == Input.Keys.UP || keycode == Input.Keys.W){
+				selectionIndex--;
+				if (selectionIndex<0)
+					selectionIndex=menuItems.length-1;
+			}
+			
+            if (keycode == Input.Keys.ENTER || Gdx.input.isKeyPressed(Keys.SPACE))
+                menuItems[selectionIndex].fire(new ChangeEvent());
+			
+            return true;
+			
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return true;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return true;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return true;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return true;
+        }
+    }
 	
 }

@@ -77,7 +77,7 @@ public class CustomGameView extends GameView{
 		
         ((PlayerWithWeapon) getPlayer(0)).setCamera(camera);
 		
-		//WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld2.mp3");
+		//WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld.mp3");
         
         
 //        controller.setMinimap(

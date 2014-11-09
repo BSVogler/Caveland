@@ -1066,6 +1066,9 @@ public class Camera {
 		return (tmp[0] && tmp[1] && tmp[2]);
 	}
 
+	/**
+	 * recalcualtes the camera on next check
+	 */
 	public void requestRecalc() {
 		recalcRequested = true;
 	}

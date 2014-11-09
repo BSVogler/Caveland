@@ -55,6 +55,9 @@ import java.util.ArrayList;
  * @author Benedikt
  */
 public class GameView extends View implements GameManager {
+	/**
+	 * the cameras rendering the scene
+	 */
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     

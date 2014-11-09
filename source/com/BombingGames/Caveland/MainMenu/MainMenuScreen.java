@@ -30,6 +30,7 @@
  */
 package com.BombingGames.Caveland.MainMenu;
 
+import com.BombingGames.Caveland.CustomConfiguration;
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.MainMenuInterface;
@@ -79,7 +80,7 @@ public class MainMenuScreen implements MainMenuInterface {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.initGame(new CustomGameController(), new CustomGameView(), WE.getCurrentConfig());
+					WE.initGame(new CustomGameController(), new CustomGameView(), new CustomConfiguration());
 				}
 			}
 		);

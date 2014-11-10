@@ -72,8 +72,12 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void init() {
-		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+		batch = new SpriteBatch();
+		shr = new ShapeRenderer();
 		
+		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+		
+		//add buttons
 		int i=0;
 		final int top = 500;
 		final int distance =50;
@@ -144,9 +148,6 @@ public class MainMenuScreen extends AbstractMainMenu {
         //background.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
         //background.setY(50);
         //background.flip(false, true);
-        
-        batch = new SpriteBatch();
-		shr = new ShapeRenderer();
         
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

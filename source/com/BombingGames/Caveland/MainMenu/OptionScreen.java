@@ -33,54 +33,45 @@ package com.BombingGames.Caveland.MainMenu;
 import com.BombingGames.Caveland.CustomConfiguration;
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
-import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
+import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class MainMenuScreen extends AbstractMainMenu {
-	private final TextButton[] menuItems = new TextButton[4];
+public class OptionScreen extends WEScreen {
 	private Stage stage;
 	private ShapeRenderer shr;
-	private Sprite lettering;    
-    private Texture background;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private BitmapFont font;
-    private float alpha =0;
-	private int selectionIndex =0;
 
-
-	@Override
-	public void init() {
-		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+	
+	public OptionScreen() {
+		batch = new SpriteBatch();
+		shr = new ShapeRenderer();
 		
-		int i=0;
-		final int top = 500;
-		final int distance =50;
-		menuItems[i]=new TextButton("Start", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
+		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+		
+		SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
+		sbox.setItems(Gdx.graphics.getDisplayModes().toString());
 		//start the game
-		menuItems[i].addListener(
+		sbox.addListener(
 			new ChangeListener() {
 
 				@Override
@@ -90,64 +81,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
-		i++;
-		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new OptionScreen());
-				}
-			}
-		);
-		
-		i++;
-		menuItems[i]=new TextButton("Credits", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new CreditsScreen());
-				}
-			}
-		);
-		
-		i++;
-		menuItems[i]=new TextButton("Exit", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					Gdx.app.exit();
-				}
-			}
-		);
-		
-		for (TextButton menuItem : menuItems) {
-			stage.addActor(menuItem);
-		}
-		
-		//load textures
-        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
-        lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(50);
-        lettering.flip(false, true);
-        
-        background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.png"));
-		
-        //background.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        //background.setY(50);
-        //background.flip(false, true);
-        
-        batch = new SpriteBatch();
-		shr = new ShapeRenderer();
-        
+		stage.addActor(sbox);
+                
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -160,22 +95,12 @@ public class MainMenuScreen extends AbstractMainMenu {
 	@Override
 	public void renderImpl(float delta) {
 		//update
-
-		alpha += delta/1000f;
-		if (alpha>1) alpha=1;
 		
-		
-		for (int i = 0; i < menuItems.length; i++) {
-			TextButton menuItem = menuItems[i];
-			if 	(i==selectionIndex)
-				menuItem.setColor(1, 0, 0, 1);
-			else menuItem.setColor(1, 1, 1, 1);
-		}
-		
+			
 		
 		//render
 		 //clear & set background to black
-        Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
+        Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //update camera and set the projection matrix
@@ -185,17 +110,6 @@ public class MainMenuScreen extends AbstractMainMenu {
         
         //Background        
         batch.begin();
-			batch.draw(background, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
-//			for (int x = 0; x-1 < Gdx.graphics.getWidth()/background.getWidth(); x++) {
-//				for (int y = 0; y-1 < Gdx.graphics.getHeight()/background.getHeight(); y++) {
-//					background.setPosition(x*background.getWidth(), y*background.getHeight());
-//					background.draw(batch);
-//				}
-//			}
-        
-			// render the lettering
-			lettering.setColor(1, 1, 1, alpha);
-			lettering.draw(batch);
 
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 			font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
@@ -240,20 +154,9 @@ public class MainMenuScreen extends AbstractMainMenu {
 
         @Override
         public boolean keyDown(int keycode) {
-            if (keycode == Keys.DOWN || keycode == Keys.S){
-                selectionIndex++;
-				if (selectionIndex>=menuItems.length)
-					selectionIndex=0;
-			}
-			
-            if (keycode == Keys.UP || keycode == Keys.W){
-				selectionIndex--;
-				if (selectionIndex<0)
-					selectionIndex=menuItems.length-1;
-			}
-			
-            if (keycode == Keys.ENTER || Gdx.input.isKeyPressed(Keys.SPACE))
-                menuItems[selectionIndex].fire(new ChangeEvent());
+			//update
+			if (keycode == Input.Keys.ESCAPE)
+				WE.showMainMenu();
 			
             return true;
 			

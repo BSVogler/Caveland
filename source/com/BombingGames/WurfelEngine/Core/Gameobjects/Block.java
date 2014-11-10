@@ -57,10 +57,17 @@ public class Block extends AbstractGameObject {
      * a list where a representing color of the block is stored
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
+	private final static Block airblock;
     
     private boolean liquid;
     private boolean hasSides = true;
     
+	static {
+		airblock = new Block(0);//air
+		airblock.setTransparent(true);
+        airblock.setHidden(true);
+	}
+	
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
      * @param id
@@ -103,9 +110,7 @@ public class Block extends AbstractGameObject {
         //define the default SideSprites
         switch (id){
             case 0: 
-                    block = new Block(id);//air
-                    block.setTransparent(true);
-                    block.setHidden(true);
+                    block = airblock;
                     break;
             case 1: block = new Block(id); //grass
                     block.setObstacle(true);

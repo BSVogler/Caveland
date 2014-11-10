@@ -93,6 +93,7 @@ public class WE {
     }
 	
 	public static void setScreen(WEScreen screen){
+		engineView.resetInputProcessors();
 		game.setScreen(screen);
 	}
     

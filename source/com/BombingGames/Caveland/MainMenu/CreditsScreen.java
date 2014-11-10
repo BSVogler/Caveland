@@ -34,7 +34,8 @@ import com.BombingGames.Caveland.Caveland;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -73,8 +74,6 @@ public class CreditsScreen extends WEScreen {
     @Override
     public void renderImpl(float delta) {
 		//update
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			WE.showMainMenu();
 		
 		//render
         //clear & set background to black
@@ -99,6 +98,9 @@ public class CreditsScreen extends WEScreen {
 
     @Override
     public void show() {
+		WE.getEngineView().addInputProcessor(stage);
+		WE.getEngineView().addInputProcessor(new InputListener());
+		
     }
 
     @Override
@@ -118,6 +120,54 @@ public class CreditsScreen extends WEScreen {
         stage.dispose();
     }
 
+	private class InputListener implements InputProcessor {
+
+        @Override
+        public boolean keyDown(int keycode) {
+			//update
+			if (keycode == Input.Keys.ESCAPE)
+				WE.showMainMenu();
+			
+            return true;
+			
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return true;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return true;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return true;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return true;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return true;
+        }
+    }
+	
     
 }
 

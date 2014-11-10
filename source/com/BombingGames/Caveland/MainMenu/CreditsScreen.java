@@ -50,7 +50,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class CreditsScreen extends WEScreen {
     private final Stage stage;
     private final OrthographicCamera camera;
-    //private final TestActor actor;
 
     /**
      *

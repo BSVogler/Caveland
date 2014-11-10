@@ -16,10 +16,9 @@ public class Caveland {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WE.construct("Wurfelengine V" + WE.VERSION, args);
         
         WE.setMainMenu(new MainMenuScreen());
-        WE.launch();
+        WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map
 		if (!new File(WorkingDirectory.getMapsFolder()+"/default").exists()){

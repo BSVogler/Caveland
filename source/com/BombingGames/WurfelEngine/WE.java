@@ -83,26 +83,21 @@ public class WE {
         WE.mainMenu = mainMenu;
     }
     
-   /**
-     * Create a new instance of the engine.
-     * @param title The title, which is displayed in the window.
-     * @param args launch parameters. For a list look in the wiki.
-     */
-    public static void construct(final String title, final String[] args){
-        game = new WEGame(title,args);
-    }
-	
 	public static void setScreen(WEScreen screen){
 		engineView.resetInputProcessors();
 		game.setScreen(screen);
 	}
     
     /**
-     * Start the engine. You have to pass a main menu first.
+     * Start the engine. You should have passed a main menu first.
+	 * @param title The title, which is displayed in the window.
+     * @param args launch parameters. For a list look in the wiki.
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
      */
-    public static void launch(){
-        System.out.println("Launching engine...");
+    public static void launch(final String title, final String[] args){
+		System.out.println("Load Engine…");
+		game = new WEGame(title,args);
+        System.out.println("Fire Engine…");
         LwjglApplication application = new LwjglApplication(game, config);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
@@ -423,7 +418,7 @@ public class WE {
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         
         config = new LwjglApplicationConfiguration();
-        
+        config.resizable = false;
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = true;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60

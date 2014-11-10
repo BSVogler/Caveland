@@ -48,8 +48,6 @@ public class DesktopLauncher {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        WE.construct("Wurfelengine V" + WE.VERSION, args);
-        
         BasicMenuItem[] menuItems = new BasicMenuItem[]{
             new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class, new Configuration()),
             new BasicMenuItem(1, "Map Editor", MapEditorController.class, MapEditorView.class, new Configuration()),
@@ -58,7 +56,7 @@ public class DesktopLauncher {
         };   
         
         WE.setMainMenu(new BasicMainMenu(menuItems));
-        WE.launch();  
+        WE.launch("Wurfelengine V" + WE.VERSION, args);  
     }
     
 }

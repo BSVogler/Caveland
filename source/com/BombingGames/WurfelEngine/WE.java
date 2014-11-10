@@ -73,6 +73,8 @@ public class WE {
     private static LwjglApplicationConfiguration config;
     private static Console console;
     private static EngineView engineView;
+	private static LwjglApplication application;
+	private static boolean skipintro =false;
 	
     /**
      * Pass the mainMenu which get's displayed when you call launch().
@@ -96,11 +98,63 @@ public class WE {
      */
     public static void launch(final String title, final String[] args){
 		System.out.println("Load Engine…");
-		game = new WEGame(title,args);
+		// set the name of the application menu item on mac
+        if (System.getProperty("os.name").toLowerCase().contains("mac"))
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
+        
+        config = new LwjglApplicationConfiguration();
+        config.resizable = false;
+        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
+        config.fullscreen = true;
+        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
+        config.foregroundFPS = 0;//don't lock FPS
+		config.backgroundFPS = 60;//60 FPS in background
+         
+        //arguments
+        if (args.length > 0){
+            //look if contains launch parameters
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "-fullscreen":
+                    case "-f":
+                        //start in fullscreen
+                        config.fullscreen = true;
+                        break;
+                    case "-windowed":
+                        //start in windowed mode
+                        config.fullscreen = false;
+                        break;
+                    case "-w":
+                        //set the width
+                        config.width = Integer.parseInt(args[i+1]);
+                        break;
+                    case "-h":
+                        //set the height
+                        config.height = Integer.parseInt(args[i+1]);
+                        break;
+					case "-skipintro":
+						skipintro=true;
+                        break;
+                }
+            }
+        }    
+        
+        config.title = title + " " + config.width + "x"+config.height;
+
+        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
+        //LIBGDX: no equivalent found in libGDX yet
+        //setUpdateOnlyWhenVisible(true);        
+        //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
+        //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
         System.out.println("Fire Engine…");
-        LwjglApplication application = new LwjglApplication(game, config);
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		game = new WEGame();
+        application = new LwjglApplication(game, config);
+        application.setLogLevel(Application.LOG_DEBUG);
     }
+
+	public static LwjglApplicationConfiguration getLwjglApplicationConfiguration() {
+		return config;
+	}
     
     /**
      * Initialize the main game with you custom controller and view. This call shows the loadingScreen.
@@ -405,63 +459,6 @@ public class WE {
 	}
 
 	private static class WEGame extends Game {
-		private boolean skipintro =false;
-
-		/**
-		 * Create the Engine. Don't use this constructor. Use construct() instead. 
-		 * @param title The title, which is displayed in the window.
-		 * @param args custom display resolution: [0] width, [1] height, [2] fullscreen
-		 */
-		private WEGame(String title, final String[] args) {
-        // set the name of the application menu item on mac
-        if (System.getProperty("os.name").toLowerCase().contains("mac"))
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
-        
-        config = new LwjglApplicationConfiguration();
-        config.resizable = false;
-        config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-        config.fullscreen = true;
-        config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = 0;//don't lock FPS
-         
-        //arguments
-        if (args.length > 0){
-            //look if contains launch parameters
-            for (int i = 0; i < args.length; i++) {
-                switch (args[i]) {
-                    case "-fullscreen":
-                    case "-f":
-                        //start in fullscreen
-                        config.fullscreen = true;
-                        break;
-                    case "-windowed":
-                        //start in windowed mode
-                        config.fullscreen = false;
-                        break;
-                    case "-w":
-                        //set the width
-                        config.width = Integer.parseInt(args[i+1]);
-                        break;
-                    case "-h":
-                        //set the height
-                        config.height = Integer.parseInt(args[i+1]);
-                        break;
-					case "-skipintro":
-						skipintro=true;
-                        break;
-                }
-            }
-        }    
-        
-        config.title = title + " " + config.width + "x"+config.height;
-
-        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
-        
-        //LIBGDX: no equivalent found in libGDX yet
-        //setUpdateOnlyWhenVisible(true);        
-        //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
-        //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
-    }
 
 		@Override
 		public void create() {
@@ -494,8 +491,5 @@ public class WE {
 			}
 		}
 	}
-	
-	
-	
-	
+
 }

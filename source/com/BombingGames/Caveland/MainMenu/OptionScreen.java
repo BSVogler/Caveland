@@ -48,7 +48,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  *
@@ -60,15 +60,16 @@ public class OptionScreen extends WEScreen {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private BitmapFont font;
-	private final CheckBox fulscreenCB;
+	private final CheckBox fullscreenCB;
 	private final CheckBox vsyncCB;
 
 	
 	public OptionScreen() {
 		batch = new SpriteBatch();
 		shr = new ShapeRenderer();
+		OrthographicCamera libgdxcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+		stage = new Stage(new ScreenViewport(libgdxcamera), batch);
 		
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
 		//fill with display modes
@@ -79,13 +80,12 @@ public class OptionScreen extends WEScreen {
 		sbox.setItems(arstr);
 		sbox.setWidth(300);
 		sbox.setPosition(500, 500);			
-		sbox.addListener(
-			new ChangeListener() {
+		sbox.addListener(new ChangeListener() {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
-					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fulscreenCB.isChecked());
+					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
 				}
 			}
 		);
@@ -93,17 +93,17 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(sbox);
 		sbox.showList();
 		
-		fulscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
-		fulscreenCB.setPosition(900, 600);
-		fulscreenCB.addListener(new ChangeListener() {
+		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
+		fullscreenCB.setPosition(900, 600);
+		fullscreenCB.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fulscreenCB.isChecked());
+				Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreenCB.isChecked());
 			}
 		});
 		
-		stage.addActor(fulscreenCB);
+		stage.addActor(fullscreenCB);
 		
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
 		vsyncCB.setPosition(900, 500);
@@ -128,7 +128,7 @@ public class OptionScreen extends WEScreen {
 	@Override
 	public void renderImpl(float delta) {
 		//update
-		stage.act(delta);
+		//stage.act(delta);
 			
 		
 		//render
@@ -151,6 +151,9 @@ public class OptionScreen extends WEScreen {
 
 	@Override
 	public void resize(int width, int height) {
+		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
+        Gdx.gl.glViewport(0, 0, width,height);
+		//stage.setViewport(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 	}
 
 	@Override

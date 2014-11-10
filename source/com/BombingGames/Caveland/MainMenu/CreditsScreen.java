@@ -56,7 +56,6 @@ public class CreditsScreen extends WEScreen {
      */
     public CreditsScreen() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
-        WE.getEngineView().addInputProcessor(stage);
                 
 		Label credits = new Label(Caveland.getCredits(), WE.getEngineView().getSkin());
 		credits.setWidth(500);

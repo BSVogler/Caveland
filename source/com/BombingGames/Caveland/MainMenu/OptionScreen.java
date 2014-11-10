@@ -30,9 +30,6 @@
  */
 package com.BombingGames.Caveland.MainMenu;
 
-import com.BombingGames.Caveland.CustomConfiguration;
-import com.BombingGames.Caveland.Game.CustomGameController;
-import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -47,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
@@ -62,6 +60,8 @@ public class OptionScreen extends WEScreen {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private BitmapFont font;
+	private final CheckBox fulscreenCB;
+	private final CheckBox vsyncCB;
 
 	
 	public OptionScreen() {
@@ -70,7 +70,7 @@ public class OptionScreen extends WEScreen {
 		
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		
-		SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
+		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
 		//fill with display modes
 		Array<String> arstr = new Array<>();
 		for (Graphics.DisplayMode displayMode : Gdx.graphics.getDisplayModes()) {
@@ -78,19 +78,43 @@ public class OptionScreen extends WEScreen {
 		}
 		sbox.setItems(arstr);
 		sbox.setWidth(300);
-		sbox.setPosition(500, 500);
-		//start the game
+		sbox.setPosition(500, 500);			
 		sbox.addListener(
 			new ChangeListener() {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.initGame(new CustomGameController(), new CustomGameView(), new CustomConfiguration());
+					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
+					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fulscreenCB.isChecked());
 				}
 			}
 		);
 		
 		stage.addActor(sbox);
+		sbox.showList();
+		
+		fulscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
+		fulscreenCB.setPosition(900, 600);
+		fulscreenCB.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fulscreenCB.isChecked());
+			}
+		});
+		
+		stage.addActor(fulscreenCB);
+		
+		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
+		vsyncCB.setPosition(900, 500);
+		vsyncCB.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				Gdx.graphics.setVSync(vsyncCB.isChecked());
+			}
+		});
+		stage.addActor(vsyncCB);
                 
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -104,7 +128,7 @@ public class OptionScreen extends WEScreen {
 	@Override
 	public void renderImpl(float delta) {
 		//update
-		
+		stage.act(delta);
 			
 		
 		//render
@@ -117,20 +141,12 @@ public class OptionScreen extends WEScreen {
         batch.setProjectionMatrix(camera.combined);
 		shr.setProjectionMatrix(camera.combined);
         
-        //Background        
+		stage.draw();
+				
         batch.begin();
-
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 			font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
-		
-		stage.draw();
-        
-        font.scale(-0.5f);
-        batch.begin();
-        font.drawMultiLine(batch, WE.getCredits(), 50, 100);
-        batch.end();
-        font.scale(0.5f);
 	}
 
 	@Override
@@ -157,6 +173,7 @@ public class OptionScreen extends WEScreen {
 
 	@Override
 	public void dispose() {
+		stage.dispose();
 	}
 	
 	private class InputListener implements InputProcessor {

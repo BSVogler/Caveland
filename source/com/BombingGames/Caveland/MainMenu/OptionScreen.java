@@ -36,6 +36,7 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -48,6 +49,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -69,7 +71,14 @@ public class OptionScreen extends WEScreen {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		
 		SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
-		sbox.setItems(Gdx.graphics.getDisplayModes().toString());
+		//fill with display modes
+		Array<String> arstr = new Array<>();
+		for (Graphics.DisplayMode displayMode : Gdx.graphics.getDisplayModes()) {
+			arstr.add(displayMode.toString());	
+		}
+		sbox.setItems(arstr);
+		sbox.setWidth(300);
+		sbox.setPosition(500, 500);
 		//start the game
 		sbox.addListener(
 			new ChangeListener() {

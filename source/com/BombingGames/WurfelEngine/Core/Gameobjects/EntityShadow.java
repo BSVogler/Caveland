@@ -48,7 +48,7 @@ class EntityShadow extends AbstractEntity {
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
 		if (character==null)
 			dispose();
 		else {

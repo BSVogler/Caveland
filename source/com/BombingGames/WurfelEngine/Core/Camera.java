@@ -218,9 +218,9 @@ public class Camera {
 	/**
 	 * Updates the camera.
 	 *
-	 * @param delta
+	 * @param dt
 	 */
-	public void update(float delta) {
+	public void update(float dt) {
 		//refrehs the camera's position in the game world
 		if (focusCoordinates != null) {
 			//update camera's position according to focusCoordinates
@@ -251,7 +251,7 @@ public class Camera {
 		if (shakeTime > 0) {
 			screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
 			screenshake.y = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
-			shakeTime -= delta;
+			shakeTime -= dt;
 		} else {
 			screenshake.x = 0;
 			screenshake.y = 0;

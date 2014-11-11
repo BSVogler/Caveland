@@ -48,8 +48,8 @@ public class GunTestView extends GameView{
     
 
     @Override
-    public void update(float delta){
-        super.update(delta);
+    public void update(float dt){
+        super.update(dt);
         Input input = Gdx.input;
         
         boolean sprint = false;
@@ -72,9 +72,9 @@ public class GunTestView extends GameView{
             getPlayer().jump();
         CustomPlayer player = (CustomPlayer) (getPlayer());
         if (input.isKeyPressed(Input.Keys.Q))
-            player.setAimHeight(player.getAimHeight()- delta*0.001f);
+            player.setAimHeight(player.getAimHeight()- dt*0.001f);
         if (input.isKeyPressed(Input.Keys.E))
-            player.setAimHeight(player.getAimHeight()+ delta*0.001f);
+            player.setAimHeight(player.getAimHeight()+ dt*0.001f);
     }
 
 	public Controllable getPlayer(){

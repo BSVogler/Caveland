@@ -47,8 +47,8 @@ public class SplitScreenView extends GameView {
     
 
     @Override
-    public void update(float delta){
-        super.update(delta);
+    public void update(float dt){
+        super.update(dt);
         Input input = Gdx.input;
         
         //walks

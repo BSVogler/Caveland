@@ -72,12 +72,12 @@ public class Bullet extends AbstractEntity {
     }
    
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
         //dir.z=-delta/(float)maxDistance;//fall down
-        Vector3 dMov = dir.cpy().scl(delta*speed);
+        Vector3 dMov = dir.cpy().scl(dt*speed);
         //dMov.z /= 1.414213562f;//mixed screen and game space together?
         getPosition().addVector(dMov);
-        setRotation(getRotation()+delta);
+        setRotation(getRotation()+dt);
         
         //only spawn specific distance then destroy self
         distance += dMov.len();

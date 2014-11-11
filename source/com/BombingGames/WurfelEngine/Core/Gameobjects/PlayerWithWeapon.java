@@ -100,9 +100,9 @@ public class PlayerWithWeapon extends Controllable {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
-        if (weapon != null) weapon.update(delta);
+    public void update(float dt) {
+        super.update(dt);
+        if (weapon != null) weapon.update(dt);
     }
     
     

@@ -98,29 +98,29 @@ public class Controller implements GameManager {
         
      /**
      * Main method which is called every refresh.
-     * @param delta time since last call
+     * @param dt time since last call
      */
-    public void update(float delta) {
-        if (devtools!=null) devtools.update(delta);
+    public void update(float dt) {
+        if (devtools!=null) devtools.update(dt);
         
         //aply game world speed
-        delta *= timespeed;
+        dt *= timespeed;
         
-        if (lightEngine != null) lightEngine.update(delta);
+        if (lightEngine != null) lightEngine.update(dt);
         
         //update every static update method
-        AbstractGameObject.updateStaticUpdates(delta);
+        AbstractGameObject.updateStaticUpdates(dt);
         
         //update every block on the map
         Block[][][] mapdata = map.getData();
         for (int x=0, maxX=Map.getBlocksX(); x < maxX; x++)
             for (int y=0, maxY = Map.getBlocksY(); y < maxY; y++)
                 for (int z=0, maxZ=Map.getBlocksZ(); z < maxZ; z++)
-                    mapdata[x][y][z].update(delta, x, y, z);
+                    mapdata[x][y][z].update(dt, x, y, z);
         
         //update every entity
         for (int i = 0; i < map.getEntitys().size(); i++) {
-            map.getEntitys().get(i).update(delta);
+            map.getEntitys().get(i).update(dt);
             if (map.getEntitys().get(i).shouldBeDisposed())
                 map.getEntitys().remove(i);
         }

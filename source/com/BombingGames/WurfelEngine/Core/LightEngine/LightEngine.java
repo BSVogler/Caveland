@@ -96,11 +96,11 @@ public class LightEngine {
     
     /**
      * 
-     * @param delta
+     * @param dt
      */
-    public void update(float delta) {
-        sun.update(delta);
-        moon.update(delta);
+    public void update(float dt) {
+        sun.update(dt);
+        moon.update(dt);
         
         float sunI = sun.getPower();
         float moonI = moon.getPower();

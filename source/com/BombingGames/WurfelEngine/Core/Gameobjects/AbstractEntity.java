@@ -58,9 +58,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
 
 	/**
      * Updates the logic of the object.
-     * @param delta time since last update
+     * @param dt time since last update
      */
-    public abstract void update(float delta);
+    public abstract void update(float dt);
 	
     //IsSelfAware implementation
     @Override

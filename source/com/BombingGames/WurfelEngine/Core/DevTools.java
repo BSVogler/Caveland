@@ -79,10 +79,10 @@ public class DevTools {
     
     /**
      *Updates the diagramm
-     * @param delta
+     * @param dt
      */
-    public void update(float delta){
-        timeStepMin += delta;
+    public void update(float dt){
+        timeStepMin += dt;
         if (timeStepMin>50){//update only every t ms
             timeStepMin = 0;
             

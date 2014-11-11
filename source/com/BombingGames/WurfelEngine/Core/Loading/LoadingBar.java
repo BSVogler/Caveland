@@ -27,8 +27,8 @@ public class LoadingBar extends Actor {
     }
 
     @Override
-    public void act(float delta) {
-        stateTime += delta;
+    public void act(float dt) {
+        stateTime += dt;
         reg = animation.getKeyFrame(stateTime);
     }
 

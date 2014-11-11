@@ -291,13 +291,13 @@ public class Weapon {
     
     /**
      * Manages the weapon
-     * @param delta t in ms
+     * @param dt t in ms
      */
-    public void update(float delta){
+    public void update(float dt){
         if (bulletDelay > 0)
-            bulletDelay-=delta;
+            bulletDelay-=dt;
         if (reloading >= 0) {
-            reloading-=delta;
+            reloading-=dt;
             if (reloading<=0)//finished reloading
                 shotsLoaded = shots;
         } else {

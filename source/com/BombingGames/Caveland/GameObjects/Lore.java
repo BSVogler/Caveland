@@ -23,8 +23,8 @@ public class Lore extends MovableEntity {
 	}
 
 	@Override
-	public void update(float delta) {
-		super.update(delta);
+	public void update(float dt) {
+		super.update(dt);
 		Point pos = getPosition();
 		Block block = pos.getBlockClamp();
 

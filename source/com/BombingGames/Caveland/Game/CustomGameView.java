@@ -107,8 +107,8 @@ public class CustomGameView extends GameView{
     }
 	
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void update(float dt) {
+        super.update(dt);
         //get input and do actions
         Input input = Gdx.input;
         
@@ -137,7 +137,7 @@ public class CustomGameView extends GameView{
 				getPlayer(0).setSpeed(XboxListener.speed[0]);
 					
 			if (contextDown)
-				timeContextDown+=delta;
+				timeContextDown+=dt;
 			
 			if (timeContextDown>400){
 				ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);

@@ -16,9 +16,9 @@ public class Vanya extends MovableEntity {
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(float dt) {
 		float beforeUpdate = getMovement().z;
-		super.update(delta);
+		super.update(dt);
 		
 		//höchster Punkt erreicht
 		if (beforeUpdate>0 && getMovement().z<0)

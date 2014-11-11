@@ -38,7 +38,7 @@ public class Enemy extends MovableEntity{
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
         if (getPosition().getCoord().onLoadedMapHorizontal()) {
             //follow the target
             if (target != null) {
@@ -53,7 +53,7 @@ public class Enemy extends MovableEntity{
 
 				if (getPosition().distanceTo(target)<120) {
 					setSpeed(0);
-					setMana((int) (getMana()+delta));
+					setMana((int) (getMana()+dt));
                     if (getMana()>=1000){
                         setMana(0);//reset
                         new AnimatedEntity(46, 0, new int[]{300}, true, false).spawn(getPosition().cpy());//spawn blood
@@ -63,11 +63,11 @@ public class Enemy extends MovableEntity{
 					setSpeed(0.4f);
             }
             //update as usual
-            super.update(delta);
+            super.update(dt);
 
             //if standing on same position as in last update
             if (Arrays.equals(getPosition().getRel(), lastPos) && getSpeed()>0)//not standing still
-                runningagainstwallCounter += delta;
+                runningagainstwallCounter += dt;
             else {
                 runningagainstwallCounter=0;
                 lastPos = getPosition().getRel();

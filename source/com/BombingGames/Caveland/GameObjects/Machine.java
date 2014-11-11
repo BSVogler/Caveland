@@ -23,7 +23,7 @@ public class Machine extends Block implements IsSelfAware {
 	}
 
 	@Override
-	public void update(float delta, int x, int y, int z) {
+	public void update(float dt, int x, int y, int z) {
 		ArrayList<Lore> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(Lore.class);
 		if (lorenIncoming.size()>0) {
 			Lore loreIncoming = lorenIncoming.get(0);

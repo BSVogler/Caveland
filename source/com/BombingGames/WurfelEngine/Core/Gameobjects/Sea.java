@@ -88,10 +88,10 @@ public class Sea extends Block implements IsSelfAware{
     
     /**
      *
-     * @param delta
+     * @param dt
      */
-    public static void staticUpdate(float delta){
-        currentX += delta*wavespeed;
+    public static void staticUpdate(float dt){
+        currentX += dt*wavespeed;
     }
 	
 	@Override

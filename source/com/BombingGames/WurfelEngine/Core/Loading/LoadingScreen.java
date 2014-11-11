@@ -149,7 +149,7 @@ public class LoadingScreen extends WEScreen {
     }
 
     @Override
-    public void renderImpl(float delta) {
+    public void renderImpl(float dt) {
         if (WE.getAssetManager().update()) { // Load some, will return true if done loading 
             Gdx.app.log("Loading", "finished");
             WE.startGame();

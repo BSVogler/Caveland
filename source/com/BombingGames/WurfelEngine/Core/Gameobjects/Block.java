@@ -479,12 +479,12 @@ public class Block extends AbstractGameObject {
 
 	/**
 	 * Update the block.
-	 * @param delta time in ms since last update
+	 * @param dt time in ms since last update
 	 * @param x relative pos
 	 * @param y relative pos
 	 * @param z relative pos
 	 */
-    public void update(float delta, int x, int y, int z) {
+    public void update(float dt, int x, int y, int z) {
     }
     
 

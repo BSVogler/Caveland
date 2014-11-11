@@ -79,8 +79,8 @@ public class CustomGameController extends Controller {
     }
 
 	@Override
-	public void update(float delta) {
-		super.update(delta);
+	public void update(float dt) {
+		super.update(dt);
 		if (getPlayer(0).getPosition().getCoord().getRelY()<30 && monstercount<Enemy.getKillcounter()+5){
 			monstercount++;
 			Enemy enemy = (Enemy) new Enemy().spawn(

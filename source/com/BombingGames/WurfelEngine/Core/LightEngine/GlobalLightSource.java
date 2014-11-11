@@ -147,12 +147,12 @@ public class GlobalLightSource {
 
     /**
      *
-     * @param delta
+     * @param dt
      */
-    public void update(float delta) {    
+    public void update(float dt) {    
         //automove
         if (getAzimuthSpeed() != 0) {
-            azimuth += getAzimuthSpeed() * delta;
+            azimuth += getAzimuthSpeed() * dt;
             height = (float) (amplitude * Math.sin((azimuth + Controller.getMap().getWorldSpinDirection()) * Math.PI / 180));
         }
             

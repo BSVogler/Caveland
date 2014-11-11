@@ -84,7 +84,7 @@ public class BasicOptionsScreen extends WEScreen {
     }
 
     @Override
-    public void renderImpl(float delta) {
+    public void renderImpl(float dt) {
         //clear & set background to black
         Gdx.gl20.glClearColor( 0f, 1f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);

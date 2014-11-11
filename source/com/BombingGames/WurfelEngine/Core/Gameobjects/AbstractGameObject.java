@@ -138,10 +138,10 @@ public abstract class AbstractGameObject {
     
     /**
      * Place you static update methods here.
-     * @param delta 
+     * @param dt 
      */
-    public static void updateStaticUpdates(float delta){
-        Sea.staticUpdate(delta);
+    public static void updateStaticUpdates(float dt){
+        Sea.staticUpdate(dt);
     }
     
      /**

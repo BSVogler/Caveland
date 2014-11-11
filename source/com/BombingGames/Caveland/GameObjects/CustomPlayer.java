@@ -57,8 +57,8 @@ public class CustomPlayer extends PlayerWithWeapon {
     }
 
 	@Override
-	public void update(float delta) {
-		super.update(delta);
+	public void update(float dt) {
+		super.update(dt);
 		Point pos = getPosition();
 		ArrayList<Lore> items = pos.getCoord().getEntitysInside(Lore.class);
 
@@ -83,8 +83,8 @@ public class CustomPlayer extends PlayerWithWeapon {
 		}
 		
 		if (timeSinceDamage>4000)
-			heal(delta/2f);
-		else timeSinceDamage+=delta;
+			heal(dt/2f);
+		else timeSinceDamage+=dt;
 		
 		if (isOnGround()) airjump=false;
 	}

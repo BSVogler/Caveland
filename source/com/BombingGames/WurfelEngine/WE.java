@@ -369,11 +369,11 @@ public class WE {
     
         /**
      * updates and render the global things e.g. the console
-     * @param delta time in ms
+     * @param dt time in ms
      */
-    public static void updateAndRender(float delta) {
-        console.update(delta);
-        engineView.getStage().act(delta);
+    public static void updateAndRender(float dt) {
+        console.update(dt);
+        engineView.getStage().act(dt);
         console.render(engineView.getBatch());
         engineView.getStage().draw();
     }
@@ -401,20 +401,20 @@ public class WE {
 		}
 
 		@Override
-		public void renderImpl(float delta) {
+		public void renderImpl(float dt) {
 			if (increase){
 				if (alpha>=1){
 					alpha=1;
 					increase=false;
 				} else
-					alpha += delta/1000f;
+					alpha += dt/1000f;
 				drawLettering();
 			} else 
 				if (alpha<=0){
 					alpha=0;
 					dispose();
 				} else {
-					alpha -= delta/1000f;
+					alpha -= dt/1000f;
 					drawLettering();
 				}
 		}

@@ -156,10 +156,10 @@ public class Console {
     
     /**
      * Updates the Message System.
-     * @param delta time in ms
+     * @param dt time in ms
      */
-    public void update(float delta){
-       timelastupdate += delta;
+    public void update(float dt){
+       timelastupdate += dt;
        
         //open close console/chat box
         if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {

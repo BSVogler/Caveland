@@ -70,7 +70,7 @@ public class CreditsScreen extends WEScreen {
     }
 
     @Override
-    public void renderImpl(float delta) {
+    public void renderImpl(float dt) {
 		//update
 		
 		//render

@@ -61,15 +61,15 @@ public class AnimatedEntity extends AbstractEntity implements Animatable {
     
    /**
      * updates the entity and the animation.
-     * @param delta the time wich has passed since last update
+     * @param dt the time wich has passed since last update
      */
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
         if (running) {
             if (updateIgnoringGameTime)
                 counter += Gdx.graphics.getDeltaTime()*1000f;
             else 
-                counter += delta;
+                counter += dt;
             if (counter >= animationsduration[getValue()]){
                 setValue(getValue()+1);
                 counter=0;

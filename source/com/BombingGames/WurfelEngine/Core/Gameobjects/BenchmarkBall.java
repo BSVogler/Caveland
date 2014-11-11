@@ -54,15 +54,15 @@ public class BenchmarkBall extends MovableEntity {
        
     
     @Override
-    public void update(float delta) {
-		super.update(delta);
-        timer+=delta;
+    public void update(float dt) {
+		super.update(dt);
+        timer+=dt;
         if (timer >timeTillBall){
             if (Gdx.graphics.getDeltaTime()<0.013f)//over 60 FPS
                 new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()-2*GAME_EDGELENGTH));
             timer=0;
         }
-        timeTillBall-=delta/5000000f;
+        timeTillBall-=dt/5000000f;
      
         
         if (isOnGround()) jump();

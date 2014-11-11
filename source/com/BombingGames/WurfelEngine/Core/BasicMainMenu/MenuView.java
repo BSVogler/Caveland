@@ -82,10 +82,10 @@ public class MenuView {
 
     /**
      *
-     * @param delta time in ms
+     * @param dt time in ms
      */
-    protected void update(float delta) {
-       alpha += delta/1000f;
+    protected void update(float dt) {
+       alpha += dt/1000f;
        if (alpha>1) alpha=1;
     }
         

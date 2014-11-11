@@ -126,7 +126,7 @@ public class OptionScreen extends WEScreen {
 	}
 
 	@Override
-	public void renderImpl(float delta) {
+	public void renderImpl(float dt) {
 		//update
 		//stage.act(delta);
 			

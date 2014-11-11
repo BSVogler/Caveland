@@ -131,12 +131,12 @@ public class GameView extends View implements GameManager {
     
     /**
      *Updates every camera and everything else which must be updated.
-     * @param delta time since last update in ms.
+     * @param dt time since last update in ms.
      */
-    public void update(final float delta){
+    public void update(final float dt){
         AbstractGameObject.resetDrawCalls();
         
-        stage.act(delta);
+        stage.act(dt);
         
         //update cameras
 		/**
@@ -158,7 +158,7 @@ public class GameView extends View implements GameManager {
                     if (camera.getVisibleFrontBorder() >= Map.getBlocksY()-1)
                         Controller.getMap().setCenter(7); //scroll down, earth up
             }
-            camera.update(delta);
+            camera.update(dt);
         }
         
         // toggle the dev menu?

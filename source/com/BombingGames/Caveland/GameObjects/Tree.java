@@ -28,8 +28,8 @@ public class Tree extends Block implements IsSelfAware {
 	}
 
 	@Override
-	public void update(float delta, int x, int y, int z) {
-		super.update(delta, x, y, z);
+	public void update(float dt, int x, int y, int z) {
+		super.update(dt, x, y, z);
 		Coordinate top = new Coordinate(x, y, z+1, true);
 		if (getValue()==0 && top.getBlock().getId() != getId())//if root
 				Block.getInstance(72,1).spawn(top);

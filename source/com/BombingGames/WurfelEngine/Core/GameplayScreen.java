@@ -106,10 +106,10 @@ public class GameplayScreen extends WEScreen {
     
     
     @Override
-    public void renderImpl(float delta) {
-        controller.update(delta);
-        view.update(delta);
-		getMap().update(delta);//hack to prevent 1-frame lag by too late write access via view update
+    public void renderImpl(float dt) {
+        controller.update(dt);
+        view.update(dt);
+		getMap().update(dt);//hack to prevent 1-frame lag by too late write access via view update
         view.render();
         WE.getEngineView().getStage().draw();
     }

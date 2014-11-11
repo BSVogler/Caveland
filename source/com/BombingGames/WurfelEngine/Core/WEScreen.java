@@ -49,9 +49,9 @@ public abstract class WEScreen implements Screen {
 	
 	/**
 	 * 
-	 * @param delta time in ms 
+	 * @param dt time in ms 
 	 */
-	public abstract void renderImpl(float delta);
+	public abstract void renderImpl(float dt);
 
 	
 	

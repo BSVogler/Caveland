@@ -73,9 +73,9 @@ public class GunTestController extends Controller {
 
     
     @Override
-    public void update(float delta){
-        float origidelta = delta;
-        delta *= getTimespeed();
+    public void update(float dt){
+        float origidelta = dt;
+        dt *= getTimespeed();
 
 
 
@@ -95,9 +95,9 @@ public class GunTestController extends Controller {
 //            currentWeapon.update(input.isButtonPressed(0), delta);
 
         if (sprinting)
-            getPlayer().setMana((int) (getPlayer().getMana()-delta));
+            getPlayer().setMana((int) (getPlayer().getMana()-dt));
         else {
-            getPlayer().setMana((int) (getPlayer().getMana()+delta/2f));
+            getPlayer().setMana((int) (getPlayer().getMana()+dt/2f));
         }
         if (getPlayer().getMana()>100)
             cooldown=false;

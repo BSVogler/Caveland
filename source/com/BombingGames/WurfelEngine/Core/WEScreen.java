@@ -41,7 +41,8 @@ public abstract class WEScreen implements Screen {
 
 	@Override
 	public final void render(float delta){
-		delta *= 1000;
+		delta *= 1000;//to ms
+		if (delta >= 1000) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 17ms ^= 58FPS
 		renderImpl(delta);
 		WE.updateAndRender(delta);
 	}

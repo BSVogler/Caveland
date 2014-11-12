@@ -89,7 +89,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public boolean isOnGround(){
         if (getPosition().getHeight() <= 0) return true; //if entity is under the map
         
-        if (getPosition().getHeight()>Map.getGameHeight()){
+        if (getPosition().getHeight()< Map.getGameHeight()){
             //check if one pixel deeper is on ground.
             int z = (int) ((getPosition().getHeight()-1)/GAME_EDGELENGTH);
             if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;

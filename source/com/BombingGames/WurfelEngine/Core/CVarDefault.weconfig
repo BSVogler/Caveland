@@ -1,6 +1,6 @@
 float gravity 9.81
 int worldSpinAngle -40
-float LEAzimutSpeed 0.078125
+float LEAzimutSpeed 0.0078125
 int renderResolutionWidth 1920
 boolean enableLightEngine 1
 boolean enableFog 1

@@ -70,7 +70,8 @@ public class Controller implements GameManager {
      */
     public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
-        if (Controller.devtools == null)
+
+		if (Controller.devtools == null)
             devtools = new DevTools( 10, 50 );
         
         if (map == null){
@@ -89,7 +90,7 @@ public class Controller implements GameManager {
 		
 		map.setMinimap(minimap);
         
-        if (WE.getCurrentConfig().useLightEngine() && Controller.lightEngine == null){
+        if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         }
         

@@ -1,6 +1,7 @@
 package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import java.io.File;
@@ -16,7 +17,14 @@ public class Caveland {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        CVar.register("worldSpinAngle", 50, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("shouldLoadMap", true, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("enableLightEngine", true, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("enableFog", true, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("enableAutoShade", false, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("groundBlockID", 1, CVar.CVarFlags.CVAR_ARCHIVE);
+		CVar.register("chunkSwitchAllowed", 1, CVar.CVarFlags.CVAR_ARCHIVE);
+		
         WE.setMainMenu(new MainMenuScreen());
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		

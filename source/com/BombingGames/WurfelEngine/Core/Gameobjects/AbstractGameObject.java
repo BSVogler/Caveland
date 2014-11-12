@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
@@ -249,7 +250,7 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            WE.getCurrentConfig().shouldAutoShade()
+            CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
@@ -270,7 +271,7 @@ public abstract class AbstractGameObject {
             view,
             camera,
             pos,
-            WE.getCurrentConfig().shouldAutoShade()
+            CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
@@ -293,7 +294,7 @@ public abstract class AbstractGameObject {
             camera,
             pos,
             color,
-            WE.getCurrentConfig().useScalePrototype()//if using scale prototype scale the objects
+            CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
                 ? pos.getPoint().getHeight()/(Map.getGameHeight())
                 : 0
         );
@@ -331,7 +332,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            WE.getCurrentConfig().shouldAutoShade()
+            CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
@@ -353,7 +354,7 @@ public abstract class AbstractGameObject {
             view,
             xPos,
             yPos,
-            WE.getCurrentConfig().shouldAutoShade()
+            CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
@@ -389,7 +390,7 @@ public abstract class AbstractGameObject {
 			sprite.setColor(color);
 			sprite.draw(view.getBatch());
         
-        if (WE.getCurrentConfig().debugObjects()){
+        if (CVar.get("debugObjects").getValueb()){
             ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);
             //sprite outline

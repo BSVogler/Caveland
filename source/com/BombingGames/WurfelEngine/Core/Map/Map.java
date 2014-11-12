@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -55,7 +56,7 @@ public class Map implements Cloneable {
     /**A list which has all current nine chunk coordinates in it.*/
     private final int[][] coordlist = new int[9][2];
     
-	private final Block groundBlock = Block.getInstance(WE.getCurrentConfig().groundBlockID());//the representative of the bottom layer (ground) block
+	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei());//the representative of the bottom layer (ground) block
     /** the map data are the blocks in their cells */
     private Block[][][] data;
     
@@ -257,7 +258,7 @@ public class Map implements Cloneable {
      * @param newmiddle newmiddle is 1, 3, 5 or 7
      */
     public void setCenter(final int newmiddle){
-        if (WE.getCurrentConfig().isChunkSwitchAllowed()){
+        if (CVar.get("chunkSwitchAllowed").getValueb()){
             Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
             if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
 
@@ -569,7 +570,7 @@ public class Map implements Cloneable {
      * @return a number between 0 and 360
      */
     public int getWorldSpinDirection() {
-        return WE.getCurrentConfig().getWorldSpinAngle();
+        return CVar.get("worldSpinAngle").getValuei();
     }
     
     

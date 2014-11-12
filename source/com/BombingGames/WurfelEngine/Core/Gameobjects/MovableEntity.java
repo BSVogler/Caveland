@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -165,7 +166,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 				float t = delta/1000f; //t = time in s
 				if (!floating)
 					if (!isOnGround())
-						movement.z -= WE.getCurrentConfig().getGravity()*t; //in m/s
+						movement.z -= CVar.get("gravity").getValuef()*t; //in m/s
 				getPosition().setHeight(getPosition().getHeight() + movement.z * GAME_EDGELENGTH * t); //in m
 
 
@@ -295,7 +296,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 
 	@Override
 	public void render(View view, int xPos, int yPos, Color color, float scale) {
-		if (WE.getCurrentConfig().debugObjects()){
+		if (CVar.get("debugObjects").getValueb()){
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(Color.GREEN);

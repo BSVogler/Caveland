@@ -50,14 +50,6 @@ public class Configuration {
     public void loadConfigFromFile(){
     }
     
-    /**
-     * The gravity constant in m/s^2
-     * @return default is 9.81m/s^2
-     */
-    public float getGravity() {
-        return 9.81f;
-    }
-
     /**in which direction is the world spinning? This is needed for the light engine.
      * WEST->SOUTH->EAST = 0
       * SOUTH->WEST->NORTH = -90
@@ -65,25 +57,17 @@ public class Configuration {
        *NORTH->EAST->SOUT = -270
      * @return in degrees
      */
-    public int getWorldSpinAngle() {
-        return -40;
-    }
-
-    /**
-     *Set if the map should load or generate new chunks when the camera reaches an end of the map.
-     * @return
-     */
-    public boolean isChunkSwitchAllowed() {
-        return true;
-    }
+//    public int getWorldSpinAngle() {
+//        return -40;
+//    }
 
     /**
      *
      * @return
      */
-    public boolean shouldLoadMap() {
-        return false;
-    }
+//    public boolean shouldLoadMap() {
+//        return false;
+//    }
 
     /**
      *The map generator
@@ -93,23 +77,23 @@ public class Configuration {
         return generator;
     }
 
-    /**
-     *
-     * @return
-     */
-    public float getLEAzimutSpeed() {
-        return 1/128f;
-    }
+//    /**
+//     *
+//     * @return
+//     */
+//    public float getLEAzimutSpeed() {
+//        return 1/128f;
+//    }
     
 
-    /**
-     * The virtual render width (resolution).
-     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
-     * @return
-     */
-    public int getRenderResolutionWidth() {
-        return 1920;
-    }
+//    /**
+//     * The virtual render width (resolution).
+//     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
+//     * @return
+//     */
+//    public int getRenderResolutionWidth() {
+//        return 1920;
+//    }
     
    /**
     * clearing the screen is ~5-10% slower than without.
@@ -123,25 +107,25 @@ public class Configuration {
      *
      * @return
      */
-    public boolean useLightEngine() {
-        return true;
-    }
+//    public boolean useLightEngine() {
+//        return true;
+//    }
     
     /**
      *Should the blocks get rendered with fog?
      * @return
      */
-    public boolean useFog() {
-        return true;
-    }
+//    public boolean useFog() {
+//        return true;
+//    }
 
     /**
      * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. You should shade the blocks in this case by hand (pre-lit).
      * @return if it should autoshade it should return true
      */
-    public boolean shouldAutoShade() {
-        return false;
-    }
+//    public boolean shouldAutoShade() {
+//        return false;
+//    }
     
 //    /**
 //     * Returns a list containing classes of blocks.
@@ -202,32 +186,32 @@ public class Configuration {
      *
      * @return True if some depth prototype should be activated.
      */
-    public boolean useScalePrototype(){
-        return false;
-    }
+//    public boolean useScalePrototype(){
+//        return false;
+//    }
     
     /**
      * 
      * @return The id of the ground block.
      */
-    public int groundBlockID(){
-        return 2;
-    }
+//    public int groundBlockID(){
+//        return 2;
+//    }
     
     /**
      * 
      * @return Render box around sprites?
      */
-    public boolean debugObjects(){
-        return false;
-    }
+//    public boolean debugObjects(){
+//        return false;
+//    }
     
     /**
      * increases memory usage by not unloading data. Increases loading speed. May cause problems on low memory devices.
      * @return true if keeps the data
      */
-    public boolean preventUnloading(){
-        return true;
-    }
+//    public boolean preventUnloading(){
+//        return true;
+//    }
     
 }

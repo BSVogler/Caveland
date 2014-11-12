@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
@@ -146,10 +147,18 @@ public class WE {
         //setUpdateOnlyWhenVisible(true);        
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
         //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
+				
         System.out.println("Fire Engine…");
 		game = new WEGame();
         application = new LwjglApplication(game, config);
         application.setLogLevel(Application.LOG_DEBUG);
+		
+		//load cvars
+		if (!new File(workingDirectory+"/engine.weconfig").exists()){
+			CVar.unpackFile();
+		}
+			
+		CVar.loadFromFile();
     }
 
 	public static LwjglApplicationConfiguration getLwjglApplicationConfiguration() {

@@ -320,7 +320,7 @@ public class Camera {
 			view.getBatch().end();
 
 			//outline map
-			if (WE.getCurrentConfig().debugObjects()) {
+			if (CVar.get("debugObjects").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 				view.getShapeRenderer().rect(0, 0, Map.getGameWidth(), Map.getGameDepth() / 2);
@@ -756,7 +756,7 @@ public class Camera {
 	 * @return a scaling factor applied on the screen
 	 */
 	public float getScaling() {
-		return zoom * screenWidth / WE.getCurrentConfig().getRenderResolutionWidth();
+		return zoom * screenWidth / CVar.get("renderResolutionWidth").getValuei();
 	}
 	
 	/**

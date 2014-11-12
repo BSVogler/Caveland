@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -121,7 +120,7 @@ public class Minimap {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = Block.getRepresentingColor(WE.getCurrentConfig().groundBlockID(), 0);
+                    mapdata[x][y] = Block.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),0);
                 else {
                     Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
                     if (block.getId()!=0)

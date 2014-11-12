@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
@@ -269,7 +270,7 @@ public class Block extends AbstractGameObject {
         if (!isHidden()) {
             float scale =0;
 			Coordinate coords = pos.getCoord();
-            if (WE.getCurrentConfig().useScalePrototype())  //scale if the prototype is activated
+            if (CVar.get("enableScalePrototype").getValueb())  //scale if the prototype is activated
                 scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
                 if (!camera.getClipping(coords)[1])
@@ -366,7 +367,7 @@ public class Block extends AbstractGameObject {
      */
     public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
         Color color = Color.GRAY.cpy();
-        if (WE.getCurrentConfig().shouldAutoShade()){
+        if (CVar.get("enableAutoShade").getValueb()){
             if (side==Sides.LEFT){
                 color = color.add(Color.DARK_GRAY.cpy());
             }else if (side==Sides.RIGHT){
@@ -377,7 +378,7 @@ public class Block extends AbstractGameObject {
         }
         
         //add fog
-        if (WE.getCurrentConfig().useFog()){
+        if (CVar.get("enableFog").getValueb()){
             color.mul(
                 (float) (0.5f+Math.exp(
                     (camera.getVisibleBackBorder()-coords.getCoord().getRelY())*0.05f+1
@@ -467,7 +468,7 @@ public class Block extends AbstractGameObject {
  
         sprite.draw(view.getBatch());
         
-        if (WE.getCurrentConfig().debugObjects()){
+        if (CVar.get("debugObjects").getValueb()){
             ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());

@@ -138,7 +138,7 @@ public class Chunk {
 			try {
 				//FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
 				//BufferedReader bufRead = new BufferedReader(input);
-				BufferedReader bufRead = path.reader(30000);//normal chunk file is around 17.000 byte
+				BufferedReader bufRead = path.reader(20000);//normal chunk file is around 17.000 byte
 
 				//jump over first line to prevent problems with length byte
 				bufRead.readLine();

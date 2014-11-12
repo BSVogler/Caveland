@@ -1,0 +1,13 @@
+float gravity 9.81
+int worldSpinAngle -40
+float LEAzimutSpeed 0.078125
+int renderResolutionWidth 1920
+boolean enableLightEngine 1
+boolean enableFog 1
+boolean enableAutoShade 0
+boolean enableScalePrototype 0
+int groundBlockID 2
+boolean debugObjects 0
+boolean preventUnloading 1
+boolean shouldLoadMap 1
+boolean chunkSwitchAllowed 1

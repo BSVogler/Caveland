@@ -1,11 +1,11 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
@@ -77,7 +77,7 @@ public class Collectible extends MovableEntity {
             camera,
             pos,
             this.color.cpy().mul(color),
-            WE.getCurrentConfig().useScalePrototype()//if using scale prototype scale the objects
+            CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
                 ? pos.getPoint().getHeight()/(Map.getGameHeight())
                 : -0.4f
         );

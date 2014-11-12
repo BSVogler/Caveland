@@ -143,7 +143,7 @@ public class GameView extends View implements GameManager {
 		 * problem! Write acces in view. causes 1 frame hack without hacks.
 		 */
         for (Camera camera : cameras) {
-            if (WE.getCurrentConfig().isChunkSwitchAllowed()) {
+            if (CVar.get("chunkSwitchAllowed").getValueb()) {
                 //earth to right
                 if (camera.getVisibleLeftBorder() <= 0)
                     Controller.getMap().setCenter(3);
@@ -227,7 +227,7 @@ public class GameView extends View implements GameManager {
      * @return the scale factor
      */
     public float getEqualizationScale() {
-        return libGDXcamera.viewportWidth / WE.getCurrentConfig().getRenderResolutionWidth();
+        return libGDXcamera.viewportWidth / CVar.get("renderResolutionWidth").getValuei();
     }
 
     

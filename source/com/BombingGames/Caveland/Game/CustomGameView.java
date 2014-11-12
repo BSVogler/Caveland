@@ -30,6 +30,7 @@ package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Lore;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
@@ -77,7 +78,8 @@ public class CustomGameView extends GameView{
 		
         ((PlayerWithWeapon) getPlayer(0)).setCamera(camera);
 		
-		//WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld.mp3");
+		WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld.mp3");
+		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());
         
         
 //        controller.setMinimap(

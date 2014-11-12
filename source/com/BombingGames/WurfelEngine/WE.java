@@ -154,6 +154,7 @@ public class WE {
         application.setLogLevel(Application.LOG_DEBUG);
 		
 		//load cvars
+		System.out.println("Loading CVars…");
 		if (!new File(workingDirectory+"/engine.weconfig").exists()){
 			CVar.unpackFile();
 		}

@@ -162,10 +162,10 @@ public class Console {
        timelastupdate += dt;
        
         //open close console/chat box
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey())) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.get("consoleKey").getValuei())) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(WE.getCurrentConfig().getConsoleKey());
+        keyConsoleDown = Gdx.input.isKeyPressed(CVar.get("consoleKey").getValuei());
 
         //decrease importance every 30ms
         if (timelastupdate >= 30) {

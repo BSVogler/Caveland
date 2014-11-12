@@ -34,7 +34,6 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 
 
@@ -44,31 +43,7 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 public class Configuration {
     private final Generator generator = new IslandGenerator();
-    /**
-     * Load engine configuration from a file
-     */
-    public void loadConfigFromFile(){
-    }
     
-    /**in which direction is the world spinning? This is needed for the light engine.
-     * WEST->SOUTH->EAST = 0
-      * SOUTH->WEST->NORTH = -90
-      * EAST->NORTH->WEST = -180
-       *NORTH->EAST->SOUT = -270
-     * @return in degrees
-     */
-//    public int getWorldSpinAngle() {
-//        return -40;
-//    }
-
-    /**
-     *
-     * @return
-     */
-//    public boolean shouldLoadMap() {
-//        return false;
-//    }
-
     /**
      *The map generator
      * @return
@@ -77,78 +52,6 @@ public class Configuration {
         return generator;
     }
 
-//    /**
-//     *
-//     * @return
-//     */
-//    public float getLEAzimutSpeed() {
-//        return 1/128f;
-//    }
-    
-
-//    /**
-//     * The virtual render width (resolution).
-//     * Every resolution smaller than this get's scaled down and every resolution bigger scaled up. 
-//     * @return
-//     */
-//    public int getRenderResolutionWidth() {
-//        return 1920;
-//    }
-    
-   /**
-    * clearing the screen is ~5-10% slower than without.
-    * @return 
-    */
-    public boolean clearBeforeRendering(){
-        return true;
-    }
-
-    /**
-     *
-     * @return
-     */
-//    public boolean useLightEngine() {
-//        return true;
-//    }
-    
-    /**
-     *Should the blocks get rendered with fog?
-     * @return
-     */
-//    public boolean useFog() {
-//        return true;
-//    }
-
-    /**
-     * If no light engine the blocks can be shaded by algorithm. Use this only if you are lazy. You should shade the blocks in this case by hand (pre-lit).
-     * @return if it should autoshade it should return true
-     */
-//    public boolean shouldAutoShade() {
-//        return false;
-//    }
-    
-//    /**
-//     * Returns a list containing classes of blocks.
-//     * @return 
-//     */
-//    @SuppressWarnings("unchecked")
-//    public Class<? extends Block>[] getBlockList(){
-//        Class<? extends Block>[] blocklist = new Class[100];
-//        //blocklist[31] = ExplosiveBarrel.class;
-//        return blocklist;
-//    }
-//    
-//    @SuppressWarnings("unchecked")
-//    public void initBlockList(){
-//        try {
-//            Class<? extends Block>[] blocklist;
-//            blocklist = new Class[100];
-//            blocklist[31] = (Class<? extends Block>) Class.forName("ExplosiveBarrel");
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    
     /**
      * If you want to use custom blocks you should override this.
      * @return default is null
@@ -171,47 +74,5 @@ public class Configuration {
      * @param manager
      */
     public void initLoadingQueque(AssetManager manager){
-        
     }
-    
-    /**
-     *
-     * @return Get the key which opens the console.
-     */
-    public int getConsoleKey(){
-        return Keys.F1;
-    }
-    
-    /**
-     *
-     * @return True if some depth prototype should be activated.
-     */
-//    public boolean useScalePrototype(){
-//        return false;
-//    }
-    
-    /**
-     * 
-     * @return The id of the ground block.
-     */
-//    public int groundBlockID(){
-//        return 2;
-//    }
-    
-    /**
-     * 
-     * @return Render box around sprites?
-     */
-//    public boolean debugObjects(){
-//        return false;
-//    }
-    
-    /**
-     * increases memory usage by not unloading data. Increases loading speed. May cause problems on low memory devices.
-     * @return true if keeps the data
-     */
-//    public boolean preventUnloading(){
-//        return true;
-//    }
-    
 }

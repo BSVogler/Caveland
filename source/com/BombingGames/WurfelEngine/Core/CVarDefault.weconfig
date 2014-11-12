@@ -11,3 +11,5 @@ boolean debugObjects 0
 boolean preventUnloading 1
 boolean shouldLoadMap 1
 boolean chunkSwitchAllowed 1
+boolean clearBeforeRendering 1
+int consoleKey 244

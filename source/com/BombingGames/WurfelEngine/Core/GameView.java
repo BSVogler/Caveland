@@ -178,7 +178,7 @@ public class GameView extends View implements GameManager {
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         //clear screen if wished
-        if (WE.getCurrentConfig().clearBeforeRendering()){
+        if (CVar.get("clearBeforeRendering").getValueb()){
             Gdx.gl20.glClearColor(0, 0, 0, 1);
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }

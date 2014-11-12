@@ -132,7 +132,7 @@ public class CVar {
 				String datatype = tokenizer.nextToken();
 				String name = tokenizer.nextToken();
 				String data = tokenizer.nextToken();
-				if (null != datatype)
+				if (null != datatype && CVar.get(name)==null)//only overwrite if not already set
 					switch (datatype) {
 					case "float":
 						register(name, Float.parseFloat(data), CVarFlags.CVAR_ARCHIVE);

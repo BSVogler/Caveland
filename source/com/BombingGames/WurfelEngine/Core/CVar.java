@@ -87,7 +87,11 @@ public class CVar {
 		cvars.put(name.intern(), cvar);
 	};
 	
-	
+	/**
+	 * tries to get the cvar.
+	 * @param cvar
+	 * @return if not found returns null
+	 */
 	public static CVar get(String cvar){
 		return cvars.get(cvar.intern());
 	}

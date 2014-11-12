@@ -202,6 +202,10 @@ public class EngineView extends View {
 		return musicLoudness;
 	}
 
+	/**
+	 * 
+	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume.
+	 */
 	public void setMusicLoudness(float loudness) {
 		this.musicLoudness = loudness;
 		if (music!=null){

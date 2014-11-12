@@ -360,7 +360,10 @@ public class Console {
 			if (st.hasMoreElements()){
                 t = Float.valueOf(st.nextToken());  
             }
-			gameplayRef.getView().getCameras().get(id).shake(amp, t);
+			if (id < gameplayRef.getView().getCameras().size())
+				gameplayRef.getView().getCameras().get(id).shake(amp, t);
+			else
+				add("Camera ID out of range","System");
 		}
 		
         if (command.startsWith("fillmap")) {

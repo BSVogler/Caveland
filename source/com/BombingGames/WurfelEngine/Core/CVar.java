@@ -45,9 +45,13 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class CVar {
-	
+
 	public enum CVarFlags {
 		CVAR_ARCHIVE, CVAR_VOLATILE // never saved to file
+	}
+	
+	public enum Type {
+		b, f, i
 	}	
 	
 	/**global list of all CVars**/
@@ -57,11 +61,13 @@ public class CVar {
 	private int valuei;
 	private float valuef;
 	private boolean valueb;
+	private Type type;
 	
 	public static void register(String name, int value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valuei = value;
 		cvar.flags = flags;
+		cvar.type = Type.i;
 		cvars.put(name.intern(), cvar);
 	};
 	
@@ -69,6 +75,7 @@ public class CVar {
 		CVar cvar = new CVar();
 		cvar.valuef = value;
 		cvar.flags = flags;
+		cvar.type = Type.f;
 		cvars.put(name.intern(), cvar);
 	};
 	
@@ -76,6 +83,7 @@ public class CVar {
 		CVar cvar = new CVar();
 		cvar.valueb = value;
 		cvar.flags = flags;
+		cvar.type = Type.b;
 		cvars.put(name.intern(), cvar);
 	};
 	
@@ -96,6 +104,16 @@ public class CVar {
 		return valueb;
 	}
 	
+	public void setValue(String str) {
+		if (str.length()>0)
+			if (type==Type.i){
+				valuei = Integer.parseInt(str);
+			} else if (type==Type.f){
+				valuef = Float.parseFloat(str);
+			} else {
+				valueb = str.equals("1") || str.equals("true");
+			} 
+	}
 	
 	/**
 	 * load CVars from file 

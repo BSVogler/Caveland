@@ -238,7 +238,7 @@ public class Console {
     public void enter(){
         add(textinput.getText(), "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
-        if (mode==Modes.Console && !executeCommand(textinput.getText()))    
+        if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(textinput.getText()))    
             add("Failed executing command.", "System");    
         setText("");
     }

@@ -43,13 +43,20 @@ import java.util.logging.Logger;
 /**
  *
  * @author Benedikt Vogler
+ * @since v1.4.2
  */
 public class CVar {
 
+	/**
+	 * @since v1.4.2
+	 */
 	public enum CVarFlags {
 		CVAR_ARCHIVE, CVAR_VOLATILE // never saved to file
 	}
 	
+	/**
+	 * @since v1.4.2
+	 */
 	private enum Type {
 		b, f, i
 	}	
@@ -63,6 +70,13 @@ public class CVar {
 	private boolean valueb;
 	private Type type;
 	
+	/**
+	 * 
+	 * @param name indentifier name
+	 * @param value
+	 * @param flags
+	 * @since v1.4.2
+	 */
 	public static void register(String name, int value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valuei = value;
@@ -71,6 +85,13 @@ public class CVar {
 		cvars.put(name.intern(), cvar);
 	};
 	
+	/**
+	 * 
+	 * @param name indentifier name
+	 * @param value
+	 * @param flags
+	 * @since v1.4.2
+	 */
 	public static void register(String name, float value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valuef = value;
@@ -79,6 +100,13 @@ public class CVar {
 		cvars.put(name.intern(), cvar);
 	};
 	
+	/**
+	 * 
+	 * @param name indentifier name
+	 * @param value
+	 * @param flags
+	 * @since v1.4.2
+	 */
 	public static void register(String name, boolean value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valueb = value;
@@ -89,25 +117,46 @@ public class CVar {
 	
 	/**
 	 * tries to get the cvar.
-	 * @param cvar
+	 * @param cvar indentifier name
 	 * @return if not found returns null
+	 * @since v1.4.2
 	 */
 	public static CVar get(String cvar){
 		return cvars.get(cvar.intern());
 	}
 
+	/**
+	 * 
+	 * @return return the integer value of the cvar. if not of type i returns init value of int
+	 * @since v1.4.2
+	 */
 	public int getValuei() {
 		return valuei;
 	}
 
+	/**
+	 * 
+	 * @return returns the float value of the cvar. if not of type f returns init value of float
+	 * @since v1.4.2
+	 */
 	public float getValuef() {
 		return valuef;
 	}
 	
+	/**
+	 * 
+	 * @return returns the boolean value of the cvar. if not of type b returns init value of boolean
+	 * @since v1.4.2
+	 */
 	public boolean getValueb() {
 		return valueb;
 	}
 	
+	/**
+	 * 
+	 * @param str 
+	 * @since v1.4.2
+	 */
 	public void setValue(String str) {
 		if (str.length()>0)
 			if (type==Type.i){
@@ -120,7 +169,8 @@ public class CVar {
 	}
 	
 	/**
-	 * load CVars from file 
+	 * load CVars from file
+	 * @since v1.4.2
 	 */
 	public static void loadFromFile(){
 		FileHandle sourceFile = new FileHandle(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
@@ -157,12 +207,21 @@ public class CVar {
 	
 	/**
 	 * move config file from internal to wd
-	 * @param src
+	 * @since v1.4.2
 	 */
 	public static void unpackFile() {
 		FileHandle dest = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
 		
 		Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").copyTo(dest);
+	}
+	
+	
+	/**
+	 * saves the cvars with the flag to file
+	 * @since v1.4.2
+	 */
+	public static void dispose(){
+		
 	}
 	
 }

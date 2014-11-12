@@ -13,3 +13,5 @@ boolean shouldLoadMap 1
 boolean chunkSwitchAllowed 1
 boolean clearBeforeRendering 1
 int consoleKey 244
+int music 1
+int sound 1

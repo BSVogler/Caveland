@@ -50,7 +50,7 @@ public class CVar {
 		CVAR_ARCHIVE, CVAR_VOLATILE // never saved to file
 	}
 	
-	public enum Type {
+	private enum Type {
 		b, f, i
 	}	
 	

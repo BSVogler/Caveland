@@ -33,6 +33,7 @@ import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Lore;
 import com.BombingGames.Caveland.GameObjects.Spaceship;
+import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -75,7 +76,7 @@ public class CustomGameController extends Controller {
 //				new Point((float) (Math.random()*Map.getGameWidth()), (float) (Math.random()*Map.getGameDepth()), 1, true)
 //			);
 //		}
-		//new Vanya(Map.getCenter()).spawn();
+		new Vanya().spawn(Map.getCenter());
     }
 
 	@Override

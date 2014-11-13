@@ -171,10 +171,9 @@ public class CVar {
 				String line = reader.readLine();
 				while (line!=null) {
 					StringTokenizer tokenizer = new StringTokenizer(line, " ");
-					String datatype = tokenizer.nextToken();
 					String name = tokenizer.nextToken();
 					String data = tokenizer.nextToken();
-					if (null != datatype && CVar.get(name)==null){//only overwrite if not already set
+					if (CVar.get(name)==null){//only overwrite if not already set
 						get(name).setValue(data);
 					}
 					line = reader.readLine();
@@ -196,6 +195,7 @@ public class CVar {
 	 */
 	public static void dispose(){
 		Writer writer = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig").writer(false);
+		
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
 			
@@ -213,6 +213,11 @@ public class CVar {
 			}
 			
 			it.remove(); // avoids a ConcurrentModificationException
+		}
+		try {
+			writer.close();
+		} catch (IOException ex) {
+			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	
 	}

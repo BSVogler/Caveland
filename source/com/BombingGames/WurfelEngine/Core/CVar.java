@@ -173,8 +173,9 @@ public class CVar {
 					StringTokenizer tokenizer = new StringTokenizer(line, " ");
 					String name = tokenizer.nextToken();
 					String data = tokenizer.nextToken();
-					if (CVar.get(name)==null){//only overwrite if not already set
+					if (CVar.get(name)!=null){//only overwrite if already set
 						get(name).setValue(data);
+						System.out.println("Set CVar "+name+": "+data);
 					}
 					line = reader.readLine();
 				}
@@ -184,8 +185,7 @@ public class CVar {
 			} catch (IOException ex) {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		}
-		System.out.println("Custom CVar file not found.");
+		} else System.out.println("Custom CVar file not found.");
 	
 	}
 	

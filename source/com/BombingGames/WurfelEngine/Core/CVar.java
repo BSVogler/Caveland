@@ -195,7 +195,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static void dispose(){
-		Writer writer = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").writer(false);
+		Writer writer = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig").writer(false);
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
 			

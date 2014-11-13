@@ -35,7 +35,10 @@ import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +68,7 @@ public class CVar {
 	private static HashMap<String, CVar> cvars = new HashMap<>(50);
 	
 	private CVarFlags flags;
+	private float defaultValue;
 	private int valuei;
 	private float valuef;
 	private boolean valueb;
@@ -95,45 +99,51 @@ public class CVar {
 	}
 	
 	/**
-	 * 
+	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
 	 * @param name indentifier name
-	 * @param value
+	 * @param value the value of the cvar
 	 * @param flags
 	 * @since v1.4.2
 	 */
 	public static void register(String name, int value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valuei = value;
+		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.i;
 		cvars.put(name.intern(), cvar);
 	};
 	
 	/**
-	 * 
+	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
 	 * @param name indentifier name
-	 * @param value
+	 * @param value the value of the cvar
 	 * @param flags
 	 * @since v1.4.2
 	 */
 	public static void register(String name, float value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valuef = value;
+		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.f;
 		cvars.put(name.intern(), cvar);
 	};
 	
 	/**
-	 * 
+	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
 	 * @param name indentifier name
-	 * @param value
+	 * @param value the value of the cvar
 	 * @param flags
 	 * @since v1.4.2
 	 */
 	public static void register(String name, boolean value, CVarFlags flags){
 		CVar cvar = new CVar();
 		cvar.valueb = value;
+		if (value)
+			cvar.defaultValue = 1;
+		else
+			cvar.defaultValue = 0;
 		cvar.flags = flags;
 		cvar.type = Type.b;
 		cvars.put(name.intern(), cvar);
@@ -147,6 +157,73 @@ public class CVar {
 	 */
 	public static CVar get(String cvar){
 		return cvars.get(cvar.intern());
+	}
+	
+		/**
+	 * load CVars from file and overwrite engine cvars
+	 * @since v1.4.2
+	 */
+	public static void loadFromFile(){
+		FileHandle sourceFile = new FileHandle(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
+		try {
+			BufferedReader reader = sourceFile.reader(300);
+			String line = reader.readLine();
+			while (line!=null) {
+				StringTokenizer tokenizer = new StringTokenizer(line, " ");
+				String datatype = tokenizer.nextToken();
+				String name = tokenizer.nextToken();
+				String data = tokenizer.nextToken();
+				if (null != datatype && CVar.get(name)==null){//only overwrite if not already set
+					get(name).setValue(data);
+				}
+				line = reader.readLine();
+			}
+			
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	
+	}
+	
+	/**
+	 * move config file from internal to wd
+	 * @since v1.4.2
+	 * @deprecated 
+	 */
+	public static void unpackFile() {
+		FileHandle dest = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
+		
+		Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").copyTo(dest);
+	}
+	
+	
+	/**
+	 * saves the cvars with the flag to file
+	 * @since v1.4.2
+	 */
+	public static void dispose(){
+		Writer writer = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").writer(false);
+		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+		while (it.hasNext()) {
+			
+			Map.Entry<String, CVar> pairs = it.next();
+			try {
+				//if should be saved and different then default: save
+				if (
+					pairs.getValue().flags == CVarFlags.CVAR_ARCHIVE
+					&& pairs.getValue().getDefaultAsFloat() != pairs.getValue().getValueAsFloat()
+				)
+					writer.write(pairs.getKey() + " "+pairs.getValue().toString()+"\n");
+				
+			} catch (IOException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			
+			it.remove(); // avoids a ConcurrentModificationException
+		}
+	
 	}
 
 	/**
@@ -177,6 +254,24 @@ public class CVar {
 	}
 	
 	/**
+	 * can be used for comparing the content.
+	 * @return flaot representation of content
+	 */
+	private float getDefaultAsFloat() {
+		return defaultValue;
+	}
+
+	/**
+	 * can be used for comparing the content.
+	 * @return returns the value as a float. true=1, false =0
+	 */
+	private float getValueAsFloat() {
+		if (type==Type.f) return valuef;
+		if (type==Type.i) return valuei;
+		return valueb ? 1f : 0f;
+	}
+	
+	/**
 	 * 
 	 * @param str 
 	 * @since v1.4.2
@@ -191,61 +286,10 @@ public class CVar {
 				valueb = str.equals("1") || str.equals("true");
 			} 
 	}
-	
-	/**
-	 * load CVars from file and overwrite engine cvars
-	 * @since v1.4.2
-	 */
-	public static void loadFromFile(){
-		FileHandle sourceFile = new FileHandle(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
-		try {
-			BufferedReader reader = sourceFile.reader(300);
-			String line = reader.readLine();
-			while (line!=null) {
-				StringTokenizer tokenizer = new StringTokenizer(line, " ");
-				String datatype = tokenizer.nextToken();
-				String name = tokenizer.nextToken();
-				String data = tokenizer.nextToken();
-				if (null != datatype && CVar.get(name)==null)//only overwrite if not already set
-					switch (datatype) {
-					case "float":
-						register(name, Float.parseFloat(data), CVarFlags.CVAR_ARCHIVE);
-						break;
-					case "boolean":
-						register(name, "1".equals(data), CVarFlags.CVAR_ARCHIVE);
-						break;
-					case "int":
-						register(name, Integer.parseInt(data), CVarFlags.CVAR_ARCHIVE);
-						break;
-				}
-				line = reader.readLine();
-			}
-			
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	
-	}
-	
-	/**
-	 * move config file from internal to wd
-	 * @since v1.4.2
-	 */
-	public static void unpackFile() {
-		FileHandle dest = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
-		
-		Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").copyTo(dest);
-	}
-	
-	
-	/**
-	 * saves the cvars with the flag to file
-	 * @since v1.4.2
-	 */
-	public static void dispose(){
-		
+
+	@Override
+	public String toString() {
+		return Float.toString(getValueAsFloat());
 	}
 	
 }

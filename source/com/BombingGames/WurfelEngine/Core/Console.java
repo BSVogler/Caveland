@@ -410,12 +410,23 @@ public class Console {
         }
          
 		//if not a command try setting a cvar
-		if (CVar.get(first)!=null) {
-			CVar.get(first).setValue(st.nextToken());
-			add("Set CVar "+ first + ".", "System");
+		CVar cvar = CVar.get(first);
+		if (cvar!=null) {//if registered
+			if (st.hasMoreTokens()){
+				//set cvar
+				String value = st.nextToken();
+				CVar.get(first).setValue(value);
+				add("Set CVar \""+ first + "\" to "+value, "System");
+				return true;
+			} else {
+				//read cvar
+				add(first+": "+cvar.toString(), "System");
+				return true;
+			}
+		} else {
+			add("CVar \""+first+"\" not found.", "System");
 			return true;
 		}
-        return false;    
     }
     
     private class StageInputProcessor extends InputListener {

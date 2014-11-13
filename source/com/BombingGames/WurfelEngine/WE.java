@@ -503,6 +503,13 @@ public class WE {
 				setScreen(mainMenu);
 			}
 		}
+
+		@Override
+		public void dispose() {
+			super.dispose();
+			CVar.dispose();
+		}
+		
 	}
 
 }

@@ -294,7 +294,7 @@ public class CustomGameView extends GameView{
                  //pause
                  //time is set 0 but the game keeps running
                    if (keycode == Input.Keys.P) {
-                     getController().setTimespeed(0);
+                     CVar.get("gamespeed").setValue("0");;
                   } 
 
                  //reset zoom

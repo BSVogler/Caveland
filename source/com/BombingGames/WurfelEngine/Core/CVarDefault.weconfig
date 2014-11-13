@@ -15,3 +15,4 @@ boolean clearBeforeRendering 1
 int consoleKey 244
 float music 1
 float sound 1
+float gamespeed 1

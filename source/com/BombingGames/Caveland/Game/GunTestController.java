@@ -29,6 +29,7 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -75,7 +76,7 @@ public class GunTestController extends Controller {
     @Override
     public void update(float dt){
         float origidelta = dt;
-        dt *= getTimespeed();
+        dt *= CVar.get("gamespeed").getValuef();
 
 
 

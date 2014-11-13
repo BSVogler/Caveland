@@ -193,22 +193,6 @@ public class Controller implements GameManager {
      *
      * @return
      */
-    public float getTimespeed() {
-        return timespeed;
-    }
-
-    /**
-     *
-     * @param timespeed
-     */
-    public void setTimespeed(float timespeed) {
-        this.timespeed = timespeed;
-    }
-
-    /**
-     *
-     * @return
-     */
     public DevTools getDevTools() {
         return devtools;
     }

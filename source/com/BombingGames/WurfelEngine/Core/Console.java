@@ -409,21 +409,6 @@ public class Console {
             }
         }
          
-        if (command.startsWith("gamespeed")){
-            if (command.length()==9){
-                add("Gamespeed: "+gameplayRef.getController().getTimespeed(), "System");
-                return true;
-            } else {
-                try {
-                    gameplayRef.getController().setTimespeed(Float.parseFloat(command.substring(10)));
-                    return true;
-                } catch(NumberFormatException e) {
-                    add("Tried using value: "+command.substring(10)+". Please enter float value in format like \"0.5\" ", "Warning");
-                }
-            }
-        }
-        
-		
 		//if not a command try setting a cvar
 		if (CVar.get(first)!=null) {
 			CVar.get(first).setValue(st.nextToken());

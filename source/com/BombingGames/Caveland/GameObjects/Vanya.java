@@ -24,7 +24,7 @@ public class Vanya extends MovableEntity {
 		if (beforeUpdate>0 && getMovement().z<0)
 			new BlümchenKacke().spawn(getPosition().cpy());
 		
-		if (isOnGround()) jump();
+		if (getPosition().onLoadedMapHorizontal() && isOnGround()) jump();
 	}
 	
 	@Override

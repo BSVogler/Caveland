@@ -71,6 +71,30 @@ public class CVar {
 	private Type type;
 	
 	/**
+	 * initializes engine cvars
+	 */
+	public static void initEngineVars(){
+		register("gravity", 9.81f, CVarFlags.CVAR_ARCHIVE);
+		register("worldSpinAngle", -40, CVarFlags.CVAR_ARCHIVE);
+		register("LEAzimutSpeed", 0.0078125f, CVarFlags.CVAR_ARCHIVE);
+		register("renderResolutionWidth", 1920, CVarFlags.CVAR_ARCHIVE);
+		register("enableLightEngine", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableFog", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableAutoShade", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
+		register("groundBlockID", 2, CVarFlags.CVAR_ARCHIVE);
+		register("debugObjects", false, CVarFlags.CVAR_ARCHIVE);
+		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);
+		register("shouldLoadMap", true, CVarFlags.CVAR_ARCHIVE);
+		register("chunkSwitchAllowed", true, CVarFlags.CVAR_ARCHIVE);
+		register("clearBeforeRendering", true, CVarFlags.CVAR_ARCHIVE);
+		register("consoleKey", 244, CVarFlags.CVAR_ARCHIVE);//Keys.F1
+		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
+		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
+		register("gamespeed", 1f, CVarFlags.CVAR_ARCHIVE);
+	}
+	
+	/**
 	 * 
 	 * @param name indentifier name
 	 * @param value
@@ -169,7 +193,7 @@ public class CVar {
 	}
 	
 	/**
-	 * load CVars from file
+	 * load CVars from file and overwrite engine cvars
 	 * @since v1.4.2
 	 */
 	public static void loadFromFile(){

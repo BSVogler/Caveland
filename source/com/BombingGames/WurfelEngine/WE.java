@@ -148,16 +148,19 @@ public class WE {
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
         //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
 				
+		System.out.println("Init Engine CVars…");
+		CVar.initEngineVars();
+		
         System.out.println("Fire Engine…");
 		game = new WEGame();
         application = new LwjglApplication(game, config);
         application.setLogLevel(Application.LOG_DEBUG);
 		
 		//load cvars
-		System.out.println("Loading CVars…");
-		if (!new File(workingDirectory+"/engine.weconfig").exists()){
-			CVar.unpackFile();
-		}
+		System.out.println("Loading Game CVars…");
+//		if (!new File(workingDirectory+"/engine.weconfig").exists()){
+//			CVar.unpackFile();
+//		}
 			
 		CVar.loadFromFile();
     }

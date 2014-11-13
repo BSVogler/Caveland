@@ -188,18 +188,6 @@ public class CVar {
 	}
 	
 	/**
-	 * move config file from internal to wd
-	 * @since v1.4.2
-	 * @deprecated 
-	 */
-	public static void unpackFile() {
-		FileHandle dest = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
-		
-		Gdx.files.internal("com/BombingGames/WurfelEngine/Core/CVarDefault.weconfig").copyTo(dest);
-	}
-	
-	
-	/**
 	 * saves the cvars with the flag to file
 	 * @since v1.4.2
 	 */

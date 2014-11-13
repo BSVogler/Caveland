@@ -142,7 +142,7 @@ public class WE {
         
         config.title = title + " " + config.width + "x"+config.height;
 
-        workingDirectory = WorkingDirectory.getWorkingDirectory("Wurfel Engine");//set save-folder
+        workingDirectory = WorkingDirectory.getWorkingDirectory();//set save-folder
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS

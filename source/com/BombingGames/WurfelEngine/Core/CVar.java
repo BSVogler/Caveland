@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
@@ -164,7 +165,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static void loadFromFile(){
-		FileHandle sourceFile = new FileHandle(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
+		FileHandle sourceFile = new FileHandle(WE.getWorkingDirectory()+"/engine.weconfig");
 		if (sourceFile.exists()) {
 			try {
 				BufferedReader reader = sourceFile.reader(300);
@@ -194,7 +195,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static void dispose(){
-		Writer writer = Gdx.files.absolute(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig").writer(false);
+		Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
 		
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {

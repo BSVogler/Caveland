@@ -26,6 +26,7 @@ public class Caveland {
 		CVar.register("chunkSwitchAllowed", 1, CVar.CVarFlags.CVAR_ARCHIVE);
 		
         WE.setMainMenu(new MainMenuScreen());
+		WorkingDirectory.setApplicationName("Caveland");
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

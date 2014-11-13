@@ -45,12 +45,22 @@ import java.util.zip.ZipInputStream;
  * @author Martin Brunokowsky, Benedikt S. Vogler
  */
 public class WorkingDirectory {
+	private static String applicationName = "Wurfel Engine";
+
+	/**
+	 * set a custom name, should be the name of the game
+	 * @param applicationName the name of the folder
+	 */
+	public static void setApplicationName(String applicationName) {
+		WorkingDirectory.applicationName = applicationName;
+	}
+	
+	
     /**
      * 
-     * @param applicationName
      * @return Get the folder where the data is stored.
      */
-    public static File getWorkingDirectory(final String applicationName) {
+    public static File getWorkingDirectory() {
         String userHome = System.getProperty("user.home", ".");
         File workingDirectory;
         switch (getPlatform()) {
@@ -107,7 +117,7 @@ public class WorkingDirectory {
      * @since 1.2.X
      */
     public static File getMapsFolder(){
-        return new File(getWorkingDirectory("Wurfel Engine"),"maps");
+        return new File(getWorkingDirectory(),"maps");
     }
 	
 	/**

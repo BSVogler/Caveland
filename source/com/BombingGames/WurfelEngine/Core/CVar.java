@@ -283,6 +283,12 @@ public class CVar {
 			} 
 	}
 
+	
+	/**
+	 * Prints content of cvar
+	 * @see #getValueAsFloat() 
+	 * @return returns the value as float representation
+	 */
 	@Override
 	public String toString() {
 		return Float.toString(getValueAsFloat());

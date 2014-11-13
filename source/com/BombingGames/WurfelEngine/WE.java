@@ -151,18 +151,14 @@ public class WE {
 		System.out.println("Init Engine CVars…");
 		CVar.initEngineVars();
 		
+		//load cvars
+		System.out.println("Loading Custom CVars…");
+		CVar.loadFromFile();
+		
         System.out.println("Fire Engine…");
 		game = new WEGame();
         application = new LwjglApplication(game, config);
         application.setLogLevel(Application.LOG_DEBUG);
-		
-		//load cvars
-		System.out.println("Loading Game CVars…");
-//		if (!new File(workingDirectory+"/engine.weconfig").exists()){
-//			CVar.unpackFile();
-//		}
-			
-		CVar.loadFromFile();
     }
 
 	public static LwjglApplicationConfiguration getLwjglApplicationConfiguration() {

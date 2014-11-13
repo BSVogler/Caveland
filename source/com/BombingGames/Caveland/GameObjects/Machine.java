@@ -24,6 +24,7 @@ public class Machine extends Block implements IsSelfAware {
 
 	@Override
 	public void update(float dt, int x, int y, int z) {
+		coords = new Coordinate(x, y, z, true);
 		ArrayList<Lore> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(Lore.class);
 		if (lorenIncoming.size()>0) {
 			Lore loreIncoming = lorenIncoming.get(0);

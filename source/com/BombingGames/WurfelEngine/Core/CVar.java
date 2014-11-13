@@ -165,25 +165,28 @@ public class CVar {
 	 */
 	public static void loadFromFile(){
 		FileHandle sourceFile = new FileHandle(WorkingDirectory.getWorkingDirectory("Wurfel Engine")+"/engine.weconfig");
-		try {
-			BufferedReader reader = sourceFile.reader(300);
-			String line = reader.readLine();
-			while (line!=null) {
-				StringTokenizer tokenizer = new StringTokenizer(line, " ");
-				String datatype = tokenizer.nextToken();
-				String name = tokenizer.nextToken();
-				String data = tokenizer.nextToken();
-				if (null != datatype && CVar.get(name)==null){//only overwrite if not already set
-					get(name).setValue(data);
+		if (sourceFile.exists()) {
+			try {
+				BufferedReader reader = sourceFile.reader(300);
+				String line = reader.readLine();
+				while (line!=null) {
+					StringTokenizer tokenizer = new StringTokenizer(line, " ");
+					String datatype = tokenizer.nextToken();
+					String name = tokenizer.nextToken();
+					String data = tokenizer.nextToken();
+					if (null != datatype && CVar.get(name)==null){//only overwrite if not already set
+						get(name).setValue(data);
+					}
+					line = reader.readLine();
 				}
-				line = reader.readLine();
+
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IOException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		System.out.println("Custom CVar file not found.");
 	
 	}
 	

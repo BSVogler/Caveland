@@ -55,7 +55,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.io.File;
 
 /**
- *The Main class of the engine. To create a new engine use  {@link WE#construct(java.lang.String, java.lang.String[]) }
+ *The Main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
  * The Wurfel Engine needs Java >1.7 and the API libGDX1.4.1
  * @author Benedikt S. Vogler
  * @version 1.4.3
@@ -80,12 +80,16 @@ public class WE {
     /**
      * Pass the mainMenu which get's displayed when you call launch().
      * @param mainMenu 
-     * @see  #launch() 
+     * @see #launch() 
      */
     public static void setMainMenu(final AbstractMainMenu mainMenu) {
         WE.mainMenu = mainMenu;
     }
     
+	/**
+	 * set a screen as active
+	 * @param screen 
+	 */
 	public static void setScreen(WEScreen screen){
 		engineView.resetInputProcessors();
 		game.setScreen(screen);

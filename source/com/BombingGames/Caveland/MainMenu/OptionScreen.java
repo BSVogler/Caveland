@@ -77,10 +77,19 @@ public class OptionScreen extends WEScreen {
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
 		//fill with display modes
 		Array<String> arstr = new Array<>();
-		for (Graphics.DisplayMode displayMode : Gdx.graphics.getDisplayModes()) {
-			arstr.add(displayMode.toString());	
+		Graphics.DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
+		int indexCurrentDPM = 0;
+		for (
+			int i = 0; i < dpms.length; i++
+		) {
+			Graphics.DisplayMode dpm = dpms[i];
+			arstr.add(dpm.toString());
+			if (dpm.width==Gdx.graphics.getWidth() && dpm.height==Gdx.graphics.getHeight())
+				indexCurrentDPM = i;
 		}
+		
 		sbox.setItems(arstr);
+		sbox.setSelectedIndex(indexCurrentDPM);
 		sbox.setWidth(300);
 		sbox.setPosition(500, 500);			
 		

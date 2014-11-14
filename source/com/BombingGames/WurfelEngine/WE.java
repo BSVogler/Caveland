@@ -102,6 +102,9 @@ public class WE {
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
      */
     public static void launch(final String title, final String[] args){
+		System.out.println("Load Engine…");
+		
+		workingDirectory = WorkingDirectory.getWorkingDirectory();//set save-folder
 		System.out.println("Init Engine CVars…");
 		CVar.initEngineVars();
 		
@@ -109,7 +112,6 @@ public class WE {
 		System.out.println("Loading Custom CVars…");
 		CVar.loadFromFile();
 		
-		System.out.println("Load Engine…");
 		// set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
@@ -153,7 +155,6 @@ public class WE {
         
         config.title = title + " " + config.width + "x"+config.height;
 
-        workingDirectory = WorkingDirectory.getWorkingDirectory();//set save-folder
         //LIBGDX: no equivalent found in libGDX yet
         //setUpdateOnlyWhenVisible(true);        
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS

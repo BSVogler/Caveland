@@ -97,6 +97,7 @@ public class CVar {
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("gamespeed", 1f, CVarFlags.CVAR_ARCHIVE);
+		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**

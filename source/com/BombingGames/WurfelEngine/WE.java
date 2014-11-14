@@ -119,7 +119,7 @@ public class WE {
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = true;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = 0;//don't lock FPS
+        config.foregroundFPS = CVar.get("limitFPS").getValuei();//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
          
         //arguments

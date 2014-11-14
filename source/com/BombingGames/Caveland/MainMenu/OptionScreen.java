@@ -30,6 +30,7 @@
  */
 package com.BombingGames.Caveland.MainMenu;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -65,6 +66,7 @@ public class OptionScreen extends WEScreen {
 	private final CheckBox vsyncCB;
 	private final TextButton applyButton;
 	private final TextButton cancelButton;
+	private final CheckBox limitFPSCB;
 
 	
 	public OptionScreen() {
@@ -104,6 +106,11 @@ public class OptionScreen extends WEScreen {
 		vsyncCB.setPosition(900, 500);
 		stage.addActor(vsyncCB);
 		
+		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
+		limitFPSCB.setChecked(CVar.get("limitFPS").getValuei() > 0);
+		limitFPSCB.setPosition(900, 400);
+		stage.addActor(limitFPSCB);
+		
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
 		applyButton.setPosition(800, 100);
 		applyButton.addListener(new ChangeListener() {
@@ -113,9 +120,16 @@ public class OptionScreen extends WEScreen {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
 				Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
 				Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+				
+				//get FPS limit
+				if (limitFPSCB.isChecked())
+					CVar.get("limitFPS").setValue("60");
+				else CVar.get("limitFPS").setValue("0");
+				WE.getLwjglApplicationConfiguration().foregroundFPS = CVar.get("limitFPS").getValuei();
 			}
 		});
 		stage.addActor(applyButton);
+		
 		
 		cancelButton = new TextButton("Cancel", WE.getEngineView().getSkin());
 		cancelButton.setPosition(900, 100);

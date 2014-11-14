@@ -46,6 +46,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -62,6 +63,8 @@ public class OptionScreen extends WEScreen {
     private BitmapFont font;
 	private final CheckBox fullscreenCB;
 	private final CheckBox vsyncCB;
+	private final TextButton applyButton;
+	private final TextButton cancelButton;
 
 	
 	public OptionScreen() {
@@ -80,41 +83,55 @@ public class OptionScreen extends WEScreen {
 		sbox.setItems(arstr);
 		sbox.setWidth(300);
 		sbox.setPosition(500, 500);			
-		sbox.addListener(new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
-					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
-				}
-			}
-		);
 		
 		stage.addActor(sbox);
-		sbox.showList();
 		
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
 		fullscreenCB.setPosition(900, 600);
-		fullscreenCB.addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreenCB.isChecked());
-			}
-		});
+//		fullscreenCB.addListener(new ChangeListener() {
+//
+//			@Override
+//			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+//				
+//			}
+//		});
 		
 		stage.addActor(fullscreenCB);
 		
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
 		vsyncCB.setPosition(900, 500);
-		vsyncCB.addListener(new ChangeListener() {
+//		vsyncCB.addListener(new ChangeListener() {
+//
+//			@Override
+//			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+//				Gdx.graphics.setVSync(vsyncCB.isChecked());
+//			}
+//		});
+		stage.addActor(vsyncCB);
+		
+		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
+		applyButton.setPosition(800, 100);
+		applyButton.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
+				Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
+				Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
 			}
 		});
-		stage.addActor(vsyncCB);
+		stage.addActor(applyButton);
+		
+		cancelButton = new TextButton("Cancel", WE.getEngineView().getSkin());
+		cancelButton.setPosition(900, 100);
+		cancelButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				WE.showMainMenu();
+			}
+		});
+		stage.addActor(cancelButton);
                 
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

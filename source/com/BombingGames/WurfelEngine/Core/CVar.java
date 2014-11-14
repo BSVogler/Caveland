@@ -288,12 +288,13 @@ public class CVar {
 	
 	/**
 	 * Prints content of cvar
-	 * @see #getValueAsFloat() 
-	 * @return returns the value as float representation
+	 * @return returns the value
 	 */
 	@Override
 	public String toString() {
-		return Float.toString(getValueAsFloat());
+		if (type==Type.i) return Integer.toString(getValuei());
+		if (type==Type.b) return getValueb() ? "1" : "0";
+		return Float.toString(getValuef());
 	}
 	
 }

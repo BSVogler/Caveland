@@ -285,6 +285,17 @@ public class CVar {
 			} 
 	}
 
+	public void setValuei(int valuei) {
+		this.valuei = valuei;
+	}
+
+	public void setValuef(float valuef) {
+		this.valuef = valuef;
+	}
+
+	public void setValueb(boolean valueb) {
+		this.valueb = valueb;
+	}
 	
 	/**
 	 * Prints content of cvar

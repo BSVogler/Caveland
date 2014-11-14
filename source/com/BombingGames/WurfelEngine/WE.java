@@ -34,12 +34,12 @@ import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.CVar;
-import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
+import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
@@ -174,10 +174,10 @@ public class WE {
      * Initialize the main game with you custom controller and view. This call shows the loadingScreen.
      * @param controller
      * @param view 
-     * @param config 
+	 * @param customLoadingScreen 
      * @see com.BombingGames.WurfelEngine.WE#startGame()
      */
-    public static void initGame(final Controller controller, final GameView view, final Configuration config){
+    public static void initGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen){
         if (game != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
@@ -188,7 +188,7 @@ public class WE {
             gameplayScreen = new GameplayScreen(
                 controller,
                 view,
-                config
+				customLoadingScreen
             );
             getConsole().setGameplayRef(gameplayScreen);
         } else
@@ -354,16 +354,6 @@ public class WE {
 	}
 	
     /**
-     *
-     * @return the config in use
-     */
-    public static Configuration getCurrentConfig(){
-        if (gameplayScreen==null)
-            return new Configuration();
-        return gameplayScreen.getConfig();
-    }
-    
-    /**
      * Returns the Console. Use {@link com.BombingGames.WurfelEngine.Core.Console#add(java.lang.String) }to add messages to the console.
      * @return The console.
      */
@@ -483,7 +473,7 @@ public class WE {
 				Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
 				Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
 				BasicMenuItem[] menuItems = new BasicMenuItem[]{
-					new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class, new Configuration()),
+					new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class),
 					new BasicMenuItem(1, "Options"),
 					new BasicMenuItem(2, "Exit")
 				};   

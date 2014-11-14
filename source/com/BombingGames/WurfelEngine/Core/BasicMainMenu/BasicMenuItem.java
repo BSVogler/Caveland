@@ -28,9 +28,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -59,7 +59,6 @@ public class BasicMenuItem {
     private final String label;
     private final int width;
     private final int height = 50;
-    private Configuration config;
     
     /**
      * Create a new menu Item which can launch a game.
@@ -67,15 +66,13 @@ public class BasicMenuItem {
      * @param label the string displayed by the button. If "exit" or "options" they change their behaviour.
      * @param gameController Your game controller class for this menu item
      * @param gameView Your game view class for this menu item
-     * @param config the game configuration used with this button
      */
-    public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends GameView> gameView, Configuration config) {
+    public BasicMenuItem(int index, String label, Class<? extends Controller> gameController, Class<? extends GameView> gameView) {
         this.gameController = gameController;
         this.gameView = gameView;
         this.index = index;
         this.label = label;
         this.width= this.label.length()*20;
-        this.config = config;
     }
     
       /**
@@ -161,7 +158,7 @@ public class BasicMenuItem {
             try {
                 Controller c = getGameController().newInstance();
                 GameView v = getGameView().newInstance();
-                WE.initGame(c,v, config);
+                WE.initGame(c,v, new LoadingScreen());
             } catch (InstantiationException ex) {
                     Gdx.app.error("BasicMenuItem", "Failed intitalizing game by creating new instances of a class.");
                     Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);

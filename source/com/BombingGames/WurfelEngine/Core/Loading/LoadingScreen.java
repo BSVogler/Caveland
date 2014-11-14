@@ -5,7 +5,7 @@
 package com.BombingGames.WurfelEngine.Core.Loading;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
-import com.BombingGames.WurfelEngine.Core.Configuration;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -41,13 +41,10 @@ public class LoadingScreen extends WEScreen {
     private Actor loadingBar;
     private float percent;
     
-    private final Configuration configRef;
-
     /**
-     *
-     * @param config
+     *To load custom files overwrite #customLoading
      */
-    public LoadingScreen(final Configuration config) {
+    public LoadingScreen() {
         Gdx.app.log("LoadingScreen", "Initializing");
         AssetManager manager = WE.getAssetManager();
                 
@@ -58,7 +55,7 @@ public class LoadingScreen extends WEScreen {
         
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-        manager.load(config.getSpritesheetPath()+".txt", TextureAtlas.class);
+        manager.load(AbstractGameObject.getSpritesheetPath()+".txt", TextureAtlas.class);
         manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
 		manager.load("com/BombingGames/WurfelEngine/Core/images/bloodblur.png", Texture.class);
         
@@ -72,9 +69,12 @@ public class LoadingScreen extends WEScreen {
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
         
         //load files from configRef
-        config.initLoadingQueque(manager);
-        this.configRef = config;
+        customLoading(manager);
     }
+	
+	public void customLoading(AssetManager manager){
+	
+	}
 
     
     
@@ -191,6 +191,6 @@ public class LoadingScreen extends WEScreen {
 
     @Override
     public void dispose() {
-        WE.getAssetManager().unload(configRef.getSpritesheetPath()+".txt");
+        WE.getAssetManager().unload(AbstractGameObject.getSpritesheetPath()+".txt");
     }
 }

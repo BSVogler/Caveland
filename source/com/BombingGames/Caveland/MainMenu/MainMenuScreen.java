@@ -30,7 +30,6 @@
  */
 package com.BombingGames.Caveland.MainMenu;
 
-import com.BombingGames.Caveland.CustomConfiguration;
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
@@ -89,7 +88,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.initGame(new CustomGameController(), new CustomGameView(), new CustomConfiguration());
+					WE.initGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
 				}
 			}
 		);

@@ -1,6 +1,6 @@
 /*
  * If this software is used for a game the official „Wurfel Engine“ logo or its name must be visible in an intro screen or main menu.
- * 
+ *
  * Copyright 2014 Benedikt Vogler.
  * All rights reserved.
  *
@@ -28,51 +28,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.BombingGames.Caveland.MainMenu;
 
-package com.BombingGames.WurfelEngine.Core;
-
-import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.IslandGenerator;
+import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.badlogic.gdx.assets.AssetManager;
 
-
 /**
- *The configuration should include most of the game's specific options.
+ *
  * @author Benedikt Vogler
  */
-public class Configuration {
-    private final Generator generator = new IslandGenerator();
-    
-    /**
-     *The map generator
-     * @return
-     */
-    public Generator getChunkGenerator() {
-        return generator;
-    }
+public class CustomLoading extends LoadingScreen {
 
-    /**
-     * If you want to use custom blocks you should override this.
-     * @return default is null
-     */
-    public BlockFactory getBlockFactoy(){
-        return null;
-    }
-    
-   /**
-     * You can use your own spritesheet. the suffix will be added
-     * @return format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix
-     */
-    public String getSpritesheetPath(){
-        return "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
-    }
-    
-    /**
-     * Add asstes to loading queque. <br />
-     * e.g. manager.load("com/BombingGames/WeaponOfChoice/Sounds/melee.wav", Sound.class);
-     * @param manager
-     */
-    public void initLoadingQueque(AssetManager manager){
-    }
+	@Override
+	public void customLoading(AssetManager manager) {
+		super.customLoading(manager);
+		//manager.load
+	}
+	
+	
+	
 }

@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -59,6 +58,7 @@ public class Block extends AbstractGameObject {
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
 	private final static Block airblock;
+	private static BlockFactory customBlockFactory;
     
     private boolean liquid;
     private boolean hasSides = true;
@@ -77,7 +77,16 @@ public class Block extends AbstractGameObject {
     protected Block(int id){
         super(id,0);
     } 
-    
+
+	/**
+	 * If you want to define custo id's >39
+	 *
+	 * @param customBlockFactory new value of customBlockFactory
+	 */
+	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
+		Block.customBlockFactory = customBlockFactory;
+	}
+
     /**
      * You can create a basic block if its id is not reserved. Else getInstace() is called.
      * @param id non-reserved id's=> id>39
@@ -164,8 +173,8 @@ public class Block extends AbstractGameObject {
 				break;
             default:
                 if (id > 39) {
-                    if (WE.getCurrentConfig().getBlockFactoy()!=null){
-                        block = WE.getCurrentConfig().getBlockFactoy().produce(id, value);
+                    if (customBlockFactory!=null){
+                        block = customBlockFactory.produce(id, value);
                     } else {
                         Gdx.app.error("Block", "No custom blockFactory found for "+id+". Using a default block instead.");
                         block = new Block(id);

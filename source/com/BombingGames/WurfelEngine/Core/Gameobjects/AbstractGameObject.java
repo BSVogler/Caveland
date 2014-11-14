@@ -103,10 +103,11 @@ public abstract class AbstractGameObject {
         
     /**The sprite texture which contains every object texture*/
     private static TextureAtlas spritesheet;
+	private static String spritesheetPath = "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
     private static Pixmap pixmap;
     private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
     private static int drawCalls =0;
-    
+	
     private final int id; 
     private byte value;
     private boolean obstacle, transparent, hidden; 
@@ -138,6 +139,19 @@ public abstract class AbstractGameObject {
     public abstract char getCategory();
     
 	public abstract int getDimensionZ();
+	
+	/**
+	 * Set your custom spritesheet path. the suffix will be added
+	 * @param customPath format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix 
+	 */
+	public static void setCustomSpritesheet(String customPath) {
+		AbstractGameObject.spritesheetPath = customPath;
+	}
+
+	public static String getSpritesheetPath() {
+		return spritesheetPath;
+	}
+	
     /**
      * Place you static update methods here.
      * @param dt 
@@ -183,14 +197,14 @@ public abstract class AbstractGameObject {
         //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {
-            spritesheet = WE.getAsset(WE.getCurrentConfig().getSpritesheetPath()+".txt");
+            spritesheet = WE.getAsset(spritesheetPath+".txt");
         }
         
         //load again for pixmap, allows access to image color data;
         if (pixmap == null) {
             //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
             pixmap = new Pixmap(
-                Gdx.files.internal(WE.getCurrentConfig().getSpritesheetPath()+".png")
+                Gdx.files.internal(spritesheetPath+".png")
             );
         }
     }
@@ -564,7 +578,7 @@ public abstract class AbstractGameObject {
      */
     public static void staticDispose(){
         spritesheet.dispose();//is this line needed?
-        WE.getAssetManager().unload(WE.getCurrentConfig().getSpritesheetPath()+".txt");
+        WE.getAssetManager().unload(spritesheetPath+".txt");
         spritesheet = null;
         sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];
         //pixmap.dispose();

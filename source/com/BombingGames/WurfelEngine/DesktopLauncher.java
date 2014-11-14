@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameViewWithCamera;
-import com.BombingGames.WurfelEngine.Core.Configuration;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
@@ -49,8 +48,8 @@ public class DesktopLauncher {
      */
     public static void main(String[] args) {
         BasicMenuItem[] menuItems = new BasicMenuItem[]{
-            new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class, new Configuration()),
-            new BasicMenuItem(1, "Map Editor", MapEditorController.class, MapEditorView.class, new Configuration()),
+            new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class),
+            new BasicMenuItem(1, "Map Editor", MapEditorController.class, MapEditorView.class),
             new BasicMenuItem(2, "Options"),
             new BasicMenuItem(3, "Exit")
         };   

@@ -50,25 +50,23 @@ public class GameplayScreen extends WEScreen {
     private Controller controller = null;
     private MapEditorController editorController;
     private MapEditorView editorView;
-    private final Configuration config;
     
     /**
      * Create the gameplay state.
      * @param controller The controller of this screen.
      * @param view The user view of this screen.
-     * @param config The configuration of the game show in this screen.
+	 * @param loadingScreen
      */
-    public GameplayScreen(final Controller controller, final GameView view, final Configuration config) {
+    public GameplayScreen(final Controller controller, final GameView view, LoadingScreen loadingScreen) {
         Gdx.app.log("GameplayScreen", "Initializing");
 
         Gdx.input.setInputProcessor(null);
         
-        WE.setScreen(new LoadingScreen(config));
+        WE.setScreen(loadingScreen);
         
         
         this.controller = controller;
         this.view = view;
-        this.config = config;
     }
              
 
@@ -147,14 +145,6 @@ public class GameplayScreen extends WEScreen {
     @Override
     public void dispose() {
         Controller.disposeClass();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Configuration getConfig() {
-        return config;
     }
 
     /**

@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +49,7 @@ import java.util.logging.Logger;
 public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
 	private static ArrayList<Camera> cameras = new ArrayList<>(2);
+	private static Generator defaultGenerator = new AirGenerator();
         
     private final String filename;
     
@@ -74,13 +74,13 @@ public class Map implements Cloneable {
 	private Minimap minimap;
     
     /**
-     * Loads a map.
+     * Loads a map using the default generator.
      * @param name if available on disk it will be load
      * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public Map(final String name) throws IOException{
-        this(name, new AirGenerator());
+        this(name, defaultGenerator);
     }
     
     /**
@@ -109,7 +109,6 @@ public class Map implements Cloneable {
                     y[z] = Block.getInstance(0);
                 }
         
-        if (generator==null) generator = WE.getCurrentConfig().getChunkGenerator();
         this.generator = generator;
 		modified = true;
     }
@@ -786,6 +785,11 @@ public class Map implements Cloneable {
 	public void setMinimap(Minimap minimap) {
 		this.minimap = minimap;
 	}
+
+	public static void setDefaultGenerator(Generator defaultGenerator) {
+		Map.defaultGenerator = defaultGenerator;
+	}
+	
 
 	public Block getGroundBlock() {
 		return groundBlock;

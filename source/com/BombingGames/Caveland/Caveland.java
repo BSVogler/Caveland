@@ -1,7 +1,10 @@
 package com.BombingGames.Caveland;
 
+import com.BombingGames.Caveland.Game.CustomBlockFactory;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import java.io.File;
@@ -27,6 +30,8 @@ public class Caveland {
 		
         WE.setMainMenu(new MainMenuScreen());
 		WorkingDirectory.setApplicationName("Caveland");
+		Block.setCustomBlockFactory(new CustomBlockFactory());
+		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

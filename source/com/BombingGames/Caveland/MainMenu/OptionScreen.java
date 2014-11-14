@@ -97,25 +97,11 @@ public class OptionScreen extends WEScreen {
 		
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
 		fullscreenCB.setPosition(900, 600);
-//		fullscreenCB.addListener(new ChangeListener() {
-//
-//			@Override
-//			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-//				
-//			}
-//		});
 		
 		stage.addActor(fullscreenCB);
 		
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
 		vsyncCB.setPosition(900, 500);
-//		vsyncCB.addListener(new ChangeListener() {
-//
-//			@Override
-//			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-//				Gdx.graphics.setVSync(vsyncCB.isChecked());
-//			}
-//		});
 		stage.addActor(vsyncCB);
 		
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());

@@ -127,6 +127,8 @@ public class Camera {
 	
 	private final GameView gameView;
 	private final Controller gameController;
+	private int projectionWidth;
+	private int projectionHeight;
 	
 	/**
 	 * Creates a camera pointing at the middle of the map.
@@ -738,6 +740,7 @@ public class Camera {
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
+		updateProjectionSize();
 	}
 
 	/**
@@ -750,8 +753,8 @@ public class Camera {
 	}
 
 	/**
-	 * Returns the zoom multiplied by a scaling factor to achieve the same
-	 * viewport with every resolution
+	 * Returns the zoom multiplied by a scaling factor calculated by the width to achieve the same
+	 * viewport size with every resolution
 	 *
 	 * @return a scaling factor applied on the screen
 	 */
@@ -894,7 +897,7 @@ public class Camera {
 	 * @return in pixels
 	 */
 	public final int getProjectionWidth() {
-		return (int) (screenWidth / getScaling());
+		return projectionWidth;
 	}
 
 	/**
@@ -905,7 +908,13 @@ public class Camera {
 	 * @return in pixels
 	 */
 	public final int getProjectionHeight() {
-		return (int) (screenHeight / getScaling());
+		return projectionHeight;
+	}
+	
+	
+	public void updateProjectionSize(){
+		projectionWidth =(int) (zoom*CVar.get("renderResolutionWidth").getValuei());//same as: screenWidth / getScaling()
+		projectionHeight =(int) (screenHeight / getScaling());
 	}
 
 	/**
@@ -966,6 +975,7 @@ public class Camera {
 		this.screenWidth = Gdx.graphics.getWidth();
 		this.screenPosX = 0;
 		this.screenPosY = 0;
+		updateProjectionSize();
 	}
 
 	/**
@@ -980,12 +990,14 @@ public class Camera {
 			this.screenHeight = height;
 			this.screenPosX = 0;
 			this.screenPosY = 0;
+			updateProjectionSize();
 		}
 	}
 
 	public void setScreenSize(int width, int height) {
 		this.screenWidth = width;
 		this.screenHeight = height;
+		updateProjectionSize();
 	}
 
 	/**

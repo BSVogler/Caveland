@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 
@@ -60,11 +59,7 @@ public class RenderDataDTO {
      */
     public int getDepth(View view) {
         return (int) (pos.getDepth(view)
-            + (
-            object instanceof AbstractEntity
-                ? ((AbstractEntity)object).getDimensionZ()/1.414213562f
-                : 0
-            )
+            + object.getDimensionZ()/AbstractPosition.SQRT2
         );
     }
 

@@ -137,6 +137,7 @@ public abstract class AbstractGameObject {
      */
     public abstract char getCategory();
     
+	public abstract int getDimensionZ();
     /**
      * Place you static update methods here.
      * @param dt 

@@ -525,6 +525,11 @@ public class Block extends AbstractGameObject {
     public String getName() {
         return "feature not supported yet";
     }
+	
+	@Override
+	public int getDimensionZ() {
+		return 1;
+	}
 
 	/**
 	 * Overwrite to define what should happen if the block is getting destroyed?

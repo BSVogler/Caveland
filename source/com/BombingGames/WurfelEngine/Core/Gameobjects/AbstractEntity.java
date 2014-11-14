@@ -149,6 +149,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * 
      * @return
      */
+	@Override
     public int getDimensionZ() {
         return dimensionZ;
     }

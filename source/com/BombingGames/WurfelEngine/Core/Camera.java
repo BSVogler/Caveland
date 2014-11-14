@@ -413,7 +413,7 @@ public class Camera {
 			}
 		//sort the list
 		if (depthsort.size() > 0) {
-			return sortDepthList(depthsort);
+			return sortDepthList(depthsort, 0, depthsort.size()-1);
 		}
 		return depthsort;
 	}

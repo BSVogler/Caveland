@@ -102,6 +102,13 @@ public class WE {
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
      */
     public static void launch(final String title, final String[] args){
+		System.out.println("Init Engine CVars…");
+		CVar.initEngineVars();
+		
+		//load cvars
+		System.out.println("Loading Custom CVars…");
+		CVar.loadFromFile();
+		
 		System.out.println("Load Engine…");
 		// set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
@@ -152,13 +159,6 @@ public class WE {
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
         //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
 				
-		System.out.println("Init Engine CVars…");
-		CVar.initEngineVars();
-		
-		//load cvars
-		System.out.println("Loading Custom CVars…");
-		CVar.loadFromFile();
-		
         System.out.println("Fire Engine…");
 		game = new WEGame();
         application = new LwjglApplication(game, config);

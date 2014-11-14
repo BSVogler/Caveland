@@ -47,6 +47,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
@@ -67,6 +68,8 @@ public class OptionScreen extends WEScreen {
 	private final TextButton applyButton;
 	private final TextButton cancelButton;
 	private final CheckBox limitFPSCB;
+	private final Slider musicSlider;
+	private final Slider soundSlider;
 
 	
 	public OptionScreen() {
@@ -97,6 +100,16 @@ public class OptionScreen extends WEScreen {
 		
 		stage.addActor(sbox);
 		
+		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
+		musicSlider.setPosition(500, 400);
+		musicSlider.setValue(1f);
+		stage.addActor(musicSlider);
+		
+		soundSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
+		soundSlider.setPosition(500, 350);
+		soundSlider.setValue(1f);
+		stage.addActor(soundSlider);
+		
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
 		fullscreenCB.setPosition(900, 600);
 		
@@ -126,12 +139,15 @@ public class OptionScreen extends WEScreen {
 					CVar.get("limitFPS").setValue("60");
 				else CVar.get("limitFPS").setValue("0");
 				WE.getLwjglApplicationConfiguration().foregroundFPS = CVar.get("limitFPS").getValuei();
+				
+				//apply sound chages
+				CVar.get("music").setValuef(musicSlider.getValue());
+				CVar.get("sound").setValuef(soundSlider.getValue());
 			}
 		});
 		stage.addActor(applyButton);
 		
-		
-		cancelButton = new TextButton("Cancel", WE.getEngineView().getSkin());
+		cancelButton = new TextButton("Back to Menu", WE.getEngineView().getSkin());
 		cancelButton.setPosition(900, 100);
 		cancelButton.addListener(new ChangeListener() {
 

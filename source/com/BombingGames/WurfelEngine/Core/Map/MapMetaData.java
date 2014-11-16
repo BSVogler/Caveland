@@ -50,7 +50,7 @@ public class MapMetaData {
     /**
      *
      */
-    public static final String VERSION = "0.13";
+    public static final String VERSION = "0.14";
     private int chunkBlocksX;
     private int chunkBlocksY;
     private int chunkBlocksZ;

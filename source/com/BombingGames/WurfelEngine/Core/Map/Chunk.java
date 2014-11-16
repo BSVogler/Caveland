@@ -35,9 +35,10 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -138,35 +139,40 @@ public class Chunk {
 			try {
 				//FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
 				//BufferedReader bufRead = new BufferedReader(input);
-				BufferedReader bufRead = path.reader(20000);//normal chunk file is around 17.000 byte
+				//BufferedReader bufRead = path.reader(20000);//normal chunk file is around 17.000 byte
+				FileInputStream is = new FileInputStream(path.file());
 
 				//jump over first line to prevent problems with length byte
-				bufRead.readLine();
+				//bufRead.readLine();
+				//is.read(b)
 
 				int z = 0;
 				int x;
 				int y;
 				boolean loadingEntities = false;//flag if entitie part has begun
 				
-				String bufLine = bufRead.readLine();
+				int bufChar = is.read();
 				
 				//read a line
-				while (bufLine != null) {
-					if (bufLine.length()>0){
-						StringBuilder line = new StringBuilder(1);
-						line.append(bufLine);
-
+				while (bufChar != -1 && bufChar!='e') {
+					if (bufChar =='\n') bufChar = is.read();
+						//skip line breaks
+						
+					if (bufChar !='\n'){
 						//jump over optional comment line
 						if (
-							line.length() > 0
-							&& line.charAt(0) == '/'
-							&& line.charAt(1) == '/'
+							bufChar == '/'
 						){
-							line = new StringBuilder(1);
-							line.append(bufRead.readLine());//read next row
+							bufChar = is.read();
+							while (bufChar!='/'){
+								bufChar = is.read();
+							}
+							bufChar = is.read();
+							if (bufChar=='\n')//if following is a line break also skip it again
+								bufChar = is.read();
 						}
 						
-						if (loadingEntities==false && line.toString().startsWith("entities") ){
+						if (loadingEntities==false && bufChar=='e'){
 							loadingEntities=true;
 							Gdx.app.debug("Chunk","loading entities");
 						}
@@ -175,7 +181,7 @@ public class Chunk {
 							//ignore entities at the moment
 						} else {
 							//if layer is empty, fill with air
-							if (line.charAt(0) == 'l' ){
+							if (bufChar=='l' ){
 								for (int elx = 0; elx < blocksX; elx++) {
 									for (int ely = 0; ely < blocksY; ely++) {
 										data[elx][ely][z] = Block.getInstance(0);
@@ -188,24 +194,12 @@ public class Chunk {
 									x = 0;
 
 									do{
-										int posdots = line.indexOf(":");
-
-										int posend = 1;
-										while ((posend < -1+line.length()) && (line.charAt(posend)!= ' '))  {
-											posend++;
-										}
-
-										data[x][y][z] = Block.getInstance(
-											Integer.parseInt(line.substring(0,posdots)),
-											Integer.parseInt(line.substring(posdots+1, posend))
-										);
+										int id = is.read();
+										int value = is.read();
+										data[x][y][z] = Block.getInstance(id, value);
 										x++;
-										line.delete(0,posend+1);
 									} while (x < blocksX);
-
-									line = new StringBuilder(1);
-									line.append(bufRead.readLine());//read next row
-
+									bufChar = is.read();
 									y++;
 								} while (y < blocksY);
 							}
@@ -213,12 +207,13 @@ public class Chunk {
 						}
 					}
 					//read next line
-					bufLine = bufRead.readLine();
+					bufChar = is.read();
 				}
+				is.close();
 				return true;
 			} catch (IOException ex) {
 				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
-			} catch (StringIndexOutOfBoundsException ex) {
+			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
 				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 			} catch (ArrayIndexOutOfBoundsException ex){
 				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
@@ -226,7 +221,7 @@ public class Chunk {
 		} else {
 			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
 		}
-        
+		
         return false;
     }
     
@@ -243,45 +238,53 @@ public class Chunk {
 		int coords[] = Controller.getMap().getChunkCoords(pos);
         Gdx.app.log("Chunk","Saving "+coords[0] + ","+ coords[1] +".");
         FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coords[0]+","+coords[1]+"."+CHUNKFILESUFFIX);
-        String lineFeed = System.getProperty("line.separator");
         
         path.file().createNewFile();
-        try (Writer writer = path.writer(false, "UTF8")) {		
-            for (int z = 0; z < blocksZ; z++) {
-				//check if layer is empty
-				boolean dirty = false;
-				for (int x = 0; x < blocksX; x++) {
-					for (int y = 0; y < blocksY; y++) {
-						if (data[x][y][z].getId() != 0)
-							dirty=true;
+        try (FileOutputStream fileOut = new FileOutputStream(path.file())) {		
+			try {
+				for (int z = 0; z < blocksZ; z++) {
+					//check if layer is empty
+					boolean dirty = false;
+					for (int x = 0; x < blocksX; x++) {
+						for (int y = 0; y < blocksY; y++) {
+							if (data[x][y][z].getId() != 0)
+								dirty=true;
+						}
 					}
+					fileOut.write('/');
+					fileOut.write(z);
+					fileOut.write('/');
+					if (dirty)
+						for (int y = 0; y < blocksY; y++) {
+							for (int x = 0; x < blocksX; x++) {
+								fileOut.write(data[x][y][z].getId());
+								fileOut.write(data[x][y][z].getValue());
+							}
+						}
+					else {
+						fileOut.write('l');
+						fileOut.write('\n');
+					}
+					fileOut.write('\n');
 				}
 				
-				writer.write("//"+z+lineFeed);
-				if (dirty)
-					for (int y = 0; y < blocksY; y++) {
-						String line = "";
-						for (int x = 0; x < blocksX; x++) {
-							line +=data[x][y][z].getId()+":"+data[x][y][z].getValue()+" ";  
-						}
-						writer.write(line+lineFeed);
+				//save entities
+				fileOut.write('e');
+				fileOut.write('\n');
+				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
+				try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
+					for (AbstractEntity ent : entities){
+						Gdx.app.debug("saving", "trying to save:"+ent.getId());
+						outStream.writeObject(ent);
+						Gdx.app.debug("saving", "saved:"+ent.getId());
 					}
-				else {
-					writer.write('l'+lineFeed);
+					outStream.close();
 				}
-				writer.write(lineFeed);
-            }
-		
-			//save entities
-			writer.write("entities"+lineFeed);
-			ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
-			for (AbstractEntity ent : entities){
-				ent.save(writer);
+			} catch (IOException ex){
+				throw ex;
 			}
-		} catch (IOException ex){
-            throw ex;
-        }
-        return true;
+		}
+		return true;
     }
         /**
      * The amount of blocks in X direction

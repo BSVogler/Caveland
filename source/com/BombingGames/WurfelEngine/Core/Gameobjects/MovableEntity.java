@@ -63,15 +63,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	 */
 	private boolean floating;
 	
-   private Sound fallingSound;
+   private transient Sound fallingSound;
    
-   private static Sound waterSound;
-   private boolean fallingSoundPlaying;
-   private Sound runningSound;
-   private boolean runningSoundPlaying;
-   private Sound jumpingSound;
-   private Sound landingSound;
-   private Sound[] damageSounds;
+   private transient static Sound waterSound;
+   private transient boolean fallingSoundPlaying;
+   private transient Sound runningSound;
+   private transient boolean runningSoundPlaying;
+   private transient Sound jumpingSound;
+   private transient Sound landingSound;
+   private transient Sound[] damageSounds;
 
 
    private boolean inliquid;

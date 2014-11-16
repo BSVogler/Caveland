@@ -41,11 +41,13 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt
  */
 public class PlayerWithWeapon extends Controllable {
-    private Camera camera;
+    private transient Camera camera;
     private Weapon weapon;
 
     /**
      * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
+	 * @param spritesPerDir
+	 * @param height
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     public PlayerWithWeapon(int spritesPerDir, int height) {

@@ -42,12 +42,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.io.Serializable;
 
 /**
  *An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
-public abstract class AbstractGameObject {
+public abstract class AbstractGameObject implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
      */
     public static final int SCREEN_DEPTH = 80;

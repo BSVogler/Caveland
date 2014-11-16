@@ -23,7 +23,7 @@ public class Collectible extends MovableEntity {
 		SULFUR(50, new Color(0.8f, 0.8f, 0.1f, 1f));
 		
 		private int id;
-		private Color color;
+		private transient Color color;
 
 		private Def(int id, Color color) {
 			this.id = id;
@@ -41,7 +41,7 @@ public class Collectible extends MovableEntity {
 	}
 
 	private Def def;
-	private Color color;
+	private transient Color color;
 
 	public Collectible(Def def) {
 		super(def.getId(), 0);

@@ -39,7 +39,7 @@ import com.badlogic.gdx.audio.Sound;
  */
 public class ExplosiveBarrel extends Block implements IsSelfAware {
     private Coordinate coords;
-    private static Sound explosionsound;
+    private transient static Sound explosionsound;
 
     /**
      * Create a explosive barrel.

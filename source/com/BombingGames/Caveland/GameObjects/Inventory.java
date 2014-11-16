@@ -2,6 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,7 +10,7 @@ import java.util.Iterator;
  *
  * @author Benedikt Vogler
  */
-public class Inventory{
+public class Inventory implements Serializable {
 	private Slot[] slot = new Slot[3];
 
 	public Inventory() {
@@ -125,7 +126,7 @@ public class Inventory{
 		return slot.length;
 	}
 	
-	private class Slot{
+	private class Slot implements Serializable {
 		private int counter;
 		private MovableEntity prototype;
 

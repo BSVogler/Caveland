@@ -33,12 +33,13 @@ import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
+import java.io.Serializable;
 
 /**
  *A
  * @author Benedikt Vogler
  */
-public abstract class AbstractPosition {
+public abstract class AbstractPosition implements Serializable {
     private final int referenceX;//top left chunk x coordinate
     private final int referenceY;//top left chunk Y coordinate
     private float height;

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Explosion extends AbstractEntity {
 	private final int radius;
 	private static Sound explosionsound;
-	private Camera camera;
+	private transient Camera camera;
 
 	/**
 	 * 

@@ -40,6 +40,9 @@ import com.badlogic.gdx.graphics.Color;
  * @author Benedikt Vogler
  */
 class EntityShadow extends AbstractEntity {
+	/**
+	 * the parent class. The object where this is the shadow
+	 */
     private AbstractEntity character;
 
     protected EntityShadow(AbstractEntity character) {

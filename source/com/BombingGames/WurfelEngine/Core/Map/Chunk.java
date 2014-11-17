@@ -137,14 +137,7 @@ public class Chunk {
 		if (path.exists()) {
 			//Reading map files test
 			try {
-				//FileReader input = new FileReader("map/chunk"+coordX+","+coordY+".otmc");
-				//BufferedReader bufRead = new BufferedReader(input);
-				//BufferedReader bufRead = path.reader(20000);//normal chunk file is around 17.000 byte
-				FileInputStream is = new FileInputStream(path.file());
-
-				//jump over first line to prevent problems with length byte
-				//bufRead.readLine();
-				//is.read(b)
+				FileInputStream fis = new FileInputStream(path.file());
 
 				int z = 0;
 				int x;

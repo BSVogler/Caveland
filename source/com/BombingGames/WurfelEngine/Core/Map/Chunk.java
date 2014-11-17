@@ -38,8 +38,11 @@ import com.badlogic.gdx.files.FileHandle;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A Chunk is filled with many Blocks and is a part of the map.
@@ -142,67 +145,71 @@ public class Chunk {
 				int z = 0;
 				int x;
 				int y;
-				boolean loadingEntities = false;//flag if entitie part has begun
 				
-				int bufChar = is.read();
+				int bufChar = fis.read();
 				
 				//read a line
 				while (bufChar != -1 && bufChar!='e') {
-					if (bufChar =='\n') bufChar = is.read();
+					if (bufChar =='\n') bufChar = fis.read();
 						//skip line breaks
 						
 					if (bufChar !='\n'){
+						
 						//jump over optional comment line
 						if (
 							bufChar == '/'
 						){
-							bufChar = is.read();
+							bufChar = fis.read();
 							while (bufChar!='/'){
-								bufChar = is.read();
+								bufChar = fis.read();
 							}
-							bufChar = is.read();
+							bufChar = fis.read();
 							if (bufChar=='\n')//if following is a line break also skip it again
-								bufChar = is.read();
+								bufChar = fis.read();
 						}
 						
-						if (loadingEntities==false && bufChar=='e'){
-							loadingEntities=true;
-							Gdx.app.debug("Chunk","loading entities");
-						}
-
-						if (loadingEntities){
-							//ignore entities at the moment
-						} else {
-							//if layer is empty, fill with air
-							if (bufChar=='l' ){
-								for (int elx = 0; elx < blocksX; elx++) {
-									for (int ely = 0; ely < blocksY; ely++) {
-										data[elx][ely][z] = Block.getInstance(0);
-									}
+						//if layer is empty, fill with air
+						if (bufChar=='l' ){
+							for (int elx = 0; elx < blocksX; elx++) {
+								for (int ely = 0; ely < blocksY; ely++) {
+									data[elx][ely][z] = Block.getInstance(0);
 								}
-							} else {
-								//fill layer block by block
-								y = 0;
-								do{
-									x = 0;
-
-									do{
-										int id = is.read();
-										int value = is.read();
-										data[x][y][z] = Block.getInstance(id, value);
-										x++;
-									} while (x < blocksX);
-									bufChar = is.read();
-									y++;
-								} while (y < blocksY);
 							}
-							z++;
+						} else {
+							//fill layer block by block
+							y = 0;
+							do{
+								x = 0;
+
+								do{
+									int id = fis.read();
+									int value = fis.read();
+									data[x][y][z] = Block.getInstance(id, value);
+									x++;
+								} while (x < blocksX);
+								bufChar = fis.read();
+								y++;
+							} while (y < blocksY);
 						}
+						z++;
 					}
 					//read next line
-					bufChar = is.read();
+					bufChar = fis.read();
 				}
-				is.close();
+				
+				//loading entities
+				if (bufChar=='e'){
+					Gdx.app.debug("Chunk", "Loading entities");
+					fis.read();
+					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
+						AbstractEntity object = (AbstractEntity) objectIn.readObject();
+						Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
+						Controller.getMap().getEntitys().add(object);
+					} catch (ClassNotFoundException ex) {
+						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+				fis.close();
 				return true;
 			} catch (IOException ex) {
 				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);

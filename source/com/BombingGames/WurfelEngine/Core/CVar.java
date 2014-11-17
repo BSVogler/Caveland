@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -93,7 +94,7 @@ public class CVar {
 		register("shouldLoadMap", true, CVarFlags.CVAR_ARCHIVE);
 		register("chunkSwitchAllowed", true, CVarFlags.CVAR_ARCHIVE);
 		register("clearBeforeRendering", true, CVarFlags.CVAR_ARCHIVE);
-		register("consoleKey", 244, CVarFlags.CVAR_ARCHIVE);//Keys.F1
+		register("consoleKey", Keys.F1, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("gamespeed", 1f, CVarFlags.CVAR_ARCHIVE);

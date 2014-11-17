@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -195,21 +196,23 @@ public class Chunk {
 					bufChar = fis.read();
 				}
 
-				//loading entities
-				if (bufChar=='e'){
-					fis.read();
-					Gdx.app.debug("Chunk", "Loading entities");
-					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
-						AbstractEntity object = (AbstractEntity) objectIn.readObject();
-						while (objectIn != null) {		
-							Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
-							Controller.getMap().getEntitys().add(object);
-							object = (AbstractEntity) objectIn.readObject();
+				if (CVar.get("loadEntities").getValueb()) {
+					//loading entities
+					if (bufChar=='e'){
+						fis.read();
+						Gdx.app.debug("Chunk", "Loading entities");
+						try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
+							AbstractEntity object = (AbstractEntity) objectIn.readObject();
+							while (objectIn != null) {		
+								Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
+								Controller.getMap().getEntitys().add(object);
+								object = (AbstractEntity) objectIn.readObject();
+							}
+						} catch (ClassNotFoundException ex) {
+							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+						} catch (IOException ex) {
+							//eof
 						}
-					} catch (ClassNotFoundException ex) {
-						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-					} catch (IOException ex) {
-						//eof
 					}
 				}
 			return true;

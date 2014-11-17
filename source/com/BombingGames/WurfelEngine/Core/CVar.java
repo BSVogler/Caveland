@@ -46,7 +46,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *CVars start with a small letter and are CamelCase.
  * @author Benedikt Vogler
  * @since v1.4.2
  */

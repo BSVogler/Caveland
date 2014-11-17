@@ -139,26 +139,24 @@ public class Chunk {
 
 		if (path.exists()) {
 			//Reading map files test
-			try {
-				FileInputStream fis = new FileInputStream(path.file());
-
+			try (FileInputStream fis = new FileInputStream(path.file())) {
 				int z = 0;
 				int x;
 				int y;
-				
+
 				int bufChar = fis.read();
-				
+
 				//read a line
 				while (bufChar != -1 && bufChar!='e') {
 					if (bufChar =='\n') bufChar = fis.read();
-						//skip line breaks
-						
+					//skip line breaks
+
 					if (bufChar !='\n'){
-						
+
 						//jump over optional comment line
 						if (
 							bufChar == '/'
-						){
+							){
 							bufChar = fis.read();
 							while (bufChar!='/'){
 								bufChar = fis.read();
@@ -167,7 +165,7 @@ public class Chunk {
 							if (bufChar=='\n')//if following is a line break also skip it again
 								bufChar = fis.read();
 						}
-						
+
 						//if layer is empty, fill with air
 						if (bufChar=='l' ){
 							for (int elx = 0; elx < blocksX; elx++) {
@@ -196,28 +194,32 @@ public class Chunk {
 					//read next line
 					bufChar = fis.read();
 				}
-				
+
 				//loading entities
 				if (bufChar=='e'){
-					Gdx.app.debug("Chunk", "Loading entities");
 					fis.read();
+					Gdx.app.debug("Chunk", "Loading entities");
 					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
 						AbstractEntity object = (AbstractEntity) objectIn.readObject();
-						Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
-						Controller.getMap().getEntitys().add(object);
+						while (objectIn != null) {		
+							Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
+							Controller.getMap().getEntitys().add(object);
+							object = (AbstractEntity) objectIn.readObject();
+						}
 					} catch (ClassNotFoundException ex) {
 						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+					} catch (IOException ex) {
+						//eof
 					}
 				}
-				fis.close();
-				return true;
-			} catch (IOException ex) {
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
-			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-			} catch (ArrayIndexOutOfBoundsException ex){
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
-			}
+			return true;
+		} catch (IOException ex) {
+			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
+		} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
+			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+		} catch (ArrayIndexOutOfBoundsException ex){
+			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
+		}
 		} else {
 			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
 		}

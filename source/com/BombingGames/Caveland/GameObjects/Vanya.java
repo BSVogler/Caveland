@@ -34,8 +34,9 @@ public class Vanya extends MovableEntity {
 	}
 	
 	private class BlümchenKacke extends MovableEntity {
+		private static final long serialVersionUID = 1L;
 
-		BlümchenKacke() {
+		public BlümchenKacke() {
 			super(41, 0);
 			setMovement(new Vector3(0,0,-1));
 			setFloating(false);

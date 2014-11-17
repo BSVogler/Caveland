@@ -8,30 +8,27 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Etwas zum aufsammeln.
  * @author Benedikt Vogler
  */
-public class Collectible extends MovableEntity {
-	
+public class Collectible extends MovableEntity implements Serializable {
+	private static final long serialVersionUID = 2L;
+
 	public static enum Def {
-		IRONORE(46, Color.RED.cpy()),
-		COAL(47, Color.DARK_GRAY.cpy()),
-		GOLD(48, Color.YELLOW.cpy()),
-		IRON(49, Color.GRAY.cpy()),
-		SULFUR(50, new Color(0.8f, 0.8f, 0.1f, 1f));
+		IRONORE(Color.RED.cpy()),
+		COAL(Color.DARK_GRAY.cpy()),
+		GOLD(Color.YELLOW.cpy()),
+		IRON(Color.GRAY.cpy()),
+		SULFUR(new Color(0.8f, 0.8f, 0.1f, 1f));
 		
-		private int id;
 		private transient Color color;
 
-		private Def(int id, Color color) {
-			this.id = id;
+		private Def(Color color) {
 			this.color = color;
-		}
-
-		public int getId() {
-			return id;
 		}
 
 		public Color getColor() {
@@ -44,7 +41,7 @@ public class Collectible extends MovableEntity {
 	private transient Color color;
 
 	public Collectible(Def def) {
-		super(def.getId(), 0);
+		super(46, 0);
 		setGraphicsId(43);
 		this.color = def.getColor();
 		this.def = def;
@@ -103,5 +100,16 @@ public class Collectible extends MovableEntity {
 	public Def getDef() {
 		return def;
 	}
+	
+	/**
+	 * overrides deserialisation
+	 * @param stream
+	 * @throws IOException
+	 * @throws ClassNotFoundException 
+	 */
+	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+         stream.defaultReadObject(); //fills fld1 and fld2;
+		 color = def.getColor();
+    }
 	
 }

@@ -17,9 +17,9 @@ public class Inventory implements Serializable {
 		slot[0] = new Slot();
 		slot[1] = new Slot();
 		slot[2] = new Slot();
-		add(new Flint());
-		add(new Flint());
-		add(new Flint());
+//		add(new Flint());
+//		add(new Flint());
+//		add(new Flint());
 	}
 	
 	/**

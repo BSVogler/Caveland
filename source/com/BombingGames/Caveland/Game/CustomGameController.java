@@ -28,14 +28,9 @@
  */
 package com.BombingGames.Caveland.Game;
 
-import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
-import com.BombingGames.Caveland.GameObjects.Lore;
-import com.BombingGames.Caveland.GameObjects.Spaceship;
-import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -55,28 +50,28 @@ public class CustomGameController extends Controller {
         super.init(new AirGenerator());
 
         player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(Map.getGameHeight()));
-		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
-		
-		Lore lore = (Lore) new Lore().spawn(new Coordinate(24, 48, 20, true).getPoint());
-		new Lore().spawn(new Coordinate(25, 47, 10, true).getPoint());
-		Lore lore1 = (Lore) new Lore().spawn(new Coordinate(15, 80, 20, true).getPoint());
-		Lore lore2 = (Lore) new Lore().spawn(new Coordinate(15, 83, 20, true).getPoint());
-		//lore.setPassanger(player);
-		
-		Enemy e1 = (Enemy) new Enemy().spawn(new Coordinate(15, 70, 10, true).getPoint());
-		Enemy e2 = (Enemy) new Enemy().spawn(new Coordinate(14, 71, 10, true).getPoint());
-		e1.setTarget(lore2);
-		e2.setTarget(player);
-		
-		Spaceship spaceship = (Spaceship) new Spaceship().spawn(new Coordinate(14, 69, 0, true).getPoint());
-		spaceship.setDimensionZ(3*AbstractGameObject.GAME_EDGELENGTH);
+//		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
+//		
+//		Lore lore = (Lore) new Lore().spawn(new Coordinate(24, 48, 20, true).getPoint());
+//		new Lore().spawn(new Coordinate(25, 47, 10, true).getPoint());
+//		Lore lore1 = (Lore) new Lore().spawn(new Coordinate(15, 80, 20, true).getPoint());
+//		Lore lore2 = (Lore) new Lore().spawn(new Coordinate(15, 83, 20, true).getPoint());
+//		//lore.setPassanger(player);
+//		
+//		Enemy e1 = (Enemy) new Enemy().spawn(new Coordinate(15, 70, 10, true).getPoint());
+//		Enemy e2 = (Enemy) new Enemy().spawn(new Coordinate(14, 71, 10, true).getPoint());
+//		e1.setTarget(lore2);
+//		e2.setTarget(player);
+//		
+//		Spaceship spaceship = (Spaceship) new Spaceship().spawn(new Coordinate(14, 69, 0, true).getPoint());
+//		spaceship.setDimensionZ(3*AbstractGameObject.GAME_EDGELENGTH);
 		//grass test
 //		for (int i = 0; i < 500; i++) {
 //			new SimpleEntity(44).spawn(
 //				new Point((float) (Math.random()*Map.getGameWidth()), (float) (Math.random()*Map.getGameDepth()), 1, true)
 //			);
 //		}
-		new Vanya().spawn(Map.getCenter());
+		//new Vanya().spawn(Map.getCenter());
     }
 
 	@Override

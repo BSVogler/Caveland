@@ -43,13 +43,15 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt
  */
 public class MovableEntity extends AbstractEntity implements Cloneable {
-   private static int soundlimit;//time to pass before new sound can be played
+	private static final long serialVersionUID = 1L;
+		
+	private static int soundlimit;//time to pass before new sound can be played
      
-   private final int colissionRadius = GAME_DIAGLENGTH2/2;
-   private final int spritesPerDir;
+	private final int colissionRadius = GAME_DIAGLENGTH2/2;
+	private final int spritesPerDir;
       
    /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
-   private int friction = 0;
+	private int friction = 0;
       
 	/**
 	 * direction of movement
@@ -63,24 +65,24 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	 */
 	private boolean floating;
 	
-   private transient Sound fallingSound;
+	private transient Sound fallingSound;
    
-   private transient static Sound waterSound;
-   private transient boolean fallingSoundPlaying;
-   private transient Sound runningSound;
-   private transient boolean runningSoundPlaying;
-   private transient Sound jumpingSound;
-   private transient Sound landingSound;
-   private transient Sound[] damageSounds;
+	private transient static Sound waterSound;
+	private transient boolean fallingSoundPlaying;
+	private transient Sound runningSound;
+	private transient boolean runningSoundPlaying;
+	private transient Sound jumpingSound;
+	private transient Sound landingSound;
+	private transient Sound[] damageSounds;
 
 
-   private boolean inliquid;
-   private int mana = 1000;
-   private boolean indestructible = false;
+	private boolean inliquid;
+	private int mana = 1000;
+	private boolean indestructible = false;
        
-   private EntityShadow shadow;
+	private EntityShadow shadow;
    
-   private int walkingAnimationCounter;
+	private int walkingAnimationCounter;
 	private boolean collectable;
 
    /**

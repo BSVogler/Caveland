@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class CustomPlayer extends PlayerWithWeapon {
+	private static final long serialVersionUID = 1L;
     private float aimHeight;
 
 	private int timeSinceDamage;

@@ -269,16 +269,17 @@ public class Chunk {
 				}
 				
 				//save entities
-				fileOut.write('e');
-				fileOut.write('\n');
 				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
-				try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
-					for (AbstractEntity ent : entities){
-						Gdx.app.debug("saving", "trying to save:"+ent.getId());
-						outStream.writeObject(ent);
-						Gdx.app.debug("saving", "saved:"+ent.getId());
+				if (entities.size()>0) {
+					fileOut.write('e');
+					fileOut.write('\n');
+					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
+						for (AbstractEntity ent : entities){
+							Gdx.app.debug("Chunk", "Saving entity:"+ent.getId());
+							outStream.writeObject(ent);
+						}
+						outStream.close();
 					}
-					outStream.close();
 				}
 			} catch (IOException ex){
 				throw ex;

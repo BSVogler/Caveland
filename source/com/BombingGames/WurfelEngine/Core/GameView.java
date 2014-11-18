@@ -132,8 +132,8 @@ public class GameView extends View implements GameManager {
 		
 		if (CVar.get("enableMinimap").getValueb()) {
 			minimap = new Minimap(
-				0,
-				Gdx.graphics.getHeight()-500
+				200,
+				Gdx.graphics.getHeight()-600
 			);
 		}
     }
@@ -178,7 +178,7 @@ public class GameView extends View implements GameManager {
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
 		
 		if (CVar.get("enableMinimap").getValueb()) {
-			if (minimap != null && minimap.isNeedingRebuild()) minimap.buildMinimap(this);
+			if (minimap != null && minimap.isNeedingRebuild()) minimap.buildTexture(this);
 		}
     }
 	    

@@ -42,5 +42,13 @@ public interface BlockFactory {
      * @return 
      */
     public abstract Block produce(int id, int value);
+
+	/**
+	 * Read the name of a id value combination.
+	 * @param id An id >39
+	 * @param value
+	 * @return the name for this block.
+	 */
+	public abstract String getName(int id, int value);
     
 }

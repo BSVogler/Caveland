@@ -65,6 +65,20 @@ public Block produce(int id, int value) {
 		return block;
 	}	
 
+	@Override
+	public String getName(int id, int value) {
+		switch (id){
+			case 40:
+				return "Entity Spawner";
+			case 44:
+				return "textureless block";
+		}
+			
+		return "too lazy";
+	}
+
+
+
 	private static class RailBlock extends Block {
 
 		RailBlock() {

@@ -188,6 +188,49 @@ public class Block extends AbstractGameObject {
         return block;
     }  
     
+	public static String getName(final int id, final int value){
+		switch (id) {
+			case 0:
+				return "air";
+			case 1:
+				return "grass";
+			case 2:
+				return "dirt";
+			case 3:
+				return "???";
+			case 4:
+				return "???";
+			case 5:
+				return "???";
+			case 6:
+				return "???";
+			case 7:
+				return "???";
+			case 8:
+				return "sand";
+			case 9:
+				return "water";
+			case 10:
+				return "???";
+			case 34:
+				return "flower";
+			case 35:
+				return "bush";
+			case 36:
+				return "tree";
+								
+			default:
+				if (id > 39) {
+                    if (customBlockFactory!=null){
+                        return customBlockFactory.getName(id, value);
+                    } else {
+                        return "no custom blocks";
+                    }
+                } else {
+                    return "engine block not properly defined";
+                }
+		}
+	}
 		/**
 	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}. Block may be placed without this method call.
 	 * @param coord the position on the map
@@ -531,7 +574,7 @@ public class Block extends AbstractGameObject {
 
     @Override
     public String getName() {
-        return "feature not supported yet";
+        return getName(getId(), getValue());
     }
 	
 	@Override

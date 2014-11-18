@@ -186,7 +186,7 @@ public class Chunk {
 									data[x][y][z] = Block.getInstance(id, value);
 									x++;
 								} while (x < blocksX);
-								bufChar = fis.read();
+								fis.read();//line break?
 								y++;
 							} while (y < blocksY);
 						}
@@ -199,19 +199,19 @@ public class Chunk {
 				if (CVar.get("loadEntities").getValueb()) {
 					//loading entities
 					if (bufChar=='e'){
-						fis.read();
-						Gdx.app.debug("Chunk", "Loading entities");
+						int length = fis.read(); //amount of entities
+						fis.read();//line break
+						
+						Gdx.app.debug("Chunk", "Loading " + length+" entities");
 						try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
 							AbstractEntity object = (AbstractEntity) objectIn.readObject();
-							while (objectIn != null) {		
+							for (int i = 0; i < length; i++) {
 								Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
 								Controller.getMap().getEntitys().add(object);
 								object = (AbstractEntity) objectIn.readObject();
 							}
 						} catch (ClassNotFoundException ex) {
 							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-						} catch (IOException ex) {
-							//eof
 						}
 					}
 				}
@@ -277,6 +277,7 @@ public class Chunk {
 				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
 				if (entities.size()>0) {
 					fileOut.write('e');
+					fileOut.write(entities.size());
 					fileOut.write('\n');
 					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
 						for (AbstractEntity ent : entities){

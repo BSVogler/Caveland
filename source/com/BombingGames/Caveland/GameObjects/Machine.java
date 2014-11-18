@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Machine extends Block implements IsSelfAware {
+	private static final long serialVersionUID = 1L;
 	private Coordinate coords;
 	private int sulfurcount;
 	private int coalcount;

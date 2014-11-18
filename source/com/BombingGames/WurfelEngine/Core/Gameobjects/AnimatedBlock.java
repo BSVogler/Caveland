@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  * @author Benedikt
  */
 public class AnimatedBlock extends Block implements Animatable{
+	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private int counter = 0;
     private boolean running;

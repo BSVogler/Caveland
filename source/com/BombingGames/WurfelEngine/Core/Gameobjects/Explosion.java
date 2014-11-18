@@ -13,8 +13,10 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Explosion extends AbstractEntity {
-	private final int radius;
+	private static final long serialVersionUID = 1L;
 	private static Sound explosionsound;
+	
+	private final int radius;
 	private transient Camera camera;
 
 	/**

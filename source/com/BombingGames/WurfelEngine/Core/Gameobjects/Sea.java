@@ -37,7 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
  * @author Benedikt Vogler
  */
 public class Sea extends Block implements IsSelfAware{
-
+	private static final long serialVersionUID = 1L;
     /**
      *
      */

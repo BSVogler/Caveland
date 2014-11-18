@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class Vanya extends MovableEntity {
+	private static final long serialVersionUID = 1L;
 
 	public Vanya() {
 		super(40, 0);

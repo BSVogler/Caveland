@@ -40,6 +40,7 @@ import com.badlogic.gdx.graphics.Color;
  * @author Benedikt Vogler
  */
 class EntityShadow extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * the parent class. The object where this is the shadow
 	 */

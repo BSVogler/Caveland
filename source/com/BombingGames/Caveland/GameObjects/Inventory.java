@@ -11,6 +11,7 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public class Inventory implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Slot[] slot = new Slot[3];
 
 	public Inventory() {

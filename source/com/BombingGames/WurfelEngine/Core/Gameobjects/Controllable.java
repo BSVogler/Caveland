@@ -37,6 +37,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class Controllable extends MovableEntity {
+	private static final long serialVersionUID = 1L;
 
 	public Controllable(int id, int spritesPerDir) {
 		super(id, spritesPerDir);

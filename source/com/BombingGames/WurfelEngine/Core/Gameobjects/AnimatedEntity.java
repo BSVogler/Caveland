@@ -35,6 +35,7 @@ import com.badlogic.gdx.Gdx;
  * @author Benedikt
  */
 public class AnimatedEntity extends AbstractEntity implements Animatable {
+	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private float counter = 0;
     private boolean running;

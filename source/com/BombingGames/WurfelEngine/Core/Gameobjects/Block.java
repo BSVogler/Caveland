@@ -48,9 +48,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @author Benedikt Vogler
  */
 public class Block extends AbstractGameObject {
-    
-    /**Containts the names of the objects. index=id*/
-    
+    private static final long serialVersionUID = 1L;
+	 
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
         
     /**

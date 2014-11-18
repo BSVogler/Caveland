@@ -38,6 +38,8 @@ import com.badlogic.gdx.audio.Sound;
  * @author Benedikt
  */
 public class ExplosiveBarrel extends Block implements IsSelfAware {
+	private static final long serialVersionUID = 1L;
+	
     private Coordinate coords;
     private transient static Sound explosionsound;
 

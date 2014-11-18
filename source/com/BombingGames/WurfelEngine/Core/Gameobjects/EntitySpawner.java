@@ -40,6 +40,7 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class EntitySpawner extends Block implements IsSelfAware {
+	private static final long serialVersionUID = 1L;
     private Coordinate coords;//this field is needed because of it is selfAware
     private boolean up = true;
 

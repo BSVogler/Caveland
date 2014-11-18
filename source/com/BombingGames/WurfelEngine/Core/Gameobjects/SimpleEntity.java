@@ -34,6 +34,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  * @author  Benedikt Vogler
  */
 public class SimpleEntity extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
 
     /**
      *

@@ -10,6 +10,7 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class Enemy extends MovableEntity{
+	private static final long serialVersionUID = 1L;
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
     private float[] lastPos;

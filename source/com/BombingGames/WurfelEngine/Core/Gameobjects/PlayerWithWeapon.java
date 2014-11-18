@@ -41,6 +41,8 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt
  */
 public class PlayerWithWeapon extends Controllable {
+	private static final long serialVersionUID = 1L;
+	
     private transient Camera camera;
     private Weapon weapon;
 

@@ -9,6 +9,7 @@ import com.BombingGames.WurfelEngine.WE;
  * @author Benedikt Vogler
  */
 public class Flint extends MovableEntity{
+	private static final long serialVersionUID = 1L;
 
 	public Flint() {
 		super(43, 0);

@@ -42,6 +42,7 @@ import com.badlogic.gdx.math.Vector3;
 public class BenchmarkBall extends MovableEntity {
     private static float timer=0;
     private static float timeTillBall=1000;
+	private static final long serialVersionUID = 1L;
 
     /**
      *Creates a Benchmark ball.

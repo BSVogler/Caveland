@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Lore extends MovableEntity {
+	private static final long serialVersionUID = 1L;
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);

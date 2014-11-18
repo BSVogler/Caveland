@@ -10,6 +10,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
  * @author Benedikt Vogler
  */
 public class Tree extends Block implements IsSelfAware {
+	private static final long serialVersionUID = 1L;
 	private Coordinate pos;
 
 	/**

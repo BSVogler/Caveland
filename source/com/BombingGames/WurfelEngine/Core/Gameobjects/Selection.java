@@ -41,6 +41,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  * @author Benedikt Vogler
  */
 public class Selection extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
     private AnimatedEntity normal;
     private Sides normalSide;
     

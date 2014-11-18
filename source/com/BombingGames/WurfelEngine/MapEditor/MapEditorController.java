@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -52,6 +53,7 @@ public class MapEditorController extends Controller {
      * a clone of the map at the time when last tested.
      */
     private Map mapsave;
+	private java.util.HashMap<String, ? extends AbstractEntity> entityMap;
     private boolean reverseMap;
     private Selection SelectionEntity;
 
@@ -77,6 +79,8 @@ public class MapEditorController extends Controller {
             this.gameplayView = new GameView();
         else
             this.gameplayView = gameplayView;
+		
+		entityMap = new java.util.HashMap<>(10);
     }
 
     @Override

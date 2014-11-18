@@ -77,15 +77,13 @@ public class MapEditorView extends GameView {
         
         addCamera(camera = new Camera(this, controller));
         
-        controller.setMinimap(
+        setMinimap(
             new Minimap(
                 getCameras().get(0),
                 Gdx.graphics.getWidth() - 600,
                 Gdx.graphics.getHeight()-300
             )
         );
-        
-        controller.getMinimap().toggleVisibility();
         
 		colorGUI = new ColorGUI(getStage());
 		getStage().addActor(colorGUI);
@@ -189,7 +187,7 @@ public class MapEditorView extends GameView {
         @Override
         public boolean keyDown(int keycode) {
             if (keycode == Keys.M){
-                controller.getMinimap().toggleVisibility();
+                getMinimap().toggleVisibility();
             }
             
             //manage camera speed

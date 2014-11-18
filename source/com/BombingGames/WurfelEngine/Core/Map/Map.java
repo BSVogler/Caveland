@@ -782,10 +782,6 @@ public class Map implements Cloneable {
 		cameras.add(camera);
 	}
 
-	public void setMinimap(Minimap minimap) {
-		this.minimap = minimap;
-	}
-
 	public static void setDefaultGenerator(Generator defaultGenerator) {
 		Map.defaultGenerator = defaultGenerator;
 	}

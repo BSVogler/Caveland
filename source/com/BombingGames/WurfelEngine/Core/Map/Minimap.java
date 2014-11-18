@@ -53,26 +53,33 @@ public class Minimap {
     
     private Camera camera;
     private Color[][] mapdata;
-    private boolean visible;
+    private boolean visible = true;
     private int maximumZ;
-	private ArrayList<AbstractEntity> trackedEnt;
+	private ArrayList<AbstractEntity> trackedEnt = new ArrayList<>(1);
 	private FrameBuffer fbo;
 	private TextureRegion fboRegion;
-	private boolean needsrebuild;
+	private boolean needsrebuild = true;
 
+	/**
+     * Create a minimap. Visible by default.
+     * @param outputX the output-position of the minimap (distance to left)
+     * @param outputY the output-position of the minimap (distance from bottom)
+	 */
+	public Minimap(final int outputX, final int outputY) {
+		this.posX = outputX;
+        this.posY = outputY;
+	}
+	
     /**
-     * Create a minimap.
+     * Create a minimap. Visible by default.
      * @param camera the camera wich should be represented on the minimap
      * @param outputX the output-position of the minimap (distance to left)
      * @param outputY  the output-position of the minimap (distance from bottom)
      */
     public Minimap(final Camera camera, final int outputX, final int outputY) {
-        if (camera == null) throw new NullPointerException("Camera is null");
+		this.camera = camera;
         this.posX = outputX;
         this.posY = outputY;
-        this.camera = camera;
-		trackedEnt = new ArrayList<>(1);
-		needsrebuild=true;
     }
 
 	/**
@@ -233,58 +240,59 @@ public class Minimap {
 			);
 		}
 
-		//bottom getCameras() rectangle
-		sh.begin(ShapeType.Line);
-		sh.setColor(Color.RED);
-		sh.rect(
-			scaleX * camera.getVisibleLeftBorder(),
-			-scaleY * camera.getVisibleBackBorder(),
-			scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
-			-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
-		);
+		if (camera!=null){
+			//bottom getCameras() rectangle
+			sh.begin(ShapeType.Line);
+			sh.setColor(Color.RED);
+			sh.rect(
+				scaleX * camera.getVisibleLeftBorder(),
+				-scaleY * camera.getVisibleBackBorder(),
+				scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
+				-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
+			);
 
-		//ground level
-		sh.setColor(Color.GREEN);
-		sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
-		sh.rect(
-			scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-			scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
-			scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-			scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-		);
+			//ground level
+			sh.setColor(Color.GREEN);
+			sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
+			sh.rect(
+				scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+				scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
+				scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+				scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+			);
 
-		//player level getCameras() rectangle
-//            if (controller.getPlayer()!=null){
-//                sh.setColor(Color.GRAY);
-//                sh.rect(
-//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-//                );
-//            }
+			//player level getCameras() rectangle
+	//            if (controller.getPlayer()!=null){
+	//                sh.setColor(Color.GRAY);
+	//                sh.rect(
+	//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+	//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+	//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+	//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+	//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+	//                );
+	//            }
 
-		//top level getCameras() rectangle
-		sh.setColor(Color.WHITE);
-		sh.rect(
-			scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-			scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-				-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-			scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-			scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-		);
-		sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
-		sh.end();
+			//top level getCameras() rectangle
+			sh.setColor(Color.WHITE);
+			sh.rect(
+				scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+				scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+					-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+				scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+				scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+			);
+			sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
+			sh.end();
 
-
-		//camera position
-		view.drawString(
-			camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
-			posX,
-			(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
-			Color.WHITE
-		);
+			//camera position
+			view.drawString(
+				camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
+				posX,
+				(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
+				Color.WHITE
+			);
+		}
 		sh.translate(-posX, -posY, 0);
 		fbo.end();
 		needsrebuild= false;
@@ -322,4 +330,14 @@ public class Minimap {
 	public void needsRebuild() {
 		needsrebuild = true;
 	}
+
+	/**
+	 * Set a camera which will be represented on the minimap.
+	 * @param camera 
+	 */
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+	
+	
 }

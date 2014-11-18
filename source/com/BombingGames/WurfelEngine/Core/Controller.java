@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -52,8 +51,6 @@ public class Controller implements GameManager {
     private static DevTools devtools;
     private boolean initalized= false;
 
-    
-    private static Minimap minimap;
     /** The speed of time. 1 = real time;*/
     private float timespeed = 1;
     
@@ -88,8 +85,6 @@ public class Controller implements GameManager {
             }
         }
 		
-		map.setMinimap(minimap);
-        
         if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
             Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         }
@@ -163,24 +158,6 @@ public class Controller implements GameManager {
         map.modified();
     }
     
-    /**
-     * Returns the minimap.
-     * @return 
-     */
-    public Minimap getMinimap() {
-        return minimap;
-    }
-    
-   
-
-    /**
-     * Set the minimap and "builds it"
-     * @param minimap
-     */
-    public void setMinimap(final Minimap minimap) {
-        Controller.minimap = minimap;
-    }
-
     /**
      *
      * @return

@@ -249,8 +249,8 @@ public class CustomGameView extends GameView{
         public boolean keyDown(int keycode) {
             if (!WE.getConsole().isActive()) {
                 //toggle minimap
-                 if (keycode == Input.Keys.M && getController().getMinimap() != null){
-                     getController().getMinimap().toggleVisibility();
+                 if (keycode == Input.Keys.M && getMinimap() != null){
+                     getMinimap().toggleVisibility();
                  }
                  //toggle fullscreen
                  if (keycode == Input.Keys.F){

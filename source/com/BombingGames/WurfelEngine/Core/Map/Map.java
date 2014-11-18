@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -71,7 +70,7 @@ public class Map implements Cloneable {
 	
 	
 	private boolean modified;
-	private Minimap minimap;
+	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
     
     /**
      * Loads a map using the default generator.
@@ -771,15 +770,13 @@ public class Map implements Cloneable {
 	private void onModified() {
 		//recalculates the light if requested
 		Gdx.app.debug("Map", "modified");
-		if (minimap != null) minimap.needsRebuild();
-		for (Camera camera : cameras) {
-			camera.rayCastingClipping();
+		for (LinkedWithMap object : linkedObjects){
+			object.onMapChange();
 		}
-		LightEngine.calcSimpleLight();
 	}
 	
-	public void addCamera(Camera camera){
-		cameras.add(camera);
+	public void addLinkedObject(LinkedWithMap object){
+		linkedObjects.add(object);
 	}
 
 	public static void setDefaultGenerator(Generator defaultGenerator) {

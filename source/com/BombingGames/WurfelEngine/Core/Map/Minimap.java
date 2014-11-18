@@ -45,7 +45,7 @@ import java.util.ArrayList;
  *A minimap is a view that draws the map from top in a small window.
  * @author Benedikt
  */
-public class Minimap {
+public class Minimap implements LinkedWithMap {
     private final int posX, posY;
     private final float scaleX = 12;
     private final float scaleY = scaleX/2;
@@ -337,6 +337,11 @@ public class Minimap {
 	 */
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+	}
+
+	@Override
+	public void onMapChange() {
+		needsRebuild();
 	}
 	
 	

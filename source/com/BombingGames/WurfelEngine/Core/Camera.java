@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Camera {
+public class Camera implements LinkedWithMap {
 
 	/**
 	 * The deepest layer is an array which stores the information if there
@@ -1071,5 +1072,10 @@ public class Camera {
 	public boolean isCompletelyClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);
 		return (tmp[0] && tmp[1] && tmp[2]);
+	}
+
+	@Override
+	public void onMapChange() {
+		rayCastingClipping();
 	}
 }

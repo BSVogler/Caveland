@@ -86,7 +86,8 @@ public class Controller implements GameManager {
         }
 		
         if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
-            Controller.lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+            lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+			getMap().addLinkedObject(lightEngine);
         }
         
         initalized = true;    
@@ -212,6 +213,5 @@ public class Controller implements GameManager {
      * should get called when you leave the editor
      */
     public void exit(){}
-    
 
 }

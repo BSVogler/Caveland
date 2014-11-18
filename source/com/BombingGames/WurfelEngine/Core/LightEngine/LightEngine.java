@@ -32,6 +32,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -45,7 +46,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
  * @version 1.1.6
  * @since  WE1.1
  */
-public class LightEngine {
+public class LightEngine implements LinkedWithMap {
     /**
      * The Version of the light engine.
      */
@@ -268,7 +269,7 @@ public class LightEngine {
      /**
      * Calculates the light level based on the sun shining straight from the top
      */
-    public static void calcSimpleLight(){
+    public void calcSimpleLight(){
         for (int x=0; x < Map.getBlocksX(); x++){
             for (int y=0; y < Map.getBlocksY(); y++) {
                 //find top most renderobject
@@ -463,4 +464,9 @@ public class LightEngine {
         sun.setAzimuth(270);
         moon.setAzimuth(90);
     }
+
+	@Override
+	public void onMapChange() {
+		calcSimpleLight();
+	}
 }

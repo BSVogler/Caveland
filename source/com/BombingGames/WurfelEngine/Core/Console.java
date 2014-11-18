@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -314,20 +313,6 @@ public class Console {
             case "about":
             case "credits":
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
-                return true;
-            case "minimap":
-                if (gameplayRef==null) return false;
-                if (gameplayRef.getController().getMinimap()==null){
-                    add("No minimap found. Creating new", "System");
-                    gameplayRef.getController().setMinimap(
-						new Minimap(
-							gameplayRef.getView().getCameras().get(0),
-							0,
-							Gdx.graphics.getHeight()
-						)
-					);
-                }
-                gameplayRef.getController().getMinimap().toggleVisibility();
                 return true;
             case "clearmap":
                 Controller.getMap().fillWithAir();

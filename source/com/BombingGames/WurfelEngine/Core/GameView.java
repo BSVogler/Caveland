@@ -133,7 +133,7 @@ public class GameView extends View implements GameManager {
 		if (CVar.get("enableMinimap").getValueb()) {
 			minimap = new Minimap(
 				200,
-				Gdx.graphics.getHeight()-600
+				Gdx.graphics.getHeight()-800
 			);
 		}
     }

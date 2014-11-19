@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,7 +46,14 @@ import java.util.ArrayList;
  * @author Benedikt
  */
 public class Minimap implements LinkedWithMap {
-    private final int posX, posY;
+    /**
+	 * distance from left
+	 */
+	private final int posX;
+	/**
+	 * distance from bottom
+	 */
+	private final int posY;
     private final float scaleX = 12;
     private final float scaleY = scaleX/2;
 	/**
@@ -147,93 +153,94 @@ public class Minimap implements LinkedWithMap {
 		//render map to frame buffer
 		fbo = new FrameBuffer(
 			Pixmap.Format.RGBA8888,
-			(int) (mapdata.length*scaleX),
-			(int) (mapdata[0].length*scaleY),
+			(int) (mapdata.length*scaleX)+20,
+			//(int) (mapdata[0].length*scaleY)+20,
+			1080,
 			false
 		);
 		
 		fboRegion = new TextureRegion(fbo.getColorBufferTexture());
         fboRegion.flip(false, true);
+				
+		fbo.bind();
 		
 		ShapeRenderer sh = view.getShapeRenderer();
-		sh.translate(0, Gdx.graphics.getHeight()-posY, 0);
-		
-		fbo.bind();
-		//render the map
-		sh.begin(ShapeType.Filled);
-		sh.rect(0,0,1920,1080); 
-		for (int x = 0; x < Map.getBlocksX(); x++) {
-			for (int y = 0; y < Map.getBlocksY(); y++) {
-				sh.setColor(mapdata[x][y]);//get color
-				float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
-				float rectY = - (y+1)*scaleY;
+		sh.translate(0, mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
+			//render the map
+			sh.begin(ShapeType.Filled);
+				for (int x = 0; x < Map.getBlocksX(); x++) {
+					for (int y = 0; y < Map.getBlocksY(); y++) {
+						sh.setColor(mapdata[x][y]);//get color
+						float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
+						float rectY = - (y+1)*scaleY;
 
-				sh.translate(rectX, rectY, 0);
-				sh.rotate(0, 0, 1, 45);
-				sh.rect(0,0,renderSize,renderSize); 
-				sh.rotate(0, 0, 1, -45);
-				sh.translate(-rectX, -rectY, 0);
-			}
-		}
-		sh.end();
+						sh.translate(rectX, rectY, 0);
+						sh.rotate(0, 0, 1, 45);
+						sh.rect(0,0,renderSize,renderSize); 
+						sh.rotate(0, 0, 1, -45);
+						sh.translate(-rectX, -rectY, 0);
+					}
+				}
+			sh.end();
 
-		sh.begin(ShapeType.Line);
+			sh.begin(ShapeType.Line);
 
-		for (AbstractEntity ent : trackedEnt) {
+				for (AbstractEntity ent : trackedEnt) {
 
-			//show entity position
-			Color color = Color.BLUE.cpy();
-			color.a = 0.8f;
-			sh.setColor(color);
-			float rectX = 
-				+ ((ent.getPosition().getRelX()
-				+ (ent.getPosition().getCoord().getRelY()%2==1?0.5f:0)
-				)/Block.GAME_DIAGLENGTH
-				- 0.5f)
-				* scaleX;
-			float rectY = 
-				- (ent.getPosition().getRelY()/Block.GAME_DIAGLENGTH
-				+ 0.5f
-				)* scaleY*2;
-			sh.translate(rectX, rectY, 0);
-			sh.rotate(0, 0, 1, 45);
-			sh.rect(0,0,renderSize,-renderSize);
-			sh.rotate(0, 0, 1, -45);
-			sh.translate(-rectX, -rectY, 0);
+					//show entity position
+					Color color = Color.BLUE.cpy();
+					color.a = 0.8f;
+					sh.setColor(color);
+					float rectX = 
+						+ ((ent.getPosition().getRelX()
+						+ (ent.getPosition().getCoord().getRelY()%2==1?0.5f:0)
+						)/Block.GAME_DIAGLENGTH
+						- 0.5f)
+						* scaleX;
+					float rectY = 
+						- (ent.getPosition().getRelY()/Block.GAME_DIAGLENGTH
+						+ 0.5f
+						)* scaleY*2;
+					sh.translate(rectX, rectY, 0);
+					sh.rotate(0, 0, 1, 45);
+					sh.rect(0,0,renderSize,-renderSize);
+					sh.rotate(0, 0, 1, -45);
+					sh.translate(-rectX, -rectY, 0);
 
-			 Point tmpPos = ent.getPosition();
-			//player coordinate
-			view.drawString(
-				tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
-				(int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
-				(int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
-				Color.RED
-			);
-			rectX = (int) (
-				(tmpPos.getRelX()
-					+ (tmpPos.getCoord().getRelY()%2==1 ? 0.5f : 0)
-				  ) / Block.GAME_DIAGLENGTH * scaleX
-			);
-			rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
+					 Point tmpPos = ent.getPosition();
+					//player coordinate
+					view.drawString(
+						tmpPos.getCoord().getRelX() +" | "+ tmpPos.getCoord().getRelY() +" | "+ (int) tmpPos.getHeight(),
+						(int) (posX+(tmpPos.getCoord().getRelX() + (tmpPos.getRelY()%2==1?0.5f:0) ) * scaleX+20),
+						(int) (posY- tmpPos.getCoord().getRelY() * scaleY + 10),
+						Color.RED
+					);
+					rectX = (int) (
+						(tmpPos.getRelX()
+							+ (tmpPos.getCoord().getRelY()%2==1 ? 0.5f : 0)
+						  ) / Block.GAME_DIAGLENGTH * scaleX
+					);
+					rectY = (int) (tmpPos.getRelY()/Block.GAME_DIAGLENGTH2 * scaleY);
 
-			view.drawString(tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
-				(int) (posX+rectX),
-				(int) (posY+rectY),
-				Color.RED
-			);
-		}
+					view.drawString(tmpPos.getRelX() +" | "+ tmpPos.getRelY() +" | "+ (int) tmpPos.getHeight(),
+						(int) (posX+rectX),
+						(int) (posY+rectY),
+						Color.RED
+					);
+				}
 
-		//Chunk outline
-		sh.setColor(Color.BLACK);
-		for (int chunk = 0; chunk < 9; chunk++) {
-			sh.rect(
-				chunk%3 *(Chunk.getBlocksX()*scaleX),
-				- chunk/3*(Chunk.getBlocksY()*scaleY),
-				Chunk.getBlocksX()*scaleX,
-				-Chunk.getBlocksY()*scaleY
-			);
-		}
-		sh.end();
+				//Chunk outline
+				sh.setColor(Color.BLACK);
+				for (int chunk = 0; chunk < 9; chunk++) {
+					sh.rect(
+						chunk%3 *(Chunk.getBlocksX()*scaleX),
+						- chunk/3*(Chunk.getBlocksY()*scaleY),
+						Chunk.getBlocksX()*scaleX,
+						-Chunk.getBlocksY()*scaleY
+					);
+				}
+			sh.end();
+		sh.translate(0, -mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
 
 		//chunk coordinates
 		for (int chunk = 0; chunk < 9; chunk++) {
@@ -246,7 +253,6 @@ public class Minimap implements LinkedWithMap {
 		}
 
 		fbo.end();
-		sh.translate(0, -(Gdx.graphics.getHeight()-posY), 0);
 		needsrebuild= false;
     }
     
@@ -269,46 +275,48 @@ public class Minimap implements LinkedWithMap {
 			if (camera!=null){
 				//bottom getCameras() rectangle
 				sh.begin(ShapeType.Line);
-				sh.setColor(Color.RED);
-				sh.rect(
-					scaleX * camera.getVisibleLeftBorder(),
-					-scaleY * camera.getVisibleBackBorder(),
-					scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
-					-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
-				);
+				
+					sh.translate(0, mapdata[0].length*scaleY, 0);
+						sh.setColor(Color.RED);
+						sh.rect(
+							scaleX * camera.getVisibleLeftBorder(),
+							-scaleY * camera.getVisibleBackBorder(),
+							scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
+							-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
+						);
 
-				//ground level
-				sh.setColor(Color.GREEN);
-				sh.translate(0, -Map.getBlocksY()*scaleY, 0);//projection is y-up
-				sh.rect(
-					scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-					scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
-					scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-					scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-				);
+						//ground level
+						sh.setColor(Color.GREEN);
+					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
+					sh.rect(
+						scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
+						scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+						scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+					);
 
-				//player level getCameras() rectangle
-		//            if (controller.getPlayer()!=null){
-		//                sh.setColor(Color.GRAY);
-		//                sh.rect(
-		//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-		//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-		//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-		//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-		//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-		//                );
-		//            }
+					//player level getCameras() rectangle
+			//            if (controller.getPlayer()!=null){
+			//                sh.setColor(Color.GRAY);
+			//                sh.rect(
+			//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+			//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+			//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+			//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+			//                );
+			//            }
 
-				//top level getCameras() rectangle
-				sh.setColor(Color.WHITE);
-				sh.rect(
-					scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-					scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-						-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-					scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-					scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
-				);
-				sh.translate(0, Map.getBlocksY()*scaleY, 0);//projection is y-up
+					//top level getCameras() rectangle
+					sh.setColor(Color.WHITE);
+					sh.rect(
+						scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
+						scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
+						scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+					);
+					
 				sh.end();
 
 				//camera position

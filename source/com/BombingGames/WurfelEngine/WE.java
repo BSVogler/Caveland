@@ -246,14 +246,11 @@ public class WE {
     }
     
     /**
-     * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, GameView view)</i>. This is called after the loading screen.
+     * Starts the actual game using the custom gameplayScreen. This is called after the loading screen.
      */
     public static void startGame(){
-        if (game != null) {
-            Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
-            game.setScreen(gameplayScreen);
-        } else
-            Gdx.app.error("Wurfel Engine", "You should call initGame first.");
+		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
+		game.setScreen(gameplayScreen);
     }
     
      /**

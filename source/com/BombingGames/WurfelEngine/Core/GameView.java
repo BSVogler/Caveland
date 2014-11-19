@@ -62,7 +62,7 @@ public class GameView extends View implements GameManager {
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
     
-    private ShapeRenderer igShRenderer;
+    private ShapeRenderer shRenderer;
     
     private Controller controller;
     
@@ -116,7 +116,7 @@ public class GameView extends View implements GameManager {
         //set up renderer
         libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        igShRenderer = new ShapeRenderer();
+        shRenderer = new ShapeRenderer();
         
         //set up stage
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
@@ -210,7 +210,7 @@ public class GameView extends View implements GameManager {
             libGDXcamera.zoom = 1/getEqualizationScale();
             libGDXcamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             batch.setProjectionMatrix(libGDXcamera.combined);
-            igShRenderer.setProjectionMatrix(libGDXcamera.combined);
+            shRenderer.setProjectionMatrix(libGDXcamera.combined);
 
             //WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
             Gdx.gl20.glLineWidth(1);
@@ -364,7 +364,7 @@ public class GameView extends View implements GameManager {
      */
     @Override
     public ShapeRenderer getShapeRenderer() {
-        return igShRenderer;
+        return shRenderer;
     }
     
 

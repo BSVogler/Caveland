@@ -721,15 +721,6 @@ public class Map implements Cloneable {
     }
 
     /**
-     *
-     */
-    public void dispose(){
-        for (int i = 0; i < entityList.size(); i++) {
-			entityList.get(i).dispose();
-        }
-    }
-
-    /**
      * saves every chunk on the map
      * @return 
      */
@@ -805,5 +796,14 @@ public class Map implements Cloneable {
 				System.out.print("\n\n");
 		}
 	}
+	
+	/**
+     *
+     */
+    public void dispose(){
+        for (int i = 0; i < entityList.size(); i++) {
+			entityList.get(i).dispose();
+        }
+    }
     
 }

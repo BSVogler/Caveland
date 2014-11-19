@@ -207,8 +207,8 @@ public class GameView extends View implements GameManager {
                
         //render HUD and GUI
         {
-            libGDXcamera.zoom = 1/getEqualizationScale();
-            libGDXcamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//            libGDXcamera.zoom = 1/getEqualizationScale();
+//            libGDXcamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             batch.setProjectionMatrix(libGDXcamera.combined);
             shRenderer.setProjectionMatrix(libGDXcamera.combined);
 

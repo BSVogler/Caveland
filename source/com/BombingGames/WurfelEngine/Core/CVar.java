@@ -100,7 +100,7 @@ public class CVar {
 		register("gamespeed", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
 		register("loadEntities", true, CVarFlags.CVAR_ARCHIVE);
-		register("enableMinimap", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**

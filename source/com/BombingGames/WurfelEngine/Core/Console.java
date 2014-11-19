@@ -306,6 +306,12 @@ public class Console {
             case "menu":
                 WE.showMainMenu();
                 return true;
+			case "killall":
+				for (int i = 0; i < Controller.getMap().getEntitys().size(); i++) {
+					Controller.getMap().getEntitys().get(i).dispose();
+				}
+				Controller.getMap().getEntitys().clear();
+				return true;
             case "fullscreen":
                 WE.setFullscreen(!WE.isFullscreen());
                 return true;

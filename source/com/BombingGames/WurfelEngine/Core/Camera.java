@@ -70,20 +70,20 @@ public class Camera implements LinkedWithMap {
 	private boolean[][][][] clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 
 	/**
-	 * the position of the camera projected. Y-up*
+	 * the position of the camera projected. Y-up
 	 */
 	private final Vector3 position = new Vector3();
 	/**
-	 * the unit length direction vector of the camera *
+	 * the unit length direction vector of the camera
 	 */
 	private final Vector3 direction = new Vector3(0, 0, -1);
 	/**
-	 * the unit length up vector of the camera *
+	 * the unit length up vector of the camera
 	 */
 	private final Vector3 up = new Vector3(0, 1, 0);
 
 	/**
-	 * the projection matrix *
+	 * the projection matrix
 	 */
 	private final Matrix4 projection = new Matrix4();
 	/**
@@ -91,7 +91,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private final Matrix4 view = new Matrix4();
 	/**
-	 * the combined projection and view matrix *
+	 * the combined projection and view matrix
 	 */
 	private final Matrix4 combined = new Matrix4();
 

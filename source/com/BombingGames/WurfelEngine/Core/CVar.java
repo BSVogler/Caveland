@@ -55,14 +55,14 @@ public class CVar {
 	/**
 	 * @since v1.4.2
 	 */
-	public enum CVarFlags {
+	public static enum CVarFlags {
 		CVAR_ARCHIVE, CVAR_VOLATILE // never saved to file
 	}
 	
 	/**
 	 * @since v1.4.2
 	 */
-	private enum Type {
+	private static enum Type {
 		b, f, i
 	}	
 	

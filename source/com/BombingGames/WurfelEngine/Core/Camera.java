@@ -890,9 +890,8 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The amount of pixel which are visible in Y direction (projection
-	 * dimension). It should be equal
-	 * {@link com.BombingGames.WurfelEngine.Core.Configuration#getRenderResolutionWidth()}.
+	 * The amount of pixel which are visible in X direction (projection
+	 * dimension).
 	 * For screen pixels use {@link #getScreenWidth()}.
 	 *
 	 * @return in pixels

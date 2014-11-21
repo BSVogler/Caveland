@@ -77,13 +77,14 @@ public class MapEditorView extends GameView {
         
         addCamera(camera = new Camera(this, controller));
         
-        setMinimap(
+        if (getMinimap()==null)
+			setMinimap(
             new Minimap(
-                getCameras().get(0),
-                Gdx.graphics.getWidth() - 600,
-                Gdx.graphics.getHeight()-300
-            )
-        );
+					getCameras().get(0),
+					Gdx.graphics.getWidth() - 600,
+					Gdx.graphics.getHeight()-300
+				)
+			);
         
 		colorGUI = new ColorGUI(getStage());
 		getStage().addActor(colorGUI);

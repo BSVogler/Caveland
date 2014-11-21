@@ -142,7 +142,7 @@ public class MainMenuScreen extends AbstractMainMenu {
         lettering.setY(50);
         lettering.flip(false, true);
         
-        background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.png"));
+        background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		        
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

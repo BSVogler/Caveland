@@ -331,8 +331,8 @@ public abstract class AbstractGameObject implements Serializable {
         if (!hidden) {             
             render(
                 view,
-                pos.getProjectedPosX(view),
-                pos.getProjectedPosY(view),
+                pos.getViewSpcX(view),
+                pos.getViewSpcY(view),
                 color,
                 scale
             );

@@ -229,12 +229,12 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public int getProjectedPosX(View view) {
+    public int getViewSpcX(View view) {
         return (int) (getRelX()); //just the position as integer
     }
 
     @Override
-    public int getProjectedPosY(View view) {
+    public int getViewSpcY(View view) {
         return (
 				view.getOrientation()==0
 				?

@@ -469,14 +469,14 @@ public class Coordinate extends AbstractPosition {
     }
     
     @Override
-    public int getProjectedPosX(View view) {
+    public int getViewSpcX(View view) {
 		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
                 + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override
-    public int getProjectedPosY(View view) {
+    public int getViewSpcY(View view) {
 		return (int) (
 			(
 				view.getOrientation()==0

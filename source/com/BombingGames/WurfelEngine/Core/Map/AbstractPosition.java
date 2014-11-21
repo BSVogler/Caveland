@@ -117,18 +117,18 @@ public abstract class AbstractPosition implements Serializable {
     }
     
      /**
-     * Calculate projected position.
+     * Calculate position in view space.
 	 * @param View
      * @return Returns the center of the projected (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getProjectedPosX(View View);
+    public abstract int getViewSpcX(View View);
     
     /**
-     * Calculate projected position.
+     * Calculate position in view space.
 	 * @param View
      * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getProjectedPosY(View View);
+    public abstract int getViewSpcY(View View);
     
     /**
      * If needed calculates it and creates new instance else return itself.

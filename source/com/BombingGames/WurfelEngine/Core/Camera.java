@@ -70,7 +70,7 @@ public class Camera implements LinkedWithMap {
 	private boolean[][][][] clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 
 	/**
-	 * the position of the camera projected. Y-up
+	 * the position of the camera in projection space. Y-up
 	 */
 	private final Vector3 position = new Vector3();
 	/**
@@ -128,8 +128,8 @@ public class Camera implements LinkedWithMap {
 	
 	private final GameView gameView;
 	private final Controller gameController;
-	private int projectionWidth;
-	private int projectionHeight;
+	private int gameSpaceWidth;
+	private int gameSpaceHeight;
 	
 	/**
 	 * Creates a camera pointing at the middle of the map.
@@ -155,8 +155,8 @@ public class Camera implements LinkedWithMap {
 		fixChunkY = Controller.getMap().getChunkCoords(0)[1];
 
 		//set the camera's focus to the center of the map
-		position.x = Map.getCenter().getProjectedPosX(view) - getProjectionWidth() / 2;
-		position.y = Map.getCenter().getProjectedPosY(view) - getProjectionHeight() / 2;
+		position.x = Map.getCenter().getViewSpcX(view) - getWidthInViewSpc() / 2;
+		position.y = Map.getCenter().getViewSpcY(view) - getHeightInViewSpc() / 2;
 		position.z = 0;
 
 		zRenderingLimit = Map.getBlocksZ();
@@ -227,15 +227,15 @@ public class Camera implements LinkedWithMap {
 		//refresh the camera's position in the game world
 		if (focusCoordinates != null) {
 			//update camera's position according to focusCoordinates
-			position.x = focusCoordinates.getProjectedPosX(gameView) - getProjectionWidth() / 2;
-			position.y = focusCoordinates.getProjectedPosY(gameView) - getProjectionHeight() / 2;
+			position.x = focusCoordinates.getViewSpcX(gameView) - getWidthInViewSpc()/ 2;
+			position.y = focusCoordinates.getViewSpcY(gameView) - getHeightInViewSpc() / 2;
 
 		} else if (focusEntity != null) {
 			//update camera's position according to focusEntity
-            position.x = focusEntity.getPosition().getProjectedPosX(gameView) - getProjectionWidth() / 2;            
+            position.x = focusEntity.getPosition().getViewSpcX(gameView) - getWidthInViewSpc() / 2;
             position.y = (int) (
-                focusEntity.getPosition().getProjectedPosY(gameView)
-                - getProjectionHeight()/2
+                focusEntity.getPosition().getViewSpcY(gameView)
+                - getHeightInViewSpc()/2
                 +focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
             );
 
@@ -263,15 +263,16 @@ public class Camera implements LinkedWithMap {
 		position.x += screenshake.x;
 		position.y += screenshake.y;
 
-		Vector3 tmp = position.cpy().add(getProjectionWidth() / 2, getProjectionHeight() / 2, 0);
-		view.setToLookAt(tmp, tmp.cpy().add(direction), up);//move camera to the focus 
+		//move camera to the focus 
+		Vector3 tmp = position.cpy().add(getWidthInViewSpc()/ 2, getHeightInViewSpc()/ 2, 0);
+		view.setToLookAt(tmp, tmp.cpy().add(direction), up);
 
 		//orthographic camera, libgdx stuff
 		projection.setToOrtho(
-			(-screenWidth / 2) / getScaling(),
-			(screenWidth / 2) / getScaling(),
-			(-screenHeight / 2) / getScaling(),
-			(screenHeight / 2) / getScaling(),
+			-getWidthInViewSpc() / 2,
+			getWidthInViewSpc() / 2,
+			-getHeightInViewSpc() / 2,
+			getHeightInViewSpc() / 2,
 			0,
 			1
 		);
@@ -363,21 +364,21 @@ public class Camera implements LinkedWithMap {
                     if (!blockAtCoord.isHidden()//render if not hidden
 						&& !isCompletelyClipped(coord) //nor completely clipped
                         &&                          //inside view frustum?
-						(position.y + getProjectionHeight())//camera's top
+						(position.y + getHeightInViewSpc())//camera's top
                             >
-                            (coord.getProjectedPosY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
+                            (coord.getViewSpcY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
                         &&                                  //inside view frustum?
-                            (coord.getProjectedPosY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+                            (coord.getViewSpcY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
                             >
                             position.y//camera's bottom
 						&&
-							(coord.getProjectedPosX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
+							(coord.getViewSpcX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
 							>
 							position.x
 						&&
-							(coord.getProjectedPosX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
+							(coord.getViewSpcX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
 							<
-							position.x + getProjectionWidth()
+							position.x + getWidthInViewSpc()
 					) {
 						depthsort.add(new RenderDataDTO(blockAtCoord, coord));
 					}
@@ -387,11 +388,11 @@ public class Camera implements LinkedWithMap {
 
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-			int proX = entity.getPosition().getProjectedPosX(gameView);
-			int proY = entity.getPosition().getProjectedPosY(gameView);
+			int proX = entity.getPosition().getViewSpcX(gameView);
+			int proY = entity.getPosition().getViewSpcY(gameView);
             if (! entity.isHidden()
                 &&
-					(position.y + getProjectionHeight())
+					(position.y + getHeightInViewSpc())
 					>
 					(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
 				&&
@@ -405,7 +406,7 @@ public class Camera implements LinkedWithMap {
 				&&
 					(proX- Block.SCREEN_WIDTH2)//left side of sprite
 					<
-					position.x + getProjectionWidth()
+					position.x + getWidthInViewSpc()
                 && entity.getPosition().getZ() < zRenderingLimit
                 )
 				depthsort.add(
@@ -741,7 +742,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
-		updateProjectionSize();
+		updateGameSpaceSize();
 	}
 
 	/**
@@ -757,10 +758,10 @@ public class Camera implements LinkedWithMap {
 	 * Returns the zoom multiplied by a scaling factor calculated by the width to achieve the same
 	 * viewport size with every resolution
 	 *
-	 * @return a scaling factor applied on the screen
+	 * @return a scaling factor applied on the projection
 	 */
-	public float getScaling() {
-		return zoom * screenWidth / CVar.get("renderResolutionWidth").getValuei();
+	public float getScreenSpaceScaling() {
+		return screenWidth / CVar.get("renderResolutionWidth").getValuei();
 	}
 	
 	/**
@@ -820,7 +821,7 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		int right = (int) ((position.x + getProjectionWidth()) / AbstractGameObject.SCREEN_WIDTH + 1);
+		int right = (int) ((position.x + getWidthInViewSpc()) / AbstractGameObject.SCREEN_WIDTH + 1);
 		if (right >= Map.getBlocksX()) {
 			return Map.getBlocksX() - 1;//clamp
 		}
@@ -833,7 +834,7 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleBackBorder() {
-		int back = (int) (Map.getBlocksY() - 1 - ((position.y + getProjectionHeight()) / AbstractGameObject.SCREEN_DEPTH2) - 3);
+		int back = (int) (Map.getBlocksY() - 1 - ((position.y + getHeightInViewSpc()) / AbstractGameObject.SCREEN_DEPTH2) - 3);
 		if (back < 0) {
 			return 0;//clamp
 		}
@@ -858,7 +859,7 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return game in pixels
 	 */
-	public float getProjectionPosX() {
+	public float getProjectionSpaceX() {
 		return position.x;
 	}
 
@@ -867,7 +868,7 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @param x game in pixels
 	 */
-	public void setProjectionPosX(float x) {
+	public void setProjetionSpaceX(float x) {
 		position.x = x;
 	}
 
@@ -876,7 +877,7 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return in camera position game space
 	 */
-	public float getProjectionPosY() {
+	public float getProjectionSpaceY() {
 		return position.y;
 	}
 
@@ -885,42 +886,80 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @param y in game space
 	 */
-	public void setProjectionPosY(float y) {
+	public void setProjectionSpaceY(float y) {
 		position.y = y;
 	}
 
 	/**
-	 * The amount of pixel which are visible in X direction (projection
-	 * dimension).
+	 * The amount of game pixel which are visible in X direction without zoom.
+	 * For screen pixels use {@link #getScreenWidth()}.
+	 *
+	 * @return in game pixels
+	 */
+	public final int getWidthInGameSpc() {
+		return gameSpaceWidth;
+	}
+
+	/**
+	 * The amount of game pixel which are visible in Y direction without zoom. For screen pixels use {@link #getScreenHeight() }.
+	 *
+	 * @return in game pixels
+	 */
+	public final int getHeightInGameSpc() {
+		return gameSpaceHeight;
+	}
+	
+	/**
+	 * updates the cache
+	 */
+	public void updateGameSpaceSize(){
+		gameSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
+		gameSpaceHeight = screenHeight;
+	}
+		
+	/**
+	 * The amount of game pixel which are visible in X direction after the zoom has been applied.
+	 * For screen pixels use {@link #getScreenWidth()}.
+	 *
+	 * @return in view pixels
+	 */
+	public final int getWidthInViewSpc() {
+		return (int) (gameSpaceWidth/zoom);
+	}
+
+	/**
+	 * The amount of game pixel which are visible in Y direction after the zoom has been applied. For screen pixels use {@link #getScreenHeight() }.
+	 *
+	 * @return in view pixels
+	 */
+	public final int getHeightInViewSpc() {
+		return (int) (gameSpaceHeight/zoom);
+	}
+	
+	/**
+	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
 	 * For screen pixels use {@link #getScreenWidth()}.
 	 *
 	 * @return in pixels
 	 */
-	public final int getProjectionWidth() {
-		return projectionWidth;
+	public final int getWidthInProjectionSpc() {
+		return (int) (gameSpaceWidth*zoom);
 	}
 
 	/**
-	 * The amount of pixel which are visible in Y direction (projection
-	 * dimension, game dimension). For screen pixels use {@link #getScreenHeight()
-	 * }.
+	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
+	 * For screen pixels use {@link #getScreenHeight()}.
 	 *
-	 * @return in pixels
+	 * @return in projection pixels
 	 */
-	public final int getProjectionHeight() {
-		return projectionHeight;
-	}
-	
-	
-	public void updateProjectionSize(){
-		projectionWidth =(int) (zoom*CVar.get("renderResolutionWidth").getValuei());//same as: screenWidth / getScaling()
-		projectionHeight =(int) (screenHeight / getScaling());
+	public final int getHeightInProjectionSpc() {
+		return (int) (gameSpaceHeight*zoom);
 	}
 
 	/**
 	 * Returns the position of the cameras output (on the screen)
 	 *
-	 * @return in pixels
+	 * @return in projection pixels
 	 */
 	public int getScreenPosX() {
 		return screenPosX;
@@ -936,8 +975,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Returns the height of the camera output before scaling. To get the real
-	 * display size multiply it with scale values.
+	 * Returns the height of the camera outpu.
 	 *
 	 * @return the value before scaling
 	 */
@@ -946,8 +984,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Returns the width of the camera output before scaling. To get the real
-	 * display size multiply it with scale value.
+	 * Returns the width of the camera output.
 	 *
 	 * @return the value before scaling
 	 */
@@ -975,7 +1012,7 @@ public class Camera implements LinkedWithMap {
 		this.screenWidth = Gdx.graphics.getWidth();
 		this.screenPosX = 0;
 		this.screenPosY = 0;
-		updateProjectionSize();
+		updateGameSpaceSize();
 	}
 
 	/**
@@ -990,14 +1027,14 @@ public class Camera implements LinkedWithMap {
 			this.screenHeight = height;
 			this.screenPosX = 0;
 			this.screenPosY = 0;
-			updateProjectionSize();
+			updateGameSpaceSize();
 		}
 	}
 
 	public void setScreenSize(int width, int height) {
 		this.screenWidth = width;
 		this.screenHeight = height;
-		updateProjectionSize();
+		updateGameSpaceSize();
 	}
 
 	/**

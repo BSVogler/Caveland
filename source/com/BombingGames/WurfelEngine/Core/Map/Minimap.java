@@ -289,10 +289,10 @@ public class Minimap implements LinkedWithMap {
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
 					sh.rect(
-						scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2,
-						scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-						scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+						scaleX * camera.getProjectionSpaceX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getProjectionSpaceY() / Block.SCREEN_DEPTH2,
+						scaleX*camera.getWidthInViewSpc()/ Block.SCREEN_WIDTH,
+						scaleY*camera.getHeightInViewSpc()/ Block.SCREEN_DEPTH2
 					);
 
 					//player level getCameras() rectangle
@@ -310,18 +310,18 @@ public class Minimap implements LinkedWithMap {
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
 					sh.rect(
-						scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
+						scaleX * camera.getProjectionSpaceX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getProjectionSpaceY() / Block.SCREEN_DEPTH2
 							-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-						scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-						scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+						scaleX*camera.getWidthInViewSpc() / Block.SCREEN_WIDTH,
+						scaleY*camera.getHeightInViewSpc() / Block.SCREEN_DEPTH2
 					);
 					
 				sh.end();
 
 				//camera position
 				view.drawString(
-					camera.getProjectionPosX() +" | "+ camera.getProjectionPosY(),
+					camera.getProjectionSpaceX() +" | "+ camera.getProjectionSpaceY(),
 					posX,
 					(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
 					Color.WHITE

@@ -224,7 +224,7 @@ public class Camera implements LinkedWithMap {
 	 * @param dt
 	 */
 	public void update(float dt) {
-		//refrehs the camera's position in the game world
+		//refresh the camera's position in the game world
 		if (focusCoordinates != null) {
 			//update camera's position according to focusCoordinates
 			position.x = focusCoordinates.getProjectedPosX(gameView) - getProjectionWidth() / 2;

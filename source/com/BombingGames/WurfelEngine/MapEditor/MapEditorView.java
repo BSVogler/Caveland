@@ -162,8 +162,10 @@ public class MapEditorView extends GameView {
     public void update(final float dt) {
         super.update(dt);
         
-        camera.move((int) (camermove.x*cameraspeed*dt), (int) (camermove.y*cameraspeed*dt));
-		camera.setZRenderingLimit(controller.getCurrentLayer());
+		if (camera!=null) {
+			camera.move((int) (camermove.x*cameraspeed*dt), (int) (camermove.y*cameraspeed*dt));
+			camera.setZRenderingLimit(controller.getCurrentLayer());
+		}
     }
 
     

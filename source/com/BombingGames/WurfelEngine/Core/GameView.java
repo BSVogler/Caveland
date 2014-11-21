@@ -264,31 +264,33 @@ public class GameView extends View implements GameManager {
     }
     
     /**
-     * Returns deepest layer
+     * Returns deepest layer.
      * @param x
      * @param y
-     * @return 
+     * @return if no camera returns map center
      */
      public Point screenToGameFlat(final int x, final int y){
-        //identify clicked camera
-        Camera camera;
-        int i = 0;
-        do {          
-            camera = cameras.get(i);
-            i++;
-        } while (
-                i < cameras.size()
-                && !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
-                && y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
-        );
- 
-        //find points
-        return new Point(
-                screenXtoGame(x, camera),
-                screenYtoGame(y, camera),
-                0,
-                true
-            );
+		if (cameras.size()>0){
+			//identify clicked camera
+			Camera camera;
+			int i = 0;
+			do {          
+				camera = cameras.get(i);
+				i++;
+			} while (
+					i < cameras.size()
+					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
+					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
+			);
+
+			//find points
+			return new Point(
+					screenXtoGame(x, camera),
+					screenYtoGame(y, camera),
+					0,
+					true
+				);
+		} else return Map.getCenter();
     }
      
     /**
@@ -298,11 +300,13 @@ public class GameView extends View implements GameManager {
      * @return the position on the map. Deepest layer.
      */
     public Intersection screenToGameRaytracing(final int x, final int y){
-        Point p = screenToGameFlat(x,y);
-        float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
-        p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
+		if (cameras.size()>0) {
+			Point p = screenToGameFlat(x,y);
+			float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
+			p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
 
-        return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera
+			return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera
+		} else return new Intersection(null, Vector3.Zero, 0);
     }
     
 	    /**

@@ -160,6 +160,7 @@ public class Camera implements LinkedWithMap {
 		position.z = 0;
 
 		zRenderingLimit = Map.getBlocksZ();
+		updateGameSpaceSize();
 	}
 	
 	/**
@@ -170,6 +171,7 @@ public class Camera implements LinkedWithMap {
 	public Camera(GameView view, Controller controller) {
 		this(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), view, controller);
 		fullWindow = true;
+		updateGameSpaceSize();
 	}
 
 	/**
@@ -192,6 +194,7 @@ public class Camera implements LinkedWithMap {
 		WE.getConsole().add("Creating new camera which is focusing a coordinate");
 		this.focusCoordinates = focus;
 		this.focusEntity = null;
+		updateGameSpaceSize();
 	}
 
 	/**
@@ -216,6 +219,7 @@ public class Camera implements LinkedWithMap {
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
 		this.focusCoordinates = null;
+		updateGameSpaceSize();
 	}
 
 	/**
@@ -912,7 +916,7 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * updates the cache
 	 */
-	public void updateGameSpaceSize(){
+	public final void updateGameSpaceSize(){
 		gameSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
 		gameSpaceHeight = screenHeight;
 	}

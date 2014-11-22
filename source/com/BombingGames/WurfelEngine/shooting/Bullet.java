@@ -40,7 +40,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- *
+ *A bullet is a moving object which can destroy and damage entities or the world.
  * @author Benedikt Vogler
  */
 public class Bullet extends AbstractEntity {
@@ -55,12 +55,11 @@ public class Bullet extends AbstractEntity {
     private int impactSprite;
     
     /**
-     * 
-     * @param id
-     * @param point 
+	 * You can set a different sprite via {@link #setGraphicsId(int) }. It uses the engine default sprite.
+     * @see #setGraphicsId(int) 
      */
-    public Bullet(int id){
-        super(id);
+    public Bullet(){
+        super(12);//default graphics id is 12
     }
 
     /**

@@ -348,9 +348,7 @@ public class Weapon {
                 Bullet bullet;
 
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
-                bullet = new Bullet(
-                    12
-                    );
+                bullet = new Bullet();
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue(0);

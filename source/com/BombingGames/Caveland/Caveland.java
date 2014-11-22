@@ -1,8 +1,11 @@
 package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.Game.CustomBlockFactory;
+import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Flint;
 import com.BombingGames.Caveland.GameObjects.Lore;
+import com.BombingGames.Caveland.GameObjects.Spaceship;
+import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
@@ -37,8 +40,12 @@ public class Caveland {
 		Block.setCustomBlockFactory(new CustomBlockFactory());
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
 		
+		//register entities
 		AbstractEntity.registerEntity("Flint", Flint.class);
 		AbstractEntity.registerEntity("Lore", Lore.class);
+		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
+		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
+		AbstractEntity.registerEntity("Vanya", Vanya.class);
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

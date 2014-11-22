@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.shooting.Bullet;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -56,6 +57,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
 	public static void registerEngineEntities() {
 		entityMap.put("Explosion", Explosion.class);
 		entityMap.put("Benchmarkball", BenchmarkBall.class);
+		entityMap.put("Bullet", Bullet.class);
 	}
 	
 	public static void registerEntity(String name, Class<? extends AbstractEntity> entityClass){

@@ -20,6 +20,15 @@ public class Explosion extends AbstractEntity {
 	private transient Camera camera;
 
 	/**
+	 * simple explosion without screen shake
+	 */
+	public Explosion() {
+		super(0);
+		this.radius = 2;
+	}
+
+	
+	/**
 	 * 
 	 * @param radius the radius in game world blocks
 	 * @param camera can be null. used for screen shake

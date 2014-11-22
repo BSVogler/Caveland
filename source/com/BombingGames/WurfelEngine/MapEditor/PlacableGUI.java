@@ -45,14 +45,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  * Shows the current "color"(block) selection in the editor.
  * @author Benedikt Vogler
  */
-public class ColorGUI extends WidgetGroup {
+public class PlacableGUI extends WidgetGroup {
 	private int id;
 	private int value;
 	private Image image;
 	private Label label;
 
 
-	public ColorGUI(Stage stage) {
+	public PlacableGUI(Stage stage) {
 		setPosition(stage.getWidth()-200, stage.getHeight()-300);
 		image = new Image(new BlockDrawable(id,value,-0.4f));
 		image.setPosition(50, 60);
@@ -104,9 +104,9 @@ public class ColorGUI extends WidgetGroup {
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {
-		private ColorGUI parent;
+		private PlacableGUI parent;
 
-		ChangeListenerImpl(ColorGUI parent) {
+		ChangeListenerImpl(PlacableGUI parent) {
 			this.parent = parent;
 		}
 

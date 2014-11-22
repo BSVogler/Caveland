@@ -70,8 +70,8 @@ public class MapEditorView extends GameView {
     private Vector2 camermove = new Vector2(); 
     
     private Navigation nav = new Navigation();
-    private BlockSelector bselector;
-	private ColorGUI colorGUI;
+    private PlacableSelector bselector;
+	private PlacableGUI colorGUI;
 	
 	private Button blockButton;
 	private Button entitiesButton;
@@ -93,9 +93,9 @@ public class MapEditorView extends GameView {
 				)
 			);
         
-		colorGUI = new ColorGUI(getStage());
+		colorGUI = new PlacableGUI(getStage());
 		getStage().addActor(colorGUI);
-        bselector = new BlockSelector(colorGUI);
+        bselector = new PlacableSelector(colorGUI);
         getStage().addActor(bselector);
 
         blockButton = new TextButton("Blocks", WE.getEngineView().getSkin());

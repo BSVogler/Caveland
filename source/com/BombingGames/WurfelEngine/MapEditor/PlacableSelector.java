@@ -48,10 +48,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * A table containing all blocks where you can choose your block.
  * @author Benedikt Vogler
  */
-public class BlockSelector extends Table {
+public class PlacableSelector extends Table {
     private Table table;
     private ScrollPane scroll; 
-	private final ColorGUI colorGUI;
+	private final PlacableGUI placableGUI;
 	
 	private enum Mode{
 		blocks,
@@ -65,8 +65,8 @@ public class BlockSelector extends Table {
      *
      * @param colorGUI the linked preview of the selection
      */
-    public BlockSelector(ColorGUI colorGUI) {
-        this.colorGUI = colorGUI;
+    public PlacableSelector(PlacableGUI colorGUI) {
+        this.placableGUI = colorGUI;
         
         setWidth(400);
         setHeight(Gdx.graphics.getHeight()-100);
@@ -144,9 +144,9 @@ public class BlockSelector extends Table {
 	}
 
      private class BlockSelInpListener extends InputListener {
-        private BlockSelector parentRef;
+        private PlacableSelector parentRef;
 
-        private BlockSelInpListener(BlockSelector parent) {
+        private BlockSelInpListener(PlacableSelector parent) {
             this.parentRef = parent;
         }
 
@@ -167,7 +167,7 @@ public class BlockSelector extends Table {
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            colorGUI.setBlock(id, 0);
+            placableGUI.setBlock(id, 0);
         };
      }
     

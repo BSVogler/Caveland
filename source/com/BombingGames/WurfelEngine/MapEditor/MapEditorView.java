@@ -99,6 +99,7 @@ public class MapEditorView extends GameView {
         getStage().addActor(bselector);
 
         blockButton = new TextButton("Blocks", WE.getEngineView().getSkin());
+		blockButton.setPosition(bselector.getWidth(), 100);
 		blockButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
@@ -107,9 +108,9 @@ public class MapEditorView extends GameView {
 		});
 		getStage().addActor(blockButton);
 		
-		entitiesButton = new TextButton("Blocks", WE.getEngineView().getSkin());
-		
-		blockButton.addListener(new ChangeListener() {
+		entitiesButton = new TextButton("Entitys", WE.getEngineView().getSkin());
+		entitiesButton.setPosition(bselector.getWidth(), 200);
+		entitiesButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				bselector.showEntities();

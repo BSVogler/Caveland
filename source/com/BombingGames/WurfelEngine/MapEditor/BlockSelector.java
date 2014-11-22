@@ -52,7 +52,15 @@ public class BlockSelector extends Table {
     private Table table;
     private ScrollPane scroll; 
 	private final ColorGUI colorGUI;
-    
+	
+	private enum Mode{
+		blocks,
+		entities;
+	}
+		
+	private Mode mode = Mode.blocks;
+
+	
     /**
      *
      * @param colorGUI the linked preview of the selection
@@ -77,21 +85,38 @@ public class BlockSelector extends Table {
 
             scroll = new ScrollPane(table, WE.getEngineView().getSkin());
             add(scroll).expand().fill();
+			
+			if (mode == Mode.blocks) {
+				if (!table.hasChildren()){//add blocks
+					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+						table.row();
+						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 
-            if (!table.hasChildren()){
-                for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
-                    table.row();
-                    table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
+						Drawable dbl = new BlockDrawable(i);
+						Button button = new Button(dbl);
+						button.addListener(new ButtonListener(i, button));
+						//button.setStyle(style);
+						table.add(button);
 
-                    Drawable dbl = new BlockDrawable(i);
-                    Button button = new Button(dbl);
-                    button.addListener(new ButtonListener(i, button));
-                    //button.setStyle(style);
-                    table.add(button);
+						table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
+					}
+				}
+			} else {//add entities
+				if (!table.hasChildren()){
+					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {//shoud loop over registered map
+						table.row();
+						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 
-                    table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
-                }
-            }
+						Drawable dbl = new EntityDrawable("nameofregisteredentity");
+						Button button = new Button(dbl);
+						button.addListener(new ButtonListener(i, button));
+						//button.setStyle(style);
+						table.add(button);
+
+						table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
+					}
+				}
+			}
         }
     }
     
@@ -105,6 +130,18 @@ public class BlockSelector extends Table {
             clear();
         }
     }
+
+	void showBlocks() {
+		mode = Mode.blocks;
+		table.clearChildren();
+		show();
+	}
+
+	void showEntities() {
+		mode = Mode.entities;
+		table.clearChildren();
+		show();
+	}
 
      private class BlockSelInpListener extends InputListener {
         private BlockSelector parentRef;

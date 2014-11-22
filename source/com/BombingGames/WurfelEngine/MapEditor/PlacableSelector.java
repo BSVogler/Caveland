@@ -113,7 +113,7 @@ public class PlacableSelector extends Table {
 						//button.setStyle(style);
 						table.add(button);
 
-						table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
+						table.add(new Label("nameofregisteredentity", WE.getEngineView().getSkin()));
 					}
 				}
 			}

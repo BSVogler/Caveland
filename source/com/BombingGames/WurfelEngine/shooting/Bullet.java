@@ -44,8 +44,9 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Bullet extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
     private static Sound explosionsound;
-    private Vector3 dir;//movement
+    private Vector3 dir = new Vector3();//movement
     private float speed;
     private int damage;
     private int distance =0;//distance traveled

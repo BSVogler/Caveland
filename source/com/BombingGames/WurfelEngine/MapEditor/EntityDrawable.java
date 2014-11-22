@@ -31,20 +31,61 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class EntityDrawable extends TextureRegionDrawable {
+	private AbstractEntity instance = null;
+	private float scaling = 0;
 
-	EntityDrawable(Class<? extends AbstractEntity> value) {
+	EntityDrawable(Class<? extends AbstractEntity> type) {
+		try {
+			instance = type.newInstance();
+		} catch (InstantiationException | IllegalAccessException ex) {
+			Logger.getLogger(EntityDrawable.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		//if bigger then default sprite size
+		int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
+		int regularHeight = AbstractGameObject.SCREEN_HEIGHT+AbstractGameObject.SCREEN_DEPTH;
+		if (
+			spiteHeight
+			> regularHeight
+		)
+			scaling =  -(1f-((float) regularHeight)/ ((float) spiteHeight));
 	}
 
 	 @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
-		//draw nothing
+
+		if (instance !=null)
+			instance.render(WE.getEngineView(), (int) x, (int) y,scaling);
     }
+	
+	@Override
+	public float getLeftWidth() {
+		return 0;
+	}
+	
+	@Override
+	public float getRightWidth() {
+		return AbstractGameObject.SCREEN_WIDTH;
+	}
+
+	@Override
+	public float getTopHeight() {
+		return AbstractGameObject.SCREEN_HEIGHT2 + AbstractGameObject.SCREEN_DEPTH2;
+	}
+
+	@Override
+	public float getBottomHeight() {
+		return AbstractGameObject.SCREEN_HEIGHT2 + AbstractGameObject.SCREEN_DEPTH2;
+	}
 }

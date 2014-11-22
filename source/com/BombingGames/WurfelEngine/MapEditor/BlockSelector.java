@@ -55,7 +55,7 @@ public class BlockSelector extends Table {
     
     /**
      *
-     * @param colorGUI
+     * @param colorGUI the linked preview of the selection
      */
     public BlockSelector(ColorGUI colorGUI) {
         this.colorGUI = colorGUI;

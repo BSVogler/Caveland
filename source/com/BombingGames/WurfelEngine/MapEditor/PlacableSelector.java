@@ -57,9 +57,8 @@ public class PlacableSelector extends Table {
 	
 		
 	private PlaceMode mode = PlaceMode.Blocks;
-	private java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap;//map string to class
-	
-    /**
+
+	/**
      *
      * @param colorGUI the linked preview of the selection
      */
@@ -70,10 +69,8 @@ public class PlacableSelector extends Table {
         setHeight(Gdx.graphics.getHeight()-100);
         setPosition(-300, 0);
         addListener(new BlockSelInpListener(this));
-		
-		entityMap = new java.util.HashMap<>(10);
     }
-    
+	
     /**
      *
      */
@@ -103,7 +100,10 @@ public class PlacableSelector extends Table {
 				}
 			} else {//add entities
 				if (!table.hasChildren()){
-					for (Map.Entry<String, Class<? extends AbstractEntity>> entry : entityMap.entrySet()) {
+					for (
+						Map.Entry<String, Class<? extends AbstractEntity>> entry
+						: AbstractEntity.getRegisteredEntities().entrySet()
+					) {
 						table.row();
 						//table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 

@@ -38,6 +38,7 @@ import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.GameplayScreen;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
@@ -160,6 +161,9 @@ public class WE {
         //setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
         //setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
 				
+		//register entitys
+		AbstractEntity.registerEngineEntities();
+		
         System.out.println("Fire Engine…");
 		game = new WEGame();
         application = new LwjglApplication(game, config);
@@ -386,7 +390,7 @@ public class WE {
 	public static GameplayScreen getGameplay() {
 		return gameplayScreen;
 	}
-
+	
 	private static class WurfelEngineIntro extends WEScreen {
 		private final Sprite lettering;
 		private final SpriteBatch batch;

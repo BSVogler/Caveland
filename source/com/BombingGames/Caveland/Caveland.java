@@ -1,8 +1,11 @@
 package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.Game.CustomBlockFactory;
+import com.BombingGames.Caveland.GameObjects.Flint;
+import com.BombingGames.Caveland.GameObjects.Lore;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
@@ -28,10 +31,14 @@ public class Caveland {
 		CVar.register("groundBlockID", 1, CVar.CVarFlags.CVAR_ARCHIVE);
 		CVar.register("chunkSwitchAllowed", 1, CVar.CVarFlags.CVAR_ARCHIVE);
 		
+		//configure
         WE.setMainMenu(new MainMenuScreen());
 		WorkingDirectory.setApplicationName("Caveland");
 		Block.setCustomBlockFactory(new CustomBlockFactory());
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
+		
+		AbstractEntity.registerEntity("Flint", Flint.class);
+		AbstractEntity.registerEntity("Lore", Lore.class);
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

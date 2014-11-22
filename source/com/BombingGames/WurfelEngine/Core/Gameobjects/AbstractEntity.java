@@ -42,11 +42,30 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
 	private static final long serialVersionUID = 1L;
+	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
+
+
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean spawned;
    
+	/**
+	 * Registers engine entities in a map.
+	 */
+	public static void registerEngineEntities() {
+		entityMap.put("Explosion", Explosion.class);
+		entityMap.put("Benchmarkball", BenchmarkBall.class);
+	}
+	
+	public static void registerEntity(String name, Class<? extends AbstractEntity> entityClass){
+		entityMap.put(name, entityClass);	
+	}
+	
+	public static java.util.HashMap<String, Class<? extends AbstractEntity>> getRegisteredEntities() {
+		return entityMap;
+	}
+		
     /**
      * Create an abstractEntity.
      * @param id 

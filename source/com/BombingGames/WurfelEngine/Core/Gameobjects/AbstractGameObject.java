@@ -365,7 +365,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param scale relative value
+     * @param scale relative value. 0 means same size
      */
     public void render(View view, int xPos, int yPos, float scale) {
         render(
@@ -388,7 +388,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param xPos rendering position, center of sprite (screen space?)
      * @param yPos rendering position, center of sprite (screen space?)
      * @param color custom blending color
-     * @param scale relative value
+     * @param scale relative value. 0 means same size
      */
     public void render(View view, int xPos, int yPos, Color color, float scale) {
 		if (id != 0){

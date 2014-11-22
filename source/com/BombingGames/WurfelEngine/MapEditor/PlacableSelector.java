@@ -109,7 +109,7 @@ public class PlacableSelector extends Table {
 
 						Drawable dbl = new EntityDrawable(entry.getValue());
 						Button button = new Button(dbl);
-						button.addListener(new EntityListener(entry.getValue(), button));
+						button.addListener(new EntityListener(entry.getKey(), entry.getValue(), button));
 						//button.setStyle(style);
 						table.add(button);
 
@@ -133,12 +133,14 @@ public class PlacableSelector extends Table {
 
 	void showBlocks() {
 		mode = PlaceMode.Blocks;
+		placableGUI.setMode(mode);
 		table.clearChildren();
 		show();
 	}
 
 	void showEntities() {
 		mode = PlaceMode.Entities;
+		placableGUI.setMode(mode);
 		table.clearChildren();
 		show();
 	}
@@ -175,15 +177,17 @@ public class PlacableSelector extends Table {
 	private class EntityListener extends ClickListener {
         private Class<? extends AbstractEntity> entclass;
         private Button parent; 
+		private final String name;
         
-		EntityListener(Class<? extends AbstractEntity> entclass, Button parent){
+		EntityListener(String name, Class<? extends AbstractEntity> entclass, Button parent){
             this.entclass = entclass;
+			this.name = name;
             this.parent = parent;
         }
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setEntity(entclass);
+            placableGUI.setEntity(name, entclass);
         };
      }
     

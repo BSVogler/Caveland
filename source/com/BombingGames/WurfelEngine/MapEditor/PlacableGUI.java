@@ -55,6 +55,7 @@ public class PlacableGUI extends WidgetGroup {
 	private Label label;
 	private Class<? extends AbstractEntity> entityClass;
 	private PlaceMode mode = PlaceMode.Blocks;
+	private final Slider slider;
 
 
 	public PlacableGUI(Stage stage) {
@@ -62,7 +63,7 @@ public class PlacableGUI extends WidgetGroup {
 		image = new Image(new BlockDrawable(id,value,-0.4f));
 		image.setPosition(50, 60);
 		addActor(image);
-		Slider slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
+		slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
@@ -80,7 +81,7 @@ public class PlacableGUI extends WidgetGroup {
 	}	
 	
 	
-	void setBlock(int id, int value) {
+	public void setBlock(int id, int value) {
 		this.id = id;
 		this.value = value;
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
@@ -121,8 +122,21 @@ public class PlacableGUI extends WidgetGroup {
 		return null;
 	}
 
-	void setEntity(Class<? extends AbstractEntity> entclass) {
+	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {
 		entityClass = entclass;
+		label.setText(name);
+		image.setDrawable(new EntityDrawable(entclass));
+	}
+
+	public void setMode(PlaceMode mode) {
+		this.mode = mode;
+		if (mode==PlaceMode.Blocks)
+			slider.setVisible(true);
+		else slider.setVisible(false);
+	}
+	
+	public PlaceMode getMode() {
+		return mode;
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {
@@ -138,8 +152,4 @@ public class PlacableGUI extends WidgetGroup {
 		}
 	}
 
-	public PlaceMode getMode() {
-		return mode;
-	}
-	
 }

@@ -295,7 +295,13 @@ public class MapEditorView extends GameView {
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();
-                Controller.getMap().setData(coords, colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord()));
+                if (colorGUI.getMode() == PlaceMode.Blocks)
+					Controller.getMap().setData(
+						coords,
+						colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord())
+					);
+				else 
+					colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());
                // gras2.play();
             }   
             layerSelection = coords.getZ();

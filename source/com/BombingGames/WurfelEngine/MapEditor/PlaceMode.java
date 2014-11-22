@@ -30,21 +30,11 @@
  */
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
 /**
  *
  * @author Benedikt Vogler
  */
-public class EntityDrawable extends TextureRegionDrawable {
-
-	EntityDrawable(Class<? extends AbstractEntity> value) {
-	}
-
-	 @Override
-    public void draw(Batch batch, float x, float y, float width, float height) {
-		//draw nothing
-    }
+public enum PlaceMode {
+	Blocks, Entities
+	
 }

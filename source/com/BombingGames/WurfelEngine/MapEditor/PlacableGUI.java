@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
@@ -40,6 +41,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Shows the current "color"(block) selection in the editor.
@@ -50,6 +53,8 @@ public class PlacableGUI extends WidgetGroup {
 	private int value;
 	private Image image;
 	private Label label;
+	private Class<? extends AbstractEntity> entityClass;
+	private PlaceMode mode = PlaceMode.Blocks;
 
 
 	public PlacableGUI(Stage stage) {
@@ -95,12 +100,29 @@ public class PlacableGUI extends WidgetGroup {
 	}
 	
 	/**
-	 * 
+	 * Get a new instance of a selected block.
 	 * @param coord the position of the block instance
 	 * @return a new Block instance of the selected id and value.
 	 */
 	public Block getBlock(Coordinate coord){
 		return Block.getInstance(id, value);
+	}
+	
+	/**
+	 * Trys returning a new instance of a selected entity class.
+	 * @return if it fails returns null 
+	 */
+	public AbstractEntity getEntity(){
+		try {
+			return entityClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException ex) {
+			Logger.getLogger(PlacableGUI.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	void setEntity(Class<? extends AbstractEntity> entclass) {
+		entityClass = entclass;
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {
@@ -115,4 +137,9 @@ public class PlacableGUI extends WidgetGroup {
 			parent.setValue((int) ((Slider)actor).getValue());
 		}
 	}
+
+	public PlaceMode getMode() {
+		return mode;
+	}
+	
 }

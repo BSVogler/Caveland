@@ -31,6 +31,7 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
@@ -43,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import java.util.Map;
 
 /**
  * A table containing all blocks where you can choose your block.
@@ -53,13 +55,9 @@ public class PlacableSelector extends Table {
     private ScrollPane scroll; 
 	private final PlacableGUI placableGUI;
 	
-	private enum Mode{
-		blocks,
-		entities;
-	}
 		
-	private Mode mode = Mode.blocks;
-
+	private PlaceMode mode = PlaceMode.Blocks;
+	private java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap;//map string to class
 	
     /**
      *
@@ -72,6 +70,8 @@ public class PlacableSelector extends Table {
         setHeight(Gdx.graphics.getHeight()-100);
         setPosition(-300, 0);
         addListener(new BlockSelInpListener(this));
+		
+		entityMap = new java.util.HashMap<>(10);
     }
     
     /**
@@ -86,7 +86,7 @@ public class PlacableSelector extends Table {
             scroll = new ScrollPane(table, WE.getEngineView().getSkin());
             add(scroll).expand().fill();
 			
-			if (mode == Mode.blocks) {
+			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
 					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
 						table.row();
@@ -94,7 +94,7 @@ public class PlacableSelector extends Table {
 
 						Drawable dbl = new BlockDrawable(i);
 						Button button = new Button(dbl);
-						button.addListener(new ButtonListener(i, button));
+						button.addListener(new BlockListener(i, button));
 						//button.setStyle(style);
 						table.add(button);
 
@@ -103,17 +103,17 @@ public class PlacableSelector extends Table {
 				}
 			} else {//add entities
 				if (!table.hasChildren()){
-					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {//shoud loop over registered map
+					for (Map.Entry<String, Class<? extends AbstractEntity>> entry : entityMap.entrySet()) {
 						table.row();
-						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
+						//table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 
-						Drawable dbl = new EntityDrawable("nameofregisteredentity");
+						Drawable dbl = new EntityDrawable(entry.getValue());
 						Button button = new Button(dbl);
-						button.addListener(new ButtonListener(i, button));
+						button.addListener(new EntityListener(entry.getValue(), button));
 						//button.setStyle(style);
 						table.add(button);
 
-						table.add(new Label("nameofregisteredentity", WE.getEngineView().getSkin()));
+						table.add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
 					}
 				}
 			}
@@ -132,13 +132,13 @@ public class PlacableSelector extends Table {
     }
 
 	void showBlocks() {
-		mode = Mode.blocks;
+		mode = PlaceMode.Blocks;
 		table.clearChildren();
 		show();
 	}
 
 	void showEntities() {
-		mode = Mode.entities;
+		mode = PlaceMode.Entities;
 		table.clearChildren();
 		show();
 	}
@@ -157,10 +157,11 @@ public class PlacableSelector extends Table {
         }
     }
      
-    private class ButtonListener extends ClickListener {
-         private int id;
-         private Button parent; 
-        ButtonListener(int id, Button parent){
+    private class BlockListener extends ClickListener {
+        private int id;
+        private Button parent; 
+        
+		BlockListener(int id, Button parent){
             this.id = id;
             this.parent = parent;
         }
@@ -168,6 +169,21 @@ public class PlacableSelector extends Table {
         @Override
         public void clicked(InputEvent event, float x, float y) {
             placableGUI.setBlock(id, 0);
+        };
+     }
+	
+	private class EntityListener extends ClickListener {
+        private Class<? extends AbstractEntity> entclass;
+        private Button parent; 
+        
+		EntityListener(Class<? extends AbstractEntity> entclass, Button parent){
+            this.entclass = entclass;
+            this.parent = parent;
+        }
+                
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            placableGUI.setEntity(entclass);
         };
      }
     

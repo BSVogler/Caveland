@@ -46,12 +46,12 @@ public abstract class AbstractPosition implements Serializable {
     private float height;
 
     /**
-     *
+     *square root of two
      */
     public static final float SQRT2 = 1.4142135623730950488016887242096980785696718753769480f;
 
     /**
-     *
+     *half of square root of two
      */
     public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
 	

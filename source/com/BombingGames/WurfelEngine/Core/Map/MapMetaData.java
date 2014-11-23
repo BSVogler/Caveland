@@ -51,31 +51,29 @@ public class MapMetaData {
      *
      */
     public static final String VERSION = "0.15";
-    private int chunkBlocksX;
-    private int chunkBlocksY;
-    private int chunkBlocksZ;
-    private String mapversion;
-    private String mapName;
+    private int chunkBlocksX =10;
+    private int chunkBlocksY=40;
+    private int chunkBlocksZ=10;
+    private String mapversion=VERSION;
+    private String mapName = "no name set";
     private String description = "";
     private String fileName;
 
     /**
-     * Creates an empty objects.
+     * Simple constructor.
+     * @param fileName filename the name of the map folder
      */
-    public MapMetaData() {
-    }
-   
-    
-    /**
-     * reads the map info file and sets the size of the chunk
-     * @param fileName filename
-     * @throws java.io.IOException
-     */
-    public MapMetaData(String fileName) throws IOException {
-        BufferedReader bufRead;
+    public MapMetaData(String fileName) {
         this.fileName = fileName;
-
-        //FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
+    }
+    
+	/**
+	 * reads the map info file and sets the size of the chunk
+	 * @throws IOException 
+	 */
+	public void load() throws IOException{
+		BufferedReader bufRead;
+		//FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
         FileHandle path = Gdx.files.absolute(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/map."+METAFILESUFFIX);
         if (path.exists()){
             Gdx.app.log("MapMetaData","Trying to load Map Info from \"" + path.path() + "\"");
@@ -111,8 +109,7 @@ public class MapMetaData {
             Gdx.app.error("MapMetaData", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
             throw new IOException("Map named \""+ fileName +"\" could not be found. Path:"+ path);
         }
-    }
-    
+	}
     /**
      * Writes the data in a folder at the working directory.
      * @return

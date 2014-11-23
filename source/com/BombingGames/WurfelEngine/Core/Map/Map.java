@@ -93,6 +93,9 @@ public class Map implements Cloneable {
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
         this.filename = name;
         meta = new MapMetaData(name);
+		if (CVar.get("shouldLoadMap").getValueb()){
+			meta.load();
+		}
         Chunk.setDimensions(meta);
         
         
@@ -122,17 +125,12 @@ public class Map implements Cloneable {
 	
     /**
      * Should create a new map file.
-     * @param mapName
+     * @param mapName file name
      * @throws java.io.IOException 
      */
     public static void createMapFile(final String mapName) throws IOException {
-        MapMetaData meta = new MapMetaData();
-        meta.setFileName(mapName);
-        meta.setChunkBlocksX(10);
-        meta.setChunkBlocksY(45);
-        meta.setChunkBlocksZ(20);
+        MapMetaData meta = new MapMetaData(mapName);
         meta.setMapName(mapName);
-        meta.setDescription("No description set");
         meta.write();
     }
     

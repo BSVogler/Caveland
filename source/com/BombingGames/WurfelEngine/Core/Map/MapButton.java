@@ -59,6 +59,7 @@ public class MapButton extends TextButton {
         MapMetaData meta;
         try {
             meta = new MapMetaData(fileName);
+			meta.load();
             setText("/"+fileName+"/ "+meta.getMapName());
             if (!"".equals(meta.getDescription()))
                 add(meta.getDescription());

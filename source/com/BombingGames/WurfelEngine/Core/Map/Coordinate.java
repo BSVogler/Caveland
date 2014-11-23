@@ -46,6 +46,10 @@ public class Coordinate extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
     private int x; //saved as relative
     private int y; //saved as relative
+	/**
+	 * gets calculated every time the coordinate is written to.
+	 */
+	private Point cachedPoint;
     
     /**
      * Creates a coordiante refering to the given position on the map.
@@ -64,7 +68,8 @@ public class Coordinate extends AbstractPosition {
             this.y -= getReferenceY() * Chunk.getBlocksY();
         }
         
-        setHeight(z*Block.GAME_EDGELENGTH);
+        super.setHeight(z*Block.GAME_EDGELENGTH);
+		refreshCachedPoint();
     }
     
      /**
@@ -84,7 +89,8 @@ public class Coordinate extends AbstractPosition {
             this.y -= getReferenceY() * Chunk.getBlocksY();
         }
         
-        setHeight(height);
+		super.setHeight(height);
+		refreshCachedPoint();
     }
     
     /**
@@ -96,7 +102,8 @@ public class Coordinate extends AbstractPosition {
         
         this.x = coord.getRelX();
         this.y = coord.getRelY();
-        setHeight(coord.getHeight());
+        super.setHeight(coord.getHeight());
+		refreshCachedPoint();
     }
     
     /**
@@ -166,6 +173,7 @@ public class Coordinate extends AbstractPosition {
      */
     public void setRelX(int x){
         this.x = x;
+		refreshCachedPoint();
     }
     
     /**
@@ -174,6 +182,7 @@ public class Coordinate extends AbstractPosition {
      */
     public void setRelY(int y){
         this.y = y;
+		refreshCachedPoint();
     }
     
     /**
@@ -182,10 +191,15 @@ public class Coordinate extends AbstractPosition {
      */
     public void setZ(int z){
         setHeight(z*Block.GAME_EDGELENGTH);
+		refreshCachedPoint();
     }
-    
 
-    
+	@Override
+	public void setHeight(float height) {
+		super.setHeight(height);
+		refreshCachedPoint();
+	}
+
     /**
      *Set a block in the map where the coordinate is pointing to.
      * @param block the block you want to set.
@@ -206,6 +220,7 @@ public class Coordinate extends AbstractPosition {
         this.x += vector[0];
         this.y += vector[1];
         setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
+		refreshCachedPoint();
         return this;
     }
     
@@ -219,6 +234,7 @@ public class Coordinate extends AbstractPosition {
         this.x += vector.x;
         this.y += vector.y;
         setHeight(getHeight()+ vector.z*Block.GAME_EDGELENGTH);
+		refreshCachedPoint();
         return this;
     }
     
@@ -434,13 +450,20 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Point getPoint() {
-        return new Point(
+		return cachedPoint;
+    }
+	
+	/**
+	 * refresh the field cachedPoint
+	 */
+	private void refreshCachedPoint(){
+		cachedPoint = new Point(
             x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
             y*Block.GAME_DIAGLENGTH2,
             getHeight(),
             true
         );
-    }
+	}
 
     /**
      *
@@ -511,6 +534,7 @@ public class Coordinate extends AbstractPosition {
             y=Map.getBlocksY()-1;
         else if (y<0)
             y=0;
+		refreshCachedPoint();
         return this;
     }
     
@@ -529,6 +553,7 @@ public class Coordinate extends AbstractPosition {
         else if (y<0)
             y=0;
         setZ(getZClamp());
+		refreshCachedPoint();
         return this;
     }
 

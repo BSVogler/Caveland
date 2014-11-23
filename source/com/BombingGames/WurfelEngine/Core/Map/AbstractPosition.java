@@ -225,7 +225,7 @@ public abstract class AbstractPosition implements Serializable {
 							0
 					)
 			)            
-            + getHeight()*AbstractPosition.SQRT12//Z
+            + getHeight()*SQRT2//Z
         );
     }
 }

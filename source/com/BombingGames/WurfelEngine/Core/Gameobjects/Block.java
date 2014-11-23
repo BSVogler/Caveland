@@ -49,8 +49,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class Block extends AbstractGameObject {
     private static final long serialVersionUID = 1L;
-	 
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
+	/**
+	 * {id}{value}{side}
+	 */
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];
         
     /**
      * a list where a representing color of the block is stored

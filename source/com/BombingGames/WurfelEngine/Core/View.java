@@ -62,9 +62,8 @@ public abstract class View {
     }
 	
 	/**
-	 * Get the value of orientation
-	 *
-	 * @return the value of orientation
+	 * Get the current orientation.
+	 * @return 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
 	 * @since v1.3.12
 	 */
 	public int getOrientation() {
@@ -72,9 +71,8 @@ public abstract class View {
 	}
 
 	/**
-	 * Set the 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
-	 *
-	 * @param orientation new value of orientation
+	 * Set the new value for the current orientation.
+	 * @param orientation 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
 	 * @since v1.3.12
 	 */
 	public void setOrientation(int orientation) {

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public class CustomGameView extends GameView{
 	private float timeContextDown = 0;
 	private boolean contextDown;
+	private boolean coop;
 	
 	
     @Override
@@ -69,14 +70,15 @@ public class CustomGameView extends GameView{
 		if (Controllers.getControllers().size > 0){
 			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(0),0));
 		}
-		if (Controllers.getControllers().size > 1){
+		if (coop){
 			getCameras().get(0).setFullWindow(false);
 			getCameras().get(0).setScreenSize(1920, getCameras().get(0).getScreenHeight()/2);
 			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
 			Camera camera = new Camera(player, 0, 540, 1920, 540, this, getController());
 			addCamera(camera);
 			player.setCamera(camera);
-			Controllers.getControllers().get(1).addListener(new XboxListener(this,player,1));
+			if (Controllers.getControllers().size > 1)
+				Controllers.getControllers().get(1).addListener(new XboxListener(this,player,1));
 		}
     }
 	
@@ -130,8 +132,9 @@ public class CustomGameView extends GameView{
 		getBatch().end();
 	}
 
-	
-	
+	public void enableCoop() {
+		coop = true;
+	}
 
 
 	private static class XboxListener implements ControllerListener {

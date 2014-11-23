@@ -57,7 +57,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
-	private final TextButton[] menuItems = new TextButton[4];
+	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
 	private ShapeRenderer shr;
 	private Sprite lettering;    
@@ -80,7 +80,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		int i=0;
 		final int top = 500;
 		final int distance =50;
-		menuItems[i]=new TextButton("Start", WE.getEngineView().getSkin());
+		menuItems[i]=new TextButton("Start Single Player", WE.getEngineView().getSkin());
 		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
 		//start the game
 		menuItems[i].addListener(
@@ -89,6 +89,22 @@ public class MainMenuScreen extends AbstractMainMenu {
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					WE.initGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
+				}
+			}
+		);
+		
+		i++;
+		menuItems[i]=new TextButton("Start Local Co-Op", WE.getEngineView().getSkin());
+		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
+		//start the game
+		menuItems[i].addListener(
+			new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					CustomGameView view = new CustomGameView();
+					view.enableCoop();
+					WE.initGame(new CustomGameController(), view, new CustomLoading());
 				}
 			}
 		);

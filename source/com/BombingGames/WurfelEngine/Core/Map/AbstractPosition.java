@@ -40,6 +40,7 @@ import java.io.Serializable;
  * @author Benedikt Vogler
  */
 public abstract class AbstractPosition implements Serializable {
+	private static final long serialVersionUID = 1L;
     private final int referenceX;//top left chunk x coordinate
     private final int referenceY;//top left chunk Y coordinate
     private float height;

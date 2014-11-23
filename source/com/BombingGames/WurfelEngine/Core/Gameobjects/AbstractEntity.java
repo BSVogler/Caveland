@@ -86,6 +86,15 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      */
     public abstract void update(float dt);
 	
+	/**
+     * renders using its saved postion
+     * @param view
+     * @param camera 
+     */
+    public void render(GameView view, Camera camera){
+        super.render(view, camera, position);
+    }
+	
     //IsSelfAware implementation
     @Override
     public Point getPosition() {
@@ -196,14 +205,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
         return dispose;
     }
     
-    /**
-     * renders using it's saved postion
-     * @param view
-     * @param camera 
-     */
-    public void render(GameView view, Camera camera){
-        super.render(view, camera, position);
-    }
 	
 	/**
 	 * Is the oject saved on the map?

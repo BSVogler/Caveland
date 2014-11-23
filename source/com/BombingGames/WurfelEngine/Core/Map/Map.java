@@ -640,6 +640,23 @@ public class Map implements Cloneable {
 
         return list;
 	}
+	
+		/**
+	 * Get every entity on a chunk
+	 * @param pos the chunk position 0-8
+	 * @return 
+	 */
+	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(int pos){
+		ArrayList<AbstractEntity> list = getEntitysOnChunk(pos);
+
+        for (AbstractEntity ent : entityList) {
+            if (ent.isGettingSaved()){
+				list.remove(ent);//remove from list
+            } 
+        }
+
+        return list;
+	}
     
     /**
      *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.

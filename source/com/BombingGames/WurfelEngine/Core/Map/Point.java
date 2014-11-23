@@ -243,13 +243,13 @@ public class Point extends AbstractPosition {
 					(
 						view.getOrientation()==2
 						?
-							(int) ((getRelY()) / 2) //add the objects position inside this coordinate
+							(int) (getRelY() / 2) //add the objects position inside this coordinate
 						:
 							0
 					)
 			)
             + (int) (getHeight() * SQRT12) //take z-axis shortening into account
-            +AbstractGameObject.SCREEN_HEIGHT2-AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates
+            -AbstractGameObject.SCREEN_HEIGHT2+AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
     }
     
     @Override

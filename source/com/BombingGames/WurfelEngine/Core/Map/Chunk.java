@@ -93,8 +93,10 @@ public class Chunk {
     public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
         this();
         Gdx.app.debug("Chunk", "Creating chunk"+coordX+","+coordY);
-        if (!load(mapname, coordX, coordY))
-            fill(coordX, coordY, generator);
+		if (CVar.get("shouldLoadMap").getValueb()){
+			if (!load(mapname, coordX, coordY))
+				fill(coordX, coordY, generator);
+		} else fill(coordX, coordY, generator);
     }
     
     /**

@@ -53,69 +53,8 @@ public abstract class AbstractPosition implements Serializable {
      *
      */
     public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
-    /**
-     * With custom reference
-     * @param topleftX the chunk's X coordinate of the chunk at the top left
-     * @param topleftY the chunk's Y coordinate of the chunk at the top left 
-     */
-    public AbstractPosition(final int topleftX, final int topleftY) {
-        this.referenceX = topleftX;
-        this.referenceY = topleftY;
-    }
-
-    
-    /**
-     * With the currently loaded top left chunk.
-     */
-    public AbstractPosition() {
-        referenceX = Controller.getMap().getChunkCoords(0)[0];
-        referenceY = Controller.getMap().getChunkCoords(0)[1];
-    }
-
-    /**
-     * Geht the height (z-value) of the coordinate (game dimension).
-     * @return
-     */
-    public float getHeight() {
-        return height;
-    }
-
-    /**
-     * 
-     * @param height 
-     */
-    public void setHeight(float height) {
-        this.height = height;
-    }
-    
-    /**
-     *The z coordinate is absolute even when used as relative coordinate because there are no chunks in Z direction.
-     * @return game coordinate
-     */
-    public int getZ(){
-        float tmp = height / GAME_EDGELENGTH;
-        if (tmp<0)
-            return -1;
-        else
-            return (int) tmp;
-    }
-    
-   /**
-    * 
-    * @return 
-    */
-    protected int getReferenceX() {
-        return referenceX;
-    }
-
-    /**
-     * 
-     * @return 
-     */
-    protected int getReferenceY() {
-        return referenceY;
-    }
-    
+	
+	    
      /**
      * Calculate position in view space.
 	 * @param View
@@ -198,6 +137,70 @@ public abstract class AbstractPosition implements Serializable {
      * @return returns itself
      */
     public abstract AbstractPosition addVector(float x, float y, float z);
+	
+    /**
+     * With custom reference
+     * @param topleftX the chunk's X coordinate of the chunk at the top left
+     * @param topleftY the chunk's Y coordinate of the chunk at the top left 
+     */
+    public AbstractPosition(final int topleftX, final int topleftY) {
+        this.referenceX = topleftX;
+        this.referenceY = topleftY;
+    }
+
+    
+    /**
+     * With the currently loaded top left chunk.
+     */
+    public AbstractPosition() {
+        referenceX = Controller.getMap().getChunkCoords(0)[0];
+        referenceY = Controller.getMap().getChunkCoords(0)[1];
+    }
+
+    /**
+     * Geht the height (z-value) of the coordinate (game dimension).
+     * @return
+     */
+    public float getHeight() {
+        return height;
+    }
+
+    /**
+     * 
+     * @param height 
+     */
+    public void setHeight(float height) {
+        this.height = height;
+    }
+    
+    /**
+     *The z coordinate is absolute even when used as relative coordinate because there are no chunks in Z direction.
+     * @return game coordinate
+     */
+    public int getZ(){
+        float tmp = height / GAME_EDGELENGTH;
+        if (tmp<0)
+            return -1;
+        else
+            return (int) tmp;
+    }
+    
+   /**
+    * 
+    * @return 
+    */
+    protected int getReferenceX() {
+        return referenceX;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    protected int getReferenceY() {
+        return referenceY;
+    }
+
     
     
         /**

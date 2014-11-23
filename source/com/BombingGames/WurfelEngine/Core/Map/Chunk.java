@@ -281,8 +281,10 @@ public class Chunk {
 					fileOut.write('\n');
 					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
 						for (AbstractEntity ent : entities){
-							Gdx.app.debug("Chunk", "Saving entity:"+ent.getId());
-							outStream.writeObject(ent);
+							if (ent.isGettingSaved()) {
+								Gdx.app.debug("Chunk", "Saving entity:"+ent.getId());
+								outStream.writeObject(ent);
+							}
 						}
 						outStream.close();
 					}

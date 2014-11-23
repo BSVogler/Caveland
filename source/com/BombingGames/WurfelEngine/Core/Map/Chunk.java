@@ -274,7 +274,7 @@ public class Chunk {
 				}
 				
 				//save entities
-				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(pos);
+				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunkWhichShouldBeSaved(pos);
 				if (entities.size()>0) {
 					fileOut.write('e');
 					fileOut.write(entities.size());

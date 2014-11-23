@@ -30,6 +30,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
@@ -214,12 +215,12 @@ public abstract class AbstractPosition implements Serializable {
 			(
 				view.getOrientation()==0
 				?
-					 getPoint().getRelY() *Block.SCREEN_DEPTH//Y
+					 getPoint().getRelY() *SCREEN_DEPTH//Y
 				:
 					(
 						view.getOrientation()==2
 						?
-							Map.getGameDepth()-getPoint().getRelY() *Block.SCREEN_DEPTH//Y
+							Map.getGameDepth()-getPoint().getRelY() *SCREEN_DEPTH//Y
 						:
 							0
 					)

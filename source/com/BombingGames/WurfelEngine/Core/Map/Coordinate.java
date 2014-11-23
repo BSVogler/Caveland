@@ -43,6 +43,7 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Coordinate extends AbstractPosition {
+	private static final long serialVersionUID = 1L;
     private int x; //saved as relative
     private int y; //saved as relative
     

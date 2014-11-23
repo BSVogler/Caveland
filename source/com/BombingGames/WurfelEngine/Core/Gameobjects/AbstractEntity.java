@@ -50,6 +50,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean spawned;
+	/**
+	 * flags if should be saved
+	 */
+	private boolean saveToDisk = true;
    
 	/**
 	 * Registers engine entities in a map.
@@ -200,4 +204,20 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
     public void render(GameView view, Camera camera){
         super.render(view, camera, position);
     }
+	
+	/**
+	 * Is the oject saved on the map?
+	 * @return true if savedin map file.
+	 */
+	public boolean isGettingSaved() {
+		return saveToDisk;
+	}
+
+	/**
+	 * Temp objects should not be saved.
+	 * @param saveToDisk new value of saveToDisk
+	 */
+	public void setSaveToDisk(boolean saveToDisk) {
+		this.saveToDisk = saveToDisk;
+	}
 }

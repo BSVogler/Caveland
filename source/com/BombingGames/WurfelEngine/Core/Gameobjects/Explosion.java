@@ -25,6 +25,7 @@ public class Explosion extends AbstractEntity {
 	public Explosion() {
 		super(0);
 		this.radius = 2;
+		setSaveToDisk(false);
 	}
 
 	
@@ -39,6 +40,7 @@ public class Explosion extends AbstractEntity {
 		if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
 		this.camera = camera;
+		setSaveToDisk(false);
     }
 
 	@Override

@@ -49,6 +49,7 @@ class EntityShadow extends AbstractEntity {
     protected EntityShadow(AbstractEntity character) {
 		super(32);
 		this.character = character;
+		setSaveToDisk(false);
     }
 
     @Override

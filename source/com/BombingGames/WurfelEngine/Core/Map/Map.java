@@ -622,7 +622,7 @@ public class Map implements Cloneable {
 	 * @return 
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnChunk(int pos){
-		 ArrayList<AbstractEntity> list = new ArrayList<>(10);
+		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
         for (AbstractEntity ent : entityList) {
             if (
@@ -642,16 +642,26 @@ public class Map implements Cloneable {
 	}
 	
 		/**
-	 * Get every entity on a chunk
+	 * Get every entity on a chunk which should be saved
 	 * @param pos the chunk position 0-8
 	 * @return 
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(int pos){
-		ArrayList<AbstractEntity> list = getEntitysOnChunk(pos);
+		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
         for (AbstractEntity ent : entityList) {
-            if (ent.isGettingSaved()){
-				list.remove(ent);//remove from list
+            if (
+					ent.isGettingSaved()
+				&&
+					ent.getPosition().getRelX()>pos%3 *Chunk.getGameWidth()//left chunk border
+                &&
+					ent.getPosition().getRelX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
+				&&	
+					ent.getPosition().getRelY()>(pos/3)*Chunk.getGameDepth()//top chunk border
+				&& 
+					ent.getPosition().getRelY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
+            ){
+				list.add(ent);//add it to list
             } 
         }
 

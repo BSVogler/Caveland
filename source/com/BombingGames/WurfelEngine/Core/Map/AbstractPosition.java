@@ -205,5 +205,22 @@ public abstract class AbstractPosition implements Serializable {
 	 * @param view
      * @return the depth in game size
      */
-    public abstract int getDepth(View view);
+	public int getDepth(View view){
+        return (int) (
+			(
+				view.getOrientation()==0
+				?
+					 getPoint().getRelY() *Block.SCREEN_DEPTH//Y
+				:
+					(
+						view.getOrientation()==2
+						?
+							Map.getGameDepth()-getPoint().getRelY() *Block.SCREEN_DEPTH//Y
+						:
+							0
+					)
+			)            
+            + getHeight()*AbstractPosition.SQRT12//Z
+        );
+    }
 }

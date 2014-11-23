@@ -253,27 +253,6 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public int getDepth(View view){
-        return (int) (
-			(
-				view.getOrientation()==0
-				?
-					getPoint().getRelY()//Y
-				:
-					(
-						view.getOrientation()==2
-						?
-							Map.getGameDepth()-getPoint().getRelY()//Y
-						:
-							0
-					)
-			)
-            
-            + getHeight()*SQRT2//Z
-        );
-    }
-
-    @Override
     public boolean onLoadedMapHorizontal() {
         return (
             getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow

@@ -358,7 +358,7 @@ public class Camera implements LinkedWithMap {
 	 * @return
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
-		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(100);//start by size 100
+		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 
 		//iterate over ground layer up to zLimit
 		MapIterator iterator = Controller.getMap().getIterator(-1, zRenderingLimit);

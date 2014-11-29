@@ -129,10 +129,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
 
             return
                 new Coordinate(
-                    position.getCoord().getRelX(),
-                    position.getCoord().getRelY(),
-                    z,
-                    true
+                    position.getCoord().getX(),
+                    position.getCoord().getY(),
+                    z
                 ).getBlock().isObstacle();
         } else
             return false;//return false if over map

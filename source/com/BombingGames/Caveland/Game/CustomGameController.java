@@ -77,14 +77,13 @@ public class CustomGameController extends Controller {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (getPlayer(0).getPosition().getCoord().getRelY()<30 && monstercount<Enemy.getKillcounter()+5){
+		if (getPlayer(0).getPosition().getCoord().getY()<30 && monstercount<Enemy.getKillcounter()+5){
 			monstercount++;
 			Enemy enemy = (Enemy) new Enemy().spawn(
 				new Coordinate(
 					(int) (Math.random()*Map.getBlocksX()),
 					(int) (Math.random()*30),
-					5,
-					true
+					5
 				).getPoint()
 			);
 			enemy.setTarget(getPlayer(0));
@@ -94,7 +93,4 @@ public class CustomGameController extends Controller {
 	public CustomPlayer getPlayer(int id) {
 		return player;
 	}
-	
-
-    
 }

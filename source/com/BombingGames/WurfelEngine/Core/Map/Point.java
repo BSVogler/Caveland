@@ -56,14 +56,8 @@ public class Point extends AbstractPosition {
      * @param relative  <b>true</b> if <b>relative</b> to currently loaded map, <b>false</b> if <b>absolute</b> (relative to map with chunk 0,0 in its center)
      */
     public Point(float posX, float posY, float height, boolean relative) {
-        super();
-         if (relative){
-            this.x = posX;
-            this.y = posY;
-        } else {
-            this.x = posX - getReferenceX() * Chunk.getBlocksX();
-            this.y = posY - getReferenceY() * Chunk.getBlocksY();
-        }
+		this.x = posX;
+		this.y = posY;
         setHeight(height);
     }
     
@@ -72,7 +66,6 @@ public class Point extends AbstractPosition {
      * @param point the source of the copy
      */
     public Point(Point point) {
-       super(point.getReferenceX(), point.getReferenceY());
        this.x = point.x;
        this.y = point.y;
        this.setHeight(point.getHeight());
@@ -96,21 +89,20 @@ public class Point extends AbstractPosition {
     public Coordinate getCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) (getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
-            getHeight(),
-            true
+            (int) (getX()) / AbstractGameObject.GAME_DIAGLENGTH,
+            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
+            getHeight()
         );
        
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
-                getRelX() % AbstractGameObject.GAME_DIAGLENGTH,
-                getRelY() % (AbstractGameObject.GAME_DIAGLENGTH)
+                getX() % AbstractGameObject.GAME_DIAGLENGTH,
+                getY() % (AbstractGameObject.GAME_DIAGLENGTH)
             )
         );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY());
+        coords.setX(specificCoords.getX());
+        coords.setY(specificCoords.getY());
         coords.setZ(coords.getZ());//remove floating
         return coords; 
     }
@@ -120,23 +112,23 @@ public class Point extends AbstractPosition {
      * @return
      */
     public float[] getRel(){
-        return new float[]{getRelX(), getRelY(), getHeight()};
+        return new float[]{getX(), getY(), getHeight()};
     }
 
     /**
      *Get the game world position from left
      * @return
      */
-    public float getRelX() {
-        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
+    public float getX() {
+        return x;
     }
     
     /**
      *Get the game world position from top.
      * @return
      */
-    public float getRelY() {
-        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
+    public float getY() {
+        return y;
     }
     
 	/**
@@ -175,30 +167,6 @@ public class Point extends AbstractPosition {
 		);
 	}
 	
-    /**
-     *
-     * @return
-     */
-    public float[] getAbs(){
-        return new float[]{getAbsX(), getAbsY(), getHeight()};
-    }
-
-    /**
-     *
-     * @return
-     */
-    public float getAbsX() {
-        return x + getReferenceX() *Chunk.getGameWidth();
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public float getAbsY() {
-        return y + getReferenceY() *Chunk.getGameDepth();
-    }
-    
     @Override
     public Block getBlock() {
         return getCoord().getBlock();
@@ -231,7 +199,7 @@ public class Point extends AbstractPosition {
 
     @Override
     public int getViewSpcX(View view) {
-        return (int) (getRelX()); //just the position as integer
+        return (int) (getX()); //just the position as integer
     }
 
     @Override
@@ -239,12 +207,12 @@ public class Point extends AbstractPosition {
         return (
 				view.getOrientation()==0
 				?
-					(int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
+					(int) ((Map.getGameDepth()-getY()) / 2) //add the objects position inside this coordinate
 				:
 					(
 						view.getOrientation()==2
 						?
-							(int) (getRelY() / 2) //add the objects position inside this coordinate
+							(int) (getY() / 2) //add the objects position inside this coordinate
 						:
 							0
 					)
@@ -256,8 +224,8 @@ public class Point extends AbstractPosition {
     @Override
     public boolean onLoadedMapHorizontal() {
         return (
-            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
+            getX() >= 0 && getX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
+            && getY() >= 0 && getY() < Map.getGameDepth()//do some quick checks Y
             && getCoord().onLoadedMapHorizontal()//do extended check
         );
     }
@@ -265,8 +233,8 @@ public class Point extends AbstractPosition {
 	@Override
     public boolean onLoadedMap() {
         return (
-            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
+            getX() >= 0 && getX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
+            && getY() >= 0 && getY() < Map.getGameDepth()//do some quick checks Y
 			&& getHeight() >=0 && getHeight() < Map.getGameHeight() //quick checks z
             && getCoord().onLoadedMap()//do extended check
         );
@@ -419,7 +387,7 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal
                     if (
-                        (isectP.getRelX() -(isectP.getCoord().getRelY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
+                        (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
                         % Block.GAME_DIAGLENGTH
                         <
                         Block.GAME_DIAGLENGTH2

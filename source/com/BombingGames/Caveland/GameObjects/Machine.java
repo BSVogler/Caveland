@@ -1,9 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -11,9 +9,8 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Machine extends Block implements IsSelfAware {
+public class Machine extends Block {
 	private static final long serialVersionUID = 1L;
-	private Coordinate coords;
 	private int sulfurcount;
 	private int coalcount;
 	private int flintcount;
@@ -24,8 +21,8 @@ public class Machine extends Block implements IsSelfAware {
 	}
 
 	@Override
-	public void update(float dt, int x, int y, int z) {
-		coords = new Coordinate(x, y, z, true);
+	public void update(float dt) {
+		Coordinate coords = getPosition();
 		ArrayList<Lore> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(Lore.class);
 		if (lorenIncoming.size()>0) {
 			Lore loreIncoming = lorenIncoming.get(0);
@@ -53,22 +50,6 @@ public class Machine extends Block implements IsSelfAware {
 		}
 
 		//füllen und losschicken
-	}
-
-	@Override
-	public AbstractPosition getPosition() {
-		return coords;
-	}
-
-    @Override
-    public void setPosition(AbstractPosition pos) {
-        coords = pos.getCoord();
-    }
-
-	@Override
-	public Block spawn(Coordinate coord) {
-		setPosition(coord);
-		return super.spawn(coord);
 	}
 
 	/**

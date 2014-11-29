@@ -44,8 +44,8 @@ import java.util.ArrayList;
  */
 public class Coordinate extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
-    private int x; //saved as relative
-    private int y; //saved as relative
+    private int x;
+    private int y;
 	/**
 	 * gets calculated every time the coordinate is written to.
 	 */
@@ -56,18 +56,10 @@ public class Coordinate extends AbstractPosition {
      * @param x The x value as coordinate.
      * @param y The y value as coordinate.
      * @param z The z value as coordinate.
-     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
-    public Coordinate(int x, int y, int z, final boolean relative) {
-        super();
-        
+    public Coordinate(int x, int y, int z) {
         this.x = x;
         this.y = y;
-        if (!relative){ //if absolute then make it relative
-            this.x -= getReferenceX() * Chunk.getBlocksX();
-            this.y -= getReferenceY() * Chunk.getBlocksY();
-        }
-        
         super.setHeight(z*Block.GAME_EDGELENGTH);
 		refreshCachedPoint();
     }
@@ -77,18 +69,10 @@ public class Coordinate extends AbstractPosition {
      * @param x The x value as coordinate.
      * @param y The y value as coordinate.
      * @param height The z value as height.
-     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
-    public Coordinate(int x, int y, float height, final boolean relative) {
-        super();
-        
+    public Coordinate(int x, int y, float height) {
         this.x = x;
         this.y = y;
-        if (!relative){ //if absolute then make it relative
-            this.x -= getReferenceX() * Chunk.getBlocksX();
-            this.y -= getReferenceY() * Chunk.getBlocksY();
-        }
-        
 		super.setHeight(height);
 		refreshCachedPoint();
     }
@@ -98,10 +82,8 @@ public class Coordinate extends AbstractPosition {
      * @param coord the Coordinate you want to copy
      */
     public Coordinate(Coordinate coord) {
-        super(coord.getReferenceX(), coord.getReferenceY());
-        
-        this.x = coord.getRelX();
-        this.y = coord.getRelY();
+        this.x = coord.x;
+        this.y = coord.y;
         super.setHeight(coord.getHeight());
 		refreshCachedPoint();
     }
@@ -110,31 +92,17 @@ public class Coordinate extends AbstractPosition {
      *Gets the X coordinate relative to the map.
      * @return
      */
-    public int getRelX(){
-        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
+    public int getX(){
+        return x;
     }
     /**
      *Gets the Y coordinate relative to the map.
      * @return
      */
-    public int getRelY(){
-        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
+    public int getY(){
+        return y;
     }
     
-    /**
-     *Absolute coordinates are independent of the currently loaded chunks.
-     * @return
-     */
-    public int getAbsX(){
-        return x + getReferenceX() *Chunk.getBlocksX();
-    }
-    /**
-     *Absolute coordinates are independent of the currently loaded chunks.
-     * @return
-     */
-    public int getAbsY(){
-         return y + getReferenceY() *Chunk.getBlocksY();
-    }
     
     /**
      *Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
@@ -151,27 +119,20 @@ public class Coordinate extends AbstractPosition {
                 return tmpZ;
     }
     
-        /**
-     *
-     * @return
-     */
-    public int[] getRel(){
-        return new int[]{getRelX(), getRelY(), getZ()};
-    }
     
     /**
      *
      * @return
      */
-    public int[] getAbs(){
-        return new int[]{getAbsX(), getAbsY(), getZ()};
+    public int[] getTriple(){
+        return new int[]{x, y, getZ()};
     }
     
     /**
      *Set the coordiantes X component.
      * @param x
      */
-    public void setRelX(int x){
+    public void setX(int x){
         this.x = x;
 		refreshCachedPoint();
     }
@@ -180,7 +141,7 @@ public class Coordinate extends AbstractPosition {
      *Set the coordiantes Y component.
      * @param y
      */
-    public void setRelY(int y){
+    public void setY(int y){
         this.y = y;
 		refreshCachedPoint();
     }
@@ -205,7 +166,8 @@ public class Coordinate extends AbstractPosition {
      * @param block the block you want to set.
      */
     public void setBlock(Block block){
-        Controller.getMap().setData(this, block);
+		block.setPosition(this);
+        Controller.getMap().setData(block);
     }
     
 
@@ -288,7 +250,7 @@ public class Coordinate extends AbstractPosition {
      * @return true when hiding the past Block
      */
     public boolean hidingPastBlock(int x, int y, int z){
-		Block block = Controller.getMap().getBlock(getRelX()+x, getRelY()+y, getZ()+z);
+		Block block = Controller.getMap().getBlock(getX()+x, getY()+y, getZ()+z);
         return (block.hasSides() && ! block.isTransparent());
     }
     
@@ -304,12 +266,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public boolean onLoadedMapHorizontal(){
-        return (
-            getRelX() >= 0
-            && getRelX() < Map.getBlocksX()
-            && getRelY() >= 0
-            && getRelY() < Map.getBlocksY()
-        );
+        return true;//how to you check this? to-do
     }
 	
 	 /**
@@ -318,14 +275,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public boolean onLoadedMap(){
-        return (
-            getRelX() >= 0
-            && getRelX() < Map.getBlocksX()
-            && getRelY() >= 0
-            && getRelY() < Map.getBlocksY()
-			&& getZ() >= 0
-			&& getZ() < Map.getBlocksZ()
-        );
+        return true;//how to you check this? to-do
     }
 
     /**
@@ -389,61 +339,45 @@ public class Coordinate extends AbstractPosition {
         int[] result = new int[3];
         switch (neighbourSide) {
             case 0:
-                result[0] = getRelX();
-                result[1] = getRelY() - 2;
+                result[0] = getX();
+                result[1] = getY() - 2;
                 break;
             case 1:
-                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = getRelY() - 1;
+                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[1] = getY() - 1;
                 break;
             case 2:
-                result[0] = getRelX() + 1;
-                result[1] = getRelY();
+                result[0] = getX() + 1;
+                result[1] = getY();
                 break;
             case 3:
-                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = getRelY() + 1;
+                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[1] = getY() + 1;
                 break;
             case 4:
-                result[0] = getRelX();
-                result[1] = getRelY() + 2;
+                result[0] = getX();
+                result[1] = getY() + 2;
                 break;
             case 5:
-                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = getRelY() + 1;
+                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
+                result[1] = getY() + 1;
                 break;
             case 6:
-                result[0] = getRelX() - 1;
-                result[1] = getRelY();
+                result[0] = getX() - 1;
+                result[1] = getY();
                 break;
             case 7:
-                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = getRelY() - 1;
+                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
+                result[1] = getY() - 1;
                 break;
             default:
-                result[0] = getRelX();
-                result[1] = getRelY();
+                result[0] = getX();
+                result[1] = getY();
         }
         result[2] = getZ();
-        return new Coordinate(result[0], result[1], result[2], true);
+        return new Coordinate(result[0], result[1], result[2]);
     }
     
-    /**
-     *
-     * @return
-     */
-    protected int getX() {
-        return x;
-    }
-
-    /**
-     *
-     * @return
-     */
-    protected int getY() {
-        return y;
-    }
-
     /**
      *
      * @return the coordiante's origin is the center
@@ -494,9 +428,9 @@ public class Coordinate extends AbstractPosition {
     
     @Override
     public int getViewSpcX(View view) {
-		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
+                + (getY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override
@@ -505,12 +439,12 @@ public class Coordinate extends AbstractPosition {
 			(
 				view.getOrientation()==0
 				?
-					(Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
+					(Map.getBlocksY()+1-getY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
 				:
 					(
 						view.getOrientation()==2
 						?
-							getRelY() * AbstractGameObject.SCREEN_DEPTH2
+							getY() * AbstractGameObject.SCREEN_DEPTH2
 						:
 							0
 					)

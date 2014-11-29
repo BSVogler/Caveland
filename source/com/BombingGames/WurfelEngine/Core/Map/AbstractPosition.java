@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
@@ -42,8 +41,6 @@ import java.io.Serializable;
  */
 public abstract class AbstractPosition implements Serializable {
 	private static final long serialVersionUID = 1L;
-    private final int referenceX;//top left chunk x coordinate
-    private final int referenceY;//top left chunk Y coordinate
     private float height;
 
     /**
@@ -141,25 +138,6 @@ public abstract class AbstractPosition implements Serializable {
     public abstract AbstractPosition addVector(float x, float y, float z);
 	
     /**
-     * With custom reference
-     * @param topleftX the chunk's X coordinate of the chunk at the top left
-     * @param topleftY the chunk's Y coordinate of the chunk at the top left 
-     */
-    public AbstractPosition(final int topleftX, final int topleftY) {
-        this.referenceX = topleftX;
-        this.referenceY = topleftY;
-    }
-
-    
-    /**
-     * With the currently loaded top left chunk.
-     */
-    public AbstractPosition() {
-        referenceX = Controller.getMap().getChunkCoords(0)[0];
-        referenceY = Controller.getMap().getChunkCoords(0)[1];
-    }
-
-    /**
      * Geht the height (z-value) of the coordinate (game dimension).
      * @return
      */
@@ -187,24 +165,6 @@ public abstract class AbstractPosition implements Serializable {
             return (int) tmp;
     }
     
-   /**
-    * 
-    * @return 
-    */
-    protected int getReferenceX() {
-        return referenceX;
-    }
-
-    /**
-     * 
-     * @return 
-     */
-    protected int getReferenceY() {
-        return referenceY;
-    }
-
-    
-    
         /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
 	 * @param view
@@ -215,12 +175,12 @@ public abstract class AbstractPosition implements Serializable {
 			(
 				view.getOrientation()==0
 				?
-					 getPoint().getRelY() *SCREEN_DEPTH//Y
+					 getPoint().getY() *SCREEN_DEPTH//Y
 				:
 					(
 						view.getOrientation()==2
 						?
-							Map.getGameDepth()-getPoint().getRelY() *SCREEN_DEPTH//Y
+							Map.getGameDepth()-getPoint().getY() *SCREEN_DEPTH//Y
 						:
 							0
 					)

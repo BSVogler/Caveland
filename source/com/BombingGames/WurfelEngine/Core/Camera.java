@@ -363,7 +363,7 @@ public class Camera implements LinkedWithMap {
 			for (int y = 0, front = Map.getBlocksY(); y < front; y++) {
 				for (int z = -1; z < zRenderingLimit; z++) {//add vertical until renderlimit
 
-					Coordinate coord = new Coordinate(x, y, z, true);
+					Coordinate coord = new Coordinate(x, y, z);
 					Block blockAtCoord = coord.getBlock();
                     if (!blockAtCoord.isHidden()//render if not hidden
 						&& !isCompletelyClipped(coord) //nor completely clipped
@@ -556,7 +556,7 @@ public class Camera implements LinkedWithMap {
 			y -= 2;
 			z--;
 
-			currentCor = new Coordinate(x, y, z, true);
+			currentCor = new Coordinate(x, y, z);
 			if (side == Sides.LEFT) {
 				//direct neighbour groundBlock on left hiding the complete left side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
@@ -712,12 +712,12 @@ public class Camera implements LinkedWithMap {
 	 * @param neighbours True when neighbours groundBlock also should be scanned
 	 */
 	public void traceRayTo(Coordinate coord, boolean neighbours) {
-		int[] coords = coord.getRel();
+		int[] coords = coord.getTriple();
 
 		//default  clipped
 		setClipped(
-			coord.getRelX(),
-			coord.getRelY(),
+			coord.getX(),
+			coord.getY(),
 			coord.getZ(),
 			true
 		);
@@ -1089,7 +1089,7 @@ public class Camera implements LinkedWithMap {
 	 * @return true if clipped
 	 */
 	public boolean[] getClipping(Coordinate coords) {
-		return clipping[coords.getRelX()][coords.getRelY()][coords.getZ()+1];
+		return clipping[coords.getX()][coords.getY()][coords.getZ()+1];
 	}
 
 	/**
@@ -1117,5 +1117,15 @@ public class Camera implements LinkedWithMap {
 	@Override
 	public void onMapChange() {
 		rayCastingClipping();
+	}
+
+	/**
+	 * Returns the focuspoint
+	 * @return 
+	 */
+	Coordinate getCenter() {
+		if (focusCoordinates!=null)
+			return focusCoordinates;
+		else return focusEntity.getPosition().getCoord();
 	}
 }

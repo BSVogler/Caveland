@@ -75,12 +75,12 @@ public class Sea extends Block implements IsSelfAware{
     }
 
     @Override
-    public void update(float delta, int x, int y, int z) {
+    public void update(float delta) {
 		if (coords!=null){
 			offsetY =
 				(int) (startvalue +
 					Math.sin(
-						(currentX-coords.getRelX()-coords.getRelY())
+						(currentX-coords.getX()-coords.getY())
 							* Math.PI/waveWidth
 					)*WAVE_AMPLITUDE);
 		}

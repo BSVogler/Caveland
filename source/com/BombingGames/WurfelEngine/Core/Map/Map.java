@@ -38,6 +38,7 @@ import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,8 +57,8 @@ public class Map implements Cloneable {
     private final int[][] coordlist = new int[9][2];
     
 	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei());//the representative of the bottom layer (ground) block
-    /** the map data are the blocks in their cells */
-    private Block[][][] data;
+    /** Stores the data of the map. Fist dimension is Z. Second X, third Y.  */
+    private ArrayList<ArrayList<ArrayList<Block>>> data;
     
     private Generator generator;
     
@@ -103,26 +104,56 @@ public class Map implements Cloneable {
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
-        data = new Block[blocksX][blocksY][blocksZ];//create Array where the data is stored
-        
-        for (Block[][] x : data)
-            for (Block[] y : x)
-                for (int z = 0; z < y.length; z++) {
-                    y[z] = Block.getInstance(0);
-                }
-        
+        data = new ArrayList<>(blocksZ);
+		//loop over z
+		for (int z = 0; z < blocksZ; z++) {
+			ArrayList<ArrayList<Block>> xRow = new ArrayList<>(blocksX);
+			data.add(xRow);
+			//loop over xrow
+			for (int x = 0; x < blocksX; x++) {
+				ArrayList<Block> yRow = new ArrayList<>(blocksY);
+				xRow.add(yRow);
+				
+				Block airblock = Block.getInstance(0);
+				airblock.setPosition(new Coordinate(x, 0, z));
+				yRow.add(0, airblock);//add air cell to have at least one block with a position
+			}
+		}
+		        
         this.generator = generator;
 		modified = true;
     }
     
-	public void update(float delta){
-	
+	public void update(float dt){
+		//update every block on the map
+		for (ArrayList<ArrayList<Block>> z : data) {
+			for (ArrayList<Block> x : z) {
+				for (Block y : x) {
+					y.update(dt);
+				}
+			}
+		}
+
+		//update every entity
+		for (int i = 0; i < getEntitys().size(); i++) {
+			getEntitys().get(i).update(dt);
+			if (getEntitys().get(i).shouldBeDisposed())
+				getEntitys().remove(i);
+		}
+		
 		if (modified){
 			onModified();
 			modified = false;
 		}
 	}
 	
+	public void postUpdate(float dt) {
+		if (modified){
+			onModified();
+			modified = false;
+		}
+	}
+		
     /**
      * Should create a new map file.
      * @param mapName file name
@@ -136,28 +167,30 @@ public class Map implements Cloneable {
     
     /**
      *Fills the map with blocks. If no custom generator is set it will use air.
+	 * @param topleft
      * @param allowLoading
      */
-    public void fill(boolean allowLoading){
-        fill(generator, allowLoading);
+    public void fill(Coordinate topleft, boolean allowLoading){
+        fill(generator,topleft, allowLoading);
 		modified = true;
     }
     
     /**
-     * Fills the map without overriding the map generator.
+     * Fills 3x3 chunks the map without overriding the map generator.
      * @param generator the custom generator
+	 * @param topleft begginning at this corner
      * @param allowLoading
      */
-    public void fill(Generator generator, boolean allowLoading){
+    public void fill(Generator generator, Coordinate topleft, boolean allowLoading){
         byte chunkpos = 0;
         for (byte y=-1; y < 2; y++)
             for (byte x=-1; x < 2; x++){
                 coordlist[chunkpos][0] = x;
                 coordlist[chunkpos][1] = y;  
                 if (allowLoading)
-                    insertChunk(chunkpos, new Chunk(filename, x, y, generator));
+                    insertChunk(topleft, new Chunk(filename, x, y, generator));
                 else 
-                    insertChunk(chunkpos, new Chunk(x, y, generator));
+                    insertChunk(topleft, new Chunk(x, y, generator));
                 chunkpos++;
            }
 		modified = true;
@@ -167,13 +200,21 @@ public class Map implements Cloneable {
      */
     public void fillWithAir(){
         Gdx.app.debug("Map","Filling the map with air cells...");
-        for (Block[][] x : data) {
-            for (Block[] y : x) {
-                for (int z = 0; z < y.length; z++) {
-                    y[z] = Block.getInstance(0);
-                }
-            }   
-        }
+//        for (Block[][] x : data) {
+//            for (Block[] y : x) {
+//                for (int z = 0; z < y.length; z++) {
+//                    y[z] = Block.getInstance(0);
+//                }
+//            }   
+//        }
+		
+		for (ArrayList<ArrayList<Block>> xRow : data) {
+			for (ArrayList<Block> yRow : xRow) {
+				for (int y = 0; y < yRow.size(); y++) {
+					yRow.set(y, Block.getInstance(0));
+				}	
+			}
+		}
         
 //        //Fill the nine chunks
 //        int chunkpos = 0;
@@ -239,136 +280,138 @@ public class Map implements Cloneable {
      * Get the data of the map
      * @return
      */
-    public Block[][][] getData() {
-        return data;
-    }
+	public ArrayList<ArrayList<ArrayList<Block>>> getData() {
+		return data;
+	}
+	
+	
     
-    /**
-     * Reorganises the map and sets the new middle chunk to param newmiddle.
-     * Move all chunks when loading or creating a new piece of the map
-     *    |0|1|2|
-     *     -------------
-     *    |3|4|5|
-     *     -------------
-     *    |6|7|8|
-     * @param newmiddle newmiddle is 1, 3, 5 or 7
-     */
-    public void setCenter(final int newmiddle){
-        if (CVar.get("chunkSwitchAllowed").getValueb()){
-            Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
-            if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
-
-                //make a chunk of the data
-                Block[][][] dataCopy = copyBlocks(data);
-                
-                for (int pos=0; pos<9; pos++){
-                     //save
-                    if (isMovingOutside(pos, newmiddle)){
-                        try {
-                            copyChunk(dataCopy, pos).save(filename, pos);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    
-                    //refresh coordinates
-                    coordlist[pos][0] += (newmiddle == 3 ? -1 : (newmiddle == 5 ? 1 : 0));
-                    coordlist[pos][1] += (newmiddle == 1 ? -1 : (newmiddle == 7 ? 1 : 0));
-
-                    Chunk chunk;
-                    if (isMovingChunkPossible(pos, newmiddle)){
-                        chunk = copyChunk(dataCopy, pos - 4 + newmiddle);
-                    } else {
-                        chunk = new Chunk(
-                            filename,
-                            coordlist[pos][0],
-                            coordlist[pos][1],
-                            generator
-                        );
-                    }
-                    insertChunk((byte) pos,chunk);
-                }
-
-                modified();
-            } else {
-                Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
-            }
-        }
-    }
+//    /**
+//     * Reorganises the map and sets the new middle chunk to param newmiddle.
+//     * Move all chunks when loading or creating a new piece of the map
+//     *    |0|1|2|
+//     *     -------------
+//     *    |3|4|5|
+//     *     -------------
+//     *    |6|7|8|
+//     * @param newmiddle newmiddle is 1, 3, 5 or 7
+//     */
+//    public void setCenter(final int newmiddle){
+//        if (CVar.get("chunkSwitchAllowed").getValueb()){
+//            Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
+//            if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
+//
+//                //make a chunk of the data
+//                Block[][][] dataCopy = copyBlocks(data);
+//                
+//                for (int pos=0; pos<9; pos++){
+//                     //save
+//                    if (isMovingOutside(pos, newmiddle)){
+//                        try {
+//                            copyChunk(dataCopy, pos).save(filename, pos);
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//                    
+//                    //refresh coordinates
+//                    coordlist[pos][0] += (newmiddle == 3 ? -1 : (newmiddle == 5 ? 1 : 0));
+//                    coordlist[pos][1] += (newmiddle == 1 ? -1 : (newmiddle == 7 ? 1 : 0));
+//
+//                    Chunk chunk;
+//                    if (isMovingChunkPossible(pos, newmiddle)){
+//                        chunk = copyChunk(dataCopy, pos - 4 + newmiddle);
+//                    } else {
+//                        chunk = new Chunk(
+//                            filename,
+//                            coordlist[pos][0],
+//                            coordlist[pos][1],
+//                            generator
+//                        );
+//                    }
+//                    insertChunk((byte) pos,chunk);
+//                }
+//
+//                modified();
+//            } else {
+//                Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
+//            }
+//        }
+//    }
     
-    /**
-     * checks if the number can be reached by moving the net in a newmiddle
-     * @param pos the position you want to check
-     * @param newmiddle the newmiddle the chunkswitch is made to
-     * @return 
-     */
-     private boolean isMovingChunkPossible(final int pos, final int newmiddle){
-        boolean result = true; 
-        switch (newmiddle){
-            case 1: if ((pos==0) || (pos==1) || (pos==2)) result = false;
-            break;
-            
-            case 3: if ((pos==0) || (pos==3) || (pos==6)) result = false;
-            break;  
-                
-            case 5: if ((pos==2) || (pos==5) || (pos==8)) result = false;
-            break;
-                
-            case 7: if ((pos==6) || (pos==7) || (pos==8)) result = false;
-            break;
-        } 
-        return result;
-    }
+//    /**
+//     * checks if the number can be reached by moving the net in a newmiddle
+//     * @param pos the position you want to check
+//     * @param newmiddle the newmiddle the chunkswitch is made to
+//     * @return 
+//     */
+//     private boolean isMovingChunkPossible(final int pos, final int newmiddle){
+//        boolean result = true; 
+//        switch (newmiddle){
+//            case 1: if ((pos==0) || (pos==1) || (pos==2)) result = false;
+//            break;
+//            
+//            case 3: if ((pos==0) || (pos==3) || (pos==6)) result = false;
+//            break;  
+//                
+//            case 5: if ((pos==2) || (pos==5) || (pos==8)) result = false;
+//            break;
+//                
+//            case 7: if ((pos==6) || (pos==7) || (pos==8)) result = false;
+//            break;
+//        } 
+//        return result;
+//    }
      
-     /**
-      * is the chunk moving from the map and overriden?
-      * @param pos
-      * @param newmiddle
-      * @return 
-      */
-    private boolean isMovingOutside(final int pos, final int newmiddle){
-        boolean result = false; 
-        switch (newmiddle){
-            case 1: if ((pos==6) || (pos==7) || (pos==8)) result = true;
-            break;
-            
-            case 3: if ((pos==2) || (pos==5) || (pos==8)) result = true;
-            break;  
-                
-            case 5: if ((pos==0) || (pos==3) || (pos==6)) result = true;
-            break;
-                
-            case 7: if ((pos==0) || (pos==1) || (pos==2)) result = true;
-            break;
-        } 
-        return result;
-    }
+//     /**
+//      * is the chunk moving from the map and overriden?
+//      * @param pos
+//      * @param newmiddle
+//      * @return 
+//      */
+//    private boolean isMovingOutside(final int pos, final int newmiddle){
+//        boolean result = false; 
+//        switch (newmiddle){
+//            case 1: if ((pos==6) || (pos==7) || (pos==8)) result = true;
+//            break;
+//            
+//            case 3: if ((pos==2) || (pos==5) || (pos==8)) result = true;
+//            break;  
+//                
+//            case 5: if ((pos==0) || (pos==3) || (pos==6)) result = true;
+//            break;
+//                
+//            case 7: if ((pos==0) || (pos==1) || (pos==2)) result = true;
+//            break;
+//        } 
+//        return result;
+//    }
      
     /**
      * Get a chunk out of a map (should be a chunk of a part of the field data)
-     * @param cellData The data where you want to read from
+     * @param data The data where you want to read from
      * @param offsetData the offset data
      * @param pos The chunk number where the chunk is located
      */ 
-    private Chunk copyChunk(final Block[][][] cellData, final int pos) {
+    private Chunk copyChunk(final ArrayList<ArrayList<ArrayList<Block>>> data, final int pos) {
         Chunk chunk = new Chunk();
         //copy the data in two loops and then do an arraycopy
-        for (int x = Chunk.getBlocksX()*(pos % 3);
-                 x < Chunk.getBlocksX()*(pos % 3+1);
-                 x++
-            )
-                for (int y = Chunk.getBlocksY()*Math.abs(pos / 3);
-                         y < Chunk.getBlocksY()*Math.abs(pos / 3+1);
-                         y++
-                    ) {
-                    System.arraycopy(
-                        cellData[x][y],                
-                        0,
-                        chunk.getData()[x-Chunk.getBlocksX()*(pos % 3)][y - Chunk.getBlocksY()*(pos / 3)],
-                        0,
-                        Chunk.getBlocksZ()
-                    );
-                }
+//        for (int x = Chunk.getBlocksX()*(pos % 3);
+//                 x < Chunk.getBlocksX()*(pos % 3+1);
+//                 x++
+//            )
+//                for (int y = Chunk.getBlocksY()*Math.abs(pos / 3);
+//                         y < Chunk.getBlocksY()*Math.abs(pos / 3+1);
+//                         y++
+//                    ) {
+//                    System.arraycopy(
+//						data[x][y],                
+//                        0,
+//                        chunk.getData()[x-Chunk.getBlocksX()*(pos % 3)][y - Chunk.getBlocksY()*(pos / 3)],
+//                        0,
+//                        Chunk.getBlocksZ()
+//                    );
+//                }
         return chunk;
     }
 
@@ -377,17 +420,17 @@ public class Map implements Cloneable {
      * @param pos The position in the grid
      * @param chunk The chunk you want to insert
      */
-    private void insertChunk(final byte pos, final Chunk chunk) {
-        for (int x=0;x < Chunk.getBlocksX(); x++)
-            for (int y=0;y < Chunk.getBlocksY();y++) {
-                System.arraycopy(
-                    chunk.getData()[x][y],
-                    0,
-                    data[x+ Chunk.getBlocksX()*(pos%3)][y+ Chunk.getBlocksY()*Math.abs(pos/3)],
-                    0,
-                    Chunk.getBlocksZ()
-                );
-            }
+    private void insertChunk(final Coordinate topleftCorner, final Chunk chunk) {
+//        for (int x=0;x < Chunk.getBlocksX(); x++)
+//            for (int y=0;y < Chunk.getBlocksY();y++) {
+//                System.arraycopy(
+//                    chunk.getData()[x][y],
+//                    0,
+//                    data[x+ Chunk.getBlocksX()*(pos%3)][y+ Chunk.getBlocksY()*Math.abs(pos/3)],
+//                    0,
+//                    Chunk.getBlocksZ()
+//                );
+//            }
     }
     
    /**
@@ -401,7 +444,8 @@ public class Map implements Cloneable {
    
     
     /**
-     * Returns  a Block without checking the parameters first. Good for debugging and also faster.
+     * Returns a Block without checking the parameters first. Good for debugging and also faster.
+	 * O(n)
      * @param x position
      * @param y position
      * @param z position
@@ -410,7 +454,46 @@ public class Map implements Cloneable {
     public Block getBlock(final int x, final int y, final int z){
 		if (z<0)
 			return groundBlock;
-        return data[x][y][z];  
+		
+		//find row in Z
+		boolean found = false;
+		Iterator<ArrayList<ArrayList<Block>>> iterOverZ = data.iterator();
+		ArrayList<ArrayList<Block>> xRow = null;
+		while (!found && iterOverZ.hasNext()) {
+			xRow = iterOverZ.next();
+			found = xRow.get(0).get(0).getPosition().getZ()==z;
+		}
+		
+		//still not found, must be over map
+		if (!found)
+			return Block.getInstance(0); //return air
+		
+		//find row in x
+		found = false;
+		Iterator<ArrayList<Block>> iterOverX = xRow.iterator();
+		ArrayList<Block> yRow = null;
+		while (!found && iterOverX.hasNext()) {
+			yRow = iterOverX.next();
+			found = yRow.get(0).getPosition().getX()==x;
+		}
+		
+		//still not found, must not loaded
+		if (!found)
+			return Block.getInstance(0); //return air
+		
+		//find row in y
+		found = false;
+		Iterator<Block> iterOverY = yRow.iterator();
+		Block block = null;
+		while (!found && iterOverY.hasNext()) {
+			block = iterOverY.next();
+			found = block.getPosition().getY()==y;
+		}
+		
+		if (!found)
+			return Block.getInstance(0); //return air
+		
+        return block;  
     }
     
     /**
@@ -419,7 +502,7 @@ public class Map implements Cloneable {
      * @return
      */
     public Block getBlock(final Coordinate coord){
-        return data[coord.getRelX()][coord.getRelY()][coord.getZ()];  
+        return getBlock(coord.getX(), coord.getY(), coord.getZ()); 
     }
     
      /**
@@ -449,7 +532,7 @@ public class Map implements Cloneable {
             z = 0;
         }
         
-        return data[x][y][z];    
+        return getBlock(x, y, z);     
     }
     
     /**
@@ -458,31 +541,56 @@ public class Map implements Cloneable {
      * @return
      */
     public Block getDataClamp(final Coordinate coords) {
-        return getBlockClamp(coords.getRelX(), coords.getRelY(), coords.getZ());
-    }
-    
-   
-    
-
-    /**
-     * Set a block at a specific coordinate.
-     * @param x position
-     * @param y position
-     * @param z position
-     * @param block  
-     */
-    public void setData(final int x, final int y, final int z, final Block block){
-        data[x][y][z] = block;
-		modified();
+        return getBlockClamp(coords.getX(), coords.getY(), coords.getZ());
     }
     
     /**
-     * Set a block at a specific coordinate.
-     * @param coords
+     * Replace a block. Assume that the map already has been filled at this coordinate.
      * @param block
      */
-    public void setData(final Coordinate coords, final Block block) {
-        data[coords.getRelX()][coords.getRelY()][coords.getZ()] = block;
+    public void setData(final Block block) {
+		Coordinate coord = block.getPosition();
+		//find row in Z
+		boolean found = false;
+		Iterator<ArrayList<ArrayList<Block>>> iterOverZ = data.iterator();
+		ArrayList<ArrayList<Block>> xRow = null;
+		while (!found && iterOverZ.hasNext()) {
+			xRow = iterOverZ.next();
+			found = xRow.get(0).get(0).getPosition().getZ()==coord.getZ();
+		}
+		
+		//still not found, must be over map
+		if (!found)
+			System.out.println("Tried to set block which is not in memory.");
+		else {
+			//find row in x
+			found = false;
+			Iterator<ArrayList<Block>> iterOverX = xRow.iterator();
+			ArrayList<Block> yRow = null;
+			while (!found && iterOverX.hasNext()) {
+				yRow = iterOverX.next();
+				found = yRow.get(0).getPosition().getX()==coord.getX();
+			}
+			
+			//still not found, must not loaded
+			if (!found)
+				System.out.println("Tried to set block which is not in memory.");
+			else {
+
+				//find row in y
+				found = false;
+				int i = 0;
+				while (!found && i < yRow.size()) {
+					if (yRow.get(i).getPosition().getY()==coord.getY()){
+						yRow.set(i, block);
+						found=true;
+					}
+					i++;
+				}
+			}
+		}
+		
+		
 		modified();
     }
         
@@ -510,7 +618,7 @@ public class Map implements Cloneable {
             coords[2] = 0;
         }
         
-        data[coords[0]][coords[1]][coords[2]] = block;
+		data.get(coords[2]).get(coords[0]).set(coords[1], block);
     }
     
     /**
@@ -520,8 +628,8 @@ public class Map implements Cloneable {
      */
     public void setDataSafe(final Coordinate coord, final Block block) {        
         setDataSafe(new int[]{
-            coord.getRelX(),
-            coord.getRelY(),
+            coord.getX(),
+            coord.getY(),
             coord.getZ()},
             block
         );
@@ -580,8 +688,8 @@ public class Map implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (Arrays.equals(
-                    ent.getPosition().getCoord().getRel(),
-                    coord.getRel()
+                    ent.getPosition().getCoord().getTriple(),
+                    coord.getTriple()
                 )
                 ){
                 list.add(ent);//add it to list
@@ -604,7 +712,7 @@ public class Map implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (
-                Arrays.equals(ent.getPosition().getCoord().getRel(),coord.getRel())//on coordinate?
+                Arrays.equals(ent.getPosition().getCoord().getTriple(),coord.getTriple())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
                 ){
                     list.add((type) ent);//add it to list
@@ -624,13 +732,13 @@ public class Map implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (
-					ent.getPosition().getRelX()>pos%3 *Chunk.getGameWidth()//left chunk border
+					ent.getPosition().getX()>pos%3 *Chunk.getGameWidth()//left chunk border
                 &&
-					ent.getPosition().getRelX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
+					ent.getPosition().getX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
 				&&	
-					ent.getPosition().getRelY()>(pos/3)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY()>(pos/3)*Chunk.getGameDepth()//top chunk border
 				&& 
-					ent.getPosition().getRelY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
             } 
@@ -651,13 +759,13 @@ public class Map implements Cloneable {
             if (
 					ent.isGettingSaved()
 				&&
-					ent.getPosition().getRelX()>pos%3 *Chunk.getGameWidth()//left chunk border
+					ent.getPosition().getX()>pos%3 *Chunk.getGameWidth()//left chunk border
                 &&
-					ent.getPosition().getRelX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
+					ent.getPosition().getX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
 				&&	
-					ent.getPosition().getRelY()>(pos/3)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY()>(pos/3)*Chunk.getGameDepth()//top chunk border
 				&& 
-					ent.getPosition().getRelY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
             } 
@@ -811,10 +919,10 @@ public class Map implements Cloneable {
 		for (int z = 0; z < blocksZ; z++) {
 			for (int y = 0; y < blocksY; y++) {
 				for (int x = 0; x < blocksX; x++) {
-					if (data[x][y][z].getId()==0)
+					if (getBlock(x, y, z).getId()==0)
 						System.out.print("  ");
 					else
-						System.out.print(data[x][y][z].getId() + " ");
+						System.out.print(getBlock(x, y, z).getId() + " ");
 				}
 				System.out.print("\n");
 			}
@@ -830,5 +938,12 @@ public class Map implements Cloneable {
 			entityList.get(i).dispose();
         }
     }
+
+	public void loadChunks(int direction, Coordinate center) {
+	}
+
+	public void deleteChunks(int direction, Coordinate center) {
+	}
+
     
 }

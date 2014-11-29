@@ -110,7 +110,7 @@ public class GunTestView extends GameView{
             sh.line(
                 -getCameras().get(0).getProjectionSpaceX()+getPlayer().getPosition().getViewSpcX(this),
                 -getCameras().get(0).getProjectionSpaceY()+getPlayer().getPosition().getViewSpcY(this)+AbstractGameObject.SCREEN_HEIGHT,
-                -getCameras().get(0).getProjectionSpaceX()+impact.getRelX(),
+                -getCameras().get(0).getProjectionSpaceX()+impact.getX(),
                 -getCameras().get(0).getProjectionSpaceY()+impact.getViewSpcY(this)
              );
             sh.end();

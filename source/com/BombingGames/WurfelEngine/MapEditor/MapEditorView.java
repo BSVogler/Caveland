@@ -275,10 +275,9 @@ public class MapEditorView extends GameView {
             if (button == Buttons.RIGHT){
                 //right click
                 coords.clampToMapIncludingZ();
-                Controller.getMap().setData(
-                    coords,
-                    Block.getInstance(0)
-                );
+				Block block = Block.getInstance(0);
+				block.setPosition(coords);
+                Controller.getMap().setData(block);
                 
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
@@ -296,12 +295,11 @@ public class MapEditorView extends GameView {
                     coords = coords.neighbourSidetoCoords(3);
 
                 coords.clampToMapIncludingZ();
-                if (colorGUI.getMode() == PlaceMode.Blocks)
-					Controller.getMap().setData(
-						coords,
-						colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord())
-					);
-				else 
+				Block block;
+                if (colorGUI.getMode() == PlaceMode.Blocks) {
+					block = colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord());
+					Controller.getMap().setData(block);
+				} else 
 					colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());
                // gras2.play();
             }   
@@ -326,9 +324,12 @@ public class MapEditorView extends GameView {
             coords.setZ(layerSelection);
             
             if (buttondown==Buttons.LEFT){
-                Controller.getMap().setData(coords, colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord()));
+				Block block = colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord());
+                Controller.getMap().setData(block);
             } else if (buttondown == Buttons.RIGHT) {
-                Controller.getMap().setData(coords, Block.getInstance(0));
+				Block block = Block.getInstance(0);
+				block.setPosition(coords);
+                Controller.getMap().setData(block);
             } else return false;
             
             return false;

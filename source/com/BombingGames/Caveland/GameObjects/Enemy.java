@@ -45,8 +45,8 @@ public class Enemy extends MovableEntity{
             if (target != null) {
 				Vector3 d = new Vector3();
 
-				d.x = target.getPosition().getAbsX()-getPosition().getAbsX();
-                d.y = target.getPosition().getAbsY()-getPosition().getAbsY();
+				d.x = target.getPosition().getX()-getPosition().getX();
+                d.y = target.getPosition().getY()-getPosition().getY();
 				d.z = getMovement().z;
 				d.scl(0.4f);
 				// update the movement vector

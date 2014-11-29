@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Class under public domain. Modified for own needs. This class renders a loading screen.
+ * Class under public domain. Modified for own needs. This class renders is the default loading screen of wurfel engine.
  * @author Mats Svensson, Benedikt Vogler
  */
 public class LoadingScreen extends WEScreen {

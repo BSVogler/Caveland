@@ -47,7 +47,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * A Block is a wonderful piece of information and a geometrical object.
  * @author Benedikt Vogler
  */
-public class Block extends AbstractGameObject {
+public class Block extends AbstractGameObject implements IsSelfAware {
     private static final long serialVersionUID = 1L;
 	/**
 	 * {id}{value}{side}
@@ -63,6 +63,7 @@ public class Block extends AbstractGameObject {
     
     private boolean liquid;
     private boolean hasSides = true;
+	private Coordinate coord;
     
 	static {
 		airblock = new Block(0);//air
@@ -121,7 +122,7 @@ public class Block extends AbstractGameObject {
         //define the default SideSprites
         switch (id){
             case 0: 
-                    block = airblock;
+                    block = airblock;//propably not valid code, because blocks are now self aware, so they can not share one instance, to-do
                     break;
             case 1: block = new Block(id); //grass
                     block.setObstacle(true);
@@ -239,7 +240,8 @@ public class Block extends AbstractGameObject {
 	 * @return itself
 	 */
 	public Block spawn(Coordinate coord){
-		Controller.getMap().setData(coord, this);
+		setPosition(coord);
+		Controller.getMap().setData(this);
 		return this;
 	};
     
@@ -434,7 +436,7 @@ public class Block extends AbstractGameObject {
         if (CVar.get("enableFog").getValueb()){
             color.mul(
                 (float) (0.5f+Math.exp(
-                    (camera.getVisibleBackBorder()-coords.getCoord().getRelY())*0.05f+1
+                    (camera.getVisibleBackBorder()-coords.getCoord().getY())*0.05f+1
                 ))
             );
         }
@@ -534,11 +536,8 @@ public class Block extends AbstractGameObject {
 	/**
 	 * Update the block.
 	 * @param dt time in ms since last update
-	 * @param x relative pos
-	 * @param y relative pos
-	 * @param z relative pos
 	 */
-    public void update(float dt, int x, int y, int z) {
+    public void update(float dt) {
     }
     
 
@@ -589,5 +588,15 @@ public class Block extends AbstractGameObject {
 	 * @param pos the position of the block, can be null if not needed
 	 */
 	public void onDestroy(AbstractPosition pos) {
+	}
+
+	@Override
+	public Coordinate getPosition() {
+		return coord;
+	}
+
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		coord = pos.getCoord();
 	}
 }

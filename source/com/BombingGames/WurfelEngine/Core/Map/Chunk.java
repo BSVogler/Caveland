@@ -124,7 +124,7 @@ public class Chunk {
                     Block.getInstance(
                         generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
                         0
-					).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z, false));
+					).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z));
     }
     
     /**

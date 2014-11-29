@@ -39,6 +39,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.MapIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -314,7 +315,7 @@ public class Camera implements LinkedWithMap {
 			);
 
 			//render map
-			ArrayList<RenderDataDTO> depthlist = createDepthList();
+			ArrayList<AbstractGameObject> depthlist = createDepthList();
 
 			view.getBatch().begin();
 				//view.setDrawmode(GL10.GL_MODULATE);
@@ -322,8 +323,8 @@ public class Camera implements LinkedWithMap {
 				//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR); 
 
 				//render vom bottom to top
-				for (RenderDataDTO renderobject : depthlist) {
-					renderobject.getGameObject().render(view, camera, renderobject.getPosition());
+				for (AbstractGameObject renderobject : depthlist) {
+					renderobject.render(view, camera, renderobject.getPosition());
 				}
 			view.getBatch().end();
 
@@ -356,40 +357,23 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return
 	 */
-	private ArrayList<RenderDataDTO> createDepthList() {
-		ArrayList<RenderDataDTO> depthsort = new ArrayList<>(100);//start by size 100
+	private ArrayList<AbstractGameObject> createDepthList() {
+		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(100);//start by size 100
 
-		for (int x = 0, right = Map.getBlocksX(); x < right; x++) {//only objects in view frustum
-			for (int y = 0, front = Map.getBlocksY(); y < front; y++) {
-				for (int z = -1; z < zRenderingLimit; z++) {//add vertical until renderlimit
+		//ground layer
+//		for (int x = 0, right = Map.getBlocksX(); x < right; x++) {//only objects in view frustum
+//			for (int y = 0, front = Map.getBlocksY(); y < front; y++) {
+//				z=-1;
+//				
+//				
+//			}
+//		}
 
-					Coordinate coord = new Coordinate(x, y, z);
-					Block blockAtCoord = coord.getBlock();
-                    if (!blockAtCoord.isHidden()//render if not hidden
-						&& !isCompletelyClipped(coord) //nor completely clipped
-                        &&                          //inside view frustum?
-						(position.y + getHeightInViewSpc())//camera's top
-                            >
-                            (coord.getViewSpcY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
-                        &&                                  //inside view frustum?
-                            (coord.getViewSpcY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
-                            >
-                            position.y//camera's bottom
-						&&
-							(coord.getViewSpcX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
-							>
-							position.x
-						&&
-							(coord.getViewSpcX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
-							<
-							position.x + getWidthInViewSpc()
-					) {
-						depthsort.add(new RenderDataDTO(blockAtCoord, coord));
-					}
-				}
-			}
+		MapIterator iterator = Controller.getMap().getIterator(zRenderingLimit);
+		while (iterator.hasNext()) {//up to zRenderingLimit
+			clipping(iterator.next(), depthsort);
 		}
-
+		
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
 			int proX = entity.getPosition().getViewSpcX(gameView);
@@ -412,16 +396,38 @@ public class Camera implements LinkedWithMap {
 					<
 					position.x + getWidthInViewSpc()
                 && entity.getPosition().getZ() < zRenderingLimit
-                )
-				depthsort.add(
-					new RenderDataDTO(entity, entity.getPosition())
-				);
+            )
+				depthsort.add(entity);
 			}
 		//sort the list
 		if (depthsort.size() > 0) {
 			return sortDepthList(depthsort, 0, depthsort.size()-1);
 		}
 		return depthsort;
+	}
+	
+	public void clipping (Block block, ArrayList<AbstractGameObject> depthsort) {
+		if (!block.isHidden()//render if not hidden
+			&& !isCompletelyClipped(block.getPosition()) //nor completely clipped
+			&&                          //inside view frustum?
+			(position.y + getHeightInViewSpc())//camera's top
+				>
+				(block.getPosition().getViewSpcY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
+			&&                                  //inside view frustum?
+				(block.getPosition().getViewSpcY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+				>
+				position.y//camera's bottom
+			&&
+				(block.getPosition().getViewSpcX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
+				>
+				position.x
+			&&
+				(block.getPosition().getViewSpcX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
+				<
+				position.x + getWidthInViewSpc()
+		) {
+			depthsort.add(block);
+		}
 	}
 
 	/**
@@ -431,7 +437,7 @@ public class Camera implements LinkedWithMap {
 	 * @param low the lower border
 	 * @param high the higher border
 	 */
-	private ArrayList<RenderDataDTO> sortDepthList(ArrayList<RenderDataDTO> depthsort, int low, int high) {
+	private ArrayList<AbstractGameObject> sortDepthList(ArrayList<AbstractGameObject> depthsort, int low, int high) {
 		int left = low;
 		int right = high;
 		int middle = depthsort.get((low + high) / 2).getDepth(gameView);
@@ -441,7 +447,7 @@ public class Camera implements LinkedWithMap {
             while(depthsort.get(right).getDepth(gameView) > middle) right--;
 
 			if (left <= right) {
-				RenderDataDTO tmp = depthsort.set(left, depthsort.get(right));
+				AbstractGameObject tmp = depthsort.set(left, depthsort.get(right));
 				depthsort.set(right, tmp);
 				left++;
 				right--;
@@ -466,9 +472,9 @@ public class Camera implements LinkedWithMap {
 	 * @return sorted list
 	 * @since 1.2.20
 	 */
-	private ArrayList<RenderDataDTO> sortDepthList(ArrayList<RenderDataDTO> depthsort) {
+	private ArrayList<AbstractGameObject> sortDepthList(ArrayList<AbstractGameObject> depthsort) {
 		int i, j;
-		RenderDataDTO newValue;
+		AbstractGameObject newValue;
 		for (i = 1; i < depthsort.size(); i++) {
 			newValue = depthsort.get(i);
 			j = i;

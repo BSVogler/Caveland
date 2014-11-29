@@ -67,7 +67,7 @@ public class Camera implements LinkedWithMap {
 	private int zRenderingLimit;
 	
 	/**
-	 * [x][y][z][normal]. to fit z starting at -1, the z axis is shifted by one.
+	 * [x][y][z][normal]. Stores teh clipping data for 3x3 chunks. To fit z starting at index -1, the z axis is shifted by one.
 	 */
 	private boolean[][][][] clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 
@@ -509,8 +509,15 @@ public class Camera implements LinkedWithMap {
 			}
 
 			//send the rays through top of the map
-			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
-				for (int y = 0, maxY =Map.getBlocksY(); y < maxY + zRenderingLimit * 2; y++) {
+			for (
+				int x = getTopLeftCorner().getX(), maxX =getTopLeftCorner().getX()+Map.getBlocksX();
+				x < maxX;
+				x++
+			) {
+				for (
+					int y = getTopLeftCorner().getY(), maxY =getTopLeftCorner().getY()+Map.getBlocksY();
+					y < maxY + zRenderingLimit * 2;
+					y++) {
 					castRay(x, y, Sides.LEFT);
 					castRay(x, y, Sides.TOP);
 					castRay(x, y, Sides.RIGHT);
@@ -694,14 +701,20 @@ public class Camera implements LinkedWithMap {
 
 			if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())) { //unless both sides are clipped don't clip the whole block
 				liquidfilter = false;
-				clipping[x][y][z+1][side.getCode()] = false;
+				setClipping(x, y, z+1, side, false);
 			}
 		} while (y > 1 && z > -1 //not on back or bottom of map
 			&& (left || right) //left or right still visible
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);
-
-        clipping[x][y][0][1] = !((z <= -1) && (left || right)); //hit ground level and left or right still visible
+		
+		setClipping(
+			x,
+			y,
+			0,
+			Sides.TOP,
+			!((z <= -1) && (left || right))
+		); //hit ground level and left or right still visible
 	}
 	
 	/**
@@ -1078,10 +1091,23 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
+	 * 
+	 * @param x coord
+	 * @param y coord
+	 * @param z coord
+	 * @param normal
+	 * @param clipping 
+	 */
+	public void setClipping(int x, int y, int z, Sides normal, boolean clipping){
+		int lookupX = x-getTopLeftCorner().getX();
+		int lookupY = y-getTopLeftCorner().getY();
+		this.clipping[lookupX][lookupY][z][normal.getCode()] = clipping;
+	}
+	/**
 	 * set every site to clipped
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x index
+	 * @param y index
+	 * @param z index
 	 * @param clipped 
 	 */
 	private void setClipped(int x, int y, int z, boolean clipped) {
@@ -1092,21 +1118,21 @@ public class Camera implements LinkedWithMap {
 	
 	/**
 	 * get the clipping of a coordinate
-	 * @param coords
+	 * @param coords coord
 	 * @return true if clipped
 	 */
 	public boolean[] getClipping(Coordinate coords) {
-		return new boolean[]{false, false, false};
-//		//map coordinates to array diemnsions
-//		int lookupX = coords.getX()-getTopLeftCorner().getX();
-//		int lookupY = coords.getY()-getTopLeftCorner().getY();
-//		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )
-//			return new boolean[]{true, true, true};
-//		
-//		return clipping
-//			[lookupX]
-//			[lookupY]
-//			[coords.getZ()+1];
+		//return new boolean[]{false, false, false};
+		//map coordinates to array diemnsions
+		int lookupX = coords.getX()-getTopLeftCorner().getX();
+		int lookupY = coords.getY()-getTopLeftCorner().getY();
+		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )
+			return new boolean[]{true, true, true};
+		
+		return clipping
+			[lookupX]
+			[lookupY]
+			[coords.getZ()+1];
 	}
 
 	/**

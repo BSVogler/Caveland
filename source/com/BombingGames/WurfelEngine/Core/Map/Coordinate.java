@@ -394,8 +394,7 @@ public class Coordinate extends AbstractPosition {
 		cachedPoint = new Point(
             x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
             y*Block.GAME_DIAGLENGTH2,
-            getHeight(),
-            true
+            getHeight()
         );
 	}
 

@@ -296,8 +296,7 @@ public class GameView extends View implements GameManager {
 			return new Point(
 					screenXtoGame(x, camera),
 					screenYtoGame(y, camera),
-					0,
-					true
+					0
 				);
 		} else return Map.getCenter();
     }

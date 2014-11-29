@@ -52,9 +52,8 @@ public class Point extends AbstractPosition {
      * @param posX The distance from the left border of the map (game space)
      * @param posY The distance from the top border of the map (game space)
      * @param height The distance from ground  (game space)
-     * @param relative  <b>true</b> if <b>relative</b> to currently loaded map, <b>false</b> if <b>absolute</b> (relative to map with chunk 0,0 in its center)
      */
-    public Point(float posX, float posY, float height, boolean relative) {
+    public Point(float posX, float posY, float height) {
 		this.x = posX;
 		this.y = posY;
         setHeight(height);
@@ -371,7 +370,7 @@ public class Point extends AbstractPosition {
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
-                Point isectP = new Point(curX, curY, curZ, true);
+                Point isectP = new Point(curX, curY, curZ);
                 Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
                 //intersect?
@@ -443,7 +442,7 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
-            Point interectpoint = new Point(curX, curY, curZ, true);
+            Point interectpoint = new Point(curX, curY, curZ);
             return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
         }
         else

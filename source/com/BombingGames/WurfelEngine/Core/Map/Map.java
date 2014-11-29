@@ -68,10 +68,11 @@ public class Map implements Cloneable {
      * holds the metadata of the map
      */
     private final MapMetaData meta;
-	
+	private MapIterator mapIterator;
 	
 	private boolean modified;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
+
     
     /**
      * Loads a map using the default generator.
@@ -938,6 +939,12 @@ public class Map implements Cloneable {
 			entityList.get(i).dispose();
         }
     }
+	
+	public MapIterator getIterator(){
+		if (mapIterator == null)//lazy init
+			mapIterator = new MapIterator(this);
+		return mapIterator;
+	}
 
 	public void loadChunks(int direction, Coordinate center) {
 	}

@@ -94,7 +94,13 @@ public class MapIterator implements Iterator<Block>{
 		if (z<0){
 			//current pos -1 in z
 			Block groundblock = Block.getInstance(2);
-			groundblock.setPosition(block.getPosition());
+			groundblock.setPosition(
+				new Coordinate(
+					block.getPosition().getX(),
+					block.getPosition().getY(),
+					block.getPosition().getZ()-1
+				)
+			);
 			block = groundblock;
 		}
 		return block;

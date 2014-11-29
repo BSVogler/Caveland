@@ -68,7 +68,6 @@ public class Map implements Cloneable {
      * holds the metadata of the map
      */
     private final MapMetaData meta;
-	private MapIterator mapIterator;
 	
 	private boolean modified;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
@@ -115,11 +114,15 @@ public class Map implements Cloneable {
 				ArrayList<Block> yRow = new ArrayList<>(blocksY);
 				xRow.add(yRow);
 				
-				Block airblock = Block.getInstance(0);
-				airblock.setPosition(new Coordinate(x, 0, z));
-				yRow.add(0, airblock);//add air cell to have at least one block with a position
+				for (int y = 0; y < blocksY; y++) {
+					Block airblock = Block.getInstance(0);
+					airblock.setPosition(new Coordinate(x-Chunk.getBlocksX(), y-Chunk.getBlocksY(), z));	
+					yRow.add(0, airblock);//add air cell to have at least one block with a position
+				}
+
 			}
 		}
+		//printCoords();
 		        
         this.generator = generator;
 		modified = true;
@@ -561,9 +564,10 @@ public class Map implements Cloneable {
 		}
 		
 		//still not found, must be over map
-		if (!found)
-			System.out.println("Tried to set block which is not in memory.");
-		else {
+		if (!found) {
+			Gdx.app.debug("Map#setData","Tried to set block which is not in memory.");
+			coord.print();
+		} else {
 			//find row in x
 			found = false;
 			Iterator<ArrayList<Block>> iterOverX = xRow.iterator();
@@ -574,9 +578,10 @@ public class Map implements Cloneable {
 			}
 			
 			//still not found, must not loaded
-			if (!found)
-				System.out.println("Tried to set block which is not in memory.");
-			else {
+			if (!found) {
+				Gdx.app.debug("Map#setData","Tried to set block which is not in memory.");
+				coord.print();
+			}{
 
 				//find row in y
 				found = false;
@@ -791,10 +796,9 @@ public class Map implements Cloneable {
     public static Point getCenter(final float height){
         return
             new Point(
-                Chunk.getGameWidth()*1.5f,
-                Chunk.getGameDepth()*1.5f,
-                height,
-                false
+                0,
+                0,
+                height
             );
     }
     
@@ -917,17 +921,33 @@ public class Map implements Cloneable {
 	 * prints the map to console
 	 */
 	public void print() {
-		for (int z = 0; z < blocksZ; z++) {
-			for (int y = 0; y < blocksY; y++) {
-				for (int x = 0; x < blocksX; x++) {
-					if (getBlock(x, y, z).getId()==0)
+		for (ArrayList<ArrayList<Block>> z : data) {
+			for (ArrayList<Block> x : z) {
+				for (Block y : x) {
+					if (y.getId()==0)
 						System.out.print("  ");
 					else
-						System.out.print(getBlock(x, y, z).getId() + " ");
+						System.out.print(y.getId() + " ");
 				}
 				System.out.print("\n");
 			}
-				System.out.print("\n\n");
+			System.out.print("\n\n");
+		}
+	}
+	
+		/**
+	 * prints the map to console
+	 */
+	public final void printCoords() {
+		for (ArrayList<ArrayList<Block>> z : data) {
+			for (ArrayList<Block> x : z) {
+				for (Block y : x) {
+					y.getPosition().print();
+					System.out.print(" ");
+				}
+				System.out.print("\n");
+			}
+			System.out.print("\n\n");
 		}
 	}
 	
@@ -947,8 +967,7 @@ public class Map implements Cloneable {
 	 * @return 
 	 */
 	public MapIterator getIterator(int bottomLimitZ, int topLimitZ){
-		if (mapIterator == null)//lazy init
-			mapIterator = new MapIterator(this);
+		MapIterator mapIterator = new MapIterator(this);
 		mapIterator.setBottomLimitZ(bottomLimitZ);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;

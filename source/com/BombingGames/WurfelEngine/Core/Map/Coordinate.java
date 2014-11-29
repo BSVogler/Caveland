@@ -521,4 +521,8 @@ public class Coordinate extends AbstractPosition {
 		}
 		return false;
 	}
+
+	public void print() {
+		System.out.print("{"+x+","+y+","+getZ()+"}");
+	}
 }

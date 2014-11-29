@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -489,7 +488,7 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other object
 	 */
-	public float distanceTo(IsSelfAware object) {
+	public float distanceTo(AbstractGameObject object) {
 		return distanceTo(object.getPosition().getPoint());
 	}
 	
@@ -510,7 +509,7 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other point only regarding horizontal components.
 	 */
-	public float distanceToHorizontal(IsSelfAware object) {
+	public float distanceToHorizontal(AbstractGameObject object) {
 		return distanceToHorizontal(object.getPosition().getPoint());
 	}
 	

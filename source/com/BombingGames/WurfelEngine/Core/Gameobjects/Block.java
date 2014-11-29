@@ -47,7 +47,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * A Block is a wonderful piece of information and a geometrical object.
  * @author Benedikt Vogler
  */
-public class Block extends AbstractGameObject implements IsSelfAware {
+public class Block extends AbstractGameObject {
     private static final long serialVersionUID = 1L;
 	/**
 	 * {id}{value}{side}

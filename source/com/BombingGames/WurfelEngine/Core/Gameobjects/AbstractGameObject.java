@@ -143,6 +143,18 @@ public abstract class AbstractGameObject implements Serializable {
     
 	public abstract int getDimensionZ();
 	
+	  /**
+     * Return the coordinates of the SelfAware object.
+     * @return the coordinates where the object is located
+     */
+    public abstract AbstractPosition getPosition();
+    
+    /**
+     * Set the coordinates without safety check.
+     * @param pos the coordinates you want to set
+     */
+    public abstract void setPosition(AbstractPosition pos);
+	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
 	 * @param customPath format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix 

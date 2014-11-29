@@ -38,16 +38,13 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
  * @author Benedikt
  */
 public class RenderDataDTO {
-    private final AbstractPosition pos;
     private final AbstractGameObject object;
 
      /**
          * Create an Renderobject with a regular Block in the map
-         * @param object 
-         * @param pos The coordinates where the object should be rendered
+         * @param object
          */
-    protected RenderDataDTO(final AbstractGameObject object, final AbstractPosition pos) {
-        this.pos = pos;
+    protected RenderDataDTO(final AbstractGameObject object) {
         this.object = object;
     }
 
@@ -58,19 +55,10 @@ public class RenderDataDTO {
      * @return
      */
     public int getDepth(View view) {
-        return (int) (pos.getDepth(view)
+        return (int) (object.getPosition().getDepth(view)
             + object.getDimensionZ()/AbstractPosition.SQRT2
         );
     }
-
-    /**
-     *
-     * @return
-     */
-    public AbstractPosition getPosition() {
-        return pos;
-    }
-    
 
     /**
      *

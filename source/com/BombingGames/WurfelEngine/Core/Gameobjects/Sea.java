@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
  *A Sea Block which has a "waves" effect.
  * @author Benedikt Vogler
  */
-public class Sea extends Block implements IsSelfAware{
+public class Sea extends Block {
 	private static final long serialVersionUID = 1L;
     /**
      *

@@ -41,7 +41,7 @@ import com.BombingGames.WurfelEngine.shooting.Bullet;
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
+public abstract class AbstractEntity extends AbstractGameObject {
 	private static final long serialVersionUID = 1L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 

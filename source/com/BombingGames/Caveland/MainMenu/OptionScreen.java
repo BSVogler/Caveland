@@ -140,7 +140,7 @@ public class OptionScreen extends WEScreen {
 				else CVar.get("limitFPS").setValue("0");
 				WE.getLwjglApplicationConfiguration().foregroundFPS = CVar.get("limitFPS").getValuei();
 				
-				//apply sound chages
+				//apply sound changes
 				CVar.get("music").setValuef(musicSlider.getValue());
 				CVar.get("sound").setValuef(soundSlider.getValue());
 			}

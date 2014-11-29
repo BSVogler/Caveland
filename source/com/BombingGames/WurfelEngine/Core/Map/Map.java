@@ -942,13 +942,15 @@ public class Map implements Cloneable {
 	
 	/**
 	 * Get an iteration which can loop throug the map
-	 * @param zLimit the top limit of the iterations
+	 * @param bottomLimitZ bottom limit of the iterations
+	 * @param topLimitZ the top limit of the iterations
 	 * @return 
 	 */
-	public MapIterator getIterator(int zLimit){
+	public MapIterator getIterator(int bottomLimitZ, int topLimitZ){
 		if (mapIterator == null)//lazy init
 			mapIterator = new MapIterator(this);
-		mapIterator.setZLimit(zLimit);
+		mapIterator.setBottomLimitZ(bottomLimitZ);
+		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
 	}
 

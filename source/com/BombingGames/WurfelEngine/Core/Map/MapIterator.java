@@ -47,7 +47,8 @@ public class MapIterator implements Iterator<Block>{
 	private Iterator<Block> yIterator;
 	private Iterator<ArrayList<Block>> xIterator;
 	private Iterator<ArrayList<ArrayList<Block>>> zIterator;
-	private int zLimit;
+	private int bottomLimitZ;
+	private int topLimitZ;
 
 	public MapIterator(Map map) {
 		this.mapdata = map.getData();
@@ -60,7 +61,7 @@ public class MapIterator implements Iterator<Block>{
 
 	@Override
 	public boolean hasNext() {
-		return ((zIterator.hasNext() || z >= zLimit) && xIterator.hasNext() && yIterator.hasNext());
+		return ((zIterator.hasNext() || z >= topLimitZ) && xIterator.hasNext() && yIterator.hasNext());
 	}
 
 	/**
@@ -76,12 +77,25 @@ public class MapIterator implements Iterator<Block>{
 				yIterator = xIterator.next().iterator();
 			} else {//was at last block in layer
 				if (zIterator.hasNext()){
-					ArrayList<ArrayList<Block>> tmp = zIterator.next();
-					xIterator = tmp.iterator();
-					yIterator = tmp.get(0).iterator();
+					if (z >= 0) {
+						ArrayList<ArrayList<Block>> tmp = zIterator.next();
+						xIterator = tmp.iterator();
+						yIterator = tmp.get(0).iterator();
+					} else {
+						//loop over ground layer twice
+						zIterator = mapdata.iterator();
+						xIterator = mapdata.get(0).iterator();
+						yIterator = mapdata.get(0).get(0).iterator();
+					}
 					z++;
 				}
 			}
+		}
+		if (z<0){
+			//current pos -1 in z
+			Block groundblock = Block.getInstance(2);
+			groundblock.setPosition(block.getPosition());
+			block = groundblock;
 		}
 		return block;
 	}
@@ -122,12 +136,29 @@ public class MapIterator implements Iterator<Block>{
 		yIterator.remove();
 	}
 
+	
+	/**
+	 * set the top limit of the iteration.
+	 * @param zLimit 
+	 */
+	public void setBottomLimitZ(int zLimit) {
+		this.bottomLimitZ = zLimit;
+		
+		//move z to bottomLimitZ if >0
+		zIterator = mapdata.iterator();
+		for (int i = 0; i < zLimit; i++) {
+			nextZ();
+		}
+
+		z=bottomLimitZ;
+	}
+	
 	/**
 	 * set the top limit of the iteration
 	 * @param zLimit 
 	 */
-	void setZLimit(int zLimit) {
-		this.zLimit = zLimit;
+	public void setTopLimitZ(int zLimit) {
+		this.topLimitZ = zLimit;
 	}
 	
 }

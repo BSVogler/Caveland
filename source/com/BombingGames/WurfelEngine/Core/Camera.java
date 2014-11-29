@@ -360,18 +360,14 @@ public class Camera implements LinkedWithMap {
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(100);//start by size 100
 
-		//ground layer
-//		for (int x = 0, right = Map.getBlocksX(); x < right; x++) {//only objects in view frustum
-//			for (int y = 0, front = Map.getBlocksY(); y < front; y++) {
-//				z=-1;
-//				
-//				
-//			}
-//		}
-
-		MapIterator iterator = Controller.getMap().getIterator(zRenderingLimit);
+		//iterate over ground layer up to zLimit
+		MapIterator iterator = Controller.getMap().getIterator(-1, zRenderingLimit);
 		while (iterator.hasNext()) {//up to zRenderingLimit
-			clipping(iterator.next(), depthsort);
+			Block block = iterator.next();
+			block.getPosition().print();
+			if (isNotClipped(block)) {
+				depthsort.add(block);
+			}
 		}
 		
 		//add entitys
@@ -406,8 +402,8 @@ public class Camera implements LinkedWithMap {
 		return depthsort;
 	}
 	
-	public void clipping (Block block, ArrayList<AbstractGameObject> depthsort) {
-		if (!block.isHidden()//render if not hidden
+	public boolean isNotClipped (Block block) {
+		return (!block.isHidden()//render if not hidden
 			&& !isCompletelyClipped(block.getPosition()) //nor completely clipped
 			&&                          //inside view frustum?
 			(position.y + getHeightInViewSpc())//camera's top
@@ -425,9 +421,7 @@ public class Camera implements LinkedWithMap {
 				(block.getPosition().getViewSpcX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInViewSpc()
-		) {
-			depthsort.add(block);
-		}
+		);
 	}
 
 	/**

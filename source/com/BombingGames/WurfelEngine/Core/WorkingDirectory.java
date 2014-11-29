@@ -78,6 +78,9 @@ public class WorkingDirectory {
         case macos:
                 workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
                 break;
+        case android:
+            workingDirectory = new File(System.getenv("EXTERNAL_STORAGE"), applicationName + '/');
+            break;
         default:
                 workingDirectory = new File(userHome, applicationName + '/');
         }
@@ -100,6 +103,8 @@ public class WorkingDirectory {
                     return OS.solaris;
             if (osName.contains("sunos"))
                     return OS.solaris;
+            if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik"))
+                return OS.android;
             if (osName.contains("linux"))
                     return OS.linux;
             if (osName.contains("unix"))
@@ -108,7 +113,7 @@ public class WorkingDirectory {
     }
 
     private static enum OS {
-            linux, solaris, windows, macos, unknown;
+            linux, solaris, windows, macos, android, unknown;
     }
     
     /**

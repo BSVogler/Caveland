@@ -40,6 +40,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.MapIterator;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -324,7 +325,7 @@ public class Camera implements LinkedWithMap {
 
 				//render vom bottom to top
 				for (AbstractGameObject renderobject : depthlist) {
-					renderobject.render(view, camera, renderobject.getPosition());
+					renderobject.render(view, camera);
 				}
 			view.getBatch().end();
 
@@ -364,7 +365,6 @@ public class Camera implements LinkedWithMap {
 		MapIterator iterator = Controller.getMap().getIterator(-1, zRenderingLimit);
 		while (iterator.hasNext()) {//up to zRenderingLimit
 			Block block = iterator.next();
-			block.getPosition().print();
 			if (isNotClipped(block)) {
 				depthsort.add(block);
 			}
@@ -960,6 +960,13 @@ public class Camera implements LinkedWithMap {
 		return (int) (gameSpaceHeight*zoom);
 	}
 
+	public Coordinate getTopLeftCorner(){
+		return new Coordinate(
+			getCenter().getX() - Map.getBlocksX()/2,
+			getCenter().getY() - Map.getBlocksY()/2,
+			0
+		);
+	}
 	/**
 	 * Returns the position of the cameras output (on the screen)
 	 *
@@ -1089,7 +1096,17 @@ public class Camera implements LinkedWithMap {
 	 * @return true if clipped
 	 */
 	public boolean[] getClipping(Coordinate coords) {
-		return clipping[coords.getX()][coords.getY()][coords.getZ()+1];
+		return new boolean[]{false, false, false};
+//		//map coordinates to array diemnsions
+//		int lookupX = coords.getX()-getTopLeftCorner().getX();
+//		int lookupY = coords.getY()-getTopLeftCorner().getY();
+//		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )
+//			return new boolean[]{true, true, true};
+//		
+//		return clipping
+//			[lookupX]
+//			[lookupY]
+//			[coords.getZ()+1];
 	}
 
 	/**
@@ -1126,6 +1143,8 @@ public class Camera implements LinkedWithMap {
 	Coordinate getCenter() {
 		if (focusCoordinates!=null)
 			return focusCoordinates;
-		else return focusEntity.getPosition().getCoord();
+		else if (focusEntity!=null)
+			return focusEntity.getPosition().getCoord();
+		else return new Point(position.x, position.y, 0).getCoord();
 	}
 }

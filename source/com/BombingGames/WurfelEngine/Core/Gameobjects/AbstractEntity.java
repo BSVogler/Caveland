@@ -28,9 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -85,16 +83,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @param dt time since last update
      */
     public abstract void update(float dt);
-	
-	/**
-     * renders using its saved postion
-     * @param view
-     * @param camera 
-     */
-    public void render(GameView view, Camera camera){
-        super.render(view, camera, position);
-    }
-	
+		
     //IsSelfAware implementation
     @Override
     public Point getPosition() {

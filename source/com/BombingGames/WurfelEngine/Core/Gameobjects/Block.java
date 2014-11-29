@@ -315,10 +315,10 @@ public class Block extends AbstractGameObject {
     } 
     
     @Override
-    public void render(final View view, final Camera camera, final AbstractPosition pos) {
+    public void render(final View view, final Camera camera) {
         if (!isHidden()) {
             float scale =0;
-			Coordinate coords = pos.getCoord();
+			Coordinate coords = getPosition().getCoord();
             if (CVar.get("enableScalePrototype").getValueb())  //scale if the prototype is activated
                 scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {

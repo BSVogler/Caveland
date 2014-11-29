@@ -40,10 +40,14 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class MapIterator implements Iterator<Block>{
+	private int x=0;
+	private int y=0;
+	private int z=0;
 	private ArrayList<ArrayList<ArrayList<Block>>> mapdata;
 	private Iterator<Block> yIterator;
 	private Iterator<ArrayList<Block>> xIterator;
 	private Iterator<ArrayList<ArrayList<Block>>> zIterator;
+	private int zLimit;
 
 	public MapIterator(Map map) {
 		this.mapdata = map.getData();
@@ -56,7 +60,7 @@ public class MapIterator implements Iterator<Block>{
 
 	@Override
 	public boolean hasNext() {
-		return (zIterator.hasNext() && xIterator.hasNext() && yIterator.hasNext());
+		return ((zIterator.hasNext() || z >= zLimit) && xIterator.hasNext() && yIterator.hasNext());
 	}
 
 	/**
@@ -75,6 +79,7 @@ public class MapIterator implements Iterator<Block>{
 					ArrayList<ArrayList<Block>> tmp = zIterator.next();
 					xIterator = tmp.iterator();
 					yIterator = tmp.get(0).iterator();
+					z++;
 				}
 			}
 		}
@@ -106,6 +111,7 @@ public class MapIterator implements Iterator<Block>{
 		ArrayList<ArrayList<Block>> tmp = zIterator.next();
 		xIterator = tmp.iterator();
 		yIterator = tmp.get(0).iterator();
+		z++;
 	}
 
 	/**
@@ -114,6 +120,14 @@ public class MapIterator implements Iterator<Block>{
 	@Override
 	public void remove() {
 		yIterator.remove();
+	}
+
+	/**
+	 * set the top limit of the iteration
+	 * @param zLimit 
+	 */
+	void setZLimit(int zLimit) {
+		this.zLimit = zLimit;
 	}
 	
 }

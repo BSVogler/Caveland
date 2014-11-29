@@ -940,9 +940,15 @@ public class Map implements Cloneable {
         }
     }
 	
-	public MapIterator getIterator(){
+	/**
+	 * Get an iteration which can loop throug the map
+	 * @param zLimit the top limit of the iterations
+	 * @return 
+	 */
+	public MapIterator getIterator(int zLimit){
 		if (mapIterator == null)//lazy init
 			mapIterator = new MapIterator(this);
+		mapIterator.setZLimit(zLimit);
 		return mapIterator;
 	}
 

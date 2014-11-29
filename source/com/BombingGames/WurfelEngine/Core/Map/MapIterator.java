@@ -61,7 +61,7 @@ public class MapIterator implements Iterator<Block>{
 
 	@Override
 	public boolean hasNext() {
-		return ((zIterator.hasNext() || z >= topLimitZ) && xIterator.hasNext() && yIterator.hasNext());
+		return ((zIterator.hasNext() || z <= topLimitZ) && xIterator.hasNext() && yIterator.hasNext());
 	}
 
 	/**

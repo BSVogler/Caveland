@@ -175,6 +175,18 @@ public abstract class AbstractGameObject implements Serializable {
         Sea.staticUpdate(dt);
     }
     
+	
+	/**
+     * Returns the depth of the object.
+	 * @param view
+     * @return
+     */
+    public int getDepth(View view) {
+        return (int) (getPosition().getDepth(view)
+            + getDimensionZ()/AbstractPosition.SQRT2
+        );
+    }
+	
      /**
      *
      * @return

@@ -112,19 +112,19 @@ public class Chunk {
     
     /**
      * Fills the map using a generator.
-     * @param coordX
-     * @param coordY
+     * @param chunkCoordX
+     * @param chunkCoordY
      * @param generator 
      */
-    private void fill(final int coordX, final int coordY, final Generator generator){
-        WE.getConsole().add("Creating new chunk: "+coordX+", "+ coordY);
+    private void fill(final int chunkCoordX, final int chunkCoordY, final Generator generator){
+        WE.getConsole().add("Creating new chunk: "+chunkCoordX+", "+ chunkCoordY);
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     Block.getInstance(
-                        generator.generate(blocksX*coordX+x, blocksY*coordY+y, z),
+						generator.generate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z),
                         0
-					).spawn(new Coordinate(blocksX*coordX+x, blocksY*coordY+y, z));
+					).spawn(new Coordinate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z));//relative to chunk to map absolute
     }
     
     /**

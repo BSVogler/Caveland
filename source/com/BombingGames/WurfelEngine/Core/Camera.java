@@ -1129,8 +1129,7 @@ public class Camera implements LinkedWithMap {
 	 * @return true if clipped
 	 */
 	public boolean[] getClipping(Coordinate coords) {
-		//return new boolean[]{false, false, false};
-		//map coordinates to array diemnsions
+		//map coordinates to array dimensions
 		int lookupX = coords.getX()-getTopLeftCorner().getX();
 		int lookupY = coords.getY()-getTopLeftCorner().getY();
 		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )

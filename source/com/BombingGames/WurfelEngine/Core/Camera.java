@@ -715,14 +715,16 @@ public class Camera implements LinkedWithMap {
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);
 		
-		//bottom layer is visible if it hit ground level and left or right still visible
-		setClipping(
-			x,
-			y,
-			-1,
-			Sides.TOP,
-			!((z <= -1) && (left || right))
-		);
+		if (side==Sides.TOP){
+			//bottom layer is visible if it hit ground level and left or right still visible
+			setClipping(
+				x,
+				y,
+				-1,
+				Sides.TOP,
+				!((z <= -1) && (left || right))
+			);
+		}
 	}
 	
 	/**

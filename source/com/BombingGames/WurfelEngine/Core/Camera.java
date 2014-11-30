@@ -510,12 +510,12 @@ public class Camera implements LinkedWithMap {
 
 			//send the rays through top of the map
 			for (
-				int x = getTopLeftCorner().getX(), maxX =getTopLeftCorner().getX()+Map.getBlocksX();
+				int x = getIndexedLeftBorder(), maxX =getIndexedLeftBorder()+Map.getBlocksX();
 				x < maxX;
 				x++
 			) {
 				for (
-					int y = getTopLeftCorner().getY(), maxY =getTopLeftCorner().getY()+Map.getBlocksY() + zRenderingLimit * 2;
+					int y = getIndexedTopBorder(), maxY =getIndexedTopBorder()+Map.getBlocksY() + zRenderingLimit * 2;
 					y < maxY;
 					y++
 				) {
@@ -980,13 +980,22 @@ public class Camera implements LinkedWithMap {
 		return (int) (gameSpaceHeight*zoom);
 	}
 
-	public Coordinate getTopLeftCorner(){
-		return new Coordinate(
-			getCenter().getX() - Map.getBlocksX()/2,
-			getCenter().getY() - Map.getBlocksY()/2,
-			0
-		);
+	public int getIndexedLeftBorder(){
+		return getCenter().getX() - Map.getBlocksX()/2;
 	}
+	
+	public int getIndexedRightBorder(){
+		return getCenter().getX() + Map.getBlocksX()/2;
+	}
+	
+	public int getIndexedTopBorder(){
+		return getCenter().getY() - Map.getBlocksY()/2;
+	}
+	
+	public int getIndexedBottomBorder(){
+		return getCenter().getY() + Map.getBlocksY()/2;
+	}
+	
 	/**
 	 * Returns the position of the cameras output (on the screen)
 	 *
@@ -1106,8 +1115,8 @@ public class Camera implements LinkedWithMap {
 	 * @param clipping true if clipped
 	 */
 	public void setClipping(int x, int y, int z, Sides normal, boolean clipping){
-		int lookupX = x-getTopLeftCorner().getX();
-		int lookupY = y-getTopLeftCorner().getY();
+		int lookupX = x-getIndexedLeftBorder();
+		int lookupY = y-getIndexedTopBorder();
 		this.clipping[lookupX][lookupY][z+1][normal.getCode()] = clipping;//z has offset of one to store 
 	}
 	/**
@@ -1130,8 +1139,9 @@ public class Camera implements LinkedWithMap {
 	 */
 	public boolean[] getClipping(Coordinate coords) {
 		//map coordinates to array dimensions
-		int lookupX = coords.getX()-getTopLeftCorner().getX();
-		int lookupY = coords.getY()-getTopLeftCorner().getY();
+		int lookupX = coords.getX()-getIndexedLeftBorder();
+		int lookupY = coords.getY()-getIndexedTopBorder();
+		//if outside of covered area
 		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )
 			return new boolean[]{true, true, true};
 		

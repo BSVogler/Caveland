@@ -538,19 +538,20 @@ public class Camera implements LinkedWithMap {
 	private void castRay(int x, int y, Sides side) {
 		int z = zRenderingLimit - 1;//start always from top
 
-		int bottomIndex= getCenter().getY() + Map.getBlocksY()/2;//the last indexed coordinate
-		int topIndex= getCenter().getY() - Map.getBlocksY()/2;//the last indexed coordinate
-		int leftIndex = getCenter().getX() - Map.getBlocksX()/2;//the last indexed coordinate
-		int rightIndex= getCenter().getX() + Map.getBlocksX()/2;//the last indexed coordinate
+		//get coordaintes of border index position
+		int bottomIndex = getIndexedBottomBorder();
+		int topIndex    = getIndexedTopBorder();
+		int leftIndex   = getIndexedLeftBorder();
+		int rightIndex  = getIndexedRightBorder();
 			
-		boolean left = true;
+		boolean left  = true;
 		boolean right = true;
 		/**
 		 * true if entered a liquid
 		 */
 		boolean liquidfilter = false;
-		boolean leftliquid = false;
-		boolean rightliquid = false;
+		boolean leftliquid   = false;
+		boolean rightliquid  = false;
 
 		//bring ray to start position
 		if (y >= bottomIndex) {//if y coordiante is outside of clipping range

@@ -515,9 +515,10 @@ public class Camera implements LinkedWithMap {
 				x++
 			) {
 				for (
-					int y = getTopLeftCorner().getY(), maxY =getTopLeftCorner().getY()+Map.getBlocksY();
-					y < maxY + zRenderingLimit * 2;
-					y++) {
+					int y = getTopLeftCorner().getY(), maxY =getTopLeftCorner().getY()+Map.getBlocksY() + zRenderingLimit * 2;
+					y < maxY;
+					y++
+				) {
 					castRay(x, y, Sides.LEFT);
 					castRay(x, y, Sides.TOP);
 					castRay(x, y, Sides.RIGHT);
@@ -537,6 +538,10 @@ public class Camera implements LinkedWithMap {
 	private void castRay(int x, int y, Sides side) {
 		int z = zRenderingLimit - 1;//start always from top
 
+		int bottomIndex= getCenter().getY() + Map.getBlocksY()/2;//the last indexed coordinate
+		int topIndex= getCenter().getY() - Map.getBlocksY()/2;//the last indexed coordinate
+		int rightIndex= getCenter().getX() + Map.getBlocksX()/2;//the last indexed coordinate
+			
 		boolean left = true;
 		boolean right = true;
 		/**
@@ -547,12 +552,12 @@ public class Camera implements LinkedWithMap {
 		boolean rightliquid = false;
 
 		//bring ray to start position
-		if (y > Map.getBlocksY() - 1) {
-			z -= (y - Map.getBlocksY()) / 2;
+		if (y >= bottomIndex) {//if y coordiante is outside of clipping range
+			z -= (y - bottomIndex) / 2;
 			if (y % 2 == 0) {
-				y = Map.getBlocksY() - 1;
+				y = bottomIndex - 1;
 			} else {
-				y = Map.getBlocksY() - 2;
+				y = bottomIndex - 2;
 			}
 		}
 
@@ -567,25 +572,25 @@ public class Camera implements LinkedWithMap {
 			if (side == Sides.LEFT) {
 				//direct neighbour groundBlock on left hiding the complete left side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x > 0 && y < Map.getBlocksY() - 1
+					&& x > 0 && y < topIndex - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 0)) {
 					break; //stop ray
 				}
 				//liquid
 				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (x > 0 && y + 1 < Map.getBlocksY()
+					if (x > 0 && y + 1 < topIndex
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z).isLiquid()
 					) {
 						liquidfilter = true;
 					}
 
-					if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+					if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
 					) {
 						leftliquid = true;
 					}
 
-					if (y < Map.getBlocksY() - 2
+					if (y < topIndex - 2
 						&& Controller.getMap().getBlock(x, y + 2, z).isLiquid()
 					) {
 						rightliquid = true;
@@ -597,12 +602,12 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two blocks hiding the left side
-				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+				if (x > 0 && y < topIndex && z < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
 				}
-				if (y < Map.getBlocksY() - 2
+				if (y < topIndex - 2
 					&& currentCor.hidingPastBlock(0, 2, 0)
 				) {
 					right = false;
@@ -621,13 +626,13 @@ public class Camera implements LinkedWithMap {
 						liquidfilter = true;
 					}
 
-					if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+					if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
 					) {
 						leftliquid = true;
 					}
 
-					if (x < Map.getBlocksX() - 1 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+					if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1).isLiquid()
 					) {
 						rightliquid = true;
@@ -639,13 +644,13 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two 0- and 2-sides hiding the side 1
-				if (x > 0 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+				if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
 				}
 
-				if (x < Map.getBlocksX() - 1 && y < Map.getBlocksY() - 1 && z < zRenderingLimit - 1
+				if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
 				) {
 					right = false;
@@ -654,7 +659,7 @@ public class Camera implements LinkedWithMap {
 			} else if (side == Sides.RIGHT) {
 				//block on right hiding the whole right side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x + 1 < Map.getBlocksX() && y + 1 < Map.getBlocksY()
+					&& x + 1 < rightIndex && y + 1 < topIndex
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 0)
 				) {
 					break;
@@ -662,19 +667,19 @@ public class Camera implements LinkedWithMap {
 
 				//liquid
 				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (x < Map.getBlocksX() - 1 && y < Map.getBlocksY() - 1
+					if (x < rightIndex - 1 && y < topIndex - 1
 						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z).isLiquid()
 					) {
 						liquidfilter = true;
 					}
 
-					if (y + 2 < Map.getBlocksY()
+					if (y + 2 < topIndex
 						&& Controller.getMap().getBlock(x, y + 2, z).isLiquid()
 					) {
 						leftliquid = true;
 					}
 
-					if (x + 1 < Map.getBlocksX() && y + 1 < Map.getBlocksY() && z + 1 < zRenderingLimit
+					if (x + 1 < rightIndex && y< topIndex-1 && z + 1 < zRenderingLimit
 						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1).isLiquid()
 					) {
 						rightliquid = true;
@@ -686,13 +691,13 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two blocks hiding the right side
-				if (y + 2 < Map.getBlocksY()
+				if (y < topIndex-2
 					&& currentCor.hidingPastBlock(0, 2, 0)
 				) {
 					left = false;
 				}
 
-				if (x + 1 < Map.getBlocksX() && y + 1 < Map.getBlocksY() && z + 1 < zRenderingLimit
+				if (x + 1 < rightIndex && y < topIndex-1 && z + 1 < zRenderingLimit
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
 				) {
 					right = false;

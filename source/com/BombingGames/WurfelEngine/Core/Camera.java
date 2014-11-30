@@ -402,7 +402,7 @@ public class Camera implements LinkedWithMap {
 		return depthsort;
 	}
 	
-	public boolean isNotClipped (Block block) {
+	private boolean isNotClipped (Block block) {
 		return (!block.isHidden()//render if not hidden
 			&& !isCompletelyClipped(block.getPosition()) //nor completely clipped
 			&&                          //inside view frustum?

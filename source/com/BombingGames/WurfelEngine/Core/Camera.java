@@ -406,7 +406,7 @@ public class Camera implements LinkedWithMap {
 		return (!block.isHidden()//render if not hidden
 			&& !isCompletelyClipped(block.getPosition()) //nor completely clipped
 			&&                          //inside view frustum?
-			(position.y + getHeightInViewSpc())//camera's top
+				(position.y + getHeightInViewSpc())//camera's top
 				>
 				(block.getPosition().getViewSpcY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
 			&&                                  //inside view frustum?

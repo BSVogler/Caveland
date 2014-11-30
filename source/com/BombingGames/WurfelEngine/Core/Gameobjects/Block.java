@@ -115,8 +115,10 @@ public class Block extends AbstractGameObject {
         //define the default SideSprites
         switch (id){
             case 0: 
-                    block = new Block(id); //grass
-                    block.setObstacle(true);
+                    block = new Block(id); //air
+					block.setTransparent(true);
+                    block.setObstacle(false);
+					block.setHidden(true);
                     break;
             case 1: block = new Block(id); //grass
                     block.setObstacle(true);

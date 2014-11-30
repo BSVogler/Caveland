@@ -555,7 +555,7 @@ public class Camera implements LinkedWithMap {
 
 		//bring ray to start position
 		if (y >= bottomIndex) {//if y coordiante is outside of clipping range
-			z -= (y - bottomIndex) / 2;
+			z -= (y - bottomIndex) / 2;//move down for halfe the distance which is over the limit
 			if (y % 2 == 0) {
 				y = bottomIndex - 1;
 			} else {

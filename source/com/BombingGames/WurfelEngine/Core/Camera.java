@@ -540,6 +540,7 @@ public class Camera implements LinkedWithMap {
 
 		int bottomIndex= getCenter().getY() + Map.getBlocksY()/2;//the last indexed coordinate
 		int topIndex= getCenter().getY() - Map.getBlocksY()/2;//the last indexed coordinate
+		int leftIndex = getCenter().getX() - Map.getBlocksX()/2;//the last indexed coordinate
 		int rightIndex= getCenter().getX() + Map.getBlocksX()/2;//the last indexed coordinate
 			
 		boolean left = true;
@@ -572,19 +573,19 @@ public class Camera implements LinkedWithMap {
 			if (side == Sides.LEFT) {
 				//direct neighbour groundBlock on left hiding the complete left side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x > 0 && y < topIndex - 1
+					&& x > leftIndex && y < topIndex - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 0)) {
 					break; //stop ray
 				}
 				//liquid
 				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (x > 0 && y + 1 < topIndex
+					if (x > leftIndex && y < topIndex - 1
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z).isLiquid()
 					) {
 						liquidfilter = true;
 					}
 
-					if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
+					if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
 					) {
 						leftliquid = true;
@@ -602,7 +603,7 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two blocks hiding the left side
-				if (x > 0 && y < topIndex && z < zRenderingLimit - 1
+				if (x > leftIndex && y < topIndex && z < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
@@ -615,7 +616,7 @@ public class Camera implements LinkedWithMap {
 
 			} else if (side == Sides.TOP) {//check top side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& z + 1 < zRenderingLimit
+					&& z  < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock(0, 0, 1)) {
 					break;
 				}
@@ -626,7 +627,7 @@ public class Camera implements LinkedWithMap {
 						liquidfilter = true;
 					}
 
-					if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
+					if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
 					) {
 						leftliquid = true;
@@ -644,7 +645,7 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two 0- and 2-sides hiding the side 1
-				if (x > 0 && y < topIndex - 1 && z < zRenderingLimit - 1
+				if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
 				) {
 					left = false;
@@ -659,7 +660,7 @@ public class Camera implements LinkedWithMap {
 			} else if (side == Sides.RIGHT) {
 				//block on right hiding the whole right side
 				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x + 1 < rightIndex && y + 1 < topIndex
+					&& x < rightIndex - 1 && y < topIndex - 1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 0)
 				) {
 					break;
@@ -673,13 +674,13 @@ public class Camera implements LinkedWithMap {
 						liquidfilter = true;
 					}
 
-					if (y + 2 < topIndex
+					if (y < topIndex - 2
 						&& Controller.getMap().getBlock(x, y + 2, z).isLiquid()
 					) {
 						leftliquid = true;
 					}
 
-					if (x + 1 < rightIndex && y< topIndex-1 && z + 1 < zRenderingLimit
+					if (x < rightIndex -1 && y < topIndex - 1 && z < zRenderingLimit - 1
 						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1).isLiquid()
 					) {
 						rightliquid = true;
@@ -691,13 +692,13 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//two blocks hiding the right side
-				if (y < topIndex-2
+				if (y < topIndex - 2
 					&& currentCor.hidingPastBlock(0, 2, 0)
 				) {
 					left = false;
 				}
 
-				if (x + 1 < rightIndex && y < topIndex-1 && z + 1 < zRenderingLimit
+				if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit -1
 					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
 				) {
 					right = false;
@@ -706,20 +707,21 @@ public class Camera implements LinkedWithMap {
 
 			if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())) { //unless both sides are clipped don't clip the whole block
 				liquidfilter = false;
-				setClipping(x, y, z+1, side, false);
+				setClipping(x, y, z, side, false);
 			}
-		} while (y > 1 && z > -1 //not on back or bottom of map
+		} while (y > bottomIndex && z > -1 //not on back or bottom of map
 			&& (left || right) //left or right still visible
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);
 		
+		//bottom layer is visible if it hit ground level and left or right still visible
 		setClipping(
 			x,
 			y,
-			0,
+			-1,
 			Sides.TOP,
 			!((z <= -1) && (left || right))
-		); //hit ground level and left or right still visible
+		);
 	}
 	
 	/**
@@ -1101,12 +1103,12 @@ public class Camera implements LinkedWithMap {
 	 * @param y coord
 	 * @param z coord
 	 * @param normal
-	 * @param clipping 
+	 * @param clipping true if clipped
 	 */
 	public void setClipping(int x, int y, int z, Sides normal, boolean clipping){
 		int lookupX = x-getTopLeftCorner().getX();
 		int lookupY = y-getTopLeftCorner().getY();
-		this.clipping[lookupX][lookupY][z][normal.getCode()] = clipping;
+		this.clipping[lookupX][lookupY][z+1][normal.getCode()] = clipping;//z has offset of one to store 
 	}
 	/**
 	 * set every site to clipped

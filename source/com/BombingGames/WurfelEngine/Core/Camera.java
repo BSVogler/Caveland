@@ -980,18 +980,34 @@ public class Camera implements LinkedWithMap {
 		return (int) (gameSpaceHeight*zoom);
 	}
 
+	/**
+	 * index to coordiante.
+	 * @return  the left (X) border
+	 */
 	public int getIndexedLeftBorder(){
 		return getCenter().getX() - Map.getBlocksX()/2;
 	}
 	
+	/**
+	 * index to coordiante.
+	 * @return  the right (X) border
+	 */
 	public int getIndexedRightBorder(){
 		return getCenter().getX() + Map.getBlocksX()/2;
 	}
 	
+	/**
+	 * index to coordiante.
+	 * @return  the top (Y) border
+	 */
 	public int getIndexedTopBorder(){
 		return getCenter().getY() - Map.getBlocksY()/2;
 	}
 	
+	/**
+	 * index to coordiante.
+	 * @return  the bottom (Y) border
+	 */
 	public int getIndexedBottomBorder(){
 		return getCenter().getY() + Map.getBlocksY()/2;
 	}

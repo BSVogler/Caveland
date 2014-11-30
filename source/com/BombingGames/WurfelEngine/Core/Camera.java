@@ -710,7 +710,7 @@ public class Camera implements LinkedWithMap {
 				liquidfilter = false;
 				setClipping(x, y, z, side, false);
 			}
-		} while (y > bottomIndex && z > -1 //not on back or bottom of map
+		} while (y > topIndex && z > -1 //not on back or bottom of map
 			&& (left || right) //left or right still visible
 			&& (!currentCor.hidingPastBlock(0, 0, 0))
 		);

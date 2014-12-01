@@ -29,7 +29,6 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
@@ -48,7 +47,6 @@ import java.util.logging.Logger;
  */
 public class Map implements Cloneable {
     private static int blocksX, blocksY, blocksZ;
-	private static ArrayList<Camera> cameras = new ArrayList<>(2);
 	private static Generator defaultGenerator = new AirGenerator();
         
     private final String filename;

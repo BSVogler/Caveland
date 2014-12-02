@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,32 +41,28 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class MapIterator implements Iterator<Block>{
-	private int x=0;
-	private int y=0;
 	private int z=0;
-	private ArrayList<ArrayList<ArrayList<Block>>> mapdata;
-	private Iterator<Block> yIterator;
-	private Iterator<ArrayList<Block>> xIterator;
-	private Iterator<ArrayList<ArrayList<Block>>> zIterator;
-	private int bottomLimitZ;
+	private MapLayer[] mapdata;
+	protected Iterator<Block> yIterator;
+	protected Iterator<ArrayList<Block>> xIterator;
 	private int topLimitZ;
 
-	public MapIterator(Map map) {
-		this.mapdata = map.getData();
-		zIterator = mapdata.iterator();
-		xIterator = mapdata.get(0).iterator();
-		yIterator = mapdata.get(0).get(0).iterator();
+	public MapIterator() {
+		this.mapdata = Controller.getMap().getData();
+		xIterator = mapdata[0].iterator();
+		yIterator = mapdata[0].get(0).iterator();
+		topLimitZ = Map.getBlocksZ();
 	}
 	
 	
 
 	@Override
 	public boolean hasNext() {
-		return ((zIterator.hasNext() || z <= topLimitZ) && xIterator.hasNext() && yIterator.hasNext());
+		return ((z <= topLimitZ) && hasNextX() && hasNextY());
 	}
 
 	/**
-	 *Loops over the complete map.
+	 *Loops over the complete map. Also loops over bottom layer
 	 * @return 
 	 */
 	@Override
@@ -76,32 +73,13 @@ public class MapIterator implements Iterator<Block>{
 			if (xIterator.hasNext()){
 				yIterator = xIterator.next().iterator();
 			} else {//was at last block in layer
-				if (zIterator.hasNext()){
-					if (z >= 0) {
-						ArrayList<ArrayList<Block>> tmp = zIterator.next();
-						xIterator = tmp.iterator();
-						yIterator = tmp.get(0).iterator();
-					} else {
-						//loop over ground layer twice
-						zIterator = mapdata.iterator();
-						xIterator = mapdata.get(0).iterator();
-						yIterator = mapdata.get(0).get(0).iterator();
-					}
+				if (z<Map.getBlocksZ()){
+					MapLayer tmp = mapdata[z];
+					xIterator = tmp.iterator();
+					yIterator = tmp.get(0).iterator();
 					z++;
 				}
 			}
-		}
-		if (z<0){
-			//current pos -1 in z
-			Block groundblock = Block.getInstance(2);
-			groundblock.setPosition(
-				new Coordinate(
-					block.getPosition().getX(),
-					block.getPosition().getY(),
-					block.getPosition().getZ()-1
-				)
-			);
-			block = groundblock;
 		}
 		return block;
 	}
@@ -120,7 +98,7 @@ public class MapIterator implements Iterator<Block>{
 	 * @throws NoSuchElementException 
 	 */
 	public void nextX() throws NoSuchElementException {
-		yIterator = xIterator.next().iterator();
+		yIterator = xIterator.next().iterator();//moves to next x row and start with y at beginning
 	}
 	
 	/**
@@ -128,10 +106,9 @@ public class MapIterator implements Iterator<Block>{
 	 * @throws NoSuchElementException 
 	 */
 	public void nextZ() throws NoSuchElementException {
-		ArrayList<ArrayList<Block>> tmp = zIterator.next();
-		xIterator = tmp.iterator();
-		yIterator = tmp.get(0).iterator();
 		z++;
+		xIterator = mapdata[z].iterator();
+		yIterator = mapdata[z].get(0).iterator();
 	}
 
 	/**
@@ -145,18 +122,18 @@ public class MapIterator implements Iterator<Block>{
 	
 	/**
 	 * set the top limit of the iteration.
-	 * @param zLimit 
+	 * @param zStarting 
 	 */
-	public void setBottomLimitZ(int zLimit) {
-		this.bottomLimitZ = zLimit;
+	public void setStartingZ(int zStarting) {
+		z=zStarting;
 		
-		//move z to bottomLimitZ if >0
-		zIterator = mapdata.iterator();
-		for (int i = 0; i < zLimit; i++) {
-			nextZ();
+		if (z>0){
+			xIterator = mapdata[z].iterator();
+			yIterator = mapdata[z].get(0).iterator();
+		} else {
+			xIterator = mapdata[0].iterator();
+			yIterator = mapdata[0].get(0).iterator();
 		}
-
-		z=bottomLimitZ;
 	}
 	
 	/**
@@ -165,6 +142,26 @@ public class MapIterator implements Iterator<Block>{
 	 */
 	public void setTopLimitZ(int zLimit) {
 		this.topLimitZ = zLimit;
+	}
+
+	public int getTopLimitZ() {
+		return topLimitZ;
+	}
+
+	/**
+	 * Reached end of y row?
+	 * @return 
+	 */
+	public boolean hasNextY() {
+		return yIterator.hasNext();
+	}
+
+	/**
+	 * Reached end of x row?
+	 * @return 
+	 */
+	public boolean hasNextX() {
+		return xIterator.hasNext();
 	}
 	
 }

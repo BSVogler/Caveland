@@ -115,7 +115,7 @@ public class Map implements Cloneable {
 				for (int y = 0; y < blocksY; y++) {
 					Block airblock = Block.getInstance(0);
 					airblock.setPosition(new Coordinate(x-Chunk.getBlocksX(), y-Chunk.getBlocksY(), z));	
-					yRow.add(0, airblock);//add air cell to have at least one block with a position
+					yRow.add(airblock);//add air cell to have at least one block with a position
 				}
 
 			}

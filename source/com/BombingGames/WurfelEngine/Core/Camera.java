@@ -33,13 +33,12 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.BombingGames.WurfelEngine.Core.Map.CameraSpaceIterator;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.Map.MapIterator;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -66,11 +65,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private int zRenderingLimit;
 	
-	/**
-	 * [x][y][z][normal]. Stores teh clipping data for 3x3 chunks. To fit z starting at index -1, the z axis is shifted by one.
-	 */
-	private boolean[][][][] clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
-
+	private ClippingCell[][] clipping;
 	/**
 	 * the position of the camera in projection space. Y-up
 	 */
@@ -361,12 +356,13 @@ public class Camera implements LinkedWithMap {
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 
-		//iterate over ground layer up to zLimit
-		MapIterator iterator = Controller.getMap().getIterator(-1, zRenderingLimit);
-		while (iterator.hasNext()) {//up to zRenderingLimit
-			Block block = iterator.next();
-			if (isNotClipped(block)) {
-				depthsort.add(block);
+		//add hidden surfeace depth buffer
+		for (ClippingCell[] y : clipping) {
+			for (ClippingCell x : y) {
+				for (Block block : x) {
+					//only add if in view plane to-do
+					depthsort.add(block);
+				}
 			}
 		}
 		
@@ -402,27 +398,6 @@ public class Camera implements LinkedWithMap {
 		return depthsort;
 	}
 	
-	private boolean isNotClipped (Block block) {
-		return (!block.isHidden()//render if not hidden
-			&& !isCompletelyClipped(block.getPosition()) //nor completely clipped
-			&&                          //inside view frustum?
-				(position.y + getHeightInViewSpc())//camera's top
-				>
-				(block.getPosition().getViewSpcY(gameView)- Block.SCREEN_HEIGHT*2)//bottom of sprite, don't know why -Block.SCREEN_HEIGHT2 is not enough
-			&&                                  //inside view frustum?
-				(block.getPosition().getViewSpcY(gameView)+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
-				>
-				position.y//camera's bottom
-			&&
-				(block.getPosition().getViewSpcX(gameView)+ Block.SCREEN_WIDTH2)//right side of sprite
-				>
-				position.x
-			&&
-				(block.getPosition().getViewSpcX(gameView)- Block.SCREEN_WIDTH2)//left side of sprite
-				<
-				position.x + getWidthInViewSpc()
-		);
-	}
 
 	/**
 	 * Using Quicksort to sort. From small to big values.
@@ -480,286 +455,51 @@ public class Camera implements LinkedWithMap {
 		}
 		return depthsort;
 	}
-
-	/**
-	 * Filters every Block (and side) wich is not visible. Boosts rendering
-	 * speed.
-	 */
-	public void rayCastingClipping() {
-		System.out.println("Doing rayCastingClipping.");
-		if (zRenderingLimit > 0) {
-			//prepare clipping
-			for (int x = 0, maxX =Map.getBlocksX(); x < maxX; x++) {
-				for (int y = 0, maxY =Map.getBlocksY(); y < maxY; y++) {
-					//ground layer
-					clipping[x][y][0][0] = true;//clip left side
-					clipping[x][y][0][1] = false;//render only top
-					clipping[x][y][0][2] = true;//clip right side
-					
-					//clip by default
-					for (int z = 0; z < zRenderingLimit; z++) {
-						setClipped(
-							x,
-							y,
-							z,
-							true
-						);
-					}
-				}
-			}
-
-			//send the rays through top of the map
-			for (
-				int x = getIndexedLeftBorder(), maxX =getIndexedLeftBorder()+Map.getBlocksX();
-				x < maxX;
-				x++
-			) {
-				for (
-					int y = getIndexedTopBorder(), maxY =getIndexedTopBorder()+Map.getBlocksY() + zRenderingLimit * 2;
-					y < maxY;
-					y++
-				) {
-					castRay(x, y, Sides.LEFT);
-					castRay(x, y, Sides.TOP);
-					castRay(x, y, Sides.RIGHT);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Traces a single ray. This costs less performance than a whole
-	 * rayCastingClipping.
-	 *
-	 * @param x The starting x-coordinate on top of the map.
-	 * @param y The starting y-coordinate on top of the map.
-	 * @param side The side the ray should check
-	 */
-	private void castRay(int x, int y, Sides side) {
-		int z = zRenderingLimit - 1;//start always from top
-
-		//get coordaintes of border index position
-		int bottomIndex = getIndexedBottomBorder();
-		int topIndex    = getIndexedTopBorder();
-		int leftIndex   = getIndexedLeftBorder();
-		int rightIndex  = getIndexedRightBorder();
-			
-		boolean left  = true;
-		boolean right = true;
-		/**
-		 * true if entered a liquid
-		 */
-		boolean liquidfilter = false;
-		boolean leftliquid   = false;
-		boolean rightliquid  = false;
-
-		//bring ray to start position
-		if (y >= bottomIndex) {//if y coordiante is outside of clipping range
-			z -= (y - bottomIndex) / 2;//move down for halfe the distance which is over the limit
-			if (y % 2 == 0) {
-				y = bottomIndex - 1;
-			} else {
-				y = bottomIndex - 2;
-			}
-		}
-
-		y += 2;
-		z++;
-		Coordinate currentCor;
-		do {
-			y -= 2;
-			z--;
-
-			currentCor = new Coordinate(x, y, z);
-			if (side == Sides.LEFT) {
-				//direct neighbour groundBlock on left hiding the complete left side
-				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x > leftIndex && y < topIndex - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 0)) {
-					break; //stop ray
-				}
-				//liquid
-				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (x > leftIndex && y < topIndex - 1
-						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z).isLiquid()
-					) {
-						liquidfilter = true;
-					}
-
-					if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
-						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
-					) {
-						leftliquid = true;
-					}
-
-					if (y < topIndex - 2
-						&& Controller.getMap().getBlock(x, y + 2, z).isLiquid()
-					) {
-						rightliquid = true;
-					}
-
-					if (leftliquid && rightliquid) {
-						liquidfilter = true;
-					}
-				}
-
-				//two blocks hiding the left side
-				if (x > leftIndex && y < topIndex && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
-				) {
-					left = false;
-				}
-				if (y < topIndex - 2
-					&& currentCor.hidingPastBlock(0, 2, 0)
-				) {
-					right = false;
-				}
-
-			} else if (side == Sides.TOP) {//check top side
-				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& z  < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock(0, 0, 1)) {
-					break;
-				}
-
-				//liquid
-				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (z < zRenderingLimit - 1 && Controller.getMap().getBlock(x, y, z + 1).isLiquid()) {
-						liquidfilter = true;
-					}
-
-					if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
-						&& Controller.getMap().getBlock(x - (y % 2 == 0 ? 1 : 0), y + 1, z + 1).isLiquid()
-					) {
-						leftliquid = true;
-					}
-
-					if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit - 1
-						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1).isLiquid()
-					) {
-						rightliquid = true;
-					}
-
-					if (leftliquid && rightliquid) {
-						liquidfilter = true;
-					}
-				}
-
-				//two 0- and 2-sides hiding the side 1
-				if (x > leftIndex && y < topIndex - 1 && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? -1 : 0), 1, 1)
-				) {
-					left = false;
-				}
-
-				if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
-				) {
-					right = false;
-				}
-
-			} else if (side == Sides.RIGHT) {
-				//block on right hiding the whole right side
-				if (Controller.getMap().getBlock(x, y, z).hasSides()//block on top
-					&& x < rightIndex - 1 && y < topIndex - 1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 0)
-				) {
-					break;
-				}
-
-				//liquid
-				if (Controller.getMap().getBlock(x, y, z).isLiquid()) {
-					if (x < rightIndex - 1 && y < topIndex - 1
-						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z).isLiquid()
-					) {
-						liquidfilter = true;
-					}
-
-					if (y < topIndex - 2
-						&& Controller.getMap().getBlock(x, y + 2, z).isLiquid()
-					) {
-						leftliquid = true;
-					}
-
-					if (x < rightIndex -1 && y < topIndex - 1 && z < zRenderingLimit - 1
-						&& Controller.getMap().getBlock(x + (y % 2 == 0 ? 0 : 1), y + 1, z + 1).isLiquid()
-					) {
-						rightliquid = true;
-					}
-
-					if (leftliquid && rightliquid) {
-						liquidfilter = true;
-					}
-				}
-
-				//two blocks hiding the right side
-				if (y < topIndex - 2
-					&& currentCor.hidingPastBlock(0, 2, 0)
-				) {
-					left = false;
-				}
-
-				if (x < rightIndex - 1 && y < topIndex - 1 && z < zRenderingLimit -1
-					&& currentCor.hidingPastBlock((y % 2 == 0 ? 0 : 1), 1, 1)
-				) {
-					right = false;
-				}
-			}
-
-			if ((left || right) && !(liquidfilter && Controller.getMap().getBlock(x, y, z).isLiquid())) { //unless both sides are clipped don't clip the whole block
-				liquidfilter = false;
-				setClipping(x, y, z, side, false);
-			}
-		} while (y > topIndex && z > -1 //not on back or bottom of map
-			&& (left || right) //left or right still visible
-			&& (!currentCor.hidingPastBlock(0, 0, 0))
-		);
-		
-		if (side==Sides.TOP){
-			//bottom layer is visible if it hit ground level and left or right still visible
-			setClipping(
-				x,
-				y,
-				-1,
-				Sides.TOP,
-				!((z <= -1) && (left || right))
-			);
-		}
-	}
 	
-	/**
-	 * Traces the ray to a specific groundBlock. This is like the
-	 * rayCastingClipping but only a single ray.
-	 *
-	 * @param coord The coordinate where the ray should point to.
-	 * @param neighbours True when neighbours groundBlock also should be scanned
-	 */
-	public void traceRayTo(Coordinate coord, boolean neighbours) {
-		int[] coords = coord.getTriple();
-
-		//default  clipped
-		setClipped(
-			coord.getX(),
-			coord.getY(),
-			coord.getZ(),
-			true
-		);
-
-		//find start position
-		while (coords[2] < Map.getBlocksZ() - 1) {
-			coords[1] += 2;
-			coords[2]++;
+	public void hiddenSurfaceDetection(){
+		//create empty array clipping fields
+		clipping = new ClippingCell[Map.getBlocksX()][Map.getBlocksY()+Map.getBlocksZ()];
+		for (ClippingCell[] y : clipping) {
+			for (int x = 0; x < y.length; x++) {
+				y[x] = new ClippingCell();
+			}
 		}
+		//the iterator which iterates over the map
+		CameraSpaceIterator iterMap = new CameraSpaceIterator(this);
 
-		//trace rays
-		if (neighbours) {
-			castRay(coords[0] - (coords[1] % 2 == 0 ? 1 : 0), coords[1] - 1, Sides.RIGHT);
-			castRay(coords[0] + (coords[1] % 2 == 0 ? 0 : 1), coords[1] - 1, Sides.LEFT);
-			castRay(coords[0], coords[1] + 2, Sides.TOP);
+		//iterate at the same time over clipping area
+		int x =0;
+		int z=-1;
+		int y = (Map.getBlocksZ()-z)*2;
+		//loop over map covered by camera
+		while (iterMap.hasNext()){
+			Block block = iterMap.next();
+			y++;
+			
+			//move clipping iterator
+			if (!iterMap.hasNextY()) { // at end of line
+				if (!iterMap.hasNextX()){//end of layer
+					x = 0;//reset x iterator
+					z++;//move one layer up
+					y = (Map.getBlocksZ()-z)*2;//reset y iterator
+				} else {
+					x++;//move to next row
+					y = 0;//reset y iterator
+				}
+			}
+			
+			ClippingCell cell = clipping[x][y];
+			if (cell.isEmpty()){
+				cell.add(block);
+			} else {
+				if (block.getDepth(gameView) < cell.get(0).getDepth(gameView)){
+					if (!block.isTransparent()) {
+						cell.clear();
+					}
+					cell.add(block);
+				}
+			}
 		}
-		castRay(coords[0], coords[1], Sides.LEFT);
-		castRay(coords[0], coords[1], Sides.TOP);
-		castRay(coords[0], coords[1], Sides.RIGHT);
 	}
 
 	/**
@@ -815,7 +555,7 @@ public class Camera implements LinkedWithMap {
 				zRenderingLimit = 0;//min is 0
 			}
 			
-			rayCastingClipping();
+			hiddenSurfaceDetection();
 		}
 	}
 
@@ -984,32 +724,32 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * index to coordiante.
-	 * @return  the left (X) border
+	 * index to coordinate.
+	 * @return the left (X) border coordinate
 	 */
 	public int getIndexedLeftBorder(){
 		return getCenter().getX() - Map.getBlocksX()/2;
 	}
 	
 	/**
-	 * index to coordiante.
-	 * @return  the right (X) border
+	 * index to coordinate.
+	 * @return the right (X) border coordinate
 	 */
 	public int getIndexedRightBorder(){
 		return getCenter().getX() + Map.getBlocksX()/2;
 	}
 	
 	/**
-	 * index to coordiante.
-	 * @return  the top (Y) border
+	 * index to coordinate.
+	 * @return the top (Y) border coordinate
 	 */
 	public int getIndexedTopBorder(){
 		return getCenter().getY() - Map.getBlocksY()/2;
 	}
 	
 	/**
-	 * index to coordiante.
-	 * @return  the bottom (Y) border
+	 * index to coordinate.
+	 * @return the bottom (Y) border coordinate
 	 */
 	public int getIndexedBottomBorder(){
 		return getCenter().getY() + Map.getBlocksY()/2;
@@ -1125,76 +865,10 @@ public class Camera implements LinkedWithMap {
 		shakeTime = time;
 	}
 
-	/**
-	 * 
-	 * @param x coord
-	 * @param y coord
-	 * @param z coord
-	 * @param normal
-	 * @param clipping true if clipped
-	 */
-	public void setClipping(int x, int y, int z, Sides normal, boolean clipping){
-		int lookupX = x-getIndexedLeftBorder();
-		int lookupY = y-getIndexedTopBorder();
-		this.clipping[lookupX][lookupY][z+1][normal.getCode()] = clipping;//z has offset of one to store 
-	}
-	/**
-	 * set every site to clipped
-	 * @param x index
-	 * @param y index
-	 * @param z index
-	 * @param clipped 
-	 */
-	private void setClipped(int x, int y, int z, boolean clipped) {
-		clipping[x][y][z+1][0]=clipped;
-		clipping[x][y][z+1][1]=clipped;
-		clipping[x][y][z+1][2]=clipped;
-	}
 	
-	/**
-	 * get the clipping of a coordinate
-	 * @param coords coord
-	 * @return true if clipped
-	 */
-	public boolean[] getClipping(Coordinate coords) {
-		//map coordinates to array dimensions
-		int lookupX = coords.getX()-getIndexedLeftBorder();
-		int lookupY = coords.getY()-getIndexedTopBorder();
-		//if outside of covered area
-		if (lookupX >= Map.getBlocksX() || lookupX<0 || lookupY<0 || lookupY >= Map.getBlocksY() )
-			return new boolean[]{true, true, true};
-		
-		return clipping
-			[lookupX]
-			[lookupY]
-			[coords.getZ()+1];
-	}
-
-	/**
-	 * 
-	 * @param coord
-	 * @return is a coordiante clipped somewhere? 
-	 * @since 1.3.10
-	 */
-	public boolean isClipped(Coordinate coord) {
-		boolean[] tmp = getClipping(coord);
-		return (tmp[0] || tmp[1] || tmp[2]);
-	}
-	
-	/**
-	 * 
-	 * @param coord
-	 * @return is a coordiante completely clipped
-	 * @since 1.3.10
-	 */
-	public boolean isCompletelyClipped(Coordinate coord) {
-		boolean[] tmp = getClipping(coord);
-		return (tmp[0] && tmp[1] && tmp[2]);
-	}
-
 	@Override
 	public void onMapChange() {
-		rayCastingClipping();
+		hiddenSurfaceDetection();
 	}
 
 	/**
@@ -1207,5 +881,37 @@ public class Camera implements LinkedWithMap {
 		else if (focusEntity!=null)
 			return focusEntity.getPosition().getCoord();
 		else return new Point(position.x, position.y, 0).getCoord();
+	}
+
+	public boolean[] getClipping(Coordinate coords) {
+		//to-do
+		//get hs buffer position. if coordiante is there give the result back. if not return  new boolean[]{true, true, true};
+		return new boolean[]{true, true, true};
+	}
+
+	/**
+	 * 
+	 * @param coord
+	 * @return is a coordiante clipped somewhere? 
+	 * @since 1.3.10
+	 */
+	public boolean isClipped(Coordinate coord) {
+		boolean[] tmp = getClipping(coord);
+		return (tmp[0] || tmp[1] || tmp[2]);
+	}
+
+	private static class ClippingCell extends ArrayList<Block>{
+		private static final long serialVersionUID = 1L;
+		private boolean topLeft, topRight, leftLeft, leftRight, rightLeft, rightRight;
+
+
+		ClippingCell() {
+			super(2);
+		}
+
+		@Override
+		public Object clone() {
+			return super.clone();
+		}
 	}
 }

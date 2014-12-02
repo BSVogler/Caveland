@@ -56,7 +56,7 @@ public class Map implements Cloneable {
     
 	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei());//the representative of the bottom layer (ground) block
     /** Stores the data of the map. Fist dimension is Z. Second X, third Y.  */
-    private ArrayList<ArrayList<ArrayList<Block>>> data;
+    private MapLayer[] data;
     
     private Generator generator;
     
@@ -102,11 +102,11 @@ public class Map implements Cloneable {
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
         blocksZ = Chunk.getBlocksZ();
-        data = new ArrayList<>(blocksZ);
+        data = new MapLayer[blocksZ];
 		//loop over z
 		for (int z = 0; z < blocksZ; z++) {
-			ArrayList<ArrayList<Block>> xRow = new ArrayList<>(blocksX);
-			data.add(xRow);
+			MapLayer xRow = new MapLayer(blocksX);
+			data[z] = xRow;
 			//loop over xrow
 			for (int x = 0; x < blocksX; x++) {
 				ArrayList<Block> yRow = new ArrayList<>(blocksY);
@@ -282,7 +282,7 @@ public class Map implements Cloneable {
      * Get the data of the map
      * @return
      */
-	public ArrayList<ArrayList<ArrayList<Block>>> getData() {
+	public MapLayer[] getData() {
 		return data;
 	}
 	
@@ -395,7 +395,7 @@ public class Map implements Cloneable {
      * @param offsetData the offset data
      * @param pos The chunk number where the chunk is located
      */ 
-    private Chunk copyChunk(final ArrayList<ArrayList<ArrayList<Block>>> data, final int pos) {
+    private Chunk copyChunk(final MapLayer[] data, final int pos) {
         Chunk chunk = new Chunk();
         //copy the data in two loops and then do an arraycopy
 //        for (int x = Chunk.getBlocksX()*(pos % 3);
@@ -459,10 +459,11 @@ public class Map implements Cloneable {
 		
 		//find row in Z
 		boolean found = false;
-		Iterator<ArrayList<ArrayList<Block>>> iterOverZ = data.iterator();
+		int zIt=0;
 		ArrayList<ArrayList<Block>> xRow = null;
-		while (!found && iterOverZ.hasNext()) {
-			xRow = iterOverZ.next();
+		while (!found && zIt<blocksZ) {
+			xRow = data[zIt];
+			zIt++;
 			found = xRow.get(0).get(0).getPosition().getZ()==z;
 		}
 		
@@ -554,10 +555,11 @@ public class Map implements Cloneable {
 		Coordinate coord = block.getPosition();
 		//find row in Z
 		boolean found = false;
-		Iterator<ArrayList<ArrayList<Block>>> iterOverZ = data.iterator();
+		int zIt=0;
 		ArrayList<ArrayList<Block>> xRow = null;
-		while (!found && iterOverZ.hasNext()) {
-			xRow = iterOverZ.next();
+		while (!found && zIt<blocksZ) {
+			xRow = data[zIt];
+			zIt++;
 			found = xRow.get(0).get(0).getPosition().getZ()==coord.getZ();
 		}
 		
@@ -622,7 +624,7 @@ public class Map implements Cloneable {
             coords[2] = 0;
         }
         
-		data.get(coords[2]).get(coords[0]).set(coords[1], block);
+		data[coords[2]].get(coords[0]).set(coords[1], block);
     }
     
     /**
@@ -965,8 +967,8 @@ public class Map implements Cloneable {
 	 * @return 
 	 */
 	public MapIterator getIterator(int bottomLimitZ, int topLimitZ){
-		MapIterator mapIterator = new MapIterator(this);
-		mapIterator.setBottomLimitZ(bottomLimitZ);
+		MapIterator mapIterator = new MapIterator();
+		mapIterator.setStartingZ(bottomLimitZ);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
 	}

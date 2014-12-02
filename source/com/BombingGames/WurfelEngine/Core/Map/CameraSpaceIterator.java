@@ -58,7 +58,15 @@ public class CameraSpaceIterator extends MapIterator {
 		bottomCoord = camera.getIndexedBottomBorder();
 		rightCoord = camera.getIndexedRightBorder();
 		z=-1;
+		//bring starting position to top left
 		current = Controller.getMap().getData()[0].get(0).get(0);
+		while (current.getPosition().getX() < leftCoord){
+			nextX();
+		}
+		
+		while (current.getPosition().getY() < topCoord){
+			nextY();
+		}
 	}
 	
 	/**

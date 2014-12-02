@@ -488,15 +488,17 @@ public class Camera implements LinkedWithMap {
 				}
 			}
 			
-			ClippingCell cell = clipping[x][y];
-			if (cell.isEmpty()){
-				cell.add(block);
-			} else {
-				if (block.getDepth(gameView) < cell.get(0).getDepth(gameView)){
-					if (!block.isTransparent()) {
-						cell.clear();
-					}
+			if (!block.isHidden()) {//ignore hidden blocks
+				ClippingCell cell = clipping[x][y];
+				if (cell.isEmpty()){
 					cell.add(block);
+				} else {
+					if (block.getDepth(gameView) < cell.get(cell.size()-1).getDepth(gameView)){
+						if (!block.isTransparent()) {
+							cell.clear();
+						}
+						cell.add(block);
+					}
 				}
 			}
 		}

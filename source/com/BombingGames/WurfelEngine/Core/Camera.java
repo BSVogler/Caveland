@@ -484,7 +484,7 @@ public class Camera implements LinkedWithMap {
 					y = (Map.getBlocksZ()-z)*2;//reset y iterator
 				} else {
 					x++;//move to next row
-					y = 0;//reset y iterator
+					y = (Map.getBlocksZ()-z)*2;//reset y iterator
 				}
 			}
 			

@@ -355,16 +355,23 @@ public class Camera implements LinkedWithMap {
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
-
-		//add hidden surfeace depth buffer
-		for (ClippingCell[] y : clipping) {
-			for (ClippingCell x : y) {
-				for (Block block : x) {
-					//only add if in view plane to-do
-					depthsort.add(block);
-				}
+		CameraSpaceIterator iterator = new CameraSpaceIterator(this);
+		while (iterator.hasNext()) {//up to zRenderingLimit
+			Block block = iterator.next();
+			if (!block.isHidden()){
+				System.out.println("Added:"+block.getPosition().toString());
+				depthsort.add(block);
 			}
 		}
+//		//add hidden surfeace depth buffer
+//		for (ClippingCell[] y : clipping) {
+//			for (ClippingCell x : y) {
+//				for (Block block : x) {
+//					//only add if in view plane to-do
+//					depthsort.add(block);
+//				}
+//			}
+//		}
 		
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
@@ -886,9 +893,20 @@ public class Camera implements LinkedWithMap {
 	}
 
 	public boolean[] getClipping(Coordinate coords) {
-		//to-do
-		//get hs buffer position. if coordiante is there give the result back. if not return  new boolean[]{true, true, true};
-		return new boolean[]{true, true, true};
+		if (coords.getX()-getIndexedLeftBorder()>0
+			&& coords.getY()-getIndexedTopBorder()>0
+		) {
+			ClippingCell cell = clipping
+				[coords.getX()-getIndexedLeftBorder()]
+				[coords.getY()+coords.getZ()*2-getIndexedTopBorder()];
+			return new boolean[]{
+				cell.getClippingLeft(),
+				cell.getClippingTop(),
+				cell.getClippingRight()
+			};
+		} else {
+			return new boolean[]{true, true, true};
+		}
 	}
 
 	/**
@@ -914,6 +932,18 @@ public class Camera implements LinkedWithMap {
 		@Override
 		public Object clone() {
 			return super.clone();
+		}
+
+		boolean getClippingLeft() {
+			return false;//to-do
+		}
+
+		boolean getClippingTop() {
+			return false;//to-do
+		}
+
+		boolean getClippingRight() {
+			return false;//to-do
 		}
 	}
 }

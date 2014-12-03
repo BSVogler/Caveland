@@ -324,11 +324,11 @@ public class Block extends AbstractGameObject {
             if (CVar.get("enableScalePrototype").getValueb())  //scale if the prototype is activated
                 scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
-                if (!camera.getClipping(coords)[1])
+                //if (!camera.getClipping(coords)[1])
                     renderSide(view, camera, coords, Sides.TOP, scale);
-                if (!camera.getClipping(coords)[0])
+               // if (!camera.getClipping(coords)[0])
                     renderSide(view, camera, coords, Sides.LEFT, scale);
-                if (!camera.getClipping(coords)[2])
+                //if (!camera.getClipping(coords)[2])
                     renderSide(view, camera, coords, Sides.RIGHT, scale);
             } else
                 super.render(view, camera, coords, scale);
@@ -493,7 +493,7 @@ public class Block extends AbstractGameObject {
             sprite.setOrigin(0, 0);
             sprite.scale(scale);
         }
-        
+        //System.out.println("rend:"+xPos+","+yPos);
         color.mul(getLightlevel(), getLightlevel(), getLightlevel(), 1);//darken
 
         sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right

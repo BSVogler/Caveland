@@ -565,8 +565,7 @@ public class Map implements Cloneable {
 		
 		//still not found, must be over map
 		if (!found) {
-			Gdx.app.debug("Map#setData","Tried to set block which is not in memory.");
-			coord.print();
+			Gdx.app.debug("Map#setData","Tried to set block at " +coord+" which is not in memory.");
 		} else {
 			//find row in x
 			found = false;
@@ -579,8 +578,7 @@ public class Map implements Cloneable {
 			
 			//still not found, must not loaded
 			if (!found) {
-				Gdx.app.debug("Map#setData","Tried to set block which is not in memory.");
-				coord.print();
+				Gdx.app.debug("Map#setData","Tried to set block at " +coord+" which is not in memory.");
 			}{
 
 				//find row in y
@@ -942,8 +940,7 @@ public class Map implements Cloneable {
 		for (ArrayList<ArrayList<Block>> z : data) {
 			for (ArrayList<Block> x : z) {
 				for (Block y : x) {
-					y.getPosition().print();
-					System.out.print(" ");
+					System.out.print(y.getPosition()+" ");
 				}
 				System.out.print("\n");
 			}

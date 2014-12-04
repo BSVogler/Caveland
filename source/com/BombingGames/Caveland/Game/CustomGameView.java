@@ -36,15 +36,13 @@ public class CustomGameView extends GameView{
     public void init(Controller controller) {
         super.init(controller);
         Gdx.app.debug("CustomGameView", "Initializing");
-         
         Camera camera = new Camera(
             getPlayer(0),
             0, //left
             0, //top
             Gdx.graphics.getWidth(), //width
             Gdx.graphics.getHeight(),//height
-			this,
-			controller
+			this
         );
 		camera.setFullWindow(true);
         addCamera(camera);
@@ -74,7 +72,7 @@ public class CustomGameView extends GameView{
 			getCameras().get(0).setFullWindow(false);
 			getCameras().get(0).setScreenSize(1920, getCameras().get(0).getScreenHeight()/2);
 			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
-			Camera camera = new Camera(player, 0, 540, 1920, 540, this, getController());
+			Camera camera = new Camera(player, 0, 540, 1920, 540, this);
 			addCamera(camera);
 			player.setCamera(camera);
 			if (Controllers.getControllers().size > 1)

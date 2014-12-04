@@ -138,9 +138,8 @@ public class Camera implements LinkedWithMap {
 	 * @param height The height of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param view
-	 * @param controller
 	 */
-	public Camera(final int x, final int y, final int width, final int height, GameView view, Controller controller) {
+	public Camera(final int x, final int y, final int width, final int height, GameView view) {
 		gameView = view;
 		gameController = controller;
 		screenWidth = width;

@@ -39,8 +39,7 @@ public class GunTestView extends GameView{
             0, //top
             Gdx.graphics.getWidth(), //width
             Gdx.graphics.getHeight(),//height
-			this,
-			controller
+			this
         );
         addCamera(camera);
         ((PlayerWithWeapon) getPlayer()).setCamera(camera);

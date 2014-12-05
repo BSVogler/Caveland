@@ -378,19 +378,25 @@ public class Chunk {
 	
 	/**
 	 * print the chunk to console
+	 * @return 
 	 */
-	public void print() {
+	@Override
+	public String toString() {
+		String strg = null;
 		for (int z = 0; z < blocksZ; z++) {
 			for (int y = 0; y < blocksY; y++) {
 				for (int x = 0; x < blocksX; x++) {
 					if (data[x][y][z].getId()==0)
-						System.out.print("  ");
+						strg += "  ";
 					else
-						System.out.print(data[x][y][z].getId() + " ");
+						strg += data[x][y][z].getId() + " ";
 				}
-				System.out.print("\n");
+				strg += "\n";
 			}
-				System.out.print("\n\n");
+			strg += "\n\n";
 		}
+		return strg;
+	}
+	
 	}
 }

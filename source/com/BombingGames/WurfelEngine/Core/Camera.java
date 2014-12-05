@@ -879,6 +879,12 @@ public class Camera implements LinkedWithMap {
 		hiddenSurfaceDetection();
 	}
 
+	@Override
+	public void onChunkChange(Chunk chunk) {
+	}
+	
+	
+
 	/**
 	 * Returns the focuspoint
 	 * @return 

@@ -40,4 +40,10 @@ public interface LinkedWithMap {
 	 * called if the map content (blocks) changes.
 	 */
 	public void onMapChange();
+	
+	/**
+	 * called if a chunk's content (blocks) changes.
+	 * @param chunk the chunk that changed
+	 */
+	public void onChunkChange(Chunk chunk);
 }

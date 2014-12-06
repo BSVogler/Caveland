@@ -67,7 +67,7 @@ public class Camera implements LinkedWithMap {
 	
 	private ClippingCell[][] clipping;
 	/**
-	 * the position of the camera in projection space. Y-up
+	 * the position of the camera in view space. Y-up
 	 */
 	private final Vector2 position = new Vector2();
 	/**
@@ -643,7 +643,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The Camera top-position in the game world.
+	 * The Camera's center position in the game world. view space. y up
 	 *
 	 * @return in camera position game space
 	 */
@@ -652,7 +652,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The Camera top-position in the game world.
+	 * The Camera's center position in the game world. view space. y up
 	 *
 	 * @param y in game space
 	 */

@@ -3,10 +3,6 @@ attribute vec4 a_color;
 attribute vec2 a_texCoord0;
 
 uniform mat4 u_projTrans;
-uniform vec4 v_tint;
-uniform float u_red;
-uniform float u_green;
-uniform float u_blue;
 
 varying vec4 v_color;
 varying vec2 v_texCoords;

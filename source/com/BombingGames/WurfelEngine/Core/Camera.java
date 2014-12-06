@@ -106,11 +106,6 @@ public class Camera implements LinkedWithMap {
 
 	private Coordinate focusCoordinates;
 	private AbstractEntity focusEntity;
-	/**
-	 * a chunk with an "anchor point"
-	 */
-	private int fixChunkX;
-	private int fixChunkY;
 
 	private boolean fullWindow = false;
 

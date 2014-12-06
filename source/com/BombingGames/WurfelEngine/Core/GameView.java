@@ -259,7 +259,7 @@ public class GameView extends View implements GameManager {
      * @return the relative (to current loaded map) game coordinate
      */
     public float screenXtoGame(final int screenX, final Camera camera){
-        return screenX / camera.getScreenSpaceScaling()- camera.getScreenPosX()+ camera.getProjectionSpaceX();
+        return screenX / camera.getScreenSpaceScaling()- camera.getScreenPosX()+ camera.getViewSpaceX();
     }
     
    /**
@@ -269,7 +269,7 @@ public class GameView extends View implements GameManager {
      * @return the relative game coordinate
      */
     public float screenYtoGame(final int screenY, final Camera camera){
-        return Map.getGameDepth()-camera.getProjectionSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getScreenHeight()*2;
+        return Map.getGameDepth()-camera.getViewSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getScreenHeight()*2;
     }
     
     /**

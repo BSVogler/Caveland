@@ -107,10 +107,10 @@ public class GunTestView extends GameView{
             Gdx.gl20.glLineWidth(2);
             sh.begin(ShapeRenderer.ShapeType.Line);
             sh.line(
-                -getCameras().get(0).getProjectionSpaceX()+getPlayer().getPosition().getViewSpcX(this),
-                -getCameras().get(0).getProjectionSpaceY()+getPlayer().getPosition().getViewSpcY(this)+AbstractGameObject.SCREEN_HEIGHT,
-                -getCameras().get(0).getProjectionSpaceX()+impact.getX(),
-                -getCameras().get(0).getProjectionSpaceY()+impact.getViewSpcY(this)
+                -getCameras().get(0).getViewSpaceX()+getPlayer().getPosition().getViewSpcX(this),
+                -getCameras().get(0).getViewSpaceY()+getPlayer().getPosition().getViewSpcY(this)+AbstractGameObject.SCREEN_HEIGHT,
+                -getCameras().get(0).getViewSpaceX()+impact.getX(),
+                -getCameras().get(0).getViewSpaceY()+impact.getViewSpcY(this)
              );
             sh.end();
             

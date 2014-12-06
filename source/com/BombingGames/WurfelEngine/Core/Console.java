@@ -321,9 +321,6 @@ public class Console {
             case "credits":
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
-            case "clearmap":
-                Controller.getMap().fillWithAir();
-                return true;
             case "save":
                 return Controller.getMap().save();
             case "devtools":

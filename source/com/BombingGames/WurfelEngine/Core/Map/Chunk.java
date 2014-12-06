@@ -54,8 +54,8 @@ public class Chunk {
     protected static final String CHUNKFILESUFFIX = "wec";
     /**The suffix of the metafile */
     protected static final String METAFILESUFFIX = "wem";
-    
-    private static int blocksX = 10;
+
+	private static int blocksX = 10;
     private static int blocksY = 40;//blocksY must be even number
     private static int blocksZ = 10;
 
@@ -68,19 +68,30 @@ public class Chunk {
         blocksY = meta.getChunkBlocksY();
         blocksZ = meta.getChunkBlocksZ();
     }
-    
-    private Block data[][][];
+	/**
+	 * chunk coordinate
+	 */
+	private final int coordX, coordY;
+    private final Block data[][][];
+	private boolean modified;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
+	 * @param coordX
+	 * @param coordY
      */
-    public Chunk() {
-        data = new Block[blocksX][blocksY][blocksZ];
+    public Chunk(final int coordX, final int coordY) {
+        this.coordX = coordX;
+		this.coordY = coordY;
+		
+		data = new Block[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = Block.getInstance(0);
+		modified = true;
+
     }
     
     /**
@@ -91,7 +102,7 @@ public class Chunk {
      * @param generator
     */
     public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
-        this();
+        this(coordX,coordY);
         Gdx.app.debug("Chunk", "Creating chunk"+coordX+","+coordY);
 		if (CVar.get("shouldLoadMap").getValueb()){
 			if (!load(mapname, coordX, coordY))
@@ -106,9 +117,27 @@ public class Chunk {
     * @param generator
     */
     public Chunk(final int coordX, final int coordY, final Generator generator){
-        this();
+        this(coordX,coordY);
         fill(coordX, coordY, generator);
     }
+	
+	public void update(float dt){
+		for (Block[][] x : data) {
+			for (Block[] y : x) {
+				for (Block z : y) {
+					z.update(dt);
+				}
+			}
+		}
+		
+		if (modified){
+			modified=false;
+			Controller.getMap().modified();
+			for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
+				object.onChunkChange(this);
+			}
+		}
+	}
     
     /**
      * Fills the map using a generator.
@@ -120,11 +149,15 @@ public class Chunk {
         WE.getConsole().add("Creating new chunk: "+chunkCoordX+", "+ chunkCoordY);
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
-                for (int z=0; z < blocksZ; z++)
-                    Block.getInstance(
+                for (int z=0; z < blocksZ; z++){
+					Block block = Block.getInstance(
 						generator.generate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z),
-                        0
-					).spawn(new Coordinate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z));//relative to chunk to map absolute
+						0
+					);
+					block.setPosition(new Coordinate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z));
+                    data[x][y][z] = block;//relative to chunk to map absolute
+				}
+		modified = true;
     }
     
     /**
@@ -143,80 +176,81 @@ public class Chunk {
 		if (path.exists()) {
 			//Reading map files test
 			try (FileInputStream fis = new FileInputStream(path.file())) {
-				int z = 0;
-				int x;
-				int y;
+			int z = 0;
+			int x;
+			int y;
 
-				int bufChar = fis.read();
+			int bufChar = fis.read();
 
-				//read a line
-				while (bufChar != -1 && bufChar!='e') {
-					if (bufChar =='\n') bufChar = fis.read();
-					//skip line breaks
+			//read a line
+			while (bufChar != -1 && bufChar!='e') {
+				if (bufChar =='\n') bufChar = fis.read();
+				//skip line breaks
 
-					if (bufChar !='\n'){
+				if (bufChar !='\n'){
 
-						//jump over optional comment line
-						if (
-							bufChar == '/'
-							){
+					//jump over optional comment line
+					if (
+						bufChar == '/'
+						){
+						bufChar = fis.read();
+						while (bufChar!='/'){
 							bufChar = fis.read();
-							while (bufChar!='/'){
-								bufChar = fis.read();
-							}
-							bufChar = fis.read();
-							if (bufChar=='\n')//if following is a line break also skip it again
-								bufChar = fis.read();
 						}
+						bufChar = fis.read();
+						if (bufChar=='\n')//if following is a line break also skip it again
+							bufChar = fis.read();
+					}
 
-						//if layer is empty, fill with air
-						if (bufChar=='l' ){
-							for (int elx = 0; elx < blocksX; elx++) {
-								for (int ely = 0; ely < blocksY; ely++) {
-									data[elx][ely][z] = Block.getInstance(0);
-								}
+					//if layer is empty, fill with air
+					if (bufChar=='l' ){
+						for (int elx = 0; elx < blocksX; elx++) {
+							for (int ely = 0; ely < blocksY; ely++) {
+								data[elx][ely][z] = Block.getInstance(0);
 							}
-						} else {
-							//fill layer block by block
-							y = 0;
+						}
+					} else {
+						//fill layer block by block
+						y = 0;
+						do{
+							x = 0;
+
 							do{
-								x = 0;
-
-								do{
-									int id = fis.read();
-									int value = fis.read();
-									data[x][y][z] = Block.getInstance(id, value);
-									x++;
-								} while (x < blocksX);
-								fis.read();//line break?
-								y++;
-							} while (y < blocksY);
-						}
-						z++;
+								int id = fis.read();
+								int value = fis.read();
+								data[x][y][z] = Block.getInstance(id, value);
+								x++;
+							} while (x < blocksX);
+							fis.read();//line break?
+							y++;
+						} while (y < blocksY);
 					}
-					//read next line
-					bufChar = fis.read();
+					z++;
 				}
+				//read next line
+				bufChar = fis.read();
+			}
 
-				if (CVar.get("loadEntities").getValueb()) {
-					//loading entities
-					if (bufChar=='e'){
-						int length = fis.read(); //amount of entities
-						fis.read();//line break
-						
-						Gdx.app.debug("Chunk", "Loading " + length+" entities");
-						try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
-							AbstractEntity object = (AbstractEntity) objectIn.readObject();
-							for (int i = 0; i < length; i++) {
-								Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
-								Controller.getMap().getEntitys().add(object);
-								object = (AbstractEntity) objectIn.readObject();
-							}
-						} catch (ClassNotFoundException ex) {
-							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+			if (CVar.get("loadEntities").getValueb()) {
+				//loading entities
+				if (bufChar=='e'){
+					int length = fis.read(); //amount of entities
+					fis.read();//line break
+
+					Gdx.app.debug("Chunk", "Loading " + length+" entities");
+					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
+						AbstractEntity object = (AbstractEntity) objectIn.readObject();
+						for (int i = 0; i < length; i++) {
+							Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
+							Controller.getMap().getEntitys().add(object);
+							object = (AbstractEntity) objectIn.readObject();
 						}
+					} catch (ClassNotFoundException ex) {
+						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
+			}
+			modified = true;
 			return true;
 		} catch (IOException ex) {
 			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
@@ -236,15 +270,13 @@ public class Chunk {
      * 
      * @param fileName the map name on disk
 
-	 * @param pos position on map in memory
      * @return 
      * @throws java.io.IOException 
      */
-    public boolean save(String fileName, int pos) throws IOException {
+    public boolean save(String fileName) throws IOException {
         if ("".equals(fileName)) return false;
-		int coords[] = Controller.getMap().getChunkCoords(pos);
-        Gdx.app.log("Chunk","Saving "+coords[0] + ","+ coords[1] +".");
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coords[0]+","+coords[1]+"."+CHUNKFILESUFFIX);
+        Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
+        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
         
         path.file().createNewFile();
         try (FileOutputStream fileOut = new FileOutputStream(path.file())) {		
@@ -276,7 +308,7 @@ public class Chunk {
 				}
 				
 				//save entities
-				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunkWhichShouldBeSaved(pos);
+				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 				if (entities.size()>0) {
 					fileOut.write('e');
 					fileOut.write(entities.size());
@@ -326,14 +358,6 @@ public class Chunk {
      */
     public Block[][][] getData() {
         return data;
-    }
-
-    /**
-     * 
-     * @param data
-     */
-    public void setData(Block[][][] data) {
-        this.data = data;
     }
 
     /**
@@ -398,5 +422,29 @@ public class Chunk {
 		return strg;
 	}
 	
+	
+	public ChunkIterator getIterator(final int startingZ, final int limitZ){
+		return new ChunkIterator(this, startingZ, limitZ);
+	}
+
+	public int getChunkX() {
+		return coordX;
+	}
+
+	public int getChunkY() {
+		return coordY;
+	}
+
+	public Block getBlock(int x, int y, int z) {
+		int xIndex = x-data[0][0][0].getPosition().getX();
+		int yIndex = y-data[0][0][0].getPosition().getY();
+		return data[xIndex][yIndex][z];
+	}
+
+	public void setBlock(Block block) {
+		int xIndex = block.getPosition().getX()-data[0][0][0].getPosition().getX();
+		int yIndex = block.getPosition().getY()-data[0][0][0].getPosition().getY();
+		data[xIndex][yIndex][block.getPosition().getZ()] = block;
+		modified = true;
 	}
 }

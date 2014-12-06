@@ -31,21 +31,71 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class MapLayer extends ArrayList<ArrayList<Block>> {
-	private static final long serialVersionUID = 1L;
+public class ChunkIterator implements Iterator<Block>{
+	private int x, y, z;
+	private Block[][][] data;
+	private final int limitZ;
 
-	MapLayer(int initialCapacity) {
-		super(initialCapacity);
+	public ChunkIterator(Chunk data, final int startingZ, final int limitZ) {
+		x=-1;//start at -1 because the first call of next should return the first element
+		y=0;
+		z=startingZ;
+		this.limitZ=limitZ;
+		this.data = data.getData();
+	}
+	
+	
+
+	@Override
+	public boolean hasNext() {
+		return (
+			   x < Chunk.getBlocksX()-1
+			|| y < Chunk.getBlocksY()-1
+			|| z < Chunk.getBlocksZ()-1
+		);
 	}
 
 	@Override
-	public Object clone(){
-		return super.clone();
+	public Block next() {
+		if (x<Chunk.getBlocksX()-1)
+			x++;
+		else if (y<Chunk.getBlocksY()-1){
+			y++;
+			x=0;
+		} else if (z<limitZ) {
+			z++;
+			y=0;
+			x=0;
+		}
+		
+		if (z<0){
+			//current pos -1 in z
+			Block groundblock = Block.getInstance(2);
+			groundblock.setPosition(
+				new Coordinate(
+					data[x][y][0].getPosition().getX(),
+					data[x][y][0].getPosition().getY(),
+					data[x][y][0].getPosition().getZ()-1
+				)
+			);
+			return groundblock;
+		} else {
+			return data[x][y][z];
+		}
 	}
+
+	@Override
+	public void remove() {
+	}
+	
+	public int[] getCurrentIndex(){
+		return new int[]{x,y,z};
+	}
+	
 }

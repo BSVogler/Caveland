@@ -42,23 +42,30 @@ import java.util.NoSuchElementException;
  */
 public class MapIterator implements Iterator<Block>{
 	private int z=0;
-	private MapLayer[] mapdata;
-	protected Iterator<Block> yIterator;
-	protected Iterator<ArrayList<Block>> xIterator;
+	/**
+	 * use to iterate over chunks
+	 */
+	protected Iterator<Chunk> chunkIterator;
+	/**
+	 * always points to a block
+	 */
+	protected ChunkIterator blockIterator;
 	private int topLimitZ;
+	private int startingZ;
 
 	public MapIterator() {
-		this.mapdata = Controller.getMap().getData();
-		xIterator = mapdata[0].iterator();
-		yIterator = mapdata[0].get(0).iterator();
-		topLimitZ = Map.getBlocksZ();
+		ArrayList<Chunk> mapdata = Controller.getMap().getData();
+		chunkIterator = mapdata.iterator();
+		topLimitZ = Map.getBlocksZ()-1;
+		startingZ = 0;
+		blockIterator = mapdata.get(0).getIterator(0, topLimitZ);
 	}
 	
 	
 
 	@Override
 	public boolean hasNext() {
-		return ((z <= topLimitZ) && hasNextX() && hasNextY());
+		return blockIterator.hasNext() || hasNextChunk();
 	}
 
 	/**
@@ -67,74 +74,22 @@ public class MapIterator implements Iterator<Block>{
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		Block block = yIterator.next();
-		if (!yIterator.hasNext()) {
-			//if at end of y row
-			if (xIterator.hasNext()){
-				yIterator = xIterator.next().iterator();
-			} else {//was at last block in layer
-				if (z<Map.getBlocksZ()){
-					MapLayer tmp = mapdata[z];
-					xIterator = tmp.iterator();
-					yIterator = tmp.get(0).iterator();
-					z++;
-				}
-			}
+		Block block = blockIterator.next();
+		if (!blockIterator.hasNext()){
+			//end of chunk, move to next chunk
+			blockIterator = chunkIterator.next().getIterator(startingZ, topLimitZ);
 		}
 		return block;
 	}
 	
 	/**
-	 * moves to next element;
-	 * @return the next block
-	 * @throws NoSuchElementException 
-	 */
-	public Block nextY() throws NoSuchElementException {
-		return yIterator.next();
-	}
-	
-	/**
-	 * starts at next x row
-	 * @throws NoSuchElementException 
-	 */
-	public void nextX() throws NoSuchElementException {
-		yIterator = xIterator.next().iterator();//moves to next x row and start with y at beginning
-	}
-	
-	/**
-	 * starts at next z layer
-	 * @throws NoSuchElementException 
-	 */
-	public void nextZ() throws NoSuchElementException {
-		z++;
-		xIterator = mapdata[z].iterator();
-		yIterator = mapdata[z].get(0).iterator();
-	}
-
-	/**
 	 * Should not be used because there should be no cases where you remove elements from the map.
 	 */
 	@Override
 	public void remove() {
-		yIterator.remove();
+		//yIterator.remove();
 	}
 
-	
-	/**
-	 * set the top limit of the iteration.
-	 * @param zStarting 
-	 */
-	public void setStartingZ(int zStarting) {
-		z=zStarting;
-		
-		if (z>0){
-			xIterator = mapdata[z].iterator();
-			yIterator = mapdata[z].get(0).iterator();
-		} else {
-			xIterator = mapdata[0].iterator();
-			yIterator = mapdata[0].get(0).iterator();
-		}
-	}
 	
 	/**
 	 * set the top limit of the iteration
@@ -148,20 +103,25 @@ public class MapIterator implements Iterator<Block>{
 		return topLimitZ;
 	}
 
+	public int getStartingZ() {
+		return startingZ;
+	}
+
+	/**
+	 * resets the internal chunk iterator
+	 * @param startingZ the new bottom layer
+	 */
+	public void setStartingZ(int startingZ) {
+		this.startingZ = startingZ;
+		blockIterator = Controller.getMap().getData().get(0).getIterator(startingZ, topLimitZ);
+	}
+	
 	/**
 	 * Reached end of y row?
 	 * @return 
 	 */
-	public boolean hasNextY() {
-		return yIterator.hasNext();
-	}
-
-	/**
-	 * Reached end of x row?
-	 * @return 
-	 */
-	public boolean hasNextX() {
-		return xIterator.hasNext();
+	public boolean hasNextChunk() {
+		return chunkIterator.hasNext();
 	}
 	
 }

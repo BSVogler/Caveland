@@ -30,9 +30,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
@@ -40,51 +40,23 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class CameraSpaceIterator extends MapIterator {
-	private int z=0;
-	private int leftCoord;
-	private int topCoord;
-	private int bottomCoord;
-	private int rightCoord;
-	private Block current;
+	private int chunkCoordX;
+	private int chunkCoordY;
+	private Chunk current;
 
 	/**
-	 * Starts at z=-1.
-	 * @param camera 
+	 * Starts at z=-1. 
+	 * @param startingCoordX the top left chunk coordinate
+	 * @param startingCoordY the top left chunk coordinate
 	 */
-	public CameraSpaceIterator(Camera camera) {
+	public CameraSpaceIterator(int startingCoordX, int startingCoordY) {
 		super();
-		leftCoord = camera.getIndexedLeftBorder();
-		topCoord = camera.getIndexedTopBorder();
-		bottomCoord = camera.getIndexedBottomBorder();
-		rightCoord = camera.getIndexedRightBorder();
-		z=-1;
+		ArrayList<Chunk> mapdata = Controller.getMap().getData();
+		chunkCoordX = startingCoordX;
+		chunkCoordY = startingCoordY;
 		//bring starting position to top left
-		current = Controller.getMap().getData()[0].get(0).get(0);
-		while (current.getPosition().getX() < leftCoord){
-			nextX();
-		}
-		
-		while (current.getPosition().getY() < topCoord){
-			nextY();
-		}
-	}
-	
-	/**
-	 * Reached end of covered area of y row?
-	 * @return 
-	 */
-	@Override
-	public boolean hasNextY() {
-		return yIterator.hasNext() && current.getPosition().getY()<bottomCoord;
-	}
-
-	/**
-	 * Reached end of x row?
-	 * @return 
-	 */
-	@Override
-	public boolean hasNextX() {
-		return xIterator.hasNext() && current.getPosition().getX()<rightCoord;
+		current = mapdata.get(0);
+		blockIterator = mapdata.get(0).getIterator(getStartingZ(), getTopLimitZ());
 	}
 
 	/**
@@ -93,42 +65,28 @@ public class CameraSpaceIterator extends MapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		MapLayer[] mapdata = Controller.getMap().getData();
-		current = yIterator.next();
-		while (current.getPosition().getX() < leftCoord){
-			nextX();
-		}
-		
-		while (current.getPosition().getY() < topCoord){
-			nextY();
-		}
-		
-		if (!yIterator.hasNext()) {
-			//if at end of y row
-			if (xIterator.hasNext()){
-				yIterator = xIterator.next().iterator();
-			} else {//was at last block in layer
-				if (z<Map.getBlocksZ()){
-					MapLayer tmp = mapdata[z];
-					xIterator = tmp.iterator();
-					yIterator = tmp.get(0).iterator();
-					z++;
-				}
+		Block block = blockIterator.next();
+		if (!blockIterator.hasNext()){
+			//end of chunk, move to next chunk
+			if (chunkIterator.hasNext()){
+				current = chunkIterator.next();
 			}
-		}
-		if (z<0){
-			//current pos -1 in z
-			Block groundblock = Block.getInstance(2);
-			groundblock.setPosition(
-				new Coordinate(
-					current.getPosition().getX(),
-					current.getPosition().getY(),
-					current.getPosition().getZ()-1
-				)
-			);
-			current = groundblock;
-		}
-		return current;
+			
+			//check if valid chunk, not the starting chunk and inside camera space
+			while (
+				chunkIterator.hasNext()
+				&& (current.getChunkX() <= chunkCoordX//outside or starting chunk
+				|| current.getChunkX() > chunkCoordX+2)
+				&& (current.getChunkY() <= chunkCoordY
+				|| current.getChunkY() > chunkCoordY+2)
+			) {
+				current = chunkIterator.next();
+				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
+			}		}
+		return block;
 	}
 	
+	public int[] getCurrentIndex(){
+		return blockIterator.getCurrentIndex();
+	}
 }

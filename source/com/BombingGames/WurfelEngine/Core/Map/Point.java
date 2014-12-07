@@ -172,7 +172,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public Block getBlockSafe(){
-        if (onLoadedMapHorizontal())
+        if (isInMemoryHorizontal())
             return getCoord().getBlock();
         else return null;
     }
@@ -220,22 +220,25 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public boolean onLoadedMapHorizontal() {
-        return (
-            getX() >= 0 && getX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getY() >= 0 && getY() < Map.getGameDepth()//do some quick checks Y
-            && getCoord().onLoadedMapHorizontal()//do extended check
-        );
+    public boolean isInMemoryHorizontal() {
+        boolean found = false;
+		for (Chunk chunk : Controller.getMap().getData()){
+			if (chunk.hasPoint(this))
+				found = true;
+		}
+        return found;
     }
 	
 	@Override
-    public boolean onLoadedMap() {
-        return (
-            getX() >= 0 && getX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getY() >= 0 && getY() < Map.getGameDepth()//do some quick checks Y
-			&& getHeight() >=0 && getHeight() < Map.getGameHeight() //quick checks z
-            && getCoord().onLoadedMap()//do extended check
-        );
+    public boolean isInMemory() {
+        boolean found = false;
+		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
+			for (Chunk chunk : Controller.getMap().getData()){
+				if (chunk.hasPoint(this))
+					found = true;
+			}
+		}
+        return found;
     }
 
     /**

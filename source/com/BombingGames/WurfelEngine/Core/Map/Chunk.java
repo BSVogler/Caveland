@@ -400,6 +400,41 @@ public class Chunk {
         return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
     }
 	
+	
+	/**
+	 * Check if the coordinate has the coordinate inside.
+	 * @param coord the coordinate to be checked
+	 * @return true if coord is inside.
+	 */
+	public boolean hasCoord(Coordinate coord){
+		int x = coord.getX();
+		int y = coord.getY();
+		int left = data[0][0][0].getPosition().getX();
+		int top = data[0][0][0].getPosition().getY();
+		return (x >= left
+				&& x < left + blocksX
+				&& y >= top
+				&& y < top + blocksY
+		);
+	}
+	
+		/**
+	 * Check if the coordinate has the coordinate inside.
+	 * @param point the coordinate to be checked
+	 * @return true if coord is inside.
+	 */
+	public boolean hasPoint(Point point){
+		float x = point.getX();
+		float y = point.getY();
+		float left = data[0][0][0].getPosition().getPoint().getX();
+		float top = data[0][0][0].getPosition().getPoint().getY();
+		return (x >= left
+				&& x < left + blocksX
+				&& y >= top
+				&& y < top + blocksY
+		);
+	}
+	
 	/**
 	 * print the chunk to console
 	 * @return 

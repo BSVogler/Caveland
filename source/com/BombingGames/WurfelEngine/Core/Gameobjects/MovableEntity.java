@@ -161,7 +161,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (getPosition()!= null && getPosition().onLoadedMapHorizontal()) {
+        if (getPosition()!= null && getPosition().isInMemoryHorizontal()) {
 
             /*VERTICAL MOVEMENT*/
 				float oldHeight = getPosition().getHeight();

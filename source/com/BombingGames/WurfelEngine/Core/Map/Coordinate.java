@@ -228,7 +228,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Block getBlockSafe(){
-        if (onLoadedMapHorizontal())
+        if (isInMemoryHorizontal())
             return Controller.getMap().getBlock(this);
         else return null;
     }
@@ -265,8 +265,13 @@ public class Coordinate extends AbstractPosition {
      * @return 
      */
     @Override
-    public boolean onLoadedMapHorizontal(){
-        return true;//how to you check this? to-do
+    public boolean isInMemoryHorizontal(){
+        boolean found = false;
+		for (Chunk chunk : Controller.getMap().getData()){
+			if (chunk.hasCoord(this))
+				found = true;
+		}
+        return found;
     }
 	
 	 /**
@@ -274,8 +279,15 @@ public class Coordinate extends AbstractPosition {
      * @return 
      */
     @Override
-    public boolean onLoadedMap(){
-        return true;//how to you check this? to-do
+    public boolean isInMemory(){
+		boolean found = false;
+		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
+			for (Chunk chunk : Controller.getMap().getData()){
+				if (chunk.hasCoord(this))
+					found = true;
+			}
+		}
+        return found;
     }
 
     /**
@@ -495,7 +507,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (onLoadedMap() && getBlock().getId()!=0) {
+		if (isInMemory() && getBlock().getId()!=0) {
 			getBlock().onDestroy(this);//call destruction method
 			setBlock(Block.getInstance(0));
 			return true;
@@ -509,7 +521,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return 
 	 */
 	public boolean damage(float amount) {
-		if (onLoadedMap()) {
+		if (isInMemory()) {
 			Block block = getBlock();
 			if (block.getId()!=0) {
 				block.setHealth(block.getHealth()-amount);

@@ -40,7 +40,7 @@ public class Enemy extends MovableEntity{
 
     @Override
     public void update(float dt) {
-        if (getPosition().getCoord().onLoadedMapHorizontal()) {
+        if (getPosition().getCoord().isInMemoryHorizontal()) {
             //follow the target
             if (target != null) {
 				Vector3 d = new Vector3();

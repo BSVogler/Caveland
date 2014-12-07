@@ -352,8 +352,10 @@ public class Console {
             }
 			if (id < gameplayRef.getView().getCameras().size())
 				gameplayRef.getView().getCameras().get(id).shake(amp, t);
-			else
+			else {
 				add("Camera ID out of range","System");
+				return false;
+			}
 		}
 		
         if (command.startsWith("fillmap")) {

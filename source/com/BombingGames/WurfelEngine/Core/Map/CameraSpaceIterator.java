@@ -65,6 +65,7 @@ public class CameraSpaceIterator extends MapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
+		//move to nesxt block first
 		Block block = blockIterator.next();
 		if (!blockIterator.hasNext()){
 			//end of chunk, move to next chunk
@@ -74,15 +75,23 @@ public class CameraSpaceIterator extends MapIterator {
 			
 			//check if valid chunk, not the starting chunk and inside camera space
 			while (
-				chunkIterator.hasNext()
-				&& (current.getChunkX() <= chunkCoordX//outside or starting chunk
-				|| current.getChunkX() > chunkCoordX+2)
-				&& (current.getChunkY() <= chunkCoordY
-				|| current.getChunkY() > chunkCoordY+2)
+				chunkIterator.hasNext()&& 
+				(
+					(
+					current.getChunkX() == chunkCoordX//starting chunk
+					&& current.getChunkY() == chunkCoordY
+					)
+					||
+					(current.getChunkX() < chunkCoordX//outside
+					|| current.getChunkX() > chunkCoordX+2)
+					&& (current.getChunkY() < chunkCoordY
+					|| current.getChunkY() > chunkCoordY+2)
+				)
 			) {
 				current = chunkIterator.next();
 				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
-			}		}
+			}
+		}
 		return block;
 	}
 	

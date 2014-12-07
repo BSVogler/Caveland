@@ -71,10 +71,6 @@ public class Camera implements LinkedWithMap {
 	 */
 	private final Vector2 position = new Vector2();
 	/**
-	 * the unit length direction vector of the camera
-	 */
-	private final Vector3 direction = new Vector3(0, 0, -1);
-	/**
 	 * the unit length up vector of the camera
 	 */
 	private final Vector3 up = new Vector3(0, 1, 0);
@@ -252,8 +248,11 @@ public class Camera implements LinkedWithMap {
 		position.y += screenshake.y;
 
 		//move camera to the focus 
-		Vector2 tmp = position.cpy().add(getWidthInViewSpc()/ 2, getHeightInViewSpc()/ 2);
-		view.setToLookAt(new Vector3(tmp, 0), direction.add(tmp.x, tmp.y, 0), up);
+		view.setToLookAt(
+			new Vector3(position, 0),
+			new Vector3(position, -1),
+			up
+		);
 
 		//orthographic camera, libgdx stuff
 		projection.setToOrtho(

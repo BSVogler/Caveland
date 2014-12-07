@@ -341,7 +341,7 @@ public abstract class AbstractGameObject implements Serializable {
      * Draws an object if it is not hidden and not clipped.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
-     * @param color  custom blending color
+     * @param color custom blending color
      * @param scale relative value
      */
     public void render(View view, Camera camera, Color color, float scale) {
@@ -360,8 +360,8 @@ public abstract class AbstractGameObject implements Serializable {
         /**
      * Renders at a custom position with the global light.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position in view space (?)
+     * @param yPos rendering position in view space (?)
      */
     public void render(View view, int xPos, int yPos) {
         render(
@@ -381,8 +381,8 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Renders at a custom position with the global light.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position in view space (?)
+     * @param yPos rendering position in view space (?)
      * @param scale relative value. 0 means same size
      */
     public void render(View view, int xPos, int yPos, float scale) {
@@ -403,8 +403,8 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Renders at a custom position with a custom light.
      * @param view
-     * @param xPos rendering position, center of sprite (screen space?)
-     * @param yPos rendering position, center of sprite (screen space?)
+     * @param xPos rendering position, center of sprite in view space (?)
+     * @param yPos rendering position, center of sprite in view space (?)
      * @param color custom blending color
      * @param scale relative value. 0 means same size
      */

@@ -70,7 +70,7 @@ public class CustomGameView extends GameView{
 		}
 		if (coop){
 			getCameras().get(0).setFullWindow(false);
-			getCameras().get(0).setScreenSize(1920, getCameras().get(0).getScreenHeight()/2);
+			getCameras().get(0).setScreenSize(1920, getCameras().get(0).getHeightInScreenSpc()/2);
 			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
 			Camera camera = new Camera(player, 0, 540, 1920, 540, this);
 			addCamera(camera);

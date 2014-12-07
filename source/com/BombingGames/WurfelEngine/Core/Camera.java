@@ -640,7 +640,7 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * The amount of game pixel which are visible in X direction without zoom.
-	 * For screen pixels use {@link #getScreenWidth()}.
+	 * For screen pixels use {@link #getWidthInScreenSpc()}.
 	 *
 	 * @return in game pixels
 	 */
@@ -649,7 +649,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The amount of game pixel which are visible in Y direction without zoom. For screen pixels use {@link #getScreenHeight() }.
+	 * The amount of game pixel which are visible in Y direction without zoom. For screen pixels use {@link #getHeightInScreenSpc() }.
 	 *
 	 * @return in game pixels
 	 */
@@ -666,8 +666,8 @@ public class Camera implements LinkedWithMap {
 	}
 		
 	/**
-	 * The amount of game pixel which are visible in X direction after the zoom has been applied.
-	 * For screen pixels use {@link #getScreenWidth()}.
+	 * The amount of game world pixels which are visible in X direction after the zoom has been applied.
+	 * For screen pixels use {@link #getWidthInScreenSpc()}.
 	 *
 	 * @return in view pixels
 	 */
@@ -676,7 +676,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The amount of game pixel which are visible in Y direction after the zoom has been applied. For screen pixels use {@link #getScreenHeight() }.
+	 * The amount of game pixel which are visible in Y direction after the zoom has been applied. For screen pixels use {@link #getHeightInScreenSpc() }.
 	 *
 	 * @return in view pixels
 	 */
@@ -686,7 +686,7 @@ public class Camera implements LinkedWithMap {
 	
 	/**
 	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
-	 * For screen pixels use {@link #getScreenWidth()}.
+	 * For screen pixels use {@link #getWidthInScreenSpc()}.
 	 *
 	 * @return in pixels
 	 */
@@ -696,12 +696,48 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
-	 * For screen pixels use {@link #getScreenHeight()}.
+	 * For screen pixels use {@link #getHeightInScreenSpc()}.
 	 *
 	 * @return in projection pixels
 	 */
 	public final int getHeightInProjectionSpc() {
 		return (int) (gameSpaceHeight*zoom);
+	}
+	
+	/**
+	 * Returns the position of the cameras output (on the screen)
+	 *
+	 * @return in projection pixels
+	 */
+	public int getScreenPosX() {
+		return screenPosX;
+	}
+
+	/**
+	 * Returns the position of the camera (on the screen)
+	 *
+	 * @return
+	 */
+	public int getScreenPosY() {
+		return screenPosY;
+	}
+
+	/**
+	 * Returns the height of the camera outpu.
+	 *
+	 * @return the value before scaling
+	 */
+	public int getHeightInScreenSpc() {
+		return screenHeight;
+	}
+
+	/**
+	 * Returns the width of the camera output.
+	 *
+	 * @return the value before scaling
+	 */
+	public int getWidthInScreenSpc() {
+		return screenWidth;
 	}
 
 	/**
@@ -736,42 +772,6 @@ public class Camera implements LinkedWithMap {
 		return getCenter().getY() + Map.getBlocksY()/2;//wrong! TODO, should get chunk border
 	}
 	
-	/**
-	 * Returns the position of the cameras output (on the screen)
-	 *
-	 * @return in projection pixels
-	 */
-	public int getScreenPosX() {
-		return screenPosX;
-	}
-
-	/**
-	 * Returns the position of the camera (on the screen)
-	 *
-	 * @return
-	 */
-	public int getScreenPosY() {
-		return screenPosY;
-	}
-
-	/**
-	 * Returns the height of the camera outpu.
-	 *
-	 * @return the value before scaling
-	 */
-	public int getScreenHeight() {
-		return screenHeight;
-	}
-
-	/**
-	 * Returns the width of the camera output.
-	 *
-	 * @return the value before scaling
-	 */
-	public int getScreenWidth() {
-		return screenWidth;
-	}
-
 	/**
 	 * Does the cameras output cover the whole screen?
 	 *

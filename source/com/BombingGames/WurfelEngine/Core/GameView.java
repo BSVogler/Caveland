@@ -269,7 +269,7 @@ public class GameView extends View implements GameManager {
      * @return the relative game coordinate
      */
     public float screenYtoGame(final int screenY, final Camera camera){
-        return Map.getGameDepth()-camera.getViewSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getScreenHeight()*2;
+        return Map.getGameDepth()-camera.getViewSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getHeightInScreenSpc()*2;
     }
     
     /**
@@ -288,8 +288,8 @@ public class GameView extends View implements GameManager {
 				i++;
 			} while (
 					i < cameras.size()
-					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
-					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
+					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getWidthInScreenSpc()
+					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getHeightInScreenSpc())
 			);
 
 			//find points

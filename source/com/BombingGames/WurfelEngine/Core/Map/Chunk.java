@@ -469,6 +469,10 @@ public class Chunk {
 	public int getChunkY() {
 		return coordY;
 	}
+	
+	public Coordinate getTopLeftCoordinate(){
+		return data[0][0][0].getPosition();
+	}
 
 	public Block getBlock(int x, int y, int z) {
 		int xIndex = x-data[0][0][0].getPosition().getX();

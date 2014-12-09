@@ -325,6 +325,25 @@ public class Map implements Cloneable{
 		}
 		return null;//not found
 	}
+	
+	/**
+	 * get the chunkwith the chunk coords
+	 * @param chunkX
+	 * @param chunkY
+	 * @return 
+	 */
+	public Chunk getChunk(int chunkX, int chunkY){
+		for (Chunk chunk : data) {
+			//identify chunk
+			if (
+				   chunkX == chunk.getChunkX()
+				&& chunkY == chunk.getChunkY()
+			) {
+				return chunk;
+			}
+		}
+		return null;//not found
+	}
         
     /**
      * Set the generator used for generating maps

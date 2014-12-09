@@ -429,9 +429,9 @@ public class Chunk {
 		float left = data[0][0][0].getPosition().getPoint().getX();
 		float top = data[0][0][0].getPosition().getPoint().getY();
 		return (x >= left
-				&& x < left + blocksX
+				&& x < left + getGameWidth()
 				&& y >= top
-				&& y < top + blocksY
+				&& y < top + getGameDepth()
 		);
 	}
 	

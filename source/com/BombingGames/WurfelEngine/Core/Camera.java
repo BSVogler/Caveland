@@ -310,15 +310,39 @@ public class Camera implements LinkedWithMap {
 				}
 			view.getBatch().end();
 
-			//outline map
+			//outline 3x3 chunks
 			if (CVar.get("debugObjects").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 				view.getShapeRenderer().rect(
-					-Chunk.getGameWidth(),
-					-Chunk.getGameDepth()/2,
+					-Chunk.getGameWidth(),//one chunk to the left
+					-Chunk.getGameDepth(),//two chunks down
 					Map.getGameWidth(),
 					Map.getGameDepth() / 2
+				);
+				view.getShapeRenderer().line(
+					-Chunk.getGameWidth(),
+					-Chunk.getGameDepth()/2,
+					-Chunk.getGameWidth()+Map.getGameWidth(),
+					-Chunk.getGameDepth()/2
+				);
+				view.getShapeRenderer().line(
+					-Chunk.getGameWidth(),
+					0,
+					-Chunk.getGameWidth()+Map.getGameWidth(),
+					0
+				);
+				view.getShapeRenderer().line(
+					0,
+					Chunk.getGameDepth()/2,
+					0,
+					-Chunk.getGameDepth()
+				);
+				view.getShapeRenderer().line(
+					Chunk.getGameWidth(),
+					Chunk.getGameDepth()/2,
+					Chunk.getGameWidth(),
+					-Chunk.getGameDepth()
 				);
 				view.getShapeRenderer().end();
 			}

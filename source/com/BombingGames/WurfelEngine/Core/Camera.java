@@ -370,24 +370,24 @@ public class Camera implements LinkedWithMap {
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
-		CameraSpaceIterator iterator = new CameraSpaceIterator(topLeftChunkX,topLeftChunkY);
-		iterator.setStartingZ(-1);
-		while (iterator.hasNext()) {//up to zRenderingLimit
-			Block block = iterator.next();
-			if (!block.isHidden()){
-				System.out.println("Added:"+block.getPosition().toString());
-				depthsort.add(block);
-			}
-		}
-//		//add hidden surfeace depth buffer
-//		for (ClippingCell[] y : clipping) {
-//			for (ClippingCell x : y) {
-//				for (Block block : x) {
-//					//only add if in view plane to-do
-//					depthsort.add(block);
-//				}
+//		CameraSpaceIterator iterator = new CameraSpaceIterator(topLeftChunkX,topLeftChunkY);
+//		iterator.setStartingZ(-1);
+//		while (iterator.hasNext()) {//up to zRenderingLimit
+//			Block block = iterator.next();
+//			if (!block.isHidden()){
+//				//System.out.println("Added:"+block.getPosition().toString());
+//				depthsort.add(block);
 //			}
 //		}
+//		//add hidden surfeace depth buffer
+		for (ClippingCell[] y : clipping) {
+			for (ClippingCell x : y) {
+				for (Block block : x) {
+					//only add if in view plane to-do
+					depthsort.add(block);
+				}
+			}
+		}
 		
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {

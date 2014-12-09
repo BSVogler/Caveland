@@ -71,6 +71,7 @@ public class CameraSpaceIterator extends MapIterator {
 			//end of chunk, move to next chunk
 			if (chunkIterator.hasNext()){
 				current = chunkIterator.next();
+				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
 			}
 			
 			//check if valid chunk, not the starting chunk and inside camera space

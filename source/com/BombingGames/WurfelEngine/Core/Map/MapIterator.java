@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *Iterates over the camera space. The camera space is 3x3 chunks.
+ *Iterates over the blocks in camera space. The camera space is 3x3 chunks.
  * @author Benedikt Vogler
  */
 public class MapIterator implements Iterator<Block>{

@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import java.util.Iterator;
 
 /**
- *
+ *An iterator iterating over the data in a chunk
  * @author Benedikt Vogler
  */
 public class ChunkIterator implements Iterator<Block>{

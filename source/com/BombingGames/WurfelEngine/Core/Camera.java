@@ -314,7 +314,12 @@ public class Camera implements LinkedWithMap {
 			if (CVar.get("debugObjects").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-				view.getShapeRenderer().rect(0, 0, Map.getGameWidth(), Map.getGameDepth() / 2);
+				view.getShapeRenderer().rect(
+					-Chunk.getGameWidth(),
+					-Chunk.getGameDepth()/2,
+					Map.getGameWidth(),
+					Map.getGameDepth() / 2
+				);
 				view.getShapeRenderer().end();
 			}
 		}

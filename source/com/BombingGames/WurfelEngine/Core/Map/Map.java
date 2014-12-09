@@ -167,8 +167,8 @@ public class Map implements Cloneable{
                     data.add(new Chunk(x, y, generator));
            }
     }
-    
-     /**
+	
+	/**
      * Returns the amount of Blocks inside the map in x-direction.
      * @return
      */
@@ -220,112 +220,7 @@ public class Map implements Cloneable{
 	public ArrayList<Chunk> getData() {
 		return data;
 	}
-	
-	
-    
-//    /**
-//     * Reorganises the map and sets the new middle chunk to param newmiddle.
-//     * Move all chunks when loading or creating a new piece of the map
-//     *    |0|1|2|
-//     *     -------------
-//     *    |3|4|5|
-//     *     -------------
-//     *    |6|7|8|
-//     * @param newmiddle newmiddle is 1, 3, 5 or 7
-//     */
-//    public void setCenter(final int newmiddle){
-//        if (CVar.get("chunkSwitchAllowed").getValueb()){
-//            Gdx.app.log("Map","ChunkSwitch:"+newmiddle);
-//            if (newmiddle==1 || newmiddle==3 || newmiddle==5 || newmiddle==7) {
-//
-//                //make a chunk of the data
-//                Block[][][] dataCopy = copyBlocks(data);
-//                
-//                for (int pos=0; pos<9; pos++){
-//                     //save
-//                    if (isMovingOutside(pos, newmiddle)){
-//                        try {
-//                            copyChunk(dataCopy, pos).save(filename, pos);
-//                        } catch (IOException ex) {
-//                            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                    
-//                    //refresh coordinates
-//                    coordlist[pos][0] += (newmiddle == 3 ? -1 : (newmiddle == 5 ? 1 : 0));
-//                    coordlist[pos][1] += (newmiddle == 1 ? -1 : (newmiddle == 7 ? 1 : 0));
-//
-//                    Chunk chunk;
-//                    if (isMovingChunkPossible(pos, newmiddle)){
-//                        chunk = copyChunk(dataCopy, pos - 4 + newmiddle);
-//                    } else {
-//                        chunk = new Chunk(
-//                            filename,
-//                            coordlist[pos][0],
-//                            coordlist[pos][1],
-//                            generator
-//                        );
-//                    }
-//                    insertChunk((byte) pos,chunk);
-//                }
-//
-//                modified();
-//            } else {
-//                Gdx.app.log("Map","setCenter was called with center:"+newmiddle);
-//            }
-//        }
-//    }
-    
-//    /**
-//     * checks if the number can be reached by moving the net in a newmiddle
-//     * @param pos the position you want to check
-//     * @param newmiddle the newmiddle the chunkswitch is made to
-//     * @return 
-//     */
-//     private boolean isMovingChunkPossible(final int pos, final int newmiddle){
-//        boolean result = true; 
-//        switch (newmiddle){
-//            case 1: if ((pos==0) || (pos==1) || (pos==2)) result = false;
-//            break;
-//            
-//            case 3: if ((pos==0) || (pos==3) || (pos==6)) result = false;
-//            break;  
-//                
-//            case 5: if ((pos==2) || (pos==5) || (pos==8)) result = false;
-//            break;
-//                
-//            case 7: if ((pos==6) || (pos==7) || (pos==8)) result = false;
-//            break;
-//        } 
-//        return result;
-//    }
      
-//     /**
-//      * is the chunk moving from the map and overriden?
-//      * @param pos
-//      * @param newmiddle
-//      * @return 
-//      */
-//    private boolean isMovingOutside(final int pos, final int newmiddle){
-//        boolean result = false; 
-//        switch (newmiddle){
-//            case 1: if ((pos==6) || (pos==7) || (pos==8)) result = true;
-//            break;
-//            
-//            case 3: if ((pos==2) || (pos==5) || (pos==8)) result = true;
-//            break;  
-//                
-//            case 5: if ((pos==0) || (pos==3) || (pos==6)) result = true;
-//            break;
-//                
-//            case 7: if ((pos==0) || (pos==1) || (pos==2)) result = true;
-//            break;
-//        } 
-//        return result;
-//    }
-     
-
-    
     /**
      * Returns a block without checking the parameters first. Good for debugging and also faster.
 	 * O(n)
@@ -754,11 +649,4 @@ public class Map implements Cloneable{
 		return mapIterator;
 	}
 
-	public void loadChunks(int direction, Coordinate center) {
-	}
-
-	public void deleteChunks(int direction, Coordinate center) {
-	}
-
-    
 }

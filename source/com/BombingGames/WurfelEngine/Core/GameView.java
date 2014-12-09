@@ -152,30 +152,6 @@ public class GameView extends View implements GameManager {
 		 * problem! Write acces in view. causes 1 frame hack without hacks.
 		 */
         for (Camera camera : cameras) {
-            if (CVar.get("chunkSwitchAllowed").getValueb()) {
-                //earth to right
-                if (camera.getVisibleLeftBorder() <= 0){
-                    Controller.getMap().loadChunks(3, camera.getCenter());
-					Controller.getMap().deleteChunks(5, camera.getCenter());
-				} else
-                    if (camera.getVisibleRightBorder() >= Map.getBlocksX()-1) {
-						Controller.getMap().loadChunks(5, camera.getCenter());
-						Controller.getMap().deleteChunks(3, camera.getCenter());
-                        //Controller.getMap().setCenter(5); //earth to the left
-					}
-                //scroll up, earth down            
-                if (camera.getVisibleBackBorder() <= 0) {
-					Controller.getMap().loadChunks(1, camera.getCenter());
-					Controller.getMap().deleteChunks(7, camera.getCenter());
-                    //Controller.getMap().setCenter(1);
-				} else {
-                    if (camera.getVisibleFrontBorder() >= Map.getBlocksY()-1) {
-						Controller.getMap().loadChunks(7, camera.getCenter());
-						Controller.getMap().deleteChunks(1, camera.getCenter());
-					}
-                        //Controller.getMap().setCenter(7); //scroll down, earth up
-				}
-            }
             camera.update(dt);
         }
         

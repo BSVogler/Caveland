@@ -205,7 +205,7 @@ public class Point extends AbstractPosition {
         return (
 				view.getOrientation()==0
 				?
-					(int) ((Map.getGameDepth()-getY()) / 2) //add the objects position inside this coordinate
+					(int) (-getY() / 2) //add the objects position inside this coordinate
 				:
 					(
 						view.getOrientation()==2

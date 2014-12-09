@@ -450,7 +450,7 @@ public class Coordinate extends AbstractPosition {
 			(
 				view.getOrientation()==0
 				?
-					(Map.getBlocksY()+1-getY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
+					-getY() * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
 				:
 					(
 						view.getOrientation()==2

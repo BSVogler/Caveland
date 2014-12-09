@@ -247,6 +247,38 @@ public class Camera implements LinkedWithMap {
 		position.x += screenshake.x;
 		position.y += screenshake.y;
 
+		//check if 
+		if (CVar.get("chunkSwitchAllowed").getValueb()) {
+			if (getVisibleLeftBorder() <= getCoveredLeftBorder()){
+				Controller.getMap().loadChunk(topLeftChunkX-1, topLeftChunkY);
+                Controller.getMap().loadChunk(topLeftChunkX-1, topLeftChunkY+1);
+				Controller.getMap().loadChunk(topLeftChunkX-1, topLeftChunkY+2);
+				//TODO mark chunks on right side to be deleted
+			} else{
+				if (getVisibleRightBorder() >= getCoveredRightBorder()) {
+					Controller.getMap().loadChunk(topLeftChunkX+3, topLeftChunkY);
+					Controller.getMap().loadChunk(topLeftChunkX+3, topLeftChunkY+1);
+					Controller.getMap().loadChunk(topLeftChunkX+3, topLeftChunkY+2);
+					//TODO mark chunks on left side to be deleted
+				}
+			}
+			//scroll up, earth down            
+			if (getVisibleBackBorder() <= getCoveredBackBorder()) {
+				Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY-1);
+                Controller.getMap().loadChunk(topLeftChunkX+1, topLeftChunkY-1);
+				Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY-1);
+				//TODO mark chunks on bottom side to be deleted
+			} else {
+				if (getVisibleFrontBorder() >= getCoveredFrontBorder()) {
+					Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY+3);
+					Controller.getMap().loadChunk(topLeftChunkX+1, topLeftChunkY+3);
+					Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY+3);
+					//TODO mark chunks on top side to be deleted
+				}
+			}
+		}
+		
+		
 		//move camera to the focus 
 		view.setToLookAt(
 			new Vector3(position, 0),

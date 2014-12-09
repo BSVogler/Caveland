@@ -585,37 +585,40 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		int left = (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH);
-		if (left < 0) {
-			return 0;//clamp
-		}
-		return left;
+		//TODO
+		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH);
+	}
+	
+	public int getCoveredLeftBorder() {
+		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getX();
 	}
 
 	/**
-	 * Returns the right border of the visible area.
+	 * Returns the right border of the camera covered area.
 	 *
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		int right = (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH + 1);
-		if (right >= Map.getBlocksX()) {
-			return Map.getBlocksX() - 1;//clamp
-		}
-		return right;
+		//TODO
+		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH + 1);
+	}
+	
+	public int getCoveredRightBorder() {
+		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getX();
 	}
 
 	/**
-	 * Returns the top seight border of the deepest groundBlock
+	 * Returns the top seight border of the camera covered groundBlock
 	 *
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleBackBorder() {
-		int back = (int) (Map.getBlocksY() - 1 - ((position.y + getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2) - 3);
-		if (back < 0) {
-			return 0;//clamp
-		}
-		return back;
+		//TODO
+		return (int) (Map.getBlocksY() - 1 - ((position.y + getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2) - 3);
+	}
+	
+	public int getCoveredBackBorder() {
+		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getY();
 	}
 
 	/**
@@ -624,11 +627,13 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates, relative to map
 	 */
 	public int getVisibleFrontBorder() {
-		int front = (int) (Map.getBlocksY() - 1 - ((position.y+ getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ() * 2) + 2);
-		if (front >= Map.getBlocksY()) {
-			return Map.getBlocksY() - 1;//clamp
-		}
-		return front;
+		//TODO
+		return (int) (Map.getBlocksY() - 1 - ((position.y+ getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ() * 2) + 2);
+	}
+	
+	public int getCoveredFrontBorder() {
+		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY+2).getTopLeftCoordinate().getX()
+			+ Chunk.getBlocksX()-1;
 	}
 
 	/**

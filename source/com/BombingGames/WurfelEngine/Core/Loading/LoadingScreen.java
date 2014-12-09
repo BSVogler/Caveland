@@ -116,7 +116,7 @@ public class LoadingScreen extends WEScreen {
 
     @Override
     public void resize(int width, int height) {
-        // Set our screen to always be XXX x 480 in size
+        // Set our screen to always be WWW x 480 in size
         //width = 1920;
         //height = 1080;
         //stage.setViewport(new StretchViewport(width , height));

@@ -567,7 +567,7 @@ public class Map implements Cloneable{
     }
     
     /**
-     *Returns a corodinate pointing to the absolute center of the map.
+     *Returns a coordinate pointing to middle of a 3x3 chunk map.
      * @param height You custom height.
      * @return
      */

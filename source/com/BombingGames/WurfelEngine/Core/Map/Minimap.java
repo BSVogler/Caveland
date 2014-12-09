@@ -243,14 +243,14 @@ public class Minimap implements LinkedWithMap {
 		sh.translate(0, -mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
 
 		//chunk coordinates
-		for (int chunk = 0; chunk < 9; chunk++) {
-			view.drawString(
-				Controller.getMap().getChunkCoords(chunk)[0] +" | "+ Controller.getMap().getChunkCoords(chunk)[1],
-				(int) (posX + 10 + chunk%3 *Chunk.getBlocksX()*scaleX),
-				(int) (posY - 10 - chunk/3 *(Chunk.getBlocksY()*scaleY)),
-				Color.BLACK
-			);
-		}
+//		for (int chunk = 0; chunk < 9; chunk++) {
+//			view.drawString(
+//				Controller.getMap().getChunkCoords(chunk)[0] +" | "+ Controller.getMap().getChunkCoords(chunk)[1],
+//				(int) (posX + 10 + chunk%3 *Chunk.getBlocksX()*scaleX),
+//				(int) (posY - 10 - chunk/3 *(Chunk.getBlocksY()*scaleY)),
+//				Color.BLACK
+//			);
+//		}
 
 		fbo.end();
 		needsrebuild= false;
@@ -289,8 +289,8 @@ public class Minimap implements LinkedWithMap {
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
 					sh.rect(
-						scaleX * camera.getProjectionSpaceX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getProjectionSpaceY() / Block.SCREEN_DEPTH2,
+						scaleX * camera.getViewSpaceX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.SCREEN_DEPTH2,
 						scaleX*camera.getWidthInViewSpc()/ Block.SCREEN_WIDTH,
 						scaleY*camera.getHeightInViewSpc()/ Block.SCREEN_DEPTH2
 					);
@@ -310,8 +310,8 @@ public class Minimap implements LinkedWithMap {
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
 					sh.rect(
-						scaleX * camera.getProjectionSpaceX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getProjectionSpaceY() / Block.SCREEN_DEPTH2
+						scaleX * camera.getViewSpaceX() / Block.SCREEN_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.SCREEN_DEPTH2
 							-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
 						scaleX*camera.getWidthInViewSpc() / Block.SCREEN_WIDTH,
 						scaleY*camera.getHeightInViewSpc() / Block.SCREEN_DEPTH2
@@ -321,7 +321,7 @@ public class Minimap implements LinkedWithMap {
 
 				//camera position
 				view.drawString(
-					camera.getProjectionSpaceX() +" | "+ camera.getProjectionSpaceY(),
+					camera.getViewSpaceX() +" | "+ camera.getViewSpaceY(),
 					posX,
 					(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
 					Color.WHITE
@@ -359,6 +359,10 @@ public class Minimap implements LinkedWithMap {
 	@Override
 	public void onMapChange() {
 		needsRebuild();
+	}
+
+	@Override
+	public void onChunkChange(Chunk chunk) {
 	}
 	
 	

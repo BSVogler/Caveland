@@ -169,6 +169,15 @@ public class Map implements Cloneable{
     }
 	
 	/**
+	 * loads a chunk from disk
+	 * @param chunkX
+	 * @param chunkY 
+	 */
+	public void loadChunk(int chunkX, int chunkY){
+		data.add(new Chunk(filename, chunkX, chunkY, generator));
+	}
+    
+     /**
      * Returns the amount of Blocks inside the map in x-direction.
      * @return
      */
@@ -295,6 +304,11 @@ public class Map implements Cloneable{
 		getChunk(block.getPosition()).setBlock(block);
     }
 	
+	/**
+	 * get the chunk where the coordinates are on
+	 * @param coord
+	 * @return 
+	 */
 	public Chunk getChunk(Coordinate coord){
 		for (Chunk chunk : data) {
 			int left = chunk.getData()[0][0][0].getPosition().getX();

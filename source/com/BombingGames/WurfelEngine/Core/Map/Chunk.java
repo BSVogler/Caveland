@@ -74,6 +74,10 @@ public class Chunk {
 	private final int coordX, coordY;
     private final Block data[][][];
 	private boolean modified;
+	/**
+	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
+	 */
+	private int cameraAccessCounter = 0;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -108,6 +112,7 @@ public class Chunk {
 			if (!load(mapname, coordX, coordY))
 				fill(coordX, coordY, generator);
 		} else fill(coordX, coordY, generator);
+		increaseCameraAccesCounter();
     }
     
     /**
@@ -486,4 +491,17 @@ public class Chunk {
 		data[xIndex][yIndex][block.getPosition().getZ()] = block;
 		modified = true;
 	}
+	
+	public void decreaseAccesCounter(){
+		cameraAccessCounter--;
+	}
+	
+	public final void increaseCameraAccesCounter(){
+		cameraAccessCounter++;
+	}
+
+	protected int getCameraAccessCounter() {
+		return cameraAccessCounter;
+	}
+	
 }

@@ -324,7 +324,7 @@ public class MapEditorView extends GameView {
             coords.setZ(layerSelection);
             
             if (buttondown==Buttons.LEFT){
-				Block block = colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord());
+				Block block = colorGUI.getBlock(coords);
                 Controller.getMap().setData(block);
             } else if (buttondown == Buttons.RIGHT) {
 				Block block = Block.getInstance(0);

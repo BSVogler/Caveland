@@ -96,7 +96,19 @@ public class CameraSpaceIterator extends MapIterator {
 		return block;
 	}
 	
+	/**
+	 * get the indices position inside the chunk
+	 * @return 
+	 */
 	public int[] getCurrentIndex(){
 		return blockIterator.getCurrentIndex();
+	}
+	
+	/**
+	 * 
+	 * @return the chunk which the chunk iterator currently points to
+	 */
+	public Chunk getCurrentChunk(){
+		return current;
 	}
 }

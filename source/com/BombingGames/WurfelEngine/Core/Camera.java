@@ -536,9 +536,12 @@ public class Camera implements LinkedWithMap {
 			Block block = iterMap.next();
 			
 			if (!block.isHidden()) {//ignore hidden blocks
-				int x=iterMap.getCurrentIndex()[0];
-				int y=iterMap.getCurrentIndex()[1]-iterMap.getCurrentIndex()[2]*2;//y and z projected on one plane
+				int x= -Chunk.getBlocksX() * ( topLeftChunkX - iterMap.getCurrentChunk().getChunkX() )//skip chunks
+					+ iterMap.getCurrentIndex()[0];//position inside the chunk
+				int y = -Chunk.getBlocksY() * ( topLeftChunkY - iterMap.getCurrentChunk().getChunkY() )//skip chunks
+					+ iterMap.getCurrentIndex()[1]-iterMap.getCurrentIndex()[2]*2;//y and z projected on one plane
 				ClippingCell cell = clipping[x][y]; //tmp var for current cell
+				
 				if (cell.isEmpty()){
 					cell.add(block);
 				} else {

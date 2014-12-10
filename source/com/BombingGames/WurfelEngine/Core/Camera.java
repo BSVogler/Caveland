@@ -681,7 +681,6 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * Returns the top seight border of the camera covered groundBlock
-	 *
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleBackBorder() {
@@ -700,11 +699,13 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * Returns the bottom seight border y-coordinate of the highest groundBlock
 	 *
-	 * @return measured in grid-coordinates, relative to map
+	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleFrontBorder() {
-		//TODO
-		return (int) (Map.getBlocksY() - 1 - ((position.y+ getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ() * 2) + 2);
+		return (int) (
+			(position.y+ getHeightInViewSpc()/2) //bottom camera border
+			/ AbstractGameObject.SCREEN_DEPTH2 //back to game coordinates
+		);
 	}
 	
 	/**

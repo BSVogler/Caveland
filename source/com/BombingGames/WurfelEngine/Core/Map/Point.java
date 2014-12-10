@@ -142,6 +142,7 @@ public class Point extends AbstractPosition {
      *Get as array triple
      * @return
      */
+	@Override
     public Vector3 getVector(){
         return new Vector3(x, y, z);
     }

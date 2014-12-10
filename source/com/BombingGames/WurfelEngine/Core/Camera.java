@@ -469,7 +469,7 @@ public class Camera implements LinkedWithMap {
 					(proX- Block.SCREEN_WIDTH2)//left side of sprite
 					<
 					position.x + getWidthInViewSpc()/2
-                && entity.getPosition().getZ() < zRenderingLimit
+                && entity.getPosition().getCoord().getZ() < zRenderingLimit
             )
 				depthsort.add(entity);
 			}

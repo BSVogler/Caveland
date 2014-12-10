@@ -106,7 +106,9 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return a new Block instance of the selected id and value.
 	 */
 	public Block getBlock(Coordinate coord){
-		return Block.getInstance(id, value);
+		Block block = Block.getInstance(id, value);
+		block.setPosition(coord);
+		return block;
 	}
 	
 	/**

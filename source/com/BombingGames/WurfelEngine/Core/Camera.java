@@ -529,7 +529,8 @@ public class Camera implements LinkedWithMap {
 		}
 		//the iterator which iterates over the map
 		CameraSpaceIterator iterMap = new CameraSpaceIterator(topLeftChunkX, topLeftChunkY);
-
+		iterMap.setStartingZ(-1); //loop also over ground level
+		
 		//loop over map covered by camera
 		while (iterMap.hasNext()){
 			Block block = iterMap.next();

@@ -181,6 +181,7 @@ public class Map implements Cloneable{
 	public void loadChunk(int chunkX, int chunkY){
 		//TODO if already there.
 		data.add(new Chunk(filename, chunkX, chunkY, generator));
+		modified();
 	}
     
      /**

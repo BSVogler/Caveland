@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
  *A Sea Block which has a "waves" effect.
  * @author Benedikt Vogler
  */
-public class Sea extends Block implements IsSelfAware{
+public class Sea extends Block {
 	private static final long serialVersionUID = 1L;
     /**
      *
@@ -75,12 +75,12 @@ public class Sea extends Block implements IsSelfAware{
     }
 
     @Override
-    public void update(float delta, int x, int y, int z) {
+    public void update(float delta) {
 		if (coords!=null){
 			offsetY =
 				(int) (startvalue +
 					Math.sin(
-						(currentX-coords.getRelX()-coords.getRelY())
+						(currentX-coords.getX()-coords.getY())
 							* Math.PI/waveWidth
 					)*WAVE_AMPLITUDE);
 		}

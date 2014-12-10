@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
@@ -68,14 +67,13 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	
 	@Override
-	public void render(View view, Camera camera, AbstractPosition pos, Color color) {
+	public void render(View view, Camera camera, Color color) {
 		render(
             view,
             camera,
-            pos,
             this.color.cpy().mul(color),
             CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
-                ? pos.getPoint().getHeight()/(Map.getGameHeight())
+                ? getPosition().getZ()/(Map.getGameHeight())
                 : -0.4f
         );
 	}

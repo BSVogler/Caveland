@@ -143,6 +143,18 @@ public abstract class AbstractGameObject implements Serializable {
     
 	public abstract int getDimensionZ();
 	
+	  /**
+     * Return the coordinates of the SelfAware object.
+     * @return the coordinates where the object is located
+     */
+    public abstract AbstractPosition getPosition();
+    
+    /**
+     * Set the coordinates without safety check.
+     * @param pos the coordinates you want to set
+     */
+    public abstract void setPosition(AbstractPosition pos);
+	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
 	 * @param customPath format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix 
@@ -163,6 +175,18 @@ public abstract class AbstractGameObject implements Serializable {
         Sea.staticUpdate(dt);
     }
     
+	
+	/**
+     * Returns the depth of the object.
+	 * @param view
+     * @return
+     */
+    public int getDepth(View view) {
+        return (int) (getPosition().getDepth(view)
+            + getDimensionZ()/AbstractPosition.SQRT2
+        );
+    }
+	
      /**
      *
      * @return
@@ -259,15 +283,13 @@ public abstract class AbstractGameObject implements Serializable {
     
     /**
      * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden.
-     * @param pos the coordinates where the object should be rendered
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
-    public void render(View view, Camera camera, AbstractPosition pos) {
+    public void render(View view, Camera camera) {
         render(
             view,
             camera,
-            pos,
             CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
@@ -288,7 +310,6 @@ public abstract class AbstractGameObject implements Serializable {
         render(
             view,
             camera,
-            pos,
             CVar.get("enableAutoShade").getValueb()
                 ? Color.GRAY.cpy()
                 :
@@ -301,38 +322,35 @@ public abstract class AbstractGameObject implements Serializable {
     
      /**
      * Draws an object if it is not hidden and not clipped.
-     * @param pos the coordinates where the object is rendered
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param color  custom blending color
      */
-    public void render(View view, Camera camera, AbstractPosition pos, Color color) {
+    public void render(View view, Camera camera, Color color) {
         render(
             view,
             camera,
-            pos,
             color,
             CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
-                ? pos.getPoint().getHeight()/(Map.getGameHeight())
+                ? getPosition().getPoint().getZ()/(Map.getGameHeight())
                 : 0
         );
     }
     
          /**
      * Draws an object if it is not hidden and not clipped.
-     * @param pos the posiiton where the object is rendered. The center of the object.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
-     * @param color  custom blending color
+     * @param color custom blending color
      * @param scale relative value
      */
-    public void render(View view, Camera camera, AbstractPosition pos, Color color, float scale) {
+    public void render(View view, Camera camera, Color color, float scale) {
         //draw the object except hidden ones
         if (!hidden) {             
             render(
                 view,
-                pos.getViewSpcX(view),
-                pos.getViewSpcY(view),
+                getPosition().getViewSpcX(view),
+                getPosition().getViewSpcY(view),
                 color,
                 scale
             );
@@ -342,8 +360,8 @@ public abstract class AbstractGameObject implements Serializable {
         /**
      * Renders at a custom position with the global light.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position in view space (?)
+     * @param yPos rendering position in view space (?)
      */
     public void render(View view, int xPos, int yPos) {
         render(
@@ -363,8 +381,8 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Renders at a custom position with the global light.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position in view space (?)
+     * @param yPos rendering position in view space (?)
      * @param scale relative value. 0 means same size
      */
     public void render(View view, int xPos, int yPos, float scale) {
@@ -385,8 +403,8 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Renders at a custom position with a custom light.
      * @param view
-     * @param xPos rendering position, center of sprite (screen space?)
-     * @param yPos rendering position, center of sprite (screen space?)
+     * @param xPos rendering position, center of sprite in view space (?)
+     * @param yPos rendering position, center of sprite in view space (?)
      * @param color custom blending color
      * @param scale relative value. 0 means same size
      */

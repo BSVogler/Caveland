@@ -93,8 +93,8 @@ public class PlayerWithWeapon extends Controllable {
         Vector3 aim;
         if (camera != null){
             aim = new Vector3(
-                Gdx.input.getX()- camera.getScreenWidth()/2,
-                2*(Gdx.input.getY()- camera.getScreenHeight()/2),
+                Gdx.input.getX()- camera.getWidthInScreenSpc()/2,
+                2*(Gdx.input.getY()- camera.getHeightInScreenSpc()/2),
                 0
             );
         }else{

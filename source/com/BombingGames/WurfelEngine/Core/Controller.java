@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
@@ -107,20 +108,7 @@ public class Controller implements GameManager {
         
         //update every static update method
         AbstractGameObject.updateStaticUpdates(dt);
-        
-        //update every block on the map
-        Block[][][] mapdata = map.getData();
-        for (int x=0, maxX=Map.getBlocksX(); x < maxX; x++)
-            for (int y=0, maxY = Map.getBlocksY(); y < maxY; y++)
-                for (int z=0, maxZ=Map.getBlocksZ(); z < maxZ; z++)
-                    mapdata[x][y][z].update(dt, x, y, z);
-        
-        //update every entity
-        for (int i = 0; i < map.getEntitys().size(); i++) {
-            map.getEntitys().get(i).update(dt);
-            if (map.getEntitys().get(i).shouldBeDisposed())
-                map.getEntitys().remove(i);
-        }
+		map.update(dt);
     }
 
     /**
@@ -131,7 +119,7 @@ public class Controller implements GameManager {
     public static boolean loadMap(String name) {
         try {
             map = new Map(name);
-            map.fill(true);
+            map.fill(new Coordinate(0, 0, 0), true);
             return true;
         } catch (IOException ex) {
             WE.getConsole().add(ex.getMessage(), "Warning");

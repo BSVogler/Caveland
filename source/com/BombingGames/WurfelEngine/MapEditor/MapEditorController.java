@@ -86,7 +86,7 @@ public class MapEditorController extends Controller {
         currentLayer = Map.getBlocksZ();
         SelectionEntity = new Selection();
         //focusentity.setPositionY(Block.DIM2+1f);
-        SelectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1, true));
+        SelectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
     }
     
 

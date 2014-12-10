@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
@@ -57,23 +56,26 @@ class EntityShadow extends AbstractEntity {
 		if (character==null)
 			dispose();
 		else {
+			//find height of shadow surface
 			Coordinate tmpPos = character.getPosition().getCoord().cpy();
-			tmpPos.setZ(tmpPos.getZ());
-			while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlockClamp().isTransparent())
-				tmpPos.addVector(new float[]{0, 0, -1});
+			if (tmpPos.isInMemory()){
+				tmpPos.setZ(tmpPos.getZ());//to clamp to grid
+				while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlock().isTransparent())
+					tmpPos.addVector(new float[]{0, 0, -1});
 
-			setPosition(character.getPosition().cpy());
-			getPosition().setHeight(tmpPos.getHeight());
+				setPosition(character.getPosition().cpy());
+				getPosition().setZ(tmpPos.getPoint().getZ());
+			}
 		}
     }
 
     @Override
-    public void render(View view, Camera camera, AbstractPosition coords) {
+    public void render(View view, Camera camera) {
 		if (!shouldBeDisposed()){
 			Color color = PseudoGrey.toColor(
-					(character.getPosition().getHeight() - getPosition().getHeight())/Block.GAME_EDGELENGTH
+					(character.getPosition().getZ()- getPosition().getZ())/Block.GAME_EDGELENGTH
 					);//make color out of distance from player
-			super.render(view, camera, coords,color);
+			super.render(view, camera,color);
 		}
     }
 }

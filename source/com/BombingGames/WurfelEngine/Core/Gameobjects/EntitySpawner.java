@@ -29,17 +29,15 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *The entitty spawner spawns an entity when a character steps on it.
  * @author Benedikt Vogler
  */
-public class EntitySpawner extends Block implements IsSelfAware {
+public class EntitySpawner extends Block {
 	private static final long serialVersionUID = 1L;
     private Coordinate coords;//this field is needed because of it is selfAware
     private boolean up = true;
@@ -55,9 +53,9 @@ public class EntitySpawner extends Block implements IsSelfAware {
     
 
     @Override
-    public void update(float dt, int x, int y, int z) {
+    public void update(float dt) {
 		if (coords!=null){
-			int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getRel();
+			Coordinate coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord();
 
 			//get every character
 			ArrayList<MovableEntity> entitylist;
@@ -65,11 +63,17 @@ public class EntitySpawner extends Block implements IsSelfAware {
 
 			//check every character if standing on top
 			int i = 0;
-			while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)){
+			while (
+				i < entitylist.size()
+				&& !entitylist.get(i).getPosition().getCoord().equals(coordsOnTop)
+			){
 				i++;
 			}
 
-			if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPosition().getCoord().getRel(), coordsOnTop)) {
+			if (
+				i < entitylist.size()
+				&& entitylist.get(i).getPosition().getCoord().equals(coordsOnTop)
+			) {
 				if (up) trigger();
 				up = false;
 			} else {
@@ -78,14 +82,10 @@ public class EntitySpawner extends Block implements IsSelfAware {
 		}
     }
 
-    @Override
-    public AbstractPosition getPosition() {
-        return coords;
-    }
 
 
     private void trigger() {
-        WE.getConsole().add("You are standing on: " + coords.getRelX() +"," + coords.getRelY() +","+ coords.getZ(), "System");
+        WE.getConsole().add("You are standing on: " + coords.getX() +"," + coords.getY() +","+ coords.getZ(), "System");
         new AnimatedEntity(
             31,
             0,
@@ -94,15 +94,4 @@ public class EntitySpawner extends Block implements IsSelfAware {
             false
         ).spawn(coords.cpy().addVector(0, 2, 1).getPoint());
     }
-
-    @Override
-    public void setPosition(AbstractPosition pos) {
-        coords = pos.getCoord();
-    }
-	
-	@Override
-	public Block spawn(Coordinate coord) {
-		setPosition(coord);
-		return this;
-	}
 }

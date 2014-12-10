@@ -58,18 +58,12 @@ public class Block extends AbstractGameObject {
      * a list where a representing color of the block is stored
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
-	private final static Block airblock;
 	private static BlockFactory customBlockFactory;
     
     private boolean liquid;
     private boolean hasSides = true;
+	private Coordinate coord;
     
-	static {
-		airblock = new Block(0);//air
-		airblock.setTransparent(true);
-        airblock.setHidden(true);
-	}
-	
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
      * @param id
@@ -121,7 +115,10 @@ public class Block extends AbstractGameObject {
         //define the default SideSprites
         switch (id){
             case 0: 
-                    block = airblock;
+                    block = new Block(id); //air
+					block.setTransparent(true);
+                    block.setObstacle(false);
+					block.setHidden(true);
                     break;
             case 1: block = new Block(id); //grass
                     block.setObstacle(true);
@@ -239,7 +236,8 @@ public class Block extends AbstractGameObject {
 	 * @return itself
 	 */
 	public Block spawn(Coordinate coord){
-		Controller.getMap().setData(coord, this);
+		setPosition(coord);
+		Controller.getMap().setData(this);
 		return this;
 	};
     
@@ -319,18 +317,18 @@ public class Block extends AbstractGameObject {
     } 
     
     @Override
-    public void render(final View view, final Camera camera, final AbstractPosition pos) {
+    public void render(final View view, final Camera camera) {
         if (!isHidden()) {
             float scale =0;
-			Coordinate coords = pos.getCoord();
+			Coordinate coords = getPosition();
             if (CVar.get("enableScalePrototype").getValueb())  //scale if the prototype is activated
                 scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
-                if (!camera.getClipping(coords)[1])
+                //if (!camera.getClipping(coords)[1])
                     renderSide(view, camera, coords, Sides.TOP, scale);
-                if (!camera.getClipping(coords)[0])
+               // if (!camera.getClipping(coords)[0])
                     renderSide(view, camera, coords, Sides.LEFT, scale);
-                if (!camera.getClipping(coords)[2])
+                //if (!camera.getClipping(coords)[2])
                     renderSide(view, camera, coords, Sides.RIGHT, scale);
             } else
                 super.render(view, camera, coords, scale);
@@ -434,7 +432,7 @@ public class Block extends AbstractGameObject {
         if (CVar.get("enableFog").getValueb()){
             color.mul(
                 (float) (0.5f+Math.exp(
-                    (camera.getVisibleBackBorder()-coords.getCoord().getRelY())*0.05f+1
+                    (camera.getVisibleBackBorder()-coords.getCoord().getY())*0.05f+1
                 ))
             );
         }
@@ -495,7 +493,7 @@ public class Block extends AbstractGameObject {
             sprite.setOrigin(0, 0);
             sprite.scale(scale);
         }
-        
+        //System.out.println("rend:"+xPos+","+yPos);
         color.mul(getLightlevel(), getLightlevel(), getLightlevel(), 1);//darken
 
         sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right
@@ -534,11 +532,8 @@ public class Block extends AbstractGameObject {
 	/**
 	 * Update the block.
 	 * @param dt time in ms since last update
-	 * @param x relative pos
-	 * @param y relative pos
-	 * @param z relative pos
 	 */
-    public void update(float dt, int x, int y, int z) {
+    public void update(float dt) {
     }
     
 
@@ -589,5 +584,15 @@ public class Block extends AbstractGameObject {
 	 * @param pos the position of the block, can be null if not needed
 	 */
 	public void onDestroy(AbstractPosition pos) {
+	}
+
+	@Override
+	public Coordinate getPosition() {
+		return coord;
+	}
+
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		coord = pos.getCoord();
 	}
 }

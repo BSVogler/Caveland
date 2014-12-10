@@ -152,21 +152,6 @@ public class GameView extends View implements GameManager {
 		 * problem! Write acces in view. causes 1 frame hack without hacks.
 		 */
         for (Camera camera : cameras) {
-            if (CVar.get("chunkSwitchAllowed").getValueb()) {
-                //earth to right
-                if (camera.getVisibleLeftBorder() <= 0)
-                    Controller.getMap().setCenter(3);
-                else
-                    if (camera.getVisibleRightBorder() >= Map.getBlocksX()-1) 
-                        Controller.getMap().setCenter(5); //earth to the left
-
-                //scroll up, earth down            
-                if (camera.getVisibleBackBorder() <= 0)
-                    Controller.getMap().setCenter(1);
-                else
-                    if (camera.getVisibleFrontBorder() >= Map.getBlocksY()-1)
-                        Controller.getMap().setCenter(7); //scroll down, earth up
-            }
             camera.update(dt);
         }
         
@@ -250,7 +235,7 @@ public class GameView extends View implements GameManager {
      * @return the relative (to current loaded map) game coordinate
      */
     public float screenXtoGame(final int screenX, final Camera camera){
-        return screenX / camera.getScreenSpaceScaling()- camera.getScreenPosX()+ camera.getProjectionSpaceX();
+        return screenX / camera.getScreenSpaceScaling()- camera.getScreenPosX()+ camera.getViewSpaceX();
     }
     
    /**
@@ -260,7 +245,7 @@ public class GameView extends View implements GameManager {
      * @return the relative game coordinate
      */
     public float screenYtoGame(final int screenY, final Camera camera){
-        return Map.getGameDepth()-camera.getProjectionSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getScreenHeight()*2;
+        return Map.getGameDepth()-camera.getViewSpaceY()*2 +(screenY*2 / camera.getScreenSpaceScaling())- camera.getScreenPosY()-camera.getHeightInScreenSpc()*2;
     }
     
     /**
@@ -279,16 +264,15 @@ public class GameView extends View implements GameManager {
 				i++;
 			} while (
 					i < cameras.size()
-					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getScreenWidth()
-					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getScreenHeight())
+					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getWidthInScreenSpc()
+					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getHeightInScreenSpc())
 			);
 
 			//find points
 			return new Point(
 					screenXtoGame(x, camera),
 					screenYtoGame(y, camera),
-					0,
-					true
+					0
 				);
 		} else return Map.getCenter();
     }
@@ -302,7 +286,7 @@ public class GameView extends View implements GameManager {
     public Intersection screenToGameRaytracing(final int x, final int y){
 		if (cameras.size()>0) {
 			Point p = screenToGameFlat(x,y);
-			float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
+			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
 
 			return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera
@@ -473,7 +457,7 @@ public class GameView extends View implements GameManager {
         WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
         Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
 		for (Camera camera : cameras) {
-			camera.rayCastingClipping();
+			camera.hiddenSurfaceDetection();
 		}
         onEnter();
     }

@@ -31,6 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
@@ -320,9 +321,6 @@ public class Console {
             case "credits":
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
-            case "clearmap":
-                Controller.getMap().fillWithAir();
-                return true;
             case "save":
                 return Controller.getMap().save();
             case "devtools":
@@ -354,8 +352,10 @@ public class Console {
             }
 			if (id < gameplayRef.getView().getCameras().size())
 				gameplayRef.getView().getCameras().get(id).shake(amp, t);
-			else
+			else {
 				add("Camera ID out of range","System");
+				return false;
+			}
 		}
 		
         if (command.startsWith("fillmap")) {
@@ -364,7 +364,7 @@ public class Console {
                 id = Integer.valueOf(st.nextToken());  
             }
             
-            Controller.getMap().fill(new FullMapGenerator(id), false);
+            Controller.getMap().fill(new FullMapGenerator(id),new Coordinate(0, 0, 0), false);
             return true;
         }
         

@@ -33,10 +33,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.IsSelfAware;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *A point is a single position in the game world not bound to the grid. Use this for entities.
@@ -47,24 +47,18 @@ public class Point extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
     private float x;
     private float y;
+	private float z;
 
     /**
      * Creates a point refering to a position in the game world.
      * @param posX The distance from the left border of the map (game space)
      * @param posY The distance from the top border of the map (game space)
      * @param height The distance from ground  (game space)
-     * @param relative  <b>true</b> if <b>relative</b> to currently loaded map, <b>false</b> if <b>absolute</b> (relative to map with chunk 0,0 in its center)
      */
-    public Point(float posX, float posY, float height, boolean relative) {
-        super();
-         if (relative){
-            this.x = posX;
-            this.y = posY;
-        } else {
-            this.x = posX - getReferenceX() * Chunk.getBlocksX();
-            this.y = posY - getReferenceY() * Chunk.getBlocksY();
-        }
-        setHeight(height);
+    public Point(float posX, float posY, float height) {
+		this.x = posX;
+		this.y = posY;
+        this.z = height;
     }
     
     /**
@@ -72,10 +66,9 @@ public class Point extends AbstractPosition {
      * @param point the source of the copy
      */
     public Point(Point point) {
-       super(point.getReferenceX(), point.getReferenceY());
        this.x = point.x;
        this.y = point.y;
-       this.setHeight(point.getHeight());
+	   this.z = point.z;
     }
 
     /**
@@ -85,6 +78,22 @@ public class Point extends AbstractPosition {
     @Override
     public Point getPoint() {
        return this;
+    }
+	
+	    /**
+     * Get the height (z-value) of the coordinate.
+     * @return game dimension
+     */
+    public float getZ() {
+        return z;
+    }
+
+    /**
+     * 
+     * @param height 
+     */
+    public void setZ(float height) {
+        this.z = height;
     }
     
     /**
@@ -96,47 +105,46 @@ public class Point extends AbstractPosition {
     public Coordinate getCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) (getRelX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (getRelY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
-            getHeight(),
-            true
-        );
+            (int) (getX()) / AbstractGameObject.GAME_DIAGLENGTH,
+            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1, (//maybe dangerous to optimize code here!
+			int) (z/Block.GAME_EDGELENGTH));
        
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
-                getRelX() % AbstractGameObject.GAME_DIAGLENGTH,
-                getRelY() % (AbstractGameObject.GAME_DIAGLENGTH)
+                getX() % AbstractGameObject.GAME_DIAGLENGTH,
+                getY() % (AbstractGameObject.GAME_DIAGLENGTH)
             )
         );
-        coords.setRelX(specificCoords.getRelX());
-        coords.setRelY(specificCoords.getRelY());
+        coords.setX(specificCoords.getX());
+        coords.setY(specificCoords.getY());
         coords.setZ(coords.getZ());//remove floating
         return coords; 
     }
     
     /**
-     *
-     * @return
-     */
-    public float[] getRel(){
-        return new float[]{getRelX(), getRelY(), getHeight()};
-    }
-
-    /**
      *Get the game world position from left
      * @return
      */
-    public float getRelX() {
-        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getGameWidth();
+    public float getX() {
+        return x;
     }
     
     /**
      *Get the game world position from top.
      * @return
      */
-    public float getRelY() {
-        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getGameDepth();
+    public float getY() {
+        return y;
+    }
+	
+	  /**
+     *Get as array triple
+     * @return
+     */
+	@Override
+    public Vector3 getVector(){
+        return new Vector3(x, y, z);
     }
     
 	/**
@@ -160,7 +168,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getHeight() - getZ()*Block.GAME_EDGELENGTH;
+		return getZ() - getZ()*Block.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -175,30 +183,6 @@ public class Point extends AbstractPosition {
 		);
 	}
 	
-    /**
-     *
-     * @return
-     */
-    public float[] getAbs(){
-        return new float[]{getAbsX(), getAbsY(), getHeight()};
-    }
-
-    /**
-     *
-     * @return
-     */
-    public float getAbsX() {
-        return x + getReferenceX() *Chunk.getGameWidth();
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public float getAbsY() {
-        return y + getReferenceY() *Chunk.getGameDepth();
-    }
-    
     @Override
     public Block getBlock() {
         return getCoord().getBlock();
@@ -206,7 +190,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public Block getBlockSafe(){
-        if (onLoadedMapHorizontal())
+        if (isInMemoryHorizontal())
             return getCoord().getBlock();
         else return null;
     }
@@ -231,7 +215,7 @@ public class Point extends AbstractPosition {
 
     @Override
     public int getViewSpcX(View view) {
-        return (int) (getRelX()); //just the position as integer
+        return (int) (getX()); //just the position as integer
     }
 
     @Override
@@ -239,37 +223,43 @@ public class Point extends AbstractPosition {
         return (
 				view.getOrientation()==0
 				?
-					(int) ((Map.getGameDepth()-getRelY()) / 2) //add the objects position inside this coordinate
+					(int) (-getY() / 2) //add the objects position inside this coordinate
 				:
 					(
 						view.getOrientation()==2
 						?
-							(int) (getRelY() / 2) //add the objects position inside this coordinate
+							(int) (getY() / 2) //add the objects position inside this coordinate
 						:
 							0
 					)
 			)
-            + (int) (getHeight() * SQRT12) //take z-axis shortening into account
+            + (int) (getZ() * SQRT12) //take z-axis shortening into account
             -AbstractGameObject.SCREEN_HEIGHT2+AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
     }
     
     @Override
-    public boolean onLoadedMapHorizontal() {
-        return (
-            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
-            && getCoord().onLoadedMapHorizontal()//do extended check
-        );
+    public boolean isInMemoryHorizontal() {
+		Iterator<Chunk> it = Controller.getMap().getData().iterator();
+		boolean found = Controller.getMap().getData().get(0).hasPoint(this);//start with first element
+		while (!found && it.hasNext()) {
+			if (it.next().hasPoint(this))
+				found = true;
+		}
+        return found;
     }
 	
 	@Override
-    public boolean onLoadedMap() {
-        return (
-            getRelX() >= 0 && getRelX() < Map.getGameWidth()//do some quick checks X because getCoord() relativly slow
-            && getRelY() >= 0 && getRelY() < Map.getGameDepth()//do some quick checks Y
-			&& getHeight() >=0 && getHeight() < Map.getGameHeight() //quick checks z
-            && getCoord().onLoadedMap()//do extended check
-        );
+    public boolean isInMemory() {
+        boolean found = false;
+		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
+			Iterator<Chunk> it = Controller.getMap().getData().iterator();
+			found = Controller.getMap().getData().get(0).hasPoint(this);//start with first element
+			while (!found && it.hasNext()) {
+				if (it.next().hasPoint(this))
+					found = true;
+			}
+		}
+        return found;
     }
 
     /**
@@ -281,7 +271,7 @@ public class Point extends AbstractPosition {
     public Point addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]);
+		this.z += vector[2];
         return this;
     }
     
@@ -294,7 +284,7 @@ public class Point extends AbstractPosition {
     public Point addVector(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
-        setHeight(getHeight()+ vector.z);
+		this.z += vector.z;
         return this;
     }
 
@@ -309,7 +299,7 @@ public class Point extends AbstractPosition {
     public Point addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z);
+        this.z += z;
         return this;
     }
 	
@@ -323,7 +313,7 @@ public class Point extends AbstractPosition {
 		Point origin = getCoord().getPoint(); 
 		this.x = origin.x +x;
 		this.y = origin.y +y;
-		setHeight(origin.getHeight() +z);
+		this.z = origin.z +z;
 	}
     
     /**
@@ -367,7 +357,7 @@ public class Point extends AbstractPosition {
         // Cube containing origin point.
         float curX = (float) Math.floor(x);
         float curY = (float) Math.floor(y);
-        float curZ = (float) Math.floor(getHeight());
+        float curZ = (float) Math.floor(z);
         // Break out direction vector.
         float dx = direction.x;
         float dy = direction.y;
@@ -380,7 +370,7 @@ public class Point extends AbstractPosition {
         // part of the origin.
         float tMaxX = intbound(x, dx);
         float tMaxY = intbound(y, dy);
-        float tMaxZ = intbound(getHeight(), dz);
+        float tMaxZ = intbound(z, dz);
         // The change in t when taking a step (always positive).
         float tDeltaX = stepX/dx;
         float tDeltaY = stepY/dy;
@@ -404,7 +394,7 @@ public class Point extends AbstractPosition {
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
-                Point isectP = new Point(curX, curY, curZ, true);
+                Point isectP = new Point(curX, curY, curZ);
                 Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
                 //intersect?
@@ -419,7 +409,7 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal
                     if (
-                        (isectP.getRelX() -(isectP.getCoord().getRelY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
+                        (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
                         % Block.GAME_DIAGLENGTH
                         <
                         Block.GAME_DIAGLENGTH2
@@ -476,7 +466,7 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
-            Point interectpoint = new Point(curX, curY, curZ, true);
+            Point interectpoint = new Point(curX, curY, curZ);
             return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
         }
         else
@@ -512,7 +502,7 @@ public class Point extends AbstractPosition {
 	public float distanceTo(Point point) {
 		float dX = x-point.x;
 		float dY = y-point.y;
-		float dZ = getHeight()-point.getHeight();
+		float dZ = z-point.z;
 		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
 	}
 
@@ -521,7 +511,7 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other object
 	 */
-	public float distanceTo(IsSelfAware object) {
+	public float distanceTo(AbstractGameObject object) {
 		return distanceTo(object.getPosition().getPoint());
 	}
 	
@@ -542,7 +532,7 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other point only regarding horizontal components.
 	 */
-	public float distanceToHorizontal(IsSelfAware object) {
+	public float distanceToHorizontal(AbstractGameObject object) {
 		return distanceToHorizontal(object.getPosition().getPoint());
 	}
 	
@@ -583,4 +573,25 @@ public class Point extends AbstractPosition {
 
         return result;
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Point other = (Point)obj;
+		if (x != other.x) return false;
+		if (y != other.y) return false;
+		return z == other.z;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 97 * hash + Float.floatToIntBits(this.x);
+		hash = 97 * hash + Float.floatToIntBits(this.y);
+		hash = 97 * hash + Float.floatToIntBits(this.z);
+		return hash;
+	}
+
 }

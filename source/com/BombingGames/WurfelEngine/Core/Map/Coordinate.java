@@ -44,8 +44,9 @@ import java.util.ArrayList;
  */
 public class Coordinate extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
-    private int x; //saved as relative
-    private int y; //saved as relative
+    private int x;
+    private int y;
+	private int z;
 	/**
 	 * gets calculated every time the coordinate is written to.
 	 */
@@ -56,40 +57,11 @@ public class Coordinate extends AbstractPosition {
      * @param x The x value as coordinate.
      * @param y The y value as coordinate.
      * @param z The z value as coordinate.
-     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
      */
-    public Coordinate(int x, int y, int z, final boolean relative) {
-        super();
-        
+    public Coordinate(int x, int y, int z) {
         this.x = x;
         this.y = y;
-        if (!relative){ //if absolute then make it relative
-            this.x -= getReferenceX() * Chunk.getBlocksX();
-            this.y -= getReferenceY() * Chunk.getBlocksY();
-        }
-        
-        super.setHeight(z*Block.GAME_EDGELENGTH);
-		refreshCachedPoint();
-    }
-    
-     /**
-     * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
-     * @param x The x value as coordinate.
-     * @param y The y value as coordinate.
-     * @param height The z value as height.
-     * @param relative <b>True</b> when the coordiantes are relative to the currently loaded map. <b>False</b> when they are absolute.
-     */
-    public Coordinate(int x, int y, float height, final boolean relative) {
-        super();
-        
-        this.x = x;
-        this.y = y;
-        if (!relative){ //if absolute then make it relative
-            this.x -= getReferenceX() * Chunk.getBlocksX();
-            this.y -= getReferenceY() * Chunk.getBlocksY();
-        }
-        
-		super.setHeight(height);
+		this.z = z;
 		refreshCachedPoint();
     }
     
@@ -98,11 +70,9 @@ public class Coordinate extends AbstractPosition {
      * @param coord the Coordinate you want to copy
      */
     public Coordinate(Coordinate coord) {
-        super(coord.getReferenceX(), coord.getReferenceY());
-        
-        this.x = coord.getRelX();
-        this.y = coord.getRelY();
-        super.setHeight(coord.getHeight());
+        this.x = coord.x;
+        this.y = coord.y;
+		this.z = coord.z;
 		refreshCachedPoint();
     }
     
@@ -110,31 +80,21 @@ public class Coordinate extends AbstractPosition {
      *Gets the X coordinate relative to the map.
      * @return
      */
-    public int getRelX(){
-        return x + (getReferenceX()-Controller.getMap().getChunkCoords(0)[0]) * Chunk.getBlocksX();
+    public int getX(){
+        return x;
     }
     /**
      *Gets the Y coordinate relative to the map.
      * @return
      */
-    public int getRelY(){
-        return y + (getReferenceY()-Controller.getMap().getChunkCoords(0)[1]) * Chunk.getBlocksY();
+    public int getY(){
+        return y;
     }
+	
+	public int getZ(){
+		return z;
+	}
     
-    /**
-     *Absolute coordinates are independent of the currently loaded chunks.
-     * @return
-     */
-    public int getAbsX(){
-        return x + getReferenceX() *Chunk.getBlocksX();
-    }
-    /**
-     *Absolute coordinates are independent of the currently loaded chunks.
-     * @return
-     */
-    public int getAbsY(){
-         return y + getReferenceY() *Chunk.getBlocksY();
-    }
     
     /**
      *Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
@@ -142,36 +102,25 @@ public class Coordinate extends AbstractPosition {
      * @see #getZ() 
      */
     public int getZClamp(){
-        int tmpZ = getZ();
-        if (tmpZ >= Map.getBlocksZ())
+        if (z >= Map.getBlocksZ())
             return Map.getBlocksZ() -1;
-        else if (tmpZ < 0)
+        else if (z < 0)
                 return 0;
              else
-                return tmpZ;
+                return z;
     }
     
-        /**
-     *
-     * @return
-     */
-    public int[] getRel(){
-        return new int[]{getRelX(), getRelY(), getZ()};
-    }
     
-    /**
-     *
-     * @return
-     */
-    public int[] getAbs(){
-        return new int[]{getAbsX(), getAbsY(), getZ()};
+	@Override
+    public Vector3 getVector(){
+        return new Vector3(x, y, z);
     }
     
     /**
      *Set the coordiantes X component.
      * @param x
      */
-    public void setRelX(int x){
+    public void setX(int x){
         this.x = x;
 		refreshCachedPoint();
     }
@@ -180,7 +129,7 @@ public class Coordinate extends AbstractPosition {
      *Set the coordiantes Y component.
      * @param y
      */
-    public void setRelY(int y){
+    public void setY(int y){
         this.y = y;
 		refreshCachedPoint();
     }
@@ -190,22 +139,17 @@ public class Coordinate extends AbstractPosition {
      * @param z
      */
     public void setZ(int z){
-        setHeight(z*Block.GAME_EDGELENGTH);
+		this.z = z;
 		refreshCachedPoint();
     }
-
-	@Override
-	public void setHeight(float height) {
-		super.setHeight(height);
-		refreshCachedPoint();
-	}
 
     /**
      *Set a block in the map where the coordinate is pointing to.
      * @param block the block you want to set.
      */
     public void setBlock(Block block){
-        Controller.getMap().setData(this, block);
+		block.setPosition(this);
+        Controller.getMap().setData(block);
     }
     
 
@@ -219,7 +163,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
+		this.z += vector[2];
 		refreshCachedPoint();
         return this;
     }
@@ -233,7 +177,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
-        setHeight(getHeight()+ vector.z*Block.GAME_EDGELENGTH);
+        this.z += vector.z;
 		refreshCachedPoint();
         return this;
     }
@@ -249,13 +193,13 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z*Block.GAME_EDGELENGTH);
+        this.z += z;
         return this;
     }
     
     @Override
     public Block getBlock(){
-		if (getHeight()<0)
+		if (z<0)
 			return Controller.getMap().getGroundBlock();
 		else return Controller.getMap().getBlock(this);
     }
@@ -266,7 +210,7 @@ public class Coordinate extends AbstractPosition {
      */
     @Override
     public Block getBlockSafe(){
-        if (onLoadedMapHorizontal())
+        if (isInMemoryHorizontal())
             return Controller.getMap().getBlock(this);
         else return null;
     }
@@ -288,7 +232,7 @@ public class Coordinate extends AbstractPosition {
      * @return true when hiding the past Block
      */
     public boolean hidingPastBlock(int x, int y, int z){
-		Block block = Controller.getMap().getBlock(getRelX()+x, getRelY()+y, getZ()+z);
+		Block block = Controller.getMap().getBlock(getX()+x, getY()+y, getZ()+z);
         return (block.hasSides() && ! block.isTransparent());
     }
     
@@ -303,13 +247,13 @@ public class Coordinate extends AbstractPosition {
      * @return 
      */
     @Override
-    public boolean onLoadedMapHorizontal(){
-        return (
-            getRelX() >= 0
-            && getRelX() < Map.getBlocksX()
-            && getRelY() >= 0
-            && getRelY() < Map.getBlocksY()
-        );
+    public boolean isInMemoryHorizontal(){
+        boolean found = false;
+		for (Chunk chunk : Controller.getMap().getData()){
+			if (chunk.hasCoord(this))
+				found = true;
+		}
+        return found;
     }
 	
 	 /**
@@ -317,15 +261,15 @@ public class Coordinate extends AbstractPosition {
      * @return 
      */
     @Override
-    public boolean onLoadedMap(){
-        return (
-            getRelX() >= 0
-            && getRelX() < Map.getBlocksX()
-            && getRelY() >= 0
-            && getRelY() < Map.getBlocksY()
-			&& getZ() >= 0
-			&& getZ() < Map.getBlocksZ()
-        );
+    public boolean isInMemory(){
+		boolean found = false;
+		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
+			for (Chunk chunk : Controller.getMap().getData()){
+				if (chunk.hasCoord(this))
+					found = true;
+			}
+		}
+        return found;
     }
 
     /**
@@ -389,61 +333,45 @@ public class Coordinate extends AbstractPosition {
         int[] result = new int[3];
         switch (neighbourSide) {
             case 0:
-                result[0] = getRelX();
-                result[1] = getRelY() - 2;
+                result[0] = getX();
+                result[1] = getY() - 2;
                 break;
             case 1:
-                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = getRelY() - 1;
+                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[1] = getY() - 1;
                 break;
             case 2:
-                result[0] = getRelX() + 1;
-                result[1] = getRelY();
+                result[0] = getX() + 1;
+                result[1] = getY();
                 break;
             case 3:
-                result[0] = getRelX() + (getRelY() % 2 == 1 ? 1 : 0);
-                result[1] = getRelY() + 1;
+                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[1] = getY() + 1;
                 break;
             case 4:
-                result[0] = getRelX();
-                result[1] = getRelY() + 2;
+                result[0] = getX();
+                result[1] = getY() + 2;
                 break;
             case 5:
-                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = getRelY() + 1;
+                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
+                result[1] = getY() + 1;
                 break;
             case 6:
-                result[0] = getRelX() - 1;
-                result[1] = getRelY();
+                result[0] = getX() - 1;
+                result[1] = getY();
                 break;
             case 7:
-                result[0] = getRelX() - (getRelY() % 2 == 0 ? 1 : 0);
-                result[1] = getRelY() - 1;
+                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
+                result[1] = getY() - 1;
                 break;
             default:
-                result[0] = getRelX();
-                result[1] = getRelY();
+                result[0] = getX();
+                result[1] = getY();
         }
         result[2] = getZ();
-        return new Coordinate(result[0], result[1], result[2], true);
+        return new Coordinate(result[0], result[1], result[2]);
     }
     
-    /**
-     *
-     * @return
-     */
-    protected int getX() {
-        return x;
-    }
-
-    /**
-     *
-     * @return
-     */
-    protected int getY() {
-        return y;
-    }
-
     /**
      *
      * @return the coordiante's origin is the center
@@ -460,8 +388,7 @@ public class Coordinate extends AbstractPosition {
 		cachedPoint = new Point(
             x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
             y*Block.GAME_DIAGLENGTH2,
-            getHeight(),
-            true
+            z*Block.GAME_EDGELENGTH
         );
 	}
 
@@ -494,9 +421,9 @@ public class Coordinate extends AbstractPosition {
     
     @Override
     public int getViewSpcX(View view) {
-		return getRelX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (getRelY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
+                + (getY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override
@@ -505,19 +432,19 @@ public class Coordinate extends AbstractPosition {
 			(
 				view.getOrientation()==0
 				?
-					(Map.getBlocksY()+1-getRelY()) * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
+					-getY() * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
 				:
 					(
 						view.getOrientation()==2
 						?
-							getRelY() * AbstractGameObject.SCREEN_DEPTH2
+							getY() * AbstractGameObject.SCREEN_DEPTH2
 						:
 							0
 					)
 			)
 				
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
-            + getHeight() *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
+            + z*Block.GAME_EDGELENGTH *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
         );
     }
     
@@ -562,7 +489,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (onLoadedMap() && getBlock().getId()!=0) {
+		if (isInMemory() && getBlock().getId()!=0) {
 			getBlock().onDestroy(this);//call destruction method
 			setBlock(Block.getInstance(0));
 			return true;
@@ -576,7 +503,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return 
 	 */
 	public boolean damage(float amount) {
-		if (onLoadedMap()) {
+		if (isInMemory()) {
 			Block block = getBlock();
 			if (block.getId()!=0) {
 				block.setHealth(block.getHealth()-amount);
@@ -586,5 +513,31 @@ public class Coordinate extends AbstractPosition {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Coordinate other = (Coordinate)obj;
+		if (x != other.x) return false;
+		if (y != other.y) return false;
+		return z == other.z;
+	}
+
+	@Override
+	public int hashCode() {
+		//using generated source
+		int hash = 7;
+		hash = 53 * hash + this.x;
+		hash = 53 * hash + this.y;
+		hash = 53 * hash + this.z;
+		return hash;
+	}
+	
+	@Override
+	public String toString() {
+		return "{"+x+","+y+","+getZ()+"}";
 	}
 }

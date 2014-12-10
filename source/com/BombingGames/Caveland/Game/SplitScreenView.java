@@ -29,8 +29,7 @@ public class SplitScreenView extends GameView {
 				0, //top
 				Gdx.graphics.getWidth(), //width
 				Gdx.graphics.getHeight()/2,//height
-				this,
-			controller
+				this
 			)
         );
         
@@ -39,8 +38,7 @@ public class SplitScreenView extends GameView {
             Gdx.graphics.getHeight()/2, //top
             Gdx.graphics.getWidth(), //width
             Gdx.graphics.getHeight()/2,//height
-			this,
-			controller
+			this
         );
         addCamera(camera2);
     }

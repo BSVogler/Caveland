@@ -28,8 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -42,9 +40,6 @@ import java.io.Serializable;
  */
 public abstract class AbstractPosition implements Serializable {
 	private static final long serialVersionUID = 1L;
-    private final int referenceX;//top left chunk x coordinate
-    private final int referenceY;//top left chunk Y coordinate
-    private float height;
 
     /**
      *square root of two
@@ -83,6 +78,11 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract Coordinate getCoord();
     
+	  /**
+     *Get as vector
+     * @return
+     */
+    public abstract Vector3 getVector();
     /**
      * 
      * @return Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
@@ -104,16 +104,16 @@ public abstract class AbstractPosition implements Serializable {
     public abstract AbstractPosition cpy(); 
     
     /**
-     * Checks if the position is on the chunks currently in memory. Horizontal checks only.
+     * Checks if the position is on the chunks currently in memory. Horizontal checks only. So the position can be udner or over the map.
      * @return 
      */
-    public abstract boolean onLoadedMapHorizontal();
+    public abstract boolean isInMemoryHorizontal();
 	
 	/**
-     * Checks if the position is on the chunks currently in memory. Chgecks all axis'.
-     * @return 
+     * Checks if the position is on the chunks currently in memory. Checks all axis'.
+     * @return <i>true</i> if inside a chunk. <i>false</i> if currently not loaded.
      */
-    public abstract boolean onLoadedMap();
+    public abstract boolean isInMemory();
 	
 	
     
@@ -140,70 +140,6 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract AbstractPosition addVector(float x, float y, float z);
 	
-    /**
-     * With custom reference
-     * @param topleftX the chunk's X coordinate of the chunk at the top left
-     * @param topleftY the chunk's Y coordinate of the chunk at the top left 
-     */
-    public AbstractPosition(final int topleftX, final int topleftY) {
-        this.referenceX = topleftX;
-        this.referenceY = topleftY;
-    }
-
-    
-    /**
-     * With the currently loaded top left chunk.
-     */
-    public AbstractPosition() {
-        referenceX = Controller.getMap().getChunkCoords(0)[0];
-        referenceY = Controller.getMap().getChunkCoords(0)[1];
-    }
-
-    /**
-     * Geht the height (z-value) of the coordinate (game dimension).
-     * @return
-     */
-    public float getHeight() {
-        return height;
-    }
-
-    /**
-     * 
-     * @param height 
-     */
-    public void setHeight(float height) {
-        this.height = height;
-    }
-    
-    /**
-     *The z coordinate is absolute even when used as relative coordinate because there are no chunks in Z direction.
-     * @return game coordinate
-     */
-    public int getZ(){
-        float tmp = height / GAME_EDGELENGTH;
-        if (tmp<0)
-            return -1;
-        else
-            return (int) tmp;
-    }
-    
-   /**
-    * 
-    * @return 
-    */
-    protected int getReferenceX() {
-        return referenceX;
-    }
-
-    /**
-     * 
-     * @return 
-     */
-    protected int getReferenceY() {
-        return referenceY;
-    }
-
-    
     
         /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
@@ -215,17 +151,17 @@ public abstract class AbstractPosition implements Serializable {
 			(
 				view.getOrientation()==0
 				?
-					 getPoint().getRelY() *SCREEN_DEPTH//Y
+					 getPoint().getY() *SCREEN_DEPTH//Y
 				:
 					(
 						view.getOrientation()==2
 						?
-							Map.getGameDepth()-getPoint().getRelY() *SCREEN_DEPTH//Y
+							Map.getGameDepth()-getPoint().getY() *SCREEN_DEPTH//Y
 						:
 							0
 					)
 			)            
-            + getHeight()*SQRT2//Z
+            + getPoint().getZ()*SQRT2//Z
         );
     }
 }

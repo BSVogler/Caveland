@@ -37,7 +37,7 @@ import com.badlogic.gdx.audio.Sound;
  *An example for a special block: barrel block which can explode
  * @author Benedikt
  */
-public class ExplosiveBarrel extends Block implements IsSelfAware {
+public class ExplosiveBarrel extends Block {
 	private static final long serialVersionUID = 1L;
 	
     private Coordinate coords;

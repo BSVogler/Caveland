@@ -2,8 +2,8 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
-import java.util.Arrays;
 
 /**
  *An enemy which can follow a character.
@@ -13,7 +13,7 @@ public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
-    private float[] lastPos;
+    private Point lastPos;
     private static int killcounter = 0;
     
     public void init(){
@@ -40,13 +40,13 @@ public class Enemy extends MovableEntity{
 
     @Override
     public void update(float dt) {
-        if (getPosition().getCoord().onLoadedMapHorizontal()) {
+        if (getPosition().getCoord().isInMemoryHorizontal()) {
             //follow the target
             if (target != null) {
 				Vector3 d = new Vector3();
 
-				d.x = target.getPosition().getAbsX()-getPosition().getAbsX();
-                d.y = target.getPosition().getAbsY()-getPosition().getAbsY();
+				d.x = target.getPosition().getX()-getPosition().getX();
+                d.y = target.getPosition().getY()-getPosition().getY();
 				d.z = getMovement().z;
 				d.scl(0.4f);
 				// update the movement vector
@@ -65,13 +65,12 @@ public class Enemy extends MovableEntity{
             }
             //update as usual
             super.update(dt);
-
             //if standing on same position as in last update
-            if (Arrays.equals(getPosition().getRel(), lastPos) && getSpeed()>0)//not standing still
+            if (getPosition().equals(lastPos) && getSpeed()>0)//not standing still
                 runningagainstwallCounter += dt;
             else {
                 runningagainstwallCounter=0;
-                lastPos = getPosition().getRel();
+                lastPos = getPosition().cpy();
             }
 
             //jump after some time

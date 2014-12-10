@@ -52,8 +52,8 @@ public abstract class View {
 	private int orientation = 0;
 
     public void init(){
-        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.glsl").readString();
+        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.vs").readString();
+        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.fs").readString();
         shader = new ShaderProgram(vertexShader, fragmentShader);
     }
     

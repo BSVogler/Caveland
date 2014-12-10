@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -268,13 +267,28 @@ public class LightEngine implements LinkedWithMap {
     
      /**
      * Calculates the light level based on the sun shining straight from the top
+	 * @param chunk
      */
-    public void calcSimpleLight(){
-        for (int x=0; x < Map.getBlocksX(); x++){
-            for (int y=0; y < Map.getBlocksY(); y++) {
+    public void calcSimpleLight(Chunk chunk){
+        for (
+			int x=chunk.getData()[0][0][0].getPosition().getX(),
+				maxX=chunk.getData()[0][0][0].getPosition().getX()+Chunk.getBlocksX();
+			x< maxX;
+			x++
+		){
+            for (
+				int y=chunk.getData()[0][0][0].getPosition().getY(),
+				maxY=chunk.getData()[0][0][0].getPosition().getY()+Chunk.getBlocksY();
+				y < maxY;
+				y++
+			) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ()-1;//start at top
-                while (Controller.getMap().getBlock(x,y,topmost).isTransparent() && topmost > 0 ){
+                while (Controller.getMap().getBlock(
+						x,
+						y,
+						topmost
+					).isTransparent() && topmost > 0 ){
                     topmost--;
                 }
                 
@@ -467,6 +481,12 @@ public class LightEngine implements LinkedWithMap {
 
 	@Override
 	public void onMapChange() {
-		calcSimpleLight();
 	}
+
+	@Override
+	public void onChunkChange(Chunk chunk) {
+		calcSimpleLight(chunk);
+	}
+	
+	
 }

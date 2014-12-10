@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * Class under public domain. Modified for own needs. This class renders a loading screen.
+ * Class under public domain. Modified for own needs. This class renders is the default loading screen of wurfel engine.
  * @author Mats Svensson, Benedikt Vogler
  */
 public class LoadingScreen extends WEScreen {
@@ -116,7 +116,7 @@ public class LoadingScreen extends WEScreen {
 
     @Override
     public void resize(int width, int height) {
-        // Set our screen to always be XXX x 480 in size
+        // Set our screen to always be WWW x 480 in size
         //width = 1920;
         //height = 1080;
         //stage.setViewport(new StretchViewport(width , height));

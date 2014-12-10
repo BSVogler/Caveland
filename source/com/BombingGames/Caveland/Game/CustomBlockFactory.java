@@ -87,10 +87,6 @@ public Block produce(int id, int value) {
 			setTransparent(true);
 			setObstacle(false);
 		}
-
-		@Override
-		public void update(float dt, int x, int y, int z) {
-		}
 		
 		
 	}

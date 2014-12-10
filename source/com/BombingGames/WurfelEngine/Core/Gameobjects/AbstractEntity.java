@@ -28,9 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -41,7 +39,7 @@ import com.BombingGames.WurfelEngine.shooting.Bullet;
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject implements IsSelfAware {
+public abstract class AbstractEntity extends AbstractGameObject {
 	private static final long serialVersionUID = 1L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 
@@ -85,16 +83,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @param dt time since last update
      */
     public abstract void update(float dt);
-	
-	/**
-     * renders using its saved postion
-     * @param view
-     * @param camera 
-     */
-    public void render(GameView view, Camera camera){
-        super.render(view, camera, position);
-    }
-	
+		
     //IsSelfAware implementation
     @Override
     public Point getPosition() {
@@ -111,7 +100,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @param height 
      */
     public void setHeight(float height) {
-        position.setHeight(height);
+        position.setZ(height);
     }
     
   
@@ -120,19 +109,18 @@ public abstract class AbstractEntity extends AbstractGameObject implements IsSel
      * @return true when on the ground
      */
     public boolean isOnGround(){
-        if (getPosition().getHeight() <= 0) return true; //if entity is under the map
+        if (getPosition().getZ() <= 0) return true; //if entity is under the map
         
-        if (getPosition().getHeight()< Map.getGameHeight()){
+        if (getPosition().getZ() < Map.getGameHeight()){
             //check if one pixel deeper is on ground.
-            int z = (int) ((getPosition().getHeight()-1)/GAME_EDGELENGTH);
+            int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
             if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
 
             return
                 new Coordinate(
-                    position.getCoord().getRelX(),
-                    position.getCoord().getRelY(),
-                    z,
-                    true
+                    position.getCoord().getX(),
+                    position.getCoord().getY(),
+                    z
                 ).getBlock().isObstacle();
         } else
             return false;//return false if over map

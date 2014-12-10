@@ -633,6 +633,10 @@ public class Camera implements LinkedWithMap {
 		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH);
 	}
 	
+	/**
+	 * Get the leftmost block-coordinate covered by the camera.
+	 * @return the left (X) border coordinate
+	 */
 	public int getCoveredLeftBorder() {
 		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getX();
 	}
@@ -647,8 +651,13 @@ public class Camera implements LinkedWithMap {
 		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH + 1);
 	}
 	
+	/**
+	 * Get the rightmost block-coordinate covered by the camera.
+	 * @return the right (X) border coordinate
+	 */
 	public int getCoveredRightBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getX();
+		return Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY).getTopLeftCoordinate().getX()
+			+ Chunk.getBlocksX()-1;
 	}
 
 	/**
@@ -661,6 +670,10 @@ public class Camera implements LinkedWithMap {
 		return (int) (Map.getBlocksY() - 1 - ((position.y + getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2) - 3);
 	}
 	
+	/**
+	 * 
+	 * @return the top/back (Y) border coordinate
+	 */
 	public int getCoveredBackBorder() {
 		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getY();
 	}
@@ -675,9 +688,13 @@ public class Camera implements LinkedWithMap {
 		return (int) (Map.getBlocksY() - 1 - ((position.y+ getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2 - Map.getBlocksZ() * 2) + 2);
 	}
 	
+	/**
+	 * 
+	 * @return the bottom/front (Y) border coordinate
+	 */
 	public int getCoveredFrontBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY+2).getTopLeftCoordinate().getX()
-			+ Chunk.getBlocksX()-1;
+		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY+2).getTopLeftCoordinate().getY()
+			+ Chunk.getBlocksY()-1;
 	}
 
 	/**
@@ -819,38 +836,6 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * index to coordinate.//wrong! TODO, should get chunk border
-	 * @return the left (X) border coordinate
-	 */
-	public int getIndexedLeftBorder(){
-		return getCenter().getX() - Map.getBlocksX()/2;//wrong! TODO, should get chunk border
-	}
-	
-	/**
-	 * index to coordinate.//wrong! TODO, should get chunk border
-	 * @return the right (X) border coordinate
-	 */
-	public int getIndexedRightBorder(){
-		return getCenter().getX() + Map.getBlocksX()/2;//wrong! TODO, should get chunk border
-	}
-	
-	/**
-	 * index to coordinate.//wrong! TODO, should get chunk border
-	 * @return the top (Y) border coordinate
-	 */
-	public int getIndexedTopBorder(){
-		return getCenter().getY() - Map.getBlocksY()/2;//wrong! TODO, should get chunk border
-	}
-	
-	/**
-	 * index to coordinate.//wrong! TODO, should get chunk border
-	 * @return the bottom (Y) border coordinate
-	 */
-	public int getIndexedBottomBorder(){
-		return getCenter().getY() + Map.getBlocksY()/2;//wrong! TODO, should get chunk border
-	}
-	
-	/**
 	 * Does the cameras output cover the whole screen?
 	 *
 	 * @return
@@ -954,12 +939,12 @@ public class Camera implements LinkedWithMap {
 	}
 
 	public boolean[] getClipping(Coordinate coords) {
-		if (coords.getX()-getIndexedLeftBorder()>0
-			&& coords.getY()-getIndexedTopBorder()>0
+		if (coords.getX()-getCoveredLeftBorder()>0
+			&& coords.getY()-getCoveredFrontBorder()>0
 		) {
 			ClippingCell cell = clipping
-				[coords.getX()-getIndexedLeftBorder()]
-				[coords.getY()+coords.getZ()*2-getIndexedTopBorder()];
+				[coords.getX()-getCoveredLeftBorder()]
+				[coords.getY()+coords.getZ()*2-getCoveredBackBorder()];
 			return new boolean[]{
 				cell.getClippingLeft(),
 				cell.getClippingTop(),

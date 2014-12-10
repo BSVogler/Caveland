@@ -939,18 +939,18 @@ public class Camera implements LinkedWithMap {
 	}
 
 	public boolean[] getClipping(Coordinate coords) {
-		if (coords.getX()-getCoveredLeftBorder()>0
-			&& coords.getY()-getCoveredFrontBorder()>0
-		) {
-			ClippingCell cell = clipping
-				[coords.getX()-getCoveredLeftBorder()]
-				[coords.getY()+coords.getZ()*2-getCoveredBackBorder()];
+		int indexX = coords.getX()-getCoveredLeftBorder();
+		int indexY = coords.getY()-getCoveredBackBorder()-coords.getZ()*2;
+		
+//check if covered by depth buffer
+		if ( indexX >= 0 && indexY >= 0 ) {
 			return new boolean[]{
-				cell.getClippingLeft(),
-				cell.getClippingTop(),
-				cell.getClippingRight()
+				clipping[indexX][indexY].getClippingLeft(),
+				clipping[indexX][indexY].getClippingTop(),
+				clipping[indexX][indexY].getClippingRight()
 			};
 		} else {
+			//if not return fully clipped
 			return new boolean[]{true, true, true};
 		}
 	}

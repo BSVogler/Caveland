@@ -37,7 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 
 /**
- *
+ *The seletion indicator in the level editor.
  * @author Benedikt Vogler
  */
 public class Selection extends AbstractEntity {

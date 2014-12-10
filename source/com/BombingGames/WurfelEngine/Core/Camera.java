@@ -685,7 +685,9 @@ public class Camera implements LinkedWithMap {
 	 */
 	public int getVisibleBackBorder() {
 		//TODO
-		return (int) (Map.getBlocksY() - 1 - ((position.y + getHeightInViewSpc()/2) / AbstractGameObject.SCREEN_DEPTH2) - 3);
+		return (int) (
+			(position.y + getHeightInViewSpc()/2)//camera top border
+			/ -AbstractGameObject.SCREEN_DEPTH2);//back to game space
 	}
 	
 	/**
@@ -704,7 +706,7 @@ public class Camera implements LinkedWithMap {
 	public int getVisibleFrontBorder() {
 		return (int) (
 			(position.y+ getHeightInViewSpc()/2) //bottom camera border
-			/ AbstractGameObject.SCREEN_DEPTH2 //back to game coordinates
+			/ -AbstractGameObject.SCREEN_DEPTH2 //back to game coordinates
 		);
 	}
 	

@@ -988,15 +988,15 @@ public class Camera implements LinkedWithMap {
 			return super.clone();
 		}
 
-		boolean getClippingLeft() {
+		public boolean getClippingLeft() {
 			return false;//to-do
 		}
 
-		boolean getClippingTop() {
+		public boolean getClippingTop() {
 			return false;//to-do
 		}
 
-		boolean getClippingRight() {
+		public boolean getClippingRight() {
 			return false;//to-do
 		}
 	}

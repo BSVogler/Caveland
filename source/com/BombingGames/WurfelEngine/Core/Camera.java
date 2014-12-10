@@ -424,6 +424,25 @@ public class Camera implements LinkedWithMap {
 			for (ClippingCell x : y) {
 				for (Block block : x) {
 					//only add if in view plane to-do
+					int proX = block.getPosition().getViewSpcX(gameView);
+					int proY = block.getPosition().getViewSpcY(gameView);
+					if (
+							(position.y + getHeightInViewSpc()/2)
+							>
+							(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
+						&&
+							(proY+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+							>
+							position.y - getHeightInViewSpc()/2
+						&&
+							(proX+ Block.SCREEN_WIDTH2)//right side of sprite
+							>
+							position.x - getWidthInViewSpc()/2
+						&&
+							(proX- Block.SCREEN_WIDTH2)//left side of sprite
+							<
+							position.x + getWidthInViewSpc()/2
+				)
 					depthsort.add(block);
 				}
 			}

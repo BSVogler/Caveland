@@ -286,7 +286,7 @@ public class GameView extends View implements GameManager {
     public Intersection screenToGameRaytracing(final int x, final int y){
 		if (cameras.size()>0) {
 			Point p = screenToGameFlat(x,y);
-			float deltaZ = Chunk.getGameHeight()-Block.GAME_EDGELENGTH-p.getHeight();
+			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			p.addVector(0, (float) (deltaZ/Math.sqrt(2)*2), deltaZ);//top of map
 
 			return p.raycast(new Vector3(0,-1, -0.70710678f), 5000, cameras.get(0), false);//to-do identifiy camera

@@ -73,7 +73,7 @@ public class Collectible extends MovableEntity implements Serializable {
             camera,
             this.color.cpy().mul(color),
             CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
-                ? getPosition().getHeight()/(Map.getGameHeight())
+                ? getPosition().getZ()/(Map.getGameHeight())
                 : -0.4f
         );
 	}

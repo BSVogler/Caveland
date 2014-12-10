@@ -28,7 +28,6 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -41,7 +40,6 @@ import java.io.Serializable;
  */
 public abstract class AbstractPosition implements Serializable {
 	private static final long serialVersionUID = 1L;
-    private float height;
 
     /**
      *square root of two
@@ -80,6 +78,11 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract Coordinate getCoord();
     
+	  /**
+     *Get as vector
+     * @return
+     */
+    public abstract Vector3 getVector();
     /**
      * 
      * @return Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
@@ -137,33 +140,6 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract AbstractPosition addVector(float x, float y, float z);
 	
-    /**
-     * Geht the height (z-value) of the coordinate (game dimension).
-     * @return
-     */
-    public float getHeight() {
-        return height;
-    }
-
-    /**
-     * 
-     * @param height 
-     */
-    public void setHeight(float height) {
-        this.height = height;
-    }
-    
-    /**
-     *The z coordinate is absolute even when used as relative coordinate because there are no chunks in Z direction.
-     * @return game coordinate
-     */
-    public int getZ(){
-        float tmp = height / GAME_EDGELENGTH;
-        if (tmp<0)
-            return -1;
-        else
-            return (int) tmp;
-    }
     
         /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
@@ -185,7 +161,7 @@ public abstract class AbstractPosition implements Serializable {
 							0
 					)
 			)            
-            + getHeight()*SQRT2//Z
+            + getPoint().getZ()*SQRT2//Z
         );
     }
 }

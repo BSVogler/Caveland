@@ -100,7 +100,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @param height 
      */
     public void setHeight(float height) {
-        position.setHeight(height);
+        position.setZ(height);
     }
     
   
@@ -109,11 +109,11 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return true when on the ground
      */
     public boolean isOnGround(){
-        if (getPosition().getHeight() <= 0) return true; //if entity is under the map
+        if (getPosition().getZ() <= 0) return true; //if entity is under the map
         
-        if (getPosition().getHeight()< Map.getGameHeight()){
+        if (getPosition().getZ() < Map.getGameHeight()){
             //check if one pixel deeper is on ground.
-            int z = (int) ((getPosition().getHeight()-1)/GAME_EDGELENGTH);
+            int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
             if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
 
             return

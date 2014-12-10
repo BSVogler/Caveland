@@ -103,7 +103,7 @@ public class Lore extends MovableEntity {
 
 			if (passenger.isOnGround()) {//while standing force into lore
 				Point tmp = pos.cpy();
-				tmp.setHeight(passenger.getPosition().getHeight());
+				tmp.setZ(passenger.getPosition().getZ());
 				passenger.setPosition(tmp);
 			}
 			if (pos.distanceTo(passenger) > 200) {//object exits
@@ -149,7 +149,7 @@ public class Lore extends MovableEntity {
 		if (passenger.getMovement().z > 0) {
 			passenger.getMovement().z = 0;//fall into chuchu
 		}
-		tmp.setHeight(passenger.getPosition().getHeight());
+		tmp.setZ(passenger.getPosition().getZ());
 		passenger.setPosition(tmp);
 	}
 

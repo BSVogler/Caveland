@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -401,11 +400,7 @@ public class Map implements Cloneable{
         ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity ent : entityList) {
-            if (Arrays.equals(
-                    ent.getPosition().getCoord().getTriple(),
-                    coord.getTriple()
-                )
-                ){
+            if ( ent.getPosition().getCoord().getVector().equals(coord.getVector()) ){
                 list.add(ent);//add it to list
             } 
         }
@@ -426,7 +421,7 @@ public class Map implements Cloneable{
 
         for (AbstractEntity ent : entityList) {
             if (
-                Arrays.equals(ent.getPosition().getCoord().getTriple(),coord.getTriple())//on coordinate?
+                ent.getPosition().getCoord().getVector().equals(coord.getVector())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
                 ){
                     list.add((type) ent);//add it to list

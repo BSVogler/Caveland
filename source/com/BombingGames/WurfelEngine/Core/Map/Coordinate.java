@@ -46,6 +46,7 @@ public class Coordinate extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
     private int x;
     private int y;
+	private int z;
 	/**
 	 * gets calculated every time the coordinate is written to.
 	 */
@@ -60,20 +61,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate(int x, int y, int z) {
         this.x = x;
         this.y = y;
-        super.setHeight(z*Block.GAME_EDGELENGTH);
-		refreshCachedPoint();
-    }
-    
-     /**
-     * Creates a coordiante. You can specify wether the given values are absolute or relative to the map.
-     * @param x The x value as coordinate.
-     * @param y The y value as coordinate.
-     * @param height The z value as height.
-     */
-    public Coordinate(int x, int y, float height) {
-        this.x = x;
-        this.y = y;
-		super.setHeight(height);
+		this.z = z;
 		refreshCachedPoint();
     }
     
@@ -84,7 +72,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate(Coordinate coord) {
         this.x = coord.x;
         this.y = coord.y;
-        super.setHeight(coord.getHeight());
+		this.z = coord.z;
 		refreshCachedPoint();
     }
     
@@ -102,6 +90,10 @@ public class Coordinate extends AbstractPosition {
     public int getY(){
         return y;
     }
+	
+	public int getZ(){
+		return z;
+	}
     
     
     /**
@@ -110,22 +102,18 @@ public class Coordinate extends AbstractPosition {
      * @see #getZ() 
      */
     public int getZClamp(){
-        int tmpZ = getZ();
-        if (tmpZ >= Map.getBlocksZ())
+        if (z >= Map.getBlocksZ())
             return Map.getBlocksZ() -1;
-        else if (tmpZ < 0)
+        else if (z < 0)
                 return 0;
              else
-                return tmpZ;
+                return z;
     }
     
     
-    /**
-     *
-     * @return
-     */
-    public int[] getTriple(){
-        return new int[]{x, y, getZ()};
+	@Override
+    public Vector3 getVector(){
+        return new Vector3(x, y, z);
     }
     
     /**
@@ -151,15 +139,9 @@ public class Coordinate extends AbstractPosition {
      * @param z
      */
     public void setZ(int z){
-        setHeight(z*Block.GAME_EDGELENGTH);
+		this.z = z;
 		refreshCachedPoint();
     }
-
-	@Override
-	public void setHeight(float height) {
-		super.setHeight(height);
-		refreshCachedPoint();
-	}
 
     /**
      *Set a block in the map where the coordinate is pointing to.
@@ -181,7 +163,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]*Block.GAME_EDGELENGTH);
+		this.z += vector[2];
 		refreshCachedPoint();
         return this;
     }
@@ -195,7 +177,7 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
-        setHeight(getHeight()+ vector.z*Block.GAME_EDGELENGTH);
+        this.z += vector.z;
 		refreshCachedPoint();
         return this;
     }
@@ -211,13 +193,13 @@ public class Coordinate extends AbstractPosition {
     public Coordinate addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z*Block.GAME_EDGELENGTH);
+        this.z += z;
         return this;
     }
     
     @Override
     public Block getBlock(){
-		if (getHeight()<0)
+		if (z<0)
 			return Controller.getMap().getGroundBlock();
 		else return Controller.getMap().getBlock(this);
     }
@@ -406,7 +388,7 @@ public class Coordinate extends AbstractPosition {
 		cachedPoint = new Point(
             x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
             y*Block.GAME_DIAGLENGTH2,
-            getHeight()
+            z*Block.GAME_EDGELENGTH
         );
 	}
 
@@ -462,7 +444,7 @@ public class Coordinate extends AbstractPosition {
 			)
 				
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
-            + getHeight() *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
+            + z*Block.GAME_EDGELENGTH *AbstractPosition.SQRT12 //subtract height and take axis shortening into account
         );
     }
     

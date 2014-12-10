@@ -210,7 +210,7 @@ public class Minimap implements LinkedWithMap {
 					 Point tmpPos = ent.getPosition();
 					//player coordinate
 					view.drawString(
-						tmpPos.getCoord().getX() +" | "+ tmpPos.getCoord().getY() +" | "+ (int) tmpPos.getHeight(),
+						tmpPos.getCoord().getX() +" | "+ tmpPos.getCoord().getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+(tmpPos.getCoord().getX() + (tmpPos.getY()%2==1?0.5f:0) ) * scaleX+20),
 						(int) (posY- tmpPos.getCoord().getY() * scaleY + 10),
 						Color.RED
@@ -222,7 +222,7 @@ public class Minimap implements LinkedWithMap {
 					);
 					rectY = (int) (tmpPos.getY()/Block.GAME_DIAGLENGTH2 * scaleY);
 
-					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getHeight(),
+					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
 						(int) (posY+rectY),
 						Color.RED

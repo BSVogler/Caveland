@@ -64,7 +64,7 @@ class EntityShadow extends AbstractEntity {
 					tmpPos.addVector(new float[]{0, 0, -1});
 
 				setPosition(character.getPosition().cpy());
-				getPosition().setHeight(tmpPos.getHeight());
+				getPosition().setZ(tmpPos.getPoint().getZ());
 			}
 		}
     }
@@ -73,7 +73,7 @@ class EntityShadow extends AbstractEntity {
     public void render(View view, Camera camera) {
 		if (!shouldBeDisposed()){
 			Color color = PseudoGrey.toColor(
-					(character.getPosition().getHeight() - getPosition().getHeight())/Block.GAME_EDGELENGTH
+					(character.getPosition().getZ()- getPosition().getZ())/Block.GAME_EDGELENGTH
 					);//make color out of distance from player
 			super.render(view, camera,color);
 		}

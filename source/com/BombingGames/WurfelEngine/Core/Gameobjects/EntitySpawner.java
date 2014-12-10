@@ -31,8 +31,8 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *The entitty spawner spawns an entity when a character steps on it.
@@ -56,7 +56,7 @@ public class EntitySpawner extends Block {
     @Override
     public void update(float dt) {
 		if (coords!=null){
-			int[] coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getTriple();
+			Vector3 coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getVector();
 
 			//get every character
 			ArrayList<MovableEntity> entitylist;
@@ -64,11 +64,17 @@ public class EntitySpawner extends Block {
 
 			//check every character if standing on top
 			int i = 0;
-			while (i < entitylist.size() && !Arrays.equals( entitylist.get(i).getPosition().getCoord().getTriple(), coordsOnTop)){
+			while (
+				i < entitylist.size()
+				&& !entitylist.get(i).getPosition().getCoord().getVector().equals(coordsOnTop)
+			){
 				i++;
 			}
 
-			if (i < entitylist.size() && Arrays.equals(entitylist.get(i).getPosition().getCoord().getTriple(), coordsOnTop)) {
+			if (
+				i < entitylist.size()
+				&& entitylist.get(i).getPosition().getCoord().getVector().equals(coordsOnTop)
+			) {
 				if (up) trigger();
 				up = false;
 			} else {

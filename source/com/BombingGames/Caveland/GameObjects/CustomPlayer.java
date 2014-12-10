@@ -66,7 +66,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 		if (!items.isEmpty()){
 			Lore lore = items.get(0);
 			if (lore != null && lore.getPassenger()==null)//if contact with lroe and it has no passenger
-				if (pos.getHeight() > (pos.getZ()+0.5f)*(AbstractGameObject.GAME_EDGELENGTH)) //enter chu chu
+				if (pos.getZ() > (pos.getZ()+0.5f)*(AbstractGameObject.GAME_EDGELENGTH)) //enter chu chu
 					lore.setPassanger(this);
 		}
 		

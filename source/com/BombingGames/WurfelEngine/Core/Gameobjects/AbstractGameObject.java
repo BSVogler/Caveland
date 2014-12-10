@@ -332,7 +332,7 @@ public abstract class AbstractGameObject implements Serializable {
             camera,
             color,
             CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
-                ? getPosition().getPoint().getHeight()/(Map.getGameHeight())
+                ? getPosition().getPoint().getZ()/(Map.getGameHeight())
                 : 0
         );
     }

@@ -164,12 +164,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
         if (getPosition()!= null && getPosition().isInMemoryHorizontal()) {
 
             /*VERTICAL MOVEMENT*/
-				float oldHeight = getPosition().getHeight();
+				float oldHeight = getPosition().getZ();
 				float t = delta/1000f; //t = time in s
 				if (!floating)
 					if (!isOnGround())
 						movement.z -= CVar.get("gravity").getValuef()*t; //in m/s
-				getPosition().setHeight(getPosition().getHeight() + movement.z * GAME_EDGELENGTH * t); //in m
+				getPosition().setZ(getPosition().getZ()+ movement.z * GAME_EDGELENGTH * t); //in m
 
 
 				//check new height for colission            
@@ -183,7 +183,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 					movement.z = 0;
 
 					//set on top of block
-					getPosition().setHeight((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
 				}
 
 				if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
@@ -459,11 +459,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      */
     @Override
     public boolean isOnGround() {
-        if (getPosition().getHeight() > 0){
-                getPosition().setHeight(getPosition().getHeight()-1);
+        if (getPosition().getZ()> 0){
+                getPosition().setZ(getPosition().getZ()-1);
                 
                 boolean colission = getPosition().getBlockClamp().isObstacle() || horizontalColission(getPosition());
-                getPosition().setHeight(getPosition().getHeight()+1);
+                getPosition().setZ(getPosition().getZ()+1);
                 
                 //if standing on ground on own or neighbour block then true
                 return (super.isOnGround() || colission);

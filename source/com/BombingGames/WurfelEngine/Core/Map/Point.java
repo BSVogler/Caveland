@@ -47,6 +47,7 @@ public class Point extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
     private float x;
     private float y;
+	private float z;
 
     /**
      * Creates a point refering to a position in the game world.
@@ -57,7 +58,7 @@ public class Point extends AbstractPosition {
     public Point(float posX, float posY, float height) {
 		this.x = posX;
 		this.y = posY;
-        setHeight(height);
+        this.z = height;
     }
     
     /**
@@ -67,7 +68,7 @@ public class Point extends AbstractPosition {
     public Point(Point point) {
        this.x = point.x;
        this.y = point.y;
-       this.setHeight(point.getHeight());
+	   this.z = point.z;
     }
 
     /**
@@ -77,6 +78,22 @@ public class Point extends AbstractPosition {
     @Override
     public Point getPoint() {
        return this;
+    }
+	
+	    /**
+     * Get the height (z-value) of the coordinate.
+     * @return game dimension
+     */
+    public float getZ() {
+        return z;
+    }
+
+    /**
+     * 
+     * @param height 
+     */
+    public void setZ(float height) {
+        this.z = height;
     }
     
     /**
@@ -89,9 +106,8 @@ public class Point extends AbstractPosition {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (getX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1,//maybe dangerous to optimize code here!
-            getHeight()
-        );
+            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1, (//maybe dangerous to optimize code here!
+			int) (z/Block.GAME_EDGELENGTH));
        
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
@@ -107,14 +123,6 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     *
-     * @return
-     */
-    public float[] getRel(){
-        return new float[]{getX(), getY(), getHeight()};
-    }
-
-    /**
      *Get the game world position from left
      * @return
      */
@@ -128,6 +136,14 @@ public class Point extends AbstractPosition {
      */
     public float getY() {
         return y;
+    }
+	
+	  /**
+     *Get as array triple
+     * @return
+     */
+    public Vector3 getVector(){
+        return new Vector3(x, y, z);
     }
     
 	/**
@@ -151,7 +167,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getHeight() - getZ()*Block.GAME_EDGELENGTH;
+		return getZ() - getZ()*Block.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -216,7 +232,7 @@ public class Point extends AbstractPosition {
 							0
 					)
 			)
-            + (int) (getHeight() * SQRT12) //take z-axis shortening into account
+            + (int) (getZ() * SQRT12) //take z-axis shortening into account
             -AbstractGameObject.SCREEN_HEIGHT2+AbstractGameObject.SCREEN_DEPTH2;//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
     }
     
@@ -254,7 +270,7 @@ public class Point extends AbstractPosition {
     public Point addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
-        setHeight(getHeight()+ vector[2]);
+		this.z += vector[2];
         return this;
     }
     
@@ -267,7 +283,7 @@ public class Point extends AbstractPosition {
     public Point addVector(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
-        setHeight(getHeight()+ vector.z);
+		this.z += vector.z;
         return this;
     }
 
@@ -282,7 +298,7 @@ public class Point extends AbstractPosition {
     public Point addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;
-        setHeight(getHeight()+ z);
+        this.z += z;
         return this;
     }
 	
@@ -296,7 +312,7 @@ public class Point extends AbstractPosition {
 		Point origin = getCoord().getPoint(); 
 		this.x = origin.x +x;
 		this.y = origin.y +y;
-		setHeight(origin.getHeight() +z);
+		this.z = origin.z +z;
 	}
     
     /**
@@ -340,7 +356,7 @@ public class Point extends AbstractPosition {
         // Cube containing origin point.
         float curX = (float) Math.floor(x);
         float curY = (float) Math.floor(y);
-        float curZ = (float) Math.floor(getHeight());
+        float curZ = (float) Math.floor(z);
         // Break out direction vector.
         float dx = direction.x;
         float dy = direction.y;
@@ -353,7 +369,7 @@ public class Point extends AbstractPosition {
         // part of the origin.
         float tMaxX = intbound(x, dx);
         float tMaxY = intbound(y, dy);
-        float tMaxZ = intbound(getHeight(), dz);
+        float tMaxZ = intbound(z, dz);
         // The change in t when taking a step (always positive).
         float tDeltaX = stepX/dx;
         float tDeltaY = stepY/dy;
@@ -485,7 +501,7 @@ public class Point extends AbstractPosition {
 	public float distanceTo(Point point) {
 		float dX = x-point.x;
 		float dY = y-point.y;
-		float dZ = getHeight()-point.getHeight();
+		float dZ = z-point.z;
 		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
 	}
 

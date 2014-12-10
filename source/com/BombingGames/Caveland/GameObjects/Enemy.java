@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.badlogic.gdx.math.Vector3;
-import java.util.Arrays;
 
 /**
  *An enemy which can follow a character.
@@ -13,7 +12,7 @@ public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
-    private float[] lastPos;
+    private Vector3 lastPos;
     private static int killcounter = 0;
     
     public void init(){
@@ -65,13 +64,12 @@ public class Enemy extends MovableEntity{
             }
             //update as usual
             super.update(dt);
-
             //if standing on same position as in last update
-            if (Arrays.equals(getPosition().getRel(), lastPos) && getSpeed()>0)//not standing still
+            if (getPosition().getVector().equals(lastPos) && getSpeed()>0)//not standing still
                 runningagainstwallCounter += dt;
             else {
                 runningagainstwallCounter=0;
-                lastPos = getPosition().getRel();
+                lastPos = getPosition().getVector();
             }
 
             //jump after some time

@@ -106,11 +106,14 @@ public class Map implements Cloneable{
     }
     
 	public void update(float dt){
+		for (int i = 0; i < data.size(); i++) {
+			if (data.get(i).getCameraAccessCounter() <= 0)
+				data.remove(i);
+		}
+				
 		//update every block on the map
 		for (Chunk chunk : data) {
-			if (chunk.getCameraAccessCounter() <= 0)
-				data.remove(chunk);
-			else
+			if (chunk.getCameraAccessCounter() > 0)
 				chunk.update(dt);
 		}
 

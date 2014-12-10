@@ -515,7 +515,27 @@ public class Coordinate extends AbstractPosition {
 		return false;
 	}
 	
-		
+	@Override
+	public boolean equals(Object obj){
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Coordinate other = (Coordinate)obj;
+		if (x != other.x) return false;
+		if (y != other.y) return false;
+		return z == other.z;
+	}
+
+	@Override
+	public int hashCode() {
+		//using generated source
+		int hash = 7;
+		hash = 53 * hash + this.x;
+		hash = 53 * hash + this.y;
+		hash = 53 * hash + this.z;
+		return hash;
+	}
+	
 	@Override
 	public String toString() {
 		return "{"+x+","+y+","+getZ()+"}";

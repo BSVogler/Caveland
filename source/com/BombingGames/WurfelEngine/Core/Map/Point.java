@@ -87,6 +87,14 @@ public class Point extends AbstractPosition {
     public float getZ() {
         return z;
     }
+	
+	/**
+     * Get the z in grid coordinates of the coordinate. Faster then calculate the coordiante first.
+     * @return in grid coordinates.
+     */
+    public float getZGrid() {
+        return (int) (z/Block.GAME_EDGELENGTH);
+    }
 
     /**
      * 
@@ -106,8 +114,8 @@ public class Point extends AbstractPosition {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
             (int) (getX()) / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1, (//maybe dangerous to optimize code here!
-			int) (z/Block.GAME_EDGELENGTH));
+            (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1, //maybe dangerous to optimize code here!
+			(int) (z/Block.GAME_EDGELENGTH));
        
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(

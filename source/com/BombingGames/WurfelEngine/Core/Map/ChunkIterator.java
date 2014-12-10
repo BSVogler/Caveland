@@ -94,6 +94,10 @@ public class ChunkIterator implements Iterator<Block>{
 	public void remove() {
 	}
 	
+	/**
+	 * get the indices position of the iterator
+	 * @return 
+	 */
 	public int[] getCurrentIndex(){
 		return new int[]{x,y,z};
 	}

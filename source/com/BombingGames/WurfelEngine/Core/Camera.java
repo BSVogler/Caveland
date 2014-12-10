@@ -144,7 +144,7 @@ public class Camera implements LinkedWithMap {
 		position.y = Map.getCenter().getViewSpcY(view);
 		
 		this.topLeftChunkX = (int) (position.x / Chunk.getGameWidth())-1;
-		this.topLeftChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth())-1;//divide by 2 to game->view space
+		this.topLeftChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2)-1;//divide by 2 to game->view space
 
 		zRenderingLimit = Map.getBlocksZ();
 	}
@@ -232,7 +232,7 @@ public class Camera implements LinkedWithMap {
 		}
 		
 		this.topLeftChunkX = (int) (position.x / Chunk.getGameWidth())-1;
-		this.topLeftChunkY = (int) (Map.getGameDepth()-position.y / Chunk.getGameDepth())-1;
+		this.topLeftChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2)-1;//divide by 2 to game->view space
 
 		//aplly screen shake
 		if (shakeTime > 0) {

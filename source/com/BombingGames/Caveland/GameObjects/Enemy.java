@@ -2,6 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -12,7 +13,7 @@ public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
-    private Vector3 lastPos;
+    private Point lastPos;
     private static int killcounter = 0;
     
     public void init(){
@@ -65,11 +66,11 @@ public class Enemy extends MovableEntity{
             //update as usual
             super.update(dt);
             //if standing on same position as in last update
-            if (getPosition().getVector().equals(lastPos) && getSpeed()>0)//not standing still
+            if (getPosition().equals(lastPos) && getSpeed()>0)//not standing still
                 runningagainstwallCounter += dt;
             else {
                 runningagainstwallCounter=0;
-                lastPos = getPosition().getVector();
+                lastPos = getPosition().cpy();
             }
 
             //jump after some time

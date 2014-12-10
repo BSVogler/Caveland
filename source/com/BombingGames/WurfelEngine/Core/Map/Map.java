@@ -400,7 +400,7 @@ public class Map implements Cloneable{
         ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity ent : entityList) {
-            if ( ent.getPosition().getCoord().getVector().equals(coord.getVector()) ){
+            if ( ent.getPosition().getCoord().equals(coord) ){
                 list.add(ent);//add it to list
             } 
         }

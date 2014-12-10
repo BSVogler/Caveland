@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -56,7 +55,7 @@ public class EntitySpawner extends Block {
     @Override
     public void update(float dt) {
 		if (coords!=null){
-			Vector3 coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord().getVector();
+			Coordinate coordsOnTop = coords.cpy().addVector(new float[]{0, 0, 1}).getCoord();
 
 			//get every character
 			ArrayList<MovableEntity> entitylist;
@@ -66,14 +65,14 @@ public class EntitySpawner extends Block {
 			int i = 0;
 			while (
 				i < entitylist.size()
-				&& !entitylist.get(i).getPosition().getCoord().getVector().equals(coordsOnTop)
+				&& !entitylist.get(i).getPosition().getCoord().equals(coordsOnTop)
 			){
 				i++;
 			}
 
 			if (
 				i < entitylist.size()
-				&& entitylist.get(i).getPosition().getCoord().getVector().equals(coordsOnTop)
+				&& entitylist.get(i).getPosition().getCoord().equals(coordsOnTop)
 			) {
 				if (up) trigger();
 				up = false;

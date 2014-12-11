@@ -4,9 +4,9 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.5.2</string>
+        <string>3.5.3</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Caveland Projekt/Caveland/sprites/PrototypeSpriteSheet.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/Caveland.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../src/com/BombingGames/Caveland/Spritesheet.png</filename>
+        <filename>../../source/com/BombingGames/Caveland/Spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../src/com/BombingGames/Caveland/Spritesheet.txt</filename>
+                <filename>../../source/com/BombingGames/Caveland/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

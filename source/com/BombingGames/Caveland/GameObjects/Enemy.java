@@ -24,7 +24,7 @@ public class Enemy extends MovableEntity{
      * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
      */
     public Enemy() {
-        super(45,0);
+        super(45,1);
         setTransparent(true);
         setObstacle(true);
 //        setDamageSounds(new Sound[]{

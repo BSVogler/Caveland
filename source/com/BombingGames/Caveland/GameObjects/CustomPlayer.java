@@ -26,7 +26,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 	private boolean airjump = false;
 	
     public CustomPlayer() {
-        super(0,AbstractGameObject.GAME_EDGELENGTH);
+        super(1,AbstractGameObject.GAME_EDGELENGTH);
     }
 
 	/**

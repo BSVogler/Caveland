@@ -247,45 +247,18 @@ public class Camera implements LinkedWithMap {
 		position.x += screenshake.x;
 		position.y += screenshake.y;
 
-		//check if 
 		if (CVar.get("chunkSwitchAllowed").getValueb()) {
-			if (getVisibleLeftBorder() <= getCoveredLeftBorder()){
-				Controller.getMap().loadChunk(centerChunkX-1, centerChunkY  );
-                Controller.getMap().loadChunk(centerChunkX-1, centerChunkY+1);
-				Controller.getMap().loadChunk(centerChunkX-1, centerChunkY+2);
-				Controller.getMap().getChunk(centerChunkX+2, centerChunkY  ).decreaseAccesCounter();
-				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+1).decreaseAccesCounter();
-				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+2).decreaseAccesCounter();
-			} else{
-				if (getVisibleRightBorder() >= getCoveredRightBorder()) {
-					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY  );
-					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+1);
-					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+2);
-					Controller.getMap().getChunk(centerChunkX-2, centerChunkY  ).decreaseAccesCounter();
-					Controller.getMap().getChunk(centerChunkX-2, centerChunkY+1).decreaseAccesCounter();
-					Controller.getMap().getChunk(centerChunkX-2, centerChunkY+2).decreaseAccesCounter();
-				}
-			}
-			//scroll up, earth down            
-			if (getVisibleBackBorder() <= getCoveredBackBorder()) {
-				Controller.getMap().loadChunk(centerChunkX  , centerChunkY  );
-                Controller.getMap().loadChunk(centerChunkX+1, centerChunkY-1);
-				Controller.getMap().loadChunk(centerChunkX+2, centerChunkY-1);
-				Controller.getMap().getChunk(centerChunkX  , centerChunkY+2).decreaseAccesCounter();
-                Controller.getMap().getChunk(centerChunkX+1, centerChunkY+2).decreaseAccesCounter();
-				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+2).decreaseAccesCounter();
-			} else {
-				if (getVisibleFrontBorder() >= getCoveredFrontBorder()) {
-					Controller.getMap().loadChunk(centerChunkX  , centerChunkY+1);
-					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+1);
-					Controller.getMap().loadChunk(centerChunkX+2, centerChunkY+1);
-					Controller.getMap().getChunk(centerChunkX  , centerChunkY-2  ).decreaseAccesCounter();
-					Controller.getMap().getChunk(centerChunkX+1, centerChunkY-2).decreaseAccesCounter();
-					Controller.getMap().getChunk(centerChunkX+2, centerChunkY-2).decreaseAccesCounter();
-				}
-			}
+			//check every chunk
+			checkChunk(centerChunkX-1, centerChunkY-1);
+			checkChunk(centerChunkX  , centerChunkY-1);
+			checkChunk(centerChunkX+1, centerChunkY-1);
+			checkChunk(centerChunkX  , centerChunkY  );
+			checkChunk(centerChunkX+1, centerChunkY  );
+			checkChunk(centerChunkX-1, centerChunkY  );
+			checkChunk(centerChunkX-1, centerChunkY+1);
+			checkChunk(centerChunkX  , centerChunkY+1);
+			checkChunk(centerChunkX+1, centerChunkY+1);
 		}
-		
 		
 		//move camera to the focus 
 		view.setToLookAt(
@@ -315,6 +288,20 @@ public class Camera implements LinkedWithMap {
 		//Gdx.gl20.glLoadMatrixf(view.val, 0);
         //invProjectionView.set(combined);
 		//Matrix4.inv(invProjectionView.val);
+	}
+	
+	/**
+	 * Checks if chunk must be loaded or deleted.
+	 * @param x
+	 * @param y 
+	 */
+	private void checkChunk(int x, int y){
+		Map map = Controller.getMap();
+		if (map.getChunk(x, y)==null) {
+				map.loadChunk(x, y);
+		} else  {
+			map.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
+		}
 	}
 
 	/**

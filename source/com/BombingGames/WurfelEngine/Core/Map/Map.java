@@ -106,15 +106,9 @@ public class Map implements Cloneable{
     }
     
 	public void update(float dt){
-		for (int i = 0; i < data.size(); i++) {
-			if (data.get(i).getCameraAccessCounter() <= 0)
-				data.remove(i);
-		}
-				
 		//update every block on the map
 		for (Chunk chunk : data) {
-			if (chunk.getCameraAccessCounter() > 0)
-				chunk.update(dt);
+			chunk.update(dt);
 		}
 
 		//update every entity
@@ -131,6 +125,16 @@ public class Map implements Cloneable{
 	}
 	
 	public void postUpdate(float dt) {
+		if (CVar.get("chunkSwitchAllowed").getValueb()) {
+			//some custom garbage collection
+			for (int i = 0; i < data.size(); i++) {
+				if (data.get(i).shouldBeRemoved())
+					data.remove(i);
+				else data.get(i).resetCameraAccesCounter();
+			}
+		}
+		
+		//check for modification flag
 		if (modified){
 			onModified();
 			modified = false;

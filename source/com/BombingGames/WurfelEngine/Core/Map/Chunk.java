@@ -492,16 +492,16 @@ public class Chunk {
 		modified = true;
 	}
 	
-	public void decreaseAccesCounter(){
-		cameraAccessCounter--;
+	public void resetCameraAccesCounter(){
+		cameraAccessCounter=0;
 	}
 	
 	public final void increaseCameraAccesCounter(){
 		cameraAccessCounter++;
 	}
 
-	protected int getCameraAccessCounter() {
-		return cameraAccessCounter;
+	boolean shouldBeRemoved() {
+		return cameraAccessCounter <= 0;
 	}
 	
 }

@@ -46,14 +46,14 @@ public class CameraSpaceIterator extends MapIterator {
 
 	/**
 	 * Starts at z=-1. 
-	 * @param startingCoordX the top left chunk coordinate
-	 * @param startingCoordY the top left chunk coordinate
+	 * @param centerCoordX the center chunk coordinate
+	 * @param centerCoordY the center chunk coordinate
 	 */
-	public CameraSpaceIterator(int startingCoordX, int startingCoordY) {
+	public CameraSpaceIterator(int centerCoordX, int centerCoordY) {
 		super();
 		ArrayList<Chunk> mapdata = Controller.getMap().getData();
-		chunkCoordX = startingCoordX;
-		chunkCoordY = startingCoordY;
+		chunkCoordX = centerCoordX;
+		chunkCoordY = centerCoordY;
 		//bring starting position to top left
 		current = mapdata.get(0);
 		blockIterator = mapdata.get(0).getIterator(getStartingZ(), getTopLimitZ());
@@ -78,15 +78,10 @@ public class CameraSpaceIterator extends MapIterator {
 			while (
 				chunkIterator.hasNext()&& 
 				(
-					(
-					current.getChunkX() == chunkCoordX//starting chunk
-					&& current.getChunkY() == chunkCoordY
-					)
-					||
-					(current.getChunkX() < chunkCoordX//outside
-					|| current.getChunkX() > chunkCoordX+2)
-					&& (current.getChunkY() < chunkCoordY
-					|| current.getChunkY() > chunkCoordY+2)
+					(current.getChunkX() < chunkCoordX-1//outside
+					|| current.getChunkX() > chunkCoordX+1)
+					&& (current.getChunkY() < chunkCoordY-1
+					|| current.getChunkY() > chunkCoordY+1)
 				)
 			) {
 				current = chunkIterator.next();

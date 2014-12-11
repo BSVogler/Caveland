@@ -117,8 +117,8 @@ public class Camera implements LinkedWithMap {
 	private final GameView gameView;
 	private int gameSpaceWidth;
 	private int gameSpaceHeight;
-	private int topLeftChunkX;
-	private int topLeftChunkY;
+	private int centerChunkX;
+	private int centerChunkY;
 	
 	/**
 	 * Creates a camera pointing at the middle of the map.
@@ -143,8 +143,8 @@ public class Camera implements LinkedWithMap {
 		position.x = Map.getCenter().getViewSpcX(view);
 		position.y = Map.getCenter().getViewSpcY(view);
 		
-		this.topLeftChunkX = (int) (position.x / Chunk.getGameWidth())-1;
-		this.topLeftChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2)-1;//divide by 2 to game->view space
+		this.centerChunkX = (int) (position.x / Chunk.getGameWidth());
+		this.centerChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2);//divide by 2 to game->view space
 
 		zRenderingLimit = Map.getBlocksZ();
 	}
@@ -231,8 +231,8 @@ public class Camera implements LinkedWithMap {
             );
 		}
 		
-		this.topLeftChunkX = (int) (position.x / Chunk.getGameWidth())-1;
-		this.topLeftChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2)-1;//divide by 2 to game->view space
+		this.centerChunkX = (int) (position.x / Chunk.getGameWidth());
+		this.centerChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2);//divide by 2 to game->view space
 
 		//aplly screen shake
 		if (shakeTime > 0) {
@@ -250,38 +250,38 @@ public class Camera implements LinkedWithMap {
 		//check if 
 		if (CVar.get("chunkSwitchAllowed").getValueb()) {
 			if (getVisibleLeftBorder() <= getCoveredLeftBorder()){
-				Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY  );
-                Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY+1);
-				Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY+2);
-				Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY  ).decreaseAccesCounter();
-				Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY+1).decreaseAccesCounter();
-				Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY+2).decreaseAccesCounter();
+				Controller.getMap().loadChunk(centerChunkX-1, centerChunkY  );
+                Controller.getMap().loadChunk(centerChunkX-1, centerChunkY+1);
+				Controller.getMap().loadChunk(centerChunkX-1, centerChunkY+2);
+				Controller.getMap().getChunk(centerChunkX+2, centerChunkY  ).decreaseAccesCounter();
+				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+1).decreaseAccesCounter();
+				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+2).decreaseAccesCounter();
 			} else{
 				if (getVisibleRightBorder() >= getCoveredRightBorder()) {
-					Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY  );
-					Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY+1);
-					Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY+2);
-					Controller.getMap().getChunk(topLeftChunkX-1, topLeftChunkY  ).decreaseAccesCounter();
-					Controller.getMap().getChunk(topLeftChunkX-1, topLeftChunkY+1).decreaseAccesCounter();
-					Controller.getMap().getChunk(topLeftChunkX-1, topLeftChunkY+2).decreaseAccesCounter();
+					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY  );
+					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+1);
+					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+2);
+					Controller.getMap().getChunk(centerChunkX-2, centerChunkY  ).decreaseAccesCounter();
+					Controller.getMap().getChunk(centerChunkX-2, centerChunkY+1).decreaseAccesCounter();
+					Controller.getMap().getChunk(centerChunkX-2, centerChunkY+2).decreaseAccesCounter();
 				}
 			}
 			//scroll up, earth down            
 			if (getVisibleBackBorder() <= getCoveredBackBorder()) {
-				Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY  );
-                Controller.getMap().loadChunk(topLeftChunkX+1, topLeftChunkY);
-				Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY);
-				Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY+2  ).decreaseAccesCounter();
-                Controller.getMap().getChunk(topLeftChunkX+1, topLeftChunkY+2).decreaseAccesCounter();
-				Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY+2).decreaseAccesCounter();
+				Controller.getMap().loadChunk(centerChunkX  , centerChunkY  );
+                Controller.getMap().loadChunk(centerChunkX+1, centerChunkY-1);
+				Controller.getMap().loadChunk(centerChunkX+2, centerChunkY-1);
+				Controller.getMap().getChunk(centerChunkX  , centerChunkY+2).decreaseAccesCounter();
+                Controller.getMap().getChunk(centerChunkX+1, centerChunkY+2).decreaseAccesCounter();
+				Controller.getMap().getChunk(centerChunkX+2, centerChunkY+2).decreaseAccesCounter();
 			} else {
 				if (getVisibleFrontBorder() >= getCoveredFrontBorder()) {
-					Controller.getMap().loadChunk(topLeftChunkX, topLeftChunkY+2  );
-					Controller.getMap().loadChunk(topLeftChunkX+1, topLeftChunkY+2);
-					Controller.getMap().loadChunk(topLeftChunkX+2, topLeftChunkY+2);
-					Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY-1  ).decreaseAccesCounter();
-					Controller.getMap().getChunk(topLeftChunkX+1, topLeftChunkY-1).decreaseAccesCounter();
-					Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY-1).decreaseAccesCounter();
+					Controller.getMap().loadChunk(centerChunkX  , centerChunkY+1);
+					Controller.getMap().loadChunk(centerChunkX+1, centerChunkY+1);
+					Controller.getMap().loadChunk(centerChunkX+2, centerChunkY+1);
+					Controller.getMap().getChunk(centerChunkX  , centerChunkY-2  ).decreaseAccesCounter();
+					Controller.getMap().getChunk(centerChunkX+1, centerChunkY-2).decreaseAccesCounter();
+					Controller.getMap().getChunk(centerChunkX+2, centerChunkY-2).decreaseAccesCounter();
 				}
 			}
 		}
@@ -547,7 +547,7 @@ public class Camera implements LinkedWithMap {
 			}
 		}
 		//the iterator which iterates over the map
-		CameraSpaceIterator iterMap = new CameraSpaceIterator(topLeftChunkX, topLeftChunkY);
+		CameraSpaceIterator iterMap = new CameraSpaceIterator(centerChunkX, centerChunkY);
 		iterMap.setStartingZ(-1); //loop also over ground level
 		
 		//loop over map covered by camera
@@ -555,9 +555,9 @@ public class Camera implements LinkedWithMap {
 			Block block = iterMap.next();
 			
 			if (!block.isHidden()) {//ignore hidden blocks
-				int x= -Chunk.getBlocksX() * ( topLeftChunkX - iterMap.getCurrentChunk().getChunkX() )//skip chunks
+				int x= -Chunk.getBlocksX() * ( centerChunkX-1 - iterMap.getCurrentChunk().getChunkX() )//skip chunks
 					+ iterMap.getCurrentIndex()[0];//position inside the chunk
-				int y = -Chunk.getBlocksY() * ( topLeftChunkY - iterMap.getCurrentChunk().getChunkY() )//skip chunks
+				int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iterMap.getCurrentChunk().getChunkY() )//skip chunks
 					+ iterMap.getCurrentIndex()[1]-iterMap.getCurrentIndex()[2]*2;//y and z projected on one plane
 				ClippingCell cell = clipping[x][y]; //tmp var for current cell
 				
@@ -657,7 +657,7 @@ public class Camera implements LinkedWithMap {
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getX();
+		return Controller.getMap().getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX();
 	}
 
 	/**
@@ -675,7 +675,7 @@ public class Camera implements LinkedWithMap {
 	 * @return the right (X) border coordinate
 	 */
 	public int getCoveredRightBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX+2, topLeftChunkY).getTopLeftCoordinate().getX()
+		return Controller.getMap().getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()
 			+ Chunk.getBlocksX()-1;
 	}
 
@@ -695,7 +695,7 @@ public class Camera implements LinkedWithMap {
 	 * @return the top/back (Y) border coordinate
 	 */
 	public int getCoveredBackBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY).getTopLeftCoordinate().getY();
+		return Controller.getMap().getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getY();
 	}
 
 	/**
@@ -715,7 +715,7 @@ public class Camera implements LinkedWithMap {
 	 * @return the bottom/front (Y) border coordinate
 	 */
 	public int getCoveredFrontBorder() {
-		return Controller.getMap().getChunk(topLeftChunkX, topLeftChunkY+2).getTopLeftCoordinate().getY()
+		return Controller.getMap().getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()
 			+ Chunk.getBlocksY()-1;
 	}
 
@@ -988,12 +988,12 @@ public class Camera implements LinkedWithMap {
 		return (tmp[0] || tmp[1] || tmp[2]);
 	}
 
-	public int getTopLeftChunkCoordX() {
-		return topLeftChunkX;
+	public int getCenterChunkCoordX() {
+		return centerChunkX;
 	}
 
-	public int getTopLeftChunkCoordY() {
-		return topLeftChunkY;
+	public int getCenterChunkCoordY() {
+		return centerChunkY;
 	}
 
 	private static class ClippingCell extends ArrayList<Block>{

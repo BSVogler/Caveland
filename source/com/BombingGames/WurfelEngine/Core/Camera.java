@@ -551,7 +551,7 @@ public class Camera implements LinkedWithMap {
 				if (cell.isEmpty()){
 					cell.push(block);
 				} else {
-					if ( block.getDepth(gameView) < cell.getLast().getDepth(gameView) ){
+					if ( block.getDepth(gameView) > cell.getLast().getDepth(gameView) ){
 						if (!block.isTransparent()) {
 							cell.clear();
 						}

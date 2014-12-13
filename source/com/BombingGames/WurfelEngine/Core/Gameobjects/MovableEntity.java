@@ -70,7 +70,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	private transient static Sound waterSound;
 	private transient Sound stepSound1Grass;
-	private transient boolean stepSoundPlayedInCicle;
+	private transient boolean stepSoundPlayedInCiclePhase;
 	private transient Sound fallingSound;
 	private transient boolean fallingSoundPlaying;
 	private transient Sound runningSound;
@@ -232,13 +232,21 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			walkingCycle += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
 			if (walkingCycle > 1000) {
 				walkingCycle=0;
-				stepSoundPlayedInCicle=false;//reset variable
+				stepSoundPlayedInCiclePhase=false;//reset variable
 			}
 			
-			if (walkingCycle>500){
-				if (stepSound1Grass!=null && ! stepSoundPlayedInCicle) {
-					stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
-					stepSoundPlayedInCicle = true;
+			//play sound twice a cicle
+			if (walkingCycle<250){
+				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+					stepSound1Grass.play(1, (float) (1+Math.random()/5), 0);
+					stepSoundPlayedInCiclePhase = true;
+				}
+			} else if (walkingCycle < 500){
+				stepSoundPlayedInCiclePhase=false;
+			} else if (walkingCycle > 500){
+				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+					stepSound1Grass.play(1, (float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
+					stepSoundPlayedInCiclePhase = true;
 				}
 			}
 				

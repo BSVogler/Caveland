@@ -90,6 +90,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private int walkingAnimationLoop;
 	private boolean collectable;
+	/**
+	 * A factor to make the animation fit the movement speed.
+	 */
+	private float animSpeedCorrection = 4;
 
 	
 	   /**
@@ -223,6 +227,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 
             /* update sprite*/
+			//animation
+			walkingAnimationLoop += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
+			if (walkingAnimationLoop > 1000)
+				walkingAnimationLoop=0;
+				
 			if (spritesPerDir>0) {
 				if (movement.x < -Math.sin(Math.PI/3)){
 					setValue(1);//west

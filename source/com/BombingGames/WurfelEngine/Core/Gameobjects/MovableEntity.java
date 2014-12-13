@@ -256,12 +256,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 						}
 					}
 				}
-				if (spritesPerDir==3){
-					//animation
-					walkingAnimationLoop += delta*speed*4;
-					if (walkingAnimationLoop > 1000)
-						walkingAnimationLoop=0;    
 
+				if (spritesPerDir==2){
+					if (walkingAnimationLoop >500)
+						setValue(getValue()+8);
+				} else if (spritesPerDir==3){
 					if (walkingAnimationLoop >750)
 						setValue(getValue()+16);
 					else

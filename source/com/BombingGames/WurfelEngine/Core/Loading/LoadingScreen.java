@@ -71,9 +71,11 @@ public class LoadingScreen extends WEScreen {
         //load files from configRef
         customLoading(manager);
     }
-	
+	/**
+	 * override and add items via {@link AssetManager#load(java.lang.String, java.lang.Class)}
+	 * @param manager 
+	 */
 	public void customLoading(AssetManager manager){
-	
 	}
 
     

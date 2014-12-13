@@ -166,8 +166,6 @@ public class MainMenuScreen extends AbstractMainMenu {
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
-		
-		WE.getEngineView().setMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3").path());
 	}
 
 	@Override
@@ -231,6 +229,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 	public void show() {
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
+		WE.getEngineView().setMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3").path());
 	}
 
 	@Override

@@ -466,5 +466,9 @@ public class GameView extends View implements GameManager {
         onEnter();
     }
 
+	@Override
+	public void dispose() {
+		
+	}
 	
 }

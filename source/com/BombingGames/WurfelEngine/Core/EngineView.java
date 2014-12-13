@@ -223,5 +223,8 @@ public class EngineView extends View {
 				music.play();
 		}
 	}
-		
+
+	void disposeMusic() {
+		music.dispose();
+	}
 }

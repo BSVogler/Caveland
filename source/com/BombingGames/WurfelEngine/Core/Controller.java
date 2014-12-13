@@ -200,4 +200,8 @@ public class Controller implements GameManager {
      */
     public void exit(){}
 
+	@Override
+	public void dispose() {
+	}
+
 }

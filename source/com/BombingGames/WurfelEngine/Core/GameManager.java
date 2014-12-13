@@ -53,5 +53,7 @@ public interface GameManager {
      *
      * @return
      */
-    public boolean isInitalized();
+    public abstract boolean isInitalized();
+	
+	public abstract void dispose();
 }

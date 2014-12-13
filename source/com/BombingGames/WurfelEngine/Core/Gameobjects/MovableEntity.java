@@ -231,6 +231,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			walkingCycle += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
 			if (walkingCycle > 1000)
 				walkingCycle=0;
+			
+			if (walkingCycle>500){
+				if (stepSound1Grass!=null) {
+					stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
+				}
+			}
+				
+				
 			/* update sprite*/
 			if (spritesPerDir>0) {
 				if (movement.x < -Math.sin(Math.PI/3)){
@@ -316,10 +324,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                     fallingSoundPlaying = false;
                 }
             }
-			
-			if (stepSound1Grass!=null) {
-				stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
-			}
 			
             if (soundlimit>0)soundlimit-=delta;
             

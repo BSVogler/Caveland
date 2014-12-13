@@ -418,7 +418,6 @@ public class Camera implements LinkedWithMap {
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
 				if (!block.isHidden()){
-					//System.out.println("Added:"+block.getPosition().toString());
 					depthsort.add(block);
 				}
 			}

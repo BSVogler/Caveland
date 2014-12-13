@@ -152,31 +152,6 @@ public class Map implements Cloneable{
         meta.write();
     }
     
-    /**
-     *Fills the map with blocks. If no custom generator is set it will use air.
-	 * @param topleft
-     * @param allowLoading
-     */
-    public void fill(Coordinate topleft, boolean allowLoading){
-        fill(generator,topleft, allowLoading);
-    }
-    
-    /**
-     * Fills 3x3 chunks the map without overriding the map generator.
-     * @param generator the custom generator
-	 * @param topleft begginning at this corner
-     * @param allowLoading
-     */
-    public void fill(Generator generator, Coordinate topleft, boolean allowLoading){
-        for (byte y=-1; y < 2; y++)
-            for (byte x=-1; x < 2; x++){
-                if (allowLoading)
-                    data.add(new Chunk(filename, x, y, generator));
-                else 
-                    data.add(new Chunk(x, y, generator));
-           }
-    }
-	
 	/**
 	 * loads a chunk from disk
 	 * @param chunkX

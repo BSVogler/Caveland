@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
@@ -119,7 +118,6 @@ public class Controller implements GameManager {
     public static boolean loadMap(String name) {
         try {
             map = new Map(name);
-            map.fill(new Coordinate(0, 0, 0), true);
             return true;
         } catch (IOException ex) {
             WE.getConsole().add(ex.getMessage(), "Warning");

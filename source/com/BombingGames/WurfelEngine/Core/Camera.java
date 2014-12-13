@@ -146,6 +146,17 @@ public class Camera implements LinkedWithMap {
 		
 		this.centerChunkX = (int) (position.x / Chunk.getGameWidth());
 		this.centerChunkY = (int) ((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2);//divide by 2 to game->view space
+		
+		//make the needed chunks available
+		checkChunk(centerChunkX-1, centerChunkY-1);
+		checkChunk(centerChunkX  , centerChunkY-1);
+		checkChunk(centerChunkX+1, centerChunkY-1);
+		checkChunk(centerChunkX  , centerChunkY  );
+		checkChunk(centerChunkX+1, centerChunkY  );
+		checkChunk(centerChunkX-1, centerChunkY  );
+		checkChunk(centerChunkX-1, centerChunkY+1);
+		checkChunk(centerChunkX  , centerChunkY+1);
+		checkChunk(centerChunkX+1, centerChunkY+1);
 
 		zRenderingLimit = Map.getBlocksZ();
 	}

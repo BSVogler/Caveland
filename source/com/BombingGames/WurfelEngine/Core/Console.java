@@ -31,8 +31,6 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -357,16 +355,6 @@ public class Console {
 				return false;
 			}
 		}
-		
-        if (command.startsWith("fillmap")) {
-            int id = 2;
-            if (st.hasMoreElements()){
-                id = Integer.valueOf(st.nextToken());  
-            }
-            
-            Controller.getMap().fill(new FullMapGenerator(id),new Coordinate(0, 0, 0), false);
-            return true;
-        }
         
         if (command.startsWith("loadmap")){
             if (!st.hasMoreElements()) return false;

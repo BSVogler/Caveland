@@ -204,13 +204,14 @@ public class EngineView extends View {
 
 	/**
 	 * 
-	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume.
+	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it andc and &gt; 0 starts it
 	 */
 	public void setMusicLoudness(float loudness) {
 		this.musicLoudness = loudness;
 		if (music!=null){
 			music.setVolume(musicLoudness);
-			if (musicLoudness==0) music.stop();
+			if (musicLoudness==0) music.pause();
+			else if (!music.isPlaying()) music.play();
 		}
 	}
 	

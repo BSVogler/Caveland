@@ -103,6 +103,15 @@ public class OptionScreen extends WEScreen {
 		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(500, 400);
 		musicSlider.setValue(1f);
+		musicSlider.addListener(
+			new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					WE.getEngineView().setMusicLoudness(((Slider)actor).getValue());
+				}
+			}
+		);
 		stage.addActor(musicSlider);
 		
 		soundSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
@@ -142,6 +151,7 @@ public class OptionScreen extends WEScreen {
 				
 				//apply sound changes
 				CVar.get("music").setValuef(musicSlider.getValue());
+				WE.getEngineView().setMusicLoudness(musicSlider.getValue());
 				CVar.get("sound").setValuef(soundSlider.getValue());
 			}
 		});

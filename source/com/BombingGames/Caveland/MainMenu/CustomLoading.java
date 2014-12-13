@@ -32,6 +32,7 @@ package com.BombingGames.Caveland.MainMenu;
 
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 
 /**
  *
@@ -41,10 +42,7 @@ public class CustomLoading extends LoadingScreen {
 
 	@Override
 	public void customLoading(AssetManager manager) {
-		super.customLoading(manager);
-		//manager.load
+		manager.load("com/BombingGames/Caveland/Sounds/step.wav", Sound.class);
 	}
-	
-	
 	
 }

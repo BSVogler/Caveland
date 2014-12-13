@@ -248,7 +248,7 @@ public class Camera implements LinkedWithMap {
 		position.x += screenshake.x;
 		position.y += screenshake.y;
 
-		if (CVar.get("chunkSwitchAllowed").getValueb()) {
+		if (CVar.get("enableChunkSwitch").getValueb()) {
 			//check every chunk
 			checkChunk(centerChunkX-1, centerChunkY-1);
 			checkChunk(centerChunkX  , centerChunkY-1);

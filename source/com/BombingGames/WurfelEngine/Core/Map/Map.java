@@ -125,7 +125,7 @@ public class Map implements Cloneable{
 	}
 	
 	public void postUpdate(float dt) {
-		if (CVar.get("chunkSwitchAllowed").getValueb()) {
+		if (CVar.get("enableChunkSwitch").getValueb()) {
 			//some custom garbage collection
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved())

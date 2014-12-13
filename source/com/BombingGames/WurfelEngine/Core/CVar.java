@@ -93,7 +93,7 @@ public class CVar {
 		register("debugObjects", false, CVarFlags.CVAR_ARCHIVE);
 		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);
 		register("shouldLoadMap", true, CVarFlags.CVAR_ARCHIVE);
-		register("chunkSwitchAllowed", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
 		register("clearBeforeRendering", true, CVarFlags.CVAR_ARCHIVE);
 		register("consoleKey", Keys.F1, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);

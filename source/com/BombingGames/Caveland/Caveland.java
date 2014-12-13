@@ -33,7 +33,6 @@ public class Caveland {
 		CVar.register("enableFog", true, CVar.CVarFlags.CVAR_ARCHIVE);
 		CVar.register("enableAutoShade", false, CVar.CVarFlags.CVAR_ARCHIVE);
 		CVar.register("groundBlockID", 1, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("chunkSwitchAllowed", 1, CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());

@@ -2,6 +2,7 @@ package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.Game.CustomBlockFactory;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
 import com.BombingGames.Caveland.GameObjects.Lore;
 import com.BombingGames.Caveland.GameObjects.Spaceship;
@@ -46,6 +47,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
 		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
+		AbstractEntity.registerEntity("Enemy", Enemy.class);
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

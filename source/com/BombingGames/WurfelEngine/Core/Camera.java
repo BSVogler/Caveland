@@ -310,7 +310,7 @@ public class Camera implements LinkedWithMap {
 	private void checkChunk(int x, int y){
 		Map map = Controller.getMap();
 		if (map.getChunk(x, y)==null) {
-				map.loadChunk(x, y);
+			map.loadChunk(x, y);
 		} else  {
 			map.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
 		}

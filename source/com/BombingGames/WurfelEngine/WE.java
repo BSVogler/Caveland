@@ -47,12 +47,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import java.io.File;
 
 /**
@@ -396,12 +398,17 @@ public class WE {
 		private final SpriteBatch batch;
 		private float alpha =0;
 		private boolean increase =true;
+		private final Sound startupsound;
+		private final Interpolation interpolate;
 
 		WurfelEngineIntro() {
 			batch = new SpriteBatch();
 			lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
 			lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
 			lettering.setY((Gdx.graphics.getHeight() - lettering.getHeight())/2);
+			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/sounds/startup.mp3"));
+			startupsound.play();
+			interpolate = new Interpolation.ExpOut(2, 7);
 			//lettering.flip(false, true);
 		}
 
@@ -412,7 +419,7 @@ public class WE {
 					alpha=1;
 					increase=false;
 				} else
-					alpha += dt/1000f;
+					alpha += dt/1500f;
 				drawLettering();
 			} else 
 				if (alpha<=0){
@@ -425,7 +432,7 @@ public class WE {
 		}
 		
 		void drawLettering(){
-			lettering.setColor(1f, 1f, 1f, alpha);
+			lettering.setColor(1f, 1f, 1f, interpolate.apply(alpha));
 						
 			//clear & set background to black
 			Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
@@ -459,6 +466,7 @@ public class WE {
 
 		@Override
 		public void dispose() {
+			startupsound.dispose();
 			WE.showMainMenu();
 		}
 	}

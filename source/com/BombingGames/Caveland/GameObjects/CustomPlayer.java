@@ -6,6 +6,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -27,6 +29,9 @@ public class CustomPlayer extends PlayerWithWeapon {
 	
     public CustomPlayer() {
         super(1,AbstractGameObject.GAME_EDGELENGTH);
+		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/Sounds/step.wav"));
+		setRunningSound( (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg"));
+        setJumpingSound( (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav"));
     }
 
 	/**

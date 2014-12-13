@@ -592,6 +592,11 @@ public class Point extends AbstractPosition {
 		if (y != other.y) return false;
 		return z == other.z;
 	}
+	
+	@Override
+	public String toString() {
+		return "{"+x +", "+ y +", " +z+"}";
+	}
 
 	@Override
 	public int hashCode() {

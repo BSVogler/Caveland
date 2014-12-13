@@ -538,6 +538,6 @@ public class Coordinate extends AbstractPosition {
 	
 	@Override
 	public String toString() {
-		return "{"+x+","+y+","+getZ()+"}";
+		return "{"+x +", "+ y +", " +z+"}";
 	}
 }

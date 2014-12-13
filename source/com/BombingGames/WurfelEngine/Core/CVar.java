@@ -88,6 +88,7 @@ public class CVar {
 		register("enableFog", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableAutoShade", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
+		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);
 		register("groundBlockID", 2, CVarFlags.CVAR_ARCHIVE);
 		register("debugObjects", false, CVarFlags.CVAR_ARCHIVE);
 		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);

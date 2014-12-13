@@ -397,39 +397,28 @@ public class Camera implements LinkedWithMap {
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
-//		CameraSpaceIterator iterator = new CameraSpaceIterator(topLeftChunkX,topLeftChunkY);
-//		iterator.setStartingZ(-1);
-//		while (iterator.hasNext()) {//up to zRenderingLimit
-//			Block block = iterator.next();
-//			if (!block.isHidden()){
-//				//System.out.println("Added:"+block.getPosition().toString());
-//				depthsort.add(block);
-//			}
-//		}
-//		//add hidden surfeace depth buffer
-		for (ClippingCell[] y : clipping) {
-			for (ClippingCell x : y) {
-				for (Block block : x) {
-					//only add if in view plane to-do
-					int proX = block.getPosition().getViewSpcX(gameView);
-					int proY = block.getPosition().getViewSpcY(gameView);
-					if (
-							(position.y + getHeightInViewSpc()/2)
-							>
-							(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
-						&&
-							(proY+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
-							>
-							position.y - getHeightInViewSpc()/2
-						&&
-							(proX+ Block.SCREEN_WIDTH2)//right side of sprite
-							>
-							position.x - getWidthInViewSpc()/2
-						&&
-							(proX- Block.SCREEN_WIDTH2)//left side of sprite
-							<
-							position.x + getWidthInViewSpc()/2
-				)
+		if (CVar.get("enableHSD").getValueb()){
+			//add hidden surfeace depth buffer
+			for (ClippingCell[] y : clipping) {
+				for (ClippingCell x : y) {
+					for (Block block : x) {
+						//only add if in view plane to-do
+						if (
+							inViewFrustum(
+								block.getPosition().getViewSpcX(gameView),
+								block.getPosition().getViewSpcY(gameView))
+							)
+							depthsort.add(block);
+					}
+				}
+			}
+		}else {
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY);
+			iterator.setStartingZ(-1);
+			while (iterator.hasNext()) {//up to zRenderingLimit
+				Block block = iterator.next();
+				if (!block.isHidden()){
+					//System.out.println("Added:"+block.getPosition().toString());
 					depthsort.add(block);
 				}
 			}
@@ -437,25 +426,11 @@ public class Camera implements LinkedWithMap {
 		
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-			int proX = entity.getPosition().getViewSpcX(gameView);
-			int proY = entity.getPosition().getViewSpcY(gameView);
             if (! entity.isHidden()
-                &&
-					(position.y + getHeightInViewSpc()/2)
-					>
-					(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
-				&&
-					(proY+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
-					>
-					position.y - getHeightInViewSpc()/2
-				&&
-					(proX+ Block.SCREEN_WIDTH2)//right side of sprite
-					>
-					position.x - getWidthInViewSpc()/2
-				&&
-					(proX- Block.SCREEN_WIDTH2)//left side of sprite
-					<
-					position.x + getWidthInViewSpc()/2
+				&& inViewFrustum(
+					entity.getPosition().getViewSpcX(gameView),
+					entity.getPosition().getViewSpcY(gameView)
+				   )
                 && entity.getPosition().getZGrid() < zRenderingLimit
             )
 				depthsort.add(entity);
@@ -467,6 +442,31 @@ public class Camera implements LinkedWithMap {
 		return depthsort;
 	}
 	
+	/**
+	 * checks if the projected position is inside the view Frustum
+	 * @param proX
+	 * @param proY
+	 * @return 
+	 */
+	private boolean inViewFrustum(int proX, int proY){
+		return 
+				(position.y + getHeightInViewSpc()/2)
+				>
+				(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
+			&&
+				(proY+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+				>
+				position.y - getHeightInViewSpc()/2
+			&&
+				(proX+ Block.SCREEN_WIDTH2)//right side of sprite
+				>
+				position.x - getWidthInViewSpc()/2
+			&&
+				(proX- Block.SCREEN_WIDTH2)//left side of sprite
+				<
+				position.x + getWidthInViewSpc()/2
+		;
+	}
 
 	/**
 	 * Using Quicksort to sort. From small to big values.

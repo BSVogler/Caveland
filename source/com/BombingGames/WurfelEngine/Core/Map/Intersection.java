@@ -44,9 +44,9 @@ public class Intersection {
 
     /**
      *
-     * @param point
-     * @param normal
-     * @param distance
+     * @param point intersection point
+     * @param normal the normal
+     * @param distance distance to point from top of map
      */
     public Intersection(Point point, Vector3 normal, float distance) {
         this.normal = normal;
@@ -61,7 +61,7 @@ public class Intersection {
 
     /**
      *
-     * @return
+     * @return the normal
      */
     public Vector3 getNormal() {
         return normal;
@@ -69,7 +69,7 @@ public class Intersection {
 
     /**
      *
-     * @return
+     * @return intersection point
      */
     public Point getPoint() {
         return point;
@@ -77,7 +77,7 @@ public class Intersection {
 
     /**
      *
-     * @return
+     * @return distance to point from top of map
      */
     public float getDistance() {
         return distance;

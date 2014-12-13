@@ -42,7 +42,7 @@ import com.badlogic.gdx.math.Vector3;
  *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
  * @author Benedikt
  */
-public class MovableEntity extends AbstractEntity implements Cloneable {
+public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -69,7 +69,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	private boolean floating;
 	
 	private transient static Sound waterSound;
-	private transient static Sound stepSound1Grass;
+	private transient Sound stepSound1Grass;
 	private transient Sound fallingSound;
 	private transient boolean fallingSoundPlaying;
 	private transient Sound runningSound;
@@ -85,7 +85,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
        
 	private EntityShadow shadow;
    
-	private int walkingAnimationCounter;
+	/**
+	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
+	 */
+	private int walkingAnimationLoop;
 	private boolean collectable;
 
 	
@@ -96,10 +99,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
     public static void setWaterSound(Sound waterSound) {
         MovableEntity.waterSound = waterSound;
     }
-
-	public static void setStepSound1Grass(Sound sound) {
-		MovableEntity.stepSound1Grass = sound;
-	}
 
    /**
     * Constructor of AbstractCharacter.
@@ -259,11 +258,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 				}
 				if (spritesPerDir==3){
 					//animation
-					walkingAnimationCounter += delta*speed*4;
-					if (walkingAnimationCounter > 1000) walkingAnimationCounter=0;    
+					walkingAnimationLoop += delta*speed*4;
+					if (walkingAnimationLoop > 1000)
+						walkingAnimationLoop=0;    
 
-					if (walkingAnimationCounter >750) setValue(getValue()+16);
-					else if (walkingAnimationCounter >250 && walkingAnimationCounter <500) setValue(getValue()+8);
+					if (walkingAnimationLoop >750)
+						setValue(getValue()+16);
+					else
+						if (walkingAnimationLoop >250 && walkingAnimationLoop <500)
+							setValue(getValue()+8);
 				}
 			}
 
@@ -415,6 +418,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
     public void setDamageSounds(Sound[] sound){
         damageSounds = sound;
     }
+	
+	public void setStepSound1Grass(Sound sound) {
+		stepSound1Grass = sound;
+	}
 
 	public Vector3 getMovement() {
 		return movement;

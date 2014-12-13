@@ -50,6 +50,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 /**
@@ -548,13 +549,13 @@ public class Camera implements LinkedWithMap {
 				ClippingCell cell = clipping[x][y]; //tmp var for current cell
 				
 				if (cell.isEmpty()){
-					cell.add(block);
+					cell.push(block);
 				} else {
-					if ( block.getDepth(gameView) < cell.get(cell.size()-1).getDepth(gameView) ){
+					if ( block.getDepth(gameView) < cell.getLast().getDepth(gameView) ){
 						if (!block.isTransparent()) {
 							cell.clear();
 						}
-						cell.add(block);
+						cell.push(block);
 					}
 				}
 			}
@@ -982,19 +983,9 @@ public class Camera implements LinkedWithMap {
 		return centerChunkY;
 	}
 
-	private static class ClippingCell extends ArrayList<Block>{
+	private static class ClippingCell extends ArrayDeque<Block>{
 		private static final long serialVersionUID = 1L;
 		private boolean topLeft, topRight, leftLeft, leftRight, rightLeft, rightRight;
-
-
-		ClippingCell() {
-			super(2);
-		}
-
-		@Override
-		public Object clone() {
-			return super.clone();
-		}
 
 		public boolean getClippingLeft() {
 			return false;//to-do
@@ -1006,6 +997,11 @@ public class Camera implements LinkedWithMap {
 
 		public boolean getClippingRight() {
 			return false;//to-do
+		}
+
+		@Override
+		public ArrayDeque<Block> clone() {
+			return super.clone();
 		}
 	}
 }

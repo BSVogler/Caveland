@@ -18,9 +18,16 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class CustomPlayer extends PlayerWithWeapon {
+	/**
+	 * Time till fully loaded attack.
+	 */
+	public static final float LOADATTACKTIME = 1000; 
 	private static final long serialVersionUID = 1L;
     private float aimHeight;
 	private transient Sound jetPackSound;
+	private transient Sound loadingSound;
+	private boolean loadingSoundPlaying = false;
+	private transient Sound releaseSound;
 
 	private int timeSinceDamage;
 	
@@ -31,14 +38,18 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 */
 	private boolean airjump = false;
 	
+	private float loadAttack =0;
+	
     public CustomPlayer() {
         super(1,AbstractGameObject.GAME_EDGELENGTH);
 		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
+		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
+		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
     }
-
+	
 	/**
 	 * Get the value of inventory
 	 *
@@ -71,6 +82,21 @@ public class CustomPlayer extends PlayerWithWeapon {
 	public void update(float dt) {
 		super.update(dt);
 		Point pos = getPosition();
+		
+		//detect button hold
+		if (loadAttack!=0f) loadAttack+=dt;
+		if (loadAttack>300) {//time till registered as a "hold"
+			if (loadingSound != null && !loadingSoundPlaying){
+				loadingSound.play();
+				loadingSoundPlaying=true;
+			}
+		}
+		
+		if (loadAttack >= LOADATTACKTIME){
+			loadAttack();
+		}
+		
+		//get loren
 		ArrayList<Lore> items = pos.getCoord().getEntitysInside(Lore.class);
 
 		if (!items.isEmpty()){
@@ -141,8 +167,11 @@ public class CustomPlayer extends PlayerWithWeapon {
 		{
 			getCamera().shake(20, 50);
 		}
+		
+		//set to a small value to indicate that it is active
+		loadAttack=0.00001f;
 	}
-
+	
 	@Override
 	public void damage(int value) {
 		super.damage(value);
@@ -170,11 +199,19 @@ public class CustomPlayer extends PlayerWithWeapon {
 		}
 	}
 
+	/**
+	 * should be called on button release
+	 */
+	public void loadAttack() {
+		if (loadAttack>=LOADATTACKTIME &&releaseSound!=null) {
+			releaseSound.play();
+			setSpeed(getSpeed()+1.5f);
+		}
 	
-	@Override
-	public void jump(float velo) {
-		super.jump(velo);
-		if (!isOnGround()) airjump=true;
+		
+		attack();
+		loadAttack=0f;
+		loadingSoundPlaying =false;
 	}
 	
 }

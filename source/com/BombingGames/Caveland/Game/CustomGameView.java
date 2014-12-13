@@ -183,6 +183,9 @@ public class CustomGameView extends GameView{
 				parent.contextDown = false;
 				parent.timeContextDown =0;
 			}
+			if (buttonCode==11) //X
+				((CustomPlayer) controllable).loadAttack();
+			
 			return true;
 		}
 
@@ -323,7 +326,8 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
+			if (button ==Buttons.LEFT) getPlayer(0).loadAttack();
+            return true;
         }
 
         @Override

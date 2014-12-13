@@ -279,8 +279,8 @@ public class GameView extends View implements GameManager {
      
     /**
      * Returns the position belonging to a point on the screen. Does raytracing to find the intersection.
-     * @param x the x position on the screen
-     * @param y the y position on the screen
+     * @param x the x position on the screen from left
+     * @param y the y position on the screen from top
      * @return the position on the map. Deepest layer.
      */
     public Intersection screenToGameRaytracing(final int x, final int y){
@@ -461,6 +461,6 @@ public class GameView extends View implements GameManager {
 		}
         onEnter();
     }
-	
+
 	
 }

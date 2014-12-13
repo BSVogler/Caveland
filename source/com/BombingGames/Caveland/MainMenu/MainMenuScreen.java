@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -58,7 +57,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
-	private Music music;
 	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
 	private ShapeRenderer shr;
@@ -169,7 +167,7 @@ public class MainMenuScreen extends AbstractMainMenu {
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3"));
+		WE.getEngineView().setMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3").path());
 	}
 
 	@Override
@@ -233,7 +231,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 	public void show() {
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
-		music.play();
 	}
 
 	@Override
@@ -250,7 +247,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void dispose() {
-		music.dispose();
 	}
 	
 	private class InputListener implements InputProcessor {

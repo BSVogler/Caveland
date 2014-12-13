@@ -185,7 +185,6 @@ public class WE {
      */
     public static void initGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen){
         if (game != null) {
-			mainMenu.dispose();
             Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
@@ -256,6 +255,7 @@ public class WE {
      * Starts the actual game using the custom gameplayScreen. This is called after the loading screen.
      */
     public static void startGame(){
+		engineView.disposeMusic();
 		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
 		game.setScreen(gameplayScreen);
     }

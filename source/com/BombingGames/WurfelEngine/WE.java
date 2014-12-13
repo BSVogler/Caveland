@@ -406,7 +406,7 @@ public class WE {
 			lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
 			lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
 			lettering.setY((Gdx.graphics.getHeight() - lettering.getHeight())/2);
-			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/sounds/startup.mp3"));
+			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/Sounds/startup.mp3"));
 			startupsound.play();
 			interpolate = new Interpolation.ExpOut(2, 7);
 			//lettering.flip(false, true);

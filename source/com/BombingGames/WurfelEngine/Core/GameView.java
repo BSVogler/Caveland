@@ -286,10 +286,11 @@ public class GameView extends View implements GameManager {
     public Intersection screenToGameRaytracing(final int x, final int y){
 		if (cameras.size()>0) {
 			Point p = screenToGameFlat(x,y);
+			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			p.addVector(0, deltaZ/Point.SQRT2*2, deltaZ);//top of map
 
-			return p.raycast(new Vector3(0,-1, -Point.SQRT12), 5000, cameras.get(0), false);//to-do identifiy camera
+			return p.raycast(new Vector3(0,-1, -Point.SQRT12), 5000, cameras.get(0), false);//todo identify camera
 		} else return new Intersection(null, Vector3.Zero, 0);
     }
     

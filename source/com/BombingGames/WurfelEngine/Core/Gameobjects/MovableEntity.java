@@ -235,6 +235,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (walkingCycle>500){
 				if (stepSound1Grass!=null) {
 					stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
+					stepSoundPlayedInCicle = true;
 				}
 			}
 				

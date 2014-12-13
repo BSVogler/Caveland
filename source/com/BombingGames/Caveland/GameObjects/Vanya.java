@@ -31,7 +31,7 @@ public class Vanya extends MovableEntity {
 	@Override
 	public void jump() {
 		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, getMovement().z));
-		super.jump(6);
+		super.jump(6, true);
 	}
 	
 	private class BlümchenKacke extends MovableEntity {

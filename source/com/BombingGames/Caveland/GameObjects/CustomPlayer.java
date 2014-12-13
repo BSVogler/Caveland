@@ -20,15 +20,20 @@ import java.util.logging.Logger;
 public class CustomPlayer extends PlayerWithWeapon {
 	private static final long serialVersionUID = 1L;
     private float aimHeight;
+	private transient Sound jetPackSound;
 
 	private int timeSinceDamage;
 	
 	private Inventory inventory = new Inventory();
 	
+	/**
+	 * true if last jump was airjump.
+	 */
 	private boolean airjump = false;
 	
     public CustomPlayer() {
         super(1,AbstractGameObject.GAME_EDGELENGTH);
+		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
@@ -159,7 +164,9 @@ public class CustomPlayer extends PlayerWithWeapon {
 	@Override
 	public void jump() {
 		if (!airjump || isOnGround()){
-			super.jump();
+			if (!isOnGround()) airjump=true;
+			jump(5, !airjump);
+			if (airjump) jetPackSound.play();
 		}
 	}
 

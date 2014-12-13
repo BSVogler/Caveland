@@ -74,6 +74,6 @@ public class BenchmarkBall extends MovableEntity {
 		Vector3 tmp = getMovement();
 		tmp.x = (float) Math.random()-0.5f;
 		tmp.y = (float) Math.random()-0.5f;
-		super.jump(-tmp.z);
+		super.jump(-tmp.z, false);
 	}
 }

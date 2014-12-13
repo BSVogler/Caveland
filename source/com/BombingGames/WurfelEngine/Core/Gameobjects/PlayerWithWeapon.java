@@ -69,11 +69,11 @@ public class PlayerWithWeapon extends Controllable {
     }   
 
     /**
-     * Jumps the player
+     * Jumps the player with a sound
      */
     @Override
     public void jump() {
-        jump(5);
+        jump(5, true);
     }
     
 

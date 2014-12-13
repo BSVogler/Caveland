@@ -69,7 +69,7 @@ public class Controllable extends MovableEntity {
    }
 	@Override
 	public void jump() {
-		jump(1);
+		jump(1, true);
 	}
 
 	@Override

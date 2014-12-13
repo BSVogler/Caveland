@@ -35,7 +35,7 @@ public class Enemy extends MovableEntity{
 
     @Override
     public void jump() {
-        jump(5);
+        jump(5, true);
     }
 
     @Override

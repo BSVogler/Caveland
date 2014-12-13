@@ -88,7 +88,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
 	 */
-	private int walkingAnimationLoop;
+	private int walkingCycle;
 	private boolean collectable;
 	/**
 	 * A factor to make the animation fit the movement speed.
@@ -226,12 +226,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					onCollide();
 				}
 
-            /* update sprite*/
-			//animation
-			walkingAnimationLoop += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
-			if (walkingAnimationLoop > 1000)
-				walkingAnimationLoop=0;
-				
+
+			//cycle
+			walkingCycle += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
+			if (walkingCycle > 1000)
+				walkingCycle=0;
+			/* update sprite*/
 			if (spritesPerDir>0) {
 				if (movement.x < -Math.sin(Math.PI/3)){
 					setValue(1);//west
@@ -267,13 +267,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 
 				if (spritesPerDir==2){
-					if (walkingAnimationLoop >500)
+					if (walkingCycle >500)
 						setValue(getValue()+8);
 				} else if (spritesPerDir==3){
-					if (walkingAnimationLoop >750)
+					if (walkingCycle >750)
 						setValue(getValue()+16);
 					else
-						if (walkingAnimationLoop >250 && walkingAnimationLoop <500)
+						if (walkingCycle >250 && walkingCycle <500)
 							setValue(getValue()+8);
 				}
 			}

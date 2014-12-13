@@ -70,6 +70,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	private transient static Sound waterSound;
 	private transient Sound stepSound1Grass;
+	private transient boolean stepSoundPlayedInCicle;
 	private transient Sound fallingSound;
 	private transient boolean fallingSoundPlaying;
 	private transient Sound runningSound;
@@ -229,11 +230,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			//cycle
 			walkingCycle += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
-			if (walkingCycle > 1000)
+			if (walkingCycle > 1000) {
 				walkingCycle=0;
+				stepSoundPlayedInCicle=false;//reset variable
+			}
 			
 			if (walkingCycle>500){
-				if (stepSound1Grass!=null) {
+				if (stepSound1Grass!=null && ! stepSoundPlayedInCicle) {
 					stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
 					stepSoundPlayedInCicle = true;
 				}

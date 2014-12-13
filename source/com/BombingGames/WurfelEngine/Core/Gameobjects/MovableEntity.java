@@ -65,9 +65,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
 	 */
 	private boolean floating;
 	
-	private transient Sound fallingSound;
-   
 	private transient static Sound waterSound;
+	private transient static Sound stepSound1Grass;
+	private transient Sound fallingSound;
 	private transient boolean fallingSoundPlaying;
 	private transient Sound runningSound;
 	private transient boolean runningSoundPlaying;
@@ -84,6 +84,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
    
 	private int walkingAnimationCounter;
 	private boolean collectable;
+
+	
+	   /**
+     * Set the value of waterSound
+     * @param waterSound new value of waterSound
+     */
+    public static void setWaterSound(Sound waterSound) {
+        MovableEntity.waterSound = waterSound;
+    }
+
+	public static void setStepSound1Grass(Sound sound) {
+		MovableEntity.stepSound1Grass = sound;
+	}
 
    /**
     * Constructor of AbstractCharacter.
@@ -289,6 +302,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
                     fallingSoundPlaying = false;
                 }
             }
+			
+			if (stepSound1Grass!=null) {
+				stepSound1Grass.play(1, (float) (1+Math.random()/10), 0);
+			}
+			
             if (soundlimit>0)soundlimit-=delta;
             
             if (getHealth()<=0 && !indestructible)
@@ -385,14 +403,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable {
      */
     public void setLandingSound(Sound landingSound) {
         this.landingSound = landingSound;
-    }
-    
-   /**
-     * Set the value of waterSound
-     * @param waterSound new value of waterSound
-     */
-    public static void setWaterSound(Sound waterSound) {
-        MovableEntity.waterSound = waterSound;
     }
     
     /**

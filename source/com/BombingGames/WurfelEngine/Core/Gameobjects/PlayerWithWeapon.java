@@ -59,13 +59,6 @@ public class PlayerWithWeapon extends Controllable {
             (Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
         );
-        setRunningSound(
-            (Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg")
-        );
-        setJumpingSound((Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav")
-        );
         setLandingSound((Sound)
             WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
         );

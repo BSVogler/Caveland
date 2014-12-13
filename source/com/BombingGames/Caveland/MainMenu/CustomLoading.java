@@ -42,7 +42,9 @@ public class CustomLoading extends LoadingScreen {
 
 	@Override
 	public void customLoading(AssetManager manager) {
-		manager.load("com/BombingGames/Caveland/Sounds/step.wav", Sound.class);
+		manager.load("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg", Sound.class);
+        manager.load("com/BombingGames/Caveland/sounds/jump_man.wav", Sound.class);
+		manager.load("com/BombingGames/Caveland/sounds/step.wav", Sound.class);
 	}
 	
 }

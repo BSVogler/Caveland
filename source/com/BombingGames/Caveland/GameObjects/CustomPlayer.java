@@ -29,9 +29,9 @@ public class CustomPlayer extends PlayerWithWeapon {
 	
     public CustomPlayer() {
         super(1,AbstractGameObject.GAME_EDGELENGTH);
-		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/Sounds/step.wav"));
-		setRunningSound( (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/victorcenusa_running.ogg"));
-        setJumpingSound( (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/jump_man.wav"));
+		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
+		setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
+        setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
     }
 
 	/**

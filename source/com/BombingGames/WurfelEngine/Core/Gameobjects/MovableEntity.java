@@ -44,8 +44,11 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class MovableEntity extends AbstractEntity implements Cloneable {
 	private static final long serialVersionUID = 1L;
-		
-	private static int soundlimit;//time to pass before new sound can be played
+	
+	/**
+	 * time to pass before new sound can be played
+	 */
+	private static float soundlimit;
      
 	private final int colissionRadius = GAME_DIAGLENGTH2/2;
 	private final int spritesPerDir;

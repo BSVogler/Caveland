@@ -270,10 +270,10 @@ public class GameView extends View implements GameManager {
 
 			//find points
 			return new Point(
-					screenXtoGame(x, camera),
-					screenYtoGame(y, camera),
-					0
-				);
+				screenXtoGame(x, camera),
+				screenYtoGame(y, camera),
+				0
+			);
 		} else return Map.getCenter();
     }
      

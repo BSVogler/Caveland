@@ -29,9 +29,7 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.badlogic.gdx.Gdx;
@@ -77,17 +75,17 @@ public class CustomGameController extends Controller {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (getPlayer(0).getPosition().getCoord().getY()<30 && monstercount<Enemy.getKillcounter()+5){
-			monstercount++;
-			Enemy enemy = (Enemy) new Enemy().spawn(
-				new Coordinate(
-					(int) (Math.random()*Map.getBlocksX()),
-					(int) (Math.random()*30),
-					5
-				).getPoint()
-			);
-			enemy.setTarget(getPlayer(0));
-		}
+//		if (getPlayer(0).getPosition().getCoord().getY()<30 && monstercount<Enemy.getKillcounter()+5){
+//			monstercount++;
+//			Enemy enemy = (Enemy) new Enemy().spawn(
+//				new Coordinate(
+//					(int) (Math.random()*Map.getBlocksX()),
+//					(int) (Math.random()*30),
+//					5
+//				).getPoint()
+//			);
+//			enemy.setTarget(getPlayer(0));
+//		}
 	}
 
 	public CustomPlayer getPlayer(int id) {

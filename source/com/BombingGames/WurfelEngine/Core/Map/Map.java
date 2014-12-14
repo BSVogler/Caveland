@@ -613,7 +613,7 @@ public class Map implements Cloneable{
 	 * prints the map to console
 	 */
 	public void print() {
-		MapIterator iter = getIterator(blocksZ-1);
+		MemoryMapIterator iter = getIterator(blocksZ-1);
 		while (iter.hasNext()){
 			//if (!iter.hasNextY() && !iter.hasNextX())
 			//	System.out.print("\n\n");
@@ -632,7 +632,7 @@ public class Map implements Cloneable{
 	 * prints the map to console
 	 */
 	public final void printCoords() {
-		MapIterator iter = getIterator(blocksZ-1);
+		MemoryMapIterator iter = getIterator(blocksZ-1);
 		while (iter.hasNext()){
 		//	if (!iter.hasNextY() && !iter.hasNextX())
 		//		System.out.print("\n\n");
@@ -658,8 +658,8 @@ public class Map implements Cloneable{
 	 * @param topLimitZ the top limit of the iterations
 	 * @return 
 	 */
-	public MapIterator getIterator(int topLimitZ){
-		MapIterator mapIterator = new MapIterator();
+	public MemoryMapIterator getIterator(int topLimitZ){
+		MemoryMapIterator mapIterator = new MemoryMapIterator(0);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
 	}

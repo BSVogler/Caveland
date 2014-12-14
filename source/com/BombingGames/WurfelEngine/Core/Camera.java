@@ -425,8 +425,7 @@ public class Camera implements LinkedWithMap {
 				}
 			}
 		}else {
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY);
-			iterator.setStartingZ(-1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
 				if (!block.isHidden()){
@@ -545,8 +544,7 @@ public class Camera implements LinkedWithMap {
 			}
 		}
 		//the iterator which iterates over the map
-		CameraSpaceIterator iterMap = new CameraSpaceIterator(centerChunkX, centerChunkY);
-		iterMap.setStartingZ(-1); //loop also over ground level
+		CameraSpaceIterator iterMap = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
 		
 		//loop over map covered by camera
 		while (iterMap.hasNext()){

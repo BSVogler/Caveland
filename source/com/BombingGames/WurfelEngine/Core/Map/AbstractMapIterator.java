@@ -30,72 +30,29 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
- *Iterates over the blocks in camera space. The camera space is 3x3 chunks.
+ *
  * @author Benedikt Vogler
  */
-public class MapIterator implements Iterator<Block>{
-	private int z=0;
-	/**
-	 * use to iterate over chunks
-	 */
-	protected Iterator<Chunk> chunkIterator;
-	/**
+public abstract class AbstractMapIterator implements Iterator<Block>{
+		/**
 	 * always points to a block
 	 */
 	protected ChunkIterator blockIterator;
 	private int topLimitZ;
-	private int startingZ;
-
-	public MapIterator() {
-		ArrayList<Chunk> mapdata = Controller.getMap().getData();
-		chunkIterator = mapdata.iterator();
-		topLimitZ = Map.getBlocksZ()-1;
-		startingZ = 0;
-		blockIterator = mapdata.get(0).getIterator(0, topLimitZ);
-	}
-	
+	private int startingZ = 0;
 	
 
-	@Override
-	public boolean hasNext() {
-		return blockIterator.hasNext() || hasNextChunk();
-	}
-
-	/**
-	 *Loops over the complete map. Also loops over bottom layer
-	 * @return 
-	 */
-	@Override
-	public Block next() throws NoSuchElementException {
-		Block block = blockIterator.next();
-		if (!blockIterator.hasNext()){
-			//end of chunk, move to next chunk
-			blockIterator = chunkIterator.next().getIterator(startingZ, topLimitZ);
-		}
-		return block;
-	}
+	public abstract boolean hasNextChunk();
 	
-	/**
-	 * Should not be used because there should be no cases where you remove elements from the map.
-	 */
-	@Override
-	public void remove() {
-		//yIterator.remove();
-	}
-
-	
-	/**
+		/**
 	 * set the top limit of the iteration
 	 * @param zLimit 
 	 */
-	public void setTopLimitZ(int zLimit) {
+	protected void setTopLimitZ(int zLimit) {
 		this.topLimitZ = zLimit;
 	}
 
@@ -107,21 +64,28 @@ public class MapIterator implements Iterator<Block>{
 		return startingZ;
 	}
 
-	/**
-	 * resets the internal chunk iterator
-	 * @param startingZ the new bottom layer
-	 */
-	public void setStartingZ(int startingZ) {
+	protected void setStartingZ(int startingZ) {
 		this.startingZ = startingZ;
-		blockIterator = Controller.getMap().getData().get(0).getIterator(startingZ, topLimitZ);
 	}
+	
+
+	public void setBlockIterator(ChunkIterator blockIterator) {
+		this.blockIterator = blockIterator;
+	}
+	
+	
+	
+	@Override
+	public boolean hasNext() {
+		return blockIterator.hasNext() || hasNextChunk();
+	}
+	
 	
 	/**
-	 * Reached end of y row?
-	 * @return 
+	 * Should not be used because there should be no cases where you remove elements from the map.
 	 */
-	public boolean hasNextChunk() {
-		return chunkIterator.hasNext();
+	@Override
+	public void remove() {
+		//yIterator.remove();
 	}
-	
 }

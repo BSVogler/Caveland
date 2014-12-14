@@ -122,7 +122,7 @@ public class GameView extends View implements GameManager {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
         
         
-        batch = new SpriteBatch();
+        batch = new SpriteBatch(10);
         batch.setShader(getShader());
         //load cursor
 

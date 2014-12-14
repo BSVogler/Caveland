@@ -68,13 +68,6 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 		this.startingZ = startingZ;
 	}
 	
-
-	public void setBlockIterator(ChunkIterator blockIterator) {
-		this.blockIterator = blockIterator;
-	}
-	
-	
-	
 	@Override
 	public boolean hasNext() {
 		return blockIterator.hasNext() || hasNextChunk();

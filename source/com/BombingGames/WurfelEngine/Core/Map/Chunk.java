@@ -145,7 +145,7 @@ public class Chunk {
 	}
     
     /**
-     * Fills the map using a generator.
+     * Fills the chunk using a generator.
      * @param chunkCoordX
      * @param chunkCoordY
      * @param generator 

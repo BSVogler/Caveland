@@ -470,7 +470,8 @@ public class GameView extends View implements GameManager {
 
 	@Override
 	public void dispose() {
-		
+		shRenderer.dispose();
+		batch.dispose();
 	}
 	
 }

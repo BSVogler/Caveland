@@ -249,9 +249,9 @@ public abstract class AbstractGameObject implements Serializable {
             AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
                 Gdx.app.debug("Spritesheet", category+Integer.toString(id)+"-"+value + " not found");
-                sprite = getSpritesheet().findRegion(category+"0-0");
+                sprite = spritesheet.findRegion(category+"0-0");
                 if (sprite == null) {//load generic error sprite if category sprite failed
-                    sprite = getSpritesheet().findRegion("error");
+                    sprite = spritesheet.findRegion("error");
                     if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
                 }
             }

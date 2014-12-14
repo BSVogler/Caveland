@@ -472,6 +472,7 @@ public class GameView extends View implements GameManager {
 	public void dispose() {
 		shRenderer.dispose();
 		batch.dispose();
+		stage.dispose();
 	}
 	
 }

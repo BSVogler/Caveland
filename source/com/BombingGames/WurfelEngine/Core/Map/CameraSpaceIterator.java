@@ -57,6 +57,20 @@ public class CameraSpaceIterator extends MapIterator {
 		//bring starting position to top left
 		current = mapdata.get(0);
 		blockIterator = mapdata.get(0).getIterator(getStartingZ(), getTopLimitZ());
+		
+		//find top left chunk
+		while (
+				chunkIterator.hasNext()
+			&& 
+				(
+					current.getChunkX() != chunkCoordX-1
+					||
+					current.getChunkY() != chunkCoordY-1
+				)
+		) {
+			current = chunkIterator.next();
+			blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
+		}
 	}
 
 	/**
@@ -80,7 +94,7 @@ public class CameraSpaceIterator extends MapIterator {
 				(
 					(current.getChunkX() < chunkCoordX-1//outside
 					|| current.getChunkX() > chunkCoordX+1)
-					&& (current.getChunkY() < chunkCoordY-1
+					|| (current.getChunkY() < chunkCoordY-1
 					|| current.getChunkY() > chunkCoordY+1)
 				)
 			) {

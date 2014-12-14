@@ -151,9 +151,9 @@ public class Camera implements LinkedWithMap {
 		checkChunk(centerChunkX-1, centerChunkY-1);
 		checkChunk(centerChunkX  , centerChunkY-1);
 		checkChunk(centerChunkX+1, centerChunkY-1);
+		checkChunk(centerChunkX-1, centerChunkY  );
 		checkChunk(centerChunkX  , centerChunkY  );
 		checkChunk(centerChunkX+1, centerChunkY  );
-		checkChunk(centerChunkX-1, centerChunkY  );
 		checkChunk(centerChunkX-1, centerChunkY+1);
 		checkChunk(centerChunkX  , centerChunkY+1);
 		checkChunk(centerChunkX+1, centerChunkY+1);
@@ -264,9 +264,9 @@ public class Camera implements LinkedWithMap {
 			checkChunk(centerChunkX-1, centerChunkY-1);
 			checkChunk(centerChunkX  , centerChunkY-1);
 			checkChunk(centerChunkX+1, centerChunkY-1);
+			checkChunk(centerChunkX-1, centerChunkY  );
 			checkChunk(centerChunkX  , centerChunkY  );
 			checkChunk(centerChunkX+1, centerChunkY  );
-			checkChunk(centerChunkX-1, centerChunkY  );
 			checkChunk(centerChunkX-1, centerChunkY+1);
 			checkChunk(centerChunkX  , centerChunkY+1);
 			checkChunk(centerChunkX+1, centerChunkY+1);

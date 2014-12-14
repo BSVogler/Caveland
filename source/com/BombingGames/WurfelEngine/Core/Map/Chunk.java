@@ -107,7 +107,7 @@ public class Chunk {
     */
     public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
         this(coordX,coordY);
-        Gdx.app.debug("Chunk", "Creating chunk"+coordX+","+coordY);
+        Gdx.app.debug("Chunk", "Creating chunk "+coordX+","+coordY);
 		if (CVar.get("shouldLoadMap").getValueb()){
 			if (!load(mapname, coordX, coordY))
 				fill(coordX, coordY, generator);
@@ -151,7 +151,6 @@ public class Chunk {
      * @param generator 
      */
     private void fill(final int chunkCoordX, final int chunkCoordY, final Generator generator){
-        WE.getConsole().add("Creating new chunk: "+chunkCoordX+", "+ chunkCoordY);
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++){

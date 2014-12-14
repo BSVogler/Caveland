@@ -453,7 +453,7 @@ public class GameView extends View implements GameManager {
      */
     @Override
     public void onEnter(){
-        
+		
     }
     
     @Override
@@ -463,6 +463,8 @@ public class GameView extends View implements GameManager {
 		for (Camera camera : cameras) {
 			camera.hiddenSurfaceDetection();
 		}
+		
+		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
         onEnter();
     }
 

@@ -388,5 +388,6 @@ public class MapEditorView extends GameView {
     @Override
     public void onEnter() {
         WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
+		WE.getEngineView().setMusicLoudness(0);
     }
 }

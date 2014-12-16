@@ -102,9 +102,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					CustomGameView view = new CustomGameView();
-					view.enableCoop();
-					WE.initGame(new CustomGameController(), view, new CustomLoading());
+					WE.setScreen(new CoopControlsSelectionScreen(batch));
 				}
 			}
 		);

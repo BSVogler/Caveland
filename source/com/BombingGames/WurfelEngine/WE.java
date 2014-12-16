@@ -183,7 +183,7 @@ public class WE {
 	 * @param customLoadingScreen 
      * @see com.BombingGames.WurfelEngine.WE#startGame()
      */
-    public static void initGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen){
+    public static void initAndStartGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen){
         if (game != null) {
             Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());

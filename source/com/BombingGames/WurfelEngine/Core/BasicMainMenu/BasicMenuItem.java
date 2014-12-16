@@ -158,7 +158,7 @@ public class BasicMenuItem {
             try {
                 Controller c = getGameController().newInstance();
                 GameView v = getGameView().newInstance();
-                WE.initGame(c,v, new LoadingScreen());
+                WE.initAndStartGame(c,v, new LoadingScreen());
             } catch (InstantiationException ex) {
                     Gdx.app.error("BasicMenuItem", "Failed intitalizing game by creating new instances of a class.");
                     Logger.getLogger(BasicMenuItem.class.getName()).log(Level.SEVERE, null, ex);

@@ -2,3 +2,6 @@
 .project
 *.class
 *.DS_Store
+/source/com/BombingGames/NormalMapPrototype/nbproject/private/
+/source/com/BombingGames/NormalMapPrototype/build/
+/source/com/BombingGames/NormalMapPrototype/dist/

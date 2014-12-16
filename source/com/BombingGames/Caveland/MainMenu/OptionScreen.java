@@ -72,8 +72,8 @@ public class OptionScreen extends WEScreen {
 	private final Slider soundSlider;
 
 	
-	public OptionScreen() {
-		batch = new SpriteBatch();
+	public OptionScreen(SpriteBatch batch) {
+		this.batch = batch;
 		shr = new ShapeRenderer();
 		OrthographicCamera libgdxcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		

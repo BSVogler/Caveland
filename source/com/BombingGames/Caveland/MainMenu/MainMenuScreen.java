@@ -117,7 +117,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new OptionScreen());
+					WE.setScreen(new OptionScreen(batch));
 				}
 			}
 		);

@@ -229,6 +229,8 @@ public class OptionScreen extends WEScreen {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		batch.dispose();
+		shr.dispose();
 	}
 	
 	private class InputListener implements InputProcessor {

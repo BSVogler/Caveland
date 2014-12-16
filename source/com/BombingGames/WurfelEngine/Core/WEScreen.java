@@ -34,7 +34,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Screen;
 
 /**
- *
+ *A WEScreen is a {@link Screen} which supports Wurfel Engine features liek the {@link Console}.
  * @author Benedikt Vogler
  */
 public abstract class WEScreen implements Screen {

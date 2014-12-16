@@ -52,7 +52,7 @@ public class GameplayScreen extends WEScreen {
     private MapEditorView editorView;
     
     /**
-     * Create the gameplay state.
+     * Create the gameplay state. This shows the loading screen.
      * @param controller The controller of this screen.
      * @param view The user view of this screen.
 	 * @param loadingScreen

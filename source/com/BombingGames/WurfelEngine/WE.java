@@ -177,7 +177,7 @@ public class WE {
 	}
     
     /**
-     * Initialize the main game with you custom controller and view. This call shows the loadingScreen.
+     * Initialize the main game with you custom controller and view. This call shows the loadingScreen and disposes the menu.
      * @param controller
      * @param view 
 	 * @param customLoadingScreen 
@@ -197,6 +197,7 @@ public class WE {
 				customLoadingScreen
             );
             getConsole().setGameplayRef(gameplayScreen);
+			mainMenu.dispose();
         } else
             Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
     }

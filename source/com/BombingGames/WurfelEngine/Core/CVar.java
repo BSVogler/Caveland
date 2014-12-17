@@ -51,6 +51,10 @@ import java.util.logging.Logger;
  * @since v1.4.2
  */
 public class CVar {
+	/**
+	 * true if currently reading. Prevent's saving
+	 */
+	private static boolean reading;
 
 	/**
 	 * @since v1.4.2
@@ -169,6 +173,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static void loadFromFile(){
+		reading = true;
 		FileHandle sourceFile = new FileHandle(WE.getWorkingDirectory()+"/engine.weconfig");
 		if (sourceFile.exists()) {
 			try {
@@ -191,6 +196,7 @@ public class CVar {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else System.out.println("Custom CVar file not found.");
+		reading = false;
 	
 	}
 	
@@ -203,28 +209,30 @@ public class CVar {
 	}
 	
 	public static void save(){
-		Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
-		
-		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
-		while (it.hasNext()) {
-			
-			Map.Entry<String, CVar> pairs = it.next();
+		if (!reading) {
+			Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
+
+			Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+			while (it.hasNext()) {
+
+				Map.Entry<String, CVar> pairs = it.next();
+				try {
+					//if should be saved and different then default: save
+					if (
+						pairs.getValue().flags == CVarFlags.CVAR_ARCHIVE
+						&& pairs.getValue().getDefaultAsFloat() != pairs.getValue().getValueAsFloat()
+					)
+						writer.write(pairs.getKey() + " "+pairs.getValue().toString()+"\n");
+
+				} catch (IOException ex) {
+					Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
 			try {
-				//if should be saved and different then default: save
-				if (
-					pairs.getValue().flags == CVarFlags.CVAR_ARCHIVE
-					&& pairs.getValue().getDefaultAsFloat() != pairs.getValue().getValueAsFloat()
-				)
-					writer.write(pairs.getKey() + " "+pairs.getValue().toString()+"\n");
-				
+				writer.close();
 			} catch (IOException ex) {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		}
-		try {
-			writer.close();
-		} catch (IOException ex) {
-			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

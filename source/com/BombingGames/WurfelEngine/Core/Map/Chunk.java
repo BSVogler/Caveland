@@ -262,14 +262,14 @@ public class Chunk {
 				//loading entities
 				if (bufChar==SIGN_ENTITIES){
 					int length = fis.read(); //amount of entities
-
 					Gdx.app.debug("Chunk", "Loading " + length+" entities");
+					
 					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
-						AbstractEntity object = (AbstractEntity) objectIn.readObject();
+						AbstractEntity object;
 						for (int i = 0; i < length; i++) {
-							Gdx.app.debug("Chunk", "Loaded entity: "+object.getId());
-							Controller.getMap().getEntitys().add(object);
 							object = (AbstractEntity) objectIn.readObject();
+							Controller.getMap().getEntitys().add(object);
+							Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
 						}
 					} catch (ClassNotFoundException ex) {
 						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);

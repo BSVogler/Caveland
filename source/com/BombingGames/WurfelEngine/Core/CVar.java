@@ -200,7 +200,6 @@ public class CVar {
 	 */
 	public static void dispose(){
 		save();
-
 	}
 	
 	public static void save(){
@@ -221,8 +220,6 @@ public class CVar {
 			} catch (IOException ex) {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			
-			it.remove(); // avoids a ConcurrentModificationException
 		}
 		try {
 			writer.close();

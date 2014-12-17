@@ -183,7 +183,7 @@ public class Chunk {
 				+ "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
 		);
 
-		Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY + "\"");
+		Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
 
 		if (path.exists()) {
 			//Reading map files test
@@ -214,26 +214,39 @@ public class Chunk {
 
 					//if layer is empty, fill with air
 					if (bufChar == SIGN_EMPTYLAYER ){
-						for (int elx = 0; elx < blocksX; elx++) {
-							for (int ely = 0; ely < blocksY; ely++) {
-								data[elx][ely][z] = Block.getInstance(0);
+						for (x = 0; x < blocksX; x++) {
+							for (y = 0; y < blocksY; y++) {
+								data[x][y][z] = Block.getInstance(0);
+								data[x][y][z].setPosition(
+									new Coordinate(
+										coordX*blocksX+x,
+										coordY*blocksY+y,
+										z
+									)
+								);
 							}
 						}
 					} else {
-						//already got first one
-						int id = bufChar;
-						int value = fis.read();
-						data[0][0][z] = Block.getInstance(id, value);
-						
 						//fill layer block by block
 						y = 0;
 						do {
-							x = 1;
-
+							x = 0;
 							do {
-								id = fis.read();
-								value = fis.read();
+								
+								int id; //already got first one
+								if (y==0 && x==0)
+									 id = bufChar;
+								else 
+									id = fis.read();
+								int value = fis.read();
 								data[x][y][z] = Block.getInstance(id, value);
+								data[x][y][z].setPosition(
+									new Coordinate(
+										coordX*blocksX+x,
+										coordY*blocksY+y,
+										z
+									)
+								);
 								x++;
 							} while (x < blocksX);
 							y++;
@@ -249,7 +262,6 @@ public class Chunk {
 				//loading entities
 				if (bufChar==SIGN_ENTITIES){
 					int length = fis.read(); //amount of entities
-					fis.read();//line break
 
 					Gdx.app.debug("Chunk", "Loading " + length+" entities");
 					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {

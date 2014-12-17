@@ -29,7 +29,6 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
@@ -93,7 +92,6 @@ public class MapEditorController extends Controller {
     @Override
     public void onEnter(){
         Gdx.app.debug("MEController", "entered");
-        CVar.get("gamespeed").setValue("0");
         if (reverseMap && mapsave != null)
             Controller.setMap(mapsave);
         else

@@ -98,7 +98,6 @@ public class CVar {
 		register("consoleKey", Keys.F1, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
-		register("gamespeed", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
 		register("loadEntities", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);

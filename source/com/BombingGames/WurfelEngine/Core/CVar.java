@@ -199,6 +199,11 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static void dispose(){
+		save();
+
+	}
+	
+	public static void save(){
 		Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
 		
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
@@ -224,7 +229,6 @@ public class CVar {
 		} catch (IOException ex) {
 			Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	
 	}
 
 	/**
@@ -273,12 +277,12 @@ public class CVar {
 	}
 	
 	/**
-	 * 
+	 * Saves if should be archived.
 	 * @param str 
 	 * @since v1.4.2
 	 */
 	public void setValue(String str) {
-		if (str.length()>0)
+		if (str.length()>0) {
 			if (type==Type.i){
 				valuei = Integer.parseInt(str);
 			} else if (type==Type.f){
@@ -286,16 +290,32 @@ public class CVar {
 			} else {
 				valueb = str.equals("1") || str.equals("true");
 			} 
+			if (flags == CVarFlags.CVAR_ARCHIVE) save();
+		}
 	}
 
+	/**
+	 * Saves if should be archived.
+	 * @param valuei 
+	 */
 	public void setValuei(int valuei) {
 		this.valuei = valuei;
+		if (flags == CVarFlags.CVAR_ARCHIVE) save();
 	}
 
+	/**
+	 * Saves if should be archived.
+	 * @param valuef 
+	 */
 	public void setValuef(float valuef) {
 		this.valuef = valuef;
+		if (flags == CVarFlags.CVAR_ARCHIVE) save();
 	}
 
+	/**
+	 * Saves if should be archived.
+	 * @param valueb 
+	 */
 	public void setValueb(boolean valueb) {
 		this.valueb = valueb;
 	}

@@ -115,7 +115,11 @@ public class Point extends AbstractPosition {
         Coordinate coords = new Coordinate(
             (int) (getX()) / AbstractGameObject.GAME_DIAGLENGTH,
             (int) (getY()) / AbstractGameObject.GAME_DIAGLENGTH*2+1, //maybe dangerous to optimize code here!
-			(int) (z/Block.GAME_EDGELENGTH));
+			(int) (z/Block.GAME_EDGELENGTH)
+		);
+		//clamp at top border
+		if (z >= Chunk.getBlocksZ())
+			coords.setY(Chunk.getBlocksZ()-1);
        
         //find the specific coordinate (detail)
         Coordinate specificCoords = coords.neighbourSidetoCoords(
@@ -126,7 +130,6 @@ public class Point extends AbstractPosition {
         );
         coords.setX(specificCoords.getX());
         coords.setY(specificCoords.getY());
-        coords.setZ(coords.getZ());//remove floating
         return coords; 
     }
     
@@ -203,18 +206,6 @@ public class Point extends AbstractPosition {
         else return null;
     }
     
-
-    /**
-     *Gets the block at the position but clamps coordinate before.
-     * @return
-     */
-    public Block getBlockClamp(){
-        Coordinate coord = getCoord().clampToMap();
-        if (coord.getZ() >= Chunk.getGameHeight())
-            return Block.getInstance(0);
-        else
-            return Controller.getMap().getDataClamp(coord);
-    }
 
     @Override
     public Point cpy() {

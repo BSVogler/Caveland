@@ -84,8 +84,8 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract Vector3 getVector();
     /**
-     * 
-     * @return Get the block at the position. If the coordiante is outside the map crash. Faster than "getBlockSafe()"
+     * Clamps positions over the map at topmost layer.
+     * @return Get the block at the position. If the coordiante is not in memory crash. Faster than "getBlockSafe()"
      * @see #getBlockSafe() 
      */
     public abstract Block getBlock();

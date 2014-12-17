@@ -27,7 +27,7 @@ public class Lore extends MovableEntity {
 	public void update(float dt) {
 		super.update(dt);
 		Point pos = getPosition();
-		Block block = pos.getBlockClamp();
+		Block block = pos.getBlock();
 
 		//on tracks?
 		if (block.getId() == 55) {

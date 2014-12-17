@@ -215,15 +215,6 @@ public class Coordinate extends AbstractPosition {
         else return null;
     }
     
-    /**
-     *
-     * @return
-     */
-    public Block getBlockClamp(){
-        return Controller.getMap().getDataClamp(this);
-    }
-    
-
    /**
      * The block hides the past block when it has sides and is not transparent (like normal block)
 	 * @param x offset in coords
@@ -448,42 +439,6 @@ public class Coordinate extends AbstractPosition {
         );
     }
     
-    /**
-     * Clamps x and y coordiantes if outside of map.
-     * @return 
-     */
-    public Coordinate clampToMap() {
-        if (x>=Map.getBlocksX())
-            x=Map.getBlocksX()-1;
-        else
-            if (x<0) x=0;
-        if (y>=Map.getBlocksY())
-            y=Map.getBlocksY()-1;
-        else if (y<0)
-            y=0;
-		refreshCachedPoint();
-        return this;
-    }
-    
-    /**
-     * 
-     * @return 
-     * @since 1.2.29
-     */
-    public Coordinate clampToMapIncludingZ() {
-        if (x>=Map.getBlocksX())
-            x=Map.getBlocksX()-1;
-        else
-            if (x<0) x=0;
-        if (y>=Map.getBlocksY())
-            y=Map.getBlocksY()-1;
-        else if (y<0)
-            y=0;
-        setZ(getZClamp());
-		refreshCachedPoint();
-        return this;
-    }
-
 	/**
 	 * destroys the block at the current position, replacing by air. Calls onDestroy()
 	 * @return true if destroyed, false if nothing destroyed

@@ -274,7 +274,6 @@ public class MapEditorView extends GameView {
             
             if (button == Buttons.RIGHT){
                 //right click
-                coords.clampToMapIncludingZ();
 				Block block = Block.getInstance(0);
 				block.setPosition(coords);
                 Controller.getMap().setData(block);
@@ -282,7 +281,6 @@ public class MapEditorView extends GameView {
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
             } else if (button==Buttons.MIDDLE){//middle mouse button
-                coords.clampToMapIncludingZ();
                 Block block = coords.getBlock();
                 colorGUI.setBlock(block.getId(), block.getValue());
             } else if (button==Buttons.LEFT){ //left click
@@ -294,7 +292,6 @@ public class MapEditorView extends GameView {
                 else if (normal==Sides.RIGHT)
                     coords = coords.neighbourSidetoCoords(3);
 
-                coords.clampToMapIncludingZ();
 				Block block;
                 if (colorGUI.getMode() == PlaceMode.Blocks) {
 					block = colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord());

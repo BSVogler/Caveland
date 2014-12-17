@@ -207,10 +207,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
 				}
 
-				if (!inliquid && getPosition().getBlockClamp().isLiquid())//if enterin water
+				if (!inliquid && getPosition().getBlock().isLiquid())//if enterin water
 					if (waterSound!=null) waterSound.play();
 
-				inliquid = getPosition().getBlockClamp().isLiquid();//save if in water
+				inliquid = getPosition().getBlock().isLiquid();//save if in water
 
 
 			/*HORIZONTAL MOVEMENT*/
@@ -384,18 +384,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-        if (pos.cpy().addVector(0, - colissionRadius, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(0, - colissionRadius, 0).getCoord().getBlock().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(0, colissionRadius, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(0, colissionRadius, 0).getCoord().getBlock().isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.cpy().addVector(-colissionRadius, 0, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(-colissionRadius, 0, 0).getCoord().getBlock().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(colissionRadius, 0, 0).getCoord().getBlockClamp().isObstacle())
+        if (pos.cpy().addVector(colissionRadius, 0, 0).getCoord().getBlock().isObstacle())
             colission = true;
         
         return colission;
@@ -507,7 +507,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         if (getPosition().getZ()> 0){
                 getPosition().setZ(getPosition().getZ()-1);
                 
-                boolean colission = getPosition().getBlockClamp().isObstacle() || horizontalColission(getPosition());
+                boolean colission = getPosition().getBlock().isObstacle() || horizontalColission(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);
                 
                 //if standing on ground on own or neighbour block then true

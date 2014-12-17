@@ -243,45 +243,6 @@ public class Map implements Cloneable{
         return getBlock(coord.getX(), coord.getY(), coord.getZ()); 
     }
     
-     /**
-     * Returns a block of the map. Clamps the coodinates.
-     * @param x If too high or too low, it takes the highest/deepest value possible
-     * @param y If too high or too low, it takes the highest/deepest value possible
-     * @param z If too high or too low, it takes the highest/deepest value possible
-     * @return A single Block at the wanted coordinates.
-     * @see com.BombingGames.WurfelEngine.Core.Map.Map#getDataClamp(com.BombingGames.WurfelEngine.Core.Map.Coordinate)
-     */
-    public Block getBlockClamp(int x, int y, int z){
-        if (x >= blocksX){
-            x = blocksX-1;
-        } else if( x<0 ){
-            x = 0;
-        }
-        
-        if (y >= blocksY){
-            y = blocksY-1;
-        } else if( y < 0 ){
-            y = 0;
-        }
-        
-        if (z >= blocksZ){
-            z = blocksZ-1;
-        } else if( z < 0 ){
-            z = 0;
-        }
-        
-        return getBlock(x, y, z);     
-    }
-    
-    /**
-     * Get a block at a coordinate but clamp it first.
-     * @param coords
-     * @return
-     */
-    public Block getDataClamp(final Coordinate coords) {
-        return getBlockClamp(coords.getX(), coords.getY(), coords.getZ());
-    }
-    
     /**
      * Replace a block. Assume that the map already has been filled at this coordinate.
      * @param block

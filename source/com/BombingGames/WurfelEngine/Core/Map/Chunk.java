@@ -58,7 +58,15 @@ public class Chunk {
 	private static int blocksX = 10;
     private static int blocksY = 40;//blocksY must be even number
     private static int blocksZ = 10;
-
+	
+	/**
+	 * save file stuff
+	 */
+	private final static char SIGN_ENTITIES = '|';//124 OR 0x7c
+	private final static char SIGN_STARTCOMMENTS = '{';//123 OR 0x7b
+	private final static char SIGN_ENDCOMMENTS = '}';//125 OR 0x7d
+	private final static char SIGN_EMPTYLAYER = '~';//126 OR 0x7e
+	
     /**
      *
      * @param meta
@@ -187,27 +195,25 @@ public class Chunk {
 			int bufChar = fis.read();
 
 			//read a line
-			while (bufChar != -1 && bufChar!='e') {
-				if (bufChar =='\n') bufChar = fis.read();
-				//skip line breaks
-
-				if (bufChar !='\n'){
+			while (bufChar != -1 && bufChar != SIGN_ENTITIES) {//read while not eof and not at entity part
+				if (bufChar == 0x0A) //skip line breaks
+					bufChar = fis.read();
+				
+				if (bufChar != 0x0A){
 
 					//jump over optional comment line
-					if (
-						bufChar == '/'
-						){
+					if (bufChar == SIGN_STARTCOMMENTS){
 						bufChar = fis.read();
-						while (bufChar!='/'){
+						while (bufChar != SIGN_ENDCOMMENTS){
 							bufChar = fis.read();
 						}
 						bufChar = fis.read();
-						if (bufChar=='\n')//if following is a line break also skip it again
+						if (bufChar== 0x0A)//if following is a line break also skip it again
 							bufChar = fis.read();
 					}
 
 					//if layer is empty, fill with air
-					if (bufChar=='l' ){
+					if (bufChar == SIGN_EMPTYLAYER ){
 						for (int elx = 0; elx < blocksX; elx++) {
 							for (int ely = 0; ely < blocksY; ely++) {
 								data[elx][ely][z] = Block.getInstance(0);
@@ -216,10 +222,10 @@ public class Chunk {
 					} else {
 						//fill layer block by block
 						y = 0;
-						do{
+						do {
 							x = 0;
 
-							do{
+							do {
 								int id = fis.read();
 								int value = fis.read();
 								data[x][y][z] = Block.getInstance(id, value);
@@ -237,7 +243,7 @@ public class Chunk {
 
 			if (CVar.get("loadEntities").getValueb()) {
 				//loading entities
-				if (bufChar=='e'){
+				if (bufChar==SIGN_ENTITIES){
 					int length = fis.read(); //amount of entities
 					fis.read();//line break
 
@@ -294,9 +300,9 @@ public class Chunk {
 								dirty=true;
 						}
 					}
-					fileOut.write('/');
+					fileOut.write(SIGN_STARTCOMMENTS);
 					fileOut.write(z);
-					fileOut.write('/');
+					fileOut.write(SIGN_ENDCOMMENTS);
 					if (dirty)
 						for (int y = 0; y < blocksY; y++) {
 							for (int x = 0; x < blocksX; x++) {
@@ -305,18 +311,15 @@ public class Chunk {
 							}
 						}
 					else {
-						fileOut.write('l');
-						fileOut.write('\n');
+						fileOut.write(SIGN_EMPTYLAYER);
 					}
-					fileOut.write('\n');
 				}
 				
 				//save entities
 				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
-				if (entities.size()>0) {
-					fileOut.write('e');
+				if (entities.size() > 0) {
+					fileOut.write(SIGN_ENTITIES);
 					fileOut.write(entities.size());
-					fileOut.write('\n');
 					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
 						for (AbstractEntity ent : entities){
 							Gdx.app.debug("Chunk", "Saving entity:"+ent.getId());

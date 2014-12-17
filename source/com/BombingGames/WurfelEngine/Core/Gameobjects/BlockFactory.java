@@ -37,8 +37,8 @@ public interface BlockFactory {
 
     /**
      * Override this method and fill it with your own custom blocks.
-     * @param id An id >39
-     * @param value
+     * @param id An 123 &gt; <i>id</i> &gt; 39
+     * @param value An 123 &gt; <i>value</i> &gt; 39
      * @return 
      */
     public abstract Block produce(int id, int value);

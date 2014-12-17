@@ -78,6 +78,10 @@ public class CustomGameView extends GameView{
 			if (Controllers.getControllers().size > 1)
 				Controllers.getControllers().get(1).addListener(new XboxListener(this,player,1));
 		}
+		
+		//hide cursor
+		Gdx.input.setCursorCatched(true);
+		//Gdx.input.setCursorPosition(200, 200);
     }
 	
     @Override

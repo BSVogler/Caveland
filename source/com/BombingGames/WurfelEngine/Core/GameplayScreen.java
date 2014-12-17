@@ -50,6 +50,7 @@ public class GameplayScreen extends WEScreen {
     private Controller controller = null;
     private MapEditorController editorController;
     private MapEditorView editorView;
+	private LoadingScreen loadingScreen;
     
     /**
      * Create the gameplay state. This shows the loading screen.
@@ -61,7 +62,7 @@ public class GameplayScreen extends WEScreen {
         Gdx.app.log("GameplayScreen", "Initializing");
 
         Gdx.input.setInputProcessor(null);
-        
+        this.loadingScreen = loadingScreen;
         WE.setScreen(loadingScreen);
         
         
@@ -128,6 +129,11 @@ public class GameplayScreen extends WEScreen {
         this.view.init(controller);
         controller.enter();
         view.enter();
+		
+		if (loadingScreen!=null && !CVar.get("preventUnloading").getValueb()) {
+			loadingScreen.dispose();
+			loadingScreen=null;
+		}
     }
 
     @Override
@@ -174,5 +180,5 @@ public class GameplayScreen extends WEScreen {
         }
         return editorView;
     }
-    
+
 }

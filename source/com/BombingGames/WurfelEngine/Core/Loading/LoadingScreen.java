@@ -4,7 +4,6 @@
 
 package com.BombingGames.WurfelEngine.Core.Loading;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
@@ -175,10 +174,7 @@ public class LoadingScreen extends WEScreen {
 
     @Override
     public void hide() {
-        // Dispose the loading assets as we no longer need them
-        if (!CVar.get("preventUnloading").getValueb()){
-            WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
-        }
+      
     }
 
     @Override
@@ -191,6 +187,9 @@ public class LoadingScreen extends WEScreen {
 
     @Override
     public void dispose() {
-        WE.getAssetManager().unload(AbstractGameObject.getSpritesheetPath()+".txt");
+		Gdx.app.debug("LoadingScreen", "disposing");
+        // Dispose the loading assets as we no longer need them
+		stage.dispose();
+		WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
     }
 }

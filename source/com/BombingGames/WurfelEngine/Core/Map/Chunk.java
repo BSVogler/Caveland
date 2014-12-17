@@ -220,18 +220,22 @@ public class Chunk {
 							}
 						}
 					} else {
+						//already got first one
+						int id = bufChar;
+						int value = fis.read();
+						data[0][0][z] = Block.getInstance(id, value);
+						
 						//fill layer block by block
 						y = 0;
 						do {
-							x = 0;
+							x = 1;
 
 							do {
-								int id = fis.read();
-								int value = fis.read();
+								id = fis.read();
+								value = fis.read();
 								data[x][y][z] = Block.getInstance(id, value);
 								x++;
 							} while (x < blocksX);
-							fis.read();//line break?
 							y++;
 						} while (y < blocksY);
 					}

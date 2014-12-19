@@ -221,6 +221,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void resize(int width, int height) {
+		stage.getViewport().setWorldSize(width, height);
 	}
 
 	@Override

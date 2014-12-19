@@ -204,8 +204,8 @@ public class OptionScreen extends WEScreen {
 	@Override
 	public void resize(int width, int height) {
 		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
+		stage.getViewport().setWorldSize(width, height);
         Gdx.gl.glViewport(0, 0, width,height);
-		//stage.setViewport(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 	}
 
 	@Override

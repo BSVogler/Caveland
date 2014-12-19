@@ -308,7 +308,7 @@ public class Map implements Cloneable{
     }
 	
      /**
-     * Find every instance of a special class e.g. find every AbstractCharacter
+     * Find every instance of a special class. E.g. find every <i>AbstractCharacter</i>
      * @param <type>
      * @param type
      * @return a list with the entitys

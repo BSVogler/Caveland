@@ -274,14 +274,13 @@ public class Map implements Cloneable{
 	}
 	
 	/**
-	 * get the chunkwith the chunk coords
+	 * get the chunk with the given chunk coords
 	 * @param chunkX
 	 * @param chunkY
-	 * @return 
+	 * @return if not in memory return null
 	 */
 	public Chunk getChunk(int chunkX, int chunkY){
 		for (Chunk chunk : data) {
-			//identify chunk
 			if (
 				   chunkX == chunk.getChunkX()
 				&& chunkY == chunk.getChunkY()

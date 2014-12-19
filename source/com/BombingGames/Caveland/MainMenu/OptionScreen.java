@@ -95,13 +95,13 @@ public class OptionScreen extends WEScreen {
 		
 		sbox.setItems(arstr);
 		sbox.setSelectedIndex(indexCurrentDPM);
-		sbox.setWidth(300);
-		sbox.setPosition(500, 500);			
+		sbox.setWidth(stage.getWidth()/6);
+		sbox.setPosition(stage.getWidth()/2-300, 500);			
 		
 		stage.addActor(sbox);
 		
 		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
-		musicSlider.setPosition(500, 400);
+		musicSlider.setPosition(stage.getWidth()/2-300, 400);
 		musicSlider.setValue(1f);
 		musicSlider.addListener(
 			new ChangeListener() {
@@ -115,26 +115,26 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(musicSlider);
 		
 		soundSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
-		soundSlider.setPosition(500, 350);
+		soundSlider.setPosition(stage.getWidth()/2-300, 350);
 		soundSlider.setValue(1f);
 		stage.addActor(soundSlider);
 		
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
-		fullscreenCB.setPosition(900, 600);
+		fullscreenCB.setPosition(stage.getWidth()/2+100, 600);
 		
 		stage.addActor(fullscreenCB);
 		
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
-		vsyncCB.setPosition(900, 500);
+		vsyncCB.setPosition(stage.getWidth()/2+100, 500);
 		stage.addActor(vsyncCB);
 		
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
 		limitFPSCB.setChecked(CVar.get("limitFPS").getValuei() > 0);
-		limitFPSCB.setPosition(900, 400);
+		limitFPSCB.setPosition(stage.getWidth()/2+100, 400);
 		stage.addActor(limitFPSCB);
 		
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
-		applyButton.setPosition(800, 100);
+		applyButton.setPosition(stage.getWidth()/2-100, 100);
 		applyButton.addListener(new ChangeListener() {
 
 			@Override
@@ -158,7 +158,7 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(applyButton);
 		
 		cancelButton = new TextButton("Back to Menu", WE.getEngineView().getSkin());
-		cancelButton.setPosition(900, 100);
+		cancelButton.setPosition(stage.getWidth()/2+100, 100);
 		cancelButton.addListener(new ChangeListener() {
 
 			@Override

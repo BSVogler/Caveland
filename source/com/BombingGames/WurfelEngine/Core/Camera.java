@@ -311,7 +311,7 @@ public class Camera implements LinkedWithMap {
 		Map map = Controller.getMap();
 		if (map.getChunk(x, y)==null) {
 			map.loadChunk(x, y);
-		} else  {
+		} else {
 			map.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
 		}
 	}
@@ -1006,11 +1006,6 @@ public class Camera implements LinkedWithMap {
 
 		public boolean getClippingRight() {
 			return false;//to-do
-		}
-
-		@Override
-		public ArrayDeque<Block> clone() {
-			return super.clone();
 		}
 	}
 }

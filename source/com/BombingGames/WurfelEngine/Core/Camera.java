@@ -144,21 +144,9 @@ public class Camera implements LinkedWithMap {
 		position.x = Map.getCenter().getViewSpcX(view);
 		position.y = Map.getCenter().getViewSpcY(view);
 		
-		this.centerChunkX = (int) Math.floor(position.x / Chunk.getGameWidth());
-		this.centerChunkY = (int) Math.floor((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2);//divide by 2 to game->view space
-		
-		//make the needed chunks available
-		checkChunk(centerChunkX-1, centerChunkY-1);
-		checkChunk(centerChunkX  , centerChunkY-1);
-		checkChunk(centerChunkX+1, centerChunkY-1);
-		checkChunk(centerChunkX-1, centerChunkY  );
-		checkChunk(centerChunkX  , centerChunkY  );
-		checkChunk(centerChunkX+1, centerChunkY  );
-		checkChunk(centerChunkX-1, centerChunkY+1);
-		checkChunk(centerChunkX  , centerChunkY+1);
-		checkChunk(centerChunkX+1, centerChunkY+1);
-
 		zRenderingLimit = Map.getBlocksZ();
+		
+		updateNeededData();
 	}
 	
 	/**
@@ -243,9 +231,6 @@ public class Camera implements LinkedWithMap {
             );
 		}
 		
-		this.centerChunkX = (int) Math.floor(position.x / Chunk.getGameWidth());
-		this.centerChunkY = (int) Math.floor((Map.getGameDepth()/2-position.y) / Chunk.getGameDepth()/2);//divide by 2 to game->view space
-
 		//aplly screen shake
 		if (shakeTime > 0) {
 			screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
@@ -259,18 +244,7 @@ public class Camera implements LinkedWithMap {
 		position.x += screenshake.x;
 		position.y += screenshake.y;
 
-		if (CVar.get("enableChunkSwitch").getValueb()) {
-			//check every chunk
-			checkChunk(centerChunkX-1, centerChunkY-1);
-			checkChunk(centerChunkX  , centerChunkY-1);
-			checkChunk(centerChunkX+1, centerChunkY-1);
-			checkChunk(centerChunkX-1, centerChunkY  );
-			checkChunk(centerChunkX  , centerChunkY  );
-			checkChunk(centerChunkX+1, centerChunkY  );
-			checkChunk(centerChunkX-1, centerChunkY+1);
-			checkChunk(centerChunkX  , centerChunkY+1);
-			checkChunk(centerChunkX+1, centerChunkY+1);
-		}
+		updateNeededData();
 		
 		//move camera to the focus 
 		view.setToLookAt(
@@ -300,6 +274,24 @@ public class Camera implements LinkedWithMap {
 		//Gdx.gl20.glLoadMatrixf(view.val, 0);
         //invProjectionView.set(combined);
 		//Matrix4.inv(invProjectionView.val);
+	}
+	
+	private void updateNeededData(){
+		this.centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
+		this.centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
+		
+		//check every chunk
+		if (centerChunkX==0 && centerChunkY==0 || CVar.get("enableChunkSwitch").getValueb()) {
+			checkChunk(centerChunkX-1, centerChunkY-1);
+			checkChunk(centerChunkX  , centerChunkY-1);
+			checkChunk(centerChunkX+1, centerChunkY-1);
+			checkChunk(centerChunkX-1, centerChunkY  );
+			checkChunk(centerChunkX  , centerChunkY  );
+			checkChunk(centerChunkX+1, centerChunkY  );
+			checkChunk(centerChunkX-1, centerChunkY+1);
+			checkChunk(centerChunkX  , centerChunkY+1);
+			checkChunk(centerChunkX+1, centerChunkY+1);
+		}
 	}
 	
 	/**

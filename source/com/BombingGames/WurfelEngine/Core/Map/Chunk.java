@@ -384,7 +384,7 @@ public class Chunk {
     }
 
     /**
-     *
+     *Not scaled.
      * @return
      */
     public static int getScreenWidth(){
@@ -392,7 +392,7 @@ public class Chunk {
     }
     
     /**
-     *
+     *Not scaled. Divided by 2 because of shifted each second row.
      * @return
      */
     public static int getScreenDepth() {

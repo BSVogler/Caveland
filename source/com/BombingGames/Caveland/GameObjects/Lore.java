@@ -19,7 +19,7 @@ public class Lore extends MovableEntity {
 
 	public Lore() {
 		super(42, 0);
-		setMovement(new Vector3(1, 1, 0));
+		setMovementDir(new Vector3(1, 1, 0));
 		setSpeed(0);
 	}
 
@@ -36,12 +36,12 @@ public class Lore extends MovableEntity {
 				setSpeed(1);
 			}
 
-			float mov_z = getMovement().z;
+			float mov_z = getMovementDirection().z;
 			switch (block.getValue()) {
 				case 0:
-					setMovement(new Vector3(
-						getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
-						getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1,
+					setMovementDir(new Vector3(
+						getMovementDirection().y >= 0 && getMovementDirection().x <= 0 ? -1 : 1,
+						getMovementDirection().y >= 0 && getMovementDirection().x <= 0 ? 1 : -1,
 						mov_z)
 					);
 					float x = pos.getRelToCoordX();
@@ -52,9 +52,9 @@ public class Lore extends MovableEntity {
 					);
 					break;
 				case 1:
-					setMovement(new Vector3(
-						getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-						getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
+					setMovementDir(new Vector3(
+						getMovementDirection().y >= 0 && getMovementDirection().x >= 0 ? 1 : -1,
+						getMovementDirection().y >= 0 && getMovementDirection().x >= 0 ? 1 : -1,
 						mov_z)
 					);
 					x = pos.getRelToCoordX();
@@ -67,14 +67,14 @@ public class Lore extends MovableEntity {
 				case 3:
 				case 5:
 					int y;
-					if (getMovement().y > 0
-						|| (getMovement().y == 0 && pos.getY() - pos.getCoord().getPoint().getY() < 0)) {//on top and moving down
+					if (getMovementDirection().y > 0
+						|| (getMovementDirection().y == 0 && pos.getY() - pos.getCoord().getPoint().getY() < 0)) {//on top and moving down
 						y = 1;
 					} else {
 						y = -1;
 					}
 
-					setMovement(new Vector3(
+					setMovementDir(new Vector3(
 						0,
 						y,//coming from top right
 						mov_z)
@@ -82,8 +82,8 @@ public class Lore extends MovableEntity {
 					break;
 				case 2:
 				case 4:
-					setMovement(new Vector3(
-						getMovement().x >= 0 ? 1 : -1,//coming from left
+					setMovementDir(new Vector3(
+						getMovementDirection().x >= 0 ? 1 : -1,//coming from left
 						0,
 						mov_z)
 					);
@@ -95,8 +95,8 @@ public class Lore extends MovableEntity {
 
 		//if transporting object
 		if (passenger != null) {
-			passenger.getMovement().x = getMovement().x;
-			passenger.getMovement().y = getMovement().y;
+			passenger.getMovementDirection().x = getMovementDirection().x;
+			passenger.getMovementDirection().y = getMovementDirection().y;
 
 			passenger.setFriction(getFriction());
 			passenger.setSpeed(getSpeed());
@@ -114,7 +114,7 @@ public class Lore extends MovableEntity {
 			//add objects
 			ArrayList<MovableEntity> ents = Controller.getMap().getEntitys(MovableEntity.class);
 			for (MovableEntity ent : ents) {
-				if (ent.isCollectable() && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
+				if (ent.isCollectable() && ent.getPosition().distanceTo(pos)<80 && ent.getMovementDirection().z <0){
 					if (add(ent))
 						ent.dispose();
 				}
@@ -124,13 +124,13 @@ public class Lore extends MovableEntity {
 		//hit objects in front
 		if (getSpeed() > 0) {
 			ArrayList<MovableEntity> entitiesinfront;
-			entitiesinfront = pos.cpy().addVector(getMovement().cpy().scl(80)).getEntitiesNearby(40, MovableEntity.class);
+			entitiesinfront = pos.cpy().addVector(getMovementDirection().cpy().scl(80)).getEntitiesNearby(40, MovableEntity.class);
 			for (MovableEntity ent : entitiesinfront) {
 				if (this != ent) {//don't collide with itself
-					ent.setMovement(
+					ent.setMovementDir(
 						new Vector3(
-							(float) (getMovement().x + Math.random() * 0.5f - 0.25f),
-							(float) (getMovement().y + Math.random() * 0.5f - 0.25f),
+							(float) (getMovementDirection().x + Math.random() * 0.5f - 0.25f),
+							(float) (getMovementDirection().y + Math.random() * 0.5f - 0.25f),
 							(float) Math.random()
 						)
 					);
@@ -146,8 +146,8 @@ public class Lore extends MovableEntity {
 	void setPassanger(MovableEntity passenger) {
 		this.passenger = passenger;
 		Point tmp = getPosition().cpy();
-		if (passenger.getMovement().z > 0) {
-			passenger.getMovement().z = 0;//fall into chuchu
+		if (passenger.getMovementDirection().z > 0) {
+			passenger.getMovementDirection().z = 0;//fall into chuchu
 		}
 		tmp.setZ(passenger.getPosition().getZ());
 		passenger.setPosition(tmp);
@@ -190,11 +190,11 @@ public class Lore extends MovableEntity {
 	}
 
 	public void turn() {
-		setMovement(
+		setMovementDir(
 			new Vector3(
-				-getMovement().x,
-				-getMovement().y,
-				getMovement().z
+				-getMovementDirection().x,
+				-getMovementDirection().y,
+				getMovementDirection().z
 			)
 		);
 	}

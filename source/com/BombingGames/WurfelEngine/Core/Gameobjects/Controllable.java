@@ -54,17 +54,19 @@ public class Controllable extends MovableEntity {
      */
     public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed) {
         if (up || down || left || right){
-            setSpeed(walkingspeed);
 			
-			Vector3 dir = getMovement();
-            //update the movement vector
-            dir.x = 0;
-            dir.y = 0;
+			//update the direction vector
+			Vector3 dir = new Vector3(0f,0f,0f);
 
-            if (up)    dir.y = -1;
-            if (down)  dir.y = 1;
-            if (left)  dir.x = -1;
-            if (right) dir.x = 1;
+            if (up)    dir.y += -1;
+            if (down)  dir.y += 1;
+            if (left)  dir.x += -1;
+            if (right) dir.x += 1;
+			
+			//todo set speed to 0 if at max allowed speed for accelaration and moving in movement direction
+			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
+			dir.scl(walkingspeed);
+			addMovement(dir);
         }
    }
 	@Override
@@ -74,7 +76,7 @@ public class Controllable extends MovableEntity {
 
 	@Override
 	public Vector3 getAiming() {
-		return getMovement();
+		return getMovementDirection();
 	}
 	
 }

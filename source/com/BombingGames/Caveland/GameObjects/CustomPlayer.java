@@ -72,7 +72,7 @@ public class CustomPlayer extends PlayerWithWeapon {
     
     @Override
     public Vector3 getAiming() {
-        Vector3 aim = getMovement().cpy();
+        Vector3 aim = getMovementDirection().cpy();
         aim.z = aimHeight;
         aim.nor();
         return aim;
@@ -115,8 +115,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 		
 		ArrayList<Lore> loren = pos.getCoord().getEntitysInside(Lore.class);
 		if (loren.size()>0 && loren.get(0).getSpeed()==0){//anstupsen
-			loren.get(0).setSpeed(1f);
-			loren.get(0).setMovement(getMovement());
+			loren.get(0).addMovement(getMovementDirection().scl(1f));
 		}
 		
 		if (timeSinceDamage>4000)
@@ -130,7 +129,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 		try {
 			MovableEntity item = inventory.getFrontItem();
 			if (item != null) {
-				item.setMovement(getAiming());
+				item.setMovementDir(getAiming());
 				item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
 			}
@@ -148,7 +147,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 				MovableEntity movable = (MovableEntity) entity;
 				movable.damage(500);
 				getCamera().shake(20, 50);
-				movable.setMovement(
+				movable.setMovementDir(
 						new Vector3(
 							(float) (getAiming().x+Math.random()*0.5f-0.25f),
 							(float) (getAiming().y+Math.random()*0.5f-0.25f),

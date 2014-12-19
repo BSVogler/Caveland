@@ -200,21 +200,21 @@ public class CustomGameView extends GameView{
 				   +Math.abs(controller.getAxis(3)))/2;
 				if (speed[id] < 0.2f){
 					if (speed[id] > 0.1f) {
-						controllable.setMovement(
+						controllable.setMovementDir(
 							new Vector3(
 								controller.getAxis(2),
 								controller.getAxis(3),
-								controllable.getMovement().z
+								controllable.getMovementDirection().z
 							)
 						);
 					}
 					speed[id] = 0;
 				} else {
-					controllable.setMovement(
+					controllable.setMovementDir(
 						new Vector3(
 							controller.getAxis(2),
 							controller.getAxis(3),
-							controllable.getMovement().z
+							controllable.getMovementDirection().z
 						)
 					);
 				}
@@ -274,7 +274,7 @@ public class CustomGameView extends GameView{
                  //pause
                  //time is set 0 but the game keeps running
                    if (keycode == Input.Keys.P) {
-                     CVar.get("gamespeed").setValue("0");;
+                     //CVar.get("gamespeed").setValue("0");;
                   } 
 
                  //reset zoom

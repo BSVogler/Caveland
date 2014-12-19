@@ -91,7 +91,7 @@ public class PlayerWithWeapon extends Controllable {
                 0
             );
         }else{
-            aim = getMovement().cpy();
+            aim = getMovementDirection().cpy();
         }
         return aim.nor();
     }

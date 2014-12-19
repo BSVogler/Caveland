@@ -49,7 +49,7 @@ public class BenchmarkBall extends MovableEntity {
      */
     public BenchmarkBall() {
         super(21, 0);
-		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
+		setMovementDir(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1).nor());
 		setFloating(false);
     }
        
@@ -71,7 +71,7 @@ public class BenchmarkBall extends MovableEntity {
 
 	@Override
 	public void jump() {
-		Vector3 tmp = getMovement();
+		Vector3 tmp = getMovementDirection();
 		tmp.x = (float) Math.random()-0.5f;
 		tmp.y = (float) Math.random()-0.5f;
 		super.jump(-tmp.z, false);

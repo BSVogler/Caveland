@@ -39,11 +39,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- *A character is an entity wich can walk around. To control the character you should use {@link #walk(boolean, boolean, boolean, boolean, float) }".
+ *A character is an entity wich can walk around. To control the character you should use a {@link Controllable} or modify the movemnet via {@link #setMovement(com.badlogic.gdx.math.Vector3) }.
  * @author Benedikt
  */
 public class MovableEntity extends AbstractEntity implements Cloneable  {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	/**
 	 * time to pass before new sound can be played
@@ -59,9 +59,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * direction of movement
 	 */
-	private Vector3 movement;
+	private Vector3 movementDir;
    /**The walking/running speed of the character. provides a factor for the horizontal part of the movement vector*/
-	private float speed;
+	private float speedHorizontal;
 	private boolean coliding;
 	/**
 	 * affected by gractiy
@@ -113,8 +113,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
    protected MovableEntity(final int id, final int spritesPerDir) {
         super(id);
         this.spritesPerDir = spritesPerDir;
-		movement = new Vector3(0,0,0);
-		speed = 0.5f;
+		movementDir = new Vector3(0,0,0);
+		speedHorizontal = 0.5f;
         
 		coliding = true;
 		floating = false;
@@ -124,9 +124,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	protected MovableEntity(MovableEntity entity) {
 		super(entity.getId());
 		this.spritesPerDir = entity.spritesPerDir;
-		movement = entity.movement;
+		movementDir = entity.movementDir;
 		friction = entity.friction;
-		speed = entity.speed;
+		speedHorizontal = entity.speedHorizontal;
         
 		coliding = entity.coliding;
 		floating = entity.floating;
@@ -157,7 +157,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param playSound
      */
     public void jump(float velo, boolean playSound) {
-		movement.z = velo;
+		movementDir.z = velo;
 		if (playSound && jumpingSound != null) jumpingSound.play();
     }
 	
@@ -166,7 +166,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      * @return  If not overwritten returning movement.
      */
    public Vector3 getAiming(){
-	   return movement;
+	   return movementDir;
    };
 
     
@@ -189,19 +189,21 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				float t = delta/1000f; //t = time in s
 				if (!floating)
 					if (!isOnGround())
-						movement.z -= CVar.get("gravity").getValuef()*t; //in m/s
-				getPosition().setZ(getPosition().getZ()+ movement.z * GAME_EDGELENGTH * t); //in m
+						movementDir.z -= CVar.get("gravity").getValuef()*t; //in m/s
+				getPosition().setZ(
+					getPosition().getZ() + movementDir.z * GAME_EDGELENGTH * t
+				); //in m
 
 
 				//check new height for colission            
 				//land if standing in or under 0-level or there is an obstacle
-				if (movement.z < 0 && isOnGround()){
+				if (movementDir.z < 0 && isOnGround()){
 					onCollide();
 					if (landingSound != null)
 						landingSound.play();//play landing sound
 					if (fallingSound != null)
 						fallingSound.stop();//stop falling sound
-					movement.z = 0;
+					movementDir.z = 0;
 
 					//set on top of block
 					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
@@ -216,8 +218,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			/*HORIZONTAL MOVEMENT*/
 				//calculate new position
 				float[] dMove = new float[]{
-					delta * speed * movement.x,
-					delta * speed * movement.y,
+					delta * speedHorizontal * movementDir.x,
+					delta * speedHorizontal * movementDir.y,
 					0
 				};
 
@@ -230,7 +232,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 
 			//cycle
-			walkingCycle += delta*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
+			walkingCycle += delta*speedHorizontal*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
 			if (walkingCycle > 1000) {
 				walkingCycle=0;
 				stepSoundPlayedInCiclePhase=false;//reset variable
@@ -254,28 +256,28 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				
 			/* update sprite*/
 			if (spritesPerDir>0) {
-				if (movement.x < -Math.sin(Math.PI/3)){
+				if (movementDir.x < -Math.sin(Math.PI/3)){
 					setValue(1);//west
 				} else {
-					if (movement.x < - 0.5){
+					if (movementDir.x < - 0.5){
 						//y
-						if (movement.y<0){
+						if (movementDir.y<0){
 							setValue(2);//north-west
 						} else {
 							setValue(0);//south-east
 						}
 					} else {
-						if (movement.x <  0.5){
+						if (movementDir.x <  0.5){
 							//y
-							if (movement.y<0){
+							if (movementDir.y<0){
 								setValue(3);//north
 							}else{
 								setValue(7);//south
 							}
 						}else {
-							if (movement.x < Math.sin(Math.PI/3)) {
+							if (movementDir.x < Math.sin(Math.PI/3)) {
 								//y
-								if (movement.y < 0){
+								if (movementDir.y < 0){
 									setValue(4);//north-east
 								} else{
 									setValue(6);//sout-east
@@ -307,14 +309,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
             //slow walking down
 			if (friction>0) {
-				if (speed > 0) speed -= delta/ friction;
-				if (speed < 0) speed = 0;
+				if (speedHorizontal > 0) speedHorizontal -= delta/ friction;
+				if (speedHorizontal < 0) speedHorizontal = 0;
 			}
             
             /* SOUNDS */
             //should the runningsound be played?
             if (runningSound != null) {
-                if (speed < 0.5f) {
+                if (speedHorizontal < 0.5f) {
                     runningSound.stop();
                     runningSoundPlaying = false;
                 } else {
@@ -327,7 +329,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
             //should the fallingsound be played?
             if (fallingSound != null) {
-                if (movement.z < -1) {
+                if (movementDir.z < -1) {
                     if (!fallingSoundPlaying){
                         fallingSound.play();
                         fallingSoundPlaying = true;
@@ -448,29 +450,68 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		stepSound1Grass = sound;
 	}
 
-	public Vector3 getMovement() {
-		return movement;
+	/**
+	 * Direction of movement.
+	 * @return unit vector for x and y component. 
+	 */
+	public Vector3 getMovementDirection() {
+		return movementDir;
+	}
+	
+	/**
+	 * Get the movement vector as the product of diretion and speed.
+	 * @return 
+	 */
+	public Vector3 getMovement(){
+		return movementDir.cpy().scl(speedHorizontal);
 	}
 
 	/**
-	 * normalises x and y
-	 * @param movement 
+	 * normalises x and y so ignores length.
+	 * @param dir
 	 */
-	public void setMovement(Vector3 movement) {
-	    double len = Math.sqrt(movement.x*movement.x+movement.y*movement.y);
+	public void setMovementDir(Vector3 dir) {
+	    double len = Math.sqrt(dir.x*dir.x+dir.y*dir.y);
+		if (len != 0f && len != 1f) {
+			dir.x /= len;
+			dir.y /= len;
+		}
+		this.movementDir = dir;
+	}
+	
+	/**
+	 * Sets speed and direction.
+	 * @param movement containing direction and speed.
+	 */
+	public void setMovement(Vector3 movement){
+		double len = Math.sqrt(movement.x*movement.x+movement.y*movement.y);
 		if (len != 0f && len != 1f) {
 			movement.x /= len;
 			movement.y /= len;
 		}
-		this.movement = movement;
+		this.movementDir = movement;
+		speedHorizontal = (float) len;
 	}
+	
+	/**
+	 * Adds speed and direction.
+	 * @param movement containing direction and speed.
+	 */
+	public void addMovement(Vector3 movement){
+		setMovement(getMovement().add(movement));
+	}
+	
 
 	public float getSpeed() {
-		return speed;
+		return speedHorizontal;
 	}
 
+	/**
+	 * 
+	 * @param speed
+	 */
 	public void setSpeed(float speed) {
-		this.speed = speed;
+		this.speedHorizontal = speed;
 	}
 	
 

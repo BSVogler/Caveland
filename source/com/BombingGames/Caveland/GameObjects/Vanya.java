@@ -18,11 +18,11 @@ public class Vanya extends MovableEntity {
 
 	@Override
 	public void update(float dt) {
-		float beforeUpdate = getMovement().z;
+		float beforeUpdate = getMovementDirection().z;
 		super.update(dt);
 		
 		//höchster Punkt erreicht
-		if (beforeUpdate>0 && getMovement().z<0)
+		if (beforeUpdate>0 && getMovementDirection().z<0)
 			new BlümchenKacke().spawn(getPosition().cpy());
 		
 		if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
@@ -30,7 +30,7 @@ public class Vanya extends MovableEntity {
 	
 	@Override
 	public void jump() {
-		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, getMovement().z));
+		setMovementDir(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, getMovementDirection().z));
 		super.jump(6, true);
 	}
 	
@@ -39,7 +39,7 @@ public class Vanya extends MovableEntity {
 
 		public BlümchenKacke() {
 			super(41, 0);
-			setMovement(new Vector3(0,0,-1));
+			setMovementDir(new Vector3(0,0,-1));
 			setFloating(false);
 		}
 

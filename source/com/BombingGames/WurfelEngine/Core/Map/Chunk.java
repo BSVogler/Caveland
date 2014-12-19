@@ -387,7 +387,7 @@ public class Chunk {
      *Not scaled.
      * @return
      */
-    public static int getScreenWidth(){
+    public static int getViewWidth(){
         return blocksX*AbstractGameObject.SCREEN_WIDTH;
     }
     
@@ -395,8 +395,8 @@ public class Chunk {
      *Not scaled. Divided by 2 because of shifted each second row.
      * @return
      */
-    public static int getScreenDepth() {
         return blocksY*AbstractGameObject.SCREEN_DEPTH/4;
+    public static int getViewDepth() {
     }
     
     /**

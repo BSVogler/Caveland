@@ -41,7 +41,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 	private float loadAttack =0;
 	
     public CustomPlayer() {
-        super(1,AbstractGameObject.GAME_EDGELENGTH);
+        super(4,AbstractGameObject.GAME_EDGELENGTH);
 		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");

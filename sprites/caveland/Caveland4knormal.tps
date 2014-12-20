@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/Caveland4k.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/Caveland4knormal.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/Caveland/Spritesheet.png</filename>
+        <filename>../../source/com/BombingGames/Caveland/SpritesheetNormal.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/BombingGames/Caveland/Spritesheet.txt</filename>
+                <filename>dev/null/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">
@@ -193,8 +193,8 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>blocks4k</filename>
             <filename>entities4k</filename>
+            <filename>blocks4knormal</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

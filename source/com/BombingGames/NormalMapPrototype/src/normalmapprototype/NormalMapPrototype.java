@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.lwjgl.input.Mouse;
@@ -44,7 +45,7 @@ public class NormalMapPrototype implements ApplicationListener {
 	public static final float AMBIENT_INTENSITY = 0.2f;
 	public static final float LIGHT_INTENSITY = 1f;
 	
-	public static final Vector3 LIGHT_POS = new Vector3(0f,0f,DEFAULT_LIGHT_Z);
+	public static final Vector3 LIGHT_NORMAL = new Vector3(0f,0f,DEFAULT_LIGHT_Z);
 	
 	//Light RGB and intensity (alpha)
 	public static final Vector3 LIGHT_COLOR = new Vector3(1f, 0.8f, 0.6f);
@@ -58,9 +59,9 @@ public class NormalMapPrototype implements ApplicationListener {
 	
 	@Override
 	public void create() {
-		diffuseTextureRegion = new TextureAtlas(Gdx.files.internal("normalmapprototype/diffuseSS.txt"));
+		diffuseTextureRegion = new TextureAtlas(Gdx.files.internal("normalmapprototype/Spritesheet.txt"));
 		diffTexture = diffuseTextureRegion.getTextures().first();
-		normalTexture = new Texture(Gdx.files.internal("normalmapprototype/normalSS.png"));
+		normalTexture = new Texture(Gdx.files.internal("normalmapprototype/SpritesheetNormal.png"));
 		
 		ShaderProgram.pedantic = false;
 		String vertexShader = Gdx.files.internal("normalmapprototype/vertex.vs").readString();
@@ -100,8 +101,8 @@ public class NormalMapPrototype implements ApplicationListener {
 			@Override
 			public boolean scrolled(int delta) {
 				//LibGDX mouse wheel is inverted compared to lwjgl-basics
-				LIGHT_POS.z = Math.max(0f, LIGHT_POS.z - (delta * 0.005f));
-				System.out.println("New light Z: "+LIGHT_POS.z);
+				LIGHT_NORMAL.z = Math.max(0f, LIGHT_NORMAL.z - (delta * 0.005f));
+				System.out.println("New light Z: "+LIGHT_NORMAL.z);
 				return true;
 			}
 		});
@@ -123,8 +124,8 @@ public class NormalMapPrototype implements ApplicationListener {
 		
 		//reset light Z
 		if (Gdx.input.isTouched()) {
-			LIGHT_POS.z = DEFAULT_LIGHT_Z;
-			System.out.println("New light Z: "+LIGHT_POS.z);
+			LIGHT_NORMAL.z = DEFAULT_LIGHT_Z;
+			System.out.println("New light Z: "+LIGHT_NORMAL.z);
 		}
 		
 		batch.begin();
@@ -132,14 +133,12 @@ public class NormalMapPrototype implements ApplicationListener {
 		//shader will now be in use...
 		
 		//update light position, normalized to screen resolution
-		float x = Mouse.getX() / (float)Display.getWidth();
-		float y = Mouse.getY() / (float)Display.getHeight();
-				
-		LIGHT_POS.x = x;
-		LIGHT_POS.y = y;
+		LIGHT_NORMAL.x = 2*Mouse.getX() / (float)Display.getWidth()-1;
+		LIGHT_NORMAL.y = 2*Mouse.getY() / (float)Display.getHeight()-1;
+		LIGHT_NORMAL.nor();
 		
 		//send a Vector4f to GLSL
-		shader.setUniformf("LightPos", LIGHT_POS);
+		shader.setUniformf("LightNormal", LIGHT_NORMAL);
 		
 		//bind normal map to texture unit 1
 		normalTexture.bind(1);
@@ -149,14 +148,27 @@ public class NormalMapPrototype implements ApplicationListener {
 		diffTexture.bind(0);
 		
 		//draw the texture unit 0 with our shader effect applied
-		batch.draw(diffuseTextureRegion.findRegion("b1-1-0"), 50, 100);
-		batch.draw(diffuseTextureRegion.findRegion("b1-1-1"), 50, 180);
-		batch.draw(diffuseTextureRegion.findRegion("b1-1-2"), 130, 100);
+//		batch.draw(diffuseTextureRegion.findRegion("b2-1-0"), 50, 100);
+//		batch.draw(diffuseTextureRegion.findRegion("b1-1-1"), 50, 180);
+//		batch.draw(diffuseTextureRegion.findRegion("b1-1-2"), 130, 100);
 		batch.draw(diffuseTextureRegion.findRegion("b2-0-0"), 300+50, 100);
-		batch.draw(diffuseTextureRegion.findRegion("b2-0-1"), 300+50, 180);
+		batch.draw(diffuseTextureRegion.findRegion("b2-0-1"), 300+50, 200);
 		batch.draw(diffuseTextureRegion.findRegion("b2-0-2"), 300+130, 100);
 		
 		batch.end();
+		
+		int posX = 200;
+		int posY = 200;
+		int size=200;
+		ShapeRenderer shR = new ShapeRenderer();
+		shR.begin(ShapeRenderer.ShapeType.Line);
+		shR.line(
+			posX +(int) ( size*LIGHT_NORMAL.x ),
+			posY +size*(LIGHT_NORMAL.z+LIGHT_NORMAL.y/2f),
+			posX,
+			posY
+		 );
+		shR.end();
 	}
  
 	

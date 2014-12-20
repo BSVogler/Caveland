@@ -151,9 +151,16 @@ public class NormalMapPrototype implements ApplicationListener {
 //		batch.draw(diffuseTextureRegion.findRegion("b2-1-0"), 50, 100);
 //		batch.draw(diffuseTextureRegion.findRegion("b1-1-1"), 50, 180);
 //		batch.draw(diffuseTextureRegion.findRegion("b1-1-2"), 130, 100);
-		batch.draw(diffuseTextureRegion.findRegion("b2-0-0"), 300+50, 100);
-		batch.draw(diffuseTextureRegion.findRegion("b2-0-1"), 300+50, 200);
-		batch.draw(diffuseTextureRegion.findRegion("b2-0-2"), 300+130, 100);
+		int sizeX = 160;
+		int sizeY = 180;
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 5; y++) {
+				batch.draw(diffuseTextureRegion.findRegion("b2-0-0"), x*sizeX+50, y*sizeY);
+				batch.draw(diffuseTextureRegion.findRegion("b2-0-1"), x*sizeX+50, y*sizeY+100);
+				batch.draw(diffuseTextureRegion.findRegion("b2-0-2"), x*sizeX+130, y*sizeY);	
+			}
+		}
+		
 		
 		batch.end();
 		

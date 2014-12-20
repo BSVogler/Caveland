@@ -98,9 +98,9 @@ public abstract class AbstractGameObject implements Serializable {
     public static final int GAME_DIAGLENGTH2 = SCREEN_WIDTH2;
     
     /**the max. amount of different object types*/
-    public static final int OBJECTTYPESNUM = 99;
+    public static final int OBJECTTYPESNUM = 124;
       /**the max. amount of different values*/
-    public static final int VALUESNUM = 25;
+    public static final int VALUESNUM = 32;
     
 
         

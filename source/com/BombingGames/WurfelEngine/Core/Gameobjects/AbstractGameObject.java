@@ -71,7 +71,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The height (y-axis) of the sprite size
      */
-    public static final int SCREEN_HEIGHT = 90;
+    public static final int SCREEN_HEIGHT = 100;
     /**The half (1/2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/
     public static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
     /**A quarter (1/4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/

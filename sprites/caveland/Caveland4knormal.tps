@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>dev/null/Spritesheet.txt</filename>
+                <filename>../../../.temp/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

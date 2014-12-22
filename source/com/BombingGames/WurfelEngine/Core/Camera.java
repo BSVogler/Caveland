@@ -786,7 +786,7 @@ public class Camera implements LinkedWithMap {
 	 * @return in view pixels
 	 */
 	public final int getHeightInViewSpc() {
-		return (int) (gameSpaceHeight/zoom);
+		return (int) (gameSpaceHeight/getScreenSpaceScaling()/zoom);
 	}
 	
 	/**

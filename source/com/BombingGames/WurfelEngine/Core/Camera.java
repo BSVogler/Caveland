@@ -319,7 +319,7 @@ public class Camera implements LinkedWithMap {
 
 			view.getBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
-			//set up the viewport
+			//set up the viewport, y-up
 			Gdx.gl.glViewport(
 				screenPosX,
 				Gdx.graphics.getHeight() - screenHeight - screenPosY,
@@ -793,7 +793,7 @@ public class Camera implements LinkedWithMap {
 	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
 	 * For screen pixels use {@link #getWidthInScreenSpc()}.
 	 *
-	 * @return in pixels
+	 * @return in projection pixels
 	 */
 	public final int getWidthInProjectionSpc() {
 		return (int) (gameSpaceWidth*zoom);

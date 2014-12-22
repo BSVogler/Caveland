@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
     private static Map map;
-    private static DevTools devtools;
+    private DevTools devtools;
     private boolean initalized= false;
 
     /** The speed of time. 1 = real time;*/
@@ -68,7 +68,7 @@ public class Controller implements GameManager {
     public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
 
-		if (Controller.devtools == null)
+		if (devtools == null)
             devtools = new DevTools( 10, 50 );
         
         if (map == null){
@@ -102,13 +102,17 @@ public class Controller implements GameManager {
         
         //aply game world speed
         dt *= timespeed;
-        
-        if (lightEngine != null) lightEngine.update(dt);
-        
-        //update every static update method
+    }
+	
+	/**
+	 * update every static update method
+	 * @param dt 
+	 */
+	public static void staticUpdate(float dt){
+		if (lightEngine != null) lightEngine.update(dt);
         AbstractGameObject.updateStaticUpdates(dt);
 		map.update(dt);
-    }
+	}
 
     /**
      * Tries loading a map.

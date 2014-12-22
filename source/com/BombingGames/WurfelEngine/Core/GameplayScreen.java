@@ -107,6 +107,7 @@ public class GameplayScreen extends WEScreen {
     @Override
     public void renderImpl(float dt) {
         controller.update(dt);
+		Controller.staticUpdate(dt);
         view.update(dt);
 		getMap().postUpdate(dt);//hack to prevent 1-frame lag by too late write access via view update
         view.render();

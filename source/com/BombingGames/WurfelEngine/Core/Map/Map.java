@@ -64,8 +64,114 @@ public class Map implements Cloneable{
 	
 	private boolean modified;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
+	private float gameSpeed;
 
     
+	public static void setDefaultGenerator(Generator defaultGenerator) {
+		Map.defaultGenerator = defaultGenerator;
+	}
+	
+	/**
+     * Should create a new map file.
+     * @param mapName file name
+     * @throws java.io.IOException 
+     */
+    public static void createMapFile(final String mapName) throws IOException {
+        MapMetaData meta = new MapMetaData(mapName);
+        meta.setMapName(mapName);
+        meta.write();
+    }
+	
+	/**
+     *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
+     * @return
+     */
+    public static Point getCenter(){
+        return getCenter(Map.getBlocksZ()*Block.GAME_EDGELENGTH/2);
+    }
+    
+    /**
+     *Returns a coordinate pointing to middle of a 3x3 chunk map.
+     * @param height You custom height.
+     * @return
+     */
+    public static Point getCenter(final float height){
+        return
+            new Point(
+                Chunk.getGameWidth()/2,
+                Chunk.getGameDepth()/2,
+                height
+            );
+    }
+    
+    /**
+     *The width of the map with three chunks in use
+     * @return amount of bluck multiplied by the size in game space.
+     */
+    public static int getGameWidth(){
+        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
+    }
+    
+    /**
+     * The depth of the map in game size
+     * @return 
+     */
+    public static int getGameDepth() {
+        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
+    }
+
+    /**
+     * Game size
+     * @return 
+     */
+    public static int getGameHeight(){
+        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
+    }
+	
+	 /**
+     * Returns the amount of Blocks inside the map in x-direction.
+     * @return
+     */
+    public static int getBlocksX() {
+        return blocksX;
+    }
+
+    /**
+     * Returns the amount of Blocks inside the map in y-direction.
+     * @return
+     */
+    public static int getBlocksY() {
+        return blocksY;
+    }
+
+    /**
+     * Returns the amount of Blocks inside the map in z-direction.
+     * @return 
+     */
+    public static int getBlocksZ() {
+        return blocksZ;
+    }
+	
+	    /**
+     * Copies an array with three dimensions. Deep copy until the cells content of cells shallow copy.
+     * @param array the data you want to copy
+     * @return The copy of the array-
+     */
+    private static Block[][][] copyBlocks(final Block[][][] array) {
+        Block[][][] copy = new Block[array.length][][];
+        for (int i = 0; i < array.length; i++) {
+            copy[i] = new Block[array[i].length][];
+            for (int j = 0; j < array[i].length; j++) {
+                copy[i][j] = new Block[array[i][j].length];
+                System.arraycopy(
+                    array[i][j], 0, copy[i][j], 0, 
+                    array[i][j].length
+                );
+            }
+        }
+        return copy;
+    } 
+	
     /**
      * Loads a map using the default generator.
      * @param name if available on disk it will be load
@@ -106,6 +212,8 @@ public class Map implements Cloneable{
     }
     
 	public void update(float dt){
+		dt *= gameSpeed;//aplly game speed
+		
 		//update every block on the map
 		for (Chunk chunk : data) {
 			chunk.update(dt);
@@ -141,17 +249,6 @@ public class Map implements Cloneable{
 		}
 	}
 		
-    /**
-     * Should create a new map file.
-     * @param mapName file name
-     * @throws java.io.IOException 
-     */
-    public static void createMapFile(final String mapName) throws IOException {
-        MapMetaData meta = new MapMetaData(mapName);
-        meta.setMapName(mapName);
-        meta.write();
-    }
-    
 	/**
 	 * loads a chunk from disk
 	 * @param chunkX
@@ -163,51 +260,6 @@ public class Map implements Cloneable{
 		modified();
 	}
     
-     /**
-     * Returns the amount of Blocks inside the map in x-direction.
-     * @return
-     */
-    public static int getBlocksX() {
-        return blocksX;
-    }
-
-    /**
-     * Returns the amount of Blocks inside the map in y-direction.
-     * @return
-     */
-    public static int getBlocksY() {
-        return blocksY;
-    }
-
-    /**
-     * Returns the amount of Blocks inside the map in z-direction.
-     * @return 
-     */
-    public static int getBlocksZ() {
-        return blocksZ;
-    }
-    
-    
-    /**
-     * Copies an array with three dimensions. Deep copy until the cells content of cells shallow copy.
-     * @param array the data you want to copy
-     * @return The copy of the array-
-     */
-    private static Block[][][] copyBlocks(final Block[][][] array) {
-        Block[][][] copy = new Block[array.length][][];
-        for (int i = 0; i < array.length; i++) {
-            copy[i] = new Block[array[i].length][];
-            for (int j = 0; j < array[i].length; j++) {
-                copy[i][j] = new Block[array[i][j].length];
-                System.arraycopy(
-                    array[i][j], 0, copy[i][j], 0, 
-                    array[i][j].length
-                );
-            }
-        }
-        return copy;
-    } 
-            
     /**
      * Get the data of the map
      * @return
@@ -299,6 +351,17 @@ public class Map implements Cloneable{
         this.generator = generator;
     }
     
+	/**
+	 * Get an iteration which can loop throug the map
+	 * @param topLimitZ the top limit of the iterations
+	 * @return 
+	 */
+	public MemoryMapIterator getIterator(int topLimitZ){
+		MemoryMapIterator mapIterator = new MemoryMapIterator(0);
+		mapIterator.setTopLimitZ(topLimitZ);
+		return mapIterator;
+	}
+	
     /**
      * Returns the entityList
      * @return
@@ -429,52 +492,6 @@ public class Map implements Cloneable{
 	}
     
     /**
-     *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
-     * @return
-     */
-    public static Point getCenter(){
-        return getCenter(Map.getBlocksZ()*Block.GAME_EDGELENGTH/2);
-    }
-    
-    /**
-     *Returns a coordinate pointing to middle of a 3x3 chunk map.
-     * @param height You custom height.
-     * @return
-     */
-    public static Point getCenter(final float height){
-        return
-            new Point(
-                Chunk.getGameWidth()/2,
-                Chunk.getGameDepth()/2,
-                height
-            );
-    }
-    
-    /**
-     *The width of the map with three chunks in use
-     * @return amount of bluck multiplied by the size in game space.
-     */
-    public static int getGameWidth(){
-        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
-    }
-    
-    /**
-     * The depth of the map in game size
-     * @return 
-     */
-    public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
-    }
-
-    /**
-     * Game size
-     * @return 
-     */
-    public static int getGameHeight(){
-        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
-    }
-
-    /**
      * The name of the map on the file.
      * @return 
      */
@@ -489,6 +506,14 @@ public class Map implements Cloneable{
     public MapMetaData getMeta() {
         return meta;
     }
+	
+	/**
+	 * Set the speed of the world.
+	 * @param gameSpeed 
+	 */
+	public void setGameSpeed(float gameSpeed){
+		this.gameSpeed = gameSpeed;
+	}
 
         
     /**
@@ -558,13 +583,6 @@ public class Map implements Cloneable{
 		return linkedObjects;
 	}
 	
-	
-
-	public static void setDefaultGenerator(Generator defaultGenerator) {
-		Map.defaultGenerator = defaultGenerator;
-	}
-	
-
 	public Block getGroundBlock() {
 		return groundBlock;
 	}
@@ -613,15 +631,6 @@ public class Map implements Cloneable{
         }
     }
 	
-	/**
-	 * Get an iteration which can loop throug the map
-	 * @param topLimitZ the top limit of the iterations
-	 * @return 
-	 */
-	public MemoryMapIterator getIterator(int topLimitZ){
-		MemoryMapIterator mapIterator = new MemoryMapIterator(0);
-		mapIterator.setTopLimitZ(topLimitZ);
-		return mapIterator;
-	}
+
 
 }

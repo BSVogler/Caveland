@@ -156,7 +156,7 @@ public class Controller implements GameManager {
     public static LightEngine getLightEngine() {
         return lightEngine;
     }
-
+	
     /**
      *
      * @return
@@ -165,18 +165,6 @@ public class Controller implements GameManager {
         return devtools;
     }
     
-
-    /**
-     *
-     */
-    public static void disposeClass(){
-        Gdx.app.debug("ControllerClass", "Disposing.");
-        AbstractGameObject.staticDispose();
-        Block.staticDispose();
-        map.dispose();
-		map = null;
-        lightEngine = null;
-    }
 
     /**
      *
@@ -207,5 +195,17 @@ public class Controller implements GameManager {
 	@Override
 	public void dispose() {
 	}
+	
+	    /**
+     *Disposes static stuff.
+     */
+    public static void disposeClass(){
+        Gdx.app.debug("ControllerClass", "Disposing.");
+        AbstractGameObject.staticDispose();
+        Block.staticDispose();
+        map.dispose();
+		map = null;
+        lightEngine = null;
+    }
 
 }

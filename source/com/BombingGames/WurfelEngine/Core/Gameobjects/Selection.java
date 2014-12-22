@@ -108,8 +108,8 @@ public class Selection extends AbstractEntity {
     /**
      * Updates thhe selection using the screen position of the cursor.
      * @param view
-     * @param screenX cursor position
-     * @param screenY cursor position
+     * @param screenX cursor position from left
+     * @param screenY cursor position from top (?)
      */
     public void update(GameView view, int screenX, int screenY){
         Intersection intersect = view.screenToGameRaytracing(screenX, screenY);

@@ -160,6 +160,13 @@ public class MapEditorView extends GameView {
             Controller.getLightEngine().setToNoon();
     }
 
+	@Override
+    public void onEnter() {
+        WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
+		Gdx.input.setCursorCatched(false);
+		WE.getEngineView().setMusicLoudness(0);
+		Controller.getMap().setGameSpeed(0);
+    }
     /**
      *
      * @param speed
@@ -380,12 +387,5 @@ public class MapEditorView extends GameView {
             getLoadMenu().setOpen(view, true);
             return true;
         }
-    }
-    
-    @Override
-    public void onEnter() {
-        WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
-		Gdx.input.setCursorCatched(false);
-		WE.getEngineView().setMusicLoudness(0);
     }
 }

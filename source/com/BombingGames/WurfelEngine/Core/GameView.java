@@ -84,6 +84,8 @@ public class GameView extends View implements GameManager {
     private boolean initalized;
 	
 	private Minimap minimap;
+	
+	private float gameSpeed = 1f;
     
     /**
      * Shoud be called before the object get initialized.
@@ -453,7 +455,6 @@ public class GameView extends View implements GameManager {
      */
     @Override
     public void onEnter(){
-		
     }
     
     @Override
@@ -465,6 +466,7 @@ public class GameView extends View implements GameManager {
 		}
 		
 		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
+		Controller.getMap().setGameSpeed(gameSpeed);
         onEnter();
     }
 

@@ -2,6 +2,27 @@ Spritesheet.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+b0-0-0
+  rotate: false
+  xy: 161, 966
+  size: 20, 30
+  orig: 20, 30
+  offset: 0, 0
+  index: -1
+b0-0-1
+  rotate: false
+  xy: 161, 997
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+b0-0-2
+  rotate: false
+  xy: 182, 966
+  size: 20, 30
+  orig: 20, 30
+  offset: 0, 0
+  index: -1
 b2-0-0
   rotate: false
   xy: 917, 167
@@ -246,6 +267,13 @@ e30-9
   size: 116, 175
   orig: 375, 375
   offset: 131, 109
+  index: -1
+e32-0
+  rotate: false
+  xy: 202, 997
+  size: 40, 19
+  orig: 40, 40
+  offset: 0, 0
   index: -1
 error
   rotate: false

@@ -44,8 +44,17 @@ import java.util.ArrayList;
  */
 public class Coordinate extends AbstractPosition {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * The x coordinate. Position from left
+	 */
     private int x;
+	/**
+	 * The y coordinate. Position from behind.
+	 */
     private int y;
+	/**
+	 * The z coordinate. Position from ground.
+	 */
 	private int z;
 	/**
 	 * gets calculated every time the coordinate is written to.

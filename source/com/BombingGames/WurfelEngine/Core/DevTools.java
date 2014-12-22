@@ -44,7 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.text.NumberFormat;
 
 /**
- *The FPS diagramm collects some fps values and creates a diagram and analyzes it.
+ * Shows data for developers. Also has some tools like buttons to edito the map.
  * @author Benedikt Vogler
  */
 public class DevTools {

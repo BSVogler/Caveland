@@ -583,7 +583,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Returns the zoom multiplied by a scaling factor calculated by the width to achieve the same
+	 * Returns a scaling factor calculated by the width to achieve the same
 	 * viewport size with every resolution
 	 *
 	 * @return a scaling factor applied on the projection

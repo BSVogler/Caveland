@@ -80,6 +80,7 @@ public Block produce(int id, int value) {
 
 
 	private static class RailBlock extends Block {
+		private static final long serialVersionUID = 1L;
 
 		RailBlock() {
 			super(55);

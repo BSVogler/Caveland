@@ -589,7 +589,7 @@ public class Camera implements LinkedWithMap {
 	 * @return a scaling factor applied on the projection
 	 */
 	public float getScreenSpaceScaling() {
-		return screenWidth / CVar.get("renderResolutionWidth").getValuei();
+		return screenWidth / (float) CVar.get("renderResolutionWidth").getValuei();
 	}
 	
 	/**

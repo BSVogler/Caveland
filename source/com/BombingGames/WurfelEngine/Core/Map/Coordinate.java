@@ -428,20 +428,18 @@ public class Coordinate extends AbstractPosition {
 
     @Override
     public int getViewSpcY(View view) {
-		return (int) (
+		return (int)( 
+			getY() * AbstractGameObject.SCREEN_DEPTH2 *
 			(
 				view.getOrientation()==0
-				?
-					-getY() * AbstractGameObject.SCREEN_DEPTH2 //y-coordinate multiplied by half of the projected size in y direction
-				:
-					(
-						view.getOrientation()==2
-						?
-							getY() * AbstractGameObject.SCREEN_DEPTH2
-						:
-							0
-					)
+				? -1
+				: (
+					view.getOrientation()==2
+					? 1
+					: 0
+				  )
 			)
+				
 				
            // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
             + z*Block.GAME_EDGELENGTH *AbstractPosition.SQRT12 //subtract height and take axis shortening into account

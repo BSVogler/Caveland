@@ -423,7 +423,7 @@ public class Coordinate extends AbstractPosition {
     public int getViewSpcX(View view) {
 		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (getY() % 2) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
+                + (Math.abs(getY() % 2)) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
     }
 
     @Override

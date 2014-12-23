@@ -515,6 +515,9 @@ public class Map implements Cloneable{
 		this.gameSpeed = gameSpeed;
 	}
 
+	public float getGameSpeed() {
+		return gameSpeed;
+	}
         
     /**
      *Clones the map. Not yet checked if a valid copy.

@@ -123,12 +123,12 @@ public class CVar {
 		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.i;
-		cvars.put(name.intern(), cvar);
+		cvars.put(name.toLowerCase().intern(), cvar);
 	};
 	
 	/**
 	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
-	 * @param name indentifier name
+	 * @param name indentifier name. Saved in lower case.
 	 * @param value the value of the cvar
 	 * @param flags
 	 * @since v1.4.2
@@ -139,7 +139,7 @@ public class CVar {
 		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.f;
-		cvars.put(name.intern(), cvar);
+		cvars.put(name.toLowerCase().intern(), cvar);
 	};
 	
 	/**
@@ -158,7 +158,7 @@ public class CVar {
 			cvar.defaultValue = 0;
 		cvar.flags = flags;
 		cvar.type = Type.b;
-		cvars.put(name.intern(), cvar);
+		cvars.put(name.toLowerCase().intern(), cvar);
 	};
 	
 	/**
@@ -168,7 +168,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static CVar get(String cvar){
-		return cvars.get(cvar.intern());
+		return cvars.get(cvar.toLowerCase().intern());
 	}
 	
 		/**
@@ -249,7 +249,7 @@ public class CVar {
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, CVar> cvarEntry = it.next();
-			if (cvarEntry.getKey().startsWith(prefix))
+			if (cvarEntry.getKey().startsWith(prefix.toLowerCase()))
 				resultList.add(cvarEntry.getKey());
 		}
 		return resultList;

@@ -47,6 +47,11 @@ public abstract class View {
     public abstract ShapeRenderer getShapeRenderer();
 	
 	/**
+	 * true if current rendering is debug only
+	 */
+	private boolean inDebug;
+	
+	/**
 	 * @since v1.3.12
 	 */
 	private int orientation = 0;
@@ -78,6 +83,19 @@ public abstract class View {
 	public void setOrientation(int orientation) {
 		this.orientation = orientation;
 	}
+    	/**
+	 * enable debug rendering only
+	 * @param debug 
+	 */
+	void setDebugRendering(boolean debug) {
+		this.inDebug = debug;
+	}
 	
-    
+		/**
+	 * 
+	 * @return true if current rendering is debug only
+	 */
+	public boolean debugRendering() {
+		return inDebug;
+	}
 }

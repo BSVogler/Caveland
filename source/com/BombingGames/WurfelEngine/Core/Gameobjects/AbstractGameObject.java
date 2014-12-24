@@ -424,40 +424,40 @@ public abstract class AbstractGameObject implements Serializable {
 			);
 
 			sprite.setColor(color);
-			sprite.draw(view.getBatch());
         
-        if (CVar.get("debugObjects").getValueb()){
-            ShapeRenderer sh = view.getShapeRenderer();
-            sh.begin(ShapeRenderer.ShapeType.Line);
-            //sprite outline
-            sh.rect(
-                sprite.getX(),
-                sprite.getY(),
-                sprite.getWidth(),
-                sprite.getHeight()
-            );
-            //crossing lines
-            sh.line(
-                xPos-SCREEN_WIDTH2,
-                yPos-SCREEN_DEPTH2,
-                xPos+SCREEN_WIDTH2,
-                yPos+SCREEN_DEPTH2
-            );
-            sh.line(
-                xPos-SCREEN_WIDTH2,
-                yPos+SCREEN_DEPTH2,
-                xPos+SCREEN_WIDTH2,
-                yPos-SCREEN_DEPTH2
-            );
-            //bounding box
-            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
-            sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
-            sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-            sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-            sh.end();
-        }
-
-			drawCalls++;
+			if (view.debugRendering()){
+				ShapeRenderer sh = view.getShapeRenderer();
+				sh.begin(ShapeRenderer.ShapeType.Line);
+				//sprite outline
+				sh.rect(
+					sprite.getX(),
+					sprite.getY(),
+					sprite.getWidth(),
+					sprite.getHeight()
+				);
+				//crossing lines
+				sh.line(
+					xPos-SCREEN_WIDTH2,
+					yPos-SCREEN_DEPTH2,
+					xPos+SCREEN_WIDTH2,
+					yPos+SCREEN_DEPTH2
+				);
+				sh.line(
+					xPos-SCREEN_WIDTH2,
+					yPos+SCREEN_DEPTH2,
+					xPos+SCREEN_WIDTH2,
+					yPos-SCREEN_DEPTH2
+				);
+				//bounding box
+				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
+				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
+				sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+				sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+				sh.end();
+			} else {
+				sprite.draw(view.getBatch());
+				drawCalls++;
+			}
 		}
     }
     

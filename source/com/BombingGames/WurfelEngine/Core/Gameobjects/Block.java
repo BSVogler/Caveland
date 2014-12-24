@@ -517,16 +517,15 @@ public class Block extends AbstractGameObject {
 //        color.a = 1; 
         sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
  
-        sprite.draw(view.getBatch());
-        
-        if (CVar.get("debugObjects").getValueb()){
+        if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();
-        }
-        
-        increaseDrawCalls();
+        } else {
+			sprite.draw(view.getBatch());
+			increaseDrawCalls();
+		}
     }
 
 	/**

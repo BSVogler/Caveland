@@ -329,18 +329,30 @@ public class Camera implements LinkedWithMap {
 
 			//render map
 			ArrayList<AbstractGameObject> depthlist = createDepthList();
+			
+			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality 
+			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR);
+			
 
+			view.setDebugRendering(false);
 			view.getBatch().begin();
-				//view.setDrawmode(GL10.GL_MODULATE);
-				Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality  
-				//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR); 
-
 				//render vom bottom to top
 				for (AbstractGameObject renderobject : depthlist) {
 					renderobject.render(view, camera);
 				}
 			view.getBatch().end();
 
+			//if debugging render outline again
+			if (CVar.get("debugObjects").getValueb()) {
+				view.setDebugRendering(true);
+				view.getBatch().begin();
+					//render vom bottom to top
+					for (AbstractGameObject renderobject : depthlist) {
+						renderobject.render(view, camera);
+					}
+				view.getBatch().end();	
+			}
+			
 			//outline 3x3 chunks
 			if (CVar.get("debugObjects").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());

@@ -362,7 +362,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	@Override
 	public void render(View view, int xPos, int yPos, Color color, float scale) {
-		if (CVar.get("debugObjects").getValueb()){
+		if (view.debugRendering()){
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(Color.GREEN);

@@ -310,15 +310,17 @@ public class Console {
 		}
 		
 		//displaySuggestion
-		int saveCursorPos = textinput.getCursorPosition();
-		textinput.setText(suggestions.get(nextSuggestionNo));
-		textinput.setCursorPosition(saveCursorPos);
-		
-		//if only one available
-		if (suggestions.size()==1)
-			textinput.setCursorPosition(textinput.getText().length());
-		
-		nextSuggestionNo++;
+		if (suggestions.size()>0) {
+			int saveCursorPos = textinput.getCursorPosition();
+			textinput.setText(suggestions.get(nextSuggestionNo));
+			textinput.setCursorPosition(saveCursorPos);
+
+			//if only one available
+			if (suggestions.size()==1)
+				textinput.setCursorPosition(textinput.getText().length());
+
+			nextSuggestionNo++;
+		}
 	}
     
     /**

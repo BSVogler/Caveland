@@ -296,9 +296,15 @@ public class GameView extends View implements GameManager {
 			Point p = screenToGameFlat(x,y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
-			p.addVector(0, deltaZ/Point.SQRT2*2, deltaZ);//top of map
-
-			return p.raycast(new Vector3(0,-1, -Point.SQRT12), 5000, cameras.get(0), false);//todo identify camera
+			
+			p.addVector(0, deltaZ*Point.SQRT2, deltaZ);//top of map
+			//return new Intersection(p, Vector3.Zero, 0);
+			return p.raycast(
+				new Vector3(0,-1, -Point.SQRT12),
+				5000,
+				cameras.get(0),
+				false
+			);
 		} else return new Intersection(null, Vector3.Zero, 0);
     }
     

@@ -394,7 +394,7 @@ public class Point extends AbstractPosition {
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
 				/** Point of intersection */
                 Point isectP = new Point(curX, curY, curZ);
-                Block block = isectP.getBlockSafe();
+                Block block = isectP.getBlock();
                 if (block == null) break;//check if outside of map
                 //intersect?
                 if ((

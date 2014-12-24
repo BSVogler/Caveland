@@ -392,6 +392,7 @@ public class Point extends AbstractPosition {
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
             if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
+				/** Point of intersection */
                 Point isectP = new Point(curX, curY, curZ);
                 Block block = isectP.getBlockSafe();
                 if (block == null) break;//check if outside of map
@@ -400,14 +401,18 @@ public class Point extends AbstractPosition {
 					camera==null
 					||
 					(
-						(curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH && !camera.isClipped(isectP.getCoord())))
+						(
+							curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH
+							&& !camera.isClipped(isectP.getCoord())
+						)
 					)
+				   )
                     && (!onlySolid || (onlySolid && !block.isTransparent()))
                     && block.getId() != 0
 				){
                     //correct normal
                     if (
-                        (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2:0))
+                        (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
                         % Block.GAME_DIAGLENGTH
                         <
                         Block.GAME_DIAGLENGTH2

@@ -343,7 +343,7 @@ public class Camera implements LinkedWithMap {
 			view.getBatch().end();
 
 			//if debugging render outline again
-			if (CVar.get("debugObjects").getValueb()) {
+			if (CVar.get("DevDebugRendering").getValueb()) {
 				view.setDebugRendering(true);
 				view.getBatch().begin();
 					//render vom bottom to top
@@ -354,7 +354,7 @@ public class Camera implements LinkedWithMap {
 			}
 			
 			//outline 3x3 chunks
-			if (CVar.get("debugObjects").getValueb()) {
+			if (CVar.get("DevDebugRendering").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 				view.getShapeRenderer().rect(

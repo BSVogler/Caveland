@@ -25,7 +25,7 @@ b0-0-2
   index: -1
 b2-0-0
   rotate: false
-  xy: 917, 167
+  xy: 824, 171
   size: 80, 140
   orig: 80, 140
   offset: 0, 0
@@ -39,10 +39,31 @@ b2-0-1
   index: -1
 b2-0-2
   rotate: false
-  xy: 899, 308
+  xy: 824, 312
   size: 80, 140
   orig: 80, 140
   offset: 0, 0
+  index: -1
+e13-0
+  rotate: false
+  xy: 337, 740
+  size: 160, 180
+  orig: 160, 180
+  offset: 0, 0
+  index: -1
+e14-0
+  rotate: false
+  xy: 625, 694
+  size: 126, 164
+  orig: 160, 180
+  offset: 19, 0
+  index: -1
+e14-1
+  rotate: false
+  xy: 498, 704
+  size: 126, 169
+  orig: 160, 180
+  offset: 19, 0
   index: -1
 e30-0
   rotate: false
@@ -53,35 +74,35 @@ e30-0
   index: -1
 e30-1
   rotate: false
-  xy: 238, 0
+  xy: 341, 0
   size: 104, 177
   orig: 375, 375
   offset: 143, 109
   index: -1
 e30-10
   rotate: false
-  xy: 238, 359
+  xy: 343, 359
   size: 118, 176
   orig: 375, 375
   offset: 122, 106
   index: -1
 e30-11
   rotate: false
-  xy: 464, 531
+  xy: 579, 352
   size: 127, 172
   orig: 375, 375
   offset: 114, 110
   index: -1
 e30-12
   rotate: false
-  xy: 591, 345
+  xy: 796, 0
   size: 117, 170
   orig: 375, 375
   offset: 121, 120
   index: -1
 e30-13
   rotate: false
-  xy: 553, 0
+  xy: 551, 0
   size: 116, 173
   orig: 375, 375
   offset: 121, 119
@@ -109,42 +130,42 @@ e30-16
   index: -1
 e30-17
   rotate: false
-  xy: 343, 0
+  xy: 238, 359
   size: 104, 177
   orig: 375, 375
   offset: 143, 109
   index: -1
 e30-18
   rotate: false
-  xy: 789, 169
+  xy: 914, 0
   size: 109, 167
   orig: 375, 375
   offset: 132, 118
   index: -1
 e30-19
   rotate: false
-  xy: 583, 174
+  xy: 668, 0
   size: 127, 170
   orig: 375, 375
   offset: 115, 112
   index: -1
 e30-2
   rotate: false
-  xy: 128, 0
+  xy: 128, 181
   size: 109, 179
   orig: 375, 375
   offset: 132, 106
   index: -1
 e30-20
   rotate: false
-  xy: 337, 740
+  xy: 128, 0
   size: 107, 180
   orig: 375, 375
   offset: 121, 109
   index: -1
 e30-21
   rotate: false
-  xy: 128, 180
+  xy: 236, 0
   size: 104, 179
   orig: 375, 375
   offset: 121, 111
@@ -172,42 +193,42 @@ e30-24
   index: -1
 e30-25
   rotate: false
-  xy: 349, 178
+  xy: 354, 178
   size: 116, 176
   orig: 375, 375
   offset: 132, 113
   index: -1
 e30-26
   rotate: false
-  xy: 670, 0
+  xy: 705, 171
   size: 118, 170
   orig: 375, 375
   offset: 123, 116
   index: -1
 e30-27
   rotate: false
-  xy: 445, 712
+  xy: 464, 531
   size: 128, 172
   orig: 375, 375
   offset: 116, 111
   index: -1
 e30-28
   rotate: false
-  xy: 233, 180
+  xy: 238, 180
   size: 115, 178
   orig: 375, 375
   offset: 122, 109
   index: -1
 e30-29
   rotate: false
-  xy: 466, 177
+  xy: 471, 177
   size: 116, 174
   orig: 375, 375
   offset: 120, 113
   index: -1
 e30-3
   rotate: false
-  xy: 789, 0
+  xy: 593, 525
   size: 127, 168
   orig: 375, 375
   offset: 115, 114
@@ -228,14 +249,14 @@ e30-31
   index: -1
 e30-4
   rotate: false
-  xy: 917, 0
+  xy: 914, 168
   size: 107, 166
   orig: 375, 375
   offset: 121, 123
   index: -1
 e30-5
   rotate: false
-  xy: 448, 0
+  xy: 446, 0
   size: 104, 176
   orig: 375, 375
   offset: 121, 114
@@ -256,14 +277,14 @@ e30-7
   index: -1
 e30-8
   rotate: false
-  xy: 474, 352
+  xy: 588, 174
   size: 116, 171
   orig: 375, 375
   offset: 131, 116
   index: -1
 e30-9
   rotate: false
-  xy: 357, 355
+  xy: 462, 355
   size: 116, 175
   orig: 375, 375
   offset: 131, 109

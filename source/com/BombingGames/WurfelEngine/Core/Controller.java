@@ -68,7 +68,7 @@ public class Controller implements GameManager {
     public void init(Generator generator){
         Gdx.app.log("Controller", "Initializing");
 
-		if (devtools == null)
+		if (devtools == null && CVar.get("DevMode").getValueb())
             devtools = new DevTools( 10, 50 );
         
         if (map == null){
@@ -98,7 +98,18 @@ public class Controller implements GameManager {
      * @param dt time since last call
      */
     public void update(float dt) {
-        if (devtools!=null) devtools.update(dt);
+		if (CVar.get("DevMode").getValueb()) {
+			if (devtools == null ) {
+				devtools = new DevTools(10, 50);
+				devtools.update(dt);
+			} else
+				devtools.update(dt);
+		} else {
+			if (devtools != null ) {
+				devtools.dispose();
+				devtools = null;
+			}
+		}
         
         //aply game world speed
         dt *= timespeed;

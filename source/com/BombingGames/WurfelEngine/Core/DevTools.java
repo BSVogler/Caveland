@@ -349,4 +349,9 @@ public class DevTools {
 			}
 		}
     }
+	
+	public void dispose(){
+		if (editorbutton!=null) editorbutton.remove();
+		if (editorreversebutton!=null) editorreversebutton.remove();
+	}
 }

@@ -364,11 +364,6 @@ public class Console {
                 return true;
             case "save":
                 return Controller.getMap().save();
-            case "devtools":
-            case "dev":
-                if (gameplayRef==null) return false;
-                gameplayRef.getController().getDevTools().setVisible(!gameplayRef.getController().getDevTools().isVisible());
-                return true;
             case "benchmark":
                 new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()));
                 //add("Spawned a benchmark ball.", "System");

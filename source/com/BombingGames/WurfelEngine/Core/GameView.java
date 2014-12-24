@@ -206,8 +206,8 @@ public class GameView extends View implements GameManager {
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
             //end of setup
-            
-            controller.getDevTools().render(this);
+            if (controller.getDevTools() != null)
+				controller.getDevTools().render(this);
 
 			if (CVar.get("enableMinimap").getValueb())
 				if (minimap != null)

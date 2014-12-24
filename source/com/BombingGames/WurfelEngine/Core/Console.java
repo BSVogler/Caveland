@@ -42,6 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -57,6 +58,12 @@ public class Console {
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
     private Modes mode;
+	
+	/**
+	 * suggestions stuff
+	 */
+	private int nextSuggestionNo =0;
+	private boolean keySuggestionDown;
     
     private enum Modes {
         Chat, Console
@@ -160,10 +167,19 @@ public class Console {
        timelastupdate += dt;
        
         //open close console/chat box
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.get("consoleKey").getValuei())) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.get("KeyConsole").getValuei())) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(CVar.get("consoleKey").getValuei());
+        keyConsoleDown = Gdx.input.isKeyPressed(CVar.get("KeyConsole").getValuei());
+		
+		if (!keySuggestionDown
+			&& Gdx.input.isKeyPressed(CVar.get("KeySuggestion").getValuei())
+			&& isActive()
+		) {
+            autoSuggestion();
+        }
+        keySuggestionDown = Gdx.input.isKeyPressed(CVar.get("KeySuggestion").getValuei());
+		
 
         //decrease importance every 30ms
         if (timelastupdate >= 30) {
@@ -278,7 +294,32 @@ public class Console {
     public void setText(String text){
         textinput.setText(text);
         textinput.setCursorPosition(textinput.getText().length());
+		nextSuggestionNo=0;//start with suggestions all over
     }
+	
+	/**
+	 * suggests a cvar
+	 */
+	public void autoSuggestion(){
+		//get until cursor position
+		ArrayList<String> suggestions = CVar.getSuggestions(textinput.getText().substring(0, textinput.getCursorPosition()));
+		
+		//if at end start all overs
+		if (nextSuggestionNo >= suggestions.size()){
+			nextSuggestionNo=0;
+		}
+		
+		//displaySuggestion
+		int saveCursorPos = textinput.getCursorPosition();
+		textinput.setText(suggestions.get(nextSuggestionNo));
+		textinput.setCursorPosition(saveCursorPos);
+		
+		//if only one available
+		if (suggestions.size()==1)
+			textinput.setCursorPosition(textinput.getText().length());
+		
+		nextSuggestionNo++;
+	}
     
     /**
      * Tries executing a command

@@ -38,6 +38,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -99,7 +100,8 @@ public class CVar {
 		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);
 		register("shouldLoadMap", true, CVarFlags.CVAR_ARCHIVE);
 		register("clearBeforeRendering", true, CVarFlags.CVAR_ARCHIVE);
-		register("consoleKey", Keys.F1, CVarFlags.CVAR_ARCHIVE);
+		register("KeyConsole", Keys.F1, CVarFlags.CVAR_ARCHIVE);
+		register("KeySuggestion", Keys.TAB, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
@@ -234,6 +236,22 @@ public class CVar {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
+	}
+	
+		/**
+	 * Good use is auto-complete suggestions.
+	 * @param prefix some chars with which the cvar begins.
+	 * @return A list containing every cvar starting with the prefix
+	 */
+	public static ArrayList<String> getSuggestions(String prefix){
+		ArrayList<String> resultList = new ArrayList<>(1);
+		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, CVar> cvarEntry = it.next();
+			if (cvarEntry.getKey().startsWith(prefix))
+				resultList.add(cvarEntry.getKey());
+		}
+		return resultList;
 	}
 
 	/**

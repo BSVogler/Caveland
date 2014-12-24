@@ -269,9 +269,11 @@ public class GameView extends View implements GameManager {
 				camera = cameras.get(i);
 				i++;
 			} while (
-					i < cameras.size()
-					&& !(x > camera.getScreenPosX() && x < camera.getScreenPosX()+camera.getWidthInScreenSpc()
-					&& y > camera.getScreenPosY() && y < camera.getScreenPosY()+camera.getHeightInScreenSpc())
+				i < cameras.size()
+				&& !(x > camera.getScreenPosX()
+				&& x < camera.getScreenPosX()+camera.getWidthInScreenSpc()
+				&& y > camera.getScreenPosY()
+				&& y < camera.getScreenPosY()+camera.getHeightInScreenSpc())
 			);
 
 			//find points

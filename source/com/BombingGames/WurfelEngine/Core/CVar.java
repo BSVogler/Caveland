@@ -93,11 +93,11 @@ public class CVar {
 		register("enableAutoShade", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
 		register("groundBlockID", 2, CVarFlags.CVAR_ARCHIVE);
-		register("debugObjects", false, CVarFlags.CVAR_ARCHIVE);
+		register("debugObjects", false, CVarFlags.CVAR_VOLATILE);
 		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);
 		register("shouldLoadMap", true, CVarFlags.CVAR_ARCHIVE);
-		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
 		register("clearBeforeRendering", true, CVarFlags.CVAR_ARCHIVE);
 		register("consoleKey", Keys.F1, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);

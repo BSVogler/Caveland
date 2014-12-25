@@ -548,17 +548,17 @@ public class Camera implements LinkedWithMap {
 			}
 		}
 		//the iterator which iterates over the map
-		CameraSpaceIterator iterMap = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
+		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
 		
 		//loop over map covered by camera
-		while (iterMap.hasNext()){
-			Block block = iterMap.next();
+		while (iter.hasNext()){
+			Block block = iter.next();
 			
 			if (!block.isHidden()) {//ignore hidden blocks
-				int x= -Chunk.getBlocksX() * ( centerChunkX-1 - iterMap.getCurrentChunk().getChunkX() )//skip chunks
-					+ iterMap.getCurrentIndex()[0];//position inside the chunk
-				int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iterMap.getCurrentChunk().getChunkY() )//skip chunks
-					+ iterMap.getCurrentIndex()[1]-iterMap.getCurrentIndex()[2]*2;//y and z projected on one plane
+				int x= -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )//skip chunks
+					+ iter.getCurrentIndex()[0];//position inside the chunk
+				int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )//skip chunks
+					+ iter.getCurrentIndex()[1]-iter.getCurrentIndex()[2]*2;//y and z projected on one plane
 				ClippingCell cell = clipping[x][y]; //tmp var for current cell
 				
 				if (cell.isEmpty()){

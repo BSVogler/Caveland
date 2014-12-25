@@ -961,11 +961,16 @@ public class Camera implements LinkedWithMap {
 	}
 
 	public boolean[] getClipping(Coordinate coords) {
+		//get the index position in the clipping field
 		int indexX = coords.getX()-getCoveredLeftBorder();
 		int indexY = coords.getY()-getCoveredBackBorder()-coords.getZ()*2;
 		
-//check if covered by depth buffer
-		if ( indexX >= 0 && indexY >= 0 ) {
+		//check if covered by depth buffer
+		if ( indexX >= 0
+			&& indexX < clipping.length
+			&& indexY >= 0
+			&& indexY < clipping[0].length
+		) {
 			return new boolean[]{
 				clipping[indexX][indexY].getClippingLeft(),
 				clipping[indexX][indexY].getClippingTop(),

@@ -542,9 +542,11 @@ public class Camera implements LinkedWithMap {
 	public void hiddenSurfaceDetection(){
 		//create empty array clipping fields
 		clipping = new ClippingCell[Map.getBlocksX()][Map.getBlocksY()+Map.getBlocksZ()];
-		for (ClippingCell[] y : clipping) {
-			for (int x = 0; x < y.length; x++) {
-				y[x] = new ClippingCell();
+		
+		for (int x = 0; x < clipping.length; x++) {
+			ClippingCell[] xCell = clipping[x];
+			for (int y = 0; y < xCell.length; y++) {
+				xCell[y] = new ClippingCell(x,y);
 			}
 		}
 		//the iterator which iterates over the map
@@ -558,7 +560,8 @@ public class Camera implements LinkedWithMap {
 				int x= -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )//skip chunks
 					+ iter.getCurrentIndex()[0];//position inside the chunk
 				int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )//skip chunks
-					+ iter.getCurrentIndex()[1]-iter.getCurrentIndex()[2]*2;//y and z projected on one plane
+					+ iter.getCurrentIndex()[1]
+					-iter.getCurrentIndex()[2]*2;//y and z projected on one plane
 				ClippingCell cell = clipping[x][y]; //tmp var for current cell
 				
 				if (cell.isEmpty()){
@@ -1001,20 +1004,105 @@ public class Camera implements LinkedWithMap {
 		return centerChunkY;
 	}
 
-	private static class ClippingCell extends ArrayDeque<Block>{
+	
+	/**
+	 * A list of elements inside a cliping cell
+	 */
+	private class ClippingCell extends ArrayDeque<Block>{
 		private static final long serialVersionUID = 1L;
-		private boolean topLeft, topRight, leftLeft, leftRight, rightLeft, rightRight;
 
+		/**
+		 * index
+		 */
+		private int x;
+		/**
+		 * index 
+		 */
+		private int y;
+		/**
+		 * clipping of side. Top side not clipped on ground block
+		 */
+		private boolean topLeft, topRight;
+		/**
+		 * default is groundblock which has clipped left and right side
+		 */
+		private boolean leftLeft = true;
+		private boolean leftRight = true;
+		private boolean rightLeft = true;
+		private boolean rightRight = true;
+
+		
+		/**
+		 * 
+		 * @param x
+		 * @param y 
+		 */
+		ClippingCell(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		
+		
+		/**
+		 * 
+		 * @return true if left side is clipped
+		 */
 		public boolean getClippingLeft() {
-			return false;//to-do
+			return leftLeft && leftRight;
 		}
 
+		/**
+		 * 
+		 * @return true if top side is clipped
+		 */
 		public boolean getClippingTop() {
-			return false;//to-do
+			return topLeft && topRight;
 		}
 
+		/**
+		 * 
+		 * @return  true if right side is clipped
+		 */
 		public boolean getClippingRight() {
-			return false;//to-do
+			return leftLeft && leftRight;
 		}
+
+		@Override
+		public void push(Block block) {
+			super.push(block);
+			//todo check if some blokc is in front
+			
+			topLeft=false;
+			topRight=false;
+			
+			//check block in front/under
+			if (y>1){
+				ClippingCell backCell = clipping[x][y-2];
+				for (Block backBlock : backCell) {
+					//check if is under
+					if (
+						backBlock.getDepth(gameView)
+						>
+						block.getDepth(gameView)
+					){
+						topLeft = true;
+						topRight = true;
+					}
+				}
+			}
+			
+			rightRight=false;
+			rightLeft=false;
+			leftRight=false;
+			leftLeft=false;
+				
+			//cover blocks in back
+			//todo
+			
+			
+		}
+		
+		
 	}
 }

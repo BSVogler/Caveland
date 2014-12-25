@@ -126,7 +126,6 @@ public class GameView extends View implements GameManager {
         
         batch = new SpriteBatch(10);
         batch.setShader(getShader());
-        //load cursor
 
         initalized = true;
 		
@@ -469,7 +468,9 @@ public class GameView extends View implements GameManager {
     @Override
     public final void enter() {
         WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
-        Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
+        
+		if (CVar.get("DevMode").getValueb())
+			Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
 		for (Camera camera : cameras) {
 			camera.hiddenSurfaceDetection();
 		}

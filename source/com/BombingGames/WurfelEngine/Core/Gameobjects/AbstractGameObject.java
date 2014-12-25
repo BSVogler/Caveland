@@ -53,7 +53,7 @@ public abstract class AbstractGameObject implements Serializable {
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
      */
-    public static final int SCREEN_DEPTH = 80;
+    public static final int SCREEN_DEPTH = 100;
     /**The half (1/2) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/2*/
     public static final int SCREEN_DEPTH2 = SCREEN_DEPTH / 2;
     /**A quarter (1/4) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/4*/
@@ -62,7 +62,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The width (x-axis) of the sprite size
      */
-    public static final int SCREEN_WIDTH = 160;
+    public static final int SCREEN_WIDTH = 200;
     /**The half (1/2) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/2*/
     public static final int SCREEN_WIDTH2 = SCREEN_WIDTH / 2;
     /**A quarter (1/4) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/4*/
@@ -71,7 +71,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The height (y-axis) of the sprite size
      */
-    public static final int SCREEN_HEIGHT = 100;
+    public static final int SCREEN_HEIGHT = 125;
     /**The half (1/2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/
     public static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
     /**A quarter (1/4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/

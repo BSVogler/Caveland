@@ -37,14 +37,18 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 * true if last jump was airjump.
 	 */
 	private boolean airjump = false;
-	
+	/**
+	 * time of loading
+	 */
 	private float loadAttack =0;
+	private final Sound attackSound;
 	
     public CustomPlayer() {
         super(4,AbstractGameObject.GAME_EDGELENGTH);
 		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
+		attackSound = WE.getAsset("com/BombingGames/Caveland/sounds/attack.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
@@ -85,7 +89,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 		Point pos = getPosition();
 		
 		//detect button hold
-		if (loadAttack!=0f) loadAttack+=dt;
+		if (loadAttack != 0f) loadAttack+=dt;
 		if (loadAttack>300) {//time till registered as a "hold"
 			if (loadingSound != null && !loadingSoundPlaying){
 				loadingSound.play();
@@ -140,6 +144,7 @@ public class CustomPlayer extends PlayerWithWeapon {
 	}
 	
 	public void attack(){
+		attackSound.play();
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
 		entities.addAll(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
@@ -203,13 +208,12 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 * should be called on button release
 	 */
 	public void loadAttack() {
-		if (loadAttack>=LOADATTACKTIME &&releaseSound!=null) {
+		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
 			setSpeed(getSpeed()+1.5f);
+			attack();
 		}
 	
-		
-		attack();
 		loadAttack=0f;
 		loadingSoundPlaying =false;
 	}

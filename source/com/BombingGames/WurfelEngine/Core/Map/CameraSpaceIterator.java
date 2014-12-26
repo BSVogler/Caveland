@@ -39,8 +39,8 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class CameraSpaceIterator extends AbstractMapIterator {
-	private int chunkCoordX;
-	private int chunkCoordY;
+	private int centerChunkX;
+	private int centerChunkY;
 	private Chunk current;
 	
 	/**
@@ -52,10 +52,10 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ) {
 		setTopLimitZ(Map.getBlocksZ()-1);
 		setStartingZ(startingZ);
-		chunkCoordX = centerCoordX;
-		chunkCoordY = centerCoordY;
+		centerChunkX = centerCoordX;
+		centerChunkY = centerCoordY;
 		//bring starting position to top left
-		current = Controller.getMap().getChunk(chunkCoordX-1, chunkCoordY-1);
+		current = Controller.getMap().getChunk(centerChunkX-1, centerChunkY-1);
 		blockIterator = current.getIterator(startingZ, getTopLimitZ());
 	}
 
@@ -65,22 +65,28 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		//move to nesxt block first
-		Block block = blockIterator.next();
 		if (!blockIterator.hasNext()){
 			//end of chunk, move to next chunk
-			if (hasNextChunk()){
-				if (chunkCoordX >= current.getChunkX()) {//left or middle column
+			if (hasNextChunk()){//if has one move to next
+				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
 					//continue one chunk to the right
-					current = Controller.getMap().getChunk(current.getChunkX()+1, current.getChunkY());
+					current = Controller.getMap().getChunk(
+						current.getChunkX()+1,
+						current.getChunkY()
+					);
 				} else {
-					//then move one row down
-					current = Controller.getMap().getChunk(chunkCoordX-1, current.getChunkY()+1);
+					//move one row down
+					current = Controller.getMap().getChunk(
+						centerChunkX-1,
+						current.getChunkY()+1
+					);
 				}
+				
 				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
 			}
 		}
-		return block;
+			
+		return blockIterator.next();
 	}
 	
 	/**
@@ -101,8 +107,8 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 
 	@Override
 	public boolean hasNextChunk() {
-		return current.getChunkX() < chunkCoordX+1//has next x
-			|| current.getChunkY() < chunkCoordY+1; //or has next Y
+		return current.getChunkX() < centerChunkX+1//has next x
+			|| current.getChunkY() < centerChunkY+1; //or has next Y
 	}
 
 }

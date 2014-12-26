@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -23,7 +24,6 @@ import org.lwjgl.opengl.Display;
  */
 public class NormalMapPrototype implements ApplicationListener {
   
-	
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.width = 640;
@@ -34,6 +34,9 @@ public class NormalMapPrototype implements ApplicationListener {
 	
 	private Texture diffTexture, normalTexture;
 	private TextureAtlas diffuseTextureRegion;
+	
+	private ShapeRenderer shR;
+	private AtlasRegion[][] texture;
 	
 	private SpriteBatch batch;
 	private OrthographicCamera cam;
@@ -90,9 +93,10 @@ public class NormalMapPrototype implements ApplicationListener {
 		//LibGDX likes us to end the shader program
 		shader.end();
 		
-		batch = new SpriteBatch(1000, shader);
+		batch = new SpriteBatch(200, shader);
 		batch.setShader(shader);
 		
+		shR = new ShapeRenderer(2);
 		cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.setToOrtho(false);
 		
@@ -106,6 +110,14 @@ public class NormalMapPrototype implements ApplicationListener {
 				return true;
 			}
 		});
+		
+		//indexTextures
+		texture = new AtlasRegion[5][3];
+		for (int i = 0; i < 5; i++) {
+			texture[i][0] = diffuseTextureRegion.findRegion("b"+i+"-0-0");
+			texture[i][1] = diffuseTextureRegion.findRegion("b"+i+"-0-1");
+			texture[i][2] = diffuseTextureRegion.findRegion("b"+i+"-0-2");
+		}
 	}
  
 	@Override
@@ -154,22 +166,25 @@ public class NormalMapPrototype implements ApplicationListener {
 		int sizeX = 200;
 		int sizeY = 225;
 		for (int x = 0; x < 5; x++) {
-			for (int y = 0; y < 5; y++) {
-				batch.draw(
-					diffuseTextureRegion.findRegion("b2-0-0"),
-					x*sizeX+50,
-					y*sizeY
-				);
-				batch.draw(
-					diffuseTextureRegion.findRegion("b2-0-1"),
-					x*sizeX+50,
-					y*sizeY+125
-				);
-				batch.draw(
-					diffuseTextureRegion.findRegion("b2-0-2"),
-					x*sizeX+150,
-					y*sizeY
-				);	
+			for (int y = 1; y < 5; y++) {
+				if (texture[y][0] != null)
+					batch.draw(
+						texture[y][0],
+						x*sizeX,
+						y*sizeY-sizeY
+					);
+				if (texture[y][1] != null)
+					batch.draw(
+						texture[y][1],
+						x*sizeX,
+						y*sizeY+125-sizeY
+					);
+				if (texture[y][2] != null)
+					batch.draw(
+						texture[y][2],
+						x*sizeX+100,
+						y*sizeY-sizeY
+					);	
 			}
 		}
 		
@@ -179,7 +194,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		int posX = 200;
 		int posY = 200;
 		int size=200;
-		ShapeRenderer shR = new ShapeRenderer();
+		
 		shR.begin(ShapeRenderer.ShapeType.Line);
 		shR.line(
 			posX +(int) ( size*LIGHT_NORMAL.x ),
@@ -190,14 +205,6 @@ public class NormalMapPrototype implements ApplicationListener {
 		shR.end();
 	}
  
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void pause() {
 		

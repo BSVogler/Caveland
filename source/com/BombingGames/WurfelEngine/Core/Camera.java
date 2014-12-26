@@ -50,7 +50,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 /**
@@ -66,7 +65,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private int zRenderingLimit;
 	
-	private ClippingCell[][] clipping;
+	private boolean[][][][] clipping;
 	/**
 	 * the position of the camera in view space. Y-up
 	 */
@@ -415,19 +414,19 @@ public class Camera implements LinkedWithMap {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 		if (CVar.get("enableHSD").getValueb()){
 			//add hidden surfeace depth buffer
-			for (ClippingCell[] y : clipping) {
-				for (ClippingCell x : y) {
-					for (Block block : x) {
-						//only add if in view plane to-do
-						if (
-							inViewFrustum(
-								block.getPosition().getViewSpcX(gameView),
-								block.getPosition().getViewSpcY(gameView))
-							)
-							depthsort.add(block);
-					}
-				}
-			}
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
+			while (iterator.hasNext()) {//up to zRenderingLimit	it
+				Block block = iterator.next();
+				//only add if in view plane to-do
+				if (
+					!block.isHidden()
+					&& !isClipped(block.getPosition()) &&
+					inViewFrustum(
+						block.getPosition().getViewSpcX(gameView),
+						block.getPosition().getViewSpcY(gameView))
+				)
+				depthsort.add(block);
+			}	
 		}else {
 			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
@@ -539,42 +538,46 @@ public class Camera implements LinkedWithMap {
 		return depthsort;
 	}
 	
+	/**
+	 * performs a simple clipping check by looking at the direct neighbours.
+	 */
 	public void hiddenSurfaceDetection(){
 		//create empty array clipping fields
-		clipping = new ClippingCell[Map.getBlocksX()][Map.getBlocksY()+Map.getBlocksZ()];
-		
-		for (int x = 0; x < clipping.length; x++) {
-			ClippingCell[] xCell = clipping[x];
-			for (int y = 0; y < xCell.length; y++) {
-				xCell[y] = new ClippingCell(x,y);
-			}
-		}
-		//the iterator which iterates over the map
+		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
-		
-		//loop over map covered by camera
-		while (iter.hasNext()){
-			Block block = iter.next();
+		iter.setTopLimitZ(zRenderingLimit);
 			
-			if (!block.isHidden()) {//ignore hidden blocks
-				int x= -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )//skip chunks
-					+ iter.getCurrentIndex()[0];//position inside the chunk
-				int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )//skip chunks
-					+ iter.getCurrentIndex()[1]
-					-iter.getCurrentIndex()[2]*2;//y and z projected on one plane
-				ClippingCell cell = clipping[x][y]; //tmp var for current cell
-				
-				if (cell.isEmpty()){
-					cell.push(block);
-				} else {
-					if ( block.getDepth(gameView) > cell.getLast().getDepth(gameView) ){
-						if (!block.isTransparent()) {
-							cell.clear();//hides every lock in this cell
-						}
-						cell.push(block);
-					}
+		while (iter.hasNext()) {
+			Block next = iter.next();
+			int x = -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )
+					+ iter.getCurrentIndex()[0];//skip chunks
+			int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )
+					+ iter.getCurrentIndex()[1];//skip chunks
+			int z = iter.getCurrentIndex()[2]+1;
+			
+			Coordinate blockPos = next.getPosition();
+			//todo border checks
+			if (z > 0){//bottom layer always clipped
+				if (blockPos.getY() % 2 == 0){//next row is shifted right
+					if( blockPos.hidingPastBlocks(-1,1,0))//left
+						clipping[x][y][z][0] = true;
+					if( blockPos.hidingPastBlocks(0,1,0))//right
+						clipping[x][y][z][2] = true;
+				} else {//next row is shifted right
+					if( blockPos.hidingPastBlocks(0,1,0))//left
+						clipping[x][y][z][0] = true;
+					if( blockPos.hidingPastBlocks(1,1,0))//right
+						clipping[x][y][z][2] = true;
 				}
+			} else {
+				clipping[x][y][z][0] = true;
+				clipping[x][y][z][2] = true;
 			}
+			
+			//check top
+			if(z < Map.getBlocksZ()
+				&& blockPos.hidingPastBlocks(0, 0, 1))//top
+				clipping[x][y][z][1] = true;
 		}
 	}
 
@@ -660,7 +663,10 @@ public class Camera implements LinkedWithMap {
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
-		return Controller.getMap().getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX();
+		return Controller.getMap().getChunk(
+			centerChunkX-1,
+			centerChunkY
+		).getTopLeftCoordinate().getX();
 	}
 
 	/**
@@ -966,18 +972,18 @@ public class Camera implements LinkedWithMap {
 	public boolean[] getClipping(Coordinate coords) {
 		//get the index position in the clipping field
 		int indexX = coords.getX()-getCoveredLeftBorder();
-		int indexY = coords.getY()-getCoveredBackBorder()-coords.getZ()*2;
-		
-		//check if covered by depth buffer
+		int indexY = coords.getY()-getCoveredBackBorder();
+		int indexZ = coords.getZ()+1;
+		//check if covered by camera
 		if ( indexX >= 0
 			&& indexX < clipping.length
 			&& indexY >= 0
 			&& indexY < clipping[0].length
 		) {
 			return new boolean[]{
-				clipping[indexX][indexY].getClippingLeft(),
-				clipping[indexX][indexY].getClippingTop(),
-				clipping[indexX][indexY].getClippingRight()
+				clipping[indexX][indexY][indexZ][0],
+				clipping[indexX][indexY][indexZ][1],
+				clipping[indexX][indexY][indexZ][2]
 			};
 		} else {
 			//if not return fully clipped
@@ -988,12 +994,12 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * 
 	 * @param coord
-	 * @return is a coordiante clipped somewhere? 
+	 * @return is a coordinate completely clipped? 
 	 * @since 1.3.10
 	 */
 	public boolean isClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);
-		return (tmp[0] || tmp[1] || tmp[2]);
+		return (tmp[0] && tmp[1] && tmp[2]);
 	}
 
 	public int getCenterChunkCoordX() {
@@ -1002,107 +1008,5 @@ public class Camera implements LinkedWithMap {
 
 	public int getCenterChunkCoordY() {
 		return centerChunkY;
-	}
-
-	
-	/**
-	 * A list of elements inside a cliping cell
-	 */
-	private class ClippingCell extends ArrayDeque<Block>{
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * index
-		 */
-		private int x;
-		/**
-		 * index 
-		 */
-		private int y;
-		/**
-		 * clipping of side. Top side not clipped on ground block
-		 */
-		private boolean topLeft, topRight;
-		/**
-		 * default is groundblock which has clipped left and right side
-		 */
-		private boolean leftLeft = true;
-		private boolean leftRight = true;
-		private boolean rightLeft = true;
-		private boolean rightRight = true;
-
-		
-		/**
-		 * 
-		 * @param x
-		 * @param y 
-		 */
-		ClippingCell(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		
-		
-		/**
-		 * 
-		 * @return true if left side is clipped
-		 */
-		public boolean getClippingLeft() {
-			return leftLeft && leftRight;
-		}
-
-		/**
-		 * 
-		 * @return true if top side is clipped
-		 */
-		public boolean getClippingTop() {
-			return topLeft && topRight;
-		}
-
-		/**
-		 * 
-		 * @return  true if right side is clipped
-		 */
-		public boolean getClippingRight() {
-			return leftLeft && leftRight;
-		}
-
-		@Override
-		public void push(Block block) {
-			super.push(block);
-			//todo check if some blokc is in front
-			
-			topLeft=false;
-			topRight=false;
-			
-			//check block in front/under
-			if (y>1){
-				ClippingCell backCell = clipping[x][y-2];
-				for (Block backBlock : backCell) {
-					//check if is under
-					if (
-						backBlock.getDepth(gameView)
-						>
-						block.getDepth(gameView)
-					){
-						topLeft = true;
-						topRight = true;
-					}
-				}
-			}
-			
-			rightRight=false;
-			rightLeft=false;
-			leftRight=false;
-			leftLeft=false;
-				
-			//cover blocks in back
-			//todo
-			
-			
-		}
-		
-		
 	}
 }

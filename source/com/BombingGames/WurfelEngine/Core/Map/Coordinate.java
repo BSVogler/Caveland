@@ -231,9 +231,11 @@ public class Coordinate extends AbstractPosition {
 	 * @param z offset in coords
      * @return true when hiding the past Block
      */
-    public boolean hidingPastBlock(int x, int y, int z){
-		Block block = Controller.getMap().getBlock(getX()+x, getY()+y, getZ()+z);
-        return (block.hasSides() && ! block.isTransparent());
+    public boolean hidingPastBlocks(int x, int y, int z){
+		Block block = Controller.getMap().getBlock(
+			getX()+x, getY()+y, getZ()+z
+		);
+        return (block != null && block.hasSides() && ! block.isTransparent());
     }
     
     /** @return a copy of this coordinate */

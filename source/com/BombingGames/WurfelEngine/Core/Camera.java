@@ -569,7 +569,7 @@ public class Camera implements LinkedWithMap {
 				} else {
 					if ( block.getDepth(gameView) > cell.getLast().getDepth(gameView) ){
 						if (!block.isTransparent()) {
-							cell.clear();
+							cell.clear();//hides every lock in this cell
 						}
 						cell.push(block);
 					}

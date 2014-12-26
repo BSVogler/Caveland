@@ -23,23 +23,44 @@ b0-0-2
   orig: 25, 38
   offset: 0, 0
   index: -1
-b2-0-0
+b1-0-0
   rotate: false
   xy: 423, 1118
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
-b2-0-1
+b1-0-1
+  rotate: false
+  xy: 569, 886
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+b1-0-2
+  rotate: false
+  xy: 440, 1803
+  size: 100, 175
+  orig: 100, 175
+  offset: 0, 0
+  index: -1
+b2-0-0
   rotate: false
   xy: 424, 1340
+  size: 100, 175
+  orig: 100, 175
+  offset: 0, 0
+  index: -1
+b2-0-1
+  rotate: false
+  xy: 569, 987
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 b2-0-2
   rotate: false
-  xy: 440, 1803
+  xy: 524, 1118
   size: 100, 175
   orig: 100, 175
   offset: 0, 0

@@ -310,14 +310,14 @@ public class Map implements Cloneable{
 	 */
 	public Chunk getChunk(Coordinate coord){
 		for (Chunk chunk : data) {
-			int left = chunk.getData()[0][0][0].getPosition().getX();
-			int top = chunk.getData()[0][0][0].getPosition().getY();
+			int left = chunk.getTopLeftCoordinate().getX();
+			int top  = chunk.getTopLeftCoordinate().getY();
 			//identify chunk
 			if (
 				   left <= coord.getX()
-				&& left + Chunk.getBlocksX() > coord.getX()
+				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
-				&& top + Chunk.getBlocksY() > coord.getY()
+				&& coord.getY() < top + Chunk.getBlocksY() 
 			) {
 				return chunk;
 			}

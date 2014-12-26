@@ -52,7 +52,7 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	 * set the top limit of the iteration
 	 * @param zLimit 
 	 */
-	protected void setTopLimitZ(int zLimit) {
+	public void setTopLimitZ(int zLimit) {
 		this.topLimitZ = zLimit;
 	}
 

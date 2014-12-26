@@ -994,12 +994,12 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * 
 	 * @param coord
-	 * @return is a coordiante clipped somewhere? 
+	 * @return is a coordinate completely clipped? 
 	 * @since 1.3.10
 	 */
 	public boolean isClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);
-		return (tmp[0] || tmp[1] || tmp[2]);
+		return (tmp[0] && tmp[1] && tmp[2]);
 	}
 
 	public int getCenterChunkCoordX() {

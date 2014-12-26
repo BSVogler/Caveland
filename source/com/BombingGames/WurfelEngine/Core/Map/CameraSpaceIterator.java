@@ -65,22 +65,28 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		//move to nesxt block first
-		Block block = blockIterator.next();
 		if (!blockIterator.hasNext()){
 			//end of chunk, move to next chunk
-			if (hasNextChunk()){
-				if (chunkCoordX >= current.getChunkX()) {//left or middle column
+			if (hasNextChunk()){//if has one move to next
+				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
 					//continue one chunk to the right
-					current = Controller.getMap().getChunk(current.getChunkX()+1, current.getChunkY());
+					current = Controller.getMap().getChunk(
+						current.getChunkX()+1,
+						current.getChunkY()
+					);
 				} else {
-					//then move one row down
-					current = Controller.getMap().getChunk(chunkCoordX-1, current.getChunkY()+1);
+					//move one row down
+					current = Controller.getMap().getChunk(
+						centerChunkX-1,
+						current.getChunkY()+1
+					);
 				}
+				
 				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
 			}
 		}
-		return block;
+			
+		return blockIterator.next();
 	}
 	
 	/**

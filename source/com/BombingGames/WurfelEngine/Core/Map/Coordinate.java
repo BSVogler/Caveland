@@ -283,7 +283,7 @@ public class Coordinate extends AbstractPosition {
      * 6 | 8 | 2<br>
      * -------<br>
      * 5 / 4 \ 3<br>
-	 * O(const)
+	 * Run time: O(1)
      * @param x game-space-coordinates, value in pixels
      * @param y game-space-coordinates, value in pixels
      * @return Returns the fieldnumber of the coordinates. 8 is the field itself.

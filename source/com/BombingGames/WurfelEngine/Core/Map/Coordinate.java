@@ -291,24 +291,24 @@ public class Coordinate extends AbstractPosition {
      */
     public static int getNeighbourSide(float x, float y) {       
         int result = 8;//standard result
-        if (x + y <= Block.SCREEN_DEPTH) {
+        if (x + y <= AbstractGameObject.GAME_DIAGLENGTH2) {
             result = 7;
         }
-        if (x - y >= Block.SCREEN_DEPTH) {
+        if (x - y >= AbstractGameObject.GAME_DIAGLENGTH2) {
             if (result == 7) {
                 result = 0;
             } else {
                 result = 1;
             }
         }
-        if (x + y >= 3 * Block.SCREEN_DEPTH) {
+        if (x + y >= 3 * AbstractGameObject.GAME_DIAGLENGTH2) {
             if (result == 1) {
                 result = 2;
             } else {
                 result = 3;
             }
         }
-        if (-x + y >= Block.SCREEN_DEPTH) {
+        if (-x + y >= AbstractGameObject.GAME_DIAGLENGTH2) {
             if (result == 3) {
                 result = 4;
             } else if (result == 7) {
@@ -388,9 +388,9 @@ public class Coordinate extends AbstractPosition {
 	 */
 	private void refreshCachedPoint(){
 		cachedPoint = new Point(
-            x*Block.GAME_DIAGLENGTH + (y%2==1 ? Block.SCREEN_WIDTH2 : 0),
-            y*Block.GAME_DIAGLENGTH2,
-            z*Block.GAME_EDGELENGTH
+            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2==1 ? AbstractGameObject.SCREEN_WIDTH2 : 0),
+            y*AbstractGameObject.GAME_DIAGLENGTH2,
+            z*AbstractGameObject.GAME_EDGELENGTH
         );
 	}
 

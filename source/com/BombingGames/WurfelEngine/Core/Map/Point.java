@@ -121,16 +121,14 @@ public class Point extends AbstractPosition {
 		if (z >= Chunk.getBlocksZ())
 			coords.setY(Chunk.getBlocksZ()-1);
        
+		//return coords;
         //find the specific coordinate (detail)
-        Coordinate specificCoords = coords.neighbourSidetoCoords(
+        return coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
                 getX() % AbstractGameObject.GAME_DIAGLENGTH,
                 getY() % AbstractGameObject.GAME_DIAGLENGTH
             )
         );
-        coords.setX(specificCoords.getX());
-        coords.setY(specificCoords.getY());
-        return coords; 
     }
     
     /**

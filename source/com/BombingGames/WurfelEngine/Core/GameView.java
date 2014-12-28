@@ -247,8 +247,8 @@ public class GameView extends View implements GameManager {
      */
     public float screenYtoGame(final int screenY, final Camera camera){
         return camera.getViewSpaceY()*-2 //to game space
-			- camera.getHeightInViewSpc()//use top side, therefore /2 but bring in game space again by *2
-			+ screenY*2 / 1 //to game space and then revert scaling
+			- camera.getHeightInViewSpc()//use top side, therefore /2 but bring in game space again by *2 -> *1 -> nothing
+			+ screenY*2 / camera.getScreenSpaceScaling() //to game space and then revert scaling
 			- camera.getScreenPosY() //screen pos offset
 			- AbstractGameObject.SCREEN_HEIGHT;//offset, reason unknown todo
     }

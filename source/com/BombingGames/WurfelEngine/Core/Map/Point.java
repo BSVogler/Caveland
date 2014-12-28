@@ -113,8 +113,8 @@ public class Point extends AbstractPosition {
     public Coordinate getCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) getX() / AbstractGameObject.GAME_DIAGLENGTH,
-            (int) getY() / AbstractGameObject.GAME_DIAGLENGTH *2+1, //maybe dangerous to optimize code here!
+            (int) Math.floor(getX() / (float) AbstractGameObject.GAME_DIAGLENGTH),
+            (int) Math.floor(getY() / (float) AbstractGameObject.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
 			(int) (z/Block.GAME_EDGELENGTH)
 		);
 		//clamp at top border

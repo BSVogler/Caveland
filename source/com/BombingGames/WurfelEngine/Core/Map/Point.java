@@ -125,7 +125,7 @@ public class Point extends AbstractPosition {
         Coordinate specificCoords = coords.neighbourSidetoCoords(
             Coordinate.getNeighbourSide(
                 getX() % AbstractGameObject.GAME_DIAGLENGTH,
-                getY() % (AbstractGameObject.GAME_DIAGLENGTH)
+                getY() % AbstractGameObject.GAME_DIAGLENGTH
             )
         );
         coords.setX(specificCoords.getX());

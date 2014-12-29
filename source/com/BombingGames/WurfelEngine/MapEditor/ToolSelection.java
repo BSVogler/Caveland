@@ -50,7 +50,6 @@ public class ToolSelection {
 	private int leftPos;
 	private int bottomPos;
 	
-	
 	private final Image[] items =new Image[3]; 
 
 	public ToolSelection(Stage stage, TextureAtlas sprites) {
@@ -81,7 +80,22 @@ public class ToolSelection {
 		shR.end();
 	}
 
-	
+	/**
+	 * index of left mouse button.
+	 * @return 
+	 */
+	public int getSelectionLeft() {
+		return selectionLeft;
+	}
+
+	/**
+	 * index of right mouse button.
+	 * @return 
+	 */
+	public int getSelectionRight() {
+		return selectionRight;
+	}
+
 	private class ToolSelectionListener extends InputListener {
 		private final int index;
 	

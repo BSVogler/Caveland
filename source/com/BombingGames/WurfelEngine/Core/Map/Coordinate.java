@@ -381,6 +381,7 @@ public class Coordinate extends AbstractPosition {
     /**
      *
      * @return the coordiante's origin is the center
+	 * @see #refreshCachedPoint()
      */
     @Override
     public Point getPoint() {
@@ -388,11 +389,11 @@ public class Coordinate extends AbstractPosition {
     }
 	
 	/**
-	 * refresh the field cachedPoint
+	 * refresh the field cachedPoint. Does a coord -> point transform.
 	 */
 	private void refreshCachedPoint(){
 		cachedPoint = new Point(
-            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2==1 ? AbstractGameObject.SCREEN_WIDTH2 : 0),
+            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2!=0 ? AbstractGameObject.SCREEN_WIDTH2 : 0),
             y*AbstractGameObject.GAME_DIAGLENGTH2,
             z*AbstractGameObject.GAME_EDGELENGTH
         );

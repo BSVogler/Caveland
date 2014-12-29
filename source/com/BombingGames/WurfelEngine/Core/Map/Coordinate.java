@@ -343,7 +343,7 @@ public class Coordinate extends AbstractPosition {
                 result[1] = getY() - 2;
                 break;
             case 1:
-                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[0] = getX() + (getY() % 2 != 0 ? 1 : 0);
                 result[1] = getY() - 1;
                 break;
             case 2:
@@ -351,7 +351,7 @@ public class Coordinate extends AbstractPosition {
                 result[1] = getY();
                 break;
             case 3:
-                result[0] = getX() + (getY() % 2 == 1 ? 1 : 0);
+                result[0] = getX() + (getY() % 2 != 0 ? 1 : 0);
                 result[1] = getY() + 1;
                 break;
             case 4:

@@ -38,9 +38,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -57,12 +60,24 @@ public class CreditsScreen extends WEScreen {
     public CreditsScreen() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
                 
-		Label credits = new Label(Caveland.getCredits(), WE.getEngineView().getSkin());
+		final Label credits = new Label(Caveland.getCredits(), WE.getEngineView().getSkin());
 		credits.setWidth(500);
 		credits.setAlignment(Align.center);
 		credits.setPosition(stage.getWidth()/2-credits.getWidth()/2, 150);
 		stage.addActor(credits);
-        
+		
+		TextButton showWEcredits = new TextButton("Show Wurfel Engine Credits", WE.getEngineView().getSkin());
+		showWEcredits.setPosition(stage.getWidth()-100-showWEcredits.getWidth(), 150);
+		showWEcredits.addListener(
+			new ChangeListener() {
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					credits.setText(WE.getCredits());
+				}
+			}
+		);
+		stage.addActor(showWEcredits);
+		
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -88,6 +103,7 @@ public class CreditsScreen extends WEScreen {
 		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
+		
     }
 
     @Override

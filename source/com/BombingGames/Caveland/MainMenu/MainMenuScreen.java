@@ -195,28 +195,14 @@ public class MainMenuScreen extends AbstractMainMenu {
         //Background        
         batch.begin();
 			batch.draw(background, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
-//			for (int x = 0; x-1 < Gdx.graphics.getWidth()/background.getWidth(); x++) {
-//				for (int y = 0; y-1 < Gdx.graphics.getHeight()/background.getHeight(); y++) {
-//					background.setPosition(x*background.getWidth(), y*background.getHeight());
-//					background.draw(batch);
-//				}
-//			}
-        
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 			lettering.draw(batch);
 
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
 		
 		stage.draw();
-        
-        font.scale(-0.5f);
-        batch.begin();
-        font.drawMultiLine(batch, WE.getCredits(), 50, 100);
-        batch.end();
-        font.scale(0.5f);
 	}
 
 	@Override

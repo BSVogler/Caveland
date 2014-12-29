@@ -2,44 +2,58 @@ gui.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-editor_button
+bucket_button
   rotate: false
   xy: 1, 1
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
-editorreverse_button
+draw_button
   rotate: false
   xy: 1, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
-load_button
-  rotate: false
-  xy: 43, 1
-  size: 18, 20
-  orig: 20, 20
-  offset: 2, 0
-  index: -1
-play_button
-  rotate: false
-  xy: 22, 22
-  size: 18, 20
-  orig: 20, 20
-  offset: 1, 0
-  index: -1
-replay_button
+editor_button
   rotate: false
   xy: 1, 43
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
-save_button
+editorreverse_button
   rotate: false
   xy: 22, 1
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+load_button
+  rotate: false
+  xy: 22, 43
+  size: 18, 20
+  orig: 20, 20
+  offset: 2, 0
+  index: -1
+play_button
+  rotate: false
+  xy: 41, 43
+  size: 18, 20
+  orig: 20, 20
+  offset: 1, 0
+  index: -1
+replay_button
+  rotate: false
+  xy: 43, 1
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+save_button
+  rotate: false
+  xy: 22, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

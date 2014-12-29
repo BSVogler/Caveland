@@ -22,12 +22,13 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 * Time till fully loaded attack.
 	 */
 	public static final float LOADATTACKTIME = 1000; 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
     private float aimHeight;
-	private transient Sound jetPackSound;
-	private transient Sound loadingSound;
+	private transient final Sound jetPackSound;
+	private transient final Sound loadingSound;
 	private boolean loadingSoundPlaying = false;
-	private transient Sound releaseSound;
+	private transient final Sound releaseSound;
+	private transient final Sound attackSound;
 
 	private int timeSinceDamage;
 	
@@ -41,7 +42,6 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 * time of loading
 	 */
 	private float loadAttack =0;
-	private final Sound attackSound;
 	
     public CustomPlayer() {
         super(4,AbstractGameObject.GAME_EDGELENGTH);

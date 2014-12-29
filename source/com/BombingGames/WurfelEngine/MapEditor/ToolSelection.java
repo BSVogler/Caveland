@@ -56,7 +56,7 @@ public class ToolSelection {
 		items[0] = new Image(sprites.findRegion("draw_button"));
 		items[1] = new Image(sprites.findRegion("bucket_button"));
 		items[2] = new Image(sprites.findRegion("draw_button"));
-		leftPos = (int) (stage.getWidth()/2-50);
+		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
 		bottomPos = (int) (stage.getHeight()-100);
 		
 		for (int i = 0; i < items.length; i++) {

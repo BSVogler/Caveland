@@ -301,7 +301,7 @@ public class MapEditorView extends GameView {
 
 				Block block;
                 if (colorGUI.getMode() == PlaceMode.Blocks) {
-					block = colorGUI.getBlock(controller.getSelectionEntity().getPosition().getCoord());
+					block = colorGUI.getBlock(coords);
 					Controller.getMap().setData(block);
 				} else 
 					colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());

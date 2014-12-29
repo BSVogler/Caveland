@@ -114,9 +114,9 @@ public class Selection extends AbstractEntity {
     public void update(GameView view, int screenX, int screenY){
         Intersection intersect = view.screenToGameRaytracing(screenX, screenY);
                 
-            if (intersect.getPoint() != null){
-               setPosition( intersect.getPoint() );
-               setNormal( Sides.normalToSide( intersect.getNormal() ) );
-            }
+		if (intersect.getPoint() != null){
+		   setPosition( intersect.getPoint() );
+		   setNormal( Sides.normalToSide( intersect.getNormal() ) );
+		}
     }
 }

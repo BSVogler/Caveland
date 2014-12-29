@@ -384,13 +384,11 @@ public class Point extends AbstractPosition {
         radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
 
         while (/* ray has not gone past bounds of world */
-               (stepX > 0 ? curX < Map.getGameWidth() : curX >= 0) &&
-               (stepY > 0 ? curY < Map.getGameDepth() : curY >= 0) &&
-               (stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0)) {
+               stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0) {
 
             // Invoke the callback, unless we are not *yet* within the bounds of the
             // world.
-            if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
+            //if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
 				/** Point of intersection */
                 Point isectP = new Point(curX, curY, curZ);
                 Block block = isectP.getBlock();
@@ -421,7 +419,7 @@ public class Point extends AbstractPosition {
                     }
                     return new Intersection(isectP, normal, this.distanceTo(isectP));
                 }
-            }
+            //}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the
              X axis, and similarly for Y and Z. Therefore, choosing the least tMax

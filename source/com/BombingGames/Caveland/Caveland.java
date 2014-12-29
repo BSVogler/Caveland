@@ -69,6 +69,7 @@ public class Caveland {
 			"Frederic Brückner\n" +
 			"\n" +
 			"Musik & Sound\n" +
+			"\"SteinImBrett\":\n" +
 			"Felix von Dohlen\n" +
 			"Marcel Gohsen\n" +
 			"\n" +

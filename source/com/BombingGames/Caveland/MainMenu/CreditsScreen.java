@@ -36,8 +36,8 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -53,6 +53,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class CreditsScreen extends WEScreen {
     private final Stage stage;
     private final OrthographicCamera camera;
+	private final Texture background;
 
     /**
      *
@@ -72,7 +73,13 @@ public class CreditsScreen extends WEScreen {
 			new ChangeListener() {
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					credits.setText(WE.getCredits());
+					if ("Show Wurfel Engine Credits".equals(((TextButton) actor).getText().toString())){
+						credits.setText(WE.getCredits());
+						((TextButton) actor).setText("Show Caveland Credits");
+					} else {
+						credits.setText(Caveland.getCredits());
+						((TextButton) actor).setText("Show Wurfel Engine Credits");
+					}
 				}
 			}
 		);
@@ -80,8 +87,9 @@ public class CreditsScreen extends WEScreen {
 		
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/credits_wallpaper.jpg"));
     }
 
     @Override
@@ -90,20 +98,20 @@ public class CreditsScreen extends WEScreen {
 		
 		//render
         //clear & set background to black
-        Gdx.gl20.glClearColor(0.75f, 0.63f, 0.36f, 1f );
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+        //Gdx.gl20.glClearColor(0.75f, 0.63f, 0.36f, 1f );
+        //Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
         //update camera and set the projection matrix
         camera.update();
         WE.getEngineView().getBatch().setProjectionMatrix(camera.combined);
         WE.getEngineView().getShapeRenderer().setProjectionMatrix(camera.combined);
         
-        stage.draw();
         WE.getEngineView().getBatch().begin();
-		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+			WE.getEngineView().getBatch().draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
-		
+		stage.draw();
     }
 
     @Override

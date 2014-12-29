@@ -304,7 +304,7 @@ public class GameView extends View implements GameManager {
 			//return new Intersection(p, Vector3.Zero, 0);
 			return p.raycast(
 				new Vector3(0,-1, -Point.SQRT12),
-				5000,
+				Float.POSITIVE_INFINITY,
 				cameras.get(0),
 				false
 			);

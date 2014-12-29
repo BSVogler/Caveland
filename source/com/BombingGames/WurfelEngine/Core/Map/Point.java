@@ -468,8 +468,8 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
-            Point interectpoint = new Point(curX, curY, curZ);
-            return new Intersection(interectpoint, normal, this.distanceTo(interectpoint));
+            Point intersectpoint = new Point(curX, curY, curZ);
+            return new Intersection(intersectpoint, normal, this.distanceTo(intersectpoint));
         }
         else
             return new Intersection();

@@ -75,6 +75,7 @@ public class MapEditorView extends GameView {
 	
 	private Button blockButton;
 	private Button entitiesButton;
+	private ToolSelection toolSelection;
 
     @Override
     public void init(Controller controller) {
@@ -158,6 +159,8 @@ public class MapEditorView extends GameView {
         
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon();
+		
+		toolSelection = new ToolSelection(getStage(), spritesheet);
     }
 
 	@Override
@@ -196,6 +199,7 @@ public class MapEditorView extends GameView {
     public void render() {
         super.render();
         nav.render(this);
+		toolSelection.render(getShapeRenderer());
     }
 
     @Override

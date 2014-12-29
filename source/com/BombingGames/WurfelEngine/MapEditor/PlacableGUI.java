@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -53,12 +54,13 @@ public class PlacableGUI extends WidgetGroup {
 	private int value;
 	private Image image;
 	private Label label;
+	private Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
 	private PlaceMode mode = PlaceMode.Blocks;
 	private final Slider slider;
 
 
-	public PlacableGUI(Stage stage) {
+	public PlacableGUI(Stage stage, Selection selection) {
 		setPosition(stage.getWidth()-200, stage.getHeight()-300);
 		image = new Image(new BlockDrawable(id,value,-0.4f));
 		image.setPosition(50, 60);
@@ -67,10 +69,18 @@ public class PlacableGUI extends WidgetGroup {
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
+		
 		label = new Label(Integer.toString(id) + " - "+ Integer.toString(value), WE.getEngineView().getSkin());
 		addActor(label);
+		
+		blockPosition = new Label(selection.getPosition().getCoord().toString(), WE.getEngineView().getSkin());
+		blockPosition.setPosition(50, 0);
+		addActor(blockPosition);
 	}
 	
+	public void update(Selection selection){
+		blockPosition.setText(selection.getPosition().getCoord().toString());
+	}
 
 	public int getId() {
 		return id;

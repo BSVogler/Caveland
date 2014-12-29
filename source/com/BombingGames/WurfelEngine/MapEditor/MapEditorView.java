@@ -93,7 +93,7 @@ public class MapEditorView extends GameView {
 				)
 			);
         
-		colorGUI = new PlacableGUI(getStage());
+		colorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity());
 		getStage().addActor(colorGUI);
         bselector = new PlacableSelector(colorGUI);
         getStage().addActor(bselector);
@@ -342,7 +342,8 @@ public class MapEditorView extends GameView {
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
             selection.update(view, screenX, screenY);
-            
+            colorGUI.update(selection);
+			
             if (screenX<100)
                 view.bselector.show();
             else if (screenX > view.bselector.getWidth())

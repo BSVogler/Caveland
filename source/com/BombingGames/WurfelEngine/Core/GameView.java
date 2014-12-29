@@ -236,7 +236,11 @@ public class GameView extends View implements GameManager {
      * @return the relative (to current loaded map) game coordinate
      */
     public float screenXtoGame(final int screenX, final Camera camera){
-        return screenX / camera.getScreenSpaceScaling()- camera.getScreenPosX()+ camera.getViewSpaceX()-camera.getWidthInViewSpc()/2;
+        return screenX / camera.getScreenSpaceScaling()
+			- camera.getScreenPosX()
+			+ camera.getViewSpaceX()
+			- camera.getWidthInViewSpc()/2//use left side
+			;
     }
     
    /**

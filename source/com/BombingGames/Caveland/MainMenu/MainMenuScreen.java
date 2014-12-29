@@ -153,14 +153,13 @@ public class MainMenuScreen extends AbstractMainMenu {
 		//load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(50);
-        lettering.flip(false, true);
+        lettering.setY(Gdx.graphics.getHeight()-150);
         
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		        
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
@@ -194,7 +193,7 @@ public class MainMenuScreen extends AbstractMainMenu {
         
         //Background        
         batch.begin();
-			batch.draw(background, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
+			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 			lettering.draw(batch);

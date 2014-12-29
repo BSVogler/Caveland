@@ -289,7 +289,11 @@ public class Coordinate extends AbstractPosition {
      * @return Returns the fieldnumber of the coordinates. 8 is the field itself.
      * @see #neighbourSidetoCoords(int)
      */
-    public static int getNeighbourSide(float x, float y) {       
+    public static int getNeighbourSide(float x, float y) {  
+		//modulo
+		if (y<0) y+= AbstractGameObject.GAME_DIAGLENGTH;
+		if (x<0) x+= AbstractGameObject.GAME_DIAGLENGTH;
+		
         int result = 8;//standard result
         if (x + y <= AbstractGameObject.GAME_DIAGLENGTH2) {
             result = 7;
@@ -425,7 +429,7 @@ public class Coordinate extends AbstractPosition {
     public int getViewSpcX(View view) {
 		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (Math.abs(getY() % 2)) * AbstractGameObject.SCREEN_WIDTH2; //offset by y
+                + (getY() % 2 != 0 ? AbstractGameObject.SCREEN_WIDTH2 : 0); //offset by y
     }
 
     @Override

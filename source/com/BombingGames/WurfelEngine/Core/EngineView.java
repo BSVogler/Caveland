@@ -91,6 +91,8 @@ public class EngineView extends View {
 
         shapeRenderer = new ShapeRenderer();
         cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
+		
+		setMusicLoudness(CVar.get("music").getValuef());
     }
     
     /**

@@ -86,14 +86,14 @@ public class Coordinate extends AbstractPosition {
     }
     
     /**
-     *Gets the X coordinate relative to the map.
+     *Gets the X coordinate
      * @return
      */
     public int getX(){
         return x;
     }
     /**
-     *Gets the Y coordinate relative to the map.
+     *Gets the Y coordinate
      * @return
      */
     public int getY(){
@@ -106,7 +106,7 @@ public class Coordinate extends AbstractPosition {
     
     
     /**
-     *Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
+     * Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
      * @return
      * @see #getZ() 
      */

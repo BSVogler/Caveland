@@ -283,7 +283,8 @@ public class MapEditorView extends GameView {
                 //right click
 				Block block = Block.getInstance(0);
 				block.setPosition(coords);
-                Controller.getMap().setData(block);
+				if (coords.getZ()>=0)
+					Controller.getMap().setData(block);
                 
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();

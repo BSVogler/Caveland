@@ -60,7 +60,7 @@ public class Caveland {
     }
 
 	public static String getCredits(){
-		return "Credits\n" +
+		return "Caveland\n" +
 			"\n" +
 			"ein Spiel von\n" +
 			"Benedikt S. Vogler\n" +
@@ -75,13 +75,11 @@ public class Caveland {
 			"Qualitätssicherung\n" +
 			"Thomas Vogt\n" +
 			"\n" +
-			"Hintergrund Geschichte\n" +
-			"Felix Günther\n" +
-			"\n" +
 			"Web Development\n" +
 			"René Weißer\n" +
 			"\n" +
 			"Speziellen Dank an\n" +
+			"Felix Günther\n" +
 			"Vanya Gercheva\n" +
 			"Ulrike Vogler\n" +
 			"Gereon Vogler\n" +

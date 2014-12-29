@@ -275,19 +275,20 @@ public class WE {
      * Get the credits of the engine.
      * @return a long string with breaks
      */
-    public static String getCredits() {
+    public final static String getCredits() {
         String newline = System.getProperty("line.separator");
-        return "Created by:"+newline
-            + "Benedikt Vogler"+newline+newline
+        return "Wurfel Engine"+newline+newline
+			+ "Created by:"+newline
+            + "Benedikt S. Vogler"+newline+newline
             + "Programming:"+newline
-            + "Benedikt Vogler"+newline+newline
+            + "Benedikt S. Vogler"+newline+newline
             + "2D Art:"+newline
-            + "Benedikt Vogler"+newline+newline
+            + "Benedikt S. Vogler"+newline+newline
             + "3D Art"+newline
             + "Pia Lenßen"+newline
-            + "Benedikt Vogler"+newline+newline
+            + "Benedikt S. Vogler"+newline+newline
             + "Sound:"+newline
-            + "Benedikt Vogler"+newline+newline
+            + "Benedikt S. Vogler"+newline+newline
             + "Quality Assurance:"+newline
             + "Thomas Vogt"+newline+newline
             + "Want your name here? Contact me and join us!";

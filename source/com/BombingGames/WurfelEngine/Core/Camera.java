@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.CameraSpaceIterator;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -67,7 +68,7 @@ public class Camera implements LinkedWithMap {
 	
 	private boolean[][][][] clipping;
 	/**
-	 * the position of the camera in view space. Y-up
+	 * the position of the camera in view space. Y-up. Read only field.
 	 */
 	private final Vector2 position = new Vector2();
 	/**
@@ -139,9 +140,9 @@ public class Camera implements LinkedWithMap {
 		screenPosY = y;
 		updateGameSpaceSize();
 
-		//set the camera's focus to the center of the map
-		position.x = Map.getCenter().getViewSpcX(view);
-		position.y = Map.getCenter().getViewSpcY(view);
+		focusEntity = new SimpleEntity(0);
+		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
+		focusEntity.setHidden(true);
 		
 		zRenderingLimit = Map.getBlocksZ();
 		
@@ -180,8 +181,7 @@ public class Camera implements LinkedWithMap {
 	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height, GameView view) {
 		this(x, y, width, height, view);
 		WE.getConsole().add("Creating new camera which is focusing a coordinate");
-		this.focusCoordinates = focus;
-		this.focusEntity = null;
+		focusCoordinates = focus;
 		updateGameSpaceSize();
 	}
 
@@ -221,7 +221,7 @@ public class Camera implements LinkedWithMap {
 			position.x = focusCoordinates.getViewSpcX(gameView);
 			position.y = focusCoordinates.getViewSpcY(gameView);
 
-		} else if (focusEntity != null) {
+		} else {
 			//update camera's position according to focusEntity
             position.x = focusEntity.getPosition().getViewSpcX(gameView);
             position.y = (int) (
@@ -734,16 +734,7 @@ public class Camera implements LinkedWithMap {
 	 * @return game in pixels
 	 */
 	public float getViewSpaceX() {
-		return position.x;
-	}
-
-	/**
-	 * The Camera left Position in the game world.
-	 *
-	 * @param x game in pixels
-	 */
-	public void setViewSpaceX(float x) {
-		position.x = x;
+		return focusEntity.getPosition().getViewSpcX(gameView);
 	}
 
 	/**
@@ -752,16 +743,7 @@ public class Camera implements LinkedWithMap {
 	 * @return in camera position game space
 	 */
 	public float getViewSpaceY() {
-		return position.y;
-	}
-
-	/**
-	 * The Camera's center position in the game world. view space. y up
-	 *
-	 * @param y in game space
-	 */
-	public void setProjectionSpaceY(float y) {
-		position.y = y;
+		return focusEntity.getPosition().getViewSpcY(gameView);
 	}
 
 	/**
@@ -918,8 +900,7 @@ public class Camera implements LinkedWithMap {
 	 * @param y
 	 */
 	public void move(int x, int y) {
-		this.position.x += x;
-		this.position.y += y;
+		focusEntity.getPosition().addVector(x, y, 0);
 	}
 
 	/**

@@ -249,6 +249,9 @@ public class GameView extends View implements GameManager {
 	 */
 	public void setOrientation(int orientation) {
 		this.orientation = orientation;
+		for (Camera camera : cameras) {
+			camera.orientationChange();
+		}
 	}
     
    /**

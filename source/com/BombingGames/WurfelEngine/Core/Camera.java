@@ -1009,4 +1009,8 @@ public class Camera implements LinkedWithMap {
 	public int getCenterChunkCoordY() {
 		return centerChunkY;
 	}
+
+	void orientationChange() {
+		hiddenSurfaceDetection();
+	}
 }

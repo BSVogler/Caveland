@@ -310,7 +310,7 @@ public class CustomGameView extends GameView{
 				if (keycode==Input.Keys.SPACE)
 					parent.getPlayer(0).jump();
 				
-				if (keycode==Input.Keys.E || keycode==Input.Keys.Q)
+				if (keycode==Input.Keys.TAB)
 					if (parent.getOrientation()==0)
 						parent.setOrientation(2);
 					else 

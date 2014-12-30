@@ -188,103 +188,103 @@ public class Chunk {
 		if (path.exists()) {
 			//Reading map files test
 			try (FileInputStream fis = new FileInputStream(path.file())) {
-			int z = 0;
-			int x;
-			int y;
+				int z = 0;
+				int x;
+				int y;
 
-			int bufChar = fis.read();
+				int bufChar = fis.read();
 
-			//read a line
-			while (bufChar != -1 && bufChar != SIGN_ENTITIES) {//read while not eof and not at entity part
-				if (bufChar == 0x0A) //skip line breaks
-					bufChar = fis.read();
-				
-				if (bufChar != 0x0A){
-
-					//jump over optional comment line
-					if (bufChar == SIGN_STARTCOMMENTS){
+				//read a line
+				while (bufChar != -1 && bufChar != SIGN_ENTITIES) {//read while not eof and not at entity part
+					if (bufChar == 0x0A) //skip line breaks
 						bufChar = fis.read();
-						while (bufChar != SIGN_ENDCOMMENTS){
-							bufChar = fis.read();
-						}
-						bufChar = fis.read();
-						if (bufChar== 0x0A)//if following is a line break also skip it again
-							bufChar = fis.read();
-					}
 
-					//if layer is empty, fill with air
-					if (bufChar == SIGN_EMPTYLAYER ){
-						for (x = 0; x < blocksX; x++) {
-							for (y = 0; y < blocksY; y++) {
-								data[x][y][z] = Block.getInstance(0);
-								data[x][y][z].setPosition(
-									new Coordinate(
-										coordX*blocksX+x,
-										coordY*blocksY+y,
-										z
-									)
-								);
+					if (bufChar != 0x0A){
+
+						//jump over optional comment line
+						if (bufChar == SIGN_STARTCOMMENTS){
+							bufChar = fis.read();
+							while (bufChar != SIGN_ENDCOMMENTS){
+								bufChar = fis.read();
 							}
+							bufChar = fis.read();
+							if (bufChar== 0x0A)//if following is a line break also skip it again
+								bufChar = fis.read();
 						}
-					} else {
-						//fill layer block by block
-						y = 0;
-						do {
-							x = 0;
-							do {
-								
-								int id; //already got first one
-								if (y==0 && x==0)
-									 id = bufChar;
-								else 
-									id = fis.read();
-								int value = fis.read();
-								data[x][y][z] = Block.getInstance(id, value);
-								data[x][y][z].setPosition(
-									new Coordinate(
-										coordX*blocksX+x,
-										coordY*blocksY+y,
-										z
-									)
-								);
-								x++;
-							} while (x < blocksX);
-							y++;
-						} while (y < blocksY);
-					}
-					z++;
-				}
-				//read next line
-				bufChar = fis.read();
-			}
 
-			if (CVar.get("loadEntities").getValueb()) {
-				//loading entities
-				if (bufChar==SIGN_ENTITIES){
-					int length = fis.read(); //amount of entities
-					Gdx.app.debug("Chunk", "Loading " + length+" entities");
-					
-					try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
-						AbstractEntity object;
-						for (int i = 0; i < length; i++) {
-							object = (AbstractEntity) objectIn.readObject();
-							Controller.getMap().getEntitys().add(object);
-							Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
+						//if layer is empty, fill with air
+						if (bufChar == SIGN_EMPTYLAYER ){
+							for (x = 0; x < blocksX; x++) {
+								for (y = 0; y < blocksY; y++) {
+									data[x][y][z] = Block.getInstance(0);
+									data[x][y][z].setPosition(
+										new Coordinate(
+											coordX*blocksX+x,
+											coordY*blocksY+y,
+											z
+										)
+									);
+								}
+							}
+						} else {
+							//fill layer block by block
+							y = 0;
+							do {
+								x = 0;
+								do {
+
+									int id; //already got first one
+									if (y==0 && x==0)
+										 id = bufChar;
+									else 
+										id = fis.read();
+									int value = fis.read();
+									data[x][y][z] = Block.getInstance(id, value);
+									data[x][y][z].setPosition(
+										new Coordinate(
+											coordX*blocksX+x,
+											coordY*blocksY+y,
+											z
+										)
+									);
+									x++;
+								} while (x < blocksX);
+								y++;
+							} while (y < blocksY);
 						}
-					} catch (ClassNotFoundException ex) {
-						Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+						z++;
+					}
+					//read next line
+					bufChar = fis.read();
+				}
+
+				if (CVar.get("loadEntities").getValueb()) {
+					//loading entities
+					if (bufChar==SIGN_ENTITIES){
+						int length = fis.read(); //amount of entities
+						Gdx.app.debug("Chunk", "Loading " + length+" entities");
+
+						try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
+							AbstractEntity object;
+							for (int i = 0; i < length; i++) {
+								object = (AbstractEntity) objectIn.readObject();
+								Controller.getMap().getEntitys().add(object);
+								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
+							}
+						} catch (ClassNotFoundException ex) {
+							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+						}
 					}
 				}
+				modified = true;
+				return true;
+			} catch (IOException ex) {
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
+			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+			} catch (ArrayIndexOutOfBoundsException ex){
+				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
 			}
-			modified = true;
-			return true;
-		} catch (IOException ex) {
-			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
-		} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
-			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-		} catch (ArrayIndexOutOfBoundsException ex){
-			Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
-		}
 		} else {
 			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
 		}

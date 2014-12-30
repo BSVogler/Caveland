@@ -120,6 +120,7 @@ public class Camera implements LinkedWithMap {
 	private int gameSpaceHeight;
 	private int centerChunkX;
 	private int centerChunkY;
+	private boolean active = true;
 	
 	/**
 	 * Creates a camera pointing at the middle of the map.
@@ -215,64 +216,66 @@ public class Camera implements LinkedWithMap {
 	 * @param dt
 	 */
 	public void update(float dt) {
-		//refresh the camera's position in the game world
-		if (focusCoordinates != null) {
-			//update camera's position according to focusCoordinates
-			position.x = focusCoordinates.getViewSpcX(gameView);
-			position.y = focusCoordinates.getViewSpcY(gameView);
+		if (active){
+			//refresh the camera's position in the game world
+			if (focusCoordinates != null) {
+				//update camera's position according to focusCoordinates
+				position.x = focusCoordinates.getViewSpcX(gameView);
+				position.y = focusCoordinates.getViewSpcY(gameView);
 
-		} else {
-			//update camera's position according to focusEntity
-            position.x = focusEntity.getPosition().getViewSpcX(gameView);
-            position.y = (int) (
-                focusEntity.getPosition().getViewSpcY(gameView)
-              + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
-            );
+			} else {
+				//update camera's position according to focusEntity
+				position.x = focusEntity.getPosition().getViewSpcX(gameView);
+				position.y = (int) (
+					focusEntity.getPosition().getViewSpcY(gameView)
+				  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
+				);
+			}
+
+			//aplly screen shake
+			if (shakeTime > 0) {
+				screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
+				screenshake.y = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
+				shakeTime -= dt;
+			} else {
+				screenshake.x = 0;
+				screenshake.y = 0;
+			}
+
+			position.x += screenshake.x;
+			position.y += screenshake.y;
+
+			updateNeededData();
+
+			//move camera to the focus 
+			view.setToLookAt(
+				new Vector3(position, 0),
+				new Vector3(position, -1),
+				up
+			);
+
+			//orthographic camera, libgdx stuff
+			projection.setToOrtho(
+				(gameView.getOrientation()==2?-1:1)*-getWidthInViewSpc() / 2,
+				(gameView.getOrientation()==2?-1:1)*getWidthInViewSpc() / 2,
+				-getHeightInViewSpc() / 2,
+				getHeightInViewSpc() / 2,
+				0,
+				1
+			);
+
+			//set up projection matrices
+			combined.set(projection);
+			Matrix4.mul(combined.val, view.val);
+
+			//don't know what this does
+			//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
+			//Gdx.gl20.glLoadMatrixf(projection.val, 0);
+			//Gdx.gl20.glMatrixMode(GL20.GL_MODELVIEW);
+			//Gdx.gl20.glLoadMatrixf(view.val, 0);
+			//invProjectionView.set(combined);
+			//Matrix4.inv(invProjectionView.val);
 		}
-		
-		//aplly screen shake
-		if (shakeTime > 0) {
-			screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
-			screenshake.y = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
-			shakeTime -= dt;
-		} else {
-			screenshake.x = 0;
-			screenshake.y = 0;
-		}
-
-		position.x += screenshake.x;
-		position.y += screenshake.y;
-
-		updateNeededData();
-		
-		//move camera to the focus 
-		view.setToLookAt(
-			new Vector3(position, 0),
-			new Vector3(position, -1),
-			up
-		);
-
-		//orthographic camera, libgdx stuff
-		projection.setToOrtho(
-			(gameView.getOrientation()==2?-1:1)*-getWidthInViewSpc() / 2,
-			(gameView.getOrientation()==2?-1:1)*getWidthInViewSpc() / 2,
-			-getHeightInViewSpc() / 2,
-			getHeightInViewSpc() / 2,
-			0,
-			1
-		);
-
-		//set up projection matrices
-		combined.set(projection);
-		Matrix4.mul(combined.val, view.val);
-		
-        //don't know what this does
-		//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
-		//Gdx.gl20.glLoadMatrixf(projection.val, 0);
-		//Gdx.gl20.glMatrixMode(GL20.GL_MODELVIEW);
-		//Gdx.gl20.glLoadMatrixf(view.val, 0);
-        //invProjectionView.set(combined);
-		//Matrix4.inv(invProjectionView.val);
 	}
 	
 	/**
@@ -317,7 +320,7 @@ public class Camera implements LinkedWithMap {
 	 * @param camera
 	 */
 	public void render(final GameView view, final Camera camera) {
-		if (Controller.getMap() != null) { //render only if map exists 
+		if (active && Controller.getMap() != null ) { //render only if map exists 
 
 			view.getBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
@@ -391,9 +394,7 @@ public class Camera implements LinkedWithMap {
 				);
 				view.getShapeRenderer().end();
 			}
-		}
-
-		if (damageoverlay > 0.0f) {
+			if (damageoverlay > 0.0f) {
 			WE.getEngineView().getBatch().begin();
 				Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
 				Sprite overlay = new Sprite(texture);
@@ -405,6 +406,7 @@ public class Camera implements LinkedWithMap {
 		}
 		
 		view.drawString("z level: " + zRenderingLimit, screenPosX+200, screenPosY+100, true);
+		}
 	}
 
 	/**
@@ -545,6 +547,8 @@ public class Camera implements LinkedWithMap {
 	 * performs a simple clipping check by looking at the direct neighbours.
 	 */
 	public void hiddenSurfaceDetection(){
+		Gdx.app.debug("Camera", "hsd around "+centerChunkX+","+centerChunkY);
+				
 		//create empty array clipping fields
 		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
@@ -928,7 +932,7 @@ public class Camera implements LinkedWithMap {
 	
 	@Override
 	public void onMapChange() {
-		hiddenSurfaceDetection();
+		if (active) hiddenSurfaceDetection();
 	}
 
 	@Override
@@ -997,5 +1001,13 @@ public class Camera implements LinkedWithMap {
 
 	void orientationChange() {
 		hiddenSurfaceDetection();
+	}
+
+	/**
+	 * enable or disable the camera
+	 * @param active 
+	 */
+	void setActive(boolean active) {
+		this.active = active;
 	}
 }

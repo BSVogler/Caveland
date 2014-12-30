@@ -506,11 +506,18 @@ public class GameView extends View implements GameManager {
 		
 		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
 		Controller.getMap().setGameSpeed(gameSpeed);
+		
+		//enable cameras
+		for (Camera camera : cameras) {
+			camera.setActive(true);
+		}
+		
         onEnter();
     }
 	
 	@Override
 	public void exit(){
+		//disable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(false);
 		}

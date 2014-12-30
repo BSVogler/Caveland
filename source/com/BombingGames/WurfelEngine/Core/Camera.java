@@ -549,6 +549,7 @@ public class Camera implements LinkedWithMap {
 			
 		while (iter.hasNext()) {
 			Block next = iter.next();
+			//calculate index position
 			int x = -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )
 					+ iter.getCurrentIndex()[0];//skip chunks
 			int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )

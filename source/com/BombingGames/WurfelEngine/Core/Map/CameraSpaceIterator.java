@@ -66,7 +66,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	@Override
 	public Block next() throws NoSuchElementException {
 		if (!blockIterator.hasNext()){
-			//end of chunk, move to next chunk
+			//reached end of chunk, move to next chunk
 			if (hasNextChunk()){//if has one move to next
 				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
 					//continue one chunk to the right

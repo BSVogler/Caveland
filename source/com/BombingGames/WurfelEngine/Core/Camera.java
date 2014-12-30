@@ -254,8 +254,8 @@ public class Camera implements LinkedWithMap {
 
 		//orthographic camera, libgdx stuff
 		projection.setToOrtho(
-			-getWidthInViewSpc() / 2,
-			getWidthInViewSpc() / 2,
+			(gameView.getOrientation()==2?-1:1)*-getWidthInViewSpc() / 2,
+			(gameView.getOrientation()==2?-1:1)*getWidthInViewSpc() / 2,
 			-getHeightInViewSpc() / 2,
 			getHeightInViewSpc() / 2,
 			0,

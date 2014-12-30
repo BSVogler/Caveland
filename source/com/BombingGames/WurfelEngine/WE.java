@@ -212,6 +212,7 @@ public class WE {
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
         engineView.resetInputProcessors();
 		gameplayScreen.getController().exit();
+		gameplayScreen.getView().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
@@ -224,7 +225,7 @@ public class WE {
     }
     
     /**
-     * Use this if you want to continue to use a different controller and view.
+     * Use this if you want to continue to use already initialized controller and view.
      * @param controller the new controller
      * @param view the new view
      */
@@ -233,6 +234,7 @@ public class WE {
         Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
         engineView.resetInputProcessors();
         gameplayScreen.getController().exit();
+		gameplayScreen.getView().exit();
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //init if not initialized

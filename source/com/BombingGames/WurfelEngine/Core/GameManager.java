@@ -48,6 +48,11 @@ public interface GameManager {
      * @see #onEnter() 
      */
     public abstract void enter();
+	
+	  /**
+     * should get called when you leave the editor.
+     */
+	public abstract void exit();
 
     /**
      *
@@ -55,5 +60,8 @@ public interface GameManager {
      */
     public abstract boolean isInitalized();
 	
+	/**
+	 * should be called if removed from memory
+	 */
 	public abstract void dispose();
 }

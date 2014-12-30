@@ -198,10 +198,9 @@ public class Controller implements GameManager {
     }
     
     
-    /**
-     * should get called when you leave the editor
-     */
-    public void exit(){}
+	@Override
+    public void exit(){
+	}
 
 	@Override
 	public void dispose() {

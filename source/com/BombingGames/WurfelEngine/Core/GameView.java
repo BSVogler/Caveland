@@ -508,6 +508,13 @@ public class GameView extends View implements GameManager {
 		Controller.getMap().setGameSpeed(gameSpeed);
         onEnter();
     }
+	
+	@Override
+	public void exit(){
+		for (Camera camera : cameras) {
+			camera.setActive(false);
+		}
+	}
 
 	@Override
 	public void dispose() {

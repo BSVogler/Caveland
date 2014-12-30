@@ -275,6 +275,9 @@ public class Camera implements LinkedWithMap {
 		//Matrix4.inv(invProjectionView.val);
 	}
 	
+	/**
+	 * checks which chunks must be loaded
+	 */
 	private void updateNeededData(){
 		this.centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		this.centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());

@@ -392,11 +392,11 @@ public class Chunk {
     }
     
     /**
-     *Not scaled. Divided by 2 because of shifted each second row.
+     *Not scaled.
      * @return
      */
     public static int getViewDepth() {
-        return blocksY*AbstractGameObject.SCREEN_DEPTH2;
+        return blocksY*AbstractGameObject.SCREEN_DEPTH2;// Divided by 2 because of shifted each second row.
     }
     
     /**

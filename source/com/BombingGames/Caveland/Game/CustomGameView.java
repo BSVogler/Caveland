@@ -8,7 +8,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -46,7 +45,7 @@ public class CustomGameView extends GameView{
 				Gdx.graphics.getHeight()/2,//height
 				this
 			);
-			((PlayerWithWeapon) getPlayer(0)).setCamera(camera0);
+			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 			
 			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
@@ -65,7 +64,7 @@ public class CustomGameView extends GameView{
 				this
 			);
 			camera0.setFullWindow(true);
-			((PlayerWithWeapon) getPlayer(0)).setCamera(camera0);
+			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 		}
 		

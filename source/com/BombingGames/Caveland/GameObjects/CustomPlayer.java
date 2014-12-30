@@ -1,10 +1,11 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.PlayerWithWeapon;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Benedikt Vogler
  */
-public class CustomPlayer extends PlayerWithWeapon {
+public class CustomPlayer extends Controllable {
 	/**
 	 * Time till fully loaded attack.
 	 */
@@ -38,6 +39,9 @@ public class CustomPlayer extends PlayerWithWeapon {
 	 * true if last jump was airjump.
 	 */
 	private boolean airjump = false;
+	
+	private transient Camera camera;
+	
 	/**
 	 * time of loading
 	 */
@@ -216,6 +220,18 @@ public class CustomPlayer extends PlayerWithWeapon {
 	
 		loadAttack=0f;
 		loadingSoundPlaying =false;
+	}
+	
+	    /**
+     *Set the camera which is renderin the player to calculate the aiming. If camera is null 
+     * @param camera 
+     */
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
+	public Camera getCamera() {
+		return camera;
 	}
 	
 }

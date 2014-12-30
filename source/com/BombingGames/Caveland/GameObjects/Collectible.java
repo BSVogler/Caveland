@@ -2,9 +2,9 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	
 	@Override
-	public void render(View view, Camera camera, Color color) {
+	public void render(GameView view, Camera camera, Color color) {
 		render(
             view,
             camera,
@@ -79,7 +79,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	}
 
 	@Override
-	public void render(View view, int xPos, int yPos, float scale) {
+	public void render(GameView view, int xPos, int yPos, float scale) {
 		super.render(view, xPos, yPos, color.cpy(), scale-0.4f);
 	}
 	

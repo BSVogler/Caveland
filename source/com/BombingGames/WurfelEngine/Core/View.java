@@ -37,7 +37,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * A view is an object which renders the data.
+ * A view is an object which renders the data. Game space or not does not matter for this class.
  * @author Benedikt Vogler
  */
 public abstract class View {
@@ -51,11 +51,6 @@ public abstract class View {
 	 */
 	private boolean inDebug;
 	
-	/**
-	 * @since v1.3.12
-	 */
-	private int orientation = 0;
-
     public void init(){
         String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.vs").readString();
         String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.fs").readString();
@@ -66,23 +61,6 @@ public abstract class View {
         return shader;
     }
 	
-	/**
-	 * Get the current orientation.
-	 * @return 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
-	 * @since v1.3.12
-	 */
-	public int getOrientation() {
-		return orientation;
-	}
-
-	/**
-	 * Set the new value for the current orientation.
-	 * @param orientation 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
-	 * @since v1.3.12
-	 */
-	public void setOrientation(int orientation) {
-		this.orientation = orientation;
-	}
     	/**
 	 * enable debug rendering only
 	 * @param debug 

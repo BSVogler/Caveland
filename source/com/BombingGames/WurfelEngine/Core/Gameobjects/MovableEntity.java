@@ -29,9 +29,9 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -361,7 +361,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     }
 
 	@Override
-	public void render(View view, int xPos, int yPos, Color color, float scale) {
+	public void render(GameView view, int xPos, int yPos, Color color, float scale) {
 		if (view.debugRendering()){
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);

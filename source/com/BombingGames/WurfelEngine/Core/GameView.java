@@ -52,7 +52,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.ArrayList;
 
 /**
- * The GameView manages everything what should be drawn in an active game.
+ * The GameView manages everything what should be drawn in an active game in game space.
  * @author Benedikt
  */
 public class GameView extends View implements GameManager {
@@ -86,6 +86,11 @@ public class GameView extends View implements GameManager {
 	private Minimap minimap;
 	
 	private float gameSpeed = 1f;
+	
+		/**
+	 * @since v1.3.12
+	 */
+	private int orientation = 0;
     
     /**
      * Shoud be called before the object get initialized.
@@ -228,6 +233,23 @@ public class GameView extends View implements GameManager {
         return libGDXcamera.viewportWidth / CVar.get("renderResolutionWidth").getValuei();
     }
 
+	/**
+	 * Get the current orientation.
+	 * @return 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
+	 * @since v1.3.12
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
+	/**
+	 * Set the new value for the current orientation.
+	 * @param orientation 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
+	 * @since v1.3.12
+	 */
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
     
    /**
      * Reverts the perspective and transforms it into a coordiante which can be used in the game logic.

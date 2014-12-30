@@ -31,9 +31,9 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -181,7 +181,7 @@ public abstract class AbstractGameObject implements Serializable {
 	 * @param view
      * @return distance from zero level
      */
-    public int getDepth(View view) {
+    public int getDepth(GameView view) {
         return (int) (getPosition().getDepth(view)
             + getDimensionZ()/AbstractPosition.SQRT2
         );
@@ -286,7 +286,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
-    public void render(View view, Camera camera) {
+    public void render(GameView view, Camera camera) {
         render(
             view,
             camera,
@@ -306,7 +306,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param camera The camera rendering the scene
      * @param scale
      */
-    public void render(View view, Camera camera, AbstractPosition pos, float scale) {
+    public void render(GameView view, Camera camera, AbstractPosition pos, float scale) {
         render(
             view,
             camera,
@@ -326,7 +326,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param camera The camera rendering the scene
      * @param color  custom blending color
      */
-    public void render(View view, Camera camera, Color color) {
+    public void render(GameView view, Camera camera, Color color) {
         render(
             view,
             camera,
@@ -344,7 +344,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param color custom blending color
      * @param scale relative value
      */
-    public void render(View view, Camera camera, Color color, float scale) {
+    public void render(GameView view, Camera camera, Color color, float scale) {
         //draw the object except hidden ones
         if (!hidden) {             
             render(
@@ -363,7 +363,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param xPos rendering position in view space (?)
      * @param yPos rendering position in view space (?)
      */
-    public void render(View view, int xPos, int yPos) {
+    public void render(GameView view, int xPos, int yPos) {
         render(
             view,
             xPos,
@@ -385,7 +385,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param yPos rendering position in view space (?)
      * @param scale relative value. 0 means same size
      */
-    public void render(View view, int xPos, int yPos, float scale) {
+    public void render(GameView view, int xPos, int yPos, float scale) {
         render(
             view,
             xPos,
@@ -408,7 +408,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param color custom blending color
      * @param scale relative value. 0 means same size
      */
-    public void render(View view, int xPos, int yPos, Color color, float scale) {
+    public void render(GameView view, int xPos, int yPos, Color color, float scale) {
 		if (id != 0){
 			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
 			Sprite sprite = new Sprite(texture);

@@ -30,10 +30,10 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -211,12 +211,12 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public int getViewSpcX(View view) {
+    public int getViewSpcX(GameView view) {
         return (int) (getX()); //just the position as integer
     }
 
     @Override
-    public int getViewSpcY(View view) {
+    public int getViewSpcY(GameView view) {
         return (int)( 
 			getY() / 2*
 			(

@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -317,7 +318,7 @@ public class Block extends AbstractGameObject {
     } 
     
     @Override
-    public void render(final View view, final Camera camera) {
+    public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {
             float scale =0;
 			Coordinate coords = getPosition();
@@ -342,7 +343,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position (screen)
      */
     @Override
-    public void render(final View view, final int xPos, final int yPos) {
+    public void render(final GameView view, final int xPos, final int yPos) {
         if (!isHidden()) {
             if (hasSides) {
 				renderSide(view, xPos, yPos+(SCREEN_HEIGHT+SCREEN_DEPTH), Sides.TOP);
@@ -355,7 +356,7 @@ public class Block extends AbstractGameObject {
     }
 
     @Override
-    public void render(final View view, final int xPos, final int yPos, final Color color, float scale) {
+    public void render(final GameView view, final int xPos, final int yPos, final Color color, float scale) {
         render(view, xPos, yPos, color, scale, Controller.getLightEngine() == null);
     }
     
@@ -368,7 +369,7 @@ public class Block extends AbstractGameObject {
      * @param staticShade makes one side brighter, opposite side darker
      * @param scale the scale factor of the image
      */
-    public void render(final View view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
+    public void render(final GameView view, final int xPos, final int yPos, Color color, final float scale, final boolean staticShade) {
         if (!isHidden()) {
             if (hasSides) {
 				renderSide(
@@ -416,7 +417,7 @@ public class Block extends AbstractGameObject {
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param scale
      */
-    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
+    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
         Color color = Color.GRAY.cpy();
         if (CVar.get("enableAutoShade").getValueb()){
             if (side==Sides.LEFT){
@@ -450,7 +451,7 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale
      */
-    public void renderSide(final View view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
+    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
         renderSide(
             view,
             coords.getViewSpcX(view) - SCREEN_WIDTH2 + ( side == Sides.RIGHT ? (int) (SCREEN_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,

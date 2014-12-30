@@ -51,7 +51,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Benedikt Vogler
  * @since 1.2.26
  */
-public class EngineView extends View {
+public class EngineView extends GameView {//is GameView so it can render in game space
     private SpriteBatch batch;  
     private ShaderProgram shader;
     private ShapeRenderer shapeRenderer;

@@ -29,10 +29,10 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -427,14 +427,14 @@ public class Coordinate extends AbstractPosition {
     }
     
     @Override
-    public int getViewSpcX(View view) {
+    public int getViewSpcX(GameView view) {
 		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
                 //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
                 + (getY() % 2 != 0 ? AbstractGameObject.SCREEN_WIDTH2 : 0); //offset by y
     }
 
     @Override
-    public int getViewSpcY(View view) {
+    public int getViewSpcY(GameView view) {
 		return  
 			getY() * AbstractGameObject.SCREEN_DEPTH2 *
 			(

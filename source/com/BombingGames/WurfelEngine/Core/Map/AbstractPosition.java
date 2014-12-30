@@ -28,9 +28,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.GameView;
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.SCREEN_DEPTH;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.math.Vector3;
 import java.io.Serializable;
 
@@ -57,14 +57,14 @@ public abstract class AbstractPosition implements Serializable {
 	 * @param View
      * @return Returns the center of the projected (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getViewSpcX(View View);
+    public abstract int getViewSpcX(GameView View);
     
     /**
      * Calculate position in view space.
 	 * @param View
      * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getViewSpcY(View View);
+    public abstract int getViewSpcY(GameView View);
     
     /**
      * If needed calculates it and creates new instance else return itself.
@@ -146,7 +146,7 @@ public abstract class AbstractPosition implements Serializable {
 	 * @param view
      * @return the depth in game size
      */
-	public int getDepth(View view){
+	public int getDepth(GameView view){
         return (int) (
 			(
 				view.getOrientation()==0

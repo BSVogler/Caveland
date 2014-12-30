@@ -241,15 +241,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//play sound twice a cicle
 			if (walkingCycle<250){
 				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-					stepSound1Grass.play(1, (float) (1+Math.random()/5), 0);
-					stepSoundPlayedInCiclePhase = true;
+					step();
 				}
 			} else if (walkingCycle < 500){
 				stepSoundPlayedInCiclePhase=false;
 			} else if (walkingCycle > 500){
 				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-					stepSound1Grass.play(1, (float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
-					stepSoundPlayedInCiclePhase = true;
+					step();
 				}
 			}
 				
@@ -675,5 +673,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	public void setCollectable(boolean collectable) {
 		this.collectable = collectable;
+	}
+
+	public void step() {
+		stepSound1Grass.play(1, (float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
+		stepSoundPlayedInCiclePhase = true;
 	}
 }

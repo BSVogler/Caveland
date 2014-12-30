@@ -48,7 +48,7 @@ public class CustomPlayer extends Controllable {
 	private float loadAttack =0;
 	
     public CustomPlayer() {
-        super(4,AbstractGameObject.GAME_EDGELENGTH);
+        super(30, 4);
 		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
@@ -57,6 +57,7 @@ public class CustomPlayer extends Controllable {
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
 		setFriction(1);
+		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
     }
 	
 	/**
@@ -232,6 +233,12 @@ public class CustomPlayer extends Controllable {
 
 	public Camera getCamera() {
 		return camera;
+	}
+
+	@Override
+	public void step() {
+		super.step();
+		new Dust().spawn(getPosition().cpy());
 	}
 	
 }

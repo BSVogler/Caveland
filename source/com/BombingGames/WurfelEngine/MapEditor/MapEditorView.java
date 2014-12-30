@@ -222,6 +222,7 @@ public class MapEditorView extends GameView {
         private int buttondown =-1;
         private int layerSelection;
         private Selection selection;
+		private Coordinate bucketDown;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
@@ -285,16 +286,22 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Coordinate coords = selection.getPosition().getCoord();
+			selection.update(view, screenX, screenY);
+			Coordinate coords = selection.getPosition().getCoord();
             
             buttondown=button;
             
             if (button == Buttons.RIGHT){
-                //right click
-				Block block = Block.getInstance(0);
-				block.setPosition(coords);
-				if (coords.getZ()>=0)
-					Controller.getMap().setData(block);
+				if (toolSelection.getSelectionRight()==1)
+					bucketDown = coords;
+				
+				if (toolSelection.getSelectionRight()==0) {
+					//right click
+					Block block = Block.getInstance(0);
+					block.setPosition(coords);
+					if (coords.getZ()>=0)
+						Controller.getMap().setData(block);
+				}
                 
                 //getCameras().get(0).traceRayTo(coords, true);
                 //gras1.play();
@@ -302,23 +309,28 @@ public class MapEditorView extends GameView {
                 Block block = coords.getBlock();
                 colorGUI.setBlock(block.getId(), block.getValue());
             } else if (button==Buttons.LEFT){ //left click
-                Sides normal = selection.getNormalSides();
-                if (normal==Sides.LEFT)
-                    coords = coords.neighbourSidetoCoords(5);
-                else if (normal==Sides.TOP)
-                    coords.addVector(0, 0, 1);
-                else if (normal==Sides.RIGHT)
-                    coords = coords.neighbourSidetoCoords(3);
-
-				Block block;
-                if (colorGUI.getMode() == PlaceMode.Blocks) {
-					block = colorGUI.getBlock(coords);
-					Controller.getMap().setData(block);
-				} else 
-					colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());
-               // gras2.play();
-            }   
-            layerSelection = coords.getZ();
+				//get in normal direction
+				Sides normal = selection.getNormalSides();
+				if (normal==Sides.LEFT)
+					coords = coords.neighbourSidetoCoords(5);
+				else if (normal==Sides.TOP)
+					coords.addVector(0, 0, 1);
+				else if (normal==Sides.RIGHT)
+					coords = coords.neighbourSidetoCoords(3);
+					
+				if (toolSelection.getSelectionLeft()==1)
+					bucketDown = coords;
+				else if (toolSelection.getSelectionLeft()==0){
+					Block block;
+					if (colorGUI.getMode() == PlaceMode.Blocks) {
+						block = colorGUI.getBlock(coords);
+						Controller.getMap().setData(block);
+					} else 
+						colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());
+				   // gras2.play();
+				}   
+				layerSelection = coords.getZ();
+			}
             return false;
         }
 
@@ -327,7 +339,20 @@ public class MapEditorView extends GameView {
             buttondown = -1;
             
             selection.update(view, screenX, screenY);
-            
+			Coordinate coords = selection.getPosition().getCoord();
+			
+            if (button==Buttons.LEFT){
+				if (toolSelection.getSelectionLeft()==1 && bucketDown!=null ) {
+					bucket(bucketDown, coords);
+					bucketDown=null;
+				}
+			} else if (button==Buttons.RIGHT){
+				if (toolSelection.getSelectionRight()==1 && bucketDown!=null ) {
+					bucketDown=null;
+					bucket(bucketDown, coords);
+				}
+			}
+			
             return false;
         }
 
@@ -335,18 +360,25 @@ public class MapEditorView extends GameView {
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
             
-            Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
-            coords.setZ(layerSelection);
-            
-            if (buttondown==Buttons.LEFT){
-				Block block = colorGUI.getBlock(coords);
-                Controller.getMap().setData(block);
-            } else if (buttondown == Buttons.RIGHT) {
-				Block block = Block.getInstance(0);
-				block.setPosition(coords);
-                Controller.getMap().setData(block);
-            } else return false;
-            
+			//dragging with left and has bucket tool
+			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft()==1)
+				|| (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight()==1)
+				)
+			) { 
+				Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
+				coords.setZ(layerSelection);
+				if (coords.getZ()>=0) {
+					if (buttondown==Buttons.LEFT){
+						Block block = colorGUI.getBlock(coords);
+						Controller.getMap().setData(block);
+					} else if (buttondown == Buttons.RIGHT) {
+						Block block = Block.getInstance(0);
+						block.setPosition(coords);
+						Controller.getMap().setData(block);
+					} else return false;
+				}
+			}
+
             return false;
         }
 
@@ -367,6 +399,16 @@ public class MapEditorView extends GameView {
             controller.setCurrentLayer(controller.getCurrentLayer()-amount);
             return true;
         }
+
+		private void bucket(Coordinate from, Coordinate to) {
+			for (int x = from.getX(); x < to.getX(); x++) {
+				for (int y = from.getY(); y < to.getY(); y++) {
+					Controller.getMap().setData(
+						colorGUI.getBlock(new Coordinate(x, y, from.getZ()))
+					);
+				}	
+			}
+		}
     }
     
     private static class PlayButton extends ClickListener{

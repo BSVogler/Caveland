@@ -183,9 +183,9 @@ public class Chunk {
 				+ "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
 		);
 
-		Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
 
 		if (path.exists()) {
+			Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
 			//Reading map files test
 			try (FileInputStream fis = new FileInputStream(path.file())) {
 				int z = 0;
@@ -286,7 +286,7 @@ public class Chunk {
 				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
 			}
 		} else {
-			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found.");
+			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found on disk.");
 		}
 		
         return false;

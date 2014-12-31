@@ -49,6 +49,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private boolean dispose;
     private boolean spawned;
 	private EntityAnimation animation;
+	private transient EntityShadow shadow;
+	
 	/**
 	 * flags if should be saved
 	 */
@@ -70,7 +72,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public static java.util.HashMap<String, Class<? extends AbstractEntity>> getRegisteredEntities() {
 		return entityMap;
 	}
-	private EntityShadow shadow;
 		
     /**
      * Create an abstractEntity.

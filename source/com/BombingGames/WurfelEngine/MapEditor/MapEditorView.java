@@ -287,6 +287,7 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			selection.update(view, screenX, screenY);
+			colorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
             
             buttondown=button;
@@ -347,6 +348,7 @@ public class MapEditorView extends GameView {
             buttondown = -1;
             
             selection.update(view, screenX, screenY);
+			colorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
 			
             if (button==Buttons.LEFT){
@@ -367,7 +369,8 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
-            
+            colorGUI.update(selection);
+			
 			//dragging with left and has bucket tool
 			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft()==1)
 				|| (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight()==1)

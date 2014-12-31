@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import java.util.Iterator;
 
@@ -76,7 +77,7 @@ public class ChunkIterator implements Iterator<Block>{
 		
 		if (z<0){
 			//current pos -1 in z
-			Block groundblock = Block.getInstance(2);
+			Block groundblock = Block.getInstance(Controller.getMap().getGroundBlock().getId());
 			groundblock.setPosition(
 				new Coordinate(
 					data[x][y][0].getPosition().getX(),

@@ -412,8 +412,22 @@ public class MapEditorView extends GameView {
         }
 
 		private void bucket(Coordinate from, Coordinate to) {
-			for (int x = from.getX(); x < to.getX(); x++) {
-				for (int y = from.getY(); y < to.getY(); y++) {
+			int left = from.getX();
+			int right = to.getX();
+			if (to.getX()<left) {
+				left = to.getX();
+				right = from.getX();
+			}
+			
+			int top = from.getY();
+			int bottom = to.getY();
+			if (to.getY()<top) {
+				top = to.getY();
+				bottom = from.getY();
+			}
+			
+			for (int x = left; x < right; x++) {
+				for (int y = top; y < bottom; y++) {
 					Controller.getMap().setData(
 						colorGUI.getBlock(new Coordinate(x, y, from.getZ()))
 					);

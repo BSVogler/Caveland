@@ -31,6 +31,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -38,21 +39,30 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
  */
 public class Dust extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-	private static final float MAXTIME = 2000;
+	private final float maxtime;
 	
 	private float timeTillDeath;
+	private final Vector3 direction;
 
-	public Dust() {
+	/**
+	 * 
+	 * @param maxtime
+	 * @param direction in m/s
+	 */
+	public Dust(float maxtime, Vector3 direction) {
 		super(22);
-		timeTillDeath=MAXTIME;
+		this.maxtime = maxtime;
+		this.direction = direction;
+		timeTillDeath=maxtime;
 		setTransparent(true);
 	}
 
 	@Override
 	public void update(float dt) {
 		timeTillDeath-=dt;
-		setRotation(getRotation()+dt/20f);
-		getColor().a = timeTillDeath/MAXTIME;
+		getPosition().addVector(direction.cpy().scl(dt/1000f));
+		setRotation(-(getRotation()+dt/40f));
+		getColor().a = timeTillDeath/maxtime;
 		if (timeTillDeath <= 0) dispose();
 	}
 

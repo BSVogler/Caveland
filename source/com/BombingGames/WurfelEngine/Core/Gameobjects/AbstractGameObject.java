@@ -49,7 +49,7 @@ import java.io.Serializable;
  * @author Benedikt
  */
 public abstract class AbstractGameObject implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private transient static final long serialVersionUID = 2L;
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
      */
@@ -122,7 +122,8 @@ public abstract class AbstractGameObject implements Serializable {
 	 */
 	private float health = 1000;
 	
-    
+	private transient Color tint = new Color(1, 1, 1, 1); 
+	
     /**
      * Creates an object. Use getInstance() to create blocks or entitys.
      * @param id the id of the object
@@ -422,8 +423,7 @@ public abstract class AbstractGameObject implements Serializable {
 					-SCREEN_HEIGHT2
 					+texture.offsetY
 			);
-
-			sprite.setColor(color);
+			sprite.setColor(tint.tmp().mul(color));
         
 			if (view.debugRendering()){
 				ShapeRenderer sh = view.getShapeRenderer();
@@ -623,5 +623,13 @@ public abstract class AbstractGameObject implements Serializable {
 		if (health<0)health=0;
 		this.health = health;
 	}
-	
+
+	public void setColor(Color color) {
+		this.tint = color;
+	}
+
+	public Color getColor() {
+		return tint;
+	}
+
 }

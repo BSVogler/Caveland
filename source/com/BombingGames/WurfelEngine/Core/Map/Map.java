@@ -236,8 +236,10 @@ public class Map implements Cloneable{
 		if (CVar.get("enableChunkSwitch").getValueb()) {
 			//some custom garbage collection
 			for (int i = 0; i < data.size(); i++) {
-				if (data.get(i).shouldBeRemoved())
+				if (data.get(i).shouldBeRemoved()){
+					data.get(i).dispose();
 					data.remove(i);
+				}
 				else data.get(i).resetCameraAccesCounter();
 			}
 		}
@@ -438,25 +440,29 @@ public class Map implements Cloneable{
     }
 	
 	/**
-	 * Get every entity on a chunk
-	 * @param pos the chunk position 0-8
+	 * Get every entity on a chunk.
+	 * @param xChunk
+	 * @param yChunk
 	 * @return 
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnChunk(int pos){
+	public ArrayList<AbstractEntity> getEntitysOnChunk(final int xChunk, final int yChunk){
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
+		//loop over every loaded entity
         for (AbstractEntity ent : entityList) {
             if (
-					ent.getPosition().getX()>pos%3 *Chunk.getGameWidth()//left chunk border
+					ent.isGettingSaved() //save only entities which are flagged
+				&&
+					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
-					ent.getPosition().getX()<(pos%3+1)*Chunk.getGameWidth() //left chunk border
+					ent.getPosition().getX() < (xChunk+1)*Chunk.getGameWidth() //left chunk border
 				&&	
-					ent.getPosition().getY()>(pos/3)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY() > (yChunk)*Chunk.getGameDepth()//top chunk border
 				&& 
-					ent.getPosition().getY()<(pos/3+1)*Chunk.getGameDepth()//top chunk border
+					ent.getPosition().getY() < (yChunk+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
-            } 
+             } 
         }
 
         return list;

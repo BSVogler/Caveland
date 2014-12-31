@@ -529,4 +529,11 @@ public class Chunk {
 		return cameraAccessCounter <= 0;
 	}
 	
+	public void dispose(){
+		ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(coordX, coordY);
+		for (int i = 0; i < entities.size(); i++) {
+			entities.get(i).dispose();
+        }
+	}
+	
 }

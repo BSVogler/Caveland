@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.badlogic.gdx.Gdx;
 
 /**
  *The seletion indicator in the level editor.
@@ -81,7 +80,6 @@ public class Selection extends AbstractEntity {
 
     @Override
     public void setPosition(AbstractPosition pos) {
-		Gdx.app.debug("Selection", "intersect point: "+ pos.getPoint() + "coord"+pos.getCoord());
         super.setPosition( pos.getCoord());
         setHidden(getPosition().getZ() < 0);//hide if is under map
         normal.setPosition(pos.cpy().addVector(0, 1, 0));

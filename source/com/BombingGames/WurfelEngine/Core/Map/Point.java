@@ -386,9 +386,6 @@ public class Point extends AbstractPosition {
         while (/* ray has not gone past bounds of world */
                stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0) {
 
-            // Invoke the callback, unless we are not *yet* within the bounds of the
-            // world.
-            //if (!(curX < 0 || curY < 0 || curZ < 0 || curX >= Map.getGameWidth() || curY >= Map.getGameDepth()|| curZ >= Map.getGameHeight())){
 				/** Point of intersection */
                 Point isectP = new Point(curX, curY, curZ);
                 Block block = isectP.getBlock();
@@ -407,18 +404,18 @@ public class Point extends AbstractPosition {
                     && (!onlySolid || (onlySolid && !block.isTransparent()))
                     && block.getId() != 0
 				){
-                    //correct normal
+                    //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
                         (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
                         % Block.GAME_DIAGLENGTH
                         <
                         Block.GAME_DIAGLENGTH2
                     ) {
-                        normal.y = 0;
+						normal.y = 0;
                         normal.x = -1;
                     }
-                    return new Intersection(isectP, normal, this.distanceTo(isectP));
-                }
+						return new Intersection(isectP, normal, this.distanceTo(isectP));
+				}
             //}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the

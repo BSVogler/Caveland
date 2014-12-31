@@ -72,7 +72,7 @@ public class ToolSelection {
 		shR.begin(ShapeRenderer.ShapeType.Line);
 		//draw left
 		shR.setColor(Color.GREEN);
-		shR.rect(items[selectionLeft].getX(), items[selectionLeft].getY(), 50, 50);
+		shR.rect(items[selectionLeft].getX()+1, items[selectionLeft].getY()+1, 48, 48);
 				//draw right
 		shR.setColor(Color.BLUE);
 		shR.rect(items[selectionRight].getX(), items[selectionLeft].getY(), 50, 50);

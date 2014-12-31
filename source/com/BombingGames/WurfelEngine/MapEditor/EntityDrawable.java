@@ -54,7 +54,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 		}
 		//if bigger then default sprite size
 		int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
-		int regularHeight = AbstractGameObject.SCREEN_HEIGHT+AbstractGameObject.SCREEN_DEPTH;
+		int regularHeight = AbstractGameObject.VIEW_HEIGHT+AbstractGameObject.VIEW_DEPTH;
 		if (
 			spiteHeight
 			> regularHeight
@@ -76,16 +76,16 @@ public class EntityDrawable extends TextureRegionDrawable {
 	
 	@Override
 	public float getRightWidth() {
-		return AbstractGameObject.SCREEN_WIDTH;
+		return AbstractGameObject.VIEW_WIDTH;
 	}
 
 	@Override
 	public float getTopHeight() {
-		return AbstractGameObject.SCREEN_HEIGHT2 + AbstractGameObject.SCREEN_DEPTH2;
+		return AbstractGameObject.VIEW_HEIGHT2 + AbstractGameObject.VIEW_DEPTH2;
 	}
 
 	@Override
 	public float getBottomHeight() {
-		return AbstractGameObject.SCREEN_HEIGHT2 + AbstractGameObject.SCREEN_DEPTH2;
+		return AbstractGameObject.VIEW_HEIGHT2 + AbstractGameObject.VIEW_DEPTH2;
 	}
 }

@@ -366,17 +366,17 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos-Block.SCREEN_WIDTH2,
-				yPos+Block.SCREEN_HEIGHT,
-				getHealth()*Block.SCREEN_WIDTH/1000,
+				xPos-Block.VIEW_WIDTH2,
+				yPos+Block.VIEW_HEIGHT,
+				getHealth()*Block.VIEW_WIDTH/1000,
 				5
 			);
 			//mana bar
 			sh.setColor(Color.BLUE);
 			sh.rect(
-				xPos-Block.SCREEN_WIDTH2,
-				yPos+Block.SCREEN_HEIGHT-6,
-				getMana()*Block.SCREEN_WIDTH/1000,
+				xPos-Block.VIEW_WIDTH2,
+				yPos+Block.VIEW_HEIGHT-6,
+				getMana()*Block.VIEW_WIDTH/1000,
 				5
 			);
 

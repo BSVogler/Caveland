@@ -289,32 +289,32 @@ public class Minimap implements LinkedWithMap {
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
 					sh.rect(
-						scaleX * camera.getViewSpaceX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.SCREEN_DEPTH2,
-						scaleX*camera.getWidthInViewSpc()/ Block.SCREEN_WIDTH,
-						scaleY*camera.getHeightInViewSpc()/ Block.SCREEN_DEPTH2
+						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2,
+						scaleX*camera.getWidthInViewSpc()/ Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInViewSpc()/ Block.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
 			//            if (controller.getPlayer()!=null){
 			//                sh.setColor(Color.GRAY);
 			//                sh.rect(
-			//                    scaleX * camera.getProjectionPosX() / Block.SCREEN_WIDTH,
-			//                    + scaleY * camera.getProjectionPosY() / Block.SCREEN_DEPTH2
-			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-			//                    scaleX*camera.getProjectionWidth() / Block.SCREEN_WIDTH,
-			//                    scaleY*camera.getProjectionHeight() / Block.SCREEN_DEPTH2
+			//                    scaleX * camera.getProjectionPosX() / Block.VIEW_WIDTH,
+			//                    + scaleY * camera.getProjectionPosY() / Block.VIEW_DEPTH2
+			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
+			//                    scaleX*camera.getProjectionWidth() / Block.VIEW_WIDTH,
+			//                    scaleY*camera.getProjectionHeight() / Block.VIEW_DEPTH2
 			//                );
 			//            }
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
 					sh.rect(
-						scaleX * camera.getViewSpaceX() / Block.SCREEN_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.SCREEN_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * Block.SCREEN_HEIGHT)/ Block.SCREEN_DEPTH,
-						scaleX*camera.getWidthInViewSpc() / Block.SCREEN_WIDTH,
-						scaleY*camera.getHeightInViewSpc() / Block.SCREEN_DEPTH2
+						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
+						scaleX*camera.getWidthInViewSpc() / Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInViewSpc() / Block.VIEW_DEPTH2
 					);
 					
 				sh.end();

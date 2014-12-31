@@ -230,7 +230,7 @@ public class Point extends AbstractPosition {
 			)
 			
             + (int) (getZ() * SQRT12) //take z-axis shortening into account
-            - AbstractGameObject.SCREEN_HEIGHT2//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
+            - AbstractGameObject.VIEW_HEIGHT2//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
 			);
     }
     

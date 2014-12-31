@@ -53,49 +53,49 @@ public abstract class AbstractGameObject implements Serializable {
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
      */
-    public transient static final int SCREEN_DEPTH = 100;
-    /**The half (1/2) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/2*/
-    public transient static final int SCREEN_DEPTH2 = SCREEN_DEPTH / 2;
-    /**A quarter (1/4) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/4*/
-    public transient static final int SCREEN_DEPTH4 = SCREEN_DEPTH / 4;
+    public transient static final int VIEW_DEPTH = 100;
+    /**The half (1/2) of VIEW_DEPTH. The short form of: VIEW_DEPTH/2*/
+    public transient static final int VIEW_DEPTH2 = VIEW_DEPTH / 2;
+    /**A quarter (1/4) of VIEW_DEPTH. The short form of: VIEW_DEPTH/4*/
+    public transient static final int VIEW_DEPTH4 = VIEW_DEPTH / 4;
     
     /**
      * The width (x-axis) of the sprite size
      */
-    public transient static final int SCREEN_WIDTH = 200;
-    /**The half (1/2) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/2*/
-    public transient static final int SCREEN_WIDTH2 = SCREEN_WIDTH / 2;
-    /**A quarter (1/4) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/4*/
-    public transient static final int SCREEN_WIDTH4 = SCREEN_WIDTH / 4;
+    public transient static final int VIEW_WIDTH = 200;
+    /**The half (1/2) of VIEW_WIDTH. The short form of: VIEW_WIDTH/2*/
+    public transient static final int VIEW_WIDTH2 = VIEW_WIDTH / 2;
+    /**A quarter (1/4) of VIEW_WIDTH. The short form of: VIEW_WIDTH/4*/
+    public transient static final int VIEW_WIDTH4 = VIEW_WIDTH / 4;
     
     /**
      * The height (y-axis) of the sprite size
      */
-    public transient static final int SCREEN_HEIGHT = 125;
-    /**The half (1/2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/
-    public transient static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
-    /**A quarter (1/4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/
-    public transient static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
+    public transient static final int VIEW_HEIGHT = 125;
+    /**The half (1/2) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/2*/
+    public transient static final int VIEW_HEIGHT2 = VIEW_HEIGHT / 2;
+    /**A quarter (1/4) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/4*/
+    public transient static final int VIEW_HEIGHT4 = VIEW_HEIGHT / 4;
     
     /**
      * The game spaces dimension in pixel (edge length). 1 game meter ^= 1 GAME_EDGELENGTH
-     * The value is calculated by SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
+ The value is calculated by VIEW_HEIGHT*sqrt(2) because of the axis shortening.
      */
-    public transient static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
+    public transient static final int GAME_EDGELENGTH = (int) (VIEW_HEIGHT * Math.sqrt(2));
     
 	    /**
      * Half (1/2) of GAME_EDGELENGTH
      */
     public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     /**
-     * The game space dimension size's aequivalent to SCREEN_DEPTH or SCREEN_WIDTH.
+     * The game space dimension size's aequivalent to VIEW_DEPTH or VIEW_WIDTH.
      * Because the x axis is not shortened those two are equal.
      */
-    public transient static final int GAME_DIAGLENGTH = SCREEN_WIDTH;
+    public transient static final int GAME_DIAGLENGTH = VIEW_WIDTH;
     
     /**Half (1/2) of GAME_DIAGLENGTH
      */
-    public transient static final int GAME_DIAGLENGTH2 = SCREEN_WIDTH2;
+    public transient static final int GAME_DIAGLENGTH2 = VIEW_WIDTH2;
     
     /**the max. amount of different object types*/
     public transient static final int OBJECTTYPESNUM = 124;
@@ -413,14 +413,13 @@ public abstract class AbstractGameObject implements Serializable {
 		if (id != 0){
 			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
 			Sprite sprite = new Sprite(texture);
-			sprite.setOrigin(SCREEN_WIDTH2, SCREEN_HEIGHT2+texture.offsetY);
+			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2+texture.offsetY);
 			sprite.rotate(rotation);
 			sprite.scale(scale);
 
-			sprite.setPosition(
-				xPos+texture.offsetX-texture.originalWidth/2,
+			sprite.setPosition(xPos+texture.offsetX-texture.originalWidth/2,
 				yPos//center
-					-SCREEN_HEIGHT2
+					-VIEW_HEIGHT2
 					+texture.offsetY
 			);
 			sprite.setColor(tint.tmp().mul(color));
@@ -436,23 +435,21 @@ public abstract class AbstractGameObject implements Serializable {
 					sprite.getHeight()
 				);
 				//crossing lines
-				sh.line(
-					xPos-SCREEN_WIDTH2,
-					yPos-SCREEN_DEPTH2,
-					xPos+SCREEN_WIDTH2,
-					yPos+SCREEN_DEPTH2
+				sh.line(xPos-VIEW_WIDTH2,
+					yPos-VIEW_DEPTH2,
+					xPos+VIEW_WIDTH2,
+					yPos+VIEW_DEPTH2
 				);
-				sh.line(
-					xPos-SCREEN_WIDTH2,
-					yPos+SCREEN_DEPTH2,
-					xPos+SCREEN_WIDTH2,
-					yPos-SCREEN_DEPTH2
+				sh.line(xPos-VIEW_WIDTH2,
+					yPos+VIEW_DEPTH2,
+					xPos+VIEW_WIDTH2,
+					yPos-VIEW_DEPTH2
 				);
 				//bounding box
-				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos-SCREEN_DEPTH2);
-				sh.line(xPos-SCREEN_WIDTH2, yPos, xPos, yPos+SCREEN_DEPTH2);
-				sh.line(xPos, yPos-SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
-				sh.line(xPos, yPos+SCREEN_DEPTH2, xPos+SCREEN_WIDTH2, yPos);
+				sh.line(xPos-VIEW_WIDTH2, yPos, xPos, yPos-VIEW_DEPTH2);
+				sh.line(xPos-VIEW_WIDTH2, yPos, xPos, yPos+VIEW_DEPTH2);
+				sh.line(xPos, yPos-VIEW_DEPTH2, xPos+VIEW_WIDTH2, yPos);
+				sh.line(xPos, yPos+VIEW_DEPTH2, xPos+VIEW_WIDTH2, yPos);
 				sh.end();
 			} else {
 				sprite.draw(view.getBatch());

@@ -75,22 +75,22 @@ public class BlockDrawable extends TextureRegionDrawable {
 
 	@Override
 	public float getLeftWidth() {
-		return Block.SCREEN_WIDTH2*(1f+size);
+		return Block.VIEW_WIDTH2*(1f+size);
 	}
 	
 	@Override
 	public float getRightWidth() {
-		return Block.SCREEN_WIDTH2*(1f+size);
+		return Block.VIEW_WIDTH2*(1f+size);
 	}
 
 	@Override
 	public float getTopHeight() {
-		return (Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH2)*(1f+size);
+		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
 	}
 
 	@Override
 	public float getBottomHeight() {
-		return (Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH2)*(1f+size);
+		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
 	}
 	
     /**
@@ -99,7 +99,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinHeight() {
-        return (Block.SCREEN_HEIGHT+Block.SCREEN_DEPTH)*(1f+size);
+        return (Block.VIEW_HEIGHT+Block.VIEW_DEPTH)*(1f+size);
     }
 
     /**
@@ -108,6 +108,6 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinWidth() {
-        return Block.SCREEN_WIDTH*(1f+size);
+        return Block.VIEW_WIDTH*(1f+size);
     }
 }

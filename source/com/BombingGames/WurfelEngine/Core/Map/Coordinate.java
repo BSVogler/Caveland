@@ -393,7 +393,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	private void refreshCachedPoint(){
 		cachedPoint = new Point(
-            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2!=0 ? AbstractGameObject.SCREEN_WIDTH2 : 0),
+            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2!=0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
             y*AbstractGameObject.GAME_DIAGLENGTH2,
             z*AbstractGameObject.GAME_EDGELENGTH
         );
@@ -428,15 +428,15 @@ public class Coordinate extends AbstractPosition {
     
     @Override
     public int getViewSpcX(GameView view) {
-		return getX() * AbstractGameObject.SCREEN_WIDTH //x-coordinate multiplied by the projected size in x direction
-                //+ AbstractGameObject.SCREEN_WIDTH2 //add half tile for center
-                + (getY() % 2 != 0 ? AbstractGameObject.SCREEN_WIDTH2 : 0); //offset by y
+		return getX() * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+                //+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
+                + (getY() % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
     }
 
     @Override
     public int getViewSpcY(GameView view) {
 		return  
-			getY() * AbstractGameObject.SCREEN_DEPTH2 *
+			getY() * AbstractGameObject.VIEW_DEPTH2 *
 			(
 				view.getOrientation()==0
 				? -1
@@ -448,8 +448,8 @@ public class Coordinate extends AbstractPosition {
 			)
 				
 				
-           // + AbstractGameObject.SCREEN_DEPTH2 //add half tile for center 
-            + z*AbstractGameObject.SCREEN_HEIGHT
+           // + AbstractGameObject.VIEW_DEPTH2 //add half tile for center 
+            + z*AbstractGameObject.VIEW_HEIGHT
         ;
     }
     

@@ -470,17 +470,17 @@ public class Camera implements LinkedWithMap {
 		return 
 				(position.y + getHeightInViewSpc()/2)
 				>
-				(proY- Block.SCREEN_HEIGHT*2)//bottom of sprite
+				(proY- Block.VIEW_HEIGHT*2)//bottom of sprite
 			&&
-				(proY+ Block.SCREEN_HEIGHT2+Block.SCREEN_DEPTH)//top of sprite
+				(proY+ Block.VIEW_HEIGHT2+Block.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInViewSpc()/2
 			&&
-				(proX+ Block.SCREEN_WIDTH2)//right side of sprite
+				(proX+ Block.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInViewSpc()/2
 			&&
-				(proX- Block.SCREEN_WIDTH2)//left side of sprite
+				(proX- Block.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInViewSpc()/2
 		;
@@ -663,7 +663,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public int getVisibleLeftBorder() {
 		//TODO
-		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH);
+		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH);
 	}
 	
 	/**
@@ -684,7 +684,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public int getVisibleRightBorder() {
 		//TODO
-		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.SCREEN_WIDTH + 1);
+		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH + 1);
 	}
 	
 	/**
@@ -704,7 +704,7 @@ public class Camera implements LinkedWithMap {
 		//TODO
 		return (int) (
 			(position.y + getHeightInViewSpc()/2)//camera top border
-			/ -AbstractGameObject.SCREEN_DEPTH2);//back to game space
+			/ -AbstractGameObject.VIEW_DEPTH2);//back to game space
 	}
 	
 	/**
@@ -723,7 +723,7 @@ public class Camera implements LinkedWithMap {
 	public int getVisibleFrontBorder() {
 		return (int) (
 			(position.y+ getHeightInViewSpc()/2) //bottom camera border
-			/ -AbstractGameObject.SCREEN_DEPTH2 //back to game coordinates
+			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
 	

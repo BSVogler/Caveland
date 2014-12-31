@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -84,8 +83,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private int mana = 1000;
 	private boolean indestructible = false;
        
-	private EntityShadow shadow;
-   
 	/**
 	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
 	 */
@@ -119,7 +116,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		coliding = true;
 		floating = false;
         if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
-    }
+		enableShadow();
+   }
    
 	protected MovableEntity(MovableEntity entity) {
 		super(entity.getId());
@@ -132,17 +130,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		floating = entity.floating;
 		collectable = entity.collectable;
 		if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
+		enableShadow();
 	}
 
-	@Override
-	public MovableEntity spawn(Point point) {
-		if (point != null)
-			shadow = (EntityShadow) new EntityShadow(this).spawn(point.cpy());
-		else
-			shadow = null;
-		return (MovableEntity) super.spawn(point);
-	}
-   
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
      * @see #jump(float)
@@ -311,12 +301,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					}
 				}
 			}
-
-            //uncomment this line to see where to player stands:
-            //Controller.getMapDataSafe(getRelCoords()[0], getRelCoords()[1], getRelCoords()[2]-1).setLightlevel(30);
-
-            if (shadow != null)
-				shadow.update(delta);
 
             //slow walking down
 			if (friction>0) {
@@ -636,16 +620,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public void setFriction(int friction) {
 		this.friction = friction;
 	}
-	/**
-	 * 
-	 * @param pos 
-	 */
-	@Override
-	public void setPosition(AbstractPosition pos) {
-		if (shadow != null)
-			shadow.setPosition(pos.cpy());
-		super.setPosition(pos);
-	}
 	
 	/**
 	 * called when in contact with floor or wall. Should be overriden.
@@ -656,7 +630,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
    @Override
     public void dispose(){
         super.dispose();
-        shadow.dispose();
         if (fallingSound!= null) fallingSound.dispose();
         if (jumpingSound!= null) jumpingSound.dispose();
         if (runningSound!= null) runningSound.dispose();

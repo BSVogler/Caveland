@@ -1,7 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -37,18 +36,12 @@ public class Vanya extends MovableEntity {
 	private class BlümchenKacke extends MovableEntity {
 		private static final long serialVersionUID = 1L;
 
-		public BlümchenKacke() {
+		BlümchenKacke() {
 			super(41, 0);
 			setMovementDir(new Vector3(0,0,-1));
 			setFloating(false);
 		}
 
-		@Override
-		public MovableEntity spawn(Point p) {
-			return super.spawn(p);
-		}
-		
-		
 	}
 }
 

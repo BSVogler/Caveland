@@ -70,6 +70,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public static java.util.HashMap<String, Class<? extends AbstractEntity>> getRegisteredEntities() {
 		return entityMap;
 	}
+	private EntityShadow shadow;
 		
     /**
      * Create an abstractEntity.
@@ -85,6 +86,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public void update(float dt){
 		if (animation!=null) animation.update(dt);
+		if (shadow != null)
+			shadow.update(dt);
 	};
 		
     //IsSelfAware implementation
@@ -96,6 +99,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
     @Override
     public void setPosition(AbstractPosition pos) {
         this.position = pos.getPoint();
+		if (shadow != null)
+			shadow.setPosition(pos.cpy());
     }
 
     /**
@@ -139,8 +144,20 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		position = point;
         spawned =true;
 		dispose = false;
+		if (shadow!=null) shadow.spawn(position.cpy());
         return this;
     }
+	
+	public void enableShadow(){
+		shadow = new EntityShadow(this);
+		if (position != null)
+			if (spawned) shadow.spawn(position.cpy());
+	}
+	
+	public void disableShadow(){
+		shadow.dispose();
+		shadow = null;
+	}
     
     /**
      *Is the object active on the map?
@@ -194,6 +211,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     public void dispose(){
         dispose=true;
         spawned=false;
+		if (shadow != null) shadow.dispose();
     }
 
     /**

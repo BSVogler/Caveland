@@ -30,7 +30,7 @@ package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
@@ -73,6 +73,7 @@ public class Bullet extends AbstractEntity {
    
     @Override
     public void update(float dt) {
+		super.update(dt);
         //dir.z=-delta/(float)maxDistance;//fall down
         Vector3 dMov = dir.cpy().scl(dt*speed);
         //dMov.z /= 1.414213562f;//mixed screen and game space together?
@@ -87,7 +88,7 @@ public class Bullet extends AbstractEntity {
         //block hit -> spawn effect
         if (getPosition().isInMemoryHorizontal() && getPosition().getBlock().isObstacle()){
             if (impactSprite!= 0)
-                new AnimatedEntity(impactSprite, 0, new int[]{1000} , true, false).spawn(getPosition().cpy());
+                new SimpleEntity(31).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{1000} , true, false));
             dispose();
         }
         

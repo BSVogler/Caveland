@@ -40,7 +40,7 @@ import com.BombingGames.WurfelEngine.shooting.Bullet;
  * @author Benedikt
  */
 public abstract class AbstractEntity extends AbstractGameObject {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 
 
@@ -48,6 +48,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean spawned;
+	private EntityAnimation animation;
 	/**
 	 * flags if should be saved
 	 */
@@ -82,7 +83,9 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * Updates the logic of the object.
      * @param dt time since last update
      */
-    public abstract void update(float dt);
+    public void update(float dt){
+		if (animation!=null) animation.update(dt);
+	};
 		
     //IsSelfAware implementation
     @Override
@@ -146,7 +149,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
     public boolean spawned(){
         return spawned;
     }
-  
+
+	public EntityAnimation getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(EntityAnimation animation) {
+		this.animation = animation;
+		animation.setParent(this);
+	}
+	
 
     @Override
     public char getCategory() {

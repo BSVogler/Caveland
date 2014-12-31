@@ -42,7 +42,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
  */
 public class Selection extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-    private AnimatedEntity normal;
+    private SimpleEntity normal;
     private Sides normalSide;
     
     /**
@@ -52,8 +52,10 @@ public class Selection extends AbstractEntity {
         super(13);
         setLightlevel(10);
         
-        normal = new AnimatedEntity(14, 0, new int[]{200,200}, true, true);
-        normal.ignoreGameSpeed(true);
+        normal = new SimpleEntity(14);
+		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
+        anim.ignoreGameSpeed(true);
+		normal.setAnimation(anim);
         normal.setLightlevel(10);
     }
 

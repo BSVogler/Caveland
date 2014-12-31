@@ -45,7 +45,8 @@ public class SimpleEntity extends AbstractEntity {
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
+		super.update(dt);
     }
 
 }

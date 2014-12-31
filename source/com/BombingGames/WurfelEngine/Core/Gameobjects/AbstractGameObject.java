@@ -53,63 +53,63 @@ public abstract class AbstractGameObject implements Serializable {
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
      */
-    public static final int SCREEN_DEPTH = 100;
+    public transient static final int SCREEN_DEPTH = 100;
     /**The half (1/2) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/2*/
-    public static final int SCREEN_DEPTH2 = SCREEN_DEPTH / 2;
+    public transient static final int SCREEN_DEPTH2 = SCREEN_DEPTH / 2;
     /**A quarter (1/4) of SCREEN_DEPTH. The short form of: SCREEN_DEPTH/4*/
-    public static final int SCREEN_DEPTH4 = SCREEN_DEPTH / 4;
+    public transient static final int SCREEN_DEPTH4 = SCREEN_DEPTH / 4;
     
     /**
      * The width (x-axis) of the sprite size
      */
-    public static final int SCREEN_WIDTH = 200;
+    public transient static final int SCREEN_WIDTH = 200;
     /**The half (1/2) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/2*/
-    public static final int SCREEN_WIDTH2 = SCREEN_WIDTH / 2;
+    public transient static final int SCREEN_WIDTH2 = SCREEN_WIDTH / 2;
     /**A quarter (1/4) of SCREEN_WIDTH. The short form of: SCREEN_WIDTH/4*/
-    public static final int SCREEN_WIDTH4 = SCREEN_WIDTH / 4;
+    public transient static final int SCREEN_WIDTH4 = SCREEN_WIDTH / 4;
     
     /**
      * The height (y-axis) of the sprite size
      */
-    public static final int SCREEN_HEIGHT = 125;
+    public transient static final int SCREEN_HEIGHT = 125;
     /**The half (1/2) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/2*/
-    public static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
+    public transient static final int SCREEN_HEIGHT2 = SCREEN_HEIGHT / 2;
     /**A quarter (1/4) of SCREEN_HEIGHT. The short form of: SCREEN_WIDTH/4*/
-    public static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
+    public transient static final int SCREEN_HEIGHT4 = SCREEN_HEIGHT / 4;
     
     /**
      * The game spaces dimension in pixel (edge length). 1 game meter ^= 1 GAME_EDGELENGTH
      * The value is calculated by SCREEN_HEIGHT*sqrt(2) because of the axis shortening.
      */
-    public static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
+    public transient static final int GAME_EDGELENGTH = (int) (SCREEN_HEIGHT * Math.sqrt(2));
     
 	    /**
      * Half (1/2) of GAME_EDGELENGTH
      */
-    public static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
+    public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     /**
      * The game space dimension size's aequivalent to SCREEN_DEPTH or SCREEN_WIDTH.
      * Because the x axis is not shortened those two are equal.
      */
-    public static final int GAME_DIAGLENGTH = SCREEN_WIDTH;
+    public transient static final int GAME_DIAGLENGTH = SCREEN_WIDTH;
     
     /**Half (1/2) of GAME_DIAGLENGTH
      */
-    public static final int GAME_DIAGLENGTH2 = SCREEN_WIDTH2;
+    public transient static final int GAME_DIAGLENGTH2 = SCREEN_WIDTH2;
     
     /**the max. amount of different object types*/
-    public static final int OBJECTTYPESNUM = 124;
+    public transient static final int OBJECTTYPESNUM = 124;
       /**the max. amount of different values*/
-    public static final int VALUESNUM = 32;
+    public transient static final int VALUESNUM = 32;
     
 
         
     /**The sprite texture which contains every object texture*/
-    private static TextureAtlas spritesheet;
-	private static String spritesheetPath = "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
-    private static Pixmap pixmap;
-    private static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
-    private static int drawCalls =0;
+    private transient static TextureAtlas spritesheet;
+	private transient static String spritesheetPath = "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
+    private transient static Pixmap pixmap;
+    private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
+    private transient static int drawCalls =0;
 	
     private final int id; 
     private byte value;

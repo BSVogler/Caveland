@@ -207,10 +207,14 @@ public class CustomPlayer extends Controllable {
 			jump(5, !airjump);
 			if (airjump) {
 				jetPackSound.play();
-				for (int i = 0; i < 20; i++) {
-					new Dust(3000f,
-						new Vector3((float) Math.random()*AbstractGameObject.GAME_EDGELENGTH, (float) Math.random()*AbstractGameObject.GAME_EDGELENGTH, -2*AbstractGameObject.GAME_EDGELENGTH)).
-						spawn(getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2));
+				for (int i = 0; i < 40; i++) {
+					new Dust(1000f,
+						new Vector3(
+							(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH,
+							(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH,
+							-4*AbstractGameObject.GAME_EDGELENGTH
+						)).
+						spawn(getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2+(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH));
 				}
 				
 			}

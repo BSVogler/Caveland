@@ -63,6 +63,12 @@ public class Dust extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		timeTillDeath-=dt;
+		//spread on floor
+		if (direction.z <0 && isOnGround()){
+			direction.x *= 2;
+			direction.y *= 2;
+			direction.z = 0;
+		}
 		getPosition().addVector(direction.cpy().scl(dt/1000f));
 		setRotation(getRotation()-dt/40f);
 		getColor().a = timeTillDeath/maxtime;

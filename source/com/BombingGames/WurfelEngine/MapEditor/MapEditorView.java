@@ -358,8 +358,8 @@ public class MapEditorView extends GameView {
 				}
 			} else if (button==Buttons.RIGHT){
 				if (toolSelection.getSelectionRight()==1 && bucketDown!=null ) {
-					bucketDown=null;
 					bucket(bucketDown, coords);
+					bucketDown=null;
 				}
 			}
 			

@@ -160,7 +160,7 @@ public abstract class AbstractPosition implements Serializable {
 							0
 					)
 			)            
-            + getPoint().getZ()*SQRT2//Z
+            + getPoint().getZ()*SQRT12//Z
         );
     }
 }

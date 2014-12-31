@@ -292,8 +292,13 @@ public class MapEditorView extends GameView {
             buttondown=button;
             
             if (button == Buttons.RIGHT){
-				if (toolSelection.getSelectionRight()==1)
+				if (toolSelection.getSelectionRight()==1){
 					bucketDown = coords;
+					if (colorGUI.getMode() == PlaceMode.Blocks) {
+						Block block = colorGUI.getBlock(coords);
+						Controller.getMap().setData(block);
+					}
+				}
 				
 				if (toolSelection.getSelectionRight()==0) {
 					//right click
@@ -318,12 +323,15 @@ public class MapEditorView extends GameView {
 				else if (normal==Sides.RIGHT)
 					coords = coords.neighbourSidetoCoords(3);
 					
-				if (toolSelection.getSelectionLeft()==1)
+				if (toolSelection.getSelectionLeft()==1) {
 					bucketDown = coords;
-				else if (toolSelection.getSelectionLeft()==0){
-					Block block;
 					if (colorGUI.getMode() == PlaceMode.Blocks) {
-						block = colorGUI.getBlock(coords);
+						Block block = colorGUI.getBlock(coords);
+						Controller.getMap().setData(block);
+					}
+				} else if (toolSelection.getSelectionLeft()==0){
+					if (colorGUI.getMode() == PlaceMode.Blocks) {
+						Block block = colorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					} else 
 						colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());

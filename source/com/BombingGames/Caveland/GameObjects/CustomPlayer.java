@@ -205,7 +205,15 @@ public class CustomPlayer extends Controllable {
 		if (!airjump || isOnGround()){
 			if (!isOnGround()) airjump=true;
 			jump(5, !airjump);
-			if (airjump) jetPackSound.play();
+			if (airjump) {
+				jetPackSound.play();
+				for (int i = 0; i < 20; i++) {
+					new Dust(3000f,
+						new Vector3((float) Math.random()*AbstractGameObject.GAME_EDGELENGTH, (float) Math.random()*AbstractGameObject.GAME_EDGELENGTH, -2*AbstractGameObject.GAME_EDGELENGTH)).
+						spawn(getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2));
+				}
+				
+			}
 		}
 	}
 

@@ -5,7 +5,6 @@ import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.Caveland.GameObjects.Tree;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntitySpawner;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.badlogic.gdx.Gdx;
@@ -20,9 +19,6 @@ public class CustomBlockFactory implements BlockFactory {
 public Block produce(int id, int value) {
 	Block block;
 	switch (id){
-		case 40:
-			block = new EntitySpawner(id);
-		break;
 		case 44:
 			block = Block.createBasicInstance(id); //textureless
 			block.setObstacle(true);

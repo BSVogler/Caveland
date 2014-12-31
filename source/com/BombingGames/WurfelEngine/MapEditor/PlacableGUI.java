@@ -50,8 +50,8 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class PlacableGUI extends WidgetGroup {
-	private int id;
-	private int value;
+	private int id =1;
+	private int value=0;
 	private Image image;
 	private Label label;
 	private Label blockPosition;

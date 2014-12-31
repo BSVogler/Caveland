@@ -30,7 +30,10 @@
  */
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -61,10 +64,20 @@ public class Dust extends AbstractEntity {
 	public void update(float dt) {
 		timeTillDeath-=dt;
 		getPosition().addVector(direction.cpy().scl(dt/1000f));
-		setRotation(-(getRotation()+dt/40f));
+		setRotation(getRotation()-dt/40f);
 		getColor().a = timeTillDeath/maxtime;
 		if (timeTillDeath <= 0) dispose();
 	}
+	
+	@Override
+	public void render(GameView view, Camera camera, Color color) {
+        render(
+            view,
+            camera,
+            color,
+            1f
+        );
+    }
 
 	
 }

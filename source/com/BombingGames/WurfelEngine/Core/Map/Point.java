@@ -118,8 +118,8 @@ public class Point extends AbstractPosition {
 			(int) Math.floor(z/Block.GAME_EDGELENGTH)
 		);
 		//clamp at top border
-		if (z >= Chunk.getBlocksZ())
-			coords.setY(Chunk.getBlocksZ()-1);
+		if (coords.getZ() >= Chunk.getBlocksZ())
+			coords.setZ(Chunk.getBlocksZ()-1);
        
 		//return coords;
         //find the specific coordinate (detail)

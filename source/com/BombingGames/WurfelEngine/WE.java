@@ -69,7 +69,6 @@ public class WE {
      */
     public static final String VERSION = "1.4.17";    
     private static File workingDirectory;
-    private static boolean fullscreen = false;
     private static WEGame game;
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;
@@ -310,7 +309,7 @@ public class WE {
      */
     public static void setFullscreen(final boolean fullscreen) {
         Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
-        WE.fullscreen = Gdx.graphics.isFullscreen();
+        config.fullscreen = Gdx.graphics.isFullscreen();
         Gdx.app.debug("Wurfel Engine","Set to fullscreen:"+fullscreen + " It is now:"+WE.isFullscreen());
     }
     
@@ -330,7 +329,7 @@ public class WE {
      */
     public static boolean isFullscreen() {
          if (game != null) {
-            return fullscreen;
+            return config.fullscreen;
         } else {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
             return false;

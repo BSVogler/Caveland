@@ -425,8 +425,8 @@ public class MapEditorView extends GameView {
 				bottom = from.getY();
 			}
 			
-			for (int x = left; x < right; x++) {
-				for (int y = top; y < bottom; y++) {
+			for (int x = left; x <= right; x++) {
+				for (int y = top; y <= bottom; y++) {
 					Controller.getMap().setData(
 						colorGUI.getBlock(new Coordinate(x, y, from.getZ()))
 					);

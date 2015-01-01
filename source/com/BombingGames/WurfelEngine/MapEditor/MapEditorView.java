@@ -208,7 +208,6 @@ public class MapEditorView extends GameView {
         
 		if (camera!=null) {
 			camera.move((int) (camermove.x*cameraspeed*dt), (int) (camermove.y*cameraspeed*dt));
-			camera.setZRenderingLimit(controller.getCurrentLayer());
 		}
     }
 
@@ -407,7 +406,7 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean scrolled(int amount) {
-            controller.setCurrentLayer(controller.getCurrentLayer()-amount);
+            camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
             return true;
         }
 

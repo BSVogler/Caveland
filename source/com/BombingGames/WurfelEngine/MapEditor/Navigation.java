@@ -31,7 +31,6 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -49,7 +48,7 @@ public class Navigation {
      *
      * @param view
      */
-    protected void render(GameView view){
+    protected void render(MapEditorView view){
             //draw layer navigation  on right side
             ShapeRenderer sh = WE.getEngineView().getShapeRenderer();
             Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -63,14 +62,14 @@ public class Navigation {
             int steps = topBorder/(Map.getBlocksZ()+1);
 
             for (int i = 1; i < Map.getBlocksZ()+1; i++) {
-                if (((MapEditorController) view.getController()).getCurrentLayer() == i )
+                if (view.getCameras().get(0).getZRenderingLimit() == i )
                     sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0,0.1f));
                 else 
                     sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.5f));
                 sh.line(
                     rightborder,
                     i*steps,
-                    rightborder-50- ( ((MapEditorController) view.getController()).getCurrentLayer() == i ?40:0),
+                    rightborder-50- ( view.getCameras().get(0).getZRenderingLimit() == i ?40:0),
                     i*steps
                 );
 
@@ -79,7 +78,7 @@ public class Navigation {
                 sh.line(
                     rightborder,
                     i*steps+3,
-                    rightborder-50- ( ((MapEditorController) view.getController()).getCurrentLayer() == i ?40:0),
+                    rightborder-50- ( view.getCameras().get(0).getZRenderingLimit() == i ?40:0),
                     i*steps+3
                 ); 
             }

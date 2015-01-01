@@ -44,7 +44,6 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class MapEditorController extends Controller {
-    private int currentLayer = 0;
     private final Controller gameplayController;
     private final GameView gameplayView;
     /**
@@ -82,7 +81,6 @@ public class MapEditorController extends Controller {
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-        currentLayer = Map.getBlocksZ();
         SelectionEntity = new Selection();
         //focusentity.setPositionY(Block.DIM2+1f);
         SelectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
@@ -98,31 +96,6 @@ public class MapEditorController extends Controller {
             mapsave = null;
     }
     
-   /**
-     * Get the value of currentLayer
-     *
-     * @return the value of currentLayer
-     */
-    public int getCurrentLayer() {
-        return currentLayer;
-    }
-
-    /**
-     * Set the value of currentLayer, the layer until every block gets filtered.
-     *
-     * @param currentLayer new value of currentLayer
-     */
-    public void setCurrentLayer(int currentLayer) {
-        this.currentLayer = currentLayer;
-        
-        //clamp
-        if (currentLayer<0)
-            this.currentLayer=0;//min is 1
-        else if (currentLayer >= Map.getBlocksZ())
-            this.currentLayer=Map.getBlocksZ();
-    }
-    
-
     /**
      *
      * @param reverseMap

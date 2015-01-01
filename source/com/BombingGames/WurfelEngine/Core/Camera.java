@@ -64,7 +64,7 @@ public class Camera implements LinkedWithMap {
 	 * The deepest layer is an array which stores the information if there
 	 * should be a tile rendered
 	 */
-	private int zRenderingLimit;
+	private int zRenderingLimit = Map.getBlocksZ();
 	
 	private boolean[][][][] clipping;
 	/**
@@ -144,8 +144,6 @@ public class Camera implements LinkedWithMap {
 		focusEntity = new SimpleEntity(0);
 		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
 		focusEntity.setHidden(true);
-		
-		zRenderingLimit = Map.getBlocksZ();
 		
 		updateNeededData();
 	}

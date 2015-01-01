@@ -43,6 +43,12 @@ public class ChunkIterator implements Iterator<Block>{
 	private Block[][][] data;
 	private final int limitZ;
 
+	/**
+	 * 
+	 * @param data
+	 * @param startingZ the starting layer
+	 * @param limitZ  the last layer 
+	 */
 	public ChunkIterator(Chunk data, final int startingZ, final int limitZ) {
 		x=-1;//start at -1 because the first call of next should return the first element
 		y=0;
@@ -58,7 +64,7 @@ public class ChunkIterator implements Iterator<Block>{
 		return (
 			   x < Chunk.getBlocksX()-1
 			|| y < Chunk.getBlocksY()-1
-			|| z < Chunk.getBlocksZ()-1
+			|| z < limitZ
 		);
 	}
 

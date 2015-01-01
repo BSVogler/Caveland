@@ -550,7 +550,7 @@ public class Camera implements LinkedWithMap {
 		//create empty array clipping fields
 		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
 		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
-		iter.setTopLimitZ(zRenderingLimit);
+		iter.setTopLimitZ(zRenderingLimit-1);
 			
 		while (iter.hasNext()) {
 			Block next = iter.next();

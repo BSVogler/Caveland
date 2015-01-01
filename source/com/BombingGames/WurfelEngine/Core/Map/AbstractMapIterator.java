@@ -48,8 +48,8 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 
 	public abstract boolean hasNextChunk();
 	
-		/**
-	 * set the top limit of the iteration
+	/**
+	 * set the top/last limit of the iteration (including).
 	 * @param zLimit 
 	 */
 	public void setTopLimitZ(int zLimit) {

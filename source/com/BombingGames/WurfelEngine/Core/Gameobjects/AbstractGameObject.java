@@ -436,12 +436,14 @@ public abstract class AbstractGameObject implements Serializable {
 					sprite.getHeight()
 				);
 				//crossing lines
-				sh.line(xPos-VIEW_WIDTH2,
+				sh.line(
+					xPos-VIEW_WIDTH2,
 					yPos-VIEW_DEPTH2,
 					xPos+VIEW_WIDTH2,
 					yPos+VIEW_DEPTH2
 				);
-				sh.line(xPos-VIEW_WIDTH2,
+				sh.line(
+					xPos-VIEW_WIDTH2,
 					yPos+VIEW_DEPTH2,
 					xPos+VIEW_WIDTH2,
 					yPos-VIEW_DEPTH2

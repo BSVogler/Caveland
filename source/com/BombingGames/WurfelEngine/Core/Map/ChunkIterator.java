@@ -41,7 +41,7 @@ import java.util.Iterator;
 public class ChunkIterator implements Iterator<Block>{
 	private int x, y, z;
 	private Block[][][] data;
-	private final int limitZ;
+	private int limitZ;
 
 	/**
 	 * 
@@ -57,7 +57,13 @@ public class ChunkIterator implements Iterator<Block>{
 		this.data = data.getData();
 	}
 	
-	
+	/**
+	 * set the top/last limit of the iteration (including).
+	 * @param zLimit 
+	 */
+	public void setTopLimitZ(int zLimit) {
+		this.limitZ = zLimit;
+	}
 
 	@Override
 	public boolean hasNext() {

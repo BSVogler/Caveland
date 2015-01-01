@@ -49,14 +49,14 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
 	 */
-	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ) {
-		setTopLimitZ(Map.getBlocksZ()-1);
+	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+		setTopLimitZ(topLevel);
 		setStartingZ(startingZ);
 		centerChunkX = centerCoordX;
 		centerChunkY = centerCoordY;
 		//bring starting position to top left
 		current = Controller.getMap().getChunk(centerChunkX-1, centerChunkY-1);
-		blockIterator = current.getIterator(startingZ, getTopLimitZ());
+		blockIterator = current.getIterator(startingZ, topLevel);
 	}
 
 	/**

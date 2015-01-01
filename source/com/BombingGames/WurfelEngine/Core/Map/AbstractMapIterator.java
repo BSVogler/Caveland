@@ -54,6 +54,7 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	 */
 	public void setTopLimitZ(int zLimit) {
 		this.topLimitZ = zLimit;
+		if (blockIterator!=null) blockIterator.setTopLimitZ(zLimit);
 	}
 
 	public int getTopLimitZ() {

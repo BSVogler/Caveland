@@ -417,7 +417,7 @@ public class Camera implements LinkedWithMap {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 		if (CVar.get("enableHSD").getValueb()){
 			//add hidden surfeace depth buffer
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ()-1);
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				Block block = iterator.next();
 				//only add if in view plane to-do
@@ -431,7 +431,7 @@ public class Camera implements LinkedWithMap {
 				depthsort.add(block);
 			}	
 		}else {
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ()-1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
 				if (!block.isHidden()){
@@ -549,8 +549,7 @@ public class Camera implements LinkedWithMap {
 				
 		//create empty array clipping fields
 		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
-		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1);
-		iter.setTopLimitZ(zRenderingLimit-1);
+		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, zRenderingLimit-1);
 			
 		while (iter.hasNext()) {
 			Block next = iter.next();
@@ -957,6 +956,8 @@ public class Camera implements LinkedWithMap {
 	}
 
 	public boolean[] getClipping(Coordinate coords) {
+		if (coords.getZ() >= zRenderingLimit) return new boolean[]{true, true, true};
+		
 		//get the index position in the clipping field
 		int indexX = coords.getX()-getCoveredLeftBorder();
 		int indexY = coords.getY()-getCoveredBackBorder();

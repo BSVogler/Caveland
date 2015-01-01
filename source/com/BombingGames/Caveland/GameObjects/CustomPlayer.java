@@ -58,6 +58,7 @@ public class CustomPlayer extends Controllable {
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
 		setFriction(1);
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
+		setSaveToDisk(false);
     }
 	
 	/**

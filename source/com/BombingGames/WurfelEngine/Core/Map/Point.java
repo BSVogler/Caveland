@@ -229,7 +229,7 @@ public class Point extends AbstractPosition {
 				  )
 			)
 			
-            + (int) (getZ() * SQRT12) //take z-axis shortening into account
+            + (int) (getZ() * 8f/9f) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
             - AbstractGameObject.VIEW_HEIGHT2//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
 			);
     }

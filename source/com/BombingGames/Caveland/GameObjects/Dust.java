@@ -58,6 +58,7 @@ public class Dust extends AbstractEntity {
 		this.direction = direction;
 		timeTillDeath=maxtime;
 		setTransparent(true);
+		setSaveToDisk(false);
 	}
 
 	@Override

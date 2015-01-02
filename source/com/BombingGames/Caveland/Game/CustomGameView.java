@@ -107,7 +107,8 @@ public class CustomGameView extends GameView{
                     input.isKeyPressed(Input.Keys.S),
                     input.isKeyPressed(Input.Keys.A),
                     input.isKeyPressed(Input.Keys.D),
-                    5f*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.25f: 1)
+                    CVar.get("playerWalkingSpeed").getValuef()*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+					dt
                 );
             } else {
                 //update camera position

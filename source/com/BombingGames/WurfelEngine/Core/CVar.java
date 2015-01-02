@@ -108,6 +108,8 @@ public class CVar {
 		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
 		register("loadEntities", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);
+		register("walkingAnimationSpeedCorrection", 1.0f, CVarFlags.CVAR_ARCHIVE);
+		register("playerWalkingSpeed", 4.0f, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**

@@ -56,7 +56,7 @@ public class CustomPlayer extends Controllable {
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
-		setFriction(299);
+		setFriction(50);
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
     }

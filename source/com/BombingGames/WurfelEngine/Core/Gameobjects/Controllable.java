@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -41,7 +42,7 @@ public class Controllable extends MovableEntity {
 
 	public Controllable(int id, int spritesPerDir) {
 		super(id, spritesPerDir);
-		setFriction(300);
+		setFriction(50);
 	}
 	
    /**
@@ -51,23 +52,36 @@ public class Controllable extends MovableEntity {
      * @param left move left?
      *  @param right move right?
      * @param walkingspeed the higher the speed the bigger the steps. Should be in m/s.
+	 * @param dt
      */
-    public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed) {
+    public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
         if (up || down || left || right){
 			
 			//update the direction vector
-			Vector3 dir = new Vector3(0f,0f,0f);
+			Vector2 dir = new Vector2(0f,0f);
 
             if (up)    dir.y += -1;
             if (down)  dir.y += 1;
             if (left)  dir.x += -1;
             if (right) dir.x += 1;
+			dir.nor().scl(walkingspeed);
 			
-			//todo
 			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
 			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
-			dir.scl(walkingspeed);
-			addMovement(dir);
+//			float accelaration =30;//in m/s^2
+//			dir.scl(accelaration*dt/1000f);//in m/s
+			
+			//check if will reach max velocity
+//			Vector3 res = getMovement().add(dir.cpy());
+//			res.z=0;
+//			if (res.len() > walkingspeed){
+//				//scale that it will not exceed the walkingspeed
+//				dir.nor().scl((walkingspeed-res.len()));
+//			}
+//			addMovement(dir);
+			
+			//repalce horizontal movement if walking
+			replaceHorMovement(dir);
         }
    }
 	@Override

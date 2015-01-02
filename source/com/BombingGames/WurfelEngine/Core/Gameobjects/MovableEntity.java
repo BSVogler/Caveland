@@ -36,6 +36,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -89,11 +90,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private int walkingCycle;
 	private boolean collectable;
-	/**
-	 * A factor to make the animation fit the movement speed.
-	 */
-	private float animSpeedCorrection = 4;
-
 	
 	   /**
      * Set the value of waterSound
@@ -199,7 +195,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					new Vector3(0, 0, -CVar.get("gravity").getValuef()*t) //in m/s
 				);
 
-			//slow walking down
+			//add movement
+			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
+			
+//slow walking down
 			if (friction>0) {
 				//friction is 1/10, atmm for x,y!
 				Vector3 frictionVec = getMovement().scl(-dt/friction);
@@ -207,9 +206,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				addMovement(frictionVec);
 			}
 			
-			//add movement
-			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
-
 			//check new height for colission            
 			//land if standing in or under 0-level or there is an obstacle
 			if (movementDir.z < 0 && isOnGround()){
@@ -231,7 +227,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 
 			//cycle
-			walkingCycle += dt*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
+			walkingCycle += dt*speed*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
 			if (walkingCycle > 1000) {
 				walkingCycle=0;
 				stepSoundPlayedInCiclePhase=false;//reset variable
@@ -497,6 +493,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		Vector3 attackmove = getMovement();
 		attackmove.z = 0;
 		addMovement(attackmove.nor().scl(speed));//add 1.2 m/s in move direction
+	}
+	
+	public void replaceHorMovement(Vector2 movement){
+		Vector3 tmp = getMovement();
+		tmp.x = movement.x;
+		tmp.y = movement.y;
+		setMovement(tmp);
 	}
 	
 

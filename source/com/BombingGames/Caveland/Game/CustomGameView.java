@@ -107,7 +107,7 @@ public class CustomGameView extends GameView{
                     input.isKeyPressed(Input.Keys.S),
                     input.isKeyPressed(Input.Keys.A),
                     input.isKeyPressed(Input.Keys.D),
-                    .5f+(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 0.25f: 0)
+                    5f*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.25f: 1)
                 );
             } else {
                 //update camera position

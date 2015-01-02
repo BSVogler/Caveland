@@ -30,6 +30,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -42,7 +43,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt
  */
 public class MovableEntity extends AbstractEntity implements Cloneable  {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	
 	/**
 	 * time to pass before new sound can be played
@@ -53,14 +54,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private final int spritesPerDir;
       
    /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
-	private int friction = 0;
+	private float friction = 0;
       
 	/**
 	 * direction of movement
 	 */
 	private Vector3 movementDir;
    /**The walking/running speed of the character. provides a factor for the horizontal part of the movement vector*/
-	private float speedHorizontal;
+	private float speed;
 	private boolean coliding;
 	/**
 	 * affected by gractiy
@@ -111,7 +112,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         super(id);
         this.spritesPerDir = spritesPerDir;
 		movementDir = new Vector3(0,0,0);
-		speedHorizontal = 0.5f;
+		speed = 0.5f;
         
 		coliding = true;
 		floating = false;
@@ -124,7 +125,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		this.spritesPerDir = entity.spritesPerDir;
 		movementDir = entity.movementDir;
 		friction = entity.friction;
-		speedHorizontal = entity.speedHorizontal;
+		speed = entity.speed;
         
 		coliding = entity.coliding;
 		floating = entity.floating;
@@ -147,7 +148,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param playSound
      */
     public void jump(float velo, boolean playSound) {
-		movementDir.z = velo;
+		addMovement(new Vector3(0, 0, velo));
 		if (playSound && jumpingSound != null) jumpingSound.play();
     }
 	
@@ -162,10 +163,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
    /**
      * Updates the character.
-     * @param delta time since last update in ms
+     * @param dt time since last update in ms
      */
     @Override
-    public void update(float delta) {
+    public void update(float dt) {
         //clamp health & mana
         if (mana > 1000) mana = 1000;
         if (mana < 0) mana = 0;
@@ -173,56 +174,64 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (getPosition()!= null && getPosition().isInMemoryHorizontal()) {
-
-            /*VERTICAL MOVEMENT*/
-				float oldHeight = getPosition().getZ();
-				float t = delta/1000f; //t = time in s
-				if (!floating)
-					if (!isOnGround())
-						movementDir.z -= CVar.get("gravity").getValuef()*t; //in m/s
-				getPosition().setZ(
-					getPosition().getZ() + movementDir.z * GAME_EDGELENGTH * t
-				); //in m
-
-
-				//check new height for colission            
-				//land if standing in or under 0-level or there is an obstacle
-				if (movementDir.z < 0 && isOnGround()){
-					onCollide();
-					if (landingSound != null)
-						landingSound.play();//play landing sound
-					if (fallingSound != null)
-						fallingSound.stop();//stop falling sound
-					movementDir.z = 0;
-
-					//set on top of block
-					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
-				}
-
-				if (!inliquid && getPosition().getBlock().isLiquid())//if enterin water
-					if (waterSound!=null) waterSound.play();
-
-				inliquid = getPosition().getBlock().isLiquid();//save if in water
-
-
+			float t = dt/1000f; //t = time in s
 			/*HORIZONTAL MOVEMENT*/
-				//calculate new position
-				float[] dMove = new float[]{
-					delta * speedHorizontal * movementDir.x,
-					delta * speedHorizontal * movementDir.y,
-					0
-				};
+			//calculate new position
+			float[] dMove = new float[]{
+				t * speed * movementDir.x*GAME_EDGELENGTH,
+				t * speed * movementDir.y*GAME_EDGELENGTH,
+				0
+			};
 
-				//if movement allowed => move
-				if (!coliding || ! horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
-						getPosition().addVector(dMove);
-				} else {
-					onCollide();
-				}
+			//if movement allowed => move
+			if (coliding &&  horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+				//stop
+				addMovement(
+					new Vector3(-getMovement().x, -getMovement().y, 0)
+				);
+				onCollide();
+			}
+
+			/*VERTICAL MOVEMENT*/
+			float oldHeight = getPosition().getZ();
+			if (!floating && !isOnGround())
+				addMovement(
+					new Vector3(0, 0, -CVar.get("gravity").getValuef()*t) //in m/s
+				);
+
+			//slow walking down
+			if (friction>0) {
+				//friction is 1/10, atmm for x,y!
+				Vector3 frictionVec = getMovement().scl(-dt/friction);
+				frictionVec.z = 0;
+				addMovement(frictionVec);
+			}
+			
+			//add movement
+			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
+
+			//check new height for colission            
+			//land if standing in or under 0-level or there is an obstacle
+			if (movementDir.z < 0 && isOnGround()){
+				onCollide();
+				if (landingSound != null)
+					landingSound.play();//play landing sound
+				if (fallingSound != null)
+					fallingSound.stop();//stop falling sound
+				movementDir.z = 0;
+
+				//set on top of block
+				getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+			}
+
+			if (!inliquid && getPosition().getBlock().isLiquid())//if enterin water
+				if (waterSound!=null) waterSound.play();
+
+			inliquid = getPosition().getBlock().isLiquid();//save if in water
 
 
 			//cycle
-			walkingCycle += delta*speedHorizontal*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
+			walkingCycle += dt*speed*animSpeedCorrection;//multiply by animSpeedCorrection to make the animation fit the movement speed
 			if (walkingCycle > 1000) {
 				walkingCycle=0;
 				stepSoundPlayedInCiclePhase=false;//reset variable
@@ -302,16 +311,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 			}
 
-            //slow walking down
-			if (friction>0) {
-				if (speedHorizontal > 0) speedHorizontal -= delta/ friction;
-				if (speedHorizontal < 0) speedHorizontal = 0;
-			}
-            
             /* SOUNDS */
             //should the runningsound be played?
             if (runningSound != null) {
-                if (speedHorizontal < 0.5f) {
+                if (speed < 0.5f) {
                     runningSound.stop();
                     runningSoundPlaying = false;
                 } else {
@@ -335,7 +338,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                 }
             }
 			
-            if (soundlimit>0)soundlimit-=delta;
+            if (soundlimit>0)soundlimit-=dt;
             
             if (getHealth()<=0 && !indestructible)
                 dispose();
@@ -381,18 +384,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-        if (pos.cpy().addVector(0, - colissionRadius, 0).getCoord().getBlock().isObstacle())
+        if (pos.cpy().addVector(0, - colissionRadius, 0).getBlock().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(0, colissionRadius, 0).getCoord().getBlock().isObstacle())
+        if (pos.cpy().addVector(0, colissionRadius, 0).getBlock().isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.cpy().addVector(-colissionRadius, 0, 0).getCoord().getBlock().isObstacle())
+        if (pos.cpy().addVector(-colissionRadius, 0, 0).getBlock().isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(colissionRadius, 0, 0).getCoord().getBlock().isObstacle())
+        if (pos.cpy().addVector(colissionRadius, 0, 0).getBlock().isObstacle())
             colission = true;
         
         return colission;
@@ -455,10 +458,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Get the movement vector as the product of diretion and speed.
-	 * @return 
+	 * @return in m/s
 	 */
 	public Vector3 getMovement(){
-		return movementDir.cpy().scl(speedHorizontal);
+		return movementDir.cpy().scl(speed);
 	}
 
 	/**
@@ -466,12 +469,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param dir
 	 */
 	public void setMovementDir(Vector3 dir) {
-	    double len = Math.sqrt(dir.x*dir.x+dir.y*dir.y);
-		if (len != 0f && len != 1f) {
-			dir.x /= len;
-			dir.y /= len;
-		}
-		this.movementDir = dir;
+		this.movementDir = dir.nor();
 	}
 	
 	/**
@@ -479,18 +477,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param movement containing direction and speed.
 	 */
 	public void setMovement(Vector3 movement){
-		double len = Math.sqrt(movement.x*movement.x+movement.y*movement.y);
-		if (len != 0f && len != 1f) {
-			movement.x /= len;
-			movement.y /= len;
-		}
-		this.movementDir = movement;
-		speedHorizontal = (float) len;
+		speed = movement.len();
+		this.movementDir = movement.nor();
 	}
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed.
+	 * @param movement containing direction and speed in m/s.
 	 */
 	public void addMovement(Vector3 movement){
 		setMovement(getMovement().add(movement));
@@ -498,7 +491,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 
 	public float getSpeed() {
-		return speedHorizontal;
+		return speed;
 	}
 
 	/**
@@ -506,7 +499,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param speed
 	 */
 	public void setSpeed(float speed) {
-		this.speedHorizontal = speed;
+		this.speed = speed;
 	}
 	
 
@@ -541,6 +534,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     @Override
     public boolean isOnGround() {
         if (getPosition().getZ()> 0){
+			if (getPosition().getZ()> Map.getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);
                 
                 boolean colission = getPosition().getBlock().isObstacle() || horizontalColission(getPosition());
@@ -609,7 +603,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         this.mana = mana;
     }
 
-	public int getFriction() {
+	public float getFriction() {
 		return friction;
 	}
 
@@ -617,7 +611,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * autoamtically slows speed down.
 	 * @param friction The higher the value, the more "slide". If =0 friciton is disabled.
 	 */
-	public void setFriction(int friction) {
+	public void setFriction(float friction) {
 		this.friction = friction;
 	}
 	

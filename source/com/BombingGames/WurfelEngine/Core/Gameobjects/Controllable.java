@@ -41,7 +41,7 @@ public class Controllable extends MovableEntity {
 
 	public Controllable(int id, int spritesPerDir) {
 		super(id, spritesPerDir);
-		setFriction(200);
+		setFriction(300);
 	}
 	
    /**
@@ -63,7 +63,8 @@ public class Controllable extends MovableEntity {
             if (left)  dir.x += -1;
             if (right) dir.x += 1;
 			
-			//todo set speed to 0 if at max allowed speed for accelaration and moving in movement direction
+			//todo
+			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
 			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
 			dir.scl(walkingspeed);
 			addMovement(dir);
@@ -71,7 +72,7 @@ public class Controllable extends MovableEntity {
    }
 	@Override
 	public void jump() {
-		jump(1, true);
+		jump(3, true);
 	}
 
 	@Override

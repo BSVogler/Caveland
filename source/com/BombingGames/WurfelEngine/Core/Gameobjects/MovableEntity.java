@@ -226,23 +226,25 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			inliquid = getPosition().getBlock().isLiquid();//save if in water
 
 
-			//cycle
-			walkingCycle += dt*speed*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
-			if (walkingCycle > 1000) {
-				walkingCycle=0;
-				stepSoundPlayedInCiclePhase=false;//reset variable
-			}
-			
-			//play sound twice a cicle
-			if (walkingCycle<250){
-				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-					step();
+			//walking cycle
+			if (floating || isOnGround()) {
+				walkingCycle += dt*speed*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+				if (walkingCycle > 1000) {
+					walkingCycle=0;
+					stepSoundPlayedInCiclePhase=false;//reset variable
 				}
-			} else if (walkingCycle < 500){
-				stepSoundPlayedInCiclePhase=false;
-			} else if (walkingCycle > 500){
-				if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-					step();
+
+				//play sound twice a cicle
+				if (walkingCycle<250){
+					if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+						step();
+					}
+				} else if (walkingCycle < 500){
+					stepSoundPlayedInCiclePhase=false;
+				} else if (walkingCycle > 500){
+					if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+						step();
+					}
 				}
 			}
 				

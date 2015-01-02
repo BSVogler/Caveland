@@ -48,10 +48,10 @@ public class Enemy extends MovableEntity{
 
 				d.x = target.getPosition().getX()-getPosition().getX();
                 d.y = target.getPosition().getY()-getPosition().getY();
-				d.z = getMovementDirection().z;
+				d.z = getMovement().z;
 				d.scl(0.4f);
 				// update the movement vector
-				setMovementDir(getMovementDirection().cpy().scl(getSpeed()).add(d));
+				setMovement(getMovement().add(d));
 
 				if (getPosition().distanceTo(target)<120) {
 					//setSpeed(0);

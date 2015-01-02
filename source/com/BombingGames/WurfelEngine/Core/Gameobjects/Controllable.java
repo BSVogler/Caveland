@@ -31,7 +31,6 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -89,9 +88,4 @@ public class Controllable extends MovableEntity {
 		jump(3, true);
 	}
 
-	@Override
-	public Vector3 getAiming() {
-		return getMovementDirection();
-	}
-	
 }

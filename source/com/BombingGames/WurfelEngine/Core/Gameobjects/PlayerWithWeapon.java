@@ -82,7 +82,7 @@ public class PlayerWithWeapon extends Controllable {
                 0
             );
         }else{
-            aim = getMovementDirection().cpy();
+            aim = new Vector3(getOrientation(),0);
         }
         return aim.nor();
     }

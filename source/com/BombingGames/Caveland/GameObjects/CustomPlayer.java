@@ -87,8 +87,7 @@ public class CustomPlayer extends Controllable {
     
     @Override
     public Vector3 getAiming() {
-        Vector3 aim = getMovementDirection().cpy();
-        aim.z = aimHeight;
+        Vector3 aim = new Vector3(getOrientation(), aimHeight);
         aim.nor();
         return aim;
     }
@@ -130,7 +129,7 @@ public class CustomPlayer extends Controllable {
 		
 		ArrayList<Lore> loren = pos.getCoord().getEntitysInside(Lore.class);
 		if (loren.size()>0 && loren.get(0).getSpeed()==0){//anstupsen
-			loren.get(0).addMovement(getMovementDirection().scl(1f));
+			loren.get(0).addMovement(new Vector3(getOrientation().scl(1f),0));
 		}
 		
 		if (timeSinceDamage>4000)
@@ -144,7 +143,7 @@ public class CustomPlayer extends Controllable {
 		try {
 			MovableEntity item = inventory.getFrontItem();
 			if (item != null) {
-				item.setMovementDir(getAiming());
+				item.setMovement(getAiming());
 				//item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
 			}
@@ -155,7 +154,7 @@ public class CustomPlayer extends Controllable {
 	
 	public void attack(){
 		attackSound.play();
-		addToHor(1.2f);//add 1.2 m/s in move direction
+		addToHor(8f);//add 5 m/s in move direction
 		
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
@@ -166,13 +165,13 @@ public class CustomPlayer extends Controllable {
 				MovableEntity movable = (MovableEntity) entity;
 				movable.damage(500);
 				getCamera().shake(20, 50);
-				movable.setMovementDir(
-						new Vector3(
+				movable.setMovement(
+					new Vector3(
 							(float) (getAiming().x+Math.random()*0.5f-0.25f),
 							(float) (getAiming().y+Math.random()*0.5f-0.25f),
 							(float) Math.random()
-						)
-					);
+					)
+				);
 				//movable.setSpeed(2);
 			}
 		}
@@ -235,7 +234,7 @@ public class CustomPlayer extends Controllable {
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
-			addToHor(7f);
+			addToHor(20f);
 			attack();
 		}
 	

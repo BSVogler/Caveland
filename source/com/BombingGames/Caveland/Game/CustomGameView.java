@@ -17,6 +17,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -121,8 +122,14 @@ public class CustomGameView extends GameView{
                 );
             }
 			
-			//if (XboxListener.speed[0]!=-1)
-			//	getPlayer(0).setSpeed(XboxListener.speed[0]);
+			if (XboxListener.speed[0]!=-1){
+			Vector2 direction = getPlayer(0).getOrientation();
+				getPlayer(0).replaceHorMovement(
+					new Vector2(direction.x, direction.y).scl(
+						(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
+					)
+				);
+			}
 					
 			if (contextDown)
 				timeContextDown+=dt;
@@ -210,21 +217,21 @@ public class CustomGameView extends GameView{
 				   +Math.abs(controller.getAxis(3)))/2;
 				if (speed[id] < 0.2f){
 					if (speed[id] > 0.1f) {
-						controllable.setMovementDir(
+						controllable.setMovement(
 							new Vector3(
 								controller.getAxis(2),
 								controller.getAxis(3),
-								controllable.getMovementDirection().z
+								controllable.getMovement().z
 							)
 						);
 					}
 					speed[id] = 0;
 				} else {
-					controllable.setMovementDir(
+					controllable.setMovement(
 						new Vector3(
 							controller.getAxis(2),
 							controller.getAxis(3),
-							controllable.getMovementDirection().z
+							controllable.getMovement().z
 						)
 					);
 				}

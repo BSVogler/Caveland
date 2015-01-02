@@ -92,7 +92,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 * some effect
 	 */
 	public void sparkle(){
-		setMovementDir(new Vector3((float) Math.random()-0.5f,(float) Math.random()-0.5f,(float)  Math.random()));
+		setMovement(new Vector3((float) Math.random()-0.5f,(float) Math.random()-0.5f,(float)  Math.random()));
 	}
 
 	public Def getDef() {

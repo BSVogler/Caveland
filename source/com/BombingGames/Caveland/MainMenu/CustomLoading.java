@@ -49,6 +49,7 @@ public class CustomLoading extends LoadingScreen {
 		manager.load("com/BombingGames/Caveland/sounds/ha.wav", Sound.class);
 		manager.load("com/BombingGames/Caveland/sounds/loadAttack.wav", Sound.class);
 		manager.load("com/BombingGames/Caveland/sounds/attack.wav", Sound.class);
+		manager.load("com/BombingGames/Caveland/sounds/urf_jump.wav", Sound.class);
 	}
 	
 }

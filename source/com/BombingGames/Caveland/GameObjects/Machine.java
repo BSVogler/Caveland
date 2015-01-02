@@ -30,7 +30,7 @@ public class Machine extends Block {
 			if (content != null && content.size()>0)
 				loreIncoming.addAll(fillContent(content));
 			loreIncoming.turn();
-			loreIncoming.setSpeed(1);
+			loreIncoming.addToHor(1);
 		}
 		
 		//produce 2 sulfur + 1 coal = 1 flint

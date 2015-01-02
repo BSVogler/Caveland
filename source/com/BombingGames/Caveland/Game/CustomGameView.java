@@ -120,8 +120,8 @@ public class CustomGameView extends GameView{
                 );
             }
 			
-			if (XboxListener.speed[0]!=-1)
-				getPlayer(0).setSpeed(XboxListener.speed[0]);
+			//if (XboxListener.speed[0]!=-1)
+			//	getPlayer(0).setSpeed(XboxListener.speed[0]);
 					
 			if (contextDown)
 				timeContextDown+=dt;

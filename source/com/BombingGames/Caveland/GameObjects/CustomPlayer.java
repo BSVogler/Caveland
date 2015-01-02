@@ -141,7 +141,7 @@ public class CustomPlayer extends Controllable {
 			MovableEntity item = inventory.getFrontItem();
 			if (item != null) {
 				item.setMovementDir(getAiming());
-				item.setSpeed(0.5f);
+				//item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
 			}
 		} catch (CloneNotSupportedException ex) {
@@ -151,9 +151,12 @@ public class CustomPlayer extends Controllable {
 	
 	public void attack(){
 		attackSound.play();
+		addToHor(1.2f);//add 1.2 m/s in move direction
+		
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
 		entities.addAll(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+		//check hit
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
 				MovableEntity movable = (MovableEntity) entity;
@@ -166,7 +169,7 @@ public class CustomPlayer extends Controllable {
 							(float) Math.random()
 						)
 					);
-				movable.setSpeed(2);
+				//movable.setSpeed(2);
 			}
 		}
 		
@@ -228,7 +231,7 @@ public class CustomPlayer extends Controllable {
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
-			setSpeed(getSpeed()+1.5f);
+			addToHor(7f);
 			attack();
 		}
 	

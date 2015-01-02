@@ -45,7 +45,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		this.color = def.getColor();
 		this.def = def;
 		setFloating(false);
-		setSpeed(0.2f);
+		//setSpeed(0.2f);
 		setFriction(2000);
 		setIndestructible(true);
 		setCollectable(true);

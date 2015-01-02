@@ -489,19 +489,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		setMovement(getMovement().add(movement));
 	}
 	
+	/**
+	 * Adds speed to horizontal moving directio.
+	 * @param speed containing direction and speed in m/s.
+	 */
+	public void addToHor(float speed){
+		Vector3 attackmove = getMovement();
+		attackmove.z = 0;
+		addMovement(attackmove.nor().scl(speed));//add 1.2 m/s in move direction
+	}
+	
 
 	public float getSpeed() {
 		return speed;
 	}
-
-	/**
-	 * 
-	 * @param speed
-	 */
-	public void setSpeed(float speed) {
-		this.speed = speed;
-	}
-	
 
 	public boolean isColiding() {
 		return coliding;

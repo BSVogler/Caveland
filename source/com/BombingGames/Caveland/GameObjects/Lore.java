@@ -20,7 +20,7 @@ public class Lore extends MovableEntity {
 	public Lore() {
 		super(42, 0);
 		setMovementDir(new Vector3(1, 1, 0));
-		setSpeed(0);
+		//setSpeed(0);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class Lore extends MovableEntity {
 		if (block.getId() == 55) {
 			setFriction(10000);
 			if (getSpeed() > 0) {
-				setSpeed(1);
+				//setSpeed(1);
 			}
 
 			float mov_z = getMovementDirection().z;
@@ -99,7 +99,7 @@ public class Lore extends MovableEntity {
 			passenger.getMovementDirection().y = getMovementDirection().y;
 
 			passenger.setFriction(getFriction());
-			passenger.setSpeed(getSpeed());
+			//passenger.setSpeed(getSpeed());
 
 			if (passenger.isOnGround()) {//while standing force into lore
 				Point tmp = pos.cpy();
@@ -134,7 +134,7 @@ public class Lore extends MovableEntity {
 							(float) Math.random()
 						)
 					);
-					ent.setSpeed(getSpeed());
+					ent.addToHor(getSpeed());
 				} else {
 					System.out.println("selfcollide");
 				}

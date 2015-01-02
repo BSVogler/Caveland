@@ -54,7 +54,7 @@ public class Enemy extends MovableEntity{
 				setMovementDir(getMovementDirection().cpy().scl(getSpeed()).add(d));
 
 				if (getPosition().distanceTo(target)<120) {
-					setSpeed(0);
+					//setSpeed(0);
 					setMana((int) (getMana()+dt));
                     if (getMana()>=1000){
                         setMana(0);//reset
@@ -63,8 +63,8 @@ public class Enemy extends MovableEntity{
 						);
                         target.damage(50);
                     }
-				} else 
-					setSpeed(0.4f);
+				}// else 
+					//setSpeed(0.4f);
             }
             //update as usual
             super.update(dt);

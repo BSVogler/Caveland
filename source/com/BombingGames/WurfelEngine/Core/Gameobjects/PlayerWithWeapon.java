@@ -29,10 +29,8 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.WE;
 import com.BombingGames.WurfelEngine.shooting.Weapon;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
 
@@ -55,13 +53,6 @@ public class PlayerWithWeapon extends Controllable {
     public PlayerWithWeapon(int spritesPerDir, int height) {
         super(30, spritesPerDir);
         Gdx.app.debug("Player", "Creating player");
-        setFallingSound(
-            (Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
-        );
-        setLandingSound((Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
-        );
         
         setTransparent(true);
         setObstacle(true);

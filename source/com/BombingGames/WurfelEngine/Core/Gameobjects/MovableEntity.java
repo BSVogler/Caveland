@@ -73,7 +73,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private transient Sound stepSound1Grass;
 	private transient boolean stepSoundPlayedInCiclePhase;
 	private transient Sound fallingSound;
-	private transient boolean fallingSoundPlaying;
+	private transient long fallingSoundPlaying;
 	private transient Sound runningSound;
 	private transient boolean runningSoundPlaying;
 	private transient Sound jumpingSound;
@@ -210,10 +210,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//land if standing in or under 0-level or there is an obstacle
 			if (movementDir.z < 0 && isOnGround()){
 				onCollide();
+				
 				if (landingSound != null)
 					landingSound.play();//play landing sound
-				if (fallingSound != null)
-					fallingSound.stop();//stop falling sound
 				movementDir.z = 0;
 
 				//set on top of block
@@ -325,14 +324,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
             //should the fallingsound be played?
             if (fallingSound != null) {
-                if (movementDir.z < -1) {
-                    if (!fallingSoundPlaying){
-                        fallingSound.play();
-                        fallingSoundPlaying = true;
+                if (getMovementDirection().z < 0 && speed > 0.0f) {
+					fallingSound.setVolume(fallingSoundPlaying, speed/10f);
+                    if (fallingSoundPlaying == 0){
+                        fallingSoundPlaying = fallingSound.loop();
                     }
                 }else {
                     fallingSound.stop();
-                    fallingSoundPlaying = false;
+                    fallingSoundPlaying = 0;
                 }
             }
 			
@@ -406,6 +405,27 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     public void setFallingSound(Sound fallingSound) {
         this.fallingSound = fallingSound;
     }
+	
+	/**
+	 * Loads the default sound included with the engine.
+	 */
+	public void loadEngineFallingSound() {
+		fallingSound = (
+            (Sound)
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
+        );
+	}
+	
+	/**
+	 * Loads the default sound included with the engine.
+	 */
+	public void loadEngineLandingSound() {
+		landingSound = ((Sound)
+            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
+        );
+	}
+	
+	       
 
     /**
      * Set the sound to be played when running.

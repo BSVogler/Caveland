@@ -115,7 +115,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
   
     /**
      * Is the entity laying/standing on the ground?
-     * @return true when on the ground
+     * @return true when on the ground. False if in air or not in memory.
      */
     public boolean isOnGround(){
         if (getPosition().getZ() <= 0) return true; //if entity is under the map
@@ -125,12 +125,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
             int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
             if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
 
-            return
-                new Coordinate(
-                    position.getCoord().getX(),
-                    position.getCoord().getY(),
-                    z
-                ).getBlock().isObstacle();
+			Block block = new Coordinate(
+				position.getCoord().getX(),
+				position.getCoord().getY(),
+				z
+			).getBlock();
+			if (block == null)
+				return false;
+			return block.isObstacle();
         } else
             return false;//return false if over map
     }

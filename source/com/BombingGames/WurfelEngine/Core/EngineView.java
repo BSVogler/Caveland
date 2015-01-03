@@ -226,6 +226,12 @@ public class EngineView extends GameView {//is GameView so it can render in game
 				music.play();
 		}
 	}
+	
+	public boolean isMusicPlaying(){
+		if (music==null)
+			return false;
+		return music.isPlaying();
+	}
 
 	public void disposeMusic() {
 		if (music!=null) music.dispose();

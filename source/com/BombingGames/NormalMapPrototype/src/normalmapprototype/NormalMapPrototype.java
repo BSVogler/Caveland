@@ -132,6 +132,7 @@ public class NormalMapPrototype implements ApplicationListener {
  
 	@Override
 	public void render() {
+		Gdx.gl.glClearColor(0.6f, 0.8f, 0.1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		//reset light Z

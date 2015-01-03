@@ -48,6 +48,8 @@ public class CustomGameController extends Controller {
         super.init(new AirGenerator());
 
         player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(Map.getGameHeight()));
+		getMap().setGenerator(new ChunkGenerator());
+		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
 //		
 //		Lore lore = (Lore) new Lore().spawn(new Coordinate(24, 48, 20, true).getPoint());

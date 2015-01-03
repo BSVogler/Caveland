@@ -217,6 +217,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		}
 	}
 	
+	/**
+	 * Loads new music and plays them if a loudness is set.
+	 * @param path 
+	 */
 	public void setMusic(String path){
 		if (Gdx.files.internal(path).exists()){
 			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));

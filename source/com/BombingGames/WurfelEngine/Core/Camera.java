@@ -585,6 +585,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public void hiddenSurfaceDetection(){
 		Gdx.app.debug("Camera", "hsd around "+centerChunkX+","+centerChunkY);
+		updateNeededData();
 				
 		//create empty array clipping fields
 		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];

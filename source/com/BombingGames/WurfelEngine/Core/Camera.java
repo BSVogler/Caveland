@@ -145,6 +145,8 @@ public class Camera implements LinkedWithMap {
 		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
 		focusEntity.setHidden(true);
 		
+		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
+		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 		updateNeededData();
 	}
 	
@@ -243,6 +245,46 @@ public class Camera implements LinkedWithMap {
 			position.x += screenshake.x;
 			position.y += screenshake.y;
 
+			//check if chunkswitch left
+			if (
+				getVisibleLeftBorder()
+				<
+				Controller.getMap().getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+				//&& centerChunkX-1==//calculated x -1
+			) {
+				centerChunkX--;
+			}
+			
+			if (
+				getVisibleRightBorder()
+				>
+				Controller.getMap().getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+				//&& centerChunkX-1==//calculated x -1
+			) {
+				centerChunkX++;
+			}
+			
+			if (
+				getVisibleBackBorder()
+				<
+				Controller.getMap().getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+				//&& centerChunkX-1==//calculated x -1
+			) {
+				centerChunkY--;
+			}
+			//check in view space
+			if (
+				position.y- getHeightInViewSpc()/2
+				<
+				Map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
+				-AbstractGameObject.VIEW_DEPTH2*(
+				Controller.getMap().getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+				)
+				//&& centerChunkX-1==//calculated x -1
+			) {
+				centerChunkY++;
+			}
+			
 			updateNeededData();
 
 			//move camera to the focus 
@@ -280,9 +322,6 @@ public class Camera implements LinkedWithMap {
 	 * checks which chunks must be loaded
 	 */
 	private void updateNeededData(){
-		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
-		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		
 		//check every chunk
 		if (centerChunkX==0 && centerChunkY==0 || CVar.get("enableChunkSwitch").getValueb()) {
 			checkChunk(centerChunkX-1, centerChunkY-1);
@@ -659,7 +698,6 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		//TODO
 		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH);
 	}
 	
@@ -680,7 +718,6 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		//TODO
 		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH + 1);
 	}
 	
@@ -701,7 +738,8 @@ public class Camera implements LinkedWithMap {
 		//TODO
 		return (int) (
 			(position.y + getHeightInViewSpc()/2)//camera top border
-			/ -AbstractGameObject.VIEW_DEPTH2);//back to game space
+			/ -AbstractGameObject.VIEW_DEPTH2//back to game space
+			);
 	}
 	
 	/**
@@ -713,13 +751,13 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Returns the bottom seight border y-coordinate of the highest groundBlock
+	 * Returns the bottom seight border y-coordinate of the highest block
 	 *
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleFrontBorder() {
 		return (int) (
-			(position.y+ getHeightInViewSpc()/2) //bottom camera border
+			(position.y- getHeightInViewSpc()/2) //bottom camera border
 			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
 		);
 	}

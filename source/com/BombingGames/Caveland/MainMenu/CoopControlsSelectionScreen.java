@@ -75,7 +75,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					CustomGameView view = new CustomGameView();
-					view.enableCoop();
+					view.enableCoop(2);
 					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
 				}
 			});
@@ -95,7 +95,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					CustomGameView view = new CustomGameView();
-					view.enableCoop();
+					view.enableCoop(1);
 					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
 				}
 			});
@@ -113,7 +113,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				CustomGameView view = new CustomGameView();
-				view.enableCoop();
+				view.enableCoop(0);
 				WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
 			}
 		});

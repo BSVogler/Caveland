@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -67,6 +68,9 @@ public class MainMenuScreen extends AbstractMainMenu {
     private BitmapFont font;
     private float alpha =0;
 	private int selectionIndex =0;
+	
+	private Sound selectionSound;
+	private Sound abortSound;
 
 
 	@Override
@@ -163,6 +167,9 @@ public class MainMenuScreen extends AbstractMainMenu {
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
+		
+		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/menusound.wav"));
+		abortSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/menusoundAbort.wav"));
 	}
 
 	@Override
@@ -214,6 +221,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
 		WE.getEngineView().setMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3").path());
+		abortSound.play();
 	}
 
 	@Override
@@ -238,12 +246,14 @@ public class MainMenuScreen extends AbstractMainMenu {
         public boolean keyDown(int keycode) {
             if (keycode == Keys.DOWN || keycode == Keys.S){
                 selectionIndex++;
+				selectionSound.play();
 				if (selectionIndex>=menuItems.length)
 					selectionIndex=0;
 			}
 			
             if (keycode == Keys.UP || keycode == Keys.W){
 				selectionIndex--;
+				selectionSound.play();
 				if (selectionIndex<0)
 					selectionIndex=menuItems.length-1;
 			}

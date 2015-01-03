@@ -29,7 +29,10 @@ import java.util.ArrayList;
 public class CustomGameView extends GameView{
 	private float timeContextDown = 0;
 	private boolean contextDown;
-	private boolean coop;
+	/**
+	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
+	 */
+	private int coop = -1;
 	
 	
     @Override
@@ -37,7 +40,7 @@ public class CustomGameView extends GameView{
         super.init(controller);
         Gdx.app.debug("CustomGameView", "Initializing");
 		
-		if (coop){
+		if (coop>-1){
 			Camera camera0  = new Camera(
 				getPlayer(0),
 				0, //left
@@ -151,8 +154,12 @@ public class CustomGameView extends GameView{
 		getBatch().end();
 	}
 
-	public void enableCoop() {
-		coop = true;
+	/**
+	 * 
+	 * @param flag -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
+	 */
+	public void enableCoop(int flag) {
+		coop = flag;
 	}
 
 

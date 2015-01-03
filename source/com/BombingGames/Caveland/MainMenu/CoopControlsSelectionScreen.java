@@ -35,12 +35,14 @@ import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -52,7 +54,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class CoopControlsSelectionScreen extends WEScreen {
 	private final Texture background;
 	private Stage stage;
-	private final TextButton twoControllersButton;
 	private final SpriteBatch batch;
 	private final OrthographicCamera camera;
 
@@ -66,31 +67,44 @@ public class CoopControlsSelectionScreen extends WEScreen {
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		//stage
-		twoControllersButton = new TextButton("Choose", WE.getEngineView().getSkin());
-		twoControllersButton.setPosition(200, 600);
-		twoControllersButton.addListener(new ChangeListener() {
+		if (Controllers.getControllers().size > 1) {//setDisabled(true) does not work
+			TextButton twoControllersButton = new TextButton("Choose", WE.getEngineView().getSkin());
+			twoControllersButton.setPosition(200, 600);
+			twoControllersButton.addListener(new ChangeListener() {
 
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				CustomGameView view = new CustomGameView();
-				view.enableCoop();
-				WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
-			}
-		});
-		stage.addActor(twoControllersButton);
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					CustomGameView view = new CustomGameView();
+					view.enableCoop();
+					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
+				}
+			});
+			stage.addActor(twoControllersButton);
+		} else {
+			Label label = new Label("No second controller found.", WE.getEngineView().getSkin());
+			label.setPosition(200, 600);
+			stage.addActor(label);
+		}
 		
-		TextButton splitControlsButton = new TextButton("Choose", WE.getEngineView().getSkin());
-		splitControlsButton.setPosition(800, 400);
-		splitControlsButton.addListener(new ChangeListener() {
+		
+		if (Controllers.getControllers().size > 0) {
+			TextButton splitControlsButton = new TextButton("Choose", WE.getEngineView().getSkin());
+			splitControlsButton.setPosition(800, 400);
+			splitControlsButton.addListener(new ChangeListener() {
 
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				CustomGameView view = new CustomGameView();
-				view.enableCoop();
-				WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
-			}
-		});
-		stage.addActor(splitControlsButton);
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					CustomGameView view = new CustomGameView();
+					view.enableCoop();
+					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
+				}
+			});
+			stage.addActor(splitControlsButton);
+		} else {
+			Label label = new Label("No controller found.", WE.getEngineView().getSkin());
+			label.setPosition(800, 400);
+			stage.addActor(label);
+		}
 		
 		TextButton twoKeyboardButton = new TextButton("Choose", WE.getEngineView().getSkin());
 		twoKeyboardButton.setPosition(1200, 200);

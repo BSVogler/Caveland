@@ -26,8 +26,8 @@ public class NormalMapPrototype implements ApplicationListener {
   
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.width = 640;
-		cfg.height = 480;
+		cfg.width = 1920;
+		cfg.height = 1080;
 		cfg.resizable = false;
 		LwjglApplication instance = new LwjglApplication(new NormalMapPrototype(), cfg);
 	}
@@ -165,7 +165,7 @@ public class NormalMapPrototype implements ApplicationListener {
 //		batch.draw(diffuseTextureRegion.findRegion("b1-1-2"), 130, 100);
 		int sizeX = 200;
 		int sizeY = 225;
-		for (int x = 0; x < 5; x++) {
+		for (int x = 0; x < 10; x++) {
 			for (int y = 1; y < 5; y++) {
 				if (texture[y][0] != null)
 					batch.draw(

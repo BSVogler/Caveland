@@ -498,6 +498,11 @@ public class GameView extends View implements GameManager {
     public final void enter() {
         WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
         
+		//enable cameras
+		for (Camera camera : cameras) {
+			camera.setActive(true);
+		}
+		
 		if (CVar.get("DevMode").getValueb())
 			Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
 		for (Camera camera : cameras) {
@@ -506,11 +511,6 @@ public class GameView extends View implements GameManager {
 		
 		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
 		Controller.getMap().setGameSpeed(gameSpeed);
-		
-		//enable cameras
-		for (Camera camera : cameras) {
-			camera.setActive(true);
-		}
 		
         onEnter();
     }

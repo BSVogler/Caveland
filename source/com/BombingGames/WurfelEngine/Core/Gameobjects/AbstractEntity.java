@@ -242,4 +242,12 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public void setSaveToDisk(boolean saveToDisk) {
 		this.saveToDisk = saveToDisk;
 	}
+
+	/**
+	 * true if on chunk which is in memory
+	 * @return 
+	 */
+	public boolean isOnMemory() {
+		return position.isInMemoryHorizontal();
+	}
 }

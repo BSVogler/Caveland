@@ -173,12 +173,19 @@ public class NormalMapPrototype implements ApplicationListener {
 						x*sizeX,
 						y*sizeY-sizeY
 					);
-				if (texture[y][1] != null)
+				if (texture[y][1] != null){
+					batch.draw(
+						texture[y][1],
+						x*sizeX+sizeX/2,
+						y*sizeY+175-sizeY
+					);
 					batch.draw(
 						texture[y][1],
 						x*sizeX,
 						y*sizeY+125-sizeY
 					);
+				}
+				
 				if (texture[y][2] != null)
 					batch.draw(
 						texture[y][2],

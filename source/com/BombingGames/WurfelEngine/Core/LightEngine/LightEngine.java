@@ -43,7 +43,7 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * This Light engine calculates phong shading for three normals over the day.
  * @author Benedikt Vogler
- * @version 1.1.6
+ * @version 1.1.7
  * @since  WE1.1
  */
 public class LightEngine implements LinkedWithMap {

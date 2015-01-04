@@ -91,7 +91,7 @@ public class CVar {
 		register("renderResolutionWidth", 1920, CVarFlags.CVAR_ARCHIVE);
 		register("enableLightEngine", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableFog", true, CVarFlags.CVAR_ARCHIVE);
-		register("enableAutoShade", true, CVarFlags.CVAR_ARCHIVE);
+		register("enableAutoShade", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);

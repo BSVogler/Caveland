@@ -46,7 +46,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		this.def = def;
 		setFloating(false);
 		//setSpeed(0.2f);
-		setFriction(2000);
+		setFriction(1500);
 		setIndestructible(true);
 		setCollectable(true);
 	}
@@ -74,13 +74,13 @@ public class Collectible extends MovableEntity implements Serializable {
             this.color.cpy().mul(color),
             CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
                 ? getPosition().getZ()/(Map.getGameHeight())
-                : -0.4f
+                : 0
         );
 	}
 
 	@Override
 	public void render(GameView view, int xPos, int yPos, float scale) {
-		super.render(view, xPos, yPos, color.cpy(), scale-0.4f);
+		super.render(view, xPos, yPos, color.cpy(), scale);
 	}
 	
 	@Override

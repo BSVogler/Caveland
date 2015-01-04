@@ -230,12 +230,14 @@ public abstract class AbstractGameObject implements Serializable {
         }
         
         //load again for pixmap, allows access to image color data;
-        if (pixmap == null) {
-            //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-            pixmap = new Pixmap(
-                Gdx.files.internal(spritesheetPath+".png")
-            );
-        }
+        if (CVar.get("loadPixmap").getValueb()) {
+			if (pixmap == null) {
+				//pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+				pixmap = new Pixmap(
+					Gdx.files.internal(spritesheetPath+".png")
+				);
+			}
+		}
     }
 
     /**

@@ -324,6 +324,13 @@ e32-0
   orig: 200, 200
   offset: 0, 0
   index: -1
+e43-0
+  rotate: false
+  xy: 299, 1568
+  size: 25, 25
+  orig: 50, 50
+  offset: 12, 7
+  index: -1
 error
   rotate: false
   xy: 626, 1294

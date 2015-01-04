@@ -63,6 +63,9 @@ public class CustomPlayer extends Controllable {
 		setFriction(50);
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
+		
+		inventory.add(new Collectible(Collectible.Def.COAL));
+		inventory.add(new Collectible(Collectible.Def.SULFUR));
     }
 	
 	/**

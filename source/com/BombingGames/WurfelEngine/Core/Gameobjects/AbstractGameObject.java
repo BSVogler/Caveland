@@ -38,6 +38,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -111,6 +112,8 @@ public abstract class AbstractGameObject implements Serializable {
     private transient static Pixmap pixmap;
     private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
+	private static Texture textureDiff;
+	private static Texture textureNormal;
 	
     private final int id; 
     private byte value;
@@ -156,6 +159,14 @@ public abstract class AbstractGameObject implements Serializable {
      * @param pos the coordinates you want to set
      */
     public abstract void setPosition(AbstractPosition pos);
+
+	public static Texture getTextureDiffuse() {
+		return textureDiff;
+	}
+
+	public static Texture getTextureNormal() {
+		return textureNormal;
+	}
 	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
@@ -228,7 +239,10 @@ public abstract class AbstractGameObject implements Serializable {
         if (spritesheet == null) {
             spritesheet = WE.getAsset(spritesheetPath+".txt");
         }
-        
+		textureDiff = spritesheet.getTextures().first();
+        if (CVar.get("LEnormalMapRendering").getValueb())
+			textureNormal = WE.getAsset(spritesheetPath+"Normal.png");
+		
         //load again for pixmap, allows access to image color data;
         if (CVar.get("loadPixmap").getValueb()) {
 			if (pixmap == null) {

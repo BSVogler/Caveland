@@ -89,7 +89,7 @@ public class CVar {
 		register("worldSpinAngle", -40, CVarFlags.CVAR_ARCHIVE);
 		register("loadPixmap", false, CVarFlags.CVAR_ARCHIVE);
 		register("LEazimutSpeed", 0.0078125f, CVarFlags.CVAR_ARCHIVE);
-		register("LEuseNormalMap", true, CVarFlags.CVAR_ARCHIVE);
+		register("LEnormalMapRendering", true, CVarFlags.CVAR_ARCHIVE);
 		register("renderResolutionWidth", 1920, CVarFlags.CVAR_ARCHIVE);
 		register("enableLightEngine", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableFog", true, CVarFlags.CVAR_ARCHIVE);

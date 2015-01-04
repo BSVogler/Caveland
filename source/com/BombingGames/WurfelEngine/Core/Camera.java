@@ -381,7 +381,7 @@ public class Camera implements LinkedWithMap {
 			//send a Vector4f to GLSL
 			view.getShader().setUniformf(
 				"LightNormal",
-				new  Vector3(-1, -1,1).nor()
+				Controller.getLightEngine().getNormal()
 			);
 		
 			//bind normal map to texture unit 1

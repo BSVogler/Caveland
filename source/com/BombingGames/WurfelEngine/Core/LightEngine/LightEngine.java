@@ -37,6 +37,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -49,8 +50,8 @@ public class LightEngine implements LinkedWithMap {
     /**
      * The Version of the light engine.
      */
-    public static final String Version = "1.1.6";
-    
+    public static final String Version = "1.1.7";
+
     private boolean renderData = false;
     //diagramm data
     private int posX = 250;
@@ -191,6 +192,18 @@ public class LightEngine implements LinkedWithMap {
     public static float getBrightness() {
         return (I_0+I_1+I_2)/3f;
     }
+	
+	/**
+	 * 
+	 * @return the normal of the sun
+	 */
+	public Vector3 getNormal() {
+		return new Vector3(
+			(float) -Math.cos(sun.getAzimuth()*Math.PI/180f),
+			(float) -Math.sin(sun.getAzimuth()*Math.PI/180f),
+			(float) Math.sin(sun.getHeight()*Math.PI/180f)
+		);
+	}
     
         /**
      * Gets average color. 

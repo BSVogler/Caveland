@@ -87,7 +87,7 @@ public class GlobalLightSource {
 
     /**
      *
-     * @return
+     * @return in degrees 0-360°
      */
     public float getHeight() {
         return height;

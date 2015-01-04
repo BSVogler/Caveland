@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.LightEngine;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
@@ -57,6 +58,7 @@ public class LightEngine implements LinkedWithMap {
     private int posX = 250;
     private int posY = Gdx.graphics.getHeight()-250;
     private final int size = 500;
+	private boolean normalMapRendering = true;
     
     
     //diffuse light
@@ -80,6 +82,8 @@ public class LightEngine implements LinkedWithMap {
     public LightEngine() {
         sun = new GlobalLightSource(-Controller.getMap().getWorldSpinDirection(), 0, new Color(255, 255, 255, 1), new Color(0.1f, 0.1f, 0, 1), 60);
         moon = new GlobalLightSource(180-Controller.getMap().getWorldSpinDirection(), 0, new Color(0.2f,0.4f,0.8f,1), new Color(0, 0, 0.1f, 1), 45);
+		
+		normalMapRendering = CVar.get("LEnormalMapRendering").getValueb();
     }
 
     /**
@@ -203,6 +207,14 @@ public class LightEngine implements LinkedWithMap {
 			(float) -Math.sin(sun.getAzimuth()*Math.PI/180f),
 			(float) Math.sin(sun.getHeight()*Math.PI/180f)
 		);
+	}
+
+	/**
+	 * 
+	 * @return true if rendering via normal map
+	 */
+	public boolean isNormalMapRenderingEnabled() {
+		return normalMapRendering;
 	}
     
         /**

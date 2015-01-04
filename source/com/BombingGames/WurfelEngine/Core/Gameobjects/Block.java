@@ -426,7 +426,9 @@ public class Block extends AbstractGameObject {
                 color = color.sub(Color.DARK_GRAY.cpy());
             }
         } else if (Controller.getLightEngine() != null){
-            color = Controller.getLightEngine().getColor(side);
+			if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+				color = Controller.getLightEngine().getColor();
+			else color = Controller.getLightEngine().getColor(side);
         }
         
         //add fog
@@ -439,7 +441,7 @@ public class Block extends AbstractGameObject {
         }
         
 		color.a = 1;//prevent changes because of color operations
-        renderSide(view, camera, coords, side, color,scale);
+        renderSide(view, camera, coords, side, color, scale);
     }
 
     /**
@@ -467,14 +469,23 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Sides sidenumb){
-        renderSide(view,
+    public void renderSide(final View view, final int xPos, final int yPos, final Sides side){
+		Color color;
+		 if (Controller.getLightEngine() != null){
+			if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+				color = Controller.getLightEngine().getColor();
+			else color = Controller.getLightEngine().getColor(side);
+        } else
+			 color = Color.GRAY.cpy();
+		 
+        renderSide(
+			view,
             xPos,
             yPos,
-            sidenumb,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(sidenumb) : Color.GRAY.cpy(),
+            side,
+            color,
             0
         );
     }

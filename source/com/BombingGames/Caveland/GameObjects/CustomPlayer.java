@@ -146,7 +146,7 @@ public class CustomPlayer extends Controllable {
 		try {
 			MovableEntity item = inventory.getFrontItem();
 			if (item != null) {
-				item.setMovement(getAiming());
+				item.setMovement(getAiming().scl(3f));//throw with 3 m/s
 				//item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
 			}

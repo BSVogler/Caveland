@@ -18,16 +18,18 @@ public class Collectible extends MovableEntity implements Serializable {
 	private static final long serialVersionUID = 2L;
 
 	public static enum Def {
-		IRONORE(Color.RED.cpy()),
-		COAL(Color.DARK_GRAY.cpy()),
-		GOLD(Color.YELLOW.cpy()),
-		IRON(Color.GRAY.cpy()),
-		SULFUR(new Color(0.8f, 0.8f, 0.1f, 1f));
+		IRONORE(Color.RED.cpy(), 46),
+		COAL(Color.DARK_GRAY.cpy(), 47),
+		GOLD(Color.YELLOW.cpy(), 48),
+		IRON(Color.GRAY.cpy(), 49),
+		SULFUR(new Color(0.8f, 0.8f, 0.1f, 1f), 50);
 		
 		private transient Color color;
+		private int id;
 
-		private Def(Color color) {
+		private Def(Color color, int id) {
 			this.color = color;
+			this.id = id;
 		}
 
 		public Color getColor() {
@@ -40,9 +42,9 @@ public class Collectible extends MovableEntity implements Serializable {
 	private transient Color color;
 
 	public Collectible(Def def) {
-		super(46, 0);
+		super(def.id, 0);
 		setGraphicsId(43);
-		this.color = def.getColor();
+		this.color = def.color;
 		this.def = def;
 		setFloating(false);
 		//setSpeed(0.2f);

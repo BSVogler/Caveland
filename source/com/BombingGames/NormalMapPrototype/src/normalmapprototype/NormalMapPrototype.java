@@ -55,10 +55,6 @@ public class NormalMapPrototype implements ApplicationListener {
  
 	//Ambient RGB and intensity (alpha)
 	public static final Vector3 AMBIENT_COLOR = new Vector3(0.6f, 0.6f, 1f);
- 
-	//Attenuation coefficients for light falloff
-	public static final Vector3 FALLOFF = new Vector3(.4f, 3f, 20f);
-	
 	
 	@Override
 	public void create() {
@@ -88,7 +84,6 @@ public class NormalMapPrototype implements ApplicationListener {
 		//LibGDX doesn't have Vector4 class at the moment, so we pass them individually...
 		shader.setUniformf("LightColor", LIGHT_COLOR.x, LIGHT_COLOR.y, LIGHT_COLOR.z, LIGHT_INTENSITY);
 		shader.setUniformf("AmbientColor", AMBIENT_COLOR.x, AMBIENT_COLOR.y, AMBIENT_COLOR.z, AMBIENT_INTENSITY);
-		shader.setUniformf("Falloff", FALLOFF);
 		
 		//LibGDX likes us to end the shader program
 		shader.end();

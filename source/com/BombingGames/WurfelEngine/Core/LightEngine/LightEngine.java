@@ -387,8 +387,8 @@ public class LightEngine implements LinkedWithMap {
                 //longitude
                 shR.setColor(Color.RED);
                 shR.line(
-                    posX +(int) (size* Math.sin((sun.getAzimuth()-90)*Math.PI/180)),
-                    posY -(int) (size/2*Math.cos((sun.getAzimuth()-90)*Math.PI/180)),
+                    posX +(int) (size* getNormal().x),
+                    posY -(int) (size/2*getNormal().y),
                     posX,
                     posY
                 );
@@ -396,8 +396,8 @@ public class LightEngine implements LinkedWithMap {
                 //latitude
                 shR.setColor(Color.MAGENTA);
                 shR.line(
-                    posX +(int) (size * Math.sin((sun.getHeight()-90)*Math.PI/180)),
-                    posY +(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
+                    posX -(int) (size/2 * (1-getNormal().z)+size/2),
+                    posY +(int) (size/2*getNormal().z),
                     posX,
                     posY
                 );
@@ -405,8 +405,8 @@ public class LightEngine implements LinkedWithMap {
                 //long+lat of sun position
                 shR.setColor(Color.YELLOW);
                 shR.line(
-                    posX +(int) ( size*Math.sin((sun.getAzimuth()+90)*Math.PI/180) * Math.sin((sun.getHeight()-90)*Math.PI/180) ),
-                    posY +(int) ( size/2*Math.sin((sun.getAzimuth())*Math.PI/180) * Math.sin((sun.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((sun.getHeight())*Math.PI/180)),
+                    posX +(int) ( size*getNormal().x ),
+                    posY +(int) (size*( -getNormal().y/2+getNormal().z)),
                     posX,
                     posY
                  );

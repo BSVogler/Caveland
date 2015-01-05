@@ -8,6 +8,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -55,6 +56,7 @@ public class NormalMapPrototype implements ApplicationListener {
  
 	//Ambient RGB and intensity (alpha)
 	public static final Vector3 AMBIENT_COLOR = new Vector3(0.6f, 0.6f, 1f);
+	private BitmapFont font;
 	
 	@Override
 	public void create() {
@@ -113,6 +115,8 @@ public class NormalMapPrototype implements ApplicationListener {
 			texture[i][1] = diffuseTextureRegion.findRegion("b"+i+"-0-1");
 			texture[i][2] = diffuseTextureRegion.findRegion("b"+i+"-0-2");
 		}
+		
+		font = new BitmapFont();	
 	}
  
 	@Override
@@ -136,15 +140,12 @@ public class NormalMapPrototype implements ApplicationListener {
 			System.out.println("New light Z: "+LIGHT_NORMAL.z);
 		}
 		
-		batch.begin();
-		
-		//shader will now be in use...
-		
 		//update light position, normalized to screen resolution
 		LIGHT_NORMAL.x = 2*Mouse.getX() / (float)Display.getWidth()-1;
 		LIGHT_NORMAL.y = 2*Mouse.getY() / (float)Display.getHeight()-1;
 		LIGHT_NORMAL.nor();
 		
+		batch.begin();
 		//send a Vector4f to GLSL
 		shader.setUniformf("LightNormal", LIGHT_NORMAL);
 		
@@ -191,6 +192,9 @@ public class NormalMapPrototype implements ApplicationListener {
 			}
 		}
 		
+		font.draw(batch, "x"+LIGHT_NORMAL.x, 20, 20);
+		font.draw(batch, "y"+LIGHT_NORMAL.y, 20, 40);
+		font.draw(batch, "z"+LIGHT_NORMAL.z, 20, 60);
 		
 		batch.end();
 		

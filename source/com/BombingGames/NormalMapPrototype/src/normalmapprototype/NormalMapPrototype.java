@@ -163,23 +163,23 @@ public class NormalMapPrototype implements ApplicationListener {
 		int sizeX = 200;
 		int sizeY = 225;
 		for (int x = 0; x < 10; x++) {
-			for (int y = 1; y < 5; y++) {
+			for (int y = 0; y < 5; y++) {
 				if (texture[y][0] != null)
 					batch.draw(
 						texture[y][0],
 						x*sizeX,
-						y*sizeY-sizeY
+						y*sizeY
 					);
 				if (texture[y][1] != null){
 					batch.draw(
 						texture[y][1],
 						x*sizeX+sizeX/2,
-						y*sizeY+175-sizeY
+						y*sizeY+175
 					);
 					batch.draw(
 						texture[y][1],
 						x*sizeX,
-						y*sizeY+125-sizeY
+						y*sizeY+125
 					);
 				}
 				
@@ -187,7 +187,7 @@ public class NormalMapPrototype implements ApplicationListener {
 					batch.draw(
 						texture[y][2],
 						x*sizeX+100,
-						y*sizeY-sizeY
+						y*sizeY
 					);	
 			}
 		}

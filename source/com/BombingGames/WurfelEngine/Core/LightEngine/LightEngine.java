@@ -204,7 +204,7 @@ public class LightEngine implements LinkedWithMap {
 	public Vector3 getNormal() {
 		return new Vector3(
 			(float) -Math.cos(sun.getAzimuth()*Math.PI/180f),
-			(float) -Math.sin(sun.getAzimuth()*Math.PI/180f),
+			(float) Math.sin(sun.getAzimuth()*Math.PI/180f),
 			(float) Math.sin(sun.getHeight()*Math.PI/180f)
 		);
 	}

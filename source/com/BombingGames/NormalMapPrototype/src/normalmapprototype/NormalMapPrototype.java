@@ -205,7 +205,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		shR.begin(ShapeRenderer.ShapeType.Line);
 		shR.line(
 			posX +(int) ( size*LIGHT_NORMAL.x ),
-			posY +size*(LIGHT_NORMAL.z+LIGHT_NORMAL.y/2f),
+			posY +size*(LIGHT_NORMAL.z-LIGHT_NORMAL.y/2f),
 			posX,
 			posY
 		 );

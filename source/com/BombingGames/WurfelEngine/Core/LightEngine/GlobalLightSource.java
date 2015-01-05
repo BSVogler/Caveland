@@ -86,7 +86,7 @@ public class GlobalLightSource {
     }
 
     /**
-     *
+     *current height above horizon
      * @return in degrees 0-360°
      */
     public float getHeight() {

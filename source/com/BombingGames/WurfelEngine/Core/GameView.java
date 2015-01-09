@@ -191,38 +191,36 @@ public class GameView extends View implements GameManager {
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         } else {
+			batch.setShader(getShader());
             for (Camera camera : cameras) {
                 camera.render(this, camera);
             }
         }
                
         //render HUD and GUI
-        {
-//            libGDXcamera.zoom = 1/getEqualizationScale();
-//            libGDXcamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            batch.setProjectionMatrix(libGDXcamera.combined);
-            shRenderer.setProjectionMatrix(libGDXcamera.combined);
+		batch.setShader(null);//use default shader
+		batch.setProjectionMatrix(libGDXcamera.combined);
+		shRenderer.setProjectionMatrix(libGDXcamera.combined);
 
-            //WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
-            Gdx.gl20.glLineWidth(1);
+		//WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
+		Gdx.gl20.glLineWidth(1);
 
-            //set viewport of hud to cover whole window
-            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		//set viewport of hud to cover whole window
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-            //end of setup
-            if (controller.getDevTools() != null)
-				controller.getDevTools().render(this);
+		//end of setup
+		if (controller.getDevTools() != null)
+			controller.getDevTools().render(this);
 
-			if (CVar.get("enableMinimap").getValueb())
-				if (minimap != null)
-					minimap.render(this); 
-             
-            if (Controller.getLightEngine() != null)
-                Controller.getLightEngine().render(this);
-            
-            //render buttons
-            stage.draw();
-        }
+		if (CVar.get("enableMinimap").getValueb())
+			if (minimap != null)
+				minimap.render(this); 
+
+		if (Controller.getLightEngine() != null)
+			Controller.getLightEngine().render(this);
+
+		//render buttons
+		stage.draw();
     }
        
     /**

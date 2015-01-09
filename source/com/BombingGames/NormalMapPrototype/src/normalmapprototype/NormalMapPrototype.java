@@ -65,8 +65,8 @@ public class NormalMapPrototype implements ApplicationListener {
 		normalTexture = new Texture(Gdx.files.internal("normalmapprototype/SpritesheetNormal.png"));
 		
 		ShaderProgram.pedantic = false;
-		String vertexShader = Gdx.files.internal("normalmapprototype/vertex.vs").readString();
-        String fragmentShader = Gdx.files.internal("normalmapprototype/fragment.fs").readString();
+		String vertexShader = Gdx.files.internal("normalmapprototype/vertexNM.vs").readString();
+        String fragmentShader = Gdx.files.internal("normalmapprototype/fragmentNM.fs").readString();
         shader = new ShaderProgram(vertexShader, fragmentShader);
 		
 		//ensure it compiled

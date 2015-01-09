@@ -80,7 +80,7 @@ public class LightEngine implements LinkedWithMap {
      * 
      */
     public LightEngine() {
-        sun = new GlobalLightSource(-Controller.getMap().getWorldSpinDirection(), 0, new Color(255, 255, 255, 1), new Color(0.1f, 0.1f, 0, 1), 60);
+        sun = new GlobalLightSource(-Controller.getMap().getWorldSpinDirection(), 0, new Color(255, 255, 255, 1), new Color(0.08f, 0.06f, 0.05f, 1), 60);
 		//add moon if not using normalMaprendering
         if (!normalMapRendering)
 			moon = new GlobalLightSource(

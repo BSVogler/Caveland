@@ -11,7 +11,6 @@ uniform vec2 Resolution;      //resolution of screen
 uniform vec3 LightNormal;        //light position, normalized
 uniform vec4 LightColor;      //light RGBA -- alpha is intensity
 uniform vec4 AmbientColor;    //ambient RGBA -- alpha is intensity 
-uniform vec3 Falloff;         //attenuation coefficients
 
 void main() {
     //RGBA of our diffuse color

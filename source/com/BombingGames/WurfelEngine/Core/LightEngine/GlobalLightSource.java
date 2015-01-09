@@ -185,7 +185,7 @@ public class GlobalLightSource {
     
         /**
      * Returns the ambient the GLS emits.
-     * @return applied with pseudogray
+     * @return applied with pseudogray. "pointer-safe"
      */
     public Color getAmbient() {
         return ambient.cpy().mul(PseudoGrey.toColor(power));

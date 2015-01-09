@@ -52,10 +52,10 @@ public class NormalMapPrototype implements ApplicationListener {
 	public static final Vector3 LIGHT_NORMAL = new Vector3(0f,0f,DEFAULT_LIGHT_Z);
 	
 	//Light RGB and intensity (alpha)
-	public static final Vector3 LIGHT_COLOR = new Vector3(1f, 0.8f, 0.6f);
+	public static final Vector3 LIGHT_COLOR = new Vector3(1f, 1f, 1f);
  
 	//Ambient RGB and intensity (alpha)
-	public static final Vector3 AMBIENT_COLOR = new Vector3(0.6f, 0.6f, 1f);
+	public static final Vector3 AMBIENT_COLOR = new Vector3(0.01f, 0.01f, 0.02f);
 	private BitmapFont font;
 	
 	@Override
@@ -138,6 +138,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		//update light position, normalized to screen resolution
 		LIGHT_NORMAL.x = 2*Mouse.getX() / (float)Display.getWidth()-1;
 		LIGHT_NORMAL.y = 2*Mouse.getY() / (float)Display.getHeight()-1;
+		LIGHT_NORMAL.z = 0;
 		LIGHT_NORMAL.nor();
 		
 		batch.setShader(shader);

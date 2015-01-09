@@ -238,6 +238,8 @@ public class LightEngine implements LinkedWithMap {
      * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
      */
     public Color getColor(){
+		if (normalMapRendering)
+			return Color.WHITE;
         return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
         //more precise (?) but slower
 //        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;

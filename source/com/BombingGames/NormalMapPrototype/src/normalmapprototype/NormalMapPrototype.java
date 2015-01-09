@@ -90,8 +90,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		//LibGDX likes us to end the shader program
 		shader.end();
 		
-		batch = new SpriteBatch(200, shader);
-		batch.setShader(shader);
+		batch = new SpriteBatch(200);
 		
 		shR = new ShapeRenderer(2);
 		cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -123,10 +122,6 @@ public class NormalMapPrototype implements ApplicationListener {
 	public void resize(int width, int height) {
 		cam.setToOrtho(false, width, height);
 		batch.setProjectionMatrix(cam.combined);
-		
-		shader.begin();
-		shader.setUniformf("Resolution", width, height);
-		shader.end();
 	}
  
 	@Override
@@ -145,8 +140,8 @@ public class NormalMapPrototype implements ApplicationListener {
 		LIGHT_NORMAL.y = 2*Mouse.getY() / (float)Display.getHeight()-1;
 		LIGHT_NORMAL.nor();
 		
+		batch.setShader(shader);
 		batch.begin();
-		//send a Vector4f to GLSL
 		shader.setUniformf("LightNormal", LIGHT_NORMAL);
 		
 		//bind normal map to texture unit 1
@@ -156,10 +151,6 @@ public class NormalMapPrototype implements ApplicationListener {
 		//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 		diffTexture.bind(0);
 		
-		//draw the texture unit 0 with our shader effect applied
-//		batch.draw(diffuseTextureRegion.findRegion("b2-1-0"), 50, 100);
-//		batch.draw(diffuseTextureRegion.findRegion("b1-1-1"), 50, 180);
-//		batch.draw(diffuseTextureRegion.findRegion("b1-1-2"), 130, 100);
 		int sizeX = 200;
 		int sizeY = 225;
 		for (int x = 0; x < 10; x++) {
@@ -192,9 +183,11 @@ public class NormalMapPrototype implements ApplicationListener {
 			}
 		}
 		
-		font.draw(batch, "x"+LIGHT_NORMAL.x, 20, 20);
-		font.draw(batch, "y"+LIGHT_NORMAL.y, 20, 40);
-		font.draw(batch, "z"+LIGHT_NORMAL.z, 20, 60);
+		batch.setShader(null);
+		
+		font.draw(batch, "x: "+LIGHT_NORMAL.x, 20, 20);
+		font.draw(batch, "y: "+LIGHT_NORMAL.y, 20, 40);
+		font.draw(batch, "z: "+LIGHT_NORMAL.z, 20, 60);
 		
 		batch.end();
 		

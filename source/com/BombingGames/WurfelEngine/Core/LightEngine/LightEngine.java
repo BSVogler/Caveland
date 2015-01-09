@@ -446,9 +446,14 @@ public class LightEngine implements LinkedWithMap {
             shR.end();
 
             int y = Gdx.graphics.getHeight()-150;
-            view.drawString("Lat: "+sun.getHeight(), 600, y, Color.WHITE);
-            view.drawString("Long: "+sun.getAzimuth(), 600, y+=10, Color.WHITE);
-            view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, y+=10, Color.WHITE);
+            view.drawText("Lat: "+sun.getHeight()+"\n"
+				+"Long: "+sun.getAzimuth()+"\n"
+				+"PowerSun: "+sun.getPower()*100+"%\n"
+				+"Normal:"+getNormal(),
+				600,
+				100,
+				Color.WHITE
+			);
 			if (moon != null)
 				view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
             view.drawString("Ambient: "+getAmbient().toString(), 600, y+=10, Color.WHITE);

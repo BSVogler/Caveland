@@ -81,7 +81,15 @@ public class LightEngine implements LinkedWithMap {
      */
     public LightEngine() {
         sun = new GlobalLightSource(-Controller.getMap().getWorldSpinDirection(), 0, new Color(255, 255, 255, 1), new Color(0.1f, 0.1f, 0, 1), 60);
-        moon = new GlobalLightSource(180-Controller.getMap().getWorldSpinDirection(), 0, new Color(0.2f,0.4f,0.8f,1), new Color(0, 0, 0.1f, 1), 45);
+		//add moon if not using normalMaprendering
+        if (!normalMapRendering)
+			moon = new GlobalLightSource(
+				180-Controller.getMap().getWorldSpinDirection(),
+				0,
+				new Color(0.2f,0.4f,0.8f,1),
+				new Color(0, 0, 0.1f, 1),
+				45
+			);
 		
 		normalMapRendering = CVar.get("LEnormalMapRendering").getValueb();
     }
@@ -105,32 +113,47 @@ public class LightEngine implements LinkedWithMap {
      */
     public void update(float dt) {
         sun.update(dt);
-        moon.update(dt);
-        
+		
+        if (moon != null) {
+			moon.update(dt);
+			float moonI = moon.getPower();
+			//calcualte moon light in diff and spec
+			float tmp = (float) (moonI * k_diff * Math.cos(((moon.getHeight()) * Math.PI)/180) * Math.cos(((moon.getAzimuth()-45)*Math.PI)/180));
+			if (tmp>0) I_diff0+=tmp;
+
+			tmp = (float) (moonI * k_diff * Math.cos(((moon.getHeight()-90)*Math.PI)/180));   
+			if (tmp>0) I_diff1+=tmp;
+
+			tmp = (float) (moonI  * k_diff * Math.cos(((moon.getHeight())*Math.PI)/180)*Math.cos(((moon.getAzimuth()-135)*Math.PI)/180));
+			if (tmp>0) I_diff2+=tmp;
+			
+			//specular
+			I_spec1 +=(float) (
+				moonI
+				* k_specular
+				* Math.pow(
+					Math.sin((moon.getHeight())*Math.PI/180)*Math.sin((moon.getAzimuth())*Math.PI/180)/Math.sqrt(2)//y
+				  + Math.sin((moon.getHeight()-90)*Math.PI/180)/Math.sqrt(2)//z
+				,n_spec)
+				*(n_spec+2)/(2*Math.PI)
+			);
+		}
+		
         float sunI = sun.getPower();
-        float moonI = moon.getPower();
         
         //diffusion
         //diff0
         I_diff0 = (float) (sunI  * k_diff * Math.cos(((sun.getHeight())  * Math.PI)/180) * Math.cos(((sun.getAzimuth() -45)*Math.PI)/180));
         if (I_diff0<0) I_diff0=0;
         
-        float tmp = (float) (moonI * k_diff * Math.cos(((moon.getHeight()) * Math.PI)/180) * Math.cos(((moon.getAzimuth()-45)*Math.PI)/180));
-        if (tmp>0) I_diff0+=tmp;
-
+       
         //diff0
         I_diff1 = (float) (sunI * k_diff * Math.cos(((sun.getHeight() -90)*Math.PI)/180)); 
         if (I_diff1<0) I_diff1=0;
         
-        tmp = (float) (moonI * k_diff * Math.cos(((moon.getHeight()-90)*Math.PI)/180));   
-        if (tmp>0) I_diff1+=tmp;
-        
         //diff2
         I_diff2 = (float) (sunI * k_diff * Math.cos(((sun.getHeight()) *Math.PI)/180)*Math.cos(((sun.getAzimuth() -135)*Math.PI)/180));
         if (I_diff2<0) I_diff2=0;
-        
-        tmp = (float) (moonI  * k_diff * Math.cos(((moon.getHeight())*Math.PI)/180)*Math.cos(((moon.getAzimuth()-135)*Math.PI)/180));
-        if (tmp>0) I_diff2+=tmp;
         
         //specular
         
@@ -155,15 +178,6 @@ public class LightEngine implements LinkedWithMap {
             ,n_spec)
             *(n_spec+2)/(2*Math.PI)
         );
-        I_spec1 +=(float) (
-            moonI
-            * k_specular
-            * Math.pow(
-                Math.sin((moon.getHeight())*Math.PI/180)*Math.sin((moon.getAzimuth())*Math.PI/180)/Math.sqrt(2)//y
-              + Math.sin((moon.getHeight()-90)*Math.PI/180)/Math.sqrt(2)//z
-            ,n_spec)
-            *(n_spec+2)/(2*Math.PI)
-        );
          
       //it is impossible to get specular light with a GlobalLightSource over the horizon on side 0 and 2. Just left in case it someday may help somebody.
         //        I_spec2 =(int) (
@@ -185,7 +199,8 @@ public class LightEngine implements LinkedWithMap {
         if (Gdx.input.isButtonPressed(0)&& renderData){
             //sun.setHeight(sun.getHeight()+Gdx.input.getDeltaY()*30f);
             sun.setAzimuth(Gdx.input.getX());
-            moon.setAzimuth(Gdx.input.getX()-180);
+            if (moon != null)
+				moon.setAzimuth(Gdx.input.getX()-180);
         }
     }
     
@@ -279,7 +294,10 @@ public class LightEngine implements LinkedWithMap {
      * @return a color with a tone
      */
     private Color getAmbient(){
-        return sun.getAmbient().add(moon.getAmbient());//sun+moon
+		Color amb = sun.getAmbient();
+		if (moon!= null)
+			amb.add(moon.getAmbient());
+        return amb;
     }
     
     /**
@@ -287,7 +305,10 @@ public class LightEngine implements LinkedWithMap {
      * @return a color with a tone
      */
     private Color getEmittingLights(){
-        return sun.getLight().add(moon.getLight());//sun+moon
+		Color light = sun.getLight();
+		if (moon!= null)
+			light.add(moon.getLight());
+        return light;
     }
     
      /**
@@ -412,29 +433,35 @@ public class LightEngine implements LinkedWithMap {
                  );
 
                 shR.setColor(Color.BLUE);
-                shR.line(
-                    posX +(int) ( size*Math.sin((moon.getAzimuth()+90)*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180) ),
-                    posY +(int) ( size/2*Math.sin((moon.getAzimuth())*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((moon.getHeight())*Math.PI/180)),
-                    posX,
-                    posY
-                 );
+				if (moon != null) {
+					shR.line(
+						posX +(int) ( size*Math.sin((moon.getAzimuth()+90)*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180) ),
+						posY +(int) ( size/2*Math.sin((moon.getAzimuth())*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((moon.getHeight())*Math.PI/180)),
+						posX,
+						posY
+					 );
+				}
             shR.end();
 
             int y = Gdx.graphics.getHeight()-150;
             view.drawString("Lat: "+sun.getHeight(), 600, y, Color.WHITE);
             view.drawString("Long: "+sun.getAzimuth(), 600, y+=10, Color.WHITE);
             view.drawString("PowerSun: "+sun.getPower()*100+"%", 600, y+=10, Color.WHITE);
-            view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
+			if (moon != null)
+				view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
             view.drawString("Ambient: "+getAmbient().toString(), 600, y+=10, Color.WHITE);
             view.drawString("avg. color: "+getColor().toString(), 600, y+=10, Color.WHITE);
+			
             shR.begin(ShapeType.Filled);
                 //draw ambient light
                 shR.setColor(Color.WHITE);
                 shR.rect(600, y+=10, 70, 70);
                 shR.setColor(getAmbient());
                 shR.rect(610, y+=10, 50, 50);
-                 shR.setColor(moon.getAmbient());
-                shR.rect(600, y, 20, 25);
+				if (moon != null) {
+					shR.setColor(moon.getAmbient());
+					shR.rect(600, y, 20, 25);
+				}
                 shR.setColor(sun.getAmbient());
                 shR.rect(600, y+25, 20, 25);
                 
@@ -493,7 +520,8 @@ public class LightEngine implements LinkedWithMap {
      */
     public void setToNoon(){
         sun.setAzimuth(90);
-        moon.setAzimuth(270);
+		if (moon != null) 
+			moon.setAzimuth(270);
     }
     
     /**

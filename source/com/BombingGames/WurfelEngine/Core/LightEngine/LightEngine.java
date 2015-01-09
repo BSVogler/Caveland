@@ -221,7 +221,7 @@ public class LightEngine implements LinkedWithMap {
 			(float) -Math.cos(sun.getAzimuth()*Math.PI/180f),
 			(float) Math.sin(sun.getAzimuth()*Math.PI/180f),
 			(float) Math.sin(sun.getHeight()*Math.PI/180f)
-		);
+		).nor();
 	}
 
 	/**

@@ -295,7 +295,7 @@ public class LightEngine implements LinkedWithMap {
      * Returns the sum of every light source's ambient light
      * @return a color with a tone
      */
-    private Color getAmbient(){
+    public Color getAmbient(){
 		Color amb = sun.getAmbient();
 		if (moon!= null)
 			amb.add(moon.getAmbient());

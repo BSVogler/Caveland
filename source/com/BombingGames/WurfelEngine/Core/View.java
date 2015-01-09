@@ -35,7 +35,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
@@ -75,22 +74,8 @@ public abstract class View {
 		
 		//setup default uniforms
 		shader.begin();
- 
 		//our normal map
 		shader.setUniformi("u_normals", 1); //GL_TEXTURE1
-		//Light RGB and intensity (alpha)
-		Vector3 LIGHT_COLOR = new Vector3(1f, 0.8f, 0.6f);
- 
-			//Ambient RGB and intensity (alpha)
-		Vector3 AMBIENT_COLOR = new Vector3(0.6f, 0.6f, 1f);
-		
-		float AMBIENT_INTENSITY = 0.2f;
-		float LIGHT_INTENSITY = 1f;
-		
-		//LibGDX doesn't have Vector4 class at the moment, so we pass them individually...
-		shader.setUniformf("LightColor", LIGHT_COLOR.x, LIGHT_COLOR.y, LIGHT_COLOR.z, LIGHT_INTENSITY);
-		shader.setUniformf("AmbientColor", AMBIENT_COLOR.x, AMBIENT_COLOR.y, AMBIENT_COLOR.z, AMBIENT_INTENSITY);
-		
 		shader.end();
     }
     

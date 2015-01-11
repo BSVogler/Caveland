@@ -389,7 +389,7 @@ public class Map implements Cloneable{
      * @return a list with the entitys
      */
     @SuppressWarnings({"unchecked"})
-    public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<? extends AbstractEntity> type) {
+    public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> type) {
         ArrayList<type> list = new ArrayList<>(30);//defautl size 30
 
         for (AbstractEntity entity : entityList) {//check every entity

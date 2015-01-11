@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.shooting.Bullet;
+import com.badlogic.gdx.Gdx;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -143,11 +144,15 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){
-        Controller.getMap().getEntitys().add(this);
-		position = point;
-        spawned =true;
-		dispose = false;
-		if (shadow!=null) shadow.spawn(position.cpy());
+		if (!spawned) {
+			Controller.getMap().getEntitys().add(this);
+			position = point;
+			spawned =true;
+			dispose = false;
+			if (shadow!=null) shadow.spawn(position.cpy());
+		} else {
+			Gdx.app.debug("AbstractEntity", "Already spawned.");
+		}
         return this;
     }
 	

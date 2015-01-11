@@ -20,13 +20,7 @@ public class CustomGameController extends Controller {
         Gdx.app.log("CustomGameController", "Initializing");
         super.init(new AirGenerator());
 
-        player = (CustomPlayer) new CustomPlayer().spawn(
-			new Coordinate(
-				CVar.get("PlayerLastSaveX").getValuei(),
-				CVar.get("PlayerLastSaveY").getValuei(),
-				CVar.get("PlayerLastSaveZ").getValuei()
-			).getPoint()
-		);
+        player = new CustomPlayer();
 		getMap().setGenerator(new ChunkGenerator());
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
@@ -52,6 +46,20 @@ public class CustomGameController extends Controller {
 //		}
 		//new Vanya().spawn(Map.getCenter());
     }
+
+	@Override
+	public void onEnter() {
+		super.onEnter();
+		if (!player.spawned())
+			player.spawn(
+				new Coordinate(
+					CVar.get("PlayerLastSaveX").getValuei(),
+					CVar.get("PlayerLastSaveY").getValuei(),
+					CVar.get("PlayerLastSaveZ").getValuei()
+				).getPoint()
+			);
+	}
+	
 
 	@Override
 	public void update(float dt) {

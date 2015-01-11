@@ -145,9 +145,7 @@ public class Camera implements LinkedWithMap {
 		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
 		focusEntity.setHidden(true);
 		
-		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
-		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		updateNeededData();
+		initFocus();
 	}
 	
 	/**
@@ -163,6 +161,15 @@ public class Camera implements LinkedWithMap {
 			view
 		);
 		fullWindow = true;
+	}
+	
+	/**
+	 * sets camera position and updates the needed chunks
+	 */
+	public final void initFocus(){
+		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
+		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
+		updateNeededData();
 	}
 
 	/**

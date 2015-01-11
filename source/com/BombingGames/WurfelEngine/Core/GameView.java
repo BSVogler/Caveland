@@ -152,12 +152,13 @@ public class GameView extends View implements GameManager {
         AbstractGameObject.resetDrawCalls();
         
         stage.act(dt);
-        
+		        
         //update cameras
 		/**
-		 * problem! Write acces in view. causes 1 frame hack without hacks.
+		 * problem! Write acces in view. causes 1 frame hack without hacks. Workaround by post-update method.
 		 */
         for (Camera camera : cameras) {
+			if (Controller.getMap().isJustLoaded()) camera.initFocus();
             camera.update(dt);
         }
         

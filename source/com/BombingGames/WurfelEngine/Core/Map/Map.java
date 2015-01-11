@@ -65,6 +65,8 @@ public class Map implements Cloneable{
 	private boolean modified;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
+	
+	private boolean justLoaded = true;
 
     
 	public static void setDefaultGenerator(Generator defaultGenerator) {
@@ -234,6 +236,10 @@ public class Map implements Cloneable{
 		}
 	}
 	
+	/**
+	 * Called after the view update to catch changes caused by the view
+	 * @param dt 
+	 */
 	public void postUpdate(float dt) {
 		if (CVar.get("enableChunkSwitch").getValueb()) {
 			//some custom garbage collection
@@ -251,6 +257,8 @@ public class Map implements Cloneable{
 			onModified();
 			modified = false;
 		}
+		//set lag to false because one update cycle was passed
+		justLoaded=false;
 	}
 		
 	/**
@@ -568,7 +576,7 @@ public class Map implements Cloneable{
 	}
 	
 	/**
-	 * 
+	 * True if some block has changed in loaded chunks.
 	 * @return returns the modified flag
 	 */
 	public boolean isModified(){
@@ -584,6 +592,14 @@ public class Map implements Cloneable{
 		for (LinkedWithMap object : linkedObjects){
 			object.onMapChange();
 		}
+	}
+	
+	/**
+	 * if map is completely new returns true. True while in first update cycle.
+	 * @return 
+	 */
+	public boolean isJustLoaded(){
+		return justLoaded;	
 	}
 	
 	public void addLinkedObject(LinkedWithMap object){

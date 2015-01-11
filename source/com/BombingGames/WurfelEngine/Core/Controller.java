@@ -131,6 +131,8 @@ public class Controller implements GameManager {
      * @return returns true if the map could be laoded and false if it failed
      */
     public static boolean loadMap(String name) {
+		if (map != null)
+			map.dispose();
         try {
             map = new Map(name);
             return true;

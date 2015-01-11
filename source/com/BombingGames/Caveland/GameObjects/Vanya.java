@@ -9,8 +9,9 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class Vanya extends MovableEntity {
-	private static final long serialVersionUID = 1L;
+public class Vanya extends MovableEntity implements Interactable, Serializable {
+	private static final long serialVersionUID = 3L;
+	private transient SimpleEntity interactButton;
 
 	public Vanya() {
 		super(40, 0);
@@ -20,19 +21,45 @@ public class Vanya extends MovableEntity {
 
 	@Override
 	public void update(float dt) {
-		float beforeUpdate = getMovement().z;
+		//float beforeUpdate = getMovement().z;
 		super.update(dt);
 		
 		//höchster Punkt erreicht
 		//if (beforeUpdate>0 && getMovement().z<0)
 			//new BlümchenKacke().spawn(getPosition().cpy());
 		
-		if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
+		if (dt>0) {//update only if time is running
+			if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
+		}
 	}
-	
+
 	@Override
 	public void jump() {
 		super.jump(6, true);
+	}
+
+	@Override
+	public void showButton() {
+		if (interactButton == null) {
+			interactButton = (SimpleEntity) new SimpleEntity(23,1).spawn(
+				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
+			);
+			interactButton.setLightlevel(1);
+		}
+	}
+
+	@Override
+	public void hideButton() {
+		if (interactButton != null) {
+			interactButton.dispose();
+			interactButton = null;
+		}
+	}
+
+	
+	@Override
+	public void interact(AbstractEntity actor) {
+		//show display text
 	}
 	
 	private class BlümchenKacke extends MovableEntity {
@@ -43,7 +70,13 @@ public class Vanya extends MovableEntity {
 			setMovement(new Vector3(0,0,-1));
 			setFloating(false);
 		}
+	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (interactButton != null)
+			interactButton.dispose();
 	}
 }
 

@@ -48,6 +48,7 @@ public class CustomPlayer extends Controllable {
 	 * time of loading
 	 */
 	private float loadAttack =0;
+	private Interactable nearestEntity;
 	
     public CustomPlayer() {
         super(30, 4);
@@ -140,6 +141,19 @@ public class CustomPlayer extends Controllable {
 		if (timeSinceDamage>4000)
 			heal(dt/2f);
 		else timeSinceDamage+=dt;
+		
+ 		//update interactable
+		ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(GAME_EDGELENGTH*2, Interactable.class);
+
+		if (! nearbyInteractable.isEmpty()) {
+			//check if a different one
+			if (nearestEntity != nearbyInteractable.get(0) && nearestEntity != null)
+				nearestEntity.hideButton();
+			nearestEntity = nearbyInteractable.get(0);
+			nearestEntity.showButton();
+		} else if (nearestEntity != null)
+			nearestEntity.hideButton();
+		
 		
 		if (isOnGround()) airjump=false;
 	}

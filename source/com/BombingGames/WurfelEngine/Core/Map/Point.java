@@ -571,6 +571,43 @@ public class Point extends AbstractPosition {
         return result;
 	}
 	
+		/**
+	 * get entities in radius (horizontal only)
+	 * @param radius in game dimension pixels
+	 * @return every entitie in radius
+	 */
+	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius){
+		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
+
+        for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+            if (distanceToHorizontal(entity.getPosition().getPoint()) < radius){
+                result.add(entity);
+            } 
+        }
+
+        return result;
+	}
+	
+	/**
+	 * get entities in radius (horizontal only)
+	 * @param <type>
+	 * @param radius in game dimension pixels
+	 * @param type
+	 * @return every entitie in radius
+	 */
+	@SuppressWarnings("unchecked")
+	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<? extends AbstractEntity> type){
+		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
+
+        for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
+            if (distanceToHorizontal(entity.getPosition().getPoint()) < radius){
+                result.add((type) entity);
+            } 
+        }
+
+        return result;
+	}
+	
 	@Override
 	public boolean equals(Object obj){
 		if (this == obj) return true;

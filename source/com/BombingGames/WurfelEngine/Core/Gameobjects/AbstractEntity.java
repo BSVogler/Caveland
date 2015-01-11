@@ -35,6 +35,8 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.shooting.Bullet;
 import com.badlogic.gdx.Gdx;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -255,4 +257,9 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public boolean isOnMemory() {
 		return position.isInMemoryHorizontal();
 	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+		enableShadow();
+    }
 }

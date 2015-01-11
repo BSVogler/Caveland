@@ -423,6 +423,9 @@ public abstract class AbstractGameObject implements Serializable {
 					-VIEW_HEIGHT2
 					+texture.offsetY
 			);
+			
+			//hack for transientfield tint
+			if (tint == null) tint = new Color(1, 1, 1, 1);
 			sprite.setColor(tint.tmp().mul(color));
         
 			if (view.debugRendering()){

@@ -1,6 +1,8 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -13,6 +15,7 @@ public class Vanya extends MovableEntity {
 	public Vanya() {
 		super(40, 0);
 		setFloating(false);
+		setJumpingSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/vanya_jump.wav"));
 	}
 
 	@Override

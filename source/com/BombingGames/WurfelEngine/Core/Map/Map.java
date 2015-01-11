@@ -239,7 +239,7 @@ public class Map implements Cloneable{
 			//some custom garbage collection
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){
-					data.get(i).dispose();
+					data.get(i).dispose(filename);
 					data.remove(i);
 				}
 				else data.get(i).resetCameraAccesCounter();
@@ -637,6 +637,9 @@ public class Map implements Cloneable{
      *
      */
     public void dispose(){
+		for (Chunk chunk : data) {
+			chunk.dispose(filename);
+		}
         for (int i = 0; i < entityList.size(); i++) {
 			entityList.get(i).dispose();
         }

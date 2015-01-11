@@ -529,7 +529,17 @@ public class Chunk {
 		return cameraAccessCounter <= 0;
 	}
 	
-	public void dispose(){
+	/**
+	 * disposes the chunk
+	 * @param saveFileName if null, does not save the file
+	 */
+	public void dispose(String saveFileName){
+		if (saveFileName != null)
+			try {
+				save(saveFileName);
+			} catch (IOException ex) {
+				Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(coordX, coordY);
 		for (int i = 0; i < entities.size(); i++) {
 			entities.get(i).dispose();

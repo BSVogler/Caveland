@@ -43,6 +43,16 @@ public class SimpleEntity extends AbstractEntity {
     public SimpleEntity(int id) {
         super(id);
     }
+	
+	 /**
+     *
+     * @param id
+	 * @param value
+     */
+    public SimpleEntity(int id, int value) {
+        super(id);
+		setValue(value);
+    }
 
     @Override
     public void update(float dt) {

@@ -1,9 +1,10 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -19,7 +20,13 @@ public class CustomGameController extends Controller {
         Gdx.app.log("CustomGameController", "Initializing");
         super.init(new AirGenerator());
 
-        player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(Map.getGameHeight()));
+        player = (CustomPlayer) new CustomPlayer().spawn(
+			new Coordinate(
+				CVar.get("PlayerLastSaveX").getValuei(),
+				CVar.get("PlayerLastSaveY").getValuei(),
+				CVar.get("PlayerLastSaveZ").getValuei()
+			).getPoint()
+		);
 		getMap().setGenerator(new ChunkGenerator());
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());

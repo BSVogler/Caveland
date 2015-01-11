@@ -1,11 +1,13 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -262,5 +264,16 @@ public class CustomPlayer extends Controllable {
 		super.step();
 		new Dust(1500f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		Coordinate coord = getPosition().getCoord();
+		CVar.get("PlayerLastSaveX").setValuei(coord.getX());
+		CVar.get("PlayerLastSaveY").setValuei(coord.getY());
+		CVar.get("PlayerLastSaveZ").setValuei(coord.getZ());
+	}
+	
+	
 	
 }

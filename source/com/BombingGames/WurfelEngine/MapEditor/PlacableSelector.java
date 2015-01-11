@@ -141,7 +141,8 @@ public class PlacableSelector extends Table {
 	void showEntities() {
 		mode = PlaceMode.Entities;
 		placableGUI.setMode(mode);
-		table.clearChildren();
+		if (table !=null)
+			table.clearChildren();
 		show();
 	}
 

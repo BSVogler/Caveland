@@ -4,66 +4,73 @@ filter: Linear,Linear
 repeat: none
 b0-0-0
   rotate: false
-  xy: 332, 1568
+  xy: 424, 1328
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
 b0-0-1
   rotate: false
-  xy: 433, 1680
+  xy: 532, 1692
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 b0-0-2
   rotate: false
-  xy: 424, 1328
+  xy: 525, 1328
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
 b1-0-0
   rotate: false
-  xy: 433, 1504
+  xy: 560, 1118
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
 b1-0-1
   rotate: false
-  xy: 569, 886
+  xy: 626, 1436
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 b1-0-2
   rotate: false
-  xy: 525, 1328
+  xy: 569, 886
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
 b2-0-0
   rotate: false
-  xy: 560, 1118
+  xy: 592, 653
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
   index: -1
 b2-0-1
   rotate: false
-  xy: 569, 987
+  xy: 698, 1537
   size: 200, 100
   orig: 200, 100
   offset: 0, 0
   index: -1
 b2-0-2
   rotate: false
-  xy: 534, 1504
+  xy: 440, 1796
   size: 100, 175
   orig: 100, 175
   offset: 0, 0
+  index: -1
+b72-0
+  rotate: false
+  xy: 626, 1294
+  size: 88, 141
+  orig: 100, 163
+  offset: 7, 12
   index: -1
 e13-0
   rotate: false
@@ -319,7 +326,7 @@ e30-9
   index: -1
 e32-0
   rotate: false
-  xy: 661, 1088
+  xy: 661, 1062
   size: 200, 98
   orig: 200, 200
   offset: 0, 0
@@ -331,9 +338,72 @@ e43-0
   orig: 50, 50
   offset: 12, 7
   index: -1
+e45-0
+  rotate: false
+  xy: 373, 1757
+  size: 40, 39
+  orig: 50, 50
+  offset: 1, 2
+  index: -1
+e45-1
+  rotate: false
+  xy: 610, 1062
+  size: 35, 35
+  orig: 50, 50
+  offset: 2, 7
+  index: -1
+e45-2
+  rotate: false
+  xy: 467, 1504
+  size: 40, 36
+  orig: 50, 50
+  offset: 1, 8
+  index: -1
+e45-3
+  rotate: false
+  xy: 424, 1504
+  size: 42, 36
+  orig: 50, 50
+  offset: 4, 8
+  index: -1
+e45-4
+  rotate: false
+  xy: 569, 1062
+  size: 40, 35
+  orig: 50, 50
+  offset: 9, 8
+  index: -1
+e45-5
+  rotate: false
+  xy: 508, 1504
+  size: 35, 36
+  orig: 50, 50
+  offset: 13, 5
+  index: -1
+e45-6
+  rotate: false
+  xy: 332, 1757
+  size: 40, 40
+  orig: 50, 50
+  offset: 9, 0
+  index: -1
+e45-7
+  rotate: false
+  xy: 414, 1757
+  size: 42, 38
+  orig: 50, 50
+  offset: 4, 2
+  index: -1
+e80-0
+  rotate: false
+  xy: 332, 1568
+  size: 199, 188
+  orig: 199, 188
+  offset: 0, 0
+  index: -1
 error
   rotate: false
-  xy: 626, 1294
+  xy: 532, 1541
   size: 165, 150
   orig: 200, 225
   offset: 19, 40

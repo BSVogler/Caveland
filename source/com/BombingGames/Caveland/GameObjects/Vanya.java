@@ -65,6 +65,8 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	@Override
 	public void interact(AbstractEntity actor) {
 		//show display text
+		new Explosion().spawn(getPosition());
+		view.getStage().addActor(new Label("Jo motherfucker! Come talk to me!", WE.getEngineView().getSkin()));
 	}
 	
 	private class BlümchenKacke extends MovableEntity {

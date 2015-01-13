@@ -25,7 +25,7 @@
 
 	
 		  <!-- ...using the yGuard 'rename' task. -->  
-		  <rename logfile="yGuardLog.log" replaceClassNameStrings="true">  
+		  <rename logfile="dist/yGuardLog.log" replaceClassNameStrings="true">  
 
 			<property name="obfuscation-prefix" value="myprefix"/>  
 			<keep>  

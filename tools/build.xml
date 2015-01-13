@@ -18,7 +18,7 @@
 		<!-- Integrated obfuscation and name adjustment... -->  
 		<yguard>  
 		  <!-- Obfuscate the yFiles Jar. -->  
-		  <inoutpair in="yguard.jar" out="obfuscated.jar"/>  
+		  <!--<inoutpair in="yguard.jar" out="obfuscated.jar"/>  -->
 		  <!-- While obfuscating, adjust the names of yFiles features in the -->  
 		  <!-- application's Jar file. -->  
 		  <inoutpair in="dist/Caveland.jar" out="dist/CavelandObf.jar"/>  

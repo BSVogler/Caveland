@@ -157,6 +157,16 @@ public class CustomPlayer extends Controllable {
 		
 		if (isOnGround()) airjump=false;
 	}
+
+	/**
+	 * 
+	 * @return null if nothing in reach
+	 */
+	public Interactable getNearestInteractable() {
+		return nearestEntity;
+	}
+	
+	
 	
 	public void throwItem(){
 		try {

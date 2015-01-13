@@ -17,7 +17,10 @@ import java.io.Serializable;
 public class Collectible extends MovableEntity implements Serializable {
 	private static final long serialVersionUID = 2L;
 
-	public static enum Def {
+	/**
+	 * a enum which lists the types of collectibles
+	 */
+	public static enum ColTypes {
 		IRONORE(Color.RED.cpy(), 46),
 		COAL(Color.DARK_GRAY.cpy(), 47),
 		GOLD(Color.YELLOW.cpy(), 48),
@@ -27,7 +30,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		private transient Color color;
 		private int id;
 
-		private Def(Color color, int id) {
+		private ColTypes(Color color, int id) {
 			this.color = color;
 			this.id = id;
 		}
@@ -38,10 +41,10 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	}
 
-	private Def def;
+	private ColTypes def;
 	private transient Color color;
 
-	public Collectible(Def def) {
+	public Collectible(ColTypes def) {
 		super(def.id, 0);
 		setGraphicsId(43);
 		this.color = def.color;
@@ -97,7 +100,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		setMovement(new Vector3((float) Math.random()-0.5f,(float) Math.random()-0.5f,(float)  Math.random()));
 	}
 
-	public Def getDef() {
+	public ColTypes getColTypes() {
 		return def;
 	}
 	
@@ -109,7 +112,9 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
          stream.defaultReadObject(); //fills fld1 and fld2;
+		 def = ColTypes.COAL;//todo, proper serialisation and ddeserialisation of enum
+		 //http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
 		 color = def.getColor();
     }
-	
+
 }

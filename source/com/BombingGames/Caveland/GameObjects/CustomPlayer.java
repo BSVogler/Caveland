@@ -67,8 +67,8 @@ public class CustomPlayer extends Controllable {
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 		
-		inventory.add(new Collectible(Collectible.Def.COAL));
-		inventory.add(new Collectible(Collectible.Def.SULFUR));
+		inventory.add(new Collectible(Collectible.ColTypes.COAL));
+		inventory.add(new Collectible(Collectible.ColTypes.SULFUR));
     }
 	
 	/**

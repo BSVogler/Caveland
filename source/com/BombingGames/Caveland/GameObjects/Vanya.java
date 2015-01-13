@@ -1,11 +1,14 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -63,7 +66,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 
 	
 	@Override
-	public void interact(AbstractEntity actor) {
+	public void interact(AbstractEntity actor, GameView view) {
 		//show display text
 		new Explosion().spawn(getPosition());
 		view.getStage().addActor(new Label("Jo motherfucker! Come talk to me!", WE.getEngineView().getSkin()));

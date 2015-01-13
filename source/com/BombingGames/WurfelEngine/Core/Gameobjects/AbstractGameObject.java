@@ -98,6 +98,8 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     
+	public transient static final float ZAXISSHORTENING = 8f/9f;
+		
     /**the max. amount of different object types*/
     public transient static final int OBJECTTYPESNUM = 124;
       /**the max. amount of different values*/

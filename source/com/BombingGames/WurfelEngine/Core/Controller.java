@@ -51,9 +51,6 @@ public class Controller implements GameManager {
     private DevTools devtools;
     private boolean initalized= false;
 
-    /** The speed of time. 1 = real time;*/
-    private float timespeed = 1;
-    
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
@@ -101,18 +98,14 @@ public class Controller implements GameManager {
 		if (CVar.get("DevMode").getValueb()) {
 			if (devtools == null ) {
 				devtools = new DevTools(10, 50);
-				devtools.update(dt);
-			} else
-				devtools.update(dt);
+			}
+			devtools.update(Gdx.graphics.getRawDeltaTime()*1000f);
 		} else {
 			if (devtools != null ) {
 				devtools.dispose();
 				devtools = null;
 			}
 		}
-        
-        //aply game world speed
-        dt *= timespeed;
     }
 	
 	/**
@@ -191,7 +184,7 @@ public class Controller implements GameManager {
     
     @Override
     public void onEnter(){
-        
+		CVar.get("timespeed").setValuef(1);
     }
     
     @Override

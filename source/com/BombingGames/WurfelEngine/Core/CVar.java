@@ -110,6 +110,7 @@ public class CVar {
 		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);
 		register("walkingAnimationSpeedCorrection", 1.0f, CVarFlags.CVAR_ARCHIVE);
 		register("playerWalkingSpeed", 4.0f, CVarFlags.CVAR_ARCHIVE);
+		register("timeSpeed",1f, CVarFlags.CVAR_VOLATILE);
 	}
 	
 	/**

@@ -32,6 +32,7 @@ public class CustomPlayer extends Controllable {
 	private boolean loadingSoundPlaying = false;
 	private transient final Sound releaseSound;
 	private transient final Sound attackSound;
+	private transient final Sound blockHitSound;
 
 	private int timeSinceDamage;
 	
@@ -56,6 +57,7 @@ public class CustomPlayer extends Controllable {
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
 		attackSound = WE.getAsset("com/BombingGames/Caveland/sounds/attack.wav");
+		blockHitSound = WE.getAsset("com/BombingGames/Caveland/sounds/pock.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
@@ -211,6 +213,7 @@ public class CustomPlayer extends Controllable {
 				.addVector(getAiming().scl(80)).getCoord().damage(350)
 			)
 		{
+			if (blockHitSound!=null) blockHitSound.play();
 			getCamera().shake(20, 50);
 		}
 		

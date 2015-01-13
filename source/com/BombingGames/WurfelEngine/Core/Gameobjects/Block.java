@@ -38,6 +38,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -54,6 +55,8 @@ public class Block extends AbstractGameObject {
 	 * {id}{value}{side}
 	 */
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];
+	
+	private static Sound destructionSound;
         
     /**
      * a list where a representing color of the block is stored
@@ -561,6 +564,11 @@ public class Block extends AbstractGameObject {
     public void setNoSides(){
         hasSides=false;
     }
+
+	public static void setDestructionSound(Sound destructionSound) {
+		Block.destructionSound = destructionSound;
+	}
+	
     
     /**
      *
@@ -584,6 +592,7 @@ public class Block extends AbstractGameObject {
 	 * @param pos the position of the block, can be null if not needed
 	 */
 	public void onDestroy(AbstractPosition pos) {
+		if (destructionSound!=null) destructionSound.play();
 	}
 
 	@Override

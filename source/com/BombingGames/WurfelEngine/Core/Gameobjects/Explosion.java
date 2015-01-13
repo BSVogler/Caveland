@@ -20,7 +20,7 @@ public class Explosion extends AbstractEntity {
 	private transient Camera camera;
 
 	/**
-	 * simple explosion without screen shake
+	 * simple explosion without screen shake. Default radius is 2.
 	 */
 	public Explosion() {
 		super(0);

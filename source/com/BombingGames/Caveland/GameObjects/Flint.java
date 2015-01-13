@@ -28,6 +28,7 @@ public class Flint extends MovableEntity{
 	public void onCollide(){
 		new Explosion(
 			1,
+			500,
 			WE.getGameplay().getView().getCameras().get(0)
 		).spawn(getPosition());
 		dispose();

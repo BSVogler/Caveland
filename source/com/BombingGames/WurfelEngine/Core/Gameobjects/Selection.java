@@ -108,6 +108,14 @@ public class Selection extends AbstractEntity {
     public Sides getNormalSides() {
         return normalSide;
     }
+	
+	    /**
+     *
+     * @return
+     */
+    public SimpleEntity getNormal() {
+        return normal;
+    }
     
     /**
      * Updates thhe selection using the screen position of the cursor.

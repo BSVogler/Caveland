@@ -1,11 +1,13 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -46,6 +48,7 @@ public class CustomPlayer extends Controllable {
 	 * time of loading
 	 */
 	private float loadAttack =0;
+	private Interactable nearestEntity;
 	
     public CustomPlayer() {
         super(30, 4);
@@ -138,6 +141,19 @@ public class CustomPlayer extends Controllable {
 		if (timeSinceDamage>4000)
 			heal(dt/2f);
 		else timeSinceDamage+=dt;
+		
+ 		//update interactable
+		ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(GAME_EDGELENGTH*2, Interactable.class);
+
+		if (! nearbyInteractable.isEmpty()) {
+			//check if a different one
+			if (nearestEntity != nearbyInteractable.get(0) && nearestEntity != null)
+				nearestEntity.hideButton();
+			nearestEntity = nearbyInteractable.get(0);
+			nearestEntity.showButton();
+		} else if (nearestEntity != null)
+			nearestEntity.hideButton();
+		
 		
 		if (isOnGround()) airjump=false;
 	}
@@ -262,5 +278,16 @@ public class CustomPlayer extends Controllable {
 		super.step();
 		new Dust(1500f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		Coordinate coord = getPosition().getCoord();
+		CVar.get("PlayerLastSaveX").setValuei(coord.getX());
+		CVar.get("PlayerLastSaveY").setValuei(coord.getY());
+		CVar.get("PlayerLastSaveZ").setValuei(coord.getZ());
+	}
+	
+	
 	
 }

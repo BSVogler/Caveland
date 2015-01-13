@@ -1,36 +1,70 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Vanya extends MovableEntity {
-	private static final long serialVersionUID = 1L;
+public class Vanya extends MovableEntity implements Interactable, Serializable {
+	private static final long serialVersionUID = 3L;
+	private transient SimpleEntity interactButton;
 
 	public Vanya() {
 		super(40, 0);
 		setFloating(false);
+		setJumpingSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/vanya_jump.wav"));
 	}
 
 	@Override
 	public void update(float dt) {
-		float beforeUpdate = getMovement().z;
+		//float beforeUpdate = getMovement().z;
 		super.update(dt);
 		
 		//höchster Punkt erreicht
-		if (beforeUpdate>0 && getMovement().z<0)
-			new BlümchenKacke().spawn(getPosition().cpy());
+		//if (beforeUpdate>0 && getMovement().z<0)
+			//new BlümchenKacke().spawn(getPosition().cpy());
 		
-		if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
+		if (dt>0) {//update only if time is running
+			if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
+		}
 	}
-	
+
 	@Override
 	public void jump() {
-		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, getMovement().z));
 		super.jump(6, true);
+	}
+
+	@Override
+	public void showButton() {
+		if (interactButton == null) {
+			interactButton = (SimpleEntity) new SimpleEntity(23,1).spawn(
+				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
+			);
+			interactButton.setLightlevel(1);
+		}
+	}
+
+	@Override
+	public void hideButton() {
+		if (interactButton != null) {
+			interactButton.dispose();
+			interactButton = null;
+		}
+	}
+
+	
+	@Override
+	public void interact(AbstractEntity actor) {
+		//show display text
 	}
 	
 	private class BlümchenKacke extends MovableEntity {
@@ -41,7 +75,19 @@ public class Vanya extends MovableEntity {
 			setMovement(new Vector3(0,0,-1));
 			setFloating(false);
 		}
-
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (interactButton != null)
+			interactButton.dispose();
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        setJumpingSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/vanya_jump.wav"));
+    }
+	
 }
 

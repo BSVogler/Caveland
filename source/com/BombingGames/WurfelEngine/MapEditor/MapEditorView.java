@@ -334,7 +334,7 @@ public class MapEditorView extends GameView {
 						Block block = colorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					} else 
-						colorGUI.getEntity().spawn(controller.getSelectionEntity().getPosition().cpy());
+						colorGUI.getEntity().spawn(controller.getSelectionEntity().getNormal().getPosition().cpy());
 				   // gras2.play();
 				}   
 				layerSelection = coords.getZ();

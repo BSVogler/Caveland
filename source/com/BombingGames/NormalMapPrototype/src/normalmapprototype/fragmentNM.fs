@@ -17,10 +17,9 @@ void main() {
     vec4 DiffuseColor = texture2D(u_texture, v_texCoords);
 
     //RGB of our normal map
-    vec3 NormalMap = texture2D(u_normals, v_texCoords).rgb;
+    vec3 N = texture2D(u_normals, v_texCoords).rgb*2.0- 1.0;//normalizing here strengths interpolationg artifacts
 
-    //normalize our vectors
-    vec3 N = NormalMap * 2.0 - 1.0;//normalizing here strengths interpolationg artifacts
+	N.x = -N.x;
    // vec3 L = normalize(LightNormal);
 
     //Pre-multiply light color with intensity

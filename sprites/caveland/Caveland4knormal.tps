@@ -193,8 +193,8 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>entities4k</filename>
             <filename>blocks4knormal</filename>
+            <filename>entities4knormal</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -138,7 +138,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		//update light position, normalized to screen resolution
 		LIGHT_NORMAL.x = 2*Mouse.getX() / (float)Display.getWidth()-1;
 		LIGHT_NORMAL.y = 2*Mouse.getY() / (float)Display.getHeight()-1;
-		LIGHT_NORMAL.z = 0;
+		//LIGHT_NORMAL.z = 0;
 		LIGHT_NORMAL.nor();
 		
 		batch.setShader(shader);
@@ -151,6 +151,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		//bind diffuse color to texture unit 0
 		//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 		diffTexture.bind(0);
+		
 		
 		int sizeX = 200;
 		int sizeY = 225;
@@ -183,6 +184,12 @@ public class NormalMapPrototype implements ApplicationListener {
 					);	
 			}
 		}
+		
+		batch.draw(
+			diffuseTextureRegion.findRegion("e30-15"),
+			500,
+			800
+		);
 		
 		batch.setShader(null);
 		

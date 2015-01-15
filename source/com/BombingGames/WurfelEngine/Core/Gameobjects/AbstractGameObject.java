@@ -500,8 +500,8 @@ public abstract class AbstractGameObject implements Serializable {
 
     /**
      * How bright is the object?
-     * The lightlevel is a number between 0 and 1. 1 is full bright. 0 is black. Default is .5.
-     * @return
+     * The lightlevel is a scale applied to the color. 1 is default value.
+     * @return 1 is default bright. 0 is black.
      */
     public float getLightlevel() {
         return lightlevel;
@@ -557,7 +557,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Set the brightness of the object.
      * The lightlevel is a scaling factor between.
-     * @param lightlevel  1 is full bright. 0 is black.
+     * @param lightlevel 1 is default bright. 0 is black.
      */
     public void setLightlevel(float lightlevel) {
         this.lightlevel = lightlevel;

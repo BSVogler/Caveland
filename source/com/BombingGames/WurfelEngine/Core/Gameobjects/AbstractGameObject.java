@@ -72,7 +72,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The height (y-axis) of the sprite size.
      */
-    public transient static final int VIEW_HEIGHT = 125;
+    public transient static final int VIEW_HEIGHT = 122;
     /**The half (1/2) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/2*/
     public transient static final int VIEW_HEIGHT2 = VIEW_HEIGHT / 2;
     /**A quarter (1/4) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/4*/

@@ -338,11 +338,13 @@ public class LightEngine implements LinkedWithMap {
 			) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ()-1;//start at top
-                while (Controller.getMap().getBlock(
+                while (
+					chunk.getBlock(
 						x,
 						y,
 						topmost
-					).isTransparent() && topmost > 0 ){
+					).isTransparent() && topmost > 0
+				){
                     topmost--;
                 }
                 

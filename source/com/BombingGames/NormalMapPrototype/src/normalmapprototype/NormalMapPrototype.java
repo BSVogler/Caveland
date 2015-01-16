@@ -28,21 +28,25 @@ public class NormalMapPrototype implements ApplicationListener {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.width = 1920;
-		cfg.height = 1080;
+		cfg.height = 800;
 		cfg.resizable = false;
 		LwjglApplication instance = new LwjglApplication(new NormalMapPrototype(), cfg);
 	}
 	
-	private Texture diffTexture, normalTexture;
+	private Texture diffTexture, normalTexture, urfTexture, urfNormalTexture;
 	private TextureAtlas diffuseTextureRegion;
+	private TextureAtlas urfTextureRegion;
 	
 	private ShapeRenderer shR;
 	private AtlasRegion[][] texture;
+	private AtlasRegion[] urfRegion;
 	
 	private SpriteBatch batch;
 	private OrthographicCamera cam;
 	
 	private ShaderProgram shader;
+	
+	private float step;
  
 	//our constants...
 	public static final float DEFAULT_LIGHT_Z = 0.075f;
@@ -63,6 +67,10 @@ public class NormalMapPrototype implements ApplicationListener {
 		diffuseTextureRegion = new TextureAtlas(Gdx.files.internal("normalmapprototype/Spritesheet.txt"));
 		diffTexture = diffuseTextureRegion.getTextures().first();
 		normalTexture = new Texture(Gdx.files.internal("normalmapprototype/SpritesheetNormal.png"));
+		
+		urfTextureRegion = new TextureAtlas(Gdx.files.internal("normalmapprototype/playerSheet.txt"));
+		urfTexture = urfTextureRegion.getTextures().first();
+		urfNormalTexture = new Texture(Gdx.files.internal("normalmapprototype/playerSheetNormal.png"));
 		
 		ShaderProgram.pedantic = false;
 		String vertexShader = Gdx.files.internal("normalmapprototype/vertexNM.vs").readString();
@@ -109,11 +117,17 @@ public class NormalMapPrototype implements ApplicationListener {
 		
 		//indexTextures
 		texture = new AtlasRegion[5][3];
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < texture.length; i++) {
 			texture[i][0] = diffuseTextureRegion.findRegion("b"+i+"-0-0");
 			texture[i][1] = diffuseTextureRegion.findRegion("b"+i+"-0-1");
 			texture[i][2] = diffuseTextureRegion.findRegion("b"+i+"-0-2");
 		}
+		
+		urfRegion = new AtlasRegion[8];
+		for (int i = 0; i < urfRegion.length; i++) {
+			urfRegion[i] = urfTextureRegion.findRegion("walk"+(i+1));
+		}
+		
 		
 		font = new BitmapFont();	
 	}
@@ -154,7 +168,7 @@ public class NormalMapPrototype implements ApplicationListener {
 		
 		
 		int sizeX = 200;
-		int sizeY = 225;
+		int sizeY = 222;
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 5; y++) {
 				if (texture[y][0] != null)
@@ -167,12 +181,12 @@ public class NormalMapPrototype implements ApplicationListener {
 					batch.draw(
 						texture[y][1],
 						x*sizeX+sizeX/2,
-						y*sizeY+175
+						y*sizeY+172
 					);
 					batch.draw(
 						texture[y][1],
 						x*sizeX,
-						y*sizeY+125
+						y*sizeY+122
 					);
 				}
 				
@@ -185,11 +199,22 @@ public class NormalMapPrototype implements ApplicationListener {
 			}
 		}
 		
-		batch.draw(
-			diffuseTextureRegion.findRegion("e30-15"),
-			500,
-			800
-		);
+		batch.end();
+		batch.begin();
+		urfNormalTexture.bind(1);
+		
+		//bind diffuse color to texture unit 0
+		//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+		urfTexture.bind(0);
+		
+		step += Gdx.graphics.getDeltaTime()*1000f/60f;
+		step %= 4000f;//reset every four seconds 
+		if (urfRegion[(int) step%urfRegion.length]!=null)
+			batch.draw(
+				urfRegion[(int) step%urfRegion.length],
+				500,
+				400
+			);
 		
 		batch.setShader(null);
 		

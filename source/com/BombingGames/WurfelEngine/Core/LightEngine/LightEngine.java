@@ -245,7 +245,7 @@ public class LightEngine implements LinkedWithMap {
      */
     public Color getColor(){
 		if (normalMapRendering)
-			return Color.WHITE;
+			return Color.WHITE.cpy();
         return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
         //more precise (?) but slower
 //        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;

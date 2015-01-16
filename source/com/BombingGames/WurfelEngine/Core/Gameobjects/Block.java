@@ -40,7 +40,6 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -505,29 +504,12 @@ public class Block extends AbstractGameObject {
             sprite.setOrigin(0, 0);
             sprite.scale(scale);
         }
-        //System.out.println("rend:"+xPos+","+yPos);
-        color.mul(getLightlevel(), getLightlevel(), getLightlevel(), 1);//darken
+		//System.out.println("rend:"+xPos+","+yPos);
+		color.r *= getLightlevel();
+		color.g *= getLightlevel();
+		color.b *= getLightlevel();
 
-        sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right
-        
-        //color.mul(getLightlevel()*2-((side == 2)?0.01f:0));
-        //color.a = 1; 
-        sprite.getVertices()[SpriteBatch.C1] = color.toFloatBits();//top left
-
-        
-//        if (side == 2)
-//            color.mul(0.93f);
-//        else if (side == 0)
-//            color.mul(0.92f);
-//        color.a = 1; 
-
-        sprite.getVertices()[SpriteBatch.C2] = color.toFloatBits();//bottom left
-        
-//        if (side == 2)
-//            color.mul(0.97f);
-//        else if (side == 0) color.mul(1);
-//        color.a = 1; 
-        sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
+        sprite.setColor(color);
  
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();

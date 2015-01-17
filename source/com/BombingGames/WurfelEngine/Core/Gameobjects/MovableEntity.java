@@ -113,6 +113,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         orientation = new Vector2(1, 0);
 		coliding = true;
 		floating = false;
+		friction = CVar.get("friction").getValuef();
         if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
 		enableShadow();
    }
@@ -183,9 +184,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//if movement allowed => move
 			if (coliding &&  horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
 				//stop
-				addMovement(
-					new Vector3(-getMovement().x, -getMovement().y, 0)
-				);
+				setHorMovement(new Vector2());
 				onCollide();
 			}
 
@@ -198,17 +197,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			//add movement
 			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
-			
-//slow walking down
-			if (friction>0) {
-				Vector3 frictionVec = getMovement().scl(-dt/friction);
-				frictionVec.z = 0;
-				if (getMovementHor().len() < 0.1f)
-					replaceHorMovement(new Vector2());
-				else {
-					addMovement(frictionVec);
-				}
-			}
 			
 			//save orientation
 			if (getMovementHor().len2() != 0)//only update if there is new information, else keep it
@@ -253,6 +241,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 						step();
 					}
 				}
+			}
+			
+			//slow walking down
+			//stop at a limit
+			if (getMovementHor().len() > 0.1f)
+				setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
+			else {
+				setHorMovement(new Vector2());
 			}
 				
 				

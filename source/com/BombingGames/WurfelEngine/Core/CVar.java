@@ -111,6 +111,7 @@ public class CVar {
 		register("walkingAnimationSpeedCorrection", 1.0f, CVarFlags.CVAR_ARCHIVE);
 		register("playerWalkingSpeed", 4.0f, CVarFlags.CVAR_ARCHIVE);
 		register("timeSpeed",1f, CVarFlags.CVAR_VOLATILE);
+		register("friction",0.2f, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**

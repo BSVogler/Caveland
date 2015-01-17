@@ -484,7 +484,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Get the movement vector as the product of diretion and speed.
-	 * @return in m/s
+	 * @return in m/s. copy safe
 	 */
 	public Vector3 getMovement(){
 		return movement.cpy();

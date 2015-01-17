@@ -487,7 +487,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Get the movement vector as the product of diretion and speed.
+	 * Get the movement vector.
 	 * @return in m/s. copy safe
 	 */
 	public Vector2 getMovementHor(){
@@ -647,7 +647,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 * autoamtically slows speed down.
+	 * automatically slows speed down.
 	 * @param friction The higher the value, the more "slide". If =0 friciton is disabled.
 	 */
 	public void setFriction(float friction) {

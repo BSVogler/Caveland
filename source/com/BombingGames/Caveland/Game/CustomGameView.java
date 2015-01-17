@@ -192,7 +192,7 @@ public class CustomGameView extends GameView{
 				controllable.jump();
 			
 			if (buttonCode==11) //X
-				((CustomPlayer) controllable).attack();
+				((CustomPlayer) controllable).attack(500);
 			
 			if (buttonCode==12)//B
 				((CustomPlayer) controllable).throwItem();
@@ -354,7 +354,7 @@ public class CustomGameView extends GameView{
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.RIGHT)getPlayer(0).throwItem();
-			if (button ==Buttons.LEFT) getPlayer(0).attack();
+			if (button ==Buttons.LEFT) getPlayer(0).attack(500);
             return true;
         }
 

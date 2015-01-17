@@ -183,7 +183,11 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 	
-	public void attack(){
+	/**
+	 * does an attack move
+	 * @param damage
+	 */
+	public void attack(int damage){
 		attackSound.play();
 		addToHor(8f);//add 5 m/s in move direction
 		
@@ -194,7 +198,7 @@ public class CustomPlayer extends Controllable {
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
 				MovableEntity movable = (MovableEntity) entity;
-				movable.damage(500);
+				movable.damage(damage);
 				getCamera().shake(20, 50);
 				movable.setMovement(
 					new Vector3(
@@ -210,7 +214,7 @@ public class CustomPlayer extends Controllable {
 		//destroy blocks
 		if (
 			getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2)
-				.addVector(getAiming().scl(80)).getCoord().damage(350)
+				.addVector(getAiming().scl(80)).getCoord().damage(damage)
 			)
 		{
 			if (blockHitSound!=null) blockHitSound.play();
@@ -267,7 +271,7 @@ public class CustomPlayer extends Controllable {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
 			addToHor(20f);
-			attack();
+			attack(1000);
 		}
 	
 		loadAttack=0f;

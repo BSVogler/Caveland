@@ -128,7 +128,7 @@ public class CustomGameView extends GameView{
 			
 			if (XboxListener.speed[0]!=-1){
 			Vector2 direction = getPlayer(0).getOrientation();
-				getPlayer(0).replaceHorMovement(
+				getPlayer(0).setHorMovement(
 					new Vector2(direction.x, direction.y).scl(
 						(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
 					)

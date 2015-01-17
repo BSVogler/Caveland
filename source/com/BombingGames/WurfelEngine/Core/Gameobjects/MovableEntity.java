@@ -527,7 +527,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		addMovement(orientation.cpy().scl(speed));//add in move direction
 	}
 	
-	public void replaceHorMovement(Vector2 movement){
+	/**
+	 * Set the horizontal movement and ignore z
+	 * @param movement 
+	 */
+	public void setHorMovement(Vector2 movement){
 		Vector3 tmp = getMovement();
 		tmp.x = movement.x;
 		tmp.y = movement.y;

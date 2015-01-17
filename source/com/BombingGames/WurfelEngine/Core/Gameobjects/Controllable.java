@@ -80,7 +80,7 @@ public class Controllable extends MovableEntity {
 //			addMovement(dir);
 			
 			//repalce horizontal movement if walking
-			replaceHorMovement(dir);
+			setHorMovement(dir);
         }
    }
 	@Override

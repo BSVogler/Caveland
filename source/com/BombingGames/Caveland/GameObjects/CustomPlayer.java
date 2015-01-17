@@ -281,7 +281,7 @@ public class CustomPlayer extends Controllable {
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
-			addToHor(20f);
+			addToHor(40f);
 			attack(1000);
 		}
 	

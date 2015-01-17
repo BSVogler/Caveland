@@ -315,7 +315,12 @@ public class CVar {
 			if (type==Type.i){
 				valuei = Integer.parseInt(str);
 			} else if (type==Type.f){
-				valuef = Float.parseFloat(str);
+				try {
+					valuef = Float.parseFloat(str);
+				} catch (Exception e) {
+					WE.getConsole().add("Could not parse value.");
+				}
+				
 			} else {
 				valueb = str.equals("1") || str.equals("true");
 			} 

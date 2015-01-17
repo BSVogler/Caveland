@@ -107,11 +107,22 @@ public class CustomPlayer extends Controllable {
 		
 		//detect button hold
 		if (loadAttack != 0f) loadAttack+=dt;
+		if (loadAttack>0) {
+			Vector3 newmov = getMovement();
+			newmov.z /=2;//half vertical speed
+			if (newmov.z<0)
+				newmov.z *= 2/3;//if falling then more "freeze in air"
+			setMovement(newmov);
+		}
+		
 		if (loadAttack>300) {//time till registered as a "hold"
 			if (loadingSound != null && !loadingSoundPlaying){
 				loadingSound.play();
 				loadingSoundPlaying=true;
 			}
+			Vector3 newmov = getMovement();
+			newmov.z /=4;
+			setMovement(newmov);
 		}
 		
 		if (loadAttack >= LOADATTACKTIME){

@@ -51,7 +51,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		this.def = def;
 		setFloating(false);
 		//setSpeed(0.2f);
-		setFriction(1500);
+		setFriction(CVar.get("friction").getValuef());
 		setIndestructible(true);
 		setCollectable(true);
 	}

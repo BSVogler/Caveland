@@ -65,7 +65,7 @@ public class CustomPlayer extends Controllable {
 		setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/urf_jump.wav"));
 		
 		loadEngineLandingSound();
-		setFriction(50);
+		setFriction(CVar.get("playerfriction").getValuef());
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 		

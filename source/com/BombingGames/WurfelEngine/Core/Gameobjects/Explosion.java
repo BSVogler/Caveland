@@ -17,14 +17,16 @@ public class Explosion extends AbstractEntity {
 	private static Sound explosionsound;
 	
 	private final int radius;
+	private final int damage;
 	private transient Camera camera;
 
 	/**
-	 * simple explosion without screen shake
+	 * simple explosion without screen shake. Default radius is 2. Damage 500.
 	 */
 	public Explosion() {
 		super(0);
 		this.radius = 2;
+		damage = 500;
 		setSaveToDisk(false);
 	}
 
@@ -32,11 +34,13 @@ public class Explosion extends AbstractEntity {
 	/**
 	 * 
 	 * @param radius the radius in game world blocks
+	 * @param damage [0;1000]
 	 * @param camera can be null. used for screen shake
 	 */
-	public Explosion(int radius, Camera camera) {
+	public Explosion(int radius, int damage, Camera camera) {
 		super(0);
 		this.radius = radius;
+		this.damage = damage;
 		if (explosionsound == null)
             explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
 		this.camera = camera;
@@ -72,7 +76,7 @@ public class Explosion extends AbstractEntity {
 							);
 						for (MovableEntity ent : list) {
 							if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
-								ent.damage(1000);
+								ent.damage(damage);
 						}
 					}
 					

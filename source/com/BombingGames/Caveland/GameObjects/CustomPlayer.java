@@ -32,6 +32,7 @@ public class CustomPlayer extends Controllable {
 	private boolean loadingSoundPlaying = false;
 	private transient final Sound releaseSound;
 	private transient final Sound attackSound;
+	private transient final Sound blockHitSound;
 
 	private int timeSinceDamage;
 	
@@ -56,6 +57,7 @@ public class CustomPlayer extends Controllable {
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
 		attackSound = WE.getAsset("com/BombingGames/Caveland/sounds/attack.wav");
+		blockHitSound = WE.getAsset("com/BombingGames/Caveland/sounds/pock.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
@@ -63,12 +65,12 @@ public class CustomPlayer extends Controllable {
 		setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/urf_jump.wav"));
 		
 		loadEngineLandingSound();
-		setFriction(50);
+		setFriction(CVar.get("playerfriction").getValuef());
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 		
-		inventory.add(new Collectible(Collectible.Def.COAL));
-		inventory.add(new Collectible(Collectible.Def.SULFUR));
+		inventory.add(new Collectible(Collectible.ColTypes.COAL));
+		inventory.add(new Collectible(Collectible.ColTypes.SULFUR));
     }
 	
 	/**
@@ -105,11 +107,22 @@ public class CustomPlayer extends Controllable {
 		
 		//detect button hold
 		if (loadAttack != 0f) loadAttack+=dt;
+		if (loadAttack>0) {
+			Vector3 newmov = getMovement();
+			newmov.z /=2;//half vertical speed
+			if (newmov.z<0)
+				newmov.z *= 2/3;//if falling then more "freeze in air"
+			setMovement(newmov);
+		}
+		
 		if (loadAttack>300) {//time till registered as a "hold"
 			if (loadingSound != null && !loadingSoundPlaying){
 				loadingSound.play();
 				loadingSoundPlaying=true;
 			}
+			Vector3 newmov = getMovement();
+			newmov.z /=4;
+			setMovement(newmov);
 		}
 		
 		if (loadAttack >= LOADATTACKTIME){
@@ -157,6 +170,16 @@ public class CustomPlayer extends Controllable {
 		
 		if (isOnGround()) airjump=false;
 	}
+
+	/**
+	 * 
+	 * @return null if nothing in reach
+	 */
+	public Interactable getNearestInteractable() {
+		return nearestEntity;
+	}
+	
+	
 	
 	public void throwItem(){
 		try {
@@ -171,7 +194,11 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 	
-	public void attack(){
+	/**
+	 * does an attack move
+	 * @param damage
+	 */
+	public void attack(int damage){
 		attackSound.play();
 		addToHor(8f);//add 5 m/s in move direction
 		
@@ -182,7 +209,7 @@ public class CustomPlayer extends Controllable {
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
 				MovableEntity movable = (MovableEntity) entity;
-				movable.damage(500);
+				movable.damage(damage);
 				getCamera().shake(20, 50);
 				movable.setMovement(
 					new Vector3(
@@ -198,9 +225,10 @@ public class CustomPlayer extends Controllable {
 		//destroy blocks
 		if (
 			getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2)
-				.addVector(getAiming().scl(80)).getCoord().damage(350)
+				.addVector(getAiming().scl(80)).getCoord().damage(damage)
 			)
 		{
+			if (blockHitSound!=null) blockHitSound.play();
 			getCamera().shake(20, 50);
 		}
 		
@@ -253,8 +281,8 @@ public class CustomPlayer extends Controllable {
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
 			releaseSound.play();
-			addToHor(20f);
-			attack();
+			addToHor(40f);
+			attack(1000);
 		}
 	
 		loadAttack=0f;

@@ -1,6 +1,9 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.Caveland.Game.ChatBox;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.WE;
@@ -63,8 +66,10 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 
 	
 	@Override
-	public void interact(AbstractEntity actor) {
+	public void interact(AbstractEntity actor, GameView view) {
 		//show display text
+		new Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
+		view.getStage().addActor(new ChatBox("I dare you motherfucker! Speak to me again and I will explode again!"));
 	}
 	
 	private class BlümchenKacke extends MovableEntity {

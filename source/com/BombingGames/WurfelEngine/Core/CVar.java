@@ -88,7 +88,7 @@ public class CVar {
 		register("gravity", 9.81f, CVarFlags.CVAR_ARCHIVE);
 		register("worldSpinAngle", -40, CVarFlags.CVAR_ARCHIVE);
 		register("loadPixmap", false, CVarFlags.CVAR_ARCHIVE);
-		register("LEazimutSpeed", 0.0078125f, CVarFlags.CVAR_ARCHIVE);
+		register("LEazimutSpeed", 0.00078125f, CVarFlags.CVAR_ARCHIVE);
 		register("LEnormalMapRendering", true, CVarFlags.CVAR_ARCHIVE);
 		register("renderResolutionWidth", 1920, CVarFlags.CVAR_ARCHIVE);
 		register("enableLightEngine", true, CVarFlags.CVAR_ARCHIVE);
@@ -112,6 +112,9 @@ public class CVar {
 		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);
 		register("walkingAnimationSpeedCorrection", 1.0f, CVarFlags.CVAR_ARCHIVE);
 		register("playerWalkingSpeed", 4.0f, CVarFlags.CVAR_ARCHIVE);
+		register("timeSpeed",1f, CVarFlags.CVAR_VOLATILE);
+		register("friction",0.001f, CVarFlags.CVAR_ARCHIVE);
+		register("playerfriction",0.2f, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**
@@ -314,7 +317,12 @@ public class CVar {
 			if (type==Type.i){
 				valuei = Integer.parseInt(str);
 			} else if (type==Type.f){
-				valuef = Float.parseFloat(str);
+				try {
+					valuef = Float.parseFloat(str);
+				} catch (Exception e) {
+					WE.getConsole().add("Could not parse value.");
+				}
+				
 			} else {
 				valueb = str.equals("1") || str.equals("true");
 			} 

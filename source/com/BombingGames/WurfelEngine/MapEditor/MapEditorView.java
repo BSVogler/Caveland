@@ -207,7 +207,8 @@ public class MapEditorView extends GameView {
         super.update(dt);
         
 		if (camera!=null) {
-			camera.move((int) (camermove.x*cameraspeed*dt), (int) (camermove.y*cameraspeed*dt));
+			float rdt= Gdx.graphics.getRawDeltaTime()*1000f;//use "scree"-game time
+			camera.move((int) (camermove.x*cameraspeed*rdt), (int) (camermove.y*cameraspeed*rdt));
 		}
     }
 

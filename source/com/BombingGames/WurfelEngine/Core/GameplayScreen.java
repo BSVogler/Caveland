@@ -106,6 +106,8 @@ public class GameplayScreen extends WEScreen {
     
     @Override
     public void renderImpl(float dt) {
+		//aply game world speed
+        dt *= CVar.get("timespeed").getValuef();
         controller.update(dt);
 		Controller.staticUpdate(dt);
         view.update(dt);

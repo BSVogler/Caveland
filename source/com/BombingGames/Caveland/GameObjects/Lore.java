@@ -185,7 +185,7 @@ public class Lore extends MovableEntity {
 
 	@Override
 	public void dispose() {
-		((Collectible) new Collectible(Collectible.Def.IRON).spawn(getPosition())).sparkle();
+		((Collectible) new Collectible(Collectible.ColTypes.IRON).spawn(getPosition())).sparkle();
 		super.dispose();
 	}
 

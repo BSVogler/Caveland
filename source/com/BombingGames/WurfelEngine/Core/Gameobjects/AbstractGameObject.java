@@ -99,6 +99,8 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     
+	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT/(float) GAME_EDGELENGTH;//I thought it was sqrt(1/2) vut then it was 8/9. Can be calculated dynamically
+		
     /**the max. amount of different object types*/
     public transient static final int OBJECTTYPESNUM = 124;
       /**the max. amount of different values*/

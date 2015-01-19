@@ -156,7 +156,7 @@ public class Bullet extends AbstractEntity {
      * Spawns explosion.
      */
     private void explode(int radius){
-       new Explosion(radius,WE.getGameplay().getView().getCameras().get(0)).spawn(getPosition());
+       new Explosion(radius,800,WE.getGameplay().getView().getCameras().get(0)).spawn(getPosition());
     }
 
     @Override

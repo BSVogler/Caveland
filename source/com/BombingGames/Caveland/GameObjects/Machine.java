@@ -61,10 +61,10 @@ public class Machine extends Block {
 		for (int i = 0; i < content.size(); i++) {
 			MovableEntity obj = content.get(i);
 			if (obj instanceof Collectible){
-				if (((Collectible) obj).getDef()==Collectible.Def.COAL){
+				if (((Collectible) obj).getColTypes()==Collectible.ColTypes.COAL){
 					coalcount++;
 					content.remove(i);
-				}else if (((Collectible) obj).getDef()==Collectible.Def.SULFUR){
+				}else if (((Collectible) obj).getColTypes()==Collectible.ColTypes.SULFUR){
 					sulfurcount++;
 					content.remove(i);
 				}

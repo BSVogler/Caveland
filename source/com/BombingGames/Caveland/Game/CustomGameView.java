@@ -1,7 +1,6 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.Caveland.GameObjects.Lore;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
@@ -19,7 +18,6 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import java.util.ArrayList;
 
 
 /**
@@ -27,8 +25,11 @@ import java.util.ArrayList;
  * @author Benedikt
  */
 public class CustomGameView extends GameView{
-	private float timeContextDown = 0;
-	private boolean contextDown;
+	/**
+	 * -1 = not down, 0=just pressed down, >0 time down
+	 */
+	private float inventoryDown =-1;
+	private float useDown =-1;
 	/**
 	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 */
@@ -127,21 +128,23 @@ public class CustomGameView extends GameView{
 			
 			if (XboxListener.speed[0]!=-1){
 			Vector2 direction = getPlayer(0).getOrientation();
-				getPlayer(0).replaceHorMovement(
+				getPlayer(0).setHorMovement(
 					new Vector2(direction.x, direction.y).scl(
 						(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
 					)
 				);
 			}
 					
-			if (contextDown)
-				timeContextDown+=dt;
+			if (inventoryDown>-1)
+				inventoryDown+=dt;
 			
-			if (timeContextDown>400){
-				ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
-				if (loren.size()>0)
-					getPlayer(0).getInventory().addAll(loren.get(0).getContent());
+			if (useDown==0){
+				getPlayer(0).getNearestInteractable().interact(getPlayer(0), this);
+				//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
+				//if (loren.size()>0)
+				//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 			}
+			useDown+=dt;
 				
 	}
 
@@ -189,27 +192,29 @@ public class CustomGameView extends GameView{
 				controllable.jump();
 			
 			if (buttonCode==11) //X
-				((CustomPlayer) controllable).attack();
+				((CustomPlayer) controllable).attack(500);
 			
 			if (buttonCode==12)//B
 				((CustomPlayer) controllable).throwItem();
 			
 			if (buttonCode==14) //14=Y
-				parent.contextDown = true;
+				parent.inventoryDown = 0;
 			
 			if (buttonCode==8)//???
 				((CustomPlayer) controllable).getInventory().switchItems(true);
 			
 			if (buttonCode==9)//???
 				((CustomPlayer) controllable).getInventory().switchItems(false);
+			
+			if (buttonCode==15)//???
+				parent.useDown = 0;
 			return false;
 		}
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
 			if (buttonCode==14){ //14=Y
-				parent.contextDown = false;
-				parent.timeContextDown =0;
+				parent.inventoryDown = -1;
 			}
 			if (buttonCode==11) //X
 				((CustomPlayer) controllable).loadAttack();
@@ -284,15 +289,15 @@ public class CustomGameView extends GameView{
                  if (keycode == Input.Keys.M && getMinimap() != null){
                      getMinimap().toggleVisibility();
                  }
-                 //toggle fullscreen
-                 if (keycode == Input.Keys.F){
-                     WE.setFullscreen(!WE.isFullscreen());
-                 }
 
                  //toggle eathquake
                  if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
-					 parent.contextDown = true;
-//   getMap().earthquake(5000);
+					 parent.inventoryDown = 0;//register on down
+                 }
+				 
+				 //toggle eathquake
+                 if (keycode == Input.Keys.F){
+					 parent.useDown = 0;//register on down
                  }
 
                  //pause
@@ -306,6 +311,7 @@ public class CustomGameView extends GameView{
                      getCameras().get(0).setZoom(1);
                      WE.getConsole().add("Zoom reset");
                   }  
+				 
 
                  //show/hide light engine
                  if (keycode == Input.Keys.L) {
@@ -348,7 +354,7 @@ public class CustomGameView extends GameView{
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.RIGHT)getPlayer(0).throwItem();
-			if (button ==Buttons.LEFT) getPlayer(0).attack();
+			if (button ==Buttons.LEFT) getPlayer(0).attack(500);
             return true;
         }
 

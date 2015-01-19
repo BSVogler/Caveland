@@ -27,13 +27,13 @@ public Block produce(int id, int value) {
 			block = new RailBlock();
 		break;
 		case 56:
-			block = new Ore(id, Collectible.Def.GOLD);
+			block = new Ore(id, Collectible.ColTypes.GOLD);
 		break;
 		case 57:
-			block = new Ore(id, Collectible.Def.COAL);
+			block = new Ore(id, Collectible.ColTypes.COAL);
 		break;
 		case 58:
-			block = new Ore(id, Collectible.Def.IRONORE);
+			block = new Ore(id, Collectible.ColTypes.IRONORE);
 		break;
 		case 60:
 			block = new Machine();
@@ -89,9 +89,9 @@ public Block produce(int id, int value) {
 	}
 
 	private static class Ore extends Block {
-		private final Collectible.Def def;
+		private final Collectible.ColTypes def;
 
-		Ore(int id, Collectible.Def def) {
+		Ore(int id, Collectible.ColTypes def) {
 			super(id);
 			setObstacle(true);
 			this.def = def;

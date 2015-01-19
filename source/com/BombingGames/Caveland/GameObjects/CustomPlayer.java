@@ -57,7 +57,7 @@ public class CustomPlayer extends Controllable {
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
 		attackSound = WE.getAsset("com/BombingGames/Caveland/sounds/attack.wav");
-		blockHitSound = WE.getAsset("com/BombingGames/Caveland/sounds/pock.wav");
+		blockHitSound = WE.getAsset("com/BombingGames/Caveland/sounds/impact.wav");
 		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
         setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));

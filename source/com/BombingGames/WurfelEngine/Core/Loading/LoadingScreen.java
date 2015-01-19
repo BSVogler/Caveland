@@ -4,6 +4,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Loading;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
@@ -55,6 +56,8 @@ public class LoadingScreen extends WEScreen {
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(AbstractGameObject.getSpritesheetPath()+".txt", TextureAtlas.class);
+		if (CVar.get("LEnormalMapRendering").getValueb())
+			manager.load(AbstractGameObject.getSpritesheetPath()+"Normal.png", Texture.class);
         manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
 		manager.load("com/BombingGames/WurfelEngine/Core/images/bloodblur.png", Texture.class);
         

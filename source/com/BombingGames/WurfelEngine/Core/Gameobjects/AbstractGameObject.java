@@ -38,6 +38,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -71,7 +72,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * The height (y-axis) of the sprite size.
      */
-    public transient static final int VIEW_HEIGHT = 125;
+    public transient static final int VIEW_HEIGHT = 122;
     /**The half (1/2) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/2*/
     public transient static final int VIEW_HEIGHT2 = VIEW_HEIGHT / 2;
     /**A quarter (1/4) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/4*/
@@ -113,6 +114,8 @@ public abstract class AbstractGameObject implements Serializable {
     private transient static Pixmap pixmap;
     private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][OBJECTTYPESNUM][VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
+	private static Texture textureDiff;
+	private static Texture textureNormal;
 	
     private final int id; 
     private byte value;
@@ -158,6 +161,14 @@ public abstract class AbstractGameObject implements Serializable {
      * @param pos the coordinates you want to set
      */
     public abstract void setPosition(AbstractPosition pos);
+
+	public static Texture getTextureDiffuse() {
+		return textureDiff;
+	}
+
+	public static Texture getTextureNormal() {
+		return textureNormal;
+	}
 	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
@@ -230,14 +241,19 @@ public abstract class AbstractGameObject implements Serializable {
         if (spritesheet == null) {
             spritesheet = WE.getAsset(spritesheetPath+".txt");
         }
-        
+		textureDiff = spritesheet.getTextures().first();
+        if (CVar.get("LEnormalMapRendering").getValueb())
+			textureNormal = WE.getAsset(spritesheetPath+"Normal.png");
+		
         //load again for pixmap, allows access to image color data;
-        if (pixmap == null) {
-            //pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
-            pixmap = new Pixmap(
-                Gdx.files.internal(spritesheetPath+".png")
-            );
-        }
+        if (CVar.get("loadPixmap").getValueb()) {
+			if (pixmap == null) {
+				//pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+				pixmap = new Pixmap(
+					Gdx.files.internal(spritesheetPath+".png")
+				);
+			}
+		}
     }
 
     /**
@@ -486,8 +502,8 @@ public abstract class AbstractGameObject implements Serializable {
 
     /**
      * How bright is the object?
-     * The lightlevel is a number between 0 and 1. 1 is full bright. 0 is black. Default is .5.
-     * @return
+     * The lightlevel is a scale applied to the color. 1 is default value.
+     * @return 1 is default bright. 0 is black.
      */
     public float getLightlevel() {
         return lightlevel;
@@ -543,7 +559,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Set the brightness of the object.
      * The lightlevel is a scaling factor between.
-     * @param lightlevel  1 is full bright. 0 is black.
+     * @param lightlevel 1 is default bright. 0 is black.
      */
     public void setLightlevel(float lightlevel) {
         this.lightlevel = lightlevel;

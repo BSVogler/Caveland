@@ -41,7 +41,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -429,7 +428,9 @@ public class Block extends AbstractGameObject {
                 color = color.sub(Color.DARK_GRAY.cpy());
             }
         } else if (Controller.getLightEngine() != null){
-            color = Controller.getLightEngine().getColor(side);
+			if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+				color = Controller.getLightEngine().getColor();
+			else color = Controller.getLightEngine().getColor(side);
         }
         
         //add fog
@@ -442,7 +443,7 @@ public class Block extends AbstractGameObject {
         }
         
 		color.a = 1;//prevent changes because of color operations
-        renderSide(view, camera, coords, side, color,scale);
+        renderSide(view, camera, coords, side, color, scale);
     }
 
     /**
@@ -470,14 +471,23 @@ public class Block extends AbstractGameObject {
      * @param view the view using this render method
      * @param xPos rendering position
      * @param yPos rendering position
-     * @param sidenumb The number identifying the side. 0=left, 1=top, 2=right
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Sides sidenumb){
-        renderSide(view,
+    public void renderSide(final View view, final int xPos, final int yPos, final Sides side){
+		Color color;
+		 if (Controller.getLightEngine() != null){
+			if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+				color = Controller.getLightEngine().getColor();
+			else color = Controller.getLightEngine().getColor(side);
+        } else
+			 color = Color.GRAY.cpy();
+		 
+        renderSide(
+			view,
             xPos,
             yPos,
-            sidenumb,
-            Controller.getLightEngine() != null ? Controller.getLightEngine().getColor(sidenumb) : Color.GRAY.cpy(),
+            side,
+            color,
             0
         );
     }
@@ -497,29 +507,12 @@ public class Block extends AbstractGameObject {
             sprite.setOrigin(0, 0);
             sprite.scale(scale);
         }
-        //System.out.println("rend:"+xPos+","+yPos);
-        color.mul(getLightlevel(), getLightlevel(), getLightlevel(), 1);//darken
+		//System.out.println("rend:"+xPos+","+yPos);
+		color.r *= getLightlevel();
+		color.g *= getLightlevel();
+		color.b *= getLightlevel();
 
-        sprite.getVertices()[SpriteBatch.C4] = color.toFloatBits();//top right
-        
-        //color.mul(getLightlevel()*2-((side == 2)?0.01f:0));
-        //color.a = 1; 
-        sprite.getVertices()[SpriteBatch.C1] = color.toFloatBits();//top left
-
-        
-//        if (side == 2)
-//            color.mul(0.93f);
-//        else if (side == 0)
-//            color.mul(0.92f);
-//        color.a = 1; 
-
-        sprite.getVertices()[SpriteBatch.C2] = color.toFloatBits();//bottom left
-        
-//        if (side == 2)
-//            color.mul(0.97f);
-//        else if (side == 0) color.mul(1);
-//        color.a = 1; 
-        sprite.getVertices()[SpriteBatch.C3] = color.toFloatBits();//bottom right
+        sprite.setColor(color);
  
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();

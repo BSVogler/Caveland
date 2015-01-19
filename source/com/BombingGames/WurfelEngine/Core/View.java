@@ -35,6 +35,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
  * A view is an object which renders the data. Game space or not does not matter for this class.
@@ -52,9 +53,30 @@ public abstract class View {
 	private boolean inDebug;
 	
     public void init(){
-        String vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.vs").readString();
-        String fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.fs").readString();
+		String vertexShader;
+		String fragmentShader;
+		//shaders are very fast to load and the asset loader does not support text files out of the box
+		if (CVar.get("LEnormalMapRendering").getValueb()){
+			vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertexNM.vs").readString();
+			fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragmentNM.fs").readString();
+		} else {
+			vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.vs").readString();
+			fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.fs").readString();
+		}
+		//Setup shader
+		ShaderProgram.pedantic = false;
         shader = new ShaderProgram(vertexShader, fragmentShader);
+		if (!shader.isCompiled())
+			throw new GdxRuntimeException("Could not compile shader: "+shader.getLog());
+		//print any warnings
+		if (shader.getLog().length()!=0)
+			System.out.println(shader.getLog());
+		
+		//setup default uniforms
+		shader.begin();
+		//our normal map
+		shader.setUniformi("u_normals", 1); //GL_TEXTURE1
+		shader.end();
     }
     
     public ShaderProgram getShader() {

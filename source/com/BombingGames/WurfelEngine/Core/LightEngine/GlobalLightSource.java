@@ -86,8 +86,8 @@ public class GlobalLightSource {
     }
 
     /**
-     *
-     * @return
+     *current height above horizon
+     * @return in degrees 0-360°
      */
     public float getHeight() {
         return height;
@@ -185,7 +185,7 @@ public class GlobalLightSource {
     
         /**
      * Returns the ambient the GLS emits.
-     * @return applied with pseudogray
+     * @return applied with pseudogray. "pointer-safe"
      */
     public Color getAmbient() {
         return ambient.cpy().mul(PseudoGrey.toColor(power));

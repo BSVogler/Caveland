@@ -385,6 +385,30 @@ public class Camera implements LinkedWithMap {
 
 			view.setDebugRendering(false);
 			view.getBatch().begin();
+			//send a Vector4f to GLSL
+			if (CVar.get("enablelightengine").getValueb()) {
+				view.getShader().setUniformf(
+					"LightNormal",
+					Controller.getLightEngine().getNormal()
+				);
+				view.getShader().setUniformf(
+					"LightColor",
+					Controller.getLightEngine().getColor()
+				);
+				view.getShader().setUniformf(
+					"AmbientColor",
+					Controller.getLightEngine().getAmbient()
+				);
+			}
+		
+			//bind normal map to texture unit 1
+			if (CVar.get("LEnormalMapRendering").getValueb())
+				AbstractGameObject.getTextureNormal().bind(1);
+		
+			//bind diffuse color to texture unit 0
+			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+			AbstractGameObject.getTextureDiffuse().bind(0);
+			
 				//render vom bottom to top
 				for (AbstractGameObject renderobject : depthlist) {
 					renderobject.render(view, camera);

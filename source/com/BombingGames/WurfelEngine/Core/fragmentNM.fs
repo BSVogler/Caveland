@@ -24,7 +24,7 @@ void main() {
 
     //Pre-multiply light color with intensity
     //Then perform "N dot L" to determine our diffuse term
-    vec3 Diffuse = vec3(1,1,1) * max(dot(N, LightNormal), 0.0);
+    vec3 Diffuse = vec3(0.5,0.5,0.5) * max(dot(N, LightNormal), 0.0)+vec3(0.5,0.5,0.5);
 
     //calculate attenuation
     //float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );

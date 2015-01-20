@@ -120,6 +120,9 @@ public class Camera implements LinkedWithMap {
 	private int gameSpaceHeight;
 	private int centerChunkX;
 	private int centerChunkY;
+	/**
+	 * true if camera is currently rendering
+	 */
 	private boolean active = true;
 	
 	/**

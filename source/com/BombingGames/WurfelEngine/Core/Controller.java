@@ -34,10 +34,12 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -127,7 +129,14 @@ public class Controller implements GameManager {
 		if (map != null)
 			map.dispose();
         try {
-            map = new Map(name);
+			if (map!=null) {//loading another map
+				ArrayList<LinkedWithMap> linked = map.getLinkedObjects();
+				map = new Map(name);
+				for (LinkedWithMap linkedObj : linked) {
+					map.addLinkedObject(linkedObj);
+				}
+			} else map = new Map(name); //loading first map
+			
             return true;
         } catch (IOException ex) {
             WE.getConsole().add(ex.getMessage(), "Warning");

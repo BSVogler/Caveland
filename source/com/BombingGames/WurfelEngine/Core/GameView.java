@@ -158,7 +158,7 @@ public class GameView extends View implements GameManager {
 		 * problem! Write acces in view. causes 1 frame hack without hacks. Workaround by post-update method.
 		 */
         for (Camera camera : cameras) {
-			if (Controller.getMap().isJustLoaded()) camera.initFocus();
+			if (Controller.getMap().isJustLoaded()) camera.initFocus();//if the map is new the center chunk has to be updated
             camera.update(dt);
         }
         

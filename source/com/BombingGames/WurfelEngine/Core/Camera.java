@@ -144,8 +144,6 @@ public class Camera implements LinkedWithMap {
 		focusEntity = new SimpleEntity(0);
 		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
 		focusEntity.setHidden(true);
-		
-		initFocus();
 	}
 	
 	/**
@@ -164,7 +162,7 @@ public class Camera implements LinkedWithMap {
 	}
 	
 	/**
-	 * sets camera position and updates the needed chunks
+	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.
 	 */
 	public final void initFocus(){
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
@@ -190,7 +188,6 @@ public class Camera implements LinkedWithMap {
 		this(x, y, width, height, view);
 		WE.getConsole().add("Creating new camera which is focusing a coordinate");
 		focusCoordinates = focus;
-		updateGameSpaceSize();
 	}
 
 	/**
@@ -214,7 +211,6 @@ public class Camera implements LinkedWithMap {
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
 		this.focusCoordinates = null;
-		updateGameSpaceSize();
 	}
 
 	/**

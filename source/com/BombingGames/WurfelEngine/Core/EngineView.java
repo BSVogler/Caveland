@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
@@ -227,7 +228,11 @@ public class EngineView extends GameView {//is GameView so it can render in game
 			music.setVolume(musicLoudness);
 			music.setLooping(true);
 			if (musicLoudness>0)
-				music.play();
+				try {
+					music.play();
+				} catch (GdxRuntimeException ex){
+					System.err.println("Failed playing music: " + path);
+				}
 		}
 	}
 	

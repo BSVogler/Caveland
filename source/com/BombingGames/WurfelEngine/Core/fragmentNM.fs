@@ -24,12 +24,11 @@ void main() {
 
     //Pre-multiply light color with intensity
     //Then perform "N dot L" to determine our diffuse term
-    vec3 Diffuse = vec3(0.5,0.5,0.5) * max(dot(N, LightNormal), 0.0)+vec3(0.5,0.5,0.5);
+    vec3 Diffuse = vec3(1,1,1) * max(dot(N, LightNormal), 0.0);
 
     //calculate attenuation
     //float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
 
     //the calculation which brings it all together
-    vec3 FinalColor = AmbientColor.rgb+Diffuse.rgb*DiffuseColor.rgb;
-    gl_FragColor = v_color * vec4(FinalColor, DiffuseColor.a);
+    gl_FragColor = v_color * vec4((Diffuse.rgb+AmbientColor.rgb)*DiffuseColor.rgb, DiffuseColor.a);
 }

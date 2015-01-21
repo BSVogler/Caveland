@@ -84,7 +84,7 @@ public class LightEngine implements LinkedWithMap {
 			-Controller.getMap().getWorldSpinDirection(),
 			0,
 			new Color(255, 255, 255, 1),
-			new Color(0.06f, 0.06f, 0.05f, 1),
+			new Color(0.5f, 0.5f, 0.4f, 1),
 			60
 		);
 		//add moon if not using normalMaprendering

@@ -51,7 +51,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean spawned;
-	private AnimatedEntity animation;
+	private EntityAnimation animation;
 	private transient EntityShadow shadow;
 	
 	/**
@@ -177,11 +177,11 @@ public abstract class AbstractEntity extends AbstractGameObject {
         return spawned;
     }
 
-	public AnimatedEntity getAnimation() {
+	public EntityAnimation getAnimation() {
 		return animation;
 	}
 
-	public void setAnimation(AnimatedEntity animation) {
+	public void setAnimation(EntityAnimation animation) {
 		this.animation = animation;
 		animation.setParent(this);
 	}

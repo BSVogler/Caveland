@@ -31,10 +31,10 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.badlogic.gdx.Gdx;
 
 /**
- *An entity wich is animated.
+ * An animation interface for entitys.
  * @author Benedikt
  */
-public class AnimatedEntity implements Animatable {
+public class EntityAnimation implements Animatable {
 	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private float counter = 0;
@@ -52,7 +52,7 @@ public class AnimatedEntity implements Animatable {
      * @param autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time.
      */
-    public AnimatedEntity(int[] animationsinformation, boolean autostart, boolean loop){
+    public EntityAnimation(int[] animationsinformation, boolean autostart, boolean loop){
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

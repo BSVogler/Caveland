@@ -1,6 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -58,7 +58,7 @@ public class Enemy extends MovableEntity{
 					setMana((int) (getMana()+dt));
                     if (getMana()>=1000){
                         setMana(0);//reset
-                        new SimpleEntity(46).spawn(getPosition().cpy()).setAnimation(new AnimatedEntity(new int[]{300}, true, false)
+                        new SimpleEntity(46).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
 						);
                         target.damage(50);
                     }

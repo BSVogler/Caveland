@@ -43,6 +43,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * A Block is a wonderful piece of information and a geometrical object.
@@ -587,7 +588,11 @@ public class Block extends AbstractGameObject {
 	public void onDestroy(AbstractPosition pos) {
 		if (destructionSound!=null) destructionSound.play();
 		//caveland-mod!
-		new BlockDirt();
+		for (int i = 0; i < 10; i++) {
+			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.getPoint().cpy());
+			dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+		}
+		
 	}
 
 	@Override

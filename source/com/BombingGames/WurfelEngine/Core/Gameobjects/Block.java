@@ -586,6 +586,8 @@ public class Block extends AbstractGameObject {
 	 */
 	public void onDestroy(AbstractPosition pos) {
 		if (destructionSound!=null) destructionSound.play();
+		//caveland-mod!
+		new BlockDirt();
 	}
 
 	@Override

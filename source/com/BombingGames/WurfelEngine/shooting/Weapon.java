@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.shooting;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AnimatedEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -339,12 +339,10 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new SimpleEntity(60).spawn(parent.getPosition()).setAnimation(
-					new EntityAnimation(new int[]{300}, true, false)
+                new SimpleEntity(60).spawn(parent.getPosition()).setAnimation(new AnimatedEntity(new int[]{300}, true, false)
 				);
             else
-                new SimpleEntity(61).spawn(parent.getPosition()).setAnimation(
-					new EntityAnimation(new int[]{300}, true, false)
+                new SimpleEntity(61).spawn(parent.getPosition()).setAnimation(new AnimatedEntity(new int[]{300}, true, false)
 				);
 
             //shot bullets

@@ -84,7 +84,7 @@ public class Explosion extends AbstractEntity {
 					if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
 						x*x + (y/2)*(y/2)+ z*z <= radius*radius){
 						new SimpleEntity(31).spawn(pos.getPoint()).setAnimation(
-							new EntityAnimation(
+							new AnimatedEntity(
 								new int[]{700,2000},
 								true,
 								false

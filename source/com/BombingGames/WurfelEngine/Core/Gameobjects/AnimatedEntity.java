@@ -34,7 +34,7 @@ import com.badlogic.gdx.Gdx;
  *An entity wich is animated.
  * @author Benedikt
  */
-public class EntityAnimation  implements Animatable {
+public class AnimatedEntity implements Animatable {
 	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private float counter = 0;
@@ -52,7 +52,7 @@ public class EntityAnimation  implements Animatable {
      * @param autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time.
      */
-    public EntityAnimation(int[] animationsinformation, boolean autostart, boolean loop){
+    public AnimatedEntity(int[] animationsinformation, boolean autostart, boolean loop){
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

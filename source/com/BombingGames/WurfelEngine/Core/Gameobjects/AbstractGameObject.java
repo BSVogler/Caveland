@@ -314,7 +314,7 @@ public abstract class AbstractGameObject implements Serializable {
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getColor()
+                        ? Controller.getLightEngine().getAmbient()
                         : Color.GRAY.cpy()
         );
     }
@@ -334,7 +334,7 @@ public abstract class AbstractGameObject implements Serializable {
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getColor()
+                        ? Controller.getLightEngine().getAmbient()
                         : Color.GRAY.cpy(),
             scale
         );
@@ -392,7 +392,7 @@ public abstract class AbstractGameObject implements Serializable {
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getColor()
+                        ? Controller.getLightEngine().getAmbient()
                         : Color.GRAY.cpy(),
             0
         );
@@ -414,7 +414,7 @@ public abstract class AbstractGameObject implements Serializable {
                 ? Color.GRAY.cpy()
                 :
                     Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getColor()
+                        ? Controller.getLightEngine().getAmbient()
                         : Color.GRAY.cpy(),
             scale
         );

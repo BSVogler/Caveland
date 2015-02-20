@@ -388,11 +388,11 @@ public class Camera implements LinkedWithMap {
 			if (CVar.get("enablelightengine").getValueb()) {
 				view.getShader().setUniformf(
 					"LightNormal",
-					Controller.getLightEngine().getNormal()
+					Controller.getLightEngine().getSun().getNormal()
 				);
 				view.getShader().setUniformf(
 					"LightColor",
-					Controller.getLightEngine().getColor()
+					Controller.getLightEngine().getSun().getTone()
 				);
 				view.getShader().setUniformf(
 					"AmbientColor",

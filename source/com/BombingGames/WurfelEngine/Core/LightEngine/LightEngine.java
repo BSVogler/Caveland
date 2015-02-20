@@ -38,7 +38,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -220,17 +219,14 @@ public class LightEngine implements LinkedWithMap {
         return (I_0+I_1+I_2)/3f;
     }
 	
-	/**
-	 * 
-	 * @return the normal of the sun
-	 */
-	public Vector3 getNormal() {
-		return new Vector3(
-			(float) -Math.cos(sun.getAzimuth()*Math.PI/180f),
-			(float) Math.sin(sun.getAzimuth()*Math.PI/180f),
-			(float) Math.sin(sun.getHeight()*Math.PI/180f)
-		).nor();
+	public GlobalLightSource getSun() {
+		return sun;
 	}
+
+	public GlobalLightSource getMoon() {
+		return moon;
+	}
+	
 
 	/**
 	 * 
@@ -240,35 +236,35 @@ public class LightEngine implements LinkedWithMap {
 		return normalMapRendering;
 	}
     
-        /**
-     * Gets average color. 
-     * @return pseudoGrey color
-     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
-     */
-    public Color getColor(){
-		if (normalMapRendering)
-			return Color.WHITE.cpy();
-        return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
-        //more precise (?) but slower
-//        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;
-//        float g = (getColor(Sides.LEFT).g + getColor(Sides.TOP).g + getColor(Sides.RIGHT).g)/3f;
-//        float b = (getColor(Sides.LEFT).b + getColor(Sides.TOP).b + getColor(Sides.RIGHT).b)/3f;
-//        return new Color(r,g,b,1);
-    }
+//        /**
+//     * Gets average color. 
+//     * @return pseudoGrey color
+//     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
+//     */
+//    public Color getColor(){
+//		if (normalMapRendering)
+//			return Color.WHITE.cpy();
+//        return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
+//        //more precise (?) but slower
+////        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;
+////        float g = (getColor(Sides.LEFT).g + getColor(Sides.TOP).g + getColor(Sides.RIGHT).g)/3f;
+////        float b = (getColor(Sides.LEFT).b + getColor(Sides.TOP).b + getColor(Sides.RIGHT).b)/3f;
+////        return new Color(r,g,b,1);
+//    }
         
-    /**
-     * Get's the brightness to a normal.
-     * @param normal 0 left 1 top or 2 right
-     * @return pseudoGrey color
-     */
-    public Color getColor(Sides normal){
-          if (normal==Sides.LEFT)
-            return getAmbient().add(getDiff(normal));
-        else if (normal==Sides.TOP)
-            return getAmbient().add(getDiff(normal)).add(getSpec(normal));
-        else
-            return getAmbient().add(getDiff(normal));
-    }
+//    /**
+//     * Get's the brightness to a normal.
+//     * @param normal 0 left 1 top or 2 right
+//     * @return pseudoGrey color
+//     */
+//    public Color getColor(Sides normal){
+//          if (normal==Sides.LEFT)
+//            return getAmbient().add(getDiff(normal));
+//        else if (normal==Sides.TOP)
+//            return getAmbient().add(getDiff(normal)).add(getSpec(normal));
+//        else
+//            return getAmbient().add(getDiff(normal));
+//    }
     
     /**
      * 
@@ -420,8 +416,8 @@ public class LightEngine implements LinkedWithMap {
                 //longitude
                 shR.setColor(Color.RED);
                 shR.line(
-                    posX +(int) (size* getNormal().x),
-                    posY -(int) (size/2*getNormal().y),
+                    posX +(int) (size* sun.getNormal().x),
+                    posY -(int) (size/2*sun.getNormal().y),
                     posX,
                     posY
                 );
@@ -429,8 +425,8 @@ public class LightEngine implements LinkedWithMap {
                 //latitude
                 shR.setColor(Color.MAGENTA);
                 shR.line(
-                    posX -(int) (size/2 * (1-getNormal().z)+size/2),
-                    posY +(int) (size/2*getNormal().z),
+                    posX -(int) (size/2 * (1-sun.getNormal().z)+size/2),
+                    posY +(int) (size/2*sun.getNormal().z),
                     posX,
                     posY
                 );
@@ -438,8 +434,8 @@ public class LightEngine implements LinkedWithMap {
                 //long+lat of sun position
                 shR.setColor(Color.YELLOW);
                 shR.line(
-                    posX +(int) ( size*getNormal().x ),
-                    posY +(int) (size*( -getNormal().y/2+getNormal().z)),
+                    posX +(int) ( size*sun.getNormal().x ),
+                    posY +(int) (size*( -sun.getNormal().y/2+sun.getNormal().z)),
                     posX,
                     posY
                  );
@@ -459,7 +455,7 @@ public class LightEngine implements LinkedWithMap {
             view.drawText("Lat: "+sun.getHeight()+"\n"
 				+"Long: "+sun.getAzimuth()+"\n"
 				+"PowerSun: "+sun.getPower()*100+"%\n"
-				+"Normal:"+getNormal(),
+				+"Normal:"+sun.getNormal(),
 				600,
 				100,
 				Color.WHITE
@@ -467,7 +463,7 @@ public class LightEngine implements LinkedWithMap {
 			if (moon != null)
 				view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
             view.drawString("Ambient: "+getAmbient().toString(), 600, y+=10, Color.WHITE);
-            view.drawString("avg. color: "+getColor().toString(), 600, y+=10, Color.WHITE);
+           // view.drawString("avg. color: "+sun.getColor().toString(), 600, y+=10, Color.WHITE);
 			
             shR.begin(ShapeType.Filled);
                 //draw ambient light
@@ -491,17 +487,17 @@ public class LightEngine implements LinkedWithMap {
                 
                 view.drawText("=", 760, y+25, Color.WHITE);
                  //draw result
-                shR.setColor(Color.WHITE);
-                shR.rect(770, y-10, 70, 70);
-                shR.setColor(getColor(Sides.LEFT));
-                shR.rect(780, y, 25, 30);
-                shR.setColor(getColor(Sides.TOP));
-                shR.rect(780, y+25, 50, 30);
-                shR.setColor(getColor(Sides.RIGHT));
-                shR.rect(805, y, 25, 30);
-                
-                shR.setColor(getColor());
-                shR.rect(800, y+20, 15, 15);
+//                shR.setColor(Color.WHITE);
+//                shR.rect(770, y-10, 70, 70);
+//                shR.setColor(getColor(Sides.LEFT));
+//                shR.rect(780, y, 25, 30);
+//                shR.setColor(getColor(Sides.TOP));
+//                shR.rect(780, y+25, 50, 30);
+//                shR.setColor(getColor(Sides.RIGHT));
+//                shR.rect(805, y, 25, 30);
+//                
+//                shR.setColor(getColor());
+//                shR.rect(800, y+20, 15, 15);
 
 
                  //info bars

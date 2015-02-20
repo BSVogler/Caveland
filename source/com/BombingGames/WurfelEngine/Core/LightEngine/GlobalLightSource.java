@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.LightEngine;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -190,4 +191,16 @@ public class GlobalLightSource {
     public Color getAmbient() {
         return ambient.cpy().mul(PseudoGrey.toColor(power));
     }
+	
+	/**
+	 * 
+	 * @return the normal of the GlobalLightSource
+	 */
+	public Vector3 getNormal() {
+		return new Vector3(
+			(float) -Math.cos(getAzimuth()*Math.PI/180f),
+			(float) Math.sin(getAzimuth()*Math.PI/180f),
+			(float) Math.sin(getHeight()*Math.PI/180f)
+		).nor();
+	}
 }

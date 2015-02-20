@@ -315,7 +315,7 @@ public class CustomGameView extends GameView{
 
                  //show/hide light engine
                  if (keycode == Input.Keys.L) {
-                     if (getLightEngine() != null) getLightEngine().renderData(!getLightEngine().isRenderingData());
+                     if (getLightEngine() != null) getLightEngine().setDebug(!getLightEngine().isInDebug());
                   } 
 
                  if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();

@@ -52,8 +52,10 @@ public class LightEngine implements LinkedWithMap {
      * The Version of the light engine.
      */
     public static final String Version = "1.1.7";
-
-    private boolean renderData = false;
+	/** 
+	 * display a visual representation of the data?
+	 */
+    private boolean debuging = false;
     //diagramm data
     private int posX = 250;
     private int posY = Gdx.graphics.getHeight()-250;
@@ -202,7 +204,7 @@ public class LightEngine implements LinkedWithMap {
         
         
         //update input
-        if (Gdx.input.isButtonPressed(0)&& renderData){
+        if (Gdx.input.isButtonPressed(0)&& debuging){
             //sun.setHeight(sun.getHeight()+Gdx.input.getDeltaY()*30f);
             sun.setAzimuth(Gdx.input.getX());
             if (moon != null)
@@ -362,16 +364,16 @@ public class LightEngine implements LinkedWithMap {
      *
      * @return
      */
-    public boolean isRenderingData() {
-        return renderData;
+    public boolean isInDebug() {
+        return debuging;
     }
 
     /**
      *Should diagrams be rendered showing the data of the LE.
-     * @param render
+     * @param debug
      */
-    public void renderData(boolean render) {
-        this.renderData = render;
+    public void setDebug(boolean debug) {
+        this.debuging = debug;
     }
     
     
@@ -381,7 +383,7 @@ public class LightEngine implements LinkedWithMap {
      * @param view 
      */
     public void render(GameView view){
-        if (renderData) {
+        if (debuging) {
             
             //g.setLineWidth(2);
             ShapeRenderer shR = view.getShapeRenderer();

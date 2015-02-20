@@ -339,7 +339,7 @@ public class Console {
             case "le":
             case "lightengine":
                 if (Controller.getLightEngine()!=null)
-                    Controller.getLightEngine().renderData(!Controller.getLightEngine().isRenderingData());
+                    Controller.getLightEngine().setDebug(!Controller.getLightEngine().isInDebug());
                 return true;
             case "quit":
             case "exit":

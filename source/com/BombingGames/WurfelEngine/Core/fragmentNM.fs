@@ -7,10 +7,11 @@ uniform sampler2D u_texture;   //diffuse map
 uniform sampler2D u_normals;   //normal map
 
 //values used for shading algorithm...
-uniform vec2 Resolution;      //resolution of screen
-uniform vec3 LightNormal;        //light position, normalized
-uniform vec4 LightColor;      //light RGBA -- alpha is intensity
-uniform vec4 AmbientColor;    //ambient RGBA -- alpha is intensity 
+uniform vec3 sunNormal;        //light position, normalized
+uniform vec4 sunColor;      //light RGBA -- alpha is intensity
+uniform vec4 ambientColor;    //ambient RGBA -- alpha is intensity 
+uniform vec3 moonNormal;        //light position, normalized
+uniform vec4 moonColor;      //light RGBA -- alpha is intensity
 
 void main() {
     //RGBA of our diffuse color
@@ -19,16 +20,15 @@ void main() {
     //RGB of our normal map
     vec3 N = (texture2D(u_normals, v_texCoords).rgb*2.0- 1.0);//-0.058)*1.25 to normalize because normals are not 100% correct
 
-	N.x = -N.x;
+	N.x = -N.x;//x is flipped in texture, so fix this in shaders
    // vec3 L = normalize(LightNormal);
 
     //Pre-multiply light color with intensity
-    //Then perform "N dot L" to determine our diffuse term
-    vec3 Diffuse = vec3(1,1,1) * max(dot(N, LightNormal), 0.0);
+    vec3 Diffuse = vec3(1,1,1) * max(dot(N, sunNormal), 0.0);
 
     //calculate attenuation
     //float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
 
     //the calculation which brings it all together
-    gl_FragColor = v_color * vec4((Diffuse.rgb+AmbientColor.rgb)*DiffuseColor.rgb, DiffuseColor.a);
+    gl_FragColor = v_color * vec4((Diffuse.rgb+ambientColor.rgb)*DiffuseColor.rgb, DiffuseColor.a);
 }

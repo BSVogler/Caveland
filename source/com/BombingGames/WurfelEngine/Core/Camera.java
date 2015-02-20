@@ -387,15 +387,15 @@ public class Camera implements LinkedWithMap {
 			//send a Vector4f to GLSL
 			if (CVar.get("enablelightengine").getValueb()) {
 				view.getShader().setUniformf(
-					"LightNormal",
+					"sunNormal",
 					Controller.getLightEngine().getSun().getNormal()
 				);
 				view.getShader().setUniformf(
-					"LightColor",
+					"sunColor",
 					Controller.getLightEngine().getSun().getTone()
 				);
 				view.getShader().setUniformf(
-					"AmbientColor",
+					"ambientColor",
 					Controller.getLightEngine().getAmbient()
 				);
 			}

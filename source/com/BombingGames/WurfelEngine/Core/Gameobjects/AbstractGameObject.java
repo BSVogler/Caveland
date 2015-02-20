@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
@@ -310,12 +309,7 @@ public abstract class AbstractGameObject implements Serializable {
         render(
             view,
             camera,
-            CVar.get("enableAutoShade").getValueb()
-                ? Color.GRAY.cpy()
-                :
-                    Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getAmbient()
-                        : Color.GRAY.cpy()
+            Color.GRAY.cpy()
         );
     }
     
@@ -330,12 +324,7 @@ public abstract class AbstractGameObject implements Serializable {
         render(
             view,
             camera,
-            CVar.get("enableAutoShade").getValueb()
-                ? Color.GRAY.cpy()
-                :
-                    Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getAmbient()
-                        : Color.GRAY.cpy(),
+            Color.GRAY.cpy(),
             scale
         );
     }
@@ -371,7 +360,6 @@ public abstract class AbstractGameObject implements Serializable {
                 view,
                 getPosition().getViewSpcX(view),
                 getPosition().getViewSpcY(view),
-                color,
                 scale
             );
         }
@@ -388,44 +376,27 @@ public abstract class AbstractGameObject implements Serializable {
             view,
             xPos,
             yPos,
-            CVar.get("enableAutoShade").getValueb()
-                ? Color.GRAY.cpy()
-                :
-                    Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getAmbient()
-                        : Color.GRAY.cpy(),
             0
         );
     }
     
     /**
-     * Renders at a custom position with the global light.
-     * @param view the view using this render method
-     * @param xPos rendering position in view space (?)
-     * @param yPos rendering position in view space (?)
+     * Renders at a custom position.
+     * @param view
+     * @param xPos rendering position, center of sprite in view space (?)
+     * @param yPos rendering position, center of sprite in view space (?)
      * @param scale relative value. 0 means same size
      */
     public void render(GameView view, int xPos, int yPos, float scale) {
-        render(
-            view,
-            xPos,
-            yPos,
-            CVar.get("enableAutoShade").getValueb()
-                ? Color.GRAY.cpy()
-                :
-                    Controller.getLightEngine() != null
-                        ? Controller.getLightEngine().getAmbient()
-                        : Color.GRAY.cpy(),
-            scale
-        );
+		render(view, xPos, yPos, null, scale);
     }
     
-    /**
+	    /**
      * Renders at a custom position with a custom light.
      * @param view
      * @param xPos rendering position, center of sprite in view space (?)
      * @param yPos rendering position, center of sprite in view space (?)
-     * @param color custom blending color
+	 * @param color
      * @param scale relative value. 0 means same size
      */
     public void render(GameView view, int xPos, int yPos, Color color, float scale) {
@@ -444,7 +415,9 @@ public abstract class AbstractGameObject implements Serializable {
 			
 			//hack for transientfield tint
 			if (tint == null) tint = new Color(1, 1, 1, 1);
-			sprite.setColor(tint.tmp().mul(color));
+			if (color!=null)
+				sprite.setColor(tint.tmp().mul(color));
+			else sprite.setColor(tint);
         
 			if (view.debugRendering()){
 				ShapeRenderer sh = view.getShapeRenderer();
@@ -481,7 +454,7 @@ public abstract class AbstractGameObject implements Serializable {
 			}
 		}
     }
-    
+	
     //getter & setter
 
 	/**
@@ -649,6 +622,10 @@ public abstract class AbstractGameObject implements Serializable {
 		this.tint = color;
 	}
 
+	/**
+	 * get the tint of the object
+	 * @return not copy safe
+	 */
 	public Color getColor() {
 		return tint;
 	}

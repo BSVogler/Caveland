@@ -347,7 +347,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     }
 
 	@Override
-	public void render(GameView view, int xPos, int yPos, Color color, float scale) {
+	public void render(GameView view, int xPos, int yPos, float scale) {
 		if (view.debugRendering()){
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
@@ -370,7 +370,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			sh.end();
 		}
-		super.render(view, xPos, yPos, color, scale);
+		super.render(view, xPos, yPos, scale);
 	}
     
 	

@@ -328,12 +328,13 @@ public class Block extends AbstractGameObject {
             if (CVar.get("enableScalePrototype").getValueb())  //scale if the prototype is activated
                 scale = (coords.getZ()/(float) (Map.getBlocksZ()));
             if (hasSides) {
+				boolean staticShade = CVar.get("enableAutoShade").getValueb();
                 if (!camera.getClipping(coords)[1])
-                    renderSide(view, camera, coords, Sides.TOP, scale);
+                    renderSide(view, coords, Sides.TOP, scale, staticShade);
                 if (!camera.getClipping(coords)[0])
-                    renderSide(view, camera, coords, Sides.LEFT, scale);
+                    renderSide(view, coords, Sides.LEFT, scale, staticShade);
                 if (!camera.getClipping(coords)[2])
-                    renderSide(view, camera, coords, Sides.RIGHT, scale);
+                    renderSide(view, coords, Sides.RIGHT, scale, staticShade);
             } else
                 super.render(view, camera, coords, scale);
         }
@@ -359,8 +360,8 @@ public class Block extends AbstractGameObject {
     }
 
     @Override
-    public void render(final GameView view, final int xPos, final int yPos, final Color color, float scale) {
-        render(view, xPos, yPos, color, scale, Controller.getLightEngine() == null);
+    public void render(final GameView view, final int xPos, final int yPos, float scale) {
+        render(view, xPos, yPos, Color.GRAY.cpy(), scale, Controller.getLightEngine() == null);
     }
     
     /**
@@ -385,7 +386,7 @@ public class Block extends AbstractGameObject {
 				);
 
 				if (staticShade) {
-					color = color.cpy().add(Color.DARK_GRAY.cpy());
+					color = color.cpy().add(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0);
 				}
 				renderSide(
 					view,
@@ -416,41 +417,6 @@ public class Block extends AbstractGameObject {
      * Render a side of a block at the position of the coordinates.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
-     * @param coords the coordinates where the side is rendered 
-     * @param side The number identifying the side. 0=left, 1=top, 2=right
-     * @param scale
-     */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, float scale){
-        Color color = Color.GRAY.cpy();
-        if (CVar.get("enableAutoShade").getValueb()){
-            if (side==Sides.LEFT){
-                color = color.add(Color.DARK_GRAY.cpy());
-            }else if (side==Sides.RIGHT){
-                color = color.sub(Color.DARK_GRAY.cpy());
-            }
-        } else if (Controller.getLightEngine() != null){
-			if (Controller.getLightEngine().isShadingPixelBased())
-				color = Controller.getLightEngine().getAmbient();
-		//	else color = Controller.getLightEngine().getColor(side);//todo
-        }
-        
-        //add fog
-        if (CVar.get("enableFog").getValueb()){
-            color.mul(
-                (float) (0.5f+Math.exp(
-                    (camera.getVisibleBackBorder()-coords.getCoord().getY())*0.05f+1
-                ))
-            );
-        }
-        
-		color.a = 1;//prevent changes because of color operations
-        renderSide(view, camera, coords, side, color, scale);
-    }
-
-    /**
-     * Render a side of a block at the position of the coordinates.
-     * @param view the view using this render method
-     * @param camera The camera rendering the scene
      * @param coords the coordinates where to render 
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered
@@ -466,7 +432,41 @@ public class Block extends AbstractGameObject {
             scale
         );
     }
-    
+
+	/**
+     * Render a side of a block at the position of the coordinates.
+     * @param view the view using this render method
+     * @param coords the coordinates where to render 
+     * @param side The number identifying the side. 0=left, 1=top, 2=right
+     * @param scale
+	 * @param staticShade
+     */
+    public void renderSide(
+		final GameView view,
+		final AbstractPosition coords,
+		final Sides side,
+		final float scale,
+		final boolean staticShade
+	){
+        renderSide(
+            view,
+            coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Sides.RIGHT ? (int) (VIEW_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getViewSpcY(view) - VIEW_HEIGHT + ( side == Sides.TOP ? (int) (VIEW_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            side,
+            staticShade ?
+				side==Sides.RIGHT
+				? Color.GRAY.cpy().sub(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0)
+				: (
+					side==Sides.LEFT
+						? Color.GRAY.cpy().add(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0)
+						: Color.GRAY.cpy()
+					)
+				: Color.GRAY.cpy(),
+            scale
+        );
+    }
+	
+	
     /**
      * Ignores lightlevel.
      * @param view the view using this render method
@@ -476,12 +476,11 @@ public class Block extends AbstractGameObject {
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Sides side){
 		Color color;
-		 if (Controller.getLightEngine() != null){
-			//if (Controller.getLightEngine().isShadingPixelBased())
-				color = Controller.getLightEngine().getAmbient();
-			//else color = Controller.getLightEngine().getColor(side);//todo
+		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
+			//color = Controller.getLightEngine().getColor(side);//todo
+			color = Color.GRAY.cpy();
         } else
-			 color = Color.GRAY.cpy();
+			color = Color.GRAY.cpy();
 		 
         renderSide(
 			view,

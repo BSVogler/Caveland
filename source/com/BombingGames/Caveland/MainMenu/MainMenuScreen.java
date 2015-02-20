@@ -126,8 +126,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
-        lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(Gdx.graphics.getHeight()- lettering.getHeight()-30);
         
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		        
@@ -158,6 +156,14 @@ public class MainMenuScreen extends AbstractMainMenu {
 			else menuItem.setColor(1, 1, 1, 1);
 		}
 		
+		lettering.setX(
+			(Gdx.graphics.getWidth() - lettering.getWidth())/2
+			- (Gdx.input.getX()/(float) Gdx.graphics.getWidth()-0.5f)*10//move by cursor
+		);
+        lettering.setY(
+			Gdx.graphics.getHeight()- lettering.getHeight()-30
+			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.5f)*10//move by cursor
+		);
 		
 		//render
 		 //clear & set background to black

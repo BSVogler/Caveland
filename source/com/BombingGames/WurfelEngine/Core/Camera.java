@@ -392,7 +392,7 @@ public class Camera implements LinkedWithMap {
 				);
 				view.getShader().setUniformf(
 					"sunColor",
-					Controller.getLightEngine().getSun().getTone()
+					Controller.getLightEngine().getSun().getLight()
 				);
 				view.getShader().setUniformf(
 					"ambientColor",

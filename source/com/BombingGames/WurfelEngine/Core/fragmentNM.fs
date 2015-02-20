@@ -25,16 +25,13 @@ void main() {
 
 	//check if sun is shining, if not ignore it
 	if (sunColor.r > 0.05 || sunColor.g > 0.05 || sunColor.b> 0.05) {
-
-		//Pre-multiply light color with intensity
 		sunLight = vec3(sunColor) * max(dot(N, sunNormal), 0.0);
 	}
 
 	//check if moon is shining, if not ignore it
-	//if (moonColor.r > 0.05 || moonColor.g > 0.05 || moonColor.b> 0.05) {
-		//Pre-multiply light color with intensity
+	if (moonColor.r > 0.05 || moonColor.g > 0.05 || moonColor.b> 0.05) {
 		moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
-	//}
+	}
 
 	gl_FragColor = v_color * vec4((sunLight+moonLight+ambientColor.rgb)*DiffuseColor.rgb,DiffuseColor.a);
 }

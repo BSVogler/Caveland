@@ -92,9 +92,13 @@ public abstract class View {
 		}
 		//Setup shader
 		ShaderProgram.pedantic = false;
-        shader = new ShaderProgram(vertexShader, fragmentShader);
-		if (!shader.isCompiled())
-			throw new GdxRuntimeException("Could not compile shader: "+shader.getLog());
+		
+		ShaderProgram newshader = new ShaderProgram(vertexShader, fragmentShader);
+		if (newshader.isCompiled())
+			shader = newshader;
+		else if (shader==null)
+			throw new GdxRuntimeException("Could not compile shader: "+newshader.getLog());
+		
 		//print any warnings
 		if (shader.getLog().length()!=0)
 			System.out.println(shader.getLog());

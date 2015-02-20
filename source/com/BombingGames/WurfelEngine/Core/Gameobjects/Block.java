@@ -429,7 +429,7 @@ public class Block extends AbstractGameObject {
                 color = color.sub(Color.DARK_GRAY.cpy());
             }
         } else if (Controller.getLightEngine() != null){
-			if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+			if (Controller.getLightEngine().isShadingPixelBased())
 				color = Controller.getLightEngine().getAmbient();
 		//	else color = Controller.getLightEngine().getColor(side);//todo
         }
@@ -477,7 +477,7 @@ public class Block extends AbstractGameObject {
     public void renderSide(final View view, final int xPos, final int yPos, final Sides side){
 		Color color;
 		 if (Controller.getLightEngine() != null){
-			//if (Controller.getLightEngine().isNormalMapRenderingEnabled())
+			//if (Controller.getLightEngine().isShadingPixelBased())
 				color = Controller.getLightEngine().getAmbient();
 			//else color = Controller.getLightEngine().getColor(side);//todo
         } else

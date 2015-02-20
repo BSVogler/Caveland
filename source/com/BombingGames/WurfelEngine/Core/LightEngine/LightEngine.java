@@ -59,7 +59,10 @@ public class LightEngine implements LinkedWithMap {
     private int posX = 250;
     private int posY = Gdx.graphics.getHeight()-250;
     private final int size = 500;
-	private boolean normalMapRendering = true;
+	/**
+	 * shade pixel or vertex based
+	 */
+	private boolean pixelBasedShading = true;
     
     
     //diffuse light
@@ -89,7 +92,7 @@ public class LightEngine implements LinkedWithMap {
 			60
 		);
 		//add moon if not using normalMaprendering
-        if (!normalMapRendering)
+        if (!pixelBasedShading)
 			moon = new GlobalLightSource(
 				180-Controller.getMap().getWorldSpinDirection(),
 				0,
@@ -98,7 +101,7 @@ public class LightEngine implements LinkedWithMap {
 				45
 			);
 		
-		normalMapRendering = CVar.get("LEnormalMapRendering").getValueb();
+		pixelBasedShading = CVar.get("LEnormalMapRendering").getValueb();
     }
 
     /**
@@ -215,7 +218,7 @@ public class LightEngine implements LinkedWithMap {
      * Returns the average brightness.
      * @return
      */
-    public static float getBrightness() {
+    public static float getVertexBrightness() {
         return (I_0+I_1+I_2)/3f;
     }
 	
@@ -229,11 +232,11 @@ public class LightEngine implements LinkedWithMap {
 	
 
 	/**
-	 * 
-	 * @return true if rendering via normal map
+	 * The light engine can shade the world pixel based or vertext based.
+	 * @return true if rendering via normal map false if vertext based
 	 */
-	public boolean isNormalMapRenderingEnabled() {
-		return normalMapRendering;
+	public boolean isShadingPixelBased() {
+		return pixelBasedShading;
 	}
     
 //        /**
@@ -242,9 +245,9 @@ public class LightEngine implements LinkedWithMap {
 //     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
 //     */
 //    public Color getColor(){
-//		if (normalMapRendering)
+//		if (pixelBasedShading)
 //			return Color.WHITE.cpy();
-//        return getAmbient().add( getEmittingLights().mul( getBrightness() ) );
+//        return getAmbient().add( getEmittingLights().mul( getVertexBrightness() ) );
 //        //more precise (?) but slower
 ////        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;
 ////        float g = (getColor(Sides.LEFT).g + getColor(Sides.TOP).g + getColor(Sides.RIGHT).g)/3f;
@@ -482,7 +485,7 @@ public class LightEngine implements LinkedWithMap {
                 //draw emmittinlights
                 shR.setColor(Color.WHITE);
                 shR.rect(680, y-10, 70, 70);
-                shR.setColor(getEmittingLights().mul( getBrightness()));
+                shR.setColor(getEmittingLights().mul(getVertexBrightness()));
                 shR.rect(690, y, 50, 50);
                 
                 view.drawText("=", 760, y+25, Color.WHITE);

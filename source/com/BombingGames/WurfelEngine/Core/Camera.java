@@ -395,6 +395,14 @@ public class Camera implements LinkedWithMap {
 					Controller.getLightEngine().getSun().getLight()
 				);
 				view.getShader().setUniformf(
+					"moonNormal",
+					Controller.getLightEngine().getMoon().getNormal()
+				);
+				view.getShader().setUniformf(
+					"moonColor",
+					Controller.getLightEngine().getMoon().getLight()
+				);
+				view.getShader().setUniformf(
 					"ambientColor",
 					Controller.getLightEngine().getAmbient()
 				);

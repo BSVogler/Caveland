@@ -8,27 +8,33 @@ uniform sampler2D u_normals;   //normal map
 
 //values used for shading algorithm...
 uniform vec3 sunNormal;        //light position, normalized
-uniform vec4 sunColor;      //light RGBA -- alpha is intensity
-uniform vec4 ambientColor;    //ambient RGBA -- alpha is intensity 
+uniform vec4 sunColor;   
+uniform vec4 ambientColor;
 uniform vec3 moonNormal;        //light position, normalized
-uniform vec4 moonColor;      //light RGBA -- alpha is intensity
+uniform vec4 moonColor;
 
 void main() {
     //RGBA of our diffuse color
     vec4 DiffuseColor = texture2D(u_texture, v_texCoords);
-
-    //RGB of our normal map
-    vec3 N = (texture2D(u_normals, v_texCoords).rgb*2.0- 1.0);//-0.058)*1.25 to normalize because normals are not 100% correct
-
+	vec3 sunLight = vec3(0,0,0);
+	vec3 moonLight = vec3(0,0,0);
+	
+	//RGB of our normal map
+	vec3 N = (texture2D(u_normals, v_texCoords).rgb*2.0- 1.0);//-0.058)*1.25 to normalize because normals are not 100% correct
 	N.x = -N.x;//x is flipped in texture, so fix this in shaders
-   // vec3 L = normalize(LightNormal);
 
-    //Pre-multiply light color with intensity
-    vec4 DiffuseLS = sunColor * max(dot(N, sunNormal), 0.0);
+	//check if sun is shining, if not ignore it
+	if (sunColor.r > 0.05 || sunColor.g > 0.05 || sunColor.b> 0.05) {
 
-    //calculate attenuation
-    //float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
+		//Pre-multiply light color with intensity
+		sunLight = vec3(sunColor) * max(dot(N, sunNormal), 0.0);
+	}
 
-    //the calculation which brings it all together
-    gl_FragColor = v_color * (DiffuseLS+ambientColor)*DiffuseColor;
+	//check if moon is shining, if not ignore it
+	//if (moonColor.r > 0.05 || moonColor.g > 0.05 || moonColor.b> 0.05) {
+		//Pre-multiply light color with intensity
+		moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
+	//}
+
+	gl_FragColor = v_color * vec4((sunLight+moonLight+ambientColor.rgb)*DiffuseColor.rgb,DiffuseColor.a);
 }

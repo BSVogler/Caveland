@@ -87,19 +87,17 @@ public class LightEngine implements LinkedWithMap {
         sun = new GlobalLightSource(
 			-Controller.getMap().getWorldSpinDirection(),
 			0,
-			new Color(255, 255, 255, 1),
+			new Color(1, 1, 1, 1),
 			new Color(0.5f, 0.5f, 0.4f, 1),
 			60
 		);
-		//add moon if not using normalMaprendering
-        if (!pixelBasedShading)
-			moon = new GlobalLightSource(
-				180-Controller.getMap().getWorldSpinDirection(),
-				0,
-				new Color(0.2f,0.4f,0.8f,1),
-				new Color(0, 0, 0.1f, 1),
-				45
-			);
+		moon = new GlobalLightSource(
+			180-Controller.getMap().getWorldSpinDirection(),
+			0,
+			new Color(0.4f,0.8f,0.8f,1),
+			new Color(0, 0, 0.1f, 1),
+			45
+		);
 		
 		pixelBasedShading = CVar.get("LEnormalMapRendering").getValueb();
     }
@@ -501,6 +499,11 @@ public class LightEngine implements LinkedWithMap {
 //                
 //                shR.setColor(getColor());
 //                shR.rect(800, y+20, 15, 15);
+				
+				shR.setColor(Color.WHITE);
+                shR.rect(780, 390, 70, 70);
+                shR.setColor(getSun().getLight());
+                shR.rect(780, 400, 50, 50);
 
 
                  //info bars

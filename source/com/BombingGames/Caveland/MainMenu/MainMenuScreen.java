@@ -127,7 +127,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		//load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(Gdx.graphics.getHeight()-150);
+        lettering.setY(Gdx.graphics.getHeight()- lettering.getHeight()-30);
         
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		        

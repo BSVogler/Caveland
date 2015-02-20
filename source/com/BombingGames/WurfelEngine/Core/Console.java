@@ -371,6 +371,9 @@ public class Console {
 			case "printmap":
 				Controller.getMap().print();
 				return true;
+			case "reloadShaders":
+				gameplayRef.getView().loadShaders();
+				return true;
         }
         
 		if (command.startsWith("screenshake")){

@@ -53,6 +53,33 @@ public abstract class View {
 	private boolean inDebug;
 	
     public void init(){
+		loadShaders();
+    }
+    
+    public ShaderProgram getShader() {
+        return shader;
+    }
+	
+    	/**
+	 * enable debug rendering only
+	 * @param debug 
+	 */
+	void setDebugRendering(boolean debug) {
+		this.inDebug = debug;
+	}
+	
+		/**
+	 * 
+	 * @return true if current rendering is debug only
+	 */
+	public boolean debugRendering() {
+		return inDebug;
+	}
+	
+	/**
+	 * reloads the shaders
+	 */
+	public void loadShaders(){
 		String vertexShader;
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
@@ -77,25 +104,5 @@ public abstract class View {
 		//our normal map
 		shader.setUniformi("u_normals", 1); //GL_TEXTURE1
 		shader.end();
-    }
-    
-    public ShaderProgram getShader() {
-        return shader;
-    }
-	
-    	/**
-	 * enable debug rendering only
-	 * @param debug 
-	 */
-	void setDebugRendering(boolean debug) {
-		this.inDebug = debug;
-	}
-	
-		/**
-	 * 
-	 * @return true if current rendering is debug only
-	 */
-	public boolean debugRendering() {
-		return inDebug;
 	}
 }

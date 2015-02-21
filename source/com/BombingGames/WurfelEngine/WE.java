@@ -80,7 +80,7 @@ public class WE {
 	private static boolean skipintro =false;
 	
     /**
-     * Pass the mainMenu which get's displayed when you call launch().
+     * Pass the mainMenu which gets displayed when you call launch().
      * @param mainMenu 
      * @see #launch() 
      */
@@ -89,7 +89,7 @@ public class WE {
     }
     
 	/**
-	 * set a screen as active
+	 * Set a screen as active.
 	 * @param screen 
 	 */
 	public static void setScreen(WEScreen screen){
@@ -100,7 +100,7 @@ public class WE {
     /**
      * Start the engine. You should have passed a main menu first.
 	 * @param title The title, which is displayed in the window.
-     * @param args launch parameters. For a list look in the wiki.
+     * @param args Wurfel Engine launch parameters. For a list look in the wiki.
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
      */
     public static void launch(final String title, final String[] args){

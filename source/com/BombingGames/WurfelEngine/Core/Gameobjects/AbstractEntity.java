@@ -68,10 +68,19 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		entityMap.put("Bullet", Bullet.class);
 	}
 	
+	/**
+	 * Register a class of entities.
+	 * @param name the name of the entitie. e.g. "Ball"
+	 * @param entityClass the class you want to register
+	 */
 	public static void registerEntity(String name, Class<? extends AbstractEntity> entityClass){
 		entityMap.put(name, entityClass);	
 	}
 	
+	/**
+	 * Get a map of the registered entities
+	 * @return 
+	 */
 	public static java.util.HashMap<String, Class<? extends AbstractEntity>> getRegisteredEntities() {
 		return entityMap;
 	}

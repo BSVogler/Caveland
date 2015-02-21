@@ -295,6 +295,10 @@ public class MapEditorView extends GameView {
 						block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 						break;
+					case SELECT:
+						selectDownX = screenX;
+						selectDownY = screenY;
+						break;
 					case ERASE:
 						block = Block.getInstance(0);
 						block.setPosition(coords);

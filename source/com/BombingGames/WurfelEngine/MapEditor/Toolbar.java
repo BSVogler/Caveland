@@ -47,8 +47,10 @@ public class Toolbar {
 	public static enum Tool {
 		DRAW(0, "draw_button"),
 		BUCKET(1, "bucket_button"),
-		SELECT(2, "pointer_button"),
-		SPAWN(3, "entity_button");
+		REPLACE(2, "replace_button"),
+		SELECT(3, "pointer_button"),
+		SPAWN(4, "entity_button"),
+		ERASE(5, "eraser_button");
 	
 		private int id;
 		private String name;

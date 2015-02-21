@@ -61,21 +61,28 @@ public class PlacableSelector extends Table {
 	/**
      *
      * @param colorGUI the linked preview of the selection
+	 * @param left
      */
-    public PlacableSelector(PlacableGUI colorGUI) {
+    public PlacableSelector(PlacableGUI colorGUI, boolean left) {
         this.placableGUI = colorGUI;
         
-        setWidth(400);
-        setHeight(Gdx.graphics.getHeight()-100);
-        setPosition(-300, 0);
-        addListener(new BlockSelInpListener(this));
+		setWidth(400);
+		setHeight(Gdx.graphics.getHeight()-100);
+		setY(0);
+		
+		if (left) {
+			setX(0);
+		} else {
+			setX(1580);
+		}
+		addListener(new BlockSelInpListener(this));
     }
 	
     /**
      *
      */
     public void show(){
-        setX(0);
+		setVisible(true);
         if (!hasChildren()){
             table = new Table();
             table.pad(10).defaults().expandX().space(4);
@@ -124,11 +131,11 @@ public class PlacableSelector extends Table {
      *
      */
     public void hide(){
-        setX(-getWidth()*2/3f);
         if (hasChildren()){
             scroll.clearListeners();
             clear();
         }
+		setVisible(false);
     }
 
 	void showBlocks() {

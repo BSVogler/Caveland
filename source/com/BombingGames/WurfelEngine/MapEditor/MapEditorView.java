@@ -67,8 +67,10 @@ public class MapEditorView extends GameView {
     private Vector2 camermove = new Vector2(); 
     
     private Navigation nav = new Navigation();
-    private PlacableSelector bselector;
-	private PlacableGUI colorGUI;
+    private PlacableSelector leftSelector;
+	private PlacableGUI leftColorGUI;
+	private PlacableSelector rightSelector;
+	private PlacableGUI rightColorGUI;
 	
 	private Button blockButton;
 	private Button entitiesButton;
@@ -84,17 +86,22 @@ public class MapEditorView extends GameView {
         
         if (getMinimap()==null)
 			setMinimap(
-            new Minimap(
+				new Minimap(
 					getCameras().get(0),
 					Gdx.graphics.getWidth() - 600,
 					Gdx.graphics.getHeight()-300
 				)
 			);
         
-		colorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity());
-		getStage().addActor(colorGUI);
-        bselector = new PlacableSelector(colorGUI);
-        getStage().addActor(bselector);
+		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
+		getStage().addActor(leftColorGUI);
+        leftSelector = new PlacableSelector(leftColorGUI, true);
+        getStage().addActor(leftSelector);
+		
+		rightColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), false);
+		getStage().addActor(rightColorGUI);
+        rightSelector = new PlacableSelector(rightColorGUI, false);
+        getStage().addActor(rightSelector);
 
         //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
@@ -263,7 +270,7 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			selection.update(view, screenX, screenY);
-			colorGUI.update(selection);
+			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
             
             buttondown=button;
@@ -271,8 +278,8 @@ public class MapEditorView extends GameView {
             if (button == Buttons.RIGHT){
 				if (toolSelection.getSelectionRight()==Toolbar.Tool.BUCKET){
 					bucketDown = coords;
-					if (colorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = colorGUI.getBlock(coords);
+					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
+						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					}
 				}
@@ -289,7 +296,7 @@ public class MapEditorView extends GameView {
                 //gras1.play();
             } else if (button==Buttons.MIDDLE){//middle mouse button
                 Block block = coords.getBlock();
-                colorGUI.setBlock(block.getId(), block.getValue());
+                leftColorGUI.setBlock(block.getId(), block.getValue());
             } else if (button==Buttons.LEFT){ //left click
 				//get in normal direction
 				Sides normal = selection.getNormalSides();
@@ -302,16 +309,16 @@ public class MapEditorView extends GameView {
 					
 				if (toolSelection.getSelectionLeft()==Toolbar.Tool.BUCKET) {
 					bucketDown = coords;
-					if (colorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = colorGUI.getBlock(coords);
+					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
+						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					}
 				} else if (toolSelection.getSelectionLeft()==Toolbar.Tool.DRAW){
-					if (colorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = colorGUI.getBlock(coords);
+					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
+						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					} else 
-						colorGUI.getEntity().spawn(controller.getSelectionEntity().getNormal().getPosition().cpy());
+						leftColorGUI.getEntity().spawn(controller.getSelectionEntity().getNormal().getPosition().cpy());
 				   // gras2.play();
 				}   
 				layerSelection = coords.getZ();
@@ -324,7 +331,7 @@ public class MapEditorView extends GameView {
             buttondown = -1;
             
             selection.update(view, screenX, screenY);
-			colorGUI.update(selection);
+			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
 			
             if (button==Buttons.LEFT){
@@ -345,7 +352,7 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
-            colorGUI.update(selection);
+            leftColorGUI.update(selection);
 			
 			//dragging with left and has bucket tool
 			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() == Toolbar.Tool.BUCKET)
@@ -356,7 +363,7 @@ public class MapEditorView extends GameView {
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
 					if (buttondown==Buttons.LEFT){
-						Block block = colorGUI.getBlock(coords);
+						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					} else if (buttondown == Buttons.RIGHT) {
 						Block block = Block.getInstance(0);
@@ -372,12 +379,18 @@ public class MapEditorView extends GameView {
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
             selection.update(view, screenX, screenY);
-            colorGUI.update(selection);
+            leftColorGUI.update(selection);
+			rightColorGUI.update(selection);
 			
             if (screenX<100)
-                view.bselector.show();
-            else if (screenX > view.bselector.getWidth())
-                view.bselector.hide();
+                view.leftSelector.show();
+            else if (view.leftSelector.isVisible() && screenX > view.leftSelector.getWidth())
+                view.leftSelector.hide();
+			
+			if (screenX > getStage().getWidth()-100)
+                view.rightSelector.show();
+            else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
+                view.rightSelector.hide();
             return false;
         }
 
@@ -404,8 +417,7 @@ public class MapEditorView extends GameView {
 			
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					Controller.getMap().setData(
-						colorGUI.getBlock(new Coordinate(x, y, from.getZ()))
+					Controller.getMap().setData(leftColorGUI.getBlock(new Coordinate(x, y, from.getZ()))
 					);
 				}	
 			}

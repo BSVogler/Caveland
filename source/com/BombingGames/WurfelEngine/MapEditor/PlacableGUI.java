@@ -59,9 +59,17 @@ public class PlacableGUI extends WidgetGroup {
 	private PlaceMode mode = PlaceMode.Blocks;
 	private final Slider slider;
 
-
-	public PlacableGUI(Stage stage, Selection selection) {
-		setPosition(stage.getWidth()-200, stage.getHeight()-300);
+/**
+ * 
+ * @param stage
+ * @param selection the selection-Entity where the color comes from
+ * @param left left mouse button tool?
+ */
+	public PlacableGUI(Stage stage, Selection selection, boolean left) {
+		if (left)
+			setPosition(200, stage.getHeight()-300);
+		else
+			setPosition(stage.getWidth()-200, stage.getHeight()-300);
 		image = new Image(new BlockDrawable(id,value,-0.4f));
 		image.setPosition(50, 60);
 		addActor(image);

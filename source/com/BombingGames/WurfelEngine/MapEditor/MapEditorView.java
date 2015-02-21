@@ -189,21 +189,22 @@ public class MapEditorView extends GameView {
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
 			shr.translate(
-				-getCameras().get(0).getViewSpaceX(),
-				-getCameras().get(0).getViewSpaceY(),
+				-getCameras().get(0).getViewSpaceX()+getCameras().get(0).getWidthInViewSpc()/2,
+				-getCameras().get(0).getViewSpaceY()+getCameras().get(0).getHeightInViewSpc()/2,
 				0
 			);
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
+				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
 				shr.rect(
-					selectedEntity.getPosition().getViewSpcX(this),
-					selectedEntity.getPosition().getViewSpcY(this),
-					selectedEntity.getAtlasRegion().getRegionWidth(),
-					selectedEntity.getAtlasRegion().getRegionHeight()
+					selectedEntity.getPosition().getViewSpcX(this)-aR.getRegionWidth()/2,
+					selectedEntity.getPosition().getViewSpcY(this)-aR.getRegionWidth()/2,
+					aR.getRegionWidth(),
+					aR.getRegionHeight()
 				);
 			}
 			shr.translate(
-				getCameras().get(0).getViewSpaceX(),
-				getCameras().get(0).getViewSpaceY(),
+				getCameras().get(0).getViewSpaceX()-getCameras().get(0).getWidthInViewSpc()/2,
+				getCameras().get(0).getViewSpaceY()-getCameras().get(0).getHeightInViewSpc()/2,
 				0
 			);
 			shr.end();

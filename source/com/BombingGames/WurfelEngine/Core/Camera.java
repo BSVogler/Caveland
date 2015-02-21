@@ -875,26 +875,6 @@ public class Camera implements LinkedWithMap {
 	}
 	
 	/**
-	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
-	 * For screen pixels use {@link #getWidthInScreenSpc()}.
-	 *
-	 * @return in projection pixels
-	 */
-	public final int getWidthInProjectionSpc() {
-		return (int) (gameSpaceWidth*zoom);
-	}
-
-	/**
-	 * The amount of pixels rendered in x direction. The zoom has been applied.<br />
-	 * For screen pixels use {@link #getHeightInScreenSpc()}.
-	 *
-	 * @return in projection pixels
-	 */
-	public final int getHeightInProjectionSpc() {
-		return (int) (gameSpaceHeight*zoom);
-	}
-	
-	/**
 	 * Returns the position of the cameras output (on the screen)
 	 *
 	 * @return in projection pixels

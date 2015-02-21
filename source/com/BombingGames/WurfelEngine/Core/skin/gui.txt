@@ -4,7 +4,7 @@ filter: Linear,Linear
 repeat: none
 bucket_button
   rotate: false
-  xy: 1, 43
+  xy: 43, 22
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
@@ -32,42 +32,42 @@ editorreverse_button
   index: -1
 entity_button
   rotate: false
-  xy: 1, 22
-  size: 20, 20
+  xy: 1, 64
+  size: 14, 20
   orig: 20, 20
-  offset: 0, 0
+  offset: 3, 0
   index: -1
 load_button
   rotate: false
-  xy: 20, 43
+  xy: 1, 43
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
 play_button
   rotate: false
-  xy: 39, 43
+  xy: 20, 43
   size: 18, 20
   orig: 20, 20
   offset: 1, 0
   index: -1
 pointer_button
   rotate: false
-  xy: 1, 64
+  xy: 39, 43
   size: 15, 20
   orig: 20, 20
   offset: 5, 0
   index: -1
 replay_button
   rotate: false
-  xy: 22, 22
+  xy: 1, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 save_button
   rotate: false
-  xy: 43, 22
+  xy: 22, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0

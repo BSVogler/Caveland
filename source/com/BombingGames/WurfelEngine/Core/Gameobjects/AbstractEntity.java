@@ -186,6 +186,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
         return spawned;
     }
 
+	/**
+	 * Animation information.
+	 * @return can be null if it has no animation
+	 */
 	public EntityAnimation getAnimation() {
 		return animation;
 	}

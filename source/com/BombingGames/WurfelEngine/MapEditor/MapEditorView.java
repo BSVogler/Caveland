@@ -269,7 +269,7 @@ public class MapEditorView extends GameView {
             buttondown=button;
             
             if (button == Buttons.RIGHT){
-				if (toolSelection.getSelectionRight()==1){
+				if (toolSelection.getSelectionRight()==ToolSelection.Tool.BUCKET){
 					bucketDown = coords;
 					if (colorGUI.getMode() == PlaceMode.Blocks) {
 						Block block = colorGUI.getBlock(coords);
@@ -277,7 +277,7 @@ public class MapEditorView extends GameView {
 					}
 				}
 				
-				if (toolSelection.getSelectionRight()==0) {
+				if (toolSelection.getSelectionRight()==ToolSelection.Tool.DRAW) {
 					//right click
 					Block block = Block.getInstance(0);
 					block.setPosition(coords);
@@ -300,13 +300,13 @@ public class MapEditorView extends GameView {
 				else if (normal==Sides.RIGHT)
 					coords = coords.neighbourSidetoCoords(3);
 					
-				if (toolSelection.getSelectionLeft()==1) {
+				if (toolSelection.getSelectionLeft()==ToolSelection.Tool.BUCKET) {
 					bucketDown = coords;
 					if (colorGUI.getMode() == PlaceMode.Blocks) {
 						Block block = colorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					}
-				} else if (toolSelection.getSelectionLeft()==0){
+				} else if (toolSelection.getSelectionLeft()==ToolSelection.Tool.DRAW){
 					if (colorGUI.getMode() == PlaceMode.Blocks) {
 						Block block = colorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
@@ -328,12 +328,12 @@ public class MapEditorView extends GameView {
 			Coordinate coords = selection.getPosition().getCoord();
 			
             if (button==Buttons.LEFT){
-				if (toolSelection.getSelectionLeft()==1 && bucketDown!=null ) {
+				if (toolSelection.getSelectionLeft()==ToolSelection.Tool.BUCKET && bucketDown!=null ) {
 					bucket(bucketDown, coords);
 					bucketDown=null;
 				}
 			} else if (button==Buttons.RIGHT){
-				if (toolSelection.getSelectionRight()==1 && bucketDown!=null ) {
+				if (toolSelection.getSelectionRight()==ToolSelection.Tool.BUCKET && bucketDown!=null ) {
 					bucket(bucketDown, coords);
 					bucketDown=null;
 				}
@@ -348,8 +348,8 @@ public class MapEditorView extends GameView {
             colorGUI.update(selection);
 			
 			//dragging with left and has bucket tool
-			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft()==1)
-				|| (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight()==1)
+			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() == ToolSelection.Tool.BUCKET)
+				|| (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight() == ToolSelection.Tool.BUCKET)
 				)
 			) { 
 				Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();

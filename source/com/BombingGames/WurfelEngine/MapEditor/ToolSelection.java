@@ -40,28 +40,46 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
- *
+ * A toolbar for the editor.
  * @author Benedikt Vogler
  */
 public class ToolSelection {
-	private int selectionLeft = 0;
-	private int selectionRight = 0;
+	public static enum Tool {
+		DRAW(0, "draw_button"),
+		BUCKET(1, "bucket_button"),
+		SELECT(2, "pointer_button"),
+		SPAWN(3, "entity_button");
+	
+		private int id;
+		private String name;
+		
+		private Tool(int id, String name) {
+			this.id = id;
+			this.name = name;
+		}
+
+		public int getId() {
+			return id;
+		}
+	}
+	
+	private Tool selectionLeft = Tool.BUCKET;
+	private Tool selectionRight = Tool.BUCKET;
 	
 	private int leftPos;
 	private int bottomPos;
 	
-	private final Image[] items =new Image[3]; 
+	private final Image[] items =new Image[Tool.values().length]; 
+	
 
 	public ToolSelection(Stage stage, TextureAtlas sprites) {
-		items[0] = new Image(sprites.findRegion("draw_button"));
-		items[1] = new Image(sprites.findRegion("bucket_button"));
-		items[2] = new Image(sprites.findRegion("draw_button"));
 		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
 		bottomPos = (int) (stage.getHeight()-100);
 		
 		for (int i = 0; i < items.length; i++) {
+			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
 			items[i].setPosition(leftPos+i*50, bottomPos);
-			items[i].addListener(new ToolSelectionListener(i));
+			items[i].addListener(new ToolSelectionListener(Tool.values()[i]));
 			stage.addActor(items[i]);
 		}
 	}
@@ -72,10 +90,10 @@ public class ToolSelection {
 		shR.begin(ShapeRenderer.ShapeType.Line);
 		//draw left
 		shR.setColor(Color.GREEN);
-		shR.rect(items[selectionLeft].getX()+1, items[selectionLeft].getY()+1, 48, 48);
+		shR.rect(items[selectionLeft.id].getX()+1, items[selectionLeft.id].getY()+1, 48, 48);
 				//draw right
 		shR.setColor(Color.BLUE);
-		shR.rect(items[selectionRight].getX(), items[selectionLeft].getY(), 50, 50);
+		shR.rect(items[selectionRight.id].getX(), items[selectionLeft.id].getY(), 50, 50);
 
 		shR.end();
 	}
@@ -84,7 +102,7 @@ public class ToolSelection {
 	 * index of left mouse button.
 	 * @return 
 	 */
-	public int getSelectionLeft() {
+	public Tool getSelectionLeft() {
 		return selectionLeft;
 	}
 
@@ -92,21 +110,34 @@ public class ToolSelection {
 	 * index of right mouse button.
 	 * @return 
 	 */
-	public int getSelectionRight() {
+	public Tool getSelectionRight() {
 		return selectionRight;
 	}
 
+	//class to detect clicks
 	private class ToolSelectionListener extends InputListener {
-		private final int index;
+		private final Tool tool;
 	
-		ToolSelectionListener(int index) {
-			this.index = index;
+		ToolSelectionListener(Tool tool) {
+			this.tool = tool;
 		}
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			if (button==Buttons.LEFT) selectionLeft = index;
-			else if (button==Buttons.RIGHT) selectionRight = index;
+			if (button==Buttons.LEFT) selectionLeft = tool;
+			else if (button==Buttons.RIGHT) selectionRight = tool;
+//			if (selectionLeft==2 || selectionLeft==3)
+//				//show entities on left
+//				bselector.showBlocks();
+//			else
+//				//show blocks on left
+//				bselector.showBlocks();
+//			
+//			if (selectionRight==2 || selectionRight==3)
+//				//show entities on left
+//			else
+//				//show blocks on left
+//				bselector.showBlocks();
 			return true;
 		}
 

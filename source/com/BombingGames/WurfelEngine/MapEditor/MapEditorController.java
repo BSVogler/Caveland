@@ -131,10 +131,10 @@ public class MapEditorController extends Controller {
 	
 	/**
 	 * select every entity in this area
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2 
+	 * @param x1 view space
+	 * @param y1 view space
+	 * @param x2 view space
+	 * @param y2 view space
 	 */
 	public void select(int x1, int y1, int x2, int y2){
 		//1 values are the smaller ones, make sure that this is the case

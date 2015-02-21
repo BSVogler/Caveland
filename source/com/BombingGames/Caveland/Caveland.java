@@ -89,7 +89,7 @@ public class Caveland {
 			"Gereon Vogler\n" +
 			"Bernhard Vogler\n" +
 			"Pia Lenßen\n" +
-			"reddit.com/r/Gamedev\n" +
+			"reddit.com/r/gamedev\n" +
 			"Bauhaus Universität Weimar";
 	
 	}	

@@ -45,19 +45,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class Toolbar {
 	public static enum Tool {
-		DRAW(0, "draw_button"),
-		BUCKET(1, "bucket_button"),
-		REPLACE(2, "replace_button"),
-		SELECT(3, "pointer_button"),
-		SPAWN(4, "entity_button"),
-		ERASE(5, "eraser_button");
+		DRAW(0, "draw_button", true),
+		BUCKET(1, "bucket_button", true),
+		REPLACE(2, "replace_button", true),
+		SELECT(3, "pointer_button", false),
+		SPAWN(4, "entity_button", false),
+		ERASE(5, "eraser_button", true);
 	
 		private int id;
 		private String name;
+		private boolean worksOnBlocks;
 		
-		private Tool(int id, String name) {
+		private Tool(int id, String name, boolean worksOnBlocks) {
 			this.id = id;
 			this.name = name;
+			this.worksOnBlocks = worksOnBlocks;
 		}
 
 		public int getId() {
@@ -74,14 +76,14 @@ public class Toolbar {
 	private final Image[] items =new Image[Tool.values().length]; 
 	
 
-	public Toolbar(Stage stage, TextureAtlas sprites) {
+	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {
 		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
 		bottomPos = (int) (stage.getHeight()-100);
 		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
 			items[i].setPosition(leftPos+i*50, bottomPos);
-			items[i].addListener(new ToolSelectionListener(Tool.values()[i]));
+			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
 			stage.addActor(items[i]);
 		}
 	}
@@ -119,27 +121,31 @@ public class Toolbar {
 	//class to detect clicks
 	private class ToolSelectionListener extends InputListener {
 		private final Tool tool;
+		private final PlacableSelector left;
+		private final PlacableSelector right;
 	
-		ToolSelectionListener(Tool tool) {
+		ToolSelectionListener(Tool tool, PlacableSelector left, PlacableSelector right) {
 			this.tool = tool;
+			this.left = left;
+			this.right = right;
 		}
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			if (button==Buttons.LEFT) selectionLeft = tool;
-			else if (button==Buttons.RIGHT) selectionRight = tool;
-//			if (selectionLeft==2 || selectionLeft==3)
-//				//show entities on left
-//				bselector.showBlocks();
-//			else
-//				//show blocks on left
-//				bselector.showBlocks();
-//			
-//			if (selectionRight==2 || selectionRight==3)
-//				//show entities on left
-//			else
-//				//show blocks on left
-//				bselector.showBlocks();
+			if (button==Buttons.LEFT) {
+				selectionLeft = tool;
+				if (tool.worksOnBlocks) //show entities on left
+					left.showBlocks();
+				else //show blocks on left
+					left.showEntities();
+			} else if (button==Buttons.RIGHT) {
+				selectionRight = tool;
+				if (tool.worksOnBlocks) //show entities on left
+					right.showBlocks();
+				else //show blocks on left
+					right.showEntities();
+			}
+			
 			return true;
 		}
 

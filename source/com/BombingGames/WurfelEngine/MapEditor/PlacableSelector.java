@@ -77,7 +77,7 @@ public class PlacableSelector extends Table {
 		}
 		addListener(new BlockSelInpListener(this));
     }
-	
+
     /**
      *
      */
@@ -138,14 +138,14 @@ public class PlacableSelector extends Table {
 		setVisible(false);
     }
 
-	void showBlocks() {
+	protected void showBlocks() {
 		mode = PlaceMode.Blocks;
 		placableGUI.setMode(mode);
 		table.clearChildren();
 		show();
 	}
 
-	void showEntities() {
+	protected void showEntities() {
 		mode = PlaceMode.Entities;
 		placableGUI.setMode(mode);
 		if (table !=null)

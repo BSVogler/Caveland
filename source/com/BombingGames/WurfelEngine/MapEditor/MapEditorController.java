@@ -137,6 +137,19 @@ public class MapEditorController extends Controller {
 	 * @param y2 
 	 */
 	public void select(int x1, int y1, int x2, int y2){
+		//1 values are the smaller ones, make sure that this is the case
+		if (x1 < x2) {
+			int tmp = x1;
+			x1 = x2; 
+			x2 = tmp;
+		}
+		
+		if (y1 < y2) {
+			int tmp = y1;
+			y1 = y2; 
+			y2 = tmp;
+		}
+		
 		selectedEntities.clear();
 		for (AbstractEntity ent : getMap().getEntitys()) {
 			selectedEntities.add(ent);

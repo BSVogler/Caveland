@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -44,6 +45,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -181,6 +183,31 @@ public class MapEditorView extends GameView {
     @Override
     public void render() {
         super.render();
+		
+		if (controller.getSelectedEntities() != null) {
+			ShapeRenderer shr = getShapeRenderer();
+			shr.begin(ShapeRenderer.ShapeType.Line);
+			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
+			shr.translate(
+				-getCameras().get(0).getViewSpaceX(),
+				-getCameras().get(0).getViewSpaceY(),
+				0
+			);
+			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
+				shr.rect(
+					selectedEntity.getPosition().getViewSpcX(this),
+					selectedEntity.getPosition().getViewSpcY(this),
+					selectedEntity.getAtlasRegion().getRegionWidth(),
+					selectedEntity.getAtlasRegion().getRegionHeight()
+				);
+			}
+			shr.translate(
+				getCameras().get(0).getViewSpaceX(),
+				getCameras().get(0).getViewSpaceY(),
+				0
+			);
+			shr.end();
+		}
         nav.render(this);
 		toolSelection.render(getShapeRenderer());
     }
@@ -206,6 +233,8 @@ public class MapEditorView extends GameView {
         private int layerSelection;
         private Selection selection;
 		private Coordinate bucketDown;
+		private int selectDownX;
+		private int selectDownY;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
@@ -325,19 +354,35 @@ public class MapEditorView extends GameView {
 			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
 			
-            if (button==Buttons.LEFT){
-				if (toolSelection.getSelectionLeft()==Toolbar.Tool.BUCKET && bucketDown!=null ) {
-					bucket(bucketDown, coords);
-					bucketDown=null;
-				}
-			} else if (button==Buttons.RIGHT){
-				if (toolSelection.getSelectionRight()==Toolbar.Tool.BUCKET && bucketDown!=null ) {
-					bucket(bucketDown, coords);
-					bucketDown=null;
-				}
+			Tool toggledTool;
+
+			if (button == Buttons.RIGHT){
+				toggledTool = toolSelection.getSelectionRight();
+			} else {
+				toggledTool = toolSelection.getSelectionLeft();
 			}
 			
-            return false;
+			switch (toggledTool){
+				case DRAW:
+					break;
+				case REPLACE:
+					break;
+				case SELECT:
+					controller.select(selectDownX, selectDownY, screenX, screenY);
+					break;
+				case ERASE:
+					break;
+				case BUCKET:
+					if (bucketDown!=null) {
+						bucket(bucketDown, coords);
+						bucketDown = null;
+					}
+					break;
+				case SPAWN:
+					break;
+			}
+			
+            return true;
         }
 
         @Override
@@ -413,6 +458,7 @@ public class MapEditorView extends GameView {
 				}	
 			}
 		}
+		
     }
     
     private static class PlayButton extends ClickListener{

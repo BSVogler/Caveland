@@ -32,11 +32,13 @@ package com.BombingGames.WurfelEngine.MapEditor;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +55,7 @@ public class MapEditorController extends Controller {
     private Map mapsave;
     private boolean reverseMap;
     private Selection SelectionEntity;
+	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
    /**
      * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
@@ -125,7 +128,25 @@ public class MapEditorController extends Controller {
     public Selection getSelectionEntity() {
         return SelectionEntity;
     }
-    
+	
+	/**
+	 * select every entity in this area
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2 
+	 */
+	public void select(int x1, int y1, int x2, int y2){
+		selectedEntities.clear();
+		for (AbstractEntity ent : getMap().getEntitys()) {
+			selectedEntities.add(ent);
+		}
+	}
+
+	public ArrayList<AbstractEntity> getSelectedEntities() {
+		return selectedEntities;
+	}
+	
 	
 	@Override
     public void exit(){

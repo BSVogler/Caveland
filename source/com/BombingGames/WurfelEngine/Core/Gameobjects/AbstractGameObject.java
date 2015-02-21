@@ -629,5 +629,13 @@ public abstract class AbstractGameObject implements Serializable {
 	public Color getColor() {
 		return tint;
 	}
+	
+	/**
+	 * Should i.g. not be used for rendering.
+	 * @return the sprite used for rendering
+	 */
+	public AtlasRegion getAtlasRegion(){
+		return getSprite(getCategory(), graphicsID, value);
+	}
 
 }

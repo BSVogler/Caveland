@@ -45,12 +45,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
@@ -98,27 +95,6 @@ public class MapEditorView extends GameView {
 		getStage().addActor(colorGUI);
         bselector = new PlacableSelector(colorGUI);
         getStage().addActor(bselector);
-
-        blockButton = new TextButton("Blocks", WE.getEngineView().getSkin());
-		blockButton.setPosition(bselector.getWidth(), 100);
-		blockButton.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				bselector.showBlocks();
-			}
-		});
-		getStage().addActor(blockButton);
-		
-		entitiesButton = new TextButton("Entitys", WE.getEngineView().getSkin());
-		entitiesButton.setPosition(bselector.getWidth(), 200);
-		entitiesButton.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				bselector.showEntities();
-			}
-		});
-		getStage().addActor(entitiesButton);
-
 
         //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");

@@ -391,18 +391,18 @@ public class MapEditorView extends GameView {
 			selection.update(view, screenX, screenY);
             leftColorGUI.update(selection);
 			
-			//dragging with left and has bucket tool
-			if (! ((buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() == Toolbar.Tool.BUCKET)
-				|| (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight() == Toolbar.Tool.BUCKET)
-				)
+			//dragging with left and has not bucket tool
+			if ( (buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() != Toolbar.Tool.BUCKET)
+				&& (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight() != Toolbar.Tool.BUCKET)
+				
 			) { 
 				Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
-					if (buttondown==Buttons.LEFT){
+					if (buttondown==Buttons.LEFT && toolSelection.getSelectionLeft()==Tool.DRAW){
 						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
-					} else if (buttondown == Buttons.RIGHT) {
+					} else if (buttondown == Buttons.RIGHT && toolSelection.getSelectionLeft()==Tool.DRAW) {
 						Block block = Block.getInstance(0);
 						block.setPosition(coords);
 						Controller.getMap().setData(block);
@@ -459,7 +459,7 @@ public class MapEditorView extends GameView {
 				}	
 			}
 		}
-		
+
     }
     
     private static class PlayButton extends ClickListener{

@@ -31,7 +31,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
-		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/controlScreen.png"));
+		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/controlScreen.jpg"));
 		
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

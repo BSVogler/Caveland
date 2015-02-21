@@ -43,7 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * A toolbar for the editor.
  * @author Benedikt Vogler
  */
-public class ToolSelection {
+public class Toolbar {
 	public static enum Tool {
 		DRAW(0, "draw_button"),
 		BUCKET(1, "bucket_button"),
@@ -72,7 +72,7 @@ public class ToolSelection {
 	private final Image[] items =new Image[Tool.values().length]; 
 	
 
-	public ToolSelection(Stage stage, TextureAtlas sprites) {
+	public Toolbar(Stage stage, TextureAtlas sprites) {
 		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
 		bottomPos = (int) (stage.getHeight()-100);
 		

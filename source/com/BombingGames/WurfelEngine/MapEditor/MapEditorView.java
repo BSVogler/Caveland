@@ -34,9 +34,9 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
+import com.BombingGames.WurfelEngine.MapEditor.Toolbar.Tool;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -269,58 +269,45 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+			buttondown = button;
 			selection.update(view, screenX, screenY);
 			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().getCoord();
             
-            buttondown=button;
-            
-            if (button == Buttons.RIGHT){
-				if (toolSelection.getSelectionRight()==Toolbar.Tool.BUCKET){
-					bucketDown = coords;
-					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setData(block);
-					}
-				}
-				
-				if (toolSelection.getSelectionRight()==Toolbar.Tool.DRAW) {
-					//right click
-					Block block = Block.getInstance(0);
-					block.setPosition(coords);
-					if (coords.getZ()>=0)
-						Controller.getMap().setData(block);
-				}
-                
-                //getCameras().get(0).traceRayTo(coords, true);
-                //gras1.play();
-            } else if (button==Buttons.MIDDLE){//middle mouse button
+			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
                 Block block = coords.getBlock();
                 leftColorGUI.setBlock(block.getId(), block.getValue());
-            } else if (button==Buttons.LEFT){ //left click
-				//get in normal direction
-				Sides normal = selection.getNormalSides();
-				if (normal==Sides.LEFT)
-					coords = coords.neighbourSidetoCoords(5);
-				else if (normal==Sides.TOP)
-					coords.addVector(0, 0, 1);
-				else if (normal==Sides.RIGHT)
-					coords = coords.neighbourSidetoCoords(3);
-					
-				if (toolSelection.getSelectionLeft()==Toolbar.Tool.BUCKET) {
-					bucketDown = coords;
-					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = leftColorGUI.getBlock(coords);
+            } else {
+				Tool toggledTool;
+				
+				if (button == Buttons.RIGHT){
+					toggledTool = toolSelection.getSelectionRight();
+				} else {
+					toggledTool = toolSelection.getSelectionLeft();
+				}
+				
+				switch (toggledTool){
+					case DRAW:
+						Block block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
 						Controller.getMap().setData(block);
-					}
-				} else if (toolSelection.getSelectionLeft()==Toolbar.Tool.DRAW){
-					if (leftColorGUI.getMode() == PlaceMode.Blocks) {
-						Block block = leftColorGUI.getBlock(coords);
+						break;
+					case REPLACE:
+						block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
-					} else 
-						leftColorGUI.getEntity().spawn(controller.getSelectionEntity().getNormal().getPosition().cpy());
-				   // gras2.play();
-				}   
+						break;
+					case ERASE:
+						block = Block.getInstance(0);
+						block.setPosition(coords);
+						if (coords.getZ()>=0)
+							Controller.getMap().setData(block);
+						break;
+					case BUCKET:
+						bucketDown = coords;
+						break;
+					case SPAWN:
+						leftColorGUI.getEntity().spawn(selection.getNormal().getPosition().cpy());
+						break;
+				}
 				layerSelection = coords.getZ();
 			}
             return false;

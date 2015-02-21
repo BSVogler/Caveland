@@ -134,6 +134,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return if it fails returns null 
 	 */
 	public AbstractEntity getEntity(){
+		if (entityClass == null) return null;
 		try {
 			return entityClass.newInstance();
 		} catch (InstantiationException | IllegalAccessException ex) {

@@ -55,9 +55,8 @@ public class PlacableSelector extends Table {
     private ScrollPane scroll; 
 	private final PlacableGUI placableGUI;
 	
-		
 	private PlaceMode mode = PlaceMode.Blocks;
-
+	
 	/**
      *
      * @param colorGUI the linked preview of the selection
@@ -148,6 +147,11 @@ public class PlacableSelector extends Table {
 	protected void showEntities() {
 		mode = PlaceMode.Entities;
 		placableGUI.setMode(mode);
+		if (placableGUI.getEntity()==null)//no init value for entity
+			placableGUI.setEntity(
+				AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
+				AbstractEntity.getRegisteredEntities().values().iterator().next()
+			);
 		if (table !=null)
 			table.clearChildren();
 		show();

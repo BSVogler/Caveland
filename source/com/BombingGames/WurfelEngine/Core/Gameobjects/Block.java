@@ -252,7 +252,7 @@ public class Block extends AbstractGameObject {
      * @param side Which side?
      * @return an sprite of the side
      */
-    public static AtlasRegion getBlockSprite(final int id, final int value, final Sides side) {
+    public static AtlasRegion getBlockSprite(final int id, final int value, final Side side) {
         if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
         
         if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
@@ -289,7 +289,7 @@ public class Block extends AbstractGameObject {
             int colorInt;
             
             if (Block.getInstance(id,value).hasSides){//if has sides, take top block    
-                AtlasRegion texture = getBlockSprite(id, value, Sides.TOP);
+                AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
                     texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH4);
@@ -330,11 +330,11 @@ public class Block extends AbstractGameObject {
             if (hasSides) {
 				boolean staticShade = CVar.get("enableAutoShade").getValueb();
                 if (!camera.getClipping(coords)[1])
-                    renderSide(view, coords, Sides.TOP, scale, staticShade);
+                    renderSide(view, coords, Side.TOP, scale, staticShade);
                 if (!camera.getClipping(coords)[0])
-                    renderSide(view, coords, Sides.LEFT, scale, staticShade);
+                    renderSide(view, coords, Side.LEFT, scale, staticShade);
                 if (!camera.getClipping(coords)[2])
-                    renderSide(view, coords, Sides.RIGHT, scale, staticShade);
+                    renderSide(view, coords, Side.RIGHT, scale, staticShade);
             } else
                 super.render(view, camera, coords, scale);
         }
@@ -350,9 +350,9 @@ public class Block extends AbstractGameObject {
     public void render(final GameView view, final int xPos, final int yPos) {
         if (!isHidden()) {
             if (hasSides) {
-				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Sides.TOP);
-				renderSide(view, xPos, yPos, Sides.LEFT);
-				renderSide(view, xPos+VIEW_WIDTH2, yPos, Sides.RIGHT);
+				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Side.TOP);
+				renderSide(view, xPos, yPos, Side.LEFT);
+				renderSide(view, xPos+VIEW_WIDTH2, yPos, Side.RIGHT);
 			} else {
 				super.render(view, xPos, yPos);
 			}
@@ -380,7 +380,7 @@ public class Block extends AbstractGameObject {
 					view,
 					(int) (xPos-VIEW_WIDTH2*(1+scale)),
 					(int) (yPos+VIEW_HEIGHT*(1+scale)),
-					Sides.TOP,
+					Side.TOP,
 					color,
 					scale
 				);
@@ -392,7 +392,7 @@ public class Block extends AbstractGameObject {
 					view,
 					(int) (xPos-VIEW_WIDTH2*(1+scale)),
 					yPos,
-					Sides.LEFT,
+					Side.LEFT,
 					color,
 					scale
 				);
@@ -404,7 +404,7 @@ public class Block extends AbstractGameObject {
 					view,
 					xPos,
 					yPos,
-					Sides.RIGHT,
+					Side.RIGHT,
 					color,
 					scale
 				);
@@ -422,11 +422,11 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale
      */
-    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Sides side, final Color color, final float scale){
+    public void renderSide(final GameView view, final Camera camera, final AbstractPosition coords, final Side side, final Color color, final float scale){
         renderSide(
             view,
-            coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Sides.RIGHT ? (int) (VIEW_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getViewSpcY(view) - VIEW_HEIGHT + ( side == Sides.TOP ? (int) (VIEW_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getViewSpcY(view) - VIEW_HEIGHT + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             color,
             scale
@@ -444,20 +444,20 @@ public class Block extends AbstractGameObject {
     public void renderSide(
 		final GameView view,
 		final AbstractPosition coords,
-		final Sides side,
+		final Side side,
 		final float scale,
 		final boolean staticShade
 	){
         renderSide(
             view,
-            coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Sides.RIGHT ? (int) (VIEW_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
-            coords.getViewSpcY(view) - VIEW_HEIGHT + ( side == Sides.TOP ? (int) (VIEW_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
+            coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+scale)) : 0),//right side is  half a block more to the right,
+            coords.getViewSpcY(view) - VIEW_HEIGHT + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(1+scale)) : 0),//the top is drawn a quarter blocks higher,
             side,
             staticShade ?
-				side==Sides.RIGHT
+				side==Side.RIGHT
 				? Color.GRAY.cpy().sub(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0)
 				: (
-					side==Sides.LEFT
+					side==Side.LEFT
 						? Color.GRAY.cpy().add(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0)
 						: Color.GRAY.cpy()
 					)
@@ -474,7 +474,7 @@ public class Block extends AbstractGameObject {
      * @param yPos rendering position
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Sides side){
+    public void renderSide(final View view, final int xPos, final int yPos, final Side side){
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
 			//color = Controller.getLightEngine().getColor(side);//todo
@@ -500,7 +500,7 @@ public class Block extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered
      * @param scale if you want to scale it up use scale > 0 else negative values scales down
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Sides side, Color color, final float scale){
+    public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color, final float scale){
         Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
         sprite.setPosition(xPos, yPos);
         if (scale != 0) {

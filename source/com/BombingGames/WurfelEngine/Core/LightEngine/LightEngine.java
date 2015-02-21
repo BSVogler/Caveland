@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.LightEngine;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Sides;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Side;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.badlogic.gdx.Gdx;
@@ -240,16 +240,16 @@ public class LightEngine implements LinkedWithMap {
 //        /**
 //     * Gets average color. 
 //     * @return pseudoGrey color
-//     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Sides)
+//     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Side)
 //     */
 //    public Color getColor(){
 //		if (pixelBasedShading)
 //			return Color.WHITE.cpy();
 //        return getAmbient().add( getEmittingLights().mul( getVertexBrightness() ) );
 //        //more precise (?) but slower
-////        float r = (getColor(Sides.LEFT).r + getColor(Sides.TOP).r + getColor(Sides.RIGHT).r)/3f;
-////        float g = (getColor(Sides.LEFT).g + getColor(Sides.TOP).g + getColor(Sides.RIGHT).g)/3f;
-////        float b = (getColor(Sides.LEFT).b + getColor(Sides.TOP).b + getColor(Sides.RIGHT).b)/3f;
+////        float r = (getColor(Side.LEFT).r + getColor(Side.TOP).r + getColor(Side.RIGHT).r)/3f;
+////        float g = (getColor(Side.LEFT).g + getColor(Side.TOP).g + getColor(Side.RIGHT).g)/3f;
+////        float b = (getColor(Side.LEFT).b + getColor(Side.TOP).b + getColor(Side.RIGHT).b)/3f;
 ////        return new Color(r,g,b,1);
 //    }
         
@@ -258,10 +258,10 @@ public class LightEngine implements LinkedWithMap {
 //     * @param normal 0 left 1 top or 2 right
 //     * @return pseudoGrey color
 //     */
-//    public Color getColor(Sides normal){
-//          if (normal==Sides.LEFT)
+//    public Color getColor(Side normal){
+//          if (normal==Side.LEFT)
 //            return getAmbient().add(getDiff(normal));
-//        else if (normal==Sides.TOP)
+//        else if (normal==Side.TOP)
 //            return getAmbient().add(getDiff(normal)).add(getSpec(normal));
 //        else
 //            return getAmbient().add(getDiff(normal));
@@ -272,10 +272,10 @@ public class LightEngine implements LinkedWithMap {
      * @param normal
      * @return pseudoGrey color
      */
-     private Color getDiff(Sides normal){
-        if (normal==Sides.LEFT)
+     private Color getDiff(Side normal){
+        if (normal==Side.LEFT)
             return getEmittingLights().mul(I_diff0);
-        else if (normal==Sides.TOP)
+        else if (normal==Side.TOP)
             return getEmittingLights().mul(I_diff1);//only top side can have specular light
         else
             return getEmittingLights().mul(I_diff2);
@@ -286,10 +286,10 @@ public class LightEngine implements LinkedWithMap {
      * @param normal
      * @return pseudoGrey color
      */
-     private Color getSpec(Sides normal){
-        if (normal==Sides.LEFT)
+     private Color getSpec(Side normal){
+        if (normal==Side.LEFT)
             return Color.BLACK.cpy();
-        else if (normal==Sides.TOP)
+        else if (normal==Side.TOP)
             return getEmittingLights().mul(I_spec1);
         else
             return Color.BLACK.cpy();
@@ -490,11 +490,11 @@ public class LightEngine implements LinkedWithMap {
                  //draw result
 //                shR.setColor(Color.WHITE);
 //                shR.rect(770, y-10, 70, 70);
-//                shR.setColor(getColor(Sides.LEFT));
+//                shR.setColor(getColor(Side.LEFT));
 //                shR.rect(780, y, 25, 30);
-//                shR.setColor(getColor(Sides.TOP));
+//                shR.setColor(getColor(Side.TOP));
 //                shR.rect(780, y+25, 50, 30);
-//                shR.setColor(getColor(Sides.RIGHT));
+//                shR.setColor(getColor(Side.RIGHT));
 //                shR.rect(805, y, 25, 30);
 //                
 //                shR.setColor(getColor());

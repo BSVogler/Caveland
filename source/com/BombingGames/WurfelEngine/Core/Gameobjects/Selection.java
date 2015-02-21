@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 
@@ -43,7 +44,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 public class Selection extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
     private SimpleEntity normal;
-    private Sides normalSide;
+    private Side normalSide;
     
     /**
      *
@@ -72,11 +73,11 @@ public class Selection extends AbstractEntity {
 
     @Override
     public void update(float delta) {
-//        if (normalSide==Sides.LEFT)
+//        if (normalSide==Side.LEFT)
 //            normal.setPosition(getPosition().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
-//        else if (normalSide==Sides.TOP)
+//        else if (normalSide==Side.TOP)
 //            normal.setPosition(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
-//            else if (normalSide==Sides.RIGHT)
+//            else if (normalSide==Side.RIGHT)
 //                normal.setPosition(getPosition().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
 	}
 
@@ -91,13 +92,13 @@ public class Selection extends AbstractEntity {
      *
      * @param side
      */
-    public void setNormal(Sides side){
+    public void setNormal(Side side){
         normalSide = side;
-        if (side == Sides.LEFT)
+        if (side == Side.LEFT)
             normal.setRotation(120);
-        else if (side == Sides.TOP)
+        else if (side == Side.TOP)
             normal.setRotation(0);
-        if (side == Sides.RIGHT)
+        if (side == Side.RIGHT)
             normal.setRotation(-120);
     }
 
@@ -105,9 +106,24 @@ public class Selection extends AbstractEntity {
      *
      * @return
      */
-    public Sides getNormalSides() {
+    public Side getNormalSide() {
         return normalSide;
     }
+	
+	/**
+	 * 
+	 * @return the neighbour coordinat where the normal points to
+	 */
+	public Coordinate getCoordInNormalDirection(){
+		Coordinate coords = getPosition().getCoord();
+		if (normalSide==Side.LEFT)
+			coords = coords.neighbourSidetoCoords(5);
+		else if (normalSide==Side.TOP)
+			coords.addVector(0, 0, 1);
+		else if (normalSide==Side.RIGHT)
+			coords = coords.neighbourSidetoCoords(3);
+		return coords;
+	}
 	
 	    /**
      *
@@ -128,7 +144,7 @@ public class Selection extends AbstractEntity {
                 
 		if (intersect.getPoint() != null){
 		   setPosition( intersect.getPoint() );
-		   setNormal( Sides.normalToSide( intersect.getNormal() ) );
+		   setNormal( Side.normalToSide( intersect.getNormal() ) );
 		}
     }
 }

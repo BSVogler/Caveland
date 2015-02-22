@@ -74,7 +74,13 @@ public class MapEditorView extends GameView {
 	private PlacableGUI rightColorGUI;
 	
 	private Toolbar toolSelection;
+	/**
+	 * start of selection in view space
+	 */
 	private int selectDownX;
+	/**
+	 * start of selection in view space
+	 */
 	private int selectDownY;
 
     @Override
@@ -188,8 +194,8 @@ public class MapEditorView extends GameView {
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
 			shr.translate(
-				-getCameras().get(0).getViewSpaceX()+getCameras().get(0).getWidthInViewSpc()/2,
-				-getCameras().get(0).getViewSpaceY()+getCameras().get(0).getHeightInViewSpc()/2,
+				-getCameras().get(0).getViewSpaceX()+getCameras().get(0).getWidthInProjSpc()/2,
+				-getCameras().get(0).getViewSpaceY()+getCameras().get(0).getHeightInProjSpc()/2,
 				0
 			);
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
@@ -201,9 +207,17 @@ public class MapEditorView extends GameView {
 					aR.getRegionHeight()
 				);
 			}
+			if (selectDownX != 0 && selectDownY != 0) {
+				shr.rect(
+					selectDownX,
+					-selectDownY/2,
+					screenXtoView(Gdx.input.getX(), camera)-selectDownX,
+					-screenYtoView(Gdx.input.getY(), camera)/2+selectDownY/2
+				);
+			}
 			shr.translate(
-				getCameras().get(0).getViewSpaceX()-getCameras().get(0).getWidthInViewSpc()/2,
-				getCameras().get(0).getViewSpaceY()-getCameras().get(0).getHeightInViewSpc()/2,
+				getCameras().get(0).getViewSpaceX()-getCameras().get(0).getWidthInProjSpc()/2,
+				getCameras().get(0).getViewSpaceY()-getCameras().get(0).getHeightInProjSpc()/2,
 				0
 			);
 			shr.end();
@@ -233,8 +247,6 @@ public class MapEditorView extends GameView {
         private int layerSelection;
         private Selection selection;
 		private Coordinate bucketDown;
-		private int selectDownX;
-		private int selectDownY;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
@@ -325,8 +337,8 @@ public class MapEditorView extends GameView {
 						Controller.getMap().setData(block);
 						break;
 					case SELECT:
-						selectDownX = screenX;
-						selectDownY = screenY;
+						selectDownX = (int) screenXtoView(screenX, camera);
+						selectDownY = (int) screenYtoView(screenY, camera);
 						break;
 					case ERASE:
 						block = Block.getInstance(0);
@@ -367,8 +379,9 @@ public class MapEditorView extends GameView {
 					break;
 				case REPLACE:
 					break;
-				case SELECT:
-					controller.select(selectDownX, selectDownY, screenX, screenY);
+				case SELECT://release, reset
+					selectDownX = 0;
+					selectDownY = 0;
 					break;
 				case ERASE:
 					break;
@@ -389,7 +402,16 @@ public class MapEditorView extends GameView {
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
             leftColorGUI.update(selection);
-			
+				
+			if (selectDownX!=0 && selectDownY!=0) {//currently selecting
+				controller.select(
+					selectDownX,
+					selectDownY,
+					(int) screenXtoView(screenX, camera),
+					(int) screenYtoView(screenY, camera)
+				);
+			}
+				
 			//dragging with left and has not bucket tool
 			if ( (buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() != Toolbar.Tool.BUCKET)
 				&& (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight() != Toolbar.Tool.BUCKET)

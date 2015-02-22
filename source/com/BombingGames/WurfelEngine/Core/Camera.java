@@ -470,15 +470,15 @@ public class Camera implements LinkedWithMap {
 				view.getShapeRenderer().end();
 			}
 			if (damageoverlay > 0.0f) {
-			WE.getEngineView().getBatch().begin();
-				Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
-				Sprite overlay = new Sprite(texture);
-				overlay.setOrigin(0, 0);
-				overlay.scale(1.4f);
-				overlay.setColor(1, 0, 0, damageoverlay);
-				overlay.draw(WE.getEngineView().getBatch());
-			WE.getEngineView().getBatch().end();
-		}
+				WE.getEngineView().getBatch().begin();
+					Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
+					Sprite overlay = new Sprite(texture);
+					overlay.setOrigin(0, 0);
+					overlay.scale(1.4f);
+					overlay.setColor(1, 0, 0, damageoverlay);
+					overlay.draw(WE.getEngineView().getBatch());
+				WE.getEngineView().getBatch().end();
+			}
 		
 		view.drawString("z level: " + zRenderingLimit, screenPosX+200, screenPosY+100, true);
 		}

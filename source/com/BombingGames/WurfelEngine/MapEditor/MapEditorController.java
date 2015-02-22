@@ -130,7 +130,7 @@ public class MapEditorController extends Controller {
     }
 	
 	/**
-	 * select every entity in this area
+	 * Select every entity in this area.
 	 * @param x1 view space
 	 * @param y1 view space
 	 * @param x2 view space
@@ -152,7 +152,15 @@ public class MapEditorController extends Controller {
 		
 		selectedEntities.clear();
 		for (AbstractEntity ent : getMap().getEntitys()) {
-			selectedEntities.add(ent);
+			int entLeft = ent.getPosition().getViewSpcX(gameplayView) - ent.getAtlasRegion().getRegionWidth()/2;
+			int entRight = ent.getPosition().getViewSpcX(gameplayView) + ent.getAtlasRegion().getRegionWidth()/2;
+			if (
+				entRight >= x1 //right border of ent
+				&& ent.getPosition().getViewSpcY(gameplayView) >= y1 //top border
+				&& entLeft <= x2 //left border of sprite
+				//&& ent.getPosition().getViewSpcY(gameplayView) <= y2 //bottom border
+			)
+				selectedEntities.add(ent);
 		}
 	}
 

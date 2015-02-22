@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -135,7 +136,7 @@ public class MapEditorController extends Controller {
 	 * @param y1 view space
 	 * @param x2 view space
 	 * @param y2 view space
-	 * @return the selection
+	 * @return the selection. unfiltered
 	 */
 	public ArrayList<AbstractEntity> select(int x1, int y1, int x2, int y2){
 		//1 values are the smaller ones, make sure that this is the case
@@ -164,8 +165,17 @@ public class MapEditorController extends Controller {
 		return selectedEntities;
 	}
 
+	/**
+	 * filter map editor entities
+	 * @return selected entities but map editor entities 
+	 */
 	public ArrayList<AbstractEntity> getSelectedEntities() {
-		return selectedEntities;
+		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
+		for (AbstractEntity ent : selectedEntities) {
+			if (!(ent instanceof EntityShadow) && !ent.getName().equals("normal") &&!ent.equals(selectionEntity))
+				selection.add(ent);
+		}
+		return selection;
 	}
 	
 	

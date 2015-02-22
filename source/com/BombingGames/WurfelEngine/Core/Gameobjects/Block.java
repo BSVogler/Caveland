@@ -477,7 +477,7 @@ public class Block extends AbstractGameObject {
     public void renderSide(final View view, final int xPos, final int yPos, final Side side){
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
-			//color = Controller.getLightEngine().getColor(side);//todo
+			//color = Controller.getLightEngine().getColor(side);//todo reimplement vertex shading
 			color = Color.GRAY.cpy();
         } else
 			color = Color.GRAY.cpy();

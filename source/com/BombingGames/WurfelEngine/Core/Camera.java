@@ -774,7 +774,7 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleBackBorder() {
-		//TODO
+		//TODO verify
 		return (int) (
 			(position.y + getHeightInViewSpc()/2)//camera top border
 			/ -AbstractGameObject.VIEW_DEPTH2//back to game space

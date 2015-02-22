@@ -299,6 +299,10 @@ public class MapEditorView extends GameView {
 				else 
 					setOrientation(0);
         
+			if (keycode==Input.Keys.FORWARD_DEL)
+				for (AbstractEntity ent : controller.getSelectedEntities()) {
+					ent.dispose();
+				}
         return false;
         }
 

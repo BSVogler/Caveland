@@ -75,6 +75,7 @@ public class MapEditorView extends GameView {
 	private PlacableGUI rightColorGUI;
 	
 	private Toolbar toolSelection;
+	private boolean selecting = false;
 	/**
 	 * start of selection in view space
 	 */
@@ -193,38 +194,39 @@ public class MapEditorView extends GameView {
 		if (controller.getSelectedEntities() != null) {
 			ShapeRenderer shr = getShapeRenderer();
 			shr.begin(ShapeRenderer.ShapeType.Line);
-			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
-			shr.translate(
-				-camera.getViewSpaceX()+camera.getWidthInProjSpc()/2,
-				-camera.getViewSpaceY()+camera.getHeightInProjSpc()/2,
-				0
-			);
-			//outlines for selected entities
-			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
-				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
-				shr.rect(
-					selectedEntity.getPosition().getViewSpcX(this)-aR.getRegionWidth()/2,
-					selectedEntity.getPosition().getViewSpcY(this)-aR.getRegionWidth()/2,
-					aR.getRegionWidth(),
-					aR.getRegionHeight()
+				shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
+				shr.translate(
+					-camera.getViewSpaceX()+camera.getWidthInProjSpc()/2,
+					-camera.getViewSpaceY()+camera.getHeightInProjSpc()/2,
+					0
 				);
-			}
-			//selection outline
-			if (selectDownX != 0 && selectDownY != 0) {
-				shr.rect(
-					viewToScreenX(selectDownX, camera),
-					viewToScreenY(selectDownY, camera),
-					viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera)-selectDownX), camera),
-					viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera)-selectDownY), camera)
+					//outlines for selected entities
+					for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
+						TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
+						shr.rect(
+							selectedEntity.getPosition().getViewSpcX(this)-aR.getRegionWidth()/2,
+							selectedEntity.getPosition().getViewSpcY(this)-aR.getRegionWidth()/2,
+							aR.getRegionWidth(),
+							aR.getRegionHeight()
+						);
+					}			
+				shr.translate(
+					camera.getViewSpaceX()-camera.getWidthInProjSpc()/2,
+					camera.getViewSpaceY()-camera.getHeightInProjSpc()/2,
+					0
 				);
-			}
-			
-			shr.translate(
-				camera.getViewSpaceX()-camera.getWidthInProjSpc()/2,
-				camera.getViewSpaceY()-camera.getHeightInProjSpc()/2,
-				0
-			);
+
+				//selection outline
+				if (selecting) {
+					shr.rect(
+						viewToScreenX(selectDownX, camera),
+						viewToScreenY(selectDownY, camera),
+						viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera))-viewToScreenX(selectDownX, camera), camera),//todo bug here
+						viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera))-viewToScreenY(selectDownY, camera), camera)
+					);
+				}
 			shr.end();
+			
 			drawString(selectDownX+","+selectDownY,
 				viewToScreenX(selectDownX, camera),
 				viewToScreenY(selectDownY, camera),
@@ -353,6 +355,7 @@ public class MapEditorView extends GameView {
 						Controller.getMap().setData(block);
 						break;
 					case SELECT:
+						selecting = true;
 						selectDownX = (int) screenXtoView(screenX, camera);
 						selectDownY = (int) screenYtoView(screenY, camera);
 						break;
@@ -396,8 +399,7 @@ public class MapEditorView extends GameView {
 				case REPLACE:
 					break;
 				case SELECT://release, reset
-					selectDownX = 0;
-					selectDownY = 0;
+					selecting = false;
 					break;
 				case ERASE:
 					break;

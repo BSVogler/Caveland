@@ -334,7 +334,7 @@ public class GameView extends View implements GameManager {
     }
 	
 	/**
-	 * not verified
+	 * Not a homomorphism, which means f(a*b) != f(a)*f(b)
 	 * @param x view space
 	 * @param camera
 	 * @return screen space
@@ -344,7 +344,7 @@ public class GameView extends View implements GameManager {
 	}
 	
 	/**
-	 * not verified
+	 * Not a homomorphism, which means f(a*b) != f(a)*f(b)
 	 * @param y view space
 	 * @param camera
 	 * @return screen space 
@@ -353,7 +353,7 @@ public class GameView extends View implements GameManager {
 		return (int) (y-camera.getViewSpaceY()+camera.getHeightInScreenSpc()/2);
 	}
     
-	    /**
+	/**
      *Draw a string using the last active color.
      * @param msg
      * @param xPos screen space

@@ -370,10 +370,10 @@ public class GameView extends View implements GameManager {
     }
     
     /**
-     *Draw a string in a color.
+     *Draw a string in a color. Starts a new batch.
      * @param msg
-     * @param xPos
-     * @param yPos
+     * @param xPos screen space
+     * @param yPos screen space
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {

@@ -61,7 +61,7 @@ public abstract class AbstractPosition implements Serializable {
     /**
      * Calculate position in view space.
 	 * @param View
-     * @return Returns the center of the projected (screen) y-position where the object is rendered without regarding the camera.
+     * @return Returns the center of the projected (view space) y-position where the object is rendered without regarding the camera.
      */
     public abstract int getViewSpcY(GameView View);
     

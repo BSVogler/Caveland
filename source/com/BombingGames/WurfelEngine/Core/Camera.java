@@ -537,7 +537,7 @@ public class Camera implements LinkedWithMap {
 	
 	/**
 	 * checks if the projected position is inside the view Frustum
-	 * @param proX
+	 * @param proX projective space
 	 * @param proY
 	 * @return 
 	 */

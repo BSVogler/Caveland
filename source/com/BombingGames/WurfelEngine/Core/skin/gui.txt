@@ -32,7 +32,7 @@ editorreverse_button
   index: -1
 entity_button
   rotate: false
-  xy: 17, 64
+  xy: 20, 64
   size: 14, 20
   orig: 20, 20
   offset: 3, 0
@@ -61,9 +61,9 @@ play_button
 pointer_button
   rotate: false
   xy: 1, 64
-  size: 15, 20
+  size: 18, 20
   orig: 20, 20
-  offset: 5, 0
+  offset: 2, 0
   index: -1
 replace_button
   rotate: false

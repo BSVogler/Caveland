@@ -116,8 +116,8 @@ public class Camera implements LinkedWithMap {
 	private float shakeTime;
 	
 	private final GameView gameView;
-	private int gameSpaceWidth;
-	private int gameSpaceHeight;
+	private int viewSpaceWidth;
+	private int viewSpaceHeight;
 	private int centerChunkX;
 	private int centerChunkY;
 	/**
@@ -142,7 +142,7 @@ public class Camera implements LinkedWithMap {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
-		updateGameSpaceSize();
+		updateViewSpaceSize();
 
 		focusEntity = new SimpleEntity(0);
 		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
@@ -280,7 +280,7 @@ public class Camera implements LinkedWithMap {
 			}
 			//check in view space
 			if (
-				position.y- getHeightInViewSpc()/2
+				position.y- getHeightInProjSpc()/2
 				<
 				Map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
 				-AbstractGameObject.VIEW_DEPTH2*(
@@ -302,10 +302,10 @@ public class Camera implements LinkedWithMap {
 
 			//orthographic camera, libgdx stuff
 			projection.setToOrtho(
-				(gameView.getOrientation()==2?-1:1)*-getWidthInViewSpc() / 2,
-				(gameView.getOrientation()==2?-1:1)*getWidthInViewSpc() / 2,
-				-getHeightInViewSpc() / 2,
-				getHeightInViewSpc() / 2,
+				(gameView.getOrientation()==2?-1:1)*-getWidthInProjSpc() / 2,
+				(gameView.getOrientation()==2?-1:1)*getWidthInProjSpc() / 2,
+				-getHeightInProjSpc() / 2,
+				getHeightInProjSpc() / 2,
 				0,
 				1
 			);
@@ -543,21 +543,21 @@ public class Camera implements LinkedWithMap {
 	 */
 	private boolean inViewFrustum(int proX, int proY){
 		return 
-				(position.y + getHeightInViewSpc()/2)
+				(position.y + getHeightInProjSpc()/2)
 				>
 				(proY- Block.VIEW_HEIGHT*2)//bottom of sprite
 			&&
 				(proY+ Block.VIEW_HEIGHT2+Block.VIEW_DEPTH)//top of sprite
 				>
-				position.y - getHeightInViewSpc()/2
+				position.y - getHeightInProjSpc()/2
 			&&
 				(proX+ Block.VIEW_WIDTH2)//right side of sprite
 				>
-				position.x - getWidthInViewSpc()/2
+				position.x - getWidthInProjSpc()/2
 			&&
 				(proX- Block.VIEW_WIDTH2)//left side of sprite
 				<
-				position.x + getWidthInViewSpc()/2
+				position.x + getWidthInProjSpc()/2
 		;
 	}
 
@@ -671,7 +671,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
-		updateGameSpaceSize();
+		updateViewSpaceSize();//todo check for redundaant call?
 	}
 
 	/**
@@ -737,7 +737,7 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x-getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH);
+		return (int) ((position.x-getWidthInProjSpc()/2) / AbstractGameObject.VIEW_WIDTH);
 	}
 	
 	/**
@@ -757,7 +757,7 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInViewSpc()/2) / AbstractGameObject.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc()/2) / AbstractGameObject.VIEW_WIDTH + 1);
 	}
 	
 	/**
@@ -776,7 +776,7 @@ public class Camera implements LinkedWithMap {
 	public int getVisibleBackBorder() {
 		//TODO verify
 		return (int) (
-			(position.y + getHeightInViewSpc()/2)//camera top border
+			(position.y + getHeightInProjSpc()/2)//camera top border
 			/ -AbstractGameObject.VIEW_DEPTH2//back to game space
 			);
 	}
@@ -796,7 +796,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public int getVisibleFrontBorder() {
 		return (int) (
-			(position.y- getHeightInViewSpc()/2) //bottom camera border
+			(position.y- getHeightInProjSpc()/2) //bottom camera border
 			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
@@ -834,8 +834,8 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return in game pixels
 	 */
-	public final int getWidthInGameSpc() {
-		return gameSpaceWidth;
+	public final int getWidthInViewSpc() {
+		return viewSpaceWidth;
 	}
 
 	/**
@@ -843,16 +843,16 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return in game pixels
 	 */
-	public final int getHeightInGameSpc() {
-		return gameSpaceHeight;
+	public final int getHeightInViewSpc() {
+		return viewSpaceHeight;
 	}
 	
 	/**
 	 * updates the cache
 	 */
-	public final void updateGameSpaceSize(){
-		gameSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
-		gameSpaceHeight = screenHeight;
+	public final void updateViewSpaceSize(){
+		viewSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
+		viewSpaceHeight = screenHeight;
 	}
 		
 	/**
@@ -861,17 +861,17 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @return in view pixels
 	 */
-	public final int getWidthInViewSpc() {
-		return (int) (gameSpaceWidth/zoom);
+	public final int getWidthInProjSpc() {
+		return (int) (viewSpaceWidth/zoom);
 	}
 
 	/**
 	 * The amount of game pixel which are visible in Y direction after the zoom has been applied. For screen pixels use {@link #getHeightInScreenSpc() }.
 	 *
-	 * @return in view pixels
+	 * @return in projective pixels
 	 */
-	public final int getHeightInViewSpc() {
-		return (int) (gameSpaceHeight/getScreenSpaceScaling()/zoom);
+	public final int getHeightInProjSpc() {
+		return (int) (viewSpaceHeight/getScreenSpaceScaling()/zoom);
 	}
 	
 	/**
@@ -930,7 +930,7 @@ public class Camera implements LinkedWithMap {
 		this.screenWidth = Gdx.graphics.getWidth();
 		this.screenPosX = 0;
 		this.screenPosY = 0;
-		updateGameSpaceSize();
+		updateViewSpaceSize();
 	}
 
 	/**
@@ -945,14 +945,14 @@ public class Camera implements LinkedWithMap {
 			this.screenHeight = height;
 			this.screenPosX = 0;
 			this.screenPosY = 0;
-			updateGameSpaceSize();
+			updateViewSpaceSize();
 		}
 	}
 
 	public void setScreenSize(int width, int height) {
 		this.screenWidth = width;
 		this.screenHeight = height;
-		updateGameSpaceSize();
+		updateViewSpaceSize();
 	}
 
 	/**

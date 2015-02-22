@@ -291,8 +291,8 @@ public class Minimap implements LinkedWithMap {
 					sh.rect(
 						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
 						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2,
-						scaleX*camera.getWidthInViewSpc()/ Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInViewSpc()/ Block.VIEW_DEPTH2
+						scaleX*camera.getWidthInProjSpc()/ Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ Block.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
@@ -313,8 +313,8 @@ public class Minimap implements LinkedWithMap {
 						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
 						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2
 							-scaleY *2*(Chunk.getBlocksZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
-						scaleX*camera.getWidthInViewSpc() / Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInViewSpc() / Block.VIEW_DEPTH2
+						scaleX*camera.getWidthInProjSpc() / Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / Block.VIEW_DEPTH2
 					);
 					
 				sh.end();

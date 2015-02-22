@@ -257,9 +257,9 @@ public class GameView extends View implements GameManager {
      * Reverts the perspective and transforms it into a coordiante which can be used in the game logic.
      * @param screenX the x position on the screen
      * @param camera the camera where the position is on
-     * @return the relative (to current loaded map) game coordinate
+     * @return view coordinate
      */
-    public float screenXtoGame(final int screenX, final Camera camera){
+    public float screenXtoView(final int screenX, final Camera camera){
         return screenX / camera.getScreenSpaceScaling()
 			- camera.getScreenPosX()
 			+ camera.getViewSpaceX()
@@ -268,12 +268,12 @@ public class GameView extends View implements GameManager {
     }
     
    /**
-     * Reverts the projection and transforms it into a coordiante which can be used in the game logic.
+     * Reverts the projection and transforms it into a coordinate which can be used in the game logic.
      * @param screenY the y position on the screen. y down
      * @param camera the camera where the position is on
-     * @return the relative game coordinate
+     * @return view coordinate
      */
-    public float screenYtoGame(final int screenY, final Camera camera){
+    public float screenYtoView(final int screenY, final Camera camera){
         return camera.getViewSpaceY()*-2 //to game space
 			- camera.getHeightInProjSpc()//use top side, therefore /2 but bring in game space again by *2 -> *1 -> nothing
 			+ screenY*2 / camera.getScreenSpaceScaling() //to game space and then revert scaling
@@ -282,12 +282,12 @@ public class GameView extends View implements GameManager {
     }
     
     /**
-     * Returns deepest layer.
+     * Returns deepest layer. Can pe used in game space but then its on the floor layer.
      * @param x
      * @param y
      * @return if no camera returns map center
      */
-     public Point screenToGameFlat(final int x, final int y){
+     public Point screenToView(final int x, final int y){
 		if (cameras.size()>0){
 			//identify clicked camera
 			Camera camera;
@@ -305,22 +305,22 @@ public class GameView extends View implements GameManager {
 
 			//find points
 			return new Point(
-				screenXtoGame(x, camera),
-				screenYtoGame(y, camera),
+				screenXtoView(x, camera),
+				screenYtoView(y, camera),
 				0
 			);
 		} else return Map.getCenter();
     }
      
     /**
-     * Returns the position belonging to a point on the screen. Does raytracing to find the intersection.
+     * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -> game. First does screen->view and then via raytracing view->game.
      * @param x the x position on the screen from left
      * @param y the y position on the screen from top
      * @return the position on the map. Deepest layer.
      */
-    public Intersection screenToGameRaytracing(final int x, final int y){
+    public Intersection screenToGame(final int x, final int y){
 		if (cameras.size()>0) {
-			Point p = screenToGameFlat(x,y);
+			Point p = screenToView(x,y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			

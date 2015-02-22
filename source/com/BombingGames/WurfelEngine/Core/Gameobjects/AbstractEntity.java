@@ -53,6 +53,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private boolean spawned;
 	private EntityAnimation animation;
 	private transient EntityShadow shadow;
+	private String name = "undefined";
 	
 	/**
 	 * flags if should be saved
@@ -208,8 +209,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
     
     @Override
     public String getName() {
-        return "feature not supported yet";
+		if (name==null)
+			return "undefined";
+        return name;
     }
+	
+	public void setName(String name){
+		this.name = name;
+	}
     
      /**
      * Set the height of the object.

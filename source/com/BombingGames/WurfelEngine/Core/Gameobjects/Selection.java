@@ -61,6 +61,7 @@ public class Selection extends AbstractEntity {
 		normal.setAnimation(anim);
         normal.setLightlevel(10);
 		normal.setSaveToDisk(false);
+		normal.setName("normal");
     }
 
 	@Override

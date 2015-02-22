@@ -55,7 +55,7 @@ public class MapEditorController extends Controller {
      */
     private Map mapsave;
     private boolean reverseMap;
-    private Selection SelectionEntity;
+    private Selection selectionEntity;
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
    /**
@@ -86,9 +86,9 @@ public class MapEditorController extends Controller {
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-        SelectionEntity = new Selection();
+        selectionEntity = new Selection();
         //focusentity.setPositionY(Block.DIM2+1f);
-        SelectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
+        selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
     }
     
 
@@ -127,7 +127,7 @@ public class MapEditorController extends Controller {
      * @return
      */
     public Selection getSelectionEntity() {
-        return SelectionEntity;
+        return selectionEntity;
     }
 	
 	/**

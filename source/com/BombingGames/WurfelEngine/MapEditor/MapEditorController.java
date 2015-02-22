@@ -152,13 +152,11 @@ public class MapEditorController extends Controller {
 		
 		selectedEntities.clear();
 		for (AbstractEntity ent : getMap().getEntitys()) {
-			int entLeft = ent.getPosition().getViewSpcX(gameplayView) - ent.getAtlasRegion().getRegionWidth()/2;
-			int entRight = ent.getPosition().getViewSpcX(gameplayView) + ent.getAtlasRegion().getRegionWidth()/2;
 			if (
-				entRight >= x1 //right border of ent
-				&& ent.getPosition().getViewSpcY(gameplayView) >= y1 //top border
-				&& entLeft <= x2 //left border of sprite
-				//&& ent.getPosition().getViewSpcY(gameplayView) <= y2 //bottom border
+				ent.getPosition().getViewSpcX(gameplayView) + ent.getAtlasRegion().getRegionWidth()/2 >= x1 //right sprite borde
+				&& ent.getPosition().getViewSpcX(gameplayView) - ent.getAtlasRegion().getRegionWidth()/2 <= x2 //left spr. border
+				&& ent.getPosition().getViewSpcY(gameplayView) - ent.getAtlasRegion().getRegionHeight()/2 <= y2 //bottom spr. border
+				&& ent.getPosition().getViewSpcY(gameplayView) + ent.getAtlasRegion().getRegionHeight()/2 >= y1 //top spr. border
 			)
 				selectedEntities.add(ent);
 		}

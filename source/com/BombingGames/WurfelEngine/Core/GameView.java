@@ -263,8 +263,7 @@ public class GameView extends View implements GameManager {
         return screenX / camera.getScreenSpaceScaling()
 			- camera.getScreenPosX()
 			+ camera.getViewSpaceX()
-			- camera.getWidthInProjSpc()/2//use left side
-			;
+			- camera.getWidthInProjSpc()/2;//use left side
     }
     
    /**

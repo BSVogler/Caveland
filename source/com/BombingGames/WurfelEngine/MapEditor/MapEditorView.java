@@ -44,6 +44,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -194,10 +195,11 @@ public class MapEditorView extends GameView {
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
 			shr.translate(
-				-getCameras().get(0).getViewSpaceX()+getCameras().get(0).getWidthInProjSpc()/2,
-				-getCameras().get(0).getViewSpaceY()+getCameras().get(0).getHeightInProjSpc()/2,
+				-camera.getViewSpaceX()+camera.getWidthInProjSpc()/2,
+				-camera.getViewSpaceY()+camera.getHeightInProjSpc()/2,
 				0
 			);
+			//outlines for selected entities
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
 				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
 				shr.rect(
@@ -207,20 +209,34 @@ public class MapEditorView extends GameView {
 					aR.getRegionHeight()
 				);
 			}
+			//selection outline
 			if (selectDownX != 0 && selectDownY != 0) {
 				shr.rect(
-					selectDownX,
-					-selectDownY/2,
-					screenXtoView(Gdx.input.getX(), camera)-selectDownX,
-					-screenYtoView(Gdx.input.getY(), camera)/2+selectDownY/2
+					viewToScreenX(selectDownX, camera),
+					viewToScreenY(selectDownY, camera),
+					viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera)-selectDownX), camera),
+					viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera)-selectDownY), camera)
 				);
 			}
+			
 			shr.translate(
-				getCameras().get(0).getViewSpaceX()-getCameras().get(0).getWidthInProjSpc()/2,
-				getCameras().get(0).getViewSpaceY()-getCameras().get(0).getHeightInProjSpc()/2,
+				camera.getViewSpaceX()-camera.getWidthInProjSpc()/2,
+				camera.getViewSpaceY()-camera.getHeightInProjSpc()/2,
 				0
 			);
 			shr.end();
+			drawString(selectDownX+","+selectDownY,
+				viewToScreenX(selectDownX, camera),
+				viewToScreenY(selectDownY, camera),
+				Color.WHITE
+			);
+			drawString(
+				screenXtoView(
+					Gdx.input.getX(), camera)+","+screenYtoView(Gdx.input.getY(), camera),
+				Gdx.input.getX(),
+				Gdx.graphics.getHeight()-Gdx.input.getY(),
+				Color.WHITE
+			);
 		}
         nav.render(this);
 		toolSelection.render(getShapeRenderer());

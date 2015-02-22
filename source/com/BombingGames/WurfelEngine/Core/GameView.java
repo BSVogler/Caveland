@@ -254,7 +254,7 @@ public class GameView extends View implements GameManager {
 	}
     
    /**
-     * Reverts the perspective and transforms it into a coordiante which can be used in the game logic.
+     * Reverts the perspective and transforms it into a coordiante which can be used in the game logic. Should be verified if returning correct results.
      * @param screenX the x position on the screen
      * @param camera the camera where the position is on
      * @return view coordinate
@@ -267,26 +267,25 @@ public class GameView extends View implements GameManager {
     }
     
    /**
-     * Reverts the projection and transforms it into a coordinate which can be used in the game logic.
-     * @param screenY the y position on the screen. y down
+     * Reverts the projection and transforms it into a coordinate which can be used in the game logic. Should be verified if returning correct results.
+     * @param screenY the y position on the screen. y-up
      * @param camera the camera where the position is on
      * @return view coordinate
      */
     public float screenYtoView(final int screenY, final Camera camera){
-        return camera.getViewSpaceY()*-2 //to game space
-			- camera.getHeightInProjSpc()//use top side, therefore /2 but bring in game space again by *2 -> *1 -> nothing
-			+ screenY*2 / camera.getScreenSpaceScaling() //to game space and then revert scaling
-			- camera.getScreenPosY() //screen pos offset
-			- AbstractGameObject.VIEW_HEIGHT;//offset, todo find reason
+        return camera.getViewSpaceY() //to view space
+			+ camera.getHeightInProjSpc()/2//use top side, therefore /2
+			- screenY / camera.getScreenSpaceScaling() //to view space and then revert scaling
+			- camera.getScreenPosY(); //screen pos offset
     }
     
     /**
-     * Returns deepest layer. Can pe used in game space but then its on the floor layer.
-     * @param x
-     * @param y
-     * @return if no camera returns map center
+     * Returns deepest layer. Can be used in game space but then its on the floor layer.
+     * @param x screen space
+     * @param y screen space. y-up
+     * @return if no camera returns map center.
      */
-     public Point screenToView(final int x, final int y){
+     public Point screenToGameBasic(final int x, final int y){
 		if (cameras.size()>0){
 			//identify clicked camera
 			Camera camera;
@@ -305,7 +304,7 @@ public class GameView extends View implements GameManager {
 			//find points
 			return new Point(
 				screenXtoView(x, camera),
-				screenYtoView(y, camera),
+				screenYtoView(y, camera)*-2,
 				0
 			);
 		} else return Map.getCenter();
@@ -319,7 +318,7 @@ public class GameView extends View implements GameManager {
      */
     public Intersection screenToGame(final int x, final int y){
 		if (cameras.size()>0) {
-			Point p = screenToView(x,y);
+			Point p = screenToGameBasic(x,y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			
@@ -333,13 +332,33 @@ public class GameView extends View implements GameManager {
 			);
 		} else return new Intersection(null, Vector3.Zero, 0);
     }
+	
+	/**
+	 * not verified
+	 * @param x view space
+	 * @param camera
+	 * @return screen space
+	 */
+	public int viewToScreenX(int x, Camera camera){
+		return (int) (x-camera.getViewSpaceX()+camera.getWidthInScreenSpc()/2);
+	}
+	
+	/**
+	 * not verified
+	 * @param y view space
+	 * @param camera
+	 * @return screen space 
+	 */
+	public int viewToScreenY(int y, Camera camera){
+		return (int) (y-camera.getViewSpaceY()+camera.getHeightInScreenSpc()/2);
+	}
     
 	    /**
      *Draw a string using the last active color.
      * @param msg
-     * @param xPos
-     * @param yPos
-	 * @param openbatch treu if begin/end shoould be called
+     * @param xPos screen space
+     * @param yPos screen space
+	 * @param openbatch true if begin/end shoould be called
      */
     public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
         if (openbatch) {

@@ -886,7 +886,7 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * Returns the position of the camera (on the screen)
 	 *
-	 * @return
+	 * @return y-down
 	 */
 	public int getScreenPosY() {
 		return screenPosY;

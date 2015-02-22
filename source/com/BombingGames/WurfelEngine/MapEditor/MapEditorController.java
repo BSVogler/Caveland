@@ -135,8 +135,9 @@ public class MapEditorController extends Controller {
 	 * @param y1 view space
 	 * @param x2 view space
 	 * @param y2 view space
+	 * @return the selection
 	 */
-	public void select(int x1, int y1, int x2, int y2){
+	public ArrayList<AbstractEntity> select(int x1, int y1, int x2, int y2){
 		//1 values are the smaller ones, make sure that this is the case
 		if (x2 < x1) {
 			int tmp = x1;
@@ -160,6 +161,7 @@ public class MapEditorController extends Controller {
 			)
 				selectedEntities.add(ent);
 		}
+		return selectedEntities;
 	}
 
 	public ArrayList<AbstractEntity> getSelectedEntities() {

@@ -48,7 +48,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -74,9 +73,9 @@ public class MapEditorView extends GameView {
 	private PlacableSelector rightSelector;
 	private PlacableGUI rightColorGUI;
 	
-	private Button blockButton;
-	private Button entitiesButton;
 	private Toolbar toolSelection;
+	private int selectDownX;
+	private int selectDownY;
 
     @Override
     public void init(Controller controller) {

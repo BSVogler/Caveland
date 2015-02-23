@@ -31,9 +31,11 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
@@ -362,6 +364,7 @@ public class MapEditorView extends GameView {
 						selecting = true;
 						selectDownX = (int) screenXtoView(screenX, camera);
 						selectDownY = (int) screenYtoView(screenY, camera);
+						controller.select( selectDownX, selectDownY, selectDownX, selectDownY );
 						break;
 					case ERASE:
 						block = Block.getInstance(0);
@@ -462,6 +465,30 @@ public class MapEditorView extends GameView {
             leftColorGUI.update(selection);
 			rightColorGUI.update(selection);
 			
+			AbstractEntity entityUnderMouse = null;
+			if (toolSelection.getSelectionLeft() == Tool.SELECT && !selecting){
+				//find ent under mouse
+				for (AbstractEntity ent : getMap().getEntitys()) {
+					if (
+						ent.getPosition().getViewSpcX(view) + ent.getAtlasRegion().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
+						&& ent.getPosition().getViewSpcX(view) - ent.getAtlasRegion().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
+						&& ent.getPosition().getViewSpcY(view) - ent.getAtlasRegion().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
+						&& ent.getPosition().getViewSpcY(view) + ent.getAtlasRegion().getRegionHeight()/2 >= (int) screenYtoView(screenY, camera) //top spr. border
+						&& !(ent instanceof EntityShadow)
+						&& !ent.getName().equals("normal")
+						&& !ent.getName().equals("selectionEntity")
+					)
+						entityUnderMouse = ent;
+				}
+			}
+			
+			//if entity udner mosue is selected
+			if (entityUnderMouse!=null && controller.getSelectedEntities().contains(entityUnderMouse))
+				WE.getEngineView().setCursor(2);
+			else WE.getEngineView().setCursor(0);
+
+					
+					
             if (screenX<100)
                 view.leftSelector.show();
             else if (view.leftSelector.isVisible() && screenX > view.leftSelector.getWidth())

@@ -52,6 +52,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import java.util.ArrayList;
 
 /**
  *
@@ -253,6 +254,8 @@ public class MapEditorView extends GameView {
         private int layerSelection;
         private Selection selection;
 		private Coordinate bucketDown;
+		private int lastX;
+		private int lastY;
 
         MapEditorInputListener(MapEditorController controller, MapEditorView view) {
             this.controller = controller;
@@ -347,10 +350,12 @@ public class MapEditorView extends GameView {
 						Controller.getMap().setData(block);
 						break;
 					case SELECT:
-						selecting = true;
-						selectDownX = (int) screenXtoView(screenX, camera);
-						selectDownY = (int) screenYtoView(screenY, camera);
-						controller.select( selectDownX, selectDownY, selectDownX, selectDownY );
+						if (WE.getEngineView().getCursor()!=2) {//not dragging
+							selecting = true;
+							selectDownX = (int) screenXtoView(screenX, camera);
+							selectDownY = (int) screenYtoView(screenY, camera);
+							controller.select( selectDownX, selectDownY, selectDownX, selectDownY );
+						}
 						break;
 					case ERASE:
 						block = Block.getInstance(0);
@@ -413,14 +418,22 @@ public class MapEditorView extends GameView {
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
             leftColorGUI.update(selection);
-				
-			if (selecting) {//currently selecting
-				controller.select(
-					selectDownX,
-					selectDownY,
-					(int) screenXtoView(screenX, camera),
-					(int) screenYtoView(screenY, camera)
-				);
+
+			//dragging selection?
+			if (WE.getEngineView().getCursor()==2){
+				ArrayList<AbstractEntity> selectedEnts = controller.getSelectedEntities();
+				for (AbstractEntity ent : selectedEnts) {
+					ent.getPosition().addVector(screenX-lastX, (screenY-lastY)*2, 0);
+				}
+			} else {
+				if (selecting) {//currently selecting
+					controller.select(
+						selectDownX,
+						selectDownY,
+						(int) screenXtoView(screenX, camera),
+						(int) screenYtoView(screenY, camera)
+					);
+				}
 			}
 				
 			//dragging with left and has not bucket tool
@@ -441,8 +454,10 @@ public class MapEditorView extends GameView {
 					} else return false;
 				}
 			}
-
-            return false;
+			
+			lastX =screenX; 	
+			lastY =screenY;
+            return true;
         }
 
         @Override
@@ -484,6 +499,9 @@ public class MapEditorView extends GameView {
                 view.rightSelector.show();
             else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
                 view.rightSelector.hide();
+			
+			lastX =screenX; 	
+			lastY =screenY;
             return false;
         }
 

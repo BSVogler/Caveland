@@ -53,6 +53,7 @@ public class Selection extends AbstractEntity {
         super(13);
         setLightlevel(10);
 		setSaveToDisk(false);
+		setName("selectionEntity");
         
         normal = new SimpleEntity(14);
 		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);

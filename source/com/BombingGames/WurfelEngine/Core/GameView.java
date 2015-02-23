@@ -521,7 +521,7 @@ public class GameView extends View implements GameManager {
 		}
 		
 		if (CVar.get("DevMode").getValueb())
-			Gdx.input.setCursorImage(WE.getEngineView().getCursor(), 8, 8);
+			WE.getEngineView().setCursor(0);
 		for (Camera camera : cameras) {
 			camera.hiddenSurfaceDetection();
 		}

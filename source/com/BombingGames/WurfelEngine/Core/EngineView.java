@@ -67,6 +67,8 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	 */
 	private float musicLoudness = 1;
 	private Music music;
+	private Pixmap cursorDrag;
+	private Pixmap cursorPointer;
     
     /**
      *
@@ -91,8 +93,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
         batch = new SpriteBatch();
 
         shapeRenderer = new ShapeRenderer();
-        cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
-		
 		setMusicLoudness(CVar.get("music").getValuef());
     }
     
@@ -195,10 +195,24 @@ public class EngineView extends GameView {//is GameView so it can render in game
 
     /**
      * 
-     * @return 
+	 * @param id 0 default, 1 pointer, 2 drag 
      */
-    public Pixmap getCursor() {
-        return cursor;
+    public void setCursor(int id) {
+		if (id==0) {
+			if (cursor == null)
+				cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
+			Gdx.input.setCursorImage(cursor, 8, 8);
+		} else if (id==1) {
+			if (cursorPointer==null)
+				cursorPointer = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/wecursor.png"));
+			Gdx.input.setCursorImage(cursorPointer, 0, 0);
+		} else if (id==2) {
+			if (cursorPointer==null)
+				cursorDrag = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor_drag.png"));
+			Gdx.input.setCursorImage(cursorDrag, 0, 0);
+		} else {
+			Gdx.input.setCursorImage(cursor, 0, 0);
+		}
     }
 
 	public float getMusicLoudness() {

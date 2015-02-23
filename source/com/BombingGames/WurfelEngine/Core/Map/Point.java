@@ -589,7 +589,7 @@ public class Point extends AbstractPosition {
 	}
 	
 	/**
-	 * get entities in radius (horizontal only)
+	 * get entities in horizontal radius (like a pipe)
 	 * @param <type>
 	 * @param radius in game dimension pixels
 	 * @param type

@@ -69,6 +69,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private Music music;
 	private Pixmap cursorDrag;
 	private Pixmap cursorPointer;
+	private int cursorId;
     
     /**
      *
@@ -199,6 +200,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	 * @param id 0 default, 1 pointer, 2 drag 
      */
     public void setCursor(int id) {
+		cursorId = id;
 		if (id==0) {
 			if (cursor == null)
 				cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/cursor.png"));
@@ -215,6 +217,14 @@ public class EngineView extends GameView {//is GameView so it can render in game
 			Gdx.input.setCursorImage(cursor, 0, 0);
 		}
     }
+
+	/**
+	 * returns the current cursor
+	 * @return 0 default, 1 pointer, 2 drag 
+	 */
+	public int getCursor() {
+		return cursorId;
+	}
 
 	public float getMusicLoudness() {
 		return musicLoudness;

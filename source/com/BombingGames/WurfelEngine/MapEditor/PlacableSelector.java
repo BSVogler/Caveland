@@ -140,7 +140,8 @@ public class PlacableSelector extends Table {
 	protected void showBlocks() {
 		mode = PlaceMode.Blocks;
 		placableGUI.setMode(mode);
-		table.clearChildren();
+		if (table !=null)
+			table.clearChildren();
 		show();
 	}
 

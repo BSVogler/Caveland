@@ -46,7 +46,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -228,19 +227,6 @@ public class MapEditorView extends GameView {
 					);
 				}
 			shr.end();
-			
-			drawString(selectDownX+","+selectDownY,
-				viewToScreenX(selectDownX, camera),
-				viewToScreenY(selectDownY, camera),
-				Color.WHITE
-			);
-			drawString(
-				screenXtoView(
-					Gdx.input.getX(), camera)+","+screenYtoView(Gdx.input.getY(), camera),
-				Gdx.input.getX(),
-				Gdx.graphics.getHeight()-Gdx.input.getY(),
-				Color.WHITE
-			);
 		}
         nav.render(this);
 		toolSelection.render(getShapeRenderer());

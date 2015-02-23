@@ -425,7 +425,7 @@ public class MapEditorView extends GameView {
 			selection.update(view, screenX, screenY);
             leftColorGUI.update(selection);
 				
-			if (selectDownX!=0 && selectDownY!=0) {//currently selecting
+			if (selecting) {//currently selecting
 				controller.select(
 					selectDownX,
 					selectDownY,

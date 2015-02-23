@@ -182,7 +182,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			};
 
 			//if movement allowed => move
-			if (coliding &&  horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+			if (coliding && horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();

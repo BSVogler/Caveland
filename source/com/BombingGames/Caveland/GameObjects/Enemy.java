@@ -27,10 +27,11 @@ public class Enemy extends MovableEntity{
      * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
      */
     public Enemy() {
-        super(45,4);
+        super(45,5);
         setTransparent(true);
         setObstacle(true);
 		setFloating(false);
+		setWalkingAnimationCycling(true);
 //        setDamageSounds(new Sound[]{
 //            (Sound) WE.getAsset("com/BombingGames/WeaponOfChoice/Sounds/impactFlesh.wav")
 //        });

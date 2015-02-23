@@ -103,7 +103,7 @@ public abstract class AbstractGameObject implements Serializable {
     /**the max. amount of different object types*/
     public transient static final int OBJECTTYPESNUM = 124;
       /**the max. amount of different values*/
-    public transient static final int VALUESNUM = 32;
+    public transient static final int VALUESNUM = 64;
     
 
         

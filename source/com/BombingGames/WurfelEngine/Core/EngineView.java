@@ -181,6 +181,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      *
      * @return a view independent stage
      */
+	@Override
     public Stage getStage() {
         return stage;
     }

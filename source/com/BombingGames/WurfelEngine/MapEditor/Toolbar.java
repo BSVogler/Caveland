@@ -82,22 +82,25 @@ public class Toolbar {
 		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
-			items[i].setPosition(leftPos+i*50, bottomPos);
+			items[i].setPosition(leftPos+i*25, bottomPos);
 			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
 			stage.addActor(items[i]);
 		}
 	}
 	
 	
-	
+	/**
+	 * renders the toolbar outline
+	 * @param shR 
+	 */
 	public void render(ShapeRenderer shR){
 		shR.begin(ShapeRenderer.ShapeType.Line);
 		//draw left
 		shR.setColor(Color.GREEN);
-		shR.rect(items[selectionLeft.id].getX()+1, items[selectionLeft.id].getY()+1, 48, 48);
+		shR.rect(items[selectionLeft.id].getX()-1, items[selectionLeft.id].getY()-1, 22, 22);
 				//draw right
 		shR.setColor(Color.BLUE);
-		shR.rect(items[selectionRight.id].getX(), items[selectionLeft.id].getY(), 50, 50);
+		shR.rect(items[selectionRight.id].getX()-2, items[selectionLeft.id].getY()-2, 24, 24);
 
 		shR.end();
 	}

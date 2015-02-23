@@ -1,10 +1,12 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
+import java.util.ArrayList;
 
 /**
  *An enemy which can follow a character.
@@ -25,9 +27,10 @@ public class Enemy extends MovableEntity{
      * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
      */
     public Enemy() {
-        super(45,1);
+        super(45,4);
         setTransparent(true);
         setObstacle(true);
+		setFloating(false);
 //        setDamageSounds(new Sound[]{
 //            (Sound) WE.getAsset("com/BombingGames/WeaponOfChoice/Sounds/impactFlesh.wav")
 //        });
@@ -41,6 +44,8 @@ public class Enemy extends MovableEntity{
 
     @Override
     public void update(float dt) {
+		//update as usual
+        super.update(dt);
         if (getPosition().getCoord().isInMemoryHorizontal()) {
             //follow the target
             if (target != null) {
@@ -48,25 +53,34 @@ public class Enemy extends MovableEntity{
 
 				d.x = target.getPosition().getX()-getPosition().getX();
                 d.y = target.getPosition().getY()-getPosition().getY();
+				d.nor();//direction only
+				d.scl(2f);
 				d.z = getMovement().z;
-				d.scl(0.4f);
+
 				// update the movement vector
-				setMovement(getMovement().add(d));
+				setMovement(d);
 
 				if (getPosition().distanceTo(target)<120) {
 					//setSpeed(0);
 					setMana((int) (getMana()+dt));
                     if (getMana()>=1000){
                         setMana(0);//reset
-                        new SimpleEntity(46).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
+                        new SimpleEntity(46).spawn(getPosition().cpy()).setAnimation(
+							new EntityAnimation(new int[]{300}, true, false)
 						);
                         target.damage(50);
                     }
 				}// else 
 					//setSpeed(0.4f);
             }
-            //update as usual
-            super.update(dt);
+			
+			//find nearby target if there is none
+			if (target==null){
+				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH*4, CustomPlayer.class);
+				if (!nearby.isEmpty())
+					target = nearby.get(0);
+			}
+			
             //if standing on same position as in last update
             if (getPosition().equals(lastPos) && getSpeed()>0)//not standing still
                 runningagainstwallCounter += dt;
@@ -101,4 +115,9 @@ public class Enemy extends MovableEntity{
     public static int getKillcounter() {
         return killcounter;
     }
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 }

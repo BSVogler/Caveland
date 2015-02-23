@@ -50,7 +50,16 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * time to pass before new sound can be played
 	 */
 	private static float soundlimit;
-     
+	private transient static Sound waterSound;
+     	
+	   /**
+     * Set the value of waterSound
+     * @param waterSound new value of waterSound
+     */
+    public static void setWaterSound(Sound waterSound) {
+        MovableEntity.waterSound = waterSound;
+    }
+	
 	private final int colissionRadius = GAME_DIAGLENGTH2/2;
 	private final int spritesPerDir;
       
@@ -71,7 +80,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private boolean floating;
 	
-	private transient static Sound waterSound;
 	private transient Sound stepSound1Grass;
 	private transient boolean stepSoundPlayedInCiclePhase;
 	private transient Sound fallingSound;
@@ -92,14 +100,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private int walkingCycle;
 	private boolean collectable;
-	
-	   /**
-     * Set the value of waterSound
-     * @param waterSound new value of waterSound
-     */
-    public static void setWaterSound(Sound waterSound) {
-        MovableEntity.waterSound = waterSound;
-    }
+	private boolean cycleAnimation;
 
    /**
     * Constructor of AbstractCharacter.
@@ -130,6 +131,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		collectable = entity.collectable;
 		if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
 		enableShadow();
+	}
+	
+	/**
+	 * Bounce back and forth (1,2,3,2,1,2 etc.) or cycle (1,2,3,1,2,3 etc.)
+	 * @param cycle true if cycle, false if bounce
+	 */
+	public void setWalkingAnimationCycling(boolean cycle){
+		cycleAnimation = cycle;
 	}
 
    /**

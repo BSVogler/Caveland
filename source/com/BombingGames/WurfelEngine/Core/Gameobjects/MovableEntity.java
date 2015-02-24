@@ -236,7 +236,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (floating || isOnGround()) {
 				walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
 				if (walkingCycle > 1000) {
-					walkingCycle=0;
+					walkingCycle%=1000;
 					stepSoundPlayedInCiclePhase=false;//reset variable
 				}
 

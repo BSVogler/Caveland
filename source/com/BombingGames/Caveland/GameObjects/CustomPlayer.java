@@ -34,7 +34,7 @@ public class CustomPlayer extends Controllable {
 	private static final long serialVersionUID = 2L;
 	
 	private transient static TextureAtlas spritesheet;
-	private transient static AtlasRegion[][] sprites = new AtlasRegion['z'][64];
+	private transient static AtlasRegion[][] sprites = new AtlasRegion['z'][65];
 	private transient static Texture textureDiff;
 	private transient static Texture textureNormal;
 	
@@ -94,8 +94,12 @@ public class CustomPlayer extends Controllable {
 	private float loadAttack =0;
 	private Interactable nearestEntity;
 	
+	private int spriteNum = 1;
+	private int walkingCycle;
+	private char actionNum = 'w';
+	
     public CustomPlayer() {
-        super(30, 4);
+        super(30, 0);
 		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
 		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
 		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
@@ -147,6 +151,49 @@ public class CustomPlayer extends Controllable {
 	public void update(float dt) {
 		super.update(dt);
 		Point pos = getPosition();
+		walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+		if (walkingCycle > 1000) {
+			walkingCycle=0;
+		}
+		
+		//detect direciton
+		int walkingDirSpriteNum;
+		if (getOrientation().x < -Math.sin(Math.PI/3)){
+			walkingDirSpriteNum = 49;//west
+		} else {
+			if (getOrientation().x < - 0.5){
+				//y
+				if (getOrientation().y<0){
+					walkingDirSpriteNum = 41;//north-west
+				} else {
+					walkingDirSpriteNum = 57;//south-east
+				}
+			} else {
+				if (getOrientation().x <  0.5){
+					//y
+					if (getOrientation().y<0){
+						walkingDirSpriteNum = 33;//north
+					}else{
+						walkingDirSpriteNum = 1;//south
+					}
+				}else {
+					if (getOrientation().x < Math.sin(Math.PI/3)) {
+						//y
+						if (getOrientation().y < 0){
+							walkingDirSpriteNum = 25;//north-east
+						} else{
+							walkingDirSpriteNum = 9;//sout-east
+						}
+					} else{
+						walkingDirSpriteNum = 17;//east
+					}
+				}
+			}
+		}
+		
+		//animation
+		spriteNum = walkingDirSpriteNum+walkingCycle/(1000/8);//8 walking sprites
+		
 		
 		//detect button hold
 		if (loadAttack != 0f) loadAttack+=dt;
@@ -225,17 +272,19 @@ public class CustomPlayer extends Controllable {
 		textureDiff.bind(0);
 				
 		view.getBatch().begin();
-			AtlasRegion texture = getSprite('h', (int) (Math.random()*63+1));
+			AtlasRegion texture = getSprite(actionNum, spriteNum);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2+texture.offsetY);
 			sprite.rotate(getRotation());
 			//sprite.scale(get);
 			sprite.setColor(getColor());
 
-			sprite.setPosition(getPosition().getViewSpcX(view)+texture.offsetX-texture.originalWidth/2,
+			sprite.setPosition(
+				getPosition().getViewSpcX(view)+texture.offsetX-texture.originalWidth/2,
 				getPosition().getViewSpcY(view)//center
 					-VIEW_HEIGHT2
 					+texture.offsetY
+					-50 //only this player sprite has an offset because it has overize
 			);
 			sprite.draw(view.getBatch());
 		view.getBatch().end();
@@ -339,6 +388,7 @@ public class CustomPlayer extends Controllable {
 		if (!airjump || isOnGround()){
 			if (!isOnGround()) airjump=true;
 			jump(5, !airjump);
+			actionNum = 'j';
 			if (airjump) {
 				jetPackSound.play();
 				for (int i = 0; i < 40; i++) {
@@ -387,6 +437,11 @@ public class CustomPlayer extends Controllable {
 		new Dust(1500f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
 	}
 
+	@Override
+	public void onLand() {
+		actionNum = 'w';
+	}
+	
 	@Override
 	public void dispose() {
 		super.dispose();

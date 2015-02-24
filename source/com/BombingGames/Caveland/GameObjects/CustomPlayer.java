@@ -154,57 +154,73 @@ public class CustomPlayer extends Controllable {
 		//some redundant code from movable to have a custom animation
 		Point pos = getPosition();
 		if (action=='h')
-			animationCycle += dt;
+			animationCycle += dt*5;
 		else
 			animationCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
 		
 		//cycle the cycle
 		if (animationCycle > 1000) {
+			if (action=='h')//play hit only once
+				action='w';
 			animationCycle%=1000;
 		}
 		
 		//detect direciton
-		int walkingDirSpriteNum;
+		int animationStart;
 		if (getOrientation().x < -Math.sin(Math.PI/3)){
-			walkingDirSpriteNum = 49;//west
+			animationStart = 49;//west
 		} else {
 			if (getOrientation().x < - 0.5){
 				//y
 				if (getOrientation().y<0){
-					walkingDirSpriteNum = 41;//north-west
+					animationStart = 41;//north-west
 				} else {
-					walkingDirSpriteNum = 57;//south-east
+					animationStart = 57;//south-east
 				}
 			} else {
 				if (getOrientation().x <  0.5){
 					//y
 					if (getOrientation().y<0){
-						walkingDirSpriteNum = 33;//north
+						animationStart = 33;//north
 					}else{
-						walkingDirSpriteNum = 1;//south
+						animationStart = 1;//south
 					}
 				}else {
 					if (getOrientation().x < Math.sin(Math.PI/3)) {
 						//y
 						if (getOrientation().y < 0){
-							walkingDirSpriteNum = 25;//north-east
+							animationStart = 25;//north-east
 						} else{
-							walkingDirSpriteNum = 9;//sout-east
+							animationStart = 9;//sout-east
 						}
 					} else{
-						walkingDirSpriteNum = 17;//east
+						animationStart = 17;//east
 					}
 				}
 			}
 		}
 		
+		//fix for different starting positions
+		if (action!='w' && action!='j')
+			animationStart -=8;
+		if (animationStart<0)
+			animationStart=57;
+		
 		//animation
-		int animationStep = animationCycle/(1000/8);//animation walking sprites
-		if (action=='j' && animationStep>3) { //todo temporary fix to avoid landing animation
-			animationStep=3;
-			animationCycle=375;
+		int animationStep;
+		if (action=='t') {
+			animationStep = animationCycle/(1000/6);//six sprites for throwing
+			spriteNum = animationStart + animationStep;
+			if (spriteNum>48) spriteNum=48;//clamp at 48 //todo temporary fix to avoid crash
+		} else {
+			animationStep = animationCycle/(1000/8);//animation walking sprites
+		
+			if (action=='j' && animationStep>3) { //todo temporary fix to avoid landing animation
+				animationStep=3;
+				animationCycle=375;
+			}
+			spriteNum = animationStart + animationStep;
 		}
-		spriteNum = walkingDirSpriteNum + animationStep;
 		
 		
 		//detect button hold

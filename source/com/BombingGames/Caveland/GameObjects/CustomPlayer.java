@@ -57,7 +57,7 @@ public class CustomPlayer extends Controllable {
         if (spritesheet == null) return null;
         if (sprites[category][value] == null){ //load if not already loaded
 			
-            AtlasRegion sprite = spritesheet.findRegion(category+"/"+category+ (value < 10 ? "0" : "") +Integer.toString(value));
+            AtlasRegion sprite = spritesheet.findRegion(category+"/"+Integer.toString(value));
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
                 Gdx.app.debug("Player animation", category+Integer.toString(value) + " not found");
                 return null;

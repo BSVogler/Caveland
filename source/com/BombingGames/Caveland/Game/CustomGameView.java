@@ -41,6 +41,8 @@ public class CustomGameView extends GameView{
         super.init(controller);
         Gdx.app.debug("CustomGameView", "Initializing");
 		
+		CustomPlayer.loadSheet();
+		
 		if (coop>-1){
 			Camera camera0  = new Camera(
 				getPlayer(0),

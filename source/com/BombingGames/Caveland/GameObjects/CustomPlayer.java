@@ -2,6 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
@@ -10,7 +11,12 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -26,6 +32,43 @@ public class CustomPlayer extends Controllable {
 	 */
 	public static final float LOADATTACKTIME = 1000; 
 	private static final long serialVersionUID = 2L;
+	
+	private transient static TextureAtlas spritesheet;
+	private transient static AtlasRegion[][] sprites = new AtlasRegion['z'][64];
+	private transient static Texture textureDiff;
+	private transient static Texture textureNormal;
+	
+	public static void loadSheet(){
+		if (spritesheet == null) {
+            spritesheet = WE.getAsset("com/BombingGames/Caveland/playerSheet.txt");
+        }
+		textureDiff = spritesheet.getTextures().first();
+        if (CVar.get("LEnormalMapRendering").getValueb())
+			textureNormal = WE.getAsset("com/BombingGames/Caveland/playerSheetNormal.png");
+	}
+	
+	/**
+     * Returns a sprite texture.
+     * @param category the category of the sprite e.g. "w" for walking
+     * @param value the index of the animation
+     * @return 
+     */
+    public static AtlasRegion getSprite(final char category, final int value) {
+        if (spritesheet == null) return null;
+        if (sprites[category][value] == null){ //load if not already loaded
+			
+            AtlasRegion sprite = spritesheet.findRegion(category+"/"+category+ (value < 10 ? "0" : "") +Integer.toString(value));
+            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
+                Gdx.app.debug("Player animation", category+Integer.toString(value) + " not found");
+                return null;
+			}
+            sprites[category][value] = sprite;
+            return sprite;
+        } else {
+            return sprites[category][value];
+        }
+    }
+	
     private float aimHeight;
 	private transient final Sound jetPackSound;
 	private transient final Sound loadingSound;
@@ -171,6 +214,43 @@ public class CustomPlayer extends Controllable {
 		if (isOnGround()) airjump=false;
 	}
 
+	@Override
+	public void render(GameView view, Camera camera) {
+		view.getBatch().end();//inject new batch here
+
+		//bind normal map to texture unit 1
+		if (CVar.get("LEnormalMapRendering").getValueb())
+			textureNormal.bind(1);
+		
+		textureDiff.bind(0);
+				
+		view.getBatch().begin();
+			AtlasRegion texture = getSprite('h', (int) (Math.random()*63+1));
+			Sprite sprite = new Sprite(texture);
+			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2+texture.offsetY);
+			sprite.rotate(getRotation());
+			//sprite.scale(get);
+			sprite.setColor(getColor());
+
+			sprite.setPosition(getPosition().getViewSpcX(view)+texture.offsetX-texture.originalWidth/2,
+				getPosition().getViewSpcY(view)//center
+					-VIEW_HEIGHT2
+					+texture.offsetY
+			);
+			sprite.draw(view.getBatch());
+		view.getBatch().end();
+		
+		//bind normal map to texture unit 1
+		if (CVar.get("LEnormalMapRendering").getValueb())
+			AbstractGameObject.getTextureNormal().bind(1);
+
+		//bind diffuse color to texture unit 0
+		//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+		AbstractGameObject.getTextureDiffuse().bind(0);
+		view.getBatch().begin();
+	}
+
+	
 	/**
 	 * 
 	 * @return null if nothing in reach

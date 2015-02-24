@@ -376,6 +376,7 @@ public abstract class AbstractGameObject implements Serializable {
             view,
             xPos,
             yPos,
+			null,
             0
         );
     }
@@ -623,7 +624,7 @@ public abstract class AbstractGameObject implements Serializable {
 	}
 
 	/**
-	 * get the tint of the object
+	 * get the tint of the object. The default brightness is around 0.5 so you can make it brighter and darker
 	 * @return not copy safe
 	 */
 	public Color getColor() {

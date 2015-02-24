@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/NormalMapPrototype/src/normalmapprototype/playerSheet.png</filename>
+        <filename>../../source/com/BombingGames/Caveland/playerSheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/BombingGames/NormalMapPrototype/src/normalmapprototype/playerSheet.txt</filename>
+                <filename>../../source/com/BombingGames/Caveland/playerSheet.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>

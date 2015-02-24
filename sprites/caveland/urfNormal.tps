@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/NormalMapPrototype/src/normalmapprototype/playerSheetNormal.png</filename>
+        <filename>../../source/com/BombingGames/Caveland/playerSheetNormal.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>

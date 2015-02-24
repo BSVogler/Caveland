@@ -127,7 +127,7 @@ public abstract class AbstractGameObject implements Serializable {
 	 */
 	private float health = 1000;
 	
-	private transient Color tint = new Color(1, 1, 1, 1); 
+	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 	
     /**
      * Creates an object. Use getInstance() to create blocks or entitys.
@@ -415,7 +415,7 @@ public abstract class AbstractGameObject implements Serializable {
 			);
 			
 			//hack for transientfield tint
-			if (tint == null) tint = new Color(1, 1, 1, 1);
+			if (tint == null) tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 			if (color!=null)
 				sprite.setColor(tint.tmp().mul(color));
 			else sprite.setColor(tint);
@@ -624,7 +624,7 @@ public abstract class AbstractGameObject implements Serializable {
 	}
 
 	/**
-	 * get the tint of the object. The default brightness is around 0.5 so you can make it brighter and darker
+	 * get the tint of the object. The default brightness is vec3(0.5) so you can make it brighter and darker.
 	 * @return not copy safe
 	 */
 	public Color getColor() {

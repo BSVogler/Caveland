@@ -33,5 +33,5 @@ void main() {
 		moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
 	}
 
-	gl_FragColor = v_color * vec4((sunLight+moonLight+ambientColor.rgb)*DiffuseColor.rgb,DiffuseColor.a);
+	gl_FragColor = vec4(v_color.rgb+vec3(0.5,0.5,0.5),1.0) * vec4((sunLight+moonLight+ambientColor.rgb)*DiffuseColor.rgb,DiffuseColor.a);
 }

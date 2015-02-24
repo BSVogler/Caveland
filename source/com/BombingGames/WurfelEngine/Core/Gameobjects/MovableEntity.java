@@ -215,9 +215,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//land if standing in or under 0-level or there is an obstacle
 			if (movement.z < 0 && isOnGround()){
 				onCollide();
+				onLand();
 				
 				if (landingSound != null)
 					landingSound.play();//play landing sound
+
 				movement.z = 0;
 
 				//set on top of block
@@ -671,6 +673,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * called when in contact with floor or wall. Should be overriden.
 	 */
 	public void onCollide() {
+	}
+	
+	/**
+	 * called when objects lands
+	 */
+	public void onLand() {
 	}
 	
    @Override

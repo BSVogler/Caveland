@@ -95,8 +95,8 @@ public class CustomPlayer extends Controllable {
 	private Interactable nearestEntity;
 	
 	private int spriteNum = 1;
-	private int walkingCycle;
-	private char actionNum = 'w';
+	private int animationCycle;
+	private char action = 'w';
 	
     public CustomPlayer() {
         super(30, 0);
@@ -150,10 +150,17 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		
+		//some redundant code from movable to have a custom animation
 		Point pos = getPosition();
-		walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
-		if (walkingCycle > 1000) {
-			walkingCycle=0;
+		if (action=='h')
+			animationCycle += dt;
+		else
+			animationCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+		
+		//cycle the cycle
+		if (animationCycle > 1000) {
+			animationCycle%=1000;
 		}
 		
 		//detect direciton
@@ -192,7 +199,12 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		//animation
-		spriteNum = walkingDirSpriteNum+walkingCycle/(1000/8);//8 walking sprites
+		int animationStep = animationCycle/(1000/8);//animation walking sprites
+		if (action=='j' && animationStep>3) { //todo temporary fix to avoid landing animation
+			animationStep=3;
+			animationCycle=375;
+		}
+		spriteNum = walkingDirSpriteNum + animationStep;
 		
 		
 		//detect button hold
@@ -206,6 +218,7 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		if (loadAttack>300) {//time till registered as a "hold"
+			action = 'l';
 			if (loadingSound != null && !loadingSoundPlaying){
 				loadingSound.play();
 				loadingSoundPlaying=true;
@@ -272,7 +285,7 @@ public class CustomPlayer extends Controllable {
 		textureDiff.bind(0);
 				
 		view.getBatch().begin();
-			AtlasRegion texture = getSprite(actionNum, spriteNum);
+			AtlasRegion texture = getSprite(action, spriteNum);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2+texture.offsetY);
 			sprite.rotate(getRotation());
@@ -314,6 +327,8 @@ public class CustomPlayer extends Controllable {
 		try {
 			MovableEntity item = inventory.getFrontItem();
 			if (item != null) {
+				//throw is performed
+				playAnimation('t');
 				item.setMovement(getAiming().scl(3f));//throw with 3 m/s
 				//item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
@@ -328,6 +343,7 @@ public class CustomPlayer extends Controllable {
 	 * @param damage
 	 */
 	public void attack(int damage){
+		playAnimation('h');
 		attackSound.play();
 		addToHor(8f);//add 5 m/s in move direction
 		
@@ -388,7 +404,7 @@ public class CustomPlayer extends Controllable {
 		if (!airjump || isOnGround()){
 			if (!isOnGround()) airjump=true;
 			jump(5, !airjump);
-			actionNum = 'j';
+			playAnimation('j');
 			if (airjump) {
 				jetPackSound.play();
 				for (int i = 0; i < 40; i++) {
@@ -406,10 +422,11 @@ public class CustomPlayer extends Controllable {
 	}
 
 	/**
-	 * should be called on button release
+	 * should be called on button release. Checks if a big attack should be performed.
 	 */
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
+			playAnimation('i');
 			releaseSound.play();
 			addToHor(40f);
 			attack(1000);
@@ -439,7 +456,7 @@ public class CustomPlayer extends Controllable {
 
 	@Override
 	public void onLand() {
-		actionNum = 'w';
+		playAnimation('w');
 	}
 	
 	@Override
@@ -450,7 +467,11 @@ public class CustomPlayer extends Controllable {
 		CVar.get("PlayerLastSaveY").setValuei(coord.getY());
 		CVar.get("PlayerLastSaveZ").setValuei(coord.getZ());
 	}
-	
+
+	private void playAnimation(char c) {
+		action = c;
+		animationCycle=0;
+	}
 	
 	
 }

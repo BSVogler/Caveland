@@ -53,7 +53,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play();
+			return result.play(volume);
 		return 0;
 	}
 	
@@ -67,7 +67,7 @@ public class SoundEngine {
 	public long playSound(String identifier, float volume, float pitch){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play();
+			return result.play(volume, pitch, pitch);
 		return 0;
 	}
 	
@@ -82,7 +82,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume, float pitch, float pan){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play();
+			return result.play(volume, pitch, pan);
 		return 0;
 	}
 

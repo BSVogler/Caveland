@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -236,13 +237,19 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		//get loren
-		ArrayList<Lore> items = pos.getCoord().getEntitysInside(Lore.class);
+		ArrayList<Lore> nearbyLoren = pos.getPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, Lore.class);
 
-		if (!items.isEmpty()){
-			Lore lore = items.get(0);
-			if (lore != null && lore.getPassenger()==null)//if contact with lroe and it has no passenger
+		if (!nearbyLoren.isEmpty()){
+			Lore lore = nearbyLoren.get(0);
+			if (lore != null && lore.getPassenger()==null)//if contact with lore and it has no passenger
 				if (pos.getZ() > (pos.getZ()+0.5f)*(AbstractGameObject.GAME_EDGELENGTH)) //enter chu chu
 					lore.setPassanger(this);
+		}
+		
+		
+		//loren anstupsen
+		if (nearbyLoren.size() > 0 && nearbyLoren.get(0).getSpeedHor() < 0.1){//anstupsen
+			nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(4f)));
 		}
 		
 		//collect collectibles
@@ -250,11 +257,6 @@ public class CustomPlayer extends Controllable {
 		for (MovableEntity collectible : collectibles) {
 			if (collectible.isCollectable() && inventory.add(collectible))
 				collectible.dispose();
-		}
-		
-		ArrayList<Lore> loren = pos.getCoord().getEntitysInside(Lore.class);
-		if (loren.size()>0 && loren.get(0).getSpeed()==0){//anstupsen
-			loren.get(0).addMovement(new Vector3(getOrientation().scl(1f),0));
 		}
 		
 		if (timeSinceDamage>4000)

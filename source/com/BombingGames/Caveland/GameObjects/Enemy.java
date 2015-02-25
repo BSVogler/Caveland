@@ -5,6 +5,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.backends.lwjgl.audio.Wav.Sound;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -14,10 +16,12 @@ import java.util.ArrayList;
  */
 public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
+	private static int killcounter = 0;
+	private static Sound killSound;
+	
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
     private Point lastPos;
-    private static int killcounter = 0;
     
     public void init(){
        killcounter=0; 
@@ -32,6 +36,9 @@ public class Enemy extends MovableEntity{
         setObstacle(true);
 		setFloating(false);
 		setWalkingAnimationCycling(true);
+		
+		if (killSound==null)
+			killSound = WE.getAsset("com/BombingGames/Caveland/Sounds/robot1destroy.wav");
 //        setDamageSounds(new Sound[]{
 //            (Sound) WE.getAsset("com/BombingGames/WeaponOfChoice/Sounds/impactFlesh.wav")
 //        });
@@ -109,6 +116,8 @@ public class Enemy extends MovableEntity{
 
     @Override
     public void dispose() {
+		if (getHealth() <= 0 && killSound != null)
+			killSound.play();
         killcounter++;
         super.dispose();
     }

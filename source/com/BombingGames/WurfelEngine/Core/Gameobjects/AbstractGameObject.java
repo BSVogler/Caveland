@@ -91,7 +91,7 @@ public abstract class AbstractGameObject implements Serializable {
      * The game spaces dimension in pixel (edge length). 1 game meter ^= 1 GAME_EDGELENGTH
  The value is calculated by VIEW_HEIGHT*sqrt(2) because of the axis shortening.
      */
-    public transient static final int GAME_EDGELENGTH = (int) (GAME_DIAGLENGTH / Math.sqrt(2));
+    public transient static final int GAME_EDGELENGTH = (int) (GAME_DIAGLENGTH / 1.41421356237309504880168872420969807856967187537694807317667973799f);
     
 	/**
      * Half (1/2) of GAME_EDGELENGTH.

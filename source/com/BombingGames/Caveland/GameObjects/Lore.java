@@ -123,9 +123,9 @@ public class Lore extends MovableEntity {
 
 		//hit objects in front
 		if (getSpeed() > 0) {
-			ArrayList<MovableEntity> entitiesinfront;
-			entitiesinfront = pos.cpy().addVector(getMovement().cpy().scl(80)).getEntitiesNearby(40, MovableEntity.class);
-			for (MovableEntity ent : entitiesinfront) {
+			ArrayList<MovableEntity> entitiesInFront;
+			entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(40, MovableEntity.class);
+			for (MovableEntity ent : entitiesInFront) {
 				if (this != ent) {//don't collide with itself
 					ent.setMovement(
 						new Vector3(
@@ -135,8 +135,6 @@ public class Lore extends MovableEntity {
 						)
 					);
 					ent.addToHor(getSpeed());
-				} else {
-					System.out.println("selfcollide");
 				}
 			}
 		}

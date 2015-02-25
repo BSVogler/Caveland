@@ -115,6 +115,7 @@ public class CVar {
 		register("timeSpeed",1f, CVarFlags.CVAR_VOLATILE);
 		register("friction",0.001f, CVarFlags.CVAR_ARCHIVE);
 		register("playerfriction",0.2f, CVarFlags.CVAR_ARCHIVE);
+		register("soundDecay",6000, CVarFlags.CVAR_ARCHIVE);
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.BombingGames.WurfelEngine.Core.SoundEngine;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
@@ -70,11 +71,13 @@ public class SoundEngine {
 						minDistance = distance;
 				}
 				
-				volume = 5*AbstractGameObject.GAME_EDGELENGTH / (minDistance+5*AbstractGameObject.GAME_EDGELENGTH);
+				int decay = CVar.get("soundDecay").getValuei();
+				volume = decay*AbstractGameObject.GAME_EDGELENGTH / (minDistance*minDistance + decay*AbstractGameObject.GAME_EDGELENGTH);//loose energy radial
 				if (volume > 1)
 					volume = 1;
 			}
-			result.play(volume);
+			if (volume >= 0.1) //only play sound louder>10%
+				result.play(volume);
 		}
 	}
 	

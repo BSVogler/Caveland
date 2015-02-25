@@ -91,8 +91,10 @@ public class Controller implements GameManager {
 			getMap().addLinkedObject(lightEngine);
         }
 		
-		soundEngine = new SoundEngine();
-        
+		//only initialize static variable once
+		if (Controller.soundEngine == null)
+			soundEngine = new SoundEngine();
+		
         initalized = true;    
     }
         

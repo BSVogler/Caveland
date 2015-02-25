@@ -468,7 +468,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	/**
 	 * Direction of movement. Normalized.
-	 * @return unit vector for x and y component. 
+	 * @return unit vector for x and y component. copy safe
 	 */
 	public Vector2 getOrientation() {
 		return orientation.cpy();
@@ -534,6 +534,32 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		setMovement(tmp);
 	}
 	
+	/**
+	 * Set the speed and only take x and y into account.
+	 */
+	public void setSpeedHorizontal(float speed) {
+		setHorMovement(getOrientation().scl(speed));
+	}
+	
+	/**
+	 * Set the speed. Uses x, y and z.
+	 */
+	public void setSpeedIncludingZ(float speed) {
+		movement = getMovement().nor().scl(speed);
+	}
+	
+	/**
+	 * get the gorizontalspeed of the object in m/s.
+	 * @return 
+	 */
+	public float getSpeedHor() {
+		return (float)Math.sqrt(movement.x * movement.x + movement.y * movement.y);
+	}
+	
+	/**
+	 * get the speed of the object in m/s.
+	 * @return 
+	 */
 	public float getSpeed() {
 		return movement.len();
 	}

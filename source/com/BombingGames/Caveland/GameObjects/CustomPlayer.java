@@ -368,7 +368,7 @@ public class CustomPlayer extends Controllable {
 							(float) Math.random()
 					)
 				);
-				//movable.setSpeed(2);
+				movable.setSpeedHorizontal(2);
 			}
 		}
 		

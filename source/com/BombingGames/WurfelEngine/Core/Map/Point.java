@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -272,6 +273,17 @@ public class Point extends AbstractPosition {
         return this;
     }
     
+	/**
+     *Add a vector to the position
+     * @param vector all values in game world values
+     * @return
+     */
+    public Point addVector(Vector2 vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        return this;
+    }
+	
      /**
      *Add a vector to the position
      * @param vector all values in game world values

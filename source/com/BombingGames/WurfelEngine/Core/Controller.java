@@ -169,15 +169,15 @@ public class Controller implements GameManager {
     }
     
     /**
-     *
-     * @return
+     * The light engine doing the lighting.
+     * @return can return null
      */
     public static LightEngine getLightEngine() {
         return lightEngine;
     }
 	
 	/**
-     *
+     *The sound engine managing the sfx.
      * @return
      */
     public static SoundEngine getSoundEngine() {

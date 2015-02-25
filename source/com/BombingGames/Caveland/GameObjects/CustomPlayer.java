@@ -149,7 +149,7 @@ public class CustomPlayer extends Controllable {
 		if (animationCycle >= 1000) {
 			if (action=='h')//play hit only once
 				action='w';
-			animationCycle%=1000;
+			animationCycle %= 1000;
 		}
 		
 		//detect direciton

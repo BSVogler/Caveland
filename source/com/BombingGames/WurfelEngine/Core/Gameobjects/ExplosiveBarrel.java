@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.audio.Sound;
 
 /**
  *An example for a special block: barrel block which can explode
@@ -41,7 +40,7 @@ public class ExplosiveBarrel extends Block {
 	private static final long serialVersionUID = 1L;
 	
     private Coordinate coords;
-    private transient static Sound explosionsound;
+    private transient static String explosionsound;
 
     /**
      * Create a explosive barrel.
@@ -51,7 +50,7 @@ public class ExplosiveBarrel extends Block {
         super(id);
         setObstacle(true);
         if (explosionsound == null)
-            explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
+            explosionsound = "explosion2";
     }
    
     /**

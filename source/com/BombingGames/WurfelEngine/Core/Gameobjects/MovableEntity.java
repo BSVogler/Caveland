@@ -82,8 +82,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	private transient String stepSound1Grass;
 	private transient boolean stepSoundPlayedInCiclePhase;
-	private transient String fallingSound;
-	private transient boolean fallingSoundPlaying;
+	private transient String fallingSound = "wind";
+	private transient long fallingSoundInstance;
 	private transient String runningSound;
 	private transient boolean runningSoundPlaying;
 	private transient String jumpingSound;
@@ -344,19 +344,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             //should the fallingsound be played?
             if (fallingSound != null) {
                 if (getMovement().z < 0 && movement.len2() > 0.0f) {
-					Controller.getSoundEngine().setVolume(fallingSound, getSpeed()/10f);
-                    if (!fallingSoundPlaying){
-                        Controller.getSoundEngine().loop(fallingSound);
+                    if (fallingSoundInstance == 0) {
+                        fallingSoundInstance = Controller.getSoundEngine().loop(fallingSound);
                     }
-                }else {
+					Controller.getSoundEngine().setVolume(fallingSound,fallingSoundInstance, getSpeed()/10f);
+                } else {
                     Controller.getSoundEngine().stop(fallingSound);
-                    fallingSoundPlaying = false;
+                    fallingSoundInstance = 0;
                 }
             }
 			
-            if (soundlimit>0)soundlimit-=dt;
+            if (soundlimit > 0)
+				soundlimit -= dt;
             
-            if (getHealth()<=0 && !indestructible)
+            if (getHealth()<= 0 && !indestructible)
                 dispose();
         }
     }

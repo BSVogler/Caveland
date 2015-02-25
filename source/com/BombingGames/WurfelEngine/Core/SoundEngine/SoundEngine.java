@@ -6,7 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 
 /**
- *
+ * Manages the sounds in the game world.
  * @author Benedikt Vogler
  */
 public class SoundEngine {
@@ -18,14 +18,18 @@ public class SoundEngine {
 		sounds.put("wind", (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg"));
 	}
 	
-	
+	/**
+	 * Register a sound.
+	 * @param identifier
+	 * @param path 
+	 */
 	public void register(String identifier, String path){
 		sounds.put(identifier, (Sound) WE.getAsset(path));
 	}
 	
 	/***
 	 * 
-	 * @param identifier 
+	 * @param identifier name of sound
 	 */
 	public void play(String identifier){
 		Sound result = sounds.get(identifier);
@@ -35,7 +39,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier 
+	 * @param identifier name of sound
 	 * @param coord the position of the sound in the world
 	 */
 	public void play(String identifier, AbstractPosition coord){
@@ -46,7 +50,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier
+	 * @param identifier name of sound
 	 * @param volume
 	 * @return 
 	 */
@@ -59,7 +63,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier 
+	 * @param identifier name of sound
 	 * @param volume 
 	 * @param pitch
 	 * @return 
@@ -73,7 +77,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier 
+	 * @param identifier name of sound
 	 * @param volume 
 	 * @param pitch 
 	 * @param pan
@@ -86,6 +90,10 @@ public class SoundEngine {
 		return 0;
 	}
 
+	/**
+	 * Stops all instances of this sound.
+	 * @param identifier name of sound
+	 */
 	public void stop(String identifier) {
 		Sound result = sounds.get(identifier);
 		if (result != null)

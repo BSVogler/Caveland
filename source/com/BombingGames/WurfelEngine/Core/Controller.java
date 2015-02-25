@@ -36,6 +36,7 @@ import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -49,6 +50,7 @@ import java.util.logging.Logger;
  */
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
+	private static SoundEngine soundEngine;
     private static Map map;
     private DevTools devtools;
     private boolean initalized= false;
@@ -170,6 +172,14 @@ public class Controller implements GameManager {
      */
     public static LightEngine getLightEngine() {
         return lightEngine;
+    }
+	
+	/**
+     *
+     * @return
+     */
+    public static SoundEngine getSoundEngine() {
+        return soundEngine;
     }
 	
     /**

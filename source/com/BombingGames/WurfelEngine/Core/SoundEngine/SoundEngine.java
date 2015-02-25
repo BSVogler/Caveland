@@ -1,8 +1,11 @@
 package com.BombingGames.WurfelEngine.Core.SoundEngine;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,20 +14,32 @@ import java.util.HashMap;
  */
 public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
+	private ArrayList<Camera> cameras;
 
 	public SoundEngine() {
-		sounds.put("landing", (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav"));
-		sounds.put("splash", (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.ogg"));
-		sounds.put("wind", (Sound) WE.getAsset("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg"));
+		register("landing", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav");
+		register("splash", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.ogg");
+		register("wind", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg");
 	}
 	
 	/**
-	 * Register a sound.
-	 * @param identifier
-	 * @param path 
+	 * Registers a sound. The sound must be loaded via asset manager.
+	 * You can not register a sound twice.
+	 * @param identifier name of sound
+	 * @param path path of the sound
 	 */
 	public void register(String identifier, String path){
-		sounds.put(identifier, (Sound) WE.getAsset(path));
+		if (!sounds.containsKey(identifier)){
+			sounds.put(identifier, (Sound) WE.getAsset(path));
+		}
+	}
+
+	/**
+	 * 
+	 * @param cameras 
+	 */
+	public void setCameras(ArrayList<Camera> cameras) {
+		this.cameras = cameras;
 	}
 	
 	/***
@@ -38,14 +53,29 @@ public class SoundEngine {
 	}
 	
 	/***
-	 * 
+	 * Plays sound with decreasing volume depending on distance.
 	 * @param identifier name of sound
-	 * @param coord the position of the sound in the world
+	 * @param pos the position of the sound in the world
 	 */
-	public void play(String identifier, AbstractPosition coord){
+	public void play(String identifier, AbstractPosition pos){
 		Sound result = sounds.get(identifier);
-		if (result != null)
-			result.play();
+		if (result != null){
+			float volume = 1;
+			if (cameras != null) {
+				//calculate minimal distance to camera
+				float minDistance = Float.POSITIVE_INFINITY;
+				for (Camera camera : cameras) {
+					float distance = pos.getPoint().distanceTo(camera.getCenter().getPoint());
+					if (distance < minDistance)
+						minDistance = distance;
+				}
+				
+				volume = 5*AbstractGameObject.GAME_EDGELENGTH / (minDistance+5*AbstractGameObject.GAME_EDGELENGTH);
+				if (volume > 1)
+					volume = 1;
+			}
+			result.play(volume);
+		}
 	}
 	
 	/***

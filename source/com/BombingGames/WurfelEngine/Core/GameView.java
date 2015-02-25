@@ -120,6 +120,8 @@ public class GameView extends View implements GameManager {
         //clear old stuff
         cameras.clear();
         
+		Controller.getSoundEngine().setCameras(cameras);
+		
         //set up renderer
         libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 

@@ -99,16 +99,30 @@ public class SoundEngine {
 		if (result != null)
 			result.stop();
 	}
+	
+	/**
+	 * Stops a specifiy instance of the sound.
+	 * @param identifier 
+	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
+	 * @see com.​badlogic.​gdx.​audio.​Sound#stop
+	 */
+	public void stop(String identifier, long instance) {
+		Sound result = sounds.get(identifier);
+		if (result != null)
+			result.stop(instance);
+	}
 
 	/**
 	 * currently not working
 	 * @param identifier
+	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @param volume 
+	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume
 	 */
-	public void setVolume(String identifier, float volume) {
+	public void setVolume(String identifier, long instance, float volume) {
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			result.setVolume(0, volume);//todo needs soundId
+			result.setVolume(instance, volume);
 	}
 
 	public long loop(String identifier) {

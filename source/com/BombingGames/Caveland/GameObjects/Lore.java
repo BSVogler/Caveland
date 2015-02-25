@@ -33,7 +33,7 @@ public class Lore extends MovableEntity {
 		if (block.getId() == 55) {
 			setFriction(10000);
 			if (getSpeed() > 0) {
-				//setSpeed(1);
+				setSpeedHorizontal(1);
 			}
 
 			float mov_z = getMovement().z;

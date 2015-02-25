@@ -89,7 +89,8 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        setJumpingSound("vanya_jump.wav");
+		setFloating(false);
+        setJumpingSound("vanya_jump");
     }
 	
 }

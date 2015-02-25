@@ -29,11 +29,11 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -50,13 +50,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * time to pass before new sound can be played
 	 */
 	private static float soundlimit;
-	private transient static Sound waterSound;
+	private transient static String waterSound;
      	
 	   /**
      * Set the value of waterSound
      * @param waterSound new value of waterSound
      */
-    public static void setWaterSound(Sound waterSound) {
+    public static void setWaterSound(String waterSound) {
         MovableEntity.waterSound = waterSound;
     }
 	
@@ -80,15 +80,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private boolean floating;
 	
-	private transient Sound stepSound1Grass;
+	private transient String stepSound1Grass;
 	private transient boolean stepSoundPlayedInCiclePhase;
-	private transient Sound fallingSound;
-	private transient long fallingSoundPlaying;
-	private transient Sound runningSound;
+	private transient String fallingSound;
+	private transient boolean fallingSoundPlaying;
+	private transient String runningSound;
 	private transient boolean runningSoundPlaying;
-	private transient Sound jumpingSound;
-	private transient Sound landingSound;
-	private transient Sound[] damageSounds;
+	private transient String jumpingSound;
+	private transient String landingSound;
+	private transient String[] damageSounds;
 
 
 	private boolean inliquid;
@@ -156,7 +156,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      */
     public void jump(float velo, boolean playSound) {
 		addMovement(new Vector3(0, 0, velo));
-		if (playSound && jumpingSound != null) jumpingSound.play();
+		if (playSound && jumpingSound != null) Controller.getSoundEngine().play(jumpingSound);
     }
 	
     /**
@@ -218,7 +218,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				onLand();
 				
 				if (landingSound != null)
-					landingSound.play();//play landing sound
+					Controller.getSoundEngine().play(landingSound);//play landing sound
 
 				movement.z = 0;
 
@@ -227,7 +227,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			}
 
 			if (!inliquid && getPosition().getBlock().isLiquid())//if enterin water
-				if (waterSound!=null) waterSound.play();
+				if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
 
 			inliquid = getPosition().getBlock().isLiquid();//save if in water
 
@@ -331,11 +331,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             //should the runningsound be played?
             if (runningSound != null) {
                 if (getSpeed() < 0.5f) {
-                    runningSound.stop();
+                    Controller.getSoundEngine().stop(runningSound);
                     runningSoundPlaying = false;
                 } else {
                     if (!runningSoundPlaying){
-                        runningSound.play();
+                        Controller.getSoundEngine().play(runningSound);
                         runningSoundPlaying = true;
                     }
                 }
@@ -344,13 +344,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             //should the fallingsound be played?
             if (fallingSound != null) {
                 if (getMovement().z < 0 && movement.len2() > 0.0f) {
-					fallingSound.setVolume(fallingSoundPlaying, getSpeed()/10f);
-                    if (fallingSoundPlaying == 0){
-                        fallingSoundPlaying = fallingSound.loop();
+					Controller.getSoundEngine().setVolume(fallingSound, getSpeed()/10f);
+                    if (!fallingSoundPlaying){
+                        Controller.getSoundEngine().loop(fallingSound);
                     }
                 }else {
-                    fallingSound.stop();
-                    fallingSoundPlaying = 0;
+                    Controller.getSoundEngine().stop(fallingSound);
+                    fallingSoundPlaying = false;
                 }
             }
 			
@@ -421,36 +421,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      * Sets the sound to be played when falling.
      * @param fallingSound
      */
-    public void setFallingSound(Sound fallingSound) {
+    public void setFallingSound(String fallingSound) {
         this.fallingSound = fallingSound;
     }
 	
-	/**
-	 * Loads the default sound included with the engine.
-	 */
-	public void loadEngineFallingSound() {
-		fallingSound = (
-            (Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/wind.ogg")
-        );
-	}
-	
-	/**
-	 * Loads the default sound included with the engine.
-	 */
-	public void loadEngineLandingSound() {
-		landingSound = ((Sound)
-            WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/landing.wav")
-        );
-	}
-	
-	       
-
     /**
      * Set the sound to be played when running.
      * @param runningSound
      */
-    public void setRunningSound(Sound runningSound) {
+    public void setRunningSound(String runningSound) {
         this.runningSound = runningSound;
     }
     
@@ -460,7 +439,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      *
      * @param jumpingSound new value of jumpingSound
      */
-    public void setJumpingSound(Sound jumpingSound) {
+    public void setJumpingSound(String jumpingSound) {
         this.jumpingSound = jumpingSound;
     }
     
@@ -469,7 +448,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      *
      * @param landingSound new value of landingSound
      */
-    public void setLandingSound(Sound landingSound) {
+    public void setLandingSound(String landingSound) {
         this.landingSound = landingSound;
     }
     
@@ -477,11 +456,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      *
      * @param sound
      */
-    public void setDamageSounds(Sound[] sound){
+    public void setDamageSounds(String[] sound){
         damageSounds = sound;
     }
 	
-	public void setStepSound1Grass(Sound sound) {
+	public void setStepSound1Grass(String sound) {
 		stepSound1Grass = sound;
 	}
 
@@ -615,7 +594,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (!indestructible) {
 			if (getHealth() >0){
 				if (damageSounds != null && soundlimit<=0) {
-					damageSounds[(int) (Math.random()*(damageSounds.length-1))].play(0.7f);
+					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], 0.7f);
 					soundlimit = 100;
 				}
 				setHealth(getHealth()-value);
@@ -684,9 +663,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
    @Override
     public void dispose(){
         super.dispose();
-        if (fallingSound!= null) fallingSound.dispose();
-        if (jumpingSound!= null) jumpingSound.dispose();
-        if (runningSound!= null) runningSound.dispose();
     }
 
 	@Override
@@ -703,7 +679,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	public void step() {
-		stepSound1Grass.play(1, (float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
+		Controller.getSoundEngine().play(stepSound1Grass, 1,(float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
 		stepSoundPlayedInCiclePhase = true;
 	}
 }

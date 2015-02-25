@@ -6,8 +6,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
-import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,7 +22,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	public Vanya() {
 		super(40, 0);
 		setFloating(false);
-		setJumpingSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/vanya_jump.wav"));
+		setJumpingSound("vanya_jump");
 	}
 
 	@Override
@@ -91,7 +89,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        setJumpingSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/vanya_jump.wav"));
+        setJumpingSound("vanya_jump.wav");
     }
 	
 }

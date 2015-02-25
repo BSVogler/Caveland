@@ -6,9 +6,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 
 /**
  *The <i>CustomGameController</i> is for the game code. Put engine code into <i>Controller</i>.
@@ -25,7 +23,7 @@ public class CustomGameController extends Controller {
 
         player = new CustomPlayer();
 		getMap().setGenerator(new ChunkGenerator());
-		Block.setDestructionSound((Sound) WE.getAsset("com/BombingGames/Caveland/sounds/poch.wav"));
+		Block.setDestructionSound("blockDestroy");
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
 //		

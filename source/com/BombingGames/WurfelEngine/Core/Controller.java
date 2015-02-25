@@ -90,6 +90,8 @@ public class Controller implements GameManager {
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 			getMap().addLinkedObject(lightEngine);
         }
+		
+		soundEngine = new SoundEngine();
         
         initalized = true;    
     }

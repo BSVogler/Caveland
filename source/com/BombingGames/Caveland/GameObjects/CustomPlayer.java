@@ -2,6 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -12,7 +13,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -70,12 +70,7 @@ public class CustomPlayer extends Controllable {
     }
 	
     private float aimHeight;
-	private transient final Sound jetPackSound;
-	private transient final Sound loadingSound;
 	private boolean loadingSoundPlaying = false;
-	private transient final Sound releaseSound;
-	private transient final Sound attackSound;
-	private transient final Sound blockHitSound;
 
 	private int timeSinceDamage;
 	
@@ -100,18 +95,10 @@ public class CustomPlayer extends Controllable {
 	
     public CustomPlayer() {
         super(30, 0);
-		jetPackSound = WE.getAsset("com/BombingGames/Caveland/sounds/jetpack.wav");
-		loadingSound = WE.getAsset("com/BombingGames/Caveland/sounds/loadAttack.wav");
-		releaseSound = WE.getAsset("com/BombingGames/Caveland/sounds/ha.wav");
-		attackSound = WE.getAsset("com/BombingGames/Caveland/sounds/attack.wav");
-		blockHitSound = WE.getAsset("com/BombingGames/Caveland/sounds/impact.wav");
-		setStepSound1Grass( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/step.wav"));
+	
+		setStepSound1Grass("step");
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
-        setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/jump_man.wav"));
-		loadEngineFallingSound();
-		setJumpingSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/urf_jump.wav"));
-		
-		loadEngineLandingSound();
+		setJumpingSound("urfJump");
 		setFriction(CVar.get("playerfriction").getValuef());
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
@@ -235,8 +222,8 @@ public class CustomPlayer extends Controllable {
 		
 		if (loadAttack>300) {//time till registered as a "hold"
 			action = 'l';
-			if (loadingSound != null && !loadingSoundPlaying){
-				loadingSound.play();
+			if (!loadingSoundPlaying){
+				Controller.getSoundEngine().play("loadAttack");
 				loadingSoundPlaying=true;
 			}
 			Vector3 newmov = getMovement();
@@ -360,7 +347,7 @@ public class CustomPlayer extends Controllable {
 	 */
 	public void attack(int damage){
 		playAnimation('h');
-		attackSound.play();
+		Controller.getSoundEngine().play("attack");
 		addToHor(8f);//add 5 m/s in move direction
 		
 		//from current position go 80px in aiming direction and get entities 80px around there
@@ -389,7 +376,7 @@ public class CustomPlayer extends Controllable {
 				.addVector(getAiming().scl(80)).getCoord().damage(damage)
 			)
 		{
-			if (blockHitSound!=null) blockHitSound.play();
+			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
 		}
 		
@@ -422,7 +409,7 @@ public class CustomPlayer extends Controllable {
 			jump(5, !airjump);
 			playAnimation('j');
 			if (airjump) {
-				jetPackSound.play();
+				Controller.getSoundEngine().play("jetpack");
 				for (int i = 0; i < 40; i++) {
 					new Dust(1000f,
 						new Vector3(
@@ -441,9 +428,9 @@ public class CustomPlayer extends Controllable {
 	 * should be called on button release. Checks if a big attack should be performed.
 	 */
 	public void loadAttack() {
-		if (loadAttack >= LOADATTACKTIME && releaseSound != null) {
+		if (loadAttack >= LOADATTACKTIME) {
 			playAnimation('i');
-			releaseSound.play();
+			Controller.getSoundEngine().play("ha");
 			addToHor(40f);
 			attack(1000);
 		}

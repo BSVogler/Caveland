@@ -38,7 +38,6 @@ import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.View;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -56,7 +55,7 @@ public class Block extends AbstractGameObject {
 	 */
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];
 	
-	private static Sound destructionSound;
+	private static String destructionSound;
         
     /**
      * a list where a representing color of the block is stored
@@ -558,7 +557,7 @@ public class Block extends AbstractGameObject {
         hasSides=false;
     }
 
-	public static void setDestructionSound(Sound destructionSound) {
+	public static void setDestructionSound(String destructionSound) {
 		Block.destructionSound = destructionSound;
 	}
 	
@@ -585,7 +584,7 @@ public class Block extends AbstractGameObject {
 	 * @param pos the position of the block, can be null if not needed
 	 */
 	public void onDestroy(AbstractPosition pos) {
-		if (destructionSound!=null) destructionSound.play();
+		if (destructionSound!=null) Controller.getSoundEngine().play(destructionSound);
 		//caveland-mod!
 		for (int i = 0; i < 10; i++) {
 			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.getPoint().cpy());

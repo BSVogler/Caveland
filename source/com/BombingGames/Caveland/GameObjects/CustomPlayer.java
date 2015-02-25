@@ -146,7 +146,7 @@ public class CustomPlayer extends Controllable {
 			animationCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
 		
 		//cycle the cycle
-		if (animationCycle > 1000) {
+		if (animationCycle >= 1000) {
 			if (action=='h')//play hit only once
 				action='w';
 			animationCycle%=1000;

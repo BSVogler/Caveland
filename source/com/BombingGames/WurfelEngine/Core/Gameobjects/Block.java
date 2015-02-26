@@ -42,7 +42,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * A Block is a wonderful piece of information and a geometrical object.
@@ -62,6 +61,27 @@ public class Block extends AbstractGameObject {
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
 	private static BlockFactory customBlockFactory;
+		
+	private static BlockDestructionAction destructionAction;
+	
+	/**
+	 * Set the action performed if a block gets destroyed.
+	 * @param DestructionAction an instance whose {@link BlockDestructionAction#action(AbstractPosition) }  method then gets executet.
+	 * @see BlockDestructionAction
+	 * @since v1.4.20
+	 */
+	public static void setDestructionAction(BlockDestructionAction DestructionAction) {
+		Block.destructionAction = DestructionAction;
+	}
+	
+	/**
+	 * Implements the command pattern.
+	 * @see #setDestructionAction(BlockDestructionAction) 
+	 * @since v1.4.20
+	 */
+	public static interface BlockDestructionAction {
+		public void action(AbstractPosition pos);
+	}
     
     private boolean liquid;
     private boolean hasSides = true;
@@ -557,6 +577,10 @@ public class Block extends AbstractGameObject {
         hasSides=false;
     }
 
+	/**
+	 * set the sound to be played if a block gets destroyed.
+	 * @param destructionSound 
+	 */
 	public static void setDestructionSound(String destructionSound) {
 		Block.destructionSound = destructionSound;
 	}
@@ -584,13 +608,8 @@ public class Block extends AbstractGameObject {
 	 * @param pos the position of the block, can be null if not needed
 	 */
 	public void onDestroy(AbstractPosition pos) {
-		if (destructionSound!=null) Controller.getSoundEngine().play(destructionSound);
-		//caveland-mod!
-		for (int i = 0; i < 10; i++) {
-			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.getPoint().cpy());
-			dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-		}
-		
+		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
+		if (destructionAction != null) destructionAction.action(pos);
 	}
 
 	@Override

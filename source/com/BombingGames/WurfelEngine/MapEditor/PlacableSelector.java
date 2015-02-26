@@ -81,7 +81,11 @@ public class PlacableSelector extends Table {
      *
      */
     public void show(){
-		setVisible(true);
+		if (!isVisible()) {
+			placableGUI.moveToCenter(getWidth());
+			setVisible(true);
+		}
+		
         if (!hasChildren()){
             table = new Table();
             table.pad(10).defaults().expandX().space(4);
@@ -134,7 +138,11 @@ public class PlacableSelector extends Table {
             scroll.clearListeners();
             clear();
         }
-		setVisible(false);
+		
+		if (isVisible()){
+			placableGUI.moveToBorder(placableGUI.getWidth()+100);
+			setVisible(false);
+		}
     }
 
 	protected void showBlocks() {

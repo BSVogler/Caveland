@@ -58,18 +58,23 @@ public class PlacableGUI extends WidgetGroup {
 	private Class<? extends AbstractEntity> entityClass;
 	private PlaceMode mode = PlaceMode.Blocks;
 	private final Slider slider;
+	/** parent stage*/
+	private Stage stage;
 
 /**
  * 
- * @param stage
+ * @param stage parent stage
  * @param selection the selection-Entity where the color comes from
  * @param left left mouse button tool?
  */
 	public PlacableGUI(Stage stage, Selection selection, boolean left) {
+		this.stage = stage;
+		
 		if (left)
 			setPosition(200, stage.getHeight()-300);
 		else
 			setPosition(stage.getWidth()-200, stage.getHeight()-300);
+		
 		image = new Image(new BlockDrawable(id,value,-0.4f));
 		image.setPosition(50, 60);
 		addActor(image);
@@ -158,6 +163,28 @@ public class PlacableGUI extends WidgetGroup {
 	
 	public PlaceMode getMode() {
 		return mode;
+	}
+
+	/**
+	 * Relative movement.
+	 * @param amount 
+	 */
+	void moveToCenter(float amount) {
+		if (getX() < stage.getWidth()/2)
+			setX(getX()+amount);
+		else
+			setX(getX()-amount);
+	}
+
+	/**
+	 * Absolute position.
+	 * @param amount 
+	 */
+	void moveToBorder(float amount) {
+		if (getX() < stage.getWidth()/2)
+			setX(amount);
+		else
+			setX(stage.getWidth()-amount);
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {

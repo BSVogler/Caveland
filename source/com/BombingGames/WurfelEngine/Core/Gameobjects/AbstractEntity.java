@@ -195,6 +195,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		return animation;
 	}
 
+	/**
+	 * Give the entity an animation.
+	 * @param animation 
+	 */
 	public void setAnimation(EntityAnimation animation) {
 		this.animation = animation;
 		animation.setParent(this);

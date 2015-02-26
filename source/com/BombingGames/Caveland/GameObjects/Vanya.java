@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.Caveland.Game.ChatBox;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.badlogic.gdx.math.Vector3;
@@ -18,10 +17,13 @@ import java.io.Serializable;
 public class Vanya extends MovableEntity implements Interactable, Serializable {
 	private static final long serialVersionUID = 3L;
 	private transient SimpleEntity interactButton;
+	private int chatCounter;
+	private ChatBox currentChat;
 
 	public Vanya() {
 		super(40, 0);
 		setFloating(false);
+		setName("Vanya");
 		setJumpingSound("vanya_jump");
 	}
 
@@ -65,9 +67,26 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
-		//show display text
-		new Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
-		view.getStage().addActor(new ChatBox("I dare you motherfucker! Speak to me again and I will explode again!"));
+		//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
+		chatCounter++;
+		if (currentChat!=null)
+			currentChat.remove();
+		String text = "";
+		switch(chatCounter) {
+			case 1:
+				text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. /n"
+					+ "Welcome to Caveland! I will be your guide.\n";
+				break;
+			case 2:	
+				text = " I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+				break;
+			case 3:	
+				text = "You should definetely check the editor or take a ride in the mine cart.";
+				break;
+		}
+		currentChat = new ChatBox(view.getStage(), getName(), text);
+			
+		view.getStage().addActor(currentChat);
 	}
 	
 	private class BlümchenKacke extends MovableEntity {

@@ -68,7 +68,7 @@ public class Block extends AbstractGameObject {
 	private Coordinate coord;
     
     /**
-     * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead.
+     * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead. You can extend this to implement own blocks.
      * @param id
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance() 
      */

@@ -38,10 +38,6 @@ public class Wagon extends MovableEntity {
 			if( isPlayingSound == 0)
 				isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
 			
-			if (getSpeed() > 0) {
-				setSpeedHorizontal(10);
-			}
-
 			float movZ = getMovement().z;
 			switch (block.getValue()) {
 				case 0://straight left bottom to top right
@@ -99,6 +95,10 @@ public class Wagon extends MovableEntity {
 						movZ)
 					);
 					break;
+			}
+			
+			if (getSpeed() > 0) {
+				setSpeedHorizontal(3);//accelarate to max
 			}
 		} else {//offroad
 			setFriction(500);

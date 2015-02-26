@@ -4,8 +4,6 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.audio.Sound;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Explosion extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-	private static Sound explosionsound;
+	private static String explosionsound;
 	
 	private final int radius;
 	private final int damage;
@@ -42,7 +40,7 @@ public class Explosion extends AbstractEntity {
 		this.radius = radius;
 		this.damage = damage;
 		if (explosionsound == null)
-            explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
+            explosionsound = "explosion2.ogg";
 		this.camera = camera;
 		setSaveToDisk(false);
     }
@@ -98,7 +96,7 @@ public class Explosion extends AbstractEntity {
 		if (camera!=null)
 			camera.shake(radius*100/3f, 100);
 		if (explosionsound != null)
-			explosionsound.play();
+			Controller.getSoundEngine().play(explosionsound);
 		dispose();
 		return this;
 	}

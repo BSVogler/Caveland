@@ -101,7 +101,7 @@ public class SoundEngine {
 	 * @param pitch
 	 * @return 
 	 */
-	public long playSound(String identifier, float volume, float pitch){
+	public long play(String identifier, float volume, float pitch){
 		Sound result = sounds.get(identifier);
 		if (result != null)
 			return result.play(volume, pitch, pitch);
@@ -122,6 +122,35 @@ public class SoundEngine {
 			return result.play(volume, pitch, pan);
 		return 0;
 	}
+	
+	/**
+	 * loops a sound
+	 * @param identifier name of sound
+	 * @return the instance id
+	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
+	 */
+	public long loop(String identifier) {
+		Sound result = sounds.get(identifier);
+		if (result != null)
+			return result.loop();
+		return 0;
+	}
+	
+	/**
+	 * loops a sound. Sound decay not working.
+	 * @param identifier name of sound
+	 * @param pos the position of the sound in the game world
+	 * @return the instance id
+	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
+	 */
+	public long loop(String identifier, AbstractPosition pos) {
+		Sound result = sounds.get(identifier);
+		if (result != null)
+			return result.loop();
+		return 0;
+	}
+	
+	
 
 	/**
 	 * Stops all instances of this sound.
@@ -135,7 +164,7 @@ public class SoundEngine {
 	
 	/**
 	 * Stops a specifiy instance of the sound.
-	 * @param identifier 
+	 * @param identifier name of sound
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @see com.​badlogic.​gdx.​audio.​Sound#stop
 	 */
@@ -146,8 +175,8 @@ public class SoundEngine {
 	}
 
 	/**
-	 * currently not working
-	 * @param identifier
+	 * Set the volume of a playing instance.
+	 * @param identifier name of sound
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @param volume 
 	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume
@@ -158,11 +187,4 @@ public class SoundEngine {
 			result.setVolume(instance, volume);
 	}
 
-	public long loop(String identifier) {
-		Sound result = sounds.get(identifier);
-		if (result != null)
-			return result.loop();
-		return 0;
-	}
-	
 }

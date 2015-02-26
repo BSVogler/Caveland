@@ -56,7 +56,7 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("vanya_jump", "com/BombingGames/Caveland/sounds/vanya_jump.wav");
 		Controller.getSoundEngine().register("wagon", "com/BombingGames/Caveland/sounds/wagon.mp3");
 		
-		if (coop>-1){
+		if (coop >- 1){
 			Camera camera0  = new Camera(
 				getPlayer(0),
 				0, //left

@@ -11,13 +11,13 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Lore extends MovableEntity {
+public class Wagon extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 
-	public Lore() {
+	public Wagon() {
 		super(42, 0);
 		setMovement(new Vector3(1, 1, 0));
 		//setSpeed(0);

@@ -23,9 +23,9 @@ public class Machine extends Block {
 	@Override
 	public void update(float dt) {
 		Coordinate coords = getPosition();
-		ArrayList<Lore> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(Lore.class);
+		ArrayList<Wagon> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(Wagon.class);
 		if (lorenIncoming.size()>0) {
-			Lore loreIncoming = lorenIncoming.get(0);
+			Wagon loreIncoming = lorenIncoming.get(0);
 			ArrayList<MovableEntity> content = loreIncoming.getContent();
 			if (content != null && content.size()>0)
 				loreIncoming.addAll(fillContent(content));
@@ -43,7 +43,7 @@ public class Machine extends Block {
 			}
 		}
 
-		ArrayList<Lore> lorenOutgoing = coords.neighbourSidetoCoords(3).getEntitysInside(Lore.class);
+		ArrayList<Wagon> lorenOutgoing = coords.neighbourSidetoCoords(3).getEntitysInside(Wagon.class);
 		if (lorenIncoming.size()>0 && flintcount>0){//if loreIncoming davor && produkt im speicher
 			if (lorenOutgoing.get(0).add(new Flint()))
 				flintcount--;

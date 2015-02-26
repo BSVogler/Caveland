@@ -4,7 +4,7 @@ import com.BombingGames.Caveland.Game.CustomBlockFactory;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
-import com.BombingGames.Caveland.GameObjects.Lore;
+import com.BombingGames.Caveland.GameObjects.Wagon;
 import com.BombingGames.Caveland.GameObjects.Spaceship;
 import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
@@ -45,7 +45,7 @@ public class Caveland {
 		
 		//register entities
 		AbstractEntity.registerEntity("Flint", Flint.class);
-		AbstractEntity.registerEntity("Lore", Lore.class);
+		AbstractEntity.registerEntity("Lore", Wagon.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
 		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);

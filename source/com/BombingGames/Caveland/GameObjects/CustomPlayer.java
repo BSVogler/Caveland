@@ -237,10 +237,10 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		//get loren
-		ArrayList<Lore> nearbyLoren = pos.getPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, Lore.class);
+		ArrayList<Wagon> nearbyLoren = pos.getPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, Wagon.class);
 
 		if (!nearbyLoren.isEmpty()){
-			Lore lore = nearbyLoren.get(0);
+			Wagon lore = nearbyLoren.get(0);
 			if (lore != null && lore.getPassenger()==null)//if contact with lore and it has no passenger
 				if (pos.getZ() > (pos.getZ()+0.5f)*(AbstractGameObject.GAME_EDGELENGTH)) //enter chu chu
 					lore.setPassanger(this);

@@ -102,8 +102,10 @@ public class Wagon extends MovableEntity {
 			}
 		} else {//offroad
 			setFriction(500);
-			isPlayingSound = 0;
-			Controller.getSoundEngine().stop("wagon", isPlayingSound);
+			if (isPlayingSound!=0) {
+				Controller.getSoundEngine().stop("wagon", isPlayingSound);
+				isPlayingSound = 0;
+			}
 		}
 		
 		//moving down left or up right

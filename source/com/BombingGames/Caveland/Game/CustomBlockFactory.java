@@ -2,7 +2,7 @@ package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.Machine;
-import com.BombingGames.Caveland.GameObjects.Tree;
+import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
@@ -48,7 +48,7 @@ public Block produce(int id, int value) {
 			block.setNoSides();
 		break;
 		case 72:
-			block = new Tree(value);
+			block = new CustomTree(value);
 		break;
 //		case 72:
 //			block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting

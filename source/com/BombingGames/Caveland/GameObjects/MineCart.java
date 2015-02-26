@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Wagon extends MovableEntity {
+public class MineCart extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 
 	private MovableEntity passenger;
@@ -19,7 +19,7 @@ public class Wagon extends MovableEntity {
 	private float rollingCycle;
 	private long isPlayingSound;
 	
-	public Wagon() {
+	public MineCart() {
 		super(42, 0);
 		setMovement(new Vector3(1, 1, 0));
 		//setSpeed(0);

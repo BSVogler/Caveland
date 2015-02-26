@@ -16,7 +16,8 @@ public class Wagon extends MovableEntity {
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
-
+	private float rollingCycle;
+	
 	public Wagon() {
 		super(42, 0);
 		setMovement(new Vector3(1, 1, 0));
@@ -33,7 +34,7 @@ public class Wagon extends MovableEntity {
 		if (block.getId() == 55) {
 			setFriction(10000);
 			if (getSpeed() > 0) {
-				setSpeedHorizontal(1);
+				setSpeedHorizontal(10);
 			}
 
 			float movZ = getMovement().z;
@@ -96,6 +97,26 @@ public class Wagon extends MovableEntity {
 			}
 		} else {//offroad
 			setFriction(500);
+		}
+		
+		//moving down left or up right
+		if (
+			(getOrientation().y > 0
+			&&
+			getOrientation().y > getOrientation().x)
+			||
+			(getOrientation().y < 0
+			&&
+			getOrientation().y < getOrientation().x)
+		)
+			setValue(0);
+		else
+			setValue(2);
+		
+		rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite
+		rollingCycle %= GAME_EDGELENGTH/4; //cycle
+		if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
+			setValue(getValue()+1); //next step in animation
 		}
 
 		//if transporting object

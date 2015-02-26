@@ -36,14 +36,16 @@ public class Wagon extends MovableEntity {
 				setSpeedHorizontal(1);
 			}
 
-			float mov_z = getMovement().z;
+			float movZ = getMovement().z;
 			switch (block.getValue()) {
-				case 0:
+				case 0://straight left bottom to top right
 					setMovement(new Vector3(
-						getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
-						getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1,
-						mov_z)
+							getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
+							getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1,
+							movZ
+						)
 					);
+					//move on y=-x
 					float x = pos.getRelToCoordX();
 					pos.setPositionRelativeToCoord(
 						x,
@@ -52,11 +54,14 @@ public class Wagon extends MovableEntity {
 					);
 					break;
 				case 1:
-					setMovement(new Vector3(
-						getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-						getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-						mov_z)
+					setMovement(
+						new Vector3(
+							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
+							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
+							movZ
+						)
 					);
+					//move on y=-x
 					x = pos.getRelToCoordX();
 					pos.setPositionRelativeToCoord(
 						x,
@@ -77,7 +82,7 @@ public class Wagon extends MovableEntity {
 					setMovement(new Vector3(
 						0,
 						y,//coming from top right
-						mov_z)
+						movZ)
 					);
 					break;
 				case 2:
@@ -85,7 +90,7 @@ public class Wagon extends MovableEntity {
 					setMovement(new Vector3(
 						getMovement().x >= 0 ? 1 : -1,//coming from left
 						0,
-						mov_z)
+						movZ)
 					);
 					break;
 			}

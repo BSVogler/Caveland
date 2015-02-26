@@ -13,15 +13,16 @@ public class Tree extends Block {
 	private Coordinate pos;
 
 	/**
-	 * creates a tree
+	 * creates a tree in a random shape
 	 */
 	public Tree(){
-		this(0);
+		this((int) (Math.random()*8));
 	}
 	
 		
 	public Tree(int value) {
 		super(72);
+		setValue(value);
 		setNoSides();
 		setObstacle(true);
 		setTransparent(true);
@@ -41,7 +42,7 @@ public class Tree extends Block {
 
 	@Override
 	public void onDestroy(AbstractPosition pos) {
-		super.onDestroy(pos.cpy().addVector(0, 0, 1));//destry top block
+		super.onDestroy(pos.cpy().addVector(0, 0, 1));//destroy top block
 	}
 
 	

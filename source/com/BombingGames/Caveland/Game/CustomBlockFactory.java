@@ -48,7 +48,7 @@ public Block produce(int id, int value) {
 			block.setNoSides();
 		break;
 		case 72:
-			block = new Tree();
+			block = new Tree(value);
 		break;
 //		case 72:
 //			block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting

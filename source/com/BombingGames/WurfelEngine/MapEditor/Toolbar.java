@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -38,12 +39,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 /**
  * A toolbar for the editor.
  * @author Benedikt Vogler
  */
-public class Toolbar {
+public class Toolbar extends Window {
 	public static enum Tool {
 		DRAW(0, "draw_button", true),
 		BUCKET(1, "bucket_button", true),
@@ -74,17 +76,21 @@ public class Toolbar {
 	private int bottomPos;
 	
 	private final Image[] items =new Image[Tool.values().length]; 
-	
 
-	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {
+	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {	
+		super("Tools", WE.getEngineView().getSkin());
 		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
 		bottomPos = (int) (stage.getHeight()-100);
 		
+		setPosition(leftPos, bottomPos);
+		setWidth(Tool.values().length*25);
+		setHeight(45);
+		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
-			items[i].setPosition(leftPos+i*25, bottomPos);
+			items[i].setPosition(i*25, 2);
 			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
-			stage.addActor(items[i]);
+			addActor(items[i]);
 		}
 	}
 	
@@ -94,15 +100,17 @@ public class Toolbar {
 	 * @param shR 
 	 */
 	public void render(ShapeRenderer shR){
+		shR.translate(getX(), getY(), 0);
 		shR.begin(ShapeRenderer.ShapeType.Line);
-		//draw left
-		shR.setColor(Color.GREEN);
-		shR.rect(items[selectionLeft.id].getX()-1, items[selectionLeft.id].getY()-1, 22, 22);
-				//draw right
-		shR.setColor(Color.BLUE);
-		shR.rect(items[selectionRight.id].getX()-2, items[selectionLeft.id].getY()-2, 24, 24);
+			//draw left	
+			shR.setColor(Color.GREEN);
+			shR.rect(items[selectionLeft.id].getX()-1, items[selectionLeft.id].getY()-1, 22, 22);
+					//draw right
+			shR.setColor(Color.BLUE);
+			shR.rect(items[selectionRight.id].getX()-2, items[selectionLeft.id].getY()-2, 24, 24);
 
 		shR.end();
+		shR.translate(-getX(), -getY(), 0);
 	}
 
 	/**

@@ -155,6 +155,7 @@ public class MapEditorView extends GameView {
             Controller.getLightEngine().setToNoon();
 		
 		toolSelection = new Toolbar(getStage(), spritesheet, leftSelector, rightSelector);
+		getStage().addActor(toolSelection);
     }
 
 	@Override

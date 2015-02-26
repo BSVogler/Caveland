@@ -178,7 +178,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getZ() - getZ()*Block.GAME_EDGELENGTH;
+		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
 	}
 	
 	/**

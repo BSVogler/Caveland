@@ -17,6 +17,7 @@ public class Wagon extends MovableEntity {
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private float rollingCycle;
+	private long isPlayingSound;
 	
 	public Wagon() {
 		super(42, 0);
@@ -33,6 +34,10 @@ public class Wagon extends MovableEntity {
 		//on tracks?
 		if (block.getId() == 55) {
 			setFriction(10000);
+			
+			if( isPlayingSound == 0)
+				isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
+			
 			if (getSpeed() > 0) {
 				setSpeedHorizontal(10);
 			}
@@ -97,6 +102,8 @@ public class Wagon extends MovableEntity {
 			}
 		} else {//offroad
 			setFriction(500);
+			isPlayingSound = 0;
+			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 		}
 		
 		//moving down left or up right

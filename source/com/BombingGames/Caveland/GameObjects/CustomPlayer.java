@@ -249,7 +249,7 @@ public class CustomPlayer extends Controllable {
 		
 		//loren anstupsen
 		if (nearbyLoren.size() > 0 && nearbyLoren.get(0).getSpeedHor() < 0.1){//anstupsen
-			nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(4f)));
+			nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(getMovementHor().len()+5f)));
 		}
 		
 		//collect collectibles

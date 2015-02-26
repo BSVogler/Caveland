@@ -218,6 +218,7 @@ public class Wagon extends MovableEntity {
 
 	@Override
 	public void dispose() {
+		Controller.getSoundEngine().stop("wagon", isPlayingSound);
 		((Collectible) new Collectible(Collectible.ColTypes.IRON).spawn(getPosition())).sparkle();
 		super.dispose();
 	}

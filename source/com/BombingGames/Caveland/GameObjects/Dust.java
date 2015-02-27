@@ -41,7 +41,7 @@ public class Dust extends AbstractEntity {
 			direction.z = 0;
 		}
 		getPosition().addVector(direction.cpy().scl(dt/1000f));
-		setRotation(getRotation()-dt/40f);
+		setRotation(getRotation()-dt/10f);
 		getColor().a = timeTillDeath/maxtime;
 		if (timeTillDeath <= 0) dispose();
 	}

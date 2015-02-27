@@ -97,9 +97,10 @@ public class PlacableSelector extends Table {
 					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
 						table.row();
 						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
-
-						Drawable dbl = new BlockDrawable(i);
-						Button button = new Button(dbl);
+						
+						BlockDrawable dbl = new BlockDrawable(i);
+						ImageButton button = new ImageButton(dbl);
+						dbl.setX(50);
 						button.addListener(new BlockListener(i, button));
 						//button.setStyle(style);
 						table.add(button);

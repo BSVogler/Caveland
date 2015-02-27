@@ -38,12 +38,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
- *
+ * a class what renders a block using the drawableinterface.
  * @author Benedikt Vogler
  */
 public class BlockDrawable extends TextureRegionDrawable {
     private Block block;
     private float size = -0.5f;
+	private float x;
     
     /**
      *
@@ -52,6 +53,7 @@ public class BlockDrawable extends TextureRegionDrawable {
     public BlockDrawable(int id) {
         this.block = Block.getInstance(id,0);
     }
+	
 
 	/**
 	 * 
@@ -64,12 +66,14 @@ public class BlockDrawable extends TextureRegionDrawable {
 		this.size = size;
 	}
 
-
-
+	public void setX(float x){
+		this.x = x;
+	}
+	
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
 		if (block.getId()!=0) {
-			block.render(WE.getEngineView(), (int) x, (int) y, Color.GRAY.cpy(), size, true);
+			block.render(WE.getEngineView(), (int) (x+this.x), (int) y, Color.GRAY.cpy(), size, true);
 		}
     }
 

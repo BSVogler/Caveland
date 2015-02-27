@@ -465,7 +465,7 @@ public class CustomPlayer extends Controllable {
 		new Dust(
 			1000f,
 			new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8),
-			new Color(0.2f,0.5f,0.2f,1f)
+			new Color(0.2f,0.25f,0.05f,1f)
 		).spawn(getPosition().cpy());
 	}
 

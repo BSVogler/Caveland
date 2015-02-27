@@ -457,7 +457,7 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void step() {
 		super.step();
-		new Dust(1500f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
+		new Dust(1000f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
 	}
 
 	@Override

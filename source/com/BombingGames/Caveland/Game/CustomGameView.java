@@ -7,7 +7,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -56,7 +55,8 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("vanya_jump", "com/BombingGames/Caveland/sounds/vanya_jump.wav");
 		Controller.getSoundEngine().register("wagon", "com/BombingGames/Caveland/sounds/wagon.mp3");
 		
-		if (coop >- 1){
+		if (coop >- 1){//coop
+			((CustomGameController) controller).addPlayer2();
 			Camera camera0  = new Camera(
 				getPlayer(0),
 				0, //left
@@ -68,12 +68,20 @@ public class CustomGameView extends GameView{
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 			
-			CustomPlayer player = (CustomPlayer) new CustomPlayer().spawn(Map.getCenter(20));
-			Camera camera1 = new Camera(player, 0, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/2, this);
+			Camera camera1 = new Camera(
+				getPlayer(1),
+				0,
+				Gdx.graphics.getHeight()/2,
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight()/2,
+				this
+			);
 			addCamera(camera1);
-			player.setCamera(camera1);
+			getPlayer(1).setCamera(camera1);
+			
+			//if there is second controller use it for second player
 			if (Controllers.getControllers().size > 1)
-				Controllers.getControllers().get(1).addListener(new XboxListener(this,player,1));
+				Controllers.getControllers().get(1).addListener(new XboxListener(this, getPlayer(1), 1));
 		} else {
 			Camera camera0  = new Camera(
 				getPlayer(0),
@@ -119,48 +127,47 @@ public class CustomGameView extends GameView{
         //get input and do actions
         Input input = Gdx.input;
         
-            //walk
-            if (getPlayer(0) != null){
-				
-                getPlayer(0).walk(
-                    input.isKeyPressed(Input.Keys.W),
-                    input.isKeyPressed(Input.Keys.S),
-                    input.isKeyPressed(Input.Keys.A),
-                    input.isKeyPressed(Input.Keys.D),
-                    CVar.get("playerWalkingSpeed").getValuef()*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
-					dt
-                );
-            } else {
-                //update camera position
-                Camera camera = getCameras().get(0);
-                camera.move(
-                    (input.isKeyPressed(Input.Keys.D)? 3: 0)
-                    - (input.isKeyPressed(Input.Keys.A)? 3: 0),
-                    - (input.isKeyPressed(Input.Keys.W)? 3: 0)
-                    + (input.isKeyPressed(Input.Keys.S)? 3: 0)
-                );
-            }
-			
-			if (XboxListener.speed[0]!=-1){
-			Vector2 direction = getPlayer(0).getOrientation();
-				getPlayer(0).setHorMovement(
-					new Vector2(direction.x, direction.y).scl(
-						(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
-					)
-				);
-			}
-					
-			if (inventoryDown>-1)
-				inventoryDown+=dt;
-			
-			if (useDown==0){
-				getPlayer(0).getNearestInteractable().interact(getPlayer(0), this);
-				//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
-				//if (loren.size()>0)
-				//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
-			}
-			useDown+=dt;
-				
+		//walk
+		if (getPlayer(0) != null){
+
+			getPlayer(0).walk(
+				input.isKeyPressed(Input.Keys.W),
+				input.isKeyPressed(Input.Keys.S),
+				input.isKeyPressed(Input.Keys.A),
+				input.isKeyPressed(Input.Keys.D),
+				CVar.get("playerWalkingSpeed").getValuef()*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+				dt
+			);
+		} else {
+			//update camera position
+			Camera camera = getCameras().get(0);
+			camera.move(
+				(input.isKeyPressed(Input.Keys.D)? 3: 0)
+				- (input.isKeyPressed(Input.Keys.A)? 3: 0),
+				- (input.isKeyPressed(Input.Keys.W)? 3: 0)
+				+ (input.isKeyPressed(Input.Keys.S)? 3: 0)
+			);
+		}
+
+		if (XboxListener.speed[0]!=-1){
+		Vector2 direction = getPlayer(0).getOrientation();
+			getPlayer(0).setHorMovement(
+				new Vector2(direction.x, direction.y).scl(
+					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
+				)
+			);
+		}
+
+		if (inventoryDown>-1)
+			inventoryDown+=dt;
+
+		if (useDown==0){
+			getPlayer(0).getNearestInteractable().interact(getPlayer(0), this);
+			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
+			//if (loren.size()>0)
+			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
+		}
+		useDown+=dt;
 	}
 
 	@Override

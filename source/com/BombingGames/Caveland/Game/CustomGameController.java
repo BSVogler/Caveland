@@ -15,14 +15,15 @@ import com.badlogic.gdx.Gdx;
  */
 public class CustomGameController extends Controller {
 	private int monstercount =0;
-	private CustomPlayer player;
+	private CustomPlayer player1;
+	private CustomPlayer player2;
         
     @Override
     public void init(){
         Gdx.app.log("CustomGameController", "Initializing");
         super.init(new AirGenerator());
 
-        player = new CustomPlayer();
+        player1 = new CustomPlayer();
 		getMap().setGenerator(new ChunkGenerator());
 		Block.setDestructionSound("blockDestroy");
 		Block.setDestructionAction(new CustomBlockDestructionAction());
@@ -33,12 +34,12 @@ public class CustomGameController extends Controller {
 //		new Lore().spawn(new Coordinate(25, 47, 10, true).getPoint());
 //		Lore lore1 = (Lore) new Lore().spawn(new Coordinate(15, 80, 20, true).getPoint());
 //		Lore lore2 = (Lore) new Lore().spawn(new Coordinate(15, 83, 20, true).getPoint());
-//		//lore.setPassanger(player);
+//		//lore.setPassanger(player1);
 //		
 //		Enemy e1 = (Enemy) new Enemy().spawn(new Coordinate(15, 70, 10, true).getPoint());
 //		Enemy e2 = (Enemy) new Enemy().spawn(new Coordinate(14, 71, 10, true).getPoint());
 //		e1.setTarget(lore2);
-//		e2.setTarget(player);
+//		e2.setTarget(player1);
 //		
 //		Spaceship spaceship = (Spaceship) new Spaceship().spawn(new Coordinate(14, 69, 0, true).getPoint());
 //		spaceship.setDimensionZ(3*AbstractGameObject.GAME_EDGELENGTH);
@@ -54,8 +55,16 @@ public class CustomGameController extends Controller {
 	@Override
 	public void onEnter() {
 		super.onEnter();
-		if (!player.spawned())
-			player.spawn(
+		if (!player1.spawned())
+			player1.spawn(
+				new Coordinate(
+					CVar.get("PlayerLastSaveX").getValuei(),
+					CVar.get("PlayerLastSaveY").getValuei(),
+					CVar.get("PlayerLastSaveZ").getValuei()
+				).getPoint()
+			);
+		if (player2!=null && !player2.spawned())
+			player2.spawn(
 				new Coordinate(
 					CVar.get("PlayerLastSaveX").getValuei(),
 					CVar.get("PlayerLastSaveY").getValuei(),
@@ -81,7 +90,23 @@ public class CustomGameController extends Controller {
 //		}
 	}
 
+	/**
+	 * 
+	 * @param id 0 is first player, 1 is second
+	 * @return 
+	 */
 	public CustomPlayer getPlayer(int id) {
-		return player;
+		if (id==0)
+			return player1;
+		else
+			return player2;
+		
+	}
+
+	/**
+	 * Adds the second player to the game. Will not be spawned until in {@link #onEnter() }.
+	 */
+	protected void addPlayer2() {
+		player2 = new CustomPlayer();
 	}
 }

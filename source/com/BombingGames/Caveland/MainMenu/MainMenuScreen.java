@@ -31,7 +31,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
 	private ShapeRenderer shr;
-	private Sprite lettering;    
+	private Sprite lettering;
+	private Sprite alphaTag; 
     private Texture background;
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -126,9 +127,10 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
+		alphaTag = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/alphaTag.png")));
         
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
-		        
+		
         //set the center to the top left
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -164,6 +166,15 @@ public class MainMenuScreen extends AbstractMainMenu {
 			Gdx.graphics.getHeight()- lettering.getHeight()-30
 			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.5f)*10//move by cursor
 		);
+		alphaTag.setX(
+			(Gdx.graphics.getWidth() - alphaTag.getWidth())/2
+			- (Gdx.input.getX()/(float) Gdx.graphics.getWidth()-0.6f)*5//move by cursor
+			+300
+		);
+        alphaTag.setY(
+			Gdx.graphics.getHeight()- alphaTag.getHeight()-350
+			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.6f)*5//move by cursor
+		);
 		
 		//render
 		 //clear & set background to black
@@ -181,6 +192,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 			lettering.draw(batch);
+			alphaTag.draw(batch);
 
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
         batch.end();

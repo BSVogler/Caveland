@@ -87,7 +87,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private transient String runningSound;
 	private transient boolean runningSoundPlaying;
 	private transient String jumpingSound;
-	private transient String landingSound;
+	private transient String landingSound = "landing";
 	private transient String[] damageSounds;
 
 
@@ -217,8 +217,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				onCollide();
 				onLand();
 				
-				if (landingSound != null)
-					Controller.getSoundEngine().play(landingSound);//play landing sound
+				if (landingSound != null && !floating)
+					Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound
 
 				movement.z = 0;
 

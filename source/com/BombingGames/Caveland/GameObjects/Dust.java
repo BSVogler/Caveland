@@ -1,6 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -18,12 +19,14 @@ public class Dust extends AbstractEntity {
 	 * 
 	 * @param maxtime
 	 * @param direction in m/s
+	 * @param color
 	 */
-	public Dust(float maxtime, Vector3 direction) {
+	public Dust(float maxtime, Vector3 direction, Color color) {
 		super(22);
 		this.maxtime = maxtime;
 		this.direction = direction;
 		timeTillDeath=maxtime;
+		setColor(color);
 		setTransparent(true);
 		setSaveToDisk(false);
 		setScaling(-1);

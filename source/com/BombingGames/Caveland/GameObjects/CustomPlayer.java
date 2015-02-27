@@ -13,6 +13,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -414,13 +415,17 @@ public class CustomPlayer extends Controllable {
 			if (airjump) {
 				Controller.getSoundEngine().play("jetpack");
 				for (int i = 0; i < 40; i++) {
-					new Dust(1000f,
+					new Dust(
+						1000f,
 						new Vector3(
 							(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH,
 							(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH,
 							-4*AbstractGameObject.GAME_EDGELENGTH
-						)).
-						spawn(getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2+(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH));
+						),
+						new Color(1, 1, 0,1)
+					).spawn(
+						getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2+(float) Math.random()*AbstractGameObject.GAME_EDGELENGTH)
+					);
 				}
 				
 			}
@@ -457,7 +462,11 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void step() {
 		super.step();
-		new Dust(1000f, new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8)).spawn(getPosition().cpy());
+		new Dust(
+			1000f,
+			new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH/8),
+			new Color(0.2f,0.5f,0.2f,1f)
+		).spawn(getPosition().cpy());
 	}
 
 	@Override

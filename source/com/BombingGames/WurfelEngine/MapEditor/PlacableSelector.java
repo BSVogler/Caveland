@@ -180,6 +180,9 @@ public class PlacableSelector extends Table {
         }
     }
      
+	/**
+	 * detects a click on the Block in the list
+	 */
     private class BlockListener extends ClickListener {
         private int id;
         private Button parent; 
@@ -195,6 +198,9 @@ public class PlacableSelector extends Table {
         };
      }
 	
+	/**
+	 * detects a click on an entity in the list
+	 */
 	private class EntityListener extends ClickListener {
         private Class<? extends AbstractEntity> entclass;
         private Button parent; 

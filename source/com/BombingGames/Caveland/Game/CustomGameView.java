@@ -32,6 +32,10 @@ public class CustomGameView extends GameView{
 	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 */
 	private int coop = -1;
+	/**
+	 * the player which is controlled by the keyboard and mouse
+	 */
+	private CustomPlayer keyControllerPlayer;
 	
 	
     @Override
@@ -116,6 +120,10 @@ public class CustomGameView extends GameView{
 		if (Controllers.getControllers().size > 0){
 			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(0),0));
 		}
+		
+		if (coop>0)
+			keyControllerPlayer = getPlayer(1);
+		else keyControllerPlayer = getPlayer(0);
 		//hide cursor
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(200, 200);
@@ -128,9 +136,9 @@ public class CustomGameView extends GameView{
         Input input = Gdx.input;
         
 		//walk
-		if (getPlayer(0) != null){
+		if (keyControllerPlayer != null){
 
-			getPlayer(0).walk(
+			keyControllerPlayer.walk(
 				input.isKeyPressed(Input.Keys.W),
 				input.isKeyPressed(Input.Keys.S),
 				input.isKeyPressed(Input.Keys.A),
@@ -342,13 +350,13 @@ public class CustomGameView extends GameView{
                      WE.showMainMenu();
 				 
 				if (keycode==Input.Keys.NUM_1)
-					parent.getPlayer(0).getInventory().switchItems(true);
+					keyControllerPlayer.getInventory().switchItems(true);
 			
 				if (keycode==Input.Keys.NUM_2)
-					parent.getPlayer(0).getInventory().switchItems(false);
+					keyControllerPlayer.getInventory().switchItems(false);
 				
 				if (keycode==Input.Keys.SPACE)
-					parent.getPlayer(0).jump();
+					keyControllerPlayer.jump();
 				
 				if (keycode==Input.Keys.TAB)
 					if (parent.getOrientation()==0)
@@ -373,14 +381,14 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.RIGHT)getPlayer(0).throwItem();
-			if (button ==Buttons.LEFT) getPlayer(0).attack(500);
+			if (button ==Buttons.RIGHT) keyControllerPlayer.throwItem();
+			if (button ==Buttons.LEFT) keyControllerPlayer.attack(500);
             return true;
         }
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.LEFT) getPlayer(0).loadAttack();
+			if (button ==Buttons.LEFT) keyControllerPlayer.loadAttack();
             return true;
         }
 

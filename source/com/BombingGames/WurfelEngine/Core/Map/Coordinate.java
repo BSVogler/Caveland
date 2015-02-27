@@ -450,6 +450,7 @@ public class Coordinate extends AbstractPosition {
 				
            // + AbstractGameObject.VIEW_DEPTH2 //add half tile for center 
             + z*AbstractGameObject.VIEW_HEIGHT
+			- AbstractGameObject.VIEW_HEIGHT2//offset relative to coordinates, don't know why it is this way but if you invert the summands by factor -1 you align at the top.
         ;
     }
     

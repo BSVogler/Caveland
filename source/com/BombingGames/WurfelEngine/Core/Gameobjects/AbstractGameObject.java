@@ -32,7 +32,6 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -121,6 +120,7 @@ public abstract class AbstractGameObject implements Serializable {
     private boolean obstacle, transparent, hidden; 
     private float lightlevel = 1f;
     private float rotation;
+	private float scaling;
 	private int graphicsID;
 	/**
 	 * number between 0 and 1000
@@ -314,71 +314,21 @@ public abstract class AbstractGameObject implements Serializable {
     }
     
     /**
-     * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden and not clipped.
-     * @param pos the coordinates where the object should be rendered
-     * @param view the view using this render method
-     * @param camera The camera rendering the scene
-     * @param scale
-     */
-    public void render(GameView view, Camera camera, AbstractPosition pos, float scale) {
-        render(
-            view,
-            camera,
-            Color.GRAY.cpy(),
-            scale
-        );
-    }
-    
-     /**
-     * Draws an object if it is not hidden and not clipped.
-     * @param view the view using this render method
-     * @param camera The camera rendering the scene
-     * @param color  custom blending color
-     */
-    public void render(GameView view, Camera camera, Color color) {
-        render(
-            view,
-            camera,
-            color,
-            CVar.get("enableScalePrototype").getValueb()//if using scale prototype scale the objects
-                ? getPosition().getPoint().getZ()/(Map.getGameHeight())
-                : 0
-        );
-    }
-    
-         /**
      * Draws an object if it is not hidden and not clipped.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      * @param color custom blending color
-     * @param scale relative value
      */
-    public void render(GameView view, Camera camera, Color color, float scale) {
+    public void render(GameView view, Camera camera, Color color) {
         //draw the object except hidden ones
         if (!hidden) {             
             render(
                 view,
                 getPosition().getViewSpcX(view),
                 getPosition().getViewSpcY(view),
-                scale
+				color
             );
         }
-    }
-    
-        /**
-     * Renders at a custom position with the global light.
-     * @param view the view using this render method
-     * @param xPos rendering position in view space (?)
-     * @param yPos rendering position in view space (?)
-     */
-    public void render(GameView view, int xPos, int yPos) {
-        render(
-            view,
-            xPos,
-            yPos,
-			null,
-            0
-        );
     }
     
     /**
@@ -386,10 +336,9 @@ public abstract class AbstractGameObject implements Serializable {
      * @param view
      * @param xPos rendering position, center of sprite in view space (?)
      * @param yPos rendering position, center of sprite in view space (?)
-     * @param scale relative value. 0 means same size
      */
-    public void render(GameView view, int xPos, int yPos, float scale) {
-		render(view, xPos, yPos, null, scale);
+    public void render(GameView view, int xPos, int yPos) {
+		render(view, xPos, yPos, null);
     }
     
 	    /**
@@ -398,9 +347,8 @@ public abstract class AbstractGameObject implements Serializable {
      * @param xPos rendering position, center of sprite in view space (?)
      * @param yPos rendering position, center of sprite in view space (?)
 	 * @param color
-     * @param scale relative value. 0 means same size
      */
-    public void render(GameView view, int xPos, int yPos, Color color, float scale) {
+    public void render(GameView view, int xPos, int yPos, Color color) {
 		if (id != 0){
 			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
 			Sprite sprite = new Sprite(texture);
@@ -409,7 +357,7 @@ public abstract class AbstractGameObject implements Serializable {
 				VIEW_HEIGHT2 - texture.offsetY
 			);
 			sprite.rotate(rotation);
-			sprite.scale(scale);
+			sprite.scale(scaling);
 
 			sprite.setPosition(xPos+texture.offsetX-texture.originalWidth/2,
 				yPos//center
@@ -507,8 +455,15 @@ public abstract class AbstractGameObject implements Serializable {
     public float getRotation() {
         return rotation;
     }
-    
-    
+
+	/**
+	 * Returns the scale factor of the object.
+	 * @return 0 is no scaling
+	 */
+	public float getScaling() {
+		return scaling;
+	}
+	
     /**
      * Returns true, when set as hidden. Hidden objects are not rendered even when they are clipped ("clipped" by the meaning of the raytracing).
      * @return if the object is invisible
@@ -582,6 +537,14 @@ public abstract class AbstractGameObject implements Serializable {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+	
+	/**
+	 * 
+	 * @param scaling 0 no scaling
+	 */
+	public void setScaling(float scaling){
+		this.scaling = scaling;
+	}
     
 	/**
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.

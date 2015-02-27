@@ -93,7 +93,7 @@ public class Inventory implements Serializable {
 			MovableEntity ent = slot[i].prototype;
 			if (ent!=null) {
 				int x = (int) (view.getStage().getWidth()-400+i*100);
-				ent.render(view, x, 10, 0.6f);
+				ent.render(view, x, 10);
 				view.drawString(Integer.toString(slot[i].counter),  x, 150,false);
 			}
 		}

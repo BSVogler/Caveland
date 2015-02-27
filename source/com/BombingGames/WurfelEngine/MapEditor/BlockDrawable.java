@@ -52,6 +52,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     public BlockDrawable(int id) {
         this.block = Block.getInstance(id,0);
+		block.setScaling(size);
     }
 	
 
@@ -73,7 +74,7 @@ public class BlockDrawable extends TextureRegionDrawable {
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
 		if (block.getId()!=0) {
-			block.render(WE.getEngineView(), (int) (x+this.x), (int) y, Color.GRAY.cpy(), size, true);
+			block.render(WE.getEngineView(), (int) (x+this.x), (int) y, Color.GRAY.cpy(), true);
 		}
     }
 

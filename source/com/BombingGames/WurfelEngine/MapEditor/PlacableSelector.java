@@ -37,8 +37,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -54,6 +54,7 @@ public class PlacableSelector extends Table {
     private Table table;
     private ScrollPane scroll; 
 	private final PlacableGUI placableGUI;
+	private float lastPosition;
 	
 	private PlaceMode mode = PlaceMode.Blocks;
 	
@@ -127,6 +128,10 @@ public class PlacableSelector extends Table {
 					}
 				}
 			}
+			
+			scroll.setForceScroll(false, true);
+			scroll.setScrollBarPositions(false, true);
+			scroll.setScrollX(lastPosition);
         }
     }
     
@@ -135,6 +140,7 @@ public class PlacableSelector extends Table {
      */
     public void hide(){
         if (hasChildren()){
+			lastPosition = scroll.getScrollX();
             scroll.clearListeners();
             clear();
         }

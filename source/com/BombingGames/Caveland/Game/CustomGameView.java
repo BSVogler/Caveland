@@ -15,7 +15,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 
@@ -150,12 +149,9 @@ public class CustomGameView extends GameView{
 			);
 		}
 
-		if (XboxListener.speed[0]!=-1){
-		Vector2 direction = getPlayer(0).getOrientation();
-			getPlayer(0).setHorMovement(
-				new Vector2(direction.x, direction.y).scl(
-					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
-				)
+		if (XboxListener.speed[0] > 0){
+			getPlayer(0).setSpeedHorizontal(
+				(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
 			);
 		}
 
@@ -192,6 +188,9 @@ public class CustomGameView extends GameView{
 
 	private static class XboxListener implements ControllerListener {
 		private final Controllable controllable;
+		/**
+		 * speed of one player
+		 */
 		public static float[] speed = new float[]{-1,-1};
 		private int id;
 		private final CustomGameView parent;
@@ -248,29 +247,26 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
-				speed[id] = 
-					(Math.abs(controller.getAxis(2))
-				   +Math.abs(controller.getAxis(3)))/2;
-				if (speed[id] < 0.2f){
-					if (speed[id] > 0.1f) {
-						controllable.setMovement(
-							new Vector3(
-								controller.getAxis(2),
-								controller.getAxis(3),
-								controllable.getMovement().z
-							)
-						);
-					}
-					speed[id] = 0;
-				} else {
-					controllable.setMovement(
-						new Vector3(
-							controller.getAxis(2),
-							controller.getAxis(3),
-							controllable.getMovement().z
-						)
-					);
-				}
+			speed[id] = (float) Math.sqrt(
+				controller.getAxis(2)*controller.getAxis(2)+controller.getAxis(3)*controller.getAxis(3)
+			);
+
+			if (speed[id]>0.1f)  //move only if stick is a bit moved
+				controllable.setMovement(
+					new Vector3(
+						controller.getAxis(2),
+						controller.getAxis(3),
+						controllable.getMovement().z
+					)
+				);
+
+			if (speed[id] < 0.2f){//if moving to little only set orientation
+				speed[id] = 0;
+			}
+			
+			controllable.setSpeedHorizontal(
+				(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
+			);
 			return false;
 		}
 

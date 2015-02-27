@@ -209,8 +209,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
 			
 			//save orientation
-			if (getMovementHor().len2() != 0)//only update if there is new information, else keep it
-				orientation = getMovementHor().nor();
+			updateOrientation();
 			
 			//check new height for colission            
 			//land if standing in or under 0-level or there is an obstacle
@@ -496,6 +495,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void setMovement(Vector3 movement){
 		this.movement = movement;
+		updateOrientation();
 	}
 	
 	/**
@@ -504,6 +504,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void addMovement(Vector2 movement){
 		this.movement.add(movement.x, movement.y, 0);
+		updateOrientation();
 	}
 	
 	
@@ -513,6 +514,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void addMovement(Vector3 movement){
 		this.movement.add(movement);
+		updateOrientation();
 	}
 	
 	/**
@@ -536,6 +538,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Set the speed and only take x and y into account.
+	 * @param speed
 	 */
 	public void setSpeedHorizontal(float speed) {
 		setHorMovement(getOrientation().scl(speed));
@@ -543,6 +546,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Set the speed. Uses x, y and z.
+	 * @param speed
 	 */
 	public void setSpeedIncludingZ(float speed) {
 		movement = getMovement().nor().scl(speed);
@@ -709,5 +713,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public void step() {
 		Controller.getSoundEngine().play(stepSound1Grass, 1,(float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
 		stepSoundPlayedInCiclePhase = true;
+	}
+
+	private void updateOrientation() {
+		if (getMovementHor().len2() != 0)//only update if there is new information, else keep it
+			orientation = getMovementHor().nor();
 	}
 }

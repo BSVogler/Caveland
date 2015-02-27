@@ -508,8 +508,11 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean scrolled(int amount) {
-            camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
-            return true;
+			if (!leftSelector.isVisible() && !rightSelector.isVisible()) {
+				camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
+				return true;
+			}
+            return false;
         }
 
 		private void bucket(Coordinate from, Coordinate to) {

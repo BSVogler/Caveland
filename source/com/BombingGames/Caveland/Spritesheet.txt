@@ -363,7 +363,7 @@ e22-0
   rotate: false
   xy: 1896, 624
   size: 34, 32
-  orig: 200, 225
+  orig: 200, 223
   offset: 85, 41
   index: -1
 e23-0

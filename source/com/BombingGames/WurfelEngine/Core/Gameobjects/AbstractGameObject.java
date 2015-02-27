@@ -404,7 +404,10 @@ public abstract class AbstractGameObject implements Serializable {
 		if (id != 0){
 			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
 			Sprite sprite = new Sprite(texture);
-			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2+texture.offsetY);
+			sprite.setOrigin(
+				texture.originalWidth/2 - texture.offsetX,
+				VIEW_HEIGHT2 - texture.offsetY
+			);
 			sprite.rotate(rotation);
 			sprite.scale(scale);
 

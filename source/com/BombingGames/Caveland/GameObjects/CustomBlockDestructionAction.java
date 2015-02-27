@@ -17,6 +17,7 @@ public class CustomBlockDestructionAction implements BlockDestructionAction {
 		for (int i = 0; i < 10; i++) {
 			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(block.getPosition().getPoint().cpy());
 			dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+			dirt.setRotation((float) Math.random()*360);
 		}
 	}
 	

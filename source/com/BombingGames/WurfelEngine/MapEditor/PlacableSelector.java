@@ -74,7 +74,6 @@ public class PlacableSelector extends Table {
 		} else {
 			setX(1580);
 		}
-		addListener(new BlockSelInpListener(this));
     }
 
     /**
@@ -166,20 +165,6 @@ public class PlacableSelector extends Table {
 		show();
 	}
 
-     private class BlockSelInpListener extends InputListener {
-        private PlacableSelector parentRef;
-
-        private BlockSelInpListener(PlacableSelector parent) {
-            this.parentRef = parent;
-        }
-
-        @Override
-        public boolean mouseMoved(InputEvent event, float x, float y) {
-            parentRef.show();
-            return false;
-        }
-    }
-     
 	/**
 	 * detects a click on the Block in the list
 	 */

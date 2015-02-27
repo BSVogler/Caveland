@@ -309,7 +309,7 @@ public abstract class AbstractGameObject implements Serializable {
         render(
             view,
             camera,
-            Color.GRAY.cpy()
+            null
         );
     }
     

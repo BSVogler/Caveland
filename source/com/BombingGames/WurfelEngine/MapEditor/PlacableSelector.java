@@ -68,7 +68,7 @@ public class PlacableSelector extends Table {
         
 		setWidth(400);
 		setHeight(Gdx.graphics.getHeight()-100);
-		setY(0);
+		setY(10);
 		
 		if (left) {
 			setX(0);

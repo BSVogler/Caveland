@@ -46,6 +46,7 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("jetpack", "com/BombingGames/Caveland/sounds/jetpack.wav");
 		Controller.getSoundEngine().register("step", "com/BombingGames/Caveland/sounds/step.wav");
 		Controller.getSoundEngine().register("urfJump", "com/BombingGames/Caveland/sounds/urf_jump.wav");
+		Controller.getSoundEngine().register("urfHurt", "com/BombingGames/Caveland/sounds/urfHurt.wav");
 		Controller.getSoundEngine().register("loadAttack", "com/BombingGames/Caveland/sounds/loadAttack.wav");
 		Controller.getSoundEngine().register("ha", "com/BombingGames/Caveland/sounds/ha.wav");
 		Controller.getSoundEngine().register("attack", "com/BombingGames/Caveland/sounds/attack.wav");
@@ -175,7 +176,8 @@ public class CustomGameView extends GameView{
 		super.render();
 		getBatch().begin();
 		getPlayer(0).getInventory().render(this);
-		getPlayer(1).getInventory().render(this);
+		if (coop > -1)
+			getPlayer(1).getInventory().render(this);
 		getBatch().end();
 	}
 

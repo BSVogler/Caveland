@@ -389,6 +389,7 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void damage(int value) {
 		super.damage(value);
+		Controller.getSoundEngine().play("urfHurt");
 		if (getCamera()!=null) getCamera().setDamageoverlayOpacity(1f-getHealth()/1000f);
 		timeSinceDamage=0;
 	}

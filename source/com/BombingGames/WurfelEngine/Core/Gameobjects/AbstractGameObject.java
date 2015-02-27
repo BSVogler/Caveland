@@ -491,7 +491,7 @@ public abstract class AbstractGameObject implements Serializable {
     
     /**
      * Get the value. It is like a sub-id and can identify the status.
-     * @return
+     * @return in range [0;{@link #VALUESNUM}]. Is -1 if about to destroyed.
      */
     public int getValue() {
         return value;

@@ -604,9 +604,10 @@ public class Block extends AbstractGameObject {
 	}
 
 	/**
-	 * Overwrite to define what should happen if the block is getting destroyed?
+	 * Overwrite to define what should happen if the block is getting destroyed? Sets the value to -1. So be carefull when to call super.onDestroy().
 	 */
 	public void onDestroy() {
+		setValue(-1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
 		if (destructionAction != null) destructionAction.action(this);
 	}

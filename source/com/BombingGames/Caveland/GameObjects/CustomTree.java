@@ -49,19 +49,28 @@ public class CustomTree extends Block {
 
 	
 	@Override
-	public void onDestroy() {
+	public void onDestroy() {	
+		//destroy other half
+		Coordinate otherHalf;
+		if (getValue() == TREETOPVALUE){
+			otherHalf = getPosition().cpy().addVector(0, 0, -1);
+		} else {
+			otherHalf = getPosition().cpy().addVector(0, 0, 1);
+		}
+		
 		super.onDestroy();
-		getPosition().cpy().addVector(0, 0, 1).destroy();
+		
+		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
+			otherHalf.destroy();
+			
 		new SimpleEntity(46,0).
 			spawn(getPosition().getPoint()).
 			setAnimation(
 				new EntityAnimation(
-					new int[]{100,100,100,100,100},
+					new int[]{80, 80, 80, 80, 80},
 					true,
 					true)
-			);
-		
-		
+			);		
 	}
 
 	

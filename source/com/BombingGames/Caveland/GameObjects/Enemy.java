@@ -35,10 +35,7 @@ public class Enemy extends MovableEntity{
         setObstacle(true);
 		setFloating(false);
 		setWalkingAnimationCycling(true);
-		
-//        setDamageSounds(new Sound[]{
-//            (Sound) WE.getAsset("com/BombingGames/WeaponOfChoice/Sounds/impactFlesh.wav")
-//        });
+		setDamageSounds(new String[]{"robotHit"});
     }
 
 
@@ -46,6 +43,7 @@ public class Enemy extends MovableEntity{
     public void jump() {
         jump(5, true);
     }
+
 
     @Override
     public void update(float dt) {

@@ -47,9 +47,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private static final long serialVersionUID = 4L;
 	
 	/**
-	 * time to pass before new sound can be played
+	 * time in ms to pass before new sound can be played
 	 */
-	private static float soundlimit;
+	private static float soundTimeLimit;
 	private transient static String waterSound;
      	
 	   /**
@@ -354,8 +354,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                 }
             }
 			
-            if (soundlimit > 0)
-				soundlimit -= dt;
+            if (soundTimeLimit > 0)
+				soundTimeLimit -= dt;
             
             if (getHealth()<= 0 && !indestructible)
                 dispose();
@@ -625,9 +625,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     public void damage(int value) {
 		if (!indestructible) {
 			if (getHealth() >0){
-				if (damageSounds != null && soundlimit<=0) {
-					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], 0.7f);
-					soundlimit = 100;
+				if (damageSounds != null && soundTimeLimit<=0) {
+					//play random sound
+					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
+					soundTimeLimit = 100;
 				}
 				setHealth(getHealth()-value);
 			} else
@@ -711,7 +712,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	public void step() {
-		Controller.getSoundEngine().play(stepSound1Grass, 1,(float) (1+Math.random()/5f), (float) (Math.random()-1/2f));
+		Controller.getSoundEngine().play(stepSound1Grass, 0.5f,(float) (0.9f+Math.random()/5f), (float) (Math.random()-1/2f));
 		stepSoundPlayedInCiclePhase = true;
 	}
 

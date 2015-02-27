@@ -72,7 +72,7 @@ public class CustomPlayer extends Controllable {
     }
 	
     private float aimHeight;
-	private boolean loadingSoundPlaying = false;
+	private boolean canPlayLoadingSound = false;
 
 	private int timeSinceDamage;
 	
@@ -224,9 +224,9 @@ public class CustomPlayer extends Controllable {
 		
 		if (loadAttack>300) {//time till registered as a "hold"
 			action = 'l';
-			if (!loadingSoundPlaying){
+			if (!canPlayLoadingSound){
 				Controller.getSoundEngine().play("loadAttack");
-				loadingSoundPlaying=true;
+				canPlayLoadingSound=true;
 			}
 			Vector3 newmov = getMovement();
 			newmov.z /=4;
@@ -255,10 +255,16 @@ public class CustomPlayer extends Controllable {
 		
 		//collect collectibles
 		ArrayList<MovableEntity> collectibles = pos.getCoord().getEntitysInside(Collectible.class);
+		boolean playCollectSound = false;
 		for (MovableEntity collectible : collectibles) {
-			if (collectible.isCollectable() && inventory.add(collectible))
+			if (collectible.isCollectable() && inventory.add(collectible)){
 				collectible.dispose();
+				playCollectSound = true;
+			}
 		}
+		if (playCollectSound)
+			Controller.getSoundEngine().play("collect");
+		
 		
 		if (timeSinceDamage>4000)
 			heal(dt/2f);
@@ -350,7 +356,7 @@ public class CustomPlayer extends Controllable {
 	 */
 	public void attack(int damage){
 		playAnimation('h');
-		Controller.getSoundEngine().play("attack");
+		Controller.getSoundEngine().play("sword");
 		addToHor(8f);//add 5 m/s in move direction
 		
 		//from current position go 80px in aiming direction and get entities 80px around there
@@ -384,7 +390,7 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		//set to a small value to indicate that it is active
-		loadAttack=0.00001f;
+		loadAttack=0.00001f;		
 	}
 	
 	@Override
@@ -437,14 +443,15 @@ public class CustomPlayer extends Controllable {
 	 */
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME) {
+			//perform loadattack
 			playAnimation('i');
-			Controller.getSoundEngine().play("ha");
+			Controller.getSoundEngine().play("release");
 			addToHor(40f);
 			attack(1000);
 		}
 	
-		loadAttack=0f;
-		loadingSoundPlaying =false;
+		loadAttack = 0f;
+		canPlayLoadingSound =false;
 	}
 	
 	    /**

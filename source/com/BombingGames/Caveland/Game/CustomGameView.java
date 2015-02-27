@@ -52,12 +52,15 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("urfHurt", "com/BombingGames/Caveland/sounds/urfHurt.wav");
 		Controller.getSoundEngine().register("loadAttack", "com/BombingGames/Caveland/sounds/loadAttack.wav");
 		Controller.getSoundEngine().register("ha", "com/BombingGames/Caveland/sounds/ha.wav");
-		Controller.getSoundEngine().register("attack", "com/BombingGames/Caveland/sounds/attack.wav");
+		Controller.getSoundEngine().register("release", "com/BombingGames/Caveland/sounds/release.wav");
 		Controller.getSoundEngine().register("impact", "com/BombingGames/Caveland/sounds/impact.wav");
 		Controller.getSoundEngine().register("robot1destroy", "com/BombingGames/Caveland/sounds/robot1destroy.wav");
+		Controller.getSoundEngine().register("robotHit", "com/BombingGames/Caveland/sounds/robotHit.wav");
 		Controller.getSoundEngine().register("blockDestroy", "com/BombingGames/Caveland/sounds/poch.wav");
 		Controller.getSoundEngine().register("vanya_jump", "com/BombingGames/Caveland/sounds/vanya_jump.wav");
 		Controller.getSoundEngine().register("wagon", "com/BombingGames/Caveland/sounds/wagon.mp3");
+		Controller.getSoundEngine().register("collect", "com/BombingGames/Caveland/sounds/collect.wav");
+		Controller.getSoundEngine().register("sword", "com/BombingGames/Caveland/sounds/sword.wav");
 		
 		if (coop >- 1){//coop
 			((CustomGameController) controller).addPlayer2();

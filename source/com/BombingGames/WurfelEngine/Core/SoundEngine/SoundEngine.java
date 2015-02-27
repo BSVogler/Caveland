@@ -111,9 +111,9 @@ public class SoundEngine {
 	/***
 	 * 
 	 * @param identifier name of sound
-	 * @param volume 
-	 * @param pitch 
-	 * @param pan
+	 * @param volume the volume in the range [0,1]
+	 * @param pitch the pitch multiplier, 1 == default, >1 == faster, 1 == slower, the value has to be between 0.5 and 2.0
+	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
 	 * @return 
 	 */
 	public long play(String identifier, float volume, float pitch, float pan){

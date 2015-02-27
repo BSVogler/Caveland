@@ -1,12 +1,11 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.Collectible;
-import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
+import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -98,10 +97,10 @@ public Block produce(int id, int value) {
 		}
 
 		@Override
-		public void onDestroy(AbstractPosition pos) {
-			new Collectible(def).spawn(pos.cpy().getPoint());
-			new Collectible(def).spawn(pos.getPoint());
-			new Collectible(def).spawn(pos.getPoint());
+		public void onDestroy() {
+			new Collectible(def).spawn(getPosition().getPoint().cpy());
+			new Collectible(def).spawn(getPosition().getPoint().cpy());
+			new Collectible(def).spawn(getPosition().getPoint().cpy());
 		}
 		
 		

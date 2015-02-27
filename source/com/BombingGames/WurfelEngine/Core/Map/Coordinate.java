@@ -459,7 +459,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public boolean destroy() {
 		if (isInMemory() && getBlock().getId()!=0) {
-			getBlock().onDestroy(this);//call destruction method
+			getBlock().onDestroy();//call destruction method
 			setBlock(Block.getInstance(0));
 			return true;
 		}

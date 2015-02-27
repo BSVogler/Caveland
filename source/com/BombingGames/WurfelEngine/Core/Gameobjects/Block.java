@@ -80,7 +80,7 @@ public class Block extends AbstractGameObject {
 	 * @since v1.4.20
 	 */
 	public static interface BlockDestructionAction {
-		public void action(AbstractPosition pos);
+		public void action(Block block);
 	}
     
     private boolean liquid;
@@ -605,11 +605,10 @@ public class Block extends AbstractGameObject {
 
 	/**
 	 * Overwrite to define what should happen if the block is getting destroyed?
-	 * @param pos the position of the block, can be null if not needed
 	 */
-	public void onDestroy(AbstractPosition pos) {
+	public void onDestroy() {
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
-		if (destructionAction != null) destructionAction.action(pos);
+		if (destructionAction != null) destructionAction.action(this);
 	}
 
 	@Override

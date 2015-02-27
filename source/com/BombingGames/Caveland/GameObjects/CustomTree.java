@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 
 /**
@@ -45,12 +44,14 @@ public class CustomTree extends Block {
 		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
 			Block.getInstance(72, TREETOPVALUE).spawn(top);
 	}
-	
+
 	
 
+	
 	@Override
-	public void onDestroy(AbstractPosition pos) {
-		super.onDestroy(pos.cpy().addVector(0, 0, 1));//destroy top block
+	public void onDestroy() {
+		super.onDestroy();
+		getPosition().cpy().addVector(0, 0, 1).destroy();
 		new SimpleEntity(46,0).
 			spawn(getPosition().getPoint()).
 			setAnimation(

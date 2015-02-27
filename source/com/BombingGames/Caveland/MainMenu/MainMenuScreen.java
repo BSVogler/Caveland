@@ -56,7 +56,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		final int top = 500;
 		final int distance =50;
 		menuItems[i]=new TextButton("Start Single Player", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
+		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top-i*distance);
 		//start the game
 		menuItems[i].addListener(
 			new ChangeListener() {
@@ -70,7 +70,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		i++;
 		menuItems[i]=new TextButton("Start Local Co-Op", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
+
 		//start the game
 		menuItems[i].addListener(
 			new ChangeListener() {
@@ -84,7 +84,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		i++;
 		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
 		menuItems[i].addListener(
 			new ChangeListener() {
 
@@ -97,7 +96,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		i++;
 		menuItems[i]=new TextButton("Credits", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
 		menuItems[i].addListener(
 			new ChangeListener() {
 
@@ -110,7 +108,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		i++;
 		menuItems[i]=new TextButton("Exit", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2, top-i*distance);
 		menuItems[i].addListener(
 			new ChangeListener() {
 
@@ -120,6 +117,11 @@ public class MainMenuScreen extends AbstractMainMenu {
 				}
 			}
 		);
+		
+		for (int j = 0; j < menuItems.length; j++) {
+			menuItems[j].setWidth(200);
+			menuItems[j].setPosition(stage.getWidth()/2-menuItems[j].getWidth()/2, top-j*distance);
+		}
 		
 		for (TextButton menuItem : menuItems) {
 			stage.addActor(menuItem);

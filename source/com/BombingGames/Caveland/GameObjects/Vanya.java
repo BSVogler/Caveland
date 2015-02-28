@@ -82,7 +82,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 				text = " I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
 				break;
 			case 3:	
-				text = "You should definetely check the editor or take a ride in the mine cart.";
+				text = "You should definetely check the map editor by pressing 'G'.";
 				break;
 		}
 		currentChat = new ChatBox(view.getStage(), getName(), text);

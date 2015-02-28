@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class Vanya extends MovableEntity implements Interactable, Serializable {
 	private static final long serialVersionUID = 3L;
 	private transient SimpleEntity interactButton;
-	private int chatCounter;
+	private transient int chatCounter;
 	private transient ChatBox currentChat;
 
 	public Vanya() {

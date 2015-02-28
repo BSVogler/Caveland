@@ -343,7 +343,7 @@ public class CustomPlayer extends Controllable {
 				playAnimation('t');
 				item.setMovement(getAiming().scl(3f));//throw with 3 m/s
 				//item.setSpeed(0.5f);
-				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*2));
+				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*1.5f));
 			}
 		} catch (CloneNotSupportedException ex) {
 			Logger.getLogger(CustomPlayer.class.getName()).log(Level.SEVERE, null, ex);

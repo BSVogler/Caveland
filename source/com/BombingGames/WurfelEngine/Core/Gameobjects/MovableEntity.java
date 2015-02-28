@@ -175,6 +175,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      */
     @Override
     public void update(float dt) {
+		super.update(dt);
+		
         //clamp health & mana
         if (mana > 1000) mana = 1000;
         if (mana < 0) mana = 0;

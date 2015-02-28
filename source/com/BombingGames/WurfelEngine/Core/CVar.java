@@ -93,6 +93,11 @@ public class CVar {
 		register("renderResolutionWidth", 1920, CVarFlags.CVAR_ARCHIVE);
 		register("enableLightEngine", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableFog", true, CVarFlags.CVAR_ARCHIVE);
+		register("fogR", 0.3f, CVarFlags.CVAR_ARCHIVE);
+		register("fogG", 0.4f, CVarFlags.CVAR_ARCHIVE);
+		register("fogB", 1.0f, CVarFlags.CVAR_ARCHIVE);
+		register("fogOffset", 2f, CVarFlags.CVAR_ARCHIVE);
+		register("fogFactor", 0.17f, CVarFlags.CVAR_ARCHIVE);
 		register("enableAutoShade", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);

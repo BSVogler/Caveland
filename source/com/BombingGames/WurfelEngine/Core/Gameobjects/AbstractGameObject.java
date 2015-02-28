@@ -320,8 +320,26 @@ public abstract class AbstractGameObject implements Serializable {
      * @param color custom blending color
      */
     public void render(GameView view, Camera camera, Color color) {
-        //draw the object except hidden ones
-        if (!hidden) {             
+        if (!hidden) {  
+			if (CVar.get("enableFog").getValueb()) {
+				//can use CVars for dynamic change. using harcored values for performance reasons
+				float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().getCoord().getY())*0.17+2));
+				if (color ==null) {
+					color = new Color(0.5f, 0.5f, 0.5f, 1).add(
+						0.3f*factor,
+						0.4f*factor,
+						1f*factor,
+						0f
+					);
+				} else {
+					color.add(
+						0.3f*factor,
+						0.4f*factor,
+						1f*factor,
+						0f
+					);
+				}
+			}
             render(
                 view,
                 getPosition().getViewSpcX(view),

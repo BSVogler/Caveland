@@ -217,13 +217,16 @@ public class MineCart extends MovableEntity {
 	}
 
 	@Override
-	public void dispose() {
-		Controller.getSoundEngine().stop("wagon", isPlayingSound);
-		Controller.getSoundEngine().play("robot1destroy", getPosition());
-		((Collectible) new Collectible(Collectible.ColTypes.IRONORE).spawn(getPosition())).sparkle();
-		super.dispose();
+	public void damage(int value) {
+		super.damage(value);
+		if (getHealth()<0) {
+			Controller.getSoundEngine().stop("wagon", isPlayingSound);
+			Controller.getSoundEngine().play("robot1destroy", getPosition());
+			((Collectible) new Collectible(Collectible.ColTypes.IRONORE).spawn(getPosition())).sparkle();
+		}
 	}
-
+	
+	
 	public void turn() {
 		setMovement(
 			new Vector3(

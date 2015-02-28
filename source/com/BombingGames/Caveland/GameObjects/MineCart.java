@@ -219,7 +219,7 @@ public class MineCart extends MovableEntity {
 	@Override
 	public void damage(int value) {
 		super.damage(value);
-		if (getHealth()<0) {
+		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 			Controller.getSoundEngine().play("robot1destroy", getPosition());
 			((Collectible) new Collectible(Collectible.ColTypes.IRONORE).spawn(getPosition())).sparkle();

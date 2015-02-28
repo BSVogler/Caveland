@@ -109,13 +109,16 @@ public class Enemy extends MovableEntity{
         this.target = target;
     }
 
-    @Override
-    public void dispose() {
-		if (getHealth() <= 0 && killSound != null)
-			Controller.getSoundEngine().play(killSound);
-        killcounter++;
-        super.dispose();
-    }
+	@Override
+	public void damage(int value) {
+		super.damage(value);
+		if (getHealth()<=0){
+			if (getHealth() <= 0 && killSound != null)
+				Controller.getSoundEngine().play(killSound);
+			killcounter++;
+		}
+	}
+
 
     public static int getKillcounter() {
         return killcounter;

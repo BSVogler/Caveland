@@ -18,21 +18,20 @@ public class CustomBlockFactory implements BlockFactory {
 public Block produce(int id, int value) {
 	Block block;
 	switch (id){
+		case 41:
+			block = new Ore(id, Collectible.ColTypes.CRISTALL);
+		break;
+		case 42:
+			block = new Ore(id, Collectible.ColTypes.SULFUR);
+		break;
+		case 43:
+			block = new Ore(id, Collectible.ColTypes.IRONORE);
+		break;	
 		case 44:
-			block = Block.createBasicInstance(id); //textureless
-			block.setObstacle(true);
+			block = new Ore(id, Collectible.ColTypes.COAL);
 		break;  
 		case 55:
 			block = new RailBlock();
-		break;
-		case 56:
-			block = new Ore(id, Collectible.ColTypes.GOLD);
-		break;
-		case 57:
-			block = new Ore(id, Collectible.ColTypes.COAL);
-		break;
-		case 58:
-			block = new Ore(id, Collectible.ColTypes.IRONORE);
 		break;
 		case 60:
 			block = new Machine();

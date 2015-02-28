@@ -220,7 +220,7 @@ public class MineCart extends MovableEntity {
 	public void dispose() {
 		Controller.getSoundEngine().stop("wagon", isPlayingSound);
 		Controller.getSoundEngine().play("robot1destroy", getPosition());
-		((Collectible) new Collectible(Collectible.ColTypes.IRON).spawn(getPosition())).sparkle();
+		((Collectible) new Collectible(Collectible.ColTypes.IRONORE).spawn(getPosition())).sparkle();
 		super.dispose();
 	}
 

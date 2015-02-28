@@ -18,34 +18,27 @@ public class Collectible extends MovableEntity implements Serializable {
 	 * a enum which lists the types of collectibles
 	 */
 	public static enum ColTypes {
-		IRONORE(Color.RED.cpy(), 46),
-		COAL(Color.DARK_GRAY.cpy(), 47),
-		GOLD(Color.YELLOW.cpy(), 48),
-		IRON(Color.GRAY.cpy(), 49),
-		SULFUR(new Color(0.8f, 0.8f, 0.1f, 1f), 50);
+		WOOD(46),
+		EXPLOSIVES(47),
+		IRONORE(48),
+		COAL(49),
+		CRISTALL(50),
+		SULFUR(51);
 		
-		private transient Color color;
 		private int id;
 
-		private ColTypes(Color color, int id) {
-			this.color = color;
+		private ColTypes(int id) {
 			this.id = id;
 		}
-
-		public Color getColor() {
-			return color;
-		}
-
 	}
 
 	private ColTypes def;
 
 	public Collectible(ColTypes def) {
 		super(def.id, 0);
-		setGraphicsId(43);
-		setColor(def.color);
 		this.def = def;
 		setFloating(false);
+		enableShadow();
 		//setSpeed(0.2f);
 		setFriction(CVar.get("friction").getValuef());
 		setIndestructible(true);
@@ -58,7 +51,6 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	public Collectible(Collectible collectible) {
 		super(collectible);
-		setGraphicsId(43);
 		setFloating(false);
 		setIndestructible(true);
 		setCollectable(true);
@@ -91,6 +83,5 @@ public class Collectible extends MovableEntity implements Serializable {
          stream.defaultReadObject(); //fills fld1 and fld2;
 		 def = ColTypes.COAL;//todo, proper serialisation and ddeserialisation of enum
 		 //http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
-		 setColor(def.getColor());
     }
 }

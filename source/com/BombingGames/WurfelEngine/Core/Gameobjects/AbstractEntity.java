@@ -51,7 +51,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean spawned;
-	private EntityAnimation animation;
+	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
 	private String name = "undefined";
 	

@@ -65,32 +65,32 @@ public class Caveland {
 	public static String getCredits(){
 		return "Caveland\n" +
 			"\n" +
-			"ein Spiel von\n" +
+			"a game by\n" +
 			"Benedikt S. Vogler\n" +
 			"\n" +
-			"Graphik\n" +
-			"Frederic Brückner\n" +
+			"Art\n" +
+			"Frederic Brueckner\n" +
 			"\n" +
-			"Musik & Sound\n" +
+			"Music & Sound\n" +
 			"\"SteinImBrett\":\n" +
 			"Felix von Dohlen\n" +
 			"Marcel Gohsen\n" +
 			"\n" +
-			"Qualitätssicherung\n" +
+			"Quality Assurance\n" +
 			"Thomas Vogt\n" +
 			"\n" +
 			"Web Development\n" +
-			"René Weißer\n" +
+			"Rene Weiszer\n" +
 			"\n" +
-			"Speziellen Dank an\n" +
-			"Felix Günther\n" +
+			"Special Thanks to\n" +
+			"Felix Guenther\n" +
 			"Vanya Gercheva\n" +
 			"Ulrike Vogler\n" +
 			"Gereon Vogler\n" +
 			"Bernhard Vogler\n" +
-			"Pia Lenßen\n" +
+			"Pia Lenszen\n" +
 			"reddit.com/r/gamedev\n" +
-			"Bauhaus Universität Weimar";
+			"Bauhaus University Weimar";
 	
 	}	
     

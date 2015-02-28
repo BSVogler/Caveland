@@ -278,21 +278,11 @@ public class WE {
      */
     public final static String getCredits() {
         String newline = System.getProperty("line.separator");
-        return "Wurfel Engine"+newline+newline
+        return "Wurfel Engine ("+VERSION+")"+newline+newline
 			+ "Created by:"+newline
             + "Benedikt S. Vogler"+newline+newline
-            + "Programming:"+newline
-            + "Benedikt S. Vogler"+newline+newline
-            + "2D Art:"+newline
-            + "Benedikt S. Vogler"+newline+newline
-            + "3D Art"+newline
-            + "Pia Lenßen"+newline
-            + "Benedikt S. Vogler"+newline+newline
-            + "Sound:"+newline
-            + "Benedikt S. Vogler"+newline+newline
             + "Quality Assurance:"+newline
-            + "Thomas Vogt"+newline+newline
-            + "Want your name here? Contact me and join us!";
+            + "Thomas Vogt"+newline+newline;
     }
     
    /**

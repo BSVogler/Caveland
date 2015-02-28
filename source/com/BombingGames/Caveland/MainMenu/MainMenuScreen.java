@@ -137,7 +137,7 @@ public class MainMenuScreen extends AbstractMainMenu {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
+        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), false);
         font.setColor(Color.WHITE);
 		
 		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/menusound.wav"));

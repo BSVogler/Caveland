@@ -196,13 +196,13 @@ public class CustomGameView extends GameView{
 		if (useDownP2>-1)
 			useDownP2+=dt;
 
-		if (useDownP1==0){
+		if (useDownP1>-1){
 			getPlayer(0).getNearestInteractable().interact(getPlayer(0), this);
 			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
 			//if (loren.size()>0)
 			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 		}
-		if (useDownP2==0){
+		if (useDownP2>-1){
 			getPlayer(1).getNearestInteractable().interact(getPlayer(1), this);
 			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
 			//if (loren.size()>0)

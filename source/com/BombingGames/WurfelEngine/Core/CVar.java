@@ -102,7 +102,7 @@ public class CVar {
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
-		register("DevMode", true, CVarFlags.CVAR_ARCHIVE);
+		register("DevMode", false, CVarFlags.CVAR_ARCHIVE);
 		register("DevDebugRendering", false, CVarFlags.CVAR_VOLATILE);
 		register("groundBlockID", 2, CVarFlags.CVAR_ARCHIVE);
 		register("preventUnloading", true, CVarFlags.CVAR_ARCHIVE);
@@ -112,7 +112,7 @@ public class CVar {
 		register("KeySuggestion", Keys.TAB, CVarFlags.CVAR_ARCHIVE);
 		register("music", 1f, CVarFlags.CVAR_ARCHIVE);
 		register("sound", 1f, CVarFlags.CVAR_ARCHIVE);
-		register("limitFPS",0, CVarFlags.CVAR_ARCHIVE);
+		register("limitFPS",60, CVarFlags.CVAR_ARCHIVE);
 		register("loadEntities", true, CVarFlags.CVAR_ARCHIVE);
 		register("enableMinimap", false, CVarFlags.CVAR_ARCHIVE);
 		register("walkingAnimationSpeedCorrection", 1.0f, CVarFlags.CVAR_ARCHIVE);

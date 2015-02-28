@@ -1,6 +1,7 @@
 package com.BombingGames.Caveland.MainMenu;
 
 import com.BombingGames.Caveland.Caveland;
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -79,7 +80,7 @@ public class CreditsScreen extends WEScreen {
         WE.getEngineView().getBatch().begin();
 			WE.getEngineView().getBatch().draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+			if (CVar.get("DevMode").getValueb()) WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
 		stage.draw();
     }

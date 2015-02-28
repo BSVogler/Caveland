@@ -48,27 +48,28 @@ public class OptionScreen extends WEScreen {
 		OrthographicCamera libgdxcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		stage = new Stage(new ScreenViewport(libgdxcamera), batch);
-		
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
-		//fill with display modes
-		Array<String> arstr = new Array<>();
-		Graphics.DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
-		int indexCurrentDPM = 0;
-		for (
-			int i = 0; i < dpms.length; i++
-		) {
-			Graphics.DisplayMode dpm = dpms[i];
-			arstr.add(dpm.toString());
-			if (dpm.width==Gdx.graphics.getWidth() && dpm.height==Gdx.graphics.getHeight())
-				indexCurrentDPM = i;
+		if (CVar.get("DevMode").getValueb())  {
+			//fill with display modes
+			Array<String> arstr = new Array<>();
+			Graphics.DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
+			int indexCurrentDPM = 0;
+			for (
+				int i = 0; i < dpms.length; i++
+			) {
+				Graphics.DisplayMode dpm = dpms[i];
+				arstr.add(dpm.toString());
+				if (dpm.width==Gdx.graphics.getWidth() && dpm.height==Gdx.graphics.getHeight())
+					indexCurrentDPM = i;
+			}
+
+			sbox.setItems(arstr);
+			sbox.setSelectedIndex(indexCurrentDPM);
+			sbox.setWidth(stage.getWidth()/6);
+			sbox.setPosition(stage.getWidth()/2-300, 500);
+		
+			stage.addActor(sbox);
 		}
-		
-		sbox.setItems(arstr);
-		sbox.setSelectedIndex(indexCurrentDPM);
-		sbox.setWidth(stage.getWidth()/6);
-		sbox.setPosition(stage.getWidth()/2-300, 500);			
-		
-		stage.addActor(sbox);
 		
 		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(stage.getWidth()/2-300, 400);
@@ -110,8 +111,10 @@ public class OptionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
-				Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
-				Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+				if (CVar.get("DevMode").getValueb())  {
+					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
+					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+				}
 				
 				//get FPS limit
 				if (limitFPSCB.isChecked())
@@ -167,7 +170,7 @@ public class OptionScreen extends WEScreen {
 				
         batch.begin();
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+			if (CVar.get("DevMode").getValueb()) font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
 	}
 

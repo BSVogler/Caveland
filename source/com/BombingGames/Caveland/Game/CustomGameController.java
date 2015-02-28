@@ -14,7 +14,6 @@ import com.badlogic.gdx.Gdx;
  * @author Benedikt
  */
 public class CustomGameController extends Controller {
-	private int monstercount =0;
 	private CustomPlayer player1;
 	private CustomPlayer player2;
         

@@ -1,8 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 
 /**
@@ -63,14 +61,7 @@ public class CustomTree extends Block {
 		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
 			otherHalf.destroy();
 			
-		new SimpleEntity(46,0).
-			spawn(getPosition().getPoint()).
-			setAnimation(
-				new EntityAnimation(
-					new int[]{80, 80, 80, 80, 80},
-					true,
-					true)
-			);		
+		new Collectible(Collectible.ColTypes.WOOD).spawn(getPosition().getPoint());			
 	}
 
 	

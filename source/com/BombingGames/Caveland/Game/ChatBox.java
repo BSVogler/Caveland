@@ -17,7 +17,12 @@ public class ChatBox extends Window {
 		setPosition(stage.getWidth()/2, stage.getHeight());
 		setWidth(600);
 		setHeight(200);
-		addActor(new Label(text, WE.getEngineView().getSkin()));
+		Label textArea = new Label(text, WE.getEngineView().getSkin());
+		textArea.setX(10);
+		textArea.setWrap(true);
+		textArea.setWidth(580);
+		textArea.setHeight(180);
+		addActor(textArea);
 	}
 	
 }

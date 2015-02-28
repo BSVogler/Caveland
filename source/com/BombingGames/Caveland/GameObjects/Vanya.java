@@ -75,7 +75,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 		String text = "";
 		switch(chatCounter) {
 			case 1:
-				text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. /n"
+				text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. \n"
 					+ "Welcome to Caveland! I will be your guide.\n";
 				break;
 			case 2:	
@@ -84,10 +84,14 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 			case 3:	
 				text = "You should definetely check the map editor by pressing 'G'.";
 				break;
+			case 4:	
+				chatCounter = 0;
+				break;
 		}
-		currentChat = new ChatBox(view.getStage(), getName(), text);
-			
-		view.getStage().addActor(currentChat);
+		if (!"".equals(text)) {
+			currentChat = new ChatBox(view.getStage(), getName(), text);
+			view.getStage().addActor(currentChat);
+		}
 	}
 	
 	private class BlümchenKacke extends MovableEntity {

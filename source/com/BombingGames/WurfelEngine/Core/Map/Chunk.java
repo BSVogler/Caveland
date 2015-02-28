@@ -510,11 +510,18 @@ public class Chunk {
 		return data[xIndex][yIndex][z];
 	}
 
+	/**
+	 * sets a block in the map. if position is under the map does nothing.
+	 * @param block 
+	 */
 	public void setBlock(Block block) {
 		int xIndex = block.getPosition().getX()-data[0][0][0].getPosition().getX();
 		int yIndex = block.getPosition().getY()-data[0][0][0].getPosition().getY();
-		data[xIndex][yIndex][block.getPosition().getZ()] = block;
-		modified = true;
+		int z = block.getPosition().getZ();
+		if (z >= 0){
+			data[xIndex][yIndex][z] = block;
+			modified = true;
+		}
 	}
 	
 	public void resetCameraAccesCounter(){

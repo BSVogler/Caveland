@@ -27,13 +27,16 @@ public class CustomGameView extends GameView{
 	 * -1 = not down, 0=just pressed down, >0 time down
 	 */
 	private float inventoryDown =-1;
-	private float useDown =-1;
+	private float throwDownP1 =-1;
+	private float throwDownP2 =-1;
+	private float useDownP1 =-1;
+	private float useDownP2 =-1;
 	/**
 	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 */
 	private int coop = -1;
 	/**
-	 * the player which is controlled by the keyboard and mouse
+	 * the player which is controlled by the keyboard and mouse. If both player are on the keyboard this is player 1.
 	 */
 	private CustomPlayer keyControllerPlayer;
 	
@@ -113,13 +116,18 @@ public class CustomGameView extends GameView{
 //        );
     }
 
+	/**
+	 * 
+	 * @param id 0 is first player, 1 is second
+	 * @return 
+	 */
 	public CustomPlayer getPlayer(int id){
 		return ((CustomGameController) getController()).getPlayer(id);
 	}
 	
 	@Override
     public void onEnter() {
-        WE.getEngineView().addInputProcessor(new InputListener(this));
+        WE.getEngineView().addInputProcessor(new InputListener());
 		if (Controllers.getControllers().size > 0){
 			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(0),0));
 		}
@@ -140,7 +148,6 @@ public class CustomGameView extends GameView{
         
 		//walk
 		if (keyControllerPlayer != null){
-
 			keyControllerPlayer.walk(
 				input.isKeyPressed(Input.Keys.W),
 				input.isKeyPressed(Input.Keys.S),
@@ -159,6 +166,18 @@ public class CustomGameView extends GameView{
 				+ (input.isKeyPressed(Input.Keys.S)? 3: 0)
 			);
 		}
+		
+		//update player2
+		if (getPlayer(1) != null){
+			getPlayer(1).walk(
+				input.isKeyPressed(Input.Keys.UP),
+				input.isKeyPressed(Input.Keys.DOWN),
+				input.isKeyPressed(Input.Keys.LEFT),
+				input.isKeyPressed(Input.Keys.RIGHT),
+				CVar.get("playerWalkingSpeed").getValuef(),
+				dt
+			);
+		}
 
 		if (XboxListener.speed[0] > 0){
 			getPlayer(0).setSpeedHorizontal(
@@ -168,14 +187,27 @@ public class CustomGameView extends GameView{
 
 		if (inventoryDown>-1)
 			inventoryDown+=dt;
+		if (throwDownP1 > -1)
+			throwDownP1 += dt;
+		if (throwDownP2 > -1)
+			throwDownP2 += dt;
+		if (useDownP1>-1)
+			useDownP1+=dt;
+		if (useDownP2>-1)
+			useDownP2+=dt;
 
-		if (useDown==0){
+		if (useDownP1==0){
 			getPlayer(0).getNearestInteractable().interact(getPlayer(0), this);
 			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
 			//if (loren.size()>0)
 			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 		}
-		useDown+=dt;
+		if (useDownP2==0){
+			getPlayer(1).getNearestInteractable().interact(getPlayer(1), this);
+			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
+			//if (loren.size()>0)
+			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
+		}
 	}
 
 	@Override
@@ -228,8 +260,12 @@ public class CustomGameView extends GameView{
 			if (buttonCode==11) //X
 				((CustomPlayer) controllable).attack(500);
 			
-			if (buttonCode==12)//B
-				((CustomPlayer) controllable).throwItem();
+			if (buttonCode==12){//B
+				if (id==0)
+					parent.throwDownP1 = 0;
+				else
+					parent.throwDownP2 = 0;
+			}
 			
 			if (buttonCode==14) //14=Y
 				parent.inventoryDown = 0;
@@ -241,7 +277,7 @@ public class CustomGameView extends GameView{
 				((CustomPlayer) controllable).getInventory().switchItems(false);
 			
 			if (buttonCode==15)//???
-				parent.useDown = 0;
+				parent.useDownP1 = 0;
 			return false;
 		}
 
@@ -249,6 +285,7 @@ public class CustomGameView extends GameView{
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
 			if (buttonCode==14){ //14=Y
 				parent.inventoryDown = -1;
+				
 			}
 			if (buttonCode==11) //X
 				((CustomPlayer) controllable).loadAttack();
@@ -276,7 +313,7 @@ public class CustomGameView extends GameView{
 			}
 			
 			controllable.setSpeedHorizontal(
-				(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
+				(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[id])
 			);
 			return false;
 		}
@@ -303,45 +340,39 @@ public class CustomGameView extends GameView{
 	}
     
     private class InputListener implements InputProcessor {
-		CustomGameView parent;
 
-		InputListener(CustomGameView parent) {
-			this.parent = parent;
+		InputListener() {
 		}
-		
-		
-	
-		
 
         @Override
         public boolean keyDown(int keycode) {
             if (!WE.getConsole().isActive()) {
                 //toggle minimap
-                 if (keycode == Input.Keys.M && getMinimap() != null){
-                     getMinimap().toggleVisibility();
-                 }
+				if (keycode == Input.Keys.M && getMinimap() != null){
+					getMinimap().toggleVisibility();
+				}
 
-                 //toggle eathquake
-                 if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
-					 parent.inventoryDown = 0;//register on down
-                 }
-				 
-				 //toggle eathquake
-                 if (keycode == Input.Keys.F){
-					 parent.useDown = 0;//register on down
-                 }
+				//toggle eathquake
+				if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
+					inventoryDown = 0;//register on down
+				}
 
-                 //pause
-                 //time is set 0 but the game keeps running
-                   if (keycode == Input.Keys.P) {
-                     //CVar.get("gamespeed").setValue("0");;
-                  } 
+				//toggle eathquake
+				if (keycode == Input.Keys.F){
+					 useDownP1 = 0;//register on down
+				}
 
-                 //reset zoom
-                 if (keycode == Input.Keys.Z) {
+				//pause
+				//time is set 0 but the game keeps running
+				  if (keycode == Input.Keys.P) {
+					//CVar.get("gamespeed").setValue("0");;
+				 } 
+
+                //reset zoom
+                if (keycode == Input.Keys.Z) {
                      getCameras().get(0).setZoom(1);
                      WE.getConsole().add("Zoom reset");
-                  }  
+				}  
 				 
 
                  //show/hide light engine
@@ -362,11 +393,32 @@ public class CustomGameView extends GameView{
 					keyControllerPlayer.jump();
 				
 				if (keycode==Input.Keys.TAB)
-					if (parent.getOrientation()==0)
-						parent.setOrientation(2);
+					if (getOrientation()==0)
+						setOrientation(2);
 					else 
-						parent.setOrientation(0);
+						setOrientation(0);
 				
+				//player 2 controlls
+				if (coop==0){
+					if (keycode == Input.Keys.NUMPAD_0) {
+						getPlayer(1).attack(500);
+					}
+					if (keycode == Input.Keys.NUMPAD_1) {
+						getPlayer(1).jump();
+					}
+					if (keycode==Input.Keys.NUMPAD_4)
+						getPlayer(1).getInventory().switchItems(true);
+			
+					if (keycode==Input.Keys.NUMPAD_5){
+						getPlayer(1).getInventory().switchItems(false);
+					}
+					if (keycode==Input.Keys.NUMPAD_3)//throw
+						throwDownP2=0;
+					
+					if (keycode==Input.Keys.COMMA){
+						useDownP2 =0;
+					}
+				}
             }
             
             return true;            
@@ -374,6 +426,16 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean keyUp(int keycode) {
+			if (coop==0){
+				if (keycode==Input.Keys.NUMPAD_2){
+					getPlayer(1).throwItem();
+				}
+			}
+			
+			if (keycode==Input.Keys.PERIOD){
+				getPlayer(0).throwItem();
+			}
+			
             return false;
         }
 
@@ -384,7 +446,9 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.RIGHT) keyControllerPlayer.throwItem();
+			if (button ==Buttons.RIGHT) {
+				throwDownP1 = 0;
+			}
 			if (button ==Buttons.LEFT) keyControllerPlayer.attack(500);
             return true;
         }
@@ -392,6 +456,9 @@ public class CustomGameView extends GameView{
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.LEFT) keyControllerPlayer.loadAttack();
+			if (button ==Buttons.RIGHT) {
+				getPlayer(0).throwItem();
+			}
             return true;
         }
 

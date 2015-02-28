@@ -82,6 +82,7 @@ public class PlacableSelector extends Table {
      */
     public void show(){
 		if (!isVisible()) {
+			placableGUI.setVisible(true);
 			placableGUI.moveToCenter(getWidth());
 			setVisible(true);
 		}
@@ -137,8 +138,9 @@ public class PlacableSelector extends Table {
     
     /**
      *
+	 * @param includingSelection including the colro selection gui
      */
-    public void hide(){
+    public void hide(boolean includingSelection){
         if (hasChildren()){
 			lastPosition = scroll.getScrollX();
             scroll.clearListeners();
@@ -149,8 +151,11 @@ public class PlacableSelector extends Table {
 			placableGUI.moveToBorder(placableGUI.getWidth()+100);
 			setVisible(false);
 		}
+		
+		if (includingSelection)
+			placableGUI.hide();
     }
-
+	
 	protected void showBlocks() {
 		mode = PlaceMode.Blocks;
 		placableGUI.setMode(mode);

@@ -47,25 +47,35 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
  */
 public class Toolbar extends Window {
 	public static enum Tool {
-		DRAW(0, "draw_button", true),
-		BUCKET(1, "bucket_button", true),
-		REPLACE(2, "replace_button", true),
-		SELECT(3, "pointer_button", false),
-		SPAWN(4, "entity_button", false),
-		ERASE(5, "eraser_button", true);
+		DRAW(0, "draw_button", true, false),
+		BUCKET(1, "bucket_button", true, false),
+		REPLACE(2, "replace_button", true, false),
+		SELECT(3, "pointer_button", false, false),
+		SPAWN(4, "entity_button", false, true),
+		ERASE(5, "eraser_button", false, false);
 	
 		private int id;
 		private String name;
-		private boolean worksOnBlocks;
+		private boolean selectFromBlocks;
+		private boolean selectFromEntities;
 		
-		private Tool(int id, String name, boolean worksOnBlocks) {
+		private Tool(int id, String name, boolean worksOnBlocks, boolean worksOnEntities) {
 			this.id = id;
 			this.name = name;
-			this.worksOnBlocks = worksOnBlocks;
+			this.selectFromBlocks = worksOnBlocks;
+			this.selectFromEntities = worksOnEntities;
 		}
 
 		public int getId() {
 			return id;
+		}
+
+		public boolean selectFromBlocks() {
+			return selectFromBlocks;
+		}
+
+		public boolean selectFromEntities() {
+			return selectFromEntities;
 		}
 	}
 	
@@ -92,6 +102,25 @@ public class Toolbar extends Window {
 			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
 			addActor(items[i]);
 		}
+		
+		//initialize selection
+		if (selectionLeft.selectFromBlocks) //show entities on left
+			left.showBlocks();
+		else {//show blocks on left
+			if (selectionLeft.selectFromEntities)
+				left.showEntities();
+			else left.hide(true);
+		}
+			
+		if (selectionRight.selectFromBlocks) //show entities on left
+			right.showBlocks();
+		else { //show blocks on left
+			if (selectionRight.selectFromEntities)
+				right.showEntities();
+			else {
+				right.hide(true);
+			}
+		}
 	}
 	
 	
@@ -117,7 +146,7 @@ public class Toolbar extends Window {
 	 * index of left mouse button.
 	 * @return 
 	 */
-	public Tool getSelectionLeft() {
+	public Tool getLeftTool() {
 		return selectionLeft;
 	}
 
@@ -125,7 +154,7 @@ public class Toolbar extends Window {
 	 * index of right mouse button.
 	 * @return 
 	 */
-	public Tool getSelectionRight() {
+	public Tool getRightTool() {
 		return selectionRight;
 	}
 
@@ -145,16 +174,24 @@ public class Toolbar extends Window {
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 			if (button==Buttons.LEFT) {
 				selectionLeft = tool;
-				if (tool.worksOnBlocks) //show entities on left
+				if (tool.selectFromBlocks) //show entities on left
 					left.showBlocks();
-				else //show blocks on left
-					left.showEntities();
+				else {//show blocks on left
+					if (tool.selectFromEntities)
+						left.showEntities();
+					else left.hide(true);
+				}
 			} else if (button==Buttons.RIGHT) {
 				selectionRight = tool;
-				if (tool.worksOnBlocks) //show entities on left
+				if (tool.selectFromBlocks) //show entities on left
 					right.showBlocks();
-				else //show blocks on left
-					right.showEntities();
+				else { //show blocks on left
+					if (tool.selectFromEntities)
+						right.showEntities();
+					else {
+						right.hide(true);
+					}
+				}
 			}
 			
 			return true;

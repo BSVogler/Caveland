@@ -336,9 +336,9 @@ public class MapEditorView extends GameView {
 				Tool toggledTool;
 				
 				if (button == Buttons.RIGHT){
-					toggledTool = toolSelection.getSelectionRight();
+					toggledTool = toolSelection.getRightTool();
 				} else {
-					toggledTool = toolSelection.getSelectionLeft();
+					toggledTool = toolSelection.getLeftTool();
 				}
 				
 				switch (toggledTool){
@@ -387,9 +387,9 @@ public class MapEditorView extends GameView {
 			Tool toggledTool;
 
 			if (button == Buttons.RIGHT){
-				toggledTool = toolSelection.getSelectionRight();
+				toggledTool = toolSelection.getRightTool();
 			} else {
-				toggledTool = toolSelection.getSelectionLeft();
+				toggledTool = toolSelection.getLeftTool();
 			}
 			
 			switch (toggledTool){
@@ -438,17 +438,17 @@ public class MapEditorView extends GameView {
 			}
 				
 			//dragging with left and has not bucket tool
-			if ( (buttondown==Buttons.LEFT && toolSelection.getSelectionLeft() != Toolbar.Tool.BUCKET)
-				&& (buttondown==Buttons.RIGHT && toolSelection.getSelectionRight() != Toolbar.Tool.BUCKET)
+			if ( (buttondown==Buttons.LEFT && toolSelection.getLeftTool() != Toolbar.Tool.BUCKET)
+				&& (buttondown==Buttons.RIGHT && toolSelection.getRightTool() != Toolbar.Tool.BUCKET)
 				
 			) { 
 				Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
-					if (buttondown==Buttons.LEFT && toolSelection.getSelectionLeft()==Tool.DRAW){
+					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){
 						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
-					} else if (buttondown == Buttons.RIGHT && toolSelection.getSelectionLeft()==Tool.DRAW) {
+					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
 						Block block = Block.getInstance(0);
 						block.setPosition(coords);
 						Controller.getMap().setData(block);
@@ -468,7 +468,7 @@ public class MapEditorView extends GameView {
 			rightColorGUI.update(selection);
 			
 			AbstractEntity entityUnderMouse = null;
-			if (toolSelection.getSelectionLeft() == Tool.SELECT && !selecting){
+			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting){
 				//find ent under mouse
 				for (AbstractEntity ent : getMap().getEntitys()) {
 					if (
@@ -490,19 +490,25 @@ public class MapEditorView extends GameView {
 			else WE.getEngineView().setCursor(0);
 
 					
-					
-            if (screenX<100)
+			//show selection list if mouse is at position and if tool supports selection		
+            if (
+				screenX<100
+				&& (toolSelection.getLeftTool().selectFromBlocks() || toolSelection.getLeftTool().selectFromEntities())
+			)
                 view.leftSelector.show();
             else if (view.leftSelector.isVisible() && screenX > view.leftSelector.getWidth())
-                view.leftSelector.hide();
+                view.leftSelector.hide(false);
 			
-			if (screenX > getStage().getWidth()-100)
+			if (
+				screenX > getStage().getWidth()-100
+				&& (toolSelection.getRightTool().selectFromBlocks() || toolSelection.getRightTool().selectFromEntities())
+			)
                 view.rightSelector.show();
             else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
-                view.rightSelector.hide();
+                view.rightSelector.hide(false);
 			
-			lastX =screenX; 	
-			lastY =screenY;
+			lastX = screenX; 	
+			lastY = screenY;
             return false;
         }
 

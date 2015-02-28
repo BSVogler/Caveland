@@ -187,6 +187,10 @@ public class PlacableGUI extends WidgetGroup {
 			setX(stage.getWidth()-amount);
 	}
 
+	void hide() {
+		setVisible(false);
+	}
+
 	private static class ChangeListenerImpl extends ChangeListener {
 		private PlacableGUI parent;
 
@@ -199,5 +203,4 @@ public class PlacableGUI extends WidgetGroup {
 			parent.setValue((int) ((Slider)actor).getValue());
 		}
 	}
-
 }

@@ -53,6 +53,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
 			);
 			interactButton.setLightlevel(1);
+			interactButton.setSaveToDisk(false);
 		}
 	}
 

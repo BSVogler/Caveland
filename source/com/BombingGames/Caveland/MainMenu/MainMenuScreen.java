@@ -196,7 +196,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			lettering.draw(batch);
 			alphaTag.draw(batch);
 
-			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+			font.draw(batch, "Caveland Alpha V1, FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 30);
         batch.end();
 		
 		stage.draw();

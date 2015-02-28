@@ -352,15 +352,21 @@ public class CustomGameView extends GameView{
 					getMinimap().toggleVisibility();
 				}
 
-				//toggle eathquake
-				if (keycode == Input.Keys.E){ //((ExplosiveBarrel)(getMapData(Chunk.getBlocksX()+5, Chunk.getBlocksY()+5, 3))).explode();
+				//use inventory
+				if (keycode == Input.Keys.E){
 					inventoryDown = 0;//register on down
 				}
 
-				//toggle eathquake
+				//interact
 				if (keycode == Input.Keys.F){
 					 useDownP1 = 0;//register on down
 				}
+				
+				//editor
+				if (keycode == Input.Keys.G){
+					 WE.loadEditor(false);
+				}
+				
 
 				//pause
 				//time is set 0 but the game keeps running

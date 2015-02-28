@@ -479,8 +479,6 @@ public class Camera implements LinkedWithMap {
 					overlay.draw(WE.getEngineView().getBatch());
 				WE.getEngineView().getBatch().end();
 			}
-		
-		view.drawString("z level: " + zRenderingLimit, screenPosX+200, screenPosY+100, true);
 		}
 	}
 

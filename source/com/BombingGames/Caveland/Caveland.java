@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland;
 
+import com.BombingGames.Caveland.Game.ChunkGenerator;
 import com.BombingGames.Caveland.Game.CustomBlockFactory;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
@@ -12,6 +13,7 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import java.io.File;
@@ -50,6 +52,9 @@ public class Caveland {
 		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
+		
+		Map.setDefaultGenerator(new ChunkGenerator());
+				
         WE.launch("Wurfelengine V" + WE.VERSION, args);
 		
 		//unpack map

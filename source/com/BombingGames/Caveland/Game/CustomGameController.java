@@ -23,7 +23,6 @@ public class CustomGameController extends Controller {
         super.init(new AirGenerator());
 
         player1 = new CustomPlayer();
-		getMap().setGenerator(new ChunkGenerator());
 		Block.setDestructionSound("blockDestroy");
 		Block.setDestructionAction(new CustomBlockDestructionAction());
 		

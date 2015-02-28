@@ -69,8 +69,8 @@ public class Toolbar extends Window {
 		}
 	}
 	
-	private Tool selectionLeft = Tool.BUCKET;
-	private Tool selectionRight = Tool.BUCKET;
+	private Tool selectionLeft = Tool.DRAW;
+	private Tool selectionRight = Tool.ERASE;
 	
 	private int leftPos;
 	private int bottomPos;

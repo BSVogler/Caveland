@@ -282,7 +282,8 @@ public class WE {
 			+ "Created by:"+newline
             + "Benedikt S. Vogler"+newline+newline
             + "Quality Assurance:"+newline
-            + "Thomas Vogt"+newline+newline;
+            + "Thomas Vogt"+newline+newline
+			+ "Wurfel Engine uses libGDX."+newline;
     }
     
    /**

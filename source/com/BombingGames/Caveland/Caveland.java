@@ -95,7 +95,8 @@ public class Caveland {
 			"Bernhard Vogler\n" +
 			"Pia Lenszen\n" +
 			"reddit.com/r/gamedev\n" +
-			"Bauhaus University Weimar";
+			"Bauhaus University Weimar\n\n"
+			+ "Wurfel Engine uses libGDX.\n";
 	
 	}	
     

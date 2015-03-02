@@ -97,7 +97,7 @@ public class MineCart extends MovableEntity {
 					break;
 			}
 			
-			if (getSpeed() > 0) {
+			if (getSpeedHor()> 0) {
 				setSpeedHorizontal(3);//accelarate to max
 			}
 		} else {//offroad

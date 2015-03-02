@@ -33,7 +33,7 @@ public class MineCart extends MovableEntity {
 
 		//on tracks?
 		if (block.getId() == 55) {
-			setFriction(10000);
+			setFriction(0.001f);
 			
 			switch (block.getValue()) {
 				case 0://straight left bottom to top right
@@ -100,7 +100,7 @@ public class MineCart extends MovableEntity {
 					isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
 			}
 		} else {//offroad
-			setFriction(500);
+			setFriction(0.005f);
 			if (isPlayingSound!=0) {
 				Controller.getSoundEngine().stop("wagon", isPlayingSound);
 				isPlayingSound = 0;

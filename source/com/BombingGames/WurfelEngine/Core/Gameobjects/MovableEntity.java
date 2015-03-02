@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +49,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * time in ms to pass before new sound can be played
 	 */
 	private static float soundTimeLimit;
-	private transient static String waterSound;
+	private transient static String waterSound = "splash";
      	
 	   /**
      * Set the value of waterSound
@@ -115,7 +114,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		coliding = true;
 		floating = false;
 		friction = CVar.get("friction").getValuef();
-        if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
 		enableShadow();
    }
    
@@ -129,7 +127,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		coliding = entity.coliding;
 		floating = entity.floating;
 		collectable = entity.collectable;
-		if (waterSound!=null) waterSound =  WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/splash.ogg");
 		enableShadow();
 	}
 	

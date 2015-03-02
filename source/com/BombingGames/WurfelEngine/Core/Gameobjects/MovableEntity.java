@@ -573,6 +573,23 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public float getSpeed() {
 		return movement.len();
 	}
+	
+		/**
+	 * Turns an object in a different direction.
+	 * @param orientation the new orientation
+	 */
+	public void setOrientation(Vector2 orientation){
+		this.orientation = orientation;
+		setMovement(orientation.cpy().scl(getSpeedHor()));
+	}
+	
+	/**
+	 * updates the orientation vector
+	 */
+	private void updateOrientation() {
+		if (getMovementHor().len2() != 0)//only update if there is new information, else keep it
+			orientation = getMovementHor().nor();
+	}
 
 	public boolean isColiding() {
 		return coliding;
@@ -720,10 +737,5 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public void step() {
 		Controller.getSoundEngine().play(stepSound1Grass, 0.5f,(float) (0.9f+Math.random()/5f), (float) (Math.random()-1/2f));
 		stepSoundPlayedInCiclePhase = true;
-	}
-
-	private void updateOrientation() {
-		if (getMovementHor().len2() != 0)//only update if there is new information, else keep it
-			orientation = getMovementHor().nor();
 	}
 }

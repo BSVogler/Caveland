@@ -495,6 +495,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * Sets speed and direction.
 	 * @param movement containing direction and speed.
 	 */
+	/**
+	 * Sets speed and direction.
+	 * @param movement containing direction and speed.
+	 */
 	public void setMovement(Vector3 movement){
 		this.movement = movement;
 		updateOrientation();
@@ -528,7 +532,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Set the horizontal movement and ignore z
+	 * Set the horizontal movement and keeps z
 	 * @param movement 
 	 */
 	public void setHorMovement(Vector2 movement){

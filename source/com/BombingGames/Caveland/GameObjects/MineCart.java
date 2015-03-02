@@ -22,6 +22,7 @@ public class MineCart extends MovableEntity {
 	
 	public MineCart() {
 		super(42, 0);
+		setName("MineCart");
 		setOrientation(new Vector2(1, 1));
 	}
 

@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/Caveland4knormal.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/CavelandNormal.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -193,8 +193,8 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>blocks4knormal</filename>
-            <filename>entities4knormal</filename>
+            <filename>blocksNormal</filename>
+            <filename>entitiesNormal</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -447,8 +447,22 @@ public class CustomPlayer extends Controllable {
 
 	@Override
 	public void jump() {
-		if (!airjump || isOnGround()){
-			if (!isOnGround()) airjump=true;
+		if (!airjump || allowBunnyHop()){
+			if (!allowBunnyHop())
+				airjump=true;//do an airjump
+			else {
+				if (!isOnGround()) {//doing bunnyhop and not on ground
+					onCollide();
+					onLand();
+					String landingSound = getLandingSound();
+					if (landingSound != null)
+						Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound
+					step();
+				}
+				Vector3 resetZ = getMovement().cpy();
+				resetZ.z =0;
+				setMovement(resetZ);
+			}
 			jump(5, !airjump);
 			playAnimation('j');
 			if (airjump) {
@@ -469,6 +483,19 @@ public class CustomPlayer extends Controllable {
 				
 			}
 		}
+	}
+	
+	/**
+	 * Checks if the groudn is near. Allows jumping wihtout checking the floor
+	 * @return 
+	 * @see AbstractEntity#isOnGround()
+	 */
+	private boolean allowBunnyHop(){
+		final int bunnyhopDistance = 20;
+		getPosition().setZ(getPosition().getZ()-bunnyhopDistance);
+		boolean colission = isOnGround();       
+        getPosition().setZ(getPosition().getZ()+bunnyhopDistance);
+		return colission;
 	}
 
 	/**
@@ -512,6 +539,7 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void onLand() {
 		playAnimation('w');
+		step();
 	}
 	
 	@Override

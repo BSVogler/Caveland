@@ -451,7 +451,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     public void setLandingSound(String landingSound) {
         this.landingSound = landingSound;
     }
-    
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public String getLandingSound() {
+		return landingSound;
+	}
+	
     /**
      *
      * @param sound

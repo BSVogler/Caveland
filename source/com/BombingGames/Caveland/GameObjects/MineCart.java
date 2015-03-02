@@ -4,6 +4,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -35,13 +36,11 @@ public class MineCart extends MovableEntity {
 		if (block.getId() == 55) {
 			setFriction(10000);
 			
-			float movZ = getMovement().z;
 			switch (block.getValue()) {
 				case 0://straight left bottom to top right
-					setMovement(new Vector3(
+					setOrientation(new Vector2(
 							getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
-							getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1,
-							movZ
+							getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1
 						)
 					);
 					//move on y=-x
@@ -53,11 +52,10 @@ public class MineCart extends MovableEntity {
 					);
 					break;
 				case 1:
-					setMovement(
-						new Vector3(
+					setOrientation(
+						new Vector2(
 							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-							movZ
+							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1
 						)
 					);
 					//move on y=-x
@@ -78,18 +76,20 @@ public class MineCart extends MovableEntity {
 						y = -1;
 					}
 
-					setMovement(new Vector3(
-						0,
-						y,//coming from top right
-						movZ)
+					setOrientation(
+						new Vector2(
+							0,
+							y//coming from top right
+						)
 					);
 					break;
 				case 2:
 				case 4:
-					setMovement(new Vector3(
-						getMovement().x >= 0 ? 1 : -1,//coming from left
-						0,
-						movZ)
+					setOrientation(
+						new Vector2(
+							getMovement().x >= 0 ? 1 : -1,//coming from left
+							0
+						)
 					);
 					break;
 			}
@@ -228,11 +228,10 @@ public class MineCart extends MovableEntity {
 	
 	
 	public void turn() {
-		setMovement(
-			new Vector3(
+		setOrientation(
+			new Vector2(
 				-getOrientation().x,
-				-getOrientation().y,
-				getMovement().z
+				-getOrientation().y
 			)
 		);
 	}

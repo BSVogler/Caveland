@@ -457,6 +457,7 @@ public class CustomGameView extends GameView{
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.RIGHT) {
 				throwDownP1 = 0;
+				getPlayer(0).prepareThrow();
 			}
 			if (button ==Buttons.LEFT) keyControllerPlayer.attack(500);
             return true;

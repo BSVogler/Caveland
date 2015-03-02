@@ -93,7 +93,13 @@ public class CustomPlayer extends Controllable {
 	
 	private int spriteNum = 1;
 	private int animationCycle;
+	/** false means pause*/
+	private boolean playAnimation;
 	private char action = 'w';
+	/**
+	 * play the throw animation till load is finished
+	 */
+	private boolean prepareThrow;
 	
     public CustomPlayer() {
         super(30, 0);
@@ -142,75 +148,91 @@ public class CustomPlayer extends Controllable {
 		
 		//some redundant code from movable to have a custom animation
 		Point pos = getPosition();
-		if (action=='h')
-			animationCycle += dt*5;
-		else
-			animationCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+		if (playAnimation) {
+			if (action=='w')
+				animationCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+			else
+				animationCycle += dt*5;
+		}
 		
 		//cycle the cycle
 		if (animationCycle >= 1000) {
-			if (action=='h')//play hit only once
-				action='w';
 			animationCycle %= 1000;
+			if (action=='l' || action=='i' || action=='t')//animation to play only once
+				playAnimation=false;//pause
+			else if (action=='h')//play hit only once then continue with load
+				action='l';
 		}
 		
 		//detect direciton
 		int animationStart;
 		if (getOrientation().x < -Math.sin(Math.PI/3)){
-			animationStart = 49;//west
+			animationStart = 6;//west
 		} else {
 			if (getOrientation().x < - 0.5){
 				//y
 				if (getOrientation().y<0){
-					animationStart = 41;//north-west
+					animationStart = 5;//north-west
 				} else {
-					animationStart = 57;//south-east
+					animationStart = 7;//south-east
 				}
 			} else {
 				if (getOrientation().x <  0.5){
 					//y
 					if (getOrientation().y<0){
-						animationStart = 33;//north
+						animationStart = 4;//north
 					}else{
-						animationStart = 1;//south
+						animationStart = 0;//south
 					}
 				}else {
 					if (getOrientation().x < Math.sin(Math.PI/3)) {
 						//y
 						if (getOrientation().y < 0){
-							animationStart = 25;//north-east
+							animationStart = 3;//north-east
 						} else{
-							animationStart = 9;//sout-east
+							animationStart = 1;//sout-east
 						}
 					} else{
-						animationStart = 17;//east
+						animationStart = 2;//east
 					}
 				}
 			}
 		}
-		
 		//fix for different starting positions
-		if (action!='w' && action!='j')
-			animationStart -=8;
-		if (animationStart<0)
-			animationStart=57;
+		if (action!='w' && action!='j' && action!='t')
+			animationStart -=1;
 		
-		//animation
+		if (animationStart<0)
+			animationStart=7;
+		
+		if (action=='t' || action=='i')
+			animationStart*=6;
+		else
+			animationStart*=8;
+		
+		animationStart+=1;
+		
+
+		
+		//manage animation
 		int animationStep;
-		if (action=='t') {
-			animationStep = animationCycle/(1000/6);//six sprites for throwing
-			spriteNum = animationStart + animationStep;
-			if (spriteNum>48) spriteNum=48;//clamp at 48 //todo temporary fix to avoid crash
+		if (action=='t' || action=='i') {//throw or hit2
+			animationStep = (int) (animationCycle/(1000/6f));//six sprites for each animation
+			
+			//stop throwing anitmation if it is loaded
+			if (prepareThrow && animationStep>0){
+				playAnimation=false;
+				animationStep=1;
+			}
 		} else {
-			animationStep = animationCycle/(1000/8);//animation walking sprites
+			animationStep = (int) (animationCycle/(1000/8f));//animation sprites with 8 steps
 		
 			if (action=='j' && animationStep>3) { //todo temporary fix to avoid landing animation
 				animationStep=3;
-				animationCycle=375;
-			}
-			spriteNum = animationStart + animationStep;
+				playAnimation=false;
+			} 
 		}
-		
+		spriteNum = animationStart + animationStep;
 		
 		//detect button hold
 		if (loadAttack != 0f) loadAttack+=dt;
@@ -282,6 +304,9 @@ public class CustomPlayer extends Controllable {
 		} else if (nearestEntity != null)
 			nearestEntity.hideButton();
 		
+		//play walking animation
+			if (isOnGround() && getSpeedHor()>0 && (!playAnimation))
+				playAnimation('w');
 		
 		if (isOnGround()) airjump=false;
 	}
@@ -334,13 +359,21 @@ public class CustomPlayer extends Controllable {
 	}
 	
 	
+	public void prepareThrow(){
+		playAnimation('t');
+		prepareThrow=true;
+	}
 	
 	public void throwItem(){
 		try {
 			MovableEntity item = inventory.getFrontItem();
-			if (item != null) {
-				//throw is performed
-				playAnimation('t');
+			if (item != null) {//throw is performed if there is an item to throw
+				//play animation
+				if (action!='t')//check if not in loaded position
+					playAnimation('t');
+				playAnimation=true;
+				prepareThrow=false;
+				
 				item.setMovement(getAiming().scl(3f));//throw with 3 m/s
 				//item.setSpeed(0.5f);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*1.5f));
@@ -355,7 +388,10 @@ public class CustomPlayer extends Controllable {
 	 * @param damage
 	 */
 	public void attack(int damage){
-		playAnimation('h');
+		if(action=='l')
+			playAnimation('i');
+		else playAnimation('h');
+		
 		Controller.getSoundEngine().play("sword");
 		addToHor(8f);//add 5 m/s in move direction
 		
@@ -439,7 +475,7 @@ public class CustomPlayer extends Controllable {
 	}
 
 	/**
-	 * should be called on button release. Checks if a big attack should be performed.
+	 * should be called on button release. Performs the load attack.
 	 */
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME) {
@@ -493,6 +529,9 @@ public class CustomPlayer extends Controllable {
 	private void playAnimation(char c) {
 		action = c;
 		animationCycle=0;
+		playAnimation=true;
+		if (c!='t')
+			prepareThrow=false;
 	}
 	
 	

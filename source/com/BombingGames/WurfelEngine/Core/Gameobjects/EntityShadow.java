@@ -30,7 +30,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.LightEngine.PseudoGrey;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.badlogic.gdx.graphics.Color;
 
@@ -53,6 +52,9 @@ public class EntityShadow extends AbstractEntity {
 
     @Override
     public void update(float dt) {
+		setColor(
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ()- getPosition().getZ())/4/Block.GAME_EDGELENGTH)
+		);
 		if (character==null)
 			dispose();
 		else {
@@ -72,10 +74,7 @@ public class EntityShadow extends AbstractEntity {
     @Override
     public void render(GameView view, Camera camera) {
 		if (!shouldBeDisposed()){
-			Color color = PseudoGrey.toColor(
-					(character.getPosition().getZ()- getPosition().getZ())/Block.GAME_EDGELENGTH
-					);//make color out of distance from player
-			super.render(view, camera,color);
+			super.render(view, camera);
 		}
     }
 }

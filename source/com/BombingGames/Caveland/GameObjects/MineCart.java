@@ -22,8 +22,7 @@ public class MineCart extends MovableEntity {
 	
 	public MineCart() {
 		super(42, 0);
-		setMovement(new Vector3(1, 1, 0));
-		//setSpeed(0);
+		setOrientation(new Vector2(1, 1));
 	}
 
 	@Override

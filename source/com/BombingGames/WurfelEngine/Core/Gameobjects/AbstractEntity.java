@@ -104,7 +104,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			shadow.update(dt);
 	};
 		
-    //IsSelfAware implementation
+    //AbstractGameObject implementation
     @Override
     public Point getPosition() {
         return position;

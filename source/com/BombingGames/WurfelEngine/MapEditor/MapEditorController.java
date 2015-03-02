@@ -55,7 +55,7 @@ public class MapEditorController extends Controller {
      */
     private Map mapsave;
     private boolean reverseMap;
-    private Selection selectionEntity;
+    private Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
    /**
@@ -66,9 +66,9 @@ public class MapEditorController extends Controller {
     }
     
     /**
-     * Create an editor controller with coressponding gameplay classes.
-     * @param gameplayView the old gameplay classes. If "null": the editor then chooses a basic controller.
-     * @param gameplayController the old gameplay classes.  If "null": the editor then chooses a basic view.
+     * Create an editor controller with coresponding gameplay classes.
+     * @param gameplayView the old gameplay classes. If <i>null</i>: the editor then chooses a basic view.
+     * @param gameplayController the old gameplay classes.  If <i>null</i>: the editor then chooses a basic controller.
      */
     public MapEditorController(GameView gameplayView, Controller gameplayController) {
         if (gameplayController == null)
@@ -82,25 +82,33 @@ public class MapEditorController extends Controller {
             this.gameplayView = gameplayView;
     }
 
+	public Controller getGameplayController() {
+		return gameplayController;
+	}
+
+	public GameView getGameplayView() {
+		return gameplayView;
+	}
+	
     @Override
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-        selectionEntity = new Selection();
-        //focusentity.setPositionY(Block.DIM2+1f);
-        selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
+		if (!selectionEntity.spawned()) selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
     }
     
 
     @Override
     public void onEnter(){
 		super.onEnter();
-		CVar.get("timespeed").setValuef(0f);
+		CVar.get("timespeed").setValuef(0f);//stop the game time
         Gdx.app.debug("MEController", "entered");
         if (reverseMap && mapsave != null)
             Controller.setMap(mapsave);
         else
             mapsave = null;
+		
+        if (!selectionEntity.spawned()) selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
     }
     
     /**

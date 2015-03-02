@@ -93,7 +93,14 @@ public class MapEditorView extends GameView {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        addCamera(camera = new Camera(this));
+        addCamera(camera = new Camera(
+			this.controller.getGameplayView().getCameras().get(0).getCenter(),
+			0,
+			0,
+			Gdx.graphics.getWidth(),
+			Gdx.graphics.getHeight(),
+			this)
+		);
         
         if (getMinimap()==null)
 			setMinimap(
@@ -175,11 +182,12 @@ public class MapEditorView extends GameView {
     
     /**
      *
-     * @param x
-     * @param y
+     * @param x in view space (?)
+     * @param y in view space (?)
      */
     protected void setCameraMoveVector(float x,float y){
-        camermove = new Vector2(x, y);
+        camermove.x = x;
+        camermove.y = y;
     }
     
     /**

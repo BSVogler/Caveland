@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.CameraSpaceIterator;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -101,7 +100,6 @@ public class Camera implements LinkedWithMap {
 
 	private float zoom = 1;
 
-	private Coordinate focusCoordinates;
 	private AbstractEntity focusEntity;
 
 	private boolean fullWindow = false;
@@ -143,10 +141,10 @@ public class Camera implements LinkedWithMap {
 		screenPosX = x;
 		screenPosY = y;
 		updateViewSpaceSize();
-
-		focusEntity = new SimpleEntity(0);
-		focusEntity.setPosition( Map.getCenter() );//set the camera's focus to the center of the map
-		focusEntity.setHidden(true);
+		
+		Point center = Map.getCenter();
+		position.x = center.getViewSpcX(gameView);
+		position.y = center.getViewSpcY(gameView);
 	}
 	
 	/**
@@ -178,7 +176,7 @@ public class Camera implements LinkedWithMap {
 	 * with <i>focusCoordinates()</i>. Screen size does refer to the output of
 	 * the camera not the real size on the display.
 	 *
-	 * @param focus the coordiante where the camera focuses
+	 * @param center the point where the camera focuses
 	 * @param x the position in the application window (viewport position). Origin top left
 	 * @param y the position in the application window (viewport position). Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
@@ -187,10 +185,11 @@ public class Camera implements LinkedWithMap {
 	 * the application window (viewport)
 	 * @param view
 	 */
-	public Camera(final Coordinate focus, final int x, final int y, final int width, final int height, GameView view) {
+	public Camera(final Point center, final int x, final int y, final int width, final int height, GameView view) {
 		this(x, y, width, height, view);
-		WE.getConsole().add("Creating new camera which is focusing a coordinate");
-		focusCoordinates = focus;
+		WE.getConsole().add("Creating new camera.");
+		position.x = center.getViewSpcX(gameView);
+		position.y = center.getViewSpcY(gameView);
 	}
 
 	/**
@@ -213,7 +212,6 @@ public class Camera implements LinkedWithMap {
 		}
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
-		this.focusCoordinates = null;
 	}
 
 	/**
@@ -223,13 +221,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public void update(float dt) {
 		if (active){
-			//refresh the camera's position in the game world
-			if (focusCoordinates != null) {
-				//update camera's position according to focusCoordinates
-				position.x = focusCoordinates.getViewSpcX(gameView);
-				position.y = focusCoordinates.getViewSpcY(gameView);
-
-			} else {
+			if (focusEntity!=null) {
 				//update camera's position according to focusEntity
 				position.x = focusEntity.getPosition().getViewSpcX(gameView);
 				position.y = (int) (
@@ -720,16 +712,6 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Use this if you want to focus on a special groundBlock.
-	 *
-	 * @param coord the coordaintes of the groundBlock.
-	 */
-	public void focusOnCoords(Coordinate coord) {
-		focusCoordinates = coord;
-		focusEntity = null;
-	}
-
-	/**
 	 * Returns the left border of the visible area.
 	 *
 	 * @return measured in grid-coordinates
@@ -814,7 +796,7 @@ public class Camera implements LinkedWithMap {
 	 * @return game in pixels
 	 */
 	public float getViewSpaceX() {
-		return focusEntity.getPosition().getViewSpcX(gameView);
+		return getCenter().getViewSpcX(gameView);
 	}
 
 	/**
@@ -823,7 +805,7 @@ public class Camera implements LinkedWithMap {
 	 * @return in camera position game space
 	 */
 	public float getViewSpaceY() {
-		return focusEntity.getPosition().getViewSpcY(gameView);
+		return getCenter().getViewSpcY(gameView);
 	}
 
 	/**
@@ -955,12 +937,16 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * Move x and y coordinate
-	 *
-	 * @param x
-	 * @param y
+	 * @param x in game space if has focusentity, else in view space (?)
+	 * @param y in game space if has focusentity, else in view space (?)
 	 */
 	public void move(int x, int y) {
-		focusEntity.getPosition().addVector(x, y, 0);
+		if(focusEntity != null)
+			focusEntity.getPosition().addVector(x, y, 0);
+		else {
+			position.x +=x;
+			position.y +=y;
+		}
 	}
 
 	/**
@@ -997,17 +983,15 @@ public class Camera implements LinkedWithMap {
 	 * Returns the focuspoint
 	 * @return 
 	 */
-	public Coordinate getCenter() {
-		if (focusCoordinates!=null)
-			return focusCoordinates;
-		else if (focusEntity!=null)
-			return focusEntity.getPosition().getCoord();
+	public Point getCenter() {
+		if (focusEntity!=null)
+			return focusEntity.getPosition();
 		else return
 			new Point(
 				position.x,
-				Map.getGameDepth()-position.y,
+				-position.y*2,
 				0
-			).getCoord();//view to game
+			);//view to game
 	}
 
 	public boolean[] getClipping(Coordinate coords) {

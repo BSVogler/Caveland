@@ -110,9 +110,6 @@ public class CustomPlayer extends Controllable {
 		setFriction(CVar.get("playerfriction").getValuef());
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
-		
-		inventory.add(new Collectible(Collectible.ColTypes.COAL));
-		inventory.add(new Collectible(Collectible.ColTypes.SULFUR));
     }
 	
 	/**

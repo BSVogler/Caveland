@@ -338,7 +338,7 @@ public class Map implements Cloneable{
 	}
 	
 	/**
-	 * get the chunk with the given chunk coords
+	 * get the chunk with the given chunk coords. <br />Runtime: O(c) where c = amount of chunks -> O(1)
 	 * @param chunkX
 	 * @param chunkY
 	 * @return if not in memory return null

@@ -1000,18 +1000,13 @@ public class Camera implements LinkedWithMap {
 		//get the index position in the clipping field
 		int indexX = coords.getX()-getCoveredLeftBorder();
 		int indexY = coords.getY()-getCoveredBackBorder();
-		int indexZ = coords.getZ()+1;
 		//check if covered by camera
 		if ( indexX >= 0
 			&& indexX < clipping.length
 			&& indexY >= 0
 			&& indexY < clipping[0].length
 		) {
-			return new boolean[]{
-				clipping[indexX][indexY][indexZ][0],
-				clipping[indexX][indexY][indexZ][1],
-				clipping[indexX][indexY][indexZ][2]
-			};
+			return clipping[indexX][indexY][coords.getZ()+1];
 		} else {
 			//if not return fully clipped
 			return new boolean[]{true, true, true};

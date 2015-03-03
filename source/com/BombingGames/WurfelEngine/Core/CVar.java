@@ -136,7 +136,7 @@ public class CVar {
 		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.i;
-		cvars.put(name.toLowerCase().intern(), cvar);
+		cvars.put(name.toLowerCase(), cvar);
 	};
 	
 	/**
@@ -152,7 +152,7 @@ public class CVar {
 		cvar.defaultValue = value;
 		cvar.flags = flags;
 		cvar.type = Type.f;
-		cvars.put(name.toLowerCase().intern(), cvar);
+		cvars.put(name.toLowerCase(), cvar);
 	};
 	
 	/**
@@ -171,7 +171,7 @@ public class CVar {
 			cvar.defaultValue = 0;
 		cvar.flags = flags;
 		cvar.type = Type.b;
-		cvars.put(name.toLowerCase().intern(), cvar);
+		cvars.put(name.toLowerCase(), cvar);
 	};
 	
 	/**
@@ -181,7 +181,7 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static CVar get(String cvar){
-		return cvars.get(cvar.toLowerCase().intern());
+		return cvars.get(cvar.toLowerCase());
 	}
 	
 		/**

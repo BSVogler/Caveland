@@ -52,6 +52,9 @@ public abstract class View {
 	 */
 	private boolean inDebug;
 	
+	/**
+	 * initializes the view.
+	 */
     public void init(){
 		loadShaders();
     }

@@ -352,8 +352,8 @@ public abstract class AbstractGameObject implements Serializable {
     /**
      * Renders at a custom position.
      * @param view
-     * @param xPos rendering position, center of sprite in view space (?)
-     * @param yPos rendering position, center of sprite in view space (?)
+     * @param xPos rendering position, center of sprite in projection (?) space 
+     * @param yPos rendering position, center of sprite in projection (?) space
      */
     public void render(GameView view, int xPos, int yPos) {
 		render(view, xPos, yPos, null);
@@ -362,8 +362,8 @@ public abstract class AbstractGameObject implements Serializable {
 	    /**
      * Renders at a custom position with a custom light.
      * @param view
-     * @param xPos rendering position, center of sprite in view space (?)
-     * @param yPos rendering position, center of sprite in view space (?)
+     * @param xPos rendering position, center of sprite in projection space (?)
+     * @param yPos rendering position, center of sprite in projection space (?)
 	 * @param color
      */
     public void render(GameView view, int xPos, int yPos, Color color) {

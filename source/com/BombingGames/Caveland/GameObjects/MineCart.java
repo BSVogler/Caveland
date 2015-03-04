@@ -222,7 +222,7 @@ public class MineCart extends MovableEntity {
 		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 			Controller.getSoundEngine().play("robot1destroy", getPosition());
-			((Collectible) new Collectible(Collectible.ColTypes.IRONORE).spawn(getPosition())).sparkle();
+			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE).spawn(getPosition())).sparkle();
 		}
 	}
 	

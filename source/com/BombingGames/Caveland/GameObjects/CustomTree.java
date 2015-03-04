@@ -61,7 +61,7 @@ public class CustomTree extends Block {
 		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
 			otherHalf.destroy();
 			
-		new Collectible(Collectible.ColTypes.WOOD).spawn(getPosition().getPoint());			
+		Collectible.create(Collectible.CollectibleType.WOOD).spawn(getPosition().getPoint());			
 	}
 
 	

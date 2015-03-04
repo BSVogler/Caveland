@@ -17,7 +17,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	/**
 	 * a enum which lists the types of collectibles
 	 */
-	public static enum ColTypes {
+	public static enum CollectibleType {
 		WOOD(46),
 		EXPLOSIVES(47),
 		IRONORE(48),
@@ -27,14 +27,25 @@ public class Collectible extends MovableEntity implements Serializable {
 		
 		private int id;
 
-		private ColTypes(int id) {
+		private CollectibleType(int id) {
 			this.id = id;
 		}
 	}
 
-	private ColTypes def;
+	/**
+	 * factory method
+	 * @param def
+	 * @return 
+	 */
+	public static Collectible create(CollectibleType def){
+		if (def==CollectibleType.EXPLOSIVES)
+			return new TFlint(def);
+		else return new Collectible(def);
+	}
+	
+	private CollectibleType def;
 
-	public Collectible(ColTypes def) {
+	protected Collectible(CollectibleType def) {
 		super(def.id, 0);
 		this.def = def;
 		setFloating(false);
@@ -81,7 +92,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		setMovement(new Vector3((float) Math.random()-0.5f,(float) Math.random()-0.5f,(float)  Math.random()));
 	}
 
-	public ColTypes getColTypes() {
+	public CollectibleType getType() {
 		return def;
 	}
 	
@@ -93,7 +104,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
          stream.defaultReadObject(); //fills fld1 and fld2;
-		 def = ColTypes.COAL;//todo, proper serialisation and ddeserialisation of enum
+		 def = CollectibleType.COAL;//todo, proper serialisation and ddeserialisation of enum
 		 //http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
     }
 }

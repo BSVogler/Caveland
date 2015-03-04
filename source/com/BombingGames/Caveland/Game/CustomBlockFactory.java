@@ -19,16 +19,16 @@ public Block produce(int id, int value) {
 	Block block;
 	switch (id){
 		case 41:
-			block = new Ore(id, Collectible.ColTypes.CRISTALL);
+			block = new Ore(id, Collectible.CollectibleType.CRISTALL);
 		break;
 		case 42:
-			block = new Ore(id, Collectible.ColTypes.SULFUR);
+			block = new Ore(id, Collectible.CollectibleType.EXPLOSIVES);
 		break;
 		case 43:
-			block = new Ore(id, Collectible.ColTypes.IRONORE);
+			block = new Ore(id, Collectible.CollectibleType.IRONORE);
 		break;	
 		case 44:
-			block = new Ore(id, Collectible.ColTypes.COAL);
+			block = new Ore(id, Collectible.CollectibleType.COAL);
 		break;  
 		case 55:
 			block = new RailBlock();
@@ -97,9 +97,9 @@ public Block produce(int id, int value) {
 
 		@Override
 		public void onDestroy() {
-			new Collectible(def).spawn(getPosition().getPoint().cpy());
-			new Collectible(def).spawn(getPosition().getPoint().cpy());
-			new Collectible(def).spawn(getPosition().getPoint().cpy());
+			Collectible.create(def).spawn(getPosition().getPoint().cpy());
+			Collectible.create(def).spawn(getPosition().getPoint().cpy());
+			Collectible.create(def).spawn(getPosition().getPoint().cpy());
 		}
 		
 		

@@ -90,9 +90,9 @@ public Block produce(int id, int value) {
 	}
 
 	private static class Ore extends Block {
-		private final Collectible.ColTypes def;
+		private final Collectible.CollectibleType def;
 
-		Ore(int id, Collectible.ColTypes def) {
+		Ore(int id, Collectible.CollectibleType def) {
 			super(id);
 			setObstacle(true);
 			this.def = def;

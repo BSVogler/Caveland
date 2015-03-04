@@ -13,11 +13,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
@@ -31,8 +31,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
 	private ShapeRenderer shr;
-	private Sprite lettering;
-	private Sprite alphaTag; 
+	private Image lettering;
+	private Image alphaTag; 
     private Texture background;
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -50,6 +50,14 @@ public class MainMenuScreen extends AbstractMainMenu {
 		shr = new ShapeRenderer();
 		
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+		
+		//load textures
+        lettering = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
+		lettering.scaleBy(WE.getEngineView().getEqualizationScale()-1);
+		stage.addActor(lettering);
+		alphaTag = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/alphaTag.png")));
+		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
+		stage.addActor(alphaTag);
 		
 		//add buttons
 		int i=0;
@@ -127,10 +135,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 			stage.addActor(menuItem);
 		}
 		
-		//load textures
-        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
-		alphaTag = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/alphaTag.png")));
-        
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		
         //set the center to the top left
@@ -161,22 +165,24 @@ public class MainMenuScreen extends AbstractMainMenu {
 		}
 		
 		lettering.setX(
-			(Gdx.graphics.getWidth() - lettering.getWidth())/2
+			(Gdx.graphics.getWidth() - lettering.getWidth()*lettering.getScaleX())/2
 			- (Gdx.input.getX()/(float) Gdx.graphics.getWidth()-0.5f)*10//move by cursor
 		);
         lettering.setY(
-			Gdx.graphics.getHeight()- lettering.getHeight()-30
+			Gdx.graphics.getHeight()- lettering.getHeight()*lettering.getScaleY()-30
 			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.5f)*10//move by cursor
 		);
+		//lettering.setScale(WE.getEngineView().getEqualizationScale());
 		alphaTag.setX(
-			(Gdx.graphics.getWidth() - alphaTag.getWidth())/2
+			(Gdx.graphics.getWidth() - alphaTag.getWidth()*alphaTag.getScaleX())/2
 			- (Gdx.input.getX()/(float) Gdx.graphics.getWidth()-0.6f)*5//move by cursor
-			+300
+			+300*alphaTag.getScaleX()
 		);
         alphaTag.setY(
-			Gdx.graphics.getHeight()- alphaTag.getHeight()-350
+			Gdx.graphics.getHeight()- (alphaTag.getHeight()+350)*alphaTag.getScaleY()
 			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.6f)*5//move by cursor
 		);
+		//alphaTag.setScale(WE.getEngineView().getEqualizationScale());
 		
 		//render
 		 //clear & set background to black
@@ -193,8 +199,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
-			lettering.draw(batch);
-			alphaTag.draw(batch);
 
 			font.draw(batch, "Caveland Alpha V1, FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 30);
         batch.end();

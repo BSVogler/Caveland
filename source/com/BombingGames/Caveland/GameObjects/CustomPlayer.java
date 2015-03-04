@@ -143,6 +143,8 @@ public class CustomPlayer extends Controllable {
 	public void update(float dt) {
 		super.update(dt);
 		
+		inventory.update(dt);
+		
 		//some redundant code from movable to have a custom animation
 		Point pos = getPosition();
 		if (playAnimation) {

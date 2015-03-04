@@ -108,6 +108,17 @@ public class Inventory implements Serializable {
 	}
 	
 	/**
+	 * Updates the items in the slots.
+	 * @param dt 
+	 */
+	public void update(float dt){
+		for (Slot currentSlot : slot) {
+			if (currentSlot.prototype != null)
+				currentSlot.prototype.update(dt);
+		}
+	}
+	
+	/**
 	 * 
 	 * @param left true if left, false to right
 	 */

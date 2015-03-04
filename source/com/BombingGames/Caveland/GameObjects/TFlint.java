@@ -26,15 +26,17 @@ public class TFlint extends Collectible {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (lit)
-			timer-=dt;
-		if (timer <= 0) {
-			new Explosion(
-				1,
-				500,
-				WE.getGameplay().getView().getCameras().get(0)
-			).spawn(getPosition());
-			dispose();
+		if (!shouldBeDisposed()) {
+			if (lit)
+				timer-=dt;
+			if (timer <= 0) {
+				new Explosion(
+					1,
+					500,
+					WE.getGameplay().getView().getCameras().get(0)
+				).spawn(getPosition());
+				dispose();
+			}
 		}
 	}
 	

@@ -97,6 +97,14 @@ public class Collectible extends MovableEntity implements Serializable {
 	}
 	
 	/**
+	 * the action if you active the item in the inventory
+	 */
+	public void action(){
+	
+	
+	}
+	
+	/**
 	 * overrides deserialisation
 	 * @param stream
 	 * @throws IOException

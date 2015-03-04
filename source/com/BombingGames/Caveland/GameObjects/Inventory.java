@@ -1,7 +1,9 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.badlogic.gdx.Gdx;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -131,6 +133,19 @@ public class Inventory implements Serializable {
 
 	public int size() {
 		return slot.length;
+	}
+	
+	/**
+	 * calls the action method for the first slot item.
+	 */
+	public void action(){
+		if (slot[0].counter>0){
+			slot[0].prototype.action();
+		} else if (slot[1].counter>0){
+			slot[1].prototype.action();
+		}else if (slot[2].counter>0){
+			slot[2].prototype.action();
+		}
 	}
 	
 	private class Slot implements Serializable {

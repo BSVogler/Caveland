@@ -232,7 +232,9 @@ public class GameView extends View implements GameManager {
      * @return the scale factor
      */
     public float getEqualizationScale() {
-        return libGDXcamera.viewportWidth / CVar.get("renderResolutionWidth").getValuei();
+		if (initalized)
+			return libGDXcamera.viewportWidth / CVar.get("renderResolutionWidth").getValuei();
+		else return 1;
     }
 
 	/**

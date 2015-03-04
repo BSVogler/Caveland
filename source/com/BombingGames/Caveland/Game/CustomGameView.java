@@ -201,6 +201,10 @@ public class CustomGameView extends GameView{
 			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 		}
 		
+		if (inventoryDown==0){
+			getPlayer(0).getInventory().action();
+		}
+		
 		if (inventoryDown>-1)
 			inventoryDown+=dt;
 		if (throwDownP1 > -1)

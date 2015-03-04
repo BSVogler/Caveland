@@ -113,7 +113,7 @@ public class GameView extends View implements GameManager {
      */
     public void init(final Controller controller){
         super.init();
-        Gdx.app.debug("View", "Initializing");
+        Gdx.app.debug("GameView", "Initializing");
         
         this.controller = controller;
         

@@ -40,7 +40,7 @@ public class Explosion extends AbstractEntity {
 		this.radius = radius;
 		this.damage = damage;
 		if (explosionsound == null)
-            explosionsound = "explosion2.ogg";
+            explosionsound = "explosion";
 		this.camera = camera;
 		setSaveToDisk(false);
     }

@@ -484,6 +484,7 @@ public class WE {
 				mainMenu = new BasicMainMenu(menuItems);
 			}
 			engineView = new EngineView();
+			engineView.init(null);
 
 			Gdx.app.debug("WE","Initializing main menu...");
 			mainMenu.init();

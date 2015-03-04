@@ -29,6 +29,9 @@ public Block produce(int id, int value) {
 		break;	
 		case 44:
 			block = new Ore(id, Collectible.CollectibleType.COAL);
+		break;
+		case 46://sand
+			block = Block.createBasicInstance(id);
 		break;  
 		case 55:
 			block = new RailBlock();

@@ -46,7 +46,7 @@ public class Inventory implements Serializable {
 	 * @param ent
 	 * @return false if inventory is full
 	 */
-	public final boolean add(MovableEntity ent){
+	public final boolean add(Collectible ent){
 		if (ent.isCollectable()) {
 			if (slot[0].prototype != null && slot[0].prototype.getId() ==ent.getId() && slot[0].counter<10){
 				slot[0].increase();
@@ -76,11 +76,11 @@ public class Inventory implements Serializable {
 	 * @param list
 	 * @return everything 
 	 */
-	public ArrayList<MovableEntity> addAll(ArrayList<MovableEntity> list) {
+	public ArrayList<Collectible> addAll(ArrayList<Collectible> list) {
 		if (list != null) {
-		Iterator<MovableEntity> it = list.iterator();
+		Iterator<Collectible> it = list.iterator();
 			while (it.hasNext()) {
-			  MovableEntity ent = it.next();
+			  Collectible ent = it.next();
 				if (add(ent))
 					it.remove();
 			}
@@ -129,7 +129,7 @@ public class Inventory implements Serializable {
 	
 	private class Slot implements Serializable {
 		private int counter;
-		private MovableEntity prototype;
+		private Collectible prototype;
 
 		private MovableEntity take() {
 			counter--;
@@ -143,7 +143,7 @@ public class Inventory implements Serializable {
 			counter++;
 		}
 
-		public void setPrototype(MovableEntity prototype) {
+		public void setPrototype(Collectible prototype) {
 			this.prototype = prototype;
 			counter=1;
 		}

@@ -273,9 +273,9 @@ public class CustomPlayer extends Controllable {
 		}
 		
 		//collect collectibles
-		ArrayList<MovableEntity> collectibles = pos.getCoord().getEntitysInside(Collectible.class);
+		ArrayList<Collectible> collectibles = pos.getCoord().getEntitysInside(Collectible.class);
 		boolean playCollectSound = false;
-		for (MovableEntity collectible : collectibles) {
+		for (Collectible collectible : collectibles) {
 			if (collectible.isCollectable() && inventory.add(collectible)){
 				collectible.dispose();
 				playCollectSound = true;

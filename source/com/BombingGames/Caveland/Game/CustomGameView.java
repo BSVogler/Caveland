@@ -64,6 +64,7 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("wagon", "com/BombingGames/Caveland/sounds/wagon.mp3");
 		Controller.getSoundEngine().register("collect", "com/BombingGames/Caveland/sounds/collect.wav");
 		Controller.getSoundEngine().register("sword", "com/BombingGames/Caveland/sounds/sword.wav");
+		Controller.getSoundEngine().register("hiss", "com/BombingGames/Caveland/sounds/hiss.wav");
 		
 		if (coop >- 1){//coop
 			((CustomGameController) controller).addPlayer2();

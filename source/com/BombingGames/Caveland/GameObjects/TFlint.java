@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.WE;
 
@@ -45,6 +46,7 @@ public class TFlint extends Collectible {
 	@Override
 	public void action() {
 		super.action();
+		Controller.getSoundEngine().play("hiss", getPosition());
 		lit = true;
 		timer = TIMETILLEXPLOSION;
 	}

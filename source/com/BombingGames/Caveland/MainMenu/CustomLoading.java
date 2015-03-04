@@ -33,6 +33,7 @@ public class CustomLoading extends LoadingScreen {
 		manager.load("com/BombingGames/Caveland/sounds/robot1destroy.wav", Sound.class);
 		manager.load("com/BombingGames/Caveland/sounds/wagon.mp3", Sound.class);
 		manager.load("com/BombingGames/Caveland/sounds/sword.wav", Sound.class);
+		manager.load("com/BombingGames/Caveland/sounds/hiss.wav", Sound.class);
 	}
 	
 }

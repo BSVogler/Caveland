@@ -32,6 +32,7 @@ public Block produce(int id, int value) {
 		break;
 		case 46://sand
 			block = Block.createBasicInstance(id);
+			block.setObstacle(true);
 		break;  
 		case 55:
 			block = new RailBlock();

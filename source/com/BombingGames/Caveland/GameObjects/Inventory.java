@@ -88,13 +88,19 @@ public class Inventory implements Serializable {
 		return list;
 	}
 	
-	public void render(GameView view){
+	/**
+	 *Renders the inventory in the HUD.
+	 * @param view
+	 * @param camera
+	 */
+	public void render(GameView view, Camera camera){
 		for (int i = 0; i < slot.length; i++) {
 			MovableEntity ent = slot[i].prototype;
 			if (ent!=null) {
 				int x = (int) (view.getStage().getWidth()-400+i*100);
-				ent.render(view, x, 10);
-				view.drawString(Integer.toString(slot[i].counter),  x, 150,false);
+				int y =Gdx.graphics.getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10; 
+				ent.render(view, x, y);
+				view.drawString(Integer.toString(slot[i].counter),  x+20, y+30,false);
 			}
 		}
 	}

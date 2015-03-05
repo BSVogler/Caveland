@@ -187,5 +187,14 @@ public class SoundEngine {
 		if (result != null)
 			result.setVolume(instance, volume);
 	}
+	
+	/**
+	 * disposes the sounds
+	 */
+	public void dispose(){
+		for (Sound s : sounds.values()) {
+			s.dispose();
+		}
+	}
 
 }

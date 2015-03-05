@@ -234,6 +234,8 @@ public class Controller implements GameManager {
         map.dispose();
 		map = null;
         lightEngine = null;
+		soundEngine.dispose();
+		soundEngine = null;
     }
 
 }

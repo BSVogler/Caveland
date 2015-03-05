@@ -8,6 +8,7 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Manages the sounds in the game world.
@@ -16,6 +17,7 @@ import java.util.HashMap;
 public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
 	private ArrayList<Camera> cameras;
+	private ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 
 	public SoundEngine() {
 		register("landing", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav");
@@ -25,10 +27,10 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * Registers a sound. The sound must be loaded via asset manager.
-	 * You can not register a sound twice.
-	 * @param identifier name of sound
-	 * @param path path of the sound
+	 * Registers a soundIterator. The soundIterator must be loaded via asset manager.
+ You can not register a soundIterator twice.
+	 * @param identifier name of soundIterator
+	 * @param path path of the soundIterator
 	 */
 	public void register(String identifier, String path){
 		if (!sounds.containsKey(identifier)){
@@ -46,7 +48,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of sound
+	 * @param identifier name of soundIterator
 	 */
 	public void play(String identifier){
 		Sound result = sounds.get(identifier);
@@ -55,36 +57,22 @@ public class SoundEngine {
 	}
 	
 	/***
-	 * Plays sound with decreasing volume depending on distance.
-	 * @param identifier name of sound
-	 * @param pos the position of the sound in the world
+	 * Plays soundIterator with decreasing volume depending on distance.
+	 * @param identifier name of soundIterator
+	 * @param pos the position of the soundIterator in the world
 	 */
 	public void play(String identifier, AbstractPosition pos){
 		Sound result = sounds.get(identifier);
 		if (result != null){
-			float volume = 1;
-			if (cameras != null) {
-				//calculate minimal distance to camera
-				float minDistance = Float.POSITIVE_INFINITY;
-				for (Camera camera : cameras) {
-					float distance = pos.getPoint().distanceTo(camera.getCenter().getPoint());
-					if (distance < minDistance)
-						minDistance = distance;
-				}
-				
-				int decay = CVar.get("soundDecay").getValuei();
-				volume = decay*AbstractGameObject.GAME_EDGELENGTH / (minDistance*minDistance + decay*AbstractGameObject.GAME_EDGELENGTH);//loose energy radial
-				if (volume > 1)
-					volume = 1;
-			}
-			if (volume >= 0.1) //only play sound louder>10%
+			float volume = getVolume(pos);
+			if (volume >= 0.1) //only play soundIterator louder>10%
 				result.play(volume);
 		}
 	}
 	
 	/***
 	 * 
-	 * @param identifier name of sound
+	 * @param identifier name of soundIterator
 	 * @param volume
 	 * @return 
 	 */
@@ -97,7 +85,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of sound
+	 * @param identifier name of soundIterator
 	 * @param volume 
 	 * @param pitch
 	 * @return 
@@ -111,7 +99,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of sound
+	 * @param identifier name of soundIterator
 	 * @param volume the volume in the range [0,1]
 	 * @param pitch the pitch multiplier, 1 == default, >1 == faster, 1 == slower, the value has to be between 0.5 and 2.0
 	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
@@ -125,8 +113,8 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * loops a sound
-	 * @param identifier name of sound
+	 * playingLoops a soundIterator.
+	 * @param identifier name of soundIterator
 	 * @return the instance id
 	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
 	 */
@@ -138,46 +126,60 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * loops a sound. Sound decay not working.
-	 * @param identifier name of sound
-	 * @param pos the position of the sound in the game world
+	 * playingLoops a soundIterator. Sound decay not working.
+	 * @param identifier name of soundIterator
+	 * @param pos the position of the soundIterator in the game world
 	 * @return the instance id
 	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
 	 */
 	public long loop(String identifier, AbstractPosition pos) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
-			return result.loop();
+		if (result != null) {
+			long id = result.loop();
+			playingLoops.add(new SoundInstance(this, result, id, pos));
+			return id;
+		}
 		return 0;
 	}
 	
 	
 
 	/**
-	 * Stops all instances of this sound.
-	 * @param identifier name of sound
+	 * Stops all instances of this soundIterator.
+	 * @param identifier name of soundIterator
 	 */
 	public void stop(String identifier) {
 		Sound result = sounds.get(identifier);
+		//remove from playing loops list
+		for (Iterator<SoundInstance> soundIterator = playingLoops.iterator(); soundIterator.hasNext();) {
+			if (soundIterator.next().sound.equals(result))
+				soundIterator.remove();
+		}
 		if (result != null)
 			result.stop();
 	}
 	
 	/**
-	 * Stops a specifiy instance of the sound.
-	 * @param identifier name of sound
+	 * Stops a specifiy instance of the soundIterator.
+	 * @param identifier name of soundIterator
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @see com.​badlogic.​gdx.​audio.​Sound#stop
 	 */
 	public void stop(String identifier, long instance) {
 		Sound result = sounds.get(identifier);
+		//remove from playing loops list if with this instance id
+		for (Iterator<SoundInstance> soundIterator = playingLoops.iterator(); soundIterator.hasNext();) {
+			SoundInstance instanceSound = soundIterator.next();
+			if (instanceSound.sound.equals(result) && instanceSound.id ==instance)
+				soundIterator.remove();
+		}
 		if (result != null)
 			result.stop(instance);
 	}
 
 	/**
 	 * Set the volume of a playing instance.
-	 * @param identifier name of sound
+	 * @param identifier name of soundIterator
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @param volume 
 	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume
@@ -188,6 +190,12 @@ public class SoundEngine {
 			result.setVolume(instance, volume);
 	}
 	
+	public void update(float dt){
+		for (SoundInstance sound : playingLoops) {
+			sound.update();
+		}
+	}
+	
 	/**
 	 * disposes the sounds
 	 */
@@ -196,6 +204,30 @@ public class SoundEngine {
 //		for (Sound s : sounds.values()) {
 //			s.dispose();
 //		}
+	}
+	
+	/**
+	 * calculates the volume of a soundIterator based on the posiiton in the game world
+	 * @param pos
+	 * @return 
+	 */
+	protected float getVolume(AbstractPosition pos){
+		float volume = 1;
+		if (cameras != null) {
+			//calculate minimal distance to camera
+			float minDistance = Float.POSITIVE_INFINITY;
+			for (Camera camera : cameras) {
+				float distance = pos.getPoint().distanceTo(camera.getCenter().getPoint());
+				if (distance < minDistance)
+					minDistance = distance;
+			}
+
+			int decay = CVar.get("soundDecay").getValuei();
+			volume = decay*AbstractGameObject.GAME_EDGELENGTH / (minDistance*minDistance + decay*AbstractGameObject.GAME_EDGELENGTH);//loose energy radial
+			if (volume > 1)
+				volume = 1;
+		}
+		return volume;
 	}
 
 }

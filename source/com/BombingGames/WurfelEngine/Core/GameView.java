@@ -120,9 +120,6 @@ public class GameView extends View implements GameManager {
         //clear old stuff
         cameras.clear();
         
-		if (controller != null)
-			Controller.getSoundEngine().setCameras(cameras);
-		
         //set up renderer
         libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -524,6 +521,9 @@ public class GameView extends View implements GameManager {
 		for (Camera camera : cameras) {
 			camera.setActive(true);
 		}
+		
+		if (Controller.getSoundEngine() != null)
+			Controller.getSoundEngine().setView(this);
 		
 		if (CVar.get("DevMode").getValueb())
 			WE.getEngineView().setCursor(0);

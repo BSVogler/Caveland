@@ -2,6 +2,7 @@ package com.BombingGames.WurfelEngine.Core.SoundEngine;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
+import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.WE;
@@ -16,8 +17,8 @@ import java.util.Iterator;
  */
 public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
-	private ArrayList<Camera> cameras;
 	private ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
+	private GameView view;
 
 	public SoundEngine() {
 		register("landing", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav");
@@ -36,14 +37,6 @@ public class SoundEngine {
 		if (!sounds.containsKey(identifier)){
 			sounds.put(identifier, (Sound) WE.getAsset(path));
 		}
-	}
-
-	/**
-	 * 
-	 * @param cameras 
-	 */
-	public void setCameras(ArrayList<Camera> cameras) {
-		this.cameras = cameras;
 	}
 	
 	/***
@@ -213,11 +206,11 @@ public class SoundEngine {
 	 */
 	protected float getVolume(AbstractPosition pos){
 		float volume = 1;
-		if (cameras != null) {
+		if (view != null) {
 			//calculate minimal distance to camera
 			float minDistance = Float.POSITIVE_INFINITY;
-			for (Camera camera : cameras) {
-				float distance = pos.getPoint().distanceTo(camera.getCenter().getPoint());
+			for (Camera camera : view.getCameras()) {
+				float distance = pos.getPoint().distanceTo(camera.getCenter());
 				if (distance < minDistance)
 					minDistance = distance;
 			}
@@ -228,6 +221,10 @@ public class SoundEngine {
 				volume = 1;
 		}
 		return volume;
+	}
+
+	public void setView(GameView view) {
+		this.view = view;
 	}
 
 }

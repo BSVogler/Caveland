@@ -44,6 +44,7 @@ import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -124,7 +125,9 @@ public class WE {
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
         config.foregroundFPS = CVar.get("limitFPS").getValuei();//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
-         
+		//config.addIcon("com/BombingGames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
+        config.addIcon("com/BombingGames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?
+		
         //arguments
         if (args.length > 0){
             //look if contains launch parameters

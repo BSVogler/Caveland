@@ -69,11 +69,11 @@ public class WE {
      */
     public static final String VERSION = "1.4.20";    
     private static File workingDirectory;
-    private static WEGame game;
+    private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;
     private static final AssetManager assetManager = new AssetManager();
-    private static LwjglApplicationConfiguration config;
+    private static final LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
     private static Console console;
     private static EngineView engineView;
 	private static LwjglApplication application;
@@ -118,7 +118,6 @@ public class WE {
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         
-        config = new LwjglApplicationConfiguration();
         config.resizable = false;
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = true;
@@ -166,7 +165,6 @@ public class WE {
 		AbstractEntity.registerEngineEntities();
 		
         System.out.println("Fire Engine…");
-		game = new WEGame();
         application = new LwjglApplication(game, config);
         application.setLogLevel(Application.LOG_DEBUG);
     }

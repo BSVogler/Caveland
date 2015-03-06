@@ -59,6 +59,10 @@ public abstract class View {
 		loadShaders();
     }
     
+	/**
+	 * Get the loaded shader program of the view.
+	 * @return 
+	 */
     public ShaderProgram getShader() {
         return shader;
     }

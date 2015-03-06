@@ -118,7 +118,8 @@ public class Inventory implements Serializable {
 				int x = (int) (view.getStage().getWidth()-400+i*100);
 				int y =Gdx.graphics.getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10; 
 				ent.render(view, x, y);
-				view.drawString(Integer.toString(slot[i].counter),  x+20, y+30,false);
+				if (enableStacking)
+					view.drawString(Integer.toString(slot[i].counter),  x+20, y+30,false);
 			}
 		}
 	}

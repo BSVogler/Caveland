@@ -364,7 +364,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param view
      * @param xPos rendering position, center of sprite in projection space (?)
      * @param yPos rendering position, center of sprite in projection space (?)
-	 * @param color
+	 * @param color color which gets multiplied with the tint. 0.5f ist no change
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
 		if (id != 0){
@@ -386,7 +386,7 @@ public abstract class AbstractGameObject implements Serializable {
 			//hack for transientfield tint
 			if (tint == null) tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 			if (color!=null)
-				sprite.setColor(tint.tmp().mul(color));
+				sprite.setColor(tint.tmp().mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f));
 			else sprite.setColor(tint);
         
 			if (view.debugRendering()){

@@ -203,6 +203,7 @@ public class Coordinate extends AbstractPosition {
         this.x += x;
         this.y += y;
         this.z += z;
+		refreshCachedPoint();
         return this;
     }
     

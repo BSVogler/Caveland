@@ -740,10 +740,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		return new MovableEntity(this);
 	}
 
+	/**
+	 * can this object be put in an inventory?
+	 * @return 
+	 */
 	public boolean isCollectable() {
 		return collectable;
 	}
 
+	/**
+	 * can this object be put in an inventory?
+	 * @param collectable
+	 */
 	public void setCollectable(boolean collectable) {
 		this.collectable = collectable;
 	}

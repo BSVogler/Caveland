@@ -1,6 +1,5 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 

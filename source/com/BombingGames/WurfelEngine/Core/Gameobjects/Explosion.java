@@ -4,6 +4,8 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -59,11 +61,10 @@ public class Explosion extends AbstractEntity {
 		super.spawn(point);
 		//replace blocks by air
 		for (int x=-radius; x<radius; x++){
-			for (int y=-radius*2; y<radius*2; y++) {
+			for (int y=-radius; y<radius; y++) {
 				for (int z=-radius; z<radius; z++){
 					Coordinate pos = getPosition().cpy().getCoord().addVector(x, y, z);
-					//place air
-					if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){
+					if (x*x + y*y+ z*z <= radius*radius){//check if in radius
 						pos.destroy();
 						
 						//get every entity which is attacked
@@ -76,18 +77,16 @@ public class Explosion extends AbstractEntity {
 							if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
 								ent.damage(damage);
 						}
-					}
-					
-					//spawn effect
-					if (x*x + (y/2)*(y/2)+ z*z >= radius*radius-4 &&
-						x*x + (y/2)*(y/2)+ z*z <= radius*radius){
-						new SimpleEntity(31).spawn(pos.getPoint()).setAnimation(
-							new EntityAnimation(
-								new int[]{700,2000},
-								true,
-								false
-							)
-						);
+						
+						new Dust(
+							2000,
+							new Vector3(
+								(float) Math.random()-0.5f,
+								(float) Math.random()-0.5f,
+								(float) Math.random()-0.5f
+							).nor().scl(5f),
+							new Color(0.5f,0.45f,0.4f,1f)
+						).spawn(pos.cpy().getPoint());
 					}
 				}
 			}	

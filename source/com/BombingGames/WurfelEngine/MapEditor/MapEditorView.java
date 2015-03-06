@@ -239,7 +239,7 @@ public class MapEditorView extends GameView {
 			shr.end();
 		}
         nav.render(this);
-		toolSelection.render(getShapeRenderer());
+		toolSelection.render(WE.getEngineView().getShapeRenderer());
     }
 
     @Override

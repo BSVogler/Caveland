@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.badlogic.gdx.Gdx;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -115,8 +114,8 @@ public class Inventory implements Serializable {
 		for (int i = 0; i < slot.length; i++) {
 			MovableEntity ent = slot[i].prototype;
 			if (ent!=null) {
-				int x = (int) (view.getStage().getWidth()-400+i*100);
-				int y =Gdx.graphics.getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10; 
+				int x = (int) ((int) (view.getStage().getWidth()-400+i*100)/view.getEqualizationScale());
+				int y = (int) ((view.getStage().getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10)/view.getEqualizationScale()); 
 				ent.render(view, x, y);
 				if (enableStacking)
 					view.drawString(Integer.toString(slot[i].counter),  x+20, y+30,false);

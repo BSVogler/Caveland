@@ -10,7 +10,7 @@ import com.BombingGames.WurfelEngine.WE;
  */
 public class TFlint extends Collectible {
 	private static final long serialVersionUID = 2L;
-	private static final float TIMETILLEXPLOSION = 1000;
+	private static final float TIMETILLEXPLOSION = 2000;
 	private float timer = TIMETILLEXPLOSION;
 	private boolean lit;
 

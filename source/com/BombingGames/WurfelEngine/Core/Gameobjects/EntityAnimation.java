@@ -68,18 +68,21 @@ public class EntityAnimation implements Animatable {
                 counter += Gdx.graphics.getDeltaTime()*1000f;
             else 
                 counter += dt;
-            if (counter >= animationsduration[ parent.getValue() ]){
-                parent.setValue(parent.getValue()+1);
-                counter=0;
-                if (parent.getValue() >= animationsduration.length)//if over animation array
-                    if (loop)
-                        parent.setValue(0);
-                    else{//delete
-                        parent.setHidden(true);
-                        parent.setValue(parent.getValue()-1);
-                        parent.dispose();
-                    }
-            }
+			int value = parent.getValue();
+			if (value >= animationsduration.length) //stop the animation if value is suddenly too big
+				running=false;
+			else if (counter >= animationsduration[ value ]){
+					parent.setValue(parent.getValue()+1);
+					counter=0;
+					if (parent.getValue() >= animationsduration.length)//if over animation array
+						if (loop)
+							parent.setValue(0);
+						else{//delete
+							parent.setHidden(true);
+							parent.setValue(parent.getValue()-1);
+							parent.dispose();
+						}
+				}
         }
     }
 

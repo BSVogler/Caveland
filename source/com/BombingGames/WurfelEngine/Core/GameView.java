@@ -322,7 +322,7 @@ public class GameView extends View implements GameManager {
 		if (cameras.size()>0) {
 			Point p = screenToGameBasic(x,y);
 			//find point at top of map
-			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
+			float deltaZ = Chunk.getGameHeight() - AbstractGameObject.GAME_EDGELENGTH - p.getZ();
 			
 			p.addVector(0, deltaZ*Point.SQRT2, deltaZ);//top of map
 			//return new Intersection(p, Vector3.Zero, 0);

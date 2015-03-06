@@ -1,6 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -17,10 +18,12 @@ public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
 	private static int killcounter = 0;
 	private static String killSound = "robot1destroy";
+	private static final String movementSound = "robot1Wobble";
 	
     private MovableEntity target;
     private int runningagainstwallCounter = 0;
     private Point lastPos;
+	private long movementSoundPlaying;
     
     public void init(){
        killcounter=0; 
@@ -38,6 +41,11 @@ public class Enemy extends MovableEntity{
 		setDamageSounds(new String[]{"robotHit"});
     }
 
+	@Override
+	public AbstractEntity spawn(final Point point) {
+		movementSoundPlaying = Controller.getSoundEngine().loop(movementSound, point);
+		return super.spawn(point);
+	}
 
     @Override
     public void jump() {
@@ -113,6 +121,7 @@ public class Enemy extends MovableEntity{
 	public void damage(int value) {
 		super.damage(value);
 		if (getHealth()<=0){
+			Controller.getSoundEngine().stop(movementSound, movementSoundPlaying);
 			if (getHealth() <= 0 && killSound != null)
 				Controller.getSoundEngine().play(killSound);
 			killcounter++;

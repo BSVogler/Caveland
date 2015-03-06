@@ -58,6 +58,7 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("release", "com/BombingGames/Caveland/sounds/release.wav");
 		Controller.getSoundEngine().register("impact", "com/BombingGames/Caveland/sounds/impact.wav");
 		Controller.getSoundEngine().register("robot1destroy", "com/BombingGames/Caveland/sounds/robot1destroy.wav");
+		Controller.getSoundEngine().register("robot1Wobble", "com/BombingGames/Caveland/sounds/robot1Wobble.mp3");
 		Controller.getSoundEngine().register("robotHit", "com/BombingGames/Caveland/sounds/robotHit.wav");
 		Controller.getSoundEngine().register("blockDestroy", "com/BombingGames/Caveland/sounds/poch.wav");
 		Controller.getSoundEngine().register("vanya_jump", "com/BombingGames/Caveland/sounds/vanya_jump.wav");

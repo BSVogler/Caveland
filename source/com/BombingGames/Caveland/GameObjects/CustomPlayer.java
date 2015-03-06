@@ -143,6 +143,18 @@ public class CustomPlayer extends Controllable {
 	public void update(float dt) {
 		super.update(dt);
 		
+		
+		//slow down in air
+		if(!isOnGround()) {
+			if (getMovementHor().len() > 0.1f)
+				setHorMovement(getMovementHor().scl(1f/(dt*getFriction()+1f)));//with this formula this fraction is always <1
+			else {
+				setHorMovement(new Vector2());
+			}
+		}
+		
+		
+		
 		inventory.update(dt);
 		
 		//some redundant code from movable to have a custom animation

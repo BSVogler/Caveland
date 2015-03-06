@@ -254,11 +254,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			}
 			
 			//slow walking down
-			//stop at a limit
-			if (getMovementHor().len() > 0.1f)
-				setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
-			else {
-				setHorMovement(new Vector2());
+			if (isOnGround()) {
+				//stop at a threshold
+				if (getMovementHor().len() > 0.1f)
+					setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
+				else {
+					setHorMovement(new Vector2());
+				}
 			}
 				
 				

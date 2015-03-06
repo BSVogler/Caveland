@@ -63,9 +63,8 @@ public class EntityDrawable extends TextureRegionDrawable {
 		instance.setScaling(scaling);
 	}
 
-	 @Override
+	@Override
     public void draw(Batch batch, float x, float y, float width, float height) {
-
 		if (instance !=null)
 			instance.render(WE.getEngineView(), (int) x, (int) y);
     }

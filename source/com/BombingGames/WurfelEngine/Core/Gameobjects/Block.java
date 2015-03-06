@@ -394,7 +394,10 @@ public class Block extends AbstractGameObject {
 				);
 
 				if (staticShade) {
-					color = color.cpy().add(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0);
+					if (color==null)
+						color = new Color(0.75f, 0.75f, 0.75f, 1);
+					else
+						color = color.cpy().add(0.25f, 0.25f, 0.25f, 0);
 				}
 				renderSide(
 					view,
@@ -405,7 +408,7 @@ public class Block extends AbstractGameObject {
 				);
 
 				if (staticShade) {
-					color = color.cpy().sub(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0);
+					color = color.cpy().sub(0.25f, 0.25f, 0.25f, 0);
 				}
 				renderSide(
 					view,
@@ -493,7 +496,7 @@ public class Block extends AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      * @param side The number identifying the side. 0=left, 1=top, 2=right
-     * @param color a tint in which the sprite gets rendered
+     * @param color a tint in which the sprite gets rendered. If null lightlevel gets ignored
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color){
         Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
@@ -503,11 +506,13 @@ public class Block extends AbstractGameObject {
             sprite.scale(getScaling());
         }
 		//System.out.println("rend:"+xPos+","+yPos);
-		color.r *= getLightlevel();
-		color.g *= getLightlevel();
-		color.b *= getLightlevel();
+		if (color!=null) {
+			color.r *= getLightlevel();
+			color.g *= getLightlevel();
+			color.b *= getLightlevel();
 
-        sprite.setColor(color);
+			sprite.setColor(color);
+		}
  
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();

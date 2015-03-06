@@ -15,14 +15,12 @@ import java.util.Iterator;
 public class Inventory implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Slot[] slot = new Slot[3];
+	private static final boolean enableStacking = false;
 
 	public Inventory() {
 		slot[0] = new Slot();
 		slot[1] = new Slot();
 		slot[2] = new Slot();
-//		add(new Flint());
-//		add(new Flint());
-//		add(new Flint());
 	}
 	
 	/**
@@ -31,16 +29,17 @@ public class Inventory implements Serializable {
 	 * @throws java.lang.CloneNotSupportedException
 	 */
 	public MovableEntity getFrontItem() throws CloneNotSupportedException {
-		MovableEntity tmp = null;
+		MovableEntity result = null;
 		if (slot[0].counter>0){
-			tmp = slot[0].take();
+			result = slot[0].take();
 		} else if (slot[1].counter>0){
-			tmp = slot[1].take();
+			result = slot[1].take();
 		}else if (slot[2].counter>0){
-			tmp = slot[2].take();
+			result = slot[2].take();
 		}
-		if (tmp==null) return null;	
-		return tmp.clone();
+		
+		if (result==null) return null;
+		return result;
 	}
 	
 	/**
@@ -49,17 +48,30 @@ public class Inventory implements Serializable {
 	 * @return false if inventory is full
 	 */
 	public final boolean add(Collectible ent){
-		if (ent.isCollectable()) {
-			if (slot[0].prototype != null && slot[0].prototype.getId() ==ent.getId() && slot[0].counter<10){
-				slot[0].increase();
-				return true;
-			} else if (slot[1].prototype != null && slot[1].prototype.getId() ==ent.getId() && slot[1].counter<10){
-				slot[1].increase();
-				return true;
-			} else if (slot[2].prototype != null && slot[2].prototype.getId() ==ent.getId() && slot[2].counter<10){
-				slot[2].increase();
-				return true;
-			} else if (slot[2].prototype == null ) {
+		if (enableStacking) {
+			if (ent.isCollectable()) {
+				if (slot[0].prototype != null && slot[0].prototype.getId() ==ent.getId() && slot[0].counter<10){
+					slot[0].increase();
+					return true;
+				} else if (slot[1].prototype != null && slot[1].prototype.getId() ==ent.getId() && slot[1].counter<10){
+					slot[1].increase();
+					return true;
+				} else if (slot[2].prototype != null && slot[2].prototype.getId() ==ent.getId() && slot[2].counter<10){
+					slot[2].increase();
+					return true;
+				} else if (slot[2].prototype == null ) {
+					slot[2].setPrototype(ent);
+					return true;
+				} else if (slot[1].prototype == null ) {
+					slot[1].setPrototype(ent);
+					return true;
+				} else if (slot[0].prototype == null ) {
+					slot[0].setPrototype(ent);
+					return true;
+				}
+			}
+		} else {
+			if (slot[2].prototype == null ) {
 				slot[2].setPrototype(ent);
 				return true;
 			} else if (slot[1].prototype == null ) {
@@ -68,7 +80,7 @@ public class Inventory implements Serializable {
 			} else if (slot[0].prototype == null ) {
 				slot[0].setPrototype(ent);
 				return true;
-			}
+			}	
 		}
 		return false;
 	}
@@ -119,7 +131,7 @@ public class Inventory implements Serializable {
 	}
 	
 	/**
-	 * 
+	 * Works only for three stacks.
 	 * @param left true if left, false to right
 	 */
 	public void switchItems(boolean left){
@@ -142,6 +154,10 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * the amount of stacks in the inventory
+	 * @return 
+	 */
 	public int size() {
 		return slot.length;
 	}
@@ -159,13 +175,31 @@ public class Inventory implements Serializable {
 		}
 	}
 	
+	public boolean isEmpty(){
+		boolean empty = true;
+		for (Slot currentSlot : slot) {
+			if (!currentSlot.isEmpty())
+				empty=false;
+		}
+		return empty;
+	}
+	
 	private class Slot implements Serializable {
 		private int counter;
 		private Collectible prototype;
 
-		private MovableEntity take() {
+		/**
+		 * Takes one object from the slot
+		 * @return 
+		 */
+		private MovableEntity take() throws CloneNotSupportedException {
 			counter--;
-			MovableEntity tmp = prototype;
+			MovableEntity tmp;
+			if (enableStacking) {
+				tmp = prototype.clone();
+			} else {
+				tmp = prototype;
+			}
 			if (counter <= 0)
 				prototype=null;
 			return tmp;
@@ -178,6 +212,10 @@ public class Inventory implements Serializable {
 		public void setPrototype(Collectible prototype) {
 			this.prototype = prototype;
 			counter=1;
+		}
+
+		private boolean isEmpty() {
+			return counter<=0;
 		}
 	}
 

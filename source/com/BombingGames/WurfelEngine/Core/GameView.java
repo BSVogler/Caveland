@@ -76,7 +76,7 @@ public class GameView extends View implements GameManager {
      * game related stage. e.g. holds hud and gui
      */
     private Stage stage;
-    private SpriteBatch batch;
+    private SpriteBatch batch = new SpriteBatch(2000);
     
     private LoadMenu loadMenu;
     
@@ -129,7 +129,6 @@ public class GameView extends View implements GameManager {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
         
         
-        batch = new SpriteBatch(10);
         batch.setShader(getShader());
 
         initalized = true;

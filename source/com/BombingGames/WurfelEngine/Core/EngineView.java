@@ -38,7 +38,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -53,7 +52,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @since 1.2.26
  */
 public class EngineView extends GameView {//is GameView so it can render in game space
-    private SpriteBatch batch;  
     private ShaderProgram shader;
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
@@ -91,8 +89,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
 
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
-        batch = new SpriteBatch();
-
         shapeRenderer = new ShapeRenderer();
 		setMusicLoudness(CVar.get("music").getValuef());
     }
@@ -150,15 +146,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
         return font;
     }
     
-    /**
-     *y-down
-     * @return
-     */
-    @Override
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
     /**
      *
      * @return

@@ -42,7 +42,8 @@ public class Dust extends AbstractEntity {
 		}
 		Vector3 step = direction.cpy().scl(dt/1000f);
 		getPosition().addVector(step);
-		if (getPosition().getBlock().isObstacle())
+		Block block = getPosition().getBlock();
+		if (block==null || block.isObstacle())
 			getPosition().addVector(step.scl(-1));
 			
 		setRotation(getRotation()-dt/10f);

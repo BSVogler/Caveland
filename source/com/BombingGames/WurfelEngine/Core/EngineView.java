@@ -38,13 +38,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * A view which is not dependend on the currently active game. Singleton.
@@ -52,10 +48,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @since 1.2.26
  */
 public class EngineView extends GameView {//is GameView so it can render in game space
-    private ShaderProgram shader;
-    private ShapeRenderer shapeRenderer;
     private BitmapFont font;
-    private Stage stage;//the stage used for view-independetn things
     private Skin skin;
     private Pixmap cursor;
     private InputMultiplexer inpMulPlex;
@@ -69,35 +62,31 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private Pixmap cursorPointer;
 	private int cursorId;
     
-    /**
-     *
-     */
-    public EngineView(){
-        Gdx.app.debug("EngineView","Initializing...");
+	@Override
+	public void init() {
+		super.init(null);
+		Gdx.app.debug("EngineView","Initializing...");
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(false);
         //font.scale(2);
 
-
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
         //load sprites
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(getStage());
 
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
-        shapeRenderer = new ShapeRenderer();
 		setMusicLoudness(CVar.get("music").getValuef());
-    }
-    
+	}
+	
     /**
      * Resets the input processors.
      */
     public void resetInputProcessors() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(getStage());
         inpMulPlex = null;
         inactiveInpProcssrs = null;
         addInputProcessor(getStage());
@@ -121,7 +110,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      */
     public void focusInputProcessor(final InputProcessor processor){
         inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
-        Gdx.input.setInputProcessor(stage); //reset
+        Gdx.input.setInputProcessor(getStage()); //reset
         addInputProcessor(processor);//add the focus
     }
     
@@ -132,7 +121,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      */
     public void unfocusInputProcessor(){
         Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
-        Gdx.input.setInputProcessor(stage); //reset
+        Gdx.input.setInputProcessor(getStage()); //reset
         for (InputProcessor ip : inactiveInpProcssrs) {
             addInputProcessor(ip);
         }
@@ -150,38 +139,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
      *
      * @return
      */
-    @Override
-    public ShaderProgram getShader() {
-        return shader;
-    }
-    
-    
-    /**
-     * Y-down
-     * @return
-     */
-    @Override
-    public ShapeRenderer getShapeRenderer() {
-        return shapeRenderer;
-    }
-    
-    /**
-     *
-     * @return a view independent stage
-     */
-	@Override
-    public Stage getStage() {
-        return stage;
-    }
-
-    /**
-     *
-     * @return
-     */
     public Skin getSkin() {
         return skin;
     }
-
+	
     /**
      * 
 	 * @param id 0 default, 1 pointer, 2 drag 

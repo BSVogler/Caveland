@@ -141,6 +141,7 @@ public class GameView extends View implements GameManager {
 				Gdx.graphics.getHeight()-800
 			);
 		}
+		batch.setShader(null);
     }
     
     /**

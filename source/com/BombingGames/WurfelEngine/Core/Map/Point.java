@@ -417,8 +417,8 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
-                        % Block.GAME_DIAGLENGTH
+                        (Block.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
+                        % Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
                         <
                         Block.GAME_DIAGLENGTH2
                     ) {

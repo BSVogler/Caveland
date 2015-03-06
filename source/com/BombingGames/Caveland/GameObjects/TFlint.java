@@ -49,6 +49,7 @@ public class TFlint extends Collectible {
 	public void action() {
 		super.action();
 		Controller.getSoundEngine().play("hiss", getPosition());
+		setValue(5);
 		lit = true;
 		timer = TIMETILLEXPLOSION;
 	}

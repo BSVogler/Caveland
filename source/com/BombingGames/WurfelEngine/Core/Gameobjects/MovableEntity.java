@@ -732,11 +732,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public void onLand() {
 	}
 	
-   @Override
-    public void dispose(){
-        super.dispose();
-    }
-
 	@Override
 	public MovableEntity clone() throws CloneNotSupportedException{
 		return new MovableEntity(this);

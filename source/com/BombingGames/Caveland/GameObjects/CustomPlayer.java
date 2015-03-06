@@ -76,7 +76,7 @@ public class CustomPlayer extends Controllable {
 
 	private int timeSinceDamage;
 	
-	private Inventory inventory = new Inventory();
+	private Inventory inventory = new Inventory(this);
 	
 	/**
 	 * true if last jump was airjump.

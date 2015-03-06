@@ -7,6 +7,8 @@ import com.badlogic.gdx.Gdx;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,11 +18,13 @@ public class Inventory implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Slot[] slot = new Slot[3];
 	private static final boolean enableStacking = false;
+	private CustomPlayer player;
 
-	public Inventory() {
+	public Inventory(CustomPlayer player) {
 		slot[0] = new Slot();
 		slot[1] = new Slot();
 		slot[2] = new Slot();
+		this.player = player;
 	}
 	
 	/**
@@ -28,8 +32,8 @@ public class Inventory implements Serializable {
 	 * @return the frontmost element. can return null if empty.
 	 * @throws java.lang.CloneNotSupportedException
 	 */
-	public MovableEntity getFrontItem() throws CloneNotSupportedException {
-		MovableEntity result = null;
+	public Collectible getFrontItem() throws CloneNotSupportedException {
+		Collectible result = null;
 		if (slot[0].counter>0){
 			result = slot[0].take();
 		} else if (slot[1].counter>0){
@@ -125,8 +129,13 @@ public class Inventory implements Serializable {
 	 */
 	public void update(float dt){
 		for (Slot currentSlot : slot) {
-			if (currentSlot.prototype != null)
+			if (currentSlot.prototype != null){
 				currentSlot.prototype.update(dt);
+				if (currentSlot.prototype.shouldBeDisposed()){
+					currentSlot.prototype = null;
+					currentSlot.counter = 0;
+				}
+			}
 		}
 	}
 	
@@ -166,12 +175,15 @@ public class Inventory implements Serializable {
 	 * calls the action method for the first slot item.
 	 */
 	public void action(){
-		if (slot[0].counter>0){
-			slot[0].prototype.action();
-		} else if (slot[1].counter>0){
-			slot[1].prototype.action();
-		}else if (slot[2].counter>0){
-			slot[2].prototype.action();
+		try {
+			//Get the first item and activate it. Then put it back.
+			Collectible item = getFrontItem();
+			if(item!=null) {
+				item.action();
+				add(item);
+			}
+		} catch (CloneNotSupportedException ex) {
+			Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 	
@@ -192,9 +204,9 @@ public class Inventory implements Serializable {
 		 * Takes one object from the slot
 		 * @return 
 		 */
-		private MovableEntity take() throws CloneNotSupportedException {
+		private Collectible take() throws CloneNotSupportedException {
 			counter--;
-			MovableEntity tmp;
+			Collectible tmp;
 			if (enableStacking) {
 				tmp = prototype.clone();
 			} else {
@@ -202,6 +214,7 @@ public class Inventory implements Serializable {
 			}
 			if (counter <= 0)
 				prototype=null;
+			tmp.setPosition(player.getPosition().cpy());//independent of player position now
 			return tmp;
 		}
 
@@ -210,6 +223,7 @@ public class Inventory implements Serializable {
 		}
 
 		public void setPrototype(Collectible prototype) {
+			prototype.setPosition(player.getPosition());
 			this.prototype = prototype;
 			counter=1;
 		}

@@ -79,7 +79,7 @@ public abstract class AbstractPosition implements Serializable {
     
 	  /**
      *Get as vector
-     * @return
+     * @return copy safe
      */
     public abstract Vector3 getVector();
     /**

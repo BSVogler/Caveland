@@ -5,7 +5,6 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -63,14 +62,13 @@ public class Explosion extends AbstractEntity {
 		for (int x=-radius; x<radius; x++){
 			for (int y=-radius; y<radius; y++) {
 				for (int z=-radius; z<radius; z++){
-					Coordinate pos = getPosition().cpy().getCoord().addVector(x, y, z);
+					Coordinate coord = point.cpy().getCoord().addVector(x, y, z);
 					if (x*x + y*y+ z*z <= radius*radius){//check if in radius
-						pos.destroy();
+						coord.destroy();
 						
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list =
-							Controller.getMap().getEntitysOnCoord(
-								pos,
+							Controller.getMap().getEntitysOnCoord(coord,
 								MovableEntity.class
 							);
 						for (MovableEntity ent : list) {
@@ -79,14 +77,11 @@ public class Explosion extends AbstractEntity {
 						}
 						
 						new Dust(
-							2000,
-							new Vector3(
-								(float) Math.random()-0.5f,
-								(float) Math.random()-0.5f,
-								(float) Math.random()-0.5f
-							).nor().scl(5f),
+							1700,
+							coord.getPoint().getVector().sub(point.getVector())
+								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f),//move from center to outside
 							new Color(0.5f,0.45f,0.4f,1f)
-						).spawn(pos.cpy().getPoint());
+						).spawn(coord.getPoint().cpy());//spawn at center
 					}
 				}
 			}	

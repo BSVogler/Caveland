@@ -60,10 +60,10 @@ public class Explosion extends AbstractEntity {
 		super.spawn(point);
 		//replace blocks by air
 		for (int x=-radius; x<radius; x++){
-			for (int y=-radius; y<radius; y++) {
+			for (int y=-radius*2; y<radius*2; y++) {
 				for (int z=-radius; z<radius; z++){
 					Coordinate coord = point.cpy().getCoord().addVector(x, y, z);
-					if (x*x + y*y+ z*z <= radius*radius){//check if in radius
+					if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){//check if in radius
 						coord.destroy();
 						
 						//get every entity which is attacked

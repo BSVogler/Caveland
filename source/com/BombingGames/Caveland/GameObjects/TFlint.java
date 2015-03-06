@@ -31,7 +31,7 @@ public class TFlint extends Collectible {
 				timer-=dt;
 			if (timer <= 0) {
 				new Explosion(
-					1,
+					2,
 					500,
 					WE.getGameplay().getView().getCameras().get(0)
 				).spawn(getPosition());

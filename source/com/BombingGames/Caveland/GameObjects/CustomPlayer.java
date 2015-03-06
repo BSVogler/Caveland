@@ -291,7 +291,7 @@ public class CustomPlayer extends Controllable {
 		boolean playCollectSound = false;
 		for (Collectible collectible : collectibles) {
 			if (collectible.isCollectable() && inventory.add(collectible)){
-				collectible.dispose();
+				collectible.disposeFromMap();
 				playCollectSound = true;
 			}
 		}

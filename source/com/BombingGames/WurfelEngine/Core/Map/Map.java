@@ -226,7 +226,7 @@ public class Map implements Cloneable{
 			AbstractEntity entity = getEntitys().get(i);
 			if (entity.isOnMemory())
 				entity.update(dt);
-			if (entity.shouldBeDisposed())
+			if (entity.shouldBeDisposedFromMap())
 				getEntitys().remove(i);
 		}
 		

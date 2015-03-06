@@ -50,7 +50,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
-    private boolean spawned;
+    private boolean onMap;
 	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
 	private String name = "undefined";
@@ -152,10 +152,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){
-		if (!spawned) {
+		if (!onMap) {
 			Controller.getMap().getEntitys().add(this);
 			position = point;
-			spawned =true;
+			onMap =true;
 			dispose = false;
 			if (shadow != null && !shadow.spawned())
 				shadow.spawn(position.cpy());
@@ -168,7 +168,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
 		if (position != null)
-			if (spawned) shadow.spawn(position.cpy());
+			if (onMap) shadow.spawn(position.cpy());
 	}
 	
 	public void disableShadow(){
@@ -181,7 +181,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return
      */
     public boolean spawned(){
-        return spawned;
+        return onMap;
     }
 
 	/**
@@ -236,12 +236,23 @@ public abstract class AbstractEntity extends AbstractGameObject {
     }
     
    /**
-     * Deletes the object from the map. The opposite to spawn();
+     * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely.;
 	 * @see #shouldBeDisposed() 
+	 * @see #disposeFromMap() 
      */
     public void dispose(){
         dispose=true;
-        spawned=false;
+        onMap=false;
+		if (shadow != null) shadow.dispose();
+    }
+	
+	    
+   /**
+     * Deletes the object from the map. The opposite to spawn();
+	 * @see #shouldBeDisposed() 
+     */
+    public void disposeFromMap(){
+        onMap=false;
 		if (shadow != null) shadow.dispose();
     }
 
@@ -252,6 +263,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public boolean shouldBeDisposed() {
         return dispose;
+    }
+	
+	 /**
+     * 
+     * @return true if disposing next tick from map only
+	 * @see #disposeFromMap() 
+	 * @see #shouldBeDisposed() 
+     */
+    public boolean shouldBeDisposedFromMap() {
+        return !onMap;
     }
     
 	

@@ -180,7 +180,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (getPosition()!= null && getPosition().isInMemoryHorizontal()) {
+        if (spawned() && getPosition()!= null && getPosition().isInMemoryHorizontal()) {
 			float t = dt/1000f; //t = time in s
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position

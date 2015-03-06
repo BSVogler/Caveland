@@ -121,7 +121,7 @@ public class SoundEngine {
 	/**
 	 * playingLoops a soundIterator. Sound decay not working.
 	 * @param identifier name of soundIterator
-	 * @param pos the position of the soundIterator in the game world
+	 * @param pos the position of the soundIterator in the game world. Should be a reference to the position of the object and no copy so that it updates itself.
 	 * @return the instance id
 	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
 	 */

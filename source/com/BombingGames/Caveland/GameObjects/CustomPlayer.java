@@ -357,10 +357,14 @@ public class CustomPlayer extends Controllable {
 		return nearestEntity;
 	}
 	
-	
+	/**
+	 * if inventory is empty does nothing
+	 */
 	public void prepareThrow(){
-		playAnimation('t');
-		prepareThrow=true;
+		if (!inventory.isEmpty()) {
+			playAnimation('t');
+			prepareThrow=true;
+		}
 	}
 	
 	public void throwItem(){

@@ -100,9 +100,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public void update(float dt){
 		if (animation!=null) animation.update(dt);
-		if (shadow != null)
-			shadow.update(dt);
-	};
+	}
 		
     //AbstractGameObject implementation
     @Override
@@ -113,8 +111,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
     @Override
     public void setPosition(AbstractPosition pos) {
         this.position = pos.getPoint();
-		if (shadow != null)
-			shadow.setPosition(pos.cpy());
     }
 
     /**
@@ -161,7 +157,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			position = point;
 			spawned =true;
 			dispose = false;
-			if (shadow!=null) shadow.spawn(position.cpy());
+			if (shadow != null && !shadow.spawned())
+				shadow.spawn(position.cpy());
 		} else {
 			Gdx.app.debug("AbstractEntity", "Already spawned.");
 		}

@@ -357,6 +357,7 @@ public class WE {
      * @return The console.
      */
     public static Console getConsole() {
+		if (console==null) System.err.println("Engine not running yet.");
         return console;
     }
 

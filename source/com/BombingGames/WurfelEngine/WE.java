@@ -487,14 +487,15 @@ public class WE {
 			engineView = new EngineView();
 			engineView.init();
 
-			Gdx.app.debug("WE","Initializing main menu...");
-			mainMenu.init();
-
 			console = new Console(
 				engineView.getSkin(),
 				Gdx.graphics.getWidth()/2,
 				Gdx.graphics.getHeight()/4
 			);
+						
+			Gdx.app.debug("WE","Initializing main menu...");
+			mainMenu.init();
+
 
 			if (skipintro){
 				setScreen(mainMenu);

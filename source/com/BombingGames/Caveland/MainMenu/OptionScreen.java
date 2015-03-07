@@ -31,7 +31,6 @@ public class OptionScreen extends WEScreen {
 	private Stage stage;
 	private ShapeRenderer shr;
     private SpriteBatch batch;
-    private OrthographicCamera camera;
     private BitmapFont font;
 	private final CheckBox fullscreenCB;
 	private final CheckBox vsyncCB;
@@ -141,10 +140,6 @@ public class OptionScreen extends WEScreen {
 		});
 		stage.addActor(cancelButton);
                 
-        //set the center to the top left
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
 		
@@ -155,16 +150,10 @@ public class OptionScreen extends WEScreen {
 		//update
 		//stage.act(delta);
 			
-		
 		//render
 		 //clear & set background to black
         Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        //update camera and set the projection matrix
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-		shr.setProjectionMatrix(camera.combined);
         
 		stage.draw();
 				

@@ -10,7 +10,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,7 +34,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 	private Image alphaTag; 
     private Texture background;
     private SpriteBatch batch;
-    private OrthographicCamera camera;
     private BitmapFont font;
     private float alpha =0;
 	private int selectionIndex =0;
@@ -137,10 +135,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
         background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
 		
-        //set the center to the top left
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), false);
         font.setColor(Color.WHITE);
 		
@@ -188,11 +182,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		 //clear & set background to black
         Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        //update camera and set the projection matrix
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-		shr.setProjectionMatrix(camera.combined);
         
         //Background        
         batch.begin();

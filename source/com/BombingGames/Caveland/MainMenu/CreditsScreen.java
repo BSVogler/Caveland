@@ -7,7 +7,6 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,7 +22,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 public class CreditsScreen extends WEScreen {
     private final Stage stage;
-    private final OrthographicCamera camera;
 	private final Texture background;
 
     /**
@@ -56,10 +54,6 @@ public class CreditsScreen extends WEScreen {
 		);
 		stage.addActor(showWEcredits);
 		
-        //set the center to the top left
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
 		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/credits_wallpaper.jpg"));
     }
 
@@ -73,10 +67,6 @@ public class CreditsScreen extends WEScreen {
         //Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
         //update camera and set the projection matrix
-        camera.update();
-        WE.getEngineView().getBatch().setProjectionMatrix(camera.combined);
-        WE.getEngineView().getShapeRenderer().setProjectionMatrix(camera.combined);
-        
         WE.getEngineView().getBatch().begin();
 			WE.getEngineView().getBatch().draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);

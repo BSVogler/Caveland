@@ -34,7 +34,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -50,7 +49,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class MenuView {
     private final Sprite lettering;    
     private final SpriteBatch batch;
-    private final OrthographicCamera camera;
     private final BitmapFont font;
     private float alpha =0;
     private final ShapeRenderer sr;
@@ -69,10 +67,6 @@ public class MenuView {
         lettering.flip(false, true);
         
         batch = new SpriteBatch();
-        
-        //set the center to the top left
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
         font.setColor(Color.WHITE);
@@ -98,12 +92,6 @@ public class MenuView {
         Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        //update camera and set the projection matrix
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
-        
-                
         // render the lettering
         batch.begin();
             //lettering.setColor(1, 1, 1, alpha);
@@ -111,7 +99,7 @@ public class MenuView {
         
 			// Draw the menu items
 			for (BasicMenuItem mI : BasicMainMenu.getController().getMenuItems()) {
-				mI.render(camera, font, batch, sr);
+				mI.render(font, batch, sr);
 			}
         
 			//draw warnings

@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -90,12 +89,11 @@ public class BasicMenuItem {
     
     /**
      *Renders the menu item.
-     * @param camera The camera rendering the MenuItem
      * @param font
      * @param batch
      * @param sr
      */
-    public void render(Camera camera, BitmapFont font, SpriteBatch batch, ShapeRenderer sr) {
+    public void render(BitmapFont font, SpriteBatch batch, ShapeRenderer sr) {
         this.x = ((Gdx.graphics.getWidth()-50)/2);
         this.y = (Gdx.graphics.getHeight()/2-120+index*80);
         

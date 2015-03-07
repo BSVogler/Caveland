@@ -36,6 +36,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -61,6 +62,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private Pixmap cursorDrag;
 	private Pixmap cursorPointer;
 	private int cursorId;
+	private OrthographicCamera camera;
     
 	@Override
 	public void init() {
@@ -80,6 +82,12 @@ public class EngineView extends GameView {//is GameView so it can render in game
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
 		setMusicLoudness(CVar.get("music").getValuef());
+		
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.update();
+        getBatch().setProjectionMatrix(camera.combined);
+		getShapeRenderer().setProjectionMatrix(camera.combined);
 	}
 	
     /**

@@ -7,7 +7,6 @@ import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,16 +24,13 @@ public class CoopControlsSelectionScreen extends WEScreen {
 	private final Texture background;
 	private Stage stage;
 	private final SpriteBatch batch;
-	private final OrthographicCamera camera;
+
 
 	public CoopControlsSelectionScreen(SpriteBatch batch) {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
 		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/controlScreen.jpg"));
-		
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		//stage
 		if (Controllers.getControllers().size > 1) {//setDisabled(true) does not work
@@ -108,10 +104,8 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		camera.update();
-        batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-			batch.draw(background, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
+			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 		
 		stage.draw();

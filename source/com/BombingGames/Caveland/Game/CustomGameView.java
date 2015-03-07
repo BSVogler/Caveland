@@ -125,8 +125,10 @@ public class CustomGameView extends GameView{
 	@Override
     public void onEnter() {
         WE.getEngineView().addInputProcessor(new InputListener());
+		int playerId = 0;
+		if (coop==1) playerId = 1;
 		if (Controllers.getControllers().size > 0){
-			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(0),0));
+			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(playerId),playerId));
 		}
 		
 		//hide cursor
@@ -173,7 +175,7 @@ public class CustomGameView extends GameView{
 			);
 		}
 
-		if (coop !=1) {
+		if (coop !=1) {//P1 controlled by keyboard
 			if (XboxListener.speed[0] > 0){
 				getPlayer(0).setSpeedHorizontal(
 					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])

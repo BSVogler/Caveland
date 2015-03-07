@@ -873,7 +873,7 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Returns the height of the camera outpu.
+	 * Returns the height of the camera output.
 	 *
 	 * @return the value before scaling
 	 */

@@ -39,7 +39,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	public static Collectible create(CollectibleType def){
 		if (def==CollectibleType.EXPLOSIVES)
-			return new TFlint(def);
+			return new TFlint();
 		else return new Collectible(def);
 	}
 	

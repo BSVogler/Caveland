@@ -31,6 +31,8 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	public void update(float dt) {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
+		if (interactButton!=null)
+			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH));
 		
 		//höchster Punkt erreicht
 		//if (beforeUpdate>0 && getMovement().z<0)
@@ -49,7 +51,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	@Override
 	public void showButton() {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity(23,1).spawn(
+			interactButton = (SimpleEntity) new SimpleEntity(23,11).spawn(
 				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
 			);
 			interactButton.setLightlevel(1);

@@ -518,7 +518,7 @@ public class CustomPlayer extends Controllable {
 	}
 
 	/**
-	 * should be called on button release. Performs the load attack.
+	 * should be called on button release. Performs the load attack if loaded enough.
 	 */
 	public void loadAttack() {
 		if (loadAttack >= LOADATTACKTIME) {

@@ -16,6 +16,13 @@ public interface Interactable {
 	 */
 	public void interact(AbstractEntity actor, GameView view);
 	
+	/**
+	 * display the interact button
+	 */
 	public void showButton();
+	
+	/**
+	 * hide the interact button
+	 */
 	public void hideButton();
 }

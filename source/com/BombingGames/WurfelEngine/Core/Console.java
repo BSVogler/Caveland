@@ -50,7 +50,8 @@ import java.util.StringTokenizer;
  *The message system can manage&show messages (Line).
  * @author Benedikt
  */
-public class Console {
+public class Console implements CommandsInterface  {
+	
     private int timelastupdate = 0;
     private GameplayScreen gameplayRef;//the reference to the associated gameplay
     private TextField textinput;
@@ -58,12 +59,15 @@ public class Console {
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
     private Modes mode;
+	private CommandsInterface externalCommands;
 	
 	/**
 	 * suggestions stuff
 	 */
 	private int nextSuggestionNo =0;
 	private boolean keySuggestionDown;
+
+
     
     private enum Modes {
         Chat, Console
@@ -125,6 +129,7 @@ public class Console {
      *
      * @param gameplayRef
      */
+	@Override
     public void setGameplayRef(GameplayScreen gameplayRef) {
         this.gameplayRef = gameplayRef;
     }
@@ -323,11 +328,17 @@ public class Console {
 		}
 	}
     
+	public void setCustomCommands(CommandsInterface externalCommands){
+		this.externalCommands = externalCommands;	
+		externalCommands.setGameplayRef(gameplayRef);
+	}
+	
     /**
-     * Tries executing a command
+     * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
      * @return 
      */
+	@Override
     public boolean executeCommand(String command){
         if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
@@ -444,6 +455,9 @@ public class Console {
 				return true;
 			}
 		} else {
+			//try executing with custom commands
+			if (externalCommands!=null)
+				return externalCommands.executeCommand(command);
 			add("CVar \""+first+"\" not found.", "System");
 			return true;
 		}

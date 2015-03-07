@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.Game;
 
+import com.BombingGames.Caveland.CavelandCommands;
 import com.BombingGames.Caveland.GameObjects.CustomBlockDestructionAction;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.WurfelEngine.Core.CVar;
@@ -7,6 +8,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -25,6 +27,8 @@ public class CustomGameController extends Controller {
         player1 = new CustomPlayer();
 		Block.setDestructionSound("blockDestroy");
 		Block.setDestructionAction(new CustomBlockDestructionAction());
+		
+		WE.getConsole().setCustomCommands(new CavelandCommands());
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
 //		

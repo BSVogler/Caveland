@@ -466,7 +466,8 @@ public class Camera implements LinkedWithMap {
 					Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
 					Sprite overlay = new Sprite(texture);
 					overlay.setOrigin(0, 0);
-					overlay.scale(1.4f);
+					//somehow reverse the viewport transformation, needed for split-screen
+					overlay.setSize(getWidthInScreenSpc(), getHeightInScreenSpc()*(float)Gdx.graphics.getHeight()/getHeightInScreenSpc());
 					overlay.setColor(1, 0, 0, damageoverlay);
 					overlay.draw(WE.getEngineView().getBatch());
 				WE.getEngineView().getBatch().end();

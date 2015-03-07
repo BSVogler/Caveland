@@ -99,7 +99,7 @@ public class WE {
 	}
     
     /**
-     * Start the engine. You should have passed a main menu first.
+     * Start the engine. You should have passed a main menu first.<br /> Until the engine is launched it can take a while. Code that can only be run after the engine has openend should be run in the screen class.
 	 * @param title The title, which is displayed in the window.
      * @param args Wurfel Engine launch parameters. For a list look in the wiki.
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)

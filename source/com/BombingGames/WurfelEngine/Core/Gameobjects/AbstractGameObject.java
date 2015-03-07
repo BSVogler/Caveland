@@ -181,15 +181,6 @@ public abstract class AbstractGameObject implements Serializable {
 		return spritesheetPath;
 	}
 	
-    /**
-     * Place you static update methods here.
-     * @param dt 
-     */
-    public static void updateStaticUpdates(float dt){
-        Sea.staticUpdate(dt);
-    }
-    
-	
 	/**
      * Returns the depth of the object. Nearer objects have a bigger depth.
 	 * @param view

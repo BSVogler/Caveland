@@ -38,6 +38,11 @@ public class AnimatedBlock extends Block implements Animatable{
     private int counter = 0;
     private boolean running;
     private final boolean loop;
+	private boolean bob;
+	/**
+	 * true if running forth, false if back
+	 */
+	private boolean runningForth;
     
     /**
      * Create this Block with an array wich has the time of every animation step in ms in it.
@@ -52,6 +57,15 @@ public class AnimatedBlock extends Block implements Animatable{
         this.running = autostart;
         this.loop = loop;
     }
+
+	/**
+	 * play the animation back and forth
+	 * @param bob 
+	 */
+	public void setBounce(boolean bob) {
+		this.bob = bob;
+	}
+	
     
    /**
      * updates the block and the animation.
@@ -62,15 +76,37 @@ public class AnimatedBlock extends Block implements Animatable{
         if (running) {
             counter += dt;
             if (counter >= animationsduration[getValue()]){
-                setValue(getValue()+1);
-                counter=0;
-                if (getValue() >= animationsduration.length)//if over animation array
-                    if (loop)
-                        setValue(0);
-                    else{
+                counter %= animationsduration[getValue()];//stay in circle
+				if (runningForth)
+					setValue(getValue()+1);
+				else
+					setValue(getValue()-1);
+				
+                if (getValue() >= animationsduration.length) {//if over animation array
+                    if (loop) {
+						if (bob && runningForth) {
+							runningForth=false;//go back
+							setValue(animationsduration.length-2);//reverse step and go in different direction
+						} else
+							setValue(0);
+					} else {
+						//stop animation
                         running = false;
-                        setValue(getValue()-1);
+                        setValue(animationsduration.length-1);
                     }
+				} else if (getValue() < 0) {
+					if (loop) {
+						if (bob && !runningForth) {
+							runningForth=true;//go forth
+							setValue(1);
+						} else
+							setValue(animationsduration.length-1);
+					} else {
+						//stop animation
+						running = false;
+						setValue(0);
+					}
+				}
             }
         }
     }

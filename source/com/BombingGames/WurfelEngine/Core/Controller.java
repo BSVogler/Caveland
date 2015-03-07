@@ -123,7 +123,6 @@ public class Controller implements GameManager {
 	public static void staticUpdate(float dt){
 		if (lightEngine != null) lightEngine.update(dt);
 		if (soundEngine != null) soundEngine.update(dt);
-        AbstractGameObject.updateStaticUpdates(dt);
 		map.update(dt);
 	}
 

@@ -28,75 +28,21 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
-
 /**
  *A Sea Block which has a "waves" effect.
  * @author Benedikt Vogler
  */
-public class Sea extends Block {
+public class Sea extends AnimatedBlock {
 	private static final long serialVersionUID = 1L;
-    /**
-     *
-     */
-    public static final int WAVE_AMPLITUDE = AbstractGameObject.GAME_EDGELENGTH/2-10;
-    private static final float wavespeed = 1/700f; //the smaller the slower
-    private static float currentX = 0;
-    private static final int waveWidth = Map.getBlocksX()/7;
-    
-    private int startvalue;
-    
-    private Coordinate coords;
-	private int offsetY;
         
     /**
      *
      * @param id
      */
     public Sea(final int id) {
-        super(id);
+        super(id,new int[]{100,100,100}, true, true);
+		setBounce(true);
         setTransparent(true);
-                
-        if (coords!=null)
-			startvalue = (int) (offsetY + Math.random()*WAVE_AMPLITUDE - WAVE_AMPLITUDE);
-       
     }
 
-    @Override
-    public Coordinate getPosition() {
-        return coords;
-    }
-
-    @Override
-    public void setPosition(AbstractPosition pos) {
-        coords = pos.getCoord();
-    }
-
-    @Override
-    public void update(float delta) {
-		if (coords!=null){
-			offsetY =
-				(int) (startvalue +
-					Math.sin(
-						(currentX-coords.getX()-coords.getY())
-							* Math.PI/waveWidth
-					)*WAVE_AMPLITUDE);
-		}
-    }
-    
-    /**
-     *
-     * @param dt
-     */
-    public static void staticUpdate(float dt){
-        currentX += dt*wavespeed;
-    }
-	
-	@Override
-	public Block spawn(Coordinate coords) {
-		this.coords = coords;
-		return this;
-	}
 }

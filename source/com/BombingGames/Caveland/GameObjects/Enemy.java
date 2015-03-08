@@ -37,6 +37,7 @@ public class Enemy extends MovableEntity{
         setTransparent(true);
         setObstacle(true);
 		setFloating(false);
+		setWalkingSpeedIndependentAnimation(1f);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
     }

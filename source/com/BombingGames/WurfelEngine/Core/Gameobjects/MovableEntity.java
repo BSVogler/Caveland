@@ -359,11 +359,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 						//regular bounce
 						if (walkingCycle < 500) {//forht
 							setValue(
-								getValue() + (int) (walkingCycle / (500 / (float) spritesPerDir))*8
+								getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
 							);
 						} else {//back
 							setValue(
-								getValue() + (int) (spritesPerDir-(walkingCycle-500) / (500 / (float) spritesPerDir))*8
+								getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
 							);
 							
 						}

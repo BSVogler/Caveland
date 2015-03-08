@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
- *
+ *Tutorial owl.
  * @author Benedikt Vogler
  */
 public class Vanya extends MovableEntity implements Interactable, Serializable {

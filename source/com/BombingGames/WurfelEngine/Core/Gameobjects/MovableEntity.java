@@ -262,7 +262,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 			}
 			
-			if (walkingCycle > 1000) {
+			if (walkingCycle >= 1000) {
 				walkingCycle %= 1000;
 				stepSoundPlayedInCiclePhase = false;//reset variable
 			}
@@ -329,7 +329,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 
 				if (cycleAnimation){
-					setValue(getValue()+walkingCycle/(1000/spritesPerDir)*8);
+					setValue(getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8);
 				} else {//bounce
 					if (stepMode) {//some strange step order
 						if (spritesPerDir==2){

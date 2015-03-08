@@ -100,6 +100,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private int walkingCycle;
 	private boolean collectable;
 	private boolean cycleAnimation;
+	/**
+	 * factor which gets multiplied with the walking animation
+	 */
+	private float walkOnTheSpot = 0;
+	private boolean stepMode = true;
 
    /**
     * Constructor of AbstractCharacter.
@@ -131,13 +136,30 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Bounce back and forth (1,2,3,2,1,2 etc.) or cycle (1,2,3,1,2,3 etc.)
-	 * @param cycle true if cycle, false if bounce
+	 * <b>Bounce</b> back and forth (1,2,3,2,1,2 etc.) or <b>cycle</b> (1,2,3,1,2,3 etc.)
+	 * @param cycle true if <b>cycle</b>, false if <b>bounce</b>
 	 */
 	public void setWalkingAnimationCycling(boolean cycle){
 		cycleAnimation = cycle;
 	}
+	
+	/**
+	 * enable this to have a walking cycle even if not moving
+	 * @param walkOnTheSpot the speed of the animation ~1
+	 */
+	public void setWalkingSpeedIndependentAnimation(float walkOnTheSpot) {
+		this.walkOnTheSpot = walkOnTheSpot;
+	}
 
+	/**
+	 * Set step mode or disable step mode. if no step mode plays animation back and forth. If step mode then some strange pattern which looks god for walking animations.
+	 * @param stepmode  stepmode = true, 
+	 */
+	public void setWalkingStepMode(boolean stepmode) {
+		this.stepMode = stepmode;
+	}
+	
+	
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
      * @see #jump(float)
@@ -230,15 +252,22 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			inliquid = getPosition().getBlock().isLiquid();//save if in water
 
-
-			//walking cycle
-			if (floating || isOnGround()) {
-				walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
-				if (walkingCycle > 1000) {
-					walkingCycle%=1000;
-					stepSoundPlayedInCiclePhase=false;//reset variable
+			
+			if(walkOnTheSpot > 0) {
+				walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
+			} else { 
+				//walking cycle
+				if (floating || isOnGround()) {
+					walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
 				}
-
+			}
+			
+			if (walkingCycle > 1000) {
+				walkingCycle %= 1000;
+				stepSoundPlayedInCiclePhase = false;//reset variable
+			}
+			
+			if (floating || isOnGround()) {
 				//play sound twice a cicle
 				if (walkingCycle<250){
 					if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
@@ -301,28 +330,42 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 				if (cycleAnimation){
 					setValue(getValue()+walkingCycle/(1000/spritesPerDir)*8);
-				} else {
-					if (spritesPerDir==2){
-						if (walkingCycle >500)
-							setValue(getValue()+8);
-					} else if (spritesPerDir==3){
-						if (walkingCycle >750)
-							setValue(getValue()+16);
-						else
-							if (walkingCycle >250 && walkingCycle <500)
+				} else {//bounce
+					if (stepMode) {//some strange step order
+						if (spritesPerDir==2){
+							if (walkingCycle >500)
 								setValue(getValue()+8);
-					} else if (spritesPerDir==4){
-						if (walkingCycle >=166 && walkingCycle <333)
-							setValue(getValue()+8);
-						else {
-							if ((walkingCycle >=500 && walkingCycle <666)
-								||
-								(walkingCycle >=833 && walkingCycle <1000)
-							){
+						} else if (spritesPerDir==3){
+							if (walkingCycle >750)
 								setValue(getValue()+16);
-							} else if (walkingCycle >=666 && walkingCycle < 833) {
-								setValue(getValue()+24);
+							else
+								if (walkingCycle >250 && walkingCycle <500)
+									setValue(getValue()+8);
+						} else if (spritesPerDir==4){
+							if (walkingCycle >=166 && walkingCycle <333)
+								setValue(getValue()+8);
+							else {
+								if ((walkingCycle >=500 && walkingCycle <666)
+									||
+									(walkingCycle >=833 && walkingCycle <1000)
+								){
+									setValue(getValue()+16);
+								} else if (walkingCycle >=666 && walkingCycle < 833) {
+									setValue(getValue()+24);
+								}
 							}
+						}
+					} else {
+						//regular bounce
+						if (walkingCycle < 500) {//forht
+							setValue(
+								getValue() + (int) (walkingCycle / (500 / (float) spritesPerDir))*8
+							);
+						} else {//back
+							setValue(
+								getValue() + (int) (spritesPerDir-(walkingCycle-500) / (500 / (float) spritesPerDir))*8
+							);
+							
 						}
 					}
 				}

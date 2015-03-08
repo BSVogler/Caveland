@@ -21,10 +21,13 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	private transient ChatBox currentChat;
 
 	public Vanya() {
-		super(40, 0);
+		super(40, 3);
 		setFloating(false);
 		setName("Vanya");
 		setJumpingSound("vanya_jump");
+		setWalkingSpeedIndependentAnimation(2f);
+		setWalkingAnimationCycling(false);
+		setWalkingStepMode(false);
 	}
 
 	@Override
@@ -33,6 +36,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 		super.update(dt);
 		if (interactButton!=null)
 			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH));
+		
 		
 		//höchster Punkt erreicht
 		//if (beforeUpdate>0 && getMovement().z<0)
@@ -95,7 +99,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 			view.getStage().addActor(currentChat);
 		}
 	}
-	
+
 	private class BlümchenKacke extends MovableEntity {
 		private static final long serialVersionUID = 1L;
 
@@ -117,6 +121,9 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
         in.defaultReadObject();
 		setFloating(false);
         setJumpingSound("vanya_jump");
+		setWalkingSpeedIndependentAnimation(2f);
+		setWalkingAnimationCycling(false);
+		setWalkingStepMode(false);
     }
 	
 }

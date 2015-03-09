@@ -629,18 +629,18 @@ public class Camera implements LinkedWithMap {
 					+ iter.getCurrentIndex()[1];//skip chunks
 			int z = iter.getCurrentIndex()[2]+1;
 			
-			Coordinate blockPos = next.getPosition();
+			Coordinate blockCoord = next.getPosition();
 			//todo border checks
-			if (z > 0){//bottom layer always clipped
-				if (blockPos.getY() % 2 == 0){//next row is shifted right
-					if( blockPos.hidingPastBlocks(-1,1,0))//left
+			if (z > 0){//bottom layer always has sides always clipped
+				if (blockCoord.getY() % 2 == 0){//next row is shifted right
+					if( blockCoord.hidingPastBlock(-1,1,0))//left
 						clipping[x][y][z][0] = true;
-					if( blockPos.hidingPastBlocks(0,1,0))//right
+					if( blockCoord.hidingPastBlock(0,1,0))//right
 						clipping[x][y][z][2] = true;
 				} else {//next row is shifted right
-					if( blockPos.hidingPastBlocks(0,1,0))//left
+					if( blockCoord.hidingPastBlock(0,1,0))//left
 						clipping[x][y][z][0] = true;
-					if( blockPos.hidingPastBlocks(1,1,0))//right
+					if( blockCoord.hidingPastBlock(1,1,0))//right
 						clipping[x][y][z][2] = true;
 				}
 			} else {
@@ -650,7 +650,8 @@ public class Camera implements LinkedWithMap {
 			
 			//check top
 			if(z < Map.getBlocksZ()
-				&& blockPos.hidingPastBlocks(0, 0, 1))//top
+				&& (blockCoord.hidingPastBlock(0, 0, 1))
+			)
 				clipping[x][y][z][1] = true;
 		}
 	}

@@ -95,15 +95,20 @@ public class CustomPlayer extends Controllable {
 	 * time of loading
 	 */
 	private float loadAttack = 0;
-	private AbstractInteractable nearestEntity;
+	private transient AbstractInteractable nearestEntity;
 
-	private int spriteNum = 1;
-	private int animationCycle;
+	/**
+	 * the current playing sprite value */
+	private transient int spriteNum = 1;
+	/**
+	 * where in the cycle it is [0:999]
+	 */
+	private transient float animationCycle;
 	/**
 	 * false means pause
 	 */
-	private boolean playAnimation;
-	private char action = 'w';
+	private transient boolean playAnimation;
+	private transient char action = 'w';
 	/**
 	 * play the throw animation till load is finished
 	 */

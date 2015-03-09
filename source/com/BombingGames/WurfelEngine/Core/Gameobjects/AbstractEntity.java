@@ -33,7 +33,6 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.shooting.Bullet;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -66,7 +65,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public static void registerEngineEntities() {
 		entityMap.put("Explosion", Explosion.class);
 		entityMap.put("Benchmarkball", BenchmarkBall.class);
-		entityMap.put("Bullet", Bullet.class);
 	}
 	
 	/**

@@ -210,10 +210,8 @@ public class CustomPlayer extends Controllable {
 
 		if (!nearbyLoren.isEmpty()) {
 			MineCart lore = nearbyLoren.get(0);
-			if (lore != null && lore.getPassenger() == null)//if contact with lore and it has no passenger
-			{
-				if (pos.getZ() > (pos.getZ() + 0.5f) * (AbstractGameObject.GAME_EDGELENGTH)) //enter chu chu
-				{
+			if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
+				if (pos.getZ() > (lore.getPosition().getZ() + AbstractGameObject.GAME_EDGELENGTH2/2)) {//enter chu chu
 					lore.setPassanger(this);
 				}
 			}

@@ -1,6 +1,8 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -12,8 +14,9 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class MineCart extends MovableEntity {
+public class MineCart extends AbstractInteractable {
 	private static final long serialVersionUID = 1L;
+	private static final float MAXSPEED = 5;
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
@@ -96,7 +99,7 @@ public class MineCart extends MovableEntity {
 			
 			//start moving?
 			if (getSpeedHor()> 0) {
-				setSpeedHorizontal(3);//accelarate to max
+				setSpeedHorizontal(MAXSPEED);//start moving
 				if( isPlayingSound == 0)
 					isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
 			}
@@ -130,19 +133,18 @@ public class MineCart extends MovableEntity {
 
 		//if transporting object
 		if (passenger != null) {
+			//give same speed as minecart
 			passenger.getMovement().x = getMovement().x;
 			passenger.getMovement().y = getMovement().y;
 
-			passenger.setFriction(getFriction());
 			//passenger.setSpeed(getSpeed());
 
-			if (passenger.isOnGround()) {//while standing force into lore
+			if (passenger.getPosition().getZ() < pos.getZ()+GAME_EDGELENGTH/4) {//while standing in mine cart force into it
 				Point tmp = pos.cpy();
-				tmp.setZ(passenger.getPosition().getZ());
+				tmp.setZ(pos.getZ()+GAME_EDGELENGTH/4);
 				passenger.setPosition(tmp);
 			}
-			if (pos.distanceTo(passenger) > 200) {//object exits
-				passenger.setFriction(200);
+			if (pos.distanceTo(passenger) > 200) {//passenger exits
 				passenger = null;
 			}
 		} else {
@@ -176,12 +178,17 @@ public class MineCart extends MovableEntity {
 
 	}
 
-	void setPassanger(MovableEntity passenger) {
+	/**
+	 * the passengers must enter by themself
+	 * @param passenger 
+	 */
+	public void setPassanger(MovableEntity passenger) {
 		this.passenger = passenger;
-		Point tmp = getPosition().cpy();
 		if (passenger.getMovement().z > 0) {
 			passenger.getMovement().z = 0;//fall into chuchu
 		}
+		//set passenger inside the mine cart
+		Point tmp = passenger.getPosition().cpy();
 		tmp.setZ(passenger.getPosition().getZ());
 		passenger.setPosition(tmp);
 	}
@@ -234,5 +241,9 @@ public class MineCart extends MovableEntity {
 				-getOrientation().y
 			)
 		);
+	}
+
+	@Override
+	public void interact(AbstractEntity actor, GameView view) {
 	}
 }

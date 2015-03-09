@@ -52,26 +52,24 @@ public class Inventory implements Serializable {
 	 */
 	public final boolean add(Collectible ent){
 		if (enableStacking) {
-			if (ent.isCollectable()) {
-				if (slot[0].prototype != null && slot[0].prototype.getId() ==ent.getId() && slot[0].counter<10){
-					slot[0].increase();
-					return true;
-				} else if (slot[1].prototype != null && slot[1].prototype.getId() ==ent.getId() && slot[1].counter<10){
-					slot[1].increase();
-					return true;
-				} else if (slot[2].prototype != null && slot[2].prototype.getId() ==ent.getId() && slot[2].counter<10){
-					slot[2].increase();
-					return true;
-				} else if (slot[2].prototype == null ) {
-					slot[2].setPrototype(ent);
-					return true;
-				} else if (slot[1].prototype == null ) {
-					slot[1].setPrototype(ent);
-					return true;
-				} else if (slot[0].prototype == null ) {
-					slot[0].setPrototype(ent);
-					return true;
-				}
+			if (slot[0].prototype != null && slot[0].prototype.getId() ==ent.getId() && slot[0].counter<10){
+				slot[0].increase();
+				return true;
+			} else if (slot[1].prototype != null && slot[1].prototype.getId() ==ent.getId() && slot[1].counter<10){
+				slot[1].increase();
+				return true;
+			} else if (slot[2].prototype != null && slot[2].prototype.getId() ==ent.getId() && slot[2].counter<10){
+				slot[2].increase();
+				return true;
+			} else if (slot[2].prototype == null ) {
+				slot[2].setPrototype(ent);
+				return true;
+			} else if (slot[1].prototype == null ) {
+				slot[1].setPrototype(ent);
+				return true;
+			} else if (slot[0].prototype == null ) {
+				slot[0].setPrototype(ent);
+				return true;
 			}
 		} else {
 			if (slot[2].prototype == null ) {

@@ -122,6 +122,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		enableShadow();
    }
    
+   /**
+	* copy constructor
+	* @param entity 
+	*/
 	protected MovableEntity(MovableEntity entity) {
 		super(entity.getId());
 		this.spritesPerDir = entity.spritesPerDir;

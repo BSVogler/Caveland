@@ -98,7 +98,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
 	 */
 	private int walkingCycle;
-	private boolean collectable;
 	private boolean cycleAnimation;
 	/**
 	 * factor which gets multiplied with the walking animation
@@ -135,7 +134,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         
 		coliding = entity.coliding;
 		floating = entity.floating;
-		collectable = entity.collectable;
 		enableShadow();
 	}
 	
@@ -782,22 +780,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	@Override
 	public MovableEntity clone() throws CloneNotSupportedException{
 		return new MovableEntity(this);
-	}
-
-	/**
-	 * can this object be put in an inventory?
-	 * @return 
-	 */
-	public boolean isCollectable() {
-		return collectable;
-	}
-
-	/**
-	 * can this object be put in an inventory?
-	 * @param collectable
-	 */
-	public void setCollectable(boolean collectable) {
-		this.collectable = collectable;
 	}
 
 	/**

@@ -113,7 +113,7 @@ public class CustomPlayer extends Controllable {
 	 * play the throw animation till load is finished
 	 */
 	private boolean prepareThrow;
-
+	
 	public CustomPlayer() {
 		super(30, 0);
 
@@ -231,7 +231,7 @@ public class CustomPlayer extends Controllable {
 		ArrayList<Collectible> collectibles = pos.getCoord().getEntitysInside(Collectible.class);
 		boolean playCollectSound = false;
 		for (Collectible collectible : collectibles) {
-			if (collectible.isCollectable() && inventory.add(collectible)) {
+			if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {
 				collectible.disposeFromMap();
 				playCollectSound = true;
 			}
@@ -330,18 +330,17 @@ public class CustomPlayer extends Controllable {
 
 	public void throwItem() {
 		try {
-			MovableEntity item = inventory.getFrontItem();
+			Collectible item = inventory.getFrontItem();
 			if (item != null) {//throw is performed if there is an item to throw
 				//play animation
-				if (action != 't')//check if not in loaded position
-				{
+				if (action != 't') {//check if not in loaded position
 					playAnimation('t');
 				}
 				playAnimation = true;
 				prepareThrow = false;
 
-				item.setMovement(getAiming().scl(3f));//throw with 3 m/s
-				//item.setSpeed(0.5f);
+				item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
+				item.preventPickup(this, 400);
 				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
 			}
 		} catch (CloneNotSupportedException ex) {

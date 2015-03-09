@@ -1,20 +1,18 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.WE;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Flint extends MovableEntity{
+public class Flint extends Collectible{
 	private static final long serialVersionUID = 1L;
 
 	public Flint() {
-		super(43, 0);
+		super(CollectibleType.EXPLOSIVES);
 		setFriction(2000);
-		setCollectable(true);
 	}
 	
 	public Flint(Flint flint) {
@@ -35,7 +33,7 @@ public class Flint extends MovableEntity{
 	}
 
 	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
+	public Collectible clone() throws CloneNotSupportedException {
 		return new Flint(this);
 	}
 }

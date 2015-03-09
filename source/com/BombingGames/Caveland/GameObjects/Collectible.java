@@ -1,6 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.badlogic.gdx.math.Vector3;
@@ -38,45 +39,85 @@ public class Collectible extends MovableEntity implements Serializable {
 	 * @return 
 	 */
 	public static Collectible create(CollectibleType def){
+		Collectible obj;
 		if (def==CollectibleType.EXPLOSIVES)
-			return new TFlint();
-		else return new Collectible(def);
+			obj = new TFlint();
+		else obj = new Collectible(def);
+		
+		return obj;
 	}
 	
 	private CollectibleType def;
-
+	/**
+	 * the last object which held the item
+	 */
+	private AbstractGameObject lastParent;
+	private float timeParentBlocked = 1500;
+	
+	
+	/**
+	 * 
+	 * @param def
+	 */
 	protected Collectible(CollectibleType def) {
 		super(def.id, 0);
 		this.def = def;
+		this.lastParent = lastParent;
 		setFloating(false);
 		enableShadow();
 		//setSpeed(0.2f);
 		setFriction(CVar.get("friction").getValuef());
 		setIndestructible(true);
-		setCollectable(true);
 		setAnimation(
 			new EntityAnimation(
 				new int[]{80, 80, 80, 80, 80},
 				true,
-				true)
+				true
+			)
 		);
 	}
 	
 	/**
-	 * copy c
+	 * copy constructor
 	 * @param collectible 
 	 */
 	public Collectible(Collectible collectible) {
 		super(collectible);
 		setFloating(false);
 		setIndestructible(true);
-		setCollectable(true);
 		setAnimation(
 			new EntityAnimation(
 				new int[]{80, 80, 80, 80, 80},
 				true,
 				true)
 		);
+	}
+
+	/**
+	 * prevents being picked up (msut be checked with {@link #canBePickedByParent(AbstractGameObject) }.
+	 * @param lastParent
+	 * @param time time in ms
+	 * @see #canBePickedByParent(AbstractGameObject) 
+	 */
+	public void preventPickup(AbstractGameObject lastParent, float time) {
+		this.lastParent = lastParent;
+		timeParentBlocked=1500;
+	}
+	
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (timeParentBlocked > 0)
+			timeParentBlocked-=dt;
+	}
+	
+	/**
+	 * can be picked up if timer has run out for this object
+	 * @param parent
+	 * @return 
+	 */
+	public boolean canBePickedByParent(AbstractGameObject parent) {
+		return timeParentBlocked < 0 || !parent.equals(lastParent);
 	}
 
 

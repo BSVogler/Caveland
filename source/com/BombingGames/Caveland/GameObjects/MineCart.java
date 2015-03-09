@@ -229,7 +229,7 @@ public class MineCart extends AbstractInteractable {
 		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 			Controller.getSoundEngine().play("robot1destroy", getPosition());
-			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE, this ).spawn(getPosition())).sparkle();
+			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE).spawn(getPosition())).sparkle();
 		}
 	}
 	

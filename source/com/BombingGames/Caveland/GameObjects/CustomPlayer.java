@@ -95,7 +95,7 @@ public class CustomPlayer extends Controllable {
 	 * time of loading
 	 */
 	private float loadAttack = 0;
-	private Interactable nearestEntity;
+	private AbstractInteractable nearestEntity;
 
 	private int spriteNum = 1;
 	private int animationCycle;
@@ -244,7 +244,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//update interactable
-		ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(GAME_EDGELENGTH * 2, Interactable.class);
+		ArrayList<AbstractInteractable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(GAME_EDGELENGTH * 2, AbstractInteractable.class);
 
 		if (!nearbyInteractable.isEmpty()) {
 			//check if a different one
@@ -252,7 +252,7 @@ public class CustomPlayer extends Controllable {
 				nearestEntity.hideButton();
 			}
 			nearestEntity = nearbyInteractable.get(0);
-			nearestEntity.showButton();
+			nearestEntity.showButton(AbstractInteractable.RT);
 		} else if (nearestEntity != null) {
 			nearestEntity.hideButton();
 		}
@@ -311,7 +311,7 @@ public class CustomPlayer extends Controllable {
 	 *
 	 * @return null if nothing in reach
 	 */
-	public Interactable getNearestInteractable() {
+	public AbstractInteractable getNearestInteractable() {
 		return nearestEntity;
 	}
 

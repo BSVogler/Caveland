@@ -4,19 +4,16 @@ import com.BombingGames.Caveland.Game.ChatBox;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 
 /**
  *Tutorial owl.
  * @author Benedikt Vogler
  */
-public class Vanya extends MovableEntity implements Interactable, Serializable {
+public class Vanya extends AbstractInteractable {
 	private static final long serialVersionUID = 3L;
-	private transient SimpleEntity interactButton;
 	private transient int chatCounter;
 	private transient ChatBox currentChat;
 
@@ -34,9 +31,6 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	public void update(float dt) {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
-		if (interactButton!=null)
-			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*1.5f));
-		
 		
 		//höchster Punkt erreicht
 		//if (beforeUpdate>0 && getMovement().z<0)
@@ -50,25 +44,6 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 	@Override
 	public void jump() {
 		super.jump(6, true);
-	}
-
-	@Override
-	public void showButton() {
-		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity(23,11).spawn(
-				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
-			);
-			interactButton.setLightlevel(1);
-			interactButton.setSaveToDisk(false);
-		}
-	}
-
-	@Override
-	public void hideButton() {
-		if (interactButton != null) {
-			interactButton.dispose();
-			interactButton = null;
-		}
 	}
 
 	
@@ -110,13 +85,6 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 		}
 	}
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		if (interactButton != null)
-			interactButton.dispose();
-	}
-	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 		setFloating(false);

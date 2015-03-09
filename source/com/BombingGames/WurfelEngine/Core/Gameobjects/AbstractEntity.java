@@ -232,6 +232,15 @@ public abstract class AbstractEntity extends AbstractGameObject {
     public int getDimensionZ() {
         return dimensionZ;
     }
+	
+	/**
+     * Deletes the object from the map. The opposite to spawn();
+	 * @see #shouldBeDisposed() 
+     */
+    public void disposeFromMap(){
+        onMap = false;
+		if (shadow != null) shadow.dispose();
+    }
     
    /**
      * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely.;
@@ -239,21 +248,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @see #disposeFromMap() 
      */
     public void dispose(){
-        dispose=true;
-        onMap=false;
-		if (shadow != null) shadow.dispose();
+        dispose = true;
+        disposeFromMap();
     }
 	
-	    
-   /**
-     * Deletes the object from the map. The opposite to spawn();
-	 * @see #shouldBeDisposed() 
-     */
-    public void disposeFromMap(){
-        onMap=false;
-		if (shadow != null) shadow.dispose();
-    }
-
     /**
      * 
      * @return true if disposing next tick

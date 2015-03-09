@@ -557,6 +557,10 @@ public class Block extends AbstractGameObject {
     public void setNoSides(){
         hasSides=false;
     }
+	
+	public void setLiquid(boolean liquid){
+		this.liquid = liquid;
+	}
 
 	/**
 	 * set the sound to be played if a block gets destroyed.

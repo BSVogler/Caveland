@@ -234,7 +234,7 @@ public class Coordinate extends AbstractPosition {
      */
     public boolean hidingPastBlocks(int x, int y, int z){
 		Block block = Controller.getMap().getBlock(
-			getX()+x, getY()+y, getZ()+z
+			this.x+x, this.y+y, this.z+z
 		);
         return (block != null && block.hasSides() && ! block.isTransparent());
     }

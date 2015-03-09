@@ -35,7 +35,7 @@ public class Vanya extends MovableEntity implements Interactable, Serializable {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
 		if (interactButton!=null)
-			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH));
+			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH*1.5f));
 		
 		
 		//höchster Punkt erreicht

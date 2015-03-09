@@ -563,9 +563,9 @@ public class Point extends AbstractPosition {
 	
 	/**
 	 * get entities in radius
-	 * @param <type>
+	 * @param <type> returns only object if type which is the filter
 	 * @param radius in game dimension pixels
-	 * @param type
+	 * @param type the type you want to filter
 	 * @return every entitie in radius
 	 */
 	@SuppressWarnings("unchecked")

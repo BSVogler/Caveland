@@ -19,6 +19,10 @@ public class TFlint extends Collectible {
 		setFriction(0.02f);
 	}
 
+	/**
+	 * copy constructor
+	 * @param collectible 
+	 */
 	public TFlint(TFlint collectible) {
 		super(collectible);
 	}

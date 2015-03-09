@@ -149,9 +149,9 @@ public class MineCart extends AbstractInteractable {
 			}
 		} else {
 			//add objects
-			ArrayList<MovableEntity> ents = Controller.getMap().getEntitys(MovableEntity.class);
-			for (MovableEntity ent : ents) {
-				if (ent.isCollectable() && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
+			ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
+			for (Collectible ent : ents) {
+				if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
 					if (add(ent))
 						ent.dispose();
 				}
@@ -229,7 +229,7 @@ public class MineCart extends AbstractInteractable {
 		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 			Controller.getSoundEngine().play("robot1destroy", getPosition());
-			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE).spawn(getPosition())).sparkle();
+			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE, this ).spawn(getPosition())).sparkle();
 		}
 	}
 	

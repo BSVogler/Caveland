@@ -234,142 +234,145 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//save orientation
 			updateOrientation();
 			
-			//check new height for colission            
-			//land if standing in or under 0-level or there is an obstacle
-			if (movement.z < 0 && isOnGround()){
-				onCollide();
-				onLand();
-				
-				if (landingSound != null && !floating)
-					Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound
+			//movement has applied maybe outside memory area 
+			if (getPosition().isInMemoryAreaHorizontal()) {
+				//check new height for colission            
+				//land if standing in or under 0-level or there is an obstacle
+				if (movement.z < 0 && isOnGround()){
+					onCollide();
+					onLand();
 
-				movement.z = 0;
+					if (landingSound != null && !floating)
+						Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound
 
-				//set on top of block
-				getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
-			}
+					movement.z = 0;
 
-			Block block = getPosition().getBlock();
-			if (!inliquid && block != null && block.isLiquid())//if enterin water
-				if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
+					//set on top of block
+					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+				}
 
-			if (block != null)
-				inliquid = block.isLiquid();//save if in water
+				Block block = getPosition().getBlock();
+				if (!inliquid && block != null && block.isLiquid())//if enterin water
+					if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
 
-			
-			if(walkOnTheSpot > 0) {
-				walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
-			} else { 
-				//walking cycle
+				if (block != null)
+					inliquid = block.isLiquid();//save if in water
+
+
+				if(walkOnTheSpot > 0) {
+					walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
+				} else { 
+					//walking cycle
+					if (floating || isOnGround()) {
+						walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+					}
+				}
+
+				if (walkingCycle >= 1000) {
+					walkingCycle %= 1000;
+					stepSoundPlayedInCiclePhase = false;//reset variable
+				}
+
 				if (floating || isOnGround()) {
-					walkingCycle += dt*getSpeed()*CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
-				}
-			}
-			
-			if (walkingCycle >= 1000) {
-				walkingCycle %= 1000;
-				stepSoundPlayedInCiclePhase = false;//reset variable
-			}
-			
-			if (floating || isOnGround()) {
-				//play sound twice a cicle
-				if (walkingCycle<250){
-					if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-						step();
-					}
-				} else if (walkingCycle < 500){
-					stepSoundPlayedInCiclePhase=false;
-				} else if (walkingCycle > 500){
-					if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-						step();
-					}
-				}
-			}
-			
-			//slow walking down
-			if (isOnGround()) {
-				//stop at a threshold
-				if (getMovementHor().len() > 0.1f)
-					setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
-				else {
-					setHorMovement(new Vector2());
-				}
-			}
-				
-				
-			/* update sprite*/
-			if (spritesPerDir>0) {
-				if (orientation.x < -Math.sin(Math.PI/3)){
-					setValue(1);//west
-				} else {
-					if (orientation.x < - 0.5){
-						//y
-						if (orientation.y<0){
-							setValue(2);//north-west
-						} else {
-							setValue(0);//south-east
+					//play sound twice a cicle
+					if (walkingCycle<250){
+						if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+							step();
 						}
+					} else if (walkingCycle < 500){
+						stepSoundPlayedInCiclePhase=false;
+					} else if (walkingCycle > 500){
+						if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+							step();
+						}
+					}
+				}
+
+				//slow walking down
+				if (isOnGround()) {
+					//stop at a threshold
+					if (getMovementHor().len() > 0.1f)
+						setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
+					else {
+						setHorMovement(new Vector2());
+					}
+				}
+
+
+				/* update sprite*/
+				if (spritesPerDir>0) {
+					if (orientation.x < -Math.sin(Math.PI/3)){
+						setValue(1);//west
 					} else {
-						if (orientation.x <  0.5){
+						if (orientation.x < - 0.5){
 							//y
 							if (orientation.y<0){
-								setValue(3);//north
-							}else{
-								setValue(7);//south
+								setValue(2);//north-west
+							} else {
+								setValue(0);//south-east
 							}
-						}else {
-							if (orientation.x < Math.sin(Math.PI/3)) {
+						} else {
+							if (orientation.x <  0.5){
 								//y
-								if (orientation.y < 0){
-									setValue(4);//north-east
-								} else{
-									setValue(6);//sout-east
+								if (orientation.y<0){
+									setValue(3);//north
+								}else{
+									setValue(7);//south
 								}
-							} else{
-								setValue(5);//east
+							}else {
+								if (orientation.x < Math.sin(Math.PI/3)) {
+									//y
+									if (orientation.y < 0){
+										setValue(4);//north-east
+									} else{
+										setValue(6);//sout-east
+									}
+								} else{
+									setValue(5);//east
+								}
 							}
 						}
 					}
-				}
 
-				if (cycleAnimation){
-					setValue(getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8);
-				} else {//bounce
-					if (stepMode) {//some strange step order
-						if (spritesPerDir==2){
-							if (walkingCycle >500)
-								setValue(getValue()+8);
-						} else if (spritesPerDir==3){
-							if (walkingCycle >750)
-								setValue(getValue()+16);
-							else
-								if (walkingCycle >250 && walkingCycle <500)
+					if (cycleAnimation){
+						setValue(getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8);
+					} else {//bounce
+						if (stepMode) {//some strange step order
+							if (spritesPerDir==2){
+								if (walkingCycle >500)
 									setValue(getValue()+8);
-						} else if (spritesPerDir==4){
-							if (walkingCycle >=166 && walkingCycle <333)
-								setValue(getValue()+8);
-							else {
-								if ((walkingCycle >=500 && walkingCycle <666)
-									||
-									(walkingCycle >=833 && walkingCycle <1000)
-								){
+							} else if (spritesPerDir==3){
+								if (walkingCycle >750)
 									setValue(getValue()+16);
-								} else if (walkingCycle >=666 && walkingCycle < 833) {
-									setValue(getValue()+24);
+								else
+									if (walkingCycle >250 && walkingCycle <500)
+										setValue(getValue()+8);
+							} else if (spritesPerDir==4){
+								if (walkingCycle >=166 && walkingCycle <333)
+									setValue(getValue()+8);
+								else {
+									if ((walkingCycle >=500 && walkingCycle <666)
+										||
+										(walkingCycle >=833 && walkingCycle <1000)
+									){
+										setValue(getValue()+16);
+									} else if (walkingCycle >=666 && walkingCycle < 833) {
+										setValue(getValue()+24);
+									}
 								}
 							}
-						}
-					} else {
-						//regular bounce
-						if (walkingCycle < 500) {//forht
-							setValue(
-								getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
-							);
-						} else {//back
-							setValue(
-								getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
-							);
-							
+						} else {
+							//regular bounce
+							if (walkingCycle < 500) {//forht
+								setValue(
+									getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
+								);
+							} else {//back
+								setValue(
+									getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
+								);
+
+							}
 						}
 					}
 				}

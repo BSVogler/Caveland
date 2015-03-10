@@ -32,150 +32,152 @@ public class MineCart extends AbstractInteractable {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		Point pos = getPosition();
-		Block block = pos.getBlock();
+		
+		if (getPosition().isInMemoryAreaHorizontal()) {
+			Point pos = getPosition();
+			Block block = pos.getBlock();
 
-		//on tracks?
-		if (block.getId() == 55) {
-			setFriction(0.001f);
-			
-			switch (block.getValue()) {
-				case 0://straight left bottom to top right
-					setOrientation(new Vector2(
-							getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
-							getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1
-						)
-					);
-					//move on y=-x
-					float x = pos.getRelToCoordX();
-					pos.setPositionRelativeToCoord(
-						x,
-						-x,
-						pos.getRelToCoordZ()
-					);
-					break;
-				case 1:
-					setOrientation(
-						new Vector2(
-							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
-							getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1
-						)
-					);
-					//move on y=-x
-					x = pos.getRelToCoordX();
-					pos.setPositionRelativeToCoord(
-						x,
-						x,
-						pos.getRelToCoordZ()
-					);
-					break;
-				case 3:
-				case 5:
-					int y;
-					if (getMovement().y > 0
-						|| (getMovement().y == 0 && pos.getY() - pos.getCoord().getPoint().getY() < 0)) {//on top and moving down
-						y = 1;
-					} else {
-						y = -1;
+			//on tracks?
+			if (block.getId() == 55) {
+				setFriction(0.001f);
+
+				switch (block.getValue()) {
+					case 0://straight left bottom to top right
+						setOrientation(new Vector2(
+								getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
+								getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1
+							)
+						);
+						//move on y=-x
+						float x = pos.getRelToCoordX();
+						pos.setPositionRelativeToCoord(
+							x,
+							-x,
+							pos.getRelToCoordZ()
+						);
+						break;
+					case 1:
+						setOrientation(
+							new Vector2(
+								getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
+								getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1
+							)
+						);
+						//move on y=-x
+						x = pos.getRelToCoordX();
+						pos.setPositionRelativeToCoord(
+							x,
+							x,
+							pos.getRelToCoordZ()
+						);
+						break;
+					case 3:
+					case 5:
+						int y;
+						if (getMovement().y > 0
+							|| (getMovement().y == 0 && pos.getY() - pos.getCoord().getPoint().getY() < 0)) {//on top and moving down
+							y = 1;
+						} else {
+							y = -1;
+						}
+
+						setOrientation(
+							new Vector2(
+								0,
+								y//coming from top right
+							)
+						);
+						break;
+					case 2:
+					case 4:
+						setOrientation(
+							new Vector2(
+								getMovement().x >= 0 ? 1 : -1,//coming from left
+								0
+							)
+						);
+						break;
+				}
+
+				//start moving?
+				if (getSpeedHor()> 0) {
+					setSpeedHorizontal(MAXSPEED);//start moving
+					if( isPlayingSound == 0)
+						isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
+				}
+			} else {//offroad
+				setFriction(0.005f);
+				if (isPlayingSound!=0) {
+					Controller.getSoundEngine().stop("wagon", isPlayingSound);
+					isPlayingSound = 0;
+				}
+			}
+
+			//moving down left or up right
+			if (
+				(getOrientation().y > 0
+				&&
+				getOrientation().y > getOrientation().x)
+				||
+				(getOrientation().y < 0
+				&&
+				getOrientation().y < getOrientation().x)
+			)
+				setValue(0);
+			else
+				setValue(2);
+
+			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite
+			rollingCycle %= GAME_EDGELENGTH/4; //cycle
+			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
+				setValue(getValue()+1); //next step in animation
+			}
+
+			//if transporting object
+			if (passenger != null) {
+				//give same speed as minecart
+				passenger.getMovement().x = getMovement().x;
+				passenger.getMovement().y = getMovement().y;
+
+				//passenger.setSpeed(getSpeed());
+
+				if (passenger.getPosition().getZ() < pos.getZ()+GAME_EDGELENGTH/4) {//while standing in mine cart force into it
+					Point tmp = pos.cpy();
+					tmp.setZ(pos.getZ()+GAME_EDGELENGTH/4);
+					passenger.setPosition(tmp);
+				}
+				if (pos.distanceTo(passenger) > 200) {//passenger exits
+					passenger = null;
+				}
+			} else {
+				//add objects
+				ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
+				for (Collectible ent : ents) {
+					if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
+						if (add(ent))
+							ent.dispose();
 					}
+				}
+			}
 
-					setOrientation(
-						new Vector2(
-							0,
-							y//coming from top right
-						)
-					);
-					break;
-				case 2:
-				case 4:
-					setOrientation(
-						new Vector2(
-							getMovement().x >= 0 ? 1 : -1,//coming from left
-							0
-						)
-					);
-					break;
-			}
-			
-			//start moving?
-			if (getSpeedHor()> 0) {
-				setSpeedHorizontal(MAXSPEED);//start moving
-				if( isPlayingSound == 0)
-					isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
-			}
-		} else {//offroad
-			setFriction(0.005f);
-			if (isPlayingSound!=0) {
-				Controller.getSoundEngine().stop("wagon", isPlayingSound);
-				isPlayingSound = 0;
-			}
-		}
-		
-		//moving down left or up right
-		if (
-			(getOrientation().y > 0
-			&&
-			getOrientation().y > getOrientation().x)
-			||
-			(getOrientation().y < 0
-			&&
-			getOrientation().y < getOrientation().x)
-		)
-			setValue(0);
-		else
-			setValue(2);
-		
-		rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite
-		rollingCycle %= GAME_EDGELENGTH/4; //cycle
-		if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
-			setValue(getValue()+1); //next step in animation
-		}
-
-		//if transporting object
-		if (passenger != null) {
-			//give same speed as minecart
-			passenger.getMovement().x = getMovement().x;
-			passenger.getMovement().y = getMovement().y;
-
-			//passenger.setSpeed(getSpeed());
-
-			if (passenger.getPosition().getZ() < pos.getZ()+GAME_EDGELENGTH/4) {//while standing in mine cart force into it
-				Point tmp = pos.cpy();
-				tmp.setZ(pos.getZ()+GAME_EDGELENGTH/4);
-				passenger.setPosition(tmp);
-			}
-			if (pos.distanceTo(passenger) > 200) {//passenger exits
-				passenger = null;
-			}
-		} else {
-			//add objects
-			ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
-			for (Collectible ent : ents) {
-				if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
-					if (add(ent))
-						ent.dispose();
+			//hit objects in front
+			if (getSpeed() > 0) {
+				ArrayList<MovableEntity> entitiesInFront;
+				entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(40, MovableEntity.class);
+				for (MovableEntity ent : entitiesInFront) {
+					if (this != ent) {//don't collide with itself
+						ent.setMovement(
+							new Vector3(
+								(float) (getMovement().x + Math.random() * 0.5f - 0.25f),
+								(float) (getMovement().y + Math.random() * 0.5f - 0.25f),
+								(float) Math.random()
+							)
+						);
+						ent.addToHor(getSpeed());
+					}
 				}
 			}
 		}
-
-		//hit objects in front
-		if (getSpeed() > 0) {
-			ArrayList<MovableEntity> entitiesInFront;
-			entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(40, MovableEntity.class);
-			for (MovableEntity ent : entitiesInFront) {
-				if (this != ent) {//don't collide with itself
-					ent.setMovement(
-						new Vector3(
-							(float) (getMovement().x + Math.random() * 0.5f - 0.25f),
-							(float) (getMovement().y + Math.random() * 0.5f - 0.25f),
-							(float) Math.random()
-						)
-					);
-					ent.addToHor(getSpeed());
-				}
-			}
-		}
-
 	}
 
 	/**

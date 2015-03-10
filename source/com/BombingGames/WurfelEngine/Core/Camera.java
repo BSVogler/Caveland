@@ -124,6 +124,15 @@ public class Camera implements LinkedWithMap {
 	private boolean active = true;
 	
 	/**
+	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.
+	 */
+	private void initFocus(){
+		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
+		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
+		updateNeededData();
+	}
+
+	/**
 	 * Creates a camera pointing at the middle of the map.
 	 *
 	 * @param x the position in the application window (viewport position). Origin top left
@@ -166,15 +175,6 @@ public class Camera implements LinkedWithMap {
 	}
 	
 	/**
-	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.
-	 */
-	private void initFocus(){
-		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
-		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		updateNeededData();
-	}
-
-	/**
 	 * Create a camera focusin a specific coordinate. It can later be changed
 	 * with <i>focusCoordinates()</i>. Screen size does refer to the output of
 	 * the camera not the real size on the display.
@@ -199,7 +199,7 @@ public class Camera implements LinkedWithMap {
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
 	}
-
+	
 	/**
 	 * Creates a camera focusing an entity. The values are sceen-size and do
 	 * refer to the output of the camera not the real display size.
@@ -235,7 +235,7 @@ public class Camera implements LinkedWithMap {
 		);
 		initFocus();
 	}
-
+	
 	/**
 	 * Updates the camera.
 	 *

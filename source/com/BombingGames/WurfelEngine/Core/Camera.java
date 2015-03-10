@@ -225,6 +225,9 @@ public class Camera implements LinkedWithMap {
 		}
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
+		if (!focusentity.spawned()) {
+			throw new NullPointerException(focusentity.getName()+" is not spawned yet");
+		}
 		position.x = focusEntity.getPosition().getViewSpcX(gameView);
 		position.y = (int) (
 					focusEntity.getPosition().getViewSpcY(gameView)

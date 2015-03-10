@@ -246,7 +246,7 @@ public class Map implements Cloneable{
 	 */
 	public void postUpdate(float dt) {
 		if (CVar.get("enableChunkSwitch").getValueb()) {
-			//some custom garbage collection
+			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){
 					data.get(i).dispose(filename);

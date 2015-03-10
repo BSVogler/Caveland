@@ -108,10 +108,12 @@ public class GameplayScreen extends WEScreen {
     public void renderImpl(float dt) {
 		//aply game world speed
         dt *= CVar.get("timespeed").getValuef();
+		//update data
         controller.update(dt);
 		Controller.staticUpdate(dt);
         view.update(dt);
 		getMap().postUpdate(dt);//hack to prevent 1-frame lag by too late write access via view update
+		//render data
         view.render();
         WE.getEngineView().getStage().draw();
     }

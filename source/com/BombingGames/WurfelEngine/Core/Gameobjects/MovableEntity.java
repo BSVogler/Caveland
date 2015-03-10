@@ -447,18 +447,22 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-        if (pos.cpy().addVector(0, - colissionRadius, 0).getBlock().isObstacle())
+		Block block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
+        if (block!=null && block.isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(0, colissionRadius, 0).getBlock().isObstacle())
+		block = pos.cpy().addVector(0, colissionRadius, 0).getBlock();
+        if (block!=null && block.isObstacle())
             colission = true;
         
         //check X
         //left
-        if (pos.cpy().addVector(-colissionRadius, 0, 0).getBlock().isObstacle())
+		block = pos.cpy().addVector(-colissionRadius, 0, 0).getBlock();
+        if (block!=null && block.isObstacle())
             colission = true;
         //bottom corner
-        if (pos.cpy().addVector(colissionRadius, 0, 0).getBlock().isObstacle())
+		block = pos.cpy().addVector(colissionRadius, 0, 0).getBlock();
+        if (block!=null && block.isObstacle())
             colission = true;
         
         return colission;

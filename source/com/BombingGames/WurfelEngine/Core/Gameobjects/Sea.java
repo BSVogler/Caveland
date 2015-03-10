@@ -40,7 +40,7 @@ public class Sea extends AnimatedBlock {
      * @param id
      */
     public Sea(final int id) {
-        super(id,new int[]{100,100,100}, true, true);
+        super(id,new int[]{200,200,200,200}, true, true);
 		setBounce(true);
         setTransparent(true);
 		setLiquid(true);

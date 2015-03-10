@@ -308,7 +308,7 @@ public class Coordinate extends AbstractPosition {
 
     /**
      * Returns the field-id where the coordiantes are inside in relation to the current field. Field id count clockwise, starting with the top with 0.
-     * If you want to get the neighbour you can use {@link #neighbourSidetoCoords(int)} with the parameter found by this function.
+     * If you want to get the neighbour you can use {@link #goToNeighbour(int)} with the parameter found by this function.
      * The numbering of the sides:<br>
      * 7 \ 0 / 1<br>
      * -------<br>
@@ -319,7 +319,7 @@ public class Coordinate extends AbstractPosition {
      * @param x game-space-coordinates, value in pixels
      * @param y game-space-coordinates, value in pixels
      * @return Returns the fieldnumber of the coordinates. 8 is the field itself.
-     * @see #neighbourSidetoCoords(int)
+     * @see #goToNeighbour(int)
      */
     public static int getNeighbourSide(float x, float y) {  
 		//modulo
@@ -357,7 +357,7 @@ public class Coordinate extends AbstractPosition {
     }
 
     /**
-     * Get the neighbour coordinates of the neighbour of the coords you give.<br />
+     * Goes to the the neighbour with the specific side.<br />
      * 7 \ 0 / 1<br />
      * -------<br />
      * 6 | 8 | 2<br />
@@ -365,49 +365,36 @@ public class Coordinate extends AbstractPosition {
      * 5 / 4 \ 3<br />
 	 * O(const)
      * @param neighbourSide the side number of the given coordinates
-     * @return The coordinates of the neighbour.
+	 * @return itself for chaining
      */
-    public Coordinate neighbourSidetoCoords(final int neighbourSide) {
-        int[] result = new int[3];
+    public Coordinate goToNeighbour(final int neighbourSide) {
         switch (neighbourSide) {
             case 0:
-                result[0] = getX();
-                result[1] = getY() - 2;
+                addVector( 0, -2, 0); 
                 break;
             case 1:
-                result[0] = getX() + (getY() % 2 != 0 ? 1 : 0);
-                result[1] = getY() - 1;
+				addVector( getY() % 2 != 0 ? 1 : 0, -1, 0); 
                 break;
             case 2:
-                result[0] = getX() + 1;
-                result[1] = getY();
+				addVector( 1, 0, 0); 
                 break;
             case 3:
-                result[0] = getX() + (getY() % 2 != 0 ? 1 : 0);
-                result[1] = getY() + 1;
+				addVector( getY() % 2 != 0 ? 1 : 0, 1, 0); 
                 break;
             case 4:
-                result[0] = getX();
-                result[1] = getY() + 2;
+                addVector( 0, 2, 0); 
                 break;
             case 5:
-                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
-                result[1] = getY() + 1;
+                addVector( getY() % 2 == 0 ? -1 : 0, 1, 0); 
                 break;
             case 6:
-                result[0] = getX() - 1;
-                result[1] = getY();
+				addVector(-1, 0, 0);
                 break;
             case 7:
-                result[0] = getX() - (getY() % 2 == 0 ? 1 : 0);
-                result[1] = getY() - 1;
+				addVector( getY() % 2 == 0 ? -1 : 0, -1, 0); 
                 break;
-            default:
-                result[0] = getX();
-                result[1] = getY();
         }
-        result[2] = getZ();
-        return new Coordinate(result[0], result[1], result[2]);
+		return this;
     }
     
     /**

@@ -22,8 +22,8 @@ public class Machine extends Block {
 
 	@Override
 	public void update(float dt) {
-		Coordinate coords = getPosition();
-		ArrayList<MineCart> lorenIncoming = coords.neighbourSidetoCoords(1).getEntitysInside(MineCart.class);
+		Coordinate coords = getPosition().cpy();
+		ArrayList<MineCart> lorenIncoming = coords.goToNeighbour(1).getEntitysInside(MineCart.class);
 		if (lorenIncoming.size()>0) {
 			MineCart loreIncoming = lorenIncoming.get(0);
 			ArrayList<MovableEntity> content = loreIncoming.getContent();
@@ -43,7 +43,7 @@ public class Machine extends Block {
 			}
 		}
 
-		ArrayList<MineCart> lorenOutgoing = coords.neighbourSidetoCoords(3).getEntitysInside(MineCart.class);
+		ArrayList<MineCart> lorenOutgoing = coords.goToNeighbour(3).getEntitysInside(MineCart.class);
 		if (lorenIncoming.size()>0 && flintcount>0){//if loreIncoming davor && produkt im speicher
 			if (lorenOutgoing.get(0).add(new Flint()))
 				flintcount--;

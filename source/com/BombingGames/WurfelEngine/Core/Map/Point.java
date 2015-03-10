@@ -106,7 +106,7 @@ public class Point extends AbstractPosition {
     }
     
     /**
-     * returns coordinate aquivalent. Removes floating of block.
+     * returns coordinate aquivalent. Removes floating of block.<br /> Copy safe.<br />
 	 * Looks complicated but is O(const)
      * @return coordinate aquivalent
      */
@@ -124,7 +124,7 @@ public class Point extends AbstractPosition {
        
 		//return coords;
         //find the specific coordinate (detail)
-        return coords.neighbourSidetoCoords(
+        return coords.goToNeighbour(
             Coordinate.getNeighbourSide(
                 getX() % AbstractGameObject.GAME_DIAGLENGTH,
                 getY() % AbstractGameObject.GAME_DIAGLENGTH

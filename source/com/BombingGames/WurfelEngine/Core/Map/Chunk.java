@@ -449,8 +449,8 @@ public class Chunk {
 	public boolean hasPoint(Point point){
 		float x = point.getX();
 		float y = point.getY();
-		float left = getTopLeftCoordinate().getX();
-		float top = getTopLeftCoordinate().getY();
+		float left = getTopLeftCoordinate().getPoint().getX();
+		float top = getTopLeftCoordinate().getPoint().getY();
 		return (x >= left
 				&& x < left + getGameWidth()
 				&& y >= top

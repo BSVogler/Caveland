@@ -42,7 +42,9 @@ public class CoopControlsSelectionScreen extends WEScreen {
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					CustomGameView view = new CustomGameView();
 					view.enableCoop(2);
-					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
+					CustomGameController controller = new CustomGameController();
+					controller.activatePlayer2();
+					WE.initAndStartGame(controller, view, new CustomLoading());
 				}
 			});
 			stage.addActor(twoControllersButton);
@@ -62,7 +64,9 @@ public class CoopControlsSelectionScreen extends WEScreen {
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 					CustomGameView view = new CustomGameView();
 					view.enableCoop(1);
-					WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
+					CustomGameController controller = new CustomGameController();
+					controller.activatePlayer2();
+					WE.initAndStartGame(controller, view, new CustomLoading());
 				}
 			});
 			stage.addActor(splitControlsButton);
@@ -80,7 +84,9 @@ public class CoopControlsSelectionScreen extends WEScreen {
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				CustomGameView view = new CustomGameView();
 				view.enableCoop(0);
-				WE.initAndStartGame(new CustomGameController(), view, new CustomLoading());
+				CustomGameController controller = new CustomGameController();
+				controller.activatePlayer2();
+				WE.initAndStartGame(controller, view, new CustomLoading());
 			}
 		});
 		stage.addActor(twoKeyboardButton);

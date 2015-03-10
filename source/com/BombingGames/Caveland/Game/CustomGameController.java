@@ -104,7 +104,7 @@ public class CustomGameController extends Controller {
 	/**
 	 * Adds the second player to the game. Will not be spawned until in {@link #onEnter() }.
 	 */
-	protected void addPlayer2() {
+	public void activatePlayer2() {
 		player2 = new CustomPlayer();
 	}
 }

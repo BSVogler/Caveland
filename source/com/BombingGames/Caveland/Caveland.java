@@ -24,7 +24,8 @@ import java.io.InputStream;
  * @author Benedikt Vogler
  */
 public class Caveland {
-
+	public static final String VERSION = "Alpha 2";
+	
     /**
      * @param args the command line arguments
      */
@@ -55,7 +56,7 @@ public class Caveland {
 		
 		Map.setDefaultGenerator(new ChunkGenerator());
 				
-        WE.launch("Wurfelengine V" + WE.VERSION, args);
+        WE.launch("Caveland " + VERSION, args);
 		
 		//unpack map
 		if (!new File(WorkingDirectory.getMapsFolder()+"/default").exists()){

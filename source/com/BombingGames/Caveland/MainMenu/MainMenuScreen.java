@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.MainMenu;
 
+import com.BombingGames.Caveland.Caveland;
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
@@ -189,7 +190,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 
-			font.draw(batch, "Caveland Alpha V1, FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 30);
+			font.draw(batch, Caveland.VERSION+", FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 30);
         batch.end();
 		
 		stage.draw();

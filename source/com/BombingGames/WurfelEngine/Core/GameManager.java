@@ -41,27 +41,27 @@ public interface GameManager {
     /**
      *Overriding method should contain what should happen when the manager becomes active.
      */
-    public abstract void onEnter();
+    public void onEnter();
     
     /**
      * Should be called when the manager becomes active. Calls {@link  #onEnter()}.
      * @see #onEnter() 
      */
-    public abstract void enter();
+    public void enter();
 	
 	  /**
      * should get called when you leave the editor.
      */
-	public abstract void exit();
+	public void exit();
 
     /**
      *
      * @return
      */
-    public abstract boolean isInitalized();
+    public boolean isInitalized();
 	
 	/**
 	 * should be called if removed from memory
 	 */
-	public abstract void dispose();
+	public void dispose();
 }

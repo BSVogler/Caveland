@@ -145,6 +145,7 @@ public class Camera implements LinkedWithMap {
 		Point center = Map.getCenter();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
+		initFocus();
 	}
 	
 	/**
@@ -152,20 +153,22 @@ public class Camera implements LinkedWithMap {
 	 * @param view
 	 */
 	public Camera(GameView view) {
-		this(
-			0,
-			0,
-			Gdx.graphics.getWidth(),
-			Gdx.graphics.getHeight(),
-			view
-		);
+		gameView = view;
+		screenWidth = Gdx.graphics.getWidth();
+		screenHeight = Gdx.graphics.getHeight();
+		updateViewSpaceSize();
+		
+		Point center = Map.getCenter();
+		position.x = center.getViewSpcX(gameView);
+		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
+		initFocus();
 	}
 	
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.
 	 */
-	public final void initFocus(){
+	private void initFocus(){
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 		updateNeededData();
@@ -186,10 +189,15 @@ public class Camera implements LinkedWithMap {
 	 * @param view
 	 */
 	public Camera(final Point center, final int x, final int y, final int width, final int height, GameView view) {
-		this(x, y, width, height, view);
-		WE.getConsole().add("Creating new camera.");
+		gameView = view;
+		screenWidth = width;
+		screenHeight = height;
+		screenPosX = x;
+		screenPosY = y;
+		updateViewSpaceSize();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
+		initFocus();
 	}
 
 	/**
@@ -206,12 +214,23 @@ public class Camera implements LinkedWithMap {
 	 * @param view
 	 */
 	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height, GameView view) {
-		this(x, y, width, height, view);
+		gameView = view;
+		screenWidth = width;
+		screenHeight = height;
+		screenPosX = x;
+		screenPosY = y;
+		updateViewSpaceSize();
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
 		}
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
+		position.x = focusEntity.getPosition().getViewSpcX(gameView);
+		position.y = (int) (
+					focusEntity.getPosition().getViewSpcY(gameView)
+				  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
+		);
+		initFocus();
 	}
 
 	/**
@@ -219,7 +238,7 @@ public class Camera implements LinkedWithMap {
 	 *
 	 * @param dt
 	 */
-	public void update(float dt) {
+	public final void update(float dt) {
 		if (active){
 			if (focusEntity!=null) {
 				//update camera's position according to focusEntity
@@ -1043,6 +1062,11 @@ public class Camera implements LinkedWithMap {
 	 * @param active 
 	 */
 	void setActive(boolean active) {
+		//turning on
+		if (this.active ==false && active==true) {
+			hiddenSurfaceDetection();
+		}
+		
 		this.active = active;
 	}
 }

@@ -158,8 +158,6 @@ public class GameView extends View implements GameManager {
 		 * problem! Write acces in view. causes 1 frame hack without hacks. Workaround by post-update method.
 		 */
         for (Camera camera : cameras) {
-			if (Controller.getMap().isJustLoaded())
-				camera.initFocus();//if the map is new the center chunk has to be updated
             camera.update(dt);
         }
         
@@ -529,10 +527,7 @@ public class GameView extends View implements GameManager {
 		
 		if (CVar.get("DevMode").getValueb())
 			WE.getEngineView().setCursor(0);
-		for (Camera camera : cameras) {
-			camera.hiddenSurfaceDetection();
-		}
-		
+				
 		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
 		Controller.getMap().setGameSpeed(gameSpeed);
 		

@@ -21,10 +21,28 @@ public class CustomGameController extends Controller {
         
     @Override
     public void init(){
-        Gdx.app.log("CustomGameController", "Initializing");
         super.init(new AirGenerator());
 
+		Gdx.app.log("CustomGameController", "Initializing");
         player1 = new CustomPlayer();
+		
+		if (!player1.spawned())
+			player1.spawn(
+				new Coordinate(
+					CVar.get("PlayerLastSaveX").getValuei(),
+					CVar.get("PlayerLastSaveY").getValuei(),
+					CVar.get("PlayerLastSaveZ").getValuei()
+				).getPoint()
+			);
+		if (player2!=null && !player2.spawned())
+			player2.spawn(
+				new Coordinate(
+					CVar.get("PlayerLastSaveX").getValuei(),
+					CVar.get("PlayerLastSaveY").getValuei(),
+					CVar.get("PlayerLastSaveZ").getValuei()
+				).getPoint()
+			);
+		
 		Block.setDestructionSound("blockDestroy");
 		Block.setDestructionAction(new CustomBlockDestructionAction());
 		
@@ -53,28 +71,6 @@ public class CustomGameController extends Controller {
 //		}
 		//new Vanya().spawn(Map.getCenter());
     }
-
-	@Override
-	public void onEnter() {
-		super.onEnter();
-		if (!player1.spawned())
-			player1.spawn(
-				new Coordinate(
-					CVar.get("PlayerLastSaveX").getValuei(),
-					CVar.get("PlayerLastSaveY").getValuei(),
-					CVar.get("PlayerLastSaveZ").getValuei()
-				).getPoint()
-			);
-		if (player2!=null && !player2.spawned())
-			player2.spawn(
-				new Coordinate(
-					CVar.get("PlayerLastSaveX").getValuei(),
-					CVar.get("PlayerLastSaveY").getValuei(),
-					CVar.get("PlayerLastSaveZ").getValuei()
-				).getPoint()
-			);
-	}
-	
 
 	@Override
 	public void update(float dt) {

@@ -34,6 +34,7 @@ public class Enemy extends MovableEntity{
      */
     public Enemy() {
         super(45,5);
+		setName("Evil Robot");
         setTransparent(true);
         setObstacle(true);
 		setFloating(false);

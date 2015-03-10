@@ -117,6 +117,7 @@ public class CustomPlayer extends Controllable {
 	public CustomPlayer() {
 		super(30, 0);
 
+		setName("Ejira");
 		setStepSound1Grass("step");
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");

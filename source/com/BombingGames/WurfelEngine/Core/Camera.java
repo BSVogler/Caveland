@@ -121,7 +121,7 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * true if camera is currently rendering
 	 */
-	private boolean active = true;
+	private boolean active = false;
 	
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.

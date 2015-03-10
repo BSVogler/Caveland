@@ -106,13 +106,13 @@ public abstract class AbstractPosition implements Serializable {
      * Checks if the position is on the chunks currently in memory. Horizontal checks only. So the position can be udner or over the map.
      * @return 
      */
-    public abstract boolean isInMemoryHorizontal();
+    public abstract boolean isInMemoryAreaHorizontal();
 	
 	/**
      * Checks if the position is on the chunks currently in memory. Checks all axis'.
      * @return <i>true</i> if inside a chunk. <i>false</i> if currently not loaded.
      */
-    public abstract boolean isInMemory();
+    public abstract boolean isInMemoryArea();
 	
 	
     

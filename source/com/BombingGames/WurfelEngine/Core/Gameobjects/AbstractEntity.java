@@ -292,8 +292,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * true if on chunk which is in memory
 	 * @return 
 	 */
-	public boolean isOnMemory() {
-		return position.isInMemoryHorizontal();
+	public boolean isInMemoryArea() {
+		return position.isInMemoryAreaHorizontal();
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

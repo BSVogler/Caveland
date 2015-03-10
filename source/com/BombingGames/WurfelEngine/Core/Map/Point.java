@@ -200,7 +200,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public Block getBlockSafe(){
-        if (isInMemoryHorizontal())
+        if (isInMemoryAreaHorizontal())
             return getCoord().getBlock();
         else return null;
     }
@@ -235,7 +235,7 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public boolean isInMemoryHorizontal() {
+    public boolean isInMemoryAreaHorizontal() {
 		Iterator<Chunk> it = Controller.getMap().getData().iterator();
 		while (it.hasNext()) {
 			if (it.next().hasPoint(this))
@@ -245,7 +245,7 @@ public class Point extends AbstractPosition {
     }
 	
 	@Override
-    public boolean isInMemory() {
+    public boolean isInMemoryArea() {
         boolean found = false;
 		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
 			Iterator<Chunk> it = Controller.getMap().getData().iterator();

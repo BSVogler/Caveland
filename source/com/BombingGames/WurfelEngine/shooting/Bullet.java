@@ -86,7 +86,7 @@ public class Bullet extends AbstractEntity {
             dispose();
                 
         //block hit -> spawn effect
-        if (getPosition().isInMemoryHorizontal() && getPosition().getBlock().isObstacle()){
+        if (getPosition().isInMemoryAreaHorizontal() && getPosition().getBlock().isObstacle()){
             if (impactSprite!= 0)
                 new SimpleEntity(31).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{1000} , true, false));
             dispose();

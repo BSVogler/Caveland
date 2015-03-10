@@ -37,7 +37,7 @@ public class Vanya extends AbstractInteractable {
 			//new BlümchenKacke().spawn(getPosition().cpy());
 		
 		if (dt>0) {//update only if time is running
-			if (getPosition().isInMemoryHorizontal() && isOnGround()) jump();
+			if (getPosition().isInMemoryAreaHorizontal() && isOnGround()) jump();
 		}
 	}
 

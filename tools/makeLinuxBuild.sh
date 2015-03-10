@@ -1,5 +1,5 @@
 #create file
-echo "#!bin/sh
+echo "#!/bin/sh
 exec java -jar \"\$0\" \"\$@\"
 
 " > ./caveland

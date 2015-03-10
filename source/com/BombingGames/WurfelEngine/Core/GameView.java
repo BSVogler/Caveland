@@ -512,6 +512,7 @@ public class GameView extends View implements GameManager {
      */
     @Override
     public void onEnter(){
+		//no code here
     }
     
     @Override

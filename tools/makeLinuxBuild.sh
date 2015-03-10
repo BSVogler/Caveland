@@ -1,3 +1,5 @@
+#run at directory of the build
+
 #create file
 echo "#!/bin/sh
 exec java -jar \"\$0\" \"\$@\"

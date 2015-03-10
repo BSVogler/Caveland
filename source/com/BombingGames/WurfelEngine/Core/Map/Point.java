@@ -37,7 +37,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *A point is a single position in the game world not bound to the grid. Use this for entities.
@@ -236,26 +235,16 @@ public class Point extends AbstractPosition {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		Iterator<Chunk> it = Controller.getMap().getData().iterator();
-		while (it.hasNext()) {
-			if (it.next().hasPoint(this))
-				return true;
-		}
-        return false;
+		return getBlock() != null;
     }
 	
 	@Override
     public boolean isInMemoryArea() {
-        boolean found = false;
-		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
-			Iterator<Chunk> it = Controller.getMap().getData().iterator();
-			found = Controller.getMap().getData().get(0).hasPoint(this);//start with first element
-			while (!found && it.hasNext()) {
-				if (it.next().hasPoint(this))
-					found = true;
-			}
+		if (getZ() < 0 && getZ() > Map.getBlocksZ()){
+			return false;
+		} else {
+			return getBlock() != null;
 		}
-        return found;
     }
 
     /**

@@ -237,12 +237,11 @@ public class Point extends AbstractPosition {
     @Override
     public boolean isInMemoryHorizontal() {
 		Iterator<Chunk> it = Controller.getMap().getData().iterator();
-		boolean found = Controller.getMap().getData().get(0).hasPoint(this);//start with first element
-		while (!found && it.hasNext()) {
+		while (it.hasNext()) {
 			if (it.next().hasPoint(this))
-				found = true;
+				return true;
 		}
-        return found;
+        return false;
     }
 	
 	@Override

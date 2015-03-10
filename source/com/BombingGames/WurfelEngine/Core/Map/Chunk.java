@@ -142,13 +142,17 @@ public class Chunk {
 			}
 		}
 		
+		processModification();
+	}
+	
+	public void processModification(){
 		if (modified){
-			modified=false;
-			Controller.getMap().modified();
-			for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
-				object.onChunkChange(this);
+				modified=false;
+				Controller.getMap().modified();
+				for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
+					object.onChunkChange(this);
+				}
 			}
-		}
 	}
     
     /**

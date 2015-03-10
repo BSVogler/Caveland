@@ -62,16 +62,10 @@ public class Map implements Cloneable{
      */
     private final MapMetaData meta;
 	
-	private boolean modified;
+	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
 	
-	/**
-	 * indicates wheter the map was just set up and did not have a full update circle
-	 */
-	private boolean justLoaded = true;
-
-    
 	public static void setDefaultGenerator(Generator defaultGenerator) {
 		Map.defaultGenerator = defaultGenerator;
 	}
@@ -213,7 +207,6 @@ public class Map implements Cloneable{
 		//printCoords();
 		        
         this.generator = generator;
-		modified = true;
     }
     
 	public void update(float dt){
@@ -258,12 +251,15 @@ public class Map implements Cloneable{
 		}
 		
 		//check for modification flag
+		for (Chunk chunk : data) {
+			chunk.processModification();
+		}
+		
 		if (modified){
 			onModified();
 			modified = false;
 		}
-		//set justLoaded to false because one update cycle was passed
-		justLoaded = false;
+		
 	}
 		
 	/**
@@ -598,15 +594,7 @@ public class Map implements Cloneable{
 			object.onMapChange();
 		}
 	}
-	
-	/**
-	 * if map is completely new returns true. True while in first update cycle.
-	 * @return 
-	 */
-	public boolean isJustLoaded(){
-		return justLoaded;	
-	}
-	
+		
 	public void addLinkedObject(LinkedWithMap object){
 		linkedObjects.add(object);
 	}

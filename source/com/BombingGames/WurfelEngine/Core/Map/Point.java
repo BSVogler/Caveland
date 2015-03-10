@@ -195,7 +195,7 @@ public class Point extends AbstractPosition {
 	
     @Override
     public Block getBlock() {
-        return getCoord().getBlock();
+        return Controller.getMap().getBlock(getCoord());
     }
     
     @Override

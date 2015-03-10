@@ -400,7 +400,7 @@ public class Chunk {
     }
     
     /**
-     *
+     *x axis
      * @return
      */
     public static int getGameWidth(){
@@ -408,7 +408,7 @@ public class Chunk {
     }
     
     /**
-     *
+     *y axis
      * @return
      */
     public static int getGameDepth() {
@@ -416,7 +416,7 @@ public class Chunk {
     }
     
         /**
-     * The height of the map.
+     * The height of the map. z axis
      * @return in game size
      */
     public static int getGameHeight(){

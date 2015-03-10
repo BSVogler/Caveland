@@ -66,6 +66,9 @@ public class Map implements Cloneable{
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
 	
+	/**
+	 * indicates wheter the map was just set up and did not have a full update circle
+	 */
 	private boolean justLoaded = true;
 
     
@@ -248,8 +251,9 @@ public class Map implements Cloneable{
 				if (data.get(i).shouldBeRemoved()){
 					data.get(i).dispose(filename);
 					data.remove(i);
+				} else {
+					data.get(i).resetCameraAccesCounter();
 				}
-				else data.get(i).resetCameraAccesCounter();
 			}
 		}
 		
@@ -258,8 +262,8 @@ public class Map implements Cloneable{
 			onModified();
 			modified = false;
 		}
-		//set lag to false because one update cycle was passed
-		justLoaded=false;
+		//set justLoaded to false because one update cycle was passed
+		justLoaded = false;
 	}
 		
 	/**

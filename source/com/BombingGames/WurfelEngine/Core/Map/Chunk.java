@@ -532,6 +532,10 @@ public class Chunk {
 		cameraAccessCounter++;
 	}
 
+	/**
+	 * Can this can be removed from memory?
+	 * @return true if no camera is rendering this chunk
+	 */
 	boolean shouldBeRemoved() {
 		return cameraAccessCounter <= 0;
 	}

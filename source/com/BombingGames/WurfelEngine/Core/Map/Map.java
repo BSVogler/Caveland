@@ -593,7 +593,7 @@ public class Map implements Cloneable{
 	 */
 	private void onModified() {
 		//recalculates the light if requested
-		Gdx.app.debug("Map", "modified");
+		Gdx.app.debug("Map", "onModified");
 		for (LinkedWithMap object : linkedObjects){
 			object.onMapChange();
 		}

@@ -115,7 +115,6 @@ public class Chunk {
     */
     public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
         this(coordX,coordY);
-        Gdx.app.debug("Chunk", "Creating chunk "+coordX+","+coordY);
 		if (CVar.get("shouldLoadMap").getValueb()){
 			if (!load(mapname, coordX, coordY))
 				fill(coordX, coordY, generator);

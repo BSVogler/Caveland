@@ -64,8 +64,8 @@ public class LoadingScreen extends WEScreen {
        // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg", Sound.class);
         manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav", Sound.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.ogg", Sound.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/explosion2.ogg", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.wav", Sound.class);
+        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/explosion2.wav", Sound.class);
         //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
         
         //load files from configRef

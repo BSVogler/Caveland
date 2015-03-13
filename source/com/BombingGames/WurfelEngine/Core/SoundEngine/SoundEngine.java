@@ -22,9 +22,9 @@ public class SoundEngine {
 
 	public SoundEngine() {
 		register("landing", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav");
-		register("splash", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.ogg");
+		register("splash", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.wav");
 		register("wind", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg");
-		register("explosion", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/explosion2.ogg");
+		register("explosion", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/explosion2.wav");
 	}
 	
 	/**

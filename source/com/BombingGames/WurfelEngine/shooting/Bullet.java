@@ -44,7 +44,7 @@ import java.util.ArrayList;
  */
 public class Bullet extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-    private static String explosionsound;
+    private static String explosionsound = "explosion2";
     private Vector3 dir = new Vector3();//movement
     private float speed;
     private int damage;
@@ -62,14 +62,6 @@ public class Bullet extends AbstractEntity {
         super(12);//default graphics id is 12
     }
 
-    /**
-     *
-     */
-    public static void init(){
-        if (explosionsound == null)
-            explosionsound = "explosion2";
-    }
-   
     @Override
     public void update(float dt) {
 		super.update(dt);

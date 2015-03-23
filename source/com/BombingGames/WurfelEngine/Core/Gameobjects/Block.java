@@ -590,6 +590,7 @@ public class Block extends AbstractGameObject {
 
 	/**
 	 * Overwrite to define what should happen if the block is getting destroyed? Sets the value to -1. So be carefull when to call super.onDestroy().
+	 * @since v1.4
 	 */
 	public void onDestroy() {
 		setValue(-1);

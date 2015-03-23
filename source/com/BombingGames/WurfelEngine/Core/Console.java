@@ -328,6 +328,10 @@ public class Console implements CommandsInterface  {
 		}
 	}
     
+	/**
+	 * Set the factory for custom commands for delegation.
+	 * @param externalCommands 
+	 */
 	public void setCustomCommands(CommandsInterface externalCommands){
 		this.externalCommands = externalCommands;	
 		externalCommands.setGameplayRef(gameplayRef);

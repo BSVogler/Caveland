@@ -61,7 +61,14 @@ public class CVar {
 	 * @since v1.4.2
 	 */
 	public static enum CVarFlags {
-		CVAR_ARCHIVE, CVAR_VOLATILE // never saved to file
+		/**
+		 * does save changes to file
+		*/
+		CVAR_ARCHIVE, 
+		/**
+		 * never saved to file
+		 */
+		 CVAR_VOLATILE
 	}
 	
 	/**
@@ -224,6 +231,9 @@ public class CVar {
 		save();
 	}
 	
+	/**
+	 * saves CVars to file
+	 */
 	public static void save(){
 		if (!reading) {
 			Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);

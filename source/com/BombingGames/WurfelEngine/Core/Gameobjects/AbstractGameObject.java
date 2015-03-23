@@ -97,7 +97,10 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
     
-	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT/(float) GAME_EDGELENGTH;//I thought it was sqrt(1/2) vut then it was 8/9. Can be calculated dynamically
+	/**
+	 * Some magic number which is the factor by what the Z axis is distorted because of the angle pf projection.
+	 */
+	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT/(float) GAME_EDGELENGTH;
 		
     /**the max. amount of different object types*/
     public transient static final int OBJECTTYPESNUM = 124;
@@ -127,6 +130,9 @@ public abstract class AbstractGameObject implements Serializable {
 	 */
 	private float health = 1000;
 	
+	/**
+	 * default is RGBA 0x80808080.
+	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 	
     /**
@@ -161,10 +167,18 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public abstract void setPosition(AbstractPosition pos);
 
+	/**
+	 * the diffuse map
+	 * @return 
+	 */
 	public static Texture getTextureDiffuse() {
 		return textureDiff;
 	}
 
+	/**
+	 * the normal map
+	 * @return 
+	 */
 	public static Texture getTextureNormal() {
 		return textureNormal;
 	}
@@ -177,6 +191,10 @@ public abstract class AbstractGameObject implements Serializable {
 		AbstractGameObject.spritesheetPath = customPath;
 	}
 
+	/**
+	 * path of the spritesheet
+	 * @return 
+	 */
 	public static String getSpritesheetPath() {
 		return spritesheetPath;
 	}
@@ -355,7 +373,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param view
      * @param xPos rendering position, center of sprite in projection space (?)
      * @param yPos rendering position, center of sprite in projection space (?)
-	 * @param color color which gets multiplied with the tint. 0.5f ist no change
+	 * @param color color which gets multiplied with the tint. No change ( multiply with 1) is RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
 		if (id != 0){
@@ -374,7 +392,7 @@ public abstract class AbstractGameObject implements Serializable {
 					+texture.offsetY
 			);
 			
-			//hack for transientfield tint
+			//hack for transient field tint
 			if (tint == null) tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 			if (color!=null)
 				sprite.setColor(tint.tmp().mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f));
@@ -565,7 +583,7 @@ public abstract class AbstractGameObject implements Serializable {
 	
 	
     /**
-     *
+     *disposes static fields
      */
     public static void staticDispose(){
         spritesheet.dispose();//is this line needed?
@@ -589,17 +607,21 @@ public abstract class AbstractGameObject implements Serializable {
 	 * @param health 
 	 */
 	public void setHealth(float health) {
-		if (health>1000)health=1000;
-		if (health<0)health=0;
+		if (health>1000) health=1000;
+		if (health<0) health=0;
 		this.health = health;
 	}
 
+	/**
+	 * give the object a tint. The default brightness is RGBA 0x808080FF so you can make it brighter and darker by modifying R, G and B.
+	 * @param color 
+	 */
 	public void setColor(Color color) {
 		this.tint = color;
 	}
 
 	/**
-	 * get the tint of the object. The default brightness is vec3(0.5) so you can make it brighter and darker.
+	 * get the tint of the object. The default brightness is RGBA 0x808080FF so you can make it brighter and darker by modifying R, G and B.
 	 * @return not copy safe
 	 */
 	public Color getColor() {

@@ -87,6 +87,13 @@ public class Toolbar extends Window {
 	
 	private final Image[] items =new Image[Tool.values().length]; 
 
+	/**
+	 * creates a new toolbar
+	 * @param stage
+	 * @param sprites
+	 * @param left
+	 * @param right 
+	 */
 	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {	
 		super("Tools", WE.getEngineView().getSkin());
 		leftPos = (int) (stage.getWidth()/2-items.length*50/2);

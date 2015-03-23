@@ -217,6 +217,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		}
 	}
 	
+	/**
+	 * Check if music is playing
+	 * @return true if music is playing
+	 */
 	public boolean isMusicPlaying(){
 		if (music==null)
 			return false;

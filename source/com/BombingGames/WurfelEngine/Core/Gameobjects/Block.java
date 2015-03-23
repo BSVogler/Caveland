@@ -214,6 +214,12 @@ public class Block extends AbstractGameObject {
         return block;
     }  
     
+	/**
+	 * get the name of a combination of id and value
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
 	public static String getName(final int id, final int value){
 		switch (id) {
 			case 0:

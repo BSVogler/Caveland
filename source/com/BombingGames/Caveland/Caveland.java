@@ -24,6 +24,9 @@ import java.io.InputStream;
  * @author Benedikt Vogler
  */
 public class Caveland {
+	/**
+	 * version string of the game Caveland
+	 */
 	public static final String VERSION = "Alpha 2";
 	
     /**
@@ -68,6 +71,10 @@ public class Caveland {
 		}
     }
 
+	/**
+	 * Credtis of caveland.
+	 * @return 
+	 */
 	public static String getCredits(){
 		return "Caveland\n" +
 			"\n" +

@@ -20,6 +20,9 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	public static enum CollectibleType {
 		WOOD(46),
+		/**
+		 * T.N.T.! I'm dynamite!
+		 */
 		EXPLOSIVES(47),
 		IRONORE(48),
 		COAL(49),

@@ -953,6 +953,11 @@ public class Camera implements LinkedWithMap {
 		}
 	}
 
+	/**
+	 * updates the screen size 
+	 * @param width
+	 * @param height 
+	 */
 	public void setScreenSize(int width, int height) {
 		this.screenWidth = width;
 		this.screenHeight = height;
@@ -999,6 +1004,7 @@ public class Camera implements LinkedWithMap {
 
 	@Override
 	public void onChunkChange(Chunk chunk) {
+		//does nothing
 	}
 	
 	
@@ -1018,6 +1024,11 @@ public class Camera implements LinkedWithMap {
 			);//view to game
 	}
 
+	/**
+	 * get if a coordinate is clipped
+	 * @param coords
+	 * @return 
+	 */
 	public boolean[] getClipping(Coordinate coords) {
 		if (coords.getZ() >= zRenderingLimit) return new boolean[]{true, true, true};
 		
@@ -1046,14 +1057,6 @@ public class Camera implements LinkedWithMap {
 	public boolean isClipped(Coordinate coord) {
 		boolean[] tmp = getClipping(coord);
 		return (tmp[0] && tmp[1] && tmp[2]);
-	}
-
-	public int getCenterChunkCoordX() {
-		return centerChunkX;
-	}
-
-	public int getCenterChunkCoordY() {
-		return centerChunkY;
 	}
 
 	void orientationChange() {

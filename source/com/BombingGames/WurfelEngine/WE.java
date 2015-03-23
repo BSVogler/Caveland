@@ -172,6 +172,10 @@ public class WE {
         application.setLogLevel(Application.LOG_DEBUG);
     }
 
+	/**
+	 * returns the pointer to the LWJGL configuration of the game window.
+	 * @return 
+	 */
 	public static LwjglApplicationConfiguration getLwjglApplicationConfiguration() {
 		return config;
 	}

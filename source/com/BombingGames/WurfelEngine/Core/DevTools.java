@@ -350,6 +350,9 @@ public class DevTools {
 		}
     }
 	
+	/**
+	 * disposes the dev tool
+	 */
 	public void dispose(){
 		if (editorbutton!=null) editorbutton.remove();
 		if (editorreversebutton!=null) editorreversebutton.remove();

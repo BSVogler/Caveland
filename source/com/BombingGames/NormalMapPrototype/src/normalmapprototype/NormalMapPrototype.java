@@ -25,6 +25,10 @@ import org.lwjgl.opengl.Display;
  */
 public class NormalMapPrototype implements ApplicationListener {
   
+	/**
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.width = 1920;
@@ -49,17 +53,40 @@ public class NormalMapPrototype implements ApplicationListener {
 	private float step;
  
 	//our constants...
-	public static final float DEFAULT_LIGHT_Z = 0.075f;
+
+	/**
+	 *
+	 */
+		public static final float DEFAULT_LIGHT_Z = 0.075f;
+
+	/**
+	 *
+	 */
 	public static final float AMBIENT_INTENSITY = 0.2f;
+
+	/**
+	 *
+	 */
 	public static final float LIGHT_INTENSITY = 1f;
 	
+	/**
+	 *
+	 */
 	public static final Vector3 LIGHT_NORMAL = new Vector3(0f,0f,DEFAULT_LIGHT_Z);
 	
 	//Light RGB and intensity (alpha)
-	public static final Vector3 LIGHT_COLOR = new Vector3(1f, 1f, 1f);
+
+	/**
+	 *
+	 */
+		public static final Vector3 LIGHT_COLOR = new Vector3(1f, 1f, 1f);
  
 	//Ambient RGB and intensity (alpha)
-	public static final Vector3 AMBIENT_COLOR = new Vector3(0.01f, 0.01f, 0.02f);
+
+	/**
+	 *
+	 */
+		public static final Vector3 AMBIENT_COLOR = new Vector3(0.01f, 0.01f, 0.02f);
 	private BitmapFont font;
 	
 	@Override

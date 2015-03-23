@@ -12,6 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 public class ChatBox extends Window {
 	private String text;
 
+	/**
+	 * creates a new chat box
+	 * @param stage
+	 * @param title
+	 * @param text 
+	 */
 	public ChatBox(Stage stage, String title, String text) {
 		super(title, WE.getEngineView().getSkin());
 		setPosition(stage.getWidth()/2, stage.getHeight());

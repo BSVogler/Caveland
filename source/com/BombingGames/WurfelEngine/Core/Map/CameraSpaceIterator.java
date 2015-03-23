@@ -48,6 +48,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
+	 * @param topLevel the top limit of the z axis 
 	 */
 	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
 		setTopLimitZ(topLevel);

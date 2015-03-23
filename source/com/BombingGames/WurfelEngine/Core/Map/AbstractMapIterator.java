@@ -45,7 +45,10 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	private int topLimitZ;
 	private int startingZ = 0;
 	
-
+	/**
+	 * Check if the iterator has a next chunk
+	 * @return 
+	 */
 	public abstract boolean hasNextChunk();
 	
 	/**
@@ -61,10 +64,18 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 		return topLimitZ;
 	}
 
+	/**
+	 * the z level where the iteration starts
+	 * @return 
+	 */
 	public int getStartingZ() {
 		return startingZ;
 	}
 
+	/**
+	 * the z level where the iteration starts
+	 * @param startingZ 
+	 */
 	protected void setStartingZ(int startingZ) {
 		this.startingZ = startingZ;
 	}

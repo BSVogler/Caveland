@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Explosion;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.WE;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ import java.util.ArrayList;
  */
 public class Bullet extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-    private static Sound explosionsound;
+    private static String explosionsound;
     private Vector3 dir = new Vector3();//movement
     private float speed;
     private int damage;
@@ -68,7 +67,7 @@ public class Bullet extends AbstractEntity {
      */
     public static void init(){
         if (explosionsound == null)
-            explosionsound = WE.getAsset("com/BombingGames/WurfelEngine/Core/Sounds/explosion2.ogg");
+            explosionsound = "explosion2";
     }
    
     @Override

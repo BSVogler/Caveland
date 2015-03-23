@@ -79,6 +79,11 @@ public class Block extends AbstractGameObject {
 	 * @since v1.4.20
 	 */
 	public static interface BlockDestructionAction {
+		/**
+		 * the method performed if a block is destroyed
+		 * @param block
+		 * @since v1.4.20
+		 */
 		public void action(Block block);
 	}
     

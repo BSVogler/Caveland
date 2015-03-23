@@ -183,10 +183,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
     /**
      * Defines the direction of the gun - if no gun available - the direction of the head.
-     * @return  If not overwritten returning movement.
+     * @return  If not overwriten returning orientation. copy save
      */
    public Vector3 getAiming(){
-	   return movement;
+	   return new Vector3(getOrientation(),0);
    };
 
     

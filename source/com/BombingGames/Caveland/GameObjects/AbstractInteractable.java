@@ -15,6 +15,9 @@ public abstract class AbstractInteractable extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	private transient SimpleEntity interactButton = null;
 
+	/**
+	 * Xbox controller bindings on Mac OS
+	 */
 	private static final int AUp = 0;
 	public static final int ADown = 1;
 	public static final int BUp = 2;

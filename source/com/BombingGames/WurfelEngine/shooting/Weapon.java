@@ -78,7 +78,7 @@ public class Weapon {
 
     
     /**
-     *
+     *does nothing at the moment
      */
     public static void init(){
         if (spritesheetBig == null) {
@@ -328,7 +328,7 @@ public class Weapon {
     }
     
     /**
-     *
+     *shoots the weapon
      */
     public void shoot(){
         if (shotsLoaded>0 && bulletDelay <= 0 && reloading <= 0){
@@ -375,7 +375,7 @@ public class Weapon {
     }
     
     /**
-     *
+     *reloads the weapon
      */
     public void reload(){
         reloading =relodingTime;

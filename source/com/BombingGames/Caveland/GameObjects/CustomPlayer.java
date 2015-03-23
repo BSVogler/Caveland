@@ -42,6 +42,9 @@ public class CustomPlayer extends Controllable {
 	private transient static Texture textureDiff;
 	private transient static Texture textureNormal;
 
+	/**
+	 * loads the spritesheets for the custom player
+	 */
 	public static void loadSheet() {
 		if (spritesheet == null) {
 			spritesheet = WE.getAsset("com/BombingGames/Caveland/playerSheet.txt");
@@ -77,7 +80,6 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 
-	private float aimHeight;
 	private boolean canPlayLoadingSound = false;
 
 	private int timeSinceDamage;
@@ -114,6 +116,9 @@ public class CustomPlayer extends Controllable {
 	 */
 	private boolean prepareThrow;
 	
+	/**
+	 * creates a new Ejira
+	 */
 	public CustomPlayer() {
 		super(30, 0);
 
@@ -133,27 +138,6 @@ public class CustomPlayer extends Controllable {
 	 */
 	public Inventory getInventory() {
 		return inventory;
-	}
-
-	public void setAimHeight(float aimHeight) {
-		if (aimHeight > 1) {
-			aimHeight = 1;
-		}
-		if (aimHeight < -1) {
-			aimHeight = -1;
-		}
-		this.aimHeight = aimHeight;
-	}
-
-	public float getAimHeight() {
-		return aimHeight;
-	}
-
-	@Override
-	public Vector3 getAiming() {
-		Vector3 aim = new Vector3(getOrientation(), aimHeight);
-		aim.nor();
-		return aim;
 	}
 
 	@Override
@@ -329,6 +313,9 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 
+	/**
+	 * try throwing an item from inventory
+	 */
 	public void throwItem() {
 		try {
 			Collectible item = inventory.getFrontItem();

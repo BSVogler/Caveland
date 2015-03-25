@@ -573,6 +573,15 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 37 * hash + this.x;
+		hash = 17 * hash + this.y;
+		hash = 13 * hash + this.z;
+		return hash;
+	}
+
+	@Override
 	public String toString() {
 		return "{" + x + ", " + y + ", " + z + "}";
 	}

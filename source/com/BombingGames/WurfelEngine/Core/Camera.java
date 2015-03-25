@@ -66,6 +66,12 @@ public class Camera implements LinkedWithMap {
 	private int zRenderingLimit = Map.getBlocksZ();
 
 	private boolean[][][][] clipping;
+	
+	/**
+	 * caching clipping borders
+	 */
+	private int leftCoverBorder, rightCoverBorder, backCoverBorder, frontCoverBorder;
+	
 	/**
 	 * the position of the camera in view space. Y-up. Read only field.
 	 */
@@ -159,6 +165,7 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
+		updateCoverBorders();
 	}
 
 	/**
@@ -177,6 +184,7 @@ public class Camera implements LinkedWithMap {
 		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
 		initFocus();
+		updateCoverBorders();
 	}
 
 	/**
@@ -205,6 +213,7 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
+		updateCoverBorders();
 	}
 
 	/**
@@ -241,6 +250,7 @@ public class Camera implements LinkedWithMap {
 		position.y = (int) (focusEntity.getPosition().getViewSpcY(gameView)
 			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
 		initFocus();
+		updateCoverBorders();
 	}
 
 	/**
@@ -271,7 +281,10 @@ public class Camera implements LinkedWithMap {
 
 			position.x += screenshake.x;
 			position.y += screenshake.y;
-
+			
+			//camera moved so update cover borders
+			updateCoverBorders();
+			
 			//check if chunkswitch left
 			if (
 				getVisibleLeftBorder()
@@ -770,14 +783,11 @@ public class Camera implements LinkedWithMap {
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
-		return Controller.getMap().getChunk(
-			centerChunkX - 1,
-			centerChunkY
-		).getTopLeftCoordinate().getX();
+		return leftCoverBorder;
 	}
 
 	/**
-	 * Returns the right border of the camera covered area.
+	 * Returns the right seight border of the camera covered area currently visible.
 	 *
 	 * @return measured in grid-coordinates
 	 */
@@ -786,13 +796,12 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * Get the rightmost block-coordinate covered by the camera.
+	 * Get the rightmost block-coordinate covered by the camera clipping.
 	 *
 	 * @return the right (X) border coordinate
 	 */
 	public int getCoveredRightBorder() {
-		return Controller.getMap().getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
-			+ Chunk.getBlocksX() - 1;
+		return rightCoverBorder;
 	}
 
 	/**
@@ -809,11 +818,11 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 *
+	 * Clipping
 	 * @return the top/back (Y) border coordinate
 	 */
 	public int getCoveredBackBorder() {
-		return Controller.getMap().getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
+		return backCoverBorder;
 	}
 
 	/**
@@ -833,8 +842,7 @@ public class Camera implements LinkedWithMap {
 	 * @return the bottom/front (Y) border coordinate
 	 */
 	public int getCoveredFrontBorder() {
-		return Controller.getMap().getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
-			+ Chunk.getBlocksY() - 1;
+		return frontCoverBorder;
 	}
 
 	/**
@@ -880,7 +888,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public final void updateViewSpaceSize() {
 		viewSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
-		viewSpaceHeight = screenHeight;
+		viewSpaceHeight = (int) (screenHeight /getScreenSpaceScaling());
 	}
 
 	/**
@@ -901,7 +909,7 @@ public class Camera implements LinkedWithMap {
 	 * @return in projective pixels
 	 */
 	public final int getHeightInProjSpc() {
-		return (int) (viewSpaceHeight / getScreenSpaceScaling() / zoom);
+		return (int) (viewSpaceHeight / zoom);
 	}
 
 	/**
@@ -1003,6 +1011,7 @@ public class Camera implements LinkedWithMap {
 		} else {
 			position.x += x;
 			position.y += y;
+			updateCoverBorders();
 		}
 	}
 
@@ -1066,8 +1075,8 @@ public class Camera implements LinkedWithMap {
 		}
 
 		//get the index position in the clipping field
-		int indexX = coords.getX() - getCoveredLeftBorder();
-		int indexY = coords.getY() - getCoveredBackBorder();
+		int indexX = coords.getX() - leftCoverBorder;
+		int indexY = coords.getY() - backCoverBorder;
 		//check if covered by camera
 		if (
 			   indexX >= 0
@@ -1109,5 +1118,23 @@ public class Camera implements LinkedWithMap {
 		}
 
 		this.active = active;
+	}
+
+	/**
+	 * Updates the cached fields which save the border of the covered coordinates by this camera.
+	 */
+	private void updateCoverBorders() {
+		leftCoverBorder = Controller.getMap().getChunk(
+				centerChunkX - 1,
+				centerChunkY
+			).getTopLeftCoordinate().getX();
+			
+		rightCoverBorder = Controller.getMap().getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
+			+ Chunk.getBlocksX() - 1;
+			
+		backCoverBorder = Controller.getMap().getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
+			
+		frontCoverBorder = Controller.getMap().getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
+			+ Chunk.getBlocksY() - 1;
 	}
 }

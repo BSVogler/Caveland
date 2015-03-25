@@ -17,6 +17,9 @@ public class Vanya extends AbstractInteractable {
 	private transient int chatCounter;
 	private transient ChatBox currentChat;
 
+	/**
+	 *
+	 */
 	public Vanya() {
 		super(40, 3);
 		setFloating(false);

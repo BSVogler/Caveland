@@ -37,21 +37,27 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- * A coordinate is a reference to a specific cell in the map. The coordinate can transcode between relative and absolute coordinates.<br />
- * Relative coordinates are similar to the map array. Absolute coordinates are indipendent of the current map but to access them you must have the chunk where the coordiantes are pointing to in memory.<br />
- * The coordinate uses a continously height value. The Z coordinate value can be calculated. 
+ * A coordinate is a reference to a specific cell in the map. The coordinate can
+ * transcode between relative and absolute coordinates.<br />
+ * Relative coordinates are similar to the map array. Absolute coordinates are
+ * indipendent of the current map but to access them you must have the chunk
+ * where the coordiantes are pointing to in memory.<br />
+ * The coordinate uses a continously height value. The Z coordinate value can be
+ * calculated.
+ *
  * @author Benedikt Vogler
  */
 public class Coordinate extends AbstractPosition {
+
 	private static final long serialVersionUID = 1L;
 	/**
 	 * The x coordinate. Position from left
 	 */
-    private int x;
+	private int x;
 	/**
 	 * The y coordinate. Position from behind.
 	 */
-    private int y;
+	private int y;
 	/**
 	 * The z coordinate. Position from ground.
 	 */
@@ -60,457 +66,509 @@ public class Coordinate extends AbstractPosition {
 	 * gets calculated every time the coordinate is written to.
 	 */
 	private Point cachedPoint;
-    
-    /**
-     * Creates a coordiante refering to the given position on the map.
-     * @param x The x value as coordinate.
-     * @param y The y value as coordinate.
-     * @param z The z value as coordinate.
-     */
-    public Coordinate(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
+
+	/**
+	 * Creates a coordiante refering to the given position on the map.
+	 *
+	 * @param x The x value as coordinate.
+	 * @param y The y value as coordinate.
+	 * @param z The z value as coordinate.
+	 */
+	public Coordinate(int x, int y, int z) {
+		this.x = x;
+		this.y = y;
 		this.z = z;
 		refreshCachedPoint();
-    }
-    
-    /**
-     * Creates a new coordinate from an existing coordinate
-     * @param coord the Coordinate you want to copy
-     */
-    public Coordinate(Coordinate coord) {
-        this.x = coord.x;
-        this.y = coord.y;
+	}
+
+	/**
+	 * Creates a new coordinate from an existing coordinate
+	 *
+	 * @param coord the Coordinate you want to copy
+	 */
+	public Coordinate(Coordinate coord) {
+		this.x = coord.x;
+		this.y = coord.y;
 		this.z = coord.z;
 		refreshCachedPoint();
-    }
-    
-    /**
-     *Gets the X coordinate
-     * @return
-     */
-    public int getX(){
-        return x;
-    }
-    /**
-     *Gets the Y coordinate
-     * @return
-     */
-    public int getY(){
-        return y;
-    }
-	
-	public int getZ(){
+	}
+
+	/**
+	 * Gets the X coordinate
+	 *
+	 * @return
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * Gets the Y coordinate
+	 *
+	 * @return
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getZ() {
 		return z;
 	}
-    
-    
-    /**
-     * Checks if the calculated value is inside the map dimensions and if not clamps it to the map dimensions.
-     * @return
-     * @see #getZ() 
-     */
-    public int getZClamp(){
-        if (z >= Map.getBlocksZ())
-            return Map.getBlocksZ() -1;
-        else if (z < 0)
-                return 0;
-             else
-                return z;
-    }
-    
-    
+
+	/**
+	 * Checks if the calculated value is inside the map dimensions and if not
+	 * clamps it to the map dimensions.
+	 *
+	 * @return
+	 * @see #getZ()
+	 */
+	public int getZClamp() {
+		if (z >= Map.getBlocksZ()) {
+			return Map.getBlocksZ() - 1;
+		} else if (z < 0) {
+			return 0;
+		} else {
+			return z;
+		}
+	}
+
 	@Override
-    public Vector3 getVector(){
-        return new Vector3(x, y, z);
-    }
-    
-    /**
-     *Set the coordiantes X component.
-     * @param x
-     */
-    public void setX(int x){
-        this.x = x;
+	public Vector3 getVector() {
+		return new Vector3(x, y, z);
+	}
+
+	/**
+	 * Set the coordiantes X component.
+	 *
+	 * @param x
+	 */
+	public void setX(int x) {
+		this.x = x;
 		refreshCachedPoint();
-    }
-    
-    /**
-     *Set the coordiantes Y component.
-     * @param y
-     */
-    public void setY(int y){
-        this.y = y;
+	}
+
+	/**
+	 * Set the coordiantes Y component.
+	 *
+	 * @param y
+	 */
+	public void setY(int y) {
+		this.y = y;
 		refreshCachedPoint();
-    }
-    
-    /**
-     *Set the coordinates Z component. It will be transversed into a float value (height).
-     * @param z
-     */
-    public void setZ(int z){
+	}
+
+	/**
+	 * Set the coordinates Z component. It will be transversed into a float
+	 * value (height).
+	 *
+	 * @param z
+	 */
+	public void setZ(int z) {
 		this.z = z;
 		refreshCachedPoint();
-    }
+	}
 
-    /**
-     *Set a block in the map where the coordinate is pointing to.
-     * @param block the block you want to set.
-     */
-    public void setBlock(Block block){
+	/**
+	 * Set a block in the map where the coordinate is pointing to.
+	 *
+	 * @param block the block you want to set.
+	 */
+	public void setBlock(Block block) {
 		block.setPosition(this);
-        Controller.getMap().setData(block);
-    }
-    
+		Controller.getMap().setData(block);
+	}
 
-    
-    /**
-     * Add a vector to the coordinates. If you just want the result and don't change the coordiantes use addVectorCpy.
-     * @param vector
-     * @return the new coordiantes which resulted of the addition
-     */
-    @Override
-    public Coordinate addVector(float[] vector) {
-        this.x += vector[0];
-        this.y += vector[1];
+	/**
+	 * Add a vector to the coordinates. If you just want the result and don't
+	 * change the coordiantes use addVectorCpy.
+	 *
+	 * @param vector
+	 * @return the new coordiantes which resulted of the addition
+	 */
+	@Override
+	public Coordinate addVector(float[] vector) {
+		this.x += vector[0];
+		this.y += vector[1];
 		this.z += vector[2];
 		refreshCachedPoint();
-        return this;
-    }
-    
-    /**
-     *
-     * @param vector
-     * @return
-     */
-    @Override
-    public Coordinate addVector(Vector3 vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
+		return this;
+	}
+
+	/**
+	 *
+	 * @param vector
+	 * @return
+	 */
+	@Override
+	public Coordinate addVector(Vector3 vector) {
+		this.x += vector.x;
+		this.y += vector.y;
+		this.z += vector.z;
 		refreshCachedPoint();
-        return this;
-    }
-    
-     /**
-     * Add a vector to the coordinates. If you just want the result and don't change the coordiantes use addVectorCpy.
-     * @param x
-     * @param y
-     * @param z
-     * @return the new coordiantes which resulted of the addition
-     */
-    @Override
-    public Coordinate addVector(float x, float y, float z) {
-        this.x += x;
-        this.y += y;
-        this.z += z;
+		return this;
+	}
+
+	/**
+	 * Add a vector to the coordinates. If you just want the result and don't
+	 * change the coordiantes use addVectorCpy.
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return the new coordiantes which resulted of the addition
+	 */
+	@Override
+	public Coordinate addVector(float x, float y, float z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
 		refreshCachedPoint();
-        return this;
-    }
-    
-    @Override
-    public Block getBlock(){
-		if (z<0)
+		return this;
+	}
+
+	@Override
+	public Block getBlock() {
+		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
-		else return Controller.getMap().getBlock(this);
-    }
-    
-        /**
-     *Checks of coordinates are valid before fetching the Block.
-     * @return
-     */
-    @Override
-    public Block getBlockSafe(){
-        if (isInMemoryAreaHorizontal())
-            return Controller.getMap().getBlock(this);
-        else return null;
-    }
-    
-   /**
-     * The block hides the past block when it has sides and is not transparent (like normal block)
+		} else {
+			return Controller.getMap().getBlock(this);
+		}
+	}
+
+	/**
+	 * Checks of coordinates are valid before fetching the Block.
+	 *
+	 * @return
+	 */
+	@Override
+	public Block getBlockSafe() {
+		if (isInMemoryAreaHorizontal()) {
+			return Controller.getMap().getBlock(this);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * The block hides the past block when it has sides and is not transparent
+	 * (like normal block)
+	 *
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-     * @return true when hiding the past Block
-     */
-    public boolean hidingPastBlocks(int x, int y, int z){
+	 * @return true when hiding the past Block
+	 */
+	public boolean hidingPastBlocks(int x, int y, int z) {
 		Block block = Controller.getMap().getBlock(
-			this.x+x, this.y+y, this.z+z
+			this.x + x, this.y + y, this.z + z
 		);
-        return (block != null && block.hasSides() && ! block.isTransparent());
-    }
-	
-	   /**
-     * Check if fron block is hiding because both a liquids.
+		return (block != null && block.hasSides() && !block.isTransparent());
+	}
+
+	/**
+	 * Check if fron block is hiding because both a liquids.
+	 *
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-     * @return true when hiding the past Block
-     */
-    public boolean hidingPastLiquid(int x, int y, int z){
+	 * @return true when hiding the past Block
+	 */
+	public boolean hidingPastLiquid(int x, int y, int z) {
 		return getBlock().isLiquid() && cpy().addVector(x, y, z).getBlock().isLiquid();
-    }
-	
-	    
-   /**
-     * Mixes both hidingPast methods for a single block
-	 * @see #hidingPastBlocks(int, int, int) 
-	 * @see #hidingPastLiquid(int, int, int) 
+	}
+
+	/**
+	 * Mixes both hidingPast methods for a single block
+	 *
+	 * @see #hidingPastBlocks(int, int, int)
+	 * @see #hidingPastLiquid(int, int, int)
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-     * @return true when hiding the past Block
-     */
-    public boolean hidingPastBlock(int x, int y, int z){
+	 * @return true when hiding the past Block
+	 */
+	public boolean hidingPastBlock(int x, int y, int z) {
 		Block block = Controller.getMap().getBlock(
-			this.x+x, this.y+y, this.z+z
+			this.x + x, this.y + y, this.z + z
 		);
-        return block != null &&
-			( block.hasSides() && ! block.isTransparent()
+		return block != null
+			&& (block.hasSides() && !block.isTransparent()
 			||
 			getBlock().isLiquid() && block.isLiquid());
-    }
-    
-    /** @return a copy of this coordinate */
-    @Override
-    public Coordinate cpy () {
-        return new Coordinate(this);
-    }
-    
-    /**
-     * Checks if the coordiantes are accessable with the currently loaded Chunks (horizontal only).
-     * @return 
-     */
-    @Override
-    public boolean isInMemoryAreaHorizontal(){
-        boolean found = false;
-		for (Chunk chunk : Controller.getMap().getData()){
-			if (chunk.hasCoord(this))
-				found = true;
-		}
-        return found;
-    }
-	
-	 /**
-     * Checks if the coordiantes are accessable with the currently loaded Chunks (x,y,z).
-     * @return 
-     */
-    @Override
-    public boolean isInMemoryArea(){
+	}
+
+	/**
+	 * @return a copy of this coordinate
+	 */
+	@Override
+	public Coordinate cpy() {
+		return new Coordinate(this);
+	}
+
+	/**
+	 * Checks if the coordiantes are accessable with the currently loaded Chunks
+	 * (horizontal only).
+	 *
+	 * @return
+	 */
+	@Override
+	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		if (getZ() >= 0 && getZ() < Map.getBlocksZ()){
-			for (Chunk chunk : Controller.getMap().getData()){
-				if (chunk.hasCoord(this))
-					found = true;
+		for (Chunk chunk : Controller.getMap().getData()) {
+			if (chunk.hasCoord(this)) {
+				found = true;
 			}
 		}
-        return found;
-    }
+		return found;
+	}
 
-    /**
-     * Returns the field-id where the coordiantes are inside in relation to the current field. Field id count clockwise, starting with the top with 0.
-     * If you want to get the neighbour you can use {@link #goToNeighbour(int)} with the parameter found by this function.
-     * The numbering of the sides:<br>
-     * 7 \ 0 / 1<br>
-     * -------<br>
-     * 6 | 8 | 2<br>
-     * -------<br>
-     * 5 / 4 \ 3<br>
+	/**
+	 * Checks if the coordiantes are accessable with the currently loaded Chunks
+	 * (x,y,z).
+	 *
+	 * @return
+	 */
+	@Override
+	public boolean isInMemoryArea() {
+		boolean found = false;
+		if (getZ() >= 0 && getZ() < Map.getBlocksZ()) {
+			for (Chunk chunk : Controller.getMap().getData()) {
+				if (chunk.hasCoord(this)) {
+					found = true;
+				}
+			}
+		}
+		return found;
+	}
+
+	/**
+	 * Returns the field-id where the coordiantes are inside in relation to the
+	 * current field. Field id count clockwise, starting with the top with 0. If
+	 * you want to get the neighbour you can use {@link #goToNeighbour(int)}
+	 * with the parameter found by this function. The numbering of the
+	 * sides:<br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | 8 | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
 	 * Run time: O(1)
-     * @param x game-space-coordinates, value in pixels
-     * @param y game-space-coordinates, value in pixels
-     * @return Returns the fieldnumber of the coordinates. 8 is the field itself.
-     * @see #goToNeighbour(int)
-     */
-    public static int getNeighbourSide(float x, float y) {  
+	 *
+	 * @param x game-space-coordinates, value in pixels
+	 * @param y game-space-coordinates, value in pixels
+	 * @return Returns the fieldnumber of the coordinates. 8 is the field
+	 * itself.
+	 * @see #goToNeighbour(int)
+	 */
+	public static int getNeighbourSide(float x, float y) {
 		//modulo
-		if (y<0) y+= AbstractGameObject.GAME_DIAGLENGTH;
-		if (x<0) x+= AbstractGameObject.GAME_DIAGLENGTH;
-		
-        int result = 8;//standard result
-        if (x + y <= AbstractGameObject.GAME_DIAGLENGTH2) {
-            result = 7;
-        }
-        if (x - y >= AbstractGameObject.GAME_DIAGLENGTH2) {
-            if (result == 7) {
-                result = 0;
-            } else {
-                result = 1;
-            }
-        }
-        if (x + y >= 3 * AbstractGameObject.GAME_DIAGLENGTH2) {
-            if (result == 1) {
-                result = 2;
-            } else {
-                result = 3;
-            }
-        }
-        if (-x + y >= AbstractGameObject.GAME_DIAGLENGTH2) {
-            if (result == 3) {
-                result = 4;
-            } else if (result == 7) {
-                result = 6;
-            } else {
-                result = 5;
-            }
-        }
-        return result;
-    }
+		if (y < 0) {
+			y += AbstractGameObject.GAME_DIAGLENGTH;
+		}
+		if (x < 0) {
+			x += AbstractGameObject.GAME_DIAGLENGTH;
+		}
 
-    /**
-     * Goes to the the neighbour with the specific side.<br />
-     * 7 \ 0 / 1<br />
-     * -------<br />
-     * 6 | 8 | 2<br />
-     * -------<br />
-     * 5 / 4 \ 3<br />
+		int result = 8;//standard result
+		if (x + y <= AbstractGameObject.GAME_DIAGLENGTH2) {
+			result = 7;
+		}
+		if (x - y >= AbstractGameObject.GAME_DIAGLENGTH2) {
+			if (result == 7) {
+				result = 0;
+			} else {
+				result = 1;
+			}
+		}
+		if (x + y >= 3 * AbstractGameObject.GAME_DIAGLENGTH2) {
+			if (result == 1) {
+				result = 2;
+			} else {
+				result = 3;
+			}
+		}
+		if (-x + y >= AbstractGameObject.GAME_DIAGLENGTH2) {
+			if (result == 3) {
+				result = 4;
+			} else if (result == 7) {
+				result = 6;
+			} else {
+				result = 5;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Goes to the the neighbour with the specific side.<br />
+	 * 7 \ 0 / 1<br />
+	 * -------<br />
+	 * 6 | 8 | 2<br />
+	 * -------<br />
+	 * 5 / 4 \ 3<br />
 	 * O(const)
-     * @param neighbourSide the side number of the given coordinates
+	 *
+	 * @param neighbourSide the side number of the given coordinates
 	 * @return itself for chaining
-     */
-    public Coordinate goToNeighbour(final int neighbourSide) {
-        switch (neighbourSide) {
-            case 0:
-                addVector( 0, -2, 0); 
-                break;
-            case 1:
-				addVector( getY() % 2 != 0 ? 1 : 0, -1, 0); 
-                break;
-            case 2:
-				addVector( 1, 0, 0); 
-                break;
-            case 3:
-				addVector( getY() % 2 != 0 ? 1 : 0, 1, 0); 
-                break;
-            case 4:
-                addVector( 0, 2, 0); 
-                break;
-            case 5:
-                addVector( getY() % 2 == 0 ? -1 : 0, 1, 0); 
-                break;
-            case 6:
+	 */
+	public Coordinate goToNeighbour(final int neighbourSide) {
+		switch (neighbourSide) {
+			case 0:
+				addVector(0, -2, 0);
+				break;
+			case 1:
+				addVector(getY() % 2 != 0 ? 1 : 0, -1, 0);
+				break;
+			case 2:
+				addVector(1, 0, 0);
+				break;
+			case 3:
+				addVector(getY() % 2 != 0 ? 1 : 0, 1, 0);
+				break;
+			case 4:
+				addVector(0, 2, 0);
+				break;
+			case 5:
+				addVector(getY() % 2 == 0 ? -1 : 0, 1, 0);
+				break;
+			case 6:
 				addVector(-1, 0, 0);
-                break;
-            case 7:
-				addVector( getY() % 2 == 0 ? -1 : 0, -1, 0); 
-                break;
-        }
+				break;
+			case 7:
+				addVector(getY() % 2 == 0 ? -1 : 0, -1, 0);
+				break;
+		}
 		return this;
-    }
-    
-    /**
-     *
-     * @return the coordiante's origin is the center
+	}
+
+	/**
+	 *
+	 * @return the coordiante's origin is the center
 	 * @see #refreshCachedPoint()
-     */
-    @Override
-    public Point getPoint() {
+	 */
+	@Override
+	public Point getPoint() {
 		return cachedPoint;
-    }
-	
+	}
+
 	/**
 	 * refresh the field cachedPoint. Does a coord -> point transform.
 	 */
-	private void refreshCachedPoint(){
+	private void refreshCachedPoint() {
 		cachedPoint = new Point(
-            x*AbstractGameObject.GAME_DIAGLENGTH + (y%2!=0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
-            y*AbstractGameObject.GAME_DIAGLENGTH2,
-            z*AbstractGameObject.GAME_EDGELENGTH
-        );
+			x * AbstractGameObject.GAME_DIAGLENGTH + (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
+			y * AbstractGameObject.GAME_DIAGLENGTH2,
+			z * AbstractGameObject.GAME_EDGELENGTH
+		);
 	}
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Coordinate getCoord() {
-        return this;
-    }
-	
-	 /**
-     * Get every entity on a coord.
-     * @return a list with the entitys
-     */
-    public ArrayList<AbstractEntity> getEntitiesInside() {
-       return Controller.getMap().getEntitysOnCoord(this);
-    }
-    
-      /**
-     * Get every entity on this coord of the wanted type
-     * @param <type> the class you want to filter.
-     * @param type the class you want to filter.
-     * @return a list with the entitys of the wanted type
-     */
-    public <type> ArrayList<type> getEntitysInside(final Class<? extends AbstractEntity> type) {
-        return Controller.getMap().getEntitysOnCoord(this, type);
-    }
-    
-    @Override
-    public int getViewSpcX(GameView view) {
-		return getX() * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
-                //+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-                + (getY() % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
-    }
-
-    @Override
-    public int getViewSpcY(GameView view) {
-		return  
-			getY() * AbstractGameObject.VIEW_DEPTH2 *
-			(
-				view.getOrientation()==0
-				? -1
-				: (
-					view.getOrientation()==2
-					? 1
-					: 0
-				  )
-			)
-				
-				
-           // + AbstractGameObject.VIEW_DEPTH2 //add half tile for center 
-            + z*AbstractGameObject.VIEW_HEIGHT
-        ;
-    }
-    
 	/**
-	 * destroys the block at the current position, replacing by air. Calls onDestroy()
+	 *
+	 * @return
+	 */
+	@Override
+	public Coordinate getCoord() {
+		return this;
+	}
+
+	/**
+	 * Get every entity on a coord.
+	 *
+	 * @return a list with the entitys
+	 */
+	public ArrayList<AbstractEntity> getEntitiesInside() {
+		return Controller.getMap().getEntitysOnCoord(this);
+	}
+
+	/**
+	 * Get every entity on this coord of the wanted type
+	 *
+	 * @param <type> the class you want to filter.
+	 * @param type the class you want to filter.
+	 * @return a list with the entitys of the wanted type
+	 */
+	public <type> ArrayList<type> getEntitysInside(final Class<? extends AbstractEntity> type) {
+		return Controller.getMap().getEntitysOnCoord(this, type);
+	}
+
+	@Override
+	public int getViewSpcX(GameView view) {
+		return getX() * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
+			+ (getY() % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
+	}
+
+	@Override
+	public int getViewSpcY(GameView view) {
+		return getY() * AbstractGameObject.VIEW_DEPTH2 *
+			(
+				view.getOrientation() == 0
+					? -1
+					: (view.getOrientation() == 2
+						? 1
+						: 0
+					)
+			)
+			+ z * AbstractGameObject.VIEW_HEIGHT;
+	}
+
+	/**
+	 * destroys the block at the current position, replacing by air. Calls
+	 * onDestroy()
+	 *
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (isInMemoryArea() && getBlock().getId()!=0) {
+		if (isInMemoryArea() && getBlock().getId() != 0) {
 			getBlock().onDestroy();//call destruction method
 			setBlock(Block.getInstance(0));
 			return true;
+		} else {
+			return false;
 		}
-		else return false;
 	}
-	
-		/**
+
+	/**
 	 * returns true if block got damaged
+	 *
 	 * @param amount
-	 * @return 
+	 * @return
 	 */
 	public boolean damage(float amount) {
 		if (isInMemoryArea()) {
 			Block block = getBlock();
-			if (block.getId()!=0) {
-				block.setHealth(block.getHealth()-amount);
-				if (block.getHealth()<=0)
+			if (block.getId() != 0) {
+				block.setHealth(block.getHealth() - amount);
+				if (block.getHealth() <= 0) {
 					destroy();
+				}
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		Coordinate other = (Coordinate)obj;
-		if (x != other.x) return false;
-		if (y != other.y) return false;
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Coordinate other = (Coordinate) obj;
+		if (x != other.x) {
+			return false;
+		}
+		if (y != other.y) {
+			return false;
+		}
 		return z == other.z;
 	}
 
@@ -523,9 +581,9 @@ public class Coordinate extends AbstractPosition {
 		hash = 53 * hash + this.z;
 		return hash;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "{"+x +", "+ y +", " +z+"}";
+		return "{" + x + ", " + y + ", " + z + "}";
 	}
 }

@@ -163,12 +163,18 @@ public abstract class AbstractEntity extends AbstractGameObject {
         return this;
     }
 	
+	/**
+	 *
+	 */
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
 		if (position != null)
 			if (onMap) shadow.spawn(position.cpy());
 	}
 	
+	/**
+	 *
+	 */
 	public void disableShadow(){
 		shadow.dispose();
 		shadow = null;
@@ -213,6 +219,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
         return name;
     }
 	
+	/**
+	 *
+	 * @param name
+	 */
 	public void setName(String name){
 		this.name = name;
 	}

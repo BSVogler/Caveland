@@ -25,7 +25,10 @@ public class Enemy extends MovableEntity{
     private Point lastPos;
 	private long movementSoundPlaying;
     
-    public void init(){
+	/**
+	 *
+	 */
+	public void init(){
        killcounter=0; 
     }
     
@@ -130,8 +133,11 @@ public class Enemy extends MovableEntity{
 		}
 	}
 
-
-    public static int getKillcounter() {
+	/**
+	 *
+	 * @return
+	 */
+	public static int getKillcounter() {
         return killcounter;
     }
 

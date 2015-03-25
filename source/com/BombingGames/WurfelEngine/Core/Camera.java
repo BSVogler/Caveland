@@ -64,7 +64,7 @@ public class Camera implements LinkedWithMap {
 	 * should be a tile rendered
 	 */
 	private int zRenderingLimit = Map.getBlocksZ();
-	
+
 	private boolean[][][][] clipping;
 	/**
 	 * the position of the camera in view space. Y-up. Read only field.
@@ -94,7 +94,8 @@ public class Camera implements LinkedWithMap {
 	private int screenWidth, screenHeight;
 
 	/**
-	 * the position on the screen (viewportWidth/Height ist the affiliated). Origin top left.
+	 * the position on the screen (viewportWidth/Height ist the affiliated).
+	 * Origin top left.
 	 */
 	private int screenPosX, screenPosY;
 
@@ -108,11 +109,11 @@ public class Camera implements LinkedWithMap {
 	 * the opacity of thedamage overlay
 	 */
 	private float damageoverlay = 0f;
-	
+
 	private Vector2 screenshake = new Vector2(0, 0);
 	private float shakeAmplitude;
 	private float shakeTime;
-	
+
 	private final GameView gameView;
 	private int viewSpaceWidth;
 	private int viewSpaceHeight;
@@ -122,11 +123,12 @@ public class Camera implements LinkedWithMap {
 	 * true if camera is currently rendering
 	 */
 	private boolean active = false;
-	
+
 	/**
-	 * Updates the needed chunks after recaclucating the center chunk of the camera. It is set via an absolute value.
+	 * Updates the needed chunks after recaclucating the center chunk of the
+	 * camera. It is set via an absolute value.
 	 */
-	private void initFocus(){
+	private void initFocus() {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 		updateNeededData();
@@ -135,8 +137,10 @@ public class Camera implements LinkedWithMap {
 	/**
 	 * Creates a camera pointing at the middle of the map.
 	 *
-	 * @param x the position in the application window (viewport position). Origin top left
-	 * @param y the position in the application window (viewport position). Origin top left
+	 * @param x the position in the application window (viewport position).
+	 * Origin top left
+	 * @param y the position in the application window (viewport position).
+	 * Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
@@ -150,15 +154,16 @@ public class Camera implements LinkedWithMap {
 		screenPosX = x;
 		screenPosY = y;
 		updateViewSpaceSize();
-		
+
 		Point center = Map.getCenter();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
 	}
-	
+
 	/**
 	 * Creates a fullscale camera pointing at the middle of the map.
+	 *
 	 * @param view
 	 */
 	public Camera(GameView view) {
@@ -166,22 +171,24 @@ public class Camera implements LinkedWithMap {
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		updateViewSpaceSize();
-		
+
 		Point center = Map.getCenter();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
 		initFocus();
 	}
-	
+
 	/**
 	 * Create a camera focusin a specific coordinate. It can later be changed
 	 * with <i>focusCoordinates()</i>. Screen size does refer to the output of
 	 * the camera not the real size on the display.
 	 *
 	 * @param center the point where the camera focuses
-	 * @param x the position in the application window (viewport position). Origin top left
-	 * @param y the position in the application window (viewport position). Origin top left
+	 * @param x the position in the application window (viewport position).
+	 * Origin top left
+	 * @param y the position in the application window (viewport position).
+	 * Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
@@ -199,14 +206,16 @@ public class Camera implements LinkedWithMap {
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
 	}
-	
+
 	/**
 	 * Creates a camera focusing an entity. The values are sceen-size and do
 	 * refer to the output of the camera not the real display size.
 	 *
 	 * @param focusentity the entity wich the camera focuses and follows
-	 * @param x the position in the application window (viewport position). Origin top left
-	 * @param y the position in the application window (viewport position). Origin top left
+	 * @param x the position in the application window (viewport position).
+	 * Origin top left
+	 * @param y the position in the application window (viewport position).
+	 * Origin top left
 	 * @param width The width of the image (screen size) the camera creates on
 	 * the application window (viewport)
 	 * @param height The height of the image (screen size) the camera creates on
@@ -226,24 +235,22 @@ public class Camera implements LinkedWithMap {
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
 		if (!focusentity.spawned()) {
-			throw new NullPointerException(focusentity.getName()+" is not spawned yet");
+			throw new NullPointerException(focusentity.getName() + " is not spawned yet");
 		}
 		position.x = focusEntity.getPosition().getViewSpcX(gameView);
-		position.y = (int) (
-					focusEntity.getPosition().getViewSpcY(gameView)
-				  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
-		);
+		position.y = (int) (focusEntity.getPosition().getViewSpcY(gameView)
+			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
 		initFocus();
 	}
-	
+
 	/**
 	 * Updates the camera.
 	 *
 	 * @param dt
 	 */
 	public final void update(float dt) {
-		if (active){
-			if (focusEntity!=null) {
+		if (active) {
+			if (focusEntity != null) {
 				//update camera's position according to focusEntity
 				position.x = focusEntity.getPosition().getViewSpcX(gameView);
 				position.y = (int) (
@@ -271,25 +278,25 @@ public class Camera implements LinkedWithMap {
 				<
 				Controller.getMap().getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
 				//&& centerChunkX-1==//calculated x -1
-			) {
+				) {
 				centerChunkX--;
 			}
-			
+
 			if (
 				getVisibleRightBorder()
 				>
 				Controller.getMap().getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
 				//&& centerChunkX-1==//calculated x -1
-			) {
+				) {
 				centerChunkX++;
 			}
-			
+
 			if (
 				getVisibleBackBorder()
 				<
 				Controller.getMap().getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
 				//&& centerChunkX-1==//calculated x -1
-			) {
+				) {
 				centerChunkY--;
 			}
 			//check in view space
@@ -301,10 +308,10 @@ public class Camera implements LinkedWithMap {
 				Controller.getMap().getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
 				)
 				//&& centerChunkX-1==//calculated x -1
-			) {
+				) {
 				centerChunkY++;
 			}
-			
+
 			updateNeededData();
 
 			//move camera to the focus 
@@ -316,8 +323,8 @@ public class Camera implements LinkedWithMap {
 
 			//orthographic camera, libgdx stuff
 			projection.setToOrtho(
-				(gameView.getOrientation()==2?-1:1)*-getWidthInProjSpc() / 2,
-				(gameView.getOrientation()==2?-1:1)*getWidthInProjSpc() / 2,
+				(gameView.getOrientation() == 2 ? -1 : 1) * -getWidthInProjSpc() / 2,
+				(gameView.getOrientation() == 2 ? -1 : 1) * getWidthInProjSpc() / 2,
 				-getHeightInProjSpc() / 2,
 				getHeightInProjSpc() / 2,
 				0,
@@ -337,33 +344,34 @@ public class Camera implements LinkedWithMap {
 			//Matrix4.inv(invProjectionView.val);
 		}
 	}
-	
+
 	/**
 	 * checks which chunks must be loaded
 	 */
-	private void updateNeededData(){
+	private void updateNeededData() {
 		//check every chunk
-		if (centerChunkX==0 && centerChunkY==0 || CVar.get("enableChunkSwitch").getValueb()) {
-			checkChunk(centerChunkX-1, centerChunkY-1);
-			checkChunk(centerChunkX  , centerChunkY-1);
-			checkChunk(centerChunkX+1, centerChunkY-1);
-			checkChunk(centerChunkX-1, centerChunkY  );
-			checkChunk(centerChunkX  , centerChunkY  );
-			checkChunk(centerChunkX+1, centerChunkY  );
-			checkChunk(centerChunkX-1, centerChunkY+1);
-			checkChunk(centerChunkX  , centerChunkY+1);
-			checkChunk(centerChunkX+1, centerChunkY+1);
+		if (centerChunkX == 0 && centerChunkY == 0 || CVar.get("enableChunkSwitch").getValueb()) {
+			checkChunk(centerChunkX - 1, centerChunkY - 1);
+			checkChunk(centerChunkX, centerChunkY - 1);
+			checkChunk(centerChunkX + 1, centerChunkY - 1);
+			checkChunk(centerChunkX - 1, centerChunkY);
+			checkChunk(centerChunkX, centerChunkY);
+			checkChunk(centerChunkX + 1, centerChunkY);
+			checkChunk(centerChunkX - 1, centerChunkY + 1);
+			checkChunk(centerChunkX, centerChunkY + 1);
+			checkChunk(centerChunkX + 1, centerChunkY + 1);
 		}
 	}
-	
+
 	/**
 	 * Checks if chunk must be loaded or deleted.
+	 *
 	 * @param x
-	 * @param y 
+	 * @param y
 	 */
-	private void checkChunk(int x, int y){
+	private void checkChunk(int x, int y) {
 		Map map = Controller.getMap();
-		if (map.getChunk(x, y)==null) {
+		if (map.getChunk(x, y) == null) {
 			map.loadChunk(x, y);
 		} else {
 			map.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
@@ -377,7 +385,7 @@ public class Camera implements LinkedWithMap {
 	 * @param camera
 	 */
 	public void render(final GameView view, final Camera camera) {
-		if (active && Controller.getMap() != null ) { //render only if map exists 
+		if (active && Controller.getMap() != null) { //render only if map exists 
 
 			view.getBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
@@ -391,62 +399,62 @@ public class Camera implements LinkedWithMap {
 
 			//render map
 			ArrayList<AbstractGameObject> depthlist = createDepthList();
-			
+
 			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality 
 			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR);
-			
 
 			view.setDebugRendering(false);
 			view.getBatch().begin();
-				//send a Vector4f to GLSL
-				if (CVar.get("enablelightengine").getValueb()) {
-					view.getShader().setUniformf(
-						"sunNormal",
-						Controller.getLightEngine().getSun().getNormal()
-					);
-					view.getShader().setUniformf(
-						"sunColor",
-						Controller.getLightEngine().getSun().getLight()
-					);
-					view.getShader().setUniformf(
-						"moonNormal",
-						Controller.getLightEngine().getMoon().getNormal()
-					);
-					view.getShader().setUniformf(
-						"moonColor",
-						Controller.getLightEngine().getMoon().getLight()
-					);
-					view.getShader().setUniformf(
-						"ambientColor",
-						Controller.getLightEngine().getAmbient()
-					);
-				}
+			//send a Vector4f to GLSL
+			if (CVar.get("enablelightengine").getValueb()) {
+				view.getShader().setUniformf(
+					"sunNormal",
+					Controller.getLightEngine().getSun().getNormal()
+				);
+				view.getShader().setUniformf(
+					"sunColor",
+					Controller.getLightEngine().getSun().getLight()
+				);
+				view.getShader().setUniformf(
+					"moonNormal",
+					Controller.getLightEngine().getMoon().getNormal()
+				);
+				view.getShader().setUniformf(
+					"moonColor",
+					Controller.getLightEngine().getMoon().getLight()
+				);
+				view.getShader().setUniformf(
+					"ambientColor",
+					Controller.getLightEngine().getAmbient()
+				);
+			}
 
-				//bind normal map to texture unit 1
-				if (CVar.get("LEnormalMapRendering").getValueb())
-					AbstractGameObject.getTextureNormal().bind(1);
-			
+			//bind normal map to texture unit 1
+			if (CVar.get("LEnormalMapRendering").getValueb()) {
+				AbstractGameObject.getTextureNormal().bind(1);
+			}
+
 				//bind diffuse color to texture unit 0
-				//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
-				AbstractGameObject.getTextureDiffuse().bind(0);
-			
-				//render vom bottom to top
-				for (AbstractGameObject renderobject : depthlist) {
-					renderobject.render(view, camera);
-				}
+			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+			AbstractGameObject.getTextureDiffuse().bind(0);
+
+			//render vom bottom to top
+			for (AbstractGameObject renderobject : depthlist) {
+				renderobject.render(view, camera);
+			}
 			view.getBatch().end();
 
 			//if debugging render outline again
 			if (CVar.get("DevDebugRendering").getValueb()) {
 				view.setDebugRendering(true);
 				view.getBatch().begin();
-					//render vom bottom to top
-					for (AbstractGameObject renderobject : depthlist) {
-						renderobject.render(view, camera);
-					}
-				view.getBatch().end();	
+				//render vom bottom to top
+				for (AbstractGameObject renderobject : depthlist) {
+					renderobject.render(view, camera);
+				}
+				view.getBatch().end();
 			}
-			
+
 			//outline 3x3 chunks
 			if (CVar.get("DevDebugRendering").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
@@ -459,25 +467,25 @@ public class Camera implements LinkedWithMap {
 				);
 				view.getShapeRenderer().line(
 					-Chunk.getGameWidth(),
-					-Chunk.getGameDepth()/2,
-					-Chunk.getGameWidth()+Map.getGameWidth(),
-					-Chunk.getGameDepth()/2
+					-Chunk.getGameDepth() / 2,
+					-Chunk.getGameWidth() + Map.getGameWidth(),
+					-Chunk.getGameDepth() / 2
 				);
 				view.getShapeRenderer().line(
 					-Chunk.getGameWidth(),
 					0,
-					-Chunk.getGameWidth()+Map.getGameWidth(),
+					-Chunk.getGameWidth() + Map.getGameWidth(),
 					0
 				);
 				view.getShapeRenderer().line(
 					0,
-					Chunk.getGameDepth()/2,
+					Chunk.getGameDepth() / 2,
 					0,
 					-Chunk.getGameDepth()
 				);
 				view.getShapeRenderer().line(
 					Chunk.getGameWidth(),
-					Chunk.getGameDepth()/2,
+					Chunk.getGameDepth() / 2,
 					Chunk.getGameWidth(),
 					-Chunk.getGameDepth()
 				);
@@ -485,13 +493,13 @@ public class Camera implements LinkedWithMap {
 			}
 			if (damageoverlay > 0.0f) {
 				WE.getEngineView().getBatch().begin();
-					Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
-					Sprite overlay = new Sprite(texture);
-					overlay.setOrigin(0, 0);
-					//somehow reverse the viewport transformation, needed for split-screen
-					overlay.setSize(getWidthInScreenSpc(), getHeightInScreenSpc()*(float)Gdx.graphics.getHeight()/getHeightInScreenSpc());
-					overlay.setColor(1, 0, 0, damageoverlay);
-					overlay.draw(WE.getEngineView().getBatch());
+				Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
+				Sprite overlay = new Sprite(texture);
+				overlay.setOrigin(0, 0);
+				//somehow reverse the viewport transformation, needed for split-screen
+				overlay.setSize(getWidthInScreenSpc(), getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc());
+				overlay.setColor(1, 0, 0, damageoverlay);
+				overlay.draw(WE.getEngineView().getBatch());
 				WE.getEngineView().getBatch().end();
 			}
 		}
@@ -505,72 +513,76 @@ public class Camera implements LinkedWithMap {
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
-		if (CVar.get("enableHSD").getValueb()){
+		if (CVar.get("enableHSD").getValueb()) {
 			//add hidden surfeace depth buffer
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ()-1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				Block block = iterator.next();
 				//only add if in view plane to-do
 				if (
 					!block.isHidden()
-					&& !isClipped(block.getPosition()) &&
-					inViewFrustum(
+					&& !isClipped(block.getPosition())
+					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))
-				)
-				depthsort.add(block);
-			}	
-		}else {
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ()-1);
+				) {
+					depthsort.add(block);
+				}
+			}
+		} else {
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
-				if (!block.isHidden()){
+				if (!block.isHidden()) {
 					depthsort.add(block);
 				}
 			}
 		}
-		
+
 		//add entitys
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (! entity.isHidden()
+			if (
+				!entity.isHidden()
 				&& inViewFrustum(
 					entity.getPosition().getViewSpcX(gameView),
 					entity.getPosition().getViewSpcY(gameView)
-				   )
-                && entity.getPosition().getZGrid() < zRenderingLimit
-            )
+				)
+				&& entity.getPosition().getZGrid() < zRenderingLimit
+			) {
 				depthsort.add(entity);
 			}
+		}
 		//sort the list
 		if (depthsort.size() > 0) {
-			return sortDepthList(depthsort, 0, depthsort.size()-1);
+			return sortDepthList(depthsort, 0, depthsort.size() - 1);
 		}
 		return depthsort;
 	}
-	
+
 	/**
 	 * checks if the projected position is inside the view Frustum
+	 *
 	 * @param proX projective space
 	 * @param proY
-	 * @return 
+	 * @return
 	 */
 	private boolean inViewFrustum(int proX, int proY){
 		return 
-				(position.y + getHeightInProjSpc()/2)
+				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY- Block.VIEW_HEIGHT*2)//bottom of sprite
+				(proY - Block.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY+ Block.VIEW_HEIGHT2+Block.VIEW_DEPTH)//top of sprite
+				(proY + Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH)//top of sprite
 				>
-				position.y - getHeightInProjSpc()/2
+				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX+ Block.VIEW_WIDTH2)//right side of sprite
+				(proX + Block.VIEW_WIDTH2)//right side of sprite
 				>
-				position.x - getWidthInProjSpc()/2
+				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX- Block.VIEW_WIDTH2)//left side of sprite
+				(proX - Block.VIEW_WIDTH2)//left side of sprite
 				<
-				position.x + getWidthInProjSpc()/2
+				position.x + getWidthInProjSpc() / 2
 		;
 	}
 
@@ -586,9 +598,13 @@ public class Camera implements LinkedWithMap {
 		int right = high;
 		int middle = depthsort.get((low + high) / 2).getDepth(gameView);
 
-        while (left <= right){    
-            while(depthsort.get(left).getDepth(gameView) < middle) left++; 
-            while(depthsort.get(right).getDepth(gameView) > middle) right--;
+		while (left <= right) {
+			while (depthsort.get(left).getDepth(gameView) < middle) {
+				left++;
+			}
+			while (depthsort.get(right).getDepth(gameView) > middle) {
+				right--;
+			}
 
 			if (left <= right) {
 				AbstractGameObject tmp = depthsort.set(left, depthsort.get(right));
@@ -630,51 +646,55 @@ public class Camera implements LinkedWithMap {
 		}
 		return depthsort;
 	}
-	
+
 	/**
 	 * performs a simple clipping check by looking at the direct neighbours.
 	 */
-	public void hiddenSurfaceDetection(){
-		Gdx.app.debug("Camera", "hsd around "+centerChunkX+","+centerChunkY);
+	public void hiddenSurfaceDetection() {
+		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
 		updateNeededData();
-				
+
 		//create empty array clipping fields
-		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ()+1][3];
-		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, zRenderingLimit-1);
-			
+		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ() + 1][3];
+		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, zRenderingLimit - 1);
+
 		while (iter.hasNext()) {
 			Block next = iter.next();
 			//calculate index position
-			int x = -Chunk.getBlocksX() * ( centerChunkX-1 - iter.getCurrentChunk().getChunkX() )
-					+ iter.getCurrentIndex()[0];//skip chunks
-			int y = -Chunk.getBlocksY() * ( centerChunkY-1 - iter.getCurrentChunk().getChunkY() )
-					+ iter.getCurrentIndex()[1];//skip chunks
-			int z = iter.getCurrentIndex()[2]+1;
-			
+			int x = -Chunk.getBlocksX() * (centerChunkX - 1 - iter.getCurrentChunk().getChunkX())
+				+ iter.getCurrentIndex()[0];//skip chunks
+			int y = -Chunk.getBlocksY() * (centerChunkY - 1 - iter.getCurrentChunk().getChunkY())
+				+ iter.getCurrentIndex()[1];//skip chunks
+			int z = iter.getCurrentIndex()[2] + 1;
+
 			Coordinate blockCoord = next.getPosition();
 			//todo border checks
-			if (z > 0){//bottom layer always has sides always clipped
-				if (blockCoord.getY() % 2 == 0){//next row is shifted right
-					if( blockCoord.hidingPastBlock(-1,1,0))//left
+			if (z > 0) {//bottom layer always has sides always clipped
+				if (blockCoord.getY() % 2 == 0) {//next row is shifted right
+					if (blockCoord.hidingPastBlock(-1, 1, 0)) {//left
 						clipping[x][y][z][0] = true;
-					if( blockCoord.hidingPastBlock(0,1,0))//right
+					}
+					if (blockCoord.hidingPastBlock(0, 1, 0)) {//right
 						clipping[x][y][z][2] = true;
+					}
 				} else {//next row is shifted right
-					if( blockCoord.hidingPastBlock(0,1,0))//left
+					if (blockCoord.hidingPastBlock(0, 1, 0)) {//left
 						clipping[x][y][z][0] = true;
-					if( blockCoord.hidingPastBlock(1,1,0))//right
+					}
+					if (blockCoord.hidingPastBlock(1, 1, 0)) {//right
 						clipping[x][y][z][2] = true;
+					}
 				}
 			} else {
 				clipping[x][y][z][0] = true;
 				clipping[x][y][z][2] = true;
 			}
-			
+
 			//check top
-			if(z < Map.getBlocksZ()
-				&& (blockCoord.hidingPastBlock(0, 0, 1))
-			)
+			if (z < Map.getBlocksZ()
+				&& (blockCoord.hidingPastBlock(0, 0, 1))) {
 				clipping[x][y][z][1] = true;
+			}
 		}
 	}
 
@@ -706,9 +726,9 @@ public class Camera implements LinkedWithMap {
 	public float getScreenSpaceScaling() {
 		return screenWidth / (float) CVar.get("renderResolutionWidth").getValuei();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return The highest level wich is rendered.
 	 */
 	public int getZRenderingLimit() {
@@ -720,8 +740,8 @@ public class Camera implements LinkedWithMap {
 	 * @param limit minimum is 0
 	 */
 	public void setZRenderingLimit(int limit) {
-		if (limit != zRenderingLimit){//only if it differs
-		
+		if (limit != zRenderingLimit) {//only if it differs
+
 			zRenderingLimit = limit;
 
 			//clamp
@@ -730,7 +750,7 @@ public class Camera implements LinkedWithMap {
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
-			
+
 			hiddenSurfaceDetection();
 		}
 	}
@@ -741,16 +761,17 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x-getWidthInProjSpc()/2) / AbstractGameObject.VIEW_WIDTH);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH);
 	}
-	
+
 	/**
 	 * Get the leftmost block-coordinate covered by the camera.
+	 *
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
 		return Controller.getMap().getChunk(
-			centerChunkX-1,
+			centerChunkX - 1,
 			centerChunkY
 		).getTopLeftCoordinate().getX();
 	}
@@ -761,36 +782,38 @@ public class Camera implements LinkedWithMap {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc()/2) / AbstractGameObject.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH + 1);
 	}
-	
+
 	/**
 	 * Get the rightmost block-coordinate covered by the camera.
+	 *
 	 * @return the right (X) border coordinate
 	 */
 	public int getCoveredRightBorder() {
-		return Controller.getMap().getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()
-			+ Chunk.getBlocksX()-1;
+		return Controller.getMap().getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
+			+ Chunk.getBlocksX() - 1;
 	}
 
 	/**
 	 * Returns the top seight border of the camera covered groundBlock
+	 *
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleBackBorder() {
 		//TODO verify
 		return (int) (
-			(position.y + getHeightInProjSpc()/2)//camera top border
+			(position.y + getHeightInProjSpc() / 2)//camera top border
 			/ -AbstractGameObject.VIEW_DEPTH2//back to game space
-			);
+		);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the top/back (Y) border coordinate
 	 */
 	public int getCoveredBackBorder() {
-		return Controller.getMap().getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getY();
+		return Controller.getMap().getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
 	}
 
 	/**
@@ -804,14 +827,14 @@ public class Camera implements LinkedWithMap {
 			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the bottom/front (Y) border coordinate
 	 */
 	public int getCoveredFrontBorder() {
-		return Controller.getMap().getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()
-			+ Chunk.getBlocksY()-1;
+		return Controller.getMap().getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
+			+ Chunk.getBlocksY() - 1;
 	}
 
 	/**
@@ -843,41 +866,44 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * The amount of game pixel which are visible in Y direction without zoom. For screen pixels use {@link #getHeightInScreenSpc() }.
+	 * The amount of game pixel which are visible in Y direction without zoom.
+	 * For screen pixels use {@link #getHeightInScreenSpc() }.
 	 *
 	 * @return in game pixels
 	 */
 	public final int getHeightInViewSpc() {
 		return viewSpaceHeight;
 	}
-	
+
 	/**
 	 * updates the cache
 	 */
-	public final void updateViewSpaceSize(){
+	public final void updateViewSpaceSize() {
 		viewSpaceWidth = CVar.get("renderResolutionWidth").getValuei();
 		viewSpaceHeight = screenHeight;
 	}
-		
+
 	/**
-	 * The amount of game world pixels which are visible in X direction after the zoom has been applied.
-	 * For screen pixels use {@link #getWidthInScreenSpc()}.
+	 * The amount of game world pixels which are visible in X direction after
+	 * the zoom has been applied. For screen pixels use
+	 * {@link #getWidthInScreenSpc()}.
 	 *
 	 * @return in view pixels
 	 */
 	public final int getWidthInProjSpc() {
-		return (int) (viewSpaceWidth/zoom);
+		return (int) (viewSpaceWidth / zoom);
 	}
 
 	/**
-	 * The amount of game pixel which are visible in Y direction after the zoom has been applied. For screen pixels use {@link #getHeightInScreenSpc() }.
+	 * The amount of game pixel which are visible in Y direction after the zoom
+	 * has been applied. For screen pixels use {@link #getHeightInScreenSpc() }.
 	 *
 	 * @return in projective pixels
 	 */
 	public final int getHeightInProjSpc() {
-		return (int) (viewSpaceHeight/getScreenSpaceScaling()/zoom);
+		return (int) (viewSpaceHeight / getScreenSpaceScaling() / zoom);
 	}
-	
+
 	/**
 	 * Returns the position of the cameras output (on the screen)
 	 *
@@ -954,9 +980,10 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * updates the screen size 
+	 * updates the screen size
+	 *
 	 * @param width
-	 * @param height 
+	 * @param height
 	 */
 	public void setScreenSize(int width, int height) {
 		this.screenWidth = width;
@@ -966,15 +993,16 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * Move x and y coordinate
+	 *
 	 * @param x in game space if has focusentity, else in view space (?)
 	 * @param y in game space if has focusentity, else in view space (?)
 	 */
 	public void move(int x, int y) {
-		if(focusEntity != null)
+		if (focusEntity != null) {
 			focusEntity.getPosition().addVector(x, y, 0);
-		else {
-			position.x +=x;
-			position.y +=y;
+		} else {
+			position.x += x;
+			position.y += y;
 		}
 	}
 
@@ -988,55 +1016,61 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * shakes the screen
+	 *
 	 * @param amplitude
-	 * @param time 
+	 * @param time
 	 */
 	public void shake(float amplitude, float time) {
 		shakeAmplitude = amplitude;
 		shakeTime = time;
 	}
 
-	
 	@Override
 	public void onMapChange() {
-		if (active) hiddenSurfaceDetection();
+		if (active) {
+			hiddenSurfaceDetection();
+		}
 	}
 
 	@Override
 	public void onChunkChange(Chunk chunk) {
 		//does nothing
 	}
-	
-	
 
 	/**
 	 * Returns the focuspoint
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Point getCenter() {
-		if (focusEntity!=null)
+		if (focusEntity != null) {
 			return focusEntity.getPosition();
-		else return
-			new Point(
+		} else {
+			return new Point(
 				position.x,
-				-position.y*2,
+				-position.y * 2,
 				0
 			);//view to game
+		}
 	}
 
 	/**
 	 * get if a coordinate is clipped
+	 *
 	 * @param coords
-	 * @return 
+	 * @return
 	 */
 	public boolean[] getClipping(Coordinate coords) {
-		if (coords.getZ() >= zRenderingLimit) return new boolean[]{true, true, true};
-		
+		if (coords.getZ() >= zRenderingLimit) {
+			return new boolean[]{true, true, true};
+		}
+
 		//get the index position in the clipping field
-		int indexX = coords.getX()-getCoveredLeftBorder();
-		int indexY = coords.getY()-getCoveredBackBorder();
+		int indexX = coords.getX() - getCoveredLeftBorder();
+		int indexY = coords.getY() - getCoveredBackBorder();
 		//check if covered by camera
-		if ( indexX >= 0
+		if (
+			   indexX >= 0
 			&& indexX < clipping.length
 			&& indexY >= 0
 			&& indexY < clipping[0].length
@@ -1049,9 +1083,9 @@ public class Camera implements LinkedWithMap {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param coord
-	 * @return is a coordinate completely clipped? 
+	 * @return is a coordinate completely clipped?
 	 * @since 1.3.10
 	 */
 	public boolean isClipped(Coordinate coord) {
@@ -1065,14 +1099,15 @@ public class Camera implements LinkedWithMap {
 
 	/**
 	 * enable or disable the camera
-	 * @param active 
+	 *
+	 * @param active
 	 */
 	void setActive(boolean active) {
 		//turning on
-		if (this.active ==false && active==true) {
+		if (this.active == false && active == true) {
 			hiddenSurfaceDetection();
 		}
-		
+
 		this.active = active;
 	}
 }

@@ -66,6 +66,10 @@ public class BlockDrawable extends TextureRegionDrawable {
 		this.size = size;
 	}
 
+	/**
+	 *
+	 * @param x
+	 */
 	public void setX(float x){
 		this.x = x;
 	}
@@ -77,21 +81,37 @@ public class BlockDrawable extends TextureRegionDrawable {
 		}
     }
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getLeftWidth() {
 		return Block.VIEW_WIDTH2*(1f+size);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getRightWidth() {
 		return Block.VIEW_WIDTH2*(1f+size);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getTopHeight() {
 		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getBottomHeight() {
 		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);

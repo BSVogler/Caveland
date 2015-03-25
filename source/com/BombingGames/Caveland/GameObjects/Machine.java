@@ -15,6 +15,9 @@ public class Machine extends Block {
 	private int coalcount;
 	private int flintcount;
 
+	/**
+	 *
+	 */
 	public Machine() {
 		super(60);
 		setObstacle(true);

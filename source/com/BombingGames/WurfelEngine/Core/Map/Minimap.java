@@ -340,10 +340,17 @@ public class Minimap implements LinkedWithMap {
         return visible;
     }
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isNeedingRebuild() {
 		return needsrebuild;
 	}
 	
+	/**
+	 *
+	 */
 	public void needsRebuild() {
 		needsrebuild = true;
 	}

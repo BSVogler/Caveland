@@ -22,7 +22,10 @@ public class CustomTree extends Block {
 		this((int) (Math.random()*8));
 	}
 	
-		
+	/**
+	 *
+	 * @param value
+	 */
 	public CustomTree(int value) {
 		super(72);
 		setValue(value);

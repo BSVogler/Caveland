@@ -99,15 +99,27 @@ public class PlacableGUI extends WidgetGroup {
 		blockPosition.setText(selection.getPosition().getCoord().toString());
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 		
+	/**
+	 *
+	 * @return
+	 */
 	public int getValue() {
 		return value;
 	}	
 	
-	
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 */
 	public void setBlock(int id, int value) {
 		this.id = id;
 		this.value = value;
@@ -115,12 +127,20 @@ public class PlacableGUI extends WidgetGroup {
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
+	/**
+	 *
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(id,value,-0.4f));
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	public void setValue(int value) {
 		this.value = value;
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
@@ -152,12 +172,21 @@ public class PlacableGUI extends WidgetGroup {
 		return null;
 	}
 
+	/**
+	 *
+	 * @param name
+	 * @param entclass
+	 */
 	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {
 		entityClass = entclass;
 		label.setText(name);
 		image.setDrawable(new EntityDrawable(entclass));
 	}
 
+	/**
+	 *
+	 * @param mode
+	 */
 	public void setMode(PlaceMode mode) {
 		this.mode = mode;
 		if (mode==PlaceMode.Blocks)
@@ -165,6 +194,10 @@ public class PlacableGUI extends WidgetGroup {
 		else slider.setVisible(false);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public PlaceMode getMode() {
 		return mode;
 	}

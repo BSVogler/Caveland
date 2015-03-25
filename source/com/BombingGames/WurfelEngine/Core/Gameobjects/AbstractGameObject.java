@@ -153,6 +153,10 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public abstract char getCategory();
     
+	/**
+	 *
+	 * @return
+	 */
 	public abstract int getDimensionZ();
 	
 	  /**

@@ -220,10 +220,18 @@ public class LightEngine implements LinkedWithMap {
         return (I_0+I_1+I_2)/3f;
     }
 	
+	/**
+	 *
+	 * @return
+	 */
 	public GlobalLightSource getSun() {
 		return sun;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public GlobalLightSource getMoon() {
 		return moon;
 	}

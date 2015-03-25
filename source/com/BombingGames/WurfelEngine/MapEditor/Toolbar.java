@@ -43,22 +43,46 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 /**
  * A toolbar for the editor.
+ *
  * @author Benedikt Vogler
  */
 public class Toolbar extends Window {
+
+	/**
+	 * a enum listing the available tools
+	 */
 	public static enum Tool {
+
+		/**
+		 * tool to draw blocks
+		 */
 		DRAW(0, "draw_button", true, false),
+		/**
+		 * tool to cover an area with blocks
+		 */
 		BUCKET(1, "bucket_button", true, false),
+		/**
+		 * "repaints" blocks
+		 */
 		REPLACE(2, "replace_button", true, false),
+		/**
+		 * select and move entities
+		 */
 		SELECT(3, "pointer_button", false, false),
+		/**
+		 * spawn new entities
+		 */
 		SPAWN(4, "entity_button", false, true),
+		/**
+		 * replace blocks with air
+		 */
 		ERASE(5, "eraser_button", false, false);
-	
+
 		private int id;
 		private String name;
 		private boolean selectFromBlocks;
 		private boolean selectFromEntities;
-		
+
 		private Tool(int id, String name, boolean worksOnBlocks, boolean worksOnEntities) {
 			this.id = id;
 			this.name = name;
@@ -66,84 +90,99 @@ public class Toolbar extends Window {
 			this.selectFromEntities = worksOnEntities;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public int getId() {
 			return id;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public boolean selectFromBlocks() {
 			return selectFromBlocks;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public boolean selectFromEntities() {
 			return selectFromEntities;
 		}
 	}
-	
+
 	private Tool selectionLeft = Tool.DRAW;
 	private Tool selectionRight = Tool.ERASE;
-	
+
 	private int leftPos;
 	private int bottomPos;
-	
-	private final Image[] items =new Image[Tool.values().length]; 
+
+	private final Image[] items = new Image[Tool.values().length];
 
 	/**
 	 * creates a new toolbar
+	 *
 	 * @param stage
 	 * @param sprites
 	 * @param left
-	 * @param right 
+	 * @param right
 	 */
-	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {	
+	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {
 		super("Tools", WE.getEngineView().getSkin());
-		leftPos = (int) (stage.getWidth()/2-items.length*50/2);
-		bottomPos = (int) (stage.getHeight()-100);
-		
+		leftPos = (int) (stage.getWidth() / 2 - items.length * 50 / 2);
+		bottomPos = (int) (stage.getHeight() - 100);
+
 		setPosition(leftPos, bottomPos);
-		setWidth(Tool.values().length*25);
+		setWidth(Tool.values().length * 25);
 		setHeight(45);
-		
+
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
-			items[i].setPosition(i*25, 2);
+			items[i].setPosition(i * 25, 2);
 			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
 			addActor(items[i]);
 		}
-		
+
 		//initialize selection
-		if (selectionLeft.selectFromBlocks) //show entities on left
+		if (selectionLeft.selectFromBlocks) { //show entities on left
 			left.showBlocks();
-		else {//show blocks on left
-			if (selectionLeft.selectFromEntities)
+		} else {//show blocks on left
+			if (selectionLeft.selectFromEntities) {
 				left.showEntities();
-			else left.hide(true);
+			} else {
+				left.hide(true);
+			}
 		}
-			
-		if (selectionRight.selectFromBlocks) //show entities on left
+
+		if (selectionRight.selectFromBlocks) { //show entities on left
 			right.showBlocks();
-		else { //show blocks on left
-			if (selectionRight.selectFromEntities)
+		} else { //show blocks on left
+			if (selectionRight.selectFromEntities) {
 				right.showEntities();
-			else {
+			} else {
 				right.hide(true);
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * renders the toolbar outline
-	 * @param shR 
+	 *
+	 * @param shR
 	 */
-	public void render(ShapeRenderer shR){
+	public void render(ShapeRenderer shR) {
 		shR.translate(getX(), getY(), 0);
 		shR.begin(ShapeRenderer.ShapeType.Line);
-			//draw left	
-			shR.setColor(Color.GREEN);
-			shR.rect(items[selectionLeft.id].getX()-1, items[selectionLeft.id].getY()-1, 22, 22);
-					//draw right
-			shR.setColor(Color.BLUE);
-			shR.rect(items[selectionRight.id].getX()-2, items[selectionLeft.id].getY()-2, 24, 24);
+		//draw left	
+		shR.setColor(Color.GREEN);
+		shR.rect(items[selectionLeft.id].getX() - 1, items[selectionLeft.id].getY() - 1, 22, 22);
+		//draw right
+		shR.setColor(Color.BLUE);
+		shR.rect(items[selectionRight.id].getX() - 2, items[selectionLeft.id].getY() - 2, 24, 24);
 
 		shR.end();
 		shR.translate(-getX(), -getY(), 0);
@@ -151,7 +190,8 @@ public class Toolbar extends Window {
 
 	/**
 	 * index of left mouse button.
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Tool getLeftTool() {
 		return selectionLeft;
@@ -159,7 +199,8 @@ public class Toolbar extends Window {
 
 	/**
 	 * index of right mouse button.
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Tool getRightTool() {
 		return selectionRight;
@@ -167,10 +208,11 @@ public class Toolbar extends Window {
 
 	//class to detect clicks
 	private class ToolSelectionListener extends InputListener {
+
 		private final Tool tool;
 		private final PlacableSelector left;
 		private final PlacableSelector right;
-	
+
 		ToolSelectionListener(Tool tool, PlacableSelector left, PlacableSelector right) {
 			this.tool = tool;
 			this.left = left;
@@ -179,31 +221,32 @@ public class Toolbar extends Window {
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			if (button==Buttons.LEFT) {
+			if (button == Buttons.LEFT) {
 				selectionLeft = tool;
-				if (tool.selectFromBlocks) //show entities on left
+				if (tool.selectFromBlocks) { //show entities on left
 					left.showBlocks();
-				else {//show blocks on left
-					if (tool.selectFromEntities)
+				} else {//show blocks on left
+					if (tool.selectFromEntities) {
 						left.showEntities();
-					else left.hide(true);
+					} else {
+						left.hide(true);
+					}
 				}
-			} else if (button==Buttons.RIGHT) {
+			} else if (button == Buttons.RIGHT) {
 				selectionRight = tool;
-				if (tool.selectFromBlocks) //show entities on left
+				if (tool.selectFromBlocks) { //show entities on left
 					right.showBlocks();
-				else { //show blocks on left
-					if (tool.selectFromEntities)
+				} else { //show blocks on left
+					if (tool.selectFromEntities) {
 						right.showEntities();
-					else {
+					} else {
 						right.hide(true);
 					}
 				}
 			}
-			
+
 			return true;
 		}
 
-		
 	}
 }

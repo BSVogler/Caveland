@@ -10,11 +10,18 @@ import com.BombingGames.WurfelEngine.WE;
 public class Flint extends Collectible{
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 *
+	 */
 	public Flint() {
 		super(CollectibleType.EXPLOSIVES);
 		setFriction(2000);
 	}
 	
+	/**
+	 *
+	 * @param flint
+	 */
 	public Flint(Flint flint) {
 		super(flint);
 		setFriction(2000);

@@ -14,6 +14,9 @@ public class TFlint extends Collectible {
 	private float timer = TIMETILLEXPLOSION;
 	private boolean lit;
 
+	/**
+	 *
+	 */
 	public TFlint() {
 		super(CollectibleType.EXPLOSIVES);
 		setFriction(0.02f);

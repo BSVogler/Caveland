@@ -156,6 +156,9 @@ public class PlacableSelector extends Table {
 			placableGUI.hide();
     }
 	
+	/**
+	 *
+	 */
 	protected void showBlocks() {
 		mode = PlaceMode.Blocks;
 		placableGUI.setMode(mode);
@@ -164,6 +167,9 @@ public class PlacableSelector extends Table {
 		show();
 	}
 
+	/**
+	 *
+	 */
 	protected void showEntities() {
 		mode = PlaceMode.Entities;
 		placableGUI.setMode(mode);

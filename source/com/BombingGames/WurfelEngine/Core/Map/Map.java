@@ -66,6 +66,10 @@ public class Map implements Cloneable{
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
 	
+	/**
+	 *
+	 * @param defaultGenerator
+	 */
 	public static void setDefaultGenerator(Generator defaultGenerator) {
 		Map.defaultGenerator = defaultGenerator;
 	}
@@ -209,6 +213,10 @@ public class Map implements Cloneable{
         this.generator = generator;
     }
     
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt){
 		dt *= gameSpeed;//aplly game speed
 		
@@ -532,6 +540,10 @@ public class Map implements Cloneable{
 		this.gameSpeed = gameSpeed;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public float getGameSpeed() {
 		return gameSpeed;
 	}
@@ -595,14 +607,26 @@ public class Map implements Cloneable{
 		}
 	}
 		
+	/**
+	 *
+	 * @param object
+	 */
 	public void addLinkedObject(LinkedWithMap object){
 		linkedObjects.add(object);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public ArrayList<LinkedWithMap> getLinkedObjects() {
 		return linkedObjects;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public Block getGroundBlock() {
 		return groundBlock;
 	}

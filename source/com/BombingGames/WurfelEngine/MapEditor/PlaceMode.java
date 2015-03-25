@@ -35,6 +35,15 @@ package com.BombingGames.WurfelEngine.MapEditor;
  * @author Benedikt Vogler
  */
 public enum PlaceMode {
-	Blocks, Entities
+
+	/**
+	 *
+	 */
+	Blocks,
+
+	/**
+	 *
+	 */
+	Entities
 	
 }

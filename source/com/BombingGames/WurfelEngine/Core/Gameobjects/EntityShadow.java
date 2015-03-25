@@ -44,7 +44,11 @@ public class EntityShadow extends AbstractEntity {
 	 */
     private AbstractEntity character;
 
-    protected EntityShadow(AbstractEntity character) {
+	/**
+	 *
+	 * @param character
+	 */
+	protected EntityShadow(AbstractEntity character) {
 		super(32);
 		this.character = character;
 		setSaveToDisk(false);

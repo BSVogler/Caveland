@@ -182,6 +182,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		return cursorId;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public float getMusicLoudness() {
 		return musicLoudness;
 	}
@@ -227,6 +231,9 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		return music.isPlaying();
 	}
 
+	/**
+	 *
+	 */
 	public void disposeMusic() {
 		if (music!=null) music.dispose();
 	}

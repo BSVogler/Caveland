@@ -69,21 +69,37 @@ public class EntityDrawable extends TextureRegionDrawable {
 			instance.render(WE.getEngineView(), (int) x, (int) y);
     }
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getLeftWidth() {
 		return 0;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getRightWidth() {
 		return AbstractGameObject.VIEW_WIDTH;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getTopHeight() {
 		return AbstractGameObject.VIEW_HEIGHT2 + AbstractGameObject.VIEW_DEPTH2;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getBottomHeight() {
 		return AbstractGameObject.VIEW_HEIGHT2 + AbstractGameObject.VIEW_DEPTH2;

@@ -40,7 +40,10 @@ public class OptionScreen extends WEScreen {
 	private final Slider musicSlider;
 	private final Slider soundSlider;
 
-	
+	/**
+	 *
+	 * @param batch
+	 */
 	public OptionScreen(SpriteBatch batch) {
 		this.batch = batch;
 		shr = new ShapeRenderer();

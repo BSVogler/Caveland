@@ -163,7 +163,10 @@ public class LoadMenu extends Window {
         }
     }
     
-    public void close(){
+	/**
+	 *
+	 */
+	public void close(){
         setOpen(null, false);
     }
     

@@ -524,6 +524,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         damageSounds = sound;
     }
 	
+	/**
+	 *
+	 * @param sound
+	 */
 	public void setStepSound1Grass(String sound) {
 		stepSound1Grass = sound;
 	}
@@ -657,10 +661,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			orientation = getMovementHor().nor();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isColiding() {
 		return coliding;
 	}
 
+	/**
+	 *
+	 * @param coliding
+	 */
 	public void setColiding(boolean coliding) {
 		this.coliding = coliding;
 	}
@@ -734,10 +746,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			setHealth(getHealth()+value);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isIndestructible() {
 		return indestructible;
 	}
 
+	/**
+	 *
+	 * @param indestructible
+	 */
 	public void setIndestructible(boolean indestructible) {
 		this.indestructible = indestructible;
 	}

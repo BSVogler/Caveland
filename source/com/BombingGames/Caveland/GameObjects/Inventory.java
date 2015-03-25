@@ -19,6 +19,10 @@ public class Inventory implements Serializable {
 	private static final boolean enableStacking = false;
 	private CustomPlayer player;
 
+	/**
+	 *
+	 * @param player
+	 */
 	public Inventory(CustomPlayer player) {
 		slot[0] = new Slot();
 		slot[1] = new Slot();
@@ -185,6 +189,10 @@ public class Inventory implements Serializable {
 		}
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isEmpty(){
 		boolean empty = true;
 		for (Slot currentSlot : slot) {

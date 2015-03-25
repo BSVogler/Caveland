@@ -40,6 +40,11 @@ import com.badlogic.gdx.math.Vector2;
 public class Controllable extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 *
+	 * @param id
+	 * @param spritesPerDir
+	 */
 	public Controllable(int id, int spritesPerDir) {
 		super(id, spritesPerDir);
 		setFriction(CVar.get("friction").getValuef());

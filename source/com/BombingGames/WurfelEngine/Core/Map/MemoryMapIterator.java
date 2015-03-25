@@ -46,7 +46,10 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 */
 	private Iterator<Chunk> chunkIterator;
 
-
+	/**
+	 *
+	 * @param startingZ
+	 */
 	public MemoryMapIterator(int startingZ) {
 		ArrayList<Chunk> mapdata = Controller.getMap().getData();
 		chunkIterator = mapdata.iterator();

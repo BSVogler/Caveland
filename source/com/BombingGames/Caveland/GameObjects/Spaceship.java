@@ -9,6 +9,9 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 public class Spaceship extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 *
+	 */
 	public Spaceship() {
 		super(80,0);
 	}

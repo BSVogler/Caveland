@@ -60,6 +60,10 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 		if (blockIterator!=null) blockIterator.setTopLimitZ(zLimit);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getTopLimitZ() {
 		return topLimitZ;
 	}

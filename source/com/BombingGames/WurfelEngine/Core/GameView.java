@@ -442,10 +442,18 @@ public class GameView extends View implements GameManager {
         return loadMenu;
     }
 
+	/**
+	 *
+	 * @return
+	 */
 	public Minimap getMinimap() {
 		return minimap;
 	}
 
+	/**
+	 *
+	 * @param minimap
+	 */
 	public void setMinimap(Minimap minimap) {
 		this.minimap = minimap;
 	}

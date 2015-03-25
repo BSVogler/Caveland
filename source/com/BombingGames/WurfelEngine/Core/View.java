@@ -44,8 +44,17 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public abstract class View {
     private static ShaderProgram shader;
 	
-    public abstract SpriteBatch getBatch();
-    public abstract ShapeRenderer getShapeRenderer();
+	/**
+	 *
+	 * @return
+	 */
+	public abstract SpriteBatch getBatch();
+
+	/**
+	 *
+	 * @return
+	 */
+	public abstract ShapeRenderer getShapeRenderer();
 	
 	/**
 	 * true if current rendering is debug only

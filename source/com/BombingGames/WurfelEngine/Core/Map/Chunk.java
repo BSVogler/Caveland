@@ -133,6 +133,10 @@ public class Chunk {
         fill(coordX, coordY, generator);
     }
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt){
 		for (Block[][] x : data) {
 			for (Block[] y : x) {
@@ -145,14 +149,16 @@ public class Chunk {
 		processModification();
 	}
 	
+	/** 
+	 */
 	public void processModification(){
 		if (modified){
-				modified=false;
-				Controller.getMap().modified();
-				for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
-					object.onChunkChange(this);
-				}
+			modified = false;
+			Controller.getMap().modified();
+			for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
+				object.onChunkChange(this);
 			}
+		}
 	}
     
     /**
@@ -483,19 +489,36 @@ public class Chunk {
 		return strg;
 	}
 	
-	
+	/**
+	 *
+	 * @param startingZ
+	 * @param limitZ
+	 * @return
+	 */
 	public ChunkIterator getIterator(final int startingZ, final int limitZ){
 		return new ChunkIterator(this, startingZ, limitZ);
 	}
 
+	/**
+	 * Get the chunk coordinate of this chunk.
+	 * @return
+	 */
 	public int getChunkX() {
 		return coordX;
 	}
 
+	/**
+	 * Get the chunk coordinate of this chunk.
+	 * @return
+	 */
 	public int getChunkY() {
 		return coordY;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public Coordinate getTopLeftCoordinate(){
 		return data[0][0][0].getPosition();
 	}
@@ -534,6 +557,9 @@ public class Chunk {
 		cameraAccessCounter=0;
 	}
 	
+	/**
+	 *
+	 */
 	public final void increaseCameraAccesCounter(){
 		cameraAccessCounter++;
 	}

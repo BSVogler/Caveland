@@ -104,6 +104,10 @@ public class PlayerWithWeapon extends Controllable {
         this.camera = camera;
     }
 
+	/**
+	 *
+	 * @return
+	 */
 	public Camera getCamera() {
 		return camera;
 	}

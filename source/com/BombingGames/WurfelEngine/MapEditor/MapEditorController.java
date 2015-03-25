@@ -82,10 +82,18 @@ public class MapEditorController extends Controller {
             this.gameplayView = gameplayView;
     }
 
+	/**
+	 *
+	 * @return
+	 */
 	public Controller getGameplayController() {
 		return gameplayController;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public GameView getGameplayView() {
 		return gameplayView;
 	}
@@ -197,6 +205,10 @@ public class MapEditorController extends Controller {
         }
     }
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasMapSave(){
 		return mapsave != null;
 	}

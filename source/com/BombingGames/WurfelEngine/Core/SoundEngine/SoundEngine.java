@@ -20,6 +20,9 @@ public class SoundEngine {
 	private ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 	private GameView view;
 
+	/**
+	 *
+	 */
 	public SoundEngine() {
 		register("landing", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav");
 		register("splash", "com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.wav");
@@ -183,6 +186,10 @@ public class SoundEngine {
 			result.setVolume(instance, volume);
 	}
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt){
 		for (SoundInstance sound : playingLoops) {
 			sound.update();
@@ -223,6 +230,10 @@ public class SoundEngine {
 		return volume;
 	}
 
+	/**
+	 *
+	 * @param view
+	 */
 	public void setView(GameView view) {
 		this.view = view;
 	}

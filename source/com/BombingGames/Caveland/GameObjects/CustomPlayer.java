@@ -487,6 +487,10 @@ public class CustomPlayer extends Controllable {
 		this.camera = camera;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Camera getCamera() {
 		return camera;
 	}

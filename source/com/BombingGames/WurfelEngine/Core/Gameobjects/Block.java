@@ -569,6 +569,10 @@ public class Block extends AbstractGameObject {
         hasSides=false;
     }
 	
+	/**
+	 *
+	 * @param liquid
+	 */
 	public void setLiquid(boolean liquid){
 		this.liquid = liquid;
 	}
@@ -594,6 +598,10 @@ public class Block extends AbstractGameObject {
         return getName(getId(), getValue());
     }
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public int getDimensionZ() {
 		return 1;

@@ -8,6 +8,9 @@ public class BlockDirt extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	private float timeofExistance;
 
+	/**
+	 *
+	 */
 	public BlockDirt() {
 		super(44,0);
 		setSaveToDisk(false);

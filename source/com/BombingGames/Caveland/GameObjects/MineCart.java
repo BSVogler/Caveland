@@ -23,6 +23,9 @@ public class MineCart extends AbstractInteractable {
 	private float rollingCycle;
 	private long isPlayingSound;
 	
+	/**
+	 *
+	 */
 	public MineCart() {
 		super(42, 0);
 		setName("MineCart");
@@ -195,6 +198,10 @@ public class MineCart extends AbstractInteractable {
 		passenger.setPosition(tmp);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public MovableEntity getPassenger() {
 		return passenger;
 	}
@@ -219,6 +226,10 @@ public class MineCart extends AbstractInteractable {
 		return false;
 	}
 
+	/**
+	 *
+	 * @param list
+	 */
 	public void addAll(ArrayList<MovableEntity> list) {
 		if (list != null) {
 			content.addAll(list);
@@ -235,7 +246,9 @@ public class MineCart extends AbstractInteractable {
 		}
 	}
 	
-	
+	/**
+	 *
+	 */
 	public void turn() {
 		setOrientation(
 			new Vector2(

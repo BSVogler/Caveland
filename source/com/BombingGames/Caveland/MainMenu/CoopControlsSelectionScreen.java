@@ -25,7 +25,10 @@ public class CoopControlsSelectionScreen extends WEScreen {
 	private Stage stage;
 	private final SpriteBatch batch;
 
-
+	/**
+	 *
+	 * @param batch
+	 */
 	public CoopControlsSelectionScreen(SpriteBatch batch) {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;

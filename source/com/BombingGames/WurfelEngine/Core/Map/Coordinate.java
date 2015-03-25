@@ -553,15 +553,19 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public boolean equals(Object obj) {
+		//point on same object
 		if (this == obj) {
 			return true;
 		}
+		//not null
 		if (obj == null) {
 			return false;
 		}
+		//not same class
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
+		//check fields
 		Coordinate other = (Coordinate) obj;
 		if (x != other.x) {
 			return false;

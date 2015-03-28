@@ -235,7 +235,6 @@ public class Point extends AbstractPosition {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		return getBlock() != null;
     }
 	
 	@Override

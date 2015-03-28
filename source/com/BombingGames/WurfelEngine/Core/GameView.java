@@ -284,7 +284,7 @@ public class GameView extends View implements GameManager {
      * Returns deepest layer. Can be used in game space but then its on the floor layer.
      * @param x screen space
      * @param y screen space. y-up
-     * @return if no camera returns map center.
+     * @return the position on the map. deepest layer. If no camera returns map center.
      */
      public Point screenToGameBasic(final int x, final int y){
 		if (cameras.size()>0){
@@ -315,10 +315,10 @@ public class GameView extends View implements GameManager {
      * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -> game. First does screen->view and then via raytracing view->game.
      * @param x the x position on the screen from left
      * @param y the y position on the screen from top
-     * @return the position on the map. Deepest layer.
+     * @return the position on the map.
      */
     public Intersection screenToGame(final int x, final int y){
-		if (cameras.size()>0) {
+		if (cameras.size() > 0) {
 			Point p = screenToGameBasic(x,y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - AbstractGameObject.GAME_EDGELENGTH - p.getZ();

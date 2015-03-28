@@ -96,7 +96,7 @@ public class PlacableSelector extends Table {
 			
 			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
-					for (int i = 0; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+					for (int i = 1; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
 						table.row();
 						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 						

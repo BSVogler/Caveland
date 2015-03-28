@@ -704,7 +704,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
 				Block block = getPosition().getBlock();
-                boolean colission =  block != null && (block.isObstacle() || horizontalColission(getPosition()));
+                boolean colission =  (block != null && block.isObstacle()) || horizontalColission(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);//reverse
                 
                 //if standing on ground on own or neighbour block then true

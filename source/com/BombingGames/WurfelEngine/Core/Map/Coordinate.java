@@ -161,8 +161,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Set the coordinates Z component. It will be transversed into a float
-	 * value (height).
+	 * Set the coordinates Z component.
 	 *
 	 * @param z
 	 */

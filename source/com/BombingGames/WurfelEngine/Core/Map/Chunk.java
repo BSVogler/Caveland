@@ -66,6 +66,7 @@ public class Chunk {
 	private final static char SIGN_STARTCOMMENTS = '{';//123 OR 0x7b
 	private final static char SIGN_ENDCOMMENTS = '}';//125 OR 0x7d
 	private final static char SIGN_EMPTYLAYER = '~';//126 OR 0x7e
+	private final static char SIGN_LINEFEED = 0x0A;//10 or 0x0A
 	
     /**
      *
@@ -101,7 +102,7 @@ public class Chunk {
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = Block.getInstance(0);
+                    data[x][y][z] = null;
 		modified = true;
 
     }
@@ -204,12 +205,12 @@ public class Chunk {
 
 				int bufChar = fis.read();
 
-				//read a line
+				//read a byte
 				while (bufChar != -1 && bufChar != SIGN_ENTITIES) {//read while not eof and not at entity part
-					if (bufChar == 0x0A) //skip line breaks
+					if (bufChar == SIGN_LINEFEED) //skip line breaks
 						bufChar = fis.read();
 
-					if (bufChar != 0x0A){
+					if (bufChar != SIGN_LINEFEED){//not a line break
 
 						//jump over optional comment line
 						if (bufChar == SIGN_STARTCOMMENTS){
@@ -218,7 +219,7 @@ public class Chunk {
 								bufChar = fis.read();
 							}
 							bufChar = fis.read();
-							if (bufChar== 0x0A)//if following is a line break also skip it again
+							if (bufChar== SIGN_LINEFEED)//if following is a line break also skip it again
 								bufChar = fis.read();
 						}
 
@@ -236,13 +237,13 @@ public class Chunk {
 								x = 0;
 								do {
 
-									int id; //already got first one
-									if (y==0 && x==0)
+									int id; 
+									if (y==0 && x==0)//already got first one
 										 id = bufChar;
 									else 
 										id = fis.read();
 									int value = fis.read();
-									if (id != 0) {
+									if (id > 0) {
 										data[x][y][z] = Block.getInstance(id, value);
 										data[x][y][z].setPosition(
 											new Coordinate(
@@ -251,7 +252,8 @@ public class Chunk {
 												z
 											)
 										);
-									}
+									} else 
+										data[x][y][z] =null;
 									x++;
 								} while (x < blocksX);
 								y++;
@@ -317,7 +319,7 @@ public class Chunk {
 					boolean dirty = false;
 					for (int x = 0; x < blocksX; x++) {
 						for (int y = 0; y < blocksY; y++) {
-							if (data[x][y][z].getId() != 0)
+							if (data[x][y][z] != null)
 								dirty=true;
 						}
 					}
@@ -327,8 +329,13 @@ public class Chunk {
 					if (dirty)
 						for (int y = 0; y < blocksY; y++) {
 							for (int x = 0; x < blocksX; x++) {
-								fileOut.write(data[x][y][z].getId());
-								fileOut.write(data[x][y][z].getValue());
+								if (data[x][y][z]==null) {
+									fileOut.write(0);
+									fileOut.write(0);
+								} else {
+									fileOut.write(data[x][y][z].getId());
+									fileOut.write(data[x][y][z].getValue());
+								}
 							}
 						}
 					else {

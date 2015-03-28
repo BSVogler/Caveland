@@ -547,6 +547,20 @@ public class Chunk {
 	}
 	
 	/**
+	 * remove a block from a coord
+	 * @param coord 
+	 */
+	public void destroyBlockOnCoord(Coordinate coord){
+		int xIndex = coord.getX()-data[0][0][0].getPosition().getX();
+		int yIndex = coord.getY()-data[0][0][0].getPosition().getY();
+		int z = coord.getZ();
+		if (z >= 0){
+			data[xIndex][yIndex][z] = null;
+			modified = true;
+		}
+	}
+	
+	/**
 	 * Set that no camera is accessing this chunk.
 	 */
 	public void resetCameraAccesCounter(){

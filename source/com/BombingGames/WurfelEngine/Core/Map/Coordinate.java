@@ -176,8 +176,12 @@ public class Coordinate extends AbstractPosition {
 	 * @param block the block you want to set.
 	 */
 	public void setBlock(Block block) {
-		block.setPosition(this);
-		Controller.getMap().setData(block);
+		if (block!= null) {
+			block.setPosition(this);
+			Controller.getMap().setData(block);
+		} else {
+			Controller.getMap().destroyBlockOnCoord(this);
+		}
 	}
 
 	/**
@@ -523,7 +527,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean destroy() {
 		if (isInMemoryArea() && getBlock() != null) {
 			getBlock().onDestroy();//call destruction method
-			setBlock(Block.getInstance(0));
+			setBlock(null);
 			return true;
 		} else {
 			return false;

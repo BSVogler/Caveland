@@ -325,6 +325,14 @@ public class Map implements Cloneable{
     }
 	
 	/**
+	 * remove a block from a coord
+	 * @param coord 
+	 */
+	public void destroyBlockOnCoord(Coordinate coord){
+		getChunk(coord).destroyBlockOnCoord(coord);
+	}
+	
+	/**
 	 * get the chunk where the coordinates are on
 	 * @param coord
 	 * @return 

@@ -63,20 +63,19 @@ public class EntityShadow extends AbstractEntity {
 			dispose();
 		else {
 			//find height of shadow surface
-			Coordinate newPos = character.getPosition().getCoord().cpy();
-			if (newPos.isInMemoryArea()){
-				Block block = newPos.addVector(new float[]{0, 0, -1}).getBlock();
-				while (
-					newPos.getZ() > 0
-					&& (block == null || block.isTransparent())
-				) {
-					newPos.addVector(new float[]{0, 0, -1});
-					block = newPos.addVector(new float[]{0, 0, -1}).getBlock();
-				}
-
-				setPosition(character.getPosition().cpy());
-				getPosition().setZ(newPos.getPoint().getZ());
+			Coordinate newHeight = character.getPosition().getCoord();//start at same height
+			Block block = newHeight.getBlock();
+			while (
+				newHeight.getZ() > 0
+				&& (block == null || block.isTransparent())
+			) {
+				newHeight.addVector(0, 0, -1);
+				block = newHeight.getBlock();
 			}
+
+			newHeight.addVector(0, 0, 1);
+			setPosition(character.getPosition().cpy());
+			getPosition().setZ(newHeight.getPoint().getZ());
 		}
     }
 

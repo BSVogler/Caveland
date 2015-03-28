@@ -522,7 +522,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (isInMemoryArea() && getBlock().getId() != 0) {
+		if (isInMemoryArea() && getBlock() != null) {
 			getBlock().onDestroy();//call destruction method
 			setBlock(Block.getInstance(0));
 			return true;

@@ -430,7 +430,7 @@ public class Chunk {
 	
 	
 	/**
-	 * Check if the coordinate has the coordinate inside.
+	 * Check if the coordinate has the coordinate inside. O(1)
 	 * @param coord the coordinate to be checked
 	 * @return true if coord is inside.
 	 */

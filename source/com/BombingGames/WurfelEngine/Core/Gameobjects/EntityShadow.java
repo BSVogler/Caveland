@@ -56,9 +56,6 @@ public class EntityShadow extends AbstractEntity {
 
     @Override
     public void update(float dt) {
-		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ()- getPosition().getZ())/4/Block.GAME_EDGELENGTH)
-		);
 		if (character==null)
 			dispose();
 		else {
@@ -77,6 +74,9 @@ public class EntityShadow extends AbstractEntity {
 			setPosition(character.getPosition().cpy());
 			getPosition().setZ(newHeight.getPoint().getZ());
 		}
+		setColor(
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
+		);
     }
 
     @Override

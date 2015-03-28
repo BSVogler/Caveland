@@ -31,6 +31,7 @@ package com.BombingGames.WurfelEngine.Core.LightEngine;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Side;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
@@ -344,21 +345,24 @@ public class LightEngine implements LinkedWithMap {
 				y++
 			) {
                 //find top most renderobject
-                int topmost = Chunk.getBlocksZ()-1;//start at top
-                while (
-					chunk.getBlock(
+                int topmost = Chunk.getBlocksZ();//start at top
+				Block block;
+                
+				do {
+                    topmost--;
+					block = chunk.getBlock(
 						x,
 						y,
 						topmost
-					).isTransparent() && topmost > 0
-				){
-                    topmost--;
-                }
+					);
+                } while ((block == null || block.isTransparent()) && topmost > 0);
                 
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
                     for (int level = topmost; level >= 0; level--){
-                        Controller.getMap().getBlock(x,y,level).setLightlevel(.5f + .5f*level / (float) topmost);
+						Block blockToLit = Controller.getMap().getBlock(x,y,level);
+						if (blockToLit!=null)
+							blockToLit.setLightlevel(.5f + .5f*level / (float) topmost);
                     }
                 }
             }

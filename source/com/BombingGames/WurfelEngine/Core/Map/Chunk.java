@@ -141,7 +141,8 @@ public class Chunk {
 		for (Block[][] x : data) {
 			for (Block[] y : x) {
 				for (Block z : y) {
-					z.update(dt);
+					if (z!=null)
+						z.update(dt);
 				}
 			}
 		}
@@ -225,14 +226,7 @@ public class Chunk {
 						if (bufChar == SIGN_EMPTYLAYER ){
 							for (x = 0; x < blocksX; x++) {
 								for (y = 0; y < blocksY; y++) {
-									data[x][y][z] = Block.getInstance(0);
-									data[x][y][z].setPosition(
-										new Coordinate(
-											coordX*blocksX+x,
-											coordY*blocksY+y,
-											z
-										)
-									);
+									data[x][y][z] = null;
 								}
 							}
 						} else {
@@ -248,14 +242,16 @@ public class Chunk {
 									else 
 										id = fis.read();
 									int value = fis.read();
-									data[x][y][z] = Block.getInstance(id, value);
-									data[x][y][z].setPosition(
-										new Coordinate(
-											coordX*blocksX+x,
-											coordY*blocksY+y,
-											z
-										)
-									);
+									if (id != 0) {
+										data[x][y][z] = Block.getInstance(id, value);
+										data[x][y][z].setPosition(
+											new Coordinate(
+												coordX*blocksX+x,
+												coordY*blocksY+y,
+												z
+											)
+										);
+									}
 									x++;
 								} while (x < blocksX);
 								y++;

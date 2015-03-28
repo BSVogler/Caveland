@@ -540,7 +540,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean damage(float amount) {
 		if (isInMemoryArea()) {
 			Block block = getBlock();
-			if (block.getId() != 0) {
+			if (block != null) {
 				block.setHealth(block.getHealth() - amount);
 				if (block.getHealth() <= 0) {
 					destroy();

@@ -230,7 +230,7 @@ public class Map implements Cloneable{
 			AbstractEntity entity = getEntitys().get(i);
 			if (entity.isInMemoryArea())//only update entities in memory
 				entity.update(dt);
-			else entity.dispose();//dispose entities outside of memory area
+			//else entity.dispose();//dispose entities outside of memory area
 			if (entity.shouldBeDisposedFromMap())
 				getEntitys().remove(i);
 		}

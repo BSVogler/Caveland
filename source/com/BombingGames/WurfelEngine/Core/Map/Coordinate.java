@@ -161,8 +161,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Set the coordinates Z component. It will be transversed into a float
-	 * value (height).
+	 * Set the coordinates Z component.
 	 *
 	 * @param z
 	 */
@@ -177,8 +176,12 @@ public class Coordinate extends AbstractPosition {
 	 * @param block the block you want to set.
 	 */
 	public void setBlock(Block block) {
-		block.setPosition(this);
-		Controller.getMap().setData(block);
+		if (block!= null) {
+			block.setPosition(this);
+			Controller.getMap().setData(block);
+		} else {
+			Controller.getMap().destroyBlockOnCoord(this);
+		}
 	}
 
 	/**
@@ -522,9 +525,9 @@ public class Coordinate extends AbstractPosition {
 	 * @return true if destroyed, false if nothing destroyed
 	 */
 	public boolean destroy() {
-		if (isInMemoryArea() && getBlock().getId() != 0) {
+		if (isInMemoryArea() && getBlock() != null) {
 			getBlock().onDestroy();//call destruction method
-			setBlock(Block.getInstance(0));
+			setBlock(null);
 			return true;
 		} else {
 			return false;
@@ -540,7 +543,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean damage(float amount) {
 		if (isInMemoryArea()) {
 			Block block = getBlock();
-			if (block.getId() != 0) {
+			if (block != null) {
 				block.setHealth(block.getHealth() - amount);
 				if (block.getHealth() <= 0) {
 					destroy();

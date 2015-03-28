@@ -41,7 +41,7 @@ public class MineCart extends AbstractInteractable {
 			Block block = pos.getBlock();
 
 			//on tracks?
-			if (block.getId() == 55) {
+			if (block!=null && block.getId() == 55) {
 				setFriction(0.001f);
 
 				switch (block.getValue()) {

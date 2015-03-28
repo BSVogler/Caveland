@@ -533,7 +533,8 @@ public class Camera implements LinkedWithMap {
 				Block block = iterator.next();
 				//only add if in view plane to-do
 				if (
-					!block.isHidden()
+					block != null
+					&& !block.isHidden()
 					&& !isClipped(block.getPosition())
 					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
@@ -546,7 +547,7 @@ public class Camera implements LinkedWithMap {
 			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
-				if (!block.isHidden()) {
+				if (block!= null && !block.isHidden()) {
 					depthsort.add(block);
 				}
 			}
@@ -673,40 +674,43 @@ public class Camera implements LinkedWithMap {
 
 		while (iter.hasNext()) {
 			Block next = iter.next();
-			//calculate index position
-			int x = -Chunk.getBlocksX() * (centerChunkX - 1 - iter.getCurrentChunk().getChunkX())
-				+ iter.getCurrentIndex()[0];//skip chunks
-			int y = -Chunk.getBlocksY() * (centerChunkY - 1 - iter.getCurrentChunk().getChunkY())
-				+ iter.getCurrentIndex()[1];//skip chunks
-			int z = iter.getCurrentIndex()[2] + 1;
+			
+			if (next != null) {
+				//calculate index position
+				int x = -Chunk.getBlocksX() * (centerChunkX - 1 - iter.getCurrentChunk().getChunkX())
+					+ iter.getCurrentIndex()[0];//skip chunks
+				int y = -Chunk.getBlocksY() * (centerChunkY - 1 - iter.getCurrentChunk().getChunkY())
+					+ iter.getCurrentIndex()[1];//skip chunks
+				int z = iter.getCurrentIndex()[2] + 1;
 
-			Coordinate blockCoord = next.getPosition();
-			//todo border checks
-			if (z > 0) {//bottom layer always has sides always clipped
-				if (blockCoord.getY() % 2 == 0) {//next row is shifted right
-					if (blockCoord.hidingPastBlock(-1, 1, 0)) {//left
-						clipping[x][y][z][0] = true;
+				Coordinate blockCoord = next.getPosition();
+				//todo border checks
+				if (z > 0) {//bottom layer always has sides always clipped
+					if (blockCoord.getY() % 2 == 0) {//next row is shifted right
+						if (blockCoord.hidingPastBlock(-1, 1, 0)) {//left
+							clipping[x][y][z][0] = true;
+						}
+						if (blockCoord.hidingPastBlock(0, 1, 0)) {//right
+							clipping[x][y][z][2] = true;
+						}
+					} else {//next row is shifted right
+						if (blockCoord.hidingPastBlock(0, 1, 0)) {//left
+							clipping[x][y][z][0] = true;
+						}
+						if (blockCoord.hidingPastBlock(1, 1, 0)) {//right
+							clipping[x][y][z][2] = true;
+						}
 					}
-					if (blockCoord.hidingPastBlock(0, 1, 0)) {//right
-						clipping[x][y][z][2] = true;
-					}
-				} else {//next row is shifted right
-					if (blockCoord.hidingPastBlock(0, 1, 0)) {//left
-						clipping[x][y][z][0] = true;
-					}
-					if (blockCoord.hidingPastBlock(1, 1, 0)) {//right
-						clipping[x][y][z][2] = true;
-					}
+				} else {
+					clipping[x][y][z][0] = true;
+					clipping[x][y][z][2] = true;
 				}
-			} else {
-				clipping[x][y][z][0] = true;
-				clipping[x][y][z][2] = true;
-			}
 
-			//check top
-			if (z < Map.getBlocksZ()
-				&& (blockCoord.hidingPastBlock(0, 0, 1))) {
-				clipping[x][y][z][1] = true;
+				//check top
+				if (z < Map.getBlocksZ()
+					&& (blockCoord.hidingPastBlock(0, 0, 1))) {
+					clipping[x][y][z][1] = true;
+				}
 			}
 		}
 	}

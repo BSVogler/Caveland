@@ -235,7 +235,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		return getBlock() != null;
+		return getCoord().isInMemoryAreaHorizontal();
     }
 	
 	@Override
@@ -387,8 +387,8 @@ public class Point extends AbstractPosition {
 
 				/** Point of intersection */
                 Point isectP = new Point(curX, curY, curZ);
-                Block block = isectP.getBlock();
-                if (block == null) break;//check if outside of map
+                if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
+				Block block = isectP.getBlock();
                 //intersect?
                 if ((
 					camera==null
@@ -400,8 +400,9 @@ public class Point extends AbstractPosition {
 						)
 					)
 				   )
+					&& block != null
                     && (!onlySolid || (onlySolid && !block.isTransparent()))
-                    && block.getId() != 0
+                    
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (

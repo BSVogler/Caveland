@@ -367,8 +367,7 @@ public class MapEditorView extends GameView {
 						}
 						break;
 					case ERASE:
-						block = Block.getInstance(0);
-						block.setPosition(coords);
+						block = null;
 						if (coords.getZ()>=0)
 							Controller.getMap().setData(block);
 						break;
@@ -457,8 +456,7 @@ public class MapEditorView extends GameView {
 						Block block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setData(block);
 					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
-						Block block = Block.getInstance(0);
-						block.setPosition(coords);
+						Block block = null;
 						Controller.getMap().setData(block);
 					} else return false;
 				}

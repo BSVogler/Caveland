@@ -230,7 +230,7 @@ public class Map implements Cloneable{
 			AbstractEntity entity = getEntitys().get(i);
 			if (entity.isInMemoryArea())//only update entities in memory
 				entity.update(dt);
-			else entity.dispose();//dispose entities outside of memory area
+			//else entity.dispose();//dispose entities outside of memory area
 			if (entity.shouldBeDisposedFromMap())
 				getEntitys().remove(i);
 		}
@@ -323,6 +323,14 @@ public class Map implements Cloneable{
     public void setData(final Block block) {
 		getChunk(block.getPosition()).setBlock(block);
     }
+	
+	/**
+	 * remove a block from a coord
+	 * @param coord 
+	 */
+	public void destroyBlockOnCoord(Coordinate coord){
+		getChunk(coord).destroyBlockOnCoord(coord);
+	}
 	
 	/**
 	 * get the chunk where the coordinates are on

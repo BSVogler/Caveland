@@ -56,23 +56,27 @@ public class EntityShadow extends AbstractEntity {
 
     @Override
     public void update(float dt) {
-		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ()- getPosition().getZ())/4/Block.GAME_EDGELENGTH)
-		);
 		if (character==null)
 			dispose();
 		else {
 			//find height of shadow surface
-			Coordinate tmpPos = character.getPosition().getCoord().cpy();
-			if (tmpPos.isInMemoryArea()){
-				tmpPos.setZ(tmpPos.getZ());//to clamp to grid
-				while (tmpPos.getZ() > 0 && tmpPos.cpy().addVector(new float[]{0, 0, -1}).getBlock().isTransparent())
-					tmpPos.addVector(new float[]{0, 0, -1});
-
-				setPosition(character.getPosition().cpy());
-				getPosition().setZ(tmpPos.getPoint().getZ());
+			Coordinate newHeight = character.getPosition().getCoord();//start at same height
+			Block block = newHeight.getBlock();
+			while (
+				newHeight.getZ() > 0
+				&& (block == null || block.isTransparent())
+			) {
+				newHeight.addVector(0, 0, -1);
+				block = newHeight.getBlock();
 			}
+
+			newHeight.addVector(0, 0, 1);
+			setPosition(character.getPosition().cpy());
+			getPosition().setZ(newHeight.getPoint().getZ());
 		}
+		setColor(
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
+		);
     }
 
     @Override

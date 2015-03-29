@@ -115,6 +115,7 @@ public class CustomPlayer extends Controllable {
 	 * play the throw animation till load is finished
 	 */
 	private boolean prepareThrow;
+	private boolean bunnyHopForced;
 	
 	/**
 	 * creates a new Ejira
@@ -615,6 +616,14 @@ public class CustomPlayer extends Controllable {
 			}
 		}
 		spriteNum = animationStart + animationStep;
+	}
+	
+	/**
+	 * goes in idle position
+	 */
+	public void idle(){
+		playAnimation('w');
+		playAnimation = false;
 	}
 
 }

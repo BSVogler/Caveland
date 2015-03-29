@@ -143,13 +143,19 @@ public class MineCart extends AbstractInteractable {
 			//if transporting object
 			if (passenger != null) {
 				//give same speed as minecart
-				passenger.setMovement(getMovement());
+				passenger.setMovement(getMovementHor());
 				
 				//while standing in mine cart force into it
 				if (passenger.getPosition().getZ() <= pos.getZ()+BOTTOMHEIGHT) {
 					Point tmp = pos.cpy();
 					tmp.setZ(pos.getZ()+BOTTOMHEIGHT);//a little bit higher then the minecart
 					passenger.setPosition(tmp);
+					passenger.setFloating(true);
+					if (passenger instanceof CustomPlayer) {
+						((CustomPlayer) passenger).idle();
+					}
+				} else {
+					passenger.setFloating(false);
 				}
 				
 				//check if passenger exited
@@ -200,7 +206,6 @@ public class MineCart extends AbstractInteractable {
 			passenger.getMovement().z = 0;//fall into chuchu
 		}
 		
-		passenger.setFloating(true);
 		
 		//set passenger in the center the mine cart
 		Point tmp = passenger.getPosition().cpy();

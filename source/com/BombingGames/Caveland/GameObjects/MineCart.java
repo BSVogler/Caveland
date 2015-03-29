@@ -260,7 +260,13 @@ public class MineCart extends AbstractInteractable {
 
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
-		if (actor instanceof MovableEntity)
-			setPassanger((MovableEntity) actor);
+		if (actor instanceof MovableEntity){
+			if (passenger==null){
+				setPassanger((MovableEntity) actor);
+			} else {
+				passenger=null;
+			}
+		}
+			
 	}
 }

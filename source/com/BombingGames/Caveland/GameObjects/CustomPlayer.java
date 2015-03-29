@@ -409,8 +409,8 @@ public class CustomPlayer extends Controllable {
 
 	@Override
 	public void jump() {
-		if (!airjump || allowBunnyHop()) {
-			if (!allowBunnyHop()) {
+		if (!airjump || bunnyHopAllowed()) {
+			if (!bunnyHopAllowed()) {
 				airjump = true;//do an airjump
 			} else {
 				if (!isOnGround()) {//doing bunnyhop and not on ground
@@ -454,12 +454,23 @@ public class CustomPlayer extends Controllable {
 	 * @return
 	 * @see AbstractEntity#isOnGround()
 	 */
-	private boolean allowBunnyHop() {
+	private boolean bunnyHopAllowed() {
+		if (bunnyHopForced) {
+			bunnyHopForced = false;
+			return true;
+		}
 		final int bunnyhopDistance = 20;
 		getPosition().setZ(getPosition().getZ() - bunnyhopDistance);
 		boolean colission = isOnGround();
 		getPosition().setZ(getPosition().getZ() + bunnyhopDistance);
 		return colission;
+	}
+	
+	/**
+	 * allows the player to jump without touching the ground
+	 */
+	public void forceBunnyHop(){
+		bunnyHopForced = true;
 	}
 
 	/**
@@ -522,6 +533,10 @@ public class CustomPlayer extends Controllable {
 		CVar.get("PlayerLastSaveZ").setValuei(coord.getZ());
 	}
 
+	/**
+	 * starts the animation
+	 * @param c 
+	 */
 	private void playAnimation(char c) {
 		action = c;
 		animationCycle = 0;

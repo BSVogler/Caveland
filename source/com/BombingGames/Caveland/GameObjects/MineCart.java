@@ -145,20 +145,21 @@ public class MineCart extends AbstractInteractable {
 				//give same speed as minecart
 				passenger.setMovement(getMovementHor());
 				
-				//while standing in mine cart force into it
+				//while standing at ground in mine cart force into it
 				if (passenger.getPosition().getZ() <= pos.getZ()+BOTTOMHEIGHT) {
 					Point tmp = pos.cpy();
-					tmp.setZ(pos.getZ()+BOTTOMHEIGHT);//a little bit higher then the minecart
+					tmp.setZ( pos.getZ()+BOTTOMHEIGHT );//a little bit higher then the minecart
 					passenger.setPosition(tmp);
 					passenger.setFloating(true);
 					if (passenger instanceof CustomPlayer) {
 						((CustomPlayer) passenger).idle();
+						((CustomPlayer) passenger).forceBunnyHop();
 					}
 				} else {
 					passenger.setFloating(false);
 				}
 				
-				//check if passenger exited
+				//check if passenger exited the cart
 				if (
 					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
 					|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
@@ -202,14 +203,14 @@ public class MineCart extends AbstractInteractable {
 	 */
 	public void setPassanger(MovableEntity passenger) {
 		this.passenger = passenger;
-		if (passenger.getMovement().z > 0) {
-			passenger.getMovement().z = 0;//fall into chuchu
-		}
+//		if (passenger.getMovement().z > 0) {
+//			passenger.getMovement().z = 0;//fall into chuchu
+//		}
 		
 		
 		//set passenger in the center the mine cart
 		Point tmp = passenger.getPosition().cpy();
-		tmp.setZ(passenger.getPosition().getZ());
+		tmp.setZ(passenger.getPosition().getZ());//kepp z
 		passenger.setPosition(tmp);
 	}
 

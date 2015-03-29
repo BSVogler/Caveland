@@ -17,6 +17,10 @@ import java.util.ArrayList;
 public class MineCart extends AbstractInteractable {
 	private static final long serialVersionUID = 1L;
 	private static final float MAXSPEED = 5;
+	/**
+	 * the height of the bottom plate
+	 */
+	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/4;
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
@@ -139,18 +143,21 @@ public class MineCart extends AbstractInteractable {
 			//if transporting object
 			if (passenger != null) {
 				//give same speed as minecart
-				passenger.getMovement().x = getMovement().x;
-				passenger.getMovement().y = getMovement().y;
-
-				//passenger.setSpeed(getSpeed());
-
-				if (passenger.getPosition().getZ() < pos.getZ()+GAME_EDGELENGTH/4) {//while standing in mine cart force into it
+				passenger.setMovement(getMovement());
+				
+				//while standing in mine cart force into it
+				if (passenger.getPosition().getZ() <= pos.getZ()+BOTTOMHEIGHT) {
 					Point tmp = pos.cpy();
-					tmp.setZ(pos.getZ()+GAME_EDGELENGTH/4);
+					tmp.setZ(pos.getZ()+BOTTOMHEIGHT);//a little bit higher then the minecart
 					passenger.setPosition(tmp);
 				}
-				if (pos.distanceTo(passenger) > 200) {//passenger exits
-					passenger = null;
+				
+				//check if passenger exited
+				if (
+					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
+					|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
+				) {
+					passengerLeave();
 				}
 			} else {
 				//add objects
@@ -192,7 +199,10 @@ public class MineCart extends AbstractInteractable {
 		if (passenger.getMovement().z > 0) {
 			passenger.getMovement().z = 0;//fall into chuchu
 		}
-		//set passenger inside the mine cart
+		
+		passenger.setFloating(true);
+		
+		//set passenger in the center the mine cart
 		Point tmp = passenger.getPosition().cpy();
 		tmp.setZ(passenger.getPosition().getZ());
 		passenger.setPosition(tmp);
@@ -264,9 +274,13 @@ public class MineCart extends AbstractInteractable {
 			if (passenger==null){
 				setPassanger((MovableEntity) actor);
 			} else {
-				passenger=null;
+				passengerLeave();
 			}
 		}
-			
+	}
+	
+	void passengerLeave(){
+		passenger.setFloating(false);
+		passenger=null;
 	}
 }

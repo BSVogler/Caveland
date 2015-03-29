@@ -394,7 +394,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
             //should the fallingsound be played?
             if (fallingSound != null) {
-                if (getMovement().z < 0 && movement.len2() > 0.0f) {
+                if (!floating && getMovement().z < 0 && movement.len2() > 0.0f) {
                     if (fallingSoundInstance == 0) {
                         fallingSoundInstance = Controller.getSoundEngine().loop(fallingSound);
                     }

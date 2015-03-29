@@ -243,6 +243,7 @@ public class CustomPlayer extends Controllable {
 			nearestEntity.showButton(AbstractInteractable.RT);
 		} else if (nearestEntity != null) {
 			nearestEntity.hideButton();
+			nearestEntity = null;
 		}
 
 		//play walking animation

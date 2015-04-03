@@ -34,7 +34,7 @@ public class CompleteMap extends AbstractMap {
 
 	@Override
 	public Block getBlock(int x, int y, int z) {
-		return data[x][y][z];
+		return data[blocksX/2+x][blocksY/2+y][z];
 	}
 
 	@Override

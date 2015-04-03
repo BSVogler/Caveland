@@ -140,7 +140,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 */
 	@Override
 	public void postUpdate(float dt) {
-		if (CVar.get("enableChunkSwitch").getValueb()) {
+		if (CVar.get("mapChunkSwitch").getValueb()) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){
@@ -218,7 +218,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @param block
      */
 	@Override
-    public void setData(final Block block) {
+    public void setBlock(final Block block) {
 		getChunk(block.getPosition()).setBlock(block);
     }
 	

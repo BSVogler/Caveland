@@ -19,10 +19,19 @@ public abstract class AbstractMap implements Cloneable {
 	
 	/**
 	 *
-	 * @param defaultGenerator
+	 * @param generator
 	 */
-	public static void setDefaultGenerator(Generator defaultGenerator) {
-		AbstractMap.defaultGenerator = defaultGenerator;
+	public static void setDefaultGenerator(Generator generator) {
+		defaultGenerator = generator;
+	}
+	
+	/**
+	 * Get the default set generator.
+	 * @return 
+	 * @see #setDefaultGenerator(Generator) 
+	 */
+	public static Generator getDefaultGenerator() {
+		return defaultGenerator;
 	}
 	
 	/**
@@ -406,10 +415,6 @@ public abstract class AbstractMap implements Cloneable {
 			onModified();
 			modified = false;
 		}
-	}
-
-	public static Generator getDefaultGenerator() {
-		return defaultGenerator;
 	}
 
 	public Generator getGenerator() {

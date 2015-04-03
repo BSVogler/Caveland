@@ -344,7 +344,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean isInMemoryArea() {
 		boolean found = false;
 		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
-			if (true){//to-do add method for completemap
+			if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
 				for (Chunk chunk : ((ChunkMap) map).getData()) {
 					if (chunk.hasCoord(this)) {
 						found = true;

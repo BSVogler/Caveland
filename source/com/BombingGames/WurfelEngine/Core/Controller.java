@@ -125,6 +125,7 @@ public class Controller implements GameManager {
 		if (lightEngine != null) lightEngine.update(dt);
 		if (soundEngine != null) soundEngine.update(dt);
 		map.update(dt);
+		map.modificationCheck();
 	}
 
     /**

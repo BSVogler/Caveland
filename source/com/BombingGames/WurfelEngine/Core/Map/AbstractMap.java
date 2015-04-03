@@ -378,4 +378,33 @@ public abstract class AbstractMap {
 //		}
         return (ChunkMap) super.clone();
     }
+
+	/**
+	 *
+	 * @param dt
+	 */
+	public void update(float dt) {
+		dt *= gameSpeed;//aplly game speed
+		
+		//update every entity
+		for (int i = 0; i < getEntitys().size(); i++) {
+			AbstractEntity entity = getEntitys().get(i);
+			if (entity.isInMemoryArea())//only update entities in memory
+				entity.update(dt);
+			//else entity.dispose();//dispose entities outside of memory area
+			if (entity.shouldBeDisposedFromMap())
+				getEntitys().remove(i);
+		}
+
+	};
+	
+	/**
+	 * should be executed after the update method
+	 */
+	public void modificationCheck(){
+		if (modified){
+			onModified();
+			modified = false;
+		}
+	}
 }

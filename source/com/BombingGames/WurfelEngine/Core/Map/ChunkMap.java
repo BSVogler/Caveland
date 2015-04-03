@@ -110,27 +110,13 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 *
 	 * @param dt
 	 */
+	@Override
 	public void update(float dt){
-		dt *= gameSpeed;//aplly game speed
+		super.update(dt);
 		
 		//update every block on the map
 		for (Chunk chunk : data) {
 			chunk.update(dt);
-		}
-
-		//update every entity
-		for (int i = 0; i < getEntitys().size(); i++) {
-			AbstractEntity entity = getEntitys().get(i);
-			if (entity.isInMemoryArea())//only update entities in memory
-				entity.update(dt);
-			//else entity.dispose();//dispose entities outside of memory area
-			if (entity.shouldBeDisposedFromMap())
-				getEntitys().remove(i);
-		}
-		
-		if (modified){
-			onModified();
-			modified = false;
 		}
 	}
 	

@@ -682,7 +682,8 @@ map.getGameWidth(),
 	 */
 	public void hiddenSurfaceDetection() {
 		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
-		updateNeededData();
+		if (CVar.get("mapUseChunks").getValueb())
+			updateNeededData();
 
 		//create empty array clipping fields
 		clipping = new boolean[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1][3];
@@ -789,8 +790,7 @@ map.getGameWidth(),
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
-			if (CVar.get("mapUseChunks").getValueb())
-				hiddenSurfaceDetection();
+			hiddenSurfaceDetection();
 		}
 	}
 
@@ -1062,7 +1062,7 @@ map.getGameWidth(),
 
 	@Override
 	public void onMapChange() {
-		if (active && CVar.get("mapUseChunks").getValueb()) {
+		if (active) {
 			hiddenSurfaceDetection();
 		}
 	}
@@ -1130,8 +1130,7 @@ map.getGameWidth(),
 	}
 
 	void orientationChange() {
-		if (CVar.get("mapUseChunks").getValueb())
-			hiddenSurfaceDetection();
+		hiddenSurfaceDetection();
 	}
 
 	/**
@@ -1141,7 +1140,7 @@ map.getGameWidth(),
 	 */
 	void setActive(boolean active) {
 		//turning on
-		if (this.active == false && active == true && CVar.get("mapUseChunks").getValueb()) {
+		if ( this.active == false && active == true ) {
 			hiddenSurfaceDetection();
 		}
 

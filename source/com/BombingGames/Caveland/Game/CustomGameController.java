@@ -29,6 +29,7 @@ public class CustomGameController extends Controller {
 		if (!player1.spawned())
 			player1.spawn(
 				new Coordinate(
+					Controller.getMap(),
 					CVar.get("PlayerLastSaveX").getValuei(),
 					CVar.get("PlayerLastSaveY").getValuei(),
 					CVar.get("PlayerLastSaveZ").getValuei()
@@ -37,6 +38,7 @@ public class CustomGameController extends Controller {
 		if (player2!=null && !player2.spawned())
 			player2.spawn(
 				new Coordinate(
+					Controller.getMap(),
 					CVar.get("PlayerLastSaveX").getValuei(),
 					CVar.get("PlayerLastSaveY").getValuei(),
 					CVar.get("PlayerLastSaveZ").getValuei()

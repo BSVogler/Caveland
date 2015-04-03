@@ -30,9 +30,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
+import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,117 +42,17 @@ import java.util.logging.Logger;
  *A map stores nine chunks as part of a bigger map. It also contains the entities.
  * @author Benedikt Vogler
  */
-public class Map implements Cloneable{
-    private static int blocksX, blocksY, blocksZ;
-	private static Generator defaultGenerator = new AirGenerator();
+public class ChunkMap extends AbstractMap implements Cloneable {
+	private static int blocksX;
+	private static int blocksY;
+	private static int blocksZ;
         
-    private final String filename;
     
-	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei());//the representative of the bottom layer (ground) block
     /** Stores the data of the map. */
     private ArrayList<Chunk> data;
     
-    private Generator generator;
     
-    /** every entity on the map is stored in this field */
-    private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
-    /**
-     * holds the metadata of the map
-     */
-    private final MapMetaData meta;
 	
-	private boolean modified = true;
-	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
-	private float gameSpeed;
-	
-	/**
-	 *
-	 * @param defaultGenerator
-	 */
-	public static void setDefaultGenerator(Generator defaultGenerator) {
-		Map.defaultGenerator = defaultGenerator;
-	}
-	
-	/**
-     * Should create a new map file.
-     * @param mapName file name
-     * @throws java.io.IOException 
-     */
-    public static void createMapFile(final String mapName) throws IOException {
-        MapMetaData meta = new MapMetaData(mapName);
-        meta.setMapName(mapName);
-        meta.write();
-    }
-	
-	/**
-     *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
-     * @return
-     */
-    public static Point getCenter(){
-        return getCenter(Map.getBlocksZ()*Block.GAME_EDGELENGTH/2);
-    }
-    
-    /**
-     *Returns a coordinate pointing to middle of a 3x3 chunk map.
-     * @param height You custom height.
-     * @return
-     */
-    public static Point getCenter(final float height){
-        return
-            new Point(
-                Chunk.getGameWidth()/2,
-                Chunk.getGameDepth()/2,
-                height
-            );
-    }
-    
-    /**
-     *The width of the map with three chunks in use
-     * @return amount of bluck multiplied by the size in game space.
-     */
-    public static int getGameWidth(){
-        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
-    }
-    
-    /**
-     * The depth of the map in game size
-     * @return 
-     */
-    public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
-    }
-
-    /**
-     * Game size
-     * @return 
-     */
-    public static int getGameHeight(){
-        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
-    }
-	
-	 /**
-     * Returns the amount of Blocks inside the map in x-direction.
-     * @return
-     */
-    public static int getBlocksX() {
-        return blocksX;
-    }
-
-    /**
-     * Returns the amount of Blocks inside the map in y-direction.
-     * @return
-     */
-    public static int getBlocksY() {
-        return blocksY;
-    }
-
-    /**
-     * Returns the amount of Blocks inside the map in z-direction.
-     * @return 
-     */
-    public static int getBlocksZ() {
-        return blocksZ;
-    }
 	
 	    /**
      * Copies an array with three dimensions. Deep copy until the cells content of cells shallow copy.
@@ -181,7 +80,7 @@ public class Map implements Cloneable{
      * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public Map(final String name) throws IOException{
+    public ChunkMap(final String name) throws IOException{
         this(name, defaultGenerator);
     }
     
@@ -192,25 +91,19 @@ public class Map implements Cloneable{
      * @throws java.io.IOException thrown if there is no full read/write access to the map file
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public Map(final String name, Generator generator) throws IOException {
+    public ChunkMap(final String name, Generator generator) throws IOException {
+		super(name, generator);
         Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
-        this.filename = name;
-        meta = new MapMetaData(name);
-		if (CVar.get("shouldLoadMap").getValueb()){
-			meta.load();
-		}
-        Chunk.setDimensions(meta);
-        
+
+        Chunk.setDimensions(getMeta());
         
         //save chunk size, which are now loaded
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
-        blocksZ = Chunk.getBlocksZ();
+        blocksZ =  Chunk.getBlocksZ();
         data = new ArrayList<>(9);
 
 		//printCoords();
-		        
-        this.generator = generator;
     }
     
 	/**
@@ -245,6 +138,7 @@ public class Map implements Cloneable{
 	 * Called after the view update to catch changes caused by the view
 	 * @param dt 
 	 */
+	@Override
 	public void postUpdate(float dt) {
 		if (CVar.get("enableChunkSwitch").getValueb()) {
 			//some custom garbage collection, removes chunks
@@ -297,14 +191,9 @@ public class Map implements Cloneable{
      * @param z coordinate
      * @return the single block you wanted
      */
+	@Override
     public Block getBlock(final int x, final int y, final int z){
-		if (z<0)
-			return groundBlock;
-		Chunk chunk = getChunk(new Coordinate(x, y, z));
-		if (chunk==null)
-			return null;
-		else
-			return chunk.getBlock(x, y, z);//find chunk in x coord
+		return getBlock(new Coordinate(this, x, y, z)); 
     }
     
     /**
@@ -312,14 +201,23 @@ public class Map implements Cloneable{
      * @param coord
      * @return
      */
+	@Override
     public Block getBlock(final Coordinate coord){
-        return getBlock(coord.getX(), coord.getY(), coord.getZ()); 
+		if (coord.getZ() < 0)
+			return groundBlock;
+		Chunk chunk = getChunk(coord);
+		if (chunk==null)
+			return null;
+		else
+			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
+
     }
     
     /**
      * Replace a block. Assume that the map already has been filled at this coordinate.
      * @param block
      */
+	@Override
     public void setData(final Block block) {
 		getChunk(block.getPosition()).setBlock(block);
     }
@@ -328,6 +226,7 @@ public class Map implements Cloneable{
 	 * remove a block from a coord
 	 * @param coord 
 	 */
+	@Override
 	public void destroyBlockOnCoord(Coordinate coord){
 		getChunk(coord).destroyBlockOnCoord(coord);
 	}
@@ -372,100 +271,7 @@ public class Map implements Cloneable{
 		return null;//not found
 	}
         
-    /**
-     * Set the generator used for generating maps
-     * @param generator
-     */
-    public void setGenerator(Generator generator) {
-        this.generator = generator;
-    }
     
-	/**
-	 * Get an iteration which can loop throug the map
-	 * @param topLimitZ the top limit of the iterations
-	 * @return 
-	 */
-	public MemoryMapIterator getIterator(int topLimitZ){
-		MemoryMapIterator mapIterator = new MemoryMapIterator(0);
-		mapIterator.setTopLimitZ(topLimitZ);
-		return mapIterator;
-	}
-	
-    /**
-     * Returns the entityList
-     * @return
-     */
-    public ArrayList<AbstractEntity> getEntitys() {
-        return entityList;
-    }
-	
-     /**
-     * Find every instance of a special class. E.g. find every <i>AbstractCharacter</i>.
-     * @param <type>
-     * @param type
-     * @return a list with the entitys
-     */
-    @SuppressWarnings({"unchecked"})
-    public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> type) {
-        ArrayList<type> list = new ArrayList<>(30);//defautl size 30
-
-        for (AbstractEntity entity : entityList) {//check every entity
-            if (type.isInstance(entity)) {//if the entity is of the wanted type
-                list.add((type) entity);//add it to list
-            }
-        }
-        return list;
-    }
-
-    /**
-     *Returns the degree of the world spin. This changes where the sun rises and falls.
-     * @return a number between 0 and 360
-     */
-    public int getWorldSpinDirection() {
-        return CVar.get("worldSpinAngle").getValuei();
-    }
-    
-    
-     /**
-     * Get every entity on a coord.
-     * @param coord
-     * @return a list with the entitys
-     */
-    public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
-        ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
-
-        for (AbstractEntity ent : entityList) {
-            if ( ent.getPosition().getCoord().equals(coord) ){
-                list.add(ent);//add it to list
-            } 
-        }
-
-        return list;
-    }
-    
-      /**
-     * Get every entity on a coord of the wanted type
-     * @param <type> the class you want to filter.
-     * @param coord the coord where you want to get every entity from
-     * @param type the class you want to filter.
-     * @return a list with the entitys of the wanted type
-     */
-	@SuppressWarnings("unchecked")
-    public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<>(5);
-
-        for (AbstractEntity ent : entityList) {
-            if (
-                ent.getPosition().getCoord().getVector().equals(coord.getVector())//on coordinate?
-                && type.isInstance(ent)//of tipe of filter?
-                ){
-                    list.add((type) ent);//add it to list
-            } 
-        }
-
-        return list;
-    }
-	
 	/**
 	 * Get every entity on a chunk.
 	 * @param xChunk
@@ -524,57 +330,15 @@ public class Map implements Cloneable{
         return list;
 	}
     
-    /**
-     * The name of the map on the file.
-     * @return 
-     */
-    public String getFilename() {
-        return filename;
-    }
 
-    /**
-     *
-     * @return
-     */
-    public MapMetaData getMeta() {
-        return meta;
-    }
 	
-	/**
-	 * Set the speed of the world.
-	 * @param gameSpeed 
-	 */
-	public void setGameSpeed(float gameSpeed){
-		this.gameSpeed = gameSpeed;
-	}
 
-	/**
-	 *
-	 * @return
-	 */
-	public float getGameSpeed() {
-		return gameSpeed;
-	}
         
-    /**
-     *Clones the map. Not yet checked if a valid copy.
-     * @return
-     * @throws CloneNotSupportedException
-     */
-    @Override
-    public Map clone() throws CloneNotSupportedException{
-		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
-//		clone.entityList = new ArrayList<>(entityList.size());
-//		for (AbstractEntity entity : entityList) {
-//			clone.entityList.add((AbstractEntity) entity.clone());
-//		}
-        return (Map) super.clone();
-    }
-
     /**
      * saves every chunk on the map
      * @return 
      */
+	@Override
     public boolean save() {
 		for (Chunk chunk : data) {
 			try {
@@ -582,68 +346,22 @@ public class Map implements Cloneable{
                     filename
                 );
             } catch (IOException ex) {
-                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ChunkMap.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
 		}
         return true;
     }
 
-	/**
-	 * set the modified flag to true. usually not manually called.
-	 */
-	public void modified(){
-		this.modified = true;
-	}
 	
-	/**
-	 * True if some block has changed in loaded chunks.
-	 * @return returns the modified flag
-	 */
-	public boolean isModified(){
-		return modified;
-	}
 
-	/**
-	 * called when the map is modified
-	 */
-	private void onModified() {
-		//recalculates the light if requested
-		Gdx.app.debug("Map", "onModified");
-		for (LinkedWithMap object : linkedObjects){
-			object.onMapChange();
-		}
-	}
-		
-	/**
-	 *
-	 * @param object
-	 */
-	public void addLinkedObject(LinkedWithMap object){
-		linkedObjects.add(object);
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public ArrayList<LinkedWithMap> getLinkedObjects() {
-		return linkedObjects;
-	}
-	
-	/**
-	 *
-	 * @return
-	 */
-	public Block getGroundBlock() {
-		return groundBlock;
-	}
 
 	/**
 	 * prints the map to console
 	 */
+	@Override
 	public void print() {
-		MemoryMapIterator iter = getIterator(blocksZ-1);
+		MemoryMapIterator iter = getIterator(0, blocksZ-1);
 		while (iter.hasNext()){
 			//if (!iter.hasNextY() && !iter.hasNextX())
 			//	System.out.print("\n\n");
@@ -661,8 +379,9 @@ public class Map implements Cloneable{
 		/**
 	 * prints the map to console
 	 */
+	@Override
 	public final void printCoords() {
-		MemoryMapIterator iter = getIterator(blocksZ-1);
+		MemoryMapIterator iter = getIterator(0, blocksZ-1);
 		while (iter.hasNext()){
 		//	if (!iter.hasNextY() && !iter.hasNextX())
 		//		System.out.print("\n\n");
@@ -677,14 +396,40 @@ public class Map implements Cloneable{
 	/**
      *
      */
+	@Override
     public void dispose(){
 		for (Chunk chunk : data) {
 			chunk.dispose(filename);
 		}
-        for (int i = 0; i < entityList.size(); i++) {
-			entityList.get(i).dispose();
-        }
+		super.dispose();
     }
+
+	/**
+	 * Returns the amount of Blocks inside the map in x-direction.
+	 * @return
+	 */
+	@Override
+	public int getBlocksX() {
+		return blocksX;
+	}
+
+	/**
+	 * Returns the amount of Blocks inside the map in y-direction.
+	 * @return
+	 */
+	@Override
+	public int getBlocksY() {
+		return blocksY;
+	}
+
+	/**
+	 * Returns the amount of Blocks inside the map in z-direction.
+	 * @return
+	 */
+	@Override
+	public int getBlocksZ() {
+		return blocksZ;
+	}
 	
 
 

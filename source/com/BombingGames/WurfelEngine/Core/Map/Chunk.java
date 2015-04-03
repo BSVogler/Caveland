@@ -33,6 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Iterators.ChunkIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -68,6 +69,10 @@ public class Chunk {
 	private final static char SIGN_EMPTYLAYER = '~';//126 OR 0x7e
 	private final static char SIGN_LINEFEED = 0x0A;//10 or 0x0A
 	
+	/**
+	 * the map in which the chunks are used
+	 */
+	private ChunkMap map;
     /**
      *
      * @param meta
@@ -177,7 +182,14 @@ public class Chunk {
 						generator.generate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z),
 						0
 					);
-					block.setPosition(new Coordinate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z));
+					block.setPosition(
+						new Coordinate(
+							map,
+							blocksX*chunkCoordX+x,
+							blocksY*chunkCoordY+y,
+							z
+						)
+					);
                     data[x][y][z] = block;//relative to chunk to map absolute
 				}
 		modified = true;
@@ -247,6 +259,7 @@ public class Chunk {
 										data[x][y][z] = Block.getInstance(id, value);
 										data[x][y][z].setPosition(
 											new Coordinate(
+												map, 
 												coordX*blocksX+x,
 												coordY*blocksY+y,
 												z
@@ -344,7 +357,7 @@ public class Chunk {
 				}
 				
 				//save entities
-				ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
+				ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 				if (entities.size() > 0) {
 					fileOut.write(SIGN_ENTITIES);
 					fileOut.write(entities.size());
@@ -604,7 +617,7 @@ public class Chunk {
 		}
 		
 		//remove entities on this chunk from map
-		ArrayList<AbstractEntity> entities = Controller.getMap().getEntitysOnChunk(coordX, coordY);
+		ArrayList<AbstractEntity> entities = map.getEntitysOnChunk(coordX, coordY);
 		for (AbstractEntity ent : entities) {
 			ent.disposeFromMap();
 		}

@@ -33,12 +33,13 @@ package com.BombingGames.WurfelEngine.Core;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.CameraSpaceIterator;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Map.Iterators.CameraSpaceIterator;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -60,10 +61,14 @@ import java.util.ArrayList;
 public class Camera implements LinkedWithMap {
 
 	/**
+	 * the map which is covered by the camera
+	 */
+	private AbstractMap map;
+	/**
 	 * The deepest layer is an array which stores the information if there
 	 * should be a tile rendered
 	 */
-	private int zRenderingLimit = Map.getBlocksZ();
+	private int zRenderingLimit = map.getBlocksZ();
 
 	private boolean[][][][] clipping;
 	
@@ -161,7 +166,7 @@ public class Camera implements LinkedWithMap {
 		screenPosY = y;
 		updateViewSpaceSize();
 
-		Point center = Map.getCenter();
+		Point center = map.getCenter();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
@@ -179,7 +184,7 @@ public class Camera implements LinkedWithMap {
 		screenHeight = Gdx.graphics.getHeight();
 		updateViewSpaceSize();
 
-		Point center = Map.getCenter();
+		Point center = map.getCenter();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
@@ -285,44 +290,49 @@ public class Camera implements LinkedWithMap {
 			//camera moved so update cover borders
 			updateCoverBorders();
 			
-			//check if chunkswitch left
-			if (
-				getVisibleLeftBorder()
-				<
-				Controller.getMap().getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
-				//&& centerChunkX-1==//calculated x -1
-				) {
-				centerChunkX--;
-			}
+			//if chunkmap check for chunk movement
+			if (CVar.get("mapUseChunks").getValueb()) {
+				ChunkMap chunkMap = (ChunkMap) map;
+				
+				//check if chunkswitch left
+				if (
+					getVisibleLeftBorder()
+					<
+					chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+					//&& centerChunkX-1==//calculated x -1
+					) {
+					centerChunkX--;
+				}
 
-			if (
-				getVisibleRightBorder()
-				>
-				Controller.getMap().getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
-				//&& centerChunkX-1==//calculated x -1
-				) {
-				centerChunkX++;
-			}
+				if (
+					getVisibleRightBorder()
+					>
+					chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+					//&& centerChunkX-1==//calculated x -1
+					) {
+					centerChunkX++;
+				}
 
-			if (
-				getVisibleBackBorder()
-				<
-				Controller.getMap().getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
-				//&& centerChunkX-1==//calculated x -1
-				) {
-				centerChunkY--;
-			}
-			//check in view space
-			if (
-				position.y- getHeightInProjSpc()/2
-				<
-				Map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
-				-AbstractGameObject.VIEW_DEPTH2*(
-				Controller.getMap().getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
-				)
-				//&& centerChunkX-1==//calculated x -1
-				) {
-				centerChunkY++;
+				if (
+					getVisibleBackBorder()
+					<
+					chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+					//&& centerChunkX-1==//calculated x -1
+					) {
+					centerChunkY--;
+				}
+				//check in view space
+				if (
+					position.y- getHeightInProjSpc()/2
+					<
+					map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
+					-AbstractGameObject.VIEW_DEPTH2*(
+					chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+					)
+					//&& centerChunkX-1==//calculated x -1
+					) {
+					centerChunkY++;
+				}
 			}
 
 			updateNeededData();
@@ -383,11 +393,11 @@ public class Camera implements LinkedWithMap {
 	 * @param y
 	 */
 	private void checkChunk(int x, int y) {
-		Map map = Controller.getMap();
-		if (map.getChunk(x, y) == null) {
-			map.loadChunk(x, y);
+		ChunkMap chunkMap = (ChunkMap) map;
+		if (chunkMap.getChunk(x, y) == null) {
+			chunkMap.loadChunk(x, y);
 		} else {
-			map.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
+			chunkMap.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
 		}
 	}
 
@@ -472,22 +482,19 @@ public class Camera implements LinkedWithMap {
 			if (CVar.get("DevDebugRendering").getValueb()) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-				view.getShapeRenderer().rect(
-					-Chunk.getGameWidth(),//one chunk to the left
+				view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
 					-Chunk.getGameDepth(),//two chunks down
-					Map.getGameWidth(),
-					Map.getGameDepth() / 2
+map.getGameWidth(),
+					map.getGameDepth() / 2
 				);
-				view.getShapeRenderer().line(
-					-Chunk.getGameWidth(),
+				view.getShapeRenderer().line(-Chunk.getGameWidth(),
 					-Chunk.getGameDepth() / 2,
-					-Chunk.getGameWidth() + Map.getGameWidth(),
+					-Chunk.getGameWidth() + map.getGameWidth(),
 					-Chunk.getGameDepth() / 2
 				);
-				view.getShapeRenderer().line(
-					-Chunk.getGameWidth(),
+				view.getShapeRenderer().line(-Chunk.getGameWidth(),
 					0,
-					-Chunk.getGameWidth() + Map.getGameWidth(),
+					-Chunk.getGameWidth() + map.getGameWidth(),
 					0
 				);
 				view.getShapeRenderer().line(
@@ -528,7 +535,7 @@ public class Camera implements LinkedWithMap {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 		if (CVar.get("enableHSD").getValueb()) {
 			//add hidden surfeace depth buffer
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ() - 1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				Block block = iterator.next();
 				//only add if in view plane to-do
@@ -544,7 +551,7 @@ public class Camera implements LinkedWithMap {
 				}
 			}
 		} else {
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, Map.getBlocksZ() - 1);
+			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
 				if (block!= null && !block.isHidden()) {
@@ -669,7 +676,7 @@ public class Camera implements LinkedWithMap {
 		updateNeededData();
 
 		//create empty array clipping fields
-		clipping = new boolean[Map.getBlocksX()][Map.getBlocksY()][Map.getBlocksZ() + 1][3];
+		clipping = new boolean[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1][3];
 		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, zRenderingLimit - 1);
 
 		while (iter.hasNext()) {
@@ -707,7 +714,7 @@ public class Camera implements LinkedWithMap {
 				}
 
 				//check top
-				if (z < Map.getBlocksZ()
+				if (z < map.getBlocksZ()
 					&& (blockCoord.hidingPastBlock(0, 0, 1))) {
 					clipping[x][y][z][1] = true;
 				}
@@ -762,8 +769,8 @@ public class Camera implements LinkedWithMap {
 			zRenderingLimit = limit;
 
 			//clamp
-			if (limit >= Map.getBlocksZ()) {
-				zRenderingLimit = Map.getBlocksZ();
+			if (limit >= map.getBlocksZ()) {
+				zRenderingLimit = map.getBlocksZ();
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
@@ -1060,6 +1067,7 @@ public class Camera implements LinkedWithMap {
 			return focusEntity.getPosition();
 		} else {
 			return new Point(
+				map,
 				position.x,
 				-position.y * 2,
 				0
@@ -1128,17 +1136,22 @@ public class Camera implements LinkedWithMap {
 	 * Updates the cached fields which save the border of the covered coordinates by this camera.
 	 */
 	private void updateCoverBorders() {
-		leftCoverBorder = Controller.getMap().getChunk(
-				centerChunkX - 1,
-				centerChunkY
-			).getTopLeftCoordinate().getX();
-			
-		rightCoverBorder = Controller.getMap().getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
-			+ Chunk.getBlocksX() - 1;
-			
-		backCoverBorder = Controller.getMap().getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
-			
-		frontCoverBorder = Controller.getMap().getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
-			+ Chunk.getBlocksY() - 1;
+		if (true) {//check if chunk map to-do
+			ChunkMap chunkMap = (ChunkMap) map;
+			leftCoverBorder = chunkMap.getChunk(
+					centerChunkX - 1,
+					centerChunkY
+				).getTopLeftCoordinate().getX();
+
+			rightCoverBorder = chunkMap.getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
+				+ Chunk.getBlocksX() - 1;
+
+			backCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
+
+			frontCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
+				+ Chunk.getBlocksY() - 1;
+		} else {
+		
+		}
 	}
 }

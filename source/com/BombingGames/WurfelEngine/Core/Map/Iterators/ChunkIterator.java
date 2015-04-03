@@ -28,10 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import java.util.Iterator;
 
 /**
@@ -40,6 +43,7 @@ import java.util.Iterator;
  */
 public class ChunkIterator implements Iterator<Block>{
 	private int x, y, z;
+	private AbstractMap map;
 	private Block[][][] data;
 	private int limitZ;
 
@@ -92,6 +96,7 @@ public class ChunkIterator implements Iterator<Block>{
 			Block groundblock = Block.getInstance(Controller.getMap().getGroundBlock().getId());
 			groundblock.setPosition(
 				new Coordinate(
+					map,
 					data[x][y][0].getPosition().getX(),
 					data[x][y][0].getPosition().getY(),
 					data[x][y][0].getPosition().getZ()-1

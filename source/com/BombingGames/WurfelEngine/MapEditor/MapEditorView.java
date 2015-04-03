@@ -544,7 +544,10 @@ public class MapEditorView extends GameView {
 			
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					Controller.getMap().setData(leftColorGUI.getBlock(new Coordinate(x, y, from.getZ()))
+					getMap().setData(
+						leftColorGUI.getBlock(
+							new Coordinate(getMap(), x, y, from.getZ())
+						)
 					);
 				}	
 			}

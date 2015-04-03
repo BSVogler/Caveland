@@ -51,11 +51,12 @@ public class Point extends AbstractPosition {
 
     /**
      * Creates a point refering to a position in the game world.
+	 * @param map
      * @param posX The distance from the left border of the map (game space)
      * @param posY The distance from the top border of the map (game space)
      * @param height The distance from ground  (game space)
      */
-    public Point(float posX, float posY, float height) {
+    public Point(AbstractMap map, float posX, float posY, float height) {
 		this.x = posX;
 		this.y = posY;
         this.z = height;
@@ -113,6 +114,7 @@ public class Point extends AbstractPosition {
     public Coordinate getCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
+			map,	
             (int) Math.floor(getX() / (float) AbstractGameObject.GAME_DIAGLENGTH),
             (int) Math.floor(getY() / (float) AbstractGameObject.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
 			(int) Math.floor(z/Block.GAME_EDGELENGTH)
@@ -240,7 +242,7 @@ public class Point extends AbstractPosition {
 	
 	@Override
     public boolean isInMemoryArea() {
-		if (getZ() < 0 && getZ() > Map.getBlocksZ()){
+		if (getZ() < 0 && getZ() > map.getBlocksZ()){
 			return false;
 		} else {
 			return getBlock() != null;
@@ -383,10 +385,10 @@ public class Point extends AbstractPosition {
         radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
 
         while (/* ray has not gone past bounds of world */
-               stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0) {
+               stepZ > 0 ? curZ < map.getGameHeight() : curZ >= 0) {
 
 				/** Point of intersection */
-                Point isectP = new Point(curX, curY, curZ);
+                Point isectP = new Point(map, curX, curY, curZ);
                 if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
 				Block block = isectP.getBlock();
                 //intersect?
@@ -463,7 +465,7 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
-            Point intersectpoint = new Point(curX, curY, 0);
+            Point intersectpoint = new Point(map, curX, curY, 0);
             return new Intersection(intersectpoint, normal, this.distanceTo(intersectpoint));
         } else
             return new Intersection();

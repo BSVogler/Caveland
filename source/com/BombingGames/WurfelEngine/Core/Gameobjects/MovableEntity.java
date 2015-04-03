@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -700,7 +699,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     @Override
     public boolean isOnGround() {
         if (getPosition().getZ()> 0){
-			if (getPosition().getZ()> Map.getGameHeight()) return false;
+			if (getPosition().getZ()> getPosition().getMap().getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
 				Block block = getPosition().getBlock();

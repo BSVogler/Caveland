@@ -73,11 +73,13 @@ public class Coordinate extends AbstractPosition {
 	 * @param x The x value as coordinate.
 	 * @param y The y value as coordinate.
 	 * @param z The z value as coordinate.
+	 * @param map
 	 */
-	public Coordinate(int x, int y, int z) {
+	public Coordinate(AbstractMap map, int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.map = map;
 		refreshCachedPoint();
 	}
 
@@ -90,6 +92,7 @@ public class Coordinate extends AbstractPosition {
 		this.x = coord.x;
 		this.y = coord.y;
 		this.z = coord.z;
+		this.map = coord.map;
 		refreshCachedPoint();
 	}
 
@@ -126,8 +129,8 @@ public class Coordinate extends AbstractPosition {
 	 * @see #getZ()
 	 */
 	public int getZClamp() {
-		if (z >= Map.getBlocksZ()) {
-			return Map.getBlocksZ() - 1;
+		if (z >= map.getBlocksZ()) {
+			return map.getBlocksZ() - 1;
 		} else if (z < 0) {
 			return 0;
 		} else {
@@ -320,9 +323,11 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		for (Chunk chunk : Controller.getMap().getData()) {
-			if (chunk.hasCoord(this)) {
-				found = true;
+		if (true){//to-do add method for completemap
+				for (Chunk chunk : ((ChunkMap) map).getData()) {
+				if (chunk.hasCoord(this)) {
+					found = true;
+				}
 			}
 		}
 		return found;
@@ -337,11 +342,15 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryArea() {
 		boolean found = false;
-		if (getZ() >= 0 && getZ() < Map.getBlocksZ()) {
-			for (Chunk chunk : Controller.getMap().getData()) {
-				if (chunk.hasCoord(this)) {
-					found = true;
+		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
+			if (true){//to-do add method for completemap
+				for (Chunk chunk : ((ChunkMap) map).getData()) {
+					if (chunk.hasCoord(this)) {
+						found = true;
+					}
 				}
+			} else {
+			
 			}
 		}
 		return found;
@@ -462,6 +471,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	private void refreshCachedPoint() {
 		cachedPoint = new Point(
+			map,
 			x * AbstractGameObject.GAME_DIAGLENGTH + (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
 			y * AbstractGameObject.GAME_DIAGLENGTH2,
 			z * AbstractGameObject.GAME_EDGELENGTH

@@ -50,6 +50,12 @@ public abstract class AbstractPosition implements Serializable {
      */
     public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
 	
+	protected AbstractMap map;
+	
+	public AbstractMap getMap() {
+		return map;
+	}
+	
 	    
      /**
      * Calculate position in view space.
@@ -155,7 +161,7 @@ public abstract class AbstractPosition implements Serializable {
 					(
 						view.getOrientation()==2
 						?
-							Map.getGameDepth()-getPoint().getY()//Y
+							map.getGameDepth()-getPoint().getY()//Y
 						:
 							0
 					)

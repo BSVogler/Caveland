@@ -28,88 +28,63 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *A map iterator which loops only over area covered by the camera
+ *Iterates over the blocks in memory.
  * @author Benedikt Vogler
  */
-public class CameraSpaceIterator extends AbstractMapIterator {
-	private int centerChunkX;
-	private int centerChunkY;
-	private Chunk current;
-	
+public class MemoryMapIterator extends AbstractMapIterator {
 	/**
-	 * Starts at z=-1. 
-	 * @param centerCoordX the center chunk coordinate
-	 * @param centerCoordY the center chunk coordinate
-	 * @param startingZ to loop over ground level pass -1
-	 * @param topLevel the top limit of the z axis 
+	 * use to iterate over chunks
 	 */
-	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
-		setTopLimitZ(topLevel);
-		setStartingZ(startingZ);
-		centerChunkX = centerCoordX;
-		centerChunkY = centerCoordY;
-		//bring starting position to top left
-		current = Controller.getMap().getChunk(centerChunkX-1, centerChunkY-1);
-		blockIterator = current.getIterator(startingZ, topLevel);
-	}
+	private Iterator<Chunk> chunkIterator;
 
 	/**
-	 *Loops over the map areas covered by the camera.
+	 *
+	 * @param startingZ
+	 */
+	public MemoryMapIterator(int startingZ) {
+		setTopLimitZ(map.getBlocksZ()-1);
+		setStartingZ(startingZ);
+		
+		if (true) { //todo
+			ArrayList<Chunk> mapdata = ((ChunkMap) map).getData();
+			chunkIterator = mapdata.iterator();
+			blockIterator = mapdata.get(0).getIterator(startingZ, getTopLimitZ());
+		}
+	}
+	
+
+	/**
+	 *Loops over the complete map. Also loops over bottom layer
 	 * @return 
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
+		Block block = blockIterator.next();
 		if (!blockIterator.hasNext()){
-			//reached end of chunk, move to next chunk
-			if (hasNextChunk()){//if has one move to next
-				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
-					//continue one chunk to the right
-					current = Controller.getMap().getChunk(
-						current.getChunkX()+1,
-						current.getChunkY()
-					);
-				} else {
-					//move one row down
-					current = Controller.getMap().getChunk(
-						centerChunkX-1,
-						current.getChunkY()+1
-					);
-				}
-				
-				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
-			}
+			//end of chunk, move to next chunk
+			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());
 		}
-			
-		return blockIterator.next();
+		return block;
 	}
 	
+	
 	/**
-	 * get the indices position inside the chunk
+	 * Reached end of y row?
 	 * @return 
 	 */
-	public int[] getCurrentIndex(){
-		return blockIterator.getCurrentIndex();
-	}
-	
-	/**
-	 * 
-	 * @return the chunk which the chunk iterator currently points to
-	 */
-	public Chunk getCurrentChunk(){
-		return current;
-	}
-
 	@Override
 	public boolean hasNextChunk() {
-		return current.getChunkX() < centerChunkX+1//has next x
-			|| current.getChunkY() < centerChunkY+1; //or has next Y
+		return chunkIterator.hasNext();
 	}
-
+	
 }

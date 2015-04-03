@@ -31,7 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -380,7 +380,7 @@ public class Console implements CommandsInterface  {
             case "save":
                 return Controller.getMap().save();
             case "benchmark":
-                new BenchmarkBall().spawn(Map.getCenter(Map.getGameHeight()));
+                new BenchmarkBall().spawn(Controller.getMap().getCenter(Controller.getMap().getGameHeight()));
                 //add("Spawned a benchmark ball.", "System");
                 return true;
 			case "printmap":
@@ -436,7 +436,7 @@ public class Console implements CommandsInterface  {
 //            };
 //            Controller.getMap().setGenerator(generator);
             try {
-                Map.createMapFile(mapname);
+                ChunkMap.createMapFile(mapname);
 				return executeCommand("loadmap " +mapname);
             } catch (IOException ex) {
                 add(ex.getMessage(), "Warning");

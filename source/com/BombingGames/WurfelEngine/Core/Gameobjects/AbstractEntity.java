@@ -31,7 +31,6 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -127,12 +126,13 @@ public abstract class AbstractEntity extends AbstractGameObject {
     public boolean isOnGround(){
         if (getPosition().getZ() <= 0) return true; //if entity is under the map
         
-        if (getPosition().getZ() < Map.getGameHeight()){
+        if (getPosition().getZ() < getPosition().getMap().getGameHeight()){
             //check if one pixel deeper is on ground.
             int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
-            if (z > Map.getBlocksZ()-1) z = Map.getBlocksZ()-1;
+            if (z > getPosition().getMap().getBlocksZ()-1) z = getPosition().getMap().getBlocksZ()-1;
 
 			Block block = new Coordinate(
+				getPosition().getMap(), 
 				position.getCoord().getX(),
 				position.getCoord().getY(),
 				z

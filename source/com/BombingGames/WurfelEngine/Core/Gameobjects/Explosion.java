@@ -68,7 +68,7 @@ public class Explosion extends AbstractEntity {
 						
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list =
-							Controller.getMap().getEntitysOnCoord(coord,
+							point.getMap().getEntitysOnCoord(coord,
 								MovableEntity.class
 							);
 						for (MovableEntity ent : list) {

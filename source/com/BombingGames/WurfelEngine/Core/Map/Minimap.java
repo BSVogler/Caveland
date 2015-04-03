@@ -69,6 +69,7 @@ public class Minimap implements LinkedWithMap {
 	private FrameBuffer fbo;
 	private TextureRegion fboRegion;
 	private boolean needsrebuild = true;
+	private AbstractMap map;
 
 	/**
      * Create a minimap. Visible by default.
@@ -108,20 +109,20 @@ public class Minimap implements LinkedWithMap {
 	 * @param view
      */
     public void buildTexture(GameView view){
-        mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
-        for (int x = 0; x < Map.getBlocksX(); x++) {
-            for (int y = 0; y < Map.getBlocksY(); y++) {
+        mapdata = new Color[map.getBlocksX()][map.getBlocksY()];
+        for (int x = 0; x < map.getBlocksX(); x++) {
+            for (int y = 0; y < map.getBlocksY(); y++) {
                 mapdata[x][y] = new Color();
             }
         }
         
         maximumZ = 0;
-        int[][] topTileZ = new int[Map.getBlocksX()][Map.getBlocksY()];
+        int[][] topTileZ = new int[map.getBlocksX()][map.getBlocksY()];
         
         //fing top tile
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
-                int z = Map.getBlocksZ() -1;//start at top
+                int z = map.getBlocksZ() -1;//start at top
                 while ( z>-1 && Controller.getMap().getBlock(x, y, z).getId() ==0 ) {
                     z--;//find topmost block in row
                 }
@@ -168,8 +169,8 @@ public class Minimap implements LinkedWithMap {
 		sh.translate(0, mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
 			//render the map
 			sh.begin(ShapeType.Filled);
-				for (int x = 0; x < Map.getBlocksX(); x++) {
-					for (int y = 0; y < Map.getBlocksY(); y++) {
+				for (int x = 0; x < map.getBlocksX(); x++) {
+					for (int y = 0; y < map.getBlocksY(); y++) {
 						sh.setColor(mapdata[x][y]);//get color
 						float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
 						float rectY = - (y+1)*scaleY;

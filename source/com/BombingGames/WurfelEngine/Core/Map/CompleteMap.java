@@ -29,7 +29,10 @@ public class CompleteMap extends AbstractMap {
 	
 	@Override
 	public Block getBlock(Coordinate coord) {
-		return data[coord.getX()][coord.getY()][coord.getZ()];
+		if (coord.getZ() < 0)
+			return getGroundBlock();
+		else
+			return data[coord.getX()][coord.getY()][coord.getZ()];
 	}
 
 	@Override

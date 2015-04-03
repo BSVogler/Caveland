@@ -50,7 +50,14 @@ public abstract class AbstractPosition implements Serializable {
      */
     public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
 	
-	protected AbstractMap map;
+	/**
+	 *
+	 */
+	protected final AbstractMap map;
+
+	public AbstractPosition(AbstractMap map) {
+		this.map = map;
+	}
 	
 	public AbstractMap getMap() {
 		return map;

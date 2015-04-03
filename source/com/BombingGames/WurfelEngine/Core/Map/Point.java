@@ -57,10 +57,10 @@ public class Point extends AbstractPosition {
      * @param height The distance from ground  (game space)
      */
     public Point(AbstractMap map, float posX, float posY, float height) {
+		super(map);
 		this.x = posX;
 		this.y = posY;
         this.z = height;
-		this.map = map;
     }
     
     /**
@@ -68,10 +68,10 @@ public class Point extends AbstractPosition {
      * @param point the source of the copy
      */
     public Point(Point point) {
-       this.x = point.x;
-       this.y = point.y;
-	   this.z = point.z;
-	   this.map = point.map;
+		super(point.map);
+		this.x = point.x;
+		this.y = point.y;
+		this.z = point.z;
     }
 
     /**

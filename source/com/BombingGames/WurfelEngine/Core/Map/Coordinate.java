@@ -77,10 +77,9 @@ public class Coordinate extends AbstractPosition {
 	 * @param map
 	 */
 	public Coordinate(AbstractMap map, int x, int y, int z) {
+		super(map);
 		this.x = x;
 		this.y = y;
-		this.z = z;
-		this.map = map;
 		refreshCachedPoint();
 	}
 
@@ -90,10 +89,10 @@ public class Coordinate extends AbstractPosition {
 	 * @param coord the Coordinate you want to copy
 	 */
 	public Coordinate(Coordinate coord) {
+		super(coord.map);
 		this.x = coord.x;
 		this.y = coord.y;
 		this.z = coord.z;
-		this.map = coord.map;
 		refreshCachedPoint();
 	}
 

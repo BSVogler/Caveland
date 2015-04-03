@@ -108,7 +108,11 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @return 
 	 */
 	public int[] getCurrentIndex(){
-		return blockIterator.getCurrentIndex();
+		if (useChunks){
+			return blockIterator.getCurrentIndex();
+		} else {
+			return mmI.getCurrentIndex();
+		}
 	}
 	
 	/**

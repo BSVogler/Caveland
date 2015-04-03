@@ -14,7 +14,7 @@ public class CompleteMap extends AbstractMap {
 	private final Block[][][] data;
 
 	public CompleteMap(final String name) throws IOException {
-		this(name, defaultGenerator);
+		this(name, getDefaultGenerator());
 	}
 
 	

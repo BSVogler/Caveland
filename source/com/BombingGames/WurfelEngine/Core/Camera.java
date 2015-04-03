@@ -695,16 +695,25 @@ map.getGameWidth(),
 			zRenderingLimit - 1
 		);
 
+		boolean useChunks = CVar.get("mapUseChunks").getValueb();
+		
 		while (iter.hasNext()) {
 			Block next = iter.next();
 			
 			if (next != null) {
-				//calculate index position
-				int x = -Chunk.getBlocksX() * (centerChunkX - 1 - iter.getCurrentChunk().getChunkX())
-					+ iter.getCurrentIndex()[0];//skip chunks
-				int y = -Chunk.getBlocksY() * (centerChunkY - 1 - iter.getCurrentChunk().getChunkY())
-					+ iter.getCurrentIndex()[1];//skip chunks
-				int z = iter.getCurrentIndex()[2] + 1;
+				//calculate index position relative to camera border
+				int x,y;
+				if (useChunks) {
+					x = -Chunk.getBlocksX() * (centerChunkX - 1 - iter.getCurrentChunk().getChunkX())//skip chunks
+					+ iter.getCurrentIndex()[0];//index in this chunk
+					y = -Chunk.getBlocksY() * (centerChunkY - 1 - iter.getCurrentChunk().getChunkY())//skip chunks
+					+ iter.getCurrentIndex()[1];//index in this chunk
+				} else {
+					x = iter.getCurrentIndex()[0];
+					y = iter.getCurrentIndex()[1];
+				}
+				
+				int z = iter.getCurrentIndex()[2] + 1;//offset because of ground layer
 
 				Coordinate blockCoord = next.getPosition();
 				//todo border checks

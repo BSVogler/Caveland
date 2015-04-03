@@ -82,7 +82,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	@Override
 	public Block next() throws NoSuchElementException {
 		Block block = blockIterator.next();
-		if (!blockIterator.hasNext()){
+		if (useChunks && !blockIterator.hasNext()){
 			//end of chunk, move to next chunk
 			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());
 		}
@@ -96,12 +96,15 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 */
 	@Override
 	public boolean hasNextChunk() {
-		return chunkIterator.hasNext();
+		return useChunks && chunkIterator.hasNext();
 	}
 
 	@Override
 	public boolean hasNext() {
 		return blockIterator.hasNext() || hasNextChunk();
 	}
-	
+
+	int[] getCurrentIndex() {
+		return blockIterator.getCurrentIndex();
+	}
 }

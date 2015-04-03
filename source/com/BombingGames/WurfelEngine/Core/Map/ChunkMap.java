@@ -81,7 +81,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public ChunkMap(final String name) throws IOException{
-        this(name, defaultGenerator);
+        this(name, getDefaultGenerator());
     }
     
     /**
@@ -130,7 +130,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){
-					data.get(i).dispose(filename);
+					data.get(i).dispose(getFilename());
 					data.remove(i);
 				} else {
 					data.get(i).resetCameraAccesCounter();
@@ -143,11 +143,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			chunk.processModification();
 		}
 		
-		if (modified){
-			onModified();
-			modified = false;
-		}
-		
+		modificationCheck();
 	}
 		
 	/**
@@ -157,7 +153,9 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 */
 	public void loadChunk(int chunkX, int chunkY){
 		//TODO if already there.
-		data.add(new Chunk(filename, chunkX, chunkY, generator));
+		data.add(
+			new Chunk(this, getFilename(), chunkX, chunkY, getGenerator())
+		);
 		modified();
 	}
     
@@ -190,7 +188,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	@Override
     public Block getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)
-			return groundBlock;
+			return getGroundBlock();
 		Chunk chunk = getChunk(coord);
 		if (chunk==null)
 			return null;
@@ -268,7 +266,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-        for (AbstractEntity ent : entityList) {
+        for (AbstractEntity ent : getEntitys()) {
             if (
 					ent.isGettingSaved() //save only entities which are flagged
 				&&
@@ -297,7 +295,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-        for (AbstractEntity ent : entityList) {
+        for (AbstractEntity ent : getEntitys()) {
             if (
 					ent.isGettingSaved() //save only entities which are flagged
 				&&
@@ -329,7 +327,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		for (Chunk chunk : data) {
 			try {
                 chunk.save(
-                    filename
+                    getFilename()
                 );
             } catch (IOException ex) {
                 Logger.getLogger(ChunkMap.class.getName()).log(Level.SEVERE, null, ex);
@@ -385,7 +383,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	@Override
     public void dispose(){
 		for (Chunk chunk : data) {
-			chunk.dispose(filename);
+			chunk.dispose(getFilename());
 		}
 		super.dispose();
     }

@@ -15,14 +15,14 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public abstract class AbstractMap implements Cloneable {
-	protected static Generator defaultGenerator = new AirGenerator();
+	private static Generator defaultGenerator = new AirGenerator();
 	
 	/**
 	 *
 	 * @param defaultGenerator
 	 */
 	public static void setDefaultGenerator(Generator defaultGenerator) {
-		ChunkMap.defaultGenerator = defaultGenerator;
+		AbstractMap.defaultGenerator = defaultGenerator;
 	}
 	
 	/**
@@ -36,17 +36,17 @@ public abstract class AbstractMap implements Cloneable {
 		meta.write();
 	}
 	/** every entity on the map is stored in this field */
-	protected ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
-	protected boolean modified = true;
+	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
+	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
-	protected float gameSpeed;
-	protected final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei()); //the representative of the bottom layer (ground) block
+	private float gameSpeed;
+	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei()); //the representative of the bottom layer (ground) block
 	/**
 	 * holds the metadata of the map
 	 */
 	private final MapMetaData meta;
-	protected Generator generator;
-	protected final String filename;
+	private Generator generator;
+	private final String filename;
 
 	public AbstractMap(final String name, Generator generator) throws IOException {
 		this.filename = name;
@@ -406,5 +406,13 @@ public abstract class AbstractMap implements Cloneable {
 			onModified();
 			modified = false;
 		}
+	}
+
+	public static Generator getDefaultGenerator() {
+		return defaultGenerator;
+	}
+
+	public Generator getGenerator() {
+		return generator;
 	}
 }

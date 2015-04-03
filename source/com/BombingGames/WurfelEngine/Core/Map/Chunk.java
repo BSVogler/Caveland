@@ -72,7 +72,7 @@ public class Chunk {
 	/**
 	 * the map in which the chunks are used
 	 */
-	private ChunkMap map;
+	private final ChunkMap map;
     /**
      *
      * @param meta
@@ -95,12 +95,14 @@ public class Chunk {
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
+	 * @param map
 	 * @param coordX
 	 * @param coordY
      */
-    public Chunk(final int coordX, final int coordY) {
+    public Chunk(final ChunkMap map, final int coordX, final int coordY) {
         this.coordX = coordX;
 		this.coordY = coordY;
+		this.map = map;
 		
 		data = new Block[blocksX][blocksY][blocksZ];
         
@@ -114,13 +116,14 @@ public class Chunk {
     
     /**
     *Creates a chunk by trying to load and if this fails it generates a new one.
+	 * @param map
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
      * @param mapname filename
      * @param generator
     */
-    public Chunk(final String mapname, final int coordX, final int coordY, final Generator generator){
-        this(coordX,coordY);
+    public Chunk(final ChunkMap map, final String mapname, final int coordX, final int coordY, final Generator generator){
+        this(map, coordX,coordY);
 		if (CVar.get("shouldLoadMap").getValueb()){
 			if (!load(mapname, coordX, coordY))
 				fill(coordX, coordY, generator);
@@ -130,12 +133,13 @@ public class Chunk {
     
     /**
     *Creates a chunk by generating a new one.
+	 * @param map
     * @param coordX the chunk coordinate
     * @param coordY the chunk coordinate
     * @param generator
     */
-    public Chunk(final int coordX, final int coordY, final Generator generator){
-        this(coordX,coordY);
+    public Chunk(final ChunkMap map, final int coordX, final int coordY, final Generator generator){
+        this(map, coordX, coordY);
         fill(coordX, coordY, generator);
     }
 	

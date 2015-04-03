@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
-import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -53,7 +53,7 @@ public class MapEditorController extends Controller {
     /**
      * a clone of the map at the time when last tested.
      */
-    private ChunkMap mapsave;
+    private AbstractMap mapsave;
     private boolean reverseMap;
     private Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);

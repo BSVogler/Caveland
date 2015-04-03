@@ -172,7 +172,7 @@ public class Controller implements GameManager {
      *
      * @param map
      */
-    public static void setMap(ChunkMap map) {
+    public static void setMap(AbstractMap map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
         map.modified();

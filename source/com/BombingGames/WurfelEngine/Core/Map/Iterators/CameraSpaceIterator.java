@@ -104,7 +104,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	}
 	
 	/**
-	 * get the indices position inside the chunk
+	 * get the indices position inside the chunk/data matrix
 	 * @return 
 	 */
 	public int[] getCurrentIndex(){

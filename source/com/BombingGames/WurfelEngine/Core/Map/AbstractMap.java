@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public abstract class AbstractMap {
+public abstract class AbstractMap implements Cloneable {
 	protected static Generator defaultGenerator = new AirGenerator();
 	
 	/**

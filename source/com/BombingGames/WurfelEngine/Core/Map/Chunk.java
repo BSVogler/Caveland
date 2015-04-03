@@ -179,21 +179,26 @@ public class Chunk {
      * @param generator 
      */
     private void fill(final int chunkCoordX, final int chunkCoordY, final Generator generator){
-        for (int x=0; x < blocksX; x++)
-            for (int y=0; y < blocksY; y++)
-                for (int z=0; z < blocksZ; z++){
+        for (int x = 0; x < blocksX; x++)
+            for (int y = 0; y < blocksY; y++)
+                for (int z = 0; z < blocksZ; z++){
 					Block block = Block.getInstance(
-						generator.generate(blocksX*chunkCoordX+x, blocksY*chunkCoordY+y, z),
-						0
-					);
-					block.setPosition(
-						new Coordinate(
-							map,
+						generator.generate(
 							blocksX*chunkCoordX+x,
 							blocksY*chunkCoordY+y,
 							z
-						)
+						),
+						0
 					);
+					if (block!=null)
+						block.setPosition(
+							new Coordinate(
+								map,
+								blocksX*chunkCoordX+x,
+								blocksY*chunkCoordY+y,
+								z
+							)
+						);
                     data[x][y][z] = block;//relative to chunk to map absolute
 				}
 		modified = true;

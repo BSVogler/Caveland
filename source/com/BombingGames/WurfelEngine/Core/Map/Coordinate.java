@@ -28,6 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
@@ -323,8 +324,8 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		if (true){//to-do add method for completemap
-				for (Chunk chunk : ((ChunkMap) map).getData()) {
+		if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
+			for (Chunk chunk : ((ChunkMap) map).getData()) {
 				if (chunk.hasCoord(this)) {
 					found = true;
 				}

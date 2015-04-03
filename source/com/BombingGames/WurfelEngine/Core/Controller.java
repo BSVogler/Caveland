@@ -35,6 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
@@ -143,7 +144,12 @@ public class Controller implements GameManager {
 				for (LinkedWithMap linkedObj : linked) {
 					map.addLinkedObject(linkedObj);
 				}
-			} else map = new ChunkMap(name); //loading first map
+			} else { //loading first map
+				if (CVar.get("mapUseChunks").getValueb())
+					map = new ChunkMap(name);
+				else
+					map = new CompleteMap(name);
+			}
 			
             return true;
         } catch (IOException ex) {

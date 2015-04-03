@@ -141,7 +141,8 @@ public class Camera implements LinkedWithMap {
 	private void initFocus() {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		updateNeededData();
+		if (CVar.get("mapUseChunks").getValueb())
+			updateNeededData();
 	}
 
 	/**
@@ -337,7 +338,8 @@ public class Camera implements LinkedWithMap {
 				}
 			}
 
-			updateNeededData();
+			if (CVar.get("mapUseChunks").getValueb())
+				updateNeededData();
 
 			//move camera to the focus 
 			view.setToLookAt(
@@ -787,8 +789,8 @@ map.getGameWidth(),
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
-
-			hiddenSurfaceDetection();
+			if (CVar.get("mapUseChunks").getValueb())
+				hiddenSurfaceDetection();
 		}
 	}
 
@@ -1060,7 +1062,7 @@ map.getGameWidth(),
 
 	@Override
 	public void onMapChange() {
-		if (active) {
+		if (active && CVar.get("mapUseChunks").getValueb()) {
 			hiddenSurfaceDetection();
 		}
 	}
@@ -1128,7 +1130,8 @@ map.getGameWidth(),
 	}
 
 	void orientationChange() {
-		hiddenSurfaceDetection();
+		if (CVar.get("mapUseChunks").getValueb())
+			hiddenSurfaceDetection();
 	}
 
 	/**
@@ -1138,7 +1141,7 @@ map.getGameWidth(),
 	 */
 	void setActive(boolean active) {
 		//turning on
-		if (this.active == false && active == true) {
+		if (this.active == false && active == true && CVar.get("mapUseChunks").getValueb()) {
 			hiddenSurfaceDetection();
 		}
 
@@ -1149,7 +1152,7 @@ map.getGameWidth(),
 	 * Updates the cached fields which save the border of the covered coordinates by this camera.
 	 */
 	private void updateCoverBorders() {
-		if (true) {//check if chunk map to-do
+		if (CVar.get("mapUseChunks").getValueb()) {
 			ChunkMap chunkMap = (ChunkMap) map;
 			leftCoverBorder = chunkMap.getChunk(
 					centerChunkX - 1,
@@ -1164,7 +1167,7 @@ map.getGameWidth(),
 			frontCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
 				+ Chunk.getBlocksY() - 1;
 		} else {
-		
+		//to-do
 		}
 	}
 }

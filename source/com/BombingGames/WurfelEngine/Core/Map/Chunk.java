@@ -512,7 +512,13 @@ public class Chunk {
 	 * @return
 	 */
 	public DataIterator getIterator(final int startingZ, final int limitZ){
-		return new DataIterator(data, startingZ, limitZ);
+		return new DataIterator(
+			data,
+			startingZ,
+			limitZ,
+			data[0][0][0].getPosition().getX(),
+			data[0][0][0].getPosition().getY()
+		);
 	}
 
 	/**

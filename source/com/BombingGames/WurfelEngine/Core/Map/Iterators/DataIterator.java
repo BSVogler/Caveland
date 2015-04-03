@@ -42,6 +42,8 @@ import java.util.Iterator;
  */
 public class DataIterator implements Iterator<Block>{
 	private int x, y, z;
+	private int relativeX;
+	private int relativeY;
 	private AbstractMap map;
 	private Block[][][] data;
 	private int limitZ;
@@ -51,13 +53,23 @@ public class DataIterator implements Iterator<Block>{
 	 * @param data
 	 * @param startingZ the starting layer
 	 * @param limitZ  the last layer 
+	 * @param relativeX 
+	 * @param relativeY 
 	 */
-	public DataIterator(Block[][][] data, final int startingZ, final int limitZ) {
+	public DataIterator(
+		Block[][][] data,
+		final int startingZ,
+		final int limitZ,
+		final int relativeX,
+		final int relativeY
+	) {
 		x=-1;//start at -1 because the first call of next should return the first element
 		y=0;
 		z=startingZ;
 		this.limitZ=limitZ;
 		this.data = data;
+		this.relativeX = relativeX;
+		this.relativeY = relativeY;
 	}
 	
 	/**
@@ -96,9 +108,9 @@ public class DataIterator implements Iterator<Block>{
 			groundblock.setPosition(
 				new Coordinate(
 					map,
-					data[x][y][0].getPosition().getX(),
-					data[x][y][0].getPosition().getY(),
-					data[x][y][0].getPosition().getZ()-1
+					relativeX+x,
+					relativeY+y,
+					-1
 				)
 			);
 			return groundblock;

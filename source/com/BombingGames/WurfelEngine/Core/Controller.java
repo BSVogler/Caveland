@@ -52,7 +52,7 @@ import java.util.logging.Logger;
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
 	private static SoundEngine soundEngine;
-    private static ChunkMap map;
+    private static AbstractMap map;
     private DevTools devtools;
     private boolean initalized= false;
 

@@ -46,6 +46,12 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	protected ChunkIterator blockIterator;
 	private int topLimitZ;
 	private int startingZ = 0;
+	protected final boolean useChunks;
+
+	public AbstractMapIterator(AbstractMap map) {
+		this.map = map;
+		useChunks = CVar.get("mapUseChunks").getValueb();
+	}	
 	
 	/**
 	 * Check if the iterator has a next chunk

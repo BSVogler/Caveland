@@ -60,6 +60,7 @@ public class Point extends AbstractPosition {
 		this.x = posX;
 		this.y = posY;
         this.z = height;
+		this.map = map;
     }
     
     /**
@@ -70,6 +71,7 @@ public class Point extends AbstractPosition {
        this.x = point.x;
        this.y = point.y;
 	   this.z = point.z;
+	   this.map = point.map;
     }
 
     /**

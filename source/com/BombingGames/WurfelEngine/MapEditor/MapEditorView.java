@@ -352,11 +352,11 @@ public class MapEditorView extends GameView {
 				switch (toggledTool){
 					case DRAW:
 						Block block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
-						Controller.getMap().setData(block);
+						Controller.getMap().setBlock(block);
 						break;
 					case REPLACE:
 						block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setData(block);
+						Controller.getMap().setBlock(block);
 						break;
 					case SELECT:
 						if (WE.getEngineView().getCursor()!=2) {//not dragging
@@ -369,7 +369,7 @@ public class MapEditorView extends GameView {
 					case ERASE:
 						block = null;
 						if (coords.getZ()>=0)
-							Controller.getMap().setData(block);
+							Controller.getMap().setBlock(block);
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -454,10 +454,10 @@ public class MapEditorView extends GameView {
 				if (coords.getZ()>=0) {
 					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){
 						Block block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setData(block);
+						Controller.getMap().setBlock(block);
 					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
 						Block block = null;
-						Controller.getMap().setData(block);
+						Controller.getMap().setBlock(block);
 					} else return false;
 				}
 			}
@@ -544,7 +544,7 @@ public class MapEditorView extends GameView {
 			
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					getMap().setData(
+					getMap().setBlock(
 						leftColorGUI.getBlock(
 							new Coordinate(getMap(), x, y, from.getZ())
 						)

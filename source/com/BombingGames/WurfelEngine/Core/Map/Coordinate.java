@@ -181,7 +181,7 @@ public class Coordinate extends AbstractPosition {
 	public void setBlock(Block block) {
 		if (block!= null) {
 			block.setPosition(this);
-			Controller.getMap().setData(block);
+			Controller.getMap().setBlock(block);
 		} else {
 			Controller.getMap().destroyBlockOnCoord(this);
 		}

@@ -30,8 +30,8 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import java.util.NoSuchElementException;
@@ -41,7 +41,6 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class CameraSpaceIterator extends AbstractMapIterator {
-	private boolean useChunks;
 	private int centerChunkX;
 	private int centerChunkY;
 	private Chunk current;
@@ -49,18 +48,19 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	
 	/**
 	 * Starts at z=-1. 
+	 * @param map
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
 	 * @param topLevel the top limit of the z axis 
 	 */
-	public CameraSpaceIterator(int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+	public CameraSpaceIterator(AbstractMap map, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+		super(map);
 		setTopLimitZ(topLevel);
 		setStartingZ(startingZ);
 		centerChunkX = centerCoordX;
 		centerChunkY = centerCoordY;
-		useChunks = CVar.get("mapUseChunks").getValueb();
-		if (useChunks) {//to-do
+		if (useChunks) {
 			//bring starting position to top left
 			current = ((ChunkMap) map).getChunk(centerChunkX-1, centerChunkY-1);
 			blockIterator = current.getIterator(startingZ, topLevel);
@@ -123,6 +123,15 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	public boolean hasNextChunk() {
 		return current.getChunkX() < centerChunkX+1//has next x
 			|| current.getChunkY() < centerChunkY+1; //or has next Y
+	}
+
+	@Override
+	public boolean hasNext() {
+		if (useChunks) {
+			return blockIterator.hasNext() || hasNextChunk();
+		} else {
+			return mmI.hasNext();
+		}
 	}
 
 }

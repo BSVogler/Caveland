@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
-import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import java.util.Iterator;
 
@@ -41,7 +40,7 @@ import java.util.Iterator;
  *An iterator iterating over the data in a chunk
  * @author Benedikt Vogler
  */
-public class ChunkIterator implements Iterator<Block>{
+public class DataIterator implements Iterator<Block>{
 	private int x, y, z;
 	private AbstractMap map;
 	private Block[][][] data;
@@ -53,12 +52,12 @@ public class ChunkIterator implements Iterator<Block>{
 	 * @param startingZ the starting layer
 	 * @param limitZ  the last layer 
 	 */
-	public ChunkIterator(Chunk data, final int startingZ, final int limitZ) {
+	public DataIterator(Block[][][] data, final int startingZ, final int limitZ) {
 		x=-1;//start at -1 because the first call of next should return the first element
 		y=0;
 		z=startingZ;
 		this.limitZ=limitZ;
-		this.data = data.getData();
+		this.data = data;
 	}
 	
 	/**
@@ -72,17 +71,17 @@ public class ChunkIterator implements Iterator<Block>{
 	@Override
 	public boolean hasNext() {
 		return (
-			   x < Chunk.getBlocksX()-1
-			|| y < Chunk.getBlocksY()-1
+			   x < data.length-1
+			|| y < data[0].length-1
 			|| z < limitZ
 		);
 	}
 
 	@Override
 	public Block next() {
-		if (x<Chunk.getBlocksX()-1)
+		if (x<data.length-1)
 			x++;
-		else if (y<Chunk.getBlocksY()-1){
+		else if (y<data[0].length-1){
 			y++;
 			x=0;
 		} else if (z<limitZ) {

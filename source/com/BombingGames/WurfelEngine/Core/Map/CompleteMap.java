@@ -7,11 +7,11 @@ import java.io.IOException;
  *
  * @author Benedikt Vogler
  */
-public class CompleteMap extends AbstractMap{
+public class CompleteMap extends AbstractMap {
 	private static int blocksX;
 	private static int blocksY;
 	private static int blocksZ;
-	private final Block data[][][];
+	private final Block[][][] data;
 
 	public CompleteMap(final String name, Generator generator) throws IOException {
 		super(name, generator);
@@ -35,7 +35,15 @@ public class CompleteMap extends AbstractMap{
 	}
 
 	@Override
-	public void setData(Block block) {
+	public void setBlock(Block block) {
+	}
+	
+	 /**
+     * Get the data of the map
+     * @return
+     */
+	public Block[][][] getData() {
+		return data;
 	}
 
 	@Override

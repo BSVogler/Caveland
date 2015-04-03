@@ -240,7 +240,7 @@ public abstract class AbstractMap {
 	 * @return 
 	 */
 	public MemoryMapIterator getIterator(int startLimit, int topLimitZ){
-		MemoryMapIterator mapIterator = new MemoryMapIterator(startLimit);
+		MemoryMapIterator mapIterator = new MemoryMapIterator(this, startLimit);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
 	}
@@ -289,7 +289,7 @@ public abstract class AbstractMap {
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param block
 	 */
-	public abstract void setData(final Block block);
+	public abstract void setBlock(final Block block);
 
 	/**
 	 * remove a block from a coord

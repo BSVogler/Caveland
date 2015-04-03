@@ -59,11 +59,10 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class Camera implements LinkedWithMap {
-
 	/**
 	 * the map which is covered by the camera
 	 */
-	private AbstractMap map;
+	private AbstractMap map = Controller.getMap();
 	/**
 	 * The deepest layer is an array which stores the information if there
 	 * should be a tile rendered
@@ -159,6 +158,9 @@ public class Camera implements LinkedWithMap {
 	 * @param view
 	 */
 	public Camera(final int x, final int y, final int width, final int height, GameView view) {
+		map = Controller.getMap();
+		zRenderingLimit = map.getBlocksZ();
+		
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -373,7 +375,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private void updateNeededData() {
 		//check every chunk
-		if (centerChunkX == 0 && centerChunkY == 0 || CVar.get("enableChunkSwitch").getValueb()) {
+		if (centerChunkX == 0 && centerChunkY == 0 || CVar.get("mapChunkSwitch").getValueb()) {
 			checkChunk(centerChunkX - 1, centerChunkY - 1);
 			checkChunk(centerChunkX, centerChunkY - 1);
 			checkChunk(centerChunkX + 1, centerChunkY - 1);
@@ -533,9 +535,15 @@ map.getGameWidth(),
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
+		CameraSpaceIterator iterator = new CameraSpaceIterator(
+				map,
+				centerChunkX,
+				centerChunkY,
+				-1,
+				map.getBlocksZ() - 1
+			);
 		if (CVar.get("enableHSD").getValueb()) {
 			//add hidden surfeace depth buffer
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				Block block = iterator.next();
 				//only add if in view plane to-do
@@ -551,7 +559,6 @@ map.getGameWidth(),
 				}
 			}
 		} else {
-			CameraSpaceIterator iterator = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, map.getBlocksZ() - 1);
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				Block block = iterator.next();
 				if (block!= null && !block.isHidden()) {
@@ -677,7 +684,13 @@ map.getGameWidth(),
 
 		//create empty array clipping fields
 		clipping = new boolean[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1][3];
-		CameraSpaceIterator iter = new CameraSpaceIterator(centerChunkX, centerChunkY, -1, zRenderingLimit - 1);
+		CameraSpaceIterator iter = new CameraSpaceIterator(
+			map,
+			centerChunkX,
+			centerChunkY,
+			-1,
+			zRenderingLimit - 1
+		);
 
 		while (iter.hasNext()) {
 			Block next = iter.next();

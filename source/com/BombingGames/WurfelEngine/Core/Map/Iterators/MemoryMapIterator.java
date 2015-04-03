@@ -31,8 +31,10 @@
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -49,16 +51,24 @@ public class MemoryMapIterator extends AbstractMapIterator {
 
 	/**
 	 *
+	 * @param map
 	 * @param startingZ
 	 */
-	public MemoryMapIterator(int startingZ) {
+	public MemoryMapIterator(AbstractMap map, int startingZ) {
+		super(map);
 		setTopLimitZ(map.getBlocksZ()-1);
 		setStartingZ(startingZ);
 		
-		if (true) { //todo
+		if (useChunks) { //todo
 			ArrayList<Chunk> mapdata = ((ChunkMap) map).getData();
 			chunkIterator = mapdata.iterator();
 			blockIterator = mapdata.get(0).getIterator(startingZ, getTopLimitZ());
+		} else {
+			blockIterator = new DataIterator(
+				((CompleteMap) map).getData(),
+				startingZ,
+				getTopLimitZ()
+			);
 		}
 	}
 	
@@ -85,6 +95,11 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	@Override
 	public boolean hasNextChunk() {
 		return chunkIterator.hasNext();
+	}
+
+	@Override
+	public boolean hasNext() {
+		return blockIterator.hasNext() || hasNextChunk();
 	}
 	
 }

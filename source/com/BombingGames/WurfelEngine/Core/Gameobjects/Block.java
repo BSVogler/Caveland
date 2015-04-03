@@ -265,7 +265,7 @@ public class Block extends AbstractGameObject {
 	 */
 	public Block spawn(Coordinate coord){
 		setPosition(coord);
-		Controller.getMap().setData(this);
+		Controller.getMap().setBlock(this);
 		return this;
 	};
     

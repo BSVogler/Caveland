@@ -33,7 +33,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Map.Iterators.ChunkIterator;
+import com.BombingGames.WurfelEngine.Core.Map.Iterators.DataIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -511,8 +511,8 @@ public class Chunk {
 	 * @param limitZ
 	 * @return
 	 */
-	public ChunkIterator getIterator(final int startingZ, final int limitZ){
-		return new ChunkIterator(this, startingZ, limitZ);
+	public DataIterator getIterator(final int startingZ, final int limitZ){
+		return new DataIterator(data, startingZ, limitZ);
 	}
 
 	/**

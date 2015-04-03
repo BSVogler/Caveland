@@ -13,8 +13,16 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksZ;
 	private final Block[][][] data;
 
+	public CompleteMap(final String name) throws IOException {
+		this(name, defaultGenerator);
+	}
+
+	
 	public CompleteMap(final String name, Generator generator) throws IOException {
 		super(name, generator);
+		blocksX = 100;
+        blocksY = 200;
+        blocksZ =  10;
 		data = new Block[blocksX][blocksY][blocksZ];
 	}
 

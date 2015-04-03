@@ -370,13 +370,13 @@ public abstract class AbstractMap {
      * @throws CloneNotSupportedException
      */
     @Override
-    public ChunkMap clone() throws CloneNotSupportedException{
+    public AbstractMap clone() throws CloneNotSupportedException{
 		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
 //		clone.entityList = new ArrayList<>(entityList.size());
 //		for (AbstractEntity entity : entityList) {
 //			clone.entityList.add((AbstractEntity) entity.clone());
 //		}
-        return (ChunkMap) super.clone();
+        return (AbstractMap) super.clone();
     }
 
 	/**

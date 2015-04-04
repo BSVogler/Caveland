@@ -81,6 +81,7 @@ public class Coordinate extends AbstractPosition {
 		super(map);
 		this.x = x;
 		this.y = y;
+		this.z = z;
 		refreshCachedPoint();
 	}
 

@@ -190,7 +190,7 @@ public class Chunk {
 						),
 						0
 					);
-					if (block!=null)
+					if (block != null)
 						block.setPosition(
 							new Coordinate(
 								map,

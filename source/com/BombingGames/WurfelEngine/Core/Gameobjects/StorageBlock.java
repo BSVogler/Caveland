@@ -5,28 +5,26 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  * @author Benedikt Vogler
  */
 public class StorageBlock implements HasID {
-	private int id;
-	private int value;
+	private int identifier;
 	private float lightlevel;
 
 
 	public StorageBlock(int id) {
-		this.id = id;
+		this.identifier = id;
 	}
 	
 	public StorageBlock(int id, int value) {
-		this.id = id;
-		this.value = value;
+		this.identifier = (value<<8)+id;
 	}
 	
 	@Override
 	public int getId() {
-		return id;
+		return identifier%256;
 	}
 
 	@Override
 	public int getValue() {
-		return value;
+		return (identifier>>8)%256;
 	}
 	
 	/**
@@ -34,12 +32,12 @@ public class StorageBlock implements HasID {
 	 * @return 
 	 */
 	public RenderBlock toBlock(){
-		return RenderBlock.getInstance(id, value);
+		return RenderBlock.getInstance(identifier, getValue());
 	}
 
 	public boolean isObstacle() {
 		//todo
-		if (id==0) return false;
+		if (getId()==0) return false;
 		return true;
 	}
 

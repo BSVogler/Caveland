@@ -3,7 +3,7 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
 import com.badlogic.gdx.Gdx;
@@ -15,8 +15,8 @@ import com.badlogic.gdx.Gdx;
 public class CustomBlockFactory implements BlockFactory {
 
 @Override
-public Block produce(int id, int value) {
-	Block block;
+public RenderBlock produce(int id, int value) {
+	RenderBlock block;
 	switch (id){
 		case 41:
 			block = new Ore(id, Collectible.CollectibleType.CRISTALL);
@@ -31,7 +31,7 @@ public Block produce(int id, int value) {
 			block = new Ore(id, Collectible.CollectibleType.COAL);
 		break;
 		case 46://sand
-			block = Block.createBasicInstance(id);
+			block = RenderBlock.createBasicInstance(id);
 			block.setObstacle(true);
 		break;  
 		case 55:
@@ -41,7 +41,7 @@ public Block produce(int id, int value) {
 			block = new Machine();
 		break;
 		case 70:
-			block = Block.createBasicInstance(id); 
+			block = RenderBlock.createBasicInstance(id); 
 			block.setTransparent(true);
 			block.setNoSides();
 		break;
@@ -58,7 +58,7 @@ public Block produce(int id, int value) {
 //		break;
 		default:
 			Gdx.app.error("CustomBlockFactory", "Block "+id+" not defined.");
-			block = Block.createBasicInstance(id);;
+			block = RenderBlock.createBasicInstance(id);
 		}
 		return block;
 	}	
@@ -77,7 +77,7 @@ public Block produce(int id, int value) {
 
 
 
-	private static class RailBlock extends Block {
+	private static class RailBlock extends RenderBlock {
 		private static final long serialVersionUID = 1L;
 
 		RailBlock() {
@@ -90,7 +90,7 @@ public Block produce(int id, int value) {
 		
 	}
 
-	private static class Ore extends Block {
+	private static class Ore extends RenderBlock {
 		private final Collectible.CollectibleType def;
 
 		Ore(int id, Collectible.CollectibleType def) {

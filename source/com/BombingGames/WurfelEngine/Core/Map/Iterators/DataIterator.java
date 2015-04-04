@@ -31,21 +31,18 @@
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
- *An iterator iterating over the data in a chunk
+ *An iterator iterating over a 3d array
  * @author Benedikt Vogler
  */
-public class DataIterator implements Iterator<Block>{
+public class DataIterator implements Iterator<HasID>{
 	private int x, y, z;
 	private int relativeX;
 	private int relativeY;
-	private AbstractMap map;
-	private Block[][][] data;
+	private HasID[][][] data;
 	private int limitZ;
 
 	/**
@@ -53,11 +50,11 @@ public class DataIterator implements Iterator<Block>{
 	 * @param data
 	 * @param startingZ the starting layer
 	 * @param limitZ  the last layer 
-	 * @param relativeX 
-	 * @param relativeY 
+	 * @param relativeX the x coordinate of top left
+	 * @param relativeY the y coordinate of top left
 	 */
 	public DataIterator(
-		Block[][][] data,
+		HasID[][][] data,
 		final int startingZ,
 		final int limitZ,
 		final int relativeX,
@@ -90,7 +87,7 @@ public class DataIterator implements Iterator<Block>{
 	}
 
 	@Override
-	public Block next() {
+	public HasID next() {
 		if (x<data.length-1)
 			x++;
 		else if (y<data[0].length-1){
@@ -104,16 +101,7 @@ public class DataIterator implements Iterator<Block>{
 		
 		if (z<0){
 			//current pos -1 in z
-			Block groundblock = Block.getInstance(Controller.getMap().getGroundBlock().getId());
-			groundblock.setPosition(
-				new Coordinate(
-					map,
-					relativeX+x,
-					relativeY+y,
-					-1
-				)
-			);
-			return groundblock;
+			return Controller.getMap().getGroundBlock();
 		} else {
 			return data[x][y][z];
 		}

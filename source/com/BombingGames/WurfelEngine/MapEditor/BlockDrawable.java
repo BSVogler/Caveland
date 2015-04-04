@@ -31,7 +31,7 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -41,7 +41,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * @author Benedikt Vogler
  */
 public class BlockDrawable extends TextureRegionDrawable {
-    private Block block;
+    private RenderBlock block;
     private float size = -0.5f;
 	private float x;
     
@@ -50,7 +50,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      * @param id
      */
     public BlockDrawable(int id) {
-        this.block = Block.getInstance(id,0);
+        this.block = RenderBlock.getInstance(id,0);
 		block.setScaling(size);
     }
 	
@@ -62,7 +62,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 * @param size relative size
 	 */
 	BlockDrawable(int id, int value, float size) {
-		this.block = Block.getInstance(id,value);
+		this.block = RenderBlock.getInstance(id,value);
 		this.size = size;
 	}
 
@@ -87,7 +87,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getLeftWidth() {
-		return Block.VIEW_WIDTH2*(1f+size);
+		return RenderBlock.VIEW_WIDTH2*(1f+size);
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getRightWidth() {
-		return Block.VIEW_WIDTH2*(1f+size);
+		return RenderBlock.VIEW_WIDTH2*(1f+size);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getTopHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
+		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(1f+size);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getBottomHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
+		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(1f+size);
 	}
 	
     /**
@@ -123,7 +123,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinHeight() {
-        return (Block.VIEW_HEIGHT+Block.VIEW_DEPTH)*(1f+size);
+        return (RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH)*(1f+size);
     }
 
     /**
@@ -132,6 +132,6 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinWidth() {
-        return Block.VIEW_WIDTH*(1f+size);
+        return RenderBlock.VIEW_WIDTH*(1f+size);
     }
 }

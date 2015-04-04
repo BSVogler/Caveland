@@ -1,13 +1,13 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class CustomTree extends Block {
+public class CustomTree extends RenderBlock {
 	private static final long serialVersionUID = 1L;
 	private Coordinate pos;
 	/**
@@ -43,7 +43,7 @@ public class CustomTree extends Block {
 		//check and grow treetop
 		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
 		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
-			Block.getInstance(72, TREETOPVALUE).spawn(top);
+			RenderBlock.getInstance(72, TREETOPVALUE).spawn(top);
 	}
 
 	

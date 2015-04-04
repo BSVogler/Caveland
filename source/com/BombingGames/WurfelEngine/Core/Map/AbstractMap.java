@@ -3,7 +3,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.badlogic.gdx.Gdx;
@@ -49,7 +50,7 @@ public abstract class AbstractMap implements Cloneable {
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
-	private final Block groundBlock = Block.getInstance(CVar.get("groundBlockID").getValuei()); //the representative of the bottom layer (ground) block
+	private final StorageBlock groundBlock = new StorageBlock(CVar.get("groundBlockID").getValuei()); //the representative of the bottom layer (ground) block
 	/**
 	 * holds the metadata of the map
 	 */
@@ -90,7 +91,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(getBlocksZ() * Block.GAME_EDGELENGTH / 2);
+		return getCenter(getBlocksZ() * RenderBlock.GAME_EDGELENGTH / 2);
 	}
 
 
@@ -214,7 +215,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param coord
 	 * @return
 	 */
-	public abstract Block getBlock(final Coordinate coord);
+	public abstract StorageBlock getBlock(final Coordinate coord);
 
 	/**
 	 * Returns a block without checking the parameters first. Good for debugging and also faster.
@@ -224,13 +225,13 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-	public abstract Block getBlock(final int x, final int y, final int z);
+	public abstract StorageBlock getBlock(final int x, final int y, final int z);
 
 	/**
 	 *
 	 * @return
 	 */
-	public Block getGroundBlock() {
+	public StorageBlock getGroundBlock() {
 		return groundBlock;
 	}
 
@@ -298,7 +299,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param block
 	 */
-	public abstract void setBlock(final Block block);
+	public abstract void setBlock(final RenderBlock block);
 
 	/**
 	 * remove a block from a coord
@@ -361,11 +362,6 @@ public abstract class AbstractMap implements Cloneable {
 	 * prints the map to console
 	 */
 	public abstract void print();
-
-	/**
-	 * prints the map to console
-	 */
-	public abstract void printCoords();
 
 	/**
 	 * Called after the view update to catch changes caused by the view

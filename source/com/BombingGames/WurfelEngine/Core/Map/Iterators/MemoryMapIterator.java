@@ -30,7 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
@@ -80,8 +80,8 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 * @return 
 	 */
 	@Override
-	public Block next() throws NoSuchElementException {
-		Block block = blockIterator.next();
+	public StorageBlock next() throws NoSuchElementException {
+		StorageBlock block = (StorageBlock) blockIterator.next();
 		if (useChunks && !blockIterator.hasNext()){
 			//end of chunk, move to next chunk
 			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());

@@ -36,7 +36,7 @@ import com.BombingGames.WurfelEngine.WE;
  *An example for a special block: barrel block which can explode
  * @author Benedikt
  */
-public class ExplosiveBarrel extends Block {
+public class ExplosiveBarrel extends RenderBlock {
 	private static final long serialVersionUID = 1L;
 	
     private Coordinate coords;
@@ -71,7 +71,7 @@ public class ExplosiveBarrel extends Block {
     }
 
 	@Override
-	public Block spawn(Coordinate coord) {
+	public RenderBlock spawn(Coordinate coord) {
 		setPosition(coord);
 		return this;
 	}

@@ -31,7 +31,7 @@
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import java.util.Iterator;
 
@@ -39,7 +39,7 @@ import java.util.Iterator;
  *
  * @author Benedikt Vogler
  */
-public abstract class AbstractMapIterator implements Iterator<Block>{
+public abstract class AbstractMapIterator implements Iterator<StorageBlock>{
 	protected final AbstractMap map;
 	/**
 	 * Always points to a block. Iterates over a chunk.

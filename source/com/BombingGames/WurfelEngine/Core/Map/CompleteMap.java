@@ -1,6 +1,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import java.io.IOException;
 
 /**
@@ -11,7 +12,7 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksX;
 	private static int blocksY;
 	private static int blocksZ;
-	private final Block[][][] data;
+	private final StorageBlock[][][] data;
 
 	public CompleteMap(final String name) throws IOException {
 		this(name, getDefaultGenerator());
@@ -23,12 +24,12 @@ public class CompleteMap extends AbstractMap {
 		blocksX = 100;
         blocksY = 200;
         blocksZ =  10;
-		data = new Block[blocksX][blocksY][blocksZ];
+		data = new StorageBlock[blocksX][blocksY][blocksZ];
 	}
 
 	
 	@Override
-	public Block getBlock(Coordinate coord) {
+	public StorageBlock getBlock(Coordinate coord) {
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		else
@@ -36,7 +37,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public Block getBlock(int x, int y, int z) {
+	public StorageBlock getBlock(int x, int y, int z) {
 		return data[blocksX/2+x][blocksY/2+y][z];
 	}
 
@@ -46,14 +47,14 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public void setBlock(Block block) {
+	public void setBlock(RenderBlock block) {
 	}
 	
 	 /**
      * Get the data of the map
      * @return
      */
-	public Block[][][] getData() {
+	public StorageBlock[][][] getData() {
 		return data;
 	}
 
@@ -93,11 +94,12 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public void printCoords() {
+	public void postUpdate(float dt) {
 	}
 
 	@Override
-	public void postUpdate(float dt) {
+	public AbstractMap clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 	
 }

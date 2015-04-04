@@ -3,8 +3,8 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -42,7 +42,7 @@ public class MineCart extends AbstractInteractable {
 		
 		if (getPosition().isInMemoryAreaHorizontal()) {
 			Point pos = getPosition();
-			Block block = pos.getBlock();
+			StorageBlock block = pos.getBlock();
 
 			//on tracks?
 			if (block!=null && block.getId() == 55) {

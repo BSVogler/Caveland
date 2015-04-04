@@ -250,7 +250,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
 				}
 
-				Block block = getPosition().getBlock();
+				StorageBlock block = getPosition().getBlock();
 				if (!inliquid && block != null && block.isLiquid())//if enterin water
 					if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
 
@@ -420,17 +420,17 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos-Block.VIEW_WIDTH2,
-				yPos+Block.VIEW_HEIGHT,
-				getHealth()*Block.VIEW_WIDTH/1000,
+				xPos-RenderBlock.VIEW_WIDTH2,
+				yPos+RenderBlock.VIEW_HEIGHT,
+				getHealth()*RenderBlock.VIEW_WIDTH/1000,
 				5
 			);
 			//mana bar
 			sh.setColor(Color.BLUE);
 			sh.rect(
-				xPos-Block.VIEW_WIDTH2,
-				yPos+Block.VIEW_HEIGHT-6,
-				getMana()*Block.VIEW_WIDTH/1000,
+				xPos-RenderBlock.VIEW_WIDTH2,
+				yPos+RenderBlock.VIEW_HEIGHT-6,
+				getMana()*RenderBlock.VIEW_WIDTH/1000,
 				5
 			);
 
@@ -451,7 +451,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-		Block block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
+		StorageBlock block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
         if (block!=null && block.isObstacle())
             colission = true;
         //bottom corner
@@ -702,7 +702,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (getPosition().getZ() > getPosition().getMap().getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
-				Block block = getPosition().getBlock();
+				StorageBlock block = getPosition().getBlock();
                 boolean colission =  (block != null && block.isObstacle()) || horizontalColission(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);//reverse
                 

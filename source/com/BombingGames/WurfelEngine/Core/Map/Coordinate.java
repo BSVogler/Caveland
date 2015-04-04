@@ -33,7 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -178,7 +179,7 @@ public class Coordinate extends AbstractPosition {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(Block block) {
+	public void setBlock(RenderBlock block) {
 		if (block!= null) {
 			block.setPosition(this);
 			Controller.getMap().setBlock(block);
@@ -236,7 +237,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public Block getBlock() {
+	public StorageBlock getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
 		} else {
@@ -245,12 +246,12 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Checks of coordinates are valid before fetching the Block.
+	 * Checks of coordinates are valid before fetching the RenderBlock.
 	 *
 	 * @return
 	 */
 	@Override
-	public Block getBlockSafe() {
+	public StorageBlock getBlockSafe() {
 		if (isInMemoryAreaHorizontal()) {
 			return Controller.getMap().getBlock(this);
 		} else {
@@ -265,10 +266,10 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlocks(int x, int y, int z) {
-		Block block = Controller.getMap().getBlock(
+		StorageBlock block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return (block != null && block.hasSides() && !block.isTransparent());
@@ -280,7 +281,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastLiquid(int x, int y, int z) {
 		return getBlock().isLiquid() && cpy().addVector(x, y, z).getBlock().isLiquid();
@@ -294,16 +295,16 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlock(int x, int y, int z) {
-		Block block = Controller.getMap().getBlock(
+		StorageBlock block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return block != null
 			&& (block.hasSides() && !block.isTransparent()
 			||
-			getBlock().isLiquid() && block.isLiquid());
+			block.isLiquid() && block.isLiquid());
 	}
 
 	/**
@@ -536,7 +537,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public boolean destroy() {
 		if (isInMemoryArea() && getBlock() != null) {
-			getBlock().onDestroy();//call destruction method
+			getBlock().toBlock().onDestroy();//call destruction method
 			setBlock(null);
 			return true;
 		} else {
@@ -550,17 +551,18 @@ public class Coordinate extends AbstractPosition {
 	 * @param amount
 	 * @return
 	 */
-	public boolean damage(float amount) {
-		if (isInMemoryArea()) {
-			Block block = getBlock();
-			if (block != null) {
-				block.setHealth(block.getHealth() - amount);
-				if (block.getHealth() <= 0) {
-					destroy();
-				}
-				return true;
-			}
-		}
+	public boolean damage( float amount) {
+		//todo, is camera related
+//		if (isInMemoryArea()) {
+//			RenderBlock block = getBlock();
+//			if (block != null) {
+//				block.setHealth(block.getHealth() - amount);
+//				if (block.getHealth() <= 0) {
+//					destroy();
+//				}
+//				return true;
+//			}
+//		}
 		return false;
 	}
 

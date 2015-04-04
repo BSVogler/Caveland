@@ -43,10 +43,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * A Block is a wonderful piece of information and a geometrical object.
+ * A RenderBlock is a wonderful piece of information and a geometrical object. It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras.
+ * @see StorageBlock
  * @author Benedikt Vogler
  */
-public class Block extends AbstractGameObject {
+public class RenderBlock extends AbstractGameObject{
     private static final long serialVersionUID = 1L;
 	/**
 	 * {id}{value}{side}
@@ -70,7 +71,26 @@ public class Block extends AbstractGameObject {
 	 * @since v1.4.20
 	 */
 	public static void setDestructionAction(BlockDestructionAction DestructionAction) {
-		Block.destructionAction = DestructionAction;
+		RenderBlock.destructionAction = DestructionAction;
+	}
+	private boolean clippedTop;
+	private boolean clippedRight;
+	private boolean clippedLeft;
+
+	public void setClippedLeft() {
+		clippedLeft = true;
+	}
+
+	public void setClippedRight() {
+		clippedRight = true;
+	}
+
+	public void setClippedTop() {
+		clippedTop = true;
+	}
+
+	public boolean isClipped() {
+		return clippedLeft && clippedRight && clippedTop;
 	}
 	
 	/**
@@ -84,7 +104,7 @@ public class Block extends AbstractGameObject {
 		 * @param block
 		 * @since v1.4.20
 		 */
-		public void action(Block block);
+		public void action(RenderBlock block);
 	}
     
     private boolean liquid;
@@ -96,7 +116,7 @@ public class Block extends AbstractGameObject {
      * @param id
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance() 
      */
-    protected Block(int id){
+    protected RenderBlock(int id){
         super(id,0);
     } 
 
@@ -106,7 +126,7 @@ public class Block extends AbstractGameObject {
 	 * @param customBlockFactory new value of customBlockFactory
 	 */
 	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
-		Block.customBlockFactory = customBlockFactory;
+		RenderBlock.customBlockFactory = customBlockFactory;
 	}
 
     /**
@@ -114,10 +134,10 @@ public class Block extends AbstractGameObject {
      * @param id non-reserved id's=> id>39
      * @return 
      */
-    public static Block createBasicInstance(final int id){
-        Block block; 
+    public static RenderBlock createBasicInstance(final int id){
+        RenderBlock block; 
         if (id>39) 
-            block = new Block(id);
+            block = new RenderBlock(id);
         else block = getInstance(id,0);
         return block;
     }
@@ -127,7 +147,7 @@ public class Block extends AbstractGameObject {
      * @param id the block's id
      * @return the wanted block.
      */
-    public static Block getInstance(final int id){
+    public static RenderBlock getInstance(final int id){
         return getInstance(id,0);
     }
     
@@ -135,58 +155,58 @@ public class Block extends AbstractGameObject {
      * Create a block through this factory method. If the block needs to know it's position you have to use this method and give the coordinates.
      * @param id the id of the block
      * @param value the value of the block, which is like a sub-id
-     * @return the Block
+     * @return the RenderBlock
      */
-    public static Block getInstance(final int id, final int value){
-        Block block;
+    public static RenderBlock getInstance(final int id, final int value){
+        RenderBlock block;
         //define the default SideSprites
         switch (id){
 			case 0: return null;
-            case 1: block = new Block(id); //grass
+            case 1: block = new RenderBlock(id); //grass
                     block.setObstacle(true);
                     break;
-            case 2: block = new Block(id); //dirt
+            case 2: block = new RenderBlock(id); //dirt
                     block.setObstacle(true);
                     break;
-            case 3: block = new Block(id); 
+            case 3: block = new RenderBlock(id); 
                     block.setTransparent(false);
                     block.setObstacle(true);
                     break;
-            case 4: block = new Block(id); 
+            case 4: block = new RenderBlock(id); 
                     block.setObstacle(true);
                     break;
-            case 5: block = new Block(id); 
+            case 5: block = new RenderBlock(id); 
                     block.setObstacle(true);
                     break;
-            case 6: block = new Block(id); 
+            case 6: block = new RenderBlock(id); 
                     block.setObstacle(true);
                     break;
-            case 7: block = new Block(id); 
+            case 7: block = new RenderBlock(id); 
                     block.setObstacle(true);
                     break;
-            case 8: block = new Block(id); //sand
+            case 8: block = new RenderBlock(id); //sand
                     block.setObstacle(true);
                     break;      
             case 9: if(Gdx.app.getType()==ApplicationType.Android)
-                        block = new Block(id); //static water
+                        block = new RenderBlock(id); //static water
                     else
                         block = new Sea(id); //Sea
                     block.liquid = true;
                     block.setTransparent(true);
                     break;
-            case 20: block = new Block(id);
+            case 20: block = new RenderBlock(id);
                     block.setObstacle(true);
                     break;
-            case 34: block = new Block(id); //flower
+            case 34: block = new RenderBlock(id); //flower
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;
-            case 35: block = new Block(id); //bush
+            case 35: block = new RenderBlock(id); //bush
                     block.setTransparent(true);
                     block.hasSides = false;
                     break;
 			case 36:
-					block = new Block(id); //tree
+					block = new RenderBlock(id); //tree
                     block.setTransparent(true);
                     block.hasSides = false;
 					block.setObstacle(true);
@@ -197,11 +217,11 @@ public class Block extends AbstractGameObject {
                         block = customBlockFactory.produce(id, value);
                     } else {
                         Gdx.app.error("Block", "No custom blockFactory found for "+id+". Using a default block instead.");
-                        block = new Block(id);
+                        block = new RenderBlock(id);
                     }
                 } else {
                     Gdx.app.error("Block", "Engine reserved block "+id+" not defined.");
-                    block = new Block(id);
+                    block = new RenderBlock(id);
                 }
                 break; 
         }
@@ -259,11 +279,11 @@ public class Block extends AbstractGameObject {
 		}
 	}
 		/**
-	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}. Block may be placed without this method call.
+	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}. RenderBlock may be placed without this method call.
 	 * @param coord the position on the map
 	 * @return itself
 	 */
-	public Block spawn(Coordinate coord){
+	public RenderBlock spawn(Coordinate coord){
 		setPosition(coord);
 		Controller.getMap().setBlock(this);
 		return this;
@@ -303,7 +323,7 @@ public class Block extends AbstractGameObject {
     
    /**
      * Returns a color representing the block. Picks from the sprite sprite.
-     * @param id id of the Block
+     * @param id id of the RenderBlock
      * @param value the value of the block.
      * @return copy of a color representing the block
      */
@@ -312,7 +332,7 @@ public class Block extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (Block.getInstance(id,value).hasSides){//if has sides, take top block    
+            if (RenderBlock.getInstance(id,value).hasSides){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -350,11 +370,11 @@ public class Block extends AbstractGameObject {
 			Coordinate coords = getPosition();
             if (hasSides) {
 				boolean staticShade = CVar.get("enableAutoShade").getValueb();
-                if (!camera.getClipping(coords)[1])
+                if (!clippedTop)
                     renderSide(view, camera, coords, Side.TOP, staticShade);
-                if (!camera.getClipping(coords)[0])
+                if (!clippedLeft)
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
-                if (!camera.getClipping(coords)[2])
+                if (!clippedRight)
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
             } else
                 super.render(view, camera);
@@ -577,7 +597,7 @@ public class Block extends AbstractGameObject {
 	 * @param destructionSound 
 	 */
 	public static void setDestructionSound(String destructionSound) {
-		Block.destructionSound = destructionSound;
+		RenderBlock.destructionSound = destructionSound;
 	}
 	
     
@@ -621,4 +641,15 @@ public class Block extends AbstractGameObject {
 	public void setPosition(AbstractPosition pos) {
 		coord = pos.getCoord();
 	}
+	
+	public StorageBlock toStorageBlock(){
+		return new StorageBlock(getId(), getValue());
+	}
+	
+	public boolean hidingPastBlock(){
+		return (hasSides() && !isTransparent()
+			||
+			isLiquid() && isLiquid());
+	}
+			
 }

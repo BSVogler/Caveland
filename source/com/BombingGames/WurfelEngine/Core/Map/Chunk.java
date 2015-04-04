@@ -32,7 +32,8 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.DataIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -69,10 +70,6 @@ public class Chunk {
 	private final static char SIGN_EMPTYLAYER = '~';//126 OR 0x7e
 	private final static char SIGN_LINEFEED = 0x0A;//10 or 0x0A
 	
-	/**
-	 * the map in which the chunks are used
-	 */
-	private final ChunkMap map;
     /**
      *
      * @param meta
@@ -82,16 +79,23 @@ public class Chunk {
         blocksY = meta.getChunkBlocksY();
         blocksZ = meta.getChunkBlocksZ();
     }
+	
+	/**
+	 * the map in which the chunks are used
+	 */
+	private final ChunkMap map;
+	
 	/**
 	 * chunk coordinate
 	 */
 	private final int coordX, coordY;
-    private final Block data[][][];
+    private final StorageBlock data[][][];
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
 	 */
 	private int cameraAccessCounter = 0;
+	private Coordinate topleft;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -104,7 +108,8 @@ public class Chunk {
 		this.coordY = coordY;
 		this.map = map;
 		
-		data = new Block[blocksX][blocksY][blocksZ];
+		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
+		data = new StorageBlock[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
@@ -148,14 +153,14 @@ public class Chunk {
 	 * @param dt
 	 */
 	public void update(float dt){
-		for (Block[][] x : data) {
-			for (Block[] y : x) {
-				for (Block z : y) {
-					if (z!=null)
-						z.update(dt);
-				}
-			}
-		}
+//		for (StorageBlock[][] x : data) {
+//			for (StorageBlock[] y : x) {
+//				for (StorageBlock z : y) {
+//					if (z!=null)
+//						z.update(dt);
+//				}
+//			}
+//		}
 		
 		processModification();
 	}
@@ -184,7 +189,7 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					Block block = Block.getInstance(
+					StorageBlock block = new StorageBlock(
 						generator.generate(
 							left+x,
 							top+y,
@@ -192,15 +197,6 @@ public class Chunk {
 						),
 						0
 					);
-					if (block != null)
-						block.setPosition(
-							new Coordinate(
-								map,
-								left+x,
-								top+y,
-								z
-							)
-						);
                     data[x][y][z] = block;
 				}
 		modified = true;
@@ -267,15 +263,7 @@ public class Chunk {
 										id = fis.read();
 									int value = fis.read();
 									if (id > 0) {
-										data[x][y][z] = Block.getInstance(id, value);
-										data[x][y][z].setPosition(
-											new Coordinate(
-												map, 
-												coordX*blocksX+x,
-												coordY*blocksY+y,
-												z
-											)
-										);
+										data[x][y][z] = new StorageBlock(id, value);
 									} else 
 										data[x][y][z] =null;
 									x++;
@@ -415,7 +403,7 @@ public class Chunk {
      * Returns the data of the chunk
      * @return 
      */
-    public Block[][][] getData() {
+    public StorageBlock[][][] getData() {
         return data;
     }
 
@@ -468,8 +456,8 @@ public class Chunk {
 	public boolean hasCoord(Coordinate coord){
 		int x = coord.getX();
 		int y = coord.getY();
-		int left = data[0][0][0].getPosition().getX();
-		int top = data[0][0][0].getPosition().getY();
+		int left = topleft.getX();
+		int top = topleft.getY();
 		return (x >= left
 				&& x < left + blocksX
 				&& y >= top
@@ -527,8 +515,8 @@ public class Chunk {
 			data,
 			startingZ,
 			limitZ,
-			data[0][0][0].getPosition().getX(),
-			data[0][0][0].getPosition().getY()
+			topleft.getX(),
+			topleft.getY()
 		);
 	}
 
@@ -553,7 +541,7 @@ public class Chunk {
 	 * @return
 	 */
 	public Coordinate getTopLeftCoordinate(){
-		return data[0][0][0].getPosition();
+		return topleft;
 	}
 
 	/**
@@ -563,9 +551,9 @@ public class Chunk {
 	 * @param z coordinate
 	 * @return 
 	 */
-	public Block getBlock(int x, int y, int z) {
-		int xIndex = x-data[0][0][0].getPosition().getX();
-		int yIndex = y-data[0][0][0].getPosition().getY();
+	public StorageBlock getBlock(int x, int y, int z) {
+		int xIndex = x-topleft.getX();
+		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];
 	}
 
@@ -573,12 +561,12 @@ public class Chunk {
 	 * sets a block in the map. if position is under the map does nothing.
 	 * @param block 
 	 */
-	public void setBlock(Block block) {
-		int xIndex = block.getPosition().getX()-data[0][0][0].getPosition().getX();
-		int yIndex = block.getPosition().getY()-data[0][0][0].getPosition().getY();
+	public void setBlock(RenderBlock block) {
+		int xIndex = block.getPosition().getX()-topleft.getX();
+		int yIndex = block.getPosition().getY()-topleft.getY();
 		int z = block.getPosition().getZ();
 		if (z >= 0){
-			data[xIndex][yIndex][z] = block;
+			data[xIndex][yIndex][z] = block.toStorageBlock();
 			modified = true;
 		}
 	}
@@ -588,8 +576,8 @@ public class Chunk {
 	 * @param coord 
 	 */
 	public void destroyBlockOnCoord(Coordinate coord){
-		int xIndex = coord.getX()-data[0][0][0].getPosition().getX();
-		int yIndex = coord.getY()-data[0][0][0].getPosition().getY();
+		int xIndex = coord.getX()-topleft.getX();
+		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();
 		if (z >= 0){
 			data[xIndex][yIndex][z] = null;

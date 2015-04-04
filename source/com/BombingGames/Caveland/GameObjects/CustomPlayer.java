@@ -6,7 +6,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -355,7 +355,7 @@ public class CustomPlayer extends Controllable {
 
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-		entities.addAll(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+		entities.addAll(getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
 		//check hit
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
@@ -374,7 +374,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//destroy blocks
-		if (getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2)
+		if (getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2)
 			.addVector(getAiming().scl(80)).getCoord().damage(damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);

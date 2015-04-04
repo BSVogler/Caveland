@@ -30,7 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
@@ -74,7 +74,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @return 
 	 */
 	@Override
-	public Block next() throws NoSuchElementException {
+	public StorageBlock next() throws NoSuchElementException {
 		if (useChunks) {
 			if (!blockIterator.hasNext()){
 				//reached end of chunk, move to next chunk
@@ -97,7 +97,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 				}
 			}
 
-			return blockIterator.next();
+			return (StorageBlock) blockIterator.next();
 		} else {
 			return mmI.next();//todo only return blocks in viewport
 		}
@@ -109,7 +109,13 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 */
 	public int[] getCurrentIndex(){
 		if (useChunks){
-			return blockIterator.getCurrentIndex();
+			int[] inChunk = blockIterator.getCurrentIndex();
+			return new int[]{
+				(current.getChunkX()-centerChunkX+1)*Chunk.getBlocksX()+inChunk[0],
+				(current.getChunkY()-centerChunkY+1)*Chunk.getBlocksY()+inChunk[1],
+				inChunk[2]
+			};
+				
 		} else {
 			return mmI.getCurrentIndex();
 		}

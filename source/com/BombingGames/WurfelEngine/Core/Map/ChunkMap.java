@@ -30,7 +30,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -59,12 +60,12 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @param array the data you want to copy
      * @return The copy of the array-
      */
-    private static Block[][][] copyBlocks(final Block[][][] array) {
-        Block[][][] copy = new Block[array.length][][];
+    private static RenderBlock[][][] copyBlocks(final RenderBlock[][][] array) {
+        RenderBlock[][][] copy = new RenderBlock[array.length][][];
         for (int i = 0; i < array.length; i++) {
-            copy[i] = new Block[array[i].length][];
+            copy[i] = new RenderBlock[array[i].length][];
             for (int j = 0; j < array[i].length; j++) {
-                copy[i][j] = new Block[array[i][j].length];
+                copy[i][j] = new RenderBlock[array[i][j].length];
                 System.arraycopy(
                     array[i][j], 0, copy[i][j], 0, 
                     array[i][j].length
@@ -176,7 +177,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return the single block you wanted
      */
 	@Override
-    public Block getBlock(final int x, final int y, final int z){
+    public StorageBlock getBlock(final int x, final int y, final int z){
 		return getBlock(new Coordinate(this, x, y, z)); 
     }
     
@@ -186,7 +187,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return
      */
 	@Override
-    public Block getBlock(final Coordinate coord){
+    public StorageBlock getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		Chunk chunk = getChunk(coord);
@@ -203,7 +204,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 * @see #destroyBlockOnCoord(Coordinate) 
      */
 	@Override
-    public void setBlock(final Block block) {
+    public void setBlock(final RenderBlock block) {
 		getChunk(block.getPosition()).setBlock(block);
     }
 	
@@ -353,28 +354,11 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			//if (!iter.hasNsextX())
 			//	System.out.print("\n");
 			
-			Block block = iter.next();
+			StorageBlock block = iter.next();
 			if (block.getId()==0)
 				System.out.print("  ");
 			else
 				System.out.print(block.getId() + " ");
-		}
-	}
-	
-		/**
-	 * prints the map to console
-	 */
-	@Override
-	public final void printCoords() {
-		MemoryMapIterator iter = getIterator(0, blocksZ-1);
-		while (iter.hasNext()){
-		//	if (!iter.hasNextY() && !iter.hasNextX())
-		//		System.out.print("\n\n");
-		//	if (!iter.hasNextX())
-		//		System.out.print("\n");
-			
-			Block block = iter.next();
-			System.out.print(block.getPosition()+" ");
 		}
 	}
 	

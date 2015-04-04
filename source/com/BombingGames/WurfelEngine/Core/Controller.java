@@ -31,7 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
@@ -238,7 +238,7 @@ public class Controller implements GameManager {
     public static void disposeClass(){
         Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
-        Block.staticDispose();
+        RenderBlock.staticDispose();
         map.dispose();
 		map = null;
         lightEngine = null;

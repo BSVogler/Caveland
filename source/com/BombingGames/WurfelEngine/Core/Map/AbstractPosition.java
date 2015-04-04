@@ -29,7 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.badlogic.gdx.math.Vector3;
 import java.io.Serializable;
 
@@ -100,14 +100,14 @@ public abstract class AbstractPosition implements Serializable {
      * @return Get the block at the position. If the coordiante is not in memory crash. Faster than "getBlockSafe()"
      * @see #getBlockSafe() 
      */
-    public abstract Block getBlock();
+    public abstract StorageBlock getBlock();
     
     /**
      * Slower than getBlock().
      * @return Get the block at the position. If the coordiante is outside the map return null. 
      *  @see #getBlock() 
      */
-    public abstract Block getBlockSafe();
+    public abstract StorageBlock getBlockSafe();
 
     /**
      *

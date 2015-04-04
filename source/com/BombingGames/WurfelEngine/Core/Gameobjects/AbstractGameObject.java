@@ -47,7 +47,7 @@ import java.io.Serializable;
  *An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
-public abstract class AbstractGameObject implements Serializable {
+public abstract class AbstractGameObject implements Serializable, HasID {
 	private transient static final long serialVersionUID = 2L;
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
@@ -440,10 +440,7 @@ public abstract class AbstractGameObject implements Serializable {
 	
     //getter & setter
 
-	/**
-     * returns the id of a object
-     * @return getId
-     */
+	@Override
     public int getId() {
         return this.id;
     }
@@ -456,11 +453,7 @@ public abstract class AbstractGameObject implements Serializable {
 		return graphicsID;
 	}
 
-    /**
-     * How bright is the object?
-     * The lightlevel is a scale applied to the color. 1 is default value.
-     * @return 1 is default bright. 0 is black.
-     */
+	@Override
     public float getLightlevel() {
         return lightlevel;
     }
@@ -471,10 +464,7 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public abstract String getName();
     
-    /**
-     * Get the value. It is like a sub-id and can identify the status.
-     * @return in range [0;{@link #VALUESNUM}]. Is -1 if about to destroyed.
-     */
+	@Override
     public int getValue() {
         return value;
     }
@@ -511,19 +501,12 @@ public abstract class AbstractGameObject implements Serializable {
         return obstacle;
     }
 
-    /**
-     * Can light travel through object?
-     * @return
-     */
+	@Override
     public boolean isTransparent() {
         return transparent;
     }
 
-    /**
-     * Set the brightness of the object.
-     * The lightlevel is a scaling factor between.
-     * @param lightlevel 1 is default bright. 0 is black.
-     */
+	@Override
     public void setLightlevel(float lightlevel) {
         this.lightlevel = lightlevel;
     }

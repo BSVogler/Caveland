@@ -31,7 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.LoadMenu;
@@ -103,7 +103,7 @@ public class GameView extends View implements GameManager {
         //font.scale(-0.5f);
         
         //load sprites
-        Block.loadSheet();
+        RenderBlock.loadSheet();
     }
     
     /**

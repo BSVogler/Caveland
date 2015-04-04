@@ -33,7 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class Point extends AbstractPosition {
      * @return in grid coordinates.
      */
     public float getZGrid() {
-        return (int) (z/Block.GAME_EDGELENGTH);
+        return (int) (z/RenderBlock.GAME_EDGELENGTH);
     }
 
     /**
@@ -119,7 +120,7 @@ public class Point extends AbstractPosition {
 			map,	
             (int) Math.floor(getX() / (float) AbstractGameObject.GAME_DIAGLENGTH),
             (int) Math.floor(getY() / (float) AbstractGameObject.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
-			(int) Math.floor(z/Block.GAME_EDGELENGTH)
+			(int) Math.floor(z/RenderBlock.GAME_EDGELENGTH)
 		);
 		//clamp at top border
 		if (coords.getZ() >= Chunk.getBlocksZ())
@@ -181,7 +182,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
+		return getZ() - getZGrid()*RenderBlock.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -197,12 +198,12 @@ public class Point extends AbstractPosition {
 	}
 	
     @Override
-    public Block getBlock() {
+    public StorageBlock getBlock() {
         return Controller.getMap().getBlock(getCoord());
     }
     
     @Override
-    public Block getBlockSafe(){
+    public StorageBlock getBlockSafe(){
         if (isInMemoryAreaHorizontal())
             return getCoord().getBlock();
         else return null;
@@ -392,14 +393,14 @@ public class Point extends AbstractPosition {
 				/** Point of intersection */
                 Point isectP = new Point(map, curX, curY, curZ);
                 if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
-				Block block = isectP.getBlock();
+				StorageBlock block = isectP.getBlock();
                 //intersect?
                 if ((
 					camera==null
 					||
 					(
 						(
-							curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH
+							curZ < camera.getZRenderingLimit()*RenderBlock.GAME_EDGELENGTH
 							&& !camera.isClipped(isectP.getCoord())
 						)
 					)
@@ -410,10 +411,10 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (Block.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
-                        % Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
+                        (RenderBlock.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? RenderBlock.GAME_DIAGLENGTH2 : 0))
+                        % RenderBlock.GAME_DIAGLENGTH)) % RenderBlock.GAME_DIAGLENGTH
                         <
-                        Block.GAME_DIAGLENGTH2
+                        RenderBlock.GAME_DIAGLENGTH2
                     ) {
 						normal.y = 0;
                         normal.x = -1;

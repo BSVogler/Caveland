@@ -41,7 +41,7 @@ public interface BlockFactory {
      * @param value An 123 &gt; <i>value</i> &gt; 39
      * @return 
      */
-    public abstract Block produce(int id, int value);
+    public abstract RenderBlock produce(int id, int value);
 
 	/**
 	 * Read the name of a id value combination.

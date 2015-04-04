@@ -34,9 +34,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.MapEditor.Toolbar.Tool;
@@ -338,7 +339,7 @@ public class MapEditorView extends GameView {
 			Coordinate coords = selection.getPosition().getCoord();
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
-                Block block = coords.getBlock();
+                StorageBlock block = coords.getBlock();
                 leftColorGUI.setBlock(block.getId(), block.getValue());
             } else {
 				Tool toggledTool;
@@ -351,7 +352,7 @@ public class MapEditorView extends GameView {
 				
 				switch (toggledTool){
 					case DRAW:
-						Block block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
+						RenderBlock block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
 						Controller.getMap().setBlock(block);
 						break;
 					case REPLACE:
@@ -452,10 +453,10 @@ public class MapEditorView extends GameView {
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
 					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){
-						Block block = leftColorGUI.getBlock(coords);
+						RenderBlock block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setBlock(block);
 					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
-						Block block = null;
+						RenderBlock block = null;
 						Controller.getMap().setBlock(block);
 					} else return false;
 				}

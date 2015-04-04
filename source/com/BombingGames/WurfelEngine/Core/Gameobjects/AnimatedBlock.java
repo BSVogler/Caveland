@@ -32,7 +32,7 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  *A block who has an animation.
  * @author Benedikt
  */
-public class AnimatedBlock extends Block implements Animatable{
+public class AnimatedBlock extends RenderBlock implements Animatable{
 	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private int counter = 0;
@@ -45,7 +45,7 @@ public class AnimatedBlock extends Block implements Animatable{
 	private boolean runningForth;
     
     /**
-     * Create this Block with an array wich has the time of every animation step in ms in it.
+     * Create this RenderBlock with an array wich has the time of every animation step in ms in it.
      * @param id the id of the block.
      * @param animationsinformation  an array wich has the duraion of every animationstep inside
      * @param  autostart True when it should automatically start.

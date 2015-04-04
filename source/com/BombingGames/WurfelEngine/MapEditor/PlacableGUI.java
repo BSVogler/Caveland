@@ -31,7 +31,7 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.WE;
@@ -150,10 +150,10 @@ public class PlacableGUI extends WidgetGroup {
 	/**
 	 * Get a new instance of a selected block.
 	 * @param coord the position of the block instance
-	 * @return a new Block instance of the selected id and value.
+	 * @return a new RenderBlock instance of the selected id and value.
 	 */
-	public Block getBlock(Coordinate coord){
-		Block block = Block.getInstance(id, value);
+	public RenderBlock getBlock(Coordinate coord){
+		RenderBlock block = RenderBlock.getInstance(id, value);
 		block.setPosition(coord);
 		return block;
 	}

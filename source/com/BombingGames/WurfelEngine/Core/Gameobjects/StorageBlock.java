@@ -1,12 +1,12 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 /**
- *A block which stores only id and value and is only used for storing in memory. Stores only 8 byte. Want to reduce it to 4 byte.
+ *A block which stores only id and value and is only used for storing in memory. Stores only 8 byte.
  * @author Benedikt Vogler
  */
 public class StorageBlock implements HasID {
 	private int identifier;
-	private float lightlevel;
+	private float lightlevel;//saved here because it saves recalcualtion for every camera
 
 
 	public StorageBlock(int id) {

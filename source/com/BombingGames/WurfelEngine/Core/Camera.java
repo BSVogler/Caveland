@@ -706,7 +706,12 @@ map.getGameWidth(),
 			for (int y = 0; y < viewFrustum[x].length; y++) {
 				viewFrustum[x][y][0] = map.getGroundBlock().toBlock();
 				viewFrustum[x][y][0].setPosition(
-					new Coordinate(map, leftCoverBorder+x, backCoverBorder+y, 0)
+					new Coordinate(
+						map,
+						leftCoverBorder+x,
+						backCoverBorder+y,
+						-1
+					)
 				);
 			}
 		}

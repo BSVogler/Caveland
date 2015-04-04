@@ -179,13 +179,15 @@ public class Chunk {
      * @param generator 
      */
     private void fill(final int chunkCoordX, final int chunkCoordY, final Generator generator){
+		int left = blocksX*chunkCoordX;
+		int top = blocksY*chunkCoordY;
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
 					Block block = Block.getInstance(
 						generator.generate(
-							blocksX*chunkCoordX+x,
-							blocksY*chunkCoordY+y,
+							left+x,
+							top+y,
 							z
 						),
 						0
@@ -194,12 +196,12 @@ public class Chunk {
 						block.setPosition(
 							new Coordinate(
 								map,
-								blocksX*chunkCoordX+x,
-								blocksY*chunkCoordY+y,
+								left+x,
+								top+y,
 								z
 							)
 						);
-                    data[x][y][z] = block;//relative to chunk to map absolute
+                    data[x][y][z] = block;
 				}
 		modified = true;
     }

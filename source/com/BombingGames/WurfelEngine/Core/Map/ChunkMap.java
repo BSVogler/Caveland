@@ -199,7 +199,8 @@ public class ChunkMap extends AbstractMap implements Cloneable {
     
     /**
      * Replace a block. Assume that the map already has been filled at this coordinate.
-     * @param block
+     * @param block no null value.
+	 * @see #destroyBlockOnCoord(Coordinate) 
      */
 	@Override
     public void setBlock(final Block block) {

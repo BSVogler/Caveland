@@ -118,10 +118,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private static Texture textureDiff;
 	private static Texture textureNormal;
 	
-    private final int id; 
-    private byte value;
+    private StorageBlock coreData;
     private boolean obstacle, transparent, hidden; 
-    private float lightlevel = 1f;
     private float rotation;
 	private float scaling;
 	private int graphicsID;
@@ -142,9 +140,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(int id, int value) {
-        this.id = id;
+        coreData = new StorageBlock(id, value);
 		this.graphicsID = id;
-        this.value = (byte)value;
     }
     
     /**
@@ -380,8 +377,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @param color color which gets multiplied with the tint. No change ( multiply with 1) is RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
-		if (id != 0){
-			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
+		if (getId() != 0){
+			AtlasRegion texture = getSprite(getCategory(), graphicsID, getValue());
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth/2 - texture.offsetX,
@@ -440,9 +437,18 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     //getter & setter
 
+	public StorageBlock getCoreData() {
+		return coreData;
+	}
+
 	@Override
     public int getId() {
-        return this.id;
+        return coreData.getId();
+    }
+	
+	@Override
+    public int getValue() {
+        return coreData.getValue();
     }
 
 	/**
@@ -455,7 +461,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 
 	@Override
     public float getLightlevel() {
-        return lightlevel;
+        return coreData.getLightlevel();
     }
 
     /**
@@ -464,10 +470,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      */
     public abstract String getName();
     
-	@Override
-    public int getValue() {
-        return value;
-    }
+
 
     /**
      * Returns the rotation of the object.
@@ -508,7 +511,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 
 	@Override
     public void setLightlevel(float lightlevel) {
-        this.lightlevel = lightlevel;
+        this.coreData.setLightlevel(lightlevel);
     }
 
     /**
@@ -532,7 +535,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @param value
      */
     public void setValue(int value) {
-        this.value = (byte)value;
+        this.coreData.setValue(value);
     }
 
 
@@ -620,7 +623,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getAtlasRegion(){
-		return getSprite(getCategory(), graphicsID, value);
+		return getSprite(getCategory(), graphicsID, getValue());
 	}
-
 }

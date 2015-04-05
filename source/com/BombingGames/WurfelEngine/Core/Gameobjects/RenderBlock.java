@@ -47,7 +47,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * @see StorageBlock
  * @author Benedikt Vogler
  */
-public class RenderBlock extends AbstractGameObject{
+public class RenderBlock extends AbstractGameObject {
     private static final long serialVersionUID = 1L;
 	/**
 	 * {id}{value}{side}
@@ -73,7 +73,23 @@ public class RenderBlock extends AbstractGameObject{
 	public static void setDestructionAction(BlockDestructionAction DestructionAction) {
 		RenderBlock.destructionAction = DestructionAction;
 	}
-	private boolean clippedTop;
+	
+	/**
+	 * Implements the command pattern.
+	 * @see #setDestructionAction(BlockDestructionAction) 
+	 * @since v1.4.20
+	 */
+	public static interface BlockDestructionAction {
+		/**
+		 * the method performed if a block is destroyed
+		 * @param block
+		 * @since v1.4.20
+		 */
+		public void action(RenderBlock block);
+	}
+    
+	private Coordinate coord;
+    private boolean clippedTop;
 	private boolean clippedRight;
 	private boolean clippedLeft;
 
@@ -92,25 +108,6 @@ public class RenderBlock extends AbstractGameObject{
 	public boolean isClipped() {
 		return clippedLeft && clippedRight && clippedTop;
 	}
-	
-	/**
-	 * Implements the command pattern.
-	 * @see #setDestructionAction(BlockDestructionAction) 
-	 * @since v1.4.20
-	 */
-	public static interface BlockDestructionAction {
-		/**
-		 * the method performed if a block is destroyed
-		 * @param block
-		 * @since v1.4.20
-		 */
-		public void action(RenderBlock block);
-	}
-    
-    private boolean liquid;
-    private boolean hasSides = true;
-	private Coordinate coord;
-    
     /**
      * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead. You can extend this to implement own blocks.
      * @param id
@@ -191,7 +188,6 @@ public class RenderBlock extends AbstractGameObject{
                         block = new RenderBlock(id); //static water
                     else
                         block = new Sea(id); //Sea
-                    block.liquid = true;
                     block.setTransparent(true);
                     break;
             case 20: block = new RenderBlock(id);
@@ -199,16 +195,13 @@ public class RenderBlock extends AbstractGameObject{
                     break;
             case 34: block = new RenderBlock(id); //flower
                     block.setTransparent(true);
-                    block.hasSides = false;
                     break;
             case 35: block = new RenderBlock(id); //bush
                     block.setTransparent(true);
-                    block.hasSides = false;
                     break;
 			case 36:
 					block = new RenderBlock(id); //tree
                     block.setTransparent(true);
-                    block.hasSides = false;
 					block.setObstacle(true);
 				break;
             default:
@@ -332,7 +325,7 @@ public class RenderBlock extends AbstractGameObject{
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (RenderBlock.getInstance(id,value).hasSides){//if has sides, take top block    
+            if (StorageBlock.hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -348,27 +341,11 @@ public class RenderBlock extends AbstractGameObject{
         } else return colorlist[id][value].cpy(); //return value when in list
     }
 
-    /**
-     * Check if the block is liquid.
-     * @return true if liquid, false if not 
-     */
-    public boolean isLiquid() {
-        return liquid;
-    } 
-    
-    /**
-     * Is the block a true block with sides or represents it another thing like a flower?
-     * @return 
-     */
-    public boolean hasSides() {
-        return hasSides;
-    } 
-    
     @Override
     public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {
 			Coordinate coords = getPosition();
-            if (hasSides) {
+            if (getCoreData().hasSides()) {
 				boolean staticShade = CVar.get("enableAutoShade").getValueb();
                 if (!clippedTop)
                     renderSide(view, camera, coords, Side.TOP, staticShade);
@@ -390,7 +367,7 @@ public class RenderBlock extends AbstractGameObject{
     @Override
     public void render(final GameView view, final int xPos, final int yPos) {
         if (!isHidden()) {
-            if (hasSides) {
+            if (getCoreData().hasSides()) {
 				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Side.TOP);
 				renderSide(view, xPos, yPos, Side.LEFT);
 				renderSide(view, xPos+VIEW_WIDTH2, yPos, Side.RIGHT);
@@ -410,7 +387,7 @@ public class RenderBlock extends AbstractGameObject{
      */
     public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
         if (!isHidden()) {
-            if (hasSides) {
+            if (getCoreData().hasSides()) {
 				renderSide(
 					view,
 					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
@@ -576,21 +553,6 @@ public class RenderBlock extends AbstractGameObject{
     public static AtlasRegion[][][] getBlocksprites() {
         return blocksprites;
     }
-    
-    /**
-     * Removes the flag that this block has sides. The default is true.
-     */
-    public void setNoSides(){
-        hasSides=false;
-    }
-	
-	/**
-	 *
-	 * @param liquid
-	 */
-	public void setLiquid(boolean liquid){
-		this.liquid = liquid;
-	}
 
 	/**
 	 * set the sound to be played if a block gets destroyed.
@@ -646,10 +608,14 @@ public class RenderBlock extends AbstractGameObject{
 		return new StorageBlock(getId(), getValue());
 	}
 	
+	/**
+	 * hides the block after it?
+	 * @return 
+	 */
 	public boolean hidingPastBlock(){
-		return (hasSides() && !isTransparent()
+		return (getCoreData().hasSides()) && !isTransparent()
 			||
-			isLiquid() && isLiquid());
+			getCoreData().isLiquid();
 	}
 			
 }

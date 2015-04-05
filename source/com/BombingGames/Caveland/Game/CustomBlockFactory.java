@@ -3,9 +3,9 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -43,11 +43,11 @@ public RenderBlock produce(int id, int value) {
 		case 70:
 			block = RenderBlock.createBasicInstance(id); 
 			block.setTransparent(true);
-			block.setNoSides();
+			//block.setNoSides();
 		break;
 		case 71:
 			block = new ExplosiveBarrel(id);
-			block.setNoSides();
+			//block.setNoSides();
 		break;
 		case 72:
 			block = new CustomTree(value);
@@ -82,7 +82,7 @@ public RenderBlock produce(int id, int value) {
 
 		RailBlock() {
 			super(55);
-			setNoSides();
+			//setNoSides();
 			setTransparent(true);
 			setObstacle(false);
 		}

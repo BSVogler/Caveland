@@ -29,7 +29,6 @@ public class CustomTree extends RenderBlock {
 	public CustomTree(int value) {
 		super(72);
 		setValue(value);
-		setNoSides();
 		setObstacle(true);
 		setTransparent(true);
 		

@@ -33,8 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -198,12 +198,12 @@ public class Point extends AbstractPosition {
 	}
 	
     @Override
-    public StorageBlock getBlock() {
+    public CoreData getBlock() {
         return Controller.getMap().getBlock(getCoord());
     }
     
     @Override
-    public StorageBlock getBlockSafe(){
+    public CoreData getBlockSafe(){
         if (isInMemoryAreaHorizontal())
             return getCoord().getBlock();
         else return null;
@@ -393,7 +393,7 @@ public class Point extends AbstractPosition {
 				/** Point of intersection */
                 Point isectP = new Point(map, curX, curY, curZ);
                 if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
-				StorageBlock block = isectP.getBlock();
+				CoreData block = isectP.getBlock();
                 //intersect?
                 if ((
 					camera==null

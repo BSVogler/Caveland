@@ -32,8 +32,8 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -726,7 +726,7 @@ map.getGameWidth(),
 		);
 		
 		while (csIter.hasNext()) {
-			StorageBlock block = csIter.next();
+			CoreData block = csIter.next();
 			if (block != null) {
 				int[] ind = csIter.getCurrentIndex();
 				viewFrustum[ind[0]][ind[1]][ind[2]] = block.toBlock();

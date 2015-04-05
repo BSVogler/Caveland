@@ -4,16 +4,16 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  *A small object which stores only id and value and is only used for storing in memory. Stores only 8 byte.
  * @author Benedikt Vogler
  */
-public class StorageBlock implements HasID {
+public class CoreData implements HasID {
 	private int identifier;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
 
-	public StorageBlock(int id) {
+	public CoreData(int id) {
 		this.identifier = id;
 	}
 	
-	public StorageBlock(int id, int value) {
+	public CoreData(int id, int value) {
 		this.identifier = (value<<8)+id;
 	}
 	
@@ -78,7 +78,7 @@ public class StorageBlock implements HasID {
 	}
 	
 	public static boolean hasSides(int id, int value){
-		return new StorageBlock(id, value).hasSides();
+		return new CoreData(id, value).hasSides();
 	}
 
 	void setValue(int value) {

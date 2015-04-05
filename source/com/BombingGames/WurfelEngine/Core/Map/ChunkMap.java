@@ -30,8 +30,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
@@ -177,7 +177,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return the single block you wanted
      */
 	@Override
-    public StorageBlock getBlock(final int x, final int y, final int z){
+    public CoreData getBlock(final int x, final int y, final int z){
 		return getBlock(new Coordinate(this, x, y, z)); 
     }
     
@@ -187,7 +187,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return
      */
 	@Override
-    public StorageBlock getBlock(final Coordinate coord){
+    public CoreData getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		Chunk chunk = getChunk(coord);
@@ -354,7 +354,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			//if (!iter.hasNsextX())
 			//	System.out.print("\n");
 			
-			StorageBlock block = iter.next();
+			CoreData block = iter.next();
 			if (block.getId()==0)
 				System.out.print("  ");
 			else

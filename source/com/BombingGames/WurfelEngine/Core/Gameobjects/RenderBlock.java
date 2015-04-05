@@ -44,7 +44,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  * A RenderBlock is a wonderful piece of information and a geometrical object. It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras.
- * @see StorageBlock
+ * @see CoreData
  * @author Benedikt Vogler
  */
 public class RenderBlock extends AbstractGameObject {
@@ -325,7 +325,7 @@ public class RenderBlock extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (StorageBlock.hasSides(id, value)){//if has sides, take top block    
+            if (CoreData.hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -604,8 +604,8 @@ public class RenderBlock extends AbstractGameObject {
 		coord = pos.getCoord();
 	}
 	
-	public StorageBlock toStorageBlock(){
-		return new StorageBlock(getId(), getValue());
+	public CoreData toStorageBlock(){
+		return new CoreData(getId(), getValue());
 	}
 	
 	/**

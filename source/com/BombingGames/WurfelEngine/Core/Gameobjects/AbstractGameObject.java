@@ -118,7 +118,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private static Texture textureDiff;
 	private static Texture textureNormal;
 	
-    private StorageBlock coreData;
+    private CoreData coreData;
     private boolean obstacle, transparent, hidden; 
     private float rotation;
 	private float scaling;
@@ -140,7 +140,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(int id, int value) {
-        coreData = new StorageBlock(id, value);
+        coreData = new CoreData(id, value);
 		this.graphicsID = id;
     }
     
@@ -437,7 +437,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     //getter & setter
 
-	public StorageBlock getCoreData() {
+	public CoreData getCoreData() {
 		return coreData;
 	}
 

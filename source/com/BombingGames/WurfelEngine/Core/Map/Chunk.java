@@ -32,8 +32,8 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.DataIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -89,7 +89,7 @@ public class Chunk {
 	 * chunk coordinate
 	 */
 	private final int coordX, coordY;
-    private final StorageBlock data[][][];
+    private final CoreData data[][][];
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
@@ -109,7 +109,7 @@ public class Chunk {
 		this.map = map;
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
-		data = new StorageBlock[blocksX][blocksY][blocksZ];
+		data = new CoreData[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
@@ -189,7 +189,7 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					StorageBlock block = new StorageBlock(
+					CoreData block = new CoreData(
 						generator.generate(
 							left+x,
 							top+y,
@@ -263,7 +263,7 @@ public class Chunk {
 										id = fis.read();
 									int value = fis.read();
 									if (id > 0) {
-										data[x][y][z] = new StorageBlock(id, value);
+										data[x][y][z] = new CoreData(id, value);
 									} else 
 										data[x][y][z] =null;
 									x++;
@@ -403,7 +403,7 @@ public class Chunk {
      * Returns the data of the chunk
      * @return 
      */
-    public StorageBlock[][][] getData() {
+    public CoreData[][][] getData() {
         return data;
     }
 
@@ -551,7 +551,7 @@ public class Chunk {
 	 * @param z coordinate
 	 * @return 
 	 */
-	public StorageBlock getBlock(int x, int y, int z) {
+	public CoreData getBlock(int x, int y, int z) {
 		int xIndex = x-topleft.getX();
 		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];

@@ -33,8 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -238,7 +238,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public StorageBlock getBlock() {
+	public CoreData getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
 		} else {
@@ -252,7 +252,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return
 	 */
 	@Override
-	public StorageBlock getBlockSafe() {
+	public CoreData getBlockSafe() {
 		if (isInMemoryAreaHorizontal()) {
 			return Controller.getMap().getBlock(this);
 		} else {
@@ -270,7 +270,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlocks(int x, int y, int z) {
-		StorageBlock block = Controller.getMap().getBlock(
+		CoreData block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return (block != null && block.hasSides() && !block.isTransparent());
@@ -299,7 +299,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlock(int x, int y, int z) {
-		StorageBlock block = Controller.getMap().getBlock(
+		CoreData block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return block != null

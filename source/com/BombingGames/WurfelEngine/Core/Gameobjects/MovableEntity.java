@@ -250,7 +250,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
 				}
 
-				StorageBlock block = getPosition().getBlock();
+				CoreData block = getPosition().getBlock();
 				if (!inliquid && block != null && block.isLiquid())//if enterin water
 					if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
 
@@ -451,7 +451,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-		StorageBlock block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
+		CoreData block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
         if (block!=null && block.isObstacle())
             colission = true;
         //bottom corner
@@ -702,7 +702,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (getPosition().getZ() > getPosition().getMap().getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
-				StorageBlock block = getPosition().getBlock();
+				CoreData block = getPosition().getBlock();
                 boolean colission =  (block != null && block.isObstacle()) || horizontalColission(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);//reverse
                 

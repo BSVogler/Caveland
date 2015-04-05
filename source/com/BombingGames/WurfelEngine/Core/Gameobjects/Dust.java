@@ -42,7 +42,7 @@ public class Dust extends AbstractEntity {
 		}
 		Vector3 step = direction.cpy().scl(dt/1000f);
 		getPosition().addVector(step);
-		StorageBlock block = getPosition().getBlock();
+		CoreData block = getPosition().getBlock();
 		if (block==null || block.isObstacle())
 			getPosition().addVector(step.scl(-1));
 			

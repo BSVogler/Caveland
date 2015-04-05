@@ -131,7 +131,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
             int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
             if (z > getPosition().getMap().getBlocksZ()-1) z = getPosition().getMap().getBlocksZ()-1;
 
-			StorageBlock block = new Coordinate(
+			CoreData block = new Coordinate(
 				getPosition().getMap(), 
 				position.getCoord().getX(),
 				position.getCoord().getY(),

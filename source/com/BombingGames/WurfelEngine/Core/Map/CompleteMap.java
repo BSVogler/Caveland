@@ -1,7 +1,7 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.StorageBlock;
 import java.io.IOException;
 
 /**
@@ -12,7 +12,7 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksX;
 	private static int blocksY;
 	private static int blocksZ;
-	private final StorageBlock[][][] data;
+	private final CoreData[][][] data;
 
 	public CompleteMap(final String name) throws IOException {
 		this(name, getDefaultGenerator());
@@ -24,12 +24,12 @@ public class CompleteMap extends AbstractMap {
 		blocksX = 100;
         blocksY = 200;
         blocksZ =  10;
-		data = new StorageBlock[blocksX][blocksY][blocksZ];
+		data = new CoreData[blocksX][blocksY][blocksZ];
 	}
 
 	
 	@Override
-	public StorageBlock getBlock(Coordinate coord) {
+	public CoreData getBlock(Coordinate coord) {
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		else
@@ -37,7 +37,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public StorageBlock getBlock(int x, int y, int z) {
+	public CoreData getBlock(int x, int y, int z) {
 		return data[blocksX/2+x][blocksY/2+y][z];
 	}
 
@@ -54,7 +54,7 @@ public class CompleteMap extends AbstractMap {
      * Get the data of the map
      * @return
      */
-	public StorageBlock[][][] getData() {
+	public CoreData[][][] getData() {
 		return data;
 	}
 

@@ -61,7 +61,7 @@ public class EntityShadow extends AbstractEntity {
 		else {
 			//find height of shadow surface
 			Coordinate newHeight = character.getPosition().getCoord();//start at same height
-			StorageBlock block = newHeight.getBlock();
+			CoreData block = newHeight.getBlock();
 			while (
 				newHeight.getZ() > 0
 				&& (block == null || block.isTransparent())

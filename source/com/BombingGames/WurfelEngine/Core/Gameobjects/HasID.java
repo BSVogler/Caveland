@@ -36,4 +36,10 @@ public interface HasID {
 	 * @return
 	 */
 	boolean isTransparent();
+	
+	    /**
+     * Is this object an obstacle or can you pass through?
+     * @return
+     */
+    public abstract boolean isObstacle();
 }

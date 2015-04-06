@@ -41,7 +41,6 @@ public RenderBlock produce(int id, int value) {
 		break;
 		case 70:
 			block = new RenderBlock(id); 
-			block.setTransparent(true);
 			//block.setNoSides();
 		break;
 		case 71:
@@ -82,7 +81,6 @@ public RenderBlock produce(int id, int value) {
 		RailBlock() {
 			super(55);
 			//setNoSides();
-			setTransparent(true);
 		}
 		
 		

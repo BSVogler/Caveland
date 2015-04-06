@@ -469,5 +469,9 @@ public class RenderBlock extends AbstractGameObject {
 			||
 			getCoreData().isLiquid();
 	}
-			
+
+	@Override
+	public boolean isTransparent() {
+		return getCoreData().isTransparent();
+	}
 }

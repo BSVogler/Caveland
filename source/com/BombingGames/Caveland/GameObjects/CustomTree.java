@@ -29,7 +29,6 @@ public class CustomTree extends RenderBlock {
 	public CustomTree(int value) {
 		super(72);
 		setValue(value);
-		setTransparent(true);
 		
 		if (getValue()==TREETOPVALUE)
 			setHidden(true);

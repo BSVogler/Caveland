@@ -47,10 +47,10 @@ public class CoreData implements HasID {
 		return new RenderBlock(identifier, getValue());
 	}
 
+	@Override
 	public boolean isObstacle() {
 		//todo
-		if (getId()==0) return false;
-		return true;
+		return getId() != 0;
 	}
 
 	@Override

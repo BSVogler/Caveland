@@ -51,7 +51,6 @@ public class Selection extends AbstractEntity {
      */
     public Selection() {
         super(13);
-        setLightlevel(10);
 		setSaveToDisk(false);
 		setName("selectionEntity");
         

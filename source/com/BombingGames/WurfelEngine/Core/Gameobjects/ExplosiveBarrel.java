@@ -48,7 +48,6 @@ public class ExplosiveBarrel extends RenderBlock {
      */
     public ExplosiveBarrel(int id){
         super(id);
-        setObstacle(true);
         if (explosionsound == null)
             explosionsound = "explosion2";
     }

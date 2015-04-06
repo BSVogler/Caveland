@@ -31,8 +31,7 @@ public RenderBlock produce(int id, int value) {
 			block = new Ore(id, Collectible.CollectibleType.COAL);
 		break;
 		case 46://sand
-			block = RenderBlock.createBasicInstance(id);
-			block.setObstacle(true);
+			block = new RenderBlock(id);
 		break;  
 		case 55:
 			block = new RailBlock();
@@ -41,7 +40,7 @@ public RenderBlock produce(int id, int value) {
 			block = new Machine();
 		break;
 		case 70:
-			block = RenderBlock.createBasicInstance(id); 
+			block = new RenderBlock(id); 
 			block.setTransparent(true);
 			//block.setNoSides();
 		break;
@@ -58,7 +57,7 @@ public RenderBlock produce(int id, int value) {
 //		break;
 		default:
 			Gdx.app.error("CustomBlockFactory", "Block "+id+" not defined.");
-			block = RenderBlock.createBasicInstance(id);
+			block = new RenderBlock(id);
 		}
 		return block;
 	}	
@@ -84,7 +83,6 @@ public RenderBlock produce(int id, int value) {
 			super(55);
 			//setNoSides();
 			setTransparent(true);
-			setObstacle(false);
 		}
 		
 		
@@ -95,7 +93,6 @@ public RenderBlock produce(int id, int value) {
 
 		Ore(int id, Collectible.CollectibleType def) {
 			super(id);
-			setObstacle(true);
 			this.def = def;
 		}
 

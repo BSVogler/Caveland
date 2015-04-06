@@ -1,7 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -20,7 +20,6 @@ public class Machine extends RenderBlock {
 	 */
 	public Machine() {
 		super(60);
-		setObstacle(true);
 	}
 
 	@Override

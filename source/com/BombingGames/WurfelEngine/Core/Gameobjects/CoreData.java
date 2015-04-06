@@ -1,10 +1,22 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 /**
- *A small object which stores only id and value and is only used for storing in memory. Stores only 8 byte.
+ *A small block object hich stores only id and value and is only used for storing in memory. Stores only 8 byte.
  * @author Benedikt Vogler
  */
 public class CoreData implements HasID {
+	private static BlockFactory customBlockFactory;
+	
+		/**
+	 * If you want to define custo id's >39
+	 *
+	 * @param customBlockFactory new value of customBlockFactory
+	 */
+	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
+		CoreData.customBlockFactory = customBlockFactory;
+	}
+	
+	
 	private int identifier;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
@@ -32,7 +44,7 @@ public class CoreData implements HasID {
 	 * @return 
 	 */
 	public RenderBlock toBlock(){
-		return RenderBlock.getInstance(identifier, getValue());
+		return new RenderBlock(identifier, getValue());
 	}
 
 	public boolean isObstacle() {
@@ -81,7 +93,57 @@ public class CoreData implements HasID {
 		return new CoreData(id, value).hasSides();
 	}
 
-	void setValue(int value) {
+	public void setValue(int value) {
 		this.identifier = (value<<8)+getValue();
+	}
+	
+	/**
+	 * get the name of a combination of id and value
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
+	public static String getName(final int id, final int value){
+		switch (id) {
+			case 0:
+				return "air";
+			case 1:
+				return "grass";
+			case 2:
+				return "dirt";
+			case 3:
+				return "???";
+			case 4:
+				return "???";
+			case 5:
+				return "???";
+			case 6:
+				return "???";
+			case 7:
+				return "???";
+			case 8:
+				return "sand";
+			case 9:
+				return "water";
+			case 10:
+				return "???";
+			case 34:
+				return "flower";
+			case 35:
+				return "bush";
+			case 36:
+				return "tree";
+								
+			default:
+				if (id > 39) {
+                    if (customBlockFactory!=null){
+                        return customBlockFactory.getName(id, value);
+                    } else {
+                        return "no custom blocks";
+                    }
+                } else {
+                    return "engine block not properly defined";
+                }
+		}
 	}
 }

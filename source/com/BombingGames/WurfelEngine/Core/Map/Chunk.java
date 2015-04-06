@@ -89,6 +89,9 @@ public class Chunk {
 	 * chunk coordinate
 	 */
 	private final int coordX, coordY;
+	/**
+	 * the ids are stored here
+	 */
     private final CoreData data[][][];
 	private boolean modified;
 	/**

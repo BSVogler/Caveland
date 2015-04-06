@@ -49,6 +49,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
     private boolean onMap;
+	private boolean obstacle;
 	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
 	private String name = "undefined";
@@ -305,6 +306,21 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public boolean isInMemoryArea() {
 		return position.isInMemoryAreaHorizontal();
 	}
+	
+	    /**
+     * Make the object to an obstacle or passable.
+     * @param obstacle true when obstacle. False when passable.
+     */
+    public void setObstacle(boolean obstacle) {
+        this.obstacle = obstacle;
+    }
+
+	@Override
+	public boolean isObstacle() {
+		return obstacle;
+	}
+	
+	
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();

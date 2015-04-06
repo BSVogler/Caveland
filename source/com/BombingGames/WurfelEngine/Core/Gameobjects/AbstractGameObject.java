@@ -119,7 +119,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private static Texture textureNormal;
 	
     private CoreData coreData;
-    private boolean obstacle, transparent, hidden; 
+    private boolean transparent, hidden; 
     private float rotation;
 	private float scaling;
 	private int graphicsID;
@@ -500,9 +500,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * Is this object an obstacle or can you pass through?
      * @return
      */
-    public boolean isObstacle() {
-        return obstacle;
-    }
+    public abstract boolean isObstacle();
 
 	@Override
     public boolean isTransparent() {
@@ -512,14 +510,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	@Override
     public void setLightlevel(float lightlevel) {
         this.coreData.setLightlevel(lightlevel);
-    }
-
-    /**
-     * Make the object to an obstacle or passable.
-     * @param obstacle true when obstacle. False when passable.
-     */
-    public void setObstacle(boolean obstacle) {
-        this.obstacle = obstacle;
     }
 
     /**

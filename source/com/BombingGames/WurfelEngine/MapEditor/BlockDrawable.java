@@ -50,7 +50,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      * @param id
      */
     public BlockDrawable(int id) {
-        this.block = RenderBlock.getInstance(id,0);
+        this.block = new RenderBlock(id,0);
 		block.setScaling(size);
     }
 	
@@ -62,7 +62,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 * @param size relative size
 	 */
 	BlockDrawable(int id, int value, float size) {
-		this.block = RenderBlock.getInstance(id,value);
+		this.block = new RenderBlock(id,value);
 		this.size = size;
 	}
 

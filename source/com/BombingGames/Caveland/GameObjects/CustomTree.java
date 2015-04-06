@@ -29,7 +29,6 @@ public class CustomTree extends RenderBlock {
 	public CustomTree(int value) {
 		super(72);
 		setValue(value);
-		setObstacle(true);
 		setTransparent(true);
 		
 		if (getValue()==TREETOPVALUE)
@@ -42,7 +41,7 @@ public class CustomTree extends RenderBlock {
 		//check and grow treetop
 		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
 		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
-			RenderBlock.getInstance(72, TREETOPVALUE).spawn(top);
+			new RenderBlock(72, TREETOPVALUE).spawn(top);
 	}
 
 	

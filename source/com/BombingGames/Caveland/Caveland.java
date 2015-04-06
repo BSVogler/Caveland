@@ -12,7 +12,7 @@ import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
@@ -46,7 +46,7 @@ public class Caveland {
 		//configure
         WE.setMainMenu(new MainMenuScreen());
 		WorkingDirectory.setApplicationName("Caveland");
-		RenderBlock.setCustomBlockFactory(new CustomBlockFactory());
+		CoreData.setCustomBlockFactory(new CustomBlockFactory());
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
 		
 		//register entities

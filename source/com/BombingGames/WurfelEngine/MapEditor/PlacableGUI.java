@@ -153,7 +153,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return a new RenderBlock instance of the selected id and value.
 	 */
 	public RenderBlock getBlock(Coordinate coord){
-		RenderBlock block = RenderBlock.getInstance(id, value);
+		RenderBlock block = new RenderBlock(id, value);
 		block.setPosition(coord);
 		return block;
 	}

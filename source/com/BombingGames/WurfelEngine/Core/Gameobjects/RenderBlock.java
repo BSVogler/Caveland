@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -60,8 +59,6 @@ public class RenderBlock extends AbstractGameObject {
      * a list where a representing color of the block is stored
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
-	private static BlockFactory customBlockFactory;
-		
 	private static BlockDestructionAction destructionAction;
 	
 	/**
@@ -72,6 +69,11 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public static void setDestructionAction(BlockDestructionAction DestructionAction) {
 		RenderBlock.destructionAction = DestructionAction;
+	}
+
+	@Override
+	public boolean isObstacle() {
+		return getCoreData().isObstacle();
 	}
 	
 	/**
@@ -108,169 +110,48 @@ public class RenderBlock extends AbstractGameObject {
 	public boolean isClipped() {
 		return clippedLeft && clippedRight && clippedTop;
 	}
-    /**
-     * Don't use this constructor to get a new block. Use the static <i>getInstance</i> methods instead. You can extend this to implement own blocks.
-     * @param id
-     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance() 
-     */
-    protected RenderBlock(int id){
+	
+	/**
+	 * 
+	 * @param id 
+	 */
+    public RenderBlock(int id){
         super(id,0);
-    } 
-
-	/**
-	 * If you want to define custo id's >39
-	 *
-	 * @param customBlockFactory new value of customBlockFactory
-	 */
-	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
-		RenderBlock.customBlockFactory = customBlockFactory;
+    }
+	
+	public RenderBlock(int id, int value){
+		super(id, value);
 	}
 
-    /**
-     * You can create a basic block if its id is not reserved. Else getInstace() is called.
-     * @param id non-reserved id's=> id>39
-     * @return 
-     */
-    public static RenderBlock createBasicInstance(final int id){
-        RenderBlock block; 
-        if (id>39) 
-            block = new RenderBlock(id);
-        else block = getInstance(id,0);
-        return block;
-    }
-    
-    /**
-     *  Create a block. If the block needs to know it's position you have to use <i>getInstance(int id, int value,int x, int y, int z)</i>
-     * @param id the block's id
-     * @return the wanted block.
-     */
-    public static RenderBlock getInstance(final int id){
-        return getInstance(id,0);
-    }
-    
-    /**
-     * Create a block through this factory method. If the block needs to know it's position you have to use this method and give the coordinates.
-     * @param id the id of the block
-     * @param value the value of the block, which is like a sub-id
-     * @return the RenderBlock
-     */
-    public static RenderBlock getInstance(final int id, final int value){
-        RenderBlock block;
-        //define the default SideSprites
-        switch (id){
-			case 0: return null;
-            case 1: block = new RenderBlock(id); //grass
-                    block.setObstacle(true);
-                    break;
-            case 2: block = new RenderBlock(id); //dirt
-                    block.setObstacle(true);
-                    break;
-            case 3: block = new RenderBlock(id); 
-                    block.setTransparent(false);
-                    block.setObstacle(true);
-                    break;
-            case 4: block = new RenderBlock(id); 
-                    block.setObstacle(true);
-                    break;
-            case 5: block = new RenderBlock(id); 
-                    block.setObstacle(true);
-                    break;
-            case 6: block = new RenderBlock(id); 
-                    block.setObstacle(true);
-                    break;
-            case 7: block = new RenderBlock(id); 
-                    block.setObstacle(true);
-                    break;
-            case 8: block = new RenderBlock(id); //sand
-                    block.setObstacle(true);
-                    break;      
-            case 9: if(Gdx.app.getType()==ApplicationType.Android)
-                        block = new RenderBlock(id); //static water
-                    else
-                        block = new Sea(id); //Sea
-                    block.setTransparent(true);
-                    break;
-            case 20: block = new RenderBlock(id);
-                    block.setObstacle(true);
-                    break;
-            case 34: block = new RenderBlock(id); //flower
-                    block.setTransparent(true);
-                    break;
-            case 35: block = new RenderBlock(id); //bush
-                    block.setTransparent(true);
-                    break;
-			case 36:
-					block = new RenderBlock(id); //tree
-                    block.setTransparent(true);
-					block.setObstacle(true);
-				break;
-            default:
-                if (id > 39) {
-                    if (customBlockFactory!=null){
-                        block = customBlockFactory.produce(id, value);
-                    } else {
-                        Gdx.app.error("Block", "No custom blockFactory found for "+id+". Using a default block instead.");
-                        block = new RenderBlock(id);
-                    }
-                } else {
-                    Gdx.app.error("Block", "Engine reserved block "+id+" not defined.");
-                    block = new RenderBlock(id);
-                }
-                break; 
-        }
-        block.setValue(value);
-        return block;
-    }  
-    
 	/**
-	 * get the name of a combination of id and value
-	 * @param id
-	 * @param value
-	 * @return 
+     *
+     * @return
+     */
+    public static AtlasRegion[][][] getBlocksprites() {
+        return blocksprites;
+    }
+
+	/**
+	 * set the sound to be played if a block gets destroyed.
+	 * @param destructionSound 
 	 */
-	public static String getName(final int id, final int value){
-		switch (id) {
-			case 0:
-				return "air";
-			case 1:
-				return "grass";
-			case 2:
-				return "dirt";
-			case 3:
-				return "???";
-			case 4:
-				return "???";
-			case 5:
-				return "???";
-			case 6:
-				return "???";
-			case 7:
-				return "???";
-			case 8:
-				return "sand";
-			case 9:
-				return "water";
-			case 10:
-				return "???";
-			case 34:
-				return "flower";
-			case 35:
-				return "bush";
-			case 36:
-				return "tree";
-								
-			default:
-				if (id > 39) {
-                    if (customBlockFactory!=null){
-                        return customBlockFactory.getName(id, value);
-                    } else {
-                        return "no custom blocks";
-                    }
-                } else {
-                    return "engine block not properly defined";
-                }
-		}
+	public static void setDestructionSound(String destructionSound) {
+		RenderBlock.destructionSound = destructionSound;
 	}
+	
+    
+    /**
+     *
+     */
+    public static void staticDispose(){
+        blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
+    }
+
+    @Override
+    public String getName() {
+        return  CoreData.getName(getId(), getValue());
+    }
+	
 		/**
 	 * places the object on the map. You can extend this to get the coordinate if {@link IsSelfAware}. RenderBlock may be placed without this method call.
 	 * @param coord the position on the map
@@ -546,35 +427,6 @@ public class RenderBlock extends AbstractGameObject {
         return 'b';
     }
 
-    /**
-     *
-     * @return
-     */
-    public static AtlasRegion[][][] getBlocksprites() {
-        return blocksprites;
-    }
-
-	/**
-	 * set the sound to be played if a block gets destroyed.
-	 * @param destructionSound 
-	 */
-	public static void setDestructionSound(String destructionSound) {
-		RenderBlock.destructionSound = destructionSound;
-	}
-	
-    
-    /**
-     *
-     */
-    public static void staticDispose(){
-        blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
-    }
-
-    @Override
-    public String getName() {
-        return getName(getId(), getValue());
-    }
-	
 	/**
 	 *
 	 * @return

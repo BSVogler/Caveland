@@ -107,7 +107,7 @@ public class PlacableSelector extends Table {
 						//button.setStyle(style);
 						table.add(button);
 
-						table.add(new Label(RenderBlock.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
+						table.add(new Label(new RenderBlock(i, 0).getName(), WE.getEngineView().getSkin()));
 					}
 				}
 			} else {//add entities

@@ -327,7 +327,7 @@ public class Point extends AbstractPosition {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-    public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
+		public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
       /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length
  'radius'. 'radius' may be infinite.

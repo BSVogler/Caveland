@@ -144,7 +144,7 @@ public class Selection extends AbstractEntity {
         Intersection intersect = view.screenToGame(screenX, screenY);
                 
 		if (intersect.getPoint() != null){
-		   setPosition( intersect.getPoint().addVector(0, 0, AbstractEntity.GAME_EDGELENGTH) );//temporary hack for intersection result one layer too deep 
+		   setPosition( intersect.getPoint());//temporary hack for intersection result one layer too deep 
 		   setNormal( Side.normalToSide( intersect.getNormal() ) );
 		}
     }

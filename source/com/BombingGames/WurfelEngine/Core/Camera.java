@@ -71,7 +71,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private int zRenderingLimit = map.getBlocksZ();
 
-	private RenderBlock[][][] viewFrustum;
+	private RenderBlock[][][] cameraContentBlocks;
 	
 	/**
 	 * X Coordinate of clipping borders
@@ -555,7 +555,7 @@ map.getGameWidth(),
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
 		DataIterator iterator = new DataIterator(
-				viewFrustum,
+				cameraContentBlocks,
 				0,
 				map.getBlocksZ(),//one more because of ground layer
 				0,//todo
@@ -699,13 +699,13 @@ map.getGameWidth(),
 	 */
 	private void fillViewFrustum(){
 	//fill viewFrustum with RenderBlock data
-		viewFrustum = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
+		cameraContentBlocks = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 		
 		//1. add ground layer
-		for (int x = 0; x < viewFrustum.length; x++) {
-			for (int y = 0; y < viewFrustum[x].length; y++) {
-				viewFrustum[x][y][0] = map.getGroundBlock().toBlock();
-				viewFrustum[x][y][0].setPosition(
+		for (int x = 0; x < cameraContentBlocks.length; x++) {
+			for (int y = 0; y < cameraContentBlocks[x].length; y++) {
+				cameraContentBlocks[x][y][0] = map.getGroundBlock().toBlock();
+				cameraContentBlocks[x][y][0].setPosition(
 					new Coordinate(
 						map,
 						leftCoverBorder+x,
@@ -729,9 +729,9 @@ map.getGameWidth(),
 			CoreData block = csIter.next();
 			if (block != null) {
 				int[] ind = csIter.getCurrentIndex();
-				viewFrustum[ind[0]][ind[1]][ind[2]] = block.toBlock();
-				if (viewFrustum[ind[0]][ind[1]][ind[2]] != null)
-					viewFrustum[ind[0]][ind[1]][ind[2]].setPosition(
+				cameraContentBlocks[ind[0]][ind[1]][ind[2]+1] = block.toBlock();
+				if (cameraContentBlocks[ind[0]][ind[1]][ind[2]+1] != null)
+					cameraContentBlocks[ind[0]][ind[1]][ind[2]+1].setPosition(
 						new Coordinate(
 							map,
 							leftCoverBorder + ind[0],
@@ -754,7 +754,7 @@ map.getGameWidth(),
 		
 		//iterate over view frustum
 		DataIterator dataIter = new DataIterator(
-			viewFrustum,
+			cameraContentBlocks,
 			0,
 			zRenderingLimit,//+1 because of ground layer
 			(centerChunkX-1)*Chunk.getBlocksX(),//todo
@@ -774,15 +774,15 @@ map.getGameWidth(),
 					RenderBlock neighbour;
 					if (y % 2 == 0) {//next row is shifted right
 						if (x>0) {
-							neighbour = viewFrustum[x-1][y+1][z];
+							neighbour = cameraContentBlocks[x-1][y+1][z];
 							if (neighbour!= null && neighbour.hidingPastBlock()) {//left
 								next.setClippedLeft();
 							}
 						} else {
 							next.setClippedLeft();
 						}
-						if (y<viewFrustum[x].length) {
-							neighbour = viewFrustum[x][y+1][z];
+						if (y<cameraContentBlocks[x].length) {
+							neighbour = cameraContentBlocks[x][y+1][z];
 							if (neighbour!= null && neighbour.hidingPastBlock()) {//right
 								next.setClippedRight();
 							}
@@ -790,16 +790,16 @@ map.getGameWidth(),
 							next.setClippedRight();
 						}
 					} else {//next row is shifted right
-						if (y < viewFrustum[x].length-1) {
-							neighbour = viewFrustum[x][y+1][z];
+						if (y < cameraContentBlocks[x].length-1) {
+							neighbour = cameraContentBlocks[x][y+1][z];
 							if (neighbour!= null && neighbour.hidingPastBlock()) {//left
 								next.setClippedLeft();
 							}
 						} else {
 							next.setClippedLeft();
 						}
-						if ( x < viewFrustum.length-1 && y < viewFrustum[x].length-1) {
-							neighbour = viewFrustum[x+1][y+1][z];
+						if ( x < cameraContentBlocks.length-1 && y < cameraContentBlocks[x].length-1) {
+							neighbour = cameraContentBlocks[x+1][y+1][z];
 							if (neighbour!= null && neighbour.hidingPastBlock()) {//right
 								next.setClippedRight();
 							}
@@ -815,8 +815,8 @@ map.getGameWidth(),
 				//check top
 				if (
 					z < map.getBlocksZ()
-					&& viewFrustum[x][y][z+1] != null
-					&& viewFrustum[x][y][z+1].hidingPastBlock()
+					&& cameraContentBlocks[x][y][z+1] != null
+					&& cameraContentBlocks[x][y][z+1].hidingPastBlock()
 				) {
 					next.setClippedTop();
 				}
@@ -1193,12 +1193,12 @@ map.getGameWidth(),
 		//check if covered by camera
 		if (
 			   indexX >= 0
-			&& indexX < viewFrustum.length
+			&& indexX < cameraContentBlocks.length
 			&& indexY >= 0
-			&& indexY < viewFrustum[0].length
-			&& viewFrustum[indexX][indexY][coords.getZ()+1] != null
+			&& indexY < cameraContentBlocks[0].length
+			&& cameraContentBlocks[indexX][indexY][coords.getZ()+1] != null
 		) {
-			return viewFrustum[indexX][indexY][coords.getZ()+1].isClipped();
+			return cameraContentBlocks[indexX][indexY][coords.getZ()+1].isClipped();
 		} else {
 			//if not return fully clipped
 			return true;

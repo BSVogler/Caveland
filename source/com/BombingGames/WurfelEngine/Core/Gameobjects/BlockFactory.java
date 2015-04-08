@@ -1,54 +1,26 @@
-/*
- * Copyright 2014 Benedikt Vogler.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * * Redistributions of source code must retain the above copyright notice, 
- *   this list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice, 
- *   this list of conditions and the following disclaimer in the documentation 
- *   and/or other materials provided with the distribution.
- * * Neither the name of Bombing Games nor Benedikt Vogler nor the names of its contributors 
- *   may be used to endorse or promote products derived from this software without specific
- *   prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 /**
- *A block factory instance is a class which constructs custom blocks when calling getInstance().
+ *
  * @author Benedikt Vogler
  */
 public interface BlockFactory {
+	
+	public boolean isObstacle(int id, int value);
 
+	public boolean isTransparent(int id, int value);
+	
     /**
-     * Override this method and fill it with your own custom blocks.
-     * @param id An 123 &gt; <i>id</i> &gt; 39
-     * @param value An 123 &gt; <i>value</i> &gt; 39
+     * Check if the block is liquid.
+     * @return true if liquid, false if not 
+     */
+	public boolean isLiquid(int id, int value);
+	
+    /**
+     * Is the block a true block with sides or represents it another thing like a flower?
      * @return 
      */
-    public abstract RenderBlock produce(int id, int value);
+	public boolean hasSides(int id, int value);
 
-	/**
-	 * Read the name of a id value combination.
-	 * @param id An id >39
-	 * @param value
-	 * @return the name for this block.
-	 */
-	public abstract String getName(int id, int value);
-    
+	public String getName(int id, int value);
 }

@@ -15,7 +15,10 @@ public class CoreData implements HasID {
 	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
 		CoreData.customBlockFactory = customBlockFactory;
 	}
-	
+
+	public static BlockFactory getFactory() {
+		return customBlockFactory;
+	}
 	
 	private int identifier;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
@@ -50,12 +53,18 @@ public class CoreData implements HasID {
 	@Override
 	public boolean isObstacle() {
 		//todo
+		if (getId()>39 && customBlockFactory != null){
+            return customBlockFactory.isObstacle(getId(), getValue());
+         }
 		return getId() != 0;
 	}
 
 	@Override
 	public boolean isTransparent() {
 		//todo
+		if (getId()>39 && customBlockFactory != null){
+            return customBlockFactory.isTransparent(getId(), getValue());
+         }
 		return false;
 	}
 	
@@ -64,6 +73,9 @@ public class CoreData implements HasID {
      * @return true if liquid, false if not 
      */
 	public boolean isLiquid() {
+		if (getId()>39 && customBlockFactory != null){
+            return customBlockFactory.isLiquid(getId(), getValue());
+        }
 		if (getId()==9) return true;
 		return false;
 	}
@@ -75,6 +87,9 @@ public class CoreData implements HasID {
 	public boolean hasSides() {
 		int id = getId();
 		if (id==34 ||id==35 || id==36) return false;
+		if (getId()>39 && customBlockFactory != null){
+            return customBlockFactory.hasSides(getId(), getValue());
+        }
 //todo
 		return true;
 	}
@@ -89,22 +104,17 @@ public class CoreData implements HasID {
 		this.lightlevel = lightlevel;
 	}
 	
-	public static boolean hasSides(int id, int value){
-		return new CoreData(id, value).hasSides();
-	}
-
 	public void setValue(int value) {
 		this.identifier = (value<<8)+getValue();
 	}
 	
 	/**
 	 * get the name of a combination of id and value
-	 * @param id
-	 * @param value
 	 * @return 
 	 */
-	public static String getName(final int id, final int value){
-		switch (id) {
+	@Override
+	public String getName(){
+		switch (getId()) {
 			case 0:
 				return "air";
 			case 1:
@@ -135,9 +145,9 @@ public class CoreData implements HasID {
 				return "tree";
 								
 			default:
-				if (id > 39) {
+				if (getId() > 39) {
                     if (customBlockFactory!=null){
-                        return customBlockFactory.getName(id, value);
+                        return customBlockFactory.getName(getId(), getValue());
                     } else {
                         return "no custom blocks";
                     }

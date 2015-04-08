@@ -14,7 +14,6 @@ import com.badlogic.gdx.Gdx;
  */
 public class CustomBlockFactory implements BlockFactory {
 
-@Override
 public RenderBlock produce(int id, int value) {
 	RenderBlock block;
 	switch (id){
@@ -61,7 +60,6 @@ public RenderBlock produce(int id, int value) {
 		return block;
 	}	
 
-	@Override
 	public String getName(int id, int value) {
 		switch (id){
 			case 40:
@@ -73,7 +71,25 @@ public RenderBlock produce(int id, int value) {
 		return "too lazy";
 	}
 
+	@Override
+	public boolean isObstacle(int id, int value) {
+		return false;
+	}
 
+	@Override
+	public boolean isTransparent(int id, int value) {
+		return false;
+	}
+
+	@Override
+	public boolean isLiquid(int id, int value) {
+		return false;
+	}
+
+	@Override
+	public boolean hasSides(int id, int value) {
+		return true;
+	}
 
 	private static class RailBlock extends RenderBlock {
 		private static final long serialVersionUID = 1L;

@@ -1,10 +1,11 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 /**
- *
+ *Interface for objects whether they are blocks and entities.
  * @author Benedikt Vogler
  */
 public interface HasID {
+	
 	/**
      * returns the id of a object
      * @return getId
@@ -42,4 +43,11 @@ public interface HasID {
      * @return
      */
     public abstract boolean isObstacle();
+	
+	/**
+	 * Read the name of a id value combination.
+	 * @return the name for this block.
+	 */
+	public abstract String getName();
+    
 }

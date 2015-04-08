@@ -149,7 +149,7 @@ public class RenderBlock extends AbstractGameObject {
 
     @Override
     public String getName() {
-        return  CoreData.getName(getId(), getValue());
+        return  getCoreData().getName();
     }
 	
 		/**
@@ -206,7 +206,7 @@ public class RenderBlock extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (CoreData.hasSides(id, value)){//if has sides, take top block    
+            if (CoreData.getFactory().hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(

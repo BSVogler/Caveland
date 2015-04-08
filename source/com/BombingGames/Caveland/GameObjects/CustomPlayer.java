@@ -6,10 +6,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -68,7 +68,7 @@ public class CustomPlayer extends Controllable {
 		}
 		if (sprites[category][value] == null) { //load if not already loaded
 
-			AtlasRegion sprite = spritesheet.findRegion(category + "/" + Integer.toString(value));
+			AtlasRegion sprite = spritesheet.findRegion("diff/"+category + "/" + Integer.toString(value));
 			if (sprite == null) { //if there is no sprite show the default "sprite not found sprite" for this category
 				Gdx.app.debug("Player animation", category + Integer.toString(value) + " not found");
 				return null;

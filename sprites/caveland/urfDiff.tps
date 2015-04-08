@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.6.0</string>
+        <string>3.7.1</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/urfDiff.tps</string>
         <key>autoSDSettings</key>
@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -188,7 +188,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>urf/diff</filename>
+            <filename>urf</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -200,5 +200,15 @@
         <uint>1</uint>
         <key>commonDivisorY</key>
         <uint>1</uint>
+        <key>packNormalMaps</key>
+        <true/>
+        <key>autodetectNormalMaps</key>
+        <false/>
+        <key>normalMapFilter</key>
+        <string>normal/</string>
+        <key>normalMapSuffix</key>
+        <string></string>
+        <key>normalMapSheetFileName</key>
+        <filename>../../source/com/BombingGames/Caveland/playerSheetNormal.png</filename>
     </struct>
 </data>

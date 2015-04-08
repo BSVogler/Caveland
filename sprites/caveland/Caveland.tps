@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.6.0</string>
+        <string>3.7.1</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/Caveland.tps</string>
         <key>autoSDSettings</key>
@@ -119,7 +119,7 @@
             <key>basic</key>
             <struct type="AlgorithmBasicSettings">
                 <key>sortBy</key>
-                <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
+                <enum type="AlgorithmBasicSettings::SortBy">Width</enum>
                 <key>order</key>
                 <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
             </struct>
@@ -195,6 +195,8 @@
         <array>
             <filename>blocks</filename>
             <filename>entities</filename>
+            <filename>normals/blocksNormal</filename>
+            <filename>Normals/entitiesNormal</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -206,5 +208,15 @@
         <uint>1</uint>
         <key>commonDivisorY</key>
         <uint>1</uint>
+        <key>packNormalMaps</key>
+        <true/>
+        <key>autodetectNormalMaps</key>
+        <false/>
+        <key>normalMapFilter</key>
+        <string>Normal</string>
+        <key>normalMapSuffix</key>
+        <string></string>
+        <key>normalMapSheetFileName</key>
+        <filename>../../source/com/BombingGames/Caveland/SpritesheetNormal.png</filename>
     </struct>
 </data>

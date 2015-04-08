@@ -190,7 +190,7 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
-		updateCoverBorders();
+		updateCoverBordersCache();
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class Camera implements LinkedWithMap {
 		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
 		initFocus();
-		updateCoverBorders();
+		updateCoverBordersCache();
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
-		updateCoverBorders();
+		updateCoverBordersCache();
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class Camera implements LinkedWithMap {
 		position.y = (int) (focusEntity.getPosition().getViewSpcY(gameView)
 			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
 		initFocus();
-		updateCoverBorders();
+		updateCoverBordersCache();
 	}
 
 	/**
@@ -307,56 +307,11 @@ public class Camera implements LinkedWithMap {
 			position.x += screenshake.x;
 			position.y += screenshake.y;
 			
-			//camera moved so update cover borders
-			updateCoverBorders();
+			//recalculate the center position
+			updateCenter();
 			
-			//if chunkmap check for chunk movement
-			if (CVar.get("mapUseChunks").getValueb()) {
-				ChunkMap chunkMap = (ChunkMap) map;
-				
-				//check if chunkswitch left
-				if (
-					getVisibleLeftBorder()
-					<
-					chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
-					//&& centerChunkX-1==//calculated xIndex -1
-					) {
-					centerChunkX--;
-				}
-
-				if (
-					getVisibleRightBorder()
-					>
-					chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
-					//&& centerChunkX-1==//calculated xIndex -1
-					) {
-					centerChunkX++;
-				}
-
-				if (
-					getVisibleBackBorder()
-					<
-					chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
-					//&& centerChunkX-1==//calculated xIndex -1
-					) {
-					centerChunkY--;
-				}
-				//check in view space
-				if (
-					position.y- getHeightInProjSpc()/2
-					<
-					map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
-					-AbstractGameObject.VIEW_DEPTH2*(
-					chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
-					)
-					//&& centerChunkX-1==//calculated xIndex -1
-					) {
-					centerChunkY++;
-				}
-			}
-
-			if (CVar.get("mapUseChunks").getValueb())
-				updateNeededData();
+			//camera moved so update cover borders
+			updateCoverBordersCache();
 
 			//move camera to the focus 
 			view.setToLookAt(
@@ -388,6 +343,59 @@ public class Camera implements LinkedWithMap {
 			//Matrix4.inv(invProjectionView.val);
 		}
 	}
+	
+	/**
+	 * Check if center has to be moved and if chunks must be loaded or unloaded performs according actions.
+	 */
+	public void updateCenter(){
+		//if chunkmap check for chunk movement
+		if (CVar.get("mapUseChunks").getValueb()) {
+			ChunkMap chunkMap = (ChunkMap) map;
+
+			//check if chunkswitch left
+			if (
+				getVisibleLeftBorder()
+				<
+				chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+				//&& centerChunkX-1==//calculated xIndex -1
+				) {
+				centerChunkX--;
+			}
+
+			if (
+				getVisibleRightBorder()
+				>
+				chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+				//&& centerChunkX-1==//calculated xIndex -1
+				) {
+				centerChunkX++;
+			}
+
+			if (
+				getVisibleBackBorder()
+				<
+				chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+				//&& centerChunkX-1==//calculated xIndex -1
+				) {
+				centerChunkY--;
+			}
+			//check in view space
+			if (
+				position.y- getHeightInProjSpc()/2
+				<
+				map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
+				-AbstractGameObject.VIEW_DEPTH2*(
+				chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+				)
+				//&& centerChunkX-1==//calculated xIndex -1
+				) {
+				centerChunkY++;
+			}
+		}
+		
+		if (CVar.get("mapUseChunks").getValueb())
+			updateNeededData();
+	}
 
 	/**
 	 * checks which chunks must be loaded
@@ -416,9 +424,32 @@ public class Camera implements LinkedWithMap {
 	private void checkChunk(int x, int y) {
 		ChunkMap chunkMap = (ChunkMap) map;
 		if (chunkMap.getChunk(x, y) == null) {
-			chunkMap.loadChunk(x, y);
+			chunkMap.loadChunk(x, y);//load missing chunks
 		} else {
-			chunkMap.getChunk(x, y).increaseCameraAccesCounter();//mark that it was accessed
+			chunkMap.getChunk(x, y).increaseCameraHandleCounter();//mark that it was accessed
+		}
+	}
+	
+	/**
+	 * Updates the cached fields which save the border of the covered coordinates by this camera.
+	 */
+	private void updateCoverBordersCache() {
+		if (CVar.get("mapUseChunks").getValueb()) {
+			ChunkMap chunkMap = (ChunkMap) map;
+			leftCoverBorder = chunkMap.getChunk(
+					centerChunkX - 1,
+					centerChunkY
+				).getTopLeftCoordinate().getX();
+
+			rightCoverBorder = chunkMap.getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
+				+ Chunk.getBlocksX() - 1;
+
+			backCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
+
+			frontCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
+				+ Chunk.getBlocksY() - 1;
+		} else {
+		//to-do
 		}
 	}
 
@@ -694,10 +725,24 @@ map.getGameWidth(),
 		return depthsort;
 	}
 
+	
+	/**
+	 * updates cached values like clipping
+	 */
+	protected void updateCache(){
+		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
+		if (CVar.get("mapUseChunks").getValueb())
+			updateNeededData();
+		
+		updateCoverBordersCache();
+		fillCameraContentBlocks();
+		hiddenSurfaceDetection();
+	}
+
 	/**
 	 * fill the view frustum in the camera with renderblocks
 	 */
-	private void fillViewFrustum(){
+	private void fillCameraContentBlocks(){
 	//fill viewFrustum with RenderBlock data
 		cameraContentBlocks = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 		
@@ -742,15 +787,11 @@ map.getGameWidth(),
 			}
 		}
 	}
+	
 	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
 	 */
-	public void hiddenSurfaceDetection() {
-		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
-		if (CVar.get("mapUseChunks").getValueb())
-			updateNeededData();
-		
-		fillViewFrustum();
+	protected void hiddenSurfaceDetection() {
 		
 		//iterate over view frustum
 		DataIterator dataIter = new DataIterator(
@@ -1123,8 +1164,8 @@ map.getGameWidth(),
 		} else {
 			position.x += x;
 			position.y += y;
-			updateCoverBorders();
 		}
+		updateCenter();
 	}
 
 	/**
@@ -1196,7 +1237,7 @@ map.getGameWidth(),
 			&& indexX < cameraContentBlocks.length
 			&& indexY >= 0
 			&& indexY < cameraContentBlocks[0].length
-			&& cameraContentBlocks[indexX][indexY][coords.getZ()+1] != null
+			&& cameraContentBlocks[indexX][indexY][coords.getZ()+1] != null //not air
 		) {
 			return cameraContentBlocks[indexX][indexY][coords.getZ()+1].isClipped();
 		} else {
@@ -1217,32 +1258,9 @@ map.getGameWidth(),
 	public void setActive(boolean active) {
 		//turning on
 		if ( this.active == false && active == true ) {
-			hiddenSurfaceDetection();
+			updateCache();
 		}
 
 		this.active = active;
-	}
-
-	/**
-	 * Updates the cached fields which save the border of the covered coordinates by this camera.
-	 */
-	private void updateCoverBorders() {
-		if (CVar.get("mapUseChunks").getValueb()) {
-			ChunkMap chunkMap = (ChunkMap) map;
-			leftCoverBorder = chunkMap.getChunk(
-					centerChunkX - 1,
-					centerChunkY
-				).getTopLeftCoordinate().getX();
-
-			rightCoverBorder = chunkMap.getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
-				+ Chunk.getBlocksX() - 1;
-
-			backCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
-
-			frontCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
-				+ Chunk.getBlocksY() - 1;
-		} else {
-		//to-do
-		}
 	}
 }

@@ -136,7 +136,7 @@ public class Chunk {
 			if (!load(mapname, coordX, coordY))
 				fill(coordX, coordY, generator);
 		} else fill(coordX, coordY, generator);
-		increaseCameraAccesCounter();
+		increaseCameraHandleCounter();
     }
     
     /**
@@ -598,7 +598,7 @@ public class Chunk {
 	/**
 	 *
 	 */
-	public final void increaseCameraAccesCounter(){
+	public final void increaseCameraHandleCounter(){
 		cameraAccessCounter++;
 	}
 

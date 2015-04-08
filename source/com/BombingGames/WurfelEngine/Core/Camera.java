@@ -159,7 +159,7 @@ public class Camera implements LinkedWithMap {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 		if (CVar.get("mapUseChunks").getValueb())
-			updateNeededData();
+			updateNeededChunks();
 	}
 
 	/**
@@ -394,13 +394,13 @@ public class Camera implements LinkedWithMap {
 		}
 		
 		if (CVar.get("mapUseChunks").getValueb())
-			updateNeededData();
+			updateNeededChunks();
 	}
 
 	/**
 	 * checks which chunks must be loaded
 	 */
-	private void updateNeededData() {
+	private void updateNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || CVar.get("mapChunkSwitch").getValueb()) {
 			checkChunk(centerChunkX - 1, centerChunkY - 1);
@@ -730,9 +730,8 @@ map.getGameWidth(),
 	 * updates cached values like clipping
 	 */
 	protected void updateCache(){
-		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
 		if (CVar.get("mapUseChunks").getValueb())
-			updateNeededData();
+			updateNeededChunks();
 		
 		updateCoverBordersCache();
 		fillCameraContentBlocks();
@@ -792,7 +791,7 @@ map.getGameWidth(),
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
 	 */
 	protected void hiddenSurfaceDetection() {
-		
+		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
 		//iterate over view frustum
 		DataIterator dataIter = new DataIterator(
 			cameraContentBlocks,
@@ -1190,7 +1189,7 @@ map.getGameWidth(),
 	@Override
 	public void onMapChange() {
 		if (active) {
-			hiddenSurfaceDetection();
+			updateCache();
 		}
 	}
 

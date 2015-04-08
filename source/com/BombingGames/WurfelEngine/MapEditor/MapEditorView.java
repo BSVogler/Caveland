@@ -34,10 +34,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.MapEditor.Toolbar.Tool;
@@ -340,7 +340,8 @@ public class MapEditorView extends GameView {
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
                 CoreData block = coords.getBlock();
-                leftColorGUI.setBlock(block.getId(), block.getValue());
+				if (block == null) block = new CoreData(0);
+					leftColorGUI.setBlock(block);
             } else {
 				Tool toggledTool;
 				

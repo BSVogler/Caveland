@@ -31,6 +31,7 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -50,8 +51,7 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class PlacableGUI extends WidgetGroup {
-	private int id =1;
-	private int value=0;
+	private CoreData block = new CoreData(1);
 	private Image image;
 	private Label label;
 	private Label blockPosition;
@@ -75,7 +75,7 @@ public class PlacableGUI extends WidgetGroup {
 		else
 			setPosition(stage.getWidth()-200, stage.getHeight()-300);
 		
-		image = new Image(new BlockDrawable(id,value,-0.4f));
+		image = new Image(new BlockDrawable(getId(),getValue(),-0.4f));
 		image.setPosition(50, 60);
 		addActor(image);
 		slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
@@ -83,7 +83,7 @@ public class PlacableGUI extends WidgetGroup {
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
 		
-		label = new Label(Integer.toString(id) + " - "+ Integer.toString(value), WE.getEngineView().getSkin());
+		label = new Label(Integer.toString(getId()) + " - "+ Integer.toString(getValue()), WE.getEngineView().getSkin());
 		addActor(label);
 		
 		blockPosition = new Label(selection.getPosition().getCoord().toString(), WE.getEngineView().getSkin());
@@ -104,7 +104,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public int getId() {
-		return id;
+		return block.getId();
 	}
 		
 	/**
@@ -112,19 +112,17 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public int getValue() {
-		return value;
+		return block.getValue();
 	}	
 	
 	/**
 	 *
-	 * @param id
-	 * @param value
+	 * @param block
 	 */
-	public void setBlock(int id, int value) {
-		this.id = id;
-		this.value = value;
-		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
-		image.setDrawable(new BlockDrawable(id,value,-0.4f));
+	public void setBlock(CoreData block) {
+		this.block = block;
+		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
+		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}
 
 	/**
@@ -132,9 +130,9 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param id
 	 */
 	public void setId(int id) {
-		this.id = id;
-		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
-		image.setDrawable(new BlockDrawable(id,value,-0.4f));
+		this.block = new CoreData(id, block.getValue());
+		label.setText(Integer.toString(id) + " - "+ Integer.toString(block.getValue()));
+		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}
 
 	/**
@@ -142,9 +140,9 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(int value) {
-		this.value = value;
-		label.setText(Integer.toString(id) + " - "+ Integer.toString(value));
-		image.setDrawable(new BlockDrawable(id,value,-0.4f));
+		this.block = new CoreData(block.getId(), value);
+		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
+		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}
 	
 	/**
@@ -153,9 +151,9 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return a new RenderBlock instance of the selected id and value.
 	 */
 	public RenderBlock getBlock(Coordinate coord){
-		RenderBlock block = new RenderBlock(id, value);
-		block.setPosition(coord);
-		return block;
+		RenderBlock rblock = new RenderBlock(block.getId(), block.getValue());
+		rblock.setPosition(coord);
+		return rblock;
 	}
 	
 	/**

@@ -33,6 +33,7 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -197,7 +198,7 @@ public class PlacableSelector extends Table {
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setBlock(id, 0);
+            placableGUI.setBlock(new CoreData(id));
         };
      }
 	

@@ -768,9 +768,9 @@ map.getGameWidth(),
 				//calculate index position relative to camera border
 				int x = dataIter.getCurrentIndex()[0];
 				int y = dataIter.getCurrentIndex()[1];
-				int z = dataIter.getCurrentIndex()[2] + 1;//offset because of ground layer
+				int z = dataIter.getCurrentIndex()[2];
 				
-				if (z > 0) {//bottom layer always has sides always clipped
+				if (z > 0) {//bottom layer always has sides always clipped, 0 is ground layer in this case
 					RenderBlock neighbour;
 					if (y % 2 == 0) {//next row is shifted right
 						if (x>0) {

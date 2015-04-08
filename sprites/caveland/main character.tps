@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.7.1</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/urfDiff.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine GitHub/sprites/caveland/main character.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -188,7 +188,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>urf</filename>
+            <filename>main character</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

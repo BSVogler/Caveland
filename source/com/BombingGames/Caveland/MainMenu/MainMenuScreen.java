@@ -81,6 +81,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					CustomGameController controller = new CustomGameController();
+					controller.newSaveSlot();
 					WE.initAndStartGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
 				}
 			}

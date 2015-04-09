@@ -295,4 +295,14 @@ public class MapMetaData {
     public File getMapFolder() {
         return mapFolder;
     }
+
+	/**
+	 * makes a new save slot
+	 * @return the created slot
+	 */
+	public int newSaveSlot() {
+		int slot = getSavesCount();
+		createSaveSlot(slot);
+		return slot;
+	}
 }

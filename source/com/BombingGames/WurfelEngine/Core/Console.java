@@ -417,8 +417,10 @@ public class Console implements CommandsInterface  {
             if (!st.hasMoreElements()) return false;
             
             String mapname = st.nextToken();
-            if (mapname.length()>0)
-                return Controller.loadMap(mapname, new MapMetaData(mapname).getSavesCount());
+            if (mapname.length()>0) {
+				int slot = new MapMetaData(mapname).newSaveSlot();
+                return Controller.loadMap(mapname, slot);
+			}
         }
         
         if (command.startsWith("newmap")){

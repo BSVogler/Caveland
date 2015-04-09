@@ -59,8 +59,8 @@ public class MapButton extends TextButton {
         MapMetaData meta;
         try {
             meta = new MapMetaData(fileName);
-			meta.createSaveSlot(meta.getSavesCount());
-			meta.load(meta.getSavesCount());
+			int slot = meta.newSaveSlot();
+			meta.load(slot);
             setText("/"+fileName+"/ "+meta.getMapName());
             if (!"".equals(meta.getDescription()))
                 add(meta.getDescription());
@@ -93,9 +93,10 @@ public class MapButton extends TextButton {
 
         @Override
         public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+			int slot = new MapMetaData(parent.getName()).newSaveSlot();
             Controller.loadMap(
 				parent.getName(),
-				new MapMetaData(parent.getName()).getSavesCount()
+				slot
 			);
         }
     }

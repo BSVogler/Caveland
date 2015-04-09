@@ -37,6 +37,7 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
+import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
 import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -138,11 +139,28 @@ public class Controller implements GameManager {
     private boolean initalized= false;
 	private int saveSlot;
 
-	public void setSaveSlot(int slot){
+	/**
+	 * uses a specific save slot for loading and saving the map
+	 * @param slot 
+	 */
+	public void useSaveSlot(int slot){
 		this.saveSlot = slot;
 	}
 
+	/**
+	 * get the savee slot used for loading and saving the map.
+	 * @return 
+	 */
 	public int getSaveSlot() {
+		return saveSlot;
+	}
+	
+	/**
+	 * Uses a new save slot as the save slot
+	 * @return the new save slot number
+	 */
+	public int newSaveSlot() {
+		saveSlot = new MapMetaData("default").newSaveSlot();
 		return saveSlot;
 	}
 	

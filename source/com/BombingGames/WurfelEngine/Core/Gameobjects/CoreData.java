@@ -45,6 +45,15 @@ public class CoreData implements HasID {
 	public void setValue(int value) {
 		this.identifier = (value<<8)+identifier%256;
 	}
+	
+	/**
+	 * value between 0-100
+	 * @param health 
+	 */
+	public void setHealth(int health){
+		this.identifier = (health<<16)+(identifier%65536);
+	}
+	
 	/**
 	 * creates a new RenderBlock instance based on he data
 	 * @return 

@@ -1,9 +1,9 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock.BlockDestructionAction;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock.BlockDestructionAction;
 import com.badlogic.gdx.math.Vector3;
 
 /**

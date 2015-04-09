@@ -42,7 +42,6 @@ import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,69 +53,6 @@ public class Controller implements GameManager {
     private static LightEngine lightEngine;
 	private static SoundEngine soundEngine;
     private static AbstractMap map;
-    private DevTools devtools;
-    private boolean initalized= false;
-
-    /**
-     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
-     */
-    public void init(){
-        init(null);
-    }
-    
-    /**
-     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
-     * @param generator Set the map generator you want to use.
-     */
-    public void init(Generator generator){
-        Gdx.app.log("Controller", "Initializing");
-
-		if (devtools == null && CVar.get("DevMode").getValueb())
-            devtools = new DevTools( 10, 50 );
-        
-        if (map == null){
-            if (!loadMap("default")) {
-                Gdx.app.error("Controller", "Map default could not be loaded.");
-                try {
-                    ChunkMap.createMapFile("default");
-                    loadMap("default");
-                } catch (IOException ex1) {
-                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
-                    WE.showMainMenu();
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-            }
-        }
-		
-        if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
-            lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-			getMap().addLinkedObject(lightEngine);
-        }
-		
-		//only initialize static variable once
-		if (Controller.soundEngine == null)
-			soundEngine = new SoundEngine();
-		
-        initalized = true;    
-    }
-        
-     /**
-     * Main method which is called every refresh.
-     * @param dt time since last call
-     */
-    public void update(float dt) {
-		if (CVar.get("DevMode").getValueb()) {
-			if (devtools == null ) {
-				devtools = new DevTools(10, 50);
-			}
-			devtools.update(Gdx.graphics.getRawDeltaTime()*1000f);
-		} else {
-			if (devtools != null ) {
-				devtools.dispose();
-				devtools = null;
-			}
-		}
-    }
 	
 	/**
 	 * update every static update method
@@ -192,6 +128,73 @@ public class Controller implements GameManager {
      */
     public static SoundEngine getSoundEngine() {
         return soundEngine;
+    }
+	
+	
+    private DevTools devtools;
+    private boolean initalized= false;
+
+    /**
+     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
+     */
+    public void init(){
+        init(null, 0);
+    }
+    
+    /**
+     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
+     * @param generator Set the map generator you want to use.
+	 * @param saveslot
+     */
+    public void init(Generator generator, int saveslot){
+        Gdx.app.log("Controller", "Initializing");
+
+		if (devtools == null && CVar.get("DevMode").getValueb())
+            devtools = new DevTools( 10, 50 );
+        
+        if (map == null){
+            if (!loadMap("default", saveslot)) {
+                Gdx.app.error("Controller", "Map default could not be loaded.");
+                try {
+                    ChunkMap.createMapFile("default");
+                    loadMap("default", saveslot);
+                } catch (IOException ex1) {
+                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
+                    WE.showMainMenu();
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+        }
+		
+        if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
+            lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+			getMap().addLinkedObject(lightEngine);
+        }
+		
+		//only initialize static variable once
+		if (Controller.soundEngine == null)
+			soundEngine = new SoundEngine();
+		
+        initalized = true;    
+    }
+	
+        
+     /**
+     * Main method which is called every refresh.
+     * @param dt time since last call
+     */
+    public void update(float dt) {
+		if (CVar.get("DevMode").getValueb()) {
+			if (devtools == null ) {
+				devtools = new DevTools(10, 50);
+			}
+			devtools.update(Gdx.graphics.getRawDeltaTime()*1000f);
+		} else {
+			if (devtools != null ) {
+				devtools.dispose();
+				devtools = null;
+			}
+		}
     }
 	
     /**

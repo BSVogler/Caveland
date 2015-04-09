@@ -375,7 +375,7 @@ public class CustomPlayer extends Controllable {
 
 		//destroy blocks
 		if (getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2)
-			.addVector(getAiming().scl(80)).getCoord().damage(damage)) {
+			.addVector(getAiming().scl(80)).getCoord().damage((byte) damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
 		}
@@ -483,7 +483,7 @@ public class CustomPlayer extends Controllable {
 			playAnimation('i');
 			Controller.getSoundEngine().play("release");
 			addToHor(40f);
-			attack(1000);
+			attack(100);
 		}
 
 		loadAttack = 0f;

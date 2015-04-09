@@ -20,6 +20,12 @@ public class CoreData implements HasID {
 		return customBlockFactory;
 	}
 	
+	/**
+	 * [00000000, 0hhhhhh, vvvvvvvvv, iiiiiiii]<br />
+	 * h: health bytes, stored as 100-health<br />
+	 * v: value bytes<br />
+	 * i: id bytes<br />
+	 */
 	private int identifier;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
@@ -34,24 +40,28 @@ public class CoreData implements HasID {
 	
 	@Override
 	public int getId() {
-		return identifier%256;
+		return identifier%0xFF;
 	}
 
 	@Override
 	public int getValue() {
-		return (identifier>>8)%256;
+		return (identifier>>8)%0xFF;
 	}
 	
 	public void setValue(int value) {
-		this.identifier = (value<<8)+identifier%256;
+		this.identifier = (value<<8)+identifier%0xFF;
 	}
 	
 	/**
 	 * value between 0-100
 	 * @param health 
 	 */
-	public void setHealth(int health){
-		this.identifier = (health<<16)+(identifier%65536);
+	public void setHealth(byte health){
+		this.identifier = 100-(health<<16)+(identifier%0xFFFF);
+	}
+	
+	public byte getHealth(){
+		return (byte) (100-((identifier>>16)%0xFF));
 	}
 	
 	/**

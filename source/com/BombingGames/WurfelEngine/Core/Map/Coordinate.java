@@ -538,7 +538,9 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public boolean destroy() {
 		if (isInMemoryArea() && getBlock() != null) {
-			getBlock().toBlock().onDestroy();//call destruction method
+			RenderBlock rb = getBlock().toBlock();
+			rb.setPosition(this);
+			rb.onDestroy();//call destruction method
 			setBlock(null);
 			return true;
 		} else {
@@ -549,21 +551,21 @@ public class Coordinate extends AbstractPosition {
 	/**
 	 * returns true if block got damaged
 	 *
-	 * @param amount
+	 * @param amount value between 0 and 100
 	 * @return
 	 */
-	public boolean damage( float amount) {
+	public boolean damage(byte amount) {
 		//todo, is camera related
-//		if (isInMemoryArea()) {
-//			RenderBlock block = getBlock();
-//			if (block != null) {
-//				block.setHealth(block.getHealth() - amount);
-//				if (block.getHealth() <= 0) {
-//					destroy();
-//				}
-//				return true;
-//			}
-//		}
+		if (isInMemoryArea()) {
+			CoreData block = getBlock();
+			if (block != null) {
+				block.setHealth((byte) (block.getHealth() - amount));
+				if (block.getHealth() <= 0) {
+					destroy();
+				}
+				return true;
+			}
+		}
 		return false;
 	}
 

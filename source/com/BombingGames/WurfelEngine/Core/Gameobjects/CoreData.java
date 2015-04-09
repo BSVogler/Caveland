@@ -42,6 +42,9 @@ public class CoreData implements HasID {
 		return (identifier>>8)%256;
 	}
 	
+	public void setValue(int value) {
+		this.identifier = (value<<8)+identifier%256;
+	}
 	/**
 	 * creates a new RenderBlock instance based on he data
 	 * @return 
@@ -102,10 +105,6 @@ public class CoreData implements HasID {
 	@Override
 	public void setLightlevel(float lightlevel) {
 		this.lightlevel = lightlevel;
-	}
-	
-	public void setValue(int value) {
-		this.identifier = (value<<8)+getValue();
 	}
 	
 	/**

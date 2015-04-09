@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -30,7 +29,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen extends AbstractMainMenu {
 	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
-	private ShapeRenderer shr;
 	private Image lettering;
 	private Image alphaTag; 
     private Texture background;
@@ -46,7 +44,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 	@Override
 	public void init() {
 		batch = new SpriteBatch();
-		shr = new ShapeRenderer();
 		
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		

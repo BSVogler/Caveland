@@ -57,7 +57,7 @@ public class CoreData implements HasID {
 	 * @param health 
 	 */
 	public void setHealth(byte health){
-		this.identifier = 100-(health<<16)+(identifier%0xFFFF);
+		this.identifier = ((100-health)<<16)+(identifier%0xFFFF);
 	}
 	
 	public byte getHealth(){

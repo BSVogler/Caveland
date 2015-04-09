@@ -78,23 +78,25 @@ public class ChunkMap extends AbstractMap implements Cloneable {
     /**
      * Loads a map using the default generator.
      * @param name if available on disk it will be load
+	 * @param saveslot
      * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public ChunkMap(final String name) throws IOException{
-        this(name, getDefaultGenerator());
+    public ChunkMap(final String name, int saveslot) throws IOException{
+        this(name, getDefaultGenerator(), saveslot);
     }
     
     /**
      * Loads a map. Fill the map with {@link #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) }
      * @param name if available on disk it will load the meta file
      * @param generator the generator used for generating new chunks
+	 * @param saveslot
      * @throws java.io.IOException thrown if there is no full read/write access to the map file
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public ChunkMap(final String name, Generator generator) throws IOException {
-		super(name, generator);
-        Gdx.app.debug("Map","Map named \""+name+"\" should be loaded");
+    public ChunkMap(final String name, Generator generator, int saveslot) throws IOException {
+		super(name, generator, saveslot);
+        Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveslot +" should be loaded");
 
         Chunk.setDimensions(getMeta());
         

@@ -51,30 +51,50 @@ public class MapMetaData {
      *
      */
     public static final String VERSION = "0.16";
-    private int chunkBlocksX =10;
-    private int chunkBlocksY=40;
-    private int chunkBlocksZ=10;
+    private int chunkBlocksX = 10;
+    private int chunkBlocksY = 40;
+    private int chunkBlocksZ = 10;
     private String mapversion=VERSION;
     private String mapName = "no name set";
     private String description = "";
-    private String fileName;
+    private File mapFolder;
 
-    /**
-     * Simple constructor.
-     * @param fileName filename the name of the map folder
+	
+	  /**
+     * Points to a map in working directory.
+	 * @param mapname name of the map
      */
-    public MapMetaData(String fileName) {
-        this.fileName = fileName;
+    public MapMetaData(String mapname) {
+        this.mapFolder = new File(WorkingDirectory.getMapsFolder()+"/"+mapname);
+    }
+    /**
+     * Point to an absolute path.
+     * @param path  path to the map folder
+     */
+    public MapMetaData(File path) {
+        this.mapFolder = path;
     }
     
+	/**
+	 * checks a map for the amount of save files
+	 * @return the amount of saves for this map
+	 */
+	public int getSavesCount() {
+		FileHandle path = Gdx.files.absolute(mapFolder.getAbsolutePath());
+		int i = 0;
+		while (path.child("save"+i).exists()) {			
+			i++;
+		}
+		return i;
+	}
 	/**
 	 * reads the map info file and sets the size of the chunk
 	 * @throws IOException 
 	 */
-	public void load() throws IOException{
+	public void load(int slot) throws IOException{
 		BufferedReader bufRead;
 		//FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-        FileHandle path = Gdx.files.absolute(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/map."+METAFILESUFFIX);
+        FileHandle path = Gdx.files.absolute(this.mapFolder+"/map."+METAFILESUFFIX);
         if (path.exists()){
             Gdx.app.log("MapMetaData","Trying to load Map Info from \"" + path.path() + "\"");
             try {
@@ -106,21 +126,46 @@ public class MapMetaData {
                 throw new IOException("Error reading the 'map."+ Chunk.METAFILESUFFIX + "'. It seems the file is corrupt or outdated.");
             }
         } else {
-            Gdx.app.error("MapMetaData", "Map named \""+ fileName +"\" could not be found. Path:"+ path);
-            throw new IOException("Map named \""+ fileName +"\" could not be found. Path:"+ path);
+            Gdx.app.error("MapMetaData", "Map named \""+ this.mapName +"\" could not be found. Path:"+ path);
+            throw new IOException("Map named \""+ this.mapFolder +"\" could not be found. Path:"+ path);
         }
 	}
+	
+	public void createSaveSlot(int slot){
+		FileHandle path = Gdx.files.absolute(this.mapFolder+"/save"+slot);
+        if (!path.exists()){
+			path.mkdirs();
+		}
+		//copy from map folder root
+		FileHandle root = Gdx.files.absolute(this.mapFolder.getAbsolutePath());
+		FileHandle[] childen = root.list();
+		for (FileHandle file : childen) {
+			if (!file.isDirectory()){
+				file.copyTo(path);
+			}
+		}
+	}
+	
+	/**
+	 * Check if a save slot exists.
+	 * @param saveSlot
+	 * @return 
+	 */
+	public boolean hasSaveSlot(int saveSlot) {
+		FileHandle path = Gdx.files.absolute(this.mapFolder+"/save"+saveSlot);
+		return path.exists();
+	}
+	
     /**
-     * Writes the data in a folder at the working directory.
+     * Writes the data in the map folder
      * @return
      * @throws IOException 
      * @since v1.2.28
      */
     public boolean write() throws IOException{
-        if ("".equals(fileName)) return false;
-        File path = new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/");
-        if (!path.exists()) path.mkdir();//create folder if it is missing
-        FileHandle meta = new FileHandle(path+"/map."+METAFILESUFFIX);
+        if (mapFolder == null) return false;
+        if (!mapFolder.exists()) mapFolder.mkdir();//create folder if it is missing
+        FileHandle meta = new FileHandle(mapFolder+"/map."+METAFILESUFFIX);
         String lineFeed = System.getProperty("line.separator");
         
         //meta..createNewFile();
@@ -143,8 +188,8 @@ public class MapMetaData {
      *
      * @param fileName
      */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileName(File fileName) {
+        this.mapFolder = fileName;
     }
 
     /**
@@ -228,7 +273,7 @@ public class MapMetaData {
     }
 
     /**
-     *
+     *A descriptive name.
      * @return
      */
     public String getMapName() {
@@ -247,7 +292,7 @@ public class MapMetaData {
      *
      * @return
      */
-    public String getFileName() {
-        return fileName;
+    public File getMapFolder() {
+        return mapFolder;
     }
 }

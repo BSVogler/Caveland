@@ -7,7 +7,6 @@ import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 
@@ -21,7 +20,7 @@ public class CustomGameController extends Controller {
         
     @Override
     public void init(){
-        super.init(new AirGenerator());
+        super.init();
 
 		Gdx.app.log("CustomGameController", "Initializing");
         player1 = new CustomPlayer();

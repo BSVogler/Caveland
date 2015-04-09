@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
 import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
@@ -68,23 +67,27 @@ public class Controller implements GameManager {
     /**
      * Tries loading a map.
      * @param name the name of the map
-     * @return returns true if the map could be laoded and false if it failed
+	 * @param saveslot
+     * @return returns true if the map could be loaded and false if it failed
      */
-    public static boolean loadMap(String name) {
+    public static boolean loadMap(String name, int saveslot) {
 		if (map != null)
 			map.dispose();
         try {
-			if (map!=null) {//loading another map
-				ArrayList<LinkedWithMap> linked = map.getLinkedObjects();
-				map = new ChunkMap(name);
+			Iterable<LinkedWithMap> linked = null;
+			if (map != null) {//if loading another map save linked objects
+				linked = map.getLinkedObjects();
+			}
+				
+			if (CVar.get("mapUseChunks").getValueb())
+				map = new ChunkMap(name, saveslot);
+			else
+				map = new CompleteMap(name, saveslot);
+
+			if (linked != null) {
 				for (LinkedWithMap linkedObj : linked) {
 					map.addLinkedObject(linkedObj);
 				}
-			} else { //loading first map
-				if (CVar.get("mapUseChunks").getValueb())
-					map = new ChunkMap(name);
-				else
-					map = new CompleteMap(name);
 			}
 			
             return true;
@@ -133,25 +136,32 @@ public class Controller implements GameManager {
 	
     private DevTools devtools;
     private boolean initalized= false;
+	private int saveSlot;
 
+	public void setSaveSlot(int slot){
+		this.saveSlot = slot;
+	}
+
+	public int getSaveSlot() {
+		return saveSlot;
+	}
+	
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
     public void init(){
-        init(null, 0);
+        init(saveSlot);
     }
     
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
-     * @param generator Set the map generator you want to use.
 	 * @param saveslot
      */
-    public void init(Generator generator, int saveslot){
+    public void init(int saveslot){
         Gdx.app.log("Controller", "Initializing");
 
 		if (devtools == null && CVar.get("DevMode").getValueb())
             devtools = new DevTools( 10, 50 );
-        
         if (map == null){
             if (!loadMap("default", saveslot)) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");

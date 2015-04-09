@@ -3,8 +3,8 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.badlogic.gdx.Gdx;
@@ -36,15 +36,16 @@ public abstract class AbstractMap implements Cloneable {
 	}
 	
 	/**
-	 * Should create a new map file.
-	 * @param mapName file name
+	 * Should create a new map file under the maps directory.
+	 * @param mapFileName file name
 	 * @throws java.io.IOException
 	 */
-	public static void createMapFile(final String mapName) throws IOException {
-		MapMetaData meta = new MapMetaData(mapName);
-		meta.setMapName(mapName);
+	public static void createMapFile(final String mapFileName) throws IOException {
+		MapMetaData meta = new MapMetaData(mapFileName);
+		meta.setMapName(mapFileName);
 		meta.write();
 	}
+
 	/** every entity on the map is stored in this field */
 	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
 	private boolean modified = true;
@@ -58,13 +59,15 @@ public abstract class AbstractMap implements Cloneable {
 	private Generator generator;
 	private final String filename;
 
-	public AbstractMap(final String name, Generator generator) throws IOException {
+	public AbstractMap(final String name, Generator generator, int saveSlot) throws IOException {
 		this.filename = name;
 		this.generator = generator;
 		
 		meta = new MapMetaData(name);
+		if (!meta.hasSaveSlot(saveSlot))
+			meta.createSaveSlot(saveSlot);
 		if (CVar.get("shouldLoadMap").getValueb()){
-			meta.load();
+			meta.load(saveSlot);
 		}
 	}
 	

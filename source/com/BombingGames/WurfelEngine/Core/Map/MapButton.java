@@ -41,14 +41,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import java.io.IOException;
 
 /**
- *
+ *A button which creates a new save if you click on it
  * @author Benedikt Vogler
  */
 public class MapButton extends TextButton {
 
     /**
      *
-     * @param fileName
+     * @param fileName fileName of map
      */
     public MapButton(String fileName) {
         super("",WE.getEngineView().getSkin());
@@ -59,7 +59,8 @@ public class MapButton extends TextButton {
         MapMetaData meta;
         try {
             meta = new MapMetaData(fileName);
-			meta.load();
+			meta.createSaveSlot(meta.getSavesCount());
+			meta.load(meta.getSavesCount());
             setText("/"+fileName+"/ "+meta.getMapName());
             if (!"".equals(meta.getDescription()))
                 add(meta.getDescription());
@@ -92,7 +93,10 @@ public class MapButton extends TextButton {
 
         @Override
         public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-            Controller.loadMap(parent.getName());
+            Controller.loadMap(
+				parent.getName(),
+				new MapMetaData(parent.getName()).getSavesCount()
+			);
         }
     }
     

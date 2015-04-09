@@ -32,6 +32,7 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -417,7 +418,7 @@ public class Console implements CommandsInterface  {
             
             String mapname = st.nextToken();
             if (mapname.length()>0)
-                return Controller.loadMap(mapname);
+                return Controller.loadMap(mapname, new MapMetaData(mapname).getSavesCount());
         }
         
         if (command.startsWith("newmap")){

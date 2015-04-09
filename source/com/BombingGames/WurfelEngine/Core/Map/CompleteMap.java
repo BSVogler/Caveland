@@ -5,7 +5,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import java.io.IOException;
 
 /**
- *
+ *A map where every available data is stored in one big array. No streaming.
  * @author Benedikt Vogler
  */
 public class CompleteMap extends AbstractMap {
@@ -14,13 +14,13 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksZ;
 	private final CoreData[][][] data;
 
-	public CompleteMap(final String name) throws IOException {
-		this(name, getDefaultGenerator());
+	public CompleteMap(final String name, int saveSlot) throws IOException {
+		this(name, getDefaultGenerator(), saveSlot);
 	}
 
 	
-	public CompleteMap(final String name, Generator generator) throws IOException {
-		super(name, generator);
+	public CompleteMap(final String name, Generator generator, int saveSlot) throws IOException {
+		super(name, generator, saveSlot);
 		blocksX = 100;
         blocksY = 200;
         blocksZ =  10;

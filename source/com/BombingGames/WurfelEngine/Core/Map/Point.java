@@ -33,7 +33,8 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -51,11 +52,13 @@ public class Point extends AbstractPosition {
 
     /**
      * Creates a point refering to a position in the game world.
+	 * @param map
      * @param posX The distance from the left border of the map (game space)
      * @param posY The distance from the top border of the map (game space)
      * @param height The distance from ground  (game space)
      */
-    public Point(float posX, float posY, float height) {
+    public Point(AbstractMap map, float posX, float posY, float height) {
+		super(map);
 		this.x = posX;
 		this.y = posY;
         this.z = height;
@@ -66,9 +69,10 @@ public class Point extends AbstractPosition {
      * @param point the source of the copy
      */
     public Point(Point point) {
-       this.x = point.x;
-       this.y = point.y;
-	   this.z = point.z;
+		super(point.map);
+		this.x = point.x;
+		this.y = point.y;
+		this.z = point.z;
     }
 
     /**
@@ -93,7 +97,7 @@ public class Point extends AbstractPosition {
      * @return in grid coordinates.
      */
     public float getZGrid() {
-        return (int) (z/Block.GAME_EDGELENGTH);
+        return (int) (z/RenderBlock.GAME_EDGELENGTH);
     }
 
     /**
@@ -113,9 +117,10 @@ public class Point extends AbstractPosition {
     public Coordinate getCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
+			map,	
             (int) Math.floor(getX() / (float) AbstractGameObject.GAME_DIAGLENGTH),
             (int) Math.floor(getY() / (float) AbstractGameObject.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
-			(int) Math.floor(z/Block.GAME_EDGELENGTH)
+			(int) Math.floor(z/RenderBlock.GAME_EDGELENGTH)
 		);
 		//clamp at top border
 		if (coords.getZ() >= Chunk.getBlocksZ())
@@ -177,7 +182,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
+		return getZ() - getZGrid()*RenderBlock.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -193,12 +198,12 @@ public class Point extends AbstractPosition {
 	}
 	
     @Override
-    public Block getBlock() {
+    public CoreData getBlock() {
         return Controller.getMap().getBlock(getCoord());
     }
     
     @Override
-    public Block getBlockSafe(){
+    public CoreData getBlockSafe(){
         if (isInMemoryAreaHorizontal())
             return getCoord().getBlock();
         else return null;
@@ -240,7 +245,7 @@ public class Point extends AbstractPosition {
 	
 	@Override
     public boolean isInMemoryArea() {
-		if (getZ() < 0 && getZ() > Map.getBlocksZ()){
+		if (getZ() < 0 && getZ() > map.getBlocksZ()){
 			return false;
 		} else {
 			return getBlock() != null;
@@ -322,7 +327,7 @@ public class Point extends AbstractPosition {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-    public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
+		public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
       /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length
  'radius'. 'radius' may be infinite.
@@ -383,19 +388,19 @@ public class Point extends AbstractPosition {
         radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
 
         while (/* ray has not gone past bounds of world */
-               stepZ > 0 ? curZ < Map.getGameHeight() : curZ >= 0) {
+               stepZ > 0 ? curZ < map.getGameHeight() : curZ >= 0) {
 
 				/** Point of intersection */
-                Point isectP = new Point(curX, curY, curZ);
+                Point isectP = new Point(map, curX, curY, curZ);
                 if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
-				Block block = isectP.getBlock();
+				CoreData block = isectP.getBlock();
                 //intersect?
                 if ((
 					camera==null
 					||
 					(
 						(
-							curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH
+							curZ < camera.getZRenderingLimit()*RenderBlock.GAME_EDGELENGTH
 							&& !camera.isClipped(isectP.getCoord())
 						)
 					)
@@ -406,10 +411,10 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (Block.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
-                        % Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
+                        (RenderBlock.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? RenderBlock.GAME_DIAGLENGTH2 : 0))
+                        % RenderBlock.GAME_DIAGLENGTH)) % RenderBlock.GAME_DIAGLENGTH
                         <
-                        Block.GAME_DIAGLENGTH2
+                        RenderBlock.GAME_DIAGLENGTH2
                     ) {
 						normal.y = 0;
                         normal.x = -1;
@@ -463,7 +468,7 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
-            Point intersectpoint = new Point(curX, curY, 0);
+            Point intersectpoint = new Point(map, curX, curY, 0);
             return new Intersection(intersectpoint, normal, this.distanceTo(intersectpoint));
         } else
             return new Intersection();

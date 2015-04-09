@@ -32,7 +32,8 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -69,6 +70,7 @@ public class Minimap implements LinkedWithMap {
 	private FrameBuffer fbo;
 	private TextureRegion fboRegion;
 	private boolean needsrebuild = true;
+	private AbstractMap map;
 
 	/**
      * Create a minimap. Visible by default.
@@ -108,20 +110,20 @@ public class Minimap implements LinkedWithMap {
 	 * @param view
      */
     public void buildTexture(GameView view){
-        mapdata = new Color[Map.getBlocksX()][Map.getBlocksY()];
-        for (int x = 0; x < Map.getBlocksX(); x++) {
-            for (int y = 0; y < Map.getBlocksY(); y++) {
+        mapdata = new Color[map.getBlocksX()][map.getBlocksY()];
+        for (int x = 0; x < map.getBlocksX(); x++) {
+            for (int y = 0; y < map.getBlocksY(); y++) {
                 mapdata[x][y] = new Color();
             }
         }
         
         maximumZ = 0;
-        int[][] topTileZ = new int[Map.getBlocksX()][Map.getBlocksY()];
+        int[][] topTileZ = new int[map.getBlocksX()][map.getBlocksY()];
         
         //fing top tile
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
-                int z = Map.getBlocksZ() -1;//start at top
+                int z = map.getBlocksZ() -1;//start at top
                 while ( z>-1 && Controller.getMap().getBlock(x, y, z).getId() ==0 ) {
                     z--;//find topmost block in row
                 }
@@ -137,11 +139,11 @@ public class Minimap implements LinkedWithMap {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = Block.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),0);
+                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),0);
                 else {
-                    Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
+                    CoreData block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
                     if (block.getId()!=0)
-                        mapdata[x][y] = Block.getRepresentingColor(block.getId(), block.getValue());
+                        mapdata[x][y] = RenderBlock.getRepresentingColor(block.getId(), block.getValue());
                     else 
                         mapdata[x][y] = new Color();//make air black
                 } 
@@ -168,8 +170,8 @@ public class Minimap implements LinkedWithMap {
 		sh.translate(0, mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
 			//render the map
 			sh.begin(ShapeType.Filled);
-				for (int x = 0; x < Map.getBlocksX(); x++) {
-					for (int y = 0; y < Map.getBlocksY(); y++) {
+				for (int x = 0; x < map.getBlocksX(); x++) {
+					for (int y = 0; y < map.getBlocksY(); y++) {
 						sh.setColor(mapdata[x][y]);//get color
 						float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
 						float rectY = - (y+1)*scaleY;
@@ -194,11 +196,11 @@ public class Minimap implements LinkedWithMap {
 					float rectX = 
 						+ ((ent.getPosition().getX()
 						+ (ent.getPosition().getCoord().getY()%2==1?0.5f:0)
-						)/Block.GAME_DIAGLENGTH
+						)/RenderBlock.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
 					float rectY = 
-						- (ent.getPosition().getY()/Block.GAME_DIAGLENGTH
+						- (ent.getPosition().getY()/RenderBlock.GAME_DIAGLENGTH
 						+ 0.5f
 						)* scaleY*2;
 					sh.translate(rectX, rectY, 0);
@@ -218,9 +220,9 @@ public class Minimap implements LinkedWithMap {
 					rectX = (int) (
 						(tmpPos.getX()
 							+ (tmpPos.getCoord().getY()%2==1 ? 0.5f : 0)
-						  ) / Block.GAME_DIAGLENGTH * scaleX
+						  ) / RenderBlock.GAME_DIAGLENGTH * scaleX
 					);
-					rectY = (int) (tmpPos.getY()/Block.GAME_DIAGLENGTH2 * scaleY);
+					rectY = (int) (tmpPos.getY()/RenderBlock.GAME_DIAGLENGTH2 * scaleY);
 
 					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
@@ -288,33 +290,31 @@ public class Minimap implements LinkedWithMap {
 						//ground level
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
-					sh.rect(
-						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2,
-						scaleX*camera.getWidthInProjSpc()/ Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc()/ Block.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2,
+						scaleX*camera.getWidthInProjSpc()/ RenderBlock.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ RenderBlock.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
 			//            if (controller.getPlayer()!=null){
 			//                sh.setColor(Color.GRAY);
 			//                sh.rect(
-			//                    scaleX * camera.getProjectionPosX() / Block.VIEW_WIDTH,
-			//                    + scaleY * camera.getProjectionPosY() / Block.VIEW_DEPTH2
-			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
-			//                    scaleX*camera.getProjectionWidth() / Block.VIEW_WIDTH,
-			//                    scaleY*camera.getProjectionHeight() / Block.VIEW_DEPTH2
+			//                    scaleX * camera.getProjectionPosX() / RenderBlock.VIEW_WIDTH,
+			//                    + scaleY * camera.getProjectionPosY() / RenderBlock.VIEW_DEPTH2
+			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
+			//                    scaleX*camera.getProjectionWidth() / RenderBlock.VIEW_WIDTH,
+			//                    scaleY*camera.getProjectionHeight() / RenderBlock.VIEW_DEPTH2
 			//                );
 			//            }
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
-					sh.rect(
-						scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
-						scaleX*camera.getWidthInProjSpc() / Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc() / Block.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
+						scaleX*camera.getWidthInProjSpc() / RenderBlock.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / RenderBlock.VIEW_DEPTH2
 					);
 					
 				sh.end();

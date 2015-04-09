@@ -31,11 +31,10 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.LoadMenu;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -104,7 +103,7 @@ public class GameView extends View implements GameManager {
         //font.scale(-0.5f);
         
         //load sprites
-        Block.loadSheet();
+        RenderBlock.loadSheet();
     }
     
     /**
@@ -304,11 +303,12 @@ public class GameView extends View implements GameManager {
 
 			//find points
 			return new Point(
+				Controller.getMap(),
 				screenXtoView(x, camera),
 				screenYtoView(y, camera)*-2,
 				0
 			);
-		} else return Map.getCenter();
+		} else return Controller.getMap().getCenter();
     }
      
     /**

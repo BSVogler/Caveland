@@ -2,7 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
@@ -92,7 +92,7 @@ public class Enemy extends MovableEntity{
 			
 			//find nearby target if there is none
 			if (target==null){
-				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH*4, CustomPlayer.class);
+				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_DIAGLENGTH*4, CustomPlayer.class);
 				if (!nearby.isEmpty())
 					target = nearby.get(0);
 			}

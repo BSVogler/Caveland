@@ -31,7 +31,7 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -59,9 +59,9 @@ public class Navigation {
 
             int rightborder = Gdx.graphics.getWidth();
             int topBorder = Gdx.graphics.getHeight();
-            int steps = topBorder/(Map.getBlocksZ()+1);
+            int steps = topBorder/(Controller.getMap().getBlocksZ()+1);
 
-            for (int i = 1; i < Map.getBlocksZ()+1; i++) {
+            for (int i = 1; i < Controller.getMap().getBlocksZ()+1; i++) {
                 if (view.getCameras().get(0).getZRenderingLimit() == i )
                     sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0,0.1f));
                 else 

@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -53,7 +53,7 @@ public class MapEditorController extends Controller {
     /**
      * a clone of the map at the time when last tested.
      */
-    private Map mapsave;
+    private AbstractMap mapsave;
     private boolean reverseMap;
     private Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
@@ -102,7 +102,9 @@ public class MapEditorController extends Controller {
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-		if (!selectionEntity.spawned()) selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
+		if (!selectionEntity.spawned()) selectionEntity.spawn(
+			new Point(getMap(), 0, 0, getMap().getBlocksZ()-1)
+		);
     }
     
 
@@ -116,7 +118,9 @@ public class MapEditorController extends Controller {
         else
             mapsave = null;
 		
-        if (!selectionEntity.spawned()) selectionEntity.spawn(new Point(0, 0, Map.getBlocksZ()-1));
+        if (!selectionEntity.spawned()) selectionEntity.spawn(
+			new Point(getMap(),0, 0, getMap().getBlocksZ()-1)
+		);
     }
     
     /**

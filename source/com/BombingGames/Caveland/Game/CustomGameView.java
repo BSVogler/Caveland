@@ -289,7 +289,7 @@ public class CustomGameView extends GameView{
 				player.jump();
 			
 			if (buttonCode==11) //X
-				player.attack(500);
+				player.attack(50);
 			
 			if (buttonCode==12){//B
 				if (id==0)
@@ -469,7 +469,7 @@ public class CustomGameView extends GameView{
 				if (coop==0){
 					//p1
 					if (keycode == Input.Keys.N) {
-						getPlayer(0).attack(500);
+						getPlayer(0).attack(50);
 					}
 					
 					if (keycode == Input.Keys.M) {
@@ -482,7 +482,7 @@ public class CustomGameView extends GameView{
 					}
 						
 					if (keycode == Input.Keys.NUMPAD_1) {
-						getPlayer(1).attack(500);
+						getPlayer(1).attack(50);
 					}
 					
 					if (keycode == Input.Keys.NUMPAD_2) {
@@ -545,7 +545,7 @@ public class CustomGameView extends GameView{
 				throwDownP1 = 0;
 			}
 			if (button ==Buttons.LEFT)
-				getPlayer(0).attack(500);
+				getPlayer(0).attack(50);
             return true;
         }
 

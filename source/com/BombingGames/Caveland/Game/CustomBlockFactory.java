@@ -3,9 +3,8 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.ExplosiveBarrel;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -14,9 +13,8 @@ import com.badlogic.gdx.Gdx;
  */
 public class CustomBlockFactory implements BlockFactory {
 
-@Override
-public Block produce(int id, int value) {
-	Block block;
+public RenderBlock produce(int id, int value) {
+	RenderBlock block;
 	switch (id){
 		case 41:
 			block = new Ore(id, Collectible.CollectibleType.CRISTALL);
@@ -31,8 +29,7 @@ public Block produce(int id, int value) {
 			block = new Ore(id, Collectible.CollectibleType.COAL);
 		break;
 		case 46://sand
-			block = Block.createBasicInstance(id);
-			block.setObstacle(true);
+			block = new RenderBlock(id);
 		break;  
 		case 55:
 			block = new RailBlock();
@@ -41,13 +38,8 @@ public Block produce(int id, int value) {
 			block = new Machine();
 		break;
 		case 70:
-			block = Block.createBasicInstance(id); 
-			block.setTransparent(true);
-			block.setNoSides();
-		break;
-		case 71:
-			block = new ExplosiveBarrel(id);
-			block.setNoSides();
+			block = new RenderBlock(id); 
+			//block.setNoSides();
 		break;
 		case 72:
 			block = new CustomTree(value);
@@ -58,12 +50,11 @@ public Block produce(int id, int value) {
 //		break;
 		default:
 			Gdx.app.error("CustomBlockFactory", "Block "+id+" not defined.");
-			block = Block.createBasicInstance(id);;
+			block = new RenderBlock(id);
 		}
 		return block;
 	}	
 
-	@Override
 	public String getName(int id, int value) {
 		switch (id){
 			case 40:
@@ -75,27 +66,42 @@ public Block produce(int id, int value) {
 		return "too lazy";
 	}
 
+	@Override
+	public boolean isObstacle(int id, int value) {
+		return false;
+	}
 
+	@Override
+	public boolean isTransparent(int id, int value) {
+		return false;
+	}
 
-	private static class RailBlock extends Block {
+	@Override
+	public boolean isLiquid(int id, int value) {
+		return false;
+	}
+
+	@Override
+	public boolean hasSides(int id, int value) {
+		return true;
+	}
+
+	private static class RailBlock extends RenderBlock {
 		private static final long serialVersionUID = 1L;
 
 		RailBlock() {
 			super(55);
-			setNoSides();
-			setTransparent(true);
-			setObstacle(false);
+			//setNoSides();
 		}
 		
 		
 	}
 
-	private static class Ore extends Block {
+	private static class Ore extends RenderBlock {
 		private final Collectible.CollectibleType def;
 
 		Ore(int id, Collectible.CollectibleType def) {
 			super(id);
-			setObstacle(true);
 			this.def = def;
 		}
 

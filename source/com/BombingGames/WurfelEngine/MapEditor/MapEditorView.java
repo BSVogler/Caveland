@@ -34,8 +34,9 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Minimap;
@@ -338,8 +339,9 @@ public class MapEditorView extends GameView {
 			Coordinate coords = selection.getPosition().getCoord();
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
-                Block block = coords.getBlock();
-                leftColorGUI.setBlock(block.getId(), block.getValue());
+                CoreData block = coords.getBlock();
+				if (block == null) block = new CoreData(0);
+					leftColorGUI.setBlock(block);
             } else {
 				Tool toggledTool;
 				
@@ -351,12 +353,12 @@ public class MapEditorView extends GameView {
 				
 				switch (toggledTool){
 					case DRAW:
-						Block block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
-						Controller.getMap().setData(block);
+						RenderBlock block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
+						Controller.getMap().setBlock(block);
 						break;
 					case REPLACE:
 						block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setData(block);
+						Controller.getMap().setBlock(block);
 						break;
 					case SELECT:
 						if (WE.getEngineView().getCursor()!=2) {//not dragging
@@ -367,9 +369,8 @@ public class MapEditorView extends GameView {
 						}
 						break;
 					case ERASE:
-						block = null;
 						if (coords.getZ()>=0)
-							Controller.getMap().setData(block);
+							Controller.getMap().destroyBlockOnCoord(coords);
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -453,11 +454,11 @@ public class MapEditorView extends GameView {
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
 					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){
-						Block block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setData(block);
+						RenderBlock block = leftColorGUI.getBlock(coords);
+						Controller.getMap().setBlock(block);
 					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
-						Block block = null;
-						Controller.getMap().setData(block);
+						RenderBlock block = null;
+						Controller.getMap().setBlock(block);
 					} else return false;
 				}
 			}
@@ -544,7 +545,10 @@ public class MapEditorView extends GameView {
 			
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					Controller.getMap().setData(leftColorGUI.getBlock(new Coordinate(x, y, from.getZ()))
+					getMap().setBlock(
+						leftColorGUI.getBlock(
+							new Coordinate(getMap(), x, y, from.getZ())
+						)
 					);
 				}	
 			}

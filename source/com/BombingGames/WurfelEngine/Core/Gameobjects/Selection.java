@@ -51,7 +51,6 @@ public class Selection extends AbstractEntity {
      */
     public Selection() {
         super(13);
-        setLightlevel(10);
 		setSaveToDisk(false);
 		setName("selectionEntity");
         
@@ -145,7 +144,7 @@ public class Selection extends AbstractEntity {
         Intersection intersect = view.screenToGame(screenX, screenY);
                 
 		if (intersect.getPoint() != null){
-		   setPosition( intersect.getPoint() );
+		   setPosition( intersect.getPoint());//temporary hack for intersection result one layer too deep 
 		   setNormal( Side.normalToSide( intersect.getNormal() ) );
 		}
     }

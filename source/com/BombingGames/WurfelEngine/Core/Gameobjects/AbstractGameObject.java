@@ -47,7 +47,7 @@ import java.io.Serializable;
  *An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
-public abstract class AbstractGameObject implements Serializable {
+public abstract class AbstractGameObject implements Serializable, HasID {
 	private transient static final long serialVersionUID = 2L;
 	
     /**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
@@ -118,10 +118,9 @@ public abstract class AbstractGameObject implements Serializable {
 	private static Texture textureDiff;
 	private static Texture textureNormal;
 	
-    private final int id; 
-    private byte value;
-    private boolean obstacle, transparent, hidden; 
-    private float lightlevel = 1f;
+    private CoreData coreData;
+	//render information
+    private boolean hidden; 
     private float rotation;
 	private float scaling;
 	private int graphicsID;
@@ -142,9 +141,8 @@ public abstract class AbstractGameObject implements Serializable {
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(int id, int value) {
-        this.id = id;
+        coreData = new CoreData(id, value);
 		this.graphicsID = id;
-        this.value = (byte)value;
     }
     
     /**
@@ -380,8 +378,8 @@ public abstract class AbstractGameObject implements Serializable {
 	 * @param color color which gets multiplied with the tint. No change ( multiply with 1) is RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
-		if (id != 0){
-			AtlasRegion texture = getSprite(getCategory(), graphicsID, value);
+		if (getId() != 0){
+			AtlasRegion texture = getSprite(getCategory(), graphicsID, getValue());
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth/2 - texture.offsetX,
@@ -440,12 +438,18 @@ public abstract class AbstractGameObject implements Serializable {
 	
     //getter & setter
 
-	/**
-     * returns the id of a object
-     * @return getId
-     */
+	public CoreData getCoreData() {
+		return coreData;
+	}
+
+	@Override
     public int getId() {
-        return this.id;
+        return coreData.getId();
+    }
+	
+	@Override
+    public int getValue() {
+        return coreData.getValue();
     }
 
 	/**
@@ -456,13 +460,9 @@ public abstract class AbstractGameObject implements Serializable {
 		return graphicsID;
 	}
 
-    /**
-     * How bright is the object?
-     * The lightlevel is a scale applied to the color. 1 is default value.
-     * @return 1 is default bright. 0 is black.
-     */
+	@Override
     public float getLightlevel() {
-        return lightlevel;
+        return coreData.getLightlevel();
     }
 
     /**
@@ -471,13 +471,7 @@ public abstract class AbstractGameObject implements Serializable {
      */
     public abstract String getName();
     
-    /**
-     * Get the value. It is like a sub-id and can identify the status.
-     * @return in range [0;{@link #VALUESNUM}]. Is -1 if about to destroyed.
-     */
-    public int getValue() {
-        return value;
-    }
+
 
     /**
      * Returns the rotation of the object.
@@ -503,45 +497,9 @@ public abstract class AbstractGameObject implements Serializable {
         return hidden;
     }
 
-    /**
-     * Is this object an obstacle or can you pass through?
-     * @return
-     */
-    public boolean isObstacle() {
-        return obstacle;
-    }
-
-    /**
-     * Can light travel through object?
-     * @return
-     */
-    public boolean isTransparent() {
-        return transparent;
-    }
-
-    /**
-     * Set the brightness of the object.
-     * The lightlevel is a scaling factor between.
-     * @param lightlevel 1 is default bright. 0 is black.
-     */
+	@Override
     public void setLightlevel(float lightlevel) {
-        this.lightlevel = lightlevel;
-    }
-
-    /**
-     * Make the object to an obstacle or passable.
-     * @param obstacle true when obstacle. False when passable.
-     */
-    public void setObstacle(boolean obstacle) {
-        this.obstacle = obstacle;
-    }
-
-    /**
-     * Has the object transparent areas?
-     * @param transparent
-     */
-    public void setTransparent(boolean transparent) {
-        this.transparent = transparent;
+        this.coreData.setLightlevel(lightlevel);
     }
 
     /**
@@ -549,7 +507,7 @@ public abstract class AbstractGameObject implements Serializable {
      * @param value
      */
     public void setValue(int value) {
-        this.value = (byte)value;
+        this.coreData.setValue(value);
     }
 
 
@@ -637,7 +595,6 @@ public abstract class AbstractGameObject implements Serializable {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getAtlasRegion(){
-		return getSprite(getCategory(), graphicsID, value);
+		return getSprite(getCategory(), graphicsID, getValue());
 	}
-
 }

@@ -5,7 +5,7 @@ import com.BombingGames.Caveland.GameObjects.CustomBlockDestructionAction;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.WE;
@@ -29,6 +29,7 @@ public class CustomGameController extends Controller {
 		if (!player1.spawned())
 			player1.spawn(
 				new Coordinate(
+					Controller.getMap(),
 					CVar.get("PlayerLastSaveX").getValuei(),
 					CVar.get("PlayerLastSaveY").getValuei(),
 					CVar.get("PlayerLastSaveZ").getValuei()
@@ -37,14 +38,15 @@ public class CustomGameController extends Controller {
 		if (player2!=null && !player2.spawned())
 			player2.spawn(
 				new Coordinate(
+					Controller.getMap(),
 					CVar.get("PlayerLastSaveX").getValuei(),
 					CVar.get("PlayerLastSaveY").getValuei(),
 					CVar.get("PlayerLastSaveZ").getValuei()
 				).getPoint()
 			);
 		
-		Block.setDestructionSound("blockDestroy");
-		Block.setDestructionAction(new CustomBlockDestructionAction());
+		RenderBlock.setDestructionSound("blockDestroy");
+		RenderBlock.setDestructionAction(new CustomBlockDestructionAction());
 		
 		WE.getConsole().setCustomCommands(new CavelandCommands());
 		

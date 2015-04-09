@@ -31,7 +31,7 @@ package com.BombingGames.WurfelEngine.Core.LightEngine;
 import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.HasID;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Side;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
@@ -329,38 +329,34 @@ public class LightEngine implements LinkedWithMap {
     
      /**
      * Calculates the light level based on the sun shining straight from the top
-	 * @param chunk
+	 * @param data
      */
-    public void calcSimpleLight(Chunk chunk){
+    public void calcSimpleLight(HasID[][][] data){
         for (
-			int x=chunk.getData()[0][0][0].getPosition().getX(),
-				maxX=chunk.getData()[0][0][0].getPosition().getX()+Chunk.getBlocksX();
+			int x=0,
+				maxX=data.length;
 			x< maxX;
 			x++
 		){
             for (
-				int y=chunk.getData()[0][0][0].getPosition().getY(),
-				maxY=chunk.getData()[0][0][0].getPosition().getY()+Chunk.getBlocksY();
+				int y=0,
+				maxY=data[0].length;
 				y < maxY;
 				y++
 			) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ();//start at top
-				Block block;
+				HasID block;
                 
 				do {
                     topmost--;
-					block = chunk.getBlock(
-						x,
-						y,
-						topmost
-					);
+					block = data[x][y][topmost];
                 } while ((block == null || block.isTransparent()) && topmost > 0);
                 
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
                     for (int level = topmost; level >= 0; level--){
-						Block blockToLit = Controller.getMap().getBlock(x,y,level);
+						HasID blockToLit = data[x][y][level];
 						if (blockToLit!=null)
 							blockToLit.setLightlevel(.5f + .5f*level / (float) topmost);
                     }
@@ -569,7 +565,8 @@ public class LightEngine implements LinkedWithMap {
 
 	@Override
 	public void onChunkChange(Chunk chunk) {
-		calcSimpleLight(chunk);
+		//perform light change only on this chunk
+		calcSimpleLight(chunk.getData());
 	}
 	
 	

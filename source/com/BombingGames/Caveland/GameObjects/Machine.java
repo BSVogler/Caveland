@@ -1,7 +1,7 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Machine extends Block {
+public class Machine extends RenderBlock {
 	private static final long serialVersionUID = 1L;
 	private int sulfurcount;
 	private int coalcount;
@@ -20,7 +20,6 @@ public class Machine extends Block {
 	 */
 	public Machine() {
 		super(60);
-		setObstacle(true);
 	}
 
 	@Override

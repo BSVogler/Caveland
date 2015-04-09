@@ -31,11 +31,13 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
+import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
+import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
 import com.BombingGames.WurfelEngine.Core.Map.Generator;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.Core.Map.Map;
 import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -51,7 +53,7 @@ import java.util.logging.Logger;
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
 	private static SoundEngine soundEngine;
-    private static Map map;
+    private static AbstractMap map;
     private DevTools devtools;
     private boolean initalized= false;
 
@@ -76,7 +78,7 @@ public class Controller implements GameManager {
             if (!loadMap("default")) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
                 try {
-                    Map.createMapFile("default");
+                    ChunkMap.createMapFile("default");
                     loadMap("default");
                 } catch (IOException ex1) {
                     Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
@@ -124,6 +126,7 @@ public class Controller implements GameManager {
 		if (lightEngine != null) lightEngine.update(dt);
 		if (soundEngine != null) soundEngine.update(dt);
 		map.update(dt);
+		map.modificationCheck();
 	}
 
     /**
@@ -137,11 +140,16 @@ public class Controller implements GameManager {
         try {
 			if (map!=null) {//loading another map
 				ArrayList<LinkedWithMap> linked = map.getLinkedObjects();
-				map = new Map(name);
+				map = new ChunkMap(name);
 				for (LinkedWithMap linkedObj : linked) {
 					map.addLinkedObject(linkedObj);
 				}
-			} else map = new Map(name); //loading first map
+			} else { //loading first map
+				if (CVar.get("mapUseChunks").getValueb())
+					map = new ChunkMap(name);
+				else
+					map = new CompleteMap(name);
+			}
 			
             return true;
         } catch (IOException ex) {
@@ -154,7 +162,7 @@ public class Controller implements GameManager {
      * Returns the currently loaded map.
      * @return the map
      */
-    public static Map getMap() {
+    public static AbstractMap getMap() {
         if (map == null)
             throw new NullPointerException("There is no map yet.");
         else return map;
@@ -164,7 +172,7 @@ public class Controller implements GameManager {
      *
      * @param map
      */
-    public static void setMap(Map map) {
+    public static void setMap(AbstractMap map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
         map.modified();
@@ -230,7 +238,7 @@ public class Controller implements GameManager {
     public static void disposeClass(){
         Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
-        Block.staticDispose();
+        RenderBlock.staticDispose();
         map.dispose();
 		map = null;
         lightEngine = null;

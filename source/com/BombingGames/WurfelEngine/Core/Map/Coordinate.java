@@ -28,11 +28,13 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -49,7 +51,7 @@ import java.util.ArrayList;
  */
 public class Coordinate extends AbstractPosition {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	/**
 	 * The x coordinate. Position from left
 	 */
@@ -73,8 +75,10 @@ public class Coordinate extends AbstractPosition {
 	 * @param x The x value as coordinate.
 	 * @param y The y value as coordinate.
 	 * @param z The z value as coordinate.
+	 * @param map
 	 */
-	public Coordinate(int x, int y, int z) {
+	public Coordinate(AbstractMap map, int x, int y, int z) {
+		super(map);
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -87,6 +91,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param coord the Coordinate you want to copy
 	 */
 	public Coordinate(Coordinate coord) {
+		super(coord.map);
 		this.x = coord.x;
 		this.y = coord.y;
 		this.z = coord.z;
@@ -126,8 +131,8 @@ public class Coordinate extends AbstractPosition {
 	 * @see #getZ()
 	 */
 	public int getZClamp() {
-		if (z >= Map.getBlocksZ()) {
-			return Map.getBlocksZ() - 1;
+		if (z >= map.getBlocksZ()) {
+			return map.getBlocksZ() - 1;
 		} else if (z < 0) {
 			return 0;
 		} else {
@@ -175,10 +180,10 @@ public class Coordinate extends AbstractPosition {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(Block block) {
+	public void setBlock(RenderBlock block) {
 		if (block!= null) {
 			block.setPosition(this);
-			Controller.getMap().setData(block);
+			Controller.getMap().setBlock(block);
 		} else {
 			Controller.getMap().destroyBlockOnCoord(this);
 		}
@@ -233,7 +238,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public Block getBlock() {
+	public CoreData getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
 		} else {
@@ -242,12 +247,12 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Checks of coordinates are valid before fetching the Block.
+	 * Checks of coordinates are valid before fetching the RenderBlock.
 	 *
 	 * @return
 	 */
 	@Override
-	public Block getBlockSafe() {
+	public CoreData getBlockSafe() {
 		if (isInMemoryAreaHorizontal()) {
 			return Controller.getMap().getBlock(this);
 		} else {
@@ -262,10 +267,10 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlocks(int x, int y, int z) {
-		Block block = Controller.getMap().getBlock(
+		CoreData block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return (block != null && block.hasSides() && !block.isTransparent());
@@ -277,7 +282,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastLiquid(int x, int y, int z) {
 		return getBlock().isLiquid() && cpy().addVector(x, y, z).getBlock().isLiquid();
@@ -291,16 +296,16 @@ public class Coordinate extends AbstractPosition {
 	 * @param x offset in coords
 	 * @param y offset in coords
 	 * @param z offset in coords
-	 * @return true when hiding the past Block
+	 * @return true when hiding the past RenderBlock
 	 */
 	public boolean hidingPastBlock(int x, int y, int z) {
-		Block block = Controller.getMap().getBlock(
+		CoreData block = Controller.getMap().getBlock(
 			this.x + x, this.y + y, this.z + z
 		);
 		return block != null
 			&& (block.hasSides() && !block.isTransparent()
 			||
-			getBlock().isLiquid() && block.isLiquid());
+			block.isLiquid() && block.isLiquid());
 	}
 
 	/**
@@ -320,9 +325,11 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		for (Chunk chunk : Controller.getMap().getData()) {
-			if (chunk.hasCoord(this)) {
-				found = true;
+		if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
+			for (Chunk chunk : ((ChunkMap) map).getData()) {
+				if (chunk.hasCoord(this)) {
+					found = true;
+				}
 			}
 		}
 		return found;
@@ -337,11 +344,15 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryArea() {
 		boolean found = false;
-		if (getZ() >= 0 && getZ() < Map.getBlocksZ()) {
-			for (Chunk chunk : Controller.getMap().getData()) {
-				if (chunk.hasCoord(this)) {
-					found = true;
+		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
+			if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
+				for (Chunk chunk : ((ChunkMap) map).getData()) {
+					if (chunk.hasCoord(this)) {
+						found = true;
+					}
 				}
+			} else {
+			
 			}
 		}
 		return found;
@@ -462,6 +473,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	private void refreshCachedPoint() {
 		cachedPoint = new Point(
+			map,
 			x * AbstractGameObject.GAME_DIAGLENGTH + (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
 			y * AbstractGameObject.GAME_DIAGLENGTH2,
 			z * AbstractGameObject.GAME_EDGELENGTH
@@ -526,7 +538,9 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public boolean destroy() {
 		if (isInMemoryArea() && getBlock() != null) {
-			getBlock().onDestroy();//call destruction method
+			RenderBlock rb = getBlock().toBlock();
+			rb.setPosition(this);
+			rb.onDestroy();//call destruction method
 			setBlock(null);
 			return true;
 		} else {
@@ -537,14 +551,15 @@ public class Coordinate extends AbstractPosition {
 	/**
 	 * returns true if block got damaged
 	 *
-	 * @param amount
+	 * @param amount value between 0 and 100
 	 * @return
 	 */
-	public boolean damage(float amount) {
+	public boolean damage(byte amount) {
+		//todo, is camera related
 		if (isInMemoryArea()) {
-			Block block = getBlock();
+			CoreData block = getBlock();
 			if (block != null) {
-				block.setHealth(block.getHealth() - amount);
+				block.setHealth((byte) (block.getHealth() - amount));
 				if (block.getHealth() <= 0) {
 					destroy();
 				}

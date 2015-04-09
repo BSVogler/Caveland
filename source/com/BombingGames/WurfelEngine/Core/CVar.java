@@ -108,7 +108,8 @@ public class CVar {
 		register("enableAutoShade", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableScalePrototype", false, CVarFlags.CVAR_ARCHIVE);
 		register("enableHSD", true, CVarFlags.CVAR_ARCHIVE);
-		register("enableChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
+		register("mapChunkSwitch", true, CVarFlags.CVAR_ARCHIVE);
+		register("mapUseChunks", false, CVarFlags.CVAR_ARCHIVE);
 		register("DevMode", false, CVarFlags.CVAR_ARCHIVE);
 		register("DevDebugRendering", false, CVarFlags.CVAR_VOLATILE);
 		register("groundBlockID", 2, CVarFlags.CVAR_ARCHIVE);

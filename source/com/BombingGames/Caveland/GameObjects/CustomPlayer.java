@@ -6,10 +6,10 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -68,7 +68,7 @@ public class CustomPlayer extends Controllable {
 		}
 		if (sprites[category][value] == null) { //load if not already loaded
 
-			AtlasRegion sprite = spritesheet.findRegion(category + "/" + Integer.toString(value));
+			AtlasRegion sprite = spritesheet.findRegion("diff/"+category + "/" + Integer.toString(value));
 			if (sprite == null) { //if there is no sprite show the default "sprite not found sprite" for this category
 				Gdx.app.debug("Player animation", category + Integer.toString(value) + " not found");
 				return null;
@@ -355,7 +355,7 @@ public class CustomPlayer extends Controllable {
 
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-		entities.addAll(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+		entities.addAll(getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
 		//check hit
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
@@ -374,8 +374,8 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//destroy blocks
-		if (getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH2)
-			.addVector(getAiming().scl(80)).getCoord().damage(damage)) {
+		if (getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2)
+			.addVector(getAiming().scl(80)).getCoord().damage((byte) damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
 		}
@@ -483,7 +483,7 @@ public class CustomPlayer extends Controllable {
 			playAnimation('i');
 			Controller.getSoundEngine().play("release");
 			addToHor(40f);
-			attack(1000);
+			attack(100);
 		}
 
 		loadAttack = 0f;

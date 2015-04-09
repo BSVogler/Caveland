@@ -61,7 +61,7 @@ public class EntityShadow extends AbstractEntity {
 		else {
 			//find height of shadow surface
 			Coordinate newHeight = character.getPosition().getCoord();//start at same height
-			Block block = newHeight.getBlock();
+			CoreData block = newHeight.getBlock();
 			while (
 				newHeight.getZ() > 0
 				&& (block == null || block.isTransparent())
@@ -75,7 +75,7 @@ public class EntityShadow extends AbstractEntity {
 			getPosition().setZ(newHeight.getPoint().getZ());
 		}
 		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/RenderBlock.GAME_EDGELENGTH)
 		);
     }
 

@@ -33,7 +33,8 @@ package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Block;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -107,7 +108,7 @@ public class PlacableSelector extends Table {
 						//button.setStyle(style);
 						table.add(button);
 
-						table.add(new Label(Block.getInstance(i, 0).getName(), WE.getEngineView().getSkin()));
+						table.add(new Label(new RenderBlock(i, 0).getName(), WE.getEngineView().getSkin()));
 					}
 				}
 			} else {//add entities
@@ -184,7 +185,7 @@ public class PlacableSelector extends Table {
 	}
 
 	/**
-	 * detects a click on the Block in the list
+	 * detects a click on the RenderBlock in the list
 	 */
     private class BlockListener extends ClickListener {
         private int id;
@@ -197,7 +198,7 @@ public class PlacableSelector extends Table {
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setBlock(id, 0);
+            placableGUI.setBlock(new CoreData(id));
         };
      }
 	

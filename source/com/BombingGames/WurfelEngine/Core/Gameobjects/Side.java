@@ -65,7 +65,7 @@ public enum Side {
     }
     
     /**
-     *
+     *Get the side belonging to a vector
      * @param normal
      * @return
      */

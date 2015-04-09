@@ -89,12 +89,13 @@ public class MapMetaData {
 	}
 	/**
 	 * reads the map info file and sets the size of the chunk
+	 * @param slot the slot from which is read
 	 * @throws IOException 
 	 */
 	public void load(int slot) throws IOException{
 		BufferedReader bufRead;
 		//FileHandle path = Gdx.files.internal("map/map."+METAFILESUFFIX);
-        FileHandle path = Gdx.files.absolute(this.mapFolder+"/map."+METAFILESUFFIX);
+        FileHandle path = Gdx.files.absolute(this.mapFolder+"/save"+slot+"/map."+METAFILESUFFIX);
         if (path.exists()){
             Gdx.app.log("MapMetaData","Trying to load Map Info from \"" + path.path() + "\"");
             try {
@@ -158,14 +159,19 @@ public class MapMetaData {
 	
     /**
      * Writes the data in the map folder
+	 * @param slot if slot is -1 writes in root
      * @return
      * @throws IOException 
      * @since v1.2.28
      */
-    public boolean write() throws IOException{
+    public boolean write(int slot) throws IOException{
         if (mapFolder == null) return false;
         if (!mapFolder.exists()) mapFolder.mkdir();//create folder if it is missing
-        FileHandle meta = new FileHandle(mapFolder+"/map."+METAFILESUFFIX);
+		FileHandle meta;
+		if (slot >= 0)
+			meta = new FileHandle(mapFolder+"/save"+slot+"/map."+METAFILESUFFIX);
+		else 
+			meta = new FileHandle(mapFolder+"/map."+METAFILESUFFIX);
         String lineFeed = System.getProperty("line.separator");
         
         //meta..createNewFile();

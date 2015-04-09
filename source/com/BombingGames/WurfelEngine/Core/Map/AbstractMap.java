@@ -43,7 +43,7 @@ public abstract class AbstractMap implements Cloneable {
 	public static void createMapFile(final String mapFileName) throws IOException {
 		MapMetaData meta = new MapMetaData(mapFileName);
 		meta.setMapName(mapFileName);
-		meta.write();
+		meta.write(-1);
 	}
 
 	/** every entity on the map is stored in this field */

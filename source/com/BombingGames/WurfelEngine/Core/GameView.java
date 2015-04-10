@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
@@ -134,7 +135,7 @@ public class GameView extends View implements GameManager {
 		
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		if (CVar.get("enableMinimap").getValueb()) {
+		if ((boolean) CVar.get("enableMinimap").getValue()) {
 			minimap = new Minimap(
 				200,
 				Gdx.graphics.getHeight()-800
@@ -167,7 +168,7 @@ public class GameView extends View implements GameManager {
         }
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
 		
-		if (CVar.get("enableMinimap").getValueb()) {
+		if ((boolean)  CVar.get("enableMinimap").getValue()) {
 			if (minimap != null && minimap.isNeedingRebuild()) minimap.buildTexture(this);
 		}
     }
@@ -179,7 +180,7 @@ public class GameView extends View implements GameManager {
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         //clear screen if wished
-        if (CVar.get("clearBeforeRendering").getValueb()){
+        if ((boolean) CVar.get("clearBeforeRendering").getValue()){
             Gdx.gl20.glClearColor(0, 0, 0, 1);
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
@@ -211,7 +212,7 @@ public class GameView extends View implements GameManager {
 		if (controller.getDevTools() != null)
 			controller.getDevTools().render(this);
 
-		if (CVar.get("enableMinimap").getValueb())
+		if ((boolean) CVar.get("enableMinimap").getValue())
 			if (minimap != null)
 				minimap.render(this); 
 
@@ -228,7 +229,7 @@ public class GameView extends View implements GameManager {
      */
     public float getEqualizationScale() {
 		if (initalized)
-			return libGDXcamera.viewportWidth / CVar.get("renderResolutionWidth").getValuei();
+			return libGDXcamera.viewportWidth / (int) CVar.get("renderResolutionWidth").getValue();
 		else return 1;
     }
 
@@ -465,7 +466,7 @@ public class GameView extends View implements GameManager {
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
 		Controller.getMap().addLinkedObject(camera);
-		if (CVar.get("enableMinimap").getValueb()) {
+		if ((boolean) CVar.get("enableMinimap").getValue()) {
 			minimap.setCamera(cameras.get(0));
 		}
     }
@@ -533,10 +534,10 @@ public class GameView extends View implements GameManager {
 		if (Controller.getSoundEngine() != null)
 			Controller.getSoundEngine().setView(this);
 		
-		if (CVar.get("DevMode").getValueb())
+		if ((boolean) CVar.get("DevMode").getValue())
 			WE.getEngineView().setCursor(0);
 				
-		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());//reload music loudness
+		WE.getEngineView().setMusicLoudness((float) CVar.get("music").getValue());//reload music loudness
 		Controller.getMap().setGameSpeed(gameSpeed);
 		
         onEnter();

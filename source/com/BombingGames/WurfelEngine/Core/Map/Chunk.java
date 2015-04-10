@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
@@ -132,7 +132,7 @@ public class Chunk {
     */
     public Chunk(final ChunkMap map, final String mapname, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
-		if (CVar.get("shouldLoadMap").getValueb()){
+		if (CVar.getValueB("shouldLoadMap")){
 			if (!load(mapname, map.getCurrentSaveSlot(), coordX, coordY))
 				fill(coordX, coordY, generator);
 		} else fill(coordX, coordY, generator);
@@ -279,7 +279,7 @@ public class Chunk {
 					bufChar = fis.read();
 				}
 
-				if (CVar.get("loadEntities").getValueb()) {
+				if (CVar.getValueB("loadEntities")) {
 					//loading entities
 					if (bufChar==SIGN_ENTITIES){
 						int length = fis.read(); //amount of entities

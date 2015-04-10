@@ -1,6 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -88,7 +88,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		setFloating(false);
 		enableShadow();
 		//setSpeed(0.2f);
-		setFriction(CVar.get("friction").getValuef());
+		setFriction((float) CVar.get("friction").getValue());
 		setIndestructible(true);
 		setAnimation(
 			new EntityAnimation(

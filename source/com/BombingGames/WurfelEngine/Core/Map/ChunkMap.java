@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
@@ -129,7 +129,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 */
 	@Override
 	public void postUpdate(float dt) {
-		if (CVar.get("mapChunkSwitch").getValueb()) {
+		if (CVar.getValueB("mapChunkSwitch")) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){

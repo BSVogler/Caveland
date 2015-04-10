@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.LightEngine;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.HasID;
@@ -100,7 +100,7 @@ public class LightEngine implements LinkedWithMap {
 			45
 		);
 		
-		pixelBasedShading = CVar.get("LEnormalMapRendering").getValueb();
+		pixelBasedShading = CVar.getValueB("LEnormalMapRendering");
     }
 
     /**

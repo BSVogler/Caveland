@@ -1,6 +1,6 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
@@ -51,7 +51,7 @@ public abstract class AbstractMap implements Cloneable {
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
-	private final CoreData groundBlock = new CoreData((byte) CVar.get("groundBlockID").getValuei()); //the representative of the bottom layer (ground) block
+	private final CoreData groundBlock = new CoreData((byte) CVar.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	/**
 	 * holds the metadata of the map
 	 */
@@ -74,7 +74,7 @@ public abstract class AbstractMap implements Cloneable {
 		meta = new MapMetaData(fileName);
 		if (!meta.hasSaveSlot(saveSlot))
 			meta.createSaveSlot(saveSlot);
-		if (CVar.get("shouldLoadMap").getValueb()){
+		if (CVar.getValueB("shouldLoadMap")){
 			meta.load(saveSlot);
 		}
 		activeSaveSlot = saveSlot;
@@ -85,7 +85,7 @@ public abstract class AbstractMap implements Cloneable {
      * @return a number between 0 and 360
      */
     public int getWorldSpinDirection() {
-        return CVar.get("worldSpinAngle").getValuei();
+        return CVar.getValueI("worldSpinAngle");
     }
 
 	

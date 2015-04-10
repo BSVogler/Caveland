@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.LightEngine;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
@@ -107,7 +107,7 @@ public class GlobalLightSource {
      * @return
      */
     public float getAzimuthSpeed() {
-        return CVar.get("LEAzimutSpeed").getValuef();
+        return CVar.getValueF("LEAzimutSpeed");
     }
 
     /**

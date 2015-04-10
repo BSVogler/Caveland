@@ -33,7 +33,7 @@ package com.BombingGames.WurfelEngine;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
@@ -123,7 +123,7 @@ public class WE {
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = true;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = CVar.get("limitFPS").getValuei();//don't lock FPS
+        config.foregroundFPS = CVar.getValueI("limitFPS");//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
 		//config.addIcon("com/BombingGames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
         config.addIcon("com/BombingGames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?

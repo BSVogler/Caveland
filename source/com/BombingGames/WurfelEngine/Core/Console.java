@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
@@ -173,18 +174,18 @@ public class Console implements CommandsInterface  {
        timelastupdate += dt;
        
         //open close console/chat box
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.get("KeyConsole").getValuei())) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.getValueI("KeyConsole"))) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(CVar.get("KeyConsole").getValuei());
+        keyConsoleDown = Gdx.input.isKeyPressed(CVar.getValueI("KeyConsole"));
 		
 		if (!keySuggestionDown
-			&& Gdx.input.isKeyPressed(CVar.get("KeySuggestion").getValuei())
+			&& Gdx.input.isKeyPressed( CVar.getValueI("KeySuggestion") )
 			&& isActive()
 		) {
             autoSuggestion();
         }
-        keySuggestionDown = Gdx.input.isKeyPressed(CVar.get("KeySuggestion").getValuei());
+        keySuggestionDown = Gdx.input.isKeyPressed(CVar.getValueI("KeySuggestion"));
 		
 
         //decrease importance every 30ms

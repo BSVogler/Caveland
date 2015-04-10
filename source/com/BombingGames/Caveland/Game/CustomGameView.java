@@ -1,7 +1,7 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
@@ -104,7 +104,7 @@ public class CustomGameView extends GameView{
 		
 		
 		WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld.mp3");
-		WE.getEngineView().setMusicLoudness(CVar.get("music").getValuef());
+		WE.getEngineView().setMusicLoudness(CVar.getValueF("music"));
         
         
 //        controller.setMinimap(
@@ -148,7 +148,7 @@ public class CustomGameView extends GameView{
 				input.isKeyPressed(Input.Keys.S),
 				input.isKeyPressed(Input.Keys.A),
 				input.isKeyPressed(Input.Keys.D),
-				CVar.get("playerWalkingSpeed").getValuef()*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+				CVar.getValueF("playerWalkingSpeed")*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
 				dt
 			);
 		} else {
@@ -169,7 +169,7 @@ public class CustomGameView extends GameView{
 				input.isKeyPressed(Input.Keys.DOWN),
 				input.isKeyPressed(Input.Keys.LEFT),
 				input.isKeyPressed(Input.Keys.RIGHT),
-				CVar.get("playerWalkingSpeed").getValuef(),
+				CVar.getValueF("playerWalkingSpeed"),
 				dt
 			);
 		}
@@ -177,7 +177,7 @@ public class CustomGameView extends GameView{
 		if (coop !=1) {//P1 controlled by keyboard
 			if (XboxListener.speed[0] > 0){
 				getPlayer(0).setSpeedHorizontal(
-					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[0])
+					(CVar.getValueF("playerWalkingSpeed")*XboxListener.speed[0])
 				);
 			}
 		}
@@ -185,7 +185,7 @@ public class CustomGameView extends GameView{
 		if (coop > 0) {
 			if (XboxListener.speed[1] > 0){
 				getPlayer(1).setSpeedHorizontal(
-					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[1])
+					(CVar.getValueF("playerWalkingSpeed")*XboxListener.speed[1])
 				);
 			}
 		}
@@ -372,7 +372,7 @@ public class CustomGameView extends GameView{
 				}
 
 				player.setSpeedHorizontal(
-					(CVar.get("playerWalkingSpeed").getValuef()*XboxListener.speed[id])
+					(CVar.getValueF("playerWalkingSpeed")*XboxListener.speed[id])
 				);
 			
 			}

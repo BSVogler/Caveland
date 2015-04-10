@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
@@ -325,7 +325,7 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
+		if (CVar.getValueB("mapUseChunks")){//to-do add method for completemap
 			for (Chunk chunk : ((ChunkMap) map).getData()) {
 				if (chunk.hasCoord(this)) {
 					found = true;
@@ -345,7 +345,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean isInMemoryArea() {
 		boolean found = false;
 		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
-			if (CVar.get("mapUseChunks").getValueb()){//to-do add method for completemap
+			if (CVar.getValueB("mapUseChunks")){//to-do add method for completemap
 				for (Chunk chunk : ((ChunkMap) map).getData()) {
 					if (chunk.hasCoord(this)) {
 						found = true;

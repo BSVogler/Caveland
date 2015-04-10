@@ -30,7 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -47,7 +47,7 @@ public class Controllable extends MovableEntity {
 	 */
 	public Controllable(byte id, int spritesPerDir) {
 		super(id, spritesPerDir);
-		setFriction(CVar.get("friction").getValuef());
+		setFriction(CVar.getValueF("friction"));
 	}
 	
    /**

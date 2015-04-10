@@ -9,7 +9,9 @@ import com.BombingGames.Caveland.GameObjects.MineCart;
 import com.BombingGames.Caveland.GameObjects.Spaceship;
 import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.BooleanCVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.IntCVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
@@ -33,15 +35,15 @@ public class Caveland {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        CVar.register("worldSpinAngle", 50, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("shouldLoadMap", true, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("enableLightEngine", true, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("enableFog", true, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("enableAutoShade", false, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("groundBlockID", 1, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("PlayerLastSaveX", 2, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("PlayerLastSaveY", 15, CVar.CVarFlags.CVAR_ARCHIVE);
-		CVar.register("PlayerLastSaveZ", 10, CVar.CVarFlags.CVAR_ARCHIVE);
+		new IntCVar(50).register("worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
+		new BooleanCVar(true).register("shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
+		new BooleanCVar(true).register("enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
+		new BooleanCVar(true).register("enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
+		new BooleanCVar(false).register("enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
+		new IntCVar(1).register("groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		new IntCVar(2).register("PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
+		new IntCVar(5).register("PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
+		new IntCVar(10).register("PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());

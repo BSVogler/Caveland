@@ -31,6 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -81,7 +82,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 
         skin = new Skin(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/skin/uiskin.json"));
         
-		setMusicLoudness(CVar.get("music").getValuef());
+		setMusicLoudness((float) CVar.get("music").getValue());
 		
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

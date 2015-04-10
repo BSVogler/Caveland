@@ -30,6 +30,7 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
@@ -80,7 +81,7 @@ public class Controller implements GameManager {
 				linked = map.getLinkedObjects();
 			}
 				
-			if (CVar.get("mapUseChunks").getValueb())
+			if (CVar.getValueB("mapUseChunks"))
 				map = new ChunkMap(name, saveslot);
 			else
 				map = new CompleteMap(name, saveslot);
@@ -182,7 +183,7 @@ public class Controller implements GameManager {
     public void init(int saveslot){
         Gdx.app.log("Controller", "Initializing");
 
-		if (devtools == null && CVar.get("DevMode").getValueb())
+		if (devtools == null && CVar.getValueB("DevMode"))
             devtools = new DevTools( 10, 50 );
         if (map == null){
             if (!loadMap("default", saveslot)) {
@@ -198,7 +199,7 @@ public class Controller implements GameManager {
             }
         }
 		
-        if (CVar.get("enableLightEngine").getValueb() && Controller.lightEngine == null){
+        if (CVar.getValueB("enableLightEngine") && Controller.lightEngine == null){
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 			getMap().addLinkedObject(lightEngine);
         }
@@ -216,7 +217,7 @@ public class Controller implements GameManager {
      * @param dt time since last call
      */
     public void update(float dt) {
-		if (CVar.get("DevMode").getValueb()) {
+		if (CVar.getValueB("DevMode")) {
 			if (devtools == null ) {
 				devtools = new DevTools(10, 50);
 			}
@@ -250,7 +251,7 @@ public class Controller implements GameManager {
     
     @Override
     public void onEnter(){
-		CVar.get("timespeed").setValuef(1);
+		CVar.get("timespeed").setValue(1f);
     }
     
     @Override

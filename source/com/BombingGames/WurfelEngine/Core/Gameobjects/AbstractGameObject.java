@@ -28,7 +28,7 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
@@ -252,11 +252,11 @@ public abstract class AbstractGameObject implements Serializable, HasID {
             spritesheet = WE.getAsset(spritesheetPath+".txt");
         }
 		textureDiff = spritesheet.getTextures().first();
-        if (CVar.get("LEnormalMapRendering").getValueb())
+        if (CVar.getValueB("LEnormalMapRendering"))
 			textureNormal = WE.getAsset(spritesheetPath+"Normal.png");
 		
         //load again for pixmap, allows access to image color data;
-        if (CVar.get("loadPixmap").getValueb()) {
+        if (CVar.getValueB("loadPixmap")) {
 			if (pixmap == null) {
 				//pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
 				pixmap = new Pixmap(
@@ -332,7 +332,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      */
     public void render(GameView view, Camera camera, Color color) {
         if (!hidden) {  
-			if (CVar.get("enableFog").getValueb()) {
+			if (CVar.getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons
 				float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().getCoord().getY())*0.17+2));
 				if (color ==null) {
@@ -469,8 +469,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * Returns the name of the object
      * @return the name of the object
      */
+	@Override
     public abstract String getName();
-    
 
 
     /**

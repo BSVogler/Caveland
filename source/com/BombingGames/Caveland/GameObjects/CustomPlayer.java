@@ -1,6 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
@@ -50,7 +50,7 @@ public class CustomPlayer extends Controllable {
 			spritesheet = WE.getAsset("com/BombingGames/Caveland/playerSheet.txt");
 		}
 		textureDiff = spritesheet.getTextures().first();
-		if (CVar.get("LEnormalMapRendering").getValueb()) {
+		if (CVar.getValueB("LEnormalMapRendering")) {
 			textureNormal = WE.getAsset("com/BombingGames/Caveland/playerSheetNormal.png");
 		}
 	}
@@ -127,7 +127,7 @@ public class CustomPlayer extends Controllable {
 		setStepSound1Grass("step");
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
-		setFriction(CVar.get("playerfriction").getValuef());
+		setFriction((float) CVar.get("playerfriction").getValue());
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 	}
@@ -161,7 +161,7 @@ public class CustomPlayer extends Controllable {
 		//some redundant code from movable to have a custom animation
 		if (playAnimation) {
 			if (action == 'w') {
-				animationCycle += dt * getSpeed() * CVar.get("walkingAnimationSpeedCorrection").getValuef();//multiply by factor to make the animation fit the movement speed
+				animationCycle += dt * getSpeed() * (float) CVar.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
 			} else {
 				animationCycle += dt * 5;
 			}
@@ -262,7 +262,7 @@ public class CustomPlayer extends Controllable {
 		view.getBatch().end();//inject new batch here
 
 		//bind normal map to texture unit 1
-		if (CVar.get("LEnormalMapRendering").getValueb()) {
+		if ((boolean) CVar.get("LEnormalMapRendering").getValue()) {
 			textureNormal.bind(1);
 		}
 
@@ -287,7 +287,7 @@ public class CustomPlayer extends Controllable {
 		view.getBatch().end();
 
 		//bind normal map to texture unit 1
-		if (CVar.get("LEnormalMapRendering").getValueb()) {
+		if ((boolean) CVar.get("LEnormalMapRendering").getValue()) {
 			AbstractGameObject.getTextureNormal().bind(1);
 		}
 
@@ -528,9 +528,9 @@ public class CustomPlayer extends Controllable {
 	public void dispose() {
 		super.dispose();
 		Coordinate coord = getPosition().getCoord();
-		CVar.get("PlayerLastSaveX").setValuei(coord.getX());
-		CVar.get("PlayerLastSaveY").setValuei(coord.getY());
-		CVar.get("PlayerLastSaveZ").setValuei(coord.getZ());
+		CVar.get("PlayerLastSaveX").setValue(coord.getX());
+		CVar.get("PlayerLastSaveY").setValue(coord.getY());
+		CVar.get("PlayerLastSaveZ").setValue(coord.getZ());
 	}
 
 	/**

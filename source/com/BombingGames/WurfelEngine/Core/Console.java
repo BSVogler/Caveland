@@ -379,7 +379,7 @@ public class Console implements CommandsInterface  {
                 add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
                 return true;
             case "save":
-                return Controller.getMap().save();
+                return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
             case "benchmark":
                 new BenchmarkBall().spawn(Controller.getMap().getCenter(Controller.getMap().getGameHeight()));
                 //add("Spawned a benchmark ball.", "System");

@@ -147,7 +147,7 @@ public class MapEditorView extends GameView {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Controller.getMap().save();
+				Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
 			}
 		});
         getStage().addActor(savebutton);

@@ -58,17 +58,26 @@ public abstract class AbstractMap implements Cloneable {
 	private final MapMetaData meta;
 	private Generator generator;
 	private final String filename;
+	private int activeSaveSlot;
 
-	public AbstractMap(final String name, Generator generator, int saveSlot) throws IOException {
-		this.filename = name;
+	/**
+	 * 
+	 * @param fileName
+	 * @param generator
+	 * @param saveSlot the used saveslot
+	 * @throws IOException 
+	 */
+	public AbstractMap(final String fileName, Generator generator, int saveSlot) throws IOException {
+		this.filename = fileName;
 		this.generator = generator;
 		
-		meta = new MapMetaData(name);
+		meta = new MapMetaData(fileName);
 		if (!meta.hasSaveSlot(saveSlot))
 			meta.createSaveSlot(saveSlot);
 		if (CVar.get("shouldLoadMap").getValueb()){
 			meta.load(saveSlot);
 		}
+		activeSaveSlot = saveSlot;
 	}
 	
 	    /**
@@ -294,9 +303,10 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * saves every chunk on the map
+	 * @param saveSlot
 	 * @return
 	 */
-	public abstract boolean save();
+	public abstract boolean save(int saveSlot);
 
 	/**
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
@@ -418,5 +428,26 @@ public abstract class AbstractMap implements Cloneable {
 
 	public Generator getGenerator() {
 		return generator;
+	}
+	
+	public int getCurrentSaveSlot(){
+		return activeSaveSlot;
+	}
+	
+	/**
+	 * uses a specific save slot for loading and saving the map
+	 * @param slot 
+	 */
+	public void useSaveSlot(int slot){
+		this.activeSaveSlot = slot;
+	}
+	
+	/**
+	 * Uses a new save slot as the save slot
+	 * @return the new save slot number
+	 */
+	public int newSaveSlot() {
+		activeSaveSlot = new MapMetaData("default").newSaveSlot();
+		return activeSaveSlot;
 	}
 }

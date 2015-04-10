@@ -42,7 +42,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public boolean save() {
+	public boolean save(int saveSlot) {
 		return false;
 	}
 

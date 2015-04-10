@@ -327,11 +327,12 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return 
      */
 	@Override
-    public boolean save() {
+    public boolean save(int saveSlot) {
 		for (Chunk chunk : data) {
 			try {
                 chunk.save(
-                    getFilename()
+                    getFilename(),
+					saveSlot
                 );
             } catch (IOException ex) {
                 Logger.getLogger(ChunkMap.class.getName()).log(Level.SEVERE, null, ex);

@@ -68,7 +68,7 @@ public class Controller implements GameManager {
     /**
      * Tries loading a map.
      * @param name the name of the map
-	 * @param saveslot
+	 * @param saveslot this saveslot will become the active
      * @return returns true if the map could be loaded and false if it failed
      */
     public static boolean loadMap(String name, int saveslot) {
@@ -145,6 +145,7 @@ public class Controller implements GameManager {
 	 */
 	public void useSaveSlot(int slot){
 		this.saveSlot = slot;
+		if (map!=null) map.useSaveSlot(slot);
 	}
 
 	/**
@@ -152,7 +153,9 @@ public class Controller implements GameManager {
 	 * @return 
 	 */
 	public int getSaveSlot() {
-		return saveSlot;
+		if (map!=null)
+			return map.getCurrentSaveSlot();
+		else return saveSlot;
 	}
 	
 	/**
@@ -161,6 +164,7 @@ public class Controller implements GameManager {
 	 */
 	public int newSaveSlot() {
 		saveSlot = new MapMetaData("default").newSaveSlot();
+		if (map != null) map.useSaveSlot(saveSlot);
 		return saveSlot;
 	}
 	

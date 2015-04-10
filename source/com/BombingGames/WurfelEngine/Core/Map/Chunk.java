@@ -35,7 +35,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.DataIterator;
-import com.BombingGames.WurfelEngine.WE;
+import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.FileInputStream;
@@ -133,7 +133,7 @@ public class Chunk {
     public Chunk(final ChunkMap map, final String mapname, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
 		if (CVar.get("shouldLoadMap").getValueb()){
-			if (!load(mapname, coordX, coordY))
+			if (!load(mapname, map.getCurrentSaveSlot(), coordX, coordY))
 				fill(coordX, coordY, generator);
 		} else fill(coordX, coordY, generator);
 		increaseCameraHandleCounter();
@@ -208,14 +208,13 @@ public class Chunk {
     /**
      * Tries to load a chunk from disk.
      */
-    private boolean load(final String fileName, int coordX, int coordY){
+    private boolean load(final String fileName, int saveSlot, int coordX, int coordY){
 
 		//FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
 		FileHandle path = Gdx.files.absolute(
-			WE.getWorkingDirectory().getAbsolutePath()
-				+ "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
+			WorkingDirectory.getMapsFolder()
+				+ "/"+fileName+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX
 		);
-
 
 		if (path.exists()) {
 			Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
@@ -317,14 +316,15 @@ public class Chunk {
     /**
      * 
      * @param fileName the map name on disk
+	 * @param saveSlot
 
      * @return 
      * @throws java.io.IOException 
      */
-    public boolean save(String fileName) throws IOException {
+    public boolean save(String fileName, int saveSlot) throws IOException {
         if ("".equals(fileName)) return false;
         Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
-        FileHandle path = new FileHandle(WE.getWorkingDirectory().getAbsolutePath() + "/maps/"+fileName+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+        FileHandle path = new FileHandle(WorkingDirectory.getMapsFolder()+"/"+fileName+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
         
         path.file().createNewFile();
         try (FileOutputStream fileOut = new FileOutputStream(path.file())) {		
@@ -618,7 +618,7 @@ public class Chunk {
 		//try saving
 		if (saveFileName != null) {
 			try {
-				save(saveFileName);
+				save(saveFileName, map.getCurrentSaveSlot());
 			} catch (IOException ex) {
 				Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 			}

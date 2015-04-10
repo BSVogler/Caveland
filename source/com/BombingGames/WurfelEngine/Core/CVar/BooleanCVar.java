@@ -5,7 +5,7 @@ package com.BombingGames.WurfelEngine.Core.CVar;
  * @author Benedikt Vogler
  */
 public class BooleanCVar extends CVar {
-	boolean value;
+	private boolean value;
 	private Boolean defaultValue;
 	
 
@@ -25,6 +25,7 @@ public class BooleanCVar extends CVar {
 			this.value = value.equals("1");
 		else 
 			this.value = (boolean) value;
+		if (flags == CVarFlags.CVAR_ARCHIVE) save();
 	}
 
 	@Override

@@ -144,6 +144,7 @@ public abstract class CVar {
 	 */
 	public void register(String name, CVarFlags flag){
 		this.name = name;
+		this.flags = flag;
 		//if already registered new value is set
 		if (cvars.containsKey(name))
 			cvars.get(name).setDefaultValue(this.getValue());
@@ -230,13 +231,14 @@ public abstract class CVar {
 			while (it.hasNext()) {
 
 				Map.Entry<String, CVar> pairs = it.next();
+				CVar cvar = pairs.getValue();
 				try {
 					//if should be saved and different then default: save
 					if (
-						pairs.getValue().flags == CVarFlags.CVAR_ARCHIVE
-						&& pairs.getValue().getDefaultValue() != pairs.getValue().getValue()
+						cvar.flags == CVarFlags.CVAR_ARCHIVE
+						&& cvar.getDefaultValue() != cvar.getValue()
 					)
-						writer.write(pairs.getKey() + " "+pairs.getValue().toString()+"\n");
+						writer.write(pairs.getKey() + " "+cvar.toString()+"\n");
 
 				} catch (IOException ex) {
 					Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);

@@ -41,8 +41,8 @@ import com.BombingGames.WurfelEngine.Core.Map.Generator;
 public class BlockTestGenerator implements Generator{
 
     @Override
-    public int generate(int x, int y, int z) {
-        if (z==0) return Math.abs(y) % OBJECTTYPESNUM;
+    public byte generate(int x, int y, int z) {
+        if (z==0) return (byte) (Math.abs(y) % OBJECTTYPESNUM);
         else
             return 0;
     }

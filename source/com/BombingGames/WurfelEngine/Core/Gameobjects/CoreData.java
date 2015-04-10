@@ -8,7 +8,7 @@ public class CoreData implements HasID {
 	private static BlockFactory customBlockFactory;
 	
 		/**
-	 * If you want to define custo id's >39
+	 * If you want to define custom id's >39
 	 *
 	 * @param customBlockFactory new value of customBlockFactory
 	 */
@@ -20,36 +20,32 @@ public class CoreData implements HasID {
 		return customBlockFactory;
 	}
 	
-	/**
-	 * [00000000, 0hhhhhh, vvvvvvvvv, iiiiiiii]<br />
-	 * h: health bytes, stored as 100-health<br />
-	 * v: value bytes<br />
-	 * i: id bytes<br />
-	 */
-	private int identifier;
+	private byte id;
+	private byte value;
+	private byte health = 100;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
-
-	public CoreData(int id) {
-		this.identifier = id;
+	public CoreData(byte id) {
+		this.id = id;
 	}
 	
-	public CoreData(int id, int value) {
-		this.identifier = (value<<8)+id;
+	public CoreData(byte id, byte value) {
+		this.id = id;
+		this.value = value;
 	}
 	
 	@Override
-	public int getId() {
-		return identifier%0xFF;
+	public byte getId() {
+		return id;
 	}
 
 	@Override
-	public int getValue() {
-		return (identifier>>8)%0xFF;
+	public byte getValue() {
+		return value;
 	}
 	
-	public void setValue(int value) {
-		this.identifier = (value<<8)+identifier%0xFF;
+	public void setValue(byte value) {
+		this.value = value;
 	}
 	
 	/**
@@ -57,11 +53,11 @@ public class CoreData implements HasID {
 	 * @param health 
 	 */
 	public void setHealth(byte health){
-		this.identifier = ((100-health)<<16)+(identifier%0xFFFF);
+		this.health = health;
 	}
 	
 	public byte getHealth(){
-		return (byte) (100-((identifier>>16)%0xFF));
+		return health;
 	}
 	
 	/**
@@ -69,23 +65,23 @@ public class CoreData implements HasID {
 	 * @return 
 	 */
 	public RenderBlock toBlock(){
-		return new RenderBlock(identifier, getValue());
+		return new RenderBlock(id, value);
 	}
 
 	@Override
 	public boolean isObstacle() {
 		//todo
-		if (getId()>39 && customBlockFactory != null){
-            return customBlockFactory.isObstacle(getId(), getValue());
+		if (id>39 && customBlockFactory != null){
+            return customBlockFactory.isObstacle(id, value);
          }
-		return getId() != 0;
+		return id != 0;
 	}
 
 	@Override
 	public boolean isTransparent() {
 		//todo
-		if (getId()>39 && customBlockFactory != null){
-            return customBlockFactory.isTransparent(getId(), getValue());
+		if (id>39 && customBlockFactory != null){
+            return customBlockFactory.isTransparent(id, value);
          }
 		return false;
 	}
@@ -95,10 +91,10 @@ public class CoreData implements HasID {
      * @return true if liquid, false if not 
      */
 	public boolean isLiquid() {
-		if (getId()>39 && customBlockFactory != null){
-            return customBlockFactory.isLiquid(getId(), getValue());
+		if (id>39 && customBlockFactory != null){
+            return customBlockFactory.isLiquid(id, value);
         }
-		if (getId()==9) return true;
+		if (id==9) return true;
 		return false;
 	}
 	
@@ -107,10 +103,9 @@ public class CoreData implements HasID {
      * @return 
      */
 	public boolean hasSides() {
-		int id = getId();
 		if (id==34 ||id==35 || id==36) return false;
-		if (getId()>39 && customBlockFactory != null){
-            return customBlockFactory.hasSides(getId(), getValue());
+		if (id>39 && customBlockFactory != null){
+            return customBlockFactory.hasSides(id, value);
         }
 //todo
 		return true;
@@ -132,7 +127,7 @@ public class CoreData implements HasID {
 	 */
 	@Override
 	public String getName(){
-		switch (getId()) {
+		switch (id) {
 			case 0:
 				return "air";
 			case 1:
@@ -163,9 +158,9 @@ public class CoreData implements HasID {
 				return "tree";
 								
 			default:
-				if (getId() > 39) {
+				if (id > 39) {
                     if (customBlockFactory!=null){
-                        return customBlockFactory.getName(getId(), getValue());
+                        return customBlockFactory.getName(id, value);
                     } else {
                         return "no custom blocks";
                     }

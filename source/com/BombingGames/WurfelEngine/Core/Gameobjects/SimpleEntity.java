@@ -40,7 +40,7 @@ public class SimpleEntity extends AbstractEntity {
      *
      * @param id
      */
-    public SimpleEntity(int id) {
+    public SimpleEntity(byte id) {
         super(id);
     }
 	
@@ -49,7 +49,7 @@ public class SimpleEntity extends AbstractEntity {
      * @param id
 	 * @param value
      */
-    public SimpleEntity(int id, int value) {
+    public SimpleEntity(byte id, byte value) {
         super(id);
 		setValue(value);
     }

@@ -121,7 +121,7 @@ public class CustomPlayer extends Controllable {
 	 * creates a new Ejira
 	 */
 	public CustomPlayer() {
-		super(30, 0);
+		super((byte) 30, 0);
 
 		setName("Ejira");
 		setStepSound1Grass("step");

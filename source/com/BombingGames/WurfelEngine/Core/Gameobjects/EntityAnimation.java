@@ -72,14 +72,14 @@ public class EntityAnimation implements Animatable {
 			if (value >= animationsduration.length) //stop the animation if value is suddenly too big
 				running=false;
 			else if (counter >= animationsduration[ value ]){
-					parent.setValue(parent.getValue()+1);
+					parent.setValue((byte) (parent.getValue()+0b1));
 					counter=0;
 					if (parent.getValue() >= animationsduration.length)//if over animation array
 						if (loop)
-							parent.setValue(0);
+							parent.setValue((byte)0);
 						else{//delete
 							parent.setHidden(true);
-							parent.setValue(parent.getValue()-1);
+							parent.setValue((byte) (parent.getValue()-1));
 							parent.dispose();
 						}
 				}

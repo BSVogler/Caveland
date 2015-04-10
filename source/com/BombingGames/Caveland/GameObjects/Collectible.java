@@ -25,31 +25,31 @@ public class Collectible extends MovableEntity implements Serializable {
 		/**
 		 *
 		 */
-		WOOD(46),
+		WOOD((byte) 46),
 		/**
 		 * T.N.T.! I'm dynamite!
 		 */
-		EXPLOSIVES(47),
+		EXPLOSIVES((byte) 47),
 		/**
 		 *
 		 */
-		IRONORE(48),
+		IRONORE((byte) 48),
 		/**
 		 *
 		 */
-		COAL(49),
+		COAL((byte) 49),
 		/**
 		 *
 		 */
-		CRISTALL(50),
+		CRISTALL((byte) 50),
 		/**
 		 *
 		 */
-		SULFUR(51);
+		SULFUR((byte) 51);
 
-		private int id;
+		private byte id;
 
-		private CollectibleType(int id) {
+		private CollectibleType(byte id) {
 			this.id = id;
 		}
 	}

@@ -2,9 +2,9 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
@@ -36,7 +36,7 @@ public class Enemy extends MovableEntity{
      * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
      */
     public Enemy() {
-        super(45,5);
+        super((byte) 45,5);
 		setName("Evil Robot");
         setTransparent(true);
         setObstacle(true);
@@ -81,7 +81,7 @@ public class Enemy extends MovableEntity{
 					setMana((int) (getMana()+dt));
                     if (getMana()>=1000){
                         setMana(0);//reset
-                        new SimpleEntity(46).spawn(getPosition().cpy()).setAnimation(
+                        new SimpleEntity((byte) 46).spawn(getPosition().cpy()).setAnimation(
 							new EntityAnimation(new int[]{300}, true, false)
 						);
                         target.damage(50);

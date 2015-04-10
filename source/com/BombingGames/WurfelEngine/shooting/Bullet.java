@@ -59,7 +59,7 @@ public class Bullet extends AbstractEntity {
      * @see #setGraphicsId(int) 
      */
     public Bullet(){
-        super(12);//default graphics id is 12
+        super((byte) 12);//default graphics id is 12
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Bullet extends AbstractEntity {
         //block hit -> spawn effect
         if (getPosition().isInMemoryAreaHorizontal() && getPosition().getBlock().isObstacle()){
             if (impactSprite!= 0)
-                new SimpleEntity(31).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{1000} , true, false));
+                new SimpleEntity((byte) 31).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{1000} , true, false));
             dispose();
         }
         
@@ -90,7 +90,7 @@ public class Bullet extends AbstractEntity {
         entitylist.remove(parent);//remove self from list to prevent self shooting
         if (!entitylist.isEmpty()) {
             entitylist.get(0).damage(damage);//damage only the first unit on the list
-            new SimpleEntity(16).spawn(getPosition().cpy());//spawn blood
+            new SimpleEntity((byte) 16).spawn(getPosition().cpy());//spawn blood
             dispose();
         }
     }

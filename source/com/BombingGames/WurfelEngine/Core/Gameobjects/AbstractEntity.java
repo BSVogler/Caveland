@@ -89,8 +89,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * Create an abstractEntity.
      * @param id 
      */
-    protected AbstractEntity(int id){
-        super(id,0);
+    protected AbstractEntity(byte id){
+        super(id,(byte) 0);
     }
 
 	/**

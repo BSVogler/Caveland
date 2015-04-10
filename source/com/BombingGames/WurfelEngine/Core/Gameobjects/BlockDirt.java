@@ -12,7 +12,7 @@ public class BlockDirt extends MovableEntity {
 	 *
 	 */
 	public BlockDirt() {
-		super(44,0);
+		super((byte) 44,(byte) 0);
 		setSaveToDisk(false);
 	}
 
@@ -22,7 +22,7 @@ public class BlockDirt extends MovableEntity {
 		super.update(dt);
 		timeofExistance+=dt;
 		if (timeofExistance % 500 > 250) {
-			setValue((int) (Math.random()*3));
+			setValue((byte) (int) (Math.random()*3));
 		}
 
 		if (timeofExistance>2000) dispose();

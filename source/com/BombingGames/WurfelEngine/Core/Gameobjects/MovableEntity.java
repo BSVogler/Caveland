@@ -109,7 +109,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     * @param id
     * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
     */
-   protected MovableEntity(final int id, final int spritesPerDir) {
+   protected MovableEntity(final byte id, final int spritesPerDir) {
         super(id);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
@@ -301,75 +301,71 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				/* update sprite*/
 				if (spritesPerDir>0) {
 					if (orientation.x < -Math.sin(Math.PI/3)){
-						setValue(1);//west
+						setValue((byte) 1);//west
 					} else {
 						if (orientation.x < - 0.5){
 							//y
 							if (orientation.y<0){
-								setValue(2);//north-west
+								setValue((byte) 2);//north-west
 							} else {
-								setValue(0);//south-east
+								setValue((byte) 0);//south-east
 							}
 						} else {
 							if (orientation.x <  0.5){
 								//y
 								if (orientation.y<0){
-									setValue(3);//north
+									setValue((byte) 3);//north
 								}else{
-									setValue(7);//south
+									setValue((byte) 7);//south
 								}
 							}else {
 								if (orientation.x < Math.sin(Math.PI/3)) {
 									//y
 									if (orientation.y < 0){
-										setValue(4);//north-east
+										setValue((byte) 4);//north-east
 									} else{
-										setValue(6);//sout-east
+										setValue((byte) 6);//sout-east
 									}
 								} else{
-									setValue(5);//east
+									setValue((byte)5);//east
 								}
 							}
 						}
 					}
 
 					if (cycleAnimation){
-						setValue(getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8);
+						setValue((byte) (getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
 					} else {//bounce
 						if (stepMode) {//some strange step order
 							if (spritesPerDir==2){
 								if (walkingCycle >500)
-									setValue(getValue()+8);
+									setValue((byte) (getValue()+8));
 							} else if (spritesPerDir==3){
 								if (walkingCycle >750)
-									setValue(getValue()+16);
+									setValue((byte) (getValue()+16));
 								else
 									if (walkingCycle >250 && walkingCycle <500)
-										setValue(getValue()+8);
+										setValue((byte) (getValue()+8));
 							} else if (spritesPerDir==4){
 								if (walkingCycle >=166 && walkingCycle <333)
-									setValue(getValue()+8);
+									setValue((byte) (getValue()+8));
 								else {
 									if ((walkingCycle >=500 && walkingCycle <666)
 										||
 										(walkingCycle >=833 && walkingCycle <1000)
 									){
-										setValue(getValue()+16);
+										setValue((byte) (getValue()+16));
 									} else if (walkingCycle >=666 && walkingCycle < 833) {
-										setValue(getValue()+24);
+										setValue((byte) (getValue()+24));
 									}
 								}
 							}
 						} else {
 							//regular bounce
 							if (walkingCycle < 500) {//forht
-								setValue(
-									getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
-								);
+								setValue((byte) (getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
 							} else {//back
-								setValue(
-									getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8
-								);
+								setValue((byte) (getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
 
 							}
 						}

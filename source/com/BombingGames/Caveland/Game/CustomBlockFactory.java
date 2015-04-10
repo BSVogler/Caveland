@@ -13,7 +13,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class CustomBlockFactory implements BlockFactory {
 
-public RenderBlock produce(int id, int value) {
+public RenderBlock produce(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
 		case 41:
@@ -55,7 +55,7 @@ public RenderBlock produce(int id, int value) {
 		return block;
 	}	
 
-	public String getName(int id, int value) {
+	public String getName(byte id, byte value) {
 		switch (id){
 			case 40:
 				return "Entity Spawner";
@@ -67,22 +67,22 @@ public RenderBlock produce(int id, int value) {
 	}
 
 	@Override
-	public boolean isObstacle(int id, int value) {
+	public boolean isObstacle(byte id, byte value) {
 		return false;
 	}
 
 	@Override
-	public boolean isTransparent(int id, int value) {
+	public boolean isTransparent(byte id, byte value) {
 		return false;
 	}
 
 	@Override
-	public boolean isLiquid(int id, int value) {
+	public boolean isLiquid(byte id, byte value) {
 		return false;
 	}
 
 	@Override
-	public boolean hasSides(int id, int value) {
+	public boolean hasSides(byte id, byte value) {
 		return true;
 	}
 
@@ -90,7 +90,7 @@ public RenderBlock produce(int id, int value) {
 		private static final long serialVersionUID = 1L;
 
 		RailBlock() {
-			super(55);
+			super((byte) 55);
 			//setNoSides();
 		}
 		
@@ -100,7 +100,7 @@ public RenderBlock produce(int id, int value) {
 	private static class Ore extends RenderBlock {
 		private final Collectible.CollectibleType def;
 
-		Ore(int id, Collectible.CollectibleType def) {
+		Ore(byte id, Collectible.CollectibleType def) {
 			super(id);
 			this.def = def;
 		}

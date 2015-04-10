@@ -44,5 +44,5 @@ public interface Generator {
      * @param z absolute coord
      * @return the block which belongs to the given coordinates
      */
-    public abstract int generate(int x, int y, int z);   
+    public abstract byte generate(int x, int y, int z);   
 }

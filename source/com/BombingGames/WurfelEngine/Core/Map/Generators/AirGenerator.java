@@ -41,7 +41,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Generator;
 public class AirGenerator implements Generator {
 
     @Override
-    public int generate(int x, int y, int z) {
+    public byte generate(int x, int y, int z) {
         return 0;
     }
     

@@ -39,19 +39,19 @@ import com.BombingGames.WurfelEngine.Core.Map.Generator;
  * @see com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator
  */
 public class FullMapGenerator implements Generator {
-    private final int id;
+    private final byte id;
 
     /**
      *
      * @param id
      */
-    public FullMapGenerator(int id) {
+    public FullMapGenerator(byte id) {
         this.id = id;
     }
 
 
     @Override
-    public int generate(int x, int y, int z) {
+    public byte generate(int x, int y, int z) {
         return id;
     }
     

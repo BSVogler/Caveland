@@ -6,9 +6,9 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
  */
 public interface BlockFactory {
 	
-	public boolean isObstacle(int id, int value);
+	public boolean isObstacle(byte id, byte value);
 
-	public boolean isTransparent(int id, int value);
+	public boolean isTransparent(byte id, byte value);
 	
     /**
      * Check if the block is liquid.
@@ -16,7 +16,7 @@ public interface BlockFactory {
 	 * @param value
      * @return true if liquid, false if not 
      */
-	public boolean isLiquid(int id, int value);
+	public boolean isLiquid(byte id, byte value);
 	
     /**
      * Is the block a true block with sides or represents it another thing like a flower?
@@ -24,7 +24,7 @@ public interface BlockFactory {
 	 * @param value
      * @return 
      */
-	public boolean hasSides(int id, int value);
+	public boolean hasSides(byte id, byte value);
 
-	public String getName(int id, int value);
+	public String getName(byte id, byte value);
 }

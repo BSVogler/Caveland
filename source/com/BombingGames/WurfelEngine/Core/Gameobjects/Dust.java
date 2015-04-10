@@ -21,7 +21,7 @@ public class Dust extends AbstractEntity {
 	 * @param color
 	 */
 	public Dust(float maxtime, Vector3 direction, Color color) {
-		super(22);
+		super((byte)22);
 		this.maxtime = maxtime;
 		this.direction = direction;
 		timeTillDeath=maxtime;

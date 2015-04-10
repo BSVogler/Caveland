@@ -139,7 +139,7 @@ public class Minimap implements LinkedWithMap {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),0);
+                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),(byte) 0);
                 else {
                     CoreData block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
                     if (block.getId()!=0)

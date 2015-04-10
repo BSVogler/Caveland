@@ -23,7 +23,7 @@ public class Explosion extends AbstractEntity {
 	 * simple explosion without screen shake. Default radius is 2. Damage 500.
 	 */
 	public Explosion() {
-		super(0);
+		super((byte)0);
 		this.radius = 2;
 		damage = 500;
 		setSaveToDisk(false);
@@ -37,7 +37,7 @@ public class Explosion extends AbstractEntity {
 	 * @param camera can be null. used for screen shake
 	 */
 	public Explosion(int radius, int damage, Camera camera) {
-		super(0);
+		super((byte)0);
 		this.radius = radius;
 		this.damage = damage;
 		if (explosionsound == null)

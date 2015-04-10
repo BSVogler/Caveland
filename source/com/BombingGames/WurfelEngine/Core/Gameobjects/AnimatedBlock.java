@@ -51,7 +51,7 @@ public class AnimatedBlock extends RenderBlock implements Animatable{
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time. 
      */
-    public AnimatedBlock(int id, int[] animationsinformation, boolean autostart, boolean loop){
+    public AnimatedBlock(byte id, int[] animationsinformation, boolean autostart, boolean loop){
         super(id);
         this.animationsduration = animationsinformation;
         this.running = autostart;
@@ -78,33 +78,33 @@ public class AnimatedBlock extends RenderBlock implements Animatable{
             if (counter >= animationsduration[getValue()]){
                 counter %= animationsduration[getValue()];//stay in circle
 				if (runningForth)
-					setValue(getValue()+1);
+					setValue((byte) (getValue()+1));
 				else
-					setValue(getValue()-1);
+					setValue((byte) (getValue()-1));
 				
                 if (getValue() >= animationsduration.length) {//if over animation array
                     if (loop) {
 						if (bob && runningForth) {
 							runningForth=false;//go back
-							setValue(animationsduration.length-2);//reverse step and go in different direction
+							setValue((byte) (animationsduration.length-2));//reverse step and go in different direction
 						} else
-							setValue(0);
+							setValue((byte) 0);
 					} else {
 						//stop animation
                         running = false;
-                        setValue(animationsduration.length-1);
+                        setValue((byte) (animationsduration.length-1));
                     }
 				} else if (getValue() < 0) {
 					if (loop) {
 						if (bob && !runningForth) {
 							runningForth=true;//go forth
-							setValue(1);
+							setValue((byte) 1);
 						} else
-							setValue(animationsduration.length-1);
+							setValue((byte) (animationsduration.length-1));
 					} else {
 						//stop animation
 						running = false;
-						setValue(0);
+						setValue((byte) 0);
 					}
 				}
             }

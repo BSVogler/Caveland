@@ -10,13 +10,13 @@ public interface HasID {
      * returns the id of a object
      * @return getId
      */
-	public int getId();
+	public byte getId();
 	
 	/**
      * Get the value. It is like a sub-id and can identify the status.
      * @return in range [0;{@link #VALUESNUM}]. Is -1 if about to destroyed.
      */
-	public int getValue();
+	public byte getValue();
 
 	/**
 	 * How bright is the object?

@@ -19,7 +19,7 @@ public class Machine extends RenderBlock {
 	 *
 	 */
 	public Machine() {
-		super(60);
+		super((byte) 60);
 	}
 
 	@Override

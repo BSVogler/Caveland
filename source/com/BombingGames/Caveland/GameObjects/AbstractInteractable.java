@@ -18,99 +18,99 @@ public abstract class AbstractInteractable extends MovableEntity {
 	/**
 	 * Xbox controller bindings on Mac OS
 	 */
-	private static final int AUp = 0;
+	private static final byte AUp = 0;
 
 	/**
 	 *
 	 */
-	public static final int ADown = 1;
+	public static final byte ADown = 1;
 
 	/**
 	 *
 	 */
-	public static final int BUp = 2;
+	public static final byte BUp = 2;
 
 	/**
 	 *
 	 */
-	public static final int BDown = 3;
+	public static final byte BDown = 3;
 
 	/**
 	 *
 	 */
-	public static final int KeyUp = 4;
+	public static final byte KeyUp = 4;
 
 	/**
 	 *
 	 */
-	public static final int KeyLeft = 5;
+	public static final byte KeyLeft = 5;
 
 	/**
 	 *
 	 */
-	public static final int KeyDown = 6;
+	public static final byte KeyDown = 6;
 
 	/**
 	 *
 	 */
-	public static final int KeyRight = 7;
+	public static final byte KeyRight = 7;
 
 	/**
 	 *
 	 */
-	public static final int LB = 8;
+	public static final byte LB = 8;
 
 	/**
 	 *
 	 */
-	public static final int LT = 9;
+	public static final byte LT = 9;
 
 	/**
 	 *
 	 */
-	public static final int RB = 10;
+	public static final byte RB = 10;
 
 	/**
 	 *
 	 */
-	public static final int RT = 11;
+	public static final byte RT = 11;
 
 	/**
 	 *
 	 */
-	public static final int SELECT = 12;
+	public static final byte SELECT = 12;
 
 	/**
 	 *
 	 */
-	public static final int START = 13;
+	public static final byte START = 13;
 
 	/**
 	 *
 	 */
-	public static final int XUp = 14;
+	public static final byte XUp = 14;
 
 	/**
 	 *
 	 */
-	public static final int XDown = 15;
+	public static final byte XDown = 15;
 
 	/**
 	 *
 	 */
-	public static final int YUp = 16;
+	public static final byte YUp = 16;
 
 	/**
 	 *
 	 */
-	public static final int YDown = 17;
+	public static final byte YDown = 17;
 	
 	/**
 	 *
 	 * @param id
 	 * @param spritesPerDir
 	 */
-	public AbstractInteractable(int id, int spritesPerDir) {
+	public AbstractInteractable(byte id, int spritesPerDir) {
 		super(id, spritesPerDir);
 	}
 
@@ -143,9 +143,9 @@ public abstract class AbstractInteractable extends MovableEntity {
 	 * display the interact button
 	 * @param buttonID
 	 */
-	public void showButton(int buttonID) {
+	public void showButton(byte buttonID) {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity(23, buttonID).spawn(
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
 				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
 			);
 			interactButton.setLightlevel(1);

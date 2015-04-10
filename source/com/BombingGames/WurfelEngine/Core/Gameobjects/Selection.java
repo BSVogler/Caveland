@@ -50,11 +50,11 @@ public class Selection extends AbstractEntity {
      *
      */
     public Selection() {
-        super(13);
+        super((byte) 13);
 		setSaveToDisk(false);
 		setName("selectionEntity");
         
-        normal = new SimpleEntity(14);
+        normal = new SimpleEntity((byte) 14);
 		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
         anim.ignoreGameSpeed(true);
 		normal.enableShadow();

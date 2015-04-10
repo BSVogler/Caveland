@@ -45,7 +45,7 @@ public class Controllable extends MovableEntity {
 	 * @param id
 	 * @param spritesPerDir
 	 */
-	public Controllable(int id, int spritesPerDir) {
+	public Controllable(byte id, int spritesPerDir) {
 		super(id, spritesPerDir);
 		setFriction(CVar.get("friction").getValuef());
 	}

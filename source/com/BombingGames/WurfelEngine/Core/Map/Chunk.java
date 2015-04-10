@@ -198,7 +198,7 @@ public class Chunk {
 							top+y,
 							z
 						),
-						0
+						(byte) 0
 					);
                     data[x][y][z] = block;
 				}
@@ -258,12 +258,12 @@ public class Chunk {
 								x = 0;
 								do {
 
-									int id; 
+									byte id; 
 									if (y==0 && x==0)//already got first one
-										 id = bufChar;
+										 id = (byte) bufChar;
 									else 
-										id = fis.read();
-									int value = fis.read();
+										id = (byte) fis.read();
+									byte value = (byte) fis.read();
 									if (id > 0) {
 										data[x][y][z] = new CoreData(id, value);
 									} else 

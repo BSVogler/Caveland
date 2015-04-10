@@ -97,7 +97,7 @@ public class PlacableSelector extends Table {
 			
 			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
-					for (int i = 1; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+					for (byte i = 1; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
 						table.row();
 						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 						
@@ -108,7 +108,7 @@ public class PlacableSelector extends Table {
 						//button.setStyle(style);
 						table.add(button);
 
-						table.add(new Label(new RenderBlock(i, 0).getName(), WE.getEngineView().getSkin()));
+						table.add(new Label(new RenderBlock(i, (byte) 0).getName(), WE.getEngineView().getSkin()));
 					}
 				}
 			} else {//add entities
@@ -188,10 +188,10 @@ public class PlacableSelector extends Table {
 	 * detects a click on the RenderBlock in the list
 	 */
     private class BlockListener extends ClickListener {
-        private int id;
+        private byte id;
         private Button parent; 
         
-		BlockListener(int id, Button parent){
+		BlockListener(byte id, Button parent){
             this.id = id;
             this.parent = parent;
         }

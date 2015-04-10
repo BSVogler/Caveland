@@ -47,7 +47,7 @@ public class BenchmarkBall extends MovableEntity {
      *Creates a Benchmark ball.
      */
     public BenchmarkBall() {
-        super(21, 0);
+        super((byte) 21, (byte) 0);
 		setMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f, -1));
 		setFloating(false);
     }

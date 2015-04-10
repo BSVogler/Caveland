@@ -21,7 +21,7 @@ public class Vanya extends AbstractInteractable {
 	 *
 	 */
 	public Vanya() {
-		super(40, 3);
+		super((byte) 40, 3);
 		setFloating(false);
 		setName("Vanya");
 		setJumpingSound("vanya_jump");
@@ -82,7 +82,7 @@ public class Vanya extends AbstractInteractable {
 		private static final long serialVersionUID = 1L;
 
 		BlümchenKacke() {
-			super(41, 0);
+			super((byte) 41, 0);
 			setMovement(new Vector3(0,0,-1));
 			setFloating(false);
 		}

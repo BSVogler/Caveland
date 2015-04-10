@@ -54,7 +54,7 @@ public class IslandGenerator implements Generator {
     
 
     @Override
-    public int generate(int x, int y, int z) {  
+    public byte generate(int x, int y, int z) {  
         if (z==0) return 8;
         
         int height = Chunk.getBlocksZ()-1- Math.abs(mountainY-y)- Math.abs(mountainX-x);

@@ -115,11 +115,11 @@ public class RenderBlock extends AbstractGameObject {
 	 * 
 	 * @param id 
 	 */
-    public RenderBlock(int id){
-        super(id,0);
+    public RenderBlock(byte id){
+        super(id,(byte) 0);
     }
 	
-	public RenderBlock(int id, int value){
+	public RenderBlock(byte id, byte value){
 		super(id, value);
 	}
 
@@ -201,7 +201,7 @@ public class RenderBlock extends AbstractGameObject {
      * @param value the value of the block.
      * @return copy of a color representing the block
      */
-    public static Color getRepresentingColor(final int id, final int value){
+    public static Color getRepresentingColor(final byte id, final byte value){
         if (colorlist[id][value] == null){ //if not in list, add it to the list
             colorlist[id][value] = new Color();
             int colorInt;
@@ -441,7 +441,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @since v1.4
 	 */
 	public void onDestroy() {
-		setValue(-1);
+		setValue((byte) -1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
 		if (destructionAction != null) destructionAction.action(this);
 	}

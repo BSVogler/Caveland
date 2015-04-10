@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class PlacableGUI extends WidgetGroup {
-	private CoreData block = new CoreData(1);
+	private CoreData block = new CoreData((byte) 1);
 	private Image image;
 	private Label label;
 	private Label blockPosition;
@@ -103,7 +103,7 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @return
 	 */
-	public int getId() {
+	public byte getId() {
 		return block.getId();
 	}
 		
@@ -111,7 +111,7 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @return
 	 */
-	public int getValue() {
+	public byte getValue() {
 		return block.getValue();
 	}	
 	
@@ -129,7 +129,7 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(byte id) {
 		this.block = new CoreData(id, block.getValue());
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(block.getValue()));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
@@ -139,7 +139,7 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @param value
 	 */
-	public void setValue(int value) {
+	public void setValue(byte value) {
 		this.block = new CoreData(block.getId(), value);
 		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
@@ -235,7 +235,7 @@ public class PlacableGUI extends WidgetGroup {
 
 		@Override
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			parent.setValue((int) ((Slider)actor).getValue());
+			parent.setValue((byte) ((Slider)actor).getValue());
 		}
 	}
 }

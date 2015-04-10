@@ -13,7 +13,7 @@ public class Spaceship extends MovableEntity {
 	 *
 	 */
 	public Spaceship() {
-		super(80,0);
+		super((byte) 80,0);
 	}
 
 	@Override

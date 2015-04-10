@@ -3,8 +3,8 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -31,7 +31,7 @@ public class MineCart extends AbstractInteractable {
 	 *
 	 */
 	public MineCart() {
-		super(42, 0);
+		super((byte) 42, 0);
 		setName("MineCart");
 		setOrientation(new Vector2(1, 1));
 	}
@@ -130,14 +130,14 @@ public class MineCart extends AbstractInteractable {
 				&&
 				getOrientation().y < getOrientation().x)
 			)
-				setValue(0);
+				setValue((byte) 0);
 			else
-				setValue(2);
+				setValue((byte) 2);
 
 			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite
 			rollingCycle %= GAME_EDGELENGTH/4; //cycle
 			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
-				setValue(getValue()+1); //next step in animation
+				setValue((byte) (getValue()+1)); //next step in animation
 			}
 
 			//if transporting object

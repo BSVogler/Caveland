@@ -13,21 +13,21 @@ public class CustomTree extends RenderBlock {
 	/**
 	 * The treetop is used to identify the treetop. It is invisible but it is an obstacle.
 	 */
-	private final int TREETOPVALUE = 8;
+	private final byte TREETOPVALUE = 8;
 
 	/**
 	 * creates a tree in a random shape
 	 */
 	public CustomTree(){
-		this((int) (Math.random()*8));
+		this((byte) (Math.random()*8));
 	}
 	
 	/**
 	 *
 	 * @param value
 	 */
-	public CustomTree(int value) {
-		super(72);
+	public CustomTree(byte value) {
+		super((byte) 72);
 		setValue(value);
 		
 		if (getValue()==TREETOPVALUE)
@@ -40,7 +40,7 @@ public class CustomTree extends RenderBlock {
 		//check and grow treetop
 		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
 		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
-			new RenderBlock(72, TREETOPVALUE).spawn(top);
+			new RenderBlock((byte) 72, TREETOPVALUE).spawn(top);
 	}
 
 	

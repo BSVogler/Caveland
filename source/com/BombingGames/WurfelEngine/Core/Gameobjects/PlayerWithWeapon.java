@@ -51,7 +51,7 @@ public class PlayerWithWeapon extends Controllable {
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     public PlayerWithWeapon(int spritesPerDir, int height) {
-        super(30, spritesPerDir);
+        super((byte) 30, spritesPerDir);
         Gdx.app.debug("Player", "Creating player");
         
         setTransparent(true);
@@ -126,7 +126,7 @@ public class PlayerWithWeapon extends Controllable {
      * Gives the player a weapon.
      * @param id 
      */
-    public void equipWeapon(int id){
+    public void equipWeapon(byte id){
         weapon = new Weapon(id, this);
         weapon.reload();
     }

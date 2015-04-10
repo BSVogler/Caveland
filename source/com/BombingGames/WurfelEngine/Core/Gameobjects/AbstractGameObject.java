@@ -140,7 +140,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @param value 
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
-    protected AbstractGameObject(int id, int value) {
+    protected AbstractGameObject(byte id, byte value) {
         coreData = new CoreData(id, value);
 		this.graphicsID = id;
     }
@@ -443,12 +443,12 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	}
 
 	@Override
-    public int getId() {
+    public byte getId() {
         return coreData.getId();
     }
 	
 	@Override
-    public int getValue() {
+    public byte getValue() {
         return coreData.getValue();
     }
 
@@ -506,7 +506,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * Set the value of the object.
      * @param value
      */
-    public void setValue(int value) {
+    public void setValue(byte value) {
         this.coreData.setValue(value);
     }
 

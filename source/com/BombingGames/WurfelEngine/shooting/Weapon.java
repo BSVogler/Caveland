@@ -49,7 +49,7 @@ public class Weapon {
     private static TextureAtlas spritesheetBig;
     private static final int scaling = 2;
     
-    private final int id;
+    private final byte id;
     private final String name;
 
     private MovableEntity parent;//the parent holding the weapon
@@ -66,8 +66,8 @@ public class Weapon {
     private final int bps;//bullets per shot
     private final float spread;
     private final int damage;
-    private final int bulletSprite;
-    private final int impactSprite;
+    private final byte bulletSprite;
+    private final byte impactSprite;
     
     private int shotsLoaded;
     private int reloading;
@@ -97,11 +97,11 @@ public class Weapon {
      * @param id
      * @param parent
      */
-    public Weapon(int id, MovableEntity parent) {
+    public Weapon(byte id, MovableEntity parent) {
         this.id = id;
         this.parent = parent;
         if (parent != null) {
-            laserdot = new SimpleEntity(20).spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+            laserdot = new SimpleEntity((byte) 20).spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
         }
         
         switch (id){
@@ -339,10 +339,10 @@ public class Weapon {
 
             //muzzle flash
             if (bulletSprite <0)
-                new SimpleEntity(60).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
+                new SimpleEntity((byte) 60).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
 				);
             else
-                new SimpleEntity(61).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
+                new SimpleEntity((byte) 61).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
 				);
 
             //shot bullets
@@ -353,7 +353,7 @@ public class Weapon {
                 bullet = new Bullet();
 
                 if (bulletSprite < 0){//if melee hide it
-                    bullet.setValue(0);
+                    bullet.setValue((byte) 0);
                     bullet.setHidden(true);
                 } else{
                     bullet.setValue(bulletSprite);

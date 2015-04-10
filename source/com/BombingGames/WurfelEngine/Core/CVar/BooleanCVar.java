@@ -32,7 +32,7 @@ public class BooleanCVar extends CVar {
 		if (value)
 			return "1";
 		else
-			return "2";
+			return "0";
 	}
 
 	@Override

@@ -25,9 +25,16 @@ public class SaveSelectionScreen extends WEScreen {
 	private SpriteBatch batch;
 	private Stage stage;
 	private final SelectBox<String> selectBox;
+	private int coop;
 
-	public SaveSelectionScreen(SpriteBatch batch) {
+	/**
+	 * 
+	 * @param coop flag - -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
+	 * @param batch 
+	 */
+	public SaveSelectionScreen(int coop, SpriteBatch batch) {
 		this.batch = batch;
+		this.coop = coop;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Skin skin = WE.getEngineView().getSkin();
 		
@@ -37,7 +44,7 @@ public class SaveSelectionScreen extends WEScreen {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				startGameUsingSlot();
+				startGame(false);
 			}
 		});
 		stage.addActor(continueButton);
@@ -61,9 +68,7 @@ public class SaveSelectionScreen extends WEScreen {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				CustomGameController controller = new CustomGameController();
-				controller.newSaveSlot();
-				WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+				startGame(true);
 			}
 		});
 		stage.addActor(newgameButton);
@@ -81,12 +86,22 @@ public class SaveSelectionScreen extends WEScreen {
 		stage.addActor(backButton);
 	}
 	
-	public void startGameUsingSlot(){
+	/**
+	 *
+	 * @param newslot if true uses new slot, if false uses slot selected in selection box
+	 */
+	public void startGame(boolean newslot){
+		CustomGameView view = new CustomGameView();
+		view.enableCoop(coop);
 		CustomGameController controller = new CustomGameController();
-		controller.useSaveSlot(selectBox.getSelectedIndex());
-		WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+		if (newslot)
+			controller.newSaveSlot();
+		else
+			controller.useSaveSlot(selectBox.getSelectedIndex());
+		if (coop >-1) controller.activatePlayer2();
+		WE.initAndStartGame(controller, view, new CustomLoading());
 	}
-
+	
 	@Override
 	public void renderImpl(float dt) {
 		Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );

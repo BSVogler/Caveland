@@ -1,7 +1,5 @@
 package com.BombingGames.Caveland.MainMenu;
 
-import com.BombingGames.Caveland.Game.CustomGameController;
-import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -29,7 +27,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 	 *
 	 * @param batch
 	 */
-	public CoopControlsSelectionScreen(SpriteBatch batch) {
+	public CoopControlsSelectionScreen(final SpriteBatch batch) {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
@@ -43,11 +41,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					CustomGameView view = new CustomGameView();
-					view.enableCoop(2);
-					CustomGameController controller = new CustomGameController();
-					controller.activatePlayer2();
-					WE.initAndStartGame(controller, view, new CustomLoading());
+					WE.setScreen(new SaveSelectionScreen(2, batch));
 				}
 			});
 			stage.addActor(twoControllersButton);
@@ -65,11 +59,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					CustomGameView view = new CustomGameView();
-					view.enableCoop(1);
-					CustomGameController controller = new CustomGameController();
-					controller.activatePlayer2();
-					WE.initAndStartGame(controller, view, new CustomLoading());
+					WE.setScreen(new SaveSelectionScreen(1, batch));
 				}
 			});
 			stage.addActor(splitControlsButton);
@@ -85,11 +75,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				CustomGameView view = new CustomGameView();
-				view.enableCoop(0);
-				CustomGameController controller = new CustomGameController();
-				controller.activatePlayer2();
-				WE.initAndStartGame(controller, view, new CustomLoading());
+				WE.setScreen(new SaveSelectionScreen(0, batch));
 			}
 		});
 		stage.addActor(twoKeyboardButton);

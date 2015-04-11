@@ -66,8 +66,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			new ClickListener(){
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					WE.setScreen(new SaveSelectionScreen(batch));
-					//WE.initAndStartGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
+					WE.setScreen(new SaveSelectionScreen(-1,batch));
 				}
 			}
 		);

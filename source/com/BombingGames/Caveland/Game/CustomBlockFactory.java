@@ -83,6 +83,7 @@ public RenderBlock produce(byte id, byte value) {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
+		if (id==55) return false;
 		return true;
 	}
 

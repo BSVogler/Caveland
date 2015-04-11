@@ -15,11 +15,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -27,7 +29,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
-	private final TextButton[] menuItems = new TextButton[6];
+	private final TextButton[] menuItems = new TextButton[5];
 	private Stage stage;
 	private Image lettering;
 	private Image alphaTag; 
@@ -55,22 +57,39 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
+		Image button1Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/1Player.png")));
+		button1Player.setPosition(stage.getWidth()/2-button1Player.getWidth()/2-200, stage.getHeight()/2);
+		stage.addActor(button1Player);
+		
+		button1Player.addListener(
+			new ClickListener(){
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					WE.setScreen(new SaveSelectionScreen(batch));
+					//WE.initAndStartGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
+				}
+			}
+		);
+		
+		Image button2Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/2Players.png")));
+		button2Player.setPosition(stage.getWidth()/2-button1Player.getWidth()/2+200, stage.getHeight()/2);
+		stage.addActor(button2Player);
+		
+		button2Player.addListener(
+			new ClickListener(){
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					WE.setScreen(new CoopControlsSelectionScreen(batch));
+				}
+			}
+		);
+		
 		//add buttons
 		int i=0;
 		final int top = 500;
 		final int distance =50;
 		menuItems[i]=new TextButton("Start Single Player (slot 0)", WE.getEngineView().getSkin());
 		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top-i*distance);
-		//start the game
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.initAndStartGame(new CustomGameController(), new CustomGameView(), new CustomLoading());
-				}
-			}
-		);
 		
 		i++;
 		menuItems[i]=new TextButton("Add new save", WE.getEngineView().getSkin());
@@ -88,19 +107,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
-		i++;
-		menuItems[i]=new TextButton("Start Local Co-Op", WE.getEngineView().getSkin());
-
-		//start the game
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new CoopControlsSelectionScreen(batch));
-				}
-			}
-		);
 		
 		i++;
 		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());

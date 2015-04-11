@@ -72,6 +72,7 @@ public class CreditsScreen extends WEScreen {
 			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
 			if (CVar.getValueB("DevMode")) WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         WE.getEngineView().getBatch().end();
+		stage.act(dt);
 		stage.draw();
     }
 

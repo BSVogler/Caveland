@@ -236,7 +236,7 @@ public abstract class CVar {
 					//if should be saved and different then default: save
 					if (
 						cvar.flags == CVarFlags.CVAR_ARCHIVE
-						&& cvar.getDefaultValue() != cvar.getValue()
+						&& !cvar.getDefaultValue().equals(cvar.getValue())
 					)
 						writer.write(pairs.getKey() + " "+cvar.toString()+"\n");
 

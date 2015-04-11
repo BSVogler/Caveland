@@ -1,14 +1,19 @@
 package com.BombingGames.Caveland.MainMenu;
 
+import com.BombingGames.Caveland.Game.CustomGameController;
+import com.BombingGames.Caveland.Game.CustomGameView;
+import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -19,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class SaveSelectionScreen extends WEScreen {
 	private SpriteBatch batch;
 	private Stage stage;
+	private final SelectBox<String> selectBox;
 
 	public SaveSelectionScreen(SpriteBatch batch) {
 		this.batch = batch;
@@ -27,27 +33,59 @@ public class SaveSelectionScreen extends WEScreen {
 		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setPosition(500, 600);
+		continueButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				startGameUsingSlot();
+			}
+		});
 		stage.addActor(continueButton);
 		
-		TextButton newgameButton = new TextButton("New Game…", skin);
+		//save slot selection
+		int savesCount = new MapMetaData("default").getSavesCount();
+		Array<String> arstr = new Array<>(savesCount);
+		for (int i = 0; i < savesCount; i++) {
+			arstr.add(Integer.toString(i));
+		}
+		selectBox = new SelectBox<>(skin); 
+		selectBox.setItems(arstr);
+		selectBox.setWidth(40);
+		selectBox.setPosition(600, 600);
+		stage.addActor(selectBox);
+		
+		//new game button
+		TextButton newgameButton = new TextButton("New Game...", skin);
 		newgameButton.setPosition(500, 500);
+		newgameButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				CustomGameController controller = new CustomGameController();
+				controller.newSaveSlot();
+				WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+			}
+		});
 		stage.addActor(newgameButton);
 		
-		Array<String> arstr = new Array<>(2);
-		arstr.add("Some random text that"); 
-		arstr.add("isn't being displayed!"); 
-		SelectBox<Object> sb = new SelectBox<>(skin); 
-		sb.setWidth(40);
-		sb.setItems(arstr);
-		sb.setPosition(600, 600);
-		stage.addActor(sb);
-		
+		//back button
 		TextButton backButton = new TextButton("Back…", skin);
+		backButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				WE.showMainMenu();
+			}
+		});
 		backButton.setPosition(20, 20);
 		stage.addActor(backButton);
 	}
 	
-	
+	public void startGameUsingSlot(){
+		CustomGameController controller = new CustomGameController();
+		controller.useSaveSlot(selectBox.getSelectedIndex());
+		WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+	}
 
 	@Override
 	public void renderImpl(float dt) {

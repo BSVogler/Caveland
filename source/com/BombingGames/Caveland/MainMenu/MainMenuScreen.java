@@ -1,8 +1,6 @@
 package com.BombingGames.Caveland.MainMenu;
 
 import com.BombingGames.Caveland.Caveland;
-import com.BombingGames.Caveland.Game.CustomGameController;
-import com.BombingGames.Caveland.Game.CustomGameView;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -29,7 +27,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
-	private final TextButton[] menuItems = new TextButton[5];
+	private final TextButton[] menuItems = new TextButton[3];
 	private Stage stage;
 	private Image lettering;
 	private Image alphaTag; 
@@ -58,7 +56,10 @@ public class MainMenuScreen extends AbstractMainMenu {
 		stage.addActor(alphaTag);
 		
 		Image button1Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/1Player.png")));
-		button1Player.setPosition(stage.getWidth()/2-button1Player.getWidth()/2-200, stage.getHeight()/2);
+		button1Player.setPosition(
+			stage.getWidth()/2-button1Player.getWidth()/2-200,
+			stage.getHeight()/2-200
+		);
 		stage.addActor(button1Player);
 		
 		button1Player.addListener(
@@ -72,7 +73,10 @@ public class MainMenuScreen extends AbstractMainMenu {
 		);
 		
 		Image button2Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/2Players.png")));
-		button2Player.setPosition(stage.getWidth()/2-button1Player.getWidth()/2+200, stage.getHeight()/2);
+		button2Player.setPosition(
+			stage.getWidth()/2-button1Player.getWidth()/2+200,
+			stage.getHeight()/2-200
+		);
 		stage.addActor(button2Player);
 		
 		button2Player.addListener(
@@ -86,29 +90,8 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//add buttons
 		int i=0;
-		final int top = 500;
-		final int distance =50;
-		menuItems[i]=new TextButton("Start Single Player (slot 0)", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top-i*distance);
+		final int top = 150;
 		
-		i++;
-		menuItems[i]=new TextButton("Add new save", WE.getEngineView().getSkin());
-		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top-i*distance);
-		//start the game
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					CustomGameController controller = new CustomGameController();
-					controller.newSaveSlot();
-					WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
-				}
-			}
-		);
-		
-		
-		i++;
 		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());
 		menuItems[i].addListener(
 			new ChangeListener() {
@@ -119,6 +102,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 				}
 			}
 		);
+			menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2-200, top);
 		
 		i++;
 		menuItems[i]=new TextButton("Credits", WE.getEngineView().getSkin());
@@ -131,6 +115,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 				}
 			}
 		);
+			menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top);
 		
 		i++;
 		menuItems[i]=new TextButton("Exit", WE.getEngineView().getSkin());
@@ -143,13 +128,11 @@ public class MainMenuScreen extends AbstractMainMenu {
 				}
 			}
 		);
-		
-		for (int j = 0; j < menuItems.length; j++) {
-			menuItems[j].setWidth(200);
-			menuItems[j].setPosition(stage.getWidth()/2-menuItems[j].getWidth()/2, top-j*distance);
-		}
+		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2+200, top);
 		
 		for (TextButton menuItem : menuItems) {
+			menuItem.setWidth(100);
+			menuItem.setHeight(100);
 			stage.addActor(menuItem);
 		}
 		

@@ -141,7 +141,7 @@ public class Controller implements GameManager {
 	private int saveSlot;
 
 	/**
-	 * uses a specific save slot for loading and saving the map
+	 * uses a specific save slot for loading and saving the map. Can be called before calling init().
 	 * @param slot 
 	 */
 	public void useSaveSlot(int slot){

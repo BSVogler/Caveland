@@ -100,7 +100,7 @@ public abstract class CVar {
 		new BooleanCVar(false).register("enableScalePrototype", CVarFlags.CVAR_ARCHIVE);
 		new BooleanCVar(true).register("enableHSD", CVarFlags.CVAR_ARCHIVE);
 		new BooleanCVar(true).register("mapChunkSwitch", CVarFlags.CVAR_ARCHIVE);
-		new BooleanCVar(false).register("mapUseChunks", CVarFlags.CVAR_ARCHIVE);
+		new BooleanCVar(true).register("mapUseChunks", CVarFlags.CVAR_ARCHIVE);
 		new BooleanCVar(false).register("DevMode", CVarFlags.CVAR_ARCHIVE);
 		new BooleanCVar(false).register("DevDebugRendering", CVarFlags.CVAR_ARCHIVE);
 		new IntCVar(2).register("groundBlockID", CVarFlags.CVAR_ARCHIVE);

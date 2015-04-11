@@ -22,16 +22,18 @@ public class CoopControlsSelectionScreen extends WEScreen {
 	private final Texture background;
 	private Stage stage;
 	private final SpriteBatch batch;
+	private final Texture mainbg;
 
 	/**
 	 *
 	 * @param batch
 	 */
-	public CoopControlsSelectionScreen(final SpriteBatch batch) {
+	public CoopControlsSelectionScreen(final SpriteBatch batch, Texture background) {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
-		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/controlScreen.jpg"));
+		this.background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/controlScreen.jpg"));
+		this.mainbg = background;
 		
 		//stage
 		if (Controllers.getControllers().size > 1) {//setDisabled(true) does not work
@@ -41,7 +43,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new SaveSelectionScreen(2, batch));
+					WE.setScreen(new SaveSelectionScreen(2, batch, mainbg));
 				}
 			});
 			stage.addActor(twoControllersButton);
@@ -59,7 +61,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new SaveSelectionScreen(1, batch));
+					WE.setScreen(new SaveSelectionScreen(1, batch, mainbg));
 				}
 			});
 			stage.addActor(splitControlsButton);
@@ -75,7 +77,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				WE.setScreen(new SaveSelectionScreen(0, batch));
+				WE.setScreen(new SaveSelectionScreen(0, batch, mainbg));
 			}
 		});
 		stage.addActor(twoKeyboardButton);

@@ -66,7 +66,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			new ClickListener(){
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					WE.setScreen(new SaveSelectionScreen(-1,batch));
+					WE.setScreen(new SaveSelectionScreen(-1,batch, background));
 				}
 			}
 		);
@@ -82,7 +82,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			new ClickListener(){
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					WE.setScreen(new CoopControlsSelectionScreen(batch));
+					WE.setScreen(new CoopControlsSelectionScreen(batch, background));
 				}
 			}
 		);

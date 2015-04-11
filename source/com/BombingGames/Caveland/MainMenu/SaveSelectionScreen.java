@@ -7,6 +7,7 @@ import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,15 +27,17 @@ public class SaveSelectionScreen extends WEScreen {
 	private Stage stage;
 	private final SelectBox<String> selectBox;
 	private int coop;
+	private final Texture background;
 
 	/**
 	 * 
 	 * @param coop flag - -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 * @param batch 
 	 */
-	public SaveSelectionScreen(int coop, SpriteBatch batch) {
+	public SaveSelectionScreen(int coop, SpriteBatch batch, Texture background) {
 		this.batch = batch;
 		this.coop = coop;
+		this.background = background;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Skin skin = WE.getEngineView().getSkin();
 		
@@ -107,9 +110,9 @@ public class SaveSelectionScreen extends WEScreen {
 		Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-//		batch.begin();
-//			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        batch.end();
+		batch.begin();
+			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
 		stage.act(dt);
 		stage.draw();
 	}

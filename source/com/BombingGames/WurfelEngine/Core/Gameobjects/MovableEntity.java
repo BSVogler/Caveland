@@ -256,7 +256,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 				if (block != null)
 					inliquid = block.isLiquid();//save if in water
-
+				else inliquid=false;
 
 				if(walkOnTheSpot > 0) {
 					walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed

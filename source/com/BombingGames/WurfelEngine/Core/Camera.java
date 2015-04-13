@@ -815,7 +815,7 @@ map.getGameWidth(),
 					if (y % 2 == 0) {//next row is shifted right
 						if (x>0) {
 							neighbour = cameraContentBlocks[x-1][y+1][z];
-							if (neighbour!= null && neighbour.hidingPastBlock()) {//left
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//left
 								next.setClippedLeft();
 							}
 						} else {
@@ -823,7 +823,7 @@ map.getGameWidth(),
 						}
 						if (y<cameraContentBlocks[x].length) {
 							neighbour = cameraContentBlocks[x][y+1][z];
-							if (neighbour!= null && neighbour.hidingPastBlock()) {//right
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//right
 								next.setClippedRight();
 							}
 						} else {
@@ -832,7 +832,7 @@ map.getGameWidth(),
 					} else {//next row is shifted right
 						if (y < cameraContentBlocks[x].length-1) {
 							neighbour = cameraContentBlocks[x][y+1][z];
-							if (neighbour!= null && neighbour.hidingPastBlock()) {//left
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//left
 								next.setClippedLeft();
 							}
 						} else {
@@ -840,7 +840,7 @@ map.getGameWidth(),
 						}
 						if ( x < cameraContentBlocks.length-1 && y < cameraContentBlocks[x].length-1) {
 							neighbour = cameraContentBlocks[x+1][y+1][z];
-							if (neighbour!= null && neighbour.hidingPastBlock()) {//right
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//right
 								next.setClippedRight();
 							}
 						} else {
@@ -856,7 +856,10 @@ map.getGameWidth(),
 				if (
 					z < map.getBlocksZ()
 					&& cameraContentBlocks[x][y][z+1] != null
-					&& cameraContentBlocks[x][y][z+1].hidingPastBlock()
+					&& (
+						cameraContentBlocks[x][y][z+1].hidingPastBlock()
+						|| cameraContentBlocks[x][y][z+1].getCoreData().isLiquid() && next.getCoreData().isLiquid()
+					)
 				) {
 					next.setClippedTop();
 				}

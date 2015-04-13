@@ -465,9 +465,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return (getCoreData().hasSides()) && !isTransparent()
-			||
-			getCoreData().isLiquid();
+		return (getCoreData().hasSides()) && !isTransparent();
 	}
 
 	@Override

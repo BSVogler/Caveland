@@ -36,13 +36,15 @@ public class Caveland {
      */
     public static void main(String[] args) {
 		WorkingDirectory.setApplicationName("Caveland");
+		//game cvars
 		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
-		//should be saved in map file
-		WE.CVARS.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+
+		//register map cvars
+		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());

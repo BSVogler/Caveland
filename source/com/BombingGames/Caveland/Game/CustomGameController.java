@@ -26,7 +26,7 @@ public class CustomGameController extends Controller {
 
 		Gdx.app.log("CustomGameController", "Initializing");
        
-		// register cvars
+		// register save cvars
 		CVarSystem saveCvars = Controller.getMap().getSaveCVars();
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);

@@ -1,6 +1,8 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
+import com.BombingGames.WurfelEngine.Core.CVar.IntCVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
@@ -68,6 +70,15 @@ public abstract class AbstractMap implements Cloneable {
 		return i;
 	}
 
+	private static CustomMapCVarRegistration customRegistration;
+	
+	/**
+	 * Set a custom registration of cvars before they are loaded.
+	 * @param mapcvars 
+	 */
+	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
+		customRegistration = mapcvars;
+	}
 	
 	/** every entity on the map is stored in this field */
 	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
@@ -83,7 +94,7 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	private CVarSystem cvars;
 	private CVarSystem saveCVars; 
-		
+
 	/**
 	 * 
 	 * @param directory the directory where the map lays in
@@ -95,11 +106,31 @@ public abstract class AbstractMap implements Cloneable {
 		this.directory = directory;
 		this.generator = generator;
 		cvars = new CVarSystem(new File(directory+"/meta.wecvar"));
+		//engine cvar registration
+		cvars.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register( new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register( new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register( new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		
+		//custom registration of cvars
+		if (customRegistration!=null)
+			customRegistration.register(cvars);
+		
+		cvars.load();
 		
 		if (!hasSaveSlot(saveSlot))
 			createSaveSlot(saveSlot);
 		activeSaveSlot = saveSlot;
 		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
+	}
+	
+	/**
+	 * should be set if you want to have custom. Loads cvars from file.
+	 * @param cvarSystem 
+	 */
+	public void setCVarSystem(CVarSystem cvarSystem){
+		cvars = cvarSystem;
+		cvars.load();
 	}
 	
 	    /**

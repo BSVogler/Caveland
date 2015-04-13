@@ -184,7 +184,7 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					CoreData block = new CoreData(
+					CoreData block = CoreData.getInstance(
 						generator.generate(
 							left+x,
 							top+y,
@@ -254,7 +254,7 @@ public class Chunk {
 										id = (byte) fis.read();
 									byte value = (byte) fis.read();
 									if (id > 0) {
-										data[x][y][z] = new CoreData(id, value);
+										data[x][y][z] = CoreData.getInstance(id, value);
 									} else 
 										data[x][y][z] =null;
 									x++;

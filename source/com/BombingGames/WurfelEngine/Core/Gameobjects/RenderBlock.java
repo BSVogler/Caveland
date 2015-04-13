@@ -457,7 +457,7 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	public CoreData toStorageBlock(){
-		return new CoreData(getId(), getValue());
+		return CoreData.getInstance(getId(), getValue());
 	}
 	
 	/**

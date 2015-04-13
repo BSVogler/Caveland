@@ -340,8 +340,7 @@ public class MapEditorView extends GameView {
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
                 CoreData block = coords.getBlock();
-				if (block == null) block = new CoreData((byte) 0);
-					leftColorGUI.setBlock(block);
+				leftColorGUI.setBlock(block);
             } else {
 				Tool toggledTool;
 				

@@ -25,13 +25,23 @@ public class CoreData implements HasID {
 	private byte health = 100;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
-	public CoreData(byte id) {
+	private CoreData(byte id) {
 		this.id = id;
 	}
 	
-	public CoreData(byte id, byte value) {
+	private CoreData(byte id, byte value) {
 		this.id = id;
 		this.value = value;
+	}
+	
+	public static CoreData getInstance(byte id){
+		if (id==0) return null;
+		return new CoreData(id, (byte) 0);
+	}
+	
+	public static CoreData getInstance(byte id, byte value){
+		if (id==0) return null;
+		return new CoreData(id, value);
 	}
 	
 	@Override
@@ -65,6 +75,8 @@ public class CoreData implements HasID {
 	 * @return 
 	 */
 	public RenderBlock toBlock(){
+		if (id==0)
+			return null;
 		return new RenderBlock(id, value);
 	}
 

@@ -85,7 +85,7 @@ public abstract class AbstractMap implements Cloneable {
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
-	private final CoreData groundBlock = new CoreData((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
+	private final CoreData groundBlock = CoreData.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;

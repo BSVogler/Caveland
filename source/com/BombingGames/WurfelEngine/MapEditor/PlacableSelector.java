@@ -198,7 +198,10 @@ public class PlacableSelector extends Table {
                 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setBlock(new CoreData(id));
+			if (id==0)
+				placableGUI.setBlock(null);
+			else
+				placableGUI.setBlock(CoreData.getInstance(id));
         };
      }
 	

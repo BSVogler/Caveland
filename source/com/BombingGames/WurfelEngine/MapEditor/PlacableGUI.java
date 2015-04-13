@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class PlacableGUI extends WidgetGroup {
-	private CoreData block = new CoreData((byte) 1);
+	private CoreData block = CoreData.getInstance((byte) 1);
 	private Image image;
 	private Label label;
 	private Label blockPosition;
@@ -121,8 +121,10 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setBlock(CoreData block) {
 		this.block = block;
-		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
-		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		if (block!=null) {
+			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
+			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		}
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param id
 	 */
 	public void setId(byte id) {
-		this.block = new CoreData(id, block.getValue());
+		this.block = CoreData.getInstance(id, block.getValue());
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(block.getValue()));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}
@@ -140,7 +142,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		this.block = new CoreData(block.getId(), value);
+		this.block = CoreData.getInstance(block.getId(), value);
 		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}

@@ -140,7 +140,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(byte id, byte value) {
-        coreData = new CoreData(id, value);
+        coreData = CoreData.getInstance(id, value);
 		this.graphicsID = id;
     }
     

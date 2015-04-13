@@ -268,6 +268,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param y offset in coords
 	 * @param z offset in coords
 	 * @return true when hiding the past RenderBlock
+	 * @deprecated v1.5
 	 */
 	public boolean hidingPastBlocks(int x, int y, int z) {
 		CoreData block = Controller.getMap().getBlock(
@@ -283,6 +284,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param y offset in coords
 	 * @param z offset in coords
 	 * @return true when hiding the past RenderBlock
+	 * @deprecated v1.5
 	 */
 	public boolean hidingPastLiquid(int x, int y, int z) {
 		return getBlock().isLiquid() && cpy().addVector(x, y, z).getBlock().isLiquid();
@@ -297,6 +299,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param y offset in coords
 	 * @param z offset in coords
 	 * @return true when hiding the past RenderBlock
+	 * @deprecated v1.5
 	 */
 	public boolean hidingPastBlock(int x, int y, int z) {
 		CoreData block = Controller.getMap().getBlock(
@@ -305,7 +308,7 @@ public class Coordinate extends AbstractPosition {
 		return block != null
 			&& (block.hasSides() && !block.isTransparent()
 			||
-			block.isLiquid() && block.isLiquid());
+			getBlock().isLiquid() && block.isLiquid());
 	}
 
 	/**

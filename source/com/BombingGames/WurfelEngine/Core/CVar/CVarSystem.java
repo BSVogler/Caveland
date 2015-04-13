@@ -36,36 +36,32 @@ public class CVarSystem {
 	public boolean getValueB(String cvar){
 		try {
 			return (boolean) cvars.get(cvar.toLowerCase()).getValue();
-		}catch(NullPointerException ex){
-			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
-			return false;
+		} catch(NullPointerException ex){
+			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
 		}
 	}
 	
 	public int getValueI(String cvar){
 		try {
 			return (int) cvars.get(cvar.toLowerCase()).getValue();
-		}catch(NullPointerException ex){
-			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
-			return 0;
+		} catch(NullPointerException ex){
+			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
 		}
 	}
 	
 	public float getValueF(String cvar){
 		try {
 			return (float) cvars.get(cvar.toLowerCase()).getValue();
-		}catch(NullPointerException ex){
-			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
-			return 0;
+		} catch(NullPointerException ex){
+			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
 		}
 	}
 	
 	public String getValueS(String cvar){
 		try {
 			return (String) cvars.get(cvar.toLowerCase()).getValue();
-		}catch(NullPointerException ex){
-			Gdx.app.error("CVar", "Cvar \""+cvar+"\" not defined.");
-			return null;
+		} catch(NullPointerException ex){
+			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
 		}
 	}
 	

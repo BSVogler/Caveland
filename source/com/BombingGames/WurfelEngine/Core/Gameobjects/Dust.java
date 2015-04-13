@@ -43,8 +43,8 @@ public class Dust extends AbstractEntity {
 		Vector3 step = direction.cpy().scl(dt/1000f);
 		getPosition().addVector(step);
 		CoreData block = getPosition().getBlock();
-		if (block==null || block.isObstacle())
-			getPosition().addVector(step.scl(-1));
+		if (block!=null && block.isObstacle())
+			getPosition().addVector(step.scl(-1));//reverse step
 			
 		setRotation(getRotation()-dt/10f);
 		setScaling(getScaling()+dt/300f);

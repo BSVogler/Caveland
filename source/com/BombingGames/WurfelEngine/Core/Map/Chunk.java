@@ -100,9 +100,9 @@ public class Chunk {
         this.coordX = coordX;
 		this.coordY = coordY;
 		this.map = map;
-		blocksX = WE.CVARS.getValueI("chunkBlocksX");
-        blocksY = WE.CVARS.getValueI("chunkBlocksY");
-        blocksZ = WE.CVARS.getValueI("chunkBlocksZ");
+		blocksX = map.getCvars().getValueI("chunkBlocksX");
+        blocksY = map.getCvars().getValueI("chunkBlocksY");
+        blocksZ = map.getCvars().getValueI("chunkBlocksZ");
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
 		data = new CoreData[blocksX][blocksY][blocksZ];
@@ -112,7 +112,6 @@ public class Chunk {
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = null;
 		modified = true;
-
     }
     
     /**

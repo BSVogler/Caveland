@@ -489,5 +489,8 @@ public abstract class AbstractMap implements Cloneable {
 		return getSavesCount(directory);
 	}
 	
+	CVarSystem getCvars() {
+		return cvars;
+	}
 
 }

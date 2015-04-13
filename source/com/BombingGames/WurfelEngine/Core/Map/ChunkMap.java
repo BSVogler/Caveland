@@ -400,7 +400,5 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	public int getBlocksZ() {
 		return blocksZ;
 	}
-	
-
 
 }

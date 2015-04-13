@@ -74,6 +74,8 @@ public class CoreData implements HasID {
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.isObstacle(id, value);
          }
+		if (id==9)
+			return false;
 		return id != 0;
 	}
 
@@ -83,6 +85,8 @@ public class CoreData implements HasID {
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.isTransparent(id, value);
          }
+		if (id==9)
+			return true;
 		return false;
 	}
 	
@@ -94,7 +98,8 @@ public class CoreData implements HasID {
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.isLiquid(id, value);
         }
-		if (id==9) return true;
+		if (id==9)
+			return true;
 		return false;
 	}
 	
@@ -150,6 +155,18 @@ public class CoreData implements HasID {
 				return "water";
 			case 10:
 				return "???";
+			case 11:
+				return "???";
+			case 12:
+				return "???";
+			case 13:
+				return "???";
+			case 14:
+			return "???";
+			case 15:
+				return "???";
+			case 16:
+				return "???";				
 			case 34:
 				return "flower";
 			case 35:

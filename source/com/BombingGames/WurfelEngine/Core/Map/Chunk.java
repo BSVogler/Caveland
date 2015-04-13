@@ -54,8 +54,6 @@ import java.util.logging.Logger;
 public class Chunk {
     /**The suffix of a chunk files.*/
     protected static final String CHUNKFILESUFFIX = "wec";
-    /**The suffix of the metafile */
-    protected static final String METAFILESUFFIX = "wem";
 
 	private static int blocksX = 10;
     private static int blocksY = 40;//blocksY must be even number

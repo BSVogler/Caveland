@@ -74,7 +74,7 @@ public class WE {
 	/**
 	 *
 	 */
-	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.weconfig"));
+	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.wecvars"));
     private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;

@@ -58,8 +58,10 @@ public class MapButton extends TextButton {
         setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
         setSize(150, 50);
-		CVarSystem cvars = new CVarSystem();
-		cvars.loadFromFile(WorkingDirectory.getMapsFolder()+"/"+fileName+"/");
+		CVarSystem cvars = new CVarSystem(
+			new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/")
+		);
+		cvars.load();
 		setText("/"+fileName+"/ "+cvars.getValueS("mapname"));
 		if (!"".equals(cvars.getValueS("description")))
 			add(cvars.getValueS("description"));

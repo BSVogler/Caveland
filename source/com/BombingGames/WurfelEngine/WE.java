@@ -69,8 +69,12 @@ public class WE {
      * The version of the Engine
      */
     public static final String VERSION = "1.5.1";  
-	public static final CVarSystem CVARS = new CVarSystem();
-    private static File workingDirectory;
+	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
+
+	/**
+	 *
+	 */
+	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.weconfig"));
     private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;
@@ -108,13 +112,12 @@ public class WE {
     public static void launch(final String title, final String[] args){
 		System.out.println("Load Engine…");
 		
-		workingDirectory = WorkingDirectory.getWorkingDirectory();//set save-folder
 		System.out.println("Init Engine CVars…");
 		CVARS.initEngineCVars();
 		
 		//load cvars
 		System.out.println("Loading Custom CVars…");
-		CVARS.loadFromFile(workingDirectory+"/engine.weconfig");
+		CVARS.load();
 		
 		// set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))

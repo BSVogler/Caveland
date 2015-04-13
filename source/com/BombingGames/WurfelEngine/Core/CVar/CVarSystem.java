@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
@@ -25,10 +26,14 @@ public class CVarSystem {
 	 * true if currently reading. Prevents saving
 	 */
 	private boolean reading;
+	private File path;
 	/**global list of all CVars**/
 	private HashMap<String, CVar> cvars = new HashMap<>(50);
 
-	
+	public CVarSystem(File path) {
+		this.path = path;
+	}
+
 	public CVar get(String cvar){
 		return cvars.get(cvar.toLowerCase());
 	}
@@ -67,10 +72,9 @@ public class CVarSystem {
 	
 	/**
 	 * load CVars from file and overwrite engine cvars
-	 * @param path
 	 * @since v1.4.2
 	 */
-	public void loadFromFile(String path ){
+	public void load(){
 		reading = true;
 		FileHandle sourceFile = new FileHandle(path);
 		if (sourceFile.exists()) {
@@ -111,7 +115,7 @@ public class CVarSystem {
 	 */
 	public void save(){
 		if (!reading) {
-			Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
+			Writer writer = Gdx.files.absolute(path.getAbsolutePath()).writer(false);
 
 			Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 			while (it.hasNext()) {

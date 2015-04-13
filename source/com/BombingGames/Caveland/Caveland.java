@@ -35,6 +35,7 @@ public class Caveland {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+		WorkingDirectory.setApplicationName("Caveland");
 		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
@@ -47,7 +48,6 @@ public class Caveland {
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());
-		WorkingDirectory.setApplicationName("Caveland");
 		CoreData.setCustomBlockFactory(new CustomBlockFactory());
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
 		

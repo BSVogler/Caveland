@@ -87,8 +87,8 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param saveSlot the used saveslot
 	 * @throws IOException 
 	 */
-	public AbstractMap(final String directory, Generator generator, int saveSlot) throws IOException {
-		this.directory = new File(directory);
+	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
+		this.directory = directory;
 		this.generator = generator;
 		
 		if (!hasSaveSlot(saveSlot))

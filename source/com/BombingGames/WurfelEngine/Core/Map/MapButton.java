@@ -94,7 +94,7 @@ public class MapButton extends TextButton {
         public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 			int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+parent.getName()));
             Controller.loadMap(
-				parent.getName(),
+				new File(WorkingDirectory.getMapsFolder()+"/"+parent.getName()),
 				slot
 			);
         }

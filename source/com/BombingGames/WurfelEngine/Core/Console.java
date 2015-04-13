@@ -419,7 +419,7 @@ public class Console implements CommandsInterface  {
             String mapname = st.nextToken();
             if (mapname.length()>0) {
 				int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapname));
-                return Controller.loadMap(mapname, slot);
+                return Controller.loadMap(new File(WorkingDirectory.getMapsFolder()+"/"+mapname), slot);
 			}
         }
         

@@ -100,9 +100,34 @@ public class Chunk {
         this.coordX = coordX;
 		this.coordY = coordY;
 		this.map = map;
-		blocksX = map.getCvars().getValueI("chunkBlocksX");
-        blocksY = map.getCvars().getValueI("chunkBlocksY");
-        blocksZ = map.getCvars().getValueI("chunkBlocksZ");
+		
+		//set chunk dimensions
+		int dim = 0;
+		try {
+			dim = map.getCvars().getValueI("chunkBlocksX");
+		} catch (NullPointerException ex){
+			//not set so nothing should be performed
+		}
+		if (dim>0)
+			blocksX = dim;
+		
+		dim = 0;
+		try {
+			dim = map.getCvars().getValueI("chunkBlocksY");
+		} catch (NullPointerException ex){
+			//not set so nothing should be performed
+		}
+		if (dim>0)
+			blocksY = dim;
+		
+		dim = 0;
+		try {
+			dim = map.getCvars().getValueI("chunkBlocksZ");
+		} catch (NullPointerException ex){
+			//not set so nothing should be performed
+		}
+		if (dim>0)
+			blocksZ = map.getCvars().getValueI("chunkBlocksZ");
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
 		data = new CoreData[blocksX][blocksY][blocksZ];
@@ -289,14 +314,14 @@ public class Chunk {
 				modified = true;
 				return true;
 			} catch (IOException ex) {
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed: "+ex);
+				Gdx.app.error("Chunk","Loading of chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
 			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 			} catch (ArrayIndexOutOfBoundsException ex){
-				Gdx.app.error("Chunk","Loading of chunk "+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
+				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
 			}
 		} else {
-			Gdx.app.log("Chunk",coordX + ","+ coordY +" could not be found on disk.");
+			Gdx.app.log("Chunk",path+"/"+coordX + ","+ coordY +" could not be found on disk.");
 		}
 		
         return false;

@@ -34,6 +34,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -82,7 +83,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @throws java.io.IOException
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public ChunkMap(final String name, int saveslot) throws IOException{
+    public ChunkMap(final File name, int saveslot) throws IOException{
         this(name, getDefaultGenerator(), saveslot);
     }
     
@@ -94,7 +95,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @throws java.io.IOException thrown if there is no full read/write access to the map file
      * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
-    public ChunkMap(final String name, Generator generator, int saveslot) throws IOException {
+    public ChunkMap(final File name, Generator generator, int saveslot) throws IOException {
 		super(name, generator, saveslot);
         Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveslot +" should be loaded");
 

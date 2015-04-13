@@ -65,11 +65,11 @@ public class Controller implements GameManager {
 
     /**
      * Tries loading a map.
-     * @param name the name of the map
+	 * @param path
 	 * @param saveslot this saveslot will become the active
      * @return returns true if the map could be loaded and false if it failed
      */
-    public static boolean loadMap(String name, int saveslot) {
+    public static boolean loadMap(File path, int saveslot) {
 		if (map != null)
 			map.dispose();
         try {
@@ -79,9 +79,9 @@ public class Controller implements GameManager {
 			}
 				
 			if (WE.CVARS.getValueB("mapUseChunks"))
-				map = new ChunkMap(name, saveslot);
+				map = new ChunkMap(path, saveslot);
 			else
-				map = new CompleteMap(name, saveslot);
+				map = new CompleteMap(path, saveslot);
 
 			if (linked != null) {
 				for (LinkedWithMap linkedObj : linked) {
@@ -183,11 +183,11 @@ public class Controller implements GameManager {
 		if (devtools == null && WE.CVARS.getValueB("DevMode"))
             devtools = new DevTools( 10, 50 );
         if (map == null){
-            if (!loadMap("default", saveslot)) {
+            if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot)) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
 //                try {
                     //ChunkMap.createMapFile("default");
-                    loadMap("default", saveslot);
+                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);
 //                } catch (IOException ex1) {
 //                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
 //                    WE.showMainMenu();

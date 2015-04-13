@@ -2,6 +2,7 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -14,12 +15,12 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksZ;
 	private final CoreData[][][] data;
 
-	public CompleteMap(final String name, int saveSlot) throws IOException {
+	public CompleteMap(final File name, int saveSlot) throws IOException {
 		this(name, getDefaultGenerator(), saveSlot);
 	}
 
 	
-	public CompleteMap(final String name, Generator generator, int saveSlot) throws IOException {
+	public CompleteMap(final File name, Generator generator, int saveSlot) throws IOException {
 		super(name, generator, saveSlot);
 		blocksX = 100;
         blocksY = 200;

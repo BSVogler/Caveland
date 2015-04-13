@@ -32,8 +32,7 @@ package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BenchmarkBall;
-import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
-import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -43,7 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -174,18 +173,18 @@ public class Console implements CommandsInterface  {
        timelastupdate += dt;
        
         //open close console/chat box
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(CVar.getValueI("KeyConsole"))) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"))) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(CVar.getValueI("KeyConsole"));
+        keyConsoleDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"));
 		
 		if (!keySuggestionDown
-			&& Gdx.input.isKeyPressed( CVar.getValueI("KeySuggestion") )
+			&& Gdx.input.isKeyPressed( WE.CVARS.getValueI("KeySuggestion") )
 			&& isActive()
 		) {
             autoSuggestion();
         }
-        keySuggestionDown = Gdx.input.isKeyPressed(CVar.getValueI("KeySuggestion"));
+        keySuggestionDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeySuggestion"));
 		
 
         //decrease importance every 30ms
@@ -309,7 +308,7 @@ public class Console implements CommandsInterface  {
 	 */
 	public void autoSuggestion(){
 		//get until cursor position
-		ArrayList<String> suggestions = CVar.getSuggestions(textinput.getText().substring(0, textinput.getCursorPosition()));
+		ArrayList<String> suggestions = WE.CVARS.getSuggestions(textinput.getText().substring(0, textinput.getCursorPosition()));
 		
 		//if at end start all overs
 		if (nextSuggestionNo >= suggestions.size()){
@@ -419,7 +418,7 @@ public class Console implements CommandsInterface  {
             
             String mapname = st.nextToken();
             if (mapname.length()>0) {
-				int slot = new MapMetaData(mapname).newSaveSlot();
+				int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapname));
                 return Controller.loadMap(mapname, slot);
 			}
         }
@@ -439,22 +438,22 @@ public class Console implements CommandsInterface  {
 //                }
 //            };
 //            Controller.getMap().setGenerator(generator);
-            try {
-                ChunkMap.createMapFile(mapname);
-				return executeCommand("loadmap " +mapname);
-            } catch (IOException ex) {
-                add(ex.getMessage(), "Warning");
-                return false;
-            }
+//            try {
+//                ChunkMap.createMapFile(mapname);
+//				return executeCommand("loadmap " +mapname);
+//            } catch (IOException ex) {
+//                add(ex.getMessage(), "Warning");
+//                return false;
+//            }
         }
          
 		//if not a command try setting a cvar
-		CVar cvar = CVar.get(first);
+		CVar cvar = WE.CVARS.get(first);
 		if (cvar!=null) {//if registered
 			if (st.hasMoreTokens()){
 				//set cvar
 				String value = st.nextToken();
-				CVar.get(first).setValue(value);
+				WE.CVARS.get(first).setValue(value);
 				add("Set CVar \""+ first + "\" to "+value, "System");
 				return true;
 			} else {

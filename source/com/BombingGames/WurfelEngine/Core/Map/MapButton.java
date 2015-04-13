@@ -31,14 +31,16 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
 import com.BombingGames.WurfelEngine.Core.Controller;
+import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import java.io.IOException;
+import java.io.File;
 
 /**
  *A button which creates a new save if you click on it
@@ -56,21 +58,18 @@ public class MapButton extends TextButton {
         setColor(Color.LIGHT_GRAY.cpy());
         setName(fileName);
         setSize(150, 50);
-        MapMetaData meta;
-        try {
-            meta = new MapMetaData(fileName);
-			int slot = meta.newSaveSlot();
-			meta.load(slot);
-            setText("/"+fileName+"/ "+meta.getMapName());
-            if (!"".equals(meta.getDescription()))
-                add(meta.getDescription());
-            else{
-                add("no description found");
-            }
-        } catch (IOException ex) {
-            setText("/"+fileName+"/ Error reading file");
-            setColor(Color.GRAY.cpy());
-        }
+		CVarSystem cvars = new CVarSystem();
+		cvars.loadFromFile(WorkingDirectory.getMapsFolder()+"/"+fileName+"/");
+		setText("/"+fileName+"/ "+cvars.getValueS("mapname"));
+		if (!"".equals(cvars.getValueS("description")))
+			add(cvars.getValueS("description"));
+		else{
+			add("no description found");
+		}
+//        } catch (IOException ex) {
+//            setText("/"+fileName+"/ Error reading file");
+//            setColor(Color.GRAY.cpy());
+//        }
         addListener(new ButtonChangeListener(this));
     }
 
@@ -93,7 +92,7 @@ public class MapButton extends TextButton {
 
         @Override
         public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			int slot = new MapMetaData(parent.getName()).newSaveSlot();
+			int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+parent.getName()));
             Controller.loadMap(
 				parent.getName(),
 				slot

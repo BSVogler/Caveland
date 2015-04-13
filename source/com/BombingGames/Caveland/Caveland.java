@@ -35,15 +35,15 @@ public class Caveland {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-		new IntCVar(50).register("worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
-		new BooleanCVar(true).register("shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
-		new BooleanCVar(true).register("enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
-		new BooleanCVar(true).register("enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
-		new BooleanCVar(false).register("enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
-		new IntCVar(1).register("groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
-		new IntCVar(2).register("PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
-		new IntCVar(5).register("PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
-		new IntCVar(10).register("PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new IntCVar(2), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new IntCVar(5), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());

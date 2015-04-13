@@ -33,7 +33,7 @@ package com.BombingGames.WurfelEngine;
 import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
 import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
 import com.BombingGames.WurfelEngine.Core.Console;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.EngineView;
@@ -68,7 +68,8 @@ public class WE {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.5.1";    
+    public static final String VERSION = "1.5.1";  
+	public static final CVarSystem CVARS = new CVarSystem();
     private static File workingDirectory;
     private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
@@ -109,11 +110,11 @@ public class WE {
 		
 		workingDirectory = WorkingDirectory.getWorkingDirectory();//set save-folder
 		System.out.println("Init Engine CVars…");
-		CVar.initEngineVars();
+		CVARS.initEngineCVars();
 		
 		//load cvars
 		System.out.println("Loading Custom CVars…");
-		CVar.loadFromFile();
+		CVARS.loadFromFile(workingDirectory+"/engine.weconfig");
 		
 		// set the name of the application menu item on mac
         if (System.getProperty("os.name").toLowerCase().contains("mac"))
@@ -123,7 +124,7 @@ public class WE {
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
         config.fullscreen = true;
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-        config.foregroundFPS = CVar.getValueI("limitFPS");//don't lock FPS
+        config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
 		//config.addIcon("com/BombingGames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
         config.addIcon("com/BombingGames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?
@@ -510,7 +511,7 @@ public class WE {
 		@Override
 		public void dispose() {
 			super.dispose();
-			CVar.dispose();
+			CVARS.dispose();
 		}
 		
 	}

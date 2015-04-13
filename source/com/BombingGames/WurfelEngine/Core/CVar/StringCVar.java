@@ -21,7 +21,7 @@ public class StringCVar extends CVar{
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
-		if (flags == CVarFlags.CVAR_ARCHIVE) save();
+		if (flags == CVarFlags.CVAR_ARCHIVE) parent.save();
 	}
 
 	@Override

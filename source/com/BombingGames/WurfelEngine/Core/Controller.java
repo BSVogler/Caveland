@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
@@ -38,13 +37,11 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
 import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
 import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
 import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *A controller manages the map and the game data.
@@ -81,7 +78,7 @@ public class Controller implements GameManager {
 				linked = map.getLinkedObjects();
 			}
 				
-			if (CVar.getValueB("mapUseChunks"))
+			if (WE.CVARS.getValueB("mapUseChunks"))
 				map = new ChunkMap(name, saveslot);
 			else
 				map = new CompleteMap(name, saveslot);
@@ -164,7 +161,7 @@ public class Controller implements GameManager {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		saveSlot = new MapMetaData("default").newSaveSlot();
+		saveSlot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default"));
 		if (map != null) map.useSaveSlot(saveSlot);
 		return saveSlot;
 	}
@@ -183,23 +180,23 @@ public class Controller implements GameManager {
     public void init(int saveslot){
         Gdx.app.log("Controller", "Initializing");
 
-		if (devtools == null && CVar.getValueB("DevMode"))
+		if (devtools == null && WE.CVARS.getValueB("DevMode"))
             devtools = new DevTools( 10, 50 );
         if (map == null){
             if (!loadMap("default", saveslot)) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
-                try {
-                    ChunkMap.createMapFile("default");
+//                try {
+                    //ChunkMap.createMapFile("default");
                     loadMap("default", saveslot);
-                } catch (IOException ex1) {
-                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
-                    WE.showMainMenu();
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+//                } catch (IOException ex1) {
+//                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
+//                    WE.showMainMenu();
+//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
+//                }
             }
         }
 		
-        if (CVar.getValueB("enableLightEngine") && Controller.lightEngine == null){
+        if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null){
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 			getMap().addLinkedObject(lightEngine);
         }
@@ -217,7 +214,7 @@ public class Controller implements GameManager {
      * @param dt time since last call
      */
     public void update(float dt) {
-		if (CVar.getValueB("DevMode")) {
+		if (WE.CVARS.getValueB("DevMode")) {
 			if (devtools == null ) {
 				devtools = new DevTools(10, 50);
 			}
@@ -251,7 +248,7 @@ public class Controller implements GameManager {
     
     @Override
     public void onEnter(){
-		CVar.get("timespeed").setValue(1f);
+		WE.CVARS.get("timespeed").setValue(1f);
     }
     
     @Override

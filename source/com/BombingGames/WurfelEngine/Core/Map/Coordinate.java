@@ -28,13 +28,13 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
@@ -325,7 +325,7 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		if (CVar.getValueB("mapUseChunks")){//to-do add method for completemap
+		if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
 			for (Chunk chunk : ((ChunkMap) map).getData()) {
 				if (chunk.hasCoord(this)) {
 					found = true;
@@ -345,7 +345,7 @@ public class Coordinate extends AbstractPosition {
 	public boolean isInMemoryArea() {
 		boolean found = false;
 		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
-			if (CVar.getValueB("mapUseChunks")){//to-do add method for completemap
+			if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
 				for (Chunk chunk : ((ChunkMap) map).getData()) {
 					if (chunk.hasCoord(this)) {
 						found = true;

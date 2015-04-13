@@ -3,7 +3,6 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.CavelandCommands;
 import com.BombingGames.Caveland.GameObjects.CustomBlockDestructionAction;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -29,18 +28,18 @@ public class CustomGameController extends Controller {
 			player1.spawn(
 				new Coordinate(
 					Controller.getMap(),
-					CVar.getValueI("PlayerLastSaveX"),
-					CVar.getValueI("PlayerLastSaveY"),
-					CVar.getValueI("PlayerLastSaveZ")
+					WE.CVARS.getValueI("PlayerLastSaveX"),
+					WE.CVARS.getValueI("PlayerLastSaveY"),
+					WE.CVARS.getValueI("PlayerLastSaveZ")
 				).getPoint()
 			);
 		if (player2!=null && !player2.spawned())
 			player2.spawn(
 				new Coordinate(
 					Controller.getMap(),
-					CVar.getValueI("PlayerLastSaveX"),
-					CVar.getValueI("PlayerLastSaveY"),
-					CVar.getValueI("PlayerLastSaveZ")
+					WE.CVARS.getValueI("PlayerLastSaveX"),
+					WE.CVARS.getValueI("PlayerLastSaveY"),
+					WE.CVARS.getValueI("PlayerLastSaveZ")
 				).getPoint()
 			);
 		

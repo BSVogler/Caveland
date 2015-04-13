@@ -1,0 +1,220 @@
+package com.BombingGames.WurfelEngine.Core.CVar;
+
+import com.BombingGames.WurfelEngine.WE;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Benedikt Vogler
+ */
+public class CVarSystem {
+		/**
+	 * true if currently reading. Prevents saving
+	 */
+	private boolean reading;
+	/**global list of all CVars**/
+	private HashMap<String, CVar> cvars = new HashMap<>(50);
+
+	
+	public CVar get(String cvar){
+		return cvars.get(cvar.toLowerCase());
+	}
+	
+	public boolean getValueB(String cvar){
+		try {
+			return (boolean) cvars.get(cvar.toLowerCase()).getValue();
+		}catch(NullPointerException ex){
+			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
+			return false;
+		}
+	}
+	
+	public int getValueI(String cvar){
+		try {
+			return (int) cvars.get(cvar.toLowerCase()).getValue();
+		}catch(NullPointerException ex){
+			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
+			return 0;
+		}
+	}
+	
+	public float getValueF(String cvar){
+		try {
+			return (float) cvars.get(cvar.toLowerCase()).getValue();
+		}catch(NullPointerException ex){
+			Gdx.app.error("CVar", "Cvar "+cvar+" not defined.");
+			return 0;
+		}
+	}
+	
+	public String getValueS(String cvar){
+		try {
+			return (String) cvars.get(cvar.toLowerCase()).getValue();
+		}catch(NullPointerException ex){
+			Gdx.app.error("CVar", "Cvar \""+cvar+"\" not defined.");
+			return null;
+		}
+	}
+	
+	/**
+	 * load CVars from file and overwrite engine cvars
+	 * @param path
+	 * @since v1.4.2
+	 */
+	public void loadFromFile(String path ){
+		reading = true;
+		FileHandle sourceFile = new FileHandle(path);
+		if (sourceFile.exists()) {
+			try {
+				BufferedReader reader = sourceFile.reader(300);
+				String line = reader.readLine();
+				while (line!=null) {
+					StringTokenizer tokenizer = new StringTokenizer(line, " ");
+					String name = tokenizer.nextToken();
+					String data = tokenizer.nextToken();
+					if (get(name)!=null){//only overwrite if already set
+						get(name).setValue(data);
+						System.out.println("Set CVar "+name+": "+data);
+					}
+					line = reader.readLine();
+				}
+
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IOException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		} else System.out.println("Custom CVar file not found.");
+		reading = false;
+	
+	}
+	
+		/**
+	 * saves the cvars with the flag to file
+	 * @since v1.4.2
+	 */
+	public void dispose(){
+		save();
+	}
+	
+	/**
+	 * saves CVars to file
+	 */
+	public void save(){
+		if (!reading) {
+			Writer writer = Gdx.files.absolute(WE.getWorkingDirectory()+"/engine.weconfig").writer(false);
+
+			Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+			while (it.hasNext()) {
+
+				Map.Entry<String, CVar> pairs = it.next();
+				CVar cvar = pairs.getValue();
+				try {
+					//if should be saved and different then default: save
+					if (
+						cvar.flags == CVar.CVarFlags.CVAR_ARCHIVE
+						&& !cvar.getDefaultValue().equals(cvar.getValue())
+					)
+						writer.write(pairs.getKey() + " "+cvar.toString()+"\n");
+
+				} catch (IOException ex) {
+					Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+			try {
+				writer.close();
+			} catch (IOException ex) {
+				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
+	
+	/**
+	 * Good use is auto-complete suggestions.
+	 * @param prefix some chars with which the cvar begins.
+	 * @return A list containing every cvar starting with the prefix
+	 */
+	public ArrayList<String> getSuggestions(String prefix){
+		ArrayList<String> resultList = new ArrayList<>(1);
+		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, CVar> cvarEntry = it.next();
+			if (cvarEntry.getKey().startsWith(prefix.toLowerCase()))
+				resultList.add(cvarEntry.getKey());
+		}
+		return resultList;
+	}
+	
+	/**
+	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
+	 * if already registered updates the default and current value.
+	 * @param cvar
+	 * @param name
+	 * @param flag
+	 * @since v1.4.2
+	 */
+	public void register(CVar cvar, String name, CVar.CVarFlags flag){
+		cvar.register(name, flag, this);
+		//if already registered new value is set
+		if (cvars.containsKey(cvar.name))
+			get(cvar.name).setDefaultValue(cvar.getValue());
+		else
+			cvars.put(cvar.name.toLowerCase(), cvar);
+	}
+	
+	/*
+	 * initializes engine cvars
+	 */
+	public void initEngineCVars(){
+		WE.CVARS.register(new FloatCVar(9.81f), "gravity", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(-40), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "loadPixmap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(0.00078125f), "LEazimutSpeed", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(1920), "renderResolutionWidth", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(0.3f), "fogR", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(0.4f), "fogG", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(1.0f), "fogB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(2f), "fogOffset", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(0.17f), "fogFactor", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "enableScalePrototype", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "enableHSD", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "mapChunkSwitch", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "mapUseChunks", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "DevMode", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "DevDebugRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(2), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "preventUnloading", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "clearBeforeRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(Input.Keys.F1), "KeyConsole", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(Input.Keys.TAB), "KeySuggestion", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(1.0f), "music", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(1.0f), "sound", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(60), "limitFPS", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "loadEntities", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "enableMinimap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(1.0f), "walkingAnimationSpeedCorrection", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(4.0f), "playerWalkingSpeed", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(1f), "timeSpeed", CVar.CVarFlags.CVAR_VOLATILE);
+		WE.CVARS.register(new FloatCVar(0.001f), "friction", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(0.03f), "playerfriction", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(6000), "soundDecay", CVar.CVarFlags.CVAR_ARCHIVE);
+	}
+}

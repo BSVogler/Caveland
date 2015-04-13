@@ -25,7 +25,7 @@ public class IntCVar extends CVar {
 			this.value = Integer.parseInt((String) value);
 		else 
 			this.value = (int) value;
-		if (flags == CVarFlags.CVAR_ARCHIVE) save();
+		if (flags == CVarFlags.CVAR_ARCHIVE) parent.save();
 	}
 
 
@@ -39,6 +39,7 @@ public class IntCVar extends CVar {
 		return defaultValue;
 	}
 
+	@Override
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (Integer) defaultValue;
 	}

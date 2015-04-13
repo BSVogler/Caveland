@@ -2,8 +2,9 @@ package com.BombingGames.Caveland.MainMenu;
 
 import com.BombingGames.Caveland.Game.CustomGameController;
 import com.BombingGames.Caveland.Game.CustomGameView;
-import com.BombingGames.WurfelEngine.Core.Map.MapMetaData;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
+import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import java.io.File;
 
 /**
  *
@@ -53,7 +55,7 @@ public class SaveSelectionScreen extends WEScreen {
 		stage.addActor(continueButton);
 		
 		//save slot selection
-		int savesCount = new MapMetaData("default").getSavesCount();
+		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
 		Array<String> arstr = new Array<>(savesCount);
 		for (int i = 0; i < savesCount; i++) {
 			arstr.add(Integer.toString(i));

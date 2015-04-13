@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
 import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
 import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
@@ -108,7 +107,7 @@ public class GameplayScreen extends WEScreen {
     @Override
     public void renderImpl(float dt) {
 		//aply game world speed
-        dt *= (float) CVar.get("timespeed").getValue();
+        dt *= WE.CVARS.getValueF("timespeed");
 		//update data
         controller.update(dt);
 		Controller.staticUpdate(dt);
@@ -136,7 +135,7 @@ public class GameplayScreen extends WEScreen {
         controller.enter();
         view.enter();
 		
-		if (loadingScreen!=null && !(boolean) CVar.get("preventUnloading").getValue()) {
+		if (loadingScreen!=null && !(boolean) WE.CVARS.get("preventUnloading").getValue()) {
 			loadingScreen.dispose();
 			loadingScreen=null;
 		}

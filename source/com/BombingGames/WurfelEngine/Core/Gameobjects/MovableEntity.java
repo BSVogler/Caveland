@@ -28,10 +28,10 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -116,7 +116,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         orientation = new Vector2(1, 0);
 		coliding = true;
 		floating = false;
-		friction = CVar.getValueF("friction");
+		friction = WE.CVARS.getValueF("friction");
 		enableShadow();
    }
    
@@ -224,7 +224,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			float oldHeight = getPosition().getZ();
 			if (!floating && !isOnGround())
 				addMovement(
-					new Vector3(0, 0, -CVar.getValueF("gravity")*t) //in m/s
+					new Vector3(0, 0, -WE.CVARS.getValueF("gravity")*t) //in m/s
 				);
 
 			//add movement
@@ -263,7 +263,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				} else { 
 					//walking cycle
 					if (floating || isOnGround()) {
-						walkingCycle += dt*getSpeed()*CVar.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
+						walkingCycle += dt*getSpeed()*WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
 					}
 				}
 

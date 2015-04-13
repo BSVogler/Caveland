@@ -30,7 +30,6 @@
  */
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
@@ -159,7 +158,7 @@ public class Camera implements LinkedWithMap {
 	private void initFocus() {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		if (CVar.getValueB("mapUseChunks"))
+		if (WE.CVARS.getValueB("mapUseChunks"))
 			updateNeededChunks();
 	}
 
@@ -350,7 +349,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	public void updateCenter(){
 		//if chunkmap check for chunk movement
-		if (CVar.getValueB("mapUseChunks")) {
+		if (WE.CVARS.getValueB("mapUseChunks")) {
 			ChunkMap chunkMap = (ChunkMap) map;
 
 			//check if chunkswitch left
@@ -394,7 +393,7 @@ public class Camera implements LinkedWithMap {
 			}
 		}
 		
-		if (CVar.getValueB("mapUseChunks"))
+		if (WE.CVARS.getValueB("mapUseChunks"))
 			updateNeededChunks();
 	}
 
@@ -403,7 +402,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private void updateNeededChunks() {
 		//check every chunk
-		if (centerChunkX == 0 && centerChunkY == 0 || CVar.getValueB("mapChunkSwitch")) {
+		if (centerChunkX == 0 && centerChunkY == 0 || WE.CVARS.getValueB("mapChunkSwitch")) {
 			checkChunk(centerChunkX - 1, centerChunkY - 1);
 			checkChunk(centerChunkX, centerChunkY - 1);
 			checkChunk(centerChunkX + 1, centerChunkY - 1);
@@ -435,7 +434,7 @@ public class Camera implements LinkedWithMap {
 	 * Updates the cached fields which save the border of the covered coordinates by this camera.
 	 */
 	private void updateCoverBordersCache() {
-		if (CVar.getValueB("mapUseChunks")) {
+		if (WE.CVARS.getValueB("mapUseChunks")) {
 			ChunkMap chunkMap = (ChunkMap) map;
 			leftCoverBorder = chunkMap.getChunk(
 					centerChunkX - 1,
@@ -482,7 +481,7 @@ public class Camera implements LinkedWithMap {
 			view.setDebugRendering(false);
 			view.getBatch().begin();
 			//send a Vector4f to GLSL
-			if (CVar.getValueB("enablelightengine")) {
+			if (WE.CVARS.getValueB("enablelightengine")) {
 				view.getShader().setUniformf(
 					"sunNormal",
 					Controller.getLightEngine().getSun().getNormal()
@@ -506,7 +505,7 @@ public class Camera implements LinkedWithMap {
 			}
 
 			//bind normal map to texture unit 1
-			if (CVar.getValueB("LEnormalMapRendering")) {
+			if (WE.CVARS.getValueB("LEnormalMapRendering")) {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 
@@ -521,7 +520,7 @@ public class Camera implements LinkedWithMap {
 			view.getBatch().end();
 
 			//if debugging render outline again
-			if (CVar.getValueB("DevDebugRendering")) {
+			if (WE.CVARS.getValueB("DevDebugRendering")) {
 				view.setDebugRendering(true);
 				view.getBatch().begin();
 				//render vom bottom to top
@@ -532,7 +531,7 @@ public class Camera implements LinkedWithMap {
 			}
 
 			//outline 3x3 chunks
-			if (CVar.getValueB("DevDebugRendering")) {
+			if (WE.CVARS.getValueB("DevDebugRendering")) {
 				view.getShapeRenderer().setColor(Color.RED.cpy());
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 				view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
@@ -593,7 +592,7 @@ map.getGameWidth(),
 				0,//todo
 				0//todo
 			);
-		if (CVar.getValueB("enableHSD")) {
+		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				RenderBlock block = (RenderBlock) iterator.next();
@@ -731,7 +730,7 @@ map.getGameWidth(),
 	 * updates cached values like clipping
 	 */
 	protected void updateCache(){
-		if (CVar.getValueB("mapUseChunks"))
+		if (WE.CVARS.getValueB("mapUseChunks"))
 			updateNeededChunks();
 		
 		updateCoverBordersCache();
@@ -891,7 +890,7 @@ map.getGameWidth(),
 	 * @return a scaling factor applied on the projection
 	 */
 	public float getScreenSpaceScaling() {
-		return screenWidth / (float) CVar.getValueI("renderResolutionWidth");
+		return screenWidth / (float) WE.CVARS.getValueI("renderResolutionWidth");
 	}
 
 	/**
@@ -1040,7 +1039,7 @@ map.getGameWidth(),
 	 * updates the cache
 	 */
 	public final void updateViewSpaceSize() {
-		viewSpaceWidth = CVar.getValueI("renderResolutionWidth");
+		viewSpaceWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		viewSpaceHeight = (int) (screenHeight /getScreenSpaceScaling());
 	}
 

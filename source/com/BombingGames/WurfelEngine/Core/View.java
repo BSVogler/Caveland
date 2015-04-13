@@ -31,7 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -100,7 +100,7 @@ public abstract class View {
 		String vertexShader;
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
-		if ((Boolean)CVar.get("LEnormalMapRendering").getValue()){
+		if (WE.CVARS.getValueB("LEnormalMapRendering")){
 			vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertexNM.vs").readString();
 			fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragmentNM.fs").readString();
 		} else {

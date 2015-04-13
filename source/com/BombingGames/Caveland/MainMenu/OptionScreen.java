@@ -1,6 +1,5 @@
 package com.BombingGames.Caveland.MainMenu;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.WEScreen;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -51,7 +50,7 @@ public class OptionScreen extends WEScreen {
 		
 		stage = new Stage(new ScreenViewport(libgdxcamera), batch);
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
-		if (CVar.getValueB("DevMode"))  {
+		if (WE.CVARS.getValueB("DevMode"))  {
 			//fill with display modes
 			Array<String> arstr = new Array<>();
 			Graphics.DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
@@ -102,7 +101,7 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(vsyncCB);
 		
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
-		limitFPSCB.setChecked(CVar.getValueI("limitFPS") > 0);
+		limitFPSCB.setChecked(WE.CVARS.getValueI("limitFPS") > 0);
 		limitFPSCB.setPosition(stage.getWidth()/2+100, 400);
 		stage.addActor(limitFPSCB);
 		
@@ -113,21 +112,21 @@ public class OptionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
-				if (CVar.getValueB("DevMode"))  {
+				if (WE.CVARS.getValueB("DevMode"))  {
 					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
 					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
 				}
 				
 				//get FPS limit
 				if (limitFPSCB.isChecked())
-					CVar.get("limitFPS").setValue("60");
-				else CVar.get("limitFPS").setValue("0");
-				WE.getLwjglApplicationConfiguration().foregroundFPS = CVar.getValueI("limitFPS");
+					WE.CVARS.get("limitFPS").setValue("60");
+				else WE.CVARS.get("limitFPS").setValue("0");
+				WE.getLwjglApplicationConfiguration().foregroundFPS = WE.CVARS.getValueI("limitFPS");
 				
 				//apply sound changes
-				CVar.get("music").setValue(musicSlider.getValue());
+				WE.CVARS.get("music").setValue(musicSlider.getValue());
 				WE.getEngineView().setMusicLoudness(musicSlider.getValue());
-				CVar.get("sound").setValue(soundSlider.getValue());
+				WE.CVARS.get("sound").setValue(soundSlider.getValue());
 			}
 		});
 		stage.addActor(applyButton);
@@ -162,7 +161,7 @@ public class OptionScreen extends WEScreen {
 				
         batch.begin();
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			if (CVar.getValueB("DevMode")) font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+			if (WE.CVARS.getValueB("DevMode")) font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
 	}
 

@@ -25,7 +25,7 @@ public class FloatCVar extends CVar {
 			this.value = Float.parseFloat((String) value);
 		else 
 			this.value = (float) value;
-		if (flags == CVarFlags.CVAR_ARCHIVE) save();
+		if (flags == CVarFlags.CVAR_ARCHIVE) parent.save();
 	}
 
 	@Override
@@ -38,9 +38,9 @@ public class FloatCVar extends CVar {
 		return defaultValue;
 	}
 
+	@Override
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (float) defaultValue;
 	}
-	
 	
 }

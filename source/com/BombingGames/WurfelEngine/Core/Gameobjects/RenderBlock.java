@@ -28,13 +28,13 @@
  */
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -227,7 +227,7 @@ public class RenderBlock extends AbstractGameObject {
         if (!isHidden()) {
 			Coordinate coords = getPosition();
             if (getCoreData().hasSides()) {
-				boolean staticShade = CVar.getValueB("enableAutoShade");
+				boolean staticShade = WE.CVARS.getValueB("enableAutoShade");
                 if (!clippedTop)
                     renderSide(view, camera, coords, Side.TOP, staticShade);
                 if (!clippedLeft)
@@ -322,7 +322,7 @@ public class RenderBlock extends AbstractGameObject {
 		final boolean staticShade
 	){
 		Color color;
-		if (CVar.getValueB("enableFog")) {
+		if (WE.CVARS.getValueB("enableFog")) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
 			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().getCoord().getY())*0.17+2));
 			color = new Color(0.5f, 0.5f, 0.5f, 1).add(

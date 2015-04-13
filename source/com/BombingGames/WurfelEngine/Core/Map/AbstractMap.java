@@ -1,13 +1,16 @@
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,48 +38,61 @@ public abstract class AbstractMap implements Cloneable {
 		return defaultGenerator;
 	}
 	
-	/**
-	 * Should create a new map file under the maps directory.
-	 * @param mapFileName file name
-	 * @throws java.io.IOException
-	 */
-	public static void createMapFile(final String mapFileName) throws IOException {
-		MapMetaData meta = new MapMetaData(mapFileName);
-		meta.setMapName(mapFileName);
-		meta.write(-1);
+		public static int newSaveSlot(File path) {
+		int slot = getSavesCount(path);
+		createSaveSlot(path, slot);
+		return slot;
+	}
+		
+	public static void createSaveSlot(File path, int slot){
+		FileHandle pathHandle = Gdx.files.absolute(path+"/save"+slot);
+        if (!path.exists()){
+			path.mkdirs();
+		}
+		//copy from map folder root
+		FileHandle root = Gdx.files.absolute(path.getAbsolutePath());
+		FileHandle[] childen = root.list();
+		for (FileHandle file : childen) {
+			if (!file.isDirectory()){
+				file.copyTo(pathHandle);
+			}
+		}
+	}
+	
+	public static int getSavesCount(File path) {
+		FileHandle children = Gdx.files.absolute(path.getAbsolutePath());
+		int i = 0;
+		while (children.child("save"+i).exists()) {			
+			i++;
+		}
+		return i;
 	}
 
+	
 	/** every entity on the map is stored in this field */
 	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
-	private final CoreData groundBlock = new CoreData((byte) CVar.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
-	/**
-	 * holds the metadata of the map
-	 */
-	private final MapMetaData meta;
+	private final CoreData groundBlock = new CoreData((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
-	private final String filename;
+	private final File directory;
 	private int activeSaveSlot;
+	private CVarSystem cvars;
 
 	/**
 	 * 
-	 * @param fileName
+	 * @param directory the directory where the map lays in
 	 * @param generator
 	 * @param saveSlot the used saveslot
 	 * @throws IOException 
 	 */
-	public AbstractMap(final String fileName, Generator generator, int saveSlot) throws IOException {
-		this.filename = fileName;
+	public AbstractMap(final String directory, Generator generator, int saveSlot) throws IOException {
+		this.directory = new File(directory);
 		this.generator = generator;
 		
-		meta = new MapMetaData(fileName);
-		if (!meta.hasSaveSlot(saveSlot))
-			meta.createSaveSlot(saveSlot);
-		if (CVar.getValueB("shouldLoadMap")){
-			meta.load(saveSlot);
-		}
+		if (!hasSaveSlot(saveSlot))
+			createSaveSlot(saveSlot);
 		activeSaveSlot = saveSlot;
 	}
 	
@@ -85,7 +101,7 @@ public abstract class AbstractMap implements Cloneable {
      * @return a number between 0 and 360
      */
     public int getWorldSpinDirection() {
-        return CVar.getValueI("worldSpinAngle");
+        return WE.CVARS.getValueI("worldSpinAngle");
     }
 
 	
@@ -294,14 +310,6 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 *
-	 * @return
-	 */
-	public MapMetaData getMeta() {
-		return meta;
-	}
-
-	/**
 	 * saves every chunk on the map
 	 * @param saveSlot
 	 * @return
@@ -349,8 +357,8 @@ public abstract class AbstractMap implements Cloneable {
 	 * The name of the map on the file.
 	 * @return
 	 */
-	public String getFilename() {
-		return filename;
+	public File getPath() {
+		return directory;
 	}
 
 	/**
@@ -447,7 +455,39 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		activeSaveSlot = new MapMetaData("default").newSaveSlot();
+		activeSaveSlot = getSavesCount();
+		createSaveSlot(activeSaveSlot);
 		return activeSaveSlot;
 	}
+	
+
+	
+	public void newSaveSlot(int slot) {
+		createSaveSlot(slot);
+	}
+	
+	/**
+	 * Check if a save slot exists.
+	 * @param saveSlot
+	 * @return 
+	 */
+	public boolean hasSaveSlot(int saveSlot) {
+		FileHandle path = Gdx.files.absolute(directory+"/save"+saveSlot);
+		return path.exists();
+	}
+	
+	public void createSaveSlot(int slot){
+		createSaveSlot(directory, slot);
+	}
+	
+		
+	/**
+	 * checks a map for the amount of save files
+	 * @return the amount of saves for this map
+	 */
+	public int getSavesCount() {
+		return getSavesCount(directory);
+	}
+	
+
 }

@@ -30,9 +30,9 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map.Iterators;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
+import com.BombingGames.WurfelEngine.WE;
 import java.util.Iterator;
 
 /**
@@ -51,7 +51,7 @@ public abstract class AbstractMapIterator implements Iterator<CoreData>{
 
 	public AbstractMapIterator(AbstractMap map) {
 		this.map = map;
-		useChunks = CVar.getValueB("mapUseChunks");
+		useChunks = WE.CVARS.getValueB("mapUseChunks");
 	}	
 	
 	/**

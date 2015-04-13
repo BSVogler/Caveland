@@ -28,11 +28,11 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -98,8 +98,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		super(name, generator, saveslot);
         Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveslot +" should be loaded");
 
-        Chunk.setDimensions(getMeta());
-        
         //save chunk size, which are now loaded
         blocksX = Chunk.getBlocksX()*3;
         blocksY = Chunk.getBlocksY()*3;
@@ -129,11 +127,11 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 */
 	@Override
 	public void postUpdate(float dt) {
-		if (CVar.getValueB("mapChunkSwitch")) {
+		if (WE.CVARS.getValueB("mapChunkSwitch")) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				if (data.get(i).shouldBeRemoved()){
-					data.get(i).dispose(getFilename());
+					data.get(i).dispose(getPath());
 					data.remove(i);
 				} else {
 					data.get(i).resetCameraAccesCounter();
@@ -157,7 +155,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	public void loadChunk(int chunkX, int chunkY){
 		//TODO if already there.
 		data.add(
-			new Chunk(this, getFilename(), chunkX, chunkY, getGenerator())
+			new Chunk(this, getPath(), chunkX, chunkY, getGenerator())
 		);
 		modified();
 	}
@@ -331,7 +329,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		for (Chunk chunk : data) {
 			try {
                 chunk.save(
-                    getFilename(),
+                    getPath(),
 					saveSlot
                 );
             } catch (IOException ex) {
@@ -371,7 +369,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	@Override
     public void dispose(){
 		for (Chunk chunk : data) {
-			chunk.dispose(getFilename());
+			chunk.dispose(getPath());
 		}
 		super.dispose();
     }

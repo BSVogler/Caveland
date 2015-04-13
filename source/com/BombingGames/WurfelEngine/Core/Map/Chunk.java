@@ -102,7 +102,7 @@ public class Chunk {
 		//set chunk dimensions
 		int dim = 0;
 		try {
-			dim = map.getCvars().getValueI("chunkBlocksX");
+			dim = map.getCVars().getValueI("chunkBlocksX");
 		} catch (NullPointerException ex){
 			//not set so nothing should be performed
 		}
@@ -111,7 +111,7 @@ public class Chunk {
 		
 		dim = 0;
 		try {
-			dim = map.getCvars().getValueI("chunkBlocksY");
+			dim = map.getCVars().getValueI("chunkBlocksY");
 		} catch (NullPointerException ex){
 			//not set so nothing should be performed
 		}
@@ -120,12 +120,12 @@ public class Chunk {
 		
 		dim = 0;
 		try {
-			dim = map.getCvars().getValueI("chunkBlocksZ");
+			dim = map.getCVars().getValueI("chunkBlocksZ");
 		} catch (NullPointerException ex){
 			//not set so nothing should be performed
 		}
 		if (dim>0)
-			blocksZ = map.getCvars().getValueI("chunkBlocksZ");
+			blocksZ = map.getCVars().getValueI("chunkBlocksZ");
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
 		data = new CoreData[blocksX][blocksY][blocksZ];

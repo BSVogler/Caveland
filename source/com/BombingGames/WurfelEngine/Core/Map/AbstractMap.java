@@ -38,7 +38,7 @@ public abstract class AbstractMap implements Cloneable {
 		return defaultGenerator;
 	}
 	
-		public static int newSaveSlot(File path) {
+	public static int newSaveSlot(File path) {
 		int slot = getSavesCount(path);
 		createSaveSlot(path, slot);
 		return slot;
@@ -78,8 +78,12 @@ public abstract class AbstractMap implements Cloneable {
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
+	/**
+	 * cvar system for the map. SHould in most cases read only because they are not save file independant.
+	 */
 	private CVarSystem cvars;
-
+	private CVarSystem saveCVars; 
+		
 	/**
 	 * 
 	 * @param directory the directory where the map lays in
@@ -90,10 +94,12 @@ public abstract class AbstractMap implements Cloneable {
 	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
 		this.directory = directory;
 		this.generator = generator;
+		cvars = new CVarSystem(new File(directory+"/meta.wecvar"));
 		
 		if (!hasSaveSlot(saveSlot))
 			createSaveSlot(saveSlot);
 		activeSaveSlot = saveSlot;
+		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
 	}
 	
 	    /**
@@ -448,6 +454,7 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public void useSaveSlot(int slot){
 		this.activeSaveSlot = slot;
+		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
 	}
 	
 	/**
@@ -457,10 +464,9 @@ public abstract class AbstractMap implements Cloneable {
 	public int newSaveSlot() {
 		activeSaveSlot = getSavesCount();
 		createSaveSlot(activeSaveSlot);
+		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
 		return activeSaveSlot;
 	}
-	
-
 	
 	public void newSaveSlot(int slot) {
 		createSaveSlot(slot);
@@ -489,8 +495,20 @@ public abstract class AbstractMap implements Cloneable {
 		return getSavesCount(directory);
 	}
 	
-	CVarSystem getCvars() {
+	/**
+	 * in regular case only read operations should be performed on the cvars in here
+	 * @return 
+	 */
+	public CVarSystem getCVars() {
 		return cvars;
+	}
+	
+	/**
+	 * save dependant Cvars. They are not loaded from disk unitl you do that.
+	 * @return 
+	 */
+	public CVarSystem getSaveCVars(){
+		return saveCVars;
 	}
 
 }

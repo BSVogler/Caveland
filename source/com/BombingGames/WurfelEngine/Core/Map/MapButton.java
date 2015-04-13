@@ -31,7 +31,9 @@
 
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
+import com.BombingGames.WurfelEngine.Core.CVar.StringCVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
@@ -59,15 +61,32 @@ public class MapButton extends TextButton {
         setName(fileName);
         setSize(150, 50);
 		CVarSystem cvars = new CVarSystem(
-			new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/")
+			new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/meta.wecvar")
 		);
+		cvars.register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register(new StringCVar(""), "description", CVar.CVarFlags.CVAR_ARCHIVE);
 		cvars.load();
-		setText("/"+fileName+"/ "+cvars.getValueS("mapname"));
-		if (!"".equals(cvars.getValueS("description")))
-			add(cvars.getValueS("description"));
+		String mapname;
+		try {
+			mapname = cvars.getValueS("mapname");
+		} catch (NullPointerException ex) {
+			mapname = "no map name set";
+		}
+		setText("/"+fileName+"/ "+mapname);
+		
+		String description;
+		try {
+			description = cvars.getValueS("description");
+		} catch (NullPointerException ex) {
+			description = "";
+		}
+		
+		if (!"".equals(description))
+			add(description);
 		else{
 			add("no description found");
 		}
+		
 //        } catch (IOException ex) {
 //            setText("/"+fileName+"/ Error reading file");
 //            setColor(Color.GRAY.cpy());

@@ -30,6 +30,10 @@ public class CVarSystem {
 	/**global list of all CVars**/
 	private HashMap<String, CVar> cvars = new HashMap<>(50);
 
+	/**
+	 * you have to manually call {@link #load} to load from path.
+	 * @param path 
+	 */
 	public CVarSystem(File path) {
 		this.path = path;
 	}
@@ -71,13 +75,13 @@ public class CVarSystem {
 	}
 	
 	/**
-	 * load CVars from file and overwrite engine cvars
+	 * load CVars from file and overwrite engine cvars. You must register the cvars first.
 	 * @since v1.4.2
 	 */
 	public void load(){
 		reading = true;
 		FileHandle sourceFile = new FileHandle(path);
-		if (sourceFile.exists()) {
+		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			try {
 				BufferedReader reader = sourceFile.reader(300);
 				String line = reader.readLine();
@@ -85,7 +89,7 @@ public class CVarSystem {
 					StringTokenizer tokenizer = new StringTokenizer(line, " ");
 					String name = tokenizer.nextToken();
 					String data = tokenizer.nextToken();
-					if (get(name)!=null){//only overwrite if already set
+					if (get(name)!=null){//only overwrite if already registered
 						get(name).setValue(data);
 						System.out.println("Set CVar "+name+": "+data);
 					}

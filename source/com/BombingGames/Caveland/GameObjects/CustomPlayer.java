@@ -527,9 +527,9 @@ public class CustomPlayer extends Controllable {
 	public void dispose() {
 		super.dispose();
 		Coordinate coord = getPosition().getCoord();
-		WE.CVARS.get("PlayerLastSaveX").setValue(coord.getX());
-		WE.CVARS.get("PlayerLastSaveY").setValue(coord.getY());
-		WE.CVARS.get("PlayerLastSaveZ").setValue(coord.getZ());
+		Controller.getMap().getSaveCVars().get("PlayerLastSaveX").setValue(coord.getX());
+		Controller.getMap().getSaveCVars().get("PlayerLastSaveY").setValue(coord.getY());
+		Controller.getMap().getSaveCVars().get("PlayerLastSaveZ").setValue(coord.getZ());
 	}
 
 	/**

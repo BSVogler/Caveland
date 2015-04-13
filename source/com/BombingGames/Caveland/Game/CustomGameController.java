@@ -3,6 +3,9 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.CavelandCommands;
 import com.BombingGames.Caveland.GameObjects.CustomBlockDestructionAction;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.WurfelEngine.Core.CVar.CVar;
+import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
+import com.BombingGames.WurfelEngine.Core.CVar.IntCVar;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -22,24 +25,32 @@ public class CustomGameController extends Controller {
         super.init();
 
 		Gdx.app.log("CustomGameController", "Initializing");
-        player1 = new CustomPlayer();
+       
+		// register cvars
+		CVarSystem saveCvars = Controller.getMap().getSaveCVars();
+		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.load();
+		
+		player1 = new CustomPlayer();
 		
 		if (!player1.spawned())
 			player1.spawn(
 				new Coordinate(
 					Controller.getMap(),
-					WE.CVARS.getValueI("PlayerLastSaveX"),
-					WE.CVARS.getValueI("PlayerLastSaveY"),
-					WE.CVARS.getValueI("PlayerLastSaveZ")
+					saveCvars.getValueI("PlayerLastSaveX"),
+					saveCvars.getValueI("PlayerLastSaveY"),
+					saveCvars.getValueI("PlayerLastSaveZ")
 				).getPoint()
 			);
 		if (player2!=null && !player2.spawned())
 			player2.spawn(
 				new Coordinate(
 					Controller.getMap(),
-					WE.CVARS.getValueI("PlayerLastSaveX"),
-					WE.CVARS.getValueI("PlayerLastSaveY"),
-					WE.CVARS.getValueI("PlayerLastSaveZ")
+					saveCvars.getValueI("PlayerLastSaveX"),
+					saveCvars.getValueI("PlayerLastSaveY"),
+					saveCvars.getValueI("PlayerLastSaveZ")
 				).getPoint()
 			);
 		

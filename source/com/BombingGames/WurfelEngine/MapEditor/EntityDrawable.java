@@ -49,18 +49,20 @@ public class EntityDrawable extends TextureRegionDrawable {
 	EntityDrawable(Class<? extends AbstractEntity> type) {
 		try {
 			instance = type.newInstance();
+			if (instance.getId()>0) {
+				//if bigger then default sprite size
+				int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
+				int regularHeight = AbstractGameObject.VIEW_HEIGHT+AbstractGameObject.VIEW_DEPTH;
+				if (
+					spiteHeight
+					> regularHeight
+				)
+					scaling =  -(1f-((float) regularHeight)/ ((float) spiteHeight));
+				instance.setScaling(scaling);
+			}
 		} catch (InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(EntityDrawable.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		//if bigger then default sprite size
-		int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
-		int regularHeight = AbstractGameObject.VIEW_HEIGHT+AbstractGameObject.VIEW_DEPTH;
-		if (
-			spiteHeight
-			> regularHeight
-		)
-			scaling =  -(1f-((float) regularHeight)/ ((float) spiteHeight));
-		instance.setScaling(scaling);
 	}
 
 	@Override

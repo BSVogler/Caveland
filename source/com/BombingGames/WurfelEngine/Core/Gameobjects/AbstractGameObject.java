@@ -443,11 +443,13 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 
 	@Override
     public byte getId() {
+		if (coreData==null) return 0;
         return coreData.getId();
     }
 	
 	@Override
     public byte getValue() {
+		if (coreData==null) return 0;
         return coreData.getValue();
     }
 

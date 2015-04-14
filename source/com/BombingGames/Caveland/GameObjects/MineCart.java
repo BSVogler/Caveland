@@ -3,8 +3,10 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -20,12 +22,17 @@ public class MineCart extends AbstractInteractable {
 	/**
 	 * the height of the bottom plate
 	 */
-	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/4;
+	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/3;
 
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private float rollingCycle;
 	private long isPlayingSound;
+	private SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
+	/**
+	 * empirical factor to match the front side with the rear
+	 */
+	private final static float frontOffset = 63;
 	
 	/**
 	 *
@@ -34,6 +41,13 @@ public class MineCart extends AbstractInteractable {
 		super((byte) 42, 0);
 		setName("MineCart");
 		setOrientation(new Vector2(1, 1));
+	}
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, AbstractGameObject.GAME_DIAGLENGTH2, 0));//the front is located in front
+		return this;
 	}
 
 	@Override
@@ -119,7 +133,11 @@ public class MineCart extends AbstractInteractable {
 					isPlayingSound = 0;
 				}
 			}
+			
+			//copy position to fron
+			front.setPosition(getPosition().cpy().addVector(0, frontOffset, 0));
 
+			//animation
 			//moving down left or up right
 			if (
 				(getOrientation().y > 0
@@ -129,17 +147,21 @@ public class MineCart extends AbstractInteractable {
 				(getOrientation().y < 0
 				&&
 				getOrientation().y < getOrientation().x)
-			)
+			) {
 				setValue((byte) 0);
-			else
-				setValue((byte) 2);
-
-			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite
-			rollingCycle %= GAME_EDGELENGTH/4; //cycle
-			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
-				setValue((byte) (getValue()+1)); //next step in animation
+				front.setValue((byte) 1);
+			} else {
+				setValue((byte) 3);
+				front.setValue((byte) 4);
 			}
 
+			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite, distance*m/s
+			rollingCycle %= GAME_EDGELENGTH/4; //cycle each 0,25m
+			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
+				front.setValue((byte) (front.getValue()+1)); //next step in animation
+			}
+
+			//logic
 			//if transporting object
 			if (passenger != null) {
 				//give same speed as minecart

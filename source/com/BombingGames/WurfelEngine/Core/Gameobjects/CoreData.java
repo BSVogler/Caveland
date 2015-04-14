@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class CoreData implements HasID, Serializable {
 	private static BlockFactory customBlockFactory;
+	private static final long serialVersionUID = 1L;
 	
 		/**
 	 * If you want to define custom id's >39

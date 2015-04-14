@@ -52,6 +52,7 @@ public RenderBlock produce(byte id, byte value) {
 		return block;
 	}	
 
+	@Override
 	public String getName(byte id, byte value) {
 		switch (id){
 			case 40:

@@ -30,9 +30,6 @@ public RenderBlock produce(byte id, byte value) {
 		break;
 		case 46://sand
 			block = new RenderBlock(id);
-		break;  
-		case 55:
-			block = new RailBlock();
 		break;
 		case 60:
 			block = new Machine();
@@ -61,9 +58,11 @@ public RenderBlock produce(byte id, byte value) {
 				return "Entity Spawner";
 			case 44:
 				return "textureless block";
+			case 55:
+				return "rails";	
 		}
 			
-		return "too lazy";
+		return "not named yet";
 	}
 
 	@Override
@@ -73,6 +72,7 @@ public RenderBlock produce(byte id, byte value) {
 
 	@Override
 	public boolean isTransparent(byte id, byte value) {
+		if (id==55) return true;
 		return false;
 	}
 
@@ -85,17 +85,6 @@ public RenderBlock produce(byte id, byte value) {
 	public boolean hasSides(byte id, byte value) {
 		if (id==55) return false;
 		return true;
-	}
-
-	private static class RailBlock extends RenderBlock {
-		private static final long serialVersionUID = 1L;
-
-		RailBlock() {
-			super((byte) 55);
-			//setNoSides();
-		}
-		
-		
 	}
 
 	private static class Ore extends RenderBlock {

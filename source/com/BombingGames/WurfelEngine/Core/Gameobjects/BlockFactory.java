@@ -27,4 +27,6 @@ public interface BlockFactory {
 	public boolean hasSides(byte id, byte value);
 
 	public String getName(byte id, byte value);
+	
+	public RenderBlock toRenderBlock(byte id, byte value);
 }

@@ -13,7 +13,8 @@ import com.badlogic.gdx.Gdx;
  */
 public class CustomBlockFactory implements BlockFactory {
 
-public RenderBlock produce(byte id, byte value) {
+@Override
+public RenderBlock toRenderBlock(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
 		case 41:

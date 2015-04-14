@@ -80,6 +80,9 @@ public class CoreData implements HasID, Serializable {
 	public RenderBlock toBlock(){
 		if (id==0)
 			return null;
+		if (id>39 && customBlockFactory != null){
+            return customBlockFactory.toRenderBlock(id, value);
+         }
 		return new RenderBlock(id, value);
 	}
 

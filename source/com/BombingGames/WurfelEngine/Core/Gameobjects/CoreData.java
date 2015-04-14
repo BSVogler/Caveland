@@ -1,10 +1,12 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import java.io.Serializable;
+
 /**
  *A small block object hich stores only id and value and is only used for storing in memory. Stores only 8 byte.
  * @author Benedikt Vogler
  */
-public class CoreData implements HasID {
+public class CoreData implements HasID, Serializable {
 	private static BlockFactory customBlockFactory;
 	
 		/**

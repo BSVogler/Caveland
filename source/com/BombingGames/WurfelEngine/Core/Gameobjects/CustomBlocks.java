@@ -6,7 +6,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public interface BlockFactory {
+public interface CustomBlocks {
 	
 	public boolean isObstacle(byte id, byte value);
 

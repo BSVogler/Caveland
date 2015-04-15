@@ -4,7 +4,7 @@ import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CustomBlocks;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class CustomBlockFactory implements BlockFactory {
+public class CavelandBlocks implements CustomBlocks {
 
 @Override
 public RenderBlock toRenderBlock(byte id, byte value) {
@@ -54,6 +54,8 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 
 	@Override
 	public boolean isObstacle(byte id, byte value) {
+		if (id>=41 && id<=44)
+			return true;
 		return false;
 	}
 

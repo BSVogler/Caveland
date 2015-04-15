@@ -1,7 +1,7 @@
 package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.Game.ChunkGenerator;
-import com.BombingGames.Caveland.Game.CustomBlockFactory;
+import com.BombingGames.Caveland.Game.CavelandBlocks;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
@@ -48,7 +48,7 @@ public class Caveland {
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());
-		CoreData.setCustomBlockFactory(new CustomBlockFactory());
+		CoreData.setCustomBlockFactory(new CavelandBlocks());
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
 		
 		//register entities

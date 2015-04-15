@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Benedikt Vogler
  */
 public class CoreData implements HasID, Serializable {
-	private static BlockFactory customBlocks;
+	private static CustomBlocks customBlocks;
 	private static final long serialVersionUID = 1L;
 	
 		/**
@@ -16,11 +16,11 @@ public class CoreData implements HasID, Serializable {
 	 *
 	 * @param customBlockFactory new value of customBlockFactory
 	 */
-	public static void setCustomBlockFactory(BlockFactory customBlockFactory) {
+	public static void setCustomBlockFactory(CustomBlocks customBlockFactory) {
 		CoreData.customBlocks = customBlockFactory;
 	}
 
-	public static BlockFactory getFactory() {
+	public static CustomBlocks getFactory() {
 		return customBlocks;
 	}
 	

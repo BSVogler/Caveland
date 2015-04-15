@@ -27,12 +27,12 @@ public class MineCart extends AbstractInteractable {
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private float rollingCycle;
-	private long isPlayingSound;
-	private SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
+	private transient long isPlayingSound;
+	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
 	/**
 	 * empirical factor to match the front side with the rear
 	 */
-	private final static float frontOffset = 63;
+	private final transient static float frontOffset = 63;
 	
 	/**
 	 *

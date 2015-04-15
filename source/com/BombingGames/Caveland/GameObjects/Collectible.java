@@ -174,6 +174,11 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	}
 
+	@Override
+	public String getName() {
+		return "Collectible"+def.name();
+	}
+	
 	/**
 	 * overrides deserialisation
 	 *

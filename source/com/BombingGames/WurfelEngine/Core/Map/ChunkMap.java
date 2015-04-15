@@ -208,14 +208,10 @@ public class ChunkMap extends AbstractMap implements Cloneable {
     public void setBlock(final RenderBlock block) {
 		getChunk(block.getPosition()).setBlock(block);
     }
-	
-	/**
-	 * remove a block from a coord
-	 * @param coord 
-	 */
+
 	@Override
-	public void destroyBlockOnCoord(Coordinate coord){
-		getChunk(coord).destroyBlockOnCoord(coord);
+	public void setBlock(Coordinate coord, CoreData block) {
+		getChunk(coord).setBlock(coord, block);
 	}
 	
 	/**

@@ -72,8 +72,11 @@ public class CoreData implements HasID, Serializable {
 		if (id>39 && customBlocks != null){
 			customBlocks.setHealth(coord, health, id, value);
         }
-		this.id = 0;
-		this.value = 0;
+		if (health <= 0) {
+			//make an invalid air instance (should be null)
+			this.id = 0;
+			this.value = 0;
+		}
 	}
 	
 	public byte getHealth(){

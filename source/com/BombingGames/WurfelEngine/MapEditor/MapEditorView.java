@@ -369,7 +369,7 @@ public class MapEditorView extends GameView {
 						break;
 					case ERASE:
 						if (coords.getZ()>=0)
-							Controller.getMap().destroyBlockOnCoord(coords);
+							Controller.getMap().setBlock(coords, null);
 						break;
 					case BUCKET:
 						bucketDown = coords;

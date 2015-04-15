@@ -185,10 +185,23 @@ public class Coordinate extends AbstractPosition {
 			block.setPosition(this);
 			Controller.getMap().setBlock(block);
 		} else {
-			Controller.getMap().destroyBlockOnCoord(this);
+			Controller.getMap().setBlock(this, null);
 		}
 	}
-
+	
+	/**
+	 * Set a block in the map where the coordinate is pointing to.
+	 *
+	 * @param block the block you want to set.
+	 */
+	public void setBlock(CoreData block) {
+		if (block!= null) {
+			Controller.getMap().setBlock(this, block);
+		} else {
+			Controller.getMap().setBlock(this, null);
+		}
+	}
+	
 	/**
 	 * Add a vector to the coordinates. If you just want the result and don't
 	 * change the coordiantes use addVectorCpy.
@@ -534,23 +547,12 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * destroys the block at the current position, replacing by air. Calls
-	 * onDestroy()
-	 *
-	 * @return true if destroyed, false if nothing destroyed
+	 * destroys the block at the current position, replacing by air.
 	 */
-	public boolean destroy() {
-		if (isInMemoryArea() && getBlock() != null) {
-			RenderBlock rb = getBlock().toBlock();
-			rb.setPosition(this);
-			rb.onDestroy();//call destruction method
-			setBlock(null);
-			return true;
-		} else {
-			return false;
-		}
+	public void destroy() {
+		setBlock((CoreData) null);
 	}
-
+		
 	/**
 	 * returns true if block got damaged
 	 *
@@ -558,16 +560,13 @@ public class Coordinate extends AbstractPosition {
 	 * @return
 	 */
 	public boolean damage(byte amount) {
-		//todo, is camera related
-		if (isInMemoryArea()) {
-			CoreData block = getBlock();
-			if (block != null) {
-				block.setHealth((byte) (block.getHealth() - amount));
-				if (block.getHealth() <= 0) {
-					destroy();
-				}
-				return true;
+		CoreData block = getBlock();
+		if (block != null) {
+			block.setHealth(this, (byte) (block.getHealth() - amount));
+			if (block.getHealth() <= 0) {
+				setBlock((CoreData) null);
 			}
+			return true;
 		}
 		return false;
 	}

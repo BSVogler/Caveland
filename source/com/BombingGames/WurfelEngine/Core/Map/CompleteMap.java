@@ -49,7 +49,15 @@ public class CompleteMap extends AbstractMap {
 
 	@Override
 	public void setBlock(RenderBlock block) {
+		data[block.getPosition().getX()][block.getPosition().getX()][block.getPosition().getZ()] = block.getCoreData();
 	}
+
+	@Override
+	public void setBlock(Coordinate coord, CoreData block) {
+		data[coord.getX()][coord.getX()][coord.getZ()] = block;
+	}
+	
+	
 	
 	 /**
      * Get the data of the map
@@ -57,10 +65,6 @@ public class CompleteMap extends AbstractMap {
      */
 	public CoreData[][][] getData() {
 		return data;
-	}
-
-	@Override
-	public void destroyBlockOnCoord(Coordinate coord) {
 	}
 
 	/**

@@ -565,15 +565,16 @@ public class Chunk {
 	}
 	
 	/**
-	 * remove a block from a coord
-	 * @param coord 
+	 * 
+	 * @param coord
+	 * @param block 
 	 */
-	public void destroyBlockOnCoord(Coordinate coord){
+	public void setBlock(Coordinate coord, CoreData block) {
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();
 		if (z >= 0){
-			data[xIndex][yIndex][z] = null;
+			data[xIndex][yIndex][z] = block;
 			modified = true;
 		}
 	}
@@ -620,5 +621,5 @@ public class Chunk {
 			ent.disposeFromMap();
 		}
 	}
-	
+
 }

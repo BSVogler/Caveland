@@ -360,10 +360,11 @@ public abstract class AbstractMap implements Cloneable {
 	public abstract void setBlock(final RenderBlock block);
 
 	/**
-	 * remove a block from a coord
+	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param coord
+	 * @param block
 	 */
-	public abstract void destroyBlockOnCoord(Coordinate coord);
+	public abstract void setBlock(Coordinate coord, CoreData block);
 
 	/**
 	 * Set the speed of the world.
@@ -541,5 +542,4 @@ public abstract class AbstractMap implements Cloneable {
 	public CVarSystem getSaveCVars(){
 		return saveCVars;
 	}
-
 }

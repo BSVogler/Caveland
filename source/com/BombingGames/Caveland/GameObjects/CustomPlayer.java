@@ -5,6 +5,7 @@ import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -372,11 +373,14 @@ public class CustomPlayer extends Controllable {
 			}
 		}
 
-		//destroy blocks
-		if (getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2)
-			.addVector(getAiming().scl(80)).getCoord().damage((byte) damage)) {
+		//damage blocks
+		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
+		if (aimCoord.damage((byte) damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
+			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
+			dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+			dirt.setRotation((float) Math.random()*360);
 		}
 
 		//set to a small value to indicate that it is active

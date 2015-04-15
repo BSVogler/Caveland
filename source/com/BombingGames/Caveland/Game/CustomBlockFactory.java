@@ -3,10 +3,13 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -73,7 +76,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 
 	@Override
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
-		if (health < 0 ){
+		if (health <= 0 ){
 			if (id==41) {
 				Collectible.create(Collectible.CollectibleType.CRISTALL).spawn(coord.getPoint().cpy());
 			} else if (id==42){
@@ -82,6 +85,14 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 				Collectible.create(Collectible.CollectibleType.IRONORE).spawn(coord.getPoint().cpy());
 			} else if (id==44){
 				Collectible.create(Collectible.CollectibleType.COAL).spawn(coord.getPoint().cpy());
+			}
+			
+			//view only relevant. should only be done if visible
+			//todo, check if visible
+			for (int i = 0; i < 10; i++) {
+				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.getPoint().cpy());
+				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+				dirt.setRotation((float) Math.random()*360);
 			}
 		}
 	}

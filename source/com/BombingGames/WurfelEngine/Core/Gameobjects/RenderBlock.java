@@ -456,6 +456,10 @@ public class RenderBlock extends AbstractGameObject {
 		coord = pos.getCoord();
 	}
 	
+	/**
+	 * gets the identifier and stores them in the map
+	 * @return 
+	 */
 	public CoreData toStorageBlock(){
 		return CoreData.getInstance(getId(), getValue());
 	}

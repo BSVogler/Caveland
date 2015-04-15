@@ -69,7 +69,7 @@ public class CoreData implements HasID, Serializable {
 	 */
 	public void setHealth(Coordinate coord, byte health){
 		this.health = health;
-		if (id>39 && customBlocks != null){
+		if (customBlocks != null){
 			customBlocks.setHealth(coord, health, id, value);
         }
 		if (health <= 0) {

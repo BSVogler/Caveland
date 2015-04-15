@@ -437,7 +437,7 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * Overwrite to define what should happen if the block is getting destroyed? Sets the value to -1. So be carefull when to call super.onDestroy().
+	 * Overwrite to define what should happen (view only) if the block is getting destroyed? Sets the value to -1. So be carefull when to call super.onDestroy().
 	 * @since v1.4
 	 */
 	public void onDestroy() {

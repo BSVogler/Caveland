@@ -82,7 +82,7 @@ public class CoreData implements HasID, Serializable {
 			return null;
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.toRenderBlock(id, value);
-         }
+        }
 		return new RenderBlock(id, value);
 	}
 
@@ -91,7 +91,7 @@ public class CoreData implements HasID, Serializable {
 		//todo
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.isObstacle(id, value);
-         }
+        }
 		if (id==9)
 			return false;
 		return id != 0;
@@ -102,7 +102,7 @@ public class CoreData implements HasID, Serializable {
 		//todo
 		if (id>39 && customBlockFactory != null){
             return customBlockFactory.isTransparent(id, value);
-         }
+        }
 		if (id==9)
 			return true;
 		return false;

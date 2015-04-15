@@ -59,37 +59,12 @@ public class RenderBlock extends AbstractGameObject {
      * a list where a representing color of the block is stored
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
-	private static BlockDestructionAction destructionAction;
-	
-	/**
-	 * Set the action performed if a block gets destroyed.
-	 * @param DestructionAction an instance whose {@link BlockDestructionAction#action(AbstractPosition) }  method then gets executet.
-	 * @see BlockDestructionAction
-	 * @since v1.4.20
-	 */
-	public static void setDestructionAction(BlockDestructionAction DestructionAction) {
-		RenderBlock.destructionAction = DestructionAction;
-	}
 
 	@Override
 	public boolean isObstacle() {
 		return getCoreData().isObstacle();
 	}
 	
-	/**
-	 * Implements the command pattern.
-	 * @see #setDestructionAction(BlockDestructionAction) 
-	 * @since v1.4.20
-	 */
-	public static interface BlockDestructionAction {
-		/**
-		 * the method performed if a block is destroyed
-		 * @param block
-		 * @since v1.4.20
-		 */
-		public void action(RenderBlock block);
-	}
-    
 	private Coordinate coord;
     private boolean clippedTop;
 	private boolean clippedRight;
@@ -443,7 +418,6 @@ public class RenderBlock extends AbstractGameObject {
 	public void onDestroy() {
 		setValue((byte) -1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
-		if (destructionAction != null) destructionAction.action(this);
 	}
 
 	@Override

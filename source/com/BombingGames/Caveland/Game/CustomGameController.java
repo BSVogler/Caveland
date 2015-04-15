@@ -1,7 +1,6 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.CavelandCommands;
-import com.BombingGames.Caveland.GameObjects.CustomBlockDestructionAction;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
@@ -55,7 +54,6 @@ public class CustomGameController extends Controller {
 			);
 		
 		RenderBlock.setDestructionSound("blockDestroy");
-		RenderBlock.setDestructionAction(new CustomBlockDestructionAction());
 		
 		WE.getConsole().setCustomCommands(new CavelandCommands());
 		

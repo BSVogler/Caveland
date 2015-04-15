@@ -1,5 +1,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+
 /**
  *
  * @author Benedikt Vogler
@@ -29,4 +31,13 @@ public interface BlockFactory {
 	public String getName(byte id, byte value);
 	
 	public RenderBlock toRenderBlock(byte id, byte value);
+	
+	/**
+	 * define what should happen if you alter the health. If =0 automatically get's destroyed on exiting this method.
+	 * @param coord
+	 * @param health the new health
+	 * @param id 
+	 * @param value 
+	 */
+	public void setHealth(Coordinate coord, byte health, byte id, byte value);
 }

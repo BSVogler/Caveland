@@ -5,6 +5,7 @@ import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockFactory;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -17,27 +18,8 @@ public class CustomBlockFactory implements BlockFactory {
 public RenderBlock toRenderBlock(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
-		case 41:
-			block = new Ore(id, Collectible.CollectibleType.CRISTALL);
-		break;
-		case 42:
-			block = new Ore(id, Collectible.CollectibleType.EXPLOSIVES);
-		break;
-		case 43:
-			block = new Ore(id, Collectible.CollectibleType.IRONORE);
-		break;	
-		case 44:
-			block = new Ore(id, Collectible.CollectibleType.COAL);
-		break;
-		case 46://sand
-			block = new RenderBlock(id);
-		break;
 		case 60:
 			block = new Machine();
-		break;
-		case 70:
-			block = new RenderBlock(id); 
-			//block.setNoSides();
 		break;
 		case 72:
 			block = new CustomTree(value);
@@ -89,21 +71,19 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 		return true;
 	}
 
-	private static class Ore extends RenderBlock {
-		private final Collectible.CollectibleType def;
-
-		Ore(byte id, Collectible.CollectibleType def) {
-			super(id);
-			this.def = def;
+	@Override
+	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
+		if (health < 0 ){
+			if (id==41) {
+				Collectible.create(Collectible.CollectibleType.CRISTALL).spawn(coord.getPoint().cpy());
+			} else if (id==42){
+				Collectible.create(Collectible.CollectibleType.SULFUR).spawn(coord.getPoint().cpy());
+			} else if (id==43){
+				Collectible.create(Collectible.CollectibleType.IRONORE).spawn(coord.getPoint().cpy());
+			} else if (id==44){
+				Collectible.create(Collectible.CollectibleType.COAL).spawn(coord.getPoint().cpy());
+			}
 		}
-
-		@Override
-		public void onDestroy() {
-			Collectible.create(def).spawn(getPosition().getPoint().cpy());
-			Collectible.create(def).spawn(getPosition().getPoint().cpy());
-			Collectible.create(def).spawn(getPosition().getPoint().cpy());
-		}
-		
-		
 	}
+	
 }

@@ -36,11 +36,10 @@ import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import java.io.File;
 import java.util.ArrayList;
@@ -61,6 +60,7 @@ public class Console implements CommandsInterface  {
     private StageInputProcessor inputprocessor;
     private Modes mode;
 	private CommandsInterface externalCommands;
+	private final TextArea log;
 	
 	/**
 	 * suggestions stuff
@@ -117,6 +117,16 @@ public class Console implements CommandsInterface  {
      */
     public Console(Skin skin, final int xPos, final int yPos) {
         this.messages = new Stack<>();
+		
+		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
+		log.setBounds(xPos-200, yPos+20, 400, 400);
+		//log.setAlignment(Align.top, Align.left);
+		//log.setWrap(true);
+		//Label.LabelStyle customStyle = log.getStyle();
+		//customStyle.background = textinput.getStyle().background;
+		//log.setStyle(customStyle);
+		log.setVisible(false);
+		WE.getEngineView().getStage().addActor(log);//add it to the global stage
         textinput = new TextField("", skin);
         textinput.setBounds(xPos-200, yPos, 400, 50);
         textinput.setBlinkTime(0.3f);
@@ -141,6 +151,8 @@ public class Console implements CommandsInterface  {
      */
     public void add(final String message) {
         messages.add(new Line(message, "System", 100));
+		log.setText(log.getText()+message);
+		log.setCursorPosition(log.getText().length());
         Gdx.app.debug("System",message);
     }
     
@@ -151,6 +163,8 @@ public class Console implements CommandsInterface  {
      */
     public void add(final String message, final String sender){
         messages.add(new Line(message, sender, 100));
+		log.setText(log.getText()+message);
+		log.setCursorPosition(log.getText().length());
         Gdx.app.debug(sender,message);
     }
     
@@ -162,6 +176,8 @@ public class Console implements CommandsInterface  {
      */
     public void add(final String message, final String sender, final int importance){
         messages.add(new Line(message, sender, importance));
+		log.setText(log.getText()+message);
+		log.setCursorPosition(log.getText().length());
         Gdx.app.debug(sender,message);
     }
     
@@ -198,33 +214,6 @@ public class Console implements CommandsInterface  {
     }
     
     /**
-     * Draws the Messages
-     * @param batch
-     */
-    public void render(final SpriteBatch batch){  
-        batch.begin();
-        
-            int y=0;
-            for (Line msg : messages) {
-                Color color = Color.BLUE.cpy();
-                if (null != msg.sender) switch (msg.sender) {
-                    case "System":
-                        color = Color.GREEN.cpy();
-                        break;
-                    case "Warning":
-                        color = Color.RED.cpy();
-                        break;
-                }
-
-                //draw
-                WE.getEngineView().getFont().setColor(color);
-                WE.getEngineView().getFont().drawMultiLine(batch, msg.sender+": "+msg.message, 10,50+y);
-                y+=20;
-            }
-        batch.end();
-    }
-
-    /**
      * Tell the msg system if it should listen for input.
      * @param active If deactivating the input will be saved.
      */
@@ -250,16 +239,17 @@ public class Console implements CommandsInterface  {
             WE.getEngineView().getStage().setKeyboardFocus(null);
         }
         textinput.setVisible(active);
+		log.setVisible(active);
     }
     
     /**
      *when a message is entered
      */
     public void enter(){
-        add(textinput.getText(), "Console");//add message to message list
+        add(textinput.getText()+": ", "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
         if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(textinput.getText()))    
-            add("Failed executing command.", "System");    
+            add("Failed executing command.\n", "System");    
         setText("");
     }
     
@@ -408,7 +398,7 @@ public class Console implements CommandsInterface  {
 			if (id < gameplayRef.getView().getCameras().size())
 				gameplayRef.getView().getCameras().get(id).shake(amp, t);
 			else {
-				add("Camera ID out of range","System");
+				add("Camera ID out of range\n","System");
 				return false;
 			}
 		}
@@ -454,18 +444,18 @@ public class Console implements CommandsInterface  {
 				//set cvar
 				String value = st.nextToken();
 				WE.CVARS.get(first).setValue(value);
-				add("Set CVar \""+ first + "\" to "+value, "System");
+				add("Set CVar \""+ first + "\" to "+value+"\n", "System");
 				return true;
 			} else {
 				//read cvar
-				add(first+": "+cvar.toString(), "System");
+				add(first+": "+cvar.toString()+"\n", "System");
 				return true;
 			}
 		} else {
 			//try executing with custom commands
 			if (externalCommands!=null)
 				return externalCommands.executeCommand(command);
-			add("CVar \""+first+"\" not found.", "System");
+			add("CVar \""+first+"\" not found.\n", "System");
 			return true;
 		}
     }

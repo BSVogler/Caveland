@@ -386,7 +386,6 @@ public class WE {
     public static void updateAndRender(float dt) {
         console.update(dt);
         engineView.getStage().act(dt);
-        console.render(engineView.getBatch());
         engineView.getStage().draw();
     }
 

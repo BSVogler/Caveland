@@ -1,7 +1,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 /**
- *
+ *An interface for objeccts which can execute a Wurfel Engine command.
  * @author Benedikt Vogler
  */
 public interface CommandsInterface {

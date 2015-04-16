@@ -131,12 +131,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		if (WE.CVARS.getValueB("mapChunkSwitch")) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
-				if (data.get(i).shouldBeRemoved()){
-					data.get(i).dispose(getPath());
-					data.remove(i);
-				} else {
-					data.get(i).resetCameraAccesCounter();
-				}
+				data.get(i).resetCameraAccesCounter();
 			}
 		}
 		

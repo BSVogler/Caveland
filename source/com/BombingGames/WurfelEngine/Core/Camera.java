@@ -74,26 +74,6 @@ public class Camera implements LinkedWithMap {
 	private RenderBlock[][][] cameraContentBlocks;
 	
 	/**
-	 * X Coordinate of clipping borders
-	 */
-	private int leftCoverBorder,
-
-	/**
-	 *X Coordinate of clipping borders
-	 */
-	rightCoverBorder, 
-
-	/**
-	 * Y Coordinate of clipping borders
-	 */
-	backCoverBorder, 
-
-	/**
-	 * Y Coordinate of clipping borders
-	 */
-	frontCoverBorder;
-	
-	/**
 	 * the position of the camera in view space. Y-up. Read only field.
 	 */
 	private final Vector2 position = new Vector2();
@@ -190,7 +170,6 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
-		updateCoverBordersCache();
 	}
 
 	/**
@@ -209,7 +188,6 @@ public class Camera implements LinkedWithMap {
 		position.y = center.getViewSpcY(gameView);
 		fullWindow = true;
 		initFocus();
-		updateCoverBordersCache();
 	}
 
 	/**
@@ -238,7 +216,6 @@ public class Camera implements LinkedWithMap {
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
 		initFocus();
-		updateCoverBordersCache();
 	}
 
 	/**
@@ -275,7 +252,6 @@ public class Camera implements LinkedWithMap {
 		position.y = (int) (focusEntity.getPosition().getViewSpcY(gameView)
 			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
 		initFocus();
-		updateCoverBordersCache();
 	}
 
 	/**
@@ -310,9 +286,6 @@ public class Camera implements LinkedWithMap {
 			//recalculate the center position
 			updateCenter();
 			
-			//camera moved so update cover borders
-			updateCoverBordersCache();
-
 			//move camera to the focus 
 			view.setToLookAt(
 				new Vector3(position, 0),
@@ -350,8 +323,12 @@ public class Camera implements LinkedWithMap {
 	public void updateCenter(){
 		//if chunkmap check for chunk movement
 		if (WE.CVARS.getValueB("mapUseChunks")) {
+			int oldX = centerChunkX;
+			int oldY = centerChunkY;
+			
 			ChunkMap chunkMap = (ChunkMap) map;
 
+			
 			//check if chunkswitch left
 			if (
 				getVisibleLeftBorder()
@@ -371,6 +348,8 @@ public class Camera implements LinkedWithMap {
 				centerChunkX++;
 			}
 
+			//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative baded.
+			/*
 			if (
 				getVisibleBackBorder()
 				<
@@ -390,15 +369,19 @@ public class Camera implements LinkedWithMap {
 				//&& centerChunkX-1==//calculated xIndex -1
 				) {
 				centerChunkY++;
-			}
-		}
-		
-		if (WE.CVARS.getValueB("mapUseChunks"))
+			}*/
+			
+			//his line is needed because the above does not work
+			centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
+			
 			updateNeededChunks();
+			if (oldX!=centerChunkX || oldY!=centerChunkY)
+				updateCache();
+		}
 	}
 
 	/**
-	 * checks which chunks must be loaded
+	 * checks which chunks must be loaded around the center
 	 */
 	private void updateNeededChunks() {
 		//check every chunk
@@ -430,29 +413,6 @@ public class Camera implements LinkedWithMap {
 		}
 	}
 	
-	/**
-	 * Updates the cached fields which save the border of the covered coordinates by this camera.
-	 */
-	private void updateCoverBordersCache() {
-		if (WE.CVARS.getValueB("mapUseChunks")) {
-			ChunkMap chunkMap = (ChunkMap) map;
-			leftCoverBorder = chunkMap.getChunk(
-					centerChunkX - 1,
-					centerChunkY
-				).getTopLeftCoordinate().getX();
-
-			rightCoverBorder = chunkMap.getChunk(centerChunkX + 1, centerChunkY).getTopLeftCoordinate().getX()
-				+ Chunk.getBlocksX() - 1;
-
-			backCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY - 1).getTopLeftCoordinate().getY();
-
-			frontCoverBorder = chunkMap.getChunk(centerChunkX, centerChunkY + 1).getTopLeftCoordinate().getY()
-				+ Chunk.getBlocksY() - 1;
-		} else {
-		//to-do
-		}
-	}
-
 	/**
 	 * Renders the viewport
 	 *
@@ -730,10 +690,6 @@ map.getGameWidth(),
 	 * updates cached values like clipping
 	 */
 	protected void updateCache(){
-		if (WE.CVARS.getValueB("mapUseChunks"))
-			updateNeededChunks();
-		
-		updateCoverBordersCache();
 		fillCameraContentBlocks();
 		hiddenSurfaceDetection();
 	}
@@ -752,8 +708,8 @@ map.getGameWidth(),
 				cameraContentBlocks[x][y][0].setPosition(
 					new Coordinate(
 						map,
-						leftCoverBorder+x,
-						backCoverBorder+y,
+						getCoveredLeftBorder()+x,
+						getCoveredBackBorder()+y,
 						-1
 					)
 				);
@@ -778,8 +734,8 @@ map.getGameWidth(),
 					cameraContentBlocks[ind[0]][ind[1]][ind[2]+1].setPosition(
 						new Coordinate(
 							map,
-							leftCoverBorder + ind[0],
-							backCoverBorder + ind[1],
+							getCoveredLeftBorder() + ind[0],
+							getCoveredBackBorder() + ind[1],
 							ind[2]
 						)
 					);
@@ -938,7 +894,7 @@ map.getGameWidth(),
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
-		return leftCoverBorder;
+		return (centerChunkX-1)*Chunk.getBlocksX();
 	}
 
 	/**
@@ -956,7 +912,7 @@ map.getGameWidth(),
 	 * @return the right (X) border coordinate
 	 */
 	public int getCoveredRightBorder() {
-		return rightCoverBorder;
+		return (centerChunkX + 1)*Chunk.getBlocksX() - 1;
 	}
 
 	/**
@@ -977,7 +933,7 @@ map.getGameWidth(),
 	 * @return the top/back (Y) border coordinate
 	 */
 	public int getCoveredBackBorder() {
-		return backCoverBorder;
+		return (centerChunkY-1)*Chunk.getBlocksY();
 	}
 
 	/**
@@ -997,7 +953,7 @@ map.getGameWidth(),
 	 * @return the bottom/front (Y) border coordinate
 	 */
 	public int getCoveredFrontBorder() {
-		return frontCoverBorder;
+		return (centerChunkY + 1)*Chunk.getBlocksY() - 1;
 	}
 
 	/**
@@ -1231,8 +1187,8 @@ map.getGameWidth(),
 		}
 
 		//get the index position in the clipping field
-		int indexX = coords.getX() - leftCoverBorder;
-		int indexY = coords.getY() - backCoverBorder;
+		int indexX = coords.getX() - getCoveredLeftBorder();
+		int indexY = coords.getY() - getCoveredBackBorder();
 		//check if covered by camera
 		if (
 			   indexX >= 0
@@ -1260,6 +1216,8 @@ map.getGameWidth(),
 	public void setActive(boolean active) {
 		//turning on
 		if ( this.active == false && active == true ) {
+			if (WE.CVARS.getValueB("mapUseChunks"))
+				updateNeededChunks();
 			updateCache();
 		}
 

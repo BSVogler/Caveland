@@ -341,12 +341,14 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		boolean found = false;
-		if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
+		if (WE.CVARS.getValueB("mapUseChunks")){
 			for (Chunk chunk : ((ChunkMap) map).getData()) {
 				if (chunk.hasCoord(this)) {
 					found = true;
 				}
 			}
+		} else {
+			//to-do add method for completemap
 		}
 		return found;
 	}

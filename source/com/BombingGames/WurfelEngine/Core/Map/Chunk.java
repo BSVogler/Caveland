@@ -451,10 +451,10 @@ public class Chunk {
 		int y = coord.getY();
 		int left = topleft.getX();
 		int top = topleft.getY();
-		return (x >= left
-				&& x < left + blocksX
+		return (   x >= left
+				&& x <  left + blocksX
 				&& y >= top
-				&& y < top + blocksY
+				&& y <  top + blocksY
 		);
 	}
 	

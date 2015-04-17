@@ -34,6 +34,8 @@ public class CustomGameView extends GameView{
 	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 */
 	private int coop = -1;
+	private XboxListener controllerListener1;
+	private XboxListener controllerListener2;
 	
     @Override
     public void init(Controller controller) {
@@ -85,8 +87,10 @@ public class CustomGameView extends GameView{
 			getPlayer(1).setCamera(camera1);
 			
 			//if there is second controller use it for second player
-			if (Controllers.getControllers().size > 1)
-				Controllers.getControllers().get(1).addListener(new XboxListener(this, getPlayer(1), 1));
+			if (Controllers.getControllers().size > 1){
+				controllerListener2 = new XboxListener(this, getPlayer(1), 1);
+				Controllers.getControllers().get(1).addListener(controllerListener2);
+			}
 		} else {
 			Camera camera0  = new Camera(
 				getPlayer(0),
@@ -126,7 +130,8 @@ public class CustomGameView extends GameView{
 		int playerId = 0;
 		if (coop==1) playerId = 1;
 		if (Controllers.getControllers().size > 0){
-			Controllers.getControllers().get(0).addListener(new XboxListener(this,getPlayer(playerId),playerId));
+			controllerListener1 = new XboxListener(this,getPlayer(playerId),playerId);
+			Controllers.getControllers().get(0).addListener(controllerListener1);
 		}
 		
 		//hide cursor
@@ -257,7 +262,15 @@ public class CustomGameView extends GameView{
 		coop = flag;
 	}
 
-
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (controllerListener1 !=null)
+			Controllers.getControllers().get(0).removeListener(controllerListener1);
+		if (controllerListener2 !=null)
+			Controllers.getControllers().get(0).removeListener(controllerListener2);
+	}
+	
 	private static class XboxListener implements ControllerListener {
 		private final CustomPlayer player;
 		/**

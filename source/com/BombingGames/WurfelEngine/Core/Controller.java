@@ -161,7 +161,7 @@ public class Controller implements GameManager {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		saveSlot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default"));
+		saveSlot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default/"));
 		if (map != null) map.useSaveSlot(saveSlot);
 		return saveSlot;
 	}

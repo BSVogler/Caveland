@@ -43,6 +43,8 @@ public class SaveSelectionScreen extends WEScreen {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Skin skin = WE.getEngineView().getSkin();
 		
+		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
+		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setPosition(500, 600);
 		continueButton.addListener(new ChangeListener() {
@@ -53,18 +55,21 @@ public class SaveSelectionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(continueButton);
-		
-		//save slot selection
-		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
-		Array<String> arstr = new Array<>(savesCount);
-		for (int i = 0; i < savesCount; i++) {
-			arstr.add(Integer.toString(i));
+		if (savesCount<1) {
+			continueButton.setDisabled(true);
+			selectBox = null;
+		} else {
+			//save slot selection
+			Array<String> arstr = new Array<>(savesCount);
+			for (int i = 0; i < savesCount; i++) {
+				arstr.add(Integer.toString(i));
+			}
+			selectBox = new SelectBox<>(skin); 
+			selectBox.setItems(arstr);
+			selectBox.setWidth(40);
+			selectBox.setPosition(600, 600);
+			stage.addActor(selectBox);
 		}
-		selectBox = new SelectBox<>(skin); 
-		selectBox.setItems(arstr);
-		selectBox.setWidth(40);
-		selectBox.setPosition(600, 600);
-		stage.addActor(selectBox);
 		
 		//new game button
 		TextButton newgameButton = new TextButton("New Game...", skin);

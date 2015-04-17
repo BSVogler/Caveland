@@ -40,16 +40,26 @@ public abstract class AbstractMap implements Cloneable {
 		return defaultGenerator;
 	}
 	
+	/**
+	 * 
+	 * @param path the directory of the map
+	 * @return 
+	 */
 	public static int newSaveSlot(File path) {
 		int slot = getSavesCount(path);
 		createSaveSlot(path, slot);
 		return slot;
 	}
-		
+	
+	/**
+	 * 
+	 * @param path the directory of the map
+	 * @param slot 
+	 */
 	public static void createSaveSlot(File path, int slot){
-		FileHandle pathHandle = Gdx.files.absolute(path+"/save"+slot);
-        if (!path.exists()){
-			path.mkdirs();
+		FileHandle pathHandle = Gdx.files.absolute(path+"/save"+slot+"/");
+        if (!pathHandle.exists()){
+			pathHandle.mkdirs();
 		}
 		//copy from map folder root
 		FileHandle root = Gdx.files.absolute(path.getAbsolutePath());

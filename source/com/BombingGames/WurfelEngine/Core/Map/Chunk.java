@@ -296,7 +296,7 @@ public class Chunk {
 				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
 			}
 		} else {
-			Gdx.app.log("Chunk",path+"/"+coordX + ","+ coordY +" could not be found on disk.");
+			Gdx.app.log("Chunk",savepath+" could not be found on disk.");
 		}
 		
         return false;

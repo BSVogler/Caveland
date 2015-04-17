@@ -8,7 +8,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.CustomBlocks;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -32,7 +31,6 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 //			block.setObstacle(true);
 //		break;
 		default:
-			Gdx.app.error("CustomBlockFactory", "Block "+id+" not defined.");
 			block = new RenderBlock(id);
 		}
 		return block;

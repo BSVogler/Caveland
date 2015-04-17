@@ -122,7 +122,7 @@ public class CustomGameView extends GameView{
 	
 	@Override
     public void onEnter() {
-        WE.getEngineView().addInputProcessor(new InputListener());
+        WE.getEngineView().addInputProcessor(new MouseKeyboardListener());
 		int playerId = 0;
 		if (coop==1) playerId = 1;
 		if (Controllers.getControllers().size > 0){
@@ -284,29 +284,29 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==13)//A
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonA"))//A
 				player.jump();
 			
-			if (buttonCode==11) //X
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonX")) //X
 				player.attack(50);
 			
-			if (buttonCode==12){//B
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonB")){//B
 				if (id==0)
 					parent.throwDownP1 = 0;
 				else
 					parent.throwDownP2 = 0;
 			}
 			
-			if (buttonCode==14) //14=Y
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonY")) //14=Y
 				if (id==0)
 					parent.inventoryDownP1 = 0;
 				else
 					parent.inventoryDownP2 = 0;
 			
-			if (buttonCode==8)//LB
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonLB"))//LB
 				player.getInventory().switchItems(true);
 			
-			if (buttonCode==9)//RB
+			if (buttonCode == WE.CVARS.getValueI("controllerButtonRB"))//RB
 				player.getInventory().switchItems(false);
 			
 			return false;
@@ -314,7 +314,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==12){//B
+			if (buttonCode==WE.CVARS.getValueI("controllerButtonB")){//B
 				if (id==0) {
 					parent.throwDownP1 = -1;
 				} else
@@ -322,13 +322,13 @@ public class CustomGameView extends GameView{
 				player.throwItem();
 			}
 			
-			if (buttonCode==14) //14=Y
+			if (buttonCode==WE.CVARS.getValueI("controllerButtonY")) //14=Y
 				if (id==0)
 					parent.inventoryDownP1 = -1;
 				else
 					parent.inventoryDownP2 = -1;
 			
-			if (buttonCode==11) //X
+			if (buttonCode==WE.CVARS.getValueI("controllerButtonX")) //X
 				player.loadAttack();
 			
 			return true;
@@ -336,7 +336,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
-			if (axisCode==1) {
+			if (axisCode == WE.CVARS.getValueI("controllerAxisRT")) {//RT
 				//button down
 				if (oldRTvalue < -0.75f && value>-0.75f) {
 					if (id==0)
@@ -354,14 +354,17 @@ public class CustomGameView extends GameView{
 				oldRTvalue=value;
 			} else {
 			
+				float xDeflec = controller.getAxis(WE.CVARS.getValueI("controllerAxisLX"));
+				float yDeflec = controller.getAxis(WE.CVARS.getValueI("controllerAxisLY"));
 				speed[id] = (float) Math.sqrt(
-					controller.getAxis(2)*controller.getAxis(2)+controller.getAxis(3)*controller.getAxis(3)
+					 xDeflec*xDeflec
+					+yDeflec*yDeflec
 				);
 
 				if (speed[id]>0.1f)  //move only if stick is a bit moved
 					player.setMovement(new Vector3(
-							controller.getAxis(2),
-							controller.getAxis(3),
+							xDeflec,
+							yDeflec,
 							player.getMovement().z
 						)
 					);
@@ -399,9 +402,9 @@ public class CustomGameView extends GameView{
 		}
 	}
     
-    private class InputListener implements InputProcessor {
+    private class MouseKeyboardListener implements InputProcessor {
 
-		InputListener() {
+		MouseKeyboardListener() {
 		}
 
         @Override

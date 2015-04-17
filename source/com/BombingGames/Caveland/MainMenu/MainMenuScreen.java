@@ -55,7 +55,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
-		Image button1Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/1Player.png")));
+		Image button1Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/1player.png")));
 		button1Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
 			stage.getHeight()/2-200
@@ -71,7 +71,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
-		Image button2Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/2Players.png")));
+		Image button2Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/2players.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
 			stage.getHeight()/2-200

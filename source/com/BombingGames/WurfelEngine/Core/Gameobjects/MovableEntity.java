@@ -562,7 +562,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Sets speed and direction.
-	 * @param movement containing direction and speed.
+	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
 	public void setMovement(Vector3 movement){
 		this.movement = movement;
@@ -571,7 +571,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s.
+	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
 	public void addMovement(Vector2 movement){
 		this.movement.add(movement.x, movement.y, 0);
@@ -581,7 +581,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s.
+	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
 	public void addMovement(Vector3 movement){
 		this.movement.add(movement);
@@ -590,7 +590,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed to horizontal moving directio.
-	 * @param speed containing direction and speed in m/s.
+	 * @param speed speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
 	public void addToHor(float speed){
 		addMovement(orientation.cpy().scl(speed));//add in move direction

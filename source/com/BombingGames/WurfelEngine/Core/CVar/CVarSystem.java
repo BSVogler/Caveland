@@ -32,7 +32,7 @@ public class CVarSystem {
 
 	/**
 	 * you have to manually call {@link #load} to load from path.
-	 * @param path 
+	 * @param path path to the .cvar file
 	 */
 	public CVarSystem(File path) {
 		this.path = path;
@@ -101,7 +101,14 @@ public class CVarSystem {
 			} catch (IOException ex) {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		} else System.out.println("Custom CVar file not found.");
+		} else {
+			System.out.println("Custom CVar file "+path+" not found. Creating new one at the same place.");
+			try {
+				path.createNewFile();
+			} catch (IOException ex) {
+				System.out.println("Could not create file at "+path+".");
+			}
+		}
 		reading = false;
 	
 	}

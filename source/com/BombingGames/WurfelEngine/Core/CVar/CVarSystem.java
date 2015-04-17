@@ -220,14 +220,23 @@ public class CVarSystem {
 		WE.CVARS.register(new FloatCVar(0.001f), "friction", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new FloatCVar(0.03f), "playerfriction", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(6000), "soundDecay", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(11), "controllerButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(12), "controllerButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(13), "controllerButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(14), "controllerButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(8), "controllerButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(9), "controllerButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(1), "controllerAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(2), "controllerAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new IntCVar(3), "controllerAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(11), "controllermacButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(12), "controllermacButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(13), "controllermacButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(14), "controllermacButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(8), "controllermacButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(9), "controllermacButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(1), "controllermacAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(2), "controllermacAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(3), "controllermacAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(2), "controllerwindowsButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(1), "controllerwindowsButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(0), "controllerwindowsButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(3), "controllerwindowsButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(8), "controllerwindowsButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(9), "controllerwindowsButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(5), "controllerwindowsAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(1), "controllerwindowsAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(0), "controllerwindowsAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 	}
 }

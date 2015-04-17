@@ -75,7 +75,7 @@ public class WorkingDirectory {
                 else
                         workingDirectory = new File(userHome, '.' + applicationName + '/');
                 break;
-        case macos:
+        case mac:
                 workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
                 break;
         case android:
@@ -93,27 +93,27 @@ public class WorkingDirectory {
      * 
      * @return the os
      */
-    private static OS getPlatform() {
-            String osName = System.getProperty("os.name").toLowerCase();
-            if (osName.contains("win"))
-                    return OS.windows;
-            if (osName.contains("mac"))
-                    return OS.macos;
-            if (osName.contains("solaris"))
-                    return OS.solaris;
-            if (osName.contains("sunos"))
-                    return OS.solaris;
-            if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik"))
-                return OS.android;
-            if (osName.contains("linux"))
-                    return OS.linux;
-            if (osName.contains("unix"))
-                    return OS.linux;
-            return OS.unknown;
+    public static OS getPlatform() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		if (osName.contains("win"))
+				return OS.windows;
+		if (osName.contains("mac"))
+				return OS.mac;
+		if (osName.contains("solaris"))
+				return OS.solaris;
+		if (osName.contains("sunos"))
+				return OS.solaris;
+		if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik"))
+			return OS.android;
+		if (osName.contains("linux"))
+				return OS.linux;
+		if (osName.contains("unix"))
+				return OS.linux;
+		return OS.unknown;
     }
 
-    private static enum OS {
-            linux, solaris, windows, macos, android, unknown;
+    public static enum OS {
+		linux, solaris, windows, mac, android, unknown;
     }
     
     /**

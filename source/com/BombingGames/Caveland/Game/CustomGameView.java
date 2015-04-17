@@ -5,6 +5,7 @@ import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -280,11 +281,13 @@ public class CustomGameView extends GameView{
 		private int id;
 		private final CustomGameView parent;
 		private float oldRTvalue = -1;
+		private String OS;
 
 		XboxListener(CustomGameView parent, CustomPlayer controllable, int id) {
 			this.player = controllable;
 			this.id=id;
 			this.parent = parent;
+			OS = WorkingDirectory.getPlatform().toString();
 		}
 
 		@Override
@@ -297,29 +300,29 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonA"))//A
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA"))//A
 				player.jump();
 			
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonX")) //X
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")) //X
 				player.attack(50);
 			
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonB")){//B
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
 				if (id==0)
 					parent.throwDownP1 = 0;
 				else
 					parent.throwDownP2 = 0;
 			}
 			
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonY")) //14=Y
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
 				if (id==0)
 					parent.inventoryDownP1 = 0;
 				else
 					parent.inventoryDownP2 = 0;
 			
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonLB"))//LB
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonLB"))//LB
 				player.getInventory().switchItems(true);
 			
-			if (buttonCode == WE.CVARS.getValueI("controllerButtonRB"))//RB
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonRB"))//RB
 				player.getInventory().switchItems(false);
 			
 			return false;
@@ -327,7 +330,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==WE.CVARS.getValueI("controllerButtonB")){//B
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
 				if (id==0) {
 					parent.throwDownP1 = -1;
 				} else
@@ -335,13 +338,13 @@ public class CustomGameView extends GameView{
 				player.throwItem();
 			}
 			
-			if (buttonCode==WE.CVARS.getValueI("controllerButtonY")) //14=Y
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
 				if (id==0)
 					parent.inventoryDownP1 = -1;
 				else
 					parent.inventoryDownP2 = -1;
 			
-			if (buttonCode==WE.CVARS.getValueI("controllerButtonX")) //X
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonX")) //X
 				player.attackLoadingStopped();
 			
 			return true;
@@ -349,7 +352,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
-			if (axisCode == WE.CVARS.getValueI("controllerAxisRT")) {//RT
+			if (axisCode == WE.CVARS.getValueI("controller"+OS+"AxisRT")) {//RT
 				//button down
 				if (oldRTvalue < -0.75f && value>-0.75f) {
 					if (id==0)
@@ -367,8 +370,8 @@ public class CustomGameView extends GameView{
 				oldRTvalue=value;
 			} else {
 			
-				float xDeflec = controller.getAxis(WE.CVARS.getValueI("controllerAxisLX"));
-				float yDeflec = controller.getAxis(WE.CVARS.getValueI("controllerAxisLY"));
+				float xDeflec = controller.getAxis(WE.CVARS.getValueI("controller"+OS+"AxisLX"));
+				float yDeflec = controller.getAxis(WE.CVARS.getValueI("controller"+OS+"AxisLY"));
 				speed[id] = (float) Math.sqrt(
 					 xDeflec*xDeflec
 					+yDeflec*yDeflec

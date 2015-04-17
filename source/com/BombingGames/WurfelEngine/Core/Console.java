@@ -120,6 +120,7 @@ public class Console implements CommandsInterface  {
 		
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
 		log.setBounds(xPos-200, yPos+20, 400, 400);
+		log.setFocusTraversal(false);
 		//log.setAlignment(Align.top, Align.left);
 		//log.setWrap(true);
 		//Label.LabelStyle customStyle = log.getStyle();
@@ -246,7 +247,7 @@ public class Console implements CommandsInterface  {
      *when a message is entered
      */
     public void enter(){
-        add(textinput.getText()+": ", "Console");//add message to message list
+        add("\n"+textinput.getText()+": ", "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
         if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(textinput.getText()))    
             add("Failed executing command.\n", "System");    
@@ -444,18 +445,18 @@ public class Console implements CommandsInterface  {
 				//set cvar
 				String value = st.nextToken();
 				WE.CVARS.get(first).setValue(value);
-				add("Set CVar \""+ first + "\" to "+value+"\n", "System");
+				add("Set CVar \""+ first + "\" to "+value, "System");
 				return true;
 			} else {
 				//read cvar
-				add(first+": "+cvar.toString()+"\n", "System");
+				add("cvar has value "+cvar.toString(), "System");
 				return true;
 			}
 		} else {
 			//try executing with custom commands
 			if (externalCommands!=null)
 				return externalCommands.executeCommand(command);
-			add("CVar \""+first+"\" not found.\n", "System");
+			add("CVar \""+first+"\" not found.", "System");
 			return true;
 		}
     }

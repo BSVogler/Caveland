@@ -1,7 +1,7 @@
 package com.BombingGames.Caveland;
 
-import com.BombingGames.Caveland.Game.ChunkGenerator;
 import com.BombingGames.Caveland.Game.CavelandBlocks;
+import com.BombingGames.Caveland.Game.ChunkGenerator;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
@@ -70,9 +70,35 @@ public class Caveland {
 				"default",
 				in
 			);
+		} else {
+			//checck if old format is already there. delete it
+			if (new File(WorkingDirectory.getMapsFolder()+"/default/map.wem").exists()) {
+				deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
+				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/BombingGames/Caveland/defaultmap.zip");
+				WorkingDirectory.unpackMap(
+					"default",
+					in
+				);
+			}
 		}
     }
 
+	public static boolean deleteDirectory(File directory) {
+		if(directory.exists()){
+			File[] files = directory.listFiles();
+			if(null!=files){
+				for (File file : files) {
+					if (file.isDirectory()) {
+						deleteDirectory(file);
+					} else {
+						file.delete();
+					}
+				}
+			}
+		}
+		return(directory.delete());
+	}
+	
 	/**
 	 * Credtis of caveland.
 	 * @return 

@@ -396,7 +396,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 			//hack for transient field tint
 			if (tint == null) tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 			if (color!=null)
-				sprite.setColor(tint.tmp().mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f));
+				sprite.setColor(tint.cpy().mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f));
 			else sprite.setColor(tint);
         
 			if (view.debugRendering()){

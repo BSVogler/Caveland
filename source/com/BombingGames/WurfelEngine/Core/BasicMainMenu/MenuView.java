@@ -111,9 +111,9 @@ public class MenuView {
             }
         
         
-			font.scale(-0.5f);
-			font.drawMultiLine(batch, WE.getCredits(), 50, 100);
-			font.scale(0.5f);
+			//font.scale(-0.5f);
+			font.draw(batch, WE.getCredits(), 50, 100);
+			//font.scale(0.5f);
 		batch.end();
     }
 

@@ -60,15 +60,15 @@ import java.io.File;
 
 /**
  *The Main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
- * The Wurfel Engine needs Java >= v1.7 and the API libGDX v1.5.5 (may work with older version).
+ * The Wurfel Engine needs Java >= v1.7 and the API libGDX v1.5.6 (may work with older version).
  * @author Benedikt S. Vogler
- * @version 1.5.1
+ * @version 1.5.2
  */
 public class WE {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.5.1";  
+    public static final String VERSION = "1.5.2";  
 	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
 
 	/**

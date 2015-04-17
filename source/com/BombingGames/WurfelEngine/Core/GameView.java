@@ -393,16 +393,16 @@ public class GameView extends View implements GameManager {
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
         WE.getEngineView().getFont().setColor(Color.BLACK);
-        WE.getEngineView().getFont().setScale(1.01f);
+        //WE.getEngineView().getFont().setScale(1.01f);
         batch.begin();
-        WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
+        WE.getEngineView().getFont().draw(batch, text, xPos, yPos);
         batch.end();
         
-        WE.getEngineView().getFont().setColor(Color.WHITE);
-        WE.getEngineView().getFont().setScale(1f);
-        batch.begin();
-        WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
-        batch.end();
+//        WE.getEngineView().getFont().setColor(Color.WHITE);
+//        WE.getEngineView().getFont().setScale(1f);
+//        batch.begin();
+//        WE.getEngineView().getFont().drawMultiLine(batch, text, xPos, yPos);
+//        batch.end();
     }
 
 

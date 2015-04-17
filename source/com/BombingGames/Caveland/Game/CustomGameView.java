@@ -38,6 +38,8 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
+	private CraftingMenu craftingOpen;
+	
     @Override
     public void init(Controller controller) {
         super.init(controller);
@@ -110,7 +112,6 @@ public class CustomGameView extends GameView{
 		WE.getEngineView().setMusic("com/BombingGames/Caveland/music/overworld.mp3");
 		WE.getEngineView().setMusicLoudness(WE.CVARS.getValueF("music"));
         
-        
 //        controller.setMinimap(
 //            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,Gdx.graphics.getHeight()-10)
 //        );
@@ -127,6 +128,8 @@ public class CustomGameView extends GameView{
 	
 	@Override
     public void onEnter() {
+		craftingOpen = new CraftingMenu();
+		getStage().addActor(craftingOpen);
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener());
 		int playerId = 0;
 		if (coop==1) playerId = 1;

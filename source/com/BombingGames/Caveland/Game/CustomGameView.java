@@ -268,7 +268,7 @@ public class CustomGameView extends GameView{
 		if (controllerListener1 !=null)
 			Controllers.getControllers().get(0).removeListener(controllerListener1);
 		if (controllerListener2 !=null)
-			Controllers.getControllers().get(0).removeListener(controllerListener2);
+			Controllers.getControllers().get(1).removeListener(controllerListener2);
 	}
 	
 	private static class XboxListener implements ControllerListener {

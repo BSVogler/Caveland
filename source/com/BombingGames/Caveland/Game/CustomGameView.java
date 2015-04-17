@@ -342,7 +342,7 @@ public class CustomGameView extends GameView{
 					parent.inventoryDownP2 = -1;
 			
 			if (buttonCode==WE.CVARS.getValueI("controllerButtonX")) //X
-				player.loadAttack();
+				player.attackLoadingStopped();
 			
 			return true;
 		}
@@ -484,7 +484,7 @@ public class CustomGameView extends GameView{
 				if (coop==0){
 					//p1
 					if (keycode == Input.Keys.N) {
-						getPlayer(0).attack(50);
+						getPlayer(0).attack();
 					}
 					
 					if (keycode == Input.Keys.M) {
@@ -497,7 +497,7 @@ public class CustomGameView extends GameView{
 					}
 						
 					if (keycode == Input.Keys.NUMPAD_1) {
-						getPlayer(1).attack(50);
+						getPlayer(1).attack();
 					}
 					
 					if (keycode == Input.Keys.NUMPAD_2) {
@@ -528,7 +528,7 @@ public class CustomGameView extends GameView{
         public boolean keyUp(int keycode) {
 			if (coop==0){
 				if (keycode == Input.Keys.N){
-					getPlayer(0).loadAttack();
+					getPlayer(0).attackLoadingStopped();
 				}
 				
 				if (keycode == Input.Keys.M){
@@ -536,7 +536,7 @@ public class CustomGameView extends GameView{
 				}
 				
 				if (keycode==Input.Keys.NUMPAD_1){
-					getPlayer(1).loadAttack();
+					getPlayer(1).attackLoadingStopped();
 				}
 				
 				if (keycode==Input.Keys.NUMPAD_2){
@@ -560,14 +560,14 @@ public class CustomGameView extends GameView{
 				throwDownP1 = 0;
 			}
 			if (button ==Buttons.LEFT)
-				getPlayer(0).attack(50);
+				getPlayer(0).attack();
             return true;
         }
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.LEFT)
-				getPlayer(0).loadAttack();
+				getPlayer(0).attackLoadingStopped();
 			if (button ==Buttons.RIGHT) {
 				getPlayer(0).throwItem();
 			}

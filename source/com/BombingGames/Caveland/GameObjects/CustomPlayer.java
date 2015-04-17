@@ -9,7 +9,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -193,7 +192,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		if (loadAttack >= LOADATTACKTIME) {
-			loadAttack();
+			attackLoadingStopped();
 		}
 
 		//get loren
@@ -338,6 +337,9 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 
+	public void attack(){
+		attack(50);
+	}
 	/**
 	 * does an attack move
 	 *
@@ -351,11 +353,11 @@ public class CustomPlayer extends Controllable {
 		}
 
 		Controller.getSoundEngine().play("sword");
-		addToHor(8f);//add 5 m/s in move direction
+		addToHor(13f);//add 13 m/s in move direction
 
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-		entities.addAll(getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+		entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
 		//check hit
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
@@ -374,7 +376,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//damage blocks
-		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, RenderBlock.GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
+		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
 		if (aimCoord.damage((byte) damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
@@ -480,7 +482,7 @@ public class CustomPlayer extends Controllable {
 	 * should be called on button release. Performs the load attack if loaded
 	 * enough.
 	 */
-	public void loadAttack() {
+	public void attackLoadingStopped() {
 		if (loadAttack >= LOADATTACKTIME) {
 			//perform loadattack
 			playAnimation('i');

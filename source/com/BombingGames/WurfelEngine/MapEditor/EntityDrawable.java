@@ -46,7 +46,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	private AbstractEntity instance = null;
 	private float scaling = 0;
 
-	EntityDrawable(Class<? extends AbstractEntity> type) {
+	public EntityDrawable(Class<? extends AbstractEntity> type) {
 		try {
 			instance = type.newInstance();
 			if (instance.getId()>0) {

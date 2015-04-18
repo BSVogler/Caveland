@@ -42,6 +42,7 @@ public class DataIterator implements Iterator<HasID>{
 	private int x, y, z;
 	private HasID[][][] data;
 	private int limitZ;
+	private int left, right, back, front;
 
 	/**
 	 * 
@@ -59,6 +60,11 @@ public class DataIterator implements Iterator<HasID>{
 		z=startingZ;
 		this.limitZ=limitZ;
 		this.data = data;
+		
+		left =0;
+		right = data.length-1;
+		back = 0;
+		front = data[0].length-1;
 	}
 	
 	/**
@@ -72,23 +78,23 @@ public class DataIterator implements Iterator<HasID>{
 	@Override
 	public boolean hasNext() {
 		return (
-			   x < data.length-1
-			|| y < data[0].length-1
+			   x < right
+			|| y < front
 			|| z < limitZ
 		);
 	}
 
 	@Override
 	public HasID next() {
-		if (x<data.length-1)
+		if (x<right)
 			x++;
-		else if (y<data[0].length-1){
+		else if (y<front){
 			y++;
-			x=0;
+			x=left;
 		} else if (z<limitZ) {
 			z++;
-			y=0;
-			x=0;
+			y=back;
+			x=left;
 		}
 		
 		if (z<0){
@@ -109,6 +115,20 @@ public class DataIterator implements Iterator<HasID>{
 	 */
 	public int[] getCurrentIndex(){
 		return new int[]{x,y,z};
+	}
+
+	/**
+	 * sets index position borders during iterations. This reduces greatly the amount of blocks which are traversed.
+	 * @param left
+	 * @param right
+	 * @param back
+	 * @param front 
+	 */
+	public void setBorders(int left, int right, int back, int front) {
+		this.left = left;
+		this.right = right;
+		this.back = back;
+		this.front = front;
 	}
 	
 }

@@ -207,8 +207,8 @@ public class RenderBlock extends AbstractGameObject {
     @Override
     public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {
-			Coordinate coords = getPosition();
             if (getCoreData().hasSides()) {
+				Coordinate coords = getPosition();
 				boolean staticShade = WE.CVARS.getValueB("enableAutoShade");
                 if (!clippedTop)
                     renderSide(view, camera, coords, Side.TOP, staticShade);

@@ -746,7 +746,7 @@ map.getGameWidth(),
 	 */
 	protected void hiddenSurfaceDetection() {
 		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
-		//iterate over view frustum
+		//iterate over max. view frustum
 		DataIterator dataIter = new DataIterator(
 			cameraContentBlocks,
 			0,
@@ -933,7 +933,7 @@ map.getGameWidth(),
 	}
 
 	/**
-	 * Returns the bottom seight border yIndex-coordinate of the highest block
+	 * Returns the bottom seight border y-coordinate of the highest block
 	 *
 	 * @return measured in grid-coordinates
 	 */

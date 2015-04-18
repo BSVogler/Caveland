@@ -59,6 +59,7 @@ public class RenderBlock extends AbstractGameObject {
      * a list where a representing color of the block is stored
      */
     private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
+	private static boolean fogEnabled;
 
 	@Override
 	public boolean isObstacle() {
@@ -96,10 +97,12 @@ public class RenderBlock extends AbstractGameObject {
 	 */
     public RenderBlock(byte id){
         super(id,(byte) 0);
+		fogEnabled = WE.CVARS.getValueB("enableFog");
     }
 	
 	public RenderBlock(byte id, byte value){
 		super(id, value);
+		fogEnabled = WE.CVARS.getValueB("enableFog");
 	}
 
 	/**
@@ -301,7 +304,7 @@ public class RenderBlock extends AbstractGameObject {
 		final boolean staticShade
 	){
 		Color color;
-		if (WE.CVARS.getValueB("enableFog")) {
+		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
 			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().getCoord().getY())*0.17+2));
 			color = new Color(0.5f, 0.5f, 0.5f, 1).add(
@@ -368,7 +371,7 @@ public class RenderBlock extends AbstractGameObject {
             sprite.setOrigin(0, 0);
             sprite.scale(getScaling());
         }
-		//System.out.println("rend:"+xPos+","+yPos);
+		
 		if (color!=null) {
 			color.r *= getLightlevel();
 			color.g *= getLightlevel();

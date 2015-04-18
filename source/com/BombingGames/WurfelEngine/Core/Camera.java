@@ -559,8 +559,8 @@ map.getGameWidth(),
 				//only add if in view plane to-do
 				if (
 					block != null
-					&& !block.isHidden()
 					&& !block.isClipped()
+					&& !block.isHidden()
 					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))

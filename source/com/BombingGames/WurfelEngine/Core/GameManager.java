@@ -50,7 +50,7 @@ public interface GameManager {
     public void enter();
 	
 	  /**
-     * should get called when you leave the editor.
+     * Should get called when you leave the editor. To extend this method you should overwrite adn call super ethod.
      */
 	public void exit();
 

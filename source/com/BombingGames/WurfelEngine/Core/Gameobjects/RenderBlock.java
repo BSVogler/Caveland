@@ -82,6 +82,10 @@ public class RenderBlock extends AbstractGameObject {
 		clippedTop = true;
 	}
 
+	/**
+	 * a block is only clipped if every side is clipped
+	 * @return 
+	 */
 	public boolean isClipped() {
 		return clippedLeft && clippedRight && clippedTop;
 	}

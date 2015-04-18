@@ -40,8 +40,6 @@ import java.util.Iterator;
  */
 public class DataIterator implements Iterator<HasID>{
 	private int x, y, z;
-	private int relativeX;
-	private int relativeY;
 	private HasID[][][] data;
 	private int limitZ;
 
@@ -50,23 +48,17 @@ public class DataIterator implements Iterator<HasID>{
 	 * @param data
 	 * @param startingZ the starting layer
 	 * @param limitZ  the last layer 
-	 * @param relativeX the x coordinate of top left
-	 * @param relativeY the y coordinate of top left
 	 */
 	public DataIterator(
 		HasID[][][] data,
 		final int startingZ,
-		final int limitZ,
-		final int relativeX,
-		final int relativeY
+		final int limitZ
 	) {
 		x=-1;//start at -1 because the first call of next should return the first element
 		y=0;
 		z=startingZ;
 		this.limitZ=limitZ;
 		this.data = data;
-		this.relativeX = relativeX;
-		this.relativeY = relativeY;
 	}
 	
 	/**

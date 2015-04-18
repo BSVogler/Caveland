@@ -67,9 +67,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 			blockIterator = new DataIterator(
 				((CompleteMap) map).getData(),
 				startingZ,
-				getTopLimitZ(),
-				-map.getBlocksX()/2,
-				-map.getBlocksY()/2
+				getTopLimitZ()
 			);
 		}
 	}

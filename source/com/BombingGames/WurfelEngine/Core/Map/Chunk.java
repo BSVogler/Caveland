@@ -507,9 +507,7 @@ public class Chunk {
 		return new DataIterator(
 			data,
 			startingZ,
-			limitZ,
-			topleft.getX(),
-			topleft.getY()
+			limitZ
 		);
 	}
 

@@ -546,11 +546,9 @@ map.getGameWidth(),
 	private ArrayList<AbstractGameObject> createDepthList() {
 		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(1000);//start by size 400
 		DataIterator iterator = new DataIterator(
-				cameraContentBlocks,
-				0,
-				map.getBlocksZ(),//one more because of ground layer
-				0,//todo
-				0//todo
+				cameraContentBlocks,//iterate over camera content
+				0,					//from layer0
+				map.getBlocksZ()//one more because of ground layer
 			);
 		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
@@ -752,9 +750,7 @@ map.getGameWidth(),
 		DataIterator dataIter = new DataIterator(
 			cameraContentBlocks,
 			0,
-			zRenderingLimit,//+1 because of ground layer
-			(centerChunkX-1)*Chunk.getBlocksX(),//todo
-			(centerChunkY-1)*Chunk.getBlocksY()//todo
+			zRenderingLimit//+1 because of ground layer
 		);
 		
 		while (dataIter.hasNext()) {

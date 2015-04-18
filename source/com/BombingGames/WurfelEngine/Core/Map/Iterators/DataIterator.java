@@ -125,10 +125,14 @@ public class DataIterator implements Iterator<HasID>{
 	 * @param front 
 	 */
 	public void setBorders(int left, int right, int back, int front) {
-		this.left = left;
-		this.right = right;
-		this.back = back;
-		this.front = front;
+		if (left>0)
+			this.left = left;
+		if (right < data.length-1)
+			this.right = right;
+		if (back>0)
+			this.back = back;
+		if (front < data[0].length-1)
+			this.front = front;
 	}
 	
 }

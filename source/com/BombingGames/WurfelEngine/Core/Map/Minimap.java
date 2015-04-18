@@ -284,7 +284,7 @@ public class Minimap implements LinkedWithMap {
 							scaleX * camera.getVisibleLeftBorder(),
 							-scaleY * camera.getVisibleBackBorder(),
 							scaleX*(camera.getVisibleRightBorder()-camera.getVisibleLeftBorder()+1),
-							-scaleY*(camera.getVisibleFrontBorder()-camera.getVisibleBackBorder())
+							-scaleY*(camera.getVisibleFrontBorderLow()-camera.getVisibleBackBorder())
 						);
 
 						//ground level

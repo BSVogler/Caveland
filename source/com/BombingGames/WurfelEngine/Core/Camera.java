@@ -130,6 +130,7 @@ public class Camera implements LinkedWithMap {
 	 * true if camera is currently rendering
 	 */
 	private boolean active = false;
+	private ArrayList<AbstractGameObject> depthsort;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -544,12 +545,23 @@ map.getGameWidth(),
 	 * @return
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
-		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(1000);//start by size 400
+		//register memory space onyl once then reuse
+		if (depthsort ==null)
+			depthsort= new ArrayList<>(1000);
+		else depthsort.clear();
+		
 		DataIterator iterator = new DataIterator(
-				cameraContentBlocks,//iterate over camera content
-				0,					//from layer0
-				map.getBlocksZ()//one more because of ground layer
-			);
+			cameraContentBlocks,//iterate over camera content
+			0,					//from layer0
+			map.getBlocksZ()//one more because of ground layer
+		);
+		iterator.setBorders(
+			getVisibleLeftBorder()-getCoveredLeftBorder(),
+			getVisibleRightBorder()-getCoveredLeftBorder(),
+			getVisibleBackBorder()-getCoveredBackBorder(),
+			getVisibleFrontBorderHigh()-getCoveredBackBorder()
+		);
+		
 		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
@@ -881,7 +893,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH-1);
 	}
 
 	/**
@@ -933,14 +945,29 @@ map.getGameWidth(),
 	}
 
 	/**
-	 * Returns the bottom seight border y-coordinate of the highest block
+	 * Returns the bottom seight border y-coordinate of the lowest block
 	 *
 	 * @return measured in grid-coordinates
+	 * @see #getVisibleFrontBorderHigh() 
 	 */
-	public int getVisibleFrontBorder() {
+	public int getVisibleFrontBorderLow() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
 			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
+		);
+	}
+	
+		/**
+	 * Returns the bottom seight border y-coordinate of the highest block
+	 *
+	 * @return measured in grid-coordinates
+	 * @see #getVisibleFrontBorderLow() 
+	 */
+	public int getVisibleFrontBorderHigh() {
+		return (int) (
+			(position.y- getHeightInProjSpc()/2) //bottom camera border
+			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
+			+cameraContentBlocks[0][0].length*AbstractGameObject.VIEW_HEIGHT/AbstractGameObject.VIEW_DEPTH2 //todo verify, try to add z component
 		);
 	}
 

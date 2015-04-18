@@ -529,14 +529,14 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public int getViewSpcX(GameView view) {
-		return getX() * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (getY() % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY(GameView view) {
-		return getY() * AbstractGameObject.VIEW_DEPTH2 *
+		return y * AbstractGameObject.VIEW_DEPTH2 *
 			(
 				view.getOrientation() == 0
 					? -1

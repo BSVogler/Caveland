@@ -5,6 +5,7 @@ import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.TFlint;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,6 +20,7 @@ public class RecipesList extends Table {
 	ArrayList<Recipt> receipts= new ArrayList<>(10);
 	
 	public RecipesList() {
+		setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		receipts.add(
 			new Recipt(
 				new AbstractEntity[]{

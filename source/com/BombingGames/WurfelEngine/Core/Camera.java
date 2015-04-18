@@ -544,7 +544,7 @@ map.getGameWidth(),
 	 * @return
 	 */
 	private ArrayList<AbstractGameObject> createDepthList() {
-		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(400);//start by size 400
+		ArrayList<AbstractGameObject> depthsort = new ArrayList<>(1000);//start by size 400
 		DataIterator iterator = new DataIterator(
 				cameraContentBlocks,
 				0,

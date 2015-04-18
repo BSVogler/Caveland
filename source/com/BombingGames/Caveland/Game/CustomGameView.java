@@ -38,7 +38,7 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
-	private CraftingMenu craftingOpen;
+	private CraftingMenu craftingMenu;
 	
     @Override
     public void init(Controller controller) {
@@ -128,8 +128,9 @@ public class CustomGameView extends GameView{
 	
 	@Override
     public void onEnter() {
-		craftingOpen = new CraftingMenu();
-		getStage().addActor(craftingOpen);
+		craftingMenu = new CraftingMenu();
+		craftingMenu.setVisible(false);
+		getStage().addActor(craftingMenu);
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener());
 		int playerId = 0;
 		if (coop==1) playerId = 1;
@@ -328,6 +329,11 @@ public class CustomGameView extends GameView{
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonRB"))//RB
 				player.getInventory().switchItems(false);
 			
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonSelect")) //Select
+				parent.craftingMenu.setVisible(!parent.craftingMenu.isVisible());
+			
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonStart"))
+                WE.showMainMenu();
 			return false;
 		}
 
@@ -449,11 +455,14 @@ public class CustomGameView extends GameView{
 					 WE.loadEditor(false);
 				}
 				
+				if (keycode == Input.Keys.C) //Select
+					craftingMenu.setVisible(!craftingMenu.isVisible());
+				
 
 				//pause
 				//time is set 0 but the game keeps running
 				  if (keycode == Input.Keys.P) {
-					//WE.CVARS.get("gamespeed").setValue("0");;
+					WE.CVARS.get("gamespeed").setValue("0");;
 				 } 
 
                 //reset zoom

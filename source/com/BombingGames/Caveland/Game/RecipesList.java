@@ -15,12 +15,12 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class CraftingMenu extends Table {
-	ArrayList<Receipt> receipts= new ArrayList<>(10);
+public class RecipesList extends Table {
+	ArrayList<Recipt> receipts= new ArrayList<>(10);
 	
-	public CraftingMenu() {
+	public RecipesList() {
 		receipts.add(
-			new Receipt(
+			new Recipt(
 				new AbstractEntity[]{
 					Collectible.create(Collectible.CollectibleType.SULFUR),
 					Collectible.create(Collectible.CollectibleType.COAL)
@@ -31,7 +31,7 @@ public class CraftingMenu extends Table {
 		);
 		
 		receipts.add(
-			new Receipt(
+			new Recipt(
 				new AbstractEntity[]{
 					Collectible.create(Collectible.CollectibleType.WOOD),
 					Collectible.create(Collectible.CollectibleType.WOOD)
@@ -42,7 +42,7 @@ public class CraftingMenu extends Table {
 		);
 		
 		int y = 0;
-		for (Receipt receipt : receipts) {
+		for (Recipt receipt : receipts) {
 			Image actor = receipt.getImage();
 			actor.setPosition(0, y);
 			y+=100;
@@ -50,12 +50,12 @@ public class CraftingMenu extends Table {
 		}
 	}
 	
-	class Receipt {
+	class Recipt {
 		AbstractEntity[] ingredients;
 		String name;
 		AbstractEntity result;
 
-		public Receipt(AbstractEntity[] ingredients, String name, AbstractEntity result) {
+		public Recipt(AbstractEntity[] ingredients, String name, AbstractEntity result) {
 			this.ingredients = ingredients;
 			this.name = name;
 			this.result = result;

@@ -38,7 +38,7 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
-	private CraftingMenu craftingMenu;
+	private RecipesList craftingMenu;
 	
     @Override
     public void init(Controller controller) {
@@ -128,7 +128,9 @@ public class CustomGameView extends GameView{
 	
 	@Override
     public void onEnter() {
-		craftingMenu = new CraftingMenu();
+		craftingMenu = new RecipesList();
+		craftingMenu.setBounds(400, 200, 400, 400);
+		craftingMenu.setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		craftingMenu.setVisible(false);
 		getStage().addActor(craftingMenu);
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener());

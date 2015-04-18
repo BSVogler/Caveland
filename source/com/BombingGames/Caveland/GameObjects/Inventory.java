@@ -3,11 +3,10 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.WE;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -15,6 +14,9 @@ import java.util.logging.Logger;
  */
 public class Inventory implements Serializable {
 	private static final long serialVersionUID = 1L;
+	/**
+	 * filled from back to front
+	 */
 	private Slot[] slot = new Slot[3];
 	private static final boolean enableStacking = false;
 	private CustomPlayer player;
@@ -33,9 +35,8 @@ public class Inventory implements Serializable {
 	/**
 	 * reduces the counter and deletes the object from inventory
 	 * @return the frontmost element. can return null if empty.
-	 * @throws java.lang.CloneNotSupportedException
 	 */
-	public Collectible getFrontItem() throws CloneNotSupportedException {
+	public Collectible fetchFrontItem() {
 		Collectible result = null;
 		if (slot[0].counter>0){
 			result = slot[0].take();
@@ -47,6 +48,21 @@ public class Inventory implements Serializable {
 		
 		if (result==null) return null;
 		return result;
+	}
+	
+	/**
+	 * tries to take the wanted type 
+	 * @param def
+	 * @return can return null
+	 */
+	public Collectible fetchCollectible(Collectible.CollectibleType def){
+		if (slot[2].prototype!=null && slot[2].prototype.getType() == def)
+			return slot[2].take();
+		if (slot[1].prototype!=null && slot[1].prototype.getType() == def)
+			return slot[1].take();
+		if (slot[0].prototype!=null && slot[0].prototype.getType() == def)
+			return slot[0].take();
+		return null;
 	}
 	
 	/**
@@ -88,6 +104,27 @@ public class Inventory implements Serializable {
 			}	
 		}
 		return false;
+	}
+	
+	/**
+	 * Get a copy of the content. Does not change anything
+	 * @return can have null in array
+	 */
+	public Collectible[] getContent(){
+		return new Collectible[]{slot[0].getPrototype(), slot[1].getPrototype(), slot[2].getPrototype()};
+	}
+	
+	/**
+	 * Get a copy of the content. Does not change anything
+	 * @return can have null in array
+	 */
+	public Collectible.CollectibleType[] getContentDef(){
+		Collectible[] tmp = getContent();
+		return new Collectible.CollectibleType[]{
+			(tmp[0]==null ? null : tmp[0].getType()),
+			(tmp[1]==null ? null : tmp[1].getType()),
+			(tmp[2]==null ? null : tmp[2].getType()),
+		};
 	}
 	
 	/**
@@ -177,15 +214,11 @@ public class Inventory implements Serializable {
 	 * calls the action method for the first slot item.
 	 */
 	public void action(){
-		try {
-			//Get the first item and activate it. Then put it back.
-			Collectible item = getFrontItem();
-			if(item!=null) {
-				item.action();
-				add(item);
-			}
-		} catch (CloneNotSupportedException ex) {
-			Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+		//Get the first item and activate it. Then put it back.
+		Collectible item = fetchFrontItem();
+		if(item!=null) {
+			item.action();
+			add(item);
 		}
 	}
 	
@@ -210,11 +243,18 @@ public class Inventory implements Serializable {
 		 * Takes one object from the slot
 		 * @return 
 		 */
-		private Collectible take() throws CloneNotSupportedException {
+		private Collectible take() {
 			counter--;
 			Collectible tmp;
 			if (enableStacking) {
-				tmp = prototype.clone();
+				try {
+					tmp = prototype.clone();
+				} catch (CloneNotSupportedException ex) {
+					//if clone fails remove this item
+					counter=0;
+					prototype=null;
+					WE.getConsole().add("Cloning of inventory item failed.");
+				}
 			} else {
 				tmp = prototype;
 			}
@@ -222,6 +262,14 @@ public class Inventory implements Serializable {
 				prototype=null;
 			tmp.setPosition(player.getPosition().cpy());//independent of player position now
 			return tmp;
+		}
+		
+		/**
+		 * 
+		 * @return can return null
+		 */
+		private Collectible getPrototype(){
+			return prototype;
 		}
 
 		protected void increase(){

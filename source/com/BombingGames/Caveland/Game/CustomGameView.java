@@ -38,7 +38,7 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
-	private RecipesList craftingMenu;
+	private Crafting craftingMenu;
 	
     @Override
     public void init(Controller controller) {
@@ -126,13 +126,23 @@ public class CustomGameView extends GameView{
 		return ((CustomGameController) getController()).getPlayer(id);
 	}
 	
+	private void openCrafting(int id){
+		craftingMenu = new Crafting(getPlayer(id).getInventory());
+		craftingMenu.setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
+		getStage().addActor(craftingMenu);
+	}
+	
+	private void toogleCrafting(int id) {
+		if (craftingMenu==null)
+			openCrafting(id);
+		else {
+			craftingMenu.remove();
+			craftingMenu=null;
+		}
+	}
+	
 	@Override
     public void onEnter() {
-		craftingMenu = new RecipesList();
-		craftingMenu.setBounds(400, 200, 400, 400);
-		craftingMenu.setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
-		craftingMenu.setVisible(false);
-		getStage().addActor(craftingMenu);
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener());
 		int playerId = 0;
 		if (coop==1) playerId = 1;
@@ -145,6 +155,15 @@ public class CustomGameView extends GameView{
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(200, 200);
     }
+
+	@Override
+	public void exit() {
+		super.exit();
+		if (controllerListener1 !=null)
+			Controllers.getControllers().get(0).removeListener(controllerListener1);
+		if (controllerListener2 !=null)
+			Controllers.getControllers().get(1).removeListener(controllerListener2);
+	}
 	
     @Override
     public void update(float dt) {
@@ -269,15 +288,6 @@ public class CustomGameView extends GameView{
 		coop = flag;
 	}
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		if (controllerListener1 !=null)
-			Controllers.getControllers().get(0).removeListener(controllerListener1);
-		if (controllerListener2 !=null)
-			Controllers.getControllers().get(1).removeListener(controllerListener2);
-	}
-	
 	private static class XboxListener implements ControllerListener {
 		private final CustomPlayer player;
 		/**
@@ -306,10 +316,14 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA"))//A
-				player.jump();
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")) {//A
+				if (parent.craftingMenu !=null)
+					parent.craftingMenu.craft();
+				else
+					player.jump();
+			}
 			
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")) //X
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) //X
 				player.attack(50);
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
@@ -332,7 +346,7 @@ public class CustomGameView extends GameView{
 				player.getInventory().switchItems(false);
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonSelect")) //Select
-				parent.craftingMenu.setVisible(!parent.craftingMenu.isVisible());
+				parent.toogleCrafting(id);
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonStart"))
                 WE.showMainMenu();
@@ -341,7 +355,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonB")){
 				if (id==0) {
 					parent.throwDownP1 = -1;
 				} else
@@ -349,13 +363,13 @@ public class CustomGameView extends GameView{
 				player.throwItem();
 			}
 			
-			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonY"))
 				if (id==0)
 					parent.inventoryDownP1 = -1;
 				else
 					parent.inventoryDownP2 = -1;
 			
-			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonX")) //X
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonA"))
 				player.attackLoadingStopped();
 			
 			return true;

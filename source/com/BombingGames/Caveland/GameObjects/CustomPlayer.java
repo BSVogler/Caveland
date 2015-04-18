@@ -21,8 +21,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -318,22 +316,18 @@ public class CustomPlayer extends Controllable {
 	 * try throwing an item from inventory
 	 */
 	public void throwItem() {
-		try {
-			Collectible item = inventory.getFrontItem();
-			if (item != null) {//throw is performed if there is an item to throw
-				//play animation
-				if (action != 't') {//check if not in loaded position
-					playAnimation('t');
-				}
-				playAnimation = true;
-				prepareThrow = false;
-
-				item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
-				item.preventPickup(this, 400);
-				item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
+		Collectible item = inventory.fetchFrontItem();
+		if (item != null) {//throw is performed if there is an item to throw
+			//play animation
+			if (action != 't') {//check if not in loaded position
+				playAnimation('t');
 			}
-		} catch (CloneNotSupportedException ex) {
-			Logger.getLogger(CustomPlayer.class.getName()).log(Level.SEVERE, null, ex);
+			playAnimation = true;
+			prepareThrow = false;
+
+			item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
+			item.preventPickup(this, 400);
+			item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
 		}
 	}
 

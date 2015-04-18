@@ -52,6 +52,10 @@ public class Collectible extends MovableEntity implements Serializable {
 		private CollectibleType(byte id) {
 			this.id = id;
 		}
+
+		public byte getId() {
+			return id;
+		}
 	}
 
 	/**

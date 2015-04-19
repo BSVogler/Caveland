@@ -34,14 +34,14 @@ public class CustomTree extends RenderBlock {
 			setHidden(true);
 	}
 
-	@Override
-	public void update(float dt) {
-		super.update(dt);
-		//check and grow treetop
-		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
-		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
-			new RenderBlock((byte) 72, TREETOPVALUE).spawn(top);
-	}
+//	@Override
+//	public void update(float dt) {
+//		super.update(dt);
+//		//check and grow treetop
+//		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
+//		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
+//			new RenderBlock((byte) 72, TREETOPVALUE).spawn(top);
+//	}
 
 	
 

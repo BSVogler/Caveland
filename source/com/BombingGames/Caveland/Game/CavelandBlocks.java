@@ -31,7 +31,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 //			block.setObstacle(true);
 //		break;
 		default:
-			block = new RenderBlock(id);
+			block = new RenderBlock(id, value);
 		}
 		return block;
 	}	

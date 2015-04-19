@@ -38,7 +38,7 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
-	private Crafting craftingMenu;
+	private Crafting[] craftingMenu = new Crafting[2];
 	
     @Override
     public void init(Controller controller) {
@@ -127,17 +127,17 @@ public class CustomGameView extends GameView{
 	}
 	
 	private void openCrafting(int id){
-		craftingMenu = new Crafting(getPlayer(id).getInventory());
-		craftingMenu.setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
-		getStage().addActor(craftingMenu);
+		craftingMenu[id] = new Crafting(getPlayer(id).getInventory());
+		craftingMenu[id].setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
+		getStage().addActor(craftingMenu[id]);
 	}
 	
 	private void toogleCrafting(int id) {
-		if (craftingMenu==null)
+		if (craftingMenu[id]==null)
 			openCrafting(id);
 		else {
-			craftingMenu.remove();
-			craftingMenu=null;
+			craftingMenu[id].remove();
+			craftingMenu[id]=null;
 		}
 	}
 	
@@ -317,20 +317,25 @@ public class CustomGameView extends GameView{
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")) {//A
-				if (parent.craftingMenu !=null)
-					parent.craftingMenu.craft();
-				else
-					player.jump();
+				player.jump();
 			}
 			
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) //X
-				player.attack((byte)50);
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) { //X
+				if (parent.craftingMenu[id] !=null)
+					parent.craftingMenu[id].craft();
+				else
+					player.attack();
+			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
-				if (id==0)
-					parent.throwDownP1 = 0;
-				else
-					parent.throwDownP2 = 0;
+				if (parent.craftingMenu[id] !=null)
+					parent.toogleCrafting(id);
+				else {
+					if (id==0)
+						parent.throwDownP1 = 0;
+					else
+						parent.throwDownP2 = 0;
+				}
 			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
@@ -472,7 +477,7 @@ public class CustomGameView extends GameView{
 				}
 				
 				if (keycode == Input.Keys.C) //Select
-					craftingMenu.setVisible(!craftingMenu.isVisible());
+					toogleCrafting(0);
 				
 
 				//pause
@@ -587,11 +592,18 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.RIGHT) {
-				throwDownP1 = 0;
-			}
 			if (button ==Buttons.LEFT)
-				getPlayer(0).attack();
+				if (craftingMenu[0] !=null)
+					craftingMenu[0].craft();
+				else {
+					getPlayer(0).attack();
+				}
+			
+			if (button ==Buttons.RIGHT) {
+				if (craftingMenu[0] ==null) {
+					throwDownP1 = 0;
+				}
+			}
             return true;
         }
 
@@ -600,7 +612,11 @@ public class CustomGameView extends GameView{
 			if (button ==Buttons.LEFT)
 				getPlayer(0).attackLoadingStopped();
 			if (button ==Buttons.RIGHT) {
-				getPlayer(0).throwItem();
+				if (craftingMenu[0] ==null) {
+					getPlayer(0).throwItem();
+				} else {
+					toogleCrafting(0);
+				}
 			}
             return true;
         }

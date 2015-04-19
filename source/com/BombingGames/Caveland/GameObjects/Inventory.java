@@ -51,9 +51,10 @@ public class Inventory implements Serializable {
 	}
 	
 	/**
-	 * tries to take the wanted type 
+	 * tries to take the wanted type out of the inventory 
 	 * @param def
 	 * @return can return null
+	 * @see #getCollectible(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
 	 */
 	public Collectible fetchCollectible(Collectible.CollectibleType def){
 		if (slot[2].prototype!=null && slot[2].prototype.getType() == def)
@@ -62,6 +63,22 @@ public class Inventory implements Serializable {
 			return slot[1].take();
 		if (slot[0].prototype!=null && slot[0].prototype.getType() == def)
 			return slot[0].take();
+		return null;
+	}
+	
+		/**
+	 * Get a reference to the prototype and keeps the item in inventory.
+	 * @param def
+	 * @return can return null
+	 * @see #fetchCollectible(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
+	 */
+	public Collectible getCollectible(Collectible.CollectibleType def){
+		if (slot[2].prototype!=null && slot[2].prototype.getType() == def)
+			return slot[2].getPrototype();
+		if (slot[1].prototype!=null && slot[1].prototype.getType() == def)
+			return slot[1].getPrototype();
+		if (slot[0].prototype!=null && slot[0].prototype.getType() == def)
+			return slot[0].getPrototype();
 		return null;
 	}
 	

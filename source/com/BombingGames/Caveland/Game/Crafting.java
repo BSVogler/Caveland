@@ -24,15 +24,14 @@ public class Crafting extends Table {
 
 	public Crafting(Inventory inventory) {
 		this.inventory = inventory;
-		CollectibleType[] ingredients = inventory.getContentDef();
 		this.result = new TFlint();
 		
-		if (ingredients[2]!=null && ingredients[1]!=null && canCraft()) {
+		if (canCraft()) {
 			//A
 			Image a = new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', inventory.fetchCollectible(CollectibleType.SULFUR).getId(), 0)
+						AbstractGameObject.getSprite('e', inventory.getCollectible(CollectibleType.SULFUR).getId(), 0)
 					)
 				)
 			);
@@ -48,7 +47,7 @@ public class Crafting extends Table {
 			Image b = new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', inventory.fetchCollectible(CollectibleType.COAL).getId(), 0)
+						AbstractGameObject.getSprite('e', inventory.getCollectible(CollectibleType.COAL).getId(), 0)
 					)
 				)
 			);

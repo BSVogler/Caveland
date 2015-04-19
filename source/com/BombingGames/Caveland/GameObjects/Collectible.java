@@ -47,6 +47,16 @@ public class Collectible extends MovableEntity implements Serializable {
 		 */
 		SULFUR((byte) 51);
 
+		private static CollectibleType fromValue(String value) {
+			if (value != null) {  
+				for (CollectibleType type : values()) {  
+					if (type.name().equals(value)) {  
+						return type;  
+					}  
+				}
+			} return null;
+		}  
+
 		private byte id;
 
 		private CollectibleType(byte id) {
@@ -75,12 +85,12 @@ public class Collectible extends MovableEntity implements Serializable {
 		return obj;
 	}
 
-	private CollectibleType def;
+	private transient CollectibleType def;
 	/**
 	 * the last object which held the item for pickup prevention
 	 */
-	private AbstractGameObject lastParent;
-	private float timeParentBlocked = 1500;
+	private transient AbstractGameObject lastParent;
+	private transient float timeParentBlocked = 1500;
 
 	/**
 	 *
@@ -192,7 +202,15 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
-		def = CollectibleType.COAL;//todo, proper serialisation and ddeserialisation of enum
+		String defString = (String) stream.readObject();
+		def = CollectibleType.fromValue(defString);
 		//http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
+	}
+	
+	private void writeObject(java.io.ObjectOutputStream oos) throws IOException {
+		// default serialization 
+		oos.defaultWriteObject();
+		// write the object
+		oos.writeObject(def.name());
 	}
 }

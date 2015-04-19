@@ -356,7 +356,11 @@ public class Chunk {
 					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
 						for (AbstractEntity ent : entities){
 							Gdx.app.debug("Chunk", "Saving entity:"+ent.getName());
-							outStream.writeObject(ent);
+							try {
+								outStream.writeObject(ent);
+							} catch(java.io.NotSerializableException ex){
+								Gdx.app.error("Chunk", "Something is not NotSerializable: "+ex.getMessage()+":"+ex.toString());
+							}
 						}
 						outStream.close();
 					}

@@ -20,7 +20,7 @@ public class Enemy extends MovableEntity{
 	private static String killSound = "robot1destroy";
 	private static final String movementSound = "robot1Wobble";
 	
-    private MovableEntity target;
+    private transient MovableEntity target;
     private int runningagainstwallCounter = 0;
     private Point lastPos;
 	private long movementSoundPlaying;

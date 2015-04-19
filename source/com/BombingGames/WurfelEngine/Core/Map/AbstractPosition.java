@@ -28,9 +28,11 @@
  */
 package com.BombingGames.WurfelEngine.Core.Map;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.badlogic.gdx.math.Vector3;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -53,7 +55,7 @@ public abstract class AbstractPosition implements Serializable {
 	/**
 	 *
 	 */
-	protected final AbstractMap map;
+	protected transient AbstractMap map;
 
 	public AbstractPosition(AbstractMap map) {
 		this.map = map;
@@ -176,4 +178,16 @@ public abstract class AbstractPosition implements Serializable {
             + getPoint().getZ()*SQRT12//Z
         );
     }
+	
+		/**
+	 * overrides deserialisation
+	 *
+	 * @param stream
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject(); //fills fld1 and fld2;
+		map = Controller.getMap();
+	}
 }

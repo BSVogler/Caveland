@@ -79,6 +79,14 @@ public class CoreData implements HasID, Serializable {
 		}
 	}
 	
+	/**
+	 * value between 0-100. This method should only be used for non-bocks.
+	 * @param health 
+	 */
+	public void setHealth(byte health){
+		this.health = health;
+	}
+	
 	public byte getHealth(){
 		return health;
 	}

@@ -65,7 +65,7 @@ public class Weapon {
     private final int distance;
     private final int bps;//bullets per shot
     private final float spread;
-    private final int damage;
+    private final byte damage;
     private final byte bulletSprite;
     private final byte impactSprite;
     
@@ -113,7 +113,7 @@ public class Weapon {
                 distance = 0;
                 bps = 10;
                 spread = 0.5f;
-                damage = 1000;
+                damage = (byte) 1000;
                 bulletSprite = -1;
                 impactSprite=15;
                 
@@ -129,7 +129,7 @@ public class Weapon {
                 distance = 10;
                 bps = 1;
                 spread = 0.1f;
-                damage = 800;
+                damage = (byte) 800;
                 bulletSprite = 0;
                 impactSprite=19;
                 
@@ -147,7 +147,7 @@ public class Weapon {
                 bps = 10;
                 spread = 0.4f;
                 bulletSprite = -1;
-                damage = 500;
+                damage = (byte) 500;
                 impactSprite=15;
                 
                 //fire = WEMain.getAsset("com/BombingGames/WeaponOfChoice/Sounds/punch.wav");
@@ -162,7 +162,7 @@ public class Weapon {
                 distance = 5;
                 bps = 20;
                 spread = 0.2f;
-                damage = 400;
+                damage = (byte) 400;
                 bulletSprite = 0;
                 impactSprite=19;
                 
@@ -178,7 +178,7 @@ public class Weapon {
                 distance = 10;
                 bps = 1;
                 spread = 0f;
-                damage = 400;
+                damage = (byte) 400;
                 bulletSprite = 0;
                 impactSprite=19;
                 
@@ -194,7 +194,7 @@ public class Weapon {
                 distance = 3;
                 bps = 1;
                 spread = 0.2f;
-                damage = 400;
+                damage = (byte) 400;
                 bulletSprite = 3;
                 explode = 1;
                 impactSprite=19;
@@ -228,7 +228,7 @@ public class Weapon {
                 distance = 3;
                 bps = 5;
                 spread = 0.4f;
-                damage = 200;
+                damage = (byte) 200;
                 bulletSprite = 1;
                 impactSprite=18;
                 
@@ -243,7 +243,7 @@ public class Weapon {
                     distance = 10;
                     bps = 1;
                     spread = 0.1f;
-                    damage = 800;
+                    damage = (byte) 800;
                     bulletSprite = 0;
                     impactSprite=19;
         }

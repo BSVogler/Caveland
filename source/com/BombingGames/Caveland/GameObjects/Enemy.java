@@ -84,7 +84,7 @@ public class Enemy extends MovableEntity{
                         new SimpleEntity((byte) 46).spawn(getPosition().cpy()).setAnimation(
 							new EntityAnimation(new int[]{300}, true, false)
 						);
-                        target.damage(50);
+                        target.damage((byte)50);
                     }
 				}// else 
 					//setSpeed(0.4f);
@@ -123,7 +123,7 @@ public class Enemy extends MovableEntity{
     }
 
 	@Override
-	public void damage(int value) {
+	public void damage(byte value) {
 		super.damage(value);
 		if (getHealth()<=0){
 			Controller.getSoundEngine().stop(movementSound, movementSoundPlaying);

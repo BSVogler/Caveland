@@ -275,7 +275,7 @@ public class MineCart extends AbstractInteractable {
 	}
 
 	@Override
-	public void damage(int value) {
+	public void damage(byte value) {
 		super.damage(value);
 		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);

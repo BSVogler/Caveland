@@ -33,7 +33,7 @@ public class Flint extends Collectible{
 	public void onCollide(){
 		new Explosion(
 			1,
-			500,
+			(byte)50,
 			WE.getGameplay().getView().getCameras().get(0)
 		).spawn(getPosition());
 		dispose();

@@ -224,7 +224,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		if (timeSinceDamage > 4000) {
-			heal(dt / 2f);
+			heal((byte) (dt / 2f));
 		} else {
 			timeSinceDamage += dt;
 		}
@@ -332,14 +332,14 @@ public class CustomPlayer extends Controllable {
 	}
 
 	public void attack(){
-		attack(50);
+		attack((byte)50);
 	}
 	/**
 	 * does an attack move
 	 *
 	 * @param damage
 	 */
-	public void attack(int damage) {
+	public void attack(byte damage) {
 		if (action == 'l') {
 			playAnimation('i');
 		} else {
@@ -384,7 +384,7 @@ public class CustomPlayer extends Controllable {
 	}
 
 	@Override
-	public void damage(int value) {
+	public void damage(byte value) {
 		super.damage(value);
 		Controller.getSoundEngine().play("urfHurt");
 		if (getCamera() != null) {
@@ -394,7 +394,7 @@ public class CustomPlayer extends Controllable {
 	}
 
 	@Override
-	public void heal(float value) {
+	public void heal(byte value) {
 		super.heal(value);
 		if (getCamera() != null) {
 			getCamera().setDamageoverlayOpacity(1f - getHealth() / 1000f);
@@ -482,7 +482,7 @@ public class CustomPlayer extends Controllable {
 			playAnimation('i');
 			Controller.getSoundEngine().play("release");
 			addToHor(40f);
-			attack(100);
+			attack((byte)100);
 		}
 
 		loadAttack = 0f;

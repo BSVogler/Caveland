@@ -324,7 +324,7 @@ public class CustomGameView extends GameView{
 			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) //X
-				player.attack(50);
+				player.attack((byte)50);
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
 				if (id==0)

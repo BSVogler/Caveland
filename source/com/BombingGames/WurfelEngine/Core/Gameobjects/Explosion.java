@@ -16,7 +16,7 @@ public class Explosion extends AbstractEntity {
 	private static String explosionsound;
 	
 	private final int radius;
-	private final int damage;
+	private final byte damage;
 	private transient Camera camera;
 
 	/**
@@ -25,7 +25,7 @@ public class Explosion extends AbstractEntity {
 	public Explosion() {
 		super((byte)0);
 		this.radius = 2;
-		damage = 500;
+		damage = 50;
 		setSaveToDisk(false);
 	}
 
@@ -33,10 +33,10 @@ public class Explosion extends AbstractEntity {
 	/**
 	 * 
 	 * @param radius the radius in game world blocks
-	 * @param damage [0;1000]
+	 * @param damage [0;100]
 	 * @param camera can be null. used for screen shake
 	 */
-	public Explosion(int radius, int damage, Camera camera) {
+	public Explosion(int radius, byte damage, Camera camera) {
 		super((byte)0);
 		this.radius = radius;
 		this.damage = damage;

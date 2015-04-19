@@ -47,7 +47,7 @@ public class Bullet extends AbstractEntity {
     private static String explosionsound = "explosion2";
     private Vector3 dir = new Vector3();//movement
     private float speed;
-    private int damage;
+    private byte damage;
     private int distance =0;//distance traveled
     private MovableEntity parent;//no self shooting
     private int maxDistance = 1000;//default maxDistance
@@ -131,7 +131,7 @@ public class Bullet extends AbstractEntity {
      *
      * @param damage
      */
-    public void setDamage(int damage) {
+    public void setDamage(byte damage) {
         this.damage = damage;
     }
     
@@ -147,7 +147,7 @@ public class Bullet extends AbstractEntity {
      * Spawns explosion.
      */
     private void explode(int radius){
-       new Explosion(radius,800,WE.getGameplay().getView().getCameras().get(0)).spawn(getPosition());
+       new Explosion(radius,(byte)80,WE.getGameplay().getView().getCameras().get(0)).spawn(getPosition());
     }
 
     @Override

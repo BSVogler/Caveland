@@ -47,7 +47,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * time in ms to pass before new sound can be played
 	 */
-	private static float soundTimeLimit;
+	private transient static float soundTimeLimit;
 	private transient static String waterSound = "splash";
      	
 	   /**
@@ -719,7 +719,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      * called when gets damage
      * @param value
      */
-    public void damage(int value) {
+    public void damage(byte value) {
 		if (!indestructible) {
 			if (getHealth() >0){
 				if (damageSounds != null && soundTimeLimit<=0) {
@@ -727,9 +727,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
 					soundTimeLimit = 100;
 				}
-				setHealth(getHealth()-value);
+				setHealth((byte) (getHealth()-value));
 			} else
-				setHealth(0);
+				setHealth((byte) 0);
 		}
     }
 	
@@ -737,9 +737,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * heals the entity
 	 * @param value 
 	 */
-	public void heal(float value) {
-		if (getHealth()<1000)
-			setHealth(getHealth()+value);
+	public void heal(byte value) {
+		if (getHealth()<100)
+			setHealth((byte) (getHealth()+value));
 	}
 
 	/**

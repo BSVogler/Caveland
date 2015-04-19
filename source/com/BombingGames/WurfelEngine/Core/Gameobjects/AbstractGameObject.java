@@ -123,10 +123,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private float rotation;
 	private float scaling;
 	private int graphicsID;
-	/**
-	 * number between 0 and 1000
-	 */
-	private float health = 1000;
 	
 	/**
 	 * default is RGBA 0x80808080.
@@ -562,17 +558,17 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @return from maximum 1000
      */
 	public float getHealth() {
-		return health;
+		return coreData.getHealth();
 	}
 
 	/**
 	 * clamps to [0..1000]
 	 * @param health 
 	 */
-	public void setHealth(float health) {
-		if (health>1000) health=1000;
+	public void setHealth(byte health) {
+		if (health>100) health=100;
 		if (health<0) health=0;
-		this.health = health;
+		this.coreData.setHealth(health);
 	}
 
 	/**

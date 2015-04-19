@@ -371,7 +371,7 @@ public class CustomPlayer extends Controllable {
 
 		//damage blocks
 		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
-		if (aimCoord.damage((byte) damage)) {
+		if (aimCoord.damage(damage)) {
 			Controller.getSoundEngine().play("impact");
 			getCamera().shake(20, 50);
 			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
@@ -388,7 +388,7 @@ public class CustomPlayer extends Controllable {
 		super.damage(value);
 		Controller.getSoundEngine().play("urfHurt");
 		if (getCamera() != null) {
-			getCamera().setDamageoverlayOpacity(1f - getHealth() / 1000f);
+			getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
 		}
 		timeSinceDamage = 0;
 	}
@@ -397,7 +397,7 @@ public class CustomPlayer extends Controllable {
 	public void heal(byte value) {
 		super.heal(value);
 		if (getCamera() != null) {
-			getCamera().setDamageoverlayOpacity(1f - getHealth() / 1000f);
+			getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
 		}
 	}
 

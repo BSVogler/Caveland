@@ -307,6 +307,17 @@ public class Camera implements LinkedWithMap {
 			//set up projection matrices
 			combined.set(projection);
 			Matrix4.mul(combined.val, view.val);
+			
+			if (cameraContentBlocks!=null) {
+				for (RenderBlock[][] x : cameraContentBlocks) {
+					for (RenderBlock[] y : x) {
+						for (RenderBlock z : y) {
+							if (z != null)
+								z.update(dt);
+						}
+					}
+				}
+			}
 
 			//don't know what this does
 			//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);

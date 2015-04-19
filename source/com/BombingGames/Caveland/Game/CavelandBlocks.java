@@ -45,6 +45,8 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 				return "textureless block";
 			case 55:
 				return "rails";	
+			case 72:
+				return "tree";	
 		}
 			
 		return "not named yet";
@@ -54,6 +56,8 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	public boolean isObstacle(byte id, byte value) {
 		if (id>=41 && id<=44)
 			return true;
+		if (id==72) return true;
+		if (id==46) return true;
 		return false;
 	}
 
@@ -71,6 +75,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	@Override
 	public boolean hasSides(byte id, byte value) {
 		if (id==55) return false;
+		if (id==72) return false;
 		return true;
 	}
 

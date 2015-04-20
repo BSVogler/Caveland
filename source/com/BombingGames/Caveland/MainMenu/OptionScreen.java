@@ -74,7 +74,7 @@ public class OptionScreen extends WEScreen {
 		
 		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(stage.getWidth()/2-300, 400);
-		musicSlider.setValue(1f);
+		musicSlider.setValue(WE.CVARS.getValueF("music"));
 		musicSlider.addListener(
 			new ChangeListener() {
 

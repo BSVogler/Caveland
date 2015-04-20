@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -35,6 +36,7 @@ public class SaveSelectionScreen extends WEScreen {
 	 * 
 	 * @param coop flag - -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
 	 * @param batch 
+	 * @param background 
 	 */
 	public SaveSelectionScreen(int coop, SpriteBatch batch, Texture background) {
 		this.batch = batch;
@@ -46,7 +48,7 @@ public class SaveSelectionScreen extends WEScreen {
 		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
 		
 		TextButton continueButton = new TextButton("Continue", skin);
-		continueButton.setPosition(500, 600);
+		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);
 		continueButton.addListener(new ChangeListener() {
 
 			@Override
@@ -56,6 +58,7 @@ public class SaveSelectionScreen extends WEScreen {
 		});
 		stage.addActor(continueButton);
 		if (savesCount<1) {
+			continueButton.setText("No previous game found.");
 			continueButton.setDisabled(true);
 			selectBox = null;
 		} else {
@@ -64,16 +67,19 @@ public class SaveSelectionScreen extends WEScreen {
 			for (int i = 0; i < savesCount; i++) {
 				arstr.add(Integer.toString(i));
 			}
+			Label selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
+			selectBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+200);
+			stage.addActor(selectBoxLabel);
 			selectBox = new SelectBox<>(skin); 
 			selectBox.setItems(arstr);
 			selectBox.setWidth(40);
-			selectBox.setPosition(600, 600);
+			selectBox.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+150,50,50);
 			stage.addActor(selectBox);
 		}
 		
 		//new game button
 		TextButton newgameButton = new TextButton("New Game...", skin);
-		newgameButton.setPosition(500, 500);
+		newgameButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2-200,400,150);
 		newgameButton.addListener(new ChangeListener() {
 
 			@Override

@@ -89,7 +89,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//add buttons
 		int i=0;
-		final int top = 150;
+		final int top = (int) (stage.getHeight()*0.1f);
 		
 		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());
 		menuItems[i].addListener(

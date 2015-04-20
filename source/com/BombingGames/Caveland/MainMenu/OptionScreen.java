@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -72,6 +73,10 @@ public class OptionScreen extends WEScreen {
 			stage.addActor(sbox);
 		}
 		
+		
+		Label musicLabel = new Label("Music volume", WE.getEngineView().getSkin());
+		musicLabel.setPosition(stage.getWidth()/2-300, 420);
+		stage.addActor(musicLabel);
 		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(stage.getWidth()/2-300, 400);
 		musicSlider.setValue(WE.CVARS.getValueF("music"));
@@ -86,6 +91,9 @@ public class OptionScreen extends WEScreen {
 		);
 		stage.addActor(musicSlider);
 		
+		Label soundLabel = new Label("Sound volume", WE.getEngineView().getSkin());
+		soundLabel.setPosition(stage.getWidth()/2-300, 370);
+		stage.addActor(soundLabel);
 		soundSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
 		soundSlider.setPosition(stage.getWidth()/2-300, 350);
 		soundSlider.setValue(1f);

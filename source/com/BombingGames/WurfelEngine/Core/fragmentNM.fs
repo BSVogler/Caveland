@@ -36,7 +36,15 @@ void main() {
 		//check if moon is shining, if not ignore it
 		if (moonColor.r > 0.05 || moonColor.g > 0.05 || moonColor.b> 0.05) {
 			moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
+
+			//saturation
+			//DiffuseColor.rgb = DiffuseColor.rgb-0.6*(DiffuseColor.rgb-vec3(dot(DiffuseColor.rgb, vec3(.222, .707, .071)) ));
+
+			//contrast
+			//DiffuseColor.rgb = ((DiffuseColor.rgb - 0.5) * max(1.0+0.4*moonColor.b, 0.0)) + 0.5;
+
 		}
+//vertice color + texture color*(sun, moon and ambient) 
 		gl_FragColor = vec4(v_color.rgb+vec3(0.5,0.5,0.5),v_color.a) * vec4((sunLight+moonLight+ambientColor.rgb)*DiffuseColor.rgb,DiffuseColor.a);
 	}
 }

@@ -281,7 +281,7 @@ public class Console implements CommandsInterface  {
         while (i>=0 && !messages.get(i).sender.equals(sender)) {
             i--;
         }
-        return i>=0 ? messages.get(i).message : "";
+        return i>=0 ? messages.get(i).message.substring(0, messages.get(i).message.length()-2) : "";
     }
     
     /**

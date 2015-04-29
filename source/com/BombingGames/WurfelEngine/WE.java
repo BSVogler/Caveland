@@ -72,7 +72,7 @@ public class WE {
 	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
 
 	/**
-	 *
+	 *The CVar system used by the engine.
 	 */
 	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.wecvars"));
     private static final WEGame game = new WEGame();

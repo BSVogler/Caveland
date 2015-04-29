@@ -95,7 +95,7 @@ public class BasicMenuItem {
      */
     public void render(BitmapFont font, SpriteBatch batch, ShapeRenderer sr) {
         this.x = ((Gdx.graphics.getWidth()-50)/2);
-        this.y = (Gdx.graphics.getHeight()/2-120+index*80);
+        this.y = (Gdx.graphics.getHeight()/2+120-index*80);
         
         if (highlight==index)
             sr.setColor(Color.LIGHT_GRAY.cpy());
@@ -116,7 +116,7 @@ public class BasicMenuItem {
      */
     public boolean isClicked() {
         int mouseX = Gdx.input.getX();
-        int mouseY = Gdx.input.getY();
+        int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         
         return (
             Gdx.input.isButtonPressed(Buttons.LEFT) &&

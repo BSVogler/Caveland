@@ -63,12 +63,11 @@ public class MenuView {
         //load textures
         lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
-        lettering.setY(50);
-        lettering.flip(false, true);
+        lettering.setY(Gdx.graphics.getHeight() - 150);
         
         batch = new SpriteBatch();
         
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), true);
+        font = new BitmapFont();
         font.setColor(Color.WHITE);
         
         sr = new ShapeRenderer();
@@ -104,15 +103,15 @@ public class MenuView {
         
 			//draw warnings
             font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-            font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+            font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
             if (warning) {
-                font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 50);
-                font.draw(batch, "You can hide this warning whith BasicMainMenu#supressWarning().", 20, 90);
+                font.draw(batch, "No custom main menu used. This is the engine's basic main menu.", 20, 200);
+                font.draw(batch, "You can hide this warning with BasicMainMenu#supressWarning().", 20, 100);
             }
         
         
 			//font.scale(-0.5f);
-			font.draw(batch, WE.getCredits(), 50, 100);
+			font.draw(batch, WE.getCredits(), 50, Gdx.graphics.getHeight() - 150);
 			//font.scale(0.5f);
 		batch.end();
     }

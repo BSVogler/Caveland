@@ -473,6 +473,10 @@ public class Console implements CommandsInterface  {
             if (keycode == Keys.UP){
                 parentRef.setText(parentRef.getLastMessage("Console"));
             }
+			if (keycode == Keys.DOWN){
+                parentRef.setText("");
+            }
+			
             if (keycode == Keys.ENTER){
                 parentRef.enter();
             }

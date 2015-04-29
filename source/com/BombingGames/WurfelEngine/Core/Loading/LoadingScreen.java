@@ -56,9 +56,10 @@ public class LoadingScreen extends WEScreen {
         //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(AbstractGameObject.getSpritesheetPath()+".txt", TextureAtlas.class);
 		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
-			manager.load(AbstractGameObject.getSpritesheetPath()+"Normal.png", Texture.class);
 			if (!Gdx.files.internal(AbstractGameObject.getSpritesheetPath()+"Normal.png").exists()){
 				Gdx.app.error("Loading", "No Normal Map Texture Found. Must be located at spritesheet path and end with the suffix \"Normal.png\". You can disable the normal map rendering to prevent a crash.");
+			} else {
+				manager.load(AbstractGameObject.getSpritesheetPath()+"Normal.png", Texture.class);
 			}
 		}
 		

@@ -194,7 +194,7 @@ public class CVarSystem {
 		WE.CVARS.register(new IntCVar(-40), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(false), "loadPixmap", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new FloatCVar(0.00078125f), "LEazimutSpeed", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(1920), "renderResolutionWidth", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);

@@ -42,10 +42,10 @@ import java.util.ArrayList;
 
 /**
  * A coordinate is a reference to a specific cell in the map. The coordinate can
- * transcode between relative and absolute coordinates.<br />
+ * transcode between relative and absolute coordinates.<br>
  * Relative coordinates are similar to the map array. Absolute coordinates are
  * indipendent of the current map but to access them you must have the chunk
- * where the coordiantes are pointing to in memory.<br />
+ * where the coordiantes are pointing to in memory.<br>
  * The coordinate uses a continously height value. The Z coordinate value can be
  * calculated.
  *
@@ -437,12 +437,12 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Goes to the the neighbour with the specific side.<br />
-	 * 7 \ 0 / 1<br />
-	 * -------<br />
-	 * 6 | 8 | 2<br />
-	 * -------<br />
-	 * 5 / 4 \ 3<br />
+	 * Goes to the the neighbour with the specific side.<br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | 8 | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
 	 * O(const)
 	 *
 	 * @param neighbourSide the side number of the given coordinates

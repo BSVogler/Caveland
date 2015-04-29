@@ -69,7 +69,7 @@ public abstract class CVar {
 	/**
 	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
 	 * if already registered updates the default and current value.
-	 * @param name
+	 * @param name name of the cvar
 	 * @param flag
 	 * @param parent
 	 * @since v1.4.2

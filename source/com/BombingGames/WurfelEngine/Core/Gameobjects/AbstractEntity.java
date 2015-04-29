@@ -147,8 +147,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
     }
     
     /**
-     * add this entity to the map-> let it spawn
-	 * @param point
+     * add this entity to the map-&gt; let it spawn
+	 * @param point the point in the game world where the object is 
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){

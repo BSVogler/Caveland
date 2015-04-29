@@ -546,7 +546,7 @@ public class Chunk {
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param z coordinate
-	 * @return 
+	 * @return can be null
 	 */
 	public CoreData getBlock(int x, int y, int z) {
 		int xIndex = x-topleft.getX();
@@ -556,7 +556,7 @@ public class Chunk {
 
 	/**
 	 * sets a block in the map. if position is under the map does nothing.
-	 * @param block 
+	 * @param block no null pointer allowed
 	 */
 	public void setBlock(RenderBlock block) {
 		int xIndex = block.getPosition().getX()-topleft.getX();

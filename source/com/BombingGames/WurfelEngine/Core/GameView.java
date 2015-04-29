@@ -312,7 +312,7 @@ public class GameView extends View implements GameManager {
     }
      
     /**
-     * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -> game. First does screen->view and then via raytracing view->game.
+     * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -&gt; game. First does screen-&gt;view and then via raytracing view-&gt;game.
      * @param x the x position on the screen from left
      * @param y the y position on the screen from top
      * @return the position on the map.

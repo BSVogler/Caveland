@@ -126,7 +126,7 @@ public class SoundEngine {
 	 * 
 	 * @param identifier name of soundIterator
 	 * @param volume the volume in the range [0,1]
-	 * @param pitch the pitch multiplier, 1 == default, >1 == faster, 1 == slower, the value has to be between 0.5 and 2.0
+	 * @param pitch the pitch multiplier, 1 == default, &gt;1 == faster, &lt;1 == slower, the value has to be between 0.5 and 2.0
 	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
 	 * @return 
 	 */
@@ -155,7 +155,7 @@ public class SoundEngine {
 	 * @param identifier name of soundIterator
 	 * @param pos the position of the soundIterator in the game world. Should be a reference to the position of the object and no copy so that it updates itself.
 	 * @return the instance id
-	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
+	 * @see com.badlogic.​gdx.​audio.​Sound#loop()
 	 */
 	public long loop(String identifier, AbstractPosition pos) {
 		Sound result = sounds.get(identifier);
@@ -188,7 +188,7 @@ public class SoundEngine {
 	 * Stops a specifiy instance of the soundIterator.
 	 * @param identifier name of soundIterator
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
-	 * @see com.​badlogic.​gdx.​audio.​Sound#stop
+	 * @see com.badlogic.gdx.audio.Sound#stop()
 	 */
 	public void stop(String identifier, long instance) {
 		Sound result = sounds.get(identifier);
@@ -207,7 +207,7 @@ public class SoundEngine {
 	 * @param identifier name of soundIterator
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @param volume 
-	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume
+	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume()
 	 */
 	public void setVolume(String identifier, long instance, float volume) {
 		Sound result = sounds.get(identifier);

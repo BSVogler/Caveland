@@ -83,19 +83,17 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @param name if available on disk it will be load
 	 * @param saveslot
      * @throws java.io.IOException
-     * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public ChunkMap(final File name, int saveslot) throws IOException{
         this(name, getDefaultGenerator(), saveslot);
     }
     
     /**
-     * Loads a map. Fill the map with {@link #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) }
+     * Loads a map.
      * @param name if available on disk it will load the meta file
      * @param generator the generator used for generating new chunks
 	 * @param saveslot
      * @throws java.io.IOException thrown if there is no full read/write access to the map file
-     * @see #fill(com.BombingGames.WurfelEngine.Core.Map.Generator) 
      */
     public ChunkMap(final File name, Generator generator, int saveslot) throws IOException {
 		super(name, generator, saveslot);
@@ -196,11 +194,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 
     }
     
-    /**
-     * Replace a block. Assume that the map already has been filled at this coordinate.
-     * @param block no null value.
-	 * @see #destroyBlockOnCoord(Coordinate) 
-     */
 	@Override
     public void setBlock(final RenderBlock block) {
 		getChunk(block.getPosition()).setBlock(block);
@@ -234,7 +227,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	}
 	
 	/**
-	 * get the chunk with the given chunk coords. <br />Runtime: O(c) where c = amount of chunks -> O(1)
+	 * get the chunk with the given chunk coords. <br>Runtime: O(c) where c = amount of chunks -&gt; O(1)
 	 * @param chunkX
 	 * @param chunkY
 	 * @return if not in memory return null

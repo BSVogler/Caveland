@@ -14,7 +14,7 @@ public interface HasID {
 	
 	/**
      * Get the value. It is like a sub-id and can identify the status.
-     * @return in range [0;{@link #VALUESNUM}]. Is -1 if about to destroyed.
+     * @return in range [0;{@link AbstractGameObject#VALUESNUM}]. Is -1 if about to destroyed.
      */
 	public byte getValue();
 

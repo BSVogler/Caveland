@@ -365,7 +365,8 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
-	 * @param block
+	 * @param block no null pointer
+	 * @see #setBlock(com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock) 
 	 */
 	public abstract void setBlock(final RenderBlock block);
 
@@ -373,6 +374,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param coord
 	 * @param block
+	 * @see #setBlock(com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock) 
 	 */
 	public abstract void setBlock(Coordinate coord, CoreData block);
 

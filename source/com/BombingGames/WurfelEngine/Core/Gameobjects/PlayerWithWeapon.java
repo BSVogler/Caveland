@@ -45,10 +45,9 @@ public class PlayerWithWeapon extends Controllable {
     private Weapon weapon;
 
     /**
-     * Creates a player. The parameters are for the lower half of the player. The constructor automatically creates a block on top of it.
+     * Creates a player. The parameters are for the lower half of the player.
 	 * @param spritesPerDir
 	 * @param height
-     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     public PlayerWithWeapon(int spritesPerDir, int height) {
         super((byte) 30, spritesPerDir);

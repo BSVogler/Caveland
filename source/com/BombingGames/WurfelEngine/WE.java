@@ -60,7 +60,7 @@ import java.io.File;
 
 /**
  *The Main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
- * The Wurfel Engine needs Java >= v1.8 and the API libGDX v1.5.6 (may work with older version).
+ * The Wurfel Engine needs Java &gt;= v1.8 and the API libGDX v1.5.6 (may work with older version).
  * @author Benedikt S. Vogler
  * @version 1.5.3
  */
@@ -88,7 +88,7 @@ public class WE {
     /**
      * Pass the mainMenu which gets displayed when you call launch().
      * @param mainMenu 
-     * @see #launch() 
+     * @see WE#launch(java.lang.String, java.lang.String[])
      */
     public static void setMainMenu(final AbstractMainMenu mainMenu) {
         WE.mainMenu = mainMenu;
@@ -104,7 +104,7 @@ public class WE {
 	}
     
     /**
-     * Start the engine. You should have passed a main menu first.<br /> Until the engine is launched it can take a while. Code that can only be run after the engine has openend should be run in the screen class.
+     * Start the engine. You should have passed a main menu first.<br> Until the engine is launched it can take a while. Code that can only be run after the engine has openend should be run in the screen class.
 	 * @param title The title, which is displayed in the window.
      * @param args Wurfel Engine launch parameters. For a list look in the wiki.
      * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)

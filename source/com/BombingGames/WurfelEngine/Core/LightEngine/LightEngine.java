@@ -279,30 +279,32 @@ public class LightEngine implements LinkedWithMap {
     /**
      * 
      * @param normal
-     * @return pseudoGrey color
+     * @return pseudoGrey color, copy safe
      */
      private Color getDiff(Side normal){
         if (normal==Side.LEFT)
-            return getEmittingLights().mul(I_diff0);
+            return getEmittingLights().mul(I_diff0, I_diff0, I_diff0, 1);
         else if (normal==Side.TOP)
-            return getEmittingLights().mul(I_diff1);//only top side can have specular light
+            return getEmittingLights().mul(I_diff1, I_diff1, I_diff1, 1);
         else
-            return getEmittingLights().mul(I_diff2);
+            return getEmittingLights().mul(I_diff2, I_diff2, I_diff2, 1);
     }
      
     /**
      * 
      * @param normal
-     * @return pseudoGrey color
+     * @return pseudoGrey color, copy safe
      */
      private Color getSpec(Side normal){
-        if (normal==Side.LEFT)
-            return Color.BLACK.cpy();
-        else if (normal==Side.TOP)
-            return getEmittingLights().mul(I_spec1);
+        if (normal==Side.TOP)
+            return getEmittingLights().mul(I_spec1);//only top side can have specular light
         else
             return Color.BLACK.cpy();
     }
+	 
+	public Color getColor(Side normal){
+		return getSpec(normal).add(getDiff(normal));
+	}
     
     
     /**
@@ -318,7 +320,7 @@ public class LightEngine implements LinkedWithMap {
     
     /**
      * Mix of both light sources. Used for diff and spec.
-     * @return a color with a tone
+     * @return a color with a tone, copy safe
      */
     private Color getEmittingLights(){
 		Color light = sun.getLight();

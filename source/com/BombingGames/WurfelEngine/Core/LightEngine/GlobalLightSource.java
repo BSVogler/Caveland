@@ -178,7 +178,7 @@ public class GlobalLightSource {
 
     /**
      * Returns the light the GLS emits.
-     * @return applied with pseudogray
+     * @return applied with pseudogray, copy safe
      */
     public Color getLight() {
         return tone.cpy().mul(PseudoGrey.toColor(power));

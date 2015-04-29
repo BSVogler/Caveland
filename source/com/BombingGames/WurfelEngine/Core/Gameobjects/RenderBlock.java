@@ -316,6 +316,10 @@ public class RenderBlock extends AbstractGameObject {
 		} else
 			color = Color.GRAY.cpy();
 		
+		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
+			color = Controller.getLightEngine().getColor(side).mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f);
+        }
+		
         renderSide(view,
             coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
             coords.getViewSpcY(view) - VIEW_HEIGHT2 + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(1+getScaling())) : 0),//the top is drawn a quarter blocks higher,
@@ -343,8 +347,7 @@ public class RenderBlock extends AbstractGameObject {
     public void renderSide(final View view, final int xPos, final int yPos, final Side side){
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
-			//color = Controller.getLightEngine().getColor(side);//todo reimplement vertex shading
-			color = Color.GRAY.cpy();
+			color = Controller.getLightEngine().getColor(side);
         } else
 			color = Color.GRAY.cpy();
 		 

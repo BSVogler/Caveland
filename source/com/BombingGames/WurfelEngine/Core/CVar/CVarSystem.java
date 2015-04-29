@@ -263,5 +263,6 @@ public class CVarSystem {
 		WE.CVARS.register(new IntCVar(2), "controllerlinuxAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
 	}
 }

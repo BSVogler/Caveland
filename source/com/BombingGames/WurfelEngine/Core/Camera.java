@@ -54,6 +54,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Creates a virtual camera wich displays the game world on the viewport.
@@ -130,7 +131,11 @@ public class Camera implements LinkedWithMap {
 	 * true if camera is currently rendering
 	 */
 	private boolean active = false;
-	private ArrayList<AbstractGameObject> depthsort;
+	private AbstractGameObject[] depthlist;
+	/**
+	 * amount of objects to be rendered
+	 */
+	private int objectsToBeRendered = 0;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -445,50 +450,50 @@ public class Camera implements LinkedWithMap {
 			);
 
 			//render map
-			ArrayList<AbstractGameObject> depthlist = createDepthList();
+			createDepthList();
 
 			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality 
 			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR);
 
 			view.setDebugRendering(false);
 			view.getBatch().begin();
-			//send a Vector4f to GLSL
-			if (WE.CVARS.getValueB("enablelightengine")) {
-				view.getShader().setUniformf(
-					"sunNormal",
-					Controller.getLightEngine().getSun().getNormal()
-				);
-				view.getShader().setUniformf(
-					"sunColor",
-					Controller.getLightEngine().getSun().getLight()
-				);
-				view.getShader().setUniformf(
-					"moonNormal",
-					Controller.getLightEngine().getMoon().getNormal()
-				);
-				view.getShader().setUniformf(
-					"moonColor",
-					Controller.getLightEngine().getMoon().getLight()
-				);
-				view.getShader().setUniformf(
-					"ambientColor",
-					Controller.getLightEngine().getAmbient()
-				);
-			}
+				//send a Vector4f to GLSL
+				if (WE.CVARS.getValueB("enablelightengine")) {
+					view.getShader().setUniformf(
+						"sunNormal",
+						Controller.getLightEngine().getSun().getNormal()
+					);
+					view.getShader().setUniformf(
+						"sunColor",
+						Controller.getLightEngine().getSun().getLight()
+					);
+					view.getShader().setUniformf(
+						"moonNormal",
+						Controller.getLightEngine().getMoon().getNormal()
+					);
+					view.getShader().setUniformf(
+						"moonColor",
+						Controller.getLightEngine().getMoon().getLight()
+					);
+					view.getShader().setUniformf(
+						"ambientColor",
+						Controller.getLightEngine().getAmbient()
+					);
+				}
 
-			//bind normal map to texture unit 1
-			if (WE.CVARS.getValueB("LEnormalMapRendering")) {
-				AbstractGameObject.getTextureNormal().bind(1);
-			}
+				//bind normal map to texture unit 1
+				if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+					AbstractGameObject.getTextureNormal().bind(1);
+				}
 
-				//bind diffuse color to texture unit 0
-			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
-			AbstractGameObject.getTextureDiffuse().bind(0);
+					//bind diffuse color to texture unit 0
+				//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+				AbstractGameObject.getTextureDiffuse().bind(0);
 
-			//render vom bottom to top
-			for (AbstractGameObject renderobject : depthlist) {
-				renderobject.render(view, camera);
-			}
+				//render vom bottom to top
+				for (int i = 0; i < objectsToBeRendered; i++) {
+					depthlist[i].render(view, camera);
+				}
 			view.getBatch().end();
 
 			//if debugging render outline again
@@ -555,12 +560,12 @@ map.getGameWidth(),
 	 *
 	 * @return
 	 */
-	private ArrayList<AbstractGameObject> createDepthList() {
+	private AbstractGameObject[] createDepthList() {
 		//register memory space onyl once then reuse
-		if (depthsort ==null)
-			depthsort= new ArrayList<>(1000);
-		else depthsort.clear();
+		if (depthlist==null || WE.CVARS.getValueI("MaxSprites") != depthlist.length)
+			depthlist = new AbstractGameObject[WE.CVARS.getValueI("MaxSprites")];
 		
+		objectsToBeRendered=0;
 		DataIterator iterator = new DataIterator(
 			cameraContentBlocks,//iterate over camera content
 			0,					//from layer0
@@ -586,36 +591,45 @@ map.getGameWidth(),
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))
 				) {
-					depthsort.add(block);
+					depthlist[objectsToBeRendered] = block;
+					objectsToBeRendered++;
+					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
 				}
 			}
 		} else {
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				RenderBlock block = (RenderBlock) iterator.next();
 				if (block!= null && !block.isHidden()) {
-					depthsort.add(block);
+					depthlist[objectsToBeRendered] = block;
+					objectsToBeRendered++;
+					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
 				}
 			}
 		}
+		
+		if (objectsToBeRendered < depthlist.length) {
 
-		//add entitys
-		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-			if (
+			//add entitys
+			for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+				if (
 				!entity.isHidden()
-				&& inViewFrustum(
-					entity.getPosition().getViewSpcX(gameView),
-					entity.getPosition().getViewSpcY(gameView)
-				)
-				&& entity.getPosition().getZGrid() < zRenderingLimit
-			) {
-				depthsort.add(entity);
+					&& inViewFrustum(
+						entity.getPosition().getViewSpcX(gameView),
+						entity.getPosition().getViewSpcY(gameView)
+					)
+					&& entity.getPosition().getZGrid() < zRenderingLimit
+				) {
+					depthlist[objectsToBeRendered] = entity;
+					objectsToBeRendered++;
+					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+				}
 			}
 		}
 		//sort the list
-		if (depthsort.size() > 0) {
-			return sortDepthList(depthsort, 0, depthsort.size() - 1);
+		if (objectsToBeRendered > 1) {
+			return sortDepthListParallel(depthlist);
 		}
-		return depthsort;
+		return depthlist;
 	}
 
 	/**
@@ -652,7 +666,7 @@ map.getGameWidth(),
 	 * @param low the lower border
 	 * @param high the higher border
 	 */
-	private ArrayList<AbstractGameObject> sortDepthList(ArrayList<AbstractGameObject> depthsort, int low, int high) {
+	private ArrayList<AbstractGameObject> sortDepthListQuick(ArrayList<AbstractGameObject> depthsort, int low, int high) {
 		int left = low;
 		int right = high;
 		int middle = depthsort.get((low + high) / 2).getDepth(gameView);
@@ -664,7 +678,7 @@ map.getGameWidth(),
 			while (depthsort.get(right).getDepth(gameView) > middle) {
 				right--;
 			}
-
+		
 			if (left <= right) {
 				AbstractGameObject tmp = depthsort.set(left, depthsort.get(right));
 				depthsort.set(right, tmp);
@@ -672,14 +686,31 @@ map.getGameWidth(),
 				right--;
 			}
 		}
-
-		if (low < right) {
-			sortDepthList(depthsort, low, right);
-		}
-		if (left < high) {
-			sortDepthList(depthsort, left, high);
-		}
-
+		return depthsort;
+	}
+	
+	/**
+	 * experimental feature. Can be slower or faster depending on the scene.
+	 * @param depthsort the unsorted list
+	 * @return sorted ArrayList 
+	 * @since v1.5.3
+	 */
+	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort){
+		Arrays.parallelSort(depthsort,
+			0,
+			objectsToBeRendered,
+			(AbstractGameObject o1, AbstractGameObject o2) -> {
+				int a = o1.getDepth(gameView);
+				int b = o2.getDepth(gameView);
+				if (a < b)
+					return -1;
+				else if (a==b)
+					return 0;
+				else
+					return 1;
+			}
+		);
+		
 		return depthsort;
 	}
 
@@ -691,7 +722,7 @@ map.getGameWidth(),
 	 * @return sorted list
 	 * @since 1.2.20
 	 */
-	private ArrayList<AbstractGameObject> sortDepthList(ArrayList<AbstractGameObject> depthsort) {
+	private ArrayList<AbstractGameObject> sortDepthListInsertion(ArrayList<AbstractGameObject> depthsort) {
 		int i, j;
 		AbstractGameObject newValue;
 		for (i = 1; i < depthsort.size(); i++) {

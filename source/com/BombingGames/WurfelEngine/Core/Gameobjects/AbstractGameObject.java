@@ -130,10 +130,9 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
 	
     /**
-     * Creates an object. Use getInstance() to create blocks or entitys.
+     * Creates an object.
      * @param id the id of the object
      * @param value 
-     * @see com.BombingGames.WurfelEngine.Core.Gameobjects.Block#getInstance(int) 
      */
     protected AbstractGameObject(byte id, byte value) {
         coreData = CoreData.getInstance(id, value);

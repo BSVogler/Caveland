@@ -61,7 +61,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private final int colissionRadius = GAME_DIAGLENGTH2/2;
 	private final int spritesPerDir;
       
-   /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value >1. If =0 friciton is disabled**/
+   /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value &gt;1. If =0 friciton is disabled**/
 	private float friction = 0;
       
 	/**
@@ -163,7 +163,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
    /**
      * This method should define what happens when the object  jumps. It should call super.jump(int velo)
-     * @see #jump(float)
+     * @see #jump(float, boolean)
      */
     public void jump(){
 		//jump(0);

@@ -39,7 +39,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.MapEditor.Toolbar.Tool;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -102,15 +101,6 @@ public class MapEditorView extends GameView {
 			Gdx.graphics.getHeight(),
 			this)
 		);
-        
-        if (getMinimap()==null)
-			setMinimap(
-				new Minimap(
-					getCameras().get(0),
-					Gdx.graphics.getWidth() - 600,
-					Gdx.graphics.getHeight()-300
-				)
-			);
         
 		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
 		getStage().addActor(leftColorGUI);
@@ -276,10 +266,6 @@ public class MapEditorView extends GameView {
 
         @Override
         public boolean keyDown(int keycode) {
-            if (keycode == Keys.M){
-                getMinimap().toggleVisibility();
-            }
-            
             //manage camera speed
             if (keycode == Keys.SHIFT_LEFT)
                 view.setCameraSpeed(1);

@@ -456,11 +456,6 @@ public class CustomGameView extends GameView{
         @Override
         public boolean keyDown(int keycode) {
             if (!WE.getConsole().isActive()) {
-                //toggle minimap
-				if (keycode == Input.Keys.M && getMinimap() != null){
-					getMinimap().toggleVisibility();
-				}
-
 				//use inventory
 				if (keycode == Input.Keys.E){
 					inventoryDownP1 = 0;//register on down

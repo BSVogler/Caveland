@@ -35,7 +35,6 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
 import com.BombingGames.WurfelEngine.Core.Map.LoadMenu;
-import com.BombingGames.WurfelEngine.Core.Map.Minimap;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
@@ -81,8 +80,6 @@ public class GameView extends View implements GameManager {
     
         
     private boolean initalized;
-	
-	private Minimap minimap;
 	
 	private float gameSpeed = 1f;
 	
@@ -134,12 +131,6 @@ public class GameView extends View implements GameManager {
 		
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		if ((boolean) WE.CVARS.get("enableMinimap").getValue()) {
-			minimap = new Minimap(
-				200,
-				Gdx.graphics.getHeight()-800
-			);
-		}
 		batch.setShader(null);
     }
     
@@ -166,10 +157,6 @@ public class GameView extends View implements GameManager {
             keyF5isUp = false;
         }
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
-		
-		if ((boolean)  WE.CVARS.get("enableMinimap").getValue()) {
-			if (minimap != null && minimap.isNeedingRebuild()) minimap.buildTexture(this);
-		}
     }
 	    
     /**
@@ -210,10 +197,6 @@ public class GameView extends View implements GameManager {
 		//end of setup
 		if (controller.getDevTools() != null)
 			controller.getDevTools().render(this);
-
-		if ((boolean) WE.CVARS.get("enableMinimap").getValue())
-			if (minimap != null)
-				minimap.render(this); 
 
 		if (Controller.getLightEngine() != null)
 			Controller.getLightEngine().render(this);
@@ -442,22 +425,6 @@ public class GameView extends View implements GameManager {
         return loadMenu;
     }
 
-	/**
-	 *
-	 * @return
-	 */
-	public Minimap getMinimap() {
-		return minimap;
-	}
-
-	/**
-	 *
-	 * @param minimap
-	 */
-	public void setMinimap(Minimap minimap) {
-		this.minimap = minimap;
-	}
-
     /**
      * Add a camera.
      * @param camera
@@ -465,9 +432,6 @@ public class GameView extends View implements GameManager {
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
 		Controller.getMap().addLinkedObject(camera);
-		if ((boolean) WE.CVARS.get("enableMinimap").getValue()) {
-			minimap.setCamera(cameras.get(0));
-		}
     }
     
      /**

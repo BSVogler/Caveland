@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.BombingGames.WurfelEngine.Extensions;
    
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
@@ -36,6 +36,10 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
+import com.BombingGames.WurfelEngine.Core.Map.Chunk;
+import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
+import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

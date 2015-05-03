@@ -7,48 +7,66 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class Dust extends AbstractEntity {
+public class Dust extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	private final float maxtime;
 	
 	private float timeTillDeath;
-	private final Vector3 direction;
+	private Color startingColor;
 
+	public Dust() {
+		this(2000f, new Vector3(0, 0, 0), new Color(0.5f, 0.5f, 0.5f, 1));
+	}
+	
 	/**
 	 * 
-	 * @param maxtime
+	 * @param maxtime in ms
 	 * @param direction in m/s
 	 * @param color
 	 */
 	public Dust(float maxtime, Vector3 direction, Color color) {
-		super((byte)22);
+		super((byte)22,0);
 		this.maxtime = maxtime;
-		this.direction = direction;
+		setMovement(direction);
 		timeTillDeath=maxtime;
 		setColor(color);
+		startingColor =color.cpy();
 		setTransparent(true);
 		setSaveToDisk(false);
 		setScaling(-1);
+		disableShadow();
+		setFloating(true);
 	}
 
 	@Override
+	public void setColor(Color color) {
+		super.setColor(color);
+		startingColor =color.cpy();
+	}
+	
+	
+	@Override
 	public void update(float dt) {
+		super.update(dt);
 		timeTillDeath-=dt;
-		//spread on floor
-		if (direction.z <0 && isOnGround()){
-			direction.x *= 2;
-			direction.y *= 2;
-			direction.z = 0;
-		}
-		Vector3 step = direction.cpy().scl(dt/1000f);
-		getPosition().addVector(step);
-		CoreData block = getPosition().getBlock();
-		if (block!=null && block.isObstacle())
-			getPosition().addVector(step.scl(-1));//reverse step
+//		//spread on floor
+//		if (direction.z <0 && isOnGround()){
+//			direction.x *= 2;
+//			direction.y *= 2;
+//			direction.z = 0;
+//		}
+//		Vector3 step = direction.cpy().scl(dt/1000f);
+//		getPosition().addVector(step);
+//		CoreData block = getPosition().getBlock();
+//		if (block!=null && block.isObstacle())
+//			getPosition().addVector(step.scl(-1));//reverse step
 			
 		setRotation(getRotation()-dt/10f);
 		setScaling(getScaling()+dt/300f);
 		getColor().a = timeTillDeath/maxtime;
+		getColor().r = startingColor.r*((timeTillDeath*2)/maxtime);
+		getColor().g = startingColor.g*((timeTillDeath)/maxtime);
+		getColor().b = startingColor.b*((timeTillDeath)/maxtime);
 		if (timeTillDeath <= 0) dispose();
 	}
 }

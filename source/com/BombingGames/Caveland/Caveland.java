@@ -4,6 +4,7 @@ import com.BombingGames.Caveland.Game.CavelandBlocks;
 import com.BombingGames.Caveland.Game.ChunkGenerator;
 import com.BombingGames.Caveland.GameObjects.Bird;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
+import com.BombingGames.Caveland.GameObjects.Emitter;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
 import com.BombingGames.Caveland.GameObjects.MineCart;
@@ -54,6 +55,7 @@ public class Caveland {
 		AbstractGameObject.setCustomSpritesheet("com/BombingGames/Caveland/Spritesheet");
 		
 		//register entities
+		AbstractEntity.registerEntity("Emitter", Emitter.class);
 		AbstractEntity.registerEntity("Flint", Flint.class);
 		AbstractEntity.registerEntity("Lore", MineCart.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);

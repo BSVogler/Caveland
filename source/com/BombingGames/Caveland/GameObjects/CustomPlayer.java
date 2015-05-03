@@ -433,8 +433,8 @@ public class CustomPlayer extends Controllable {
 					new Dust(
 						1000f,
 						new Vector3(
-							(float) Math.random() * AbstractGameObject.GAME_EDGELENGTH,
-							(float) Math.random() * AbstractGameObject.GAME_EDGELENGTH,
+							(float) (Math.random() * AbstractGameObject.GAME_EDGELENGTH-AbstractGameObject.GAME_EDGELENGTH2)*0.01f,
+							(float) (Math.random() * AbstractGameObject.GAME_EDGELENGTH-AbstractGameObject.GAME_EDGELENGTH2)*0.01f,
 							-4 * AbstractGameObject.GAME_EDGELENGTH
 						),
 						new Color(1, 1, 0, 1)
@@ -512,7 +512,7 @@ public class CustomPlayer extends Controllable {
 		super.step();
 		new Dust(
 			1000f,
-			new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 8),
+			new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 500f),
 			new Color(0.2f, 0.25f, 0.05f, 1f)
 		).spawn(getPosition().cpy());
 	}

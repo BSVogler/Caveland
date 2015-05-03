@@ -20,7 +20,7 @@ void main() {
 
 	//don't shade fragment's where there is no normal map => diffuse = normal
 	if (abs(DiffuseColor.r-normalColor.r)<0.08 && abs(DiffuseColor.g-normalColor.g)<0.08 && abs(DiffuseColor.b-normalColor.b)<0.08) {
-		gl_FragColor = DiffuseColor;
+		gl_FragColor = vec4(v_color.rgb+vec3(0.5,0.5,0.5),v_color.a)*DiffuseColor;
 	} else{
 	
 		vec3 N = (normalColor*2.0- 1.0);//-0.058)*1.25 to normalize because normals are not 100% correct

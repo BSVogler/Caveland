@@ -2,6 +2,7 @@ package com.BombingGames.Caveland;
 
 import com.BombingGames.Caveland.Game.CavelandBlocks;
 import com.BombingGames.Caveland.Game.ChunkGenerator;
+import com.BombingGames.Caveland.GameObjects.Bird;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
@@ -59,6 +60,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
+		AbstractEntity.registerEntity("Bird", Bird.class);
 		
 		AbstractMap.setDefaultGenerator(new ChunkGenerator());
 				

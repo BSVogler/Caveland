@@ -67,8 +67,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private AbstractMap map = Controller.getMap();
 	/**
-	 * The deepest layer is an array which stores the information if there
-	 * should be a tile rendered
+	 * top limit
 	 */
 	private int zRenderingLimit = map.getBlocksZ();
 
@@ -911,8 +910,8 @@ map.getGameWidth(),
 	}
 
 	/**
-	 *
-	 * @param limit minimum is 0
+	 * If the limit is set to the map's height or more it becomes deactivated.
+	 * @param limit minimum is 0, everything to this limit becomes rendered
 	 */
 	public void setZRenderingLimit(int limit) {
 		if (limit != zRenderingLimit) {//only if it differs

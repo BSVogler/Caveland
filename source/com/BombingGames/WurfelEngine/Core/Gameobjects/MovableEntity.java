@@ -552,8 +552,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 * Sets speed and direction.
-	 * @param movement containing direction and speed.
+	 * Sets speed and direction combined in one vector.
+	 * @param movement containing direction and speed (length).
 	 */
 	public void setMovement(Vector2 movement){
 		this.movement = new Vector3(movement, this.movement.z);

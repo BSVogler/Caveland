@@ -24,6 +24,7 @@ public class Enemy extends MovableEntity{
     private int runningagainstwallCounter = 0;
     private Point lastPos;
 	private long movementSoundPlaying;
+	private float mana = 1000;
     
 	/**
 	 *
@@ -78,9 +79,9 @@ public class Enemy extends MovableEntity{
 
 				if (getPosition().distanceTo(target)<120) {
 					//setSpeed(0);
-					setMana((int) (getMana()+dt));
-                    if (getMana()>=1000){
-                        setMana(0);//reset
+					mana = ((int) (mana+dt));
+                    if (mana>=1000){
+                        mana = 0;//reset
                         new SimpleEntity((byte) 46).spawn(getPosition().cpy()).setAnimation(
 							new EntityAnimation(new int[]{300}, true, false)
 						);
@@ -108,7 +109,7 @@ public class Enemy extends MovableEntity{
             //jump after some time
             if (runningagainstwallCounter > 500) {
                 jump();
-                setMana(0);
+                mana =0;
                 runningagainstwallCounter=0;
             }
         }

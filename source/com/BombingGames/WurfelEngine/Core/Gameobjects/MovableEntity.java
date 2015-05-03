@@ -90,7 +90,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 
 	private boolean inliquid;
-	private int mana = 1000;
 	private boolean indestructible = false;
        
 	/**
@@ -196,11 +195,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     @Override
     public void update(float dt) {
 		super.update(dt);
-		
-        //clamp health & mana
-        if (mana > 1000) mana = 1000;
-        if (mana < 0) mana = 0;
-
         
         /*Here comes the stuff where the character interacts with the environment*/
         if (spawned() && getPosition()!= null && getPosition().isInMemoryAreaHorizontal()) {
@@ -422,15 +416,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				getHealth()*RenderBlock.VIEW_WIDTH/1000,
 				5
 			);
-			//mana bar
-			sh.setColor(Color.BLUE);
-			sh.rect(
-				xPos-RenderBlock.VIEW_WIDTH2,
-				yPos+RenderBlock.VIEW_HEIGHT-6,
-				getMana()*RenderBlock.VIEW_WIDTH/1000,
-				5
-			);
-
 			sh.end();
 		}
 		super.render(view, xPos, yPos);
@@ -759,22 +744,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		this.indestructible = indestructible;
 	}
 	
-    /**
-     *
-     * @return from maximum 1000
-     */
-    public int getMana() {
-        return mana;
-    }
-
-    /**
-     *
-     * @param mana
-     */
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
 	/**
 	 * The factor which slows donw movement.
 	 * @return 

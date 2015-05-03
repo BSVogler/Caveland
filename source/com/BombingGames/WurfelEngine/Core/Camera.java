@@ -589,6 +589,7 @@ map.getGameWidth(),
 					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))
+					&& block.getPosition().getZ() < zRenderingLimit
 				) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;

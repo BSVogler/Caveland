@@ -70,6 +70,8 @@ public class Camera implements LinkedWithMap {
 	 * top limit
 	 */
 	private int zRenderingLimit = map.getBlocksZ();
+	
+	private boolean zRenderinlimitEnabled = false;
 
 	private RenderBlock[][][] cameraContentBlocks;
 	
@@ -589,7 +591,7 @@ map.getGameWidth(),
 					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))
-					&& block.getPosition().getZ() < zRenderingLimit
+					&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
 				) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
@@ -617,7 +619,7 @@ map.getGameWidth(),
 						entity.getPosition().getViewSpcX(gameView),
 						entity.getPosition().getViewSpcY(gameView)
 					)
-					&& entity.getPosition().getZGrid() < zRenderingLimit
+					&&  (!zRenderinlimitEnabled || entity.getPosition().getZGrid() < zRenderingLimit)
 				) {
 					depthlist[objectsToBeRendered] = entity;
 					objectsToBeRendered++;
@@ -918,10 +920,12 @@ map.getGameWidth(),
 		if (limit != zRenderingLimit) {//only if it differs
 
 			zRenderingLimit = limit;
-
+			zRenderinlimitEnabled = true;
+			
 			//clamp
 			if (limit >= map.getBlocksZ()) {
 				zRenderingLimit = map.getBlocksZ();
+				zRenderinlimitEnabled = false;
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}

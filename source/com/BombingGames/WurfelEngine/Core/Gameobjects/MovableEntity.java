@@ -145,8 +145,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * enable this to have a walking cycle even if not moving
-	 * @param walkOnTheSpot the speed of the animation ~1
+	 * Enable this to have a walking cycle even if not moving
+	 * @param walkOnTheSpot the speed of the animation: ~1. To disable pass 0.
 	 */
 	public void setWalkingSpeedIndependentAnimation(float walkOnTheSpot) {
 		this.walkOnTheSpot = walkOnTheSpot;
@@ -272,6 +272,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					stepSoundPlayedInCiclePhase = false;//reset variable
 				}
 
+				//make a step
 				if (floating || isOnGround()) {
 					//play sound twice a cicle
 					if (walkingCycle<250){

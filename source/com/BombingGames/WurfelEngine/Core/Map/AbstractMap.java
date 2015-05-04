@@ -512,10 +512,6 @@ public abstract class AbstractMap implements Cloneable {
 		return activeSaveSlot;
 	}
 	
-	public void newSaveSlot(int slot) {
-		createSaveSlot(slot);
-	}
-	
 	/**
 	 * Check if a save slot exists.
 	 * @param saveSlot

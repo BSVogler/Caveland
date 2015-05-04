@@ -277,15 +277,18 @@ public class Chunk {
 						int length = fis.read(); //amount of entities
 						Gdx.app.debug("Chunk", "Loading " + length+" entities");
 
-						try (ObjectInputStream objectIn = new ObjectInputStream(fis)) {
-							AbstractEntity object;
-							for (int i = 0; i < length; i++) {
+						AbstractEntity object;
+						for (int i = 0; i < length; i++) {
+							try {
+								ObjectInputStream objectIn = new ObjectInputStream(fis);
 								object = (AbstractEntity) objectIn.readObject();
 								Controller.getMap().getEntitys().add(object);
 								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
+								//objectIn.close();
+							} catch (ClassNotFoundException | InvalidClassException ex) {
+								Gdx.app.error("Chunk", "An entity could not be loaded");
+								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 							}
-						} catch (ClassNotFoundException ex) {
-							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 						}
 					}
 				}
@@ -296,7 +299,7 @@ public class Chunk {
 			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
 				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 			} catch (ArrayIndexOutOfBoundsException ex){
-				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
+				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
 			}
 		} else {
 			Gdx.app.log("Chunk",savepath+" could not be found on disk. Trying to restore chunk.");

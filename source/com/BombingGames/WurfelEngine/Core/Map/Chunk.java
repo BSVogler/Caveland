@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -298,11 +299,25 @@ public class Chunk {
 				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed.Chunk or meta file corrupt: "+ex);
 			}
 		} else {
-			Gdx.app.log("Chunk",savepath+" could not be found on disk.");
+			Gdx.app.log("Chunk",savepath+" could not be found on disk. Trying to restore chunk.");
+			if (restoreFromRoot(path, saveSlot, coordX, coordY))
+				load(path, saveSlot, coordX, coordY);
 		}
 		
         return false;
     }
+	
+	public boolean restoreFromRoot(final File path, int saveSlot, int coordX, int coordY){
+		FileHandle chunkInRoot = Gdx.files.absolute(path+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+		if (chunkInRoot.exists() && !chunkInRoot.isDirectory()){
+			chunkInRoot.copyTo(Gdx.files.absolute(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX));
+			load(path, saveSlot, coordX, coordY);
+		} else {
+			Gdx.app.log("Chunk","Restoring:" + chunkInRoot +" failed.");
+			return false;
+		}
+		return true;
+	}
     
 	
     /**

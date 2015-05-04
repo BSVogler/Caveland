@@ -6,14 +6,14 @@ import com.badlogic.gdx.graphics.Color;
  *
  * @author Benedikt Vogler
  */
-public class Dust extends MovableEntity {
+public class Smoke extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	private final float maxtime;
 	
 	private float timeTillDeath;
 	private Color startingColor;
 
-	public Dust() {
+	public Smoke() {
 		this(2000f, new Color(0.5f, 0.5f, 0.5f, 1));
 	}
 	
@@ -22,7 +22,7 @@ public class Dust extends MovableEntity {
 	 * @param maxtime in ms
 	 * @param color
 	 */
-	public Dust(float maxtime, Color color) {
+	public Smoke(float maxtime, Color color) {
 		super((byte)22,0);
 		this.maxtime = maxtime;
 		timeTillDeath=maxtime;

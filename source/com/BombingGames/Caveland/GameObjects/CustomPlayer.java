@@ -7,8 +7,8 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Smoke;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -113,6 +113,8 @@ public class CustomPlayer extends Controllable {
 	 */
 	private boolean prepareThrow;
 	private boolean bunnyHopForced;
+	private SmokeEmitter emitter;
+	private SmokeEmitter emitter2;
 	
 	/**
 	 * creates a new Ejira
@@ -128,6 +130,28 @@ public class CustomPlayer extends Controllable {
 		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 	}
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		emitter = new SmokeEmitter();
+		emitter.setParticleDelay(10);
+		emitter.setParticleTTL(800);
+		emitter.setHidden(true);
+		emitter.setFloating(true);
+		emitter.spawn(point.cpy().addVector(-20, 0, AbstractGameObject.GAME_EDGELENGTH2));
+		new SuperGlue(this, emitter).spawn(point);
+		emitter2 = new SmokeEmitter();
+		emitter2.setParticleDelay(10);
+		emitter2.setParticleTTL(800);
+		emitter2.setHidden(true);
+		emitter2.setFloating(true);
+		emitter2.spawn(point.cpy().addVector(20, 0, AbstractGameObject.GAME_EDGELENGTH2));
+		new SuperGlue(this, emitter2).spawn(point);
+		return this;
+	}
+	
+	
 
 	/**
 	 * Get the value of inventory
@@ -243,7 +267,7 @@ public class CustomPlayer extends Controllable {
 			nearestEntity.hideButton();
 			nearestEntity = null;
 		}
-
+			
 		//play walking animation
 		if (isOnGround() && getSpeedHor() > 0 && (!playAnimation)) {
 			playAnimation('w');
@@ -251,6 +275,16 @@ public class CustomPlayer extends Controllable {
 
 		if (isOnGround()) {
 			airjump = false;
+		}
+		
+		//update emitter
+		if (airjump) {
+			emitter.setActive(getMovement().z>2f);
+			emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+			emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
+			emitter2.setActive(getMovement().z>2f);
+			emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+			emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 		}
 	}
 
@@ -429,20 +463,21 @@ public class CustomPlayer extends Controllable {
 			playAnimation('j');
 			if (airjump) {
 				Controller.getSoundEngine().play("jetpack");
-				for (int i = 0; i < 40; i++) {
-					new Dust(
-						1000f,
-						new Vector3(
-							(float) (Math.random() * AbstractGameObject.GAME_EDGELENGTH-AbstractGameObject.GAME_EDGELENGTH2)*0.01f,
-							(float) (Math.random() * AbstractGameObject.GAME_EDGELENGTH-AbstractGameObject.GAME_EDGELENGTH2)*0.01f,
-							-4 * AbstractGameObject.GAME_EDGELENGTH
-						),
-						new Color(1, 1, 0, 1)
-					).spawn(
-						getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2 + (float) Math.random() * AbstractGameObject.GAME_EDGELENGTH)
-					);
-				}
-
+//				for (int i = 0; i < 80; i++) {
+//					Dust dust = (Dust) new Dust(
+//						1000f,
+//						new Color(1, 1, 0, 1)
+//					).spawn(
+//						getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2 + (float) Math.random() * AbstractGameObject.GAME_EDGELENGTH)
+//					);
+//					dust.addMovement(
+//						new Vector3(
+//							(float) (Math.random()-0.5f)*2f,
+//							(float) (Math.random()-0.5f)*2f,
+//							-5f
+//						)
+//					);
+//				}
 			}
 		}
 	}
@@ -510,11 +545,11 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void step() {
 		super.step();
-		new Dust(
+		Smoke dust = (Smoke) new Smoke(
 			1000f,
-			new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 500f),
 			new Color(0.2f, 0.25f, 0.05f, 1f)
 		).spawn(getPosition().cpy());
+		dust.addMovement(new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 500f));
 	}
 
 	@Override

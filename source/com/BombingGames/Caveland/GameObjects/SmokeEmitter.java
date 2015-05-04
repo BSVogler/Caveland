@@ -33,33 +33,34 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Dust;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Smoke;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Emitter extends AbstractInteractable{
-	private static final long serialVersionUID = 1L;
+public class SmokeEmitter extends AbstractInteractable{
+	private static final long serialVersionUID = 2L;
 	private boolean active = false;
 	private float timer;
 	private float timeEachSpawn = 100;
-	private final Class<? extends MovableEntity> particleClass;
+	//private final Class<? extends MovableEntity> particleClass;
+	private Vector3 startingVector = new Vector3(0, 0, 0);
+	private Vector3 spread = new Vector3(0, 0, 0);
+	private float TTL;
 
 	/**
 	 *
 	 * @param emitterClass
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
-	public Emitter() {
+	public SmokeEmitter() {
 		super((byte) 14, 0);
-		this.particleClass = Dust.class;
+		//this.particleClass = Dust.class;
 		disableShadow();
+		setIndestructible(true);
 	}
 
 	@Override
@@ -68,17 +69,18 @@ public class Emitter extends AbstractInteractable{
 		
 		if (active) {
 			setColor(new Color(1, 0, 0, 1));
-			timeEachSpawn = 30;
 			timer+=dt;
 			if (timer >= timeEachSpawn){
 				timer %= timeEachSpawn;
-				try {
-					MovableEntity particle = (MovableEntity) particleClass.newInstance().spawn(getPosition().cpy());
-					particle.setColor(new Color(1, 0.5f, 0.1f, 1));
-					particle.addMovement(new Vector3((float) Math.random()-0.5f,(float) Math.random()-0.5f,2f));
-				} catch (InstantiationException | IllegalAccessException ex) {
-					Logger.getLogger(Emitter.class.getName()).log(Level.SEVERE, null, ex);
-				}
+				Smoke particle = (Smoke) new Smoke(TTL, new Color(0.5f, 0.5f, 0.5f, 1)).spawn(getPosition().cpy());
+				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
+				particle.addMovement(
+					startingVector.add(
+						(float) (Math.random()-0.5f)*2*spread.x,
+						(float) (Math.random()-0.5f)*2*spread.y,
+						(float) (Math.random()-0.5f)*2*spread.z
+					)
+				);
 			}
 		} else {
 			setColor(new Color(0.5f, 0.5f, 0.5f, 1));
@@ -89,7 +91,48 @@ public class Emitter extends AbstractInteractable{
 
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
+		toggle();
+	}
+	
+	public void toggle(){
 		active= !active;
 	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	
+	/**
+	 * 
+	 * @param dir the direction and speed where the particles leave, in m/s without unit
+	 */
+	public void setParticleStartMovement(Vector3 dir){
+		if (dir!=null)
+			this.startingVector = dir;
+	}
+	
+	/**
+	 * 
+	 * @param spread the range in which random noise gets aplied, in m/s without unit
+	 */
+	public void setParticleSpread(Vector3 spread){
+		if (spread!=null)
+			this.spread = spread;
+	}
+
+	/**
+	 * 
+	 * @param timeEachSpawn time in ms
+	 */
+	public void setParticleDelay(float timeEachSpawn) {
+		this.timeEachSpawn = timeEachSpawn;
+	}
+
+	void setParticleTTL(int ttl) {
+		this.TTL = ttl;
+	}
+	
+	
 	
 }

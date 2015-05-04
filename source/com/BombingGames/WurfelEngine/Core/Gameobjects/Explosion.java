@@ -76,7 +76,7 @@ public class Explosion extends AbstractEntity {
 								ent.damage(damage);
 						}
 						
-						Dust dust = (Dust) new Dust(
+						Smoke dust = (Smoke) new Smoke(
 							1700,
 							new Color(0.5f,0.45f,0.4f,1f)
 						).spawn(coord.getPoint().cpy());//spawn at center

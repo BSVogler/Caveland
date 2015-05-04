@@ -136,7 +136,9 @@ public abstract class AbstractInteractable extends MovableEntity {
 		super.update(dt);
 		if (interactButton != null) {
 			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
+			interactButton.setHidden(isHidden());
 		}
+		
 	}
 
 	/**
@@ -161,6 +163,12 @@ public abstract class AbstractInteractable extends MovableEntity {
 			interactButton.dispose();
 			interactButton = null;
 		}
+	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		super.setHidden(hidden);
+		if (interactButton != null) interactButton.setHidden(hidden);
 	}
 
 	@Override

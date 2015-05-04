@@ -1,7 +1,6 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -15,19 +14,17 @@ public class Dust extends MovableEntity {
 	private Color startingColor;
 
 	public Dust() {
-		this(2000f, new Vector3(0, 0, 0), new Color(0.5f, 0.5f, 0.5f, 1));
+		this(2000f, new Color(0.5f, 0.5f, 0.5f, 1));
 	}
 	
 	/**
 	 * 
 	 * @param maxtime in ms
-	 * @param direction in m/s
 	 * @param color
 	 */
-	public Dust(float maxtime, Vector3 direction, Color color) {
+	public Dust(float maxtime, Color color) {
 		super((byte)22,0);
 		this.maxtime = maxtime;
-		setMovement(direction);
 		timeTillDeath=maxtime;
 		setColor(color);
 		startingColor =color.cpy();

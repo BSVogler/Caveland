@@ -76,12 +76,14 @@ public class Explosion extends AbstractEntity {
 								ent.damage(damage);
 						}
 						
-						new Dust(
+						Dust dust = (Dust) new Dust(
 							1700,
-							coord.getPoint().getVector().sub(point.getVector())
-								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f),//move from center to outside
 							new Color(0.5f,0.45f,0.4f,1f)
 						).spawn(coord.getPoint().cpy());//spawn at center
+						dust.addMovement(
+							coord.getPoint().getVector().sub(point.getVector())
+								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f)
+						);//move from center to outside
 					}
 				}
 			}	

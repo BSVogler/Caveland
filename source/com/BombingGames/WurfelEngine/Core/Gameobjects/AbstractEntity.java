@@ -87,7 +87,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		
     /**
      * Create an abstractEntity.
-     * @param id 
+     * @param id objects with id -1 are to deleted. 0 are invisible objects
      */
     protected AbstractEntity(byte id){
         super(id,(byte) 0);

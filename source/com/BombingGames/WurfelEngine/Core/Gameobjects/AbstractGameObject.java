@@ -153,7 +153,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
 	  /**
      * Return the coordinates of the SelfAware object.
-     * @return the coordinates where the object is located
+     * @return Reference to the position object which points to the location in the game world.
      */
     public abstract AbstractPosition getPosition();
     

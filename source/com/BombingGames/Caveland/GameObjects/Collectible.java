@@ -111,6 +111,7 @@ public class Collectible extends MovableEntity implements Serializable {
 				true
 			)
 		);
+		setName("Collectible " + def.name());
 	}
 
 	/**

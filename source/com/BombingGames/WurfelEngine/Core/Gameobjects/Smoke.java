@@ -33,6 +33,7 @@ public class Smoke extends MovableEntity {
 		setScaling(-1);
 		disableShadow();
 		setFloating(true);
+		setName("Smoke Particle");
 	}
 
 	@Override

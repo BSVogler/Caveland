@@ -11,6 +11,7 @@ public class Bausatz extends SimpleEntity {
 
 	public Bausatz() {
 		super((byte) 52);
+		setName("Bausatz");
 	}
 	
 }

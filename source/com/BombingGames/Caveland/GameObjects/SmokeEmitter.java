@@ -61,6 +61,7 @@ public class SmokeEmitter extends AbstractInteractable{
 		//this.particleClass = Dust.class;
 		disableShadow();
 		setIndestructible(true);
+		setName("Smoke Emitter");
 	}
 
 	@Override

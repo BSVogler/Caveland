@@ -50,7 +50,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private boolean dispose;
     private boolean onMap;
 	private boolean obstacle;
-	private boolean transparent;
 	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
 	private String name = "undefined";
@@ -115,6 +114,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     /**
      * 
      * @param height 
+	 * @deprecated v1.5.4
      */
     public void setHeight(float height) {
         position.setZ(height);
@@ -321,17 +321,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		return obstacle;
 	}
 	
-	    /**
-     * Has the object transparent areas?
-     * @param transparent
-     */
-    public void setTransparent(boolean transparent) {
-        this.transparent = transparent;
-    }
 
 	@Override
 	public boolean isTransparent() {
-		return transparent;
+		return true;
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

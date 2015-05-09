@@ -20,6 +20,10 @@ public class CavelandBlocks implements CustomBlocks {
 public RenderBlock toRenderBlock(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
+		case 11://toolbox
+			block = new RenderBlock(id, value);
+			block.setGraphicsId((byte) 13);
+			break;
 		case 60:
 			block = new Machine();
 		break;
@@ -98,6 +102,8 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 				Collectible.create(Collectible.CollectibleType.IRONORE).spawn(coord.getPoint().cpy());
 			} else if (id==44){
 				Collectible.create(Collectible.CollectibleType.COAL).spawn(coord.getPoint().cpy());
+			}else if (id==72){
+				Collectible.create(Collectible.CollectibleType.WOOD).spawn(coord.getPoint().cpy());
 			}
 			
 			//view only relevant. should only be done if visible

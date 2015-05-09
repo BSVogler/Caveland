@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -45,7 +46,12 @@ public class Collectible extends MovableEntity implements Serializable {
 		/**
 		 *
 		 */
-		SULFUR((byte) 51);
+		SULFUR((byte) 51),
+		
+		/**
+		 *
+		 */
+		TOOLKIT((byte) 53);
 
 		private static CollectibleType fromValue(String value) {
 			if (value != null) {  
@@ -184,8 +190,9 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	/**
 	 * the action if you active the item in the inventory
+	 * @param actor
 	 */
-	public void action() {
+	public void action(AbstractEntity actor) {
 
 	}
 

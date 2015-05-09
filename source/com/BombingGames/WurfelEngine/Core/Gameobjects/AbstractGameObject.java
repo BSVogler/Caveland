@@ -122,7 +122,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private boolean hidden; 
     private float rotation;
 	private float scaling;
-	private int graphicsID;
+	private byte graphicsID;
 	
 	/**
 	 * default is RGBA 0x80808080.
@@ -535,7 +535,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
 	 * @param id 
 	 */
-	public void setGraphicsId(int id) {
+	public void setGraphicsId(byte id) {
 		graphicsID = id;
 	}
 	

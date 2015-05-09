@@ -367,13 +367,17 @@ public class CustomPlayer extends Controllable {
 		}
 	}
 
+	/**
+	 * Does an attack move.
+	 */
 	public void attack(){
 		attack((byte)50);
 	}
+	
 	/**
 	 * does an attack move
 	 *
-	 * @param damage
+	 * @param damage custom damage
 	 */
 	public void attack(byte damage) {
 		if (action == 'l') {

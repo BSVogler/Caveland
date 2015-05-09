@@ -108,7 +108,6 @@ public class CoreData implements HasID, Serializable {
 
 	@Override
 	public boolean isObstacle() {
-		//todo
 		if (id>39 && customBlocks != null){
             return customBlocks.isObstacle(id, value);
         }
@@ -119,7 +118,6 @@ public class CoreData implements HasID, Serializable {
 
 	@Override
 	public boolean isTransparent() {
-		//todo
 		if (id>39 && customBlocks != null){
             return customBlocks.isTransparent(id, value);
         }
@@ -150,7 +148,6 @@ public class CoreData implements HasID, Serializable {
 		if (id>39 && customBlocks != null){
             return customBlocks.hasSides(id, value);
         }
-//todo
 		return true;
 	}
 

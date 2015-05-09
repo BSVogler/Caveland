@@ -140,14 +140,16 @@ public class CustomPlayer extends Controllable {
 		emitter.setHidden(true);
 		emitter.setFloating(true);
 		emitter.spawn(point.cpy().addVector(-20, 0, AbstractGameObject.GAME_EDGELENGTH2));
-		new SuperGlue(this, emitter).spawn(point);
+		AbstractEntity conection1 = new SuperGlue(this, emitter).spawn(point);
+		conection1.setSaveToDisk(false);
 		emitter2 = new SmokeEmitter();
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
 		emitter2.setFloating(true);
 		emitter2.spawn(point.cpy().addVector(20, 0, AbstractGameObject.GAME_EDGELENGTH2));
-		new SuperGlue(this, emitter2).spawn(point);
+		AbstractEntity conection2 = new SuperGlue(this, emitter2).spawn(point);
+		conection2.setSaveToDisk(false);
 		return this;
 	}
 	

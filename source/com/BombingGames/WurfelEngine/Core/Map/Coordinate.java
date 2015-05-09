@@ -262,20 +262,6 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Checks of coordinates are valid before fetching the RenderBlock.
-	 *
-	 * @return
-	 */
-	@Override
-	public CoreData getBlockSafe() {
-		if (isInMemoryAreaHorizontal()) {
-			return Controller.getMap().getBlock(this);
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * The block hides the past block when it has sides and is not transparent
 	 * (like normal block)
 	 *

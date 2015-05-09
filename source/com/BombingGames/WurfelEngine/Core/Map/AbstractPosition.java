@@ -107,13 +107,6 @@ public abstract class AbstractPosition implements Serializable {
     public abstract CoreData getBlock();
     
     /**
-     * Slower than getBlock().
-     * @return Get the block at the position. If the coordiante is outside the map return null. 
-     *  @see #getBlock() 
-     */
-    public abstract CoreData getBlockSafe();
-
-    /**
      *
      * @return a copy of the object.
      */

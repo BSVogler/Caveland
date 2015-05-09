@@ -205,14 +205,6 @@ public class Point extends AbstractPosition {
     }
     
     @Override
-    public CoreData getBlockSafe(){
-        if (isInMemoryAreaHorizontal())
-            return getCoord().getBlock();
-        else return null;
-    }
-    
-
-    @Override
     public Point cpy() {
         return new Point(this);
     }

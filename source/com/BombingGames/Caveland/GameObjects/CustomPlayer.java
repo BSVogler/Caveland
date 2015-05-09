@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.Caveland.Game.CavelandBlocks;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
@@ -411,12 +412,18 @@ public class CustomPlayer extends Controllable {
 
 		//damage blocks
 		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
-		if (aimCoord.damage(damage)) {
-			Controller.getSoundEngine().play("impact");
-			getCamera().shake(20, 50);
-			MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
-			dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-			dirt.setRotation((float) Math.random()*360);
+		//check if the player can damage the blocks
+		
+		if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
+			if (aimCoord.damage(damage)) {
+				Controller.getSoundEngine().play("impact");
+				getCamera().shake(20, 50);
+				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
+				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+				dirt.setRotation((float) Math.random()*360);
+			}
+		} else {
+			//indestructible by hand
 		}
 
 		//set to a small value to indicate that it is active

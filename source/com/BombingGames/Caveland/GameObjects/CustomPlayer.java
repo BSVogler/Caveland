@@ -9,7 +9,7 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Smoke;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Particle;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -413,17 +413,24 @@ public class CustomPlayer extends Controllable {
 		//damage blocks
 		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
 		//check if the player can damage the blocks
-		
-		if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
-			if (aimCoord.damage(damage)) {
-				Controller.getSoundEngine().play("impact");
-				getCamera().shake(20, 50);
-				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
-				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-				dirt.setRotation((float) Math.random()*360);
+		if (aimCoord.getBlock() != null) {
+			if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
+				//destructible by hand
+				if (aimCoord.damage(damage)) {
+					Controller.getSoundEngine().play("impact");
+					getCamera().shake(20, 50);
+					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
+					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+					dirt.setRotation((float) Math.random()*360);
+				}
+			} else {
+				//indestructible by hand
+					Controller.getSoundEngine().play("impact");//todo different sound
+					getCamera().shake(20, 50);
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.getPoint().cpy());
+					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+					dirt.setRotation((float) Math.random()*360);
 			}
-		} else {
-			//indestructible by hand
 		}
 
 		//set to a small value to indicate that it is active
@@ -558,10 +565,12 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void step() {
 		super.step();
-		Smoke dust = (Smoke) new Smoke(
-			1000f,
-			new Color(0.2f, 0.25f, 0.05f, 1f)
+		Particle dust = (Particle) new Particle(
+			(byte) 22,
+			1000f
 		).spawn(getPosition().cpy());
+		dust.setType(Particle.ParticleType.SMOKE);
+		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
 		dust.addMovement(new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 500f));
 	}
 

@@ -33,7 +33,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Smoke;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.Particle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
@@ -73,7 +73,8 @@ public class SmokeEmitter extends AbstractInteractable{
 			timer+=dt;
 			if (timer >= timeEachSpawn){
 				timer %= timeEachSpawn;
-				Smoke particle = (Smoke) new Smoke(TTL, new Color(0.5f, 0.5f, 0.5f, 1)).spawn(getPosition().cpy());
+				Particle particle = (Particle) new Particle((byte) 22, TTL).spawn(getPosition().cpy());
+				particle.setType(Particle.ParticleType.FIRE);
 				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
 				particle.addMovement(
 					startingVector.add(
@@ -133,7 +134,4 @@ public class SmokeEmitter extends AbstractInteractable{
 	void setParticleTTL(int ttl) {
 		this.TTL = ttl;
 	}
-	
-	
-	
 }

@@ -76,10 +76,12 @@ public class Explosion extends AbstractEntity {
 								ent.damage(damage);
 						}
 						
-						Smoke dust = (Smoke) new Smoke(
-							1700,
-							new Color(0.5f,0.45f,0.4f,1f)
+						Particle dust = (Particle) new Particle(
+							(byte) 22,
+							1700
 						).spawn(coord.getPoint().cpy());//spawn at center
+						dust.setColor(new Color(0.5f,0.45f,0.4f,1f));
+						dust.setType(Particle.ParticleType.FIRE);
 						dust.addMovement(
 							coord.getPoint().getVector().sub(point.getVector())
 								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f)

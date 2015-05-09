@@ -39,6 +39,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class SuperGlue extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
 	private final AbstractEntity main;
 	private final AbstractEntity smaller;
 	private final Vector3 offset;

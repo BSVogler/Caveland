@@ -882,7 +882,7 @@ map.getGameWidth(),
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
-		updateViewSpaceSize();//todo check for redundaant call?
+		updateViewSpaceSize();//todo check for redundant call?
 	}
 
 	/**

@@ -53,7 +53,6 @@ public class PlayerWithWeapon extends Controllable {
         super((byte) 30, spritesPerDir);
         Gdx.app.debug("Player", "Creating player");
         
-        setTransparent(true);
         setObstacle(true);
         setDimensionZ(height);
     }   

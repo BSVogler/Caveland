@@ -10,7 +10,7 @@ public class Bausatz extends SimpleEntity {
 	private static final long serialVersionUID = 1L;
 
 	public Bausatz() {
-		super((byte) 52);
+		super((byte) 53);
 		setName("Bausatz");
 	}
 	

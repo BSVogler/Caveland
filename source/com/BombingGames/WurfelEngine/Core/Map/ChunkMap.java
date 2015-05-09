@@ -177,11 +177,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		return getBlock(new Coordinate(this, x, y, z)); 
     }
     
-    /**
-     *
-     * @param coord
-     * @return
-     */
 	@Override
     public CoreData getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)

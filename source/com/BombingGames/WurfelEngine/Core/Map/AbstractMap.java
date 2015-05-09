@@ -286,7 +286,7 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 *
+	 * If the block can not be found returns null pointer.
 	 * @param coord
 	 * @return
 	 */

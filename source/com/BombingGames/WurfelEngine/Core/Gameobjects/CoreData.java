@@ -38,11 +38,22 @@ public class CoreData implements HasID, Serializable {
 		this.value = value;
 	}
 	
+	/**
+	 * Use for creating new objects.
+	 * @param id
+	 * @return 
+	 */
 	public static CoreData getInstance(byte id){
 		if (id==0) return null;
 		return new CoreData(id, (byte) 0);
 	}
 	
+	/**
+	 * Use for creating new objects.
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
 	public static CoreData getInstance(byte id, byte value){
 		if (id==0) return null;
 		return new CoreData(id, value);

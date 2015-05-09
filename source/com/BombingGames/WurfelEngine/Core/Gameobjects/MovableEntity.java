@@ -103,12 +103,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private float walkOnTheSpot = 0;
 	private boolean stepMode = true;
 
+	/**
+	 * Simple MovableEntity with no animation.
+	 * @param id 
+	 */
+	public MovableEntity(final byte id) {
+		this(id, 0);
+	}
+	
    /**
-    * Constructor of AbstractCharacter.
+    * Constructor of MovableEntity.
     * @param id
     * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
     */
-   protected MovableEntity(final byte id, final int spritesPerDir) {
+   public MovableEntity(final byte id, final int spritesPerDir) {
         super(id);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
@@ -123,7 +131,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	* copy constructor
 	* @param entity 
 	*/
-	protected MovableEntity(MovableEntity entity) {
+	public MovableEntity(MovableEntity entity) {
 		super(entity.getId());
 		this.spritesPerDir = entity.spritesPerDir;
 		movement = entity.movement;

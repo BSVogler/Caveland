@@ -1,9 +1,6 @@
 package com.BombingGames.Caveland.Game;
 
-import com.BombingGames.Caveland.GameObjects.Bausatz;
-import com.BombingGames.Caveland.GameObjects.Collectible;
-import com.BombingGames.Caveland.GameObjects.TFlint;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
+import com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,34 +14,34 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class RecipesList extends Table {
-	ArrayList<Recipt> receipts= new ArrayList<>(10);
+	ArrayList<Recipe> receipts= new ArrayList<>(10);
 	
 	public RecipesList() {
 		setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		receipts.add(
-			new Recipt(
-				new AbstractEntity[]{
-					Collectible.create(Collectible.CollectibleType.SULFUR),
-					Collectible.create(Collectible.CollectibleType.COAL)
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.SULFUR,
+					CollectibleType.COAL
 				},
 				"TFlint",
-				new TFlint()
+				CollectibleType.EXPLOSIVES
 			)
 		);
 		
 		receipts.add(
-			new Recipt(
-				new AbstractEntity[]{
-					Collectible.create(Collectible.CollectibleType.WOOD),
-					Collectible.create(Collectible.CollectibleType.WOOD)
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.WOOD,
+					CollectibleType.WOOD
 				},
 				"Bausatz",
-				new Bausatz()
+				CollectibleType.TOOLKIT
 			)
 		);
 		
 		int y = 0;
-		for (Recipt receipt : receipts) {
+		for (Recipe receipt : receipts) {
 			Image actor = receipt.getImage();
 			actor.setPosition(0, y);
 			y+=100;
@@ -52,12 +49,12 @@ public class RecipesList extends Table {
 		}
 	}
 	
-	class Recipt {
-		AbstractEntity[] ingredients;
+	class Recipe {
+		CollectibleType[] ingredients;
 		String name;
-		AbstractEntity result;
+		CollectibleType result;
 
-		public Recipt(AbstractEntity[] ingredients, String name, AbstractEntity result) {
+		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {
 			this.ingredients = ingredients;
 			this.name = name;
 			this.result = result;
@@ -67,7 +64,7 @@ public class RecipesList extends Table {
 			return new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', result.getId(), result.getValue())
+						AbstractGameObject.getSprite('e', result.getId(), 0)
 					)
 				)
 			);

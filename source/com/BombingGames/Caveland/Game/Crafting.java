@@ -3,8 +3,6 @@ package com.BombingGames.Caveland.Game;
 import com.BombingGames.Caveland.GameObjects.Collectible;
 import com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType;
 import com.BombingGames.Caveland.GameObjects.Inventory;
-import com.BombingGames.Caveland.GameObjects.TFlint;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,26 +10,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Array;
 
 /**
  *Shows a HUD for crafting via inventory
  * @author Benedikt Vogler
  */
 public class Crafting extends Table {
-	private AbstractEntity result;
 	private final Inventory inventory;
+	private final RecipesList recipes = new RecipesList();
 
 	public Crafting(Inventory inventory) {
 		this.inventory = inventory;
-		this.result = new TFlint();
-		
-		if (canCraft()) {
+		RecipesList.Recipe recipe = findRecipe();
+		if (recipe!=null) {
 			//A
 			Image a = new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', inventory.getCollectible(CollectibleType.SULFUR).getId(), 0)
+						AbstractGameObject.getSprite('e', recipe.ingredients[0].getId(), 0)
 					)
 				)
 			);
@@ -47,7 +43,7 @@ public class Crafting extends Table {
 			Image b = new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', inventory.getCollectible(CollectibleType.COAL).getId(), 0)
+						AbstractGameObject.getSprite('e', recipe.ingredients[1].getId(), 0)
 					)
 				)
 			);
@@ -70,7 +66,7 @@ public class Crafting extends Table {
 			Image resultImage = new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', result.getId(), result.getValue())
+						AbstractGameObject.getSprite('e', recipe.result.getId(), 0)
 					)
 				)
 			);
@@ -85,20 +81,55 @@ public class Crafting extends Table {
 	 * check wheter you can craft with the ingredients
 	 * @return 
 	 */
-	public boolean canCraft(){
-		Array<CollectibleType> tmp = new Array<>(inventory.getContentDef());
-		return tmp.contains(CollectibleType.COAL, false) && tmp.contains(CollectibleType.SULFUR, false);
+	public RecipesList.Recipe findRecipe(){
+		CollectibleType[] invent = inventory.getContentDef();
+		RecipesList.Recipe finalRecipe = null;
+		for (RecipesList.Recipe recipe : recipes.receipts) {
+			int ing1 = -1;//not found in receipt
+			if (recipe.ingredients[0]==invent[0])
+				ing1 = 0;
+			if (recipe.ingredients[0]==invent[1])
+				ing1 = 1;
+			if (recipe.ingredients[0]==invent[2])
+				ing1 = 2;
+			int ing2 = -1;//not found in receipt
+			if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1]==invent[0])
+				ing2 = 0;
+			if (ing1 != 1 && recipe.ingredients[1]==invent[1])
+				ing2 = 1;
+			if (ing1 != 2 && recipe.ingredients[1]==invent[2])
+				ing2 = 2;
+			
+			if (recipe.ingredients.length>2) {
+				int ing3 = -1;//not found in receipt
+				if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2]==invent[0])
+					ing3 = 0;
+				if (ing1 != -1 && ing1 != 1 && ing2 != -1 && ing2 != 1 && recipe.ingredients[2]==invent[1])
+					ing3 = 1;
+				if (ing1 != -1 && ing1 != 2 && ing2 != -1 && ing2 != 2 && recipe.ingredients[2]==invent[2])
+					ing3 = 2;
+
+				if (ing1 != -1 && ing2 != -1 && ing3 != -1)
+					finalRecipe = recipe;
+			} else {
+				if (ing1 != -1 && ing2 != -1)
+					finalRecipe = recipe;
+			}
+		}
+		return finalRecipe;
 	}
 	
 	/**
 	 * removes the items from inventory
 	 */
 	public void craft(){
-		if (canCraft()){
-			Collectible a = inventory.fetchCollectible(CollectibleType.COAL);
-			Collectible b = inventory.fetchCollectible(CollectibleType.SULFUR);
+		RecipesList.Recipe recipe = findRecipe();
+		if (recipe != null){
+			Collectible a = inventory.fetchCollectible(recipe.ingredients[0]);
+			Collectible b = inventory.fetchCollectible(recipe.ingredients[1]);
+			//Collectible c = inventory.fetchCollectible(recipe.ingredients[2]);
 			if (a!=null && b!=null) {
-				inventory.add(Collectible.create(CollectibleType.EXPLOSIVES));
+				inventory.add(Collectible.create(recipe.result));
 			}
 		}
 	}

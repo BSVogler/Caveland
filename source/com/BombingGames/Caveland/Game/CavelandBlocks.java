@@ -41,8 +41,16 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 		switch (id){
 			case 40:
 				return "Entity Spawner";
+			case 41:
+				return "Crystal Block";
+			case 42:
+				return "Sulfur Block";
+			case 43:
+				return "Iron Ore Block";
 			case 44:
-				return "textureless block";
+				return "Coal Block";
+			case 46:
+				return "Sand Block";	
 			case 55:
 				return "rails";	
 			case 72:
@@ -54,7 +62,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 
 	@Override
 	public boolean isObstacle(byte id, byte value) {
-		if (id>=41 && id<=44)
+		if (id>=41 && id<=44)//ores
 			return true;
 		if (id==72) return true;
 		if (id==46) return true;

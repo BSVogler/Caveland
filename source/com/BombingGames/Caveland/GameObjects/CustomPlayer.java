@@ -503,7 +503,7 @@ public class CustomPlayer extends Controllable {
 	}
 	
 	/**
-	 * allows the player to jump without touching the ground
+	 * allows the player to perform the next jump without touching the ground
 	 */
 	public void forceBunnyHop(){
 		bunnyHopForced = true;

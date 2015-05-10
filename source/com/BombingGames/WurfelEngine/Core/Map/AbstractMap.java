@@ -4,7 +4,6 @@ import com.BombingGames.WurfelEngine.Core.CVar.CVar;
 import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
 import com.BombingGames.WurfelEngine.Core.CVar.IntCVar;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
@@ -166,7 +165,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(getBlocksZ() * RenderBlock.GAME_EDGELENGTH / 2);
+		return getCenter(getBlocksZ() * CoreData.GAME_EDGELENGTH / 2);
 	}
 
 
@@ -197,7 +196,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return amount of bluck multiplied by the size in game space.
 	 */
 	public int getGameWidth() {
-		return getBlocksX() * AbstractGameObject.GAME_DIAGLENGTH;
+		return getBlocksX() * CoreData.GAME_DIAGLENGTH;
 	}
 	
 	/**
@@ -205,7 +204,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public int getGameDepth() {
-		return getBlocksY() * AbstractGameObject.GAME_DIAGLENGTH2;
+		return getBlocksY() * CoreData.GAME_DIAGLENGTH2;
 	}
 
 	/**
@@ -213,7 +212,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public int getGameHeight() {
-		return getBlocksZ() * AbstractGameObject.GAME_EDGELENGTH;
+		return getBlocksZ() * CoreData.GAME_EDGELENGTH;
 	}
 
 

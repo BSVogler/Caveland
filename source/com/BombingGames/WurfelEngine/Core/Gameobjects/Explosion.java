@@ -84,7 +84,7 @@ public class Explosion extends AbstractEntity {
 						dust.setType(Particle.ParticleType.FIRE);
 						dust.addMovement(
 							coord.toPoint().getVector().sub(point.getVector())
-								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f)
+								.nor().scl(CoreData.GAME_EDGELENGTH*4f)
 						);//move from center to outside
 					}
 				}

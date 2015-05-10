@@ -8,6 +8,11 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Controllable;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH2;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Particle;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
@@ -128,7 +133,7 @@ public class CustomPlayer extends Controllable {
 		//setRunningSound( (Sound) WE.getAsset("com/BombingGames/Caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
-		setDimensionZ(AbstractGameObject.GAME_EDGELENGTH);
+		setDimensionZ(CoreData.GAME_EDGELENGTH);
 		setSaveToDisk(false);
 	}
 
@@ -140,7 +145,7 @@ public class CustomPlayer extends Controllable {
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
 		emitter.setFloating(true);
-		emitter.spawn(point.cpy().addVector(-20, 0, AbstractGameObject.GAME_EDGELENGTH2));
+		emitter.spawn(point.cpy().addVector(-20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection1 = new SuperGlue(this, emitter).spawn(point);
 		conection1.setSaveToDisk(false);
 		emitter2 = new SmokeEmitter();
@@ -148,7 +153,7 @@ public class CustomPlayer extends Controllable {
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
 		emitter2.setFloating(true);
-		emitter2.spawn(point.cpy().addVector(20, 0, AbstractGameObject.GAME_EDGELENGTH2));
+		emitter2.spawn(point.cpy().addVector(20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection2 = new SuperGlue(this, emitter2).spawn(point);
 		conection2.setSaveToDisk(false);
 		return this;
@@ -221,12 +226,12 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//get loren
-		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, MineCart.class);
+		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(CoreData.GAME_EDGELENGTH2, MineCart.class);
 
 		if (!nearbyLoren.isEmpty()) {
 			MineCart lore = nearbyLoren.get(0);
 			if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
-				if (pos.getZ() > (lore.getPosition().getZ() + AbstractGameObject.GAME_EDGELENGTH2/2)) {//enter chu chu
+				if (pos.getZ() > (lore.getPosition().getZ() + CoreData.GAME_EDGELENGTH2/2)) {//enter chu chu
 					lore.setPassanger(this);
 				}
 			}
@@ -571,7 +576,7 @@ public class CustomPlayer extends Controllable {
 		).spawn(getPosition().cpy());
 		dust.setType(Particle.ParticleType.SMOKE);
 		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
-		dust.addMovement(new Vector3(0, 0, AbstractGameObject.GAME_EDGELENGTH / 500f));
+		dust.addMovement(new Vector3(0, 0, CoreData.GAME_EDGELENGTH / 500f));
 	}
 
 	@Override

@@ -33,7 +33,6 @@ package com.BombingGames.WurfelEngine.Core.Map;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
@@ -386,31 +385,31 @@ public class Coordinate extends AbstractPosition {
 	public static int getNeighbourSide(float x, float y) {
 		//modulo
 		if (y < 0) {
-			y += AbstractGameObject.GAME_DIAGLENGTH;
+			y += CoreData.GAME_DIAGLENGTH;
 		}
 		if (x < 0) {
-			x += AbstractGameObject.GAME_DIAGLENGTH;
+			x += CoreData.GAME_DIAGLENGTH;
 		}
 
 		int result = 8;//standard result
-		if (x + y <= AbstractGameObject.GAME_DIAGLENGTH2) {
+		if (x + y <= CoreData.GAME_DIAGLENGTH2) {
 			result = 7;
 		}
-		if (x - y >= AbstractGameObject.GAME_DIAGLENGTH2) {
+		if (x - y >= CoreData.GAME_DIAGLENGTH2) {
 			if (result == 7) {
 				result = 0;
 			} else {
 				result = 1;
 			}
 		}
-		if (x + y >= 3 * AbstractGameObject.GAME_DIAGLENGTH2) {
+		if (x + y >= 3 * CoreData.GAME_DIAGLENGTH2) {
 			if (result == 1) {
 				result = 2;
 			} else {
 				result = 3;
 			}
 		}
-		if (-x + y >= AbstractGameObject.GAME_DIAGLENGTH2) {
+		if (-x + y >= CoreData.GAME_DIAGLENGTH2) {
 			if (result == 3) {
 				result = 4;
 			} else if (result == 7) {
@@ -480,9 +479,9 @@ public class Coordinate extends AbstractPosition {
 	private void refreshCachedPoint() {
 		cachedPoint = new Point(
 			map,
-			x * AbstractGameObject.GAME_DIAGLENGTH + (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0),
-			y * AbstractGameObject.GAME_DIAGLENGTH2,
-			z * AbstractGameObject.GAME_EDGELENGTH
+			x * CoreData.GAME_DIAGLENGTH + (y % 2 != 0 ? CoreData.VIEW_WIDTH2 : 0),
+			y * CoreData.GAME_DIAGLENGTH2,
+			z * CoreData.GAME_EDGELENGTH
 		);
 	}
 
@@ -517,14 +516,14 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public int getViewSpcX(GameView view) {
-		return x * AbstractGameObject.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * CoreData.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (y % 2 != 0 ? AbstractGameObject.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? CoreData.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY(GameView view) {
-		return y * AbstractGameObject.VIEW_DEPTH2 *
+		return y * CoreData.VIEW_DEPTH2 *
 			(
 				view.getOrientation() == 0
 					? -1
@@ -533,7 +532,7 @@ public class Coordinate extends AbstractPosition {
 						: 0
 					)
 			)
-			+ z * AbstractGameObject.VIEW_HEIGHT;
+			+ z * CoreData.VIEW_HEIGHT;
 	}
 
 	/**

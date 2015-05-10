@@ -2,7 +2,7 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject.GAME_EDGELENGTH;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 
@@ -135,7 +135,7 @@ public abstract class AbstractInteractable extends MovableEntity {
 	public void update(float dt) {
 		super.update(dt);
 		if (interactButton != null) {
-			interactButton.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
+			interactButton.setPosition(getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH * 1.5f));
 			interactButton.setHidden(isHidden());
 		}
 		
@@ -148,7 +148,7 @@ public abstract class AbstractInteractable extends MovableEntity {
 	public void showButton(byte buttonID) {
 		if (interactButton == null) {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
-				getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH)
+				getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)
 			);
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);

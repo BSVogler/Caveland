@@ -32,7 +32,6 @@ package com.BombingGames.WurfelEngine.Core.Map;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Iterators.DataIterator;
@@ -429,7 +428,7 @@ public class Chunk {
      * @return
      */
     public static int getViewWidth(){
-        return blocksX*AbstractGameObject.VIEW_WIDTH;
+        return blocksX*CoreData.VIEW_WIDTH;
     }
     
     /**
@@ -437,7 +436,7 @@ public class Chunk {
      * @return
      */
     public static int getViewDepth() {
-        return blocksY*AbstractGameObject.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
+        return blocksY*CoreData.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
     }
     
     /**
@@ -445,7 +444,7 @@ public class Chunk {
      * @return
      */
     public static int getGameWidth(){
-        return blocksX*AbstractGameObject.GAME_DIAGLENGTH;
+        return blocksX*CoreData.GAME_DIAGLENGTH;
     }
     
     /**
@@ -453,7 +452,7 @@ public class Chunk {
      * @return
      */
     public static int getGameDepth() {
-        return blocksY*AbstractGameObject.GAME_DIAGLENGTH2;
+        return blocksY*CoreData.GAME_DIAGLENGTH2;
     }
     
         /**
@@ -461,7 +460,7 @@ public class Chunk {
      * @return in game size
      */
     public static int getGameHeight(){
-        return blocksZ*AbstractGameObject.GAME_EDGELENGTH;
+        return blocksZ*CoreData.GAME_EDGELENGTH;
     }
 	
 	

@@ -31,6 +31,7 @@
 
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 

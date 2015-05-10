@@ -32,7 +32,7 @@ package com.BombingGames.WurfelEngine.shooting;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
@@ -103,7 +103,7 @@ public class Weapon {
         this.id = id;
         this.parent = parent;
         if (parent != null) {
-            laserdot = new SimpleEntity((byte) 20).spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH));
+            laserdot = new SimpleEntity((byte) 20).spawn(parent.getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH));
         }
         
         switch (id){
@@ -308,7 +308,7 @@ public class Weapon {
                 reload();
         }
         
-        Point raycast = parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000, null, false).getPoint();
+        Point raycast = parent.getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH).raycast(parent.getAiming(), 5000, null, false).getPoint();
         if (raycast!=null)
             laserdot.setPosition(raycast);
 //        if (laser!=null && laser.shouldBeDisposed())
@@ -371,7 +371,7 @@ public class Weapon {
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
-                bullet.spawn(parent.getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH)); 
+                bullet.spawn(parent.getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)); 
             }
         }
     }

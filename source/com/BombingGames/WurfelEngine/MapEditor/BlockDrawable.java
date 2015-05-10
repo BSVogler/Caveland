@@ -31,6 +31,7 @@
 
 package com.BombingGames.WurfelEngine.MapEditor;
 
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -87,7 +88,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getLeftWidth() {
-		return RenderBlock.VIEW_WIDTH2*(1f+size);
+		return CoreData.VIEW_WIDTH2*(1f+size);
 	}
 	
 	/**
@@ -96,7 +97,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getRightWidth() {
-		return RenderBlock.VIEW_WIDTH2*(1f+size);
+		return CoreData.VIEW_WIDTH2*(1f+size);
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getTopHeight() {
-		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(1f+size);
+		return (CoreData.VIEW_HEIGHT2+CoreData.VIEW_DEPTH2)*(1f+size);
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getBottomHeight() {
-		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(1f+size);
+		return (CoreData.VIEW_HEIGHT2+CoreData.VIEW_DEPTH2)*(1f+size);
 	}
 	
     /**
@@ -123,7 +124,7 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinHeight() {
-        return (RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH)*(1f+size);
+        return (CoreData.VIEW_HEIGHT+CoreData.VIEW_DEPTH)*(1f+size);
     }
 
     /**
@@ -132,6 +133,6 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinWidth() {
-        return RenderBlock.VIEW_WIDTH*(1f+size);
+        return CoreData.VIEW_WIDTH*(1f+size);
     }
 }

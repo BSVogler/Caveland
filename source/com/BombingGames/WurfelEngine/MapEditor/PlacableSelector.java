@@ -32,7 +32,6 @@
 package com.BombingGames.WurfelEngine.MapEditor;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.WE;
@@ -97,7 +96,7 @@ public class PlacableSelector extends Table {
 			
 			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
-					for (byte i = 1; i < AbstractGameObject.OBJECTTYPESNUM; i++) {
+					for (byte i = 1; i < CoreData.OBJECTTYPESNUM; i++) {
 						table.row();
 						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 						

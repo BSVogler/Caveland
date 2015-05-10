@@ -645,17 +645,17 @@ map.getGameWidth(),
 		return 
 				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY - RenderBlock.VIEW_HEIGHT * 2)//bottom of sprite
+				(proY - CoreData.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY + RenderBlock.VIEW_HEIGHT2 + RenderBlock.VIEW_DEPTH)//top of sprite
+				(proY + CoreData.VIEW_HEIGHT2 + CoreData.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX + RenderBlock.VIEW_WIDTH2)//right side of sprite
+				(proX + CoreData.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX - RenderBlock.VIEW_WIDTH2)//left side of sprite
+				(proX - CoreData.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInProjSpc() / 2
 		;
@@ -939,7 +939,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH-1);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / CoreData.VIEW_WIDTH-1);
 	}
 
 	/**
@@ -957,7 +957,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc() / 2) / AbstractGameObject.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc() / 2) / CoreData.VIEW_WIDTH + 1);
 	}
 
 	/**
@@ -978,7 +978,7 @@ map.getGameWidth(),
 		//TODO verify
 		return (int) (
 			(position.y + getHeightInProjSpc() / 2)//camera top border
-			/ -AbstractGameObject.VIEW_DEPTH2//back to game space
+			/ -CoreData.VIEW_DEPTH2//back to game space
 		);
 	}
 
@@ -999,7 +999,7 @@ map.getGameWidth(),
 	public int getVisibleFrontBorderLow() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
+			/ -CoreData.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
 	
@@ -1012,8 +1012,8 @@ map.getGameWidth(),
 	public int getVisibleFrontBorderHigh() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -AbstractGameObject.VIEW_DEPTH2 //back to game coordinates
-			+cameraContentBlocks[0][0].length*AbstractGameObject.VIEW_HEIGHT/AbstractGameObject.VIEW_DEPTH2 //todo verify, try to add z component
+			/ -CoreData.VIEW_DEPTH2 //back to game coordinates
+			+cameraContentBlocks[0][0].length*CoreData.VIEW_HEIGHT/CoreData.VIEW_DEPTH2 //todo verify, try to add z component
 		);
 	}
 

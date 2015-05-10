@@ -29,6 +29,7 @@
 package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;

@@ -30,6 +30,8 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_DIAGLENGTH2;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.graphics.Color;
@@ -419,9 +421,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos-RenderBlock.VIEW_WIDTH2,
-				yPos+RenderBlock.VIEW_HEIGHT,
-				getHealth()*RenderBlock.VIEW_WIDTH/1000,
+				xPos-CoreData.VIEW_WIDTH2,
+				yPos+CoreData.VIEW_HEIGHT,
+				getHealth()*CoreData.VIEW_WIDTH/1000,
 				5
 			);
 			sh.end();

@@ -75,7 +75,7 @@ public class EntityShadow extends AbstractEntity {
 			getPosition().setZ(newHeight.toPoint().getZ());
 		}
 		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/RenderBlock.GAME_EDGELENGTH)
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/CoreData.GAME_EDGELENGTH)
 		);
     }
 

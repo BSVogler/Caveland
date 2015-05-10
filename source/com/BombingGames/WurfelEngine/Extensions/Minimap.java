@@ -202,11 +202,11 @@ public class Minimap implements LinkedWithMap {
 					float rectX = 
 						+ ((ent.getPosition().getX()
 						+ (ent.getPosition().toCoord().getY()%2==1?0.5f:0)
-						)/RenderBlock.GAME_DIAGLENGTH
+						)/CoreData.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
 					float rectY = 
-						- (ent.getPosition().getY()/RenderBlock.GAME_DIAGLENGTH
+						- (ent.getPosition().getY()/CoreData.GAME_DIAGLENGTH
 						+ 0.5f
 						)* scaleY*2;
 					sh.translate(rectX, rectY, 0);
@@ -226,9 +226,9 @@ public class Minimap implements LinkedWithMap {
 					rectX = (int) (
 						(tmpPos.getX()
 							+ (tmpPos.toCoord().getY()%2==1 ? 0.5f : 0)
-						  ) / RenderBlock.GAME_DIAGLENGTH * scaleX
+						  ) / CoreData.GAME_DIAGLENGTH * scaleX
 					);
-					rectY = (int) (tmpPos.getY()/RenderBlock.GAME_DIAGLENGTH2 * scaleY);
+					rectY = (int) (tmpPos.getY()/CoreData.GAME_DIAGLENGTH2 * scaleY);
 
 					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
@@ -296,10 +296,10 @@ public class Minimap implements LinkedWithMap {
 						//ground level
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
-					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2,
-						scaleX*camera.getWidthInProjSpc()/ RenderBlock.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc()/ RenderBlock.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / CoreData.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / CoreData.VIEW_DEPTH2,
+						scaleX*camera.getWidthInProjSpc()/ CoreData.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ CoreData.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
@@ -316,11 +316,11 @@ public class Minimap implements LinkedWithMap {
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
-					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
-						scaleX*camera.getWidthInProjSpc() / RenderBlock.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc() / RenderBlock.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / CoreData.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / CoreData.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * CoreData.VIEW_HEIGHT)/ CoreData.VIEW_DEPTH,
+						scaleX*camera.getWidthInProjSpc() / CoreData.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / CoreData.VIEW_DEPTH2
 					);
 					
 				sh.end();

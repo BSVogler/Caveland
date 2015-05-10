@@ -31,6 +31,7 @@
 package com.BombingGames.WurfelEngine.Core;
 
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.BombingGames.WurfelEngine.Core.Map.Chunk;
 import com.BombingGames.WurfelEngine.Core.Map.Intersection;
@@ -304,12 +305,12 @@ public class GameView extends View implements GameManager {
 		if (cameras.size() > 0) {
 			Point p = screenToGameBasic(x,y);
 			//find point at top of map
-			float deltaZ = Chunk.getGameHeight() - AbstractGameObject.GAME_EDGELENGTH - p.getZ();
+			float deltaZ = Chunk.getGameHeight() - CoreData.GAME_EDGELENGTH - p.getZ();
 			
 			p.addVector(0, deltaZ*Point.SQRT2, deltaZ);//top of map
 			//return new Intersection(p, Vector3.Zero, 0);
 			return p.raycast(
-				new Vector3(0,-1, -AbstractGameObject.ZAXISSHORTENING),//viewing direction, can not find correct vector todo. Was -Point.SQRT12
+				new Vector3(0,-1, -CoreData.ZAXISSHORTENING),//viewing direction, can not find correct vector todo. Was -Point.SQRT12
 				Float.POSITIVE_INFINITY,
 				cameras.get(0),//assume editor is in first camera
 				false

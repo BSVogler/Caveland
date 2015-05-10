@@ -3,8 +3,9 @@ package com.BombingGames.Caveland.GameObjects;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.GAME_EDGELENGTH2;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
@@ -47,7 +48,7 @@ public class MineCart extends AbstractInteractable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, AbstractGameObject.GAME_DIAGLENGTH2, 0));//the front is located in front
+		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
 		return this;
 	}
@@ -324,7 +325,7 @@ public class MineCart extends AbstractInteractable {
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
 		front = new SimpleEntity((byte) 42,(byte) 1);
-		front.spawn(getPosition().cpy().addVector(0, AbstractGameObject.GAME_DIAGLENGTH2, 0));//the front is located in front
+		front.spawn(getPosition().cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
 	}
 

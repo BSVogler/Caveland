@@ -36,7 +36,6 @@ import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
@@ -99,7 +98,7 @@ public class Point extends AbstractPosition {
      * @return in grid coordinates.
      */
     public float getZGrid() {
-        return (int) (z/RenderBlock.GAME_EDGELENGTH);
+        return (int) (z/CoreData.GAME_EDGELENGTH);
     }
 
     /**
@@ -120,9 +119,9 @@ public class Point extends AbstractPosition {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
 			map,	
-            (int) Math.floor(getX() / (float) AbstractGameObject.GAME_DIAGLENGTH),
-            (int) Math.floor(getY() / (float) AbstractGameObject.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
-			(int) Math.floor(z/RenderBlock.GAME_EDGELENGTH)
+            (int) Math.floor(getX() / (float) CoreData.GAME_DIAGLENGTH),
+            (int) Math.floor(getY() / (float) CoreData.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
+			(int) Math.floor(z/CoreData.GAME_EDGELENGTH)
 		);
 		//clamp at top border
 		if (coords.getZ() >= Chunk.getBlocksZ())
@@ -132,8 +131,8 @@ public class Point extends AbstractPosition {
         //find the specific coordinate (detail)
         return coords.goToNeighbour(
             Coordinate.getNeighbourSide(
-                getX() % AbstractGameObject.GAME_DIAGLENGTH,
-                getY() % AbstractGameObject.GAME_DIAGLENGTH
+                getX() % CoreData.GAME_DIAGLENGTH,
+                getY() % CoreData.GAME_DIAGLENGTH
             )
         );
     }
@@ -184,7 +183,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getZ() - getZGrid()*RenderBlock.GAME_EDGELENGTH;
+		return getZ() - getZGrid()*CoreData.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -228,7 +227,7 @@ public class Point extends AbstractPosition {
 				  )
 			)
 			
-            + (int) (getZ() * AbstractGameObject.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
+            + (int) (getZ() * CoreData.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
 			);
     }
     
@@ -394,7 +393,7 @@ public class Point extends AbstractPosition {
 					||
 					(
 						(
-							curZ < camera.getZRenderingLimit()*RenderBlock.GAME_EDGELENGTH
+							curZ < camera.getZRenderingLimit()*CoreData.GAME_EDGELENGTH
 							&& !camera.isClipped(isectP.toCoord())
 						)
 					)
@@ -405,10 +404,10 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (RenderBlock.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? RenderBlock.GAME_DIAGLENGTH2 : 0))
-                        % RenderBlock.GAME_DIAGLENGTH)) % RenderBlock.GAME_DIAGLENGTH
+                        (CoreData.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? CoreData.GAME_DIAGLENGTH2 : 0))
+                        % CoreData.GAME_DIAGLENGTH)) % CoreData.GAME_DIAGLENGTH
                         <
-                        RenderBlock.GAME_DIAGLENGTH2
+                        CoreData.GAME_DIAGLENGTH2
                     ) {
 						normal.y = 0;
                         normal.x = -1;

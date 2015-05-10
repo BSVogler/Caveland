@@ -31,6 +31,12 @@ package com.BombingGames.WurfelEngine.Core.Gameobjects;
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.GameView;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH4;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGHT;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
+import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.View;
@@ -51,14 +57,14 @@ public class RenderBlock extends AbstractGameObject {
 	/**
 	 * {id}{value}{side}
 	 */
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM][3];
 	
 	private static String destructionSound;
         
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] colorlist = new Color[OBJECTTYPESNUM][VALUESNUM];
+    private static final Color[][] colorlist = new Color[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
 	private static boolean fogEnabled;
 
 	@Override
@@ -127,7 +133,7 @@ public class RenderBlock extends AbstractGameObject {
      *
      */
     public static void staticDispose(){
-        blocksprites = new AtlasRegion[OBJECTTYPESNUM][VALUESNUM][3];//{id}{value}{side}
+        blocksprites = new AtlasRegion[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM][3];//{id}{value}{side}
     }
 
     @Override

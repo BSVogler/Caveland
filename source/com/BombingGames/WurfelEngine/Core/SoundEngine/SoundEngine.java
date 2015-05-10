@@ -32,7 +32,7 @@ package com.BombingGames.WurfelEngine.Core.SoundEngine;
 
 import com.BombingGames.WurfelEngine.Core.Camera;
 import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.audio.Sound;
@@ -252,7 +252,7 @@ public class SoundEngine {
 			}
 
 			int decay = WE.CVARS.getValueI("soundDecay");
-			volume = decay*AbstractGameObject.GAME_EDGELENGTH / (minDistance*minDistance + decay*AbstractGameObject.GAME_EDGELENGTH);//loose energy radial
+			volume = decay*CoreData.GAME_EDGELENGTH / (minDistance*minDistance + decay*CoreData.GAME_EDGELENGTH);//loose energy radial
 			if (volume > 1)
 				volume = 1;
 		}

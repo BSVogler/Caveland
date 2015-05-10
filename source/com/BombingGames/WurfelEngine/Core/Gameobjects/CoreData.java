@@ -8,8 +8,69 @@ import java.io.Serializable;
  * @author Benedikt Vogler
  */
 public class CoreData implements HasID, Serializable {
-	private static CustomBlocks customBlocks;
 	private static final long serialVersionUID = 1L;
+	
+	/**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
+     */
+    public transient static final int VIEW_DEPTH = 100;
+    /**The half (1/2) of VIEW_DEPTH. The short form of: VIEW_DEPTH/2*/
+    public transient static final int VIEW_DEPTH2 = VIEW_DEPTH / 2;
+    /**A quarter (1/4) of VIEW_DEPTH. The short form of: VIEW_DEPTH/4*/
+    public transient static final int VIEW_DEPTH4 = VIEW_DEPTH / 4;
+    
+    /**
+     * The width (x-axis) of the sprite size.
+     */
+    public transient static final int VIEW_WIDTH = 200;
+    /**The half (1/2) of VIEW_WIDTH. The short form of: VIEW_WIDTH/2*/
+    public transient static final int VIEW_WIDTH2 = VIEW_WIDTH / 2;
+    /**A quarter (1/4) of VIEW_WIDTH. The short form of: VIEW_WIDTH/4*/
+    public transient static final int VIEW_WIDTH4 = VIEW_WIDTH / 4;
+    
+    /**
+     * The height (y-axis) of the sprite size.
+     */
+    public transient static final int VIEW_HEIGHT = 122;
+    /**The half (1/2) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/2*/
+    public transient static final int VIEW_HEIGHT2 = VIEW_HEIGHT / 2;
+    /**A quarter (1/4) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/4*/
+    public transient static final int VIEW_HEIGHT4 = VIEW_HEIGHT / 4;
+    
+    /**
+     * The game space dimension size's aequivalent to VIEW_DEPTH or VIEW_WIDTH.
+     * Because the x axis is not shortened those two are equal.
+     */
+    public transient static final int GAME_DIAGLENGTH = VIEW_WIDTH;
+    
+    /**Half (1/2) of GAME_DIAGLENGTH.
+     */
+    public transient static final int GAME_DIAGLENGTH2 = VIEW_WIDTH2;
+	
+	    /**
+     * The game spaces dimension in pixel (edge length). 1 game meter ^= 1 GAME_EDGELENGTH
+ The value is calculated by VIEW_HEIGHT*sqrt(2) because of the axis shortening.
+     */
+    public transient static final int GAME_EDGELENGTH = (int) (GAME_DIAGLENGTH / 1.41421356237309504880168872420969807856967187537694807317667973799f);
+    
+	/**
+     * Half (1/2) of GAME_EDGELENGTH.
+     */
+    public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH/2;
+    
+	/**
+	 * Some magic number which is the factor by what the Z axis is distorted because of the angle pf projection.
+	 */
+	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT/(float) GAME_EDGELENGTH;
+		
+    /**the max. amount of different object types*/
+    public transient static final int OBJECTTYPESNUM = 124;
+      /**the max. amount of different values*/
+    public transient static final int VALUESNUM = 64;
+	
+	/**
+	 * the factory for custom blocks
+	 */
+	private static CustomBlocks customBlocks;
 	
 		/**
 	 * If you want to define custom id's &gt;39

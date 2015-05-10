@@ -246,7 +246,7 @@ public class SoundEngine {
 			//calculate minimal distance to camera
 			float minDistance = Float.POSITIVE_INFINITY;
 			for (Camera camera : view.getCameras()) {
-				float distance = pos.getPoint().distanceTo(camera.getCenter());
+				float distance = pos.toPoint().distanceTo(camera.getCenter());
 				if (distance < minDistance)
 					minDistance = distance;
 			}

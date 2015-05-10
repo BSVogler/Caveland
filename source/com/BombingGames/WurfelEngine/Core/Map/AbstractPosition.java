@@ -59,15 +59,34 @@ public abstract class AbstractPosition implements Serializable {
 	 */
 	protected transient AbstractMap map;
 
-	public AbstractPosition(AbstractMap map) {
+	/**
+	 * 
+	 * @param map 
+	 */
+	protected AbstractPosition(AbstractMap map) {
 		this.map = map;
 	}
 	
+	/**
+	 * the map where the position is located on
+	 * @return 
+	 */
 	public AbstractMap getMap() {
 		return map;
 	}
+	  
+	/**
+     * If needed calculates it and creates new instance else return itself.
+     * @return the point representation
+     */
+    public abstract Point toPoint();
+    
+    /**
+     * If needed calculates it and creates new instance else return itself.
+     * @return the coordinate representation
+     */
+    public abstract Coordinate toCoord();
 	
-	    
      /**
      * Calculate position in view space.
 	 * @param View
@@ -81,18 +100,6 @@ public abstract class AbstractPosition implements Serializable {
      * @return Returns the center of the projected (view space) y-position where the object is rendered without regarding the camera.
      */
     public abstract int getViewSpcY(GameView View);
-    
-    /**
-     * If needed calculates it and creates new instance else return itself.
-     * @return the point representation
-     */
-    public abstract Point getPoint();
-    
-    /**
-     * If needed calculates it and creates new instance else return itself.
-     * @return the coordinate representation
-     */
-    public abstract Coordinate getCoord();
     
 	  /**
      *Get as vector
@@ -160,21 +167,21 @@ public abstract class AbstractPosition implements Serializable {
 			(
 				view.getOrientation()==0
 				?
-					 getPoint().getY()//Y
+					 toPoint().getY()//Y
 				:
 					(
 						view.getOrientation()==2
 						?
-							map.getGameDepth()-getPoint().getY()//Y
+							map.getGameDepth()-toPoint().getY()//Y
 						:
 							0
 					)
 			)            
-            + getPoint().getZ()*SQRT12//Z
+            + toPoint().getZ()*SQRT12//Z
         );
     }
 	
-		/**
+	/**
 	 * overrides deserialisation
 	 *
 	 * @param stream
@@ -183,6 +190,6 @@ public abstract class AbstractPosition implements Serializable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
-		map = Controller.getMap();
+		map = Controller.getMap();//use defautl map
 	}
 }

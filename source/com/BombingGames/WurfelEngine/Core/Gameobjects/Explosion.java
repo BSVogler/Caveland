@@ -62,7 +62,7 @@ public class Explosion extends AbstractEntity {
 		for (int x=-radius; x<radius; x++){
 			for (int y=-radius*2; y<radius*2; y++) {
 				for (int z=-radius; z<radius; z++){
-					Coordinate coord = point.cpy().getCoord().addVector(x, y, z);
+					Coordinate coord = point.cpy().toCoord().addVector(x, y, z);
 					if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){//check if in radius
 						coord.destroy();
 						
@@ -79,11 +79,11 @@ public class Explosion extends AbstractEntity {
 						Particle dust = (Particle) new Particle(
 							(byte) 22,
 							1700
-						).spawn(coord.getPoint().cpy());//spawn at center
+						).spawn(coord.toPoint().cpy());//spawn at center
 						dust.setColor(new Color(0.5f,0.45f,0.4f,1f));
 						dust.setType(Particle.ParticleType.FIRE);
 						dust.addMovement(
-							coord.getPoint().getVector().sub(point.getVector())
+							coord.toPoint().getVector().sub(point.getVector())
 								.nor().scl(AbstractGameObject.GAME_EDGELENGTH*4f)
 						);//move from center to outside
 					}

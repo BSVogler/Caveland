@@ -326,7 +326,7 @@ public class RenderBlock extends AbstractGameObject {
 		Color color;
 		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
-			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().getCoord().getY())*0.17+2));
+			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().toCoord().getY())*0.17+2));
 			color = new Color(0.5f, 0.5f, 0.5f, 1).add(
 				0.3f*factor,
 				0.4f*factor,
@@ -457,7 +457,7 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public void setPosition(AbstractPosition pos) {
-		coord = pos.getCoord();
+		coord = pos.toCoord();
 	}
 	
 	/**

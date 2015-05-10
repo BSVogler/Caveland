@@ -246,7 +246,7 @@ public abstract class AbstractMap implements Cloneable {
         ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity ent : entityList) {
-            if ( ent.getPosition().getCoord().equals(coord) ){
+            if ( ent.getPosition().toCoord().equals(coord) ){
                 list.add(ent);//add it to list
             } 
         }
@@ -267,7 +267,7 @@ public abstract class AbstractMap implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (
-                ent.getPosition().getCoord().getVector().equals(coord.getVector())//on coordinate?
+                ent.getPosition().toCoord().getVector().equals(coord.getVector())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
                 ){
                     list.add((type) ent);//add it to list

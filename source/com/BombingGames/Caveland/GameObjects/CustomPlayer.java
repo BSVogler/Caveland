@@ -221,7 +221,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//get loren
-		ArrayList<MineCart> nearbyLoren = pos.getPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, MineCart.class);
+		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(AbstractGameObject.GAME_EDGELENGTH2, MineCart.class);
 
 		if (!nearbyLoren.isEmpty()) {
 			MineCart lore = nearbyLoren.get(0);
@@ -238,7 +238,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//collect collectibles
-		ArrayList<Collectible> collectibles = pos.getCoord().getEntitysInside(Collectible.class);
+		ArrayList<Collectible> collectibles = pos.toCoord().getEntitysInside(Collectible.class);
 		boolean playCollectSound = false;
 		for (Collectible collectible : collectibles) {
 			if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {
@@ -411,7 +411,7 @@ public class CustomPlayer extends Controllable {
 		}
 
 		//damage blocks
-		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).getCoord();
+		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
 		//check if the player can damage the blocks
 		if (aimCoord.getBlock() != null) {
 			if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
@@ -419,7 +419,7 @@ public class CustomPlayer extends Controllable {
 				if (aimCoord.damage(damage)) {
 					Controller.getSoundEngine().play("impact");
 					getCamera().shake(20, 50);
-					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.getPoint().cpy());
+					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
 					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 					dirt.setRotation((float) Math.random()*360);
 				}
@@ -427,7 +427,7 @@ public class CustomPlayer extends Controllable {
 				//indestructible by hand
 					Controller.getSoundEngine().play("impact");//todo different sound
 					getCamera().shake(20, 50);
-					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.getPoint().cpy());
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy());
 					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 					dirt.setRotation((float) Math.random()*360);
 			}
@@ -583,7 +583,7 @@ public class CustomPlayer extends Controllable {
 	@Override
 	public void dispose() {
 		super.dispose();
-		Coordinate coord = getPosition().getCoord();
+		Coordinate coord = getPosition().toCoord();
 		Controller.getMap().getSaveCVars().get("PlayerLastSaveX").setValue(coord.getX());
 		Controller.getMap().getSaveCVars().get("PlayerLastSaveY").setValue(coord.getY());
 		Controller.getMap().getSaveCVars().get("PlayerLastSaveZ").setValue(coord.getZ());

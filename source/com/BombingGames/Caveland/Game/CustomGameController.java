@@ -41,7 +41,7 @@ public class CustomGameController extends Controller {
 					saveCvars.getValueI("PlayerLastSaveX"),
 					saveCvars.getValueI("PlayerLastSaveY"),
 					saveCvars.getValueI("PlayerLastSaveZ")
-				).getPoint()
+				).toPoint()
 			);
 		if (player2!=null && !player2.spawned())
 			player2.spawn(
@@ -50,7 +50,7 @@ public class CustomGameController extends Controller {
 					saveCvars.getValueI("PlayerLastSaveX"),
 					saveCvars.getValueI("PlayerLastSaveY"),
 					saveCvars.getValueI("PlayerLastSaveZ")
-				).getPoint()
+				).toPoint()
 			);
 		
 		RenderBlock.setDestructionSound("blockDestroy");

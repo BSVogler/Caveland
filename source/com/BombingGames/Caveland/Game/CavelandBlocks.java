@@ -95,21 +95,21 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0 ){
 			if (id==41) {
-				Collectible.create(Collectible.CollectibleType.CRISTALL).spawn(coord.getPoint().cpy());
+				Collectible.create(Collectible.CollectibleType.CRISTALL).spawn(coord.toPoint().cpy());
 			} else if (id==42){
-				Collectible.create(Collectible.CollectibleType.SULFUR).spawn(coord.getPoint().cpy());
+				Collectible.create(Collectible.CollectibleType.SULFUR).spawn(coord.toPoint().cpy());
 			} else if (id==43){
-				Collectible.create(Collectible.CollectibleType.IRONORE).spawn(coord.getPoint().cpy());
+				Collectible.create(Collectible.CollectibleType.IRONORE).spawn(coord.toPoint().cpy());
 			} else if (id==44){
-				Collectible.create(Collectible.CollectibleType.COAL).spawn(coord.getPoint().cpy());
+				Collectible.create(Collectible.CollectibleType.COAL).spawn(coord.toPoint().cpy());
 			}else if (id==72){
-				Collectible.create(Collectible.CollectibleType.WOOD).spawn(coord.getPoint().cpy());
+				Collectible.create(Collectible.CollectibleType.WOOD).spawn(coord.toPoint().cpy());
 			}
 			
 			//view only relevant. should only be done if visible
 			//todo, check if visible
 			for (int i = 0; i < 10; i++) {
-				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.getPoint().cpy());
+				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.toPoint().cpy());
 				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 				dirt.setRotation((float) Math.random()*360);
 			}

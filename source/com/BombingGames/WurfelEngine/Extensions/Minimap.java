@@ -201,7 +201,7 @@ public class Minimap implements LinkedWithMap {
 					sh.setColor(color);
 					float rectX = 
 						+ ((ent.getPosition().getX()
-						+ (ent.getPosition().getCoord().getY()%2==1?0.5f:0)
+						+ (ent.getPosition().toCoord().getY()%2==1?0.5f:0)
 						)/RenderBlock.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
@@ -218,14 +218,14 @@ public class Minimap implements LinkedWithMap {
 					 Point tmpPos = ent.getPosition();
 					//player coordinate
 					view.drawString(
-						tmpPos.getCoord().getX() +" | "+ tmpPos.getCoord().getY() +" | "+ (int) tmpPos.getZ(),
-						(int) (posX+(tmpPos.getCoord().getX() + (tmpPos.getY()%2==1?0.5f:0) ) * scaleX+20),
-						(int) (posY- tmpPos.getCoord().getY() * scaleY + 10),
+						tmpPos.toCoord().getX() +" | "+ tmpPos.toCoord().getY() +" | "+ (int) tmpPos.getZ(),
+						(int) (posX+(tmpPos.toCoord().getX() + (tmpPos.getY()%2==1?0.5f:0) ) * scaleX+20),
+						(int) (posY- tmpPos.toCoord().getY() * scaleY + 10),
 						Color.RED
 					);
 					rectX = (int) (
 						(tmpPos.getX()
-							+ (tmpPos.getCoord().getY()%2==1 ? 0.5f : 0)
+							+ (tmpPos.toCoord().getY()%2==1 ? 0.5f : 0)
 						  ) / RenderBlock.GAME_DIAGLENGTH * scaleX
 					);
 					rectY = (int) (tmpPos.getY()/RenderBlock.GAME_DIAGLENGTH2 * scaleY);

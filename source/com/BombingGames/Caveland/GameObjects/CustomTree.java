@@ -62,7 +62,7 @@ public class CustomTree extends RenderBlock {
 		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
 			otherHalf.destroy();
 			
-		Collectible.create(Collectible.CollectibleType.WOOD).spawn(getPosition().getPoint());			
+		Collectible.create(Collectible.CollectibleType.WOOD).spawn(getPosition().toPoint());			
 	}
 
 	

@@ -322,7 +322,7 @@ public class MapEditorView extends GameView {
 			buttondown = button;
 			selection.update(view, screenX, screenY);
 			leftColorGUI.update(selection);
-			Coordinate coords = selection.getPosition().getCoord();
+			Coordinate coords = selection.getPosition().toCoord();
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
                 CoreData block = coords.getBlock();
@@ -375,7 +375,7 @@ public class MapEditorView extends GameView {
             
             selection.update(view, screenX, screenY);
 			leftColorGUI.update(selection);
-			Coordinate coords = selection.getPosition().getCoord();
+			Coordinate coords = selection.getPosition().toCoord();
 			
 			Tool toggledTool;
 
@@ -435,7 +435,7 @@ public class MapEditorView extends GameView {
 				&& (buttondown==Buttons.RIGHT && toolSelection.getRightTool() != Toolbar.Tool.BUCKET)
 				
 			) { 
-				Coordinate coords = controller.getSelectionEntity().getPosition().getCoord();
+				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
 				coords.setZ(layerSelection);
 				if (coords.getZ()>=0) {
 					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){

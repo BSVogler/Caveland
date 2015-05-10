@@ -86,7 +86,7 @@ public class PlacableGUI extends WidgetGroup {
 		label = new Label(Integer.toString(getId()) + " - "+ Integer.toString(getValue()), WE.getEngineView().getSkin());
 		addActor(label);
 		
-		blockPosition = new Label(selection.getPosition().getCoord().toString(), WE.getEngineView().getSkin());
+		blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
 		blockPosition.setPosition(50, 0);
 		addActor(blockPosition);
 	}
@@ -96,7 +96,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param selection the selection entity of the editor
 	 */
 	public void update(Selection selection){
-		blockPosition.setText(selection.getPosition().getCoord().toString());
+		blockPosition.setText(selection.getPosition().toCoord().toString());
 	}
 
 	/**

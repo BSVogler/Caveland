@@ -470,7 +470,7 @@ public class Coordinate extends AbstractPosition {
 	 * @see #refreshCachedPoint()
 	 */
 	@Override
-	public Point getPoint() {
+	public Point toPoint() {
 		return cachedPoint;
 	}
 
@@ -491,7 +491,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return
 	 */
 	@Override
-	public Coordinate getCoord() {
+	public Coordinate toCoord() {
 		return this;
 	}
 

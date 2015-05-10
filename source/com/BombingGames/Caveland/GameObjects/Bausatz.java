@@ -18,7 +18,7 @@ public class Bausatz extends Collectible {
 	@Override
 	public void action(AbstractEntity actor) {
 		Controller.getSoundEngine().play("robotHit", getPosition());
-		actor.getPosition().getCoord().setBlock(CoreData.getInstance((byte) 11));
+		actor.getPosition().toCoord().setBlock(CoreData.getInstance((byte) 11));
 	}
 	
 	

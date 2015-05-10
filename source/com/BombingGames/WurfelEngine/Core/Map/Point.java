@@ -82,7 +82,7 @@ public class Point extends AbstractPosition {
      * @return
      */
     @Override
-    public Point getPoint() {
+    public Point toPoint() {
        return this;
     }
 	
@@ -116,7 +116,7 @@ public class Point extends AbstractPosition {
      * @return coordinate aquivalent
      */
     @Override
-    public Coordinate getCoord() {
+    public Coordinate toCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
 			map,	
@@ -168,7 +168,7 @@ public class Point extends AbstractPosition {
 	 * @return  the offset to the coordiantes center.
 	 */
 	public float getRelToCoordX(){
-		return x - getCoord().getPoint().x;
+		return x - toCoord().toPoint().x;
 	}
 	
 	/**
@@ -176,7 +176,7 @@ public class Point extends AbstractPosition {
 	 * @return  the offset to the coordiantes center.
 	 */
 	public float getRelToCoordY(){
-		return y - getCoord().getPoint().y;
+		return y - toCoord().toPoint().y;
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public class Point extends AbstractPosition {
 	
     @Override
     public CoreData getBlock() {
-        return Controller.getMap().getBlock(getCoord());
+        return Controller.getMap().getBlock(toCoord());
     }
     
     @Override
@@ -234,7 +234,7 @@ public class Point extends AbstractPosition {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		return getCoord().isInMemoryAreaHorizontal();
+		return toCoord().isInMemoryAreaHorizontal();
     }
 	
 	@Override
@@ -305,7 +305,7 @@ public class Point extends AbstractPosition {
 	 * @param z offset from origin 
 	 */
 	public void setPositionRelativeToCoord(float x, float y, float z) {
-		Point origin = getCoord().getPoint(); 
+		Point origin = toCoord().toPoint(); 
 		this.x = origin.x +x;
 		this.y = origin.y +y;
 		this.z = origin.z +z;
@@ -395,7 +395,7 @@ public class Point extends AbstractPosition {
 					(
 						(
 							curZ < camera.getZRenderingLimit()*RenderBlock.GAME_EDGELENGTH
-							&& !camera.isClipped(isectP.getCoord())
+							&& !camera.isClipped(isectP.toCoord())
 						)
 					)
 				   )
@@ -405,7 +405,7 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (RenderBlock.GAME_DIAGLENGTH+((isectP.getX() -(isectP.getCoord().getY() % 2 == 0? RenderBlock.GAME_DIAGLENGTH2 : 0))
+                        (RenderBlock.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? RenderBlock.GAME_DIAGLENGTH2 : 0))
                         % RenderBlock.GAME_DIAGLENGTH)) % RenderBlock.GAME_DIAGLENGTH
                         <
                         RenderBlock.GAME_DIAGLENGTH2
@@ -507,7 +507,7 @@ public class Point extends AbstractPosition {
 	 * @return the distance from this point to the other object
 	 */
 	public float distanceTo(AbstractGameObject object) {
-		return distanceTo(object.getPosition().getPoint());
+		return distanceTo(object.getPosition().toPoint());
 	}
 	
 	
@@ -528,7 +528,7 @@ public class Point extends AbstractPosition {
 	 * @return the distance from this point to the other point only regarding horizontal components.
 	 */
 	public float distanceToHorizontal(AbstractGameObject object) {
-		return distanceToHorizontal(object.getPosition().getPoint());
+		return distanceToHorizontal(object.getPosition().toPoint());
 	}
 	
 	
@@ -541,7 +541,7 @@ public class Point extends AbstractPosition {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (distanceTo(entity.getPosition().getPoint()) < radius){
+            if (distanceTo(entity.getPosition().toPoint()) < radius){
                 result.add(entity);
             } 
         }
@@ -561,7 +561,7 @@ public class Point extends AbstractPosition {
 		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
-            if (distanceTo(entity.getPosition().getPoint()) < radius){
+            if (distanceTo(entity.getPosition().toPoint()) < radius){
                 result.add((type) entity);
             } 
         }
@@ -578,7 +578,7 @@ public class Point extends AbstractPosition {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (distanceToHorizontal(entity.getPosition().getPoint()) < radius){
+            if (distanceToHorizontal(entity.getPosition().toPoint()) < radius){
                 result.add(entity);
             } 
         }
@@ -602,7 +602,7 @@ public class Point extends AbstractPosition {
             if (
 				type.isInstance(entity) //if the entity is of the wanted type
 				&&
-				distanceToHorizontal(entity.getPosition().getPoint()) < radius
+				distanceToHorizontal(entity.getPosition().toPoint()) < radius
 			) {
                 result.add((type) entity);//add it to list
             }

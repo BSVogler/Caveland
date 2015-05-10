@@ -98,7 +98,7 @@ public class MineCart extends AbstractInteractable {
 					case 5:
 						int y;
 						if (getMovement().y > 0
-							|| (getMovement().y == 0 && pos.getY() - pos.getCoord().getPoint().getY() < 0)) {//on top and moving down
+							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)) {//on top and moving down
 							y = 1;
 						} else {
 							y = -1;

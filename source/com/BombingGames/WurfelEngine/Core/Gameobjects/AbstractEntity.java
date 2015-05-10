@@ -108,7 +108,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
     @Override
     public void setPosition(AbstractPosition pos) {
-        this.position = pos.getPoint();
+        this.position = pos.toPoint();
     }
 
     /**
@@ -135,8 +135,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
 			CoreData block = new Coordinate(
 				getPosition().getMap(), 
-				position.getCoord().getX(),
-				position.getCoord().getY(),
+				position.toCoord().getX(),
+				position.toCoord().getY(),
 				z
 			).getBlock();
 			if (block == null)

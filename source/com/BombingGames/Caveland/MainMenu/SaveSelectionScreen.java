@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import java.io.File;
 
 /**
- *
+ *A screen to select the save file.
  * @author Benedikt Vogler
  */
 public class SaveSelectionScreen extends WEScreen {

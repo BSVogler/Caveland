@@ -111,7 +111,7 @@ public class CoreData implements HasID, Serializable {
 			return null;
 		if (id==9)
 			return new Sea(id);
-		if (id>39 && customBlocks != null){
+		if (id>9 && customBlocks != null){
             return customBlocks.toRenderBlock(id, value);
         }
 		return new RenderBlock(id, value);
@@ -119,7 +119,7 @@ public class CoreData implements HasID, Serializable {
 
 	@Override
 	public boolean isObstacle() {
-		if (id>39 && customBlocks != null){
+		if (id>9 && customBlocks != null){
             return customBlocks.isObstacle(id, value);
         }
 		if (id==9)
@@ -129,7 +129,7 @@ public class CoreData implements HasID, Serializable {
 
 	@Override
 	public boolean isTransparent() {
-		if (id>39 && customBlocks != null){
+		if (id>9 && customBlocks != null){
             return customBlocks.isTransparent(id, value);
         }
 		if (id==9)
@@ -142,7 +142,7 @@ public class CoreData implements HasID, Serializable {
      * @return true if liquid, false if not 
      */
 	public boolean isLiquid() {
-		if (id>39 && customBlocks != null){
+		if (id>9 && customBlocks != null){
             return customBlocks.isLiquid(id, value);
         }
 		if (id==9)
@@ -186,30 +186,9 @@ public class CoreData implements HasID, Serializable {
 			case 8:
 				return "sand";
 			case 9:
-				return "water";
-			case 10:
-				return "???";
-			case 11:
-				return "???";
-			case 12:
-				return "???";
-			case 13:
-				return "???";
-			case 14:
-			return "???";
-			case 15:
-				return "???";
-			case 16:
-				return "???";				
-			case 34:
-				return "flower";
-			case 35:
-				return "bush";
-			case 36:
-				return "tree";
-								
+				return "water";								
 			default:
-				if (id > 39) {
+				if (id > 9) {
                     if (customBlocks!=null){
                         return customBlocks.getName(id, value);
                     } else {

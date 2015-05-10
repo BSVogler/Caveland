@@ -71,6 +71,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 
 	@Override
 	public boolean isObstacle(byte id, byte value) {
+		if (id==11) return false;
 		if (id>=41 && id<=44)//ores
 			return true;
 		if (id==72) return true;
@@ -80,6 +81,7 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 
 	@Override
 	public boolean isTransparent(byte id, byte value) {
+		if (id==11) return true;
 		if (id==55) return true;
 		return false;
 	}

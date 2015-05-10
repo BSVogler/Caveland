@@ -137,6 +137,7 @@ public class Camera implements LinkedWithMap {
 	 * amount of objects to be rendered
 	 */
 	private int objectsToBeRendered = 0;
+	private int renderResWidth;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -171,6 +172,7 @@ public class Camera implements LinkedWithMap {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
+		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 
 		Point center = map.getCenter();
@@ -219,6 +221,7 @@ public class Camera implements LinkedWithMap {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
+		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 		position.x = center.getViewSpcX(gameView);
 		position.y = center.getViewSpcY(gameView);
@@ -246,6 +249,7 @@ public class Camera implements LinkedWithMap {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
+		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
@@ -884,6 +888,16 @@ map.getGameWidth(),
 		this.zoom = zoom;
 		updateViewSpaceSize();//todo check for redundant call?
 	}
+	
+	
+	/**
+	 * the width of the internal render resolution
+	 * @param resolution
+	 */
+	public void setInternalRenderResolution(int resolution){
+		renderResWidth = resolution;
+		updateViewSpaceSize();
+	}
 
 	/**
 	 * Returns the zoomfactor.
@@ -901,7 +915,7 @@ map.getGameWidth(),
 	 * @return a scaling factor applied on the projection
 	 */
 	public float getScreenSpaceScaling() {
-		return screenWidth / (float) WE.CVARS.getValueI("renderResolutionWidth");
+		return screenWidth / (float) renderResWidth;
 	}
 
 	/**
@@ -1067,7 +1081,7 @@ map.getGameWidth(),
 	 * updates the cache
 	 */
 	public final void updateViewSpaceSize() {
-		viewSpaceWidth = WE.CVARS.getValueI("renderResolutionWidth");
+		viewSpaceWidth = renderResWidth;
 		viewSpaceHeight = (int) (screenHeight /getScreenSpaceScaling());
 	}
 

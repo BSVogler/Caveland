@@ -67,25 +67,51 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("hiss", "com/BombingGames/Caveland/sounds/hiss.wav");
 		
 		if (coop >- 1){//it is a coop game
-			Camera camera0  = new Camera(
-				getPlayer(0),
-				0, //left
-				0, //top
-				Gdx.graphics.getWidth(), //width
-				Gdx.graphics.getHeight()/2,//height
-				this
-			);
+			Camera camera0;
+			if (WE.CVARS.getValueB("coopVerticalSplitScreen")) {
+				camera0  = new Camera(
+					getPlayer(0),
+					0, //left
+					0, //top
+					Gdx.graphics.getWidth()/2, //width
+					Gdx.graphics.getHeight(),//height
+					this
+				);
+				camera0.setInternalRenderResolution( WE.CVARS.getValueI("renderResolutionWidth")/2);
+			} else {
+				camera0  = new Camera(
+					getPlayer(0),
+					0, //left
+					0, //top
+					Gdx.graphics.getWidth(), //width
+					Gdx.graphics.getHeight()/2,//height
+					this
+				);
+			}
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 			
-			Camera camera1 = new Camera(
-				getPlayer(1),
-				0,
-				Gdx.graphics.getHeight()/2,
-				Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight()/2,
-				this
-			);
+			Camera camera1;
+			if (WE.CVARS.getValueB("coopVerticalSplitScreen")) {
+				camera1 = new Camera(
+					getPlayer(1),
+					Gdx.graphics.getWidth()/2,
+					0,
+					Gdx.graphics.getWidth()/2,
+					Gdx.graphics.getHeight(),
+					this
+				);
+				camera1.setInternalRenderResolution( WE.CVARS.getValueI("renderResolutionWidth")/2);
+			} else {
+				camera1 = new Camera(
+					getPlayer(1),
+					0,
+					Gdx.graphics.getHeight()/2,
+					Gdx.graphics.getWidth(),
+					Gdx.graphics.getHeight()/2,
+					this
+				);
+			}
 			addCamera(camera1);
 			getPlayer(1).setCamera(camera1);
 			

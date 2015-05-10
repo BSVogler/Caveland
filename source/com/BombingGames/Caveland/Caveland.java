@@ -4,10 +4,10 @@ import com.BombingGames.Caveland.Game.CavelandBlocks;
 import com.BombingGames.Caveland.Game.ChunkGenerator;
 import com.BombingGames.Caveland.GameObjects.Bird;
 import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.Caveland.GameObjects.SmokeEmitter;
 import com.BombingGames.Caveland.GameObjects.Enemy;
 import com.BombingGames.Caveland.GameObjects.Flint;
 import com.BombingGames.Caveland.GameObjects.MineCart;
+import com.BombingGames.Caveland.GameObjects.SmokeEmitter;
 import com.BombingGames.Caveland.GameObjects.Spaceship;
 import com.BombingGames.Caveland.GameObjects.Vanya;
 import com.BombingGames.Caveland.MainMenu.MainMenuScreen;
@@ -45,6 +45,7 @@ public class Caveland {
 		WE.CVARS.register( new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//register map cvars
 		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());

@@ -84,7 +84,9 @@ public class Collectible extends MovableEntity implements Serializable {
 		Collectible obj;
 		if (def == CollectibleType.EXPLOSIVES) {
 			obj = new TFlint();
-		} else {
+		} else if (def == CollectibleType.TOOLKIT){
+			obj = new Bausatz();
+		}else {
 			obj = new Collectible(def);
 		}
 
@@ -99,7 +101,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	private transient float timeParentBlocked = 1500;
 
 	/**
-	 *
+	 *@see #create(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
 	 * @param def
 	 */
 	protected Collectible(CollectibleType def) {

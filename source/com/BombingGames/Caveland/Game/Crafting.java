@@ -130,6 +130,7 @@ public class Crafting extends Table {
 			//Collectible c = inventory.fetchCollectible(recipe.ingredients[2]);
 			if (a!=null && b!=null) {
 				inventory.add(Collectible.create(recipe.result));
+				clear();//empty the crafting menu
 			}
 		}
 	}

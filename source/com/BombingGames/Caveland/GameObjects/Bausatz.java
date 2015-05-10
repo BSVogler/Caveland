@@ -1,5 +1,6 @@
 package com.BombingGames.Caveland.GameObjects;
 
+import com.BombingGames.WurfelEngine.Core.Controller;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 
@@ -16,6 +17,7 @@ public class Bausatz extends Collectible {
 
 	@Override
 	public void action(AbstractEntity actor) {
+		Controller.getSoundEngine().play("robotHit", getPosition());
 		actor.getPosition().getCoord().setBlock(CoreData.getInstance((byte) 11));
 	}
 	

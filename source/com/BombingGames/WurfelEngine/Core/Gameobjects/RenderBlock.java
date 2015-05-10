@@ -70,6 +70,7 @@ public class RenderBlock extends AbstractGameObject {
     private boolean clippedTop;
 	private boolean clippedRight;
 	private boolean clippedLeft;
+	private boolean hasSides = true;
 
 	public void setClippedLeft() {
 		clippedLeft = true;
@@ -188,7 +189,7 @@ public class RenderBlock extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (CoreData.getFactory().hasSides(id, value)){//if has sides, take top block    
+            if (CoreData.getInstance(id, value).hasSides()){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -204,10 +205,29 @@ public class RenderBlock extends AbstractGameObject {
         } else return colorlist[id][value].cpy(); //return value when in list
     }
 
+	/**
+     * Is the block a true block with three sides or does it get rendered by a single sprite?<br>
+	 * This field is only used for representation (view) related data.
+     * @return true if it has sides, false if is rendered as a single sprite
+     */
+	public boolean hasSides() {
+		return hasSides;
+	}
+
+	/**
+	 * Is the block a true block with three sides or does it get rendered by a single sprite?
+	 * <br>
+	 * This field is only used for representation (view) related data.
+	 * @param hasSides true if it has sides, false if is rendered as a single sprite
+	 */
+	public void setHasSides(boolean hasSides) {
+		this.hasSides = hasSides;
+	}
+
     @Override
     public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {
-            if (getCoreData().hasSides()) {
+            if (hasSides()) {
 				Coordinate coords = getPosition();
 				boolean staticShade = WE.CVARS.getValueB("enableAutoShade");
                 if (!clippedTop)
@@ -230,7 +250,7 @@ public class RenderBlock extends AbstractGameObject {
     @Override
     public void render(final GameView view, final int xPos, final int yPos) {
         if (!isHidden()) {
-            if (getCoreData().hasSides()) {
+            if (hasSides()) {
 				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Side.TOP);
 				renderSide(view, xPos, yPos, Side.LEFT);
 				renderSide(view, xPos+VIEW_WIDTH2, yPos, Side.RIGHT);
@@ -250,7 +270,7 @@ public class RenderBlock extends AbstractGameObject {
      */
     public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
         if (!isHidden()) {
-            if (getCoreData().hasSides()) {
+            if (hasSides()) {
 				renderSide(
 					view,
 					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
@@ -453,7 +473,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return (getCoreData().hasSides()) && !isTransparent();
+		return (hasSides()) && !isTransparent();
 	}
 
 	@Override

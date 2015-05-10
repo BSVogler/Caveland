@@ -23,7 +23,12 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 		case 11://toolbox
 			block = new RenderBlock(id, value);
 			block.setGraphicsId((byte) 13);
+			block.setHasSides(false);
 			break;
+		case 55://rails
+			block = new RenderBlock(id, value);
+			block.setHasSides(false);
+			break;	
 		case 60:
 			block = new Machine();
 		break;
@@ -82,13 +87,6 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	@Override
 	public boolean isLiquid(byte id, byte value) {
 		return false;
-	}
-
-	@Override
-	public boolean hasSides(byte id, byte value) {
-		if (id==55) return false;
-		if (id==72) return false;
-		return true;
 	}
 
 	@Override

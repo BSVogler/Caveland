@@ -150,18 +150,6 @@ public class CoreData implements HasID, Serializable {
 		return false;
 	}
 	
-    /**
-     * Is the block a true block with sides or represents it another thing like a flower?
-     * @return 
-     */
-	public boolean hasSides() {
-		if (id==34 ||id==35 || id==36) return false;
-		if (id>39 && customBlocks != null){
-            return customBlocks.hasSides(id, value);
-        }
-		return true;
-	}
-
 	@Override
 	public float getLightlevel() {
 		return lightlevel;
@@ -231,5 +219,16 @@ public class CoreData implements HasID, Serializable {
                     return "engine block not properly defined";
                 }
 		}
+	}
+
+	/**
+	 * Creates a new instance of {@link RenderBlock} to check if it has sides. You should prefer the hasSides call to a {@link RenderBlock} object.
+	 * @return true if it has sides
+	 * @see RenderBlock#hasSides() 
+	 */
+	public boolean hasSides() {
+		RenderBlock block = toBlock();
+		if (block==null) return false;
+		return block.hasSides();
 	}
 }

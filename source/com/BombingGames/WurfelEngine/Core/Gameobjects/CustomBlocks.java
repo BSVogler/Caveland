@@ -20,14 +20,6 @@ public interface CustomBlocks {
      */
 	public boolean isLiquid(byte id, byte value);
 	
-    /**
-     * Is the block a true block with sides or represents it another thing like a flower?
-	 * @param id
-	 * @param value
-     * @return 
-     */
-	public boolean hasSides(byte id, byte value);
-
 	public String getName(byte id, byte value);
 	
 	public RenderBlock toRenderBlock(byte id, byte value);

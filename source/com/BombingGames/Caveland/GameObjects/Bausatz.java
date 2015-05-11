@@ -19,6 +19,7 @@ public class Bausatz extends Collectible {
 	public void action(AbstractEntity actor) {
 		Controller.getSoundEngine().play("robotHit", getPosition());
 		actor.getPosition().toCoord().setBlock(CoreData.getInstance((byte) 11));
+		dispose();
 	}
 	
 	

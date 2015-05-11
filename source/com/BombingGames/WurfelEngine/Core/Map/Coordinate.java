@@ -261,57 +261,6 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * The block hides the past block when it has sides and is not transparent
-	 * (like normal block)
-	 *
-	 * @param x offset in coords
-	 * @param y offset in coords
-	 * @param z offset in coords
-	 * @return true when hiding the past RenderBlock
-	 * @deprecated v1.5
-	 */
-	public boolean hidingPastBlocks(int x, int y, int z) {
-		CoreData block = Controller.getMap().getBlock(
-			this.x + x, this.y + y, this.z + z
-		);
-		return (block != null && block.hasSides() && !block.isTransparent());
-	}
-
-	/**
-	 * Check if fron block is hiding because both a liquids.
-	 *
-	 * @param x offset in coords
-	 * @param y offset in coords
-	 * @param z offset in coords
-	 * @return true when hiding the past RenderBlock
-	 * @deprecated v1.5
-	 */
-	public boolean hidingPastLiquid(int x, int y, int z) {
-		return getBlock().isLiquid() && cpy().addVector(x, y, z).getBlock().isLiquid();
-	}
-
-	/**
-	 * Mixes both hidingPast methods for a single block
-	 *
-	 * @see #hidingPastBlocks(int, int, int)
-	 * @see #hidingPastLiquid(int, int, int)
-	 * @param x offset in coords
-	 * @param y offset in coords
-	 * @param z offset in coords
-	 * @return true when hiding the past RenderBlock
-	 * @deprecated v1.5
-	 */
-	public boolean hidingPastBlock(int x, int y, int z) {
-		CoreData block = Controller.getMap().getBlock(
-			this.x + x, this.y + y, this.z + z
-		);
-		return block != null
-			&& (block.hasSides() && !block.isTransparent()
-			||
-			getBlock().isLiquid() && block.isLiquid());
-	}
-
-	/**
 	 * @return a copy of this coordinate
 	 */
 	@Override

@@ -124,16 +124,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
     public void setPosition(AbstractPosition pos) {
         this.position = pos.toPoint();
     }
-
-    /**
-     * 
-     * @param height 
-	 * @deprecated v1.5.4
-     */
-    public void setHeight(float height) {
-        position.setZ(height);
-    }
-    
   
     /**
      * Is the entity laying/standing on the ground?

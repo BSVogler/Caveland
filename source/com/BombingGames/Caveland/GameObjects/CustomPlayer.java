@@ -32,7 +32,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class CustomPlayer extends Controllable {
+public class CustomPlayer extends Controllable implements EntityNode {
 
 	/**
 	 * Time till fully loaded attack.

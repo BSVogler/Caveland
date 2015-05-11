@@ -89,7 +89,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		}else {
 			obj = new Collectible(def);
 		}
-
+		obj.setIndestructible(true);
 		return obj;
 	}
 

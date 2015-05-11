@@ -50,7 +50,7 @@ public class SuperGlue extends AbstractEntity {
 	 * @param smaller the object you want to glue at some other obejct
 	 */
 	public SuperGlue(AbstractEntity main, AbstractEntity smaller){
-		super((byte) 0);
+		super((byte) 1);//use any id but 0
 		setHidden(true);
 		this.main = main;
 		this.smaller = smaller;

@@ -15,6 +15,8 @@ import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGH
 import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Particle;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
+import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
 import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
 import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.BombingGames.WurfelEngine.WE;
@@ -121,6 +123,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private boolean bunnyHopForced;
 	private SmokeEmitter emitter;
 	private SmokeEmitter emitter2;
+	private SimpleEntity interactButton = null;
+	private Coordinate nearestInteractableBlock = null;
 	
 	/**
 	 * creates a new Ejira
@@ -263,19 +267,33 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			timeSinceDamage += dt;
 		}
 
-		//update interactable
-		ArrayList<AbstractInteractable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(GAME_EDGELENGTH * 2, AbstractInteractable.class);
+		//update interactable focus
+		//check entitys
+		ArrayList<AbstractInteractable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
+			GAME_EDGELENGTH * 2,
+			AbstractInteractable.class
+		);
 
 		if (!nearbyInteractable.isEmpty()) {
 			//check if a different one
-			if (nearestEntity != nearbyInteractable.get(0) && nearestEntity != null) {
-				nearestEntity.hideButton();
-			}
 			nearestEntity = nearbyInteractable.get(0);
-			nearestEntity.showButton(AbstractInteractable.RT);
+			showButton(AbstractInteractable.RT, nearestEntity.getPosition());
 		} else if (nearestEntity != null) {
-			nearestEntity.hideButton();
+			hideButton();
 			nearestEntity = null;
+		}
+		
+		//check interactable blocks
+		CoreData blockBelow = getPosition().toCoord().getBlock();
+		if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
+			//todo only overwrite if block is nearer
+			nearestInteractableBlock = getPosition().toCoord();
+			showButton(AbstractInteractable.RT, nearestInteractableBlock);
+		} else {
+			//no nearby block
+			//hide button if also no nearestEntity
+			if (nearestEntity==null)
+				hideButton();
 		}
 			
 		//play walking animation
@@ -339,11 +357,16 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	}
 
 	/**
-	 *
-	 * @return null if nothing in reach
+	 *interacts with the nearest thign if there is one
+	 * @param view
 	 */
-	public AbstractInteractable getNearestInteractable() {
-		return nearestEntity;
+	public void interactWithNearestThing(GameView view) {
+		if (nearestEntity!=null)
+			nearestEntity.interact(this, view);
+		else {
+			if (nearestInteractableBlock!=null)
+				CavelandBlocks.interact(nearestInteractableBlock, this);
+		}
 	}
 
 	/**
@@ -702,6 +725,33 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	public void idle(){
 		playAnimation('w');
 		playAnimation = false;
+	}
+	
+	/**
+	 * display the interact button
+	 * @param buttonID
+	 * @param pos abot this position the button will appear
+	 */
+	public void showButton(byte buttonID, AbstractPosition pos) {
+		if (interactButton == null) {
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
+				pos.toPoint().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)
+			);
+			interactButton.setLightlevel(1);
+			interactButton.setSaveToDisk(false);
+		} else {
+			interactButton.setPosition(pos.toPoint().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH));
+		}
+	}
+
+	/**
+	 * hide the interact button
+	 */
+	public void hideButton() {
+		if (interactButton != null) {
+			interactButton.dispose();
+			interactButton = null;
+		}
 	}
 
 }

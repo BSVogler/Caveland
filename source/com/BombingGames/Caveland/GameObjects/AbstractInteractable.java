@@ -2,7 +2,6 @@ package com.BombingGames.Caveland.GameObjects;
 
 import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
 
@@ -132,52 +131,7 @@ public abstract class AbstractInteractable extends MovableEntity {
 	public abstract void interact(AbstractEntity actor, GameView view);
 
 	@Override
-	public void update(float dt) {
-		super.update(dt);
-		if (interactButton != null) {
-			interactButton.setPosition(getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH * 1.5f));
-			interactButton.setHidden(isHidden());
-		}
-		
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
-
-	/**
-	 * display the interact button
-	 * @param buttonID
-	 */
-	public void showButton(byte buttonID) {
-		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
-				getPosition().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)
-			);
-			interactButton.setLightlevel(1);
-			interactButton.setSaveToDisk(false);
-		}
-	}
-
-	/**
-	 * hide the interact button
-	 */
-	public void hideButton() {
-		if (interactButton != null) {
-			interactButton.dispose();
-			interactButton = null;
-		}
-	}
-
-	@Override
-	public void setHidden(boolean hidden) {
-		super.setHidden(hidden);
-		if (interactButton != null) interactButton.setHidden(hidden);
-	}
-
-	@Override
-	public void disposeFromMap() {
-		super.disposeFromMap();
-		if (interactButton != null) {
-			interactButton.dispose();
-			interactButton = null;
-		}
-	}
-
 }

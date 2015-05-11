@@ -33,7 +33,7 @@ public class Explosion extends AbstractEntity {
 	/**
 	 * 
 	 * @param radius the radius in game world blocks
-	 * @param damage [0;100]
+	 * @param damage Damage at center.
 	 * @param camera can be null. used for screen shake
 	 */
 	public Explosion(int radius, byte damage, Camera camera) {
@@ -64,7 +64,7 @@ public class Explosion extends AbstractEntity {
 				for (int z=-radius; z<radius; z++){
 					Coordinate coord = point.cpy().toCoord().addVector(x, y, z);
 					if (x*x + (y/2)*(y/2)+ z*z <= radius*radius){//check if in radius
-						coord.destroy();
+						coord.damage((byte) (damage*(1-(x*x + (y/2)*(y/2)+ z*z)/(radius*radius))));
 						
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list =

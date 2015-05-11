@@ -1,8 +1,10 @@
 package com.BombingGames.Caveland.Game;
 
 import com.BombingGames.Caveland.GameObjects.Collectible;
+import com.BombingGames.Caveland.GameObjects.CustomPlayer;
 import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CustomBlocks;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
@@ -20,9 +22,12 @@ public class CavelandBlocks implements CustomBlocks {
 public RenderBlock toRenderBlock(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
-		case 11://toolbox
+		case 11://construction site
 			block = new RenderBlock(id, value);
-			block.setGraphicsId((byte) 13);
+			block.setHasSides(false);
+			break;
+		case 12://oven
+			block = new RenderBlock(id, value);
 			block.setHasSides(false);
 			break;
 		case 55://rails
@@ -48,6 +53,10 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	@Override
 	public String getName(byte id, byte value) {
 		switch (id){
+			case 11:
+				return "construction site";
+			case 12:
+				return "oven";	
 			case 40:
 				return "Entity Spawner";
 			case 41:
@@ -116,6 +125,9 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 		}
 	}
 	
+	
+	//Caveland specific details
+	
 	/**
 	 * indestructable by diggin
 	 * @param id
@@ -126,6 +138,32 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 			return true;
 		if (id==3) return true;//stone
 		return false;
+	}
+	
+	/**
+	 * is it possible to interact with this
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
+	public static boolean interactAble(byte id, byte value){
+		if (id==11 || id==12) return true;
+		return false;
+	}
+	
+	
+	public static void interact(Coordinate coord, AbstractEntity actor){
+		byte id = coord.getBlock().getId();
+		if (id==11) {//construction site
+			if (actor instanceof CustomPlayer){
+				//lege objekte aus Inventar  hier rein
+				Collectible frontItem = ((CustomPlayer) actor).getInventory().fetchFrontItem();
+				if (frontItem!=null)
+					frontItem.spawn(coord.toPoint());
+			}
+		}
+		
+		//sind alle da dannn baue
 	
 	}
 	

@@ -218,7 +218,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         coreData = CoreData.getInstance(id, value);
 		this.graphicsID = id;
     }
-    
+	
     /**
      * Get the category letter for accessing sprites.
      * @return
@@ -497,7 +497,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
 	   /**
      *
-     * @return from maximum 1000
+     * @return from maximum 100
      */
 	public float getHealth() {
 		return coreData.getHealth();

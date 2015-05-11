@@ -144,7 +144,7 @@ public class CustomPlayer extends Controllable {
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
-		emitter.setFloating(true);
+		//emitter.setFloating(true);
 		emitter.spawn(point.cpy().addVector(-20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection1 = new SuperGlue(this, emitter).spawn(point);
 		conection1.setSaveToDisk(false);
@@ -152,7 +152,7 @@ public class CustomPlayer extends Controllable {
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
-		emitter2.setFloating(true);
+		//emitter2.setFloating(true);
 		emitter2.spawn(point.cpy().addVector(20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection2 = new SuperGlue(this, emitter2).spawn(point);
 		conection2.setSaveToDisk(false);

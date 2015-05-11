@@ -31,7 +31,6 @@
  */
 package com.BombingGames.Caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.GameView;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.Particle;
 import com.badlogic.gdx.graphics.Color;
@@ -41,7 +40,7 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Benedikt Vogler
  */
-public class SmokeEmitter extends AbstractInteractable{
+public class SmokeEmitter extends AbstractEntity {
 	private static final long serialVersionUID = 2L;
 	private boolean active = false;
 	private float timer;
@@ -57,7 +56,7 @@ public class SmokeEmitter extends AbstractInteractable{
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
 	public SmokeEmitter() {
-		super((byte) 14, 0);
+		super((byte) 14);
 		//this.particleClass = Dust.class;
 		disableShadow();
 		setIndestructible(true);
@@ -89,12 +88,6 @@ public class SmokeEmitter extends AbstractInteractable{
 		}
 	}
 	
-	
-
-	@Override
-	public void interact(AbstractEntity actor, GameView view) {
-		toggle();
-	}
 	
 	public void toggle(){
 		active= !active;

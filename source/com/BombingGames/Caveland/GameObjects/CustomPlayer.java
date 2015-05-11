@@ -143,7 +143,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
-		//emitter.setFloating(true);
 		emitter.setPosition(new Point(Controller.getMap(), -20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection1 = new SuperGlue(this, emitter);
 		addChild(conection1);
@@ -152,7 +151,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
-		//emitter2.setFloating(true);
 		emitter2.setPosition(new Point(Controller.getMap(), 20, 0, CoreData.GAME_EDGELENGTH2));
 		AbstractEntity conection2 = new SuperGlue(this, emitter2);
 		addChild(conection2);

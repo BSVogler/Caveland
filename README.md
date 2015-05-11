@@ -1,4 +1,4 @@
-Wurfelengine V1.4
+Wurfelengine V1.6
 ============
 ![Wurfelengine logo](http://wurfelengine.net/images/logo_medium.png)
 

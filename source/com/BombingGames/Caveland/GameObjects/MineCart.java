@@ -50,6 +50,7 @@ public class MineCart extends AbstractInteractable {
 		super.spawn(point);
 		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
+		addChild(front);
 		return this;
 	}
 

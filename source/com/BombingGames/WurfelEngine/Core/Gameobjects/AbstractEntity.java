@@ -36,6 +36,7 @@ import com.BombingGames.WurfelEngine.Core.Map.Point;
 import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -89,6 +90,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
+	private ArrayList<AbstractEntity> children = new ArrayList<>(0);
    
     /**
      * Create an abstractEntity.
@@ -159,14 +161,18 @@ public abstract class AbstractEntity extends AbstractGameObject {
     }
     
     /**
-     * add this entity to the map-&gt; let it spawn
-	 * @param point the point in the game world where the object is 
+     * Add this entity to the map-&gt; let it spawn
+	 * @param point the point in the game world where the object is. If it was previously set this is ignored.
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){
 		if (!onMap) {
 			Controller.getMap().getEntitys().add(this);
-			position = point;
+			for (AbstractEntity child : children) {
+				child.spawn(point);
+			}
+			if (position==null)
+				position = point;
 			onMap =true;
 			dispose = false;
 			if (shadow != null && !shadow.spawned())
@@ -260,21 +266,29 @@ public abstract class AbstractEntity extends AbstractGameObject {
     }
 	
 	/**
-     * Deletes the object from the map. The opposite to spawn();
+     * Deletes the object from the map. The opposite to spawn();<br>
+	 * Disposes all the children.
 	 * @see #shouldBeDisposed() 
      */
     public void disposeFromMap(){
         onMap = false;
+		for (AbstractEntity child : children) {
+			child.disposeFromMap();
+		}
 		if (shadow != null) shadow.dispose();
     }
     
    /**
-     * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely.;
+     * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely.<br>
+	 * Disposes all the children.
 	 * @see #shouldBeDisposed() 
 	 * @see #disposeFromMap() 
      */
     public void dispose(){
         dispose = true;
+		for (AbstractEntity child : children) {
+			child.dispose();
+		}
         disposeFromMap();
     }
 	
@@ -307,11 +321,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	/**
-	 * Temp objects should not be saved.
+	 * Mark objects to not be saved in disk. Gets passed to the children. Temp objects should not be saved.
 	 * @param saveToDisk new value of saveToDisk
 	 */
 	public void setSaveToDisk(boolean saveToDisk) {
 		this.saveToDisk = saveToDisk;
+		for (AbstractEntity child : children) {
+			child.setSaveToDisk(saveToDisk);
+		}
 	}
 
 	/**
@@ -350,11 +367,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	/**
-	 *
+	 *Also to all the children.
 	 * @param indestructible
 	 */
 	public void setIndestructible(boolean indestructible) {
 		this.indestructible = indestructible;
+		for (AbstractEntity child : children) {
+			child.setIndestructible(indestructible);
+		}
 	}
 	
 	/**
@@ -395,5 +415,13 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	public void setDamageSounds(String[] sound) {
 		damageSounds = sound;
+	}
+	
+	public void addChild(AbstractEntity child){
+		children.add(child);	
+	}
+
+	public ArrayList<AbstractEntity> getChildren() {
+		return children;
 	}
 }

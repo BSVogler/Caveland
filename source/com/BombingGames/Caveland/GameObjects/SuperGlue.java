@@ -35,13 +35,12 @@ import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- *Glue two objects together
+ *Glue two objects together by comparing their offset and moving the smaller object to keep it.
  * @author Benedikt Vogler
  */
 public class SuperGlue extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	private final AbstractEntity main;
-	private final AbstractEntity smaller;
 	private final Vector3 offset;
 	
 	/**
@@ -53,14 +52,17 @@ public class SuperGlue extends AbstractEntity {
 		super((byte) 1);//use any id but 0
 		setHidden(true);
 		this.main = main;
-		this.smaller = smaller;
-		offset = smaller.getPosition().getVector().sub(main.getPosition().getVector());
+		addChild(smaller);
+		if (main.getPosition()==null)
+			offset = smaller.getPosition().getVector();
+		else 
+			offset = smaller.getPosition().getVector().sub(main.getPosition().getVector());
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		smaller.setPosition(main.getPosition().cpy().addVector(offset));
+		getChildren().get(0).setPosition(main.getPosition().cpy().addVector(offset));
 	}
 	
 	

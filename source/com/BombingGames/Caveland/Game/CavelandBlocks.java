@@ -6,6 +6,7 @@ import com.BombingGames.Caveland.GameObjects.CustomTree;
 import com.BombingGames.Caveland.GameObjects.Machine;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
+import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.CustomBlocks;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
 import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
@@ -153,18 +154,20 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	
 	
 	public static void interact(Coordinate coord, AbstractEntity actor){
-		byte id = coord.getBlock().getId();
-		if (id==11) {//construction site
-			if (actor instanceof CustomPlayer){
-				//lege objekte aus Inventar  hier rein
-				Collectible frontItem = ((CustomPlayer) actor).getInventory().fetchFrontItem();
-				if (frontItem!=null)
-					frontItem.spawn(coord.toPoint());
+		CoreData block = coord.getBlock();
+		if (block!=null) {
+			byte id = coord.getBlock().getId();
+			if (id==11) {//construction site
+				if (actor instanceof CustomPlayer){
+					//lege objekte aus Inventar  hier rein
+					Collectible frontItem = ((CustomPlayer) actor).getInventory().fetchFrontItem();
+					if (frontItem!=null)
+						frontItem.spawn(coord.toPoint());
+				}
+				//sind alle da dannn baue
 			}
 		}
 		
-		//sind alle da dannn baue
-	
 	}
 	
 }

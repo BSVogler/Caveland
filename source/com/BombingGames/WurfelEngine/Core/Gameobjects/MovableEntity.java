@@ -46,10 +46,6 @@ import com.badlogic.gdx.math.Vector3;
 public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private static final long serialVersionUID = 4L;
 	
-	/**
-	 * time in ms to pass before new sound can be played
-	 */
-	private transient static float soundTimeLimit;
 	private transient static String waterSound = "splash";
      	
 	   /**
@@ -88,11 +84,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private transient boolean runningSoundPlaying;
 	private transient String jumpingSound;
 	private transient String landingSound = "landing";
-	private transient String[] damageSounds;
 
-
+	/**
+	 * currently in a liquid?
+	 */
 	private boolean inliquid;
-	private boolean indestructible = false;
        
 	/**
 	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
@@ -404,12 +400,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                     fallingSoundInstance = 0;
                 }
             }
-			
-            if (soundTimeLimit > 0)
-				soundTimeLimit -= dt;
-            
-            if (getHealth()<= 0 && !indestructible)
-                dispose();
         }
     }
 
@@ -506,14 +496,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public String getLandingSound() {
 		return landingSound;
 	}
-	
-    /**
-     *
-     * @param sound
-     */
-    public void setDamageSounds(String[] sound){
-        damageSounds = sound;
-    }
 	
 	/**
 	 *
@@ -711,49 +693,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         return inliquid;
     }
 
-    /**
-     * called when gets damage
-     * @param value
-     */
-    public void damage(byte value) {
-		if (!indestructible) {
-			if (getHealth() >0){
-				if (damageSounds != null && soundTimeLimit<=0) {
-					//play random sound
-					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
-					soundTimeLimit = 100;
-				}
-				setHealth((byte) (getHealth()-value));
-			} else
-				setHealth((byte) 0);
-		}
-    }
-	
-	/**
-	 * heals the entity
-	 * @param value 
-	 */
-	public void heal(byte value) {
-		if (getHealth()<100)
-			setHealth((byte) (getHealth()+value));
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public boolean isIndestructible() {
-		return indestructible;
-	}
-
-	/**
-	 *
-	 * @param indestructible
-	 */
-	public void setIndestructible(boolean indestructible) {
-		this.indestructible = indestructible;
-	}
-	
 	/**
 	 * The factor which slows donw movement.
 	 * @return 

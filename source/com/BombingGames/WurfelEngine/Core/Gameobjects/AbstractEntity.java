@@ -45,21 +45,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 
-
-    private Point position;//the position in the map-grid
-    private int dimensionZ = GAME_EDGELENGTH;  
-    private boolean dispose;
-    private boolean onMap;
-	private boolean obstacle;
-	private transient EntityAnimation animation;
-	private transient EntityShadow shadow;
-	private String name = "undefined";
-	
-	/**
-	 * flags if should be saved
-	 */
-	private boolean saveToDisk = true;
-   
 	/**
 	 * Registers engine entities in a map.
 	 */
@@ -84,7 +69,27 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public static java.util.HashMap<String, Class<? extends AbstractEntity>> getRegisteredEntities() {
 		return entityMap;
 	}
-		
+	
+    private Point position;//the position in the map-grid
+    private int dimensionZ = GAME_EDGELENGTH;  
+    private boolean dispose;
+    private boolean onMap;
+	private boolean obstacle;
+	private transient EntityAnimation animation;
+	private transient EntityShadow shadow;
+	private String name = "undefined";
+	private boolean indestructible = false;
+		/**
+	 * time in ms to pass before new sound can be played
+	 */
+	private transient float soundTimeLimit;
+	
+	/**
+	 * flags if should be saved
+	 */
+	private boolean saveToDisk = true;
+	private transient String[] damageSounds;
+   
     /**
      * Create an abstractEntity.
      * @param id objects with id -1 are to deleted. 0 are invisible objects
@@ -99,6 +104,12 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public void update(float dt){
 		if (animation!=null) animation.update(dt);
+		
+		 if (getHealth()<= 0 && !indestructible)
+            dispose();
+		 
+		if (soundTimeLimit > 0)
+			soundTimeLimit -= dt;
 	}
 		
     //AbstractGameObject implementation
@@ -179,8 +190,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 *
 	 */
 	public void disableShadow(){
-		shadow.dispose();
-		shadow = null;
+		if (shadow!=null) {
+			shadow.dispose();
+			shadow = null;
+		}
 	}
     
     /**
@@ -328,8 +341,59 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		return true;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
+	public boolean isIndestructible() {
+		return indestructible;
+	}
+
+	/**
+	 *
+	 * @param indestructible
+	 */
+	public void setIndestructible(boolean indestructible) {
+		this.indestructible = indestructible;
+	}
+	
+	/**
+     * called when gets damage
+     * @param value
+     */
+    public void damage(byte value) {
+		if (!indestructible) {
+			if (getHealth() >0){
+				if (damageSounds != null && soundTimeLimit<=0) {
+					//play random sound
+					Controller.getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
+					soundTimeLimit = 100;
+				}
+				setHealth((byte) (getHealth()-value));
+			} else
+				setHealth((byte) 0);
+		}
+    }
+	
+	/**
+	 * heals the entity
+	 * @param value 
+	 */
+	public void heal(byte value) {
+		if (getHealth()<100)
+			setHealth((byte) (getHealth()+value));
+	}
+	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 		enableShadow();
     }
+
+	/**
+	 *
+	 * @param sound
+	 */
+	public void setDamageSounds(String[] sound) {
+		damageSounds = sound;
+	}
 }

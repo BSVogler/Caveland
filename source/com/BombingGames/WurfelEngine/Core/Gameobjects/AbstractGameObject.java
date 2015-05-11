@@ -61,52 +61,18 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private static Texture textureDiff;
 	private static Texture textureNormal;
 	
-    private CoreData coreData;
-	//render information
-    private boolean hidden; 
-    private float rotation;
-	private float scaling;
-	private byte graphicsID;
-	
-	/**
-	 * default is RGBA 0x80808080.
-	 */
-	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
-	
     /**
-     * Creates an object.
-     * @param id the id of the object
-     * @param value 
+     *disposes static fields
      */
-    protected AbstractGameObject(byte id, byte value) {
-        coreData = CoreData.getInstance(id, value);
-		this.graphicsID = id;
+    public static void staticDispose(){
+        spritesheet.dispose();//is this line needed?
+        WE.getAssetManager().unload(spritesheetPath+".txt");
+        spritesheet = null;
+        sprites = new AtlasRegion['z'][CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
+        //pixmap.dispose();
+        pixmap = null;
     }
-    
-    /**
-     * Get the category letter for accessing sprites.
-     * @return
-     */
-    public abstract char getCategory();
-    
-	/**
-	 *
-	 * @return
-	 */
-	public abstract int getDimensionZ();
 	
-	  /**
-     * Return the coordinates of the SelfAware object.
-     * @return Reference to the position object which points to the location in the game world.
-     */
-    public abstract AbstractPosition getPosition();
-    
-    /**
-     * Set the coordinates without safety check.
-     * @param pos the coordinates you want to set
-     */
-    public abstract void setPosition(AbstractPosition pos);
-
 	/**
 	 * the diffuse map
 	 * @return 
@@ -122,6 +88,14 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	public static Texture getTextureNormal() {
 		return textureNormal;
 	}
+	
+	/**
+     *
+     * @return can be null if pixmap loadin is disabled
+     */
+    public static Pixmap getPixmap() {
+        return pixmap;
+    }
 	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
@@ -140,17 +114,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	}
 	
 	/**
-     * Returns the depth of the object. Nearer objects have a bigger depth.
-	 * @param view
-     * @return distance from zero level
-     */
-    public int getDepth(GameView view) {
-        return (int) (getPosition().getDepth(view)
-            + getDimensionZ()/AbstractPosition.SQRT2
-        );
-    }
-	
-     /**
      *
      * @return
      */
@@ -172,15 +135,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     public static int getDrawCalls() {
         return drawCalls;
     }
-    
-    /**
-     * When calling sprite.draw this hsould also be called for statistics.
-     */
-    protected void increaseDrawCalls(){
-        drawCalls++;
-    }
-        
-    /**
+	
+	/**
      * Load the spritesheet from memory.
      */
     public static void loadSheet() {
@@ -240,15 +196,71 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     public static TextureAtlas getSpritesheet() {
         return spritesheet;
     }
-
+	
+    private CoreData coreData;
+	//render information
+    private boolean hidden; 
+    private float rotation;
+	private float scaling;
+	private byte graphicsID;
+	
+	/**
+	 * default is RGBA 0x80808080.
+	 */
+	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
+	
     /**
-     *
-     * @return
+     * Creates an object.
+     * @param id the id of the object
+     * @param value 
      */
-    public static Pixmap getPixmap() {
-        return pixmap;
+    protected AbstractGameObject(byte id, byte value) {
+        coreData = CoreData.getInstance(id, value);
+		this.graphicsID = id;
     }
     
+    /**
+     * Get the category letter for accessing sprites.
+     * @return
+     */
+    public abstract char getCategory();
+    
+	/**
+	 *
+	 * @return
+	 */
+	public abstract int getDimensionZ();
+	
+	  /**
+     * Return the coordinates of the SelfAware object.
+     * @return Reference to the position object which points to the location in the game world.
+     */
+    public abstract AbstractPosition getPosition();
+    
+    /**
+     * Set the coordinates without safety check.
+     * @param pos the coordinates you want to set
+     */
+    public abstract void setPosition(AbstractPosition pos);
+
+	/**
+     * Returns the depth of the object. Nearer objects have a bigger depth.
+	 * @param view
+     * @return distance from zero level
+     */
+    public int getDepth(GameView view) {
+        return (int) (getPosition().getDepth(view)
+            + getDimensionZ()/AbstractPosition.SQRT2
+        );
+    }
+	
+    /**
+     * When calling sprite.draw this hsould also be called for statistics.
+     */
+    protected void increaseDrawCalls(){
+        drawCalls++;
+    }
+        
     /**
      * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden.
      * @param view the view using this render method
@@ -483,19 +495,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 		graphicsID = id;
 	}
 	
-	
-    /**
-     *disposes static fields
-     */
-    public static void staticDispose(){
-        spritesheet.dispose();//is this line needed?
-        WE.getAssetManager().unload(spritesheetPath+".txt");
-        spritesheet = null;
-        sprites = new AtlasRegion['z'][CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
-        //pixmap.dispose();
-        pixmap = null;
-    }
-
 	   /**
      *
      * @return from maximum 1000

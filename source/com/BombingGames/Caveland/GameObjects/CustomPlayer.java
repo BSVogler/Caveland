@@ -138,34 +138,27 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(CoreData.GAME_EDGELENGTH);
-		setSaveToDisk(false);
-	}
-
-	@Override
-	public AbstractEntity spawn(Point point) {
-		super.spawn(point);
+		
 		emitter = new SmokeEmitter();
-		emitter.setSaveToDisk(false);
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
 		//emitter.setFloating(true);
-		emitter.spawn(point.cpy().addVector(-20, 0, CoreData.GAME_EDGELENGTH2));
-		AbstractEntity conection1 = new SuperGlue(this, emitter).spawn(point);
-		conection1.setSaveToDisk(false);
+		emitter.setPosition(new Point(Controller.getMap(), -20, 0, CoreData.GAME_EDGELENGTH2));
+		AbstractEntity conection1 = new SuperGlue(this, emitter);
+		addChild(conection1);
+		
 		emitter2 = new SmokeEmitter();
-		emitter2.setSaveToDisk(false);
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
 		//emitter2.setFloating(true);
-		emitter2.spawn(point.cpy().addVector(20, 0, CoreData.GAME_EDGELENGTH2));
-		AbstractEntity conection2 = new SuperGlue(this, emitter2).spawn(point);
-		conection2.setSaveToDisk(false);
-		return this;
+		emitter2.setPosition(new Point(Controller.getMap(), 20, 0, CoreData.GAME_EDGELENGTH2));
+		AbstractEntity conection2 = new SuperGlue(this, emitter2);
+		addChild(conection2);
+		setSaveToDisk(false);
 	}
-	
-	
+
 
 	/**
 	 * Get the value of inventory

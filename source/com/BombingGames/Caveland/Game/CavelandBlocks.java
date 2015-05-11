@@ -135,7 +135,9 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 	 * @return 
 	 */
 	public static boolean hardMaterial(byte id){
-		if (id>=41 && id<=44)//ores
+		if (id==41)
+			return true;
+		if (id==43)
 			return true;
 		if (id==3) return true;//stone
 		return false;

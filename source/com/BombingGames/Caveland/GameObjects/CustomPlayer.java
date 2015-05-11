@@ -141,6 +141,7 @@ public class CustomPlayer extends Controllable {
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
 		emitter = new SmokeEmitter();
+		emitter.setSaveToDisk(false);
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
@@ -149,6 +150,7 @@ public class CustomPlayer extends Controllable {
 		AbstractEntity conection1 = new SuperGlue(this, emitter).spawn(point);
 		conection1.setSaveToDisk(false);
 		emitter2 = new SmokeEmitter();
+		emitter2.setSaveToDisk(false);
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);

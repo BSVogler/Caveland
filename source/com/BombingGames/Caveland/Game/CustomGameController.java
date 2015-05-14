@@ -34,7 +34,7 @@ public class CustomGameController extends Controller {
 		
 		player1 = new CustomPlayer();
 		
-		if (!player1.spawned())
+		if (!player1.isSpawned())
 			player1.spawn(
 				new Coordinate(
 					Controller.getMap(),
@@ -43,7 +43,7 @@ public class CustomGameController extends Controller {
 					saveCvars.getValueI("PlayerLastSaveZ")
 				).toPoint()
 			);
-		if (player2!=null && !player2.spawned())
+		if (player2!=null && !player2.isSpawned())
 			player2.spawn(
 				new Coordinate(
 					Controller.getMap(),

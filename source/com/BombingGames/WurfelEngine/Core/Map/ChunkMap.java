@@ -253,7 +253,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
         for (AbstractEntity ent : getEntitys()) {
             if (
 					ent.isGettingSaved() //save only entities which are flagged
-				&& ent.spawned()
+				&& ent.isSpawned()
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
@@ -282,7 +282,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		//loop over every loaded entity
         for (AbstractEntity ent : getEntitys()) {
             if (
-					ent.isGettingSaved() && ent.spawned() //save only entities which are flagged
+					ent.isGettingSaved() && ent.isSpawned() //save only entities which are flagged
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&

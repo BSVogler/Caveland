@@ -599,7 +599,7 @@ public class Point extends AbstractPosition {
 
         for (AbstractEntity entity : entityList) {//check every entity
             if (
-				entity.spawned()
+				entity.isSpawned()
 				&& type.isInstance(entity) //if the entity is of the wanted type
 				&&
 				distanceToHorizontal(entity.getPosition().toPoint()) < radius

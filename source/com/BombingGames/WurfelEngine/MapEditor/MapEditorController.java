@@ -101,7 +101,7 @@ public class MapEditorController extends Controller {
     public void init() {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
-		if (!selectionEntity.spawned()) selectionEntity.spawn(
+		if (!selectionEntity.isSpawned()) selectionEntity.spawn(
 			new Point(getMap(), 0, 0, getMap().getBlocksZ()-1)
 		);
     }
@@ -117,7 +117,7 @@ public class MapEditorController extends Controller {
         else
             mapsave = null;
 		
-        if (!selectionEntity.spawned()) selectionEntity.spawn(
+        if (!selectionEntity.isSpawned()) selectionEntity.spawn(
 			new Point(getMap(),0, 0, getMap().getBlocksZ()-1)
 		);
     }
@@ -191,7 +191,7 @@ public class MapEditorController extends Controller {
 	public ArrayList<AbstractEntity> getSelectedEntities() {
 		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
 		for (AbstractEntity ent : selectedEntities) {
-			if (ent.spawned() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") &&!ent.equals(selectionEntity))
+			if (ent.isSpawned() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") &&!ent.equals(selectionEntity))
 				selection.add(ent);
 		}
 		return selection;

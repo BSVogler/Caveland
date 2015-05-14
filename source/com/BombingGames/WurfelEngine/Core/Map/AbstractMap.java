@@ -266,7 +266,7 @@ public abstract class AbstractMap implements Cloneable {
 
         for (AbstractEntity ent : entityList) {
             if (
-				ent.spawned()
+				ent.isSpawned()
 				&& ent.getPosition().toCoord().getVector().equals(coord.getVector())//on coordinate?
                 && type.isInstance(ent)//of tipe of filter?
                 ){
@@ -471,7 +471,7 @@ public abstract class AbstractMap implements Cloneable {
 		
 		//remove not spawned objects from list
 		getEntitys().removeIf(
-			(AbstractEntity entity) -> !entity.spawned()
+			(AbstractEntity entity) -> !entity.isSpawned()
 		);
 	}
 	

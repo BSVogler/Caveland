@@ -163,7 +163,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			if (position==null)
 				position = point;
 			dispose = false;
-			if (shadow != null && !shadow.spawned())
+			if (shadow != null && !shadow.isSpawned())
 				shadow.spawn(position.cpy());
 		} else {
 			Gdx.app.debug("AbstractEntity", "Already spawned.");
@@ -195,7 +195,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      *Is the object active on the map?
      * @return
      */
-    public boolean spawned(){
+    public boolean isSpawned(){
         return position!=null;
     }
 

@@ -400,6 +400,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			item.preventPickup(this, 800);
 		}
 	}
+	
+	public void useItem(){
+		inventory.action(this);
+	}
 
 	/**
 	 * Does an attack move.

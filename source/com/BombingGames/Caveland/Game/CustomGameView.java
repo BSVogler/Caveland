@@ -262,12 +262,12 @@ public class CustomGameView extends GameView{
 			}
 		
 		if (inventoryDownP1==0){
-			getPlayer(0).getInventory().action(getPlayer(0));
+			getPlayer(0).useItem();
 		}
 		
 		if (coop>-1)
 			if (inventoryDownP2==0){
-				getPlayer(1).getInventory().action(getPlayer(0));
+				getPlayer(1).useItem();
 			}
 		
 		if (throwDownP1==0){

@@ -618,7 +618,8 @@ map.getGameWidth(),
 			//add entitys
 			for (AbstractEntity entity : Controller.getMap().getEntitys()) {
 				if (
-				!entity.isHidden()
+					entity.spawned()
+				&& !entity.isHidden()
 					&& inViewFrustum(
 						entity.getPosition().getViewSpcX(gameView),
 						entity.getPosition().getViewSpcY(gameView)

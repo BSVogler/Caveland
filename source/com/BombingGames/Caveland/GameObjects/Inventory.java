@@ -280,7 +280,6 @@ public class Inventory implements Serializable {
 			}
 			if (counter <= 0)
 				prototype=null;
-			tmp.setPosition(player.getPosition().cpy());//independent of player position now
 			return tmp;
 		}
 		

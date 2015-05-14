@@ -178,8 +178,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
-		if (position != null)
-			if (onMap) shadow.spawn(position.cpy());
+		addChild(shadow);
+		if (onMap) shadow.spawn(position.cpy());
 	}
 	
 	/**
@@ -187,6 +187,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	public void disableShadow(){
 		if (shadow!=null) {
+			getChildren().remove(shadow);
 			shadow.dispose();
 			shadow = null;
 		}
@@ -265,7 +266,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		for (AbstractEntity child : children) {
 			child.disposeFromMap();
 		}
-		if (shadow != null) shadow.dispose();
+		position = null;
     }
     
    /**
@@ -326,6 +327,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean isInMemoryArea() {
+		if (position==null) return false;
 		return position.isInMemoryAreaHorizontal();
 	}
 	

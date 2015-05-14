@@ -355,6 +355,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			child.setIndestructible(indestructible);
 		}
 	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		super.setHidden(hidden);
+		for (AbstractEntity child : children) {
+			child.setHidden(hidden);
+		}
+	}
+	
+	
 	
 	/**
      * called when gets damage

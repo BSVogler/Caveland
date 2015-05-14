@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class Collectible extends MovableEntity implements Serializable {
 
 	private static final long serialVersionUID = 2L;
+	private boolean preventPickup;
 
 	/**
 	 * a enum which lists the types of collectibles
@@ -139,6 +140,28 @@ public class Collectible extends MovableEntity implements Serializable {
 		);
 	}
 
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (timeParentBlocked > 0) {
+			timeParentBlocked -= dt;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void allowPickup() {
+		preventPickup = false;
+	}
+		
+	/**
+	 * 
+	 */
+	public void preventPickup() {
+		preventPickup = true;
+	}
+		
 	/**
 	 * prevents being picked up (msut be checked with {@link #canBePickedByParent(AbstractGameObject)
 	 * }.
@@ -152,14 +175,6 @@ public class Collectible extends MovableEntity implements Serializable {
 		timeParentBlocked = time;
 	}
 
-	@Override
-	public void update(float dt) {
-		super.update(dt);
-		if (timeParentBlocked > 0) {
-			timeParentBlocked -= dt;
-		}
-	}
-
 	/**
 	 * can be picked up if timer has run out for this object
 	 *
@@ -167,7 +182,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 * @return true if can be picked up
 	 */
 	public boolean canBePickedByParent(AbstractGameObject parent) {
-		return timeParentBlocked < 0 || !parent.equals(lastParent);
+		return !preventPickup && (timeParentBlocked < 0 || !parent.equals(lastParent));
 	}
 
 	@Override

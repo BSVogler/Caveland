@@ -112,16 +112,46 @@ public class Inventory implements Serializable {
 		} else {
 			if (slot[2].prototype == null ) {
 				slot[2].setPrototype(ent);
+				ent.setPosition(player.getPosition().cpy());
+				ent.setHidden(true);
+				ent.preventPickup();
 				return true;
 			} else if (slot[1].prototype == null ) {
 				slot[1].setPrototype(ent);
+				ent.setPosition(player.getPosition().cpy());
+				ent.setHidden(true);
+				ent.preventPickup();
 				return true;
 			} else if (slot[0].prototype == null ) {
 				slot[0].setPrototype(ent);
+				ent.setPosition(player.getPosition().cpy());
+				ent.setHidden(true);
+				ent.preventPickup();
 				return true;
 			}	
 		}
 		return false;
+	}
+	
+		/**
+	 * put everything if in the inventory.
+	 * @param list
+	 * @return everything 
+	 */
+	public ArrayList<Collectible> addAll(ArrayList<Collectible> list) {
+		if (list != null) {
+		Iterator<Collectible> it = list.iterator();
+			while (it.hasNext()) {
+			  Collectible ent = it.next();
+				if (add(ent)) {
+					ent.setPosition(player.getPosition());
+					ent.setHidden(true);
+					ent.preventPickup();
+					it.remove();
+				}
+			}
+		}
+		return list;
 	}
 	
 	/**
@@ -143,23 +173,6 @@ public class Inventory implements Serializable {
 			(tmp[1]==null ? null : tmp[1].getType()),
 			(tmp[2]==null ? null : tmp[2].getType()),
 		};
-	}
-	
-	/**
-	 * put everything if in the inventory.
-	 * @param list
-	 * @return everything 
-	 */
-	public ArrayList<Collectible> addAll(ArrayList<Collectible> list) {
-		if (list != null) {
-		Iterator<Collectible> it = list.iterator();
-			while (it.hasNext()) {
-			  Collectible ent = it.next();
-				if (add(ent))
-					it.remove();
-			}
-		}
-		return list;
 	}
 	
 	/**
@@ -187,6 +200,7 @@ public class Inventory implements Serializable {
 	public void update(float dt){
 		for (Slot currentSlot : slot) {
 			if (currentSlot.prototype != null){
+				currentSlot.prototype.setPosition(player.getPosition().cpy());
 				currentSlot.prototype.update(dt);
 				if (currentSlot.prototype.shouldBeDisposed()){
 					currentSlot.prototype = null;
@@ -280,6 +294,8 @@ public class Inventory implements Serializable {
 			}
 			if (counter <= 0)
 				prototype=null;
+			
+			tmp.allowPickup();
 			return tmp;
 		}
 		

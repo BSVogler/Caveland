@@ -143,20 +143,20 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
-		emitter.setPosition(new Point(Controller.getMap(), -20, 0, CoreData.GAME_EDGELENGTH2));
-		AbstractEntity conection1 = new SuperGlue(this, emitter);
-		addChild(conection1);
+		SuperGlue connection1 = new SuperGlue(this, emitter);
+		connection1.setOffset(new Vector3(-20, 0, CoreData.GAME_EDGELENGTH2));
+		addChild(connection1);
 		
 		emitter2 = new SmokeEmitter();
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
 		emitter2.setPosition(new Point(Controller.getMap(), 20, 0, CoreData.GAME_EDGELENGTH2));
-		AbstractEntity conection2 = new SuperGlue(this, emitter2);
+		SuperGlue conection2 = new SuperGlue(this, emitter2);
+		conection2.setOffset(new Vector3(20, 0, CoreData.GAME_EDGELENGTH2));
 		addChild(conection2);
 		setSaveToDisk(false);
 	}
-
 
 	/**
 	 * Get the value of inventory

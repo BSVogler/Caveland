@@ -41,7 +41,7 @@ import com.badlogic.gdx.math.Vector3;
 public class SuperGlue extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	private final AbstractEntity main;
-	private final Vector3 offset;
+	private Vector3 offset;
 	
 	/**
 	 * glue some object to another object. If you move
@@ -53,10 +53,11 @@ public class SuperGlue extends AbstractEntity {
 		setHidden(true);
 		this.main = main;
 		addChild(smaller);
-		if (main.getPosition()==null)
-			offset = smaller.getPosition().getVector();
-		else 
-			offset = smaller.getPosition().getVector().sub(main.getPosition().getVector());
+		
+	}
+
+	public void setOffset(Vector3 offset) {
+		this.offset = offset;
 	}
 
 	@Override

@@ -385,7 +385,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 			item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
 			item.preventPickup(this, 400);
-			item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
+			item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1f));
 		}
 	}
 	
@@ -395,7 +395,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	public void dropItem(){
 		Collectible item = inventory.fetchFrontItem();
 		if (item != null) {//throw is performed if there is an item to throw
-			item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1.5f));
+			item.spawn(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 0.1f));
 			item.setMovement(Vector3.Zero.cpy());//throw with 3 m/s+current movement
 			item.preventPickup(this, 800);
 		}

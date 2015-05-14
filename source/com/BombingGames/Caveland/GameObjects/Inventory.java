@@ -296,7 +296,6 @@ public class Inventory implements Serializable {
 		}
 
 		public void setPrototype(Collectible prototype) {
-			prototype.setPosition(player.getPosition());
 			this.prototype = prototype;
 			counter=1;
 		}

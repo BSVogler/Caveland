@@ -74,7 +74,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
-    private boolean onMap;
 	private boolean obstacle;
 	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
@@ -156,14 +155,13 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){
-		if (!onMap) {
+		if (position==null) {
 			Controller.getMap().getEntitys().add(this);
 			for (AbstractEntity child : children) {
 				child.spawn(point);
 			}
 			if (position==null)
 				position = point;
-			onMap =true;
 			dispose = false;
 			if (shadow != null && !shadow.spawned())
 				shadow.spawn(position.cpy());
@@ -179,7 +177,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
 		addChild(shadow);
-		if (onMap) shadow.spawn(position.cpy());
+		if (position!=null) shadow.spawn(position.cpy());
 	}
 	
 	/**
@@ -198,7 +196,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @return
      */
     public boolean spawned(){
-        return onMap;
+        return position!=null;
     }
 
 	/**
@@ -262,7 +260,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @see #shouldBeDisposed() 
      */
     public void disposeFromMap(){
-        onMap = false;
 		for (AbstractEntity child : children) {
 			child.disposeFromMap();
 		}
@@ -292,17 +289,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
         return dispose;
     }
 	
-	 /**
-     * 
-     * @return true if disposing next tick from map only
-	 * @see #disposeFromMap() 
-	 * @see #shouldBeDisposed() 
-     */
-    public boolean shouldBeDisposedFromMap() {
-        return !onMap;
-    }
-    
-	
 	/**
 	 * Is the oject saved on the map?
 	 * @return true if savedin map file.
@@ -327,7 +313,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean isInMemoryArea() {
-		if (position==null) return false;
+		if (position==null)
+			return false;
 		return position.isInMemoryAreaHorizontal();
 	}
 	

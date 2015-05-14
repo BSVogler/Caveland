@@ -728,6 +728,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
 				pos.toPoint().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)
 			);
+			addChild(interactButton);
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {

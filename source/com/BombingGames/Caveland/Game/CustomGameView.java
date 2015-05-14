@@ -273,6 +273,16 @@ public class CustomGameView extends GameView{
 		if (throwDownP1==0){
 			getPlayer(0).prepareThrow();
 		}
+		if (throwDownP1>=600){
+			getPlayer(0).dropItem();
+			throwDownP1=-1;
+		}
+		
+		if (throwDownP2>=600){
+			getPlayer(1).dropItem();
+			throwDownP2=-1;
+		}
+		
 		
 		if (coop>-1)
 			if (throwDownP2==0){
@@ -633,6 +643,7 @@ public class CustomGameView extends GameView{
 			if (button ==Buttons.RIGHT) {
 				if (craftingMenu[0] ==null) {
 					getPlayer(0).throwItem();
+					throwDownP1 = -1;
 				} else {
 					toogleCrafting(0);
 				}

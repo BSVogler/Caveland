@@ -84,12 +84,14 @@ public class SoundEngine {
 	/***
 	 * Plays soundIterator with decreasing volume depending on distance.
 	 * @param identifier name of soundIterator
-	 * @param pos the position of the soundIterator in the world
+	 * @param pos the position of the soundIterator in the world. if it is null then play at center
 	 */
 	public void play(String identifier, AbstractPosition pos){
 		Sound result = sounds.get(identifier);
 		if (result != null){
-			float volume = getVolume(pos);
+			float volume =1;
+			if (pos!=null)
+				volume = getVolume(pos);
 			if (volume >= 0.1) //only play soundIterator louder>10%
 				result.play(volume);
 		}

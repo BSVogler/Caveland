@@ -464,7 +464,8 @@ public class MapEditorView extends GameView {
 				//find ent under mouse
 				for (AbstractEntity ent : getMap().getEntitys()) {
 					if (
-						ent.getPosition().getViewSpcX(view) + ent.getAtlasRegion().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
+						ent.spawned()
+						&& ent.getPosition().getViewSpcX(view) + ent.getAtlasRegion().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
 						&& ent.getPosition().getViewSpcX(view) - ent.getAtlasRegion().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
 						&& ent.getPosition().getViewSpcY(view) - ent.getAtlasRegion().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
 						&& ent.getPosition().getViewSpcY(view) + ent.getAtlasRegion().getRegionHeight()/2 >= (int) screenYtoView(screenY, camera) //top spr. border

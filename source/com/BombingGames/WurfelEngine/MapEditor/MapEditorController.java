@@ -191,7 +191,7 @@ public class MapEditorController extends Controller {
 	public ArrayList<AbstractEntity> getSelectedEntities() {
 		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
 		for (AbstractEntity ent : selectedEntities) {
-			if (!(ent instanceof EntityShadow) && !ent.getName().equals("normal") &&!ent.equals(selectionEntity))
+			if (ent.spawned() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") &&!ent.equals(selectionEntity))
 				selection.add(ent);
 		}
 		return selection;

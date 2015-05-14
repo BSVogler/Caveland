@@ -149,7 +149,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	public void preventPickup(AbstractGameObject lastParent, float time) {
 		this.lastParent = lastParent;
-		timeParentBlocked = 1500;
+		timeParentBlocked = time;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.BombingGames.WurfelEngine.Core;
+package com.bombinggames.wurfelengine.Core;
 
 /**
  *An interface for objeccts which can execute a Wurfel Engine command.

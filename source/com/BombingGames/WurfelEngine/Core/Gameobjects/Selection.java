@@ -29,13 +29,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Intersection;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.Core.Map.Intersection;
+import com.bombinggames.wurfelengine.Core.Map.Point;
 
 /**
  *The seletion indicator in the level editor.

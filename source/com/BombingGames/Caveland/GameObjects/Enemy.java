@@ -1,12 +1,12 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.SimpleEntity;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.Core.Map.Point;
 import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 

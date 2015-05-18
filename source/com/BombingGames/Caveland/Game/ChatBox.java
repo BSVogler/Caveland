@@ -1,6 +1,6 @@
-package com.BombingGames.Caveland.Game;
+package com.bombinggames.caveland.Game;
 
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;

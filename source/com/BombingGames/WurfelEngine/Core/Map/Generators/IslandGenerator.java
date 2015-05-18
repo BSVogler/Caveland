@@ -29,10 +29,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map.Generators;
+package com.bombinggames.wurfelengine.Core.Map.Generators;
 
-import com.BombingGames.WurfelEngine.Core.Map.Chunk;
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.bombinggames.wurfelengine.Core.Map.Chunk;
+import com.bombinggames.wurfelengine.Core.Map.Generator;
 
 /**
  *Fenerates islands

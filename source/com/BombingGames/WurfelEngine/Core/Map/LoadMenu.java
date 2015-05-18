@@ -29,11 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.bombinggames.wurfelengine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

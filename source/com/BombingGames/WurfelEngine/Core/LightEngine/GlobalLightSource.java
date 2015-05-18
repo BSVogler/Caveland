@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.LightEngine;
+package com.bombinggames.wurfelengine.Core.LightEngine;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 

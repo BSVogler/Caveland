@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.bombinggames.wurfelengine.Core.Map;
 
 /**
  *An interface for a map generator.

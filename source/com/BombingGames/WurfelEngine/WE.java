@@ -28,21 +28,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine;
+package com.bombinggames.wurfelengine;
 
-import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
-import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
-import com.BombingGames.WurfelEngine.Core.Console;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.EngineView;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
-import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
-import com.BombingGames.WurfelEngine.Core.WEScreen;
-import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
+import com.bombinggames.wurfelengine.Core.AbstractMainMenu;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMainMenu;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMenuItem;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.Core.Console;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.EngineView;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.GameplayScreen;
+import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
@@ -107,7 +107,7 @@ public class WE {
      * Start the engine. You should have passed a main menu first.<br> Until the engine is launched it can take a while. Code that can only be run after the engine has openend should be run in the screen class.
 	 * @param title The title, which is displayed in the window.
      * @param args Wurfel Engine launch parameters. For a list look in the wiki.
-     * @see #setMainMenu(com.BombingGames.WurfelEngine.Core.MainMenuInterface)
+     * @see #setMainMenu(com.bombinggames.wurfelengine.Core.MainMenuInterface)
      */
     public static void launch(final String title, final String[] args){
 		System.out.println("Load Engine…");
@@ -189,7 +189,7 @@ public class WE {
      * @param controller
      * @param view 
 	 * @param customLoadingScreen 
-     * @see com.BombingGames.WurfelEngine.WE#startGame()
+     * @see com.bombinggames.wurfelengine.WE#startGame()
      */
     public static void initAndStartGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen){
         if (game != null) {
@@ -361,7 +361,7 @@ public class WE {
 	}
 	
     /**
-     * Returns the Console. Use {@link com.BombingGames.WurfelEngine.Core.Console#add(java.lang.String) }to add messages to the console.
+     * Returns the Console. Use {@link com.bombinggames.wurfelengine.Core.Console#add(java.lang.String) }to add messages to the console.
      * @return The console.
      */
     public static Console getConsole() {

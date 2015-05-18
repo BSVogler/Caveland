@@ -27,20 +27,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.MapEditor;
+package com.bombinggames.wurfelengine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.MapEditor.Toolbar.Tool;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.Controller;
+import static com.bombinggames.wurfelengine.Core.Controller.getMap;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;

@@ -1,6 +1,6 @@
-package com.BombingGames.Caveland.Game;
+package com.bombinggames.caveland.Game;
 
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.bombinggames.wurfelengine.Core.Map.Generator;
 
 /**
  *

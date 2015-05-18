@@ -26,21 +26,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_DEPTH4;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGHT;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractPosition;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.View;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.GameView;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH4;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.Core.View;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;

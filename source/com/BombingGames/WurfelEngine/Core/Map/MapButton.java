@@ -29,14 +29,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.bombinggames.wurfelengine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
-import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
-import com.BombingGames.WurfelEngine.Core.CVar.StringCVar;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.CVar.CVar;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.Core.CVar.StringCVar;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;

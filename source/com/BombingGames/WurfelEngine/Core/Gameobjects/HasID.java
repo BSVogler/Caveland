@@ -1,4 +1,4 @@
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
 /**
  *Interface for objects whether they are blocks and entities.

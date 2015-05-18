@@ -1,10 +1,10 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityAnimation;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.Serializable;
@@ -102,7 +102,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	private transient float timeParentBlocked = 1500;
 
 	/**
-	 *@see #create(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
+	 *@see #create(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 * @param def
 	 */
 	protected Collectible(CollectibleType def) {

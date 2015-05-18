@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
 

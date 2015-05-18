@@ -27,16 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.MapEditor;
+package com.bombinggames.wurfelengine.MapEditor;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.EntityShadow;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Selection;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.Core.Map.Point;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.logging.Level;

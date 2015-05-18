@@ -1,16 +1,16 @@
-package com.BombingGames.Caveland.Game;
+package com.bombinggames.caveland.Game;
 
-import com.BombingGames.Caveland.GameObjects.Collectible;
-import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.Caveland.GameObjects.CustomTree;
-import com.BombingGames.Caveland.GameObjects.Machine;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.BlockDirt;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CustomBlocks;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.bombinggames.caveland.GameObjects.Collectible;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.CustomTree;
+import com.bombinggames.caveland.GameObjects.Machine;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
+import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.CustomBlocks;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.badlogic.gdx.math.Vector3;
 
 /**

@@ -29,9 +29,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 

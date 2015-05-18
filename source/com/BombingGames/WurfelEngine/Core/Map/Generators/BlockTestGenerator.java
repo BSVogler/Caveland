@@ -29,10 +29,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map.Generators;
+package com.bombinggames.wurfelengine.Core.Map.Generators;
 
-import static com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData.OBJECTTYPESNUM;
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.OBJECTTYPESNUM;
+import com.bombinggames.wurfelengine.Core.Map.Generator;
 
 /**
  *A generator which uses every block.

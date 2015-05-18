@@ -31,4 +31,4 @@
  * This package provies a basic main menu.
  *
  */
-package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
+package com.bombinggames.wurfelengine.Core.BasicMainMenu;

@@ -1,6 +1,6 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 
 /**
  *

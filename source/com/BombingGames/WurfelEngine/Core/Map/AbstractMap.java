@@ -1,14 +1,14 @@
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.bombinggames.wurfelengine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVar;
-import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
-import com.BombingGames.WurfelEngine.Core.CVar.IntCVar;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.CoreData;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.Map.Generators.AirGenerator;
-import com.BombingGames.WurfelEngine.Core.Map.Iterators.MemoryMapIterator;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.CVar.CVar;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.Core.CVar.IntCVar;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core.Map.Generators.AirGenerator;
+import com.bombinggames.wurfelengine.Core.Map.Iterators.MemoryMapIterator;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import java.io.File;
@@ -366,7 +366,7 @@ public abstract class AbstractMap implements Cloneable {
 	/**
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param block no null pointer
-	 * @see #setBlock(com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock) 
+	 * @see #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock) 
 	 */
 	public abstract void setBlock(final RenderBlock block);
 
@@ -374,7 +374,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * Replace a block. Assume that the map already has been filled at this coordinate.
 	 * @param coord
 	 * @param block
-	 * @see #setBlock(com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock) 
+	 * @see #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock) 
 	 */
 	public abstract void setBlock(Coordinate coord, CoreData block);
 

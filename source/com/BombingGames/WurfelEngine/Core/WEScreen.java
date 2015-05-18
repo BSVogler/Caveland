@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core;
+package com.bombinggames.wurfelengine.Core;
 
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Screen;
 
 /**

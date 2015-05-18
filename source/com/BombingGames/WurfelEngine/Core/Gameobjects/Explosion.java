@@ -1,9 +1,9 @@
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
-import com.BombingGames.WurfelEngine.Core.Map.Point;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.Core.Map.Point;
 import com.badlogic.gdx.graphics.Color;
 import java.util.ArrayList;
 

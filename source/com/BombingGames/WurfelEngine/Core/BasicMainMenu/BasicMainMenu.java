@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
+package com.bombinggames.wurfelengine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.AbstractMainMenu;
+import com.bombinggames.wurfelengine.Core.AbstractMainMenu;
 
 /**
  *This class provides a simple basic main menu if you don't want to set up your own and just want to test your game controllers.

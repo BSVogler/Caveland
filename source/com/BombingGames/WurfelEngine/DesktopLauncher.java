@@ -28,14 +28,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine;
+package com.bombinggames.wurfelengine;
 
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMainMenu;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.BasicMenuItem;
-import com.BombingGames.WurfelEngine.Core.BasicMainMenu.GameViewWithCamera;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMainMenu;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMenuItem;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.GameViewWithCamera;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.MapEditor.MapEditorController;
+import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
 
 /**
  *A test class for starting the engine.

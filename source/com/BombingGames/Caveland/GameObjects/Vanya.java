@@ -1,9 +1,9 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.Caveland.Game.ChatBox;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.caveland.Game.ChatBox;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.ObjectInputStream;

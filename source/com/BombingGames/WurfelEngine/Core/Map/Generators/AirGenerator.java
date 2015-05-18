@@ -29,14 +29,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.Map.Generators;
+package com.bombinggames.wurfelengine.Core.Map.Generators;
 
-import com.BombingGames.WurfelEngine.Core.Map.Generator;
+import com.bombinggames.wurfelengine.Core.Map.Generator;
 
 /**
  * A simple generator who returns only air.
  * @author Benedikt Vogler
- * @see com.BombingGames.WurfelEngine.Core.Map.Generators.FullMapGenerator
+ * @see com.bombinggames.wurfelengine.Core.Map.Generators.FullMapGenerator
  */
 public class AirGenerator implements Generator {
 

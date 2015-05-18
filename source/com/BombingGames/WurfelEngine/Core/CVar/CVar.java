@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.CVar;
+package com.bombinggames.wurfelengine.Core.CVar;
 
 /**
  *CVars start with a small letter and are CamelCase.

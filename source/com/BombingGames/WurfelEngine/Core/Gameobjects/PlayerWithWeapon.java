@@ -26,10 +26,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.shooting.Weapon;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.shooting.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 

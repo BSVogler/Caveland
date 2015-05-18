@@ -1,8 +1,8 @@
-package com.BombingGames.Caveland.Game;
+package com.bombinggames.caveland.Game;
 
-import com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;

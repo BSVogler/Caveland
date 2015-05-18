@@ -1,12 +1,12 @@
-package com.BombingGames.Caveland.Game;
+package com.bombinggames.caveland.Game;
 
-import com.BombingGames.Caveland.GameObjects.CustomPlayer;
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.Controller;
-import static com.BombingGames.WurfelEngine.Core.Controller.getLightEngine;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.Controller;
+import static com.bombinggames.wurfelengine.Core.Controller.getLightEngine;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;

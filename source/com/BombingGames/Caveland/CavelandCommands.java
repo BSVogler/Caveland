@@ -1,9 +1,9 @@
-package com.BombingGames.Caveland;
+package com.bombinggames.caveland;
 
-import com.BombingGames.Caveland.Game.CustomGameView;
-import com.BombingGames.Caveland.GameObjects.TFlint;
-import com.BombingGames.WurfelEngine.Core.CommandsInterface;
-import com.BombingGames.WurfelEngine.Core.GameplayScreen;
+import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.TFlint;
+import com.bombinggames.wurfelengine.Core.CommandsInterface;
+import com.bombinggames.wurfelengine.Core.GameplayScreen;
 import java.util.StringTokenizer;
 
 /**

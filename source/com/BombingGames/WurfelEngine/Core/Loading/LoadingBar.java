@@ -1,7 +1,7 @@
 /**
  * This class is public domain.
  */
-package com.BombingGames.WurfelEngine.Core.Loading;
+package com.bombinggames.wurfelengine.Core.Loading;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;

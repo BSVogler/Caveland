@@ -1,8 +1,5 @@
-package com.BombingGames.Caveland.MainMenu;
+package com.bombinggames.caveland.MainMenu;
 
-import com.BombingGames.Caveland.Caveland;
-import com.BombingGames.WurfelEngine.Core.WEScreen;
-import com.BombingGames.WurfelEngine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -14,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.bombinggames.caveland.Caveland;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *

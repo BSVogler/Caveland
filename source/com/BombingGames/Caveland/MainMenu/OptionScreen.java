@@ -1,7 +1,7 @@
-package com.BombingGames.Caveland.MainMenu;
+package com.bombinggames.caveland.MainMenu;
 
-import com.BombingGames.WurfelEngine.Core.WEScreen;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;

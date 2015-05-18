@@ -1,6 +1,6 @@
-package com.BombingGames.Caveland.MainMenu;
+package com.bombinggames.caveland.MainMenu;
 
-import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;

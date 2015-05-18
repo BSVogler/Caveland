@@ -1,10 +1,10 @@
-package com.BombingGames.Caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects;
 
-import com.BombingGames.WurfelEngine.Core.Camera;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractEntity;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.MovableEntity;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +55,7 @@ public class Inventory implements Serializable {
 	 * tries to take the wanted type out of the inventory 
 	 * @param def
 	 * @return can return null
-	 * @see #getCollectible(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
+	 * @see #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 */
 	public Collectible fetchCollectible(Collectible.CollectibleType def){
 		if (slot[2].prototype!=null && slot[2].prototype.getType() == def)
@@ -71,7 +71,7 @@ public class Inventory implements Serializable {
 	 * Get a reference to the prototype and keeps the item in inventory.
 	 * @param def
 	 * @return can return null
-	 * @see #fetchCollectible(com.BombingGames.Caveland.GameObjects.Collectible.CollectibleType) 
+	 * @see #fetchCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 */
 	public Collectible getCollectible(Collectible.CollectibleType def){
 		if (slot[2].prototype!=null && slot[2].prototype.getType() == def)

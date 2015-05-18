@@ -26,15 +26,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.LightEngine;
+package com.bombinggames.wurfelengine.Core.LightEngine;
 
-import com.BombingGames.WurfelEngine.Core.Controller;
-import com.BombingGames.WurfelEngine.Core.GameView;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.HasID;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.Side;
-import com.BombingGames.WurfelEngine.Core.Map.Chunk;
-import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.HasID;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Side;
+import com.bombinggames.wurfelengine.Core.Map.Chunk;
+import com.bombinggames.wurfelengine.Core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -249,7 +249,7 @@ public class LightEngine implements LinkedWithMap {
 //        /**
 //     * Gets average color. 
 //     * @return pseudoGrey color
-//     * @see #getColor(com.BombingGames.WurfelEngine.Core.Gameobjects.Side)
+//     * @see #getColor(com.bombinggames.wurfelengine.Core.Gameobjects.Side)
 //     */
 //    public Color getColor(){
 //		if (pixelBasedShading)

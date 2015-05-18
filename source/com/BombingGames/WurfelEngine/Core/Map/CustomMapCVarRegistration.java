@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core.Map;
+package com.bombinggames.wurfelengine.Core.Map;
 
-import com.BombingGames.WurfelEngine.Core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 
 /**
  * An interface to register custom cvars for the map cvar system. They msut be registered before being updated by loading from file.

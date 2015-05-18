@@ -1,6 +1,6 @@
-package com.BombingGames.WurfelEngine.Core.Gameobjects;
+package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.BombingGames.WurfelEngine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 
 /**
  *

@@ -28,17 +28,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core;
+package com.bombinggames.wurfelengine.Core;
 
-import com.BombingGames.WurfelEngine.Core.Gameobjects.AbstractGameObject;
-import com.BombingGames.WurfelEngine.Core.Gameobjects.RenderBlock;
-import com.BombingGames.WurfelEngine.Core.LightEngine.LightEngine;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
-import com.BombingGames.WurfelEngine.Core.Map.ChunkMap;
-import com.BombingGames.WurfelEngine.Core.Map.CompleteMap;
-import com.BombingGames.WurfelEngine.Core.Map.LinkedWithMap;
-import com.BombingGames.WurfelEngine.Core.SoundEngine.SoundEngine;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core.LightEngine.LightEngine;
+import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.Core.Map.ChunkMap;
+import com.bombinggames.wurfelengine.Core.Map.CompleteMap;
+import com.bombinggames.wurfelengine.Core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.Core.SoundEngine.SoundEngine;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import java.io.File;
 import java.io.IOException;

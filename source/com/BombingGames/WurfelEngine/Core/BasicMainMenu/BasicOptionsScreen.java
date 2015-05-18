@@ -29,10 +29,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.BombingGames.WurfelEngine.Core.BasicMainMenu;
+package com.bombinggames.wurfelengine.Core.BasicMainMenu;
 
-import com.BombingGames.WurfelEngine.Core.WEScreen;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

@@ -1,11 +1,11 @@
-package com.BombingGames.Caveland.MainMenu;
+package com.bombinggames.caveland.MainMenu;
 
-import com.BombingGames.Caveland.Game.CustomGameController;
-import com.BombingGames.Caveland.Game.CustomGameView;
-import com.BombingGames.WurfelEngine.Core.Map.AbstractMap;
-import com.BombingGames.WurfelEngine.Core.WEScreen;
-import com.BombingGames.WurfelEngine.Core.WorkingDirectory;
-import com.BombingGames.WurfelEngine.WE;
+import com.bombinggames.caveland.Game.CustomGameController;
+import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;

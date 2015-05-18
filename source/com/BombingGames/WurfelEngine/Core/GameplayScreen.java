@@ -28,13 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.BombingGames.WurfelEngine.Core;
+package com.bombinggames.wurfelengine.Core;
 
-import static com.BombingGames.WurfelEngine.Core.Controller.getMap;
-import com.BombingGames.WurfelEngine.Core.Loading.LoadingScreen;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorController;
-import com.BombingGames.WurfelEngine.MapEditor.MapEditorView;
-import com.BombingGames.WurfelEngine.WE;
+import static com.bombinggames.wurfelengine.Core.Controller.getMap;
+import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.MapEditor.MapEditorController;
+import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
+import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 
 /**

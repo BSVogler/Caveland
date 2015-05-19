@@ -125,14 +125,11 @@ public class GameView extends View implements GameManager {
         //set up stage
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
         
-        
-        batch.setShader(getShader());
-
         initalized = true;
 		
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		batch.setShader(null);
+		batch.setShader(null);//set default shader
     }
     
     /**

@@ -30,10 +30,6 @@
  */
 package com.bombinggames.wurfelengine.Core;
 
-import com.bombinggames.wurfelengine.Core.CVar.CVar;
-import com.bombinggames.wurfelengine.Core.Gameobjects.BenchmarkBall;
-import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -41,6 +37,10 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.bombinggames.wurfelengine.Core.CVar.CVar;
+import com.bombinggames.wurfelengine.Core.Gameobjects.BenchmarkBall;
+import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.WE;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;

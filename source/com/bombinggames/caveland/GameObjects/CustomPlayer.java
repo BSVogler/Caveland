@@ -121,6 +121,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	private boolean prepareThrow;
 	private boolean bunnyHopForced;
+	private boolean usedLoadAttackInAir;
 	private SmokeEmitter emitter;
 	private SmokeEmitter emitter2;
 	private SimpleEntity interactButton = null;
@@ -180,6 +181,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			} else {
 				setHorMovement(new Vector2());
 			}
+		} else {
+			if (usedLoadAttackInAir)
+				setFriction((float) WE.CVARS.get("playerfriction").getValue());
+			usedLoadAttackInAir = false;
 		}
 
 		inventory.update(dt);
@@ -195,7 +200,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		updateSprite();
 		
 		//detect button hold
-		if (loadAttack != 0f) {
+		if (loadAttack != Float.NEGATIVE_INFINITY) {
 			loadAttack += dt;
 		}
 		if (loadAttack > 0) {
@@ -472,8 +477,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			}
 		}
 
-		//set to a small value to indicate that it is active
-		loadAttack = 0.00001f;
+		if (!usedLoadAttackInAir){
+			//set to 0 to indicate that it is active
+			loadAttack = 0f;
+		}
 	}
 
 	@Override
@@ -575,11 +582,17 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			//perform loadattack
 			playAnimation('i');
 			Controller.getSoundEngine().play("release");
-			addToHor(40f);
+			if (!isOnGround()) {
+				setFriction((float) WE.CVARS.get("playerfriction").getValue()/3f);
+				addMovement(new Vector3(getOrientation().cpy().scl(30),-2f));
+			} else {
+				addToHor(40f);
+			}
 			attack((byte)100);
+			usedLoadAttackInAir = true;
 		}
 
-		loadAttack = 0f;
+		loadAttack = Float.NEGATIVE_INFINITY;
 		canPlayLoadingSound = false;
 	}
 

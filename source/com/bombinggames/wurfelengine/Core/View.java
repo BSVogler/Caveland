@@ -43,7 +43,7 @@ import com.bombinggames.wurfelengine.WE;
  * @author Benedikt Vogler
  */
 public abstract class View {
-    private static ShaderProgram shader;
+    private ShaderProgram shader;
 	
 	/**
 	 *

@@ -672,6 +672,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      */
     @Override
     public boolean isOnGround() {
+		if (getPosition()==null) return false;
         if (getPosition().getZ()> 0){
 			if (getPosition().getZ() > getPosition().getMap().getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check

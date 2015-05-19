@@ -68,8 +68,14 @@ public class EntityDrawable extends TextureRegionDrawable {
 
 	@Override
     public void draw(Batch batch, float x, float y, float width, float height) {
-		if (instance !=null)
-			instance.render(WE.getEngineView(), (int) x, (int) y);
+		if (instance !=null) {
+			batch.end();
+			WE.getGameplay().getView().getBatch().setShader(WE.getGameplay().getView().getShader());
+			WE.getGameplay().getView().getBatch().begin();
+			instance.render(WE.getGameplay().getView(), (int) x, (int) y);
+			WE.getGameplay().getView().getBatch().end();
+			batch.begin();
+		}
     }
 	
 	/**

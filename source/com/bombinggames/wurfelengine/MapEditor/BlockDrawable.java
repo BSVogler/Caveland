@@ -77,9 +77,15 @@ public class BlockDrawable extends TextureRegionDrawable {
 	
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
+		batch.end();
+		WE.getGameplay().getView().getBatch().setShader(WE.getGameplay().getView().getShader());
+		WE.getGameplay().getView().getBatch().begin();
 		if (block.getId()!=0) {
-			block.render(WE.getEngineView(), (int) (x+this.x), (int) y, null, true);
+			//block.setColor(new Color(1, 1, 1, 1));
+			block.render(WE.getGameplay().getView(), (int) (x+this.x), (int) y, null, true);
 		}
+		WE.getGameplay().getView().getBatch().end();
+		batch.begin();
     }
 
 	/**

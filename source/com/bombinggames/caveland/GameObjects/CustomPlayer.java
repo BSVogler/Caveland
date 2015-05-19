@@ -426,7 +426,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 
 		Controller.getSoundEngine().play("sword");
-		addToHor(13f);//add 13 m/s in move direction
+		if (isOnGround())
+			addToHor(13f);//add 13 m/s in move direction
 
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);

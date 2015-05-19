@@ -1,5 +1,13 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Controller;
@@ -20,14 +28,6 @@ import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.Core.Map.Point;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**

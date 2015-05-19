@@ -101,11 +101,11 @@ public abstract class View {
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
 		if (WE.CVARS.getValueB("LEnormalMapRendering")){
-			vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertexNM.vs").readString();
-			fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragmentNM.fs").readString();
+			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/Core/vertexNM.vs").readString();
+			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/Core/fragmentNM.fs").readString();
 		} else {
-			vertexShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/vertex.vs").readString();
-			fragmentShader = Gdx.files.internal("com/BombingGames/WurfelEngine/Core/fragment.fs").readString();
+			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/Core/vertex.vs").readString();
+			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/Core/fragment.fs").readString();
 		}
 		//Setup shader
 		ShaderProgram.pedantic = false;

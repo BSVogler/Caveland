@@ -95,7 +95,7 @@ public class GameView extends View implements GameManager {
      */
     public static void classInit(){
         //set up font
-        //font = WurfelEngine.getInstance().manager.get("com/BombingGames/WurfelEngine/EngineCore/arial.fnt"); //load font
+        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
         //font.scale(2);
 
         //font.scale(-0.5f);

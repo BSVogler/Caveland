@@ -63,7 +63,7 @@ public class MenuView {
     protected MenuView(MenuController controller){
         this.controller = controller;
         //load textures
-        lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
+        lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/Core/BasicMainMenu/Images/Lettering.png")));
         lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
         lettering.setY(Gdx.graphics.getHeight() - 150);
         
@@ -122,7 +122,7 @@ public class MenuView {
      *
      */
     protected void show() {
-        Pixmap cursor = new Pixmap(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/images/wecursor.png"));
+        Pixmap cursor = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/wecursor.png"));
         Gdx.input.setCursorImage(cursor, 0, 0);
         
         WE.getEngineView().addInputProcessor(new InputListener(controller));

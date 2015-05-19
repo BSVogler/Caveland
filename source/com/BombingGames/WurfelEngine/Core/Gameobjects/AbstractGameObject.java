@@ -54,7 +54,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     /**The sprite texture which contains every object texture*/
     private transient static TextureAtlas spritesheet;
-	private transient static String spritesheetPath = "com/BombingGames/WurfelEngine/Core/images/Spritesheet";
+	private transient static String spritesheetPath = "com/bombinggames/wurfelengine/Core/images/Spritesheet";
     private transient static Pixmap pixmap;
     private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
@@ -99,7 +99,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
-	 * @param customPath format like "com/BombingGames/WurfelEngine/Core/images/Spritesheet" without suffix 
+	 * @param customPath format like "com/bombinggames/wurfelengine/Core/images/Spritesheet" without suffix 
 	 */
 	public static void setCustomSpritesheet(String customPath) {
 		AbstractGameObject.spritesheetPath = customPath;
@@ -140,7 +140,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * Load the spritesheet from memory.
      */
     public static void loadSheet() {
-        //spritesheet = new TextureAtlas(Gdx.files.internal("com/BombingGames/Game/Blockimages/Spritesheet.txt"), true);
+        //spritesheet = new TextureAtlas(Gdx.files.internal("com/bombinggames/Game/Blockimages/Spritesheet.txt"), true);
         Gdx.app.log("AGameObject", "getting spritesheet");
         if (spritesheet == null) {
             spritesheet = WE.getAsset(spritesheetPath+".txt");
@@ -152,7 +152,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         //load again for pixmap, allows access to image color data;
         if (WE.CVARS.getValueB("loadPixmap")) {
 			if (pixmap == null) {
-				//pixmap = WurfelEngine.getInstance().manager.get("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+				//pixmap = WurfelEngine.getInstance().manager.get("com/bombinggames/Game/Blockimages/Spritesheet.png", Pixmap.class);
 				pixmap = new Pixmap(
 					Gdx.files.internal(spritesheetPath+".png")
 				);

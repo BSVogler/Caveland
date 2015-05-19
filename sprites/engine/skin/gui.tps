@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../../source/com/BombingGames/WurfelEngine/Core/skin/gui.png</filename>
+        <filename>../../../source/com/bombinggames/WurfelEngine/Core/skin/gui.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../../source/com/BombingGames/WurfelEngine/Core/skin/gui.txt</filename>
+                <filename>../../../source/com/bombinggames/WurfelEngine/Core/skin/gui.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>

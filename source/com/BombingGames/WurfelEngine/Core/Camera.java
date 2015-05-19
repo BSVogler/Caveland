@@ -547,7 +547,7 @@ map.getGameWidth(),
 			}
 			if (damageoverlay > 0.0f) {
 				WE.getEngineView().getBatch().begin();
-				Texture texture = WE.getAsset("com/BombingGames/WurfelEngine/Core/images/bloodblur.png");
+				Texture texture = WE.getAsset("com/bombinggames/wurfelengine/Core/images/bloodblur.png");
 				Sprite overlay = new Sprite(texture);
 				overlay.setOrigin(0, 0);
 				//somehow reverse the viewport transformation, needed for split-screen

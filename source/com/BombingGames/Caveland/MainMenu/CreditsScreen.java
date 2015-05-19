@@ -53,7 +53,7 @@ public class CreditsScreen extends WEScreen {
 		);
 		stage.addActor(showWEcredits);
 		
-		background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/credits_wallpaper.jpg"));
+		background = new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/credits_wallpaper.jpg"));
     }
 
     @Override

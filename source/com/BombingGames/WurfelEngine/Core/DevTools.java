@@ -310,7 +310,7 @@ public class DevTools {
      */
     private void showEditorButtons(final GameView view){
         if (editorbutton==null || editorreversebutton==null){    
-            TextureAtlas spritesheet = WE.getAsset("com/BombingGames/WurfelEngine/Core/skin/gui.txt");
+            TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/Core/skin/gui.txt");
             
             if (editorbutton==null){
                 //add editor button

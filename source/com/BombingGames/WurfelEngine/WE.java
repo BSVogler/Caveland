@@ -129,8 +129,8 @@ public class WE {
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
         config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
-		//config.addIcon("com/BombingGames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
-        config.addIcon("com/BombingGames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?
+		//config.addIcon("com/bombinggames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
+        config.addIcon("com/bombinggames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?
 		
         //arguments
         if (args.length > 0){
@@ -407,10 +407,10 @@ public class WE {
 
 		WurfelEngineIntro() {
 			batch = new SpriteBatch();
-			lettering = new Sprite(new Texture(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/BasicMainMenu/Images/Lettering.png")));
+			lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/Core/BasicMainMenu/Images/Lettering.png")));
 			lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth())/2);
 			lettering.setY((Gdx.graphics.getHeight() - lettering.getHeight())/2);
-			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/startup.mp3"));
+			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/startup.mp3"));
 			startupsound.play();
 			interpolate = new Interpolation.ExpOut(2, 7);
 			//lettering.flip(false, true);

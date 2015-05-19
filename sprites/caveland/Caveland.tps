@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/Caveland/Spritesheet.png</filename>
+        <filename>../../source/com/bombinggames/Caveland/Spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/BombingGames/Caveland/Spritesheet.txt</filename>
+                <filename>../../source/com/bombinggames/Caveland/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">
@@ -217,6 +217,6 @@
         <key>normalMapSuffix</key>
         <string></string>
         <key>normalMapSheetFileName</key>
-        <filename>../../source/com/BombingGames/Caveland/SpritesheetNormal.png</filename>
+        <filename>../../source/com/bombinggames/Caveland/SpritesheetNormal.png</filename>
     </struct>
 </data>

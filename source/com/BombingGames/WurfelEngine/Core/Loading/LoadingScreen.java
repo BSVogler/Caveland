@@ -48,12 +48,12 @@ public class LoadingScreen extends WEScreen {
         AssetManager manager = WE.getAssetManager();
                 
         // Tell the manager to load assets for the loading screen
-        manager.load("com/BombingGames/WurfelEngine/Core/Loading/loading.txt", TextureAtlas.class);
+        manager.load("com/bombinggames/wurfelengine/Core/Loading/loading.txt", TextureAtlas.class);
         // Wait until they are finished loading
         manager.finishLoading();
         
         // Add everything to be loaded, for instance:
-        //WurfelEngine.getInstance().manager.load("com/BombingGames/Game/Blockimages/Spritesheet.png", Pixmap.class);
+        //WurfelEngine.getInstance().manager.load("com/bombinggames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(AbstractGameObject.getSpritesheetPath()+".txt", TextureAtlas.class);
 		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
 			if (!Gdx.files.internal(AbstractGameObject.getSpritesheetPath()+"Normal.png").exists()){
@@ -63,15 +63,15 @@ public class LoadingScreen extends WEScreen {
 			}
 		}
 		
-        manager.load("com/BombingGames/WurfelEngine/Core/skin/gui.txt", TextureAtlas.class);
-		manager.load("com/BombingGames/WurfelEngine/Core/images/bloodblur.png", Texture.class);
+        manager.load("com/bombinggames/wurfelengine/Core/skin/gui.txt", TextureAtlas.class);
+		manager.load("com/bombinggames/wurfelengine/Core/images/bloodblur.png", Texture.class);
         
-       // manager.load("com/BombingGames/WurfelEngine/Game/Blockimages/Spritesheet.png", Pixmap.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/wind.ogg", Sound.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/landing.wav", Sound.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/splash.wav", Sound.class);
-        manager.load("com/BombingGames/WurfelEngine/Core/SoundEngine/Sounds/explosion2.wav", Sound.class);
-        //manager.load("com/BombingGames/WurfelEngine/Core/arial.fnt", BitmapFont.class);
+       // manager.load("com/bombinggames/wurfelengine/Game/Blockimages/Spritesheet.png", Pixmap.class);
+        manager.load("com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/wind.ogg", Sound.class);
+        manager.load("com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/landing.wav", Sound.class);
+        manager.load("com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/splash.wav", Sound.class);
+        manager.load("com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/explosion2.wav", Sound.class);
+        //manager.load("com/bombinggames/wurfelengine/Core/arial.fnt", BitmapFont.class);
         
         //load files from configRef
         customLoading(manager);
@@ -91,7 +91,7 @@ public class LoadingScreen extends WEScreen {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
 
         // Get our textureatlas from the manager
-        TextureAtlas GUItexture = WE.getAsset("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");
+        TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/Core/Loading/loading.txt");
         // Grab the regions from the atlas and create some images
         logo = new Image(GUItexture.findRegion("banner_medium"));
         loadingFrame = new Image(GUItexture.findRegion("loading-frame"));
@@ -198,6 +198,6 @@ public class LoadingScreen extends WEScreen {
 		Gdx.app.debug("LoadingScreen", "disposing");
         // Dispose the loading assets as we no longer need them
 		stage.dispose();
-		WE.getAssetManager().unload("com/BombingGames/WurfelEngine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
+		WE.getAssetManager().unload("com/bombinggames/wurfelengine/Core/Loading/loading.txt");//causes programm to stop and show a white screen!
     }
 }

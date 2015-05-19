@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/BombingGames/WurfelEngine/Core/Loading/loading.png</filename>
+        <filename>../../source/com/bombinggames/WurfelEngine/Core/Loading/loading.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/BombingGames/WurfelEngine/Core/Loading/loading.txt</filename>
+                <filename>../../source/com/bombinggames/WurfelEngine/Core/Loading/loading.txt</filename>
             </struct>
         </map>
         <key>multiPack</key>

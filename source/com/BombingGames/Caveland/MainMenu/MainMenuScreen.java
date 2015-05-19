@@ -48,14 +48,14 @@ public class MainMenuScreen extends AbstractMainMenu {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		
 		//load textures
-        lettering = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/Lettering.png")));
+        lettering = new Image(new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/Lettering.png")));
 		lettering.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(lettering);
-		alphaTag = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/alphaTag.png")));
+		alphaTag = new Image(new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/alphaTag.png")));
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
-		Image button1Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/1player.png")));
+		Image button1Player = new Image(new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/1player.png")));
 		button1Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
 			stage.getHeight()/2-200
@@ -71,7 +71,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
-		Image button2Player = new Image(new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/2players.png")));
+		Image button2Player = new Image(new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/2players.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
 			stage.getHeight()/2-200
@@ -135,14 +135,14 @@ public class MainMenuScreen extends AbstractMainMenu {
 			stage.addActor(menuItem);
 		}
 		
-        background = new Texture(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/background.jpg"));
+        background = new Texture(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/background.jpg"));
 		
-        font = new BitmapFont(Gdx.files.internal("com/BombingGames/WurfelEngine/Core/arial.fnt"), false);
+        font = new BitmapFont(Gdx.files.internal("com/bombinggames/wurfelengine/Core/arial.fnt"), false);
         font.setColor(Color.WHITE);
 		
-		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/menusound.wav"));
+		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/menusound.wav"));
 		//to-do play when button is pressed
-		abortSound = Gdx.audio.newSound(Gdx.files.internal("com/BombingGames/Caveland/MainMenu/menusoundAbort.wav"));
+		abortSound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/Caveland/MainMenu/menusoundAbort.wav"));
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
 		if (!WE.getEngineView().isMusicPlaying())
-			WE.getEngineView().setMusic(Gdx.files.internal("com/BombingGames/Caveland/music/title.mp3").path());
+			WE.getEngineView().setMusic(Gdx.files.internal("com/bombinggames/Caveland/music/title.mp3").path());
 		abortSound.play();
 	}
 

@@ -4,9 +4,6 @@
 
 package com.bombinggames.wurfelengine.Core.Loading;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.WEScreen;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -20,6 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  * Class under public domain. Modified for own needs. This class renders is the default loading screen of wurfel engine.

@@ -28,12 +28,12 @@
  */
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.Core.Controller;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.Core.Map.Point;
-import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;

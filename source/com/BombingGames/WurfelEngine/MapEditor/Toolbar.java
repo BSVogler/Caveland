@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.MapEditor;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -40,6 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  * A toolbar for the editor.

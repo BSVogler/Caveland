@@ -28,13 +28,6 @@
  */
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.bombinggames.wurfelengine.Core.Camera;
-import com.bombinggames.wurfelengine.Core.GameView;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -43,6 +36,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bombinggames.wurfelengine.Core.Camera;
+import com.bombinggames.wurfelengine.Core.GameView;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
 
 /**

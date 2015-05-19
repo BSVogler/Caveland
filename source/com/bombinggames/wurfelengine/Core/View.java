@@ -31,12 +31,12 @@
 
 package com.bombinggames.wurfelengine.Core;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  * A view is an object which renders the data. Game space or not does not matter for this class.

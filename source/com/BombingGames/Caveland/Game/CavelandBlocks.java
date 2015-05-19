@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.GameObjects.Collectible;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.CustomTree;
@@ -11,7 +12,6 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  *

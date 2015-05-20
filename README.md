@@ -2,7 +2,7 @@ Wurfelengine V1.6
 ============
 ![Wurfelengine logo](http://wurfelengine.net/images/logo_medium.png)
 
-Wurfelengine is a 2.5D isometric Java block world game engine build with the support of libGDX.
+Wurfelengine is a 2.5D isometric Java block world game engine build based on libGDX.
 The name comes from the german word for "cube(s)" ("Würfel") of which the terrain consists.
 
 If you want to use the engine for your game, prototype etc. take a look at the [wiki](https://github.com/Cbeed/Wurfel-Engine/wiki).
@@ -12,7 +12,7 @@ If you want to use the engine for your game, prototype etc. take a look at the [
 * **Open Source**:
 	* Well documented
 	* Clean code: Precise names, logical indent, commented
-* **Cross-platform** (Windows, Mac, Linux, Android (in work))
+* **Cross-platform** (Windows, Mac, Linux, Android (only experimental))
 * **Map Streaming**: make maps as big as you want like in Minecraft or Skyrim
 * **Three Dimensions**: make maps with high buildings or deep dungeons
 * **Map editor**: Shape you world on the fly with the build in WYSIWYG map editor.

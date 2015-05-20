@@ -84,6 +84,7 @@ public class WE {
     private static EngineView engineView;
 	private static LwjglApplication application;
 	private static boolean skipintro =false;
+	private static String iconPath = null;
 	
     /**
      * Pass the mainMenu which gets displayed when you call launch().
@@ -101,6 +102,10 @@ public class WE {
 	public static void setScreen(WEScreen screen){
 		engineView.resetInputProcessors();
 		game.setScreen(screen);
+	}
+	
+	public void addIcon(String internalPath){
+		iconPath = internalPath;
 	}
     
     /**
@@ -129,8 +134,9 @@ public class WE {
         config.vSyncEnabled = false;//if set to true the FPS is locked to 60
         config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
-		//config.addIcon("com/bombinggames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best madevia native packaging
-        config.addIcon("com/bombinggames/Caveland/icon32.png", Files.FileType.Internal);//windows and linux?
+		//config.addIcon("com/BombingGames/Caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best made via native packaging
+        if (iconPath!=null)
+			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
 		
         //arguments
         if (args.length > 0){

@@ -213,7 +213,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 //		}
 
 		if (loadAttack > 300) {//time till registered as a "hold"
-			playAnimation('l');
+			if (action!='l' && action!='i' && !playAnimation)
+				playAnimation('l');
 			if (!canPlayLoadingSound) {
 				Controller.getSoundEngine().play("loadAttack");
 				canPlayLoadingSound = true;

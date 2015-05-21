@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
@@ -7,7 +8,6 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.Core.Map.Point;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**

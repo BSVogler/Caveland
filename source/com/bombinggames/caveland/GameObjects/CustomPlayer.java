@@ -354,7 +354,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 					getPosition().getViewSpcY(view)//center
 					- VIEW_HEIGHT2
 					+ overlayTexture.offsetY
-					- 50 //only this player sprite has an offset because it has overize
+					+100 //offset for overlay
 				);
 				overlaySprite.draw(view.getBatch());
 			}

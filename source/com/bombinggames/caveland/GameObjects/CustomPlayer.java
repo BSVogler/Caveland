@@ -101,7 +101,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	/**
 	 * time of loading
 	 */
-	private float loadAttack = 0;
+	private float loadAttack = Float.NEGATIVE_INFINITY;
 	private transient AbstractInteractable nearestEntity;
 
 	/**
@@ -203,17 +203,17 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		if (loadAttack != Float.NEGATIVE_INFINITY) {
 			loadAttack += dt;
 		}
-		if (loadAttack > 0) {
-			Vector3 newmov = getMovement();
-			newmov.z /= 2;//half vertical speed
-			if (newmov.z < 0) {
-				newmov.z *= 2 / 3;//if falling then more "freeze in air"
-			}
-			setMovement(newmov);
-		}
+//		if (loadAttack > 0) {
+//			Vector3 newmov = getMovement();
+//			newmov.z /= 2;//half vertical speed
+//			if (newmov.z < 0) {
+//				newmov.z *= 2 / 3;//if falling then more "freeze in air"
+//			}
+//			setMovement(newmov);
+//		}
 
 		if (loadAttack > 300) {//time till registered as a "hold"
-			action = 'l';
+			playAnimation('l');
 			if (!canPlayLoadingSound) {
 				Controller.getSoundEngine().play("loadAttack");
 				canPlayLoadingSound = true;
@@ -292,7 +292,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 			
 		//play walking animation
-		if (isOnGround() && getSpeedHor() > 0 && (!playAnimation)) {
+		if (isOnGround() && getSpeedHor() > 0 && (!playAnimation) && loadAttack==Float.NEGATIVE_INFINITY) {
 			playAnimation('w');
 		}
 
@@ -323,21 +323,40 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		textureDiff.bind(0);
 
 		view.getBatch().begin();
-		AtlasRegion texture = getSprite(action, spriteNum);
-		Sprite sprite = new Sprite(texture);
-		sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + texture.offsetY);
-		sprite.rotate(getRotation());
-		//sprite.scale(get);
-		sprite.setColor(getColor());
+			AtlasRegion texture = getSprite(action, spriteNum);
+			Sprite sprite = new Sprite(texture);
+			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + texture.offsetY);
+			sprite.rotate(getRotation());
+			//sprite.scale(get);
+			sprite.setColor(getColor());
 
-		sprite.setPosition(
-			getPosition().getViewSpcX(view) + texture.offsetX - texture.originalWidth / 2,
-			getPosition().getViewSpcY(view)//center
-			- VIEW_HEIGHT2
-			+ texture.offsetY
-			- 50 //only this player sprite has an offset because it has overize
-		);
-		sprite.draw(view.getBatch());
+			sprite.setPosition(
+				getPosition().getViewSpcX(view) + texture.offsetX - texture.originalWidth / 2,
+				getPosition().getViewSpcY(view)//center
+				- VIEW_HEIGHT2
+				+ texture.offsetY
+				- 50 //only this player sprite has an offset because it has overize
+			);
+			sprite.draw(view.getBatch());
+			
+			//overlay
+			if (loadAttack > 300) {
+				AtlasRegion overlayTexture = getSprite('s', spriteNum);
+				Sprite overlaySprite = new Sprite(overlayTexture);
+				overlaySprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + overlayTexture.offsetY);
+				overlaySprite.rotate(getRotation());
+				//sprite.scale(get);
+				overlaySprite.setColor(getColor());
+
+				overlaySprite.setPosition(
+					getPosition().getViewSpcX(view) + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
+					getPosition().getViewSpcY(view)//center
+					- VIEW_HEIGHT2
+					+ overlayTexture.offsetY
+					- 50 //only this player sprite has an offset because it has overize
+				);
+				overlaySprite.draw(view.getBatch());
+			}
 		view.getBatch().end();
 
 		//bind normal map to texture unit 1
@@ -662,9 +681,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		//cycle the cycle
 		if (animationCycle >= 1000) {
 			animationCycle %= 1000;
-			if (action == 'l' || action == 'i' || action == 't') {//animation to play only once
-				playAnimation = false;//pause
-			} else if (action == 'h') {//play hit only once then continue with load
+			if (action == 'h') {//play hit only once then continue with load
 				action = 'l';
 			}
 		}
@@ -729,10 +746,17 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (prepareThrow && animationStep > 0) {
 				playAnimation = false;
 				animationStep = 1;
+			} 
+			if (animationStep>=5){
+				playAnimation = false;
 			}
 		} else {
 			animationStep = (int) (animationCycle / (1000 / 8f));//animation sprites with 8 steps
 
+			if ( animationStep>=7 && (action == 'l' || action == 'i')) {//animation to play only once
+				playAnimation = false;//pause
+			}
+				
 			if (action == 'j' && animationStep > 3) { //todo temporary fix to avoid landing animation
 				animationStep = 3;
 				playAnimation = false;

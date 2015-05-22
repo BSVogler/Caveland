@@ -19,6 +19,10 @@ public class Crafting extends Table {
 	private final Inventory inventory;
 	private final RecipesList recipes = new RecipesList();
 
+	/**
+	 * creates a new inventory
+	 * @param inventory 
+	 */
 	public Crafting(Inventory inventory) {
 		this.inventory = inventory;
 		RecipesList.Recipe recipe = findRecipe();

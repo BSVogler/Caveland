@@ -112,21 +112,12 @@ public class Inventory implements Serializable {
 		} else {
 			if (slot[2].prototype == null ) {
 				slot[2].setPrototype(ent);
-				ent.setPosition(player.getPosition().cpy());
-				ent.setHidden(true);
-				ent.preventPickup();
 				return true;
 			} else if (slot[1].prototype == null ) {
 				slot[1].setPrototype(ent);
-				ent.setPosition(player.getPosition().cpy());
-				ent.setHidden(true);
-				ent.preventPickup();
 				return true;
 			} else if (slot[0].prototype == null ) {
 				slot[0].setPrototype(ent);
-				ent.setPosition(player.getPosition().cpy());
-				ent.setHidden(true);
-				ent.preventPickup();
 				return true;
 			}	
 		}
@@ -145,9 +136,6 @@ public class Inventory implements Serializable {
 			  Collectible ent = it.next();
 				if (add(ent)) {
 					ent.setPosition(player.getPosition());
-					ent.setHidden(true);
-					ent.preventPickup();
-					it.remove();
 				}
 			}
 		}
@@ -295,7 +283,7 @@ public class Inventory implements Serializable {
 			if (counter <= 0)
 				prototype=null;
 			
-			tmp.allowPickup();
+			removeInventoryConfig(tmp);
 			return tmp;
 		}
 		
@@ -312,6 +300,7 @@ public class Inventory implements Serializable {
 		}
 
 		public void setPrototype(Collectible prototype) {
+			setInventoryConfig(prototype);
 			this.prototype = prototype;
 			counter=1;
 		}
@@ -319,6 +308,23 @@ public class Inventory implements Serializable {
 		private boolean isEmpty() {
 			return counter<=0;
 		}
+		
+		/**
+		* Makes the netities that the player can carry the.
+		* @param ent 
+		*/
+	   private void setInventoryConfig(Collectible ent){
+		   ent.setPosition(player.getPosition().cpy());
+		   ent.setHidden(true);
+		   ent.preventPickup();
+		   ent.setFloating(true);
+	   }
+
+		private void removeInventoryConfig(Collectible ent){
+			ent.setHidden(false);
+			ent.setFloating(false);
+			ent.allowPickup();
+	   }
 	}
 
 }

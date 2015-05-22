@@ -133,7 +133,11 @@ public class Crafting extends Table {
 			Collectible b = inventory.fetchCollectible(recipe.ingredients[1]);
 			//Collectible c = inventory.fetchCollectible(recipe.ingredients[2]);
 			if (a!=null && b!=null) {
-				inventory.add(Collectible.create(recipe.result));
+				//create new object at same position of old iinventory items
+				Collectible.create(recipe.result).spawn(a.getPosition().cpy());
+				//delete them
+				a.disposeFromMap();
+				b.disposeFromMap();
 				clear();//empty the crafting menu
 			}
 		}

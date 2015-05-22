@@ -102,6 +102,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * time of loading
 	 */
 	private float loadAttack = Float.NEGATIVE_INFINITY;
+	private transient final float LOAD_THRESHOLD = 300;//300ms until loading starts
 	private transient AbstractInteractable nearestEntity;
 
 	/**
@@ -126,6 +127,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private SmokeEmitter emitter2;
 	private SimpleEntity interactButton = null;
 	private Coordinate nearestInteractableBlock = null;
+	private int spriteNumOverlay;
 	
 	/**
 	 * creates a new Ejira
@@ -189,6 +191,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 		inventory.update(dt);
 
+		/*ANIMATION*/
 		//some redundant code from movable to have a custom animation
 		if (playAnimation) {
 			if (action == 'w') {
@@ -197,11 +200,34 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				animationCycle += dt * 5;
 			}
 		}
-		updateSprite();
+		//update regular sprite
+		updateSprite(false);
+
 		
 		//detect button hold
 		if (loadAttack != Float.NEGATIVE_INFINITY) {
 			loadAttack += dt;
+			
+			
+			//loading attack
+			if (loadAttack > LOAD_THRESHOLD) {//time till registered as a "hold"
+				if (action!='l' && action!='i' && !playAnimation)
+					playAnimation('l');
+				if (!canPlayLoadingSound) {
+					Controller.getSoundEngine().play("loadAttack");
+					canPlayLoadingSound = true;
+				}
+				Vector3 newmov = getMovement();
+				newmov.z /= 4;
+				setMovement(newmov);
+				
+				//update overlay
+				updateSprite(true);
+			}
+
+			if (loadAttack >= LOADATTACKTIME) {
+				attackLoadingStopped();
+			}
 		}
 //		if (loadAttack > 0) {
 //			Vector3 newmov = getMovement();
@@ -212,21 +238,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 //			setMovement(newmov);
 //		}
 
-		if (loadAttack > 300) {//time till registered as a "hold"
-			if (action!='l' && action!='i' && !playAnimation)
-				playAnimation('l');
-			if (!canPlayLoadingSound) {
-				Controller.getSoundEngine().play("loadAttack");
-				canPlayLoadingSound = true;
-			}
-			Vector3 newmov = getMovement();
-			newmov.z /= 4;
-			setMovement(newmov);
-		}
-
-		if (loadAttack >= LOADATTACKTIME) {
-			attackLoadingStopped();
-		}
+		
 
 		//get loren
 		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(CoreData.GAME_EDGELENGTH2, MineCart.class);
@@ -257,6 +269,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			Controller.getSoundEngine().play("collect");
 		}
 
+		//auto heal
 		if (timeSinceDamage > 4000) {
 			heal((byte) (dt / 2f));
 		} else {
@@ -341,12 +354,12 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			sprite.draw(view.getBatch());
 			
 			//overlay
-			if (loadAttack > 300 || action=='i') {
+			if (loadAttack > LOAD_THRESHOLD || action=='i') {
 				AtlasRegion overlayTexture;
 				if (action=='i'){
 					overlayTexture = getSprite('o', spriteNum);
 				} else {
-					overlayTexture = getSprite('s', spriteNum);
+					overlayTexture = getSprite('s', spriteNumOverlay);
 				}
 				
 				Sprite overlaySprite = new Sprite(overlayTexture);
@@ -679,21 +692,26 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		if (c != 't') {
 			prepareThrow = false;
 		}
-		updateSprite();
+		updateSprite(false);
 	}
 
 	/**
 	 * updates the number of the sprite using the cicle information
+	 * @param overlay true if the overlay should  be updated
 	 */
-	private void updateSprite() {
-		//cycle the cycle
-		if (animationCycle >= 1000) {
-			animationCycle %= 1000;
-			if (action == 'h') {//play hit only once then continue with load
-				action = 'l';
+	private void updateSprite(boolean overlay) {
+		if (overlay){
+			//???
+		} else {
+			//cycle the cycle
+			if (animationCycle >= 1000) {
+				animationCycle %= 1000;
+				if (action == 'h') {//play hit only once then continue with load
+					action = 'l';
+				}
 			}
 		}
-
+		
 		//detect direction
 		int animationStart;
 		if (getOrientation().x < -Math.sin(Math.PI / 3)) {
@@ -745,32 +763,51 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 		animationStart += 1;
 
+		
 		//manage animation
 		int animationStep;
 		if (action == 't' || action == 'i') {//throw or hit2
-			animationStep = (int) (animationCycle / (1000 / 6f));//six sprites for each animation
+			animationStep = getAnimationStep(6, overlay);
 
-			//stop throwing anitmation if it is loaded
-			if (prepareThrow && animationStep > 0) {
-				playAnimation = false;
-				animationStep = 1;
-			} 
-			if (animationStep>=5){
-				playAnimation = false;
+			if (!overlay) {
+				//stop throwing anitmation if it is loaded
+				if (prepareThrow && animationStep > 0) {
+					playAnimation = false;
+					animationStep = 1;
+				} 
+				if (animationStep >= 5){
+					playAnimation = false;
+				}
 			}
 		} else {
-			animationStep = (int) (animationCycle / (1000 / 8f));//animation sprites with 8 steps
+			animationStep = getAnimationStep(8, overlay);
 
-			if ( animationStep>=7 && (action == 'l' || action == 'i')) {//animation to play only once
-				playAnimation = false;//pause
-			}
-				
-			if (action == 'j' && animationStep > 3) { //todo temporary fix to avoid landing animation
-				animationStep = 3;
-				playAnimation = false;
+			if (!overlay) {
+				if (animationStep >= 7 && (action == 'l' || action == 'i')) {//animation to play only once
+					playAnimation = false;//pause
+				}
+
+				if (action == 'j' && animationStep > 3) { //todo temporary fix to avoid landing animation
+					animationStep = 3;
+					playAnimation = false;
+				}
 			}
 		}
-		spriteNum = animationStart + animationStep;
+		if (overlay){
+			spriteNumOverlay = animationStart + animationStep;
+		} else {
+			spriteNum = animationStart + animationStep;
+		}
+	}
+	
+	private int getAnimationStep(int steps, boolean overlay){
+		if (overlay) {
+			if (loadAttack-LOAD_THRESHOLD >= LOADATTACKTIME)
+				return 7;
+			else
+				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / (float) steps));//six sprites for each animation	
+		} else
+			return (int) (animationCycle / (1000 / (float) steps));//animation sprites with 8 steps
 	}
 	
 	/**

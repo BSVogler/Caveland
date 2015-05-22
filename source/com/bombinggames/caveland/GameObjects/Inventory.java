@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- *
+ *The inventory stores the items with a reference in a list but also moves them at the players position (kinda like in its backpack).
  * @author Benedikt Vogler
  */
 public class Inventory implements Serializable {

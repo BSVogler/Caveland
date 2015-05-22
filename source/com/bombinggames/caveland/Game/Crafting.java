@@ -1,15 +1,15 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.Collectible;
-import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
-import com.bombinggames.caveland.GameObjects.Inventory;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.bombinggames.caveland.GameObjects.Collectible;
+import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
+import com.bombinggames.caveland.GameObjects.Inventory;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *Shows a HUD for crafting via inventory

@@ -341,12 +341,18 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			sprite.draw(view.getBatch());
 			
 			//overlay
-			if (loadAttack > 300) {
-				AtlasRegion overlayTexture = getSprite('s', spriteNum);
+			if (loadAttack > 300 || action=='i') {
+				AtlasRegion overlayTexture;
+				if (action=='i'){
+					overlayTexture = getSprite('o', spriteNum);
+				} else {
+					overlayTexture = getSprite('s', spriteNum);
+				}
+				
 				Sprite overlaySprite = new Sprite(overlayTexture);
 				overlaySprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + overlayTexture.offsetY);
 				overlaySprite.rotate(getRotation());
-				//sprite.scale(get);
+				sprite.scale(2f);
 				overlaySprite.setColor(getColor());
 
 				overlaySprite.setPosition(
@@ -447,7 +453,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		if (action == 'l') {
 			playAnimation('i');
 		} else {
-			playAnimation('h');
+			if (action != 'i')
+				playAnimation('h');
 		}
 
 		Controller.getSoundEngine().play("sword");

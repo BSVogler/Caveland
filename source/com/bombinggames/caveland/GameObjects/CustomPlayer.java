@@ -20,7 +20,6 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
@@ -128,6 +127,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private SimpleEntity interactButton = null;
 	private Coordinate nearestInteractableBlock = null;
 	private int spriteNumOverlay;
+	private boolean performingLoadAttack = false;
 	
 	/**
 	 * creates a new Ejira
@@ -306,9 +306,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 			
 		//play walking animation
-		if (isOnGround() && getSpeedHor() > 0 && (!playAnimation) && loadAttack==Float.NEGATIVE_INFINITY) {
-			playAnimation('w');
-		}
+//		if (isOnGround() && getSpeedHor() > 0 && !playAnimation && loadAttack==Float.NEGATIVE_INFINITY) {
+//			if (action!='i')
+//				playAnimation('w');
+//		}
 
 		if (isOnGround()) {
 			airjump = false;
@@ -339,8 +340,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		view.getBatch().begin();
 			AtlasRegion texture = getSprite(action, spriteNum);
 			Sprite sprite = new Sprite(texture);
-			sprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + texture.offsetY);
-			sprite.rotate(getRotation());
+			sprite.setOrigin(
+					texture.originalWidth/2 - texture.offsetX,
+					VIEW_HEIGHT2 - texture.offsetY
+				);
 			//sprite.scale(get);
 			sprite.setColor(getColor());
 
@@ -354,7 +357,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			sprite.draw(view.getBatch());
 			
 			//overlay
-			if (loadAttack > LOAD_THRESHOLD || action=='i') {
+			if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
 				AtlasRegion overlayTexture;
 				if (action=='i'){
 					overlayTexture = getSprite('o', spriteNum);
@@ -363,9 +366,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				}
 				
 				Sprite overlaySprite = new Sprite(overlayTexture);
-				overlaySprite.setOrigin(VIEW_WIDTH2, VIEW_HEIGHT2 + overlayTexture.offsetY);
-				overlaySprite.rotate(getRotation());
-				sprite.scale(2f);
+				sprite.setOrigin(
+					overlayTexture.originalWidth/2 - overlayTexture.offsetX,
+					VIEW_HEIGHT2 - overlayTexture.offsetY
+				);
+				overlaySprite.scale(1f);
 				overlaySprite.setColor(getColor());
 
 				overlaySprite.setPosition(
@@ -463,10 +468,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * @param damage custom damage
 	 */
 	public void attack(byte damage) {
+		performingLoadAttack = false;
 		if (action == 'l') {
 			playAnimation('i');
 		} else {
-			if (action != 'i')
+			if (loadAttack< LOADATTACKTIME || action != 'i')
 				playAnimation('h');
 		}
 
@@ -629,6 +635,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				addToHor(40f);
 			}
 			attack((byte)100);
+			performingLoadAttack=true;
 			usedLoadAttackInAir = true;
 		}
 
@@ -654,6 +661,16 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		return camera;
 	}
 
+	@Override
+	public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
+		super.walk(up, down, left, right, walkingspeed, dt);
+		if (up || down || left || right){
+			if (isOnGround() && getSpeedHor() > 0 && !playAnimation)
+				playAnimation('w');
+		}
+	}
+	
+	
 	@Override
 	public void step() {
 		super.step();
@@ -691,6 +708,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		playAnimation = true;
 		if (c != 't') {
 			prepareThrow = false;
+		}
+		if (c == 'w') {
+			performingLoadAttack=false;
 		}
 		updateSprite(false);
 	}

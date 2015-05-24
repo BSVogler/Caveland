@@ -70,6 +70,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * saves the viewing direction even if the player is not moving. Should never be len()==0
 	 */
 	private Vector2 orientation;
+	/**
+	 * indicates whether this objects does collide with the blocks
+	 */
 	private boolean coliding;
 	/**
 	 * affected by gractiy
@@ -635,7 +638,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 *
+	 *indicates whether this objects does collide with the blocks
 	 * @return
 	 */
 	public boolean isColiding() {
@@ -643,8 +646,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 *
-	 * @param coliding
+	 * indicates whether this objects does collide with the blocks
+	 * @param coliding true if collides with environment
 	 */
 	public void setColiding(boolean coliding) {
 		this.coliding = coliding;

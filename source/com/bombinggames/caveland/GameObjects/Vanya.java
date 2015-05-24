@@ -73,9 +73,14 @@ public class Vanya extends AbstractInteractable {
 				break;
 		}
 		if (!"".equals(text)) {
-			currentChat = new ActionBox(view.getStage(), getName(), text);
+			currentChat = new ActionBox(view.getStage(), getName(), ActionBox.BoxModes.SIMPLE, text);
 			view.getStage().addActor(currentChat);
 		}
+	}
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 	private class BlümchenKacke extends MovableEntity {
@@ -85,6 +90,11 @@ public class Vanya extends AbstractInteractable {
 			super((byte) 41, 0);
 			setMovement(new Vector3(0,0,-1));
 			setFloating(false);
+		}
+
+		@Override
+		public MovableEntity clone() throws CloneNotSupportedException {
+			return super.clone();
 		}
 	}
 

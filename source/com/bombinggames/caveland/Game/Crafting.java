@@ -1,9 +1,9 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.Collectible;
 import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
@@ -15,15 +15,17 @@ import com.bombinggames.wurfelengine.WE;
  *Shows a HUD for crafting via inventory
  * @author Benedikt Vogler
  */
-public class Crafting extends Table {
+public class Crafting extends ActionBox {
 	private final Inventory inventory;
 	private final RecipesList recipes = new RecipesList();
 
 	/**
 	 * creates a new inventory
+	 * @param stage
 	 * @param inventory 
 	 */
-	public Crafting(Inventory inventory) {
+	public Crafting(Stage stage, Inventory inventory) {
+		super(stage, "Crafting", BoxModes.CUSTOM, null);
 		this.inventory = inventory;
 		RecipesList.Recipe recipe = findRecipe();
 		if (recipe!=null) {
@@ -35,13 +37,13 @@ public class Crafting extends Table {
 					)
 				)
 			);
-			addActor(a);
+			getWindow().addActor(a);
 
 
 			//+
 			Label plus =new Label("+", WE.getEngineView().getSkin());
 			plus.setPosition(100, 0);
-			addActor(plus);
+			getWindow().addActor(plus);
 
 			//B
 			Image b = new Image(
@@ -52,7 +54,7 @@ public class Crafting extends Table {
 				)
 			);
 			b.setPosition(150, 0);
-			addActor(b);
+			getWindow().addActor(b);
 
 //			//+ maybe C
 //			if (ingredients.length>2 && ingredients[0]!=null) {
@@ -64,7 +66,7 @@ public class Crafting extends Table {
 			//=
 			Label equals =new Label("=", WE.getEngineView().getSkin());
 			equals.setPosition(300, 0);
-			addActor(equals);
+			getWindow().addActor(equals);
 
 			//result
 			Image resultImage = new Image(
@@ -75,9 +77,9 @@ public class Crafting extends Table {
 				)
 			);
 			resultImage.setPosition(350, 0);
-			addActor(resultImage);
+			getWindow().addActor(resultImage);
 		} else {
-			addActor(new Label("not enough ingredients", WE.getEngineView().getSkin()));
+			getWindow().addActor(new Label("not enough ingredients", WE.getEngineView().getSkin()));
 		}
 	}
 	
@@ -141,5 +143,16 @@ public class Crafting extends Table {
 				clear();//empty the crafting menu
 			}
 		}
+	}
+
+	@Override
+	public void confirm() {
+		super.confirm();
+		craft();
+	}
+
+	@Override
+	public void cancel() {
+		super.cancel();
 	}
 }

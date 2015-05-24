@@ -30,13 +30,13 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -276,17 +276,14 @@ public class Coordinate extends AbstractPosition {
 	 */
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
-		boolean found = false;
 		if (WE.CVARS.getValueB("mapUseChunks")){
-			for (Chunk chunk : ((ChunkMap) map).getData()) {
-				if (chunk.hasCoord(this)) {
-					found = true;
-				}
+			if (((ChunkMap) map).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
+				return true;
 			}
 		} else {
 			//to-do add method for completemap
 		}
-		return found;
+		return false;
 	}
 
 	/**

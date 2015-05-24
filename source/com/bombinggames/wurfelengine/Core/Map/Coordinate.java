@@ -255,6 +255,8 @@ public class Coordinate extends AbstractPosition {
 	public CoreData getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
+		} else if (z >= Chunk.getBlocksZ()){
+			return null;
 		} else {
 			return Controller.getMap().getBlock(this);
 		}

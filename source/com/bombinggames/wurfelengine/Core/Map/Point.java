@@ -30,14 +30,14 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
@@ -123,9 +123,9 @@ public class Point extends AbstractPosition {
             (int) Math.floor(getY() / (float) CoreData.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
 			(int) Math.floor(z/CoreData.GAME_EDGELENGTH)
 		);
-		//clamp at top border
-		if (coords.getZ() >= Chunk.getBlocksZ())
-			coords.setZ(Chunk.getBlocksZ()-1);
+//		//clamp at top border
+//		if (coords.getZ() >= Chunk.getBlocksZ())
+//			coords.setZ(Chunk.getBlocksZ()-1);
        
 		//return coords;
         //find the specific coordinate (detail)
@@ -200,6 +200,8 @@ public class Point extends AbstractPosition {
 	
     @Override
     public CoreData getBlock() {
+		if (z >= Chunk.getGameHeight())
+			return null;
         return Controller.getMap().getBlock(toCoord());
     }
     

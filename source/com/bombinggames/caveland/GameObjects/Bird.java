@@ -31,9 +31,9 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 
 /**
  *

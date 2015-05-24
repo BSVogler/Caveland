@@ -1,5 +1,7 @@
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.Core.CVar.IntCVar;
@@ -9,8 +11,6 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.MemoryMapIterator;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,6 +131,26 @@ public abstract class AbstractMap implements Cloneable {
 			createSaveSlot(saveSlot);
 		activeSaveSlot = saveSlot;
 		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
+	}
+	
+		/**
+	 *
+	 * @param dt
+	 */
+	public void update(float dt) {
+		dt *= gameSpeed;//aplly game speed
+		
+		//update every entity
+		for (int i = 0; i < getEntitys().size(); i++) {
+			AbstractEntity entity = getEntitys().get(i);
+			if (entity.isInMemoryArea())//only update entities in memory
+				entity.update(dt);
+		}
+		
+		//remove not spawned objects from list
+		getEntitys().removeIf(
+			(AbstractEntity entity) -> !entity.isSpawned()
+		);
 	}
 	
 	/**
@@ -455,26 +475,6 @@ public abstract class AbstractMap implements Cloneable {
         return (AbstractMap) super.clone();
     }
 
-	/**
-	 *
-	 * @param dt
-	 */
-	public void update(float dt) {
-		dt *= gameSpeed;//aplly game speed
-		
-		//update every entity
-		for (int i = 0; i < getEntitys().size(); i++) {
-			AbstractEntity entity = getEntitys().get(i);
-			if (entity.isInMemoryArea())//only update entities in memory
-				entity.update(dt);
-		}
-		
-		//remove not spawned objects from list
-		getEntitys().removeIf(
-			(AbstractEntity entity) -> !entity.isSpawned()
-		);
-	}
-	
 	/**
 	 * should be executed after the update method
 	 */

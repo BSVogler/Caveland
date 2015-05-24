@@ -30,14 +30,14 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -465,7 +465,8 @@ public class Chunk {
 	
 	
 	/**
-	 * Check if the coordinate has the coordinate inside. O(1)
+	 * Check if the chunk has the coordinate inside. Only checks x and y.<br>
+	 * O(1)
 	 * @param coord the coordinate to be checked
 	 * @return true if coord is inside.
 	 */

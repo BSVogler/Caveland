@@ -1,10 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.caveland.Game.ChatBox;
+import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
-import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -15,7 +15,7 @@ import java.io.ObjectInputStream;
 public class Vanya extends AbstractInteractable {
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
-	private transient ChatBox currentChat;
+	private transient ActionBox currentChat;
 
 	/**
 	 *
@@ -73,7 +73,7 @@ public class Vanya extends AbstractInteractable {
 				break;
 		}
 		if (!"".equals(text)) {
-			currentChat = new ChatBox(view.getStage(), getName(), text);
+			currentChat = new ActionBox(view.getStage(), getName(), text);
 			view.getStage().addActor(currentChat);
 		}
 	}

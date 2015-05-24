@@ -138,7 +138,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
-
+	
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
 	 * camera. It is set via an absolute value.
@@ -274,11 +274,21 @@ public class Camera implements LinkedWithMap {
 		if (active) {
 			if (focusEntity != null) {
 				//update camera's position according to focusEntity
-				position.x = focusEntity.getPosition().getViewSpcX(gameView);
-				position.y = (int) (
-					focusEntity.getPosition().getViewSpcY(gameView)
-				  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
+				Vector2 newPos = new Vector2(
+					focusEntity.getPosition().getViewSpcX(gameView),
+					(int) (
+						focusEntity.getPosition().getViewSpcY(gameView)
+					  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
+						)
 				);
+				
+				if ( position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius") ) {
+					Vector2 diff = position.cpy().sub(newPos);
+					diff.nor().scl(WE.CVARS.getValueI("CameraLeapRadius"));
+					position.x = newPos.x;
+					position.y = newPos.y;
+					position.add(diff);
+				}
 			}
 
 			//aplly screen shake

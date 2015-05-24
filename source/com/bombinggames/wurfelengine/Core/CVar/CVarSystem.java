@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine.Core.CVar;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
+import com.bombinggames.wurfelengine.WE;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -294,5 +294,6 @@ public class CVarSystem {
 		WE.CVARS.register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(500), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
 	}
 }

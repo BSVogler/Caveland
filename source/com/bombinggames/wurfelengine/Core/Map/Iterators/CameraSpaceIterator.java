@@ -45,6 +45,14 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	private int centerChunkY;
 	private Chunk current;
 	private MemoryMapIterator mmI;
+	/**
+	 * The left chunk border index position. not equivalent to a coordinate
+	 */
+	private int chunkBorderX;
+	/**
+	 * The top chunk border index position. not equivalent to a coordinate
+	 */
+	private int chunkBorderY;
 	
 	/**
 	 * Starts at z=-1. 
@@ -64,6 +72,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 			//bring starting position to top left
 			current = ((ChunkMap) map).getChunk(centerChunkX-1, centerChunkY-1);
 			blockIterator = current.getIterator(startingZ, topLevel);
+			updateChunkBorders();
 		} else {
 			mmI = map.getIterator(startingZ, topLevel);
 		}
@@ -85,12 +94,14 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 							current.getChunkX()+1,
 							current.getChunkY()
 						);
+						updateChunkBorders();
 					} else {
 						//move one row down
 						current = ((ChunkMap) map).getChunk(
 							centerChunkX-1,
 							current.getChunkY()+1
 						);
+						updateChunkBorders();
 					}
 
 					blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
@@ -110,12 +121,9 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	public int[] getCurrentIndex(){
 		if (useChunks){
 			int[] inChunk = blockIterator.getCurrentIndex();
-			return new int[]{
-				(current.getChunkX()-centerChunkX+1)*Chunk.getBlocksX()+inChunk[0],
-				(current.getChunkY()-centerChunkY+1)*Chunk.getBlocksY()+inChunk[1],
-				inChunk[2]
-			};
-				
+			inChunk[0]+=chunkBorderX;
+			inChunk[1]+=chunkBorderY;
+			return inChunk;
 		} else {
 			return mmI.getCurrentIndex();
 		}
@@ -142,6 +150,11 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		} else {
 			return mmI.hasNext();
 		}
+	}
+
+	private void updateChunkBorders() {
+		chunkBorderX = (current.getChunkX()-centerChunkX+1)*Chunk.getBlocksX();
+		chunkBorderY = (current.getChunkY()-centerChunkY+1)*Chunk.getBlocksY();
 	}
 
 }

@@ -39,7 +39,7 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public class DataIterator implements Iterator<HasID>{
-	private int x, y, z;
+	private int[] pos;
 	private HasID[][][] data;
 	private int limitZ;
 	private int left, right, back, front;
@@ -55,9 +55,7 @@ public class DataIterator implements Iterator<HasID>{
 		final int startingZ,
 		final int limitZ
 	) {
-		x=-1;//start at -1 because the first call of next should return the first element
-		y=0;
-		z=startingZ;
+		pos = new int[]{ -1 , 0 , startingZ }; //start at -1 because the first call of next should return the first element
 		this.limitZ=limitZ;
 		this.data = data;
 		
@@ -78,30 +76,30 @@ public class DataIterator implements Iterator<HasID>{
 	@Override
 	public boolean hasNext() {
 		return (
-			   x < right
-			|| y < front
-			|| z < limitZ
+			   pos[0] < right
+			|| pos[1] < front
+			|| pos[2] < limitZ
 		);
 	}
 
 	@Override
 	public HasID next() {
-		if (x<right)
-			x++;
-		else if (y<front){
-			y++;
-			x=left;
-		} else if (z<limitZ) {
-			z++;
-			y=back;
-			x=left;
+		if (pos[0] < right)
+			pos[0]++;
+		else if (pos[1] < front){
+			pos[1]++;
+			pos[0] = left;
+		} else if (pos[2] < limitZ) {
+			pos[2]++;
+			pos[1] = back;
+			pos[0] = left;
 		}
 		
-		if (z<0){
+		if (pos[2] < 0){
 			//current pos -1 in z
 			return Controller.getMap().getGroundBlock();
 		} else {
-			return data[x][y][z];
+			return data[pos[0]][pos[1]][pos[2]];
 		}
 	}
 
@@ -110,11 +108,11 @@ public class DataIterator implements Iterator<HasID>{
 	}
 	
 	/**
-	 * get the indices position of the iterator
+	 * get the reference to the indices position of the iterator
 	 * @return 
 	 */
 	public int[] getCurrentIndex(){
-		return new int[]{x,y,z};
+		return pos;
 	}
 
 	/**

@@ -121,9 +121,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	public int[] getCurrentIndex(){
 		if (useChunks){
 			int[] inChunk = blockIterator.getCurrentIndex();
-			inChunk[0]+=chunkBorderX;
-			inChunk[1]+=chunkBorderY;
-			return inChunk;
+			return new int[]{inChunk[0]+chunkBorderX, inChunk[1]+chunkBorderY, inChunk[2]};
 		} else {
 			return mmI.getCurrentIndex();
 		}

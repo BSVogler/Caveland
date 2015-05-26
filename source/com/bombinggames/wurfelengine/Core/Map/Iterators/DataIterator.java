@@ -61,7 +61,7 @@ public class DataIterator implements Iterator<HasID>{
 		this.limitZ=limitZ;
 		this.data = data;
 		
-		left =0;
+		left = 0;
 		right = data.length-1;
 		back = 0;
 		front = data[0].length-1;

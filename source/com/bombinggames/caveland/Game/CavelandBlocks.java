@@ -23,18 +23,6 @@ public class CavelandBlocks implements CustomBlocks {
 public RenderBlock toRenderBlock(byte id, byte value) {
 	RenderBlock block;
 	switch (id){
-		case 11://construction site
-			block = new RenderBlock(id, value);
-			block.setHasSides(false);
-			break;
-		case 12://oven
-			block = new RenderBlock(id, value);
-			block.setHasSides(false);
-			break;
-		case 55://rails
-			block = new RenderBlock(id, value);
-			block.setHasSides(false);
-			break;	
 		case 60:
 			block = new Machine();
 		break;
@@ -79,6 +67,15 @@ public RenderBlock toRenderBlock(byte id, byte value) {
 		return "not named yet";
 	}
 
+	@Override
+	public boolean hasSides(byte id, byte value) {
+		if (id==11) return false;
+		if (id==12) return false;
+		if (id==55) return false;
+		if (id==72) return false;
+		return true;
+	}
+	
 	@Override
 	public boolean isObstacle(byte id, byte value) {
 		if (id==11) return false;

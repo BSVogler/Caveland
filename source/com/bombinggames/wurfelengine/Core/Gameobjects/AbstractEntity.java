@@ -357,6 +357,11 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	@Override
+	public boolean hasSides() {
+		return false;
+	}
+
+	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
 		for (AbstractEntity child : children) {

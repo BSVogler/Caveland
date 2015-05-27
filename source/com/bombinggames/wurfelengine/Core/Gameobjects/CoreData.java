@@ -261,14 +261,23 @@ public class CoreData implements HasID, Serializable {
 		}
 	}
 
-	/**
-	 * Creates a new instance of {@link RenderBlock} to check if it has sides. You should prefer the hasSides call to a {@link RenderBlock} object.
-	 * @return true if it has sides
-	 * @see RenderBlock#hasSides() 
-	 */
+	@Override
 	public boolean hasSides() {
-		RenderBlock block = toBlock();
-		if (block==null) return false;
-		return block.hasSides();
+		if (id==0) return false;
+		else {
+			if (id > 9) {
+				if (customBlocks!=null){
+					return customBlocks.hasSides(id, value);
+				} else {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+	}
+
+	public boolean hidingPastBlock() {
+		return hasSides() && !isTransparent();
 	}
 }

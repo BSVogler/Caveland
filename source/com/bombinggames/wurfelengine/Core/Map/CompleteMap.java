@@ -136,5 +136,9 @@ public class CompleteMap extends AbstractMap {
 	public AbstractMap clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
+
+	@Override
+	public boolean[] getClipping(byte cameraId, Coordinate coord) {
+		return new boolean[]{false, false, false};
+	}
 }

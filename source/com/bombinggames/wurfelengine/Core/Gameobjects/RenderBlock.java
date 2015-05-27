@@ -73,21 +73,18 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	private Coordinate coord;
-    private boolean clippedTop;
-	private boolean clippedRight;
-	private boolean clippedLeft;
-	private boolean hasSides = true;
+    private boolean[] clipping = new boolean[]{false, false, false};
 
 	public void setClippedLeft() {
-		clippedLeft = true;
+		clipping[0] = true;
 	}
 
 	public void setClippedRight() {
-		clippedRight = true;
+		clipping[2] = true;
 	}
 
 	public void setClippedTop() {
-		clippedTop = true;
+		clipping[1] = true;
 	}
 
 	/**
@@ -95,7 +92,12 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean isClipped() {
-		return clippedLeft && clippedRight && clippedTop;
+		return clipping[0] && clipping[2] && clipping[1];
+	}
+	
+	
+	public void setClipping(boolean[] clipping) {
+		this.clipping = clipping;
 	}
 	
 	/**
@@ -236,11 +238,11 @@ public class RenderBlock extends AbstractGameObject {
             if (hasSides()) {
 				Coordinate coords = getPosition();
 				boolean staticShade = WE.CVARS.getValueB("enableAutoShade");
-                if (!clippedTop)
+                if (!clipping[1])
                     renderSide(view, camera, coords, Side.TOP, staticShade);
-                if (!clippedLeft)
+                if (!clipping[0])
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
-                if (!clippedRight)
+                if (!clipping[2])
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
             } else
                 super.render(view, camera);
@@ -479,11 +481,16 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return hasSides && !getCoreData().isTransparent();
+		return getCoreData().hasSides() && !getCoreData().isTransparent();
 	}
 
 	@Override
 	public boolean isTransparent() {
 		return getCoreData().isTransparent();
+	}
+
+	@Override
+	public boolean hasSides() {
+		return getCoreData().hasSides();
 	}
 }

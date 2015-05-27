@@ -45,6 +45,14 @@ public interface HasID {
     public abstract boolean isObstacle();
 	
 	/**
+	 * Is the block a true block with three sides or does it get rendered by a single sprite?<br>
+	 * This field is only used for representation (view) related data.<br>
+	 * Only used for blocks. Entities should return <i>false</i>.
+	 * @return <i>true</i> if it has sides, <i>false</i> if is rendered as a single sprite
+	 */
+	public abstract boolean hasSides();
+	
+	/**
 	 * Read the name of a id value combination.
 	 * @return the name for this block.
 	 */

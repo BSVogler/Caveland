@@ -89,6 +89,7 @@ public class Chunk {
 	 */
 	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
+	private boolean[][][][][] clipping;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -113,6 +114,15 @@ public class Chunk {
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = null;
+		
+		clipping = new boolean[4][blocksX][blocksY][blocksZ+1][3];
+		
+        for (int camera=0; camera < 4; camera++)
+			for (int x=0; x < blocksX; x++)
+				for (int y=0; y < blocksY; y++)
+					for (int z=0; z < blocksZ+1; z++)
+						clipping[camera][x][y][z] = new boolean[]{false, false, false};
+						
 		modified = true;
     }
     
@@ -643,5 +653,55 @@ public class Chunk {
 			ent.disposeFromMap();
 		}
 	}
+
+	void setClippedLeft(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z][0] = true;
+	}
+
+	void setClippedRight(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z][2] = true;
+	}
+	
+	/**
+	 * 
+	 * @param camerayId
+	 * @param x
+	 * @param y
+	 * @param z 
+	 */
+	void setClippedTop(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z][1] = true;
+	}
+	
+	/**
+	 * a block is only clipped if every side is clipped
+	 * @param camerayId
+	 * @param x coord
+	 * @param y index
+	 * @param z index 
+	 * @return 
+	 */
+	public boolean[] getClipping(byte camerayId, int x, int y, int z) {
+		int xIndex = x-topleft.getX();
+		int yIndex = y-topleft.getY();
+		return clipping[camerayId][xIndex][yIndex][z+1];
+	}
+	
+	/**
+	 * a block is only clipped if every side is clipped
+	 * @param camerayId
+	 * @param x index
+	 * @param y index
+	 * @param z  index
+	 * @return 
+	 */
+	public boolean isClipped(byte camerayId, int x, int y, int z) {
+		int xIndex = x-topleft.getX();
+		int yIndex = y-topleft.getY();
+		return clipping[camerayId][xIndex][yIndex][z+1][0]
+			&& clipping[camerayId][xIndex][yIndex][z+1][2]
+			&& clipping[camerayId][xIndex][yIndex][z+1][1];
+	}
+	
 
 }

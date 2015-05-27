@@ -30,12 +30,14 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.MemoryMapIterator;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,6 +157,90 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		);
 		modified();
 	}
+	
+		/**
+	 * performs a simple viewFrustum check by looking at the direct neighbours.
+	 * @param camera
+	 * @param chunkX
+	 * @param chunkY
+	 */
+	public void hiddenSurfaceDetection(Camera camera, int chunkX, int chunkY) {
+		Gdx.app.debug("Camera", "hsd for chunk " + chunkX + "," + chunkY);
+		Chunk chunk = getChunk(chunkX, chunkY);
+		CoreData[][][] chunkData = chunk.getData();
+		byte cameraId = camera.getId();
+		//iterate over max. view frustum
+		DataIterator dataIter = new DataIterator(
+			chunkData,
+			0,
+			camera.getZRenderingLimit()-1//+1 because of ground layer
+		);
+		
+		while (dataIter.hasNext()) {
+			CoreData next = (CoreData) dataIter.next();
+			
+			if (next != null) {
+				//calculate index position relative to camera border
+				int x = dataIter.getCurrentIndex()[0];
+				int y = dataIter.getCurrentIndex()[1];
+				int z = dataIter.getCurrentIndex()[2];
+				
+				if (z > 0) {//bottom layer always has sides always clipped, 0 is ground layer in this case
+					CoreData neighbour;
+					if (y % 2 == 0) {//next row is shifted right
+						if (x>0) {
+							neighbour = chunkData[x-1][y+1][z];
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.isLiquid() && next.isLiquid()))) {//left
+								chunk.setClippedLeft(cameraId, x, y, z);
+							}
+						} else {
+							chunk.setClippedLeft(cameraId, x, y, z);
+						}
+						if (y<chunkData[x].length) {
+							neighbour = chunkData[x][y+1][z];
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.isLiquid() && next.isLiquid()))) {//right
+								chunk.setClippedRight(cameraId, x, y, z);
+							}
+						} else {
+							chunk.setClippedRight(cameraId, x, y, z);
+						}
+					} else {//next row is shifted right
+						if (y < chunkData[x].length-1) {
+							neighbour = chunkData[x][y+1][z];
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.isLiquid() && next.isLiquid()))) {//left
+								chunk.setClippedLeft(cameraId, x, y, z);
+							}
+						} else {
+							chunk.setClippedLeft(cameraId, x, y, z);
+						}
+						if ( x < chunkData.length-1 && y < chunkData[x].length-1) {
+							neighbour = chunkData[x+1][y+1][z];
+							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.isLiquid() && next.isLiquid()))) {//right
+								chunk.setClippedRight(cameraId, x, y, z);
+							}
+						} else {
+							chunk.setClippedRight(cameraId, x, y, z);
+						}
+					}
+				} else {
+					chunk.setClippedLeft(cameraId, x, y, z);
+					chunk.setClippedRight(cameraId, x, y, z);
+				}
+
+				//check top
+				if (
+					z < getBlocksZ()
+					&& chunkData[x][y][z+1] != null
+					&& (
+						chunkData[x][y][z+1].hidingPastBlock()
+						|| chunkData[x][y][z+1].isLiquid() && next.isLiquid()
+					)
+				) {
+					chunk.setClippedTop(cameraId, x, y, z);
+				}
+			}
+		}
+	}
     
     /**
      * Get the data of the map
@@ -162,6 +248,17 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      */
 	public ArrayList<Chunk> getData() {
 		return data;
+	}
+	
+	/**
+	 * 
+	 * @param cameraId
+	 * @param coord
+	 * @return 
+	 */
+	@Override
+	public boolean[] getClipping(byte cameraId, Coordinate coord){
+		return getChunk(coord).getClipping(cameraId, coord.getX(), coord.getY(), coord.getZ());
 	}
      
     /**

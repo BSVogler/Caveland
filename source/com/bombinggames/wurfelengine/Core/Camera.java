@@ -62,6 +62,7 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class Camera implements LinkedWithMap {
+	private byte id;
 	/**
 	 * the map which is covered by the camera
 	 */
@@ -607,6 +608,7 @@ map.getGameWidth(),
 						block.getPosition().getViewSpcY(gameView))
 					&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
 				) {
+					block.setClipping( Controller.getMap().getClipping( id, block.getPosition() ) );
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
 					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
@@ -760,7 +762,6 @@ map.getGameWidth(),
 	 */
 	protected void updateCache(){
 		fillCameraContentBlocks();
-		hiddenSurfaceDetection();
 	}
 
 	/**
@@ -812,84 +813,6 @@ map.getGameWidth(),
 		}
 	}
 	
-	/**
-	 * performs a simple viewFrustum check by looking at the direct neighbours.
-	 */
-	protected void hiddenSurfaceDetection() {
-		Gdx.app.debug("Camera", "hsd around " + centerChunkX + "," + centerChunkY);
-		//iterate over max. view frustum
-		DataIterator dataIter = new DataIterator(
-			cameraContentBlocks,
-			0,
-			zRenderingLimit//+1 because of ground layer
-		);
-		
-		while (dataIter.hasNext()) {
-			RenderBlock next = (RenderBlock) dataIter.next();
-			
-			if (next != null) {
-				//calculate index position relative to camera border
-				int x = dataIter.getCurrentIndex()[0];
-				int y = dataIter.getCurrentIndex()[1];
-				int z = dataIter.getCurrentIndex()[2];
-				
-				if (z > 0) {//bottom layer always has sides always clipped, 0 is ground layer in this case
-					RenderBlock neighbour;
-					if (y % 2 == 0) {//next row is shifted right
-						if (x>0) {
-							neighbour = cameraContentBlocks[x-1][y+1][z];
-							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//left
-								next.setClippedLeft();
-							}
-						} else {
-							next.setClippedLeft();
-						}
-						if (y<cameraContentBlocks[x].length) {
-							neighbour = cameraContentBlocks[x][y+1][z];
-							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//right
-								next.setClippedRight();
-							}
-						} else {
-							next.setClippedRight();
-						}
-					} else {//next row is shifted right
-						if (y < cameraContentBlocks[x].length-1) {
-							neighbour = cameraContentBlocks[x][y+1][z];
-							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//left
-								next.setClippedLeft();
-							}
-						} else {
-							next.setClippedLeft();
-						}
-						if ( x < cameraContentBlocks.length-1 && y < cameraContentBlocks[x].length-1) {
-							neighbour = cameraContentBlocks[x+1][y+1][z];
-							if (neighbour!= null && (neighbour.hidingPastBlock() || (neighbour.getCoreData().isLiquid() && next.getCoreData().isLiquid()))) {//right
-								next.setClippedRight();
-							}
-						} else {
-							next.setClippedRight();
-						}
-					}
-				} else {
-					next.setClippedLeft();
-					next.setClippedRight();
-				}
-
-				//check top
-				if (
-					z < map.getBlocksZ()
-					&& cameraContentBlocks[x][y][z+1] != null
-					&& (
-						cameraContentBlocks[x][y][z+1].hidingPastBlock()
-						|| cameraContentBlocks[x][y][z+1].getCoreData().isLiquid() && next.getCoreData().isLiquid()
-					)
-				) {
-					next.setClippedTop();
-				}
-			}
-		}
-	}
-
 	/**
 	 * Set the zoom factor and regenerates the sprites.
 	 *
@@ -954,7 +877,7 @@ map.getGameWidth(),
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
-			hiddenSurfaceDetection();
+			//to do hsd()
 		}
 	}
 
@@ -1248,7 +1171,10 @@ map.getGameWidth(),
 
 	@Override
 	public void onChunkChange(Chunk chunk) {
-		//does nothing
+		if (active) {
+			if (WE.CVARS.getValueB("mapUseChunks"))
+				((ChunkMap) Controller.getMap()).hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
+		}
 	}
 
 	/**
@@ -1299,7 +1225,7 @@ map.getGameWidth(),
 	}
 
 	public void orientationChange() {
-		hiddenSurfaceDetection();
+		//hiddenSurfaceDetection();
 	}
 
 	/**
@@ -1316,5 +1242,9 @@ map.getGameWidth(),
 		}
 
 		this.active = active;
+	}
+
+	public byte getId() {
+		return id;
 	}
 }

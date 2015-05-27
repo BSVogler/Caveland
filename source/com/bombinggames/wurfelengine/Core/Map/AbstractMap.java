@@ -551,4 +551,12 @@ public abstract class AbstractMap implements Cloneable {
 	public CVarSystem getSaveCVars(){
 		return saveCVars;
 	}
+
+	/**
+	 *
+	 * @param cameraId
+	 * @param coord
+	 * @return
+	 */
+	public abstract boolean[] getClipping(byte cameraId, Coordinate coord);
 }

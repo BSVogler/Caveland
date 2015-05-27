@@ -213,25 +213,6 @@ public class RenderBlock extends AbstractGameObject {
         } else return colorlist[id][value].cpy(); //return value when in list
     }
 
-	/**
-     * Is the block a true block with three sides or does it get rendered by a single sprite?<br>
-	 * This field is only used for representation (view) related data.
-     * @return true if it has sides, false if is rendered as a single sprite
-     */
-	public boolean hasSides() {
-		return hasSides;
-	}
-
-	/**
-	 * Is the block a true block with three sides or does it get rendered by a single sprite?
-	 * <br>
-	 * This field is only used for representation (view) related data.
-	 * @param hasSides true if it has sides, false if is rendered as a single sprite
-	 */
-	public void setHasSides(boolean hasSides) {
-		this.hasSides = hasSides;
-	}
-
     @Override
     public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {

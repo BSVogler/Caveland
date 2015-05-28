@@ -159,16 +159,7 @@ public class Chunk {
 	 *
 	 * @param dt
 	 */
-	public void update(float dt){
-//		for (StorageBlock[][] x : data) {
-//			for (StorageBlock[] y : x) {
-//				for (StorageBlock z : y) {
-//					if (z!=null)
-//						z.update(dt);
-//				}
-//			}
-//		}
-		
+	public void update(float dt){	
 		processModification();
 	}
 	

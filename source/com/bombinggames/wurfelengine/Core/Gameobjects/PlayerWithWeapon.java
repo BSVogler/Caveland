@@ -29,7 +29,7 @@
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
 import com.bombinggames.wurfelengine.Core.Camera;
-import com.bombinggames.wurfelengine.shooting.Weapon;
+import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 

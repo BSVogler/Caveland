@@ -154,7 +154,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
-		emitter2.setPosition(new Point(Controller.getMap(), 20, 0, CoreData.GAME_EDGELENGTH2));
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
 		conection2.setOffset(new Vector3(20, 0, CoreData.GAME_EDGELENGTH2));
 		addChild(conection2);

@@ -158,7 +158,7 @@ public class GameView extends View implements GameManager {
     }
 	    
     /**
-     * Main method which is called every time and renders everything.
+     * Main method which is called every time and renders everything. You must manually render the devtools e.g. in an extended render method.
      */
     public void render(){       
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

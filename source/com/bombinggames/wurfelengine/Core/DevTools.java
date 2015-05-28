@@ -110,8 +110,8 @@ public class DevTools {
     }
     
     /**
-     *Renders the diagramm
-     * @param view
+     *Renders the diagramm. The batches should be closed before calling this method.
+     * @param view if from class {@link MapEditorView} removes or shows the buttons
      */
     public void render(final GameView view){
         if (visible){

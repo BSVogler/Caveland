@@ -89,6 +89,9 @@ public class Chunk {
 	 */
 	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
+	/**
+	 * stores on z axis one additional block because 0 is the ground layer
+	 */
 	private boolean[][][][][] clipping;
   
     /**
@@ -119,9 +122,11 @@ public class Chunk {
 		
         for (int camera=0; camera < 4; camera++)
 			for (int x=0; x < blocksX; x++)
-				for (int y=0; y < blocksY; y++)
-					for (int z=0; z < blocksZ+1; z++)
+				for (int y=0; y < blocksY; y++) {
+					clipping[camera][x][y][0] = new boolean[]{true, false, true};
+					for (int z=1; z < blocksZ+1; z++)
 						clipping[camera][x][y][z] = new boolean[]{false, false, false};
+				}
 						
 		modified = true;
     }
@@ -645,12 +650,12 @@ public class Chunk {
 		}
 	}
 
-	void setClippedLeft(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z][0] = true;
+	protected void setClippedLeft(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z+1][0] = true;
 	}
 
-	void setClippedRight(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z][2] = true;
+	protected void setClippedRight(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z+1][2] = true;
 	}
 	
 	/**
@@ -660,8 +665,8 @@ public class Chunk {
 	 * @param y
 	 * @param z 
 	 */
-	void setClippedTop(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z][1] = true;
+	protected void setClippedTop(byte camerayId, int x, int y, int z) {
+		clipping[camerayId][x][y][z+1][1] = true;
 	}
 	
 	/**

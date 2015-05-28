@@ -62,6 +62,9 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class Camera implements LinkedWithMap {
+	/**
+	 * the camera identifier
+	 */
 	private byte id;
 	/**
 	 * the map which is covered by the camera

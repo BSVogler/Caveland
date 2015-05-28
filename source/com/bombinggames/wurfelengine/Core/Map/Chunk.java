@@ -120,13 +120,7 @@ public class Chunk {
 		
 		clipping = new boolean[4][blocksX][blocksY][blocksZ+1][3];
 		
-        for (int camera=0; camera < 4; camera++)
-			for (int x=0; x < blocksX; x++)
-				for (int y=0; y < blocksY; y++) {
-					clipping[camera][x][y][0] = new boolean[]{true, false, true};
-					for (int z=1; z < blocksZ+1; z++)
-						clipping[camera][x][y][z] = new boolean[]{false, false, false};
-				}
+        resetClipping();
 						
 		modified = true;
     }
@@ -577,6 +571,17 @@ public class Chunk {
 		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];
 	}
+	
+	/**
+	 * Get the block at the index position
+	 * @param x index pos
+	 * @param y index pos
+	 * @param z index pos
+	 * @return 
+	 */
+	public CoreData getBlockViaIndex(int x, int y, int z) {
+		return data[x][y][z];
+	}
 
 	/**
 	 * sets a block in the map. if position is under the map does nothing.
@@ -698,6 +703,15 @@ public class Chunk {
 			&& clipping[camerayId][xIndex][yIndex][z+1][2]
 			&& clipping[camerayId][xIndex][yIndex][z+1][1];
 	}
-	
+
+	protected void resetClipping() {
+		for (int camera=0; camera < 4; camera++)
+			for (int x=0; x < blocksX; x++)
+				for (int y=0; y < blocksY; y++) {
+					clipping[camera][x][y][0] = new boolean[]{true, false, true};
+					for (int z=1; z < blocksZ+1; z++)
+						clipping[camera][x][y][z] = new boolean[]{false, false, false};
+				}
+	}
 
 }

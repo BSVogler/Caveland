@@ -170,11 +170,18 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		CoreData[][][] chunkData = chunk.getData();
 		byte cameraId = camera.getId();
 		
+		chunk.resetClipping();
+		
 		//loop over floor for ground level
 		DataIterator floorIterator = chunk.getIterator(0, 0);
 		while (floorIterator.hasNext()) {
 			if (((CoreData) floorIterator.next()).hidingPastBlock())
-				chunk.setClippedTop(cameraId, floorIterator.getCurrentIndex()[0], floorIterator.getCurrentIndex()[1], -1);
+				chunk.setClippedTop(
+					cameraId,
+					floorIterator.getCurrentIndex()[0],
+					floorIterator.getCurrentIndex()[1],
+					-1
+				);
 		}
 		
 		//iterate over chunk
@@ -193,53 +200,31 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				int y = dataIter.getCurrentIndex()[1];
 				int z = dataIter.getCurrentIndex()[2];
 				
-				if (z >= 0) {//bottom layer always has sides always clipped, 0 is ground layer in this case
-					CoreData neighbour;
-					if (y % 2 == 0) {//next row is shifted right
-						if (x > 0) {
-							neighbour = chunkData[x-1][y+1][z];
-							if (neighbour!= null
-								&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-							) {//left
-								chunk.setClippedLeft(cameraId, x, y, z);
-							}
-						} else {
-							chunk.setClippedLeft(cameraId, x, y, z);
-						}
-						if (y < chunkData[x].length) {
-							neighbour = chunkData[x][y+1][z];
-							if (neighbour!= null
-								&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-							) {//right
-								chunk.setClippedRight(cameraId, x, y, z);
-							}
-						} else {
-							chunk.setClippedRight(cameraId, x, y, z);
-						}
-					} else {//next row is shifted right
-						if (y < chunkData[x].length-1) {
-							neighbour = chunkData[x][y+1][z];
-							if (neighbour!= null
-								&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-							) {//left
-								chunk.setClippedLeft(cameraId, x, y, z);
-							}
-						} else {
-							chunk.setClippedLeft(cameraId, x, y, z);
-						}
-						if ( x < chunkData.length-1 && y < chunkData[x].length-1) {
-							neighbour = chunkData[x+1][y+1][z];
-							if (neighbour!= null
-								&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-							) {//right
-								chunk.setClippedRight(cameraId, x, y, z);
-							}
-						} else {
-							chunk.setClippedRight(cameraId, x, y, z);
-						}
-					}
-				} else {
+				CoreData neighbour;
+				//left side
+				//get neighbour block
+				if (y % 2 == 0) {//next row is shifted right
+					neighbour = getIndex(chunk, x-1, y+1, z);
+				} else
+					neighbour = getIndex(chunk, x, y+1, z);
+
+				if (neighbour!= null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
+				) {
 					chunk.setClippedLeft(cameraId, x, y, z);
+				}
+
+				//right side
+				//get neighbour block
+				if (y % 2 == 0)//next row is shifted right
+					neighbour = getIndex(chunk, x, y+1, z);
+				else {
+					neighbour = getIndex(chunk, x+1, y+1, z);
+				}
+
+				if (neighbour!= null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
+				) {
 					chunk.setClippedRight(cameraId, x, y, z);
 				}
 
@@ -258,6 +243,25 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		}
 	}
     
+	/**
+	 * 
+	 * @param chunk
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
+	private CoreData getIndex(Chunk chunk, int x, int y, int z){
+		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX())//index outside current chunk
+			return getBlock(
+				chunk.getTopLeftCoordinate().getX()+x,
+				chunk.getTopLeftCoordinate().getY()+y,
+				z
+			);
+		else
+			return chunk.getBlockViaIndex(x, y, z);
+	}
+	
     /**
      * Get the data of the map
      * @return

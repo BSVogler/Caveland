@@ -599,19 +599,20 @@ map.getGameWidth(),
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				RenderBlock block = (RenderBlock) iterator.next();
 				//only add if in view plane to-do
-				if (
-					block != null
-					&& !block.isClipped()
-					&& !block.isHidden()
-					&& inViewFrustum(
-						block.getPosition().getViewSpcX(gameView),
-						block.getPosition().getViewSpcY(gameView))
-					&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
-				) {
+				if (block != null) {
 					block.setClipping( Controller.getMap().getClipping( id, block.getPosition() ) );
-					depthlist[objectsToBeRendered] = block;
-					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+					if (
+						!block.isClipped()
+						&& !block.isHidden()
+						&& inViewFrustum(
+							block.getPosition().getViewSpcX(gameView),
+							block.getPosition().getViewSpcY(gameView))
+						&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
+					) {
+						depthlist[objectsToBeRendered] = block;
+						objectsToBeRendered++;
+						if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+					}
 				}
 			}
 		} else {

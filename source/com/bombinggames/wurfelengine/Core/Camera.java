@@ -63,10 +63,6 @@ import java.util.Arrays;
  */
 public class Camera implements LinkedWithMap {
 	/**
-	 * the camera identifier
-	 */
-	private byte id;
-	/**
 	 * the map which is covered by the camera
 	 */
 	private AbstractMap map = Controller.getMap();
@@ -603,7 +599,7 @@ map.getGameWidth(),
 				RenderBlock block = (RenderBlock) iterator.next();
 				//only add if in view plane to-do
 				if (block != null) {
-					block.setClipping( Controller.getMap().getClipping( id, block.getPosition() ) );
+					block.setClipping( Controller.getMap().getClipping( block.getPosition() ) );
 					if (
 						!block.isClipped()
 						&& !block.isHidden()
@@ -1246,9 +1242,5 @@ map.getGameWidth(),
 		}
 
 		this.active = active;
-	}
-
-	public byte getId() {
-		return id;
 	}
 }

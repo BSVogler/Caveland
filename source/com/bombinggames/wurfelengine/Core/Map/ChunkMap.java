@@ -168,7 +168,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		Gdx.app.debug("Camera", "hsd for chunk " + chunkX + "," + chunkY);
 		Chunk chunk = getChunk(chunkX, chunkY);
 		CoreData[][][] chunkData = chunk.getData();
-		byte cameraId = camera.getId();
 		
 		chunk.resetClipping();
 		
@@ -177,7 +176,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		while (floorIterator.hasNext()) {
 			if (((CoreData) floorIterator.next()).hidingPastBlock())
 				chunk.setClippedTop(
-					cameraId,
 					floorIterator.getCurrentIndex()[0],
 					floorIterator.getCurrentIndex()[1],
 					-1
@@ -211,7 +209,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.setClippedLeft(cameraId, x, y, z);
+					chunk.setClippedLeft(x, y, z);
 				}
 
 				//right side
@@ -225,7 +223,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.setClippedRight(cameraId, x, y, z);
+					chunk.setClippedRight(x, y, z);
 				}
 
 				//check top
@@ -237,7 +235,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 						|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
 					)
 				) {
-					chunk.setClippedTop(cameraId, x, y, z);
+					chunk.setClippedTop(x, y, z);
 				}
 			}
 		}
@@ -272,13 +270,12 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	
 	/**
 	 * 
-	 * @param cameraId
 	 * @param coord
 	 * @return 
 	 */
 	@Override
-	public boolean[] getClipping(byte cameraId, Coordinate coord){
-		return getChunk(coord).getClipping(cameraId, coord.getX(), coord.getY(), coord.getZ());
+	public boolean[] getClipping(Coordinate coord){
+		return getChunk(coord).getClipping(coord.getX(), coord.getY(), coord.getZ());
 	}
      
     /**

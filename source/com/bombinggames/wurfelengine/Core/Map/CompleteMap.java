@@ -138,7 +138,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public boolean[] getClipping(byte cameraId, Coordinate coord) {
+	public boolean[] getClipping(Coordinate coord) {
 		return new boolean[]{false, false, false};
 	}
 }

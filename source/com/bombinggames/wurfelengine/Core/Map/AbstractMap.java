@@ -558,5 +558,5 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param coord
 	 * @return
 	 */
-	public abstract boolean[] getClipping(byte cameraId, Coordinate coord);
+	public abstract boolean[] getClipping(Coordinate coord);
 }

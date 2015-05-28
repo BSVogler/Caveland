@@ -92,7 +92,7 @@ public class Chunk {
 	/**
 	 * stores on z axis one additional block because 0 is the ground layer
 	 */
-	private boolean[][][][][] clipping;
+	private boolean[][][][] clipping;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -118,7 +118,7 @@ public class Chunk {
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = null;
 		
-		clipping = new boolean[4][blocksX][blocksY][blocksZ+1][3];
+		clipping = new boolean[blocksX][blocksY][blocksZ+1][3];
 		
         resetClipping();
 						
@@ -655,63 +655,59 @@ public class Chunk {
 		}
 	}
 
-	protected void setClippedLeft(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z+1][0] = true;
+	protected void setClippedLeft(int x, int y, int z) {
+		clipping[x][y][z+1][0] = true;
 	}
 
-	protected void setClippedRight(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z+1][2] = true;
+	protected void setClippedRight(int x, int y, int z) {
+		clipping[x][y][z+1][2] = true;
 	}
 	
 	/**
 	 * 
-	 * @param camerayId
 	 * @param x
 	 * @param y
 	 * @param z 
 	 */
-	protected void setClippedTop(byte camerayId, int x, int y, int z) {
-		clipping[camerayId][x][y][z+1][1] = true;
+	protected void setClippedTop(int x, int y, int z) {
+		clipping[x][y][z+1][1] = true;
 	}
 	
 	/**
 	 * a block is only clipped if every side is clipped
-	 * @param camerayId
 	 * @param x coord
 	 * @param y index
 	 * @param z index 
 	 * @return 
 	 */
-	public boolean[] getClipping(byte camerayId, int x, int y, int z) {
+	public boolean[] getClipping(int x, int y, int z) {
 		int xIndex = x-topleft.getX();
 		int yIndex = y-topleft.getY();
-		return clipping[camerayId][xIndex][yIndex][z+1];
+		return clipping[xIndex][yIndex][z+1];
 	}
 	
 	/**
 	 * a block is only clipped if every side is clipped
-	 * @param camerayId
 	 * @param x index
 	 * @param y index
 	 * @param z  index
 	 * @return 
 	 */
-	public boolean isClipped(byte camerayId, int x, int y, int z) {
+	public boolean isClipped(int x, int y, int z) {
 		int xIndex = x-topleft.getX();
 		int yIndex = y-topleft.getY();
-		return clipping[camerayId][xIndex][yIndex][z+1][0]
-			&& clipping[camerayId][xIndex][yIndex][z+1][2]
-			&& clipping[camerayId][xIndex][yIndex][z+1][1];
+		return clipping[xIndex][yIndex][z+1][0]
+			&& clipping[xIndex][yIndex][z+1][2]
+			&& clipping[xIndex][yIndex][z+1][1];
 	}
 
 	protected void resetClipping() {
-		for (int camera=0; camera < 4; camera++)
-			for (int x=0; x < blocksX; x++)
-				for (int y=0; y < blocksY; y++) {
-					clipping[camera][x][y][0] = new boolean[]{true, false, true};
-					for (int z=1; z < blocksZ+1; z++)
-						clipping[camera][x][y][z] = new boolean[]{false, false, false};
-				}
+		for (int x=0; x < blocksX; x++)
+			for (int y=0; y < blocksY; y++) {
+				clipping[x][y][0] = new boolean[]{true, false, true};
+				for (int z=1; z < blocksZ+1; z++)
+					clipping[x][y][z] = new boolean[]{false, false, false};
+			}
 	}
 
 }

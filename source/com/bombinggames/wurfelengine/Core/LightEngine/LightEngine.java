@@ -334,33 +334,23 @@ public class LightEngine implements LinkedWithMap {
 	 * @param data
      */
     public void calcSimpleLight(HasID[][][] data){
-        for (
-			int x=0,
-				maxX=data.length;
-			x< maxX;
-			x++
-		){
-            for (
-				int y=0,
-				maxY=data[0].length;
-				y < maxY;
-				y++
-			) {
+        for (HasID[][] x : data) {
+            for (HasID[] y : x) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ();//start at top
 				HasID block;
                 
 				do {
                     topmost--;
-					block = data[x][y][topmost];
+					block = y[topmost];
                 } while ((block == null || block.isTransparent()) && topmost > 0);
                 
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
-                    for (int level = topmost; level >= 0; level--){
-						HasID blockToLit = data[x][y][level];
+                    for (int z = 9; z >= 0; z--){
+						HasID blockToLit = y[z];
 						if (blockToLit!=null)
-							blockToLit.setLightlevel(.5f + .5f*level / (float) topmost);
+							blockToLit.setLightlevel(.5f + .5f*z / (float) topmost);
                     }
                 }
             }

@@ -47,7 +47,7 @@ void main() {
 //vertice color * texture color*(sun, moon and ambient) 
 		gl_FragColor = v_color
 		* vec4(
-			DiffuseColor.rgb*(sunLight+moonLight+ambientColor.rgb*3.0)
+			DiffuseColor.rgb*(sunLight*1.3+moonLight+ambientColor.rgb*2.0)
 			,DiffuseColor.a
 		);
 	}

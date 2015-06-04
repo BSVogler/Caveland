@@ -662,7 +662,7 @@ public class CustomGameView extends GameView{
         public boolean scrolled(int amount) {
             getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount/100f);
             
-            WE.getConsole().add("Zoom: " + getCameras().get(0).getZoom());   
+            WE.getConsole().add("Zoom: " + getCameras().get(0).getZoom()+"\n");   
             return true;
         }
     }

@@ -170,12 +170,14 @@ public class CoreData implements HasID, Serializable {
 	public RenderBlock toBlock(){
 		if (id==0)
 			return null;
+		
 		if (id==9)
 			return new Sea(id);
-		if (id>9 && customBlocks != null){
-            return customBlocks.toRenderBlock(id, value);
-        }
-		return new RenderBlock(id, value);
+		
+		if (id>9 && customBlocks != null)
+           return customBlocks.toRenderBlock(this);
+        
+		return new RenderBlock(this);
 	}
 
 	@Override

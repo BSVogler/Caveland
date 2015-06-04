@@ -20,8 +20,10 @@ import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 public class CavelandBlocks implements CustomBlocks {
 
 @Override
-public RenderBlock toRenderBlock(byte id, byte value) {
+public RenderBlock toRenderBlock(CoreData data) {
 	RenderBlock block;
+	byte id = data.getId();
+	byte value = data.getValue();
 	switch (id){
 		case 60:
 			block = new Machine();

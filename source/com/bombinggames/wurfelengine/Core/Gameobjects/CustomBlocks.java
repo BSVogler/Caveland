@@ -22,7 +22,7 @@ public interface CustomBlocks {
 	
 	public String getName(byte id, byte value);
 	
-	public RenderBlock toRenderBlock(byte id, byte value);
+	public RenderBlock toRenderBlock(CoreData data);
 	
 	/**
 	 * Is the block a true block with three sides or does it get rendered by a single sprite?<br>

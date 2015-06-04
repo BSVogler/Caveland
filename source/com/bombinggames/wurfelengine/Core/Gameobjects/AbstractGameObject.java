@@ -219,6 +219,15 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 		this.graphicsID = id;
     }
 	
+	/**
+     * Creates an object referencing to an existing coreData object.
+	 * @param data
+     */
+    protected AbstractGameObject(CoreData data) {
+        coreData = data;
+		this.graphicsID = data.getId();
+    }
+	
     /**
      * Get the category letter for accessing sprites.
      * @return

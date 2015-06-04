@@ -115,12 +115,26 @@ public class RenderBlock extends AbstractGameObject {
 	 */
     public RenderBlock(byte id){
         super(id,(byte) 0);
-		fogEnabled = WE.CVARS.getValueB("enableFog");
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
     }
 	
+	/**
+	 * 
+	 * @param id
+	 * @param value 
+	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
-		fogEnabled = WE.CVARS.getValueB("enableFog");
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+	}
+	
+	/**
+	 * Create a new render block referencing to an existing coreData object.
+	 * @param data 
+	 */
+	public RenderBlock(CoreData data){
+		super(data);
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 	}
 
 	/**

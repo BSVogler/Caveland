@@ -30,19 +30,6 @@
  */
 package com.bombinggames.wurfelengine;
 
-import com.bombinggames.wurfelengine.Core.AbstractMainMenu;
-import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMainMenu;
-import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMenuItem;
-import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.Core.Console;
-import com.bombinggames.wurfelengine.Core.Controller;
-import com.bombinggames.wurfelengine.Core.EngineView;
-import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.GameplayScreen;
-import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
-import com.bombinggames.wurfelengine.Core.WEScreen;
-import com.bombinggames.wurfelengine.Core.WorkingDirectory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
@@ -56,19 +43,32 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import com.bombinggames.wurfelengine.Core.AbstractMainMenu;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMainMenu;
+import com.bombinggames.wurfelengine.Core.BasicMainMenu.BasicMenuItem;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.Core.Console;
+import com.bombinggames.wurfelengine.Core.Controller;
+import com.bombinggames.wurfelengine.Core.EngineView;
+import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.GameplayScreen;
+import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.Core.WEScreen;
+import com.bombinggames.wurfelengine.Core.WorkingDirectory;
 import java.io.File;
 
 /**
  *The Main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
  * The Wurfel Engine needs Java &gt;= v1.8 and the API libGDX v1.5.6 (may work with older version).
  * @author Benedikt S. Vogler
- * @version 1.5.5
+ * @version 1.6.0
  */
 public class WE {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.5.5";  
+    public static final String VERSION = "1.6.0";  
 	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
 
 	/**

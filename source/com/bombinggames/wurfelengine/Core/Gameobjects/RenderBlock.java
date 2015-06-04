@@ -406,7 +406,7 @@ public class RenderBlock extends AbstractGameObject {
 		if (color!=null) {
 			color.r *= getLightlevel();
 			color.g *= getLightlevel();
-			color.b *= getLightlevel()+2f;
+			color.b *= getLightlevel();
 
 			sprite.setColor(color);
 		}

@@ -501,10 +501,12 @@ public class Camera implements LinkedWithMap {
 					AbstractGameObject.getTextureNormal().bind(1);
 				}
 
-					//bind diffuse color to texture unit 0
+				//bind diffuse color to texture unit 0
 				//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 				AbstractGameObject.getTextureDiffuse().bind(0);
 
+				RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
+								
 				//render vom bottom to top
 				for (int i = 0; i < objectsToBeRendered; i++) {
 					depthlist[i].render(view, camera);

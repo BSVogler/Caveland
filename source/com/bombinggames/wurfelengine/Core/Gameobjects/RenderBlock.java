@@ -66,7 +66,16 @@ public class RenderBlock extends AbstractGameObject {
      */
     private static final Color[][] colorlist = new Color[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
 	private static boolean fogEnabled;
+	private static boolean staticShade;
 
+	/**
+	 * Indicate whether the blocks should get shaded independent of the light engine by default.
+	 * @param shade 
+	 */
+	public static void setStaticShade(boolean shade){
+		staticShade = shade;
+	}
+	
 	@Override
 	public boolean isObstacle() {
 		return getCoreData().isObstacle();
@@ -218,7 +227,6 @@ public class RenderBlock extends AbstractGameObject {
         if (!isHidden()) {
             if (hasSides()) {
 				Coordinate coords = getPosition();
-				boolean staticShade = WE.CVARS.getValueB("enableAutoShade");
                 if (!clipping[1])
                     renderSide(view, camera, coords, Side.TOP, staticShade);
                 if (!clipping[0])
@@ -316,20 +324,17 @@ public class RenderBlock extends AbstractGameObject {
 		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
 			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().toCoord().getY())*0.17+2));
-			color = new Color(0.5f, 0.5f, 0.5f, 1).add(
-				0.3f*factor,
-				0.4f*factor,
-				1f*factor,
-				0f
-			);
+			color = new Color(0.5f+0.3f*factor, 0.5f+0.4f*factor, 0.5f+1f*factor, 1);
 		} else
 			color = Color.GRAY.cpy();
 		
+		//if vertex shaded then use different shading for each side
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
 			color = Controller.getLightEngine().getColor(side).mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f);
         }
 		
-        renderSide(view,
+        renderSide(
+			view,
             coords.getViewSpcX(view) - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
             coords.getViewSpcY(view) - VIEW_HEIGHT2 + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(1+getScaling())) : 0),//the top is drawn a quarter blocks higher,
             side,
@@ -387,7 +392,7 @@ public class RenderBlock extends AbstractGameObject {
 		if (color!=null) {
 			color.r *= getLightlevel();
 			color.g *= getLightlevel();
-			color.b *= getLightlevel();
+			color.b *= getLightlevel()+2f;
 
 			sprite.setColor(color);
 		}

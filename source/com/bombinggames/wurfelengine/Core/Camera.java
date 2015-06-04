@@ -516,8 +516,8 @@ public class Camera implements LinkedWithMap {
 				view.setDebugRendering(true);
 				view.getBatch().begin();
 				//render vom bottom to top
-				for (AbstractGameObject renderobject : depthlist) {
-					renderobject.render(view, camera);
+				for (int i = 0; i < objectsToBeRendered; i++) {
+					depthlist[i].render(view, camera);
 				}
 				view.getBatch().end();
 			}

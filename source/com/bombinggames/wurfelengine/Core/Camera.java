@@ -73,7 +73,7 @@ public class Camera implements LinkedWithMap {
 	
 	private boolean zRenderinlimitEnabled = false;
 
-	private RenderBlock[][][] cameraContentBlocks;
+	private RenderBlock[][][] cameraContent;
 	
 	/**
 	 * the position of the camera in view space. Y-up. Read only field.
@@ -328,8 +328,8 @@ public class Camera implements LinkedWithMap {
 			combined.set(projection);
 			Matrix4.mul(combined.val, view.val);
 			
-			if (cameraContentBlocks!=null) {
-				for (RenderBlock[][] x : cameraContentBlocks) {
+			if (cameraContent!=null) {
+				for (RenderBlock[][] x : cameraContent) {
 					for (RenderBlock[] y : x) {
 						for (RenderBlock z : y) {
 							if (z != null)
@@ -585,7 +585,7 @@ map.getGameWidth(),
 		
 		objectsToBeRendered=0;
 		DataIterator iterator = new DataIterator(
-			cameraContentBlocks,//iterate over camera content
+			cameraContent,//iterate over camera content
 			0,					//from layer0
 			map.getBlocksZ()//one more because of ground layer
 		);
@@ -772,13 +772,13 @@ map.getGameWidth(),
 	 */
 	private void fillCameraContentBlocks(){
 	//fill viewFrustum with RenderBlock data
-		cameraContentBlocks = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
+		cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 		
 		//1. add ground layer
-		for (int x = 0; x < cameraContentBlocks.length; x++) {
-			for (int y = 0; y < cameraContentBlocks[x].length; y++) {
-				cameraContentBlocks[x][y][0] = map.getGroundBlock().toBlock();
-				cameraContentBlocks[x][y][0].setPosition(
+		for (int x = 0; x < cameraContent.length; x++) {
+			for (int y = 0; y < cameraContent[x].length; y++) {
+				cameraContent[x][y][0] = map.getGroundBlock().toBlock();
+				cameraContent[x][y][0].setPosition(
 					new Coordinate(
 						map,
 						getCoveredLeftBorder()+x,
@@ -802,9 +802,9 @@ map.getGameWidth(),
 			CoreData block = csIter.next();
 			if (block != null) {
 				int[] ind = csIter.getCurrentIndex();
-				cameraContentBlocks[ind[0]][ind[1]][ind[2]+1] = block.toBlock();
-				if (cameraContentBlocks[ind[0]][ind[1]][ind[2]+1] != null)
-					cameraContentBlocks[ind[0]][ind[1]][ind[2]+1].setPosition(
+				cameraContent[ind[0]][ind[1]][ind[2]+1] = block.toBlock();
+				if (cameraContent[ind[0]][ind[1]][ind[2]+1] != null)
+					cameraContent[ind[0]][ind[1]][ind[2]+1].setPosition(
 						new Coordinate(
 							map,
 							getCoveredLeftBorder() + ind[0],
@@ -964,7 +964,7 @@ map.getGameWidth(),
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
 			/ -CoreData.VIEW_DEPTH2 //back to game coordinates
-			+cameraContentBlocks[0][0].length*CoreData.VIEW_HEIGHT/CoreData.VIEW_DEPTH2 //todo verify, try to add z component
+			+cameraContent[0][0].length*CoreData.VIEW_HEIGHT/CoreData.VIEW_DEPTH2 //todo verify, try to add z component
 		);
 	}
 
@@ -1215,12 +1215,12 @@ map.getGameWidth(),
 		//check if covered by camera
 		if (
 			   indexX >= 0
-			&& indexX < cameraContentBlocks.length
+			&& indexX < cameraContent.length
 			&& indexY >= 0
-			&& indexY < cameraContentBlocks[0].length
-			&& cameraContentBlocks[indexX][indexY][coords.getZ()+1] != null //not air
+			&& indexY < cameraContent[0].length
+			&& cameraContent[indexX][indexY][coords.getZ()+1] != null //not air
 		) {
-			return cameraContentBlocks[indexX][indexY][coords.getZ()+1].isClipped();
+			return cameraContent[indexX][indexY][coords.getZ()+1].isClipped();
 		} else {
 			//if not return fully clipped
 			return true;

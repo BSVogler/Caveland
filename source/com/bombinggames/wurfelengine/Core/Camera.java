@@ -505,6 +505,7 @@ public class Camera implements LinkedWithMap {
 				//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 				AbstractGameObject.getTextureDiffuse().bind(0);
 
+				//settings for this frame
 				RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
 								
 				//render vom bottom to top

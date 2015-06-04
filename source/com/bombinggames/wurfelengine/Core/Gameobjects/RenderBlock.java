@@ -346,7 +346,7 @@ public class RenderBlock extends AbstractGameObject {
 						? color.add(0.25f, 0.25f, 0.25f, 0)
 						: color
 					)
-				: color
+				: color//pass color if not shading static
         );
     }
 	
@@ -397,6 +397,7 @@ public class RenderBlock extends AbstractGameObject {
 			sprite.setColor(color);
 		}
  
+		//draw only outline or regularly?
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();
             sh.begin(ShapeRenderer.ShapeType.Line);

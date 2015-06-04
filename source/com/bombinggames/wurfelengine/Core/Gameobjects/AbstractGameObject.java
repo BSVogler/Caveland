@@ -293,7 +293,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         if (!hidden) {  
 			if (WE.CVARS.getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons
-				float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().toCoord().getY())*0.17+2));
+				float factor = (float) (Math.exp( 0.025f*(camera.getVisibleFrontBorderHigh()-getPosition().toCoord().getY()-18.0) )-1 );
 				if (color ==null) {
 					color = new Color(0.5f, 0.5f, 0.5f, 1).add(
 						0.3f*factor,

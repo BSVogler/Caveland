@@ -337,7 +337,8 @@ public class RenderBlock extends AbstractGameObject {
 		Color color;
 		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
-			float factor = (float) (Math.exp((camera.getVisibleBackBorder()-getPosition().toCoord().getY())*0.17+2));
+			float factor = (float) (Math.exp( 0.025f*(camera.getVisibleFrontBorderHigh()-coords.toCoord().getY()-18.0) )-1 );
+			//float factor = (float) (Math.exp( 0.0005f*(coords.getDepth(view)-500) )-1 );
 			color = new Color(0.5f+0.3f*factor, 0.5f+0.4f*factor, 0.5f+1f*factor, 1);
 		} else
 			color = Color.GRAY.cpy();

@@ -554,7 +554,6 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 *
-	 * @param cameraId
 	 * @param coord
 	 * @return
 	 */

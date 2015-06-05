@@ -127,6 +127,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private SimpleEntity interactButton = null;
 	private Coordinate nearestInteractableBlock = null;
 	private int spriteNumOverlay;
+	/**
+	 * true if attack in loadattackMode
+	 */
 	private boolean performingLoadAttack = false;
 	
 	/**
@@ -218,6 +221,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			timeTillImpact -= dt;
 			if (timeTillImpact <= 0)
 				attackImpact();
+		}
+		
+		//stop loadAttack if speed it too low
+		if (performingLoadAttack && getSpeedHor() < 0.1){
+			performingLoadAttack=false;
 		}
 		
 		//detect button hold
@@ -698,10 +706,16 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	@Override
 	public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
+		//if loading attack keep movement
+		Vector2 movementBefore = getMovementHor().cpy();
 		super.walk(up, down, left, right, walkingspeed, dt);
-		if (up || down || left || right){
-			if (isOnGround() && getSpeedHor() > 0 && !playAnimation)
-				playAnimation('w');
+		if (loadAttack != Float.NEGATIVE_INFINITY || performingLoadAttack) {
+			setMovement(movementBefore);
+		} else {
+			if (up || down || left || right){
+				if (isOnGround() && getSpeedHor() > 0 && !playAnimation)
+					playAnimation('w');
+			}
 		}
 	}
 	

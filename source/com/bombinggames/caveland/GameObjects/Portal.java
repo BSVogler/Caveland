@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.Core.Map.Coordinate;
  * @author Benedikt Vogler
  */
 public class Portal extends AbstractEntity implements Interactable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private Coordinate target;
 	private boolean entry = true;
 	

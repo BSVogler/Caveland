@@ -102,7 +102,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	private float loadAttack = Float.NEGATIVE_INFINITY;
 	private transient final float LOAD_THRESHOLD = 300;//300ms until loading starts
-	private transient AbstractInteractable nearestEntity;
+	private transient AbstractEntity nearestEntity;
 
 	/**
 	 * the current playing sprite value */
@@ -302,15 +302,15 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 		//update interactable focus
 		//check entitys
-		ArrayList<AbstractInteractable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
+		ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
 			GAME_EDGELENGTH * 2,
-			AbstractInteractable.class
+			Interactable.class
 		);
 
 		if (!nearbyInteractable.isEmpty()) {
 			//check if a different one
-			nearestEntity = nearbyInteractable.get(0);
-			showButton(AbstractInteractable.RT, nearestEntity.getPosition());
+			nearestEntity = (AbstractEntity) nearbyInteractable.get(0);
+			showButton(Interactable.RT, nearestEntity.getPosition());
 		} else if (nearestEntity != null) {
 			hideButton();
 			nearestEntity = null;
@@ -321,7 +321,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
 			//todo only overwrite if block is nearer
 			nearestInteractableBlock = getPosition().toCoord();
-			showButton(AbstractInteractable.RT, nearestInteractableBlock);
+			showButton(Interactable.RT, nearestInteractableBlock);
 		} else {
 			//no nearby block
 			//hide button if also no nearestEntity
@@ -425,7 +425,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	public void interactWithNearestThing(GameView view) {
 		if (nearestEntity!=null)
-			nearestEntity.interact(this, view);
+			((Interactable) nearestEntity).interact(this, view);
 		else {
 			if (nearestInteractableBlock!=null)
 				CavelandBlocks.interact(nearestInteractableBlock, this);

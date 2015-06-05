@@ -2,22 +2,16 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public abstract class AbstractInteractable extends MovableEntity {
-
-	private static final long serialVersionUID = 1L;
-	private transient SimpleEntity interactButton = null;
-
+public interface Interactable{
 	/**
 	 * Xbox controller sprite values.
 	 */
-	private static final byte AUp = 0;
+	public static final byte AUp = 0;
 
 	/**
 	 *Xbox controller sprite values.
@@ -105,23 +99,6 @@ public abstract class AbstractInteractable extends MovableEntity {
 	public static final byte YDown = 17;
 	
 	/**
-	 *
-	 * @param id
-	 * @param spritesPerDir
-	 */
-	public AbstractInteractable(byte id, int spritesPerDir) {
-		super(id, spritesPerDir);
-	}
-
-	/**
-	 *
-	 * @param entity
-	 */
-	public AbstractInteractable(MovableEntity entity) {
-		super(entity);
-	}
-
-	/**
 	 * interact with something in the world
 	 *
 	 * @param actor the thing which interacts with this
@@ -129,9 +106,4 @@ public abstract class AbstractInteractable extends MovableEntity {
 	 * send to
 	 */
 	public abstract void interact(AbstractEntity actor, GameView view);
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
 }

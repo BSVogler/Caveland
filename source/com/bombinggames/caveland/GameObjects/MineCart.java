@@ -1,5 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
@@ -9,8 +11,6 @@ import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGEL
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.Core.Map.Point;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class MineCart extends AbstractInteractable {
+public class MineCart extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 1L;
 	private static final float MAXSPEED = 5;
 	/**
@@ -328,6 +328,11 @@ public class MineCart extends AbstractInteractable {
 		front = new SimpleEntity((byte) 42,(byte) 1);
 		front.spawn(getPosition().cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
+	}
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

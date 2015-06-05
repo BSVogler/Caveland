@@ -12,7 +12,7 @@ import java.io.ObjectInputStream;
  *Tutorial owl.
  * @author Benedikt Vogler
  */
-public class Vanya extends AbstractInteractable {
+public class Vanya extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
 	private transient ActionBox currentChat;

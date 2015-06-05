@@ -45,6 +45,18 @@ public class CavelandCommands implements CommandsInterface {
 				}
 			}
 		}
+		
+		if (first.toLowerCase().startsWith("setportaltentry")){
+			ArrayList<AbstractEntity> selected = gameplayRef.getEditorController().getSelectedEntities();
+			if (!st.hasMoreTokens()) return false;
+			boolean entry = "1".equals(st.nextToken());
+			for (AbstractEntity ent : selected) {
+				if (ent instanceof Portal){
+						((Portal)ent).setCaveEntry(entry);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	

@@ -254,11 +254,11 @@ public class Console implements CommandsInterface  {
      */
     public void enter(){
 		//add line break if last line ended with line break
-		char lineBreak;
+		String lineBreak;
 		if (!log.newLineAtEnd())
-			lineBreak = '\n';
+			lineBreak = "\n";
 		else
-			lineBreak='\0';
+			lineBreak="";
         add(lineBreak + textinput.getText()+"\n", "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
         if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(
@@ -348,6 +348,18 @@ public class Console implements CommandsInterface  {
 		externalCommands.setGameplayRef(gameplayRef);
 	}
 	
+	private boolean checkPath(){
+		if (path.equals("/")) {
+			return true;
+		} else {
+			StringTokenizer tokenizer = new StringTokenizer(path, "/");
+			String mapname = tokenizer.nextToken();
+			if (new File(WorkingDirectory.getMapsFolder(), mapname).isDirectory())
+				return true;
+			return false;
+		}
+	}
+	
     /**
      * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
@@ -420,10 +432,12 @@ public class Console implements CommandsInterface  {
 					path="/";
 				} else if ("..".equals(enteredPath)) {
 					if (path.length()>1)
-						path=path.substring(0, path.lastIndexOf('/')-1);//reduce path to last /
+						path="/";
 				} else {
 					path = path.concat(enteredPath+"/");//then add new path
 				}
+				if (!checkPath())
+					add("not a valid path");
 			}
 			return true;
         }

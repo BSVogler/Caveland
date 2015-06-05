@@ -97,6 +97,9 @@ public class Particle extends MovableEntity {
 	 */
 	public void setTTL(float time){
 		maxtime = time;
+		//clamp
+		if (timeTillDeath > maxtime)
+			timeTillDeath=maxtime;
 	}
 	
 	

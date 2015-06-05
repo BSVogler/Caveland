@@ -380,7 +380,7 @@ public class Console implements CommandsInterface  {
 		String first = st.nextToken().toLowerCase();
         switch (first) {
 			case "ls":
-				File mapsFolder = WorkingDirectory.getMapsFolder();
+				File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
                 for (final File fileEntry : mapsFolder.listFiles()) {
                     if (fileEntry.isDirectory()) {
                         add(fileEntry.getName()+"\n");

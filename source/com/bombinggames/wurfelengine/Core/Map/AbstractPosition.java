@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
-import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.Serializable;
 

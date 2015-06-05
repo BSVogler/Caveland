@@ -338,7 +338,7 @@ public class Console implements CommandsInterface  {
     public boolean executeCommand(String command){
         if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
-		String first = st.nextToken();
+		String first = st.nextToken().toLowerCase();
         switch (first) {
             case "editor":
                 WE.loadEditor(true);

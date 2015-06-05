@@ -561,7 +561,7 @@ public class Console implements CommandsInterface  {
 					if ("cd ".equals(parentRef.getCurrentCommand()))
 						executeCommand("ls");
 					else
-						add(WE.CVARS.showAll());
+						add(WE.CVARS.showAll()+"\n");
 				}
 				timeLastTab = System.currentTimeMillis();
             }

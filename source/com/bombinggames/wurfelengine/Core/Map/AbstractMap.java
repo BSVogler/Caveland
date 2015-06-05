@@ -20,8 +20,9 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public abstract class AbstractMap implements Cloneable {
+
 	private static Generator defaultGenerator = new AirGenerator();
-	
+
 	/**
 	 *
 	 * @param generator
@@ -29,67 +30,71 @@ public abstract class AbstractMap implements Cloneable {
 	public static void setDefaultGenerator(Generator generator) {
 		defaultGenerator = generator;
 	}
-	
+
 	/**
 	 * Get the default set generator.
-	 * @return 
-	 * @see #setDefaultGenerator(Generator) 
+	 *
+	 * @return
+	 * @see #setDefaultGenerator(Generator)
 	 */
 	public static Generator getDefaultGenerator() {
 		return defaultGenerator;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param path the directory of the map
-	 * @return 
+	 * @return
 	 */
 	public static int newSaveSlot(File path) {
 		int slot = getSavesCount(path);
 		createSaveSlot(path, slot);
 		return slot;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param path the directory of the map
-	 * @param slot 
+	 * @param slot
 	 */
-	public static void createSaveSlot(File path, int slot){
-		FileHandle pathHandle = Gdx.files.absolute(path+"/save"+slot+"/");
-        if (!pathHandle.exists()){
+	public static void createSaveSlot(File path, int slot) {
+		FileHandle pathHandle = Gdx.files.absolute(path + "/save" + slot + "/");
+		if (!pathHandle.exists()) {
 			pathHandle.mkdirs();
 		}
 		//copy from map folder root
 		FileHandle root = Gdx.files.absolute(path.getAbsolutePath());
 		FileHandle[] childen = root.list();
 		for (FileHandle file : childen) {
-			if (!file.isDirectory()){
+			if (!file.isDirectory()) {
 				file.copyTo(pathHandle);
 			}
 		}
 	}
-	
+
 	public static int getSavesCount(File path) {
 		FileHandle children = Gdx.files.absolute(path.getAbsolutePath());
 		int i = 0;
-		while (children.child("save"+i).exists()) {			
+		while (children.child("save" + i).exists()) {
 			i++;
 		}
 		return i;
 	}
 
 	private static CustomMapCVarRegistration customRegistration;
-	
+
 	/**
 	 * Set a custom registration of cvars before they are loaded.
-	 * @param mapcvars 
+	 *
+	 * @param mapcvars
 	 */
 	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
 		customRegistration = mapcvars;
 	}
-	
-	/** every entity on the map is stored in this field */
+
+	/**
+	 * every entity on the map is stored in this field
+	 */
 	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
@@ -99,79 +104,85 @@ public abstract class AbstractMap implements Cloneable {
 	private final File directory;
 	private int activeSaveSlot;
 	/**
-	 * cvar system for the map. SHould in most cases read only because they are not save file independant.
+	 * cvar system for the map. SHould in most cases read only because they are
+	 * not save file independant.
 	 */
 	private CVarSystem cvars;
-	private CVarSystem saveCVars; 
+	private CVarSystem saveCVars;
 
 	/**
-	 * 
+	 *
 	 * @param directory the directory where the map lays in
 	 * @param generator
 	 * @param saveSlot the used saveslot
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
 		this.directory = directory;
 		this.generator = generator;
-		cvars = new CVarSystem(new File(directory+"/meta.wecvar"));
+		cvars = new CVarSystem(new File(directory + "/meta.wecvar"));
 		//engine cvar registration
-		cvars.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register( new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register( new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register( new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
-		
+		cvars.register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
+		cvars.register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
+
 		//custom registration of cvars
-		if (customRegistration!=null)
+		if (customRegistration != null) {
 			customRegistration.register(cvars);
-		
+		}
+
 		cvars.load();
-		
-		if (!hasSaveSlot(saveSlot))
+
+		if (!hasSaveSlot(saveSlot)) {
 			createSaveSlot(saveSlot);
+		}
 		activeSaveSlot = saveSlot;
-		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
+		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
 	}
-	
-		/**
+
+	/**
 	 *
 	 * @param dt
 	 */
 	public void update(float dt) {
 		dt *= gameSpeed;//aplly game speed
-		
+
 		//update every entity
 		for (int i = 0; i < getEntitys().size(); i++) {
 			AbstractEntity entity = getEntitys().get(i);
 			if (entity.isInMemoryArea())//only update entities in memory
+			{
 				entity.update(dt);
+			}
 		}
-		
+
 		//remove not spawned objects from list
 		getEntitys().removeIf(
 			(AbstractEntity entity) -> !entity.isSpawned()
 		);
 	}
-	
+
 	/**
 	 * should be set if you want to have custom. Loads cvars from file.
-	 * @param cvarSystem 
+	 *
+	 * @param cvarSystem
 	 */
-	public void setCVarSystem(CVarSystem cvarSystem){
+	public void setCVarSystem(CVarSystem cvarSystem) {
 		cvars = cvarSystem;
 		cvars.load();
 	}
-	
-	    /**
-     *Returns the degree of the world spin. This changes where the sun rises and falls.
-     * @return a number between 0 and 360
-     */
-    public int getWorldSpinDirection() {
-        return WE.CVARS.getValueI("worldSpinAngle");
-    }
 
-	
-	
+	/**
+	 * Returns the degree of the world spin. This changes where the sun rises
+	 * and falls.
+	 *
+	 * @return a number between 0 and 360
+	 */
+	public int getWorldSpinDirection() {
+		return WE.CVARS.getValueI("worldSpinAngle");
+	}
+
 	/**
 	 *
 	 * @param object
@@ -181,16 +192,18 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 *Returns a coordinate pointing to the absolute center of the map. Height is half the map's height.
+	 * Returns a coordinate pointing to the absolute center of the map. Height
+	 * is half the map's height.
+	 *
 	 * @return
 	 */
 	public Point getCenter() {
 		return getCenter(getBlocksZ() * CoreData.GAME_EDGELENGTH / 2);
 	}
 
-
 	/**
-	 *Returns a coordinate pointing to middle of a 3x3 chunk map.
+	 * Returns a coordinate pointing to middle of a 3x3 chunk map.
+	 *
 	 * @param height You custom height.
 	 * @return
 	 */
@@ -205,22 +218,25 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Returns the entityList
+	 *
 	 * @return
 	 */
 	public ArrayList<AbstractEntity> getEntitys() {
 		return entityList;
 	}
-	
+
 	/**
-	 *The width of the map with three chunks in use
+	 * The width of the map with three chunks in use
+	 *
 	 * @return amount of bluck multiplied by the size in game space.
 	 */
 	public int getGameWidth() {
 		return getBlocksX() * CoreData.GAME_DIAGLENGTH;
 	}
-	
+
 	/**
 	 * The depth of the map in game size
+	 *
 	 * @return
 	 */
 	public int getGameDepth() {
@@ -229,16 +245,17 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Game size
+	 *
 	 * @return
 	 */
 	public int getGameHeight() {
 		return getBlocksZ() * CoreData.GAME_EDGELENGTH;
 	}
 
-
-
 	/**
-	 * Find every instance of a special class. E.g. find every <i>AbstractCharacter</i>.
+	 * Find every instance of a special class. E.g. find every
+	 * <i>AbstractCharacter</i>.
+	 *
 	 * @param <type>
 	 * @param type
 	 * @return a list with the entitys
@@ -255,50 +272,52 @@ public abstract class AbstractMap implements Cloneable {
 		}
 		return list;
 	}
-	
-	     /**
-     * Get every entity on a coord.
-     * @param coord
-     * @return a list with the entitys
-     */
-    public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
-        ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
-        for (AbstractEntity ent : entityList) {
-            if ( ent.getPosition().toCoord().equals(coord) ){
-                list.add(ent);//add it to list
-            } 
-        }
+	/**
+	 * Get every entity on a coord.
+	 *
+	 * @param coord
+	 * @return a list with the entitys
+	 */
+	public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
+		ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
-        return list;
-    }
-    
-      /**
-     * Get every entity on a coord of the wanted type
-     * @param <type> the class you want to filter.
-     * @param coord the coord where you want to get every entity from
-     * @param type the class you want to filter.
-     * @return a list with the entitys of the wanted type
-     */
+		for (AbstractEntity ent : entityList) {
+			if (ent.getPosition().toCoord().equals(coord)) {
+				list.add(ent);//add it to list
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Get every entity on a coord of the wanted type
+	 *
+	 * @param <type> the class you want to filter.
+	 * @param coord the coord where you want to get every entity from
+	 * @param type the class you want to filter.
+	 * @return a list with the entitys of the wanted type
+	 */
 	@SuppressWarnings("unchecked")
-    public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
-        ArrayList<type> list = new ArrayList<>(5);
+	public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
+		ArrayList<type> list = new ArrayList<>(5);
 
-        for (AbstractEntity ent : entityList) {
-            if (
-				ent.isSpawned()
+		for (AbstractEntity ent : entityList) {
+			if (ent.isSpawned()
 				&& ent.getPosition().toCoord().getVector().equals(coord.getVector())//on coordinate?
-                && type.isInstance(ent)//of tipe of filter?
-                ){
-                    list.add((type) ent);//add it to list
-            } 
-        }
+				&& type.isInstance(ent)//of tipe of filter?
+				) {
+				list.add((type) ent);//add it to list
+			}
+		}
 
-        return list;
-    }
+		return list;
+	}
 
 	/**
 	 * True if some block has changed in loaded chunks.
+	 *
 	 * @return returns the modified flag
 	 */
 	public boolean isModified() {
@@ -307,14 +326,16 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * If the block can not be found returns null pointer.
+	 *
 	 * @param coord
 	 * @return
 	 */
 	public abstract CoreData getBlock(final Coordinate coord);
 
 	/**
-	 * Returns a block without checking the parameters first. Good for debugging and also faster.
-	 * O(n)
+	 * Returns a block without checking the parameters first. Good for debugging
+	 * and also faster. O(n)
+	 *
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param z coordinate
@@ -337,19 +358,20 @@ public abstract class AbstractMap implements Cloneable {
 	public ArrayList<LinkedWithMap> getLinkedObjects() {
 		return linkedObjects;
 	}
-	
+
 	/**
 	 * Get an iteration which can loop throug the map
+	 *
 	 * @param startLimit the starting level
 	 * @param topLimitZ the top limit of the iterations
-	 * @return 
+	 * @return
 	 */
-	public MemoryMapIterator getIterator(int startLimit, int topLimitZ){
+	public MemoryMapIterator getIterator(int startLimit, int topLimitZ) {
 		MemoryMapIterator mapIterator = new MemoryMapIterator(this, startLimit);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
 	}
-	
+
 	/**
 	 * called when the map is modified
 	 */
@@ -378,28 +400,36 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * saves every chunk on the map
+	 *
 	 * @param saveSlot
 	 * @return
 	 */
 	public abstract boolean save(int saveSlot);
 
 	/**
-	 * Replace a block. Assume that the map already has been filled at this coordinate.
+	 * Replace a block. Assume that the map already has been filled at this
+	 * coordinate.
+	 *
 	 * @param block no null pointer
-	 * @see #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock) 
+	 * @see
+	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public abstract void setBlock(final RenderBlock block);
 
 	/**
-	 * Replace a block. Assume that the map already has been filled at this coordinate.
+	 * Replace a block. Assume that the map already has been filled at this
+	 * coordinate.
+	 *
 	 * @param coord
 	 * @param block
-	 * @see #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock) 
+	 * @see
+	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public abstract void setBlock(Coordinate coord, CoreData block);
 
 	/**
 	 * Set the speed of the world.
+	 *
 	 * @param gameSpeed
 	 */
 	public void setGameSpeed(float gameSpeed) {
@@ -408,6 +438,7 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Set the generator used for generating maps
+	 *
 	 * @param generator
 	 */
 	public void setGenerator(Generator generator) {
@@ -417,11 +448,13 @@ public abstract class AbstractMap implements Cloneable {
 	/**
 	 *
 	 */
-	public void dispose(){
-	    for (int i = 0; i < entityList.size(); i++) {
+	public void dispose() {
+		for (int i = 0; i < entityList.size(); i++) {
 			entityList.get(i).dispose();
-        }
-	};
+		}
+	}
+
+	;
 
 	/**
 	 * The name of the map on the file.
@@ -433,18 +466,21 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Returns the amount of Blocks inside the map in x-direction.
+	 *
 	 * @return
 	 */
 	public abstract int getBlocksX();
 
 	/**
 	 * Returns the amount of Blocks inside the map in y-direction.
+	 *
 	 * @return
 	 */
 	public abstract int getBlocksY();
 
 	/**
 	 * Returns the amount of Blocks inside the map in z-direction.
+	 *
 	 * @return
 	 */
 	public abstract int getBlocksZ();
@@ -456,30 +492,32 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Called after the view update to catch changes caused by the view
+	 *
 	 * @param dt
 	 */
 	public abstract void postUpdate(float dt);
-	
-	    /**
-     *Clones the map. Not yet checked if a valid copy.
-     * @return
-     * @throws CloneNotSupportedException
-     */
-    @Override
-    public AbstractMap clone() throws CloneNotSupportedException{
+
+	/**
+	 * Clones the map. Not yet checked if a valid copy.
+	 *
+	 * @return
+	 * @throws CloneNotSupportedException
+	 */
+	@Override
+	public AbstractMap clone() throws CloneNotSupportedException {
 		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
 //		clone.entityList = new ArrayList<>(entityList.size());
 //		for (AbstractEntity entity : entityList) {
 //			clone.entityList.add((AbstractEntity) entity.clone());
 //		}
-        return (AbstractMap) super.clone();
-    }
+		return (AbstractMap) super.clone();
+	}
 
 	/**
 	 * should be executed after the update method
 	 */
-	public void modificationCheck(){
-		if (modified){
+	public void modificationCheck() {
+		if (modified) {
 			onModified();
 			modified = false;
 		}
@@ -488,67 +526,73 @@ public abstract class AbstractMap implements Cloneable {
 	public Generator getGenerator() {
 		return generator;
 	}
-	
-	public int getCurrentSaveSlot(){
+
+	public int getCurrentSaveSlot() {
 		return activeSaveSlot;
 	}
-	
+
 	/**
 	 * uses a specific save slot for loading and saving the map
-	 * @param slot 
+	 *
+	 * @param slot
 	 */
-	public void useSaveSlot(int slot){
+	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
+		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
 	}
-	
+
 	/**
 	 * Uses a new save slot as the save slot
+	 *
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
 		activeSaveSlot = getSavesCount();
 		createSaveSlot(activeSaveSlot);
-		saveCVars = new CVarSystem(new File(directory+"/save"+activeSaveSlot+"/meta.wecvar"));
+		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
 		return activeSaveSlot;
 	}
-	
+
 	/**
 	 * Check if a save slot exists.
+	 *
 	 * @param saveSlot
-	 * @return 
+	 * @return
 	 */
 	public boolean hasSaveSlot(int saveSlot) {
-		FileHandle path = Gdx.files.absolute(directory+"/save"+saveSlot);
+		FileHandle path = Gdx.files.absolute(directory + "/save" + saveSlot);
 		return path.exists();
 	}
-	
-	public void createSaveSlot(int slot){
+
+	public void createSaveSlot(int slot) {
 		createSaveSlot(directory, slot);
 	}
-	
-		
+
 	/**
 	 * checks a map for the amount of save files
+	 *
 	 * @return the amount of saves for this map
 	 */
 	public int getSavesCount() {
 		return getSavesCount(directory);
 	}
-	
+
 	/**
-	 * in regular case only read operations should be performed on the cvars in here
-	 * @return 
+	 * in regular case only read operations should be performed on the cvars in
+	 * here
+	 *
+	 * @return
 	 */
 	public CVarSystem getCVars() {
 		return cvars;
 	}
-	
+
 	/**
 	 * save dependant Cvars. They are not loaded from disk unitl you do that.
-	 * @return 
+	 *
+	 * @return
 	 */
-	public CVarSystem getSaveCVars(){
+	public CVarSystem getSaveCVars() {
 		return saveCVars;
 	}
 

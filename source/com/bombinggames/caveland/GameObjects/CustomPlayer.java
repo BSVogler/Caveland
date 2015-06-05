@@ -524,7 +524,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
 		//check hit
 		for (AbstractEntity entity : entities) {
-			if (entity instanceof MovableEntity && entity != this) {
+			if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
 				MovableEntity movable = (MovableEntity) entity;
 				movable.damage(attackDamage);
 				getCamera().shake(20, 50);

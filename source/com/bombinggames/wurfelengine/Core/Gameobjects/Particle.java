@@ -48,9 +48,10 @@ public class Particle extends MovableEntity {
 			return fadeToBlack;
 		}
 	}
-private static final long serialVersionUID = 1L;
-	private final float maxtime;
 	
+	private static final long serialVersionUID = 1L;
+	
+	private float maxtime;
 	private float timeTillDeath;
 	private Color startingColor;
 	private ParticleType type;
@@ -88,6 +89,14 @@ private static final long serialVersionUID = 1L;
 	public void setColor(Color color) {
 		super.setColor(color);
 		startingColor =color.cpy();
+	}
+	
+	/**
+	 * Time to live
+	 * @param time in ms
+	 */
+	public void setTTL(float time){
+		maxtime = time;
 	}
 	
 	

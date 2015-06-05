@@ -519,6 +519,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy());
 					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 					dirt.setRotation((float) Math.random()*360);
+				dirt.setTTL(50);
 			}
 		}
 

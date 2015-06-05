@@ -65,6 +65,7 @@ public class CustomGameView extends GameView{
 		Controller.getSoundEngine().register("collect", "com/bombinggames/Caveland/sounds/collect.wav");
 		Controller.getSoundEngine().register("sword", "com/bombinggames/Caveland/sounds/sword.wav");
 		Controller.getSoundEngine().register("hiss", "com/bombinggames/Caveland/sounds/hiss.wav");
+		Controller.getSoundEngine().register("treehit", "com/bombinggames/Caveland/sounds/treehit.wav");
 		
 		if (coop >- 1){//it is a coop game
 			Camera camera0;

@@ -503,11 +503,14 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
 		//check if the player can damage the blocks
 		if (aimCoord.getBlock() != null) {
+			getCamera().shake(20, 50);
 			if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
 				//destructible by hand
 				if (aimCoord.damage(damage)) {
-					Controller.getSoundEngine().play("impact");
-					getCamera().shake(20, 50);
+					if (aimCoord.getBlock().getId() == 72)
+						Controller.getSoundEngine().play("treehit");
+					else
+						Controller.getSoundEngine().play("impact");
 					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
 					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 					dirt.setRotation((float) Math.random()*360);

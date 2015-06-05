@@ -2,10 +2,3 @@
 .project
 *.class
 *.DS_Store
-/source/com/bombinggames/NormalMapPrototype/nbproject/private/
-/source/com/bombinggames/NormalMapPrototype/build/
-/source/com/bombinggames/NormalMapPrototype/dist/
-/source/com/bombinggames/NormalMapPrototype/hs_err_pid*.log
-
-sprites/caveland/SpritesheetD.png
-sprites/caveland/SpritesheetNormal.png

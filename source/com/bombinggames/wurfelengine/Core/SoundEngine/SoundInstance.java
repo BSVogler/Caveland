@@ -30,8 +30,8 @@
  */
 package com.bombinggames.wurfelengine.Core.SoundEngine;
 
-import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.badlogic.gdx.audio.Sound;
+import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 
 /**
  *

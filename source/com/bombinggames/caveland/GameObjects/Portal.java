@@ -34,6 +34,7 @@ package com.bombinggames.caveland.GameObjects;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Map.Chunk;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 
 /**
@@ -49,7 +50,9 @@ public class Portal extends AbstractEntity implements Interactable{
 	 */
 	public Portal(){
 		super((byte) 70);
-		this.target = new Coordinate(Controller.getMap(), 0, 0, 0);
+		setName("Portal");
+		setHidden(true);
+		this.target = new Coordinate(Controller.getMap(), 0, 0, Chunk.getBlocksZ()-1);
 	}
 	
 	/**
@@ -64,6 +67,10 @@ public class Portal extends AbstractEntity implements Interactable{
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
 		actor.setPosition(target.cpy());
+	}
+
+	public void setTarget(Coordinate target) {
+		this.target = target;
 	}
 	
 }

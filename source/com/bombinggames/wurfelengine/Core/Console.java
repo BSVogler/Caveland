@@ -379,6 +379,9 @@ public class Console implements CommandsInterface  {
                     }
                 }
 				return true;
+			case "clear":
+				log.setText("");
+				return true;
 				
 			case "editor":
                 WE.loadEditor(true);
@@ -523,6 +526,7 @@ public class Console implements CommandsInterface  {
     
     private class StageInputProcessor extends InputListener {
         private Console parentRef;
+		private long timeLastTab;
 
         private StageInputProcessor(Console parent) {
             this.parentRef = parent;
@@ -534,11 +538,17 @@ public class Console implements CommandsInterface  {
                 parentRef.setText(parentRef.getLastMessage("Console"));
             }
 			if (keycode == Keys.DOWN){
-                parentRef.setText("");
+                parentRef.setText(path+" $ ");
             }
 			
             if (keycode == Keys.ENTER){
                 parentRef.enter();
+            }
+			
+			if (keycode == Keys.TAB){
+				if (timeLastTab > 0 && System.currentTimeMillis()-timeLastTab<300)
+					add(WE.CVARS.showAll());
+				timeLastTab = System.currentTimeMillis();
             }
             return true;
         }

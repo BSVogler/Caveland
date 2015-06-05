@@ -48,7 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *Each cvar system manages one file
  * @author Benedikt Vogler
  */
 public class CVarSystem {

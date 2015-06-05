@@ -67,6 +67,7 @@ public class Console implements CommandsInterface  {
 	 */
 	private int nextSuggestionNo =0;
 	private boolean keySuggestionDown;
+	private String path = "/";
 
 
     
@@ -121,6 +122,7 @@ public class Console implements CommandsInterface  {
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
 		log.setBounds(xPos, yPos+52, 750, 550);
 		log.setFocusTraversal(false);
+		log.setColor(1, 1, 1, 0.5f);
 		//log.setAlignment(Align.top, Align.left);
 		//log.setWrap(true);
 		//Label.LabelStyle customStyle = log.getStyle();
@@ -131,6 +133,7 @@ public class Console implements CommandsInterface  {
         textinput = new TextField("$", skin);
         textinput.setBounds(xPos, yPos, 750, 50);
         textinput.setBlinkTime(0.3f);
+		textinput.setColor(1, 1, 1, 0.5f);
 		clearCommandLine();
         textinput.setVisible(false);
         
@@ -213,8 +216,8 @@ public class Console implements CommandsInterface  {
             }
         }
 		
-		if (textinput.getText().length()<=0)
-			setText("$");
+		if (!textinput.getText().contains("$ "))
+			setText(path+" $ ");
     }
     
     /**
@@ -250,11 +253,19 @@ public class Console implements CommandsInterface  {
      *when a message is entered
      */
     public void enter(){
-        add("\n"+textinput.getText()+": ", "Console");//add message to message list
+		//add line break if last line ended with line break
+		char lineBreak;
+		if (!log.newLineAtEnd())
+			lineBreak = '\n';
+		else
+			lineBreak='\0';
+        add(lineBreak + textinput.getText()+"\n", "Console");//add message to message list
         //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
-        if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(textinput.getText()))    
+        if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(
+			textinput.getText().substring(textinput.getText().indexOf("$ ")+2)
+		))    
             add("Failed executing command.\n", "System");    
-        setText("");
+        clearCommandLine();
     }
 	
 	public void clearCommandLine(){
@@ -348,7 +359,7 @@ public class Console implements CommandsInterface  {
         StringTokenizer st = new StringTokenizer(command, " ");
 		String first = st.nextToken().toLowerCase();
         switch (first) {
-            case "editor":
+			case "editor":
                 WE.loadEditor(true);
                 return true;
             case "le":
@@ -390,6 +401,24 @@ public class Console implements CommandsInterface  {
 				gameplayRef.getView().loadShaders();
 				return true;
         }
+		
+		if (command.startsWith("cd")){
+            if (!st.hasMoreElements()) return false;
+            
+            String enteredPath = st.nextToken();
+			if (enteredPath.length()>0) {
+				if ("/".equals(enteredPath)) {
+					path="/";
+				} else if ("..".equals(enteredPath)) {
+					if (path.length()>1)
+						path=path.substring(0, path.lastIndexOf('/')-1);//reduce path to last /
+				} else {
+					path = path.concat(enteredPath+"/");//then add new path
+				}
+			}
+			return true;
+        }
+        
         
 		if (command.startsWith("screenshake")){
 			int id = 0;
@@ -453,18 +482,18 @@ public class Console implements CommandsInterface  {
 				//set cvar
 				String value = st.nextToken();
 				WE.CVARS.get(first).setValue(value);
-				add("Set CVar \""+ first + "\" to "+value, "System");
+				add("Set CVar \""+ first + "\" to "+value+"\n", "System");
 				return true;
 			} else {
 				//read cvar
-				add("cvar has value "+cvar.toString(), "System");
+				add("cvar has value "+cvar.toString()+"\n", "System");
 				return true;
 			}
 		} else {
 			//try executing with custom commands
 			if (externalCommands!=null)
 				return externalCommands.executeCommand(command);
-			add("CVar \""+first+"\" not found.", "System");
+			add("CVar \""+first+"\" not found.\n", "System");
 			return true;
 		}
     }
@@ -483,10 +512,6 @@ public class Console implements CommandsInterface  {
             }
 			if (keycode == Keys.DOWN){
                 parentRef.setText("");
-            }
-			
-			if (keycode == Keys.BACKSPACE && parentRef.textinput.getCursorPosition()<=1){
-                parentRef.setText("$$");
             }
 			
             if (keycode == Keys.ENTER){

@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.badlogic.gdx.Gdx;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
@@ -9,7 +10,6 @@ import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
 
 /**
  *The <i>CustomGameController</i> is for the game code. Put engine code into <i>Controller</i>.

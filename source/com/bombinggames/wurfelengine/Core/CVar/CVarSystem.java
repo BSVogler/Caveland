@@ -92,6 +92,19 @@ public class CVarSystem {
 		return internalPath;
 	}
 	
+	public CVarSystem getSystem(String path){
+		if (path.equalsIgnoreCase(internalPath))
+			return this;
+		//no child system so create one
+		if (childSystem == null) {
+			int lastSlash = path.lastIndexOf('/');
+			childSystem = new CVarSystem(
+					path.substring(0, lastSlash+1),
+					new File(fileSystemPath, path.substring(0, lastSlash))
+				);
+		}
+		return childSystem.getSystem(path);
+	}
 	/**
 	 * 
 	 * @param cvar can include a path
@@ -102,7 +115,7 @@ public class CVarSystem {
 		if (lastSlash > 0 && !internalPath.equalsIgnoreCase( cvar.substring(0, lastSlash) ) ) {
 			if (childSystem==null) {
 				childSystem = new CVarSystem(
-					cvar.substring(0, lastSlash),
+					cvar.substring(0, lastSlash+1),
 					new File(fileSystemPath, cvar.substring(0, lastSlash))
 				);
 			}

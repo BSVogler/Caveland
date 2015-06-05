@@ -78,7 +78,7 @@ public class SoundEngine {
 	public void play(String identifier){
 		Sound result = sounds.get(identifier);
 		if (result!=null)
-			result.play();
+			result.play(WE.CVARS.getValueF("sound"));
 	}
 	
 	/***
@@ -92,6 +92,8 @@ public class SoundEngine {
 			float volume =1;
 			if (pos!=null)
 				volume = getVolume(pos);
+			else
+				volume *= WE.CVARS.getValueF("sound");
 			if (volume >= 0.1) //only play soundIterator louder>10%
 				result.play(volume);
 		}
@@ -106,7 +108,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play(volume);
+			return result.play(volume*WE.CVARS.getValueF("sound"));
 		return 0;
 	}
 	
@@ -120,7 +122,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume, float pitch){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play(volume, pitch, pitch);
+			return result.play(volume*WE.CVARS.getValueF("sound"), pitch, 0);
 		return 0;
 	}
 	
@@ -135,7 +137,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume, float pitch, float pan){
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.play(volume, pitch, pan);
+			return result.play(volume*WE.CVARS.getValueF("sound"), pitch, pan);
 		return 0;
 	}
 	
@@ -148,7 +150,7 @@ public class SoundEngine {
 	public long loop(String identifier) {
 		Sound result = sounds.get(identifier);
 		if (result != null)
-			return result.loop();
+			return result.loop(WE.CVARS.getValueF("sound"));
 		return 0;
 	}
 	
@@ -162,7 +164,7 @@ public class SoundEngine {
 	public long loop(String identifier, AbstractPosition pos) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			long id = result.loop();
+			long id = result.loop(WE.CVARS.getValueF("sound"));
 			playingLoops.add(new SoundInstance(this, result, id, pos));
 			return id;
 		}
@@ -258,7 +260,7 @@ public class SoundEngine {
 			if (volume > 1)
 				volume = 1;
 		}
-		return volume;
+		return volume*WE.CVARS.getValueF("sound");
 	}
 
 	/**

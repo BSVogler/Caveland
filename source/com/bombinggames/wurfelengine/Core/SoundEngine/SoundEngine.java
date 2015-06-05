@@ -233,10 +233,11 @@ public class SoundEngine {
 	 * disposes the sounds
 	 */
 	public void dispose(){
-		//if you dispose the sounds they do not play if you reload a game
-//		for (Sound s : sounds.values()) {
-//			s.dispose();
-//		}
+		for (Sound s : sounds.values()) {
+			//if you dispose the sounds they do not play if you reload a game. so stop them instead
+			s.stop();
+			//s.dispose();
+		}
 	}
 	
 	/**

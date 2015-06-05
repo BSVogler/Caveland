@@ -216,7 +216,7 @@ public class Console implements CommandsInterface  {
             }
         }
 		
-		if (!textinput.getText().contains("$ "))
+		if (!textinput.getText().startsWith(path+" $ "))
 			setText(path+" $ ");
     }
     
@@ -360,6 +360,14 @@ public class Console implements CommandsInterface  {
 		}
 	}
 	
+	/**
+	 * returns the currently typed command
+	 * @return 
+	 */
+	public String getCurrentCommand(){
+		return textinput.getText().substring(textinput.getText().indexOf("$ ")+2);
+	}
+	
     /**
      * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
@@ -439,8 +447,11 @@ public class Console implements CommandsInterface  {
 				} else {
 					path = path.concat(enteredPath+"/");//then add new path
 				}
-				if (!checkPath())
+				if (!checkPath()) {
 					add("not a valid path");
+					path = "/";
+				}
+				
 			}
 			return true;
         }
@@ -502,12 +513,12 @@ public class Console implements CommandsInterface  {
         }
          
 		//if not a command try setting a cvar
-		CVar cvar = WE.CVARS.get(first);
+		CVar cvar = WE.CVARS.get(path+first);
 		if (cvar!=null) {//if registered
 			if (st.hasMoreTokens()){
 				//set cvar
 				String value = st.nextToken();
-				WE.CVARS.get(first).setValue(value);
+				WE.CVARS.get(path+first).setValue(value);
 				add("Set CVar \""+ first + "\" to "+value+"\n", "System");
 				return true;
 			} else {
@@ -546,8 +557,12 @@ public class Console implements CommandsInterface  {
             }
 			
 			if (keycode == Keys.TAB){
-				if (timeLastTab > 0 && System.currentTimeMillis()-timeLastTab<300)
-					add(WE.CVARS.showAll());
+				if (timeLastTab > 0 && System.currentTimeMillis()-timeLastTab<300){
+					if ("cd ".equals(parentRef.getCurrentCommand()))
+						executeCommand("ls");
+					else
+						add(WE.CVARS.showAll());
+				}
 				timeLastTab = System.currentTimeMillis();
             }
             return true;

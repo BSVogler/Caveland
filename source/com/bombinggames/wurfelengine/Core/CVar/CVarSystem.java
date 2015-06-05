@@ -99,9 +99,15 @@ public class CVarSystem {
 	 */
 	public CVar get(String cvar){
 		int lastSlash = cvar.lastIndexOf('/');
-		if (lastSlash > -1 && internalPath.equalsIgnoreCase( cvar.substring(0, lastSlash) ) )
+		if (lastSlash > 0 && !internalPath.equalsIgnoreCase( cvar.substring(0, lastSlash) ) ) {
+			if (childSystem==null) {
+				childSystem = new CVarSystem(
+					cvar.substring(0, lastSlash),
+					new File(fileSystemPath, cvar.substring(0, lastSlash))
+				);
+			}
 			return childSystem.get(cvar.toLowerCase());
-		else 
+		} else 
 			return cvars.get(cvar.toLowerCase());
 	}
 	
@@ -328,5 +334,9 @@ public class CVarSystem {
 		WE.CVARS.register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new IntCVar(500), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
+	}
+	
+	public String showAll(){
+		return cvars.toString();
 	}
 }

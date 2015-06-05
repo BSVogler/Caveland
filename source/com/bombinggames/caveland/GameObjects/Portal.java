@@ -44,6 +44,7 @@ import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 public class Portal extends AbstractEntity implements Interactable{
 	private static final long serialVersionUID = 1L;
 	private Coordinate target;
+	private boolean entry = true;
 	
 	/**
 	 * teleports to 0 0 0
@@ -71,6 +72,14 @@ public class Portal extends AbstractEntity implements Interactable{
 
 	public void setTarget(Coordinate target) {
 		this.target = target;
+	}
+	
+	/**
+	 * 
+	 * @param enterCave true when used to enter a cave. False when used as an exit
+	 */
+	public void setCaveEntry(boolean enterCave){
+		entry = enterCave;
 	}
 	
 }

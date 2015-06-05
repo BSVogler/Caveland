@@ -52,7 +52,7 @@ import java.util.ArrayList;
  */
 public class Coordinate extends AbstractPosition {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	/**
 	 * The x coordinate. Position from left
 	 */
@@ -68,7 +68,7 @@ public class Coordinate extends AbstractPosition {
 	/**
 	 * gets calculated every time the coordinate is written to.
 	 */
-	private Point cachedPoint;
+	private transient Point cachedPoint;
 
 	/**
 	 * Creates a coordiante refering to the given position on the map.

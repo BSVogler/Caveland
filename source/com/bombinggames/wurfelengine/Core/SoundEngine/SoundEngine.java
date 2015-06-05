@@ -240,9 +240,9 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * calculates the volume of a soundIterator based on the posiiton in the game world
-	 * @param pos
-	 * @return 
+	 * calculates the volume of a soundIterator based on the positon in the game world. Compares to cameras.
+	 * @param pos position in the world.
+	 * @return multiplied with the settings for the volume
 	 */
 	protected float getVolume(AbstractPosition pos){
 		float volume = 1;

@@ -45,7 +45,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private transient static AtlasRegion[][] sprites = new AtlasRegion['z'][65];
 	private transient static Texture textureDiff;
 	private transient static Texture textureNormal;
-
+		
 	/**
 	 * loads the spritesheets for the custom player
 	 */
@@ -130,6 +130,15 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private boolean performingLoadAttack = false;
 	
 	/**
+	 * timer for delaying impact
+	 */
+	private float timeTillImpact; 
+	/**
+	 * save the damage until it is used on the impact
+	 */
+	private byte attackDamage;
+	
+	/**
 	 * creates a new Ejira
 	 */
 	public CustomPlayer() {
@@ -191,17 +200,25 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		inventory.update(dt);
 
 		/*ANIMATION*/
-		//some redundant code from movable to have a custom animation
-		if (playAnimation) {
-			if (action == 'w') {
-				animationCycle += dt * getSpeed() * (float) WE.CVARS.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
-			} else {
-				animationCycle += dt * 5;
+		{
+			//some redundant code from movable to have a custom animation
+			if (playAnimation) {
+				if (action == 'w') {
+					animationCycle += dt * getSpeed() * (float) WE.CVARS.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
+				} else {
+					animationCycle += dt * 5;
+				}
 			}
+			//update regular sprite
+			updateSprite(false);
 		}
-		//update regular sprite
-		updateSprite(false);
 
+		//delay for attack
+		if (timeTillImpact != Float.POSITIVE_INFINITY){
+			timeTillImpact -= dt;
+			if (timeTillImpact <= 0)
+				attackImpact();
+		}
 		
 		//detect button hold
 		if (loadAttack != Float.NEGATIVE_INFINITY) {
@@ -467,18 +484,33 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * @param damage custom damage
 	 */
 	public void attack(byte damage) {
-		performingLoadAttack = false;
-		if (action == 'l') {
-			playAnimation('i');
-		} else {
-			if (loadAttack< LOADATTACKTIME || action != 'i')
-				playAnimation('h');
+		if (timeTillImpact == Float.POSITIVE_INFINITY) {
+			performingLoadAttack = false;
+			if (action == 'l') {
+				playAnimation('i');
+			} else {
+				if (loadAttack< LOADATTACKTIME || action != 'i')
+					playAnimation('h');
+			}
+
+			Controller.getSoundEngine().play("sword");
+			if (isOnGround())
+				addToHor(13f);//add 13 m/s in move direction
+
+			//start timer
+			timeTillImpact = WE.CVARS.getValueF("PlayerTimeTillImpact");
+			attackDamage = damage;
+
+			if (!usedLoadAttackInAir){
+				//set to 0 to indicate that it is active
+				loadAttack = 0f;
+			}
 		}
-
-		Controller.getSoundEngine().play("sword");
-		if (isOnGround())
-			addToHor(13f);//add 13 m/s in move direction
-
+	}
+	
+	private void attackImpact(){
+		timeTillImpact = Float.POSITIVE_INFINITY;
+		
 		//from current position go 80px in aiming direction and get entities 80px around there
 		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
 		entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
@@ -486,7 +518,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		for (AbstractEntity entity : entities) {
 			if (entity instanceof MovableEntity && entity != this) {
 				MovableEntity movable = (MovableEntity) entity;
-				movable.damage(damage);
+				movable.damage(attackDamage);
 				getCamera().shake(20, 50);
 				movable.setMovement(
 					new Vector3(
@@ -507,7 +539,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			byte id = aimCoord.getBlock().getId();
 			if (!CavelandBlocks.hardMaterial( id )){
 				//destructible by hand
-				if (aimCoord.damage(damage)) {
+				if (aimCoord.damage(attackDamage)) {
 					if (id == 72)
 						Controller.getSoundEngine().play("treehit");
 					else
@@ -529,11 +561,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				);
 				dirt.setRotation((float) Math.random()*360);
 			}
-		}
-
-		if (!usedLoadAttackInAir){
-			//set to 0 to indicate that it is active
-			loadAttack = 0f;
 		}
 	}
 

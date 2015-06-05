@@ -13,6 +13,7 @@ import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.Core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
+import com.bombinggames.wurfelengine.Core.CVar.FloatCVar;
 import com.bombinggames.wurfelengine.Core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
@@ -46,6 +47,7 @@ public class Caveland {
 		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//register map cvars
 		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());

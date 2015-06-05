@@ -318,7 +318,7 @@ public class Console implements CommandsInterface  {
 	 */
 	public void autoSuggestion(){
 		//get until cursor position
-		ArrayList<String> suggestions = WE.CVARS.getSuggestions(textinput.getText().substring(0, textinput.getCursorPosition()));
+		ArrayList<String> suggestions = WE.CVARS.getSuggestions(getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3));
 		
 		//if at end start all overs
 		if (nextSuggestionNo >= suggestions.size()){

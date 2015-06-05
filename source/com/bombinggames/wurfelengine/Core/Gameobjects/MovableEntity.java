@@ -734,7 +734,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * performs a step. Plays a sound.
 	 */
 	public void step() {
-		Controller.getSoundEngine().play(stepSound1Grass, 0.5f,(float) (0.9f+Math.random()/5f), (float) (Math.random()-1/2f));
+		Controller.getSoundEngine().play(
+			stepSound1Grass,
+			0.3f,
+			(float) (0.9f+Math.random()/5f),
+			(float) (Math.random()-1/2f)
+		);
 		stepSoundPlayedInCiclePhase = true;
 	}
 }

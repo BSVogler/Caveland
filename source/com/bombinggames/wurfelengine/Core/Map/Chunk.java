@@ -106,9 +106,9 @@ public class Chunk {
 		this.map = map;
 		
 		//set chunk dimensions
-		blocksX = map.getCVars().getValueI("chunkBlocksX");
-		blocksY = map.getCVars().getValueI("chunkBlocksY");
-		blocksZ = map.getCVars().getValueI("chunkBlocksZ");
+		blocksX = WE.CVARS.getChildSystem().getValueI("chunkBlocksX");
+		blocksY = WE.CVARS.getChildSystem().getValueI("chunkBlocksY");
+		blocksZ = WE.CVARS.getChildSystem().getValueI("chunkBlocksZ");
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
 		data = new CoreData[blocksX][blocksY][blocksZ];

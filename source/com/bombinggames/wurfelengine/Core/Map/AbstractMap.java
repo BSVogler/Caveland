@@ -103,12 +103,6 @@ public abstract class AbstractMap implements Cloneable {
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
-	/**
-	 * cvar system for the map. SHould in most cases read only because they are
-	 * not save file independant.
-	 */
-	private CVarSystem cvars;
-	private CVarSystem saveCVars;
 
 	/**
 	 *
@@ -120,13 +114,14 @@ public abstract class AbstractMap implements Cloneable {
 	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
 		this.directory = directory;
 		this.generator = generator;
-		cvars = new CVarSystem(new File(directory + "/meta.wecvar"));
+		CVarSystem cvars = new CVarSystem(directory.getName(), new File(directory + "/meta.wecvar"));
 		//engine cvar registration
 		cvars.register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
 		cvars.register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
 		cvars.register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
 		cvars.register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
-
+		WE.CVARS.setChildSystem(cvars);
+		
 		//custom registration of cvars
 		if (customRegistration != null) {
 			customRegistration.register(cvars);
@@ -137,8 +132,7 @@ public abstract class AbstractMap implements Cloneable {
 		if (!hasSaveSlot(saveSlot)) {
 			createSaveSlot(saveSlot);
 		}
-		activeSaveSlot = saveSlot;
-		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
+		useSaveSlot(saveSlot);
 	}
 
 	/**
@@ -161,16 +155,6 @@ public abstract class AbstractMap implements Cloneable {
 		getEntitys().removeIf(
 			(AbstractEntity entity) -> !entity.isSpawned()
 		);
-	}
-
-	/**
-	 * should be set if you want to have custom. Loads cvars from file.
-	 *
-	 * @param cvarSystem
-	 */
-	public void setCVarSystem(CVarSystem cvarSystem) {
-		cvars = cvarSystem;
-		cvars.load();
 	}
 
 	/**
@@ -538,7 +522,12 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
+		WE.CVARS.getChildSystem().setChildSystem(
+			new CVarSystem(
+				WE.CVARS.getChildSystem().getInternalPath()+"save" + activeSaveSlot,
+				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
+			)
+		);
 	}
 
 	/**
@@ -549,7 +538,12 @@ public abstract class AbstractMap implements Cloneable {
 	public int newSaveSlot() {
 		activeSaveSlot = getSavesCount();
 		createSaveSlot(activeSaveSlot);
-		saveCVars = new CVarSystem(new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"));
+		WE.CVARS.getChildSystem().setChildSystem(
+			new CVarSystem(
+				WE.CVARS.getChildSystem().getInternalPath()+"save" + activeSaveSlot,
+				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
+			)
+		);
 		return activeSaveSlot;
 	}
 
@@ -575,25 +569,6 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public int getSavesCount() {
 		return getSavesCount(directory);
-	}
-
-	/**
-	 * in regular case only read operations should be performed on the cvars in
-	 * here
-	 *
-	 * @return
-	 */
-	public CVarSystem getCVars() {
-		return cvars;
-	}
-
-	/**
-	 * save dependant Cvars. They are not loaded from disk unitl you do that.
-	 *
-	 * @return
-	 */
-	public CVarSystem getSaveCVars() {
-		return saveCVars;
 	}
 
 	/**

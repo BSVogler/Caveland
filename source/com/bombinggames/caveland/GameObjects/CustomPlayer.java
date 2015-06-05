@@ -741,9 +741,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	@Override
 	public void dispose() {
 		Coordinate coord = getPosition().toCoord();
-		Controller.getMap().getSaveCVars().get("PlayerLastSaveX").setValue(coord.getX());
-		Controller.getMap().getSaveCVars().get("PlayerLastSaveY").setValue(coord.getY());
-		Controller.getMap().getSaveCVars().get("PlayerLastSaveZ").setValue(coord.getZ());
+		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
+		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
+		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
 		super.dispose();
 	}
 

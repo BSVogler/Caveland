@@ -31,17 +31,17 @@
 
 package com.bombinggames.wurfelengine.Core.Map;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.Core.CVar.StringCVar;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.WorkingDirectory;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import java.io.File;
 
 /**
@@ -61,6 +61,7 @@ public class MapButton extends TextButton {
         setName(fileName);
         setSize(150, 50);
 		CVarSystem cvars = new CVarSystem(
+			"/"+WorkingDirectory.getMapsFolder()+"/",
 			new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/meta.wecvar")
 		);
 		cvars.register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);

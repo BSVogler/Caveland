@@ -52,24 +52,57 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class CVarSystem {
-		/**
+	/**
 	 * true if currently reading. Prevents saving
 	 */
 	private boolean reading;
-	private File path;
-	/**global list of all CVars**/
+	/**
+	 * path of the cvar file
+	 */
+	private final File fileSystemPath;
+	private final String internalPath;
+	/**list of all CVars**/
 	private HashMap<String, CVar> cvars = new HashMap<>(50);
+	
+	private CVarSystem childSystem;//first level has map, second level has save
 
 	/**
 	 * you have to manually call {@link #load} to load from path.
+	 * @param internalPath
 	 * @param path path to the .cvar file
 	 */
-	public CVarSystem(File path) {
-		this.path = path;
+	public CVarSystem(String internalPath, File path) {
+		this.internalPath = internalPath;
+		this.fileSystemPath = path;
+	}
+	
+	public void setChildSystem(CVarSystem child){
+		childSystem=child;
 	}
 
+	/**
+	 * at the second level is the map cvars. third level is saves
+	 * @return 
+	 */
+	public CVarSystem getChildSystem() {
+		return childSystem;
+	}
+
+	public String getInternalPath() {
+		return internalPath;
+	}
+	
+	/**
+	 * 
+	 * @param cvar can include a path
+	 * @return 
+	 */
 	public CVar get(String cvar){
-		return cvars.get(cvar.toLowerCase());
+		int lastSlash = cvar.lastIndexOf('/');
+		if (lastSlash > -1 && internalPath.equalsIgnoreCase( cvar.substring(0, lastSlash) ) )
+			return childSystem.get(cvar.toLowerCase());
+		else 
+			return cvars.get(cvar.toLowerCase());
 	}
 	
 	public boolean getValueB(String cvar){
@@ -110,7 +143,7 @@ public class CVarSystem {
 	 */
 	public void load(){
 		reading = true;
-		FileHandle sourceFile = new FileHandle(path);
+		FileHandle sourceFile = new FileHandle(fileSystemPath);
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {
 			try {
 				BufferedReader reader = sourceFile.reader(300);
@@ -132,11 +165,11 @@ public class CVarSystem {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else {
-			System.out.println("Custom CVar file "+path+" not found. Creating new one at the same place.");
+			System.out.println("Custom CVar file "+fileSystemPath+" not found. Creating new one at the same place.");
 			try {
-				path.createNewFile();
+				fileSystemPath.createNewFile();
 			} catch (IOException ex) {
-				System.out.println("Could not create file at "+path+".");
+				System.out.println("Could not create file at "+fileSystemPath+".");
 			}
 		}
 		reading = false;
@@ -156,7 +189,7 @@ public class CVarSystem {
 	 */
 	public void save(){
 		if (!reading) {
-			Writer writer = Gdx.files.absolute(path.getAbsolutePath()).writer(false);
+			Writer writer = Gdx.files.absolute(fileSystemPath.getAbsolutePath()).writer(false);
 
 			Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 			while (it.hasNext()) {

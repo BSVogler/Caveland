@@ -74,7 +74,7 @@ public class WE {
 	/**
 	 *The CVar system used by the engine.
 	 */
-	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.wecvars"));
+	public static final CVarSystem CVARS = new CVarSystem("/", new File(workingDirectory+"/engine.wecvars"));
     private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;

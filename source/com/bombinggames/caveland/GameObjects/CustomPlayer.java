@@ -517,12 +517,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				}
 			} else {
 				//indestructible by hand
-					Controller.getSoundEngine().play("impact");//todo different sound
-					getCamera().shake(20, 50);
-					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy());
-					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-					dirt.setRotation((float) Math.random()*360);
+				Controller.getSoundEngine().play("impact");//todo different sound
+				Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy());
 				dirt.setTTL(50);
+				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+				dirt.setRotation((float) Math.random()*360);
 			}
 		}
 

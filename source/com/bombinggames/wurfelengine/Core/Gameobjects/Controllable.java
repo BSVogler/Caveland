@@ -30,8 +30,8 @@
  */
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.math.Vector2;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *
@@ -51,7 +51,7 @@ public class Controllable extends MovableEntity {
 	}
 	
    /**
-     * Lets the player walk.
+     * Lets the object walk. Replaces the horizontal movement.
      * @param up move up?
      * @param down move down?
      * @param left move left?

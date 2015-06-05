@@ -504,10 +504,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		//check if the player can damage the blocks
 		if (aimCoord.getBlock() != null) {
 			getCamera().shake(20, 50);
-			if (!CavelandBlocks.hardMaterial( aimCoord.getBlock().getId() )){
+			byte id = aimCoord.getBlock().getId();
+			if (!CavelandBlocks.hardMaterial( id )){
 				//destructible by hand
 				if (aimCoord.damage(damage)) {
-					if (aimCoord.getBlock().getId() == 72)
+					if (id == 72)
 						Controller.getSoundEngine().play("treehit");
 					else
 						Controller.getSoundEngine().play("impact");

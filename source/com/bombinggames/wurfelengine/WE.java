@@ -503,8 +503,8 @@ public class WE {
 
 			console = new Console(
 				engineView.getSkin(),
-				Gdx.graphics.getWidth()/2,
-				Gdx.graphics.getHeight()/4
+				50,
+				Gdx.graphics.getHeight()-700
 			);
 						
 			Gdx.app.debug("WE","Initializing main menu...");

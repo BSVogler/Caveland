@@ -119,7 +119,7 @@ public class Console implements CommandsInterface  {
         this.messages = new Stack<>();
 		
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
-		log.setBounds(xPos-200, yPos+20, 400, 400);
+		log.setBounds(xPos, yPos+52, 750, 550);
 		log.setFocusTraversal(false);
 		//log.setAlignment(Align.top, Align.left);
 		//log.setWrap(true);
@@ -128,10 +128,10 @@ public class Console implements CommandsInterface  {
 		//log.setStyle(customStyle);
 		log.setVisible(false);
 		WE.getEngineView().getStage().addActor(log);//add it to the global stage
-        textinput = new TextField("", skin);
-        textinput.setBounds(xPos-200, yPos, 400, 50);
+        textinput = new TextField("$", skin);
+        textinput.setBounds(xPos, yPos, 750, 50);
         textinput.setBlinkTime(0.3f);
-        textinput.setCursorPosition(0);
+		clearCommandLine();
         textinput.setVisible(false);
         
         WE.getEngineView().getStage().addActor(textinput);//add it to the global stage
@@ -158,7 +158,7 @@ public class Console implements CommandsInterface  {
     }
     
     /**
-     * 
+     * Adds a message to the console.
      * @param message
      * @param sender
      */
@@ -170,7 +170,7 @@ public class Console implements CommandsInterface  {
     }
     
     /**
-     * 
+     * Adds a message to the console.
      * @param message
      * @param sender
      * @param importance
@@ -183,7 +183,7 @@ public class Console implements CommandsInterface  {
     }
     
     /**
-     * Updates the Message System.
+     * Updates the console.
      * @param dt time in ms
      */
     public void update(float dt){
@@ -211,7 +211,10 @@ public class Console implements CommandsInterface  {
                 if (m.getImportance() > 0)
                     m.setImportance(m.getImportance()-1);
             }
-         }
+        }
+		
+		if (textinput.getText().length()<=0)
+			setText("$");
     }
     
     /**
@@ -225,7 +228,7 @@ public class Console implements CommandsInterface  {
                 enter();
             } else {
                 if (active && !textinput.isVisible()){//window should be opened?
-                    textinput.setText("");//clear if openend
+                    clearCommandLine();//clear if openend
                 }
             }
         }
@@ -253,6 +256,11 @@ public class Console implements CommandsInterface  {
             add("Failed executing command.\n", "System");    
         setText("");
     }
+	
+	public void clearCommandLine(){
+		textinput.setText("$");
+		textinput.setCursorPosition(1);
+	}
     
     /**
      * Is the window open?
@@ -475,6 +483,10 @@ public class Console implements CommandsInterface  {
             }
 			if (keycode == Keys.DOWN){
                 parentRef.setText("");
+            }
+			
+			if (keycode == Keys.BACKSPACE && parentRef.textinput.getCursorPosition()<=1){
+                parentRef.setText("$$");
             }
 			
             if (keycode == Keys.ENTER){

@@ -3,10 +3,10 @@ package com.bombinggames.caveland;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.Bird;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.Flint;
 import com.bombinggames.caveland.GameObjects.MineCart;
+import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
@@ -60,9 +60,9 @@ public class Caveland {
 		//register entities
 		AbstractEntity.registerEntity("Emitter", SmokeEmitter.class);
 		AbstractEntity.registerEntity("Flint", Flint.class);
-		AbstractEntity.registerEntity("Lore", MineCart.class);
+		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
-		AbstractEntity.registerEntity("CustomPlayer", CustomPlayer.class);
+		AbstractEntity.registerEntity("Portal", Portal.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
 		AbstractEntity.registerEntity("Bird", Bird.class);

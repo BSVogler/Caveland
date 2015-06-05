@@ -31,23 +31,39 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class Portal extends AbstractEntity implements Interactable{
-
-	public Portal() {
+	private static final long serialVersionUID = 1L;
+	private Coordinate target;
+	
+	/**
+	 * teleports to 0 0 0
+	 */
+	public Portal(){
 		super((byte) 70);
+		this.target = new Coordinate(Controller.getMap(), 0, 0, 0);
 	}
-
+	
+	/**
+	 * teleport to custom aim
+	 * @param target 
+	 */
+	public Portal(Coordinate target) {
+		this();
+		this.target = target;
+	}
 	
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
-		
+		actor.setPosition(target.cpy());
 	}
 	
 }

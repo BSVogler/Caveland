@@ -359,6 +359,15 @@ public class Console implements CommandsInterface  {
         StringTokenizer st = new StringTokenizer(command, " ");
 		String first = st.nextToken().toLowerCase();
         switch (first) {
+			case "ls":
+				File mapsFolder = WorkingDirectory.getMapsFolder();
+                for (final File fileEntry : mapsFolder.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        add(fileEntry.getName()+"\n");
+                    }
+                }
+				return true;
+				
 			case "editor":
                 WE.loadEditor(true);
                 return true;

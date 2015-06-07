@@ -34,7 +34,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.WE;
 import java.util.ArrayList;
@@ -195,7 +195,7 @@ public class Coordinate extends AbstractPosition {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(CoreData block) {
+	public void setBlock(Block block) {
 		if (block!= null) {
 			Controller.getMap().setBlock(this, block);
 		} else {
@@ -252,7 +252,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public CoreData getBlock() {
+	public Block getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getGroundBlock();
 		} else if (z >= Chunk.getBlocksZ()){
@@ -333,31 +333,31 @@ public class Coordinate extends AbstractPosition {
 	public static int getNeighbourSide(float x, float y) {
 		//modulo
 		if (y < 0) {
-			y += CoreData.GAME_DIAGLENGTH;
+			y += Block.GAME_DIAGLENGTH;
 		}
 		if (x < 0) {
-			x += CoreData.GAME_DIAGLENGTH;
+			x += Block.GAME_DIAGLENGTH;
 		}
 
 		int result = 8;//standard result
-		if (x + y <= CoreData.GAME_DIAGLENGTH2) {
+		if (x + y <= Block.GAME_DIAGLENGTH2) {
 			result = 7;
 		}
-		if (x - y >= CoreData.GAME_DIAGLENGTH2) {
+		if (x - y >= Block.GAME_DIAGLENGTH2) {
 			if (result == 7) {
 				result = 0;
 			} else {
 				result = 1;
 			}
 		}
-		if (x + y >= 3 * CoreData.GAME_DIAGLENGTH2) {
+		if (x + y >= 3 * Block.GAME_DIAGLENGTH2) {
 			if (result == 1) {
 				result = 2;
 			} else {
 				result = 3;
 			}
 		}
-		if (-x + y >= CoreData.GAME_DIAGLENGTH2) {
+		if (-x + y >= Block.GAME_DIAGLENGTH2) {
 			if (result == 3) {
 				result = 4;
 			} else if (result == 7) {
@@ -427,9 +427,9 @@ public class Coordinate extends AbstractPosition {
 	private void refreshCachedPoint() {
 		cachedPoint = new Point(
 			map,
-			x * CoreData.GAME_DIAGLENGTH + (y % 2 != 0 ? CoreData.VIEW_WIDTH2 : 0),
-			y * CoreData.GAME_DIAGLENGTH2,
-			z * CoreData.GAME_EDGELENGTH
+			x * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
+			y * Block.GAME_DIAGLENGTH2,
+			z * Block.GAME_EDGELENGTH
 		);
 	}
 
@@ -464,14 +464,14 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public int getViewSpcX(GameView view) {
-		return x * CoreData.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * Block.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (y % 2 != 0 ? CoreData.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY(GameView view) {
-		return y * CoreData.VIEW_DEPTH2 *
+		return y * Block.VIEW_DEPTH2 *
 			(
 				view.getOrientation() == 0
 					? -1
@@ -480,14 +480,14 @@ public class Coordinate extends AbstractPosition {
 						: 0
 					)
 			)
-			+ z * CoreData.VIEW_HEIGHT;
+			+ z * Block.VIEW_HEIGHT;
 	}
 
 	/**
 	 * destroys the block at the current position, replacing by air.
 	 */
 	public void destroy() {
-		setBlock((CoreData) null);
+		setBlock((Block) null);
 	}
 		
 	/**
@@ -497,11 +497,11 @@ public class Coordinate extends AbstractPosition {
 	 * @return
 	 */
 	public boolean damage(byte amount) {
-		CoreData block = getBlock();
+		Block block = getBlock();
 		if (block != null) {
 			block.setHealth(this, (byte) (block.getHealth() - amount));
 			if (block.getHealth() <= 0) {
-				setBlock((CoreData) null);
+				setBlock((Block) null);
 			}
 			return true;
 		}

@@ -6,7 +6,7 @@ import com.bombinggames.wurfelengine.Core.CVar.CVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.Core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.MemoryMapIterator;
@@ -99,7 +99,7 @@ public abstract class AbstractMap implements Cloneable {
 	private boolean modified = true;
 	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
-	private final CoreData groundBlock = CoreData.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
+	private final Block groundBlock = Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
@@ -182,7 +182,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(getBlocksZ() * CoreData.GAME_EDGELENGTH / 2);
+		return getCenter(getBlocksZ() * Block.GAME_EDGELENGTH / 2);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return amount of bluck multiplied by the size in game space.
 	 */
 	public int getGameWidth() {
-		return getBlocksX() * CoreData.GAME_DIAGLENGTH;
+		return getBlocksX() * Block.GAME_DIAGLENGTH;
 	}
 
 	/**
@@ -224,7 +224,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public int getGameDepth() {
-		return getBlocksY() * CoreData.GAME_DIAGLENGTH2;
+		return getBlocksY() * Block.GAME_DIAGLENGTH2;
 	}
 
 	/**
@@ -233,7 +233,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public int getGameHeight() {
-		return getBlocksZ() * CoreData.GAME_EDGELENGTH;
+		return getBlocksZ() * Block.GAME_EDGELENGTH;
 	}
 
 	/**
@@ -314,7 +314,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param coord
 	 * @return
 	 */
-	public abstract CoreData getBlock(final Coordinate coord);
+	public abstract Block getBlock(final Coordinate coord);
 
 	/**
 	 * Returns a block without checking the parameters first. Good for debugging
@@ -325,13 +325,13 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-	public abstract CoreData getBlock(final int x, final int y, final int z);
+	public abstract Block getBlock(final int x, final int y, final int z);
 
 	/**
 	 *
 	 * @return
 	 */
-	public CoreData getGroundBlock() {
+	public Block getGroundBlock() {
 		return groundBlock;
 	}
 
@@ -409,7 +409,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @see
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
-	public abstract void setBlock(Coordinate coord, CoreData block);
+	public abstract void setBlock(Coordinate coord, Block block);
 
 	/**
 	 * Set the speed of the world.

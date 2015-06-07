@@ -17,6 +17,12 @@ public interface HasID {
      * @return in range [0;{@link AbstractGameObject#VALUESNUM}]. Is -1 if about to destroyed.
      */
 	public byte getValue();
+	
+	/**
+     * Set the value.
+     * @param value in range [0;{@link AbstractGameObject#VALUESNUM}]. Is -1 if about to destroyed.
+     */
+	public void setValue(byte value);
 
 	/**
 	 * How bright is the object?

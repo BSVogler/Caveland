@@ -28,10 +28,10 @@
  */
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
-import com.badlogic.gdx.graphics.Color;
 
 /**
  *
@@ -62,7 +62,7 @@ public class EntityShadow extends AbstractEntity {
 		else {
 			//find height of shadow surface
 			Coordinate newHeight = character.getPosition().toCoord();//start at same height
-			CoreData block = newHeight.getBlock();
+			Block block = newHeight.getBlock();
 			while (
 				newHeight.getZ() > 0
 				&& (block == null || block.isTransparent())
@@ -76,7 +76,7 @@ public class EntityShadow extends AbstractEntity {
 			getPosition().setZ(newHeight.toPoint().getZ());
 		}
 		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/CoreData.GAME_EDGELENGTH)
+			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
 		);
     }
 

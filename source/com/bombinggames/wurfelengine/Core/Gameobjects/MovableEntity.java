@@ -34,8 +34,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_DIAGLENGTH2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_DIAGLENGTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.Core.Map.Point;
 import com.bombinggames.wurfelengine.WE;
 
@@ -253,7 +253,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
 				}
 
-				CoreData block = getPosition().getBlock();
+				Block block = getPosition().getBlock();
 				if (!inliquid && block != null && block.isLiquid())//if enterin water
 					if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
 
@@ -414,9 +414,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos-CoreData.VIEW_WIDTH2,
-				yPos+CoreData.VIEW_HEIGHT,
-				getHealth()*CoreData.VIEW_WIDTH/1000,
+				xPos-Block.VIEW_WIDTH2,
+				yPos+Block.VIEW_HEIGHT,
+				getHealth()*Block.VIEW_WIDTH/1000,
 				5
 			);
 			sh.end();
@@ -436,7 +436,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
         //check for movement in y
         //top corner
-		CoreData block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
+		Block block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
         if (block!=null && block.isObstacle())
             colission = true;
         //bottom corner
@@ -680,7 +680,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (getPosition().getZ() > getPosition().getMap().getGameHeight()) return false;
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
-				CoreData block = getPosition().getBlock();
+				Block block = getPosition().getBlock();
                 boolean colission =  (block != null && block.isObstacle()) || horizontalColission(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);//reverse
                 

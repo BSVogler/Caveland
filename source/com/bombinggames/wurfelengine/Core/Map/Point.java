@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import java.util.ArrayList;
 
 /**
@@ -98,7 +98,7 @@ public class Point extends AbstractPosition {
      * @return in grid coordinates.
      */
     public float getZGrid() {
-        return (int) (z/CoreData.GAME_EDGELENGTH);
+        return (int) (z/Block.GAME_EDGELENGTH);
     }
 
     /**
@@ -119,9 +119,9 @@ public class Point extends AbstractPosition {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
 			map,	
-            (int) Math.floor(getX() / (float) CoreData.GAME_DIAGLENGTH),
-            (int) Math.floor(getY() / (float) CoreData.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
-			(int) Math.floor(z/CoreData.GAME_EDGELENGTH)
+            (int) Math.floor(getX() / (float) Block.GAME_DIAGLENGTH),
+            (int) Math.floor(getY() / (float) Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
+			(int) Math.floor(z/Block.GAME_EDGELENGTH)
 		);
 //		//clamp at top border
 //		if (coords.getZ() >= Chunk.getBlocksZ())
@@ -129,10 +129,8 @@ public class Point extends AbstractPosition {
        
 		//return coords;
         //find the specific coordinate (detail)
-        return coords.goToNeighbour(
-            Coordinate.getNeighbourSide(
-                getX() % CoreData.GAME_DIAGLENGTH,
-                getY() % CoreData.GAME_DIAGLENGTH
+        return coords.goToNeighbour(Coordinate.getNeighbourSide(getX() % Block.GAME_DIAGLENGTH,
+                getY() % Block.GAME_DIAGLENGTH
             )
         );
     }
@@ -183,7 +181,7 @@ public class Point extends AbstractPosition {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ(){
-		return getZ() - getZGrid()*CoreData.GAME_EDGELENGTH;
+		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
 	}
 	
 	/**
@@ -199,7 +197,7 @@ public class Point extends AbstractPosition {
 	}
 	
     @Override
-    public CoreData getBlock() {
+    public Block getBlock() {
 		if (z >= Chunk.getGameHeight())
 			return null;
         return Controller.getMap().getBlock(toCoord());
@@ -229,7 +227,7 @@ public class Point extends AbstractPosition {
 				  )
 			)
 			
-            + (int) (getZ() * CoreData.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
+            + (int) (getZ() * Block.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
 			);
     }
     
@@ -388,14 +386,14 @@ public class Point extends AbstractPosition {
 				/** Point of intersection */
                 Point isectP = new Point(map, curX, curY, curZ);
                 if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
-				CoreData block = isectP.getBlock();
+				Block block = isectP.getBlock();
                 //intersect?
                 if ((
 					camera==null
 					||
 					(
 						(
-							curZ < camera.getZRenderingLimit()*CoreData.GAME_EDGELENGTH
+							curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH
 							&& !camera.isClipped(isectP.toCoord())
 						)
 					)
@@ -406,10 +404,10 @@ public class Point extends AbstractPosition {
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
                     if (
-                        (CoreData.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? CoreData.GAME_DIAGLENGTH2 : 0))
-                        % CoreData.GAME_DIAGLENGTH)) % CoreData.GAME_DIAGLENGTH
+                        (Block.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
+                        % Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
                         <
-                        CoreData.GAME_DIAGLENGTH2
+                        Block.GAME_DIAGLENGTH2
                     ) {
 						normal.y = 0;
                         normal.x = -1;

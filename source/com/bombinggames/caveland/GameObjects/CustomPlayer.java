@@ -16,10 +16,10 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Controllable;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_HEIGHT2;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
@@ -152,14 +152,14 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/Caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
-		setDimensionZ(CoreData.GAME_EDGELENGTH);
+		setDimensionZ(Block.GAME_EDGELENGTH);
 		
 		emitter = new SmokeEmitter();
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setHidden(true);
 		SuperGlue connection1 = new SuperGlue(this, emitter);
-		connection1.setOffset(new Vector3(-20, 0, CoreData.GAME_EDGELENGTH2));
+		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
 		addChild(connection1);
 		
 		emitter2 = new SmokeEmitter();
@@ -167,7 +167,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter2.setParticleTTL(800);
 		emitter2.setHidden(true);
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
-		conection2.setOffset(new Vector3(20, 0, CoreData.GAME_EDGELENGTH2));
+		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
 		addChild(conection2);
 		setSaveToDisk(false);
 	}
@@ -265,12 +265,12 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		
 
 		//get loren
-		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(CoreData.GAME_EDGELENGTH2, MineCart.class);
+		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
 
 		if (!nearbyLoren.isEmpty()) {
 			MineCart lore = nearbyLoren.get(0);
 			if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
-				if (pos.getZ() > (lore.getPosition().getZ() + CoreData.GAME_EDGELENGTH2/2)) {//enter chu chu
+				if (pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)) {//enter chu chu
 					lore.setPassanger(this);
 				}
 			}
@@ -317,7 +317,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 		
 		//check interactable blocks
-		CoreData blockBelow = getPosition().toCoord().getBlock();
+		Block blockBelow = getPosition().toCoord().getBlock();
 		if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
 			//todo only overwrite if block is nearer
 			nearestInteractableBlock = getPosition().toCoord();
@@ -517,57 +517,59 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	}
 	
 	private void attackImpact(){
-		timeTillImpact = Float.POSITIVE_INFINITY;
-		
-		//from current position go 80px in aiming direction and get entities 80px around there
-		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-		entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
-		//check hit
-		for (AbstractEntity entity : entities) {
-			if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
-				MovableEntity movable = (MovableEntity) entity;
-				movable.damage(attackDamage);
-				getCamera().shake(20, 50);
-				movable.setMovement(
-					new Vector3(
-						(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
-						(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
-						(float) Math.random()
-					)
-				);
-				movable.setSpeedHorizontal(2);
-			}
-		}
+		if (isSpawned()) {
+			timeTillImpact = Float.POSITIVE_INFINITY;
 
-		//damage blocks
-		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
-		//check if the player can damage the blocks
-		if (aimCoord.getBlock() != null) {
-			getCamera().shake(20, 50);
-			byte id = aimCoord.getBlock().getId();
-			if (!CavelandBlocks.hardMaterial( id )){
-				//destructible by hand
-				if (aimCoord.damage(attackDamage)) {
-					if (id == 72)
-						Controller.getSoundEngine().play("treehit");
-					else
-						Controller.getSoundEngine().play("impact");
-					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
-					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+			//from current position go 80px in aiming direction and get entities 80px around there
+			ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
+			entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+			//check hit
+			for (AbstractEntity entity : entities) {
+				if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
+					MovableEntity movable = (MovableEntity) entity;
+					movable.damage(attackDamage);
+					getCamera().shake(20, 50);
+					movable.setMovement(
+						new Vector3(
+							(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
+							(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
+							(float) Math.random()
+						)
+					);
+					movable.setSpeedHorizontal(2);
+				}
+			}
+
+			//damage blocks
+			Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
+			//check if the player can damage the blocks
+			if (aimCoord.getBlock() != null) {
+				getCamera().shake(20, 50);
+				byte id = aimCoord.getBlock().getId();
+				if (!CavelandBlocks.hardMaterial( id )){
+					//destructible by hand
+					if (aimCoord.damage(attackDamage)) {
+						if (id == 72)
+							Controller.getSoundEngine().play("treehit");
+						else
+							Controller.getSoundEngine().play("impact");
+						MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
+						dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+						dirt.setRotation((float) Math.random()*360);
+					}
+				} else {
+					//indestructible by hand
+					Controller.getSoundEngine().play("impact");//todo different sound
+					//spawn particle
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy().addVector(0, 0, 30));
+					dirt.setTTL(400);
+					dirt.addMovement(new Vector3(
+						(float) (Math.random()-0.5f)*10.0f,
+						(float) (Math.random()-0.5f)*10.0f,
+						(float) Math.random()*2f)
+					);
 					dirt.setRotation((float) Math.random()*360);
 				}
-			} else {
-				//indestructible by hand
-				Controller.getSoundEngine().play("impact");//todo different sound
-				//spawn particle
-				Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy().addVector(0, 0, 30));
-				dirt.setTTL(400);
-				dirt.addMovement(new Vector3(
-					(float) (Math.random()-0.5f)*10.0f,
-					(float) (Math.random()-0.5f)*10.0f,
-					(float) Math.random()*2f)
-				);
-				dirt.setRotation((float) Math.random()*360);
 			}
 		}
 	}
@@ -729,7 +731,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		).spawn(getPosition().cpy());
 		dust.setType(Particle.ParticleType.SMOKE);
 		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
-		dust.addMovement(new Vector3(0, 0, CoreData.GAME_EDGELENGTH / 500f));
+		dust.addMovement(new Vector3(0, 0, Block.GAME_EDGELENGTH / 500f));
 	}
 
 	@Override
@@ -894,14 +896,13 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	public void showButton(byte buttonID, AbstractPosition pos) {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(
-				pos.toPoint().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH)
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().cpy().addVector(0, 0, Block.GAME_EDGELENGTH)
 			);
 			addChild(interactButton);
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {
-			interactButton.setPosition(pos.toPoint().cpy().addVector(0, 0, CoreData.GAME_EDGELENGTH));
+			interactButton.setPosition(pos.toPoint().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
 		}
 	}
 

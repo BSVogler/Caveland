@@ -34,7 +34,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.WE;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +53,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 			if (instance.getId()>0) {
 				//if bigger then default sprite size
 				int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
-				int regularHeight = CoreData.VIEW_HEIGHT+CoreData.VIEW_DEPTH;
+				int regularHeight = Block.VIEW_HEIGHT+Block.VIEW_DEPTH;
 				if (
 					spiteHeight
 					> regularHeight
@@ -93,7 +93,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getRightWidth() {
-		return CoreData.VIEW_WIDTH;
+		return Block.VIEW_WIDTH;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getTopHeight() {
-		return CoreData.VIEW_HEIGHT2 + CoreData.VIEW_DEPTH2;
+		return Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH2;
 	}
 
 	/**
@@ -111,6 +111,6 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getBottomHeight() {
-		return CoreData.VIEW_HEIGHT2 + CoreData.VIEW_DEPTH2;
+		return Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH2;
 	}
 }

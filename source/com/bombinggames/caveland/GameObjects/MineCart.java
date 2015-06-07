@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH2;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH2;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.Core.Map.Point;
@@ -48,7 +48,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
+		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
 		addChild(front);
 		return this;
@@ -60,7 +60,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		
 		if (getPosition().isInMemoryAreaHorizontal()) {
 			Point pos = getPosition();
-			CoreData block = pos.getBlock();
+			Block block = pos.getBlock();
 
 			//on tracks?
 			if (block!=null && block.getId() == 55) {
@@ -326,7 +326,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
 		front = new SimpleEntity((byte) 42,(byte) 1);
-		front.spawn(getPosition().cpy().addVector(0, CoreData.GAME_DIAGLENGTH2, 0));//the front is located in front
+		front.spawn(getPosition().cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
 	}
 

@@ -7,7 +7,7 @@ import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
@@ -20,7 +20,7 @@ import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 public class CavelandBlocks implements CustomBlocks {
 
 @Override
-public RenderBlock toRenderBlock(CoreData data) {
+public RenderBlock toRenderBlock(Block data) {
 	RenderBlock block;
 	byte id = data.getId();
 	byte value = data.getValue();
@@ -155,7 +155,7 @@ public RenderBlock toRenderBlock(CoreData data) {
 	
 	
 	public static void interact(Coordinate coord, AbstractEntity actor){
-		CoreData block = coord.getBlock();
+		Block block = coord.getBlock();
 		if (block!=null) {
 			byte id = coord.getBlock().getId();
 			if (id==11) {//construction site

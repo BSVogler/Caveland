@@ -94,4 +94,9 @@ public class Controllable extends MovableEntity {
 		jump(3, true);
 	}
 
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 }

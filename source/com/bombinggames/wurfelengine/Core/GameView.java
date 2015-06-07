@@ -41,7 +41,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
 import com.bombinggames.wurfelengine.Core.Map.Intersection;
@@ -302,12 +302,11 @@ public class GameView extends View implements GameManager {
 		if (cameras.size() > 0) {
 			Point p = screenToGameBasic(x,y);
 			//find point at top of map
-			float deltaZ = Chunk.getGameHeight() - CoreData.GAME_EDGELENGTH - p.getZ();
+			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			
 			p.addVector(0, deltaZ*Point.SQRT2, deltaZ);//top of map
 			//return new Intersection(p, Vector3.Zero, 0);
-			return p.raycast(
-				new Vector3(0,-1, -CoreData.ZAXISSHORTENING),//viewing direction, can not find correct vector todo. Was -Point.SQRT12
+			return p.raycast(new Vector3(0,-1, -Block.ZAXISSHORTENING),//viewing direction, can not find correct vector todo. Was -Point.SQRT12
 				Float.POSITIVE_INFINITY,
 				cameras.get(0),//assume editor is in first camera
 				false

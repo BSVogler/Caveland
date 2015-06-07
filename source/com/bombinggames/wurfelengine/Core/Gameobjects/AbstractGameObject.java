@@ -38,9 +38,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.GameView;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
@@ -56,7 +56,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private transient static TextureAtlas spritesheet;
 	private transient static String spritesheetPath = "com/bombinggames/wurfelengine/Core/images/Spritesheet";
     private transient static Pixmap pixmap;
-    private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];//{category}{id}{value}
+    private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][Block.OBJECTTYPESNUM][Block.VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
 	private static Texture textureDiff;
 	private static Texture textureNormal;
@@ -68,7 +68,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         spritesheet.dispose();//is this line needed?
         WE.getAssetManager().unload(spritesheetPath+".txt");
         spritesheet = null;
-        sprites = new AtlasRegion['z'][CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
+        sprites = new AtlasRegion['z'][Block.OBJECTTYPESNUM][Block.VALUESNUM];
         //pixmap.dispose();
         pixmap = null;
     }
@@ -197,7 +197,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         return spritesheet;
     }
 	
-    private CoreData coreData;
 	//render information
     private boolean hidden; 
     private float rotation;
@@ -211,21 +210,10 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     /**
      * Creates an object.
-     * @param id the id of the object
-     * @param value 
+     * @param id the id of the object which is used for rendering
      */
-    protected AbstractGameObject(byte id, byte value) {
-        coreData = CoreData.getInstance(id, value);
+    protected AbstractGameObject(byte id) {
 		this.graphicsID = id;
-    }
-	
-	/**
-     * Creates an object referencing to an existing coreData object.
-	 * @param data
-     */
-    protected AbstractGameObject(CoreData data) {
-        coreData = data;
-		this.graphicsID = data.getId();
     }
 	
     /**
@@ -397,22 +385,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     //getter & setter
 
-	public CoreData getCoreData() {
-		return coreData;
-	}
-
-	@Override
-    public byte getId() {
-		if (coreData==null) return 0;
-        return coreData.getId();
-    }
-	
-	@Override
-    public byte getValue() {
-		if (coreData==null) return 0;
-        return coreData.getValue();
-    }
-
 	/**
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
 	 * @return 
@@ -421,10 +393,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 		return graphicsID;
 	}
 
-	@Override
-    public float getLightlevel() {
-        return coreData.getLightlevel();
-    }
+
 
     /**
      * Returns the name of the object
@@ -458,20 +427,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         return hidden;
     }
 
-	@Override
-    public void setLightlevel(float lightlevel) {
-        this.coreData.setLightlevel(lightlevel);
-    }
-
-    /**
-     * Set the value of the object.
-     * @param value
-     */
-    public void setValue(byte value) {
-        this.coreData.setValue(value);
-    }
-
-
     /**
      * Hide an object. It won't be rendered even if it is clipped.
      * @param hidden
@@ -504,24 +459,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 		graphicsID = id;
 	}
 	
-	   /**
-     *
-     * @return from maximum 100
-     */
-	public float getHealth() {
-		return coreData.getHealth();
-	}
-
-	/**
-	 * clamps to [0..1000]
-	 * @param health 
-	 */
-	public void setHealth(byte health) {
-		if (health>100) health=100;
-		if (health<0) health=0;
-		this.coreData.setHealth(health);
-	}
-
 	/**
 	 * give the object a tint. The default brightness is RGBA 0x808080FF so you can make it brighter and darker by modifying R, G and B.
 	 * @param color 

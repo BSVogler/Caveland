@@ -30,7 +30,7 @@
  */
 package com.bombinggames.wurfelengine.Core.Map;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class CompleteMap extends AbstractMap {
 	private static int blocksX;
 	private static int blocksY;
 	private static int blocksZ;
-	private final CoreData[][][] data;
+	private final Block[][][] data;
 
 	public CompleteMap(final File name, int saveSlot) throws IOException {
 		this(name, getDefaultGenerator(), saveSlot);
@@ -55,12 +55,12 @@ public class CompleteMap extends AbstractMap {
 		blocksX = 100;
         blocksY = 200;
         blocksZ =  10;
-		data = new CoreData[blocksX][blocksY][blocksZ];
+		data = new Block[blocksX][blocksY][blocksZ];
 	}
 
 	
 	@Override
-	public CoreData getBlock(Coordinate coord) {
+	public Block getBlock(Coordinate coord) {
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		else
@@ -68,7 +68,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public CoreData getBlock(int x, int y, int z) {
+	public Block getBlock(int x, int y, int z) {
 		return data[blocksX/2+x][blocksY/2+y][z];
 	}
 
@@ -83,7 +83,7 @@ public class CompleteMap extends AbstractMap {
 	}
 
 	@Override
-	public void setBlock(Coordinate coord, CoreData block) {
+	public void setBlock(Coordinate coord, Block block) {
 		data[coord.getX()][coord.getX()][coord.getZ()] = block;
 	}
 	
@@ -93,7 +93,7 @@ public class CompleteMap extends AbstractMap {
      * Get the data of the map
      * @return
      */
-	public CoreData[][][] getData() {
+	public Block[][][] getData() {
 		return data;
 	}
 

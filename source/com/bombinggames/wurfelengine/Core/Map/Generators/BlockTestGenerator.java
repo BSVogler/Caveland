@@ -31,7 +31,7 @@
 
 package com.bombinggames.wurfelengine.Core.Map.Generators;
 
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.OBJECTTYPESNUM;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.OBJECTTYPESNUM;
 import com.bombinggames.wurfelengine.Core.Map.Generator;
 
 /**

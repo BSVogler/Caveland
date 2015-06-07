@@ -45,7 +45,7 @@ import com.bombinggames.wurfelengine.Core.Controller;
 import static com.bombinggames.wurfelengine.Core.Controller.getMap;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Selection;
@@ -325,7 +325,7 @@ public class MapEditorView extends GameView {
 			Coordinate coords = selection.getPosition().toCoord();
             
 			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
-                CoreData block = coords.getBlock();
+                Block block = coords.getBlock();
 				leftColorGUI.setBlock(block);
             } else {
 				Tool toggledTool;

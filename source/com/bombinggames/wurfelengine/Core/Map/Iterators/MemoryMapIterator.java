@@ -30,7 +30,7 @@
  */
 package com.bombinggames.wurfelengine.Core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
 import com.bombinggames.wurfelengine.Core.Map.ChunkMap;
@@ -78,8 +78,8 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 * @return 
 	 */
 	@Override
-	public CoreData next() throws NoSuchElementException {
-		CoreData block = (CoreData) blockIterator.next();
+	public Block next() throws NoSuchElementException {
+		Block block = (Block) blockIterator.next();
 		if (useChunks && !blockIterator.hasNext()){
 			//end of chunk, move to next chunk
 			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());

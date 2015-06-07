@@ -33,7 +33,7 @@ package com.bombinggames.wurfelengine.Core.Map;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -111,7 +111,7 @@ public abstract class AbstractPosition implements Serializable {
      * @return Get the block at the position. If the coordiante is not in memory crash. Faster than "getBlockSafe()"
      * @see #getBlockSafe() 
      */
-    public abstract CoreData getBlock();
+    public abstract Block getBlock();
     
     /**
      *

@@ -36,12 +36,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_DEPTH4;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.VIEW_WIDTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_DEPTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_DEPTH4;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_HEIGHT;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.Core.View;
@@ -49,7 +49,7 @@ import com.bombinggames.wurfelengine.WE;
 
 /**
  * A RenderBlock is a wonderful piece of information and a geometrical object. It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. It is an extension to the coredata saved in the map. The core data is shared so changing this renderblock changes the data in the map.
- * @see CoreData
+ * @see Block
  * @author Benedikt Vogler
  */
 public class RenderBlock extends AbstractGameObject {
@@ -57,14 +57,14 @@ public class RenderBlock extends AbstractGameObject {
 	/**
 	 * {id}{value}{side}
 	 */
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM][3];
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];
 	
 	private static String destructionSound;
         
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] colorlist = new Color[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM];
+    private static final Color[][] colorlist = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
 
@@ -76,22 +76,65 @@ public class RenderBlock extends AbstractGameObject {
 		staticShade = shade;
 	}
 	
+	private Block coreData;
+	
+	/**
+	 * 
+	 * @param id 
+	 */
+    public RenderBlock(byte id){
+        super(id);
+		coreData = Block.getInstance(id);
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+    }
+	
+	/**
+	 * 
+	 * @param id
+	 * @param value 
+	 */
+	public RenderBlock(byte id, byte value){
+		super(id);
+		coreData = Block.getInstance(id, value);
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+	}
+	
+	/**
+	 * Create a new render block referencing to an existing coreData object.
+	 * @param data 
+	 */
+	public RenderBlock(Block data){
+		super(data.getId());
+		coreData = data;
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+	}
+	
+	
 	@Override
 	public boolean isObstacle() {
-		return getCoreData().isObstacle();
+		return coreData.isObstacle();
 	}
 	
 	private Coordinate coord;
     private boolean[] clipping = new boolean[]{false, false, false};
 
+	/**
+	 *
+	 */
 	public void setClippedLeft() {
 		clipping[0] = true;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedRight() {
 		clipping[2] = true;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedTop() {
 		clipping[1] = true;
 	}
@@ -104,37 +147,12 @@ public class RenderBlock extends AbstractGameObject {
 		return clipping[0] && clipping[2] && clipping[1];
 	}
 	
-	
+	/**
+	 *
+	 * @param clipping
+	 */
 	public void setClipping(boolean[] clipping) {
 		this.clipping = clipping;
-	}
-	
-	/**
-	 * 
-	 * @param id 
-	 */
-    public RenderBlock(byte id){
-        super(id,(byte) 0);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-    }
-	
-	/**
-	 * 
-	 * @param id
-	 * @param value 
-	 */
-	public RenderBlock(byte id, byte value){
-		super(id, value);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-	}
-	
-	/**
-	 * Create a new render block referencing to an existing coreData object.
-	 * @param data 
-	 */
-	public RenderBlock(CoreData data){
-		super(data);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 	}
 
 	/**
@@ -158,12 +176,12 @@ public class RenderBlock extends AbstractGameObject {
      *
      */
     public static void staticDispose(){
-        blocksprites = new AtlasRegion[CoreData.OBJECTTYPESNUM][CoreData.VALUESNUM][3];//{id}{value}{side}
+        blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];//{id}{value}{side}
     }
 
     @Override
     public String getName() {
-        return  getCoreData().getName();
+        return  coreData.getName();
     }
 	
 		/**
@@ -220,7 +238,7 @@ public class RenderBlock extends AbstractGameObject {
             colorlist[id][value] = new Color();
             int colorInt;
             
-            if (CoreData.getInstance(id, value).hasSides()){//if has sides, take top block    
+            if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -456,7 +474,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @since v1.4
 	 */
 	public void onDestroy() {
-		setValue((byte) -1);
+		coreData.setValue((byte) -1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
 	}
 
@@ -474,8 +492,8 @@ public class RenderBlock extends AbstractGameObject {
 	 * gets the identifier and stores them in the map
 	 * @return 
 	 */
-	public CoreData toStorageBlock(){
-		return CoreData.getInstance(getId(), getValue());
+	public Block toStorageBlock(){
+		return Block.getInstance(getId(), getValue());
 	}
 	
 	/**
@@ -483,16 +501,49 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return getCoreData().hasSides() && !getCoreData().isTransparent();
+		return coreData.hasSides() && !coreData.isTransparent();
 	}
 
 	@Override
 	public boolean isTransparent() {
-		return getCoreData().isTransparent();
+		return coreData.isTransparent();
 	}
 
 	@Override
 	public boolean hasSides() {
-		return getCoreData().hasSides();
+		return coreData.hasSides();
+	}
+
+	@Override
+	public byte getId() {
+		return coreData.getId();
+	}
+
+	@Override
+	public byte getValue() {
+		return coreData.getValue();
+	}
+
+	@Override
+	public float getLightlevel() {
+		return coreData.getLightlevel();
+	}
+
+	@Override
+	public void setLightlevel(float lightlevel) {
+		coreData.setLightlevel(lightlevel);
+	}
+
+	@Override
+	public void setValue(byte value) {
+		coreData.setValue(value);
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public Block getCoreData() {
+		return coreData;
 	}
 }

@@ -28,10 +28,10 @@
  */
 package com.bombinggames.wurfelengine.Core.Gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
-import com.badlogic.gdx.graphics.Color;
 
 /**
  *

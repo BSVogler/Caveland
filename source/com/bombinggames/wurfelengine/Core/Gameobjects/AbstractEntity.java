@@ -160,8 +160,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			for (AbstractEntity child : children) {
 				child.spawn(point);
 			}
-			if (position==null)
-				position = point;
+			position = point;
 			dispose = false;
 			if (shadow != null && !shadow.isSpawned())
 				shadow.spawn(position.cpy());

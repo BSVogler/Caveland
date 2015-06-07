@@ -76,22 +76,65 @@ public class RenderBlock extends AbstractGameObject {
 		staticShade = shade;
 	}
 	
+	private CoreData coreData;
+	
+	/**
+	 * 
+	 * @param id 
+	 */
+    public RenderBlock(byte id){
+        super(id);
+		coreData = CoreData.getInstance(id);
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+    }
+	
+	/**
+	 * 
+	 * @param id
+	 * @param value 
+	 */
+	public RenderBlock(byte id, byte value){
+		super(id);
+		coreData = CoreData.getInstance(id, value);
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+	}
+	
+	/**
+	 * Create a new render block referencing to an existing coreData object.
+	 * @param data 
+	 */
+	public RenderBlock(CoreData data){
+		super(data.getId());
+		coreData = data;
+		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+	}
+	
+	
 	@Override
 	public boolean isObstacle() {
-		return getCoreData().isObstacle();
+		return coreData.isObstacle();
 	}
 	
 	private Coordinate coord;
     private boolean[] clipping = new boolean[]{false, false, false};
 
+	/**
+	 *
+	 */
 	public void setClippedLeft() {
 		clipping[0] = true;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedRight() {
 		clipping[2] = true;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedTop() {
 		clipping[1] = true;
 	}
@@ -104,37 +147,12 @@ public class RenderBlock extends AbstractGameObject {
 		return clipping[0] && clipping[2] && clipping[1];
 	}
 	
-	
+	/**
+	 *
+	 * @param clipping
+	 */
 	public void setClipping(boolean[] clipping) {
 		this.clipping = clipping;
-	}
-	
-	/**
-	 * 
-	 * @param id 
-	 */
-    public RenderBlock(byte id){
-        super(id,(byte) 0);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-    }
-	
-	/**
-	 * 
-	 * @param id
-	 * @param value 
-	 */
-	public RenderBlock(byte id, byte value){
-		super(id, value);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-	}
-	
-	/**
-	 * Create a new render block referencing to an existing coreData object.
-	 * @param data 
-	 */
-	public RenderBlock(CoreData data){
-		super(data);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 	}
 
 	/**
@@ -163,7 +181,7 @@ public class RenderBlock extends AbstractGameObject {
 
     @Override
     public String getName() {
-        return  getCoreData().getName();
+        return  coreData.getName();
     }
 	
 		/**
@@ -456,7 +474,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @since v1.4
 	 */
 	public void onDestroy() {
-		setValue((byte) -1);
+		coreData.setValue((byte) -1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
 	}
 
@@ -483,16 +501,49 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return getCoreData().hasSides() && !getCoreData().isTransparent();
+		return coreData.hasSides() && !coreData.isTransparent();
 	}
 
 	@Override
 	public boolean isTransparent() {
-		return getCoreData().isTransparent();
+		return coreData.isTransparent();
 	}
 
 	@Override
 	public boolean hasSides() {
-		return getCoreData().hasSides();
+		return coreData.hasSides();
+	}
+
+	@Override
+	public byte getId() {
+		return coreData.getId();
+	}
+
+	@Override
+	public byte getValue() {
+		return coreData.getValue();
+	}
+
+	@Override
+	public float getLightlevel() {
+		return coreData.getLightlevel();
+	}
+
+	@Override
+	public void setLightlevel(float lightlevel) {
+		coreData.setLightlevel(lightlevel);
+	}
+
+	@Override
+	public void setValue(byte value) {
+		coreData.setValue(value);
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public CoreData getCoreData() {
+		return coreData;
 	}
 }

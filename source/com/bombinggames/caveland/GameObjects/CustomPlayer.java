@@ -517,57 +517,59 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	}
 	
 	private void attackImpact(){
-		timeTillImpact = Float.POSITIVE_INFINITY;
-		
-		//from current position go 80px in aiming direction and get entities 80px around there
-		ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-		entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
-		//check hit
-		for (AbstractEntity entity : entities) {
-			if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
-				MovableEntity movable = (MovableEntity) entity;
-				movable.damage(attackDamage);
-				getCamera().shake(20, 50);
-				movable.setMovement(
-					new Vector3(
-						(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
-						(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
-						(float) Math.random()
-					)
-				);
-				movable.setSpeedHorizontal(2);
-			}
-		}
+		if (isSpawned()) {
+			timeTillImpact = Float.POSITIVE_INFINITY;
 
-		//damage blocks
-		Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
-		//check if the player can damage the blocks
-		if (aimCoord.getBlock() != null) {
-			getCamera().shake(20, 50);
-			byte id = aimCoord.getBlock().getId();
-			if (!CavelandBlocks.hardMaterial( id )){
-				//destructible by hand
-				if (aimCoord.damage(attackDamage)) {
-					if (id == 72)
-						Controller.getSoundEngine().play("treehit");
-					else
-						Controller.getSoundEngine().play("impact");
-					MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
-					dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+			//from current position go 80px in aiming direction and get entities 80px around there
+			ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
+			entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+			//check hit
+			for (AbstractEntity entity : entities) {
+				if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
+					MovableEntity movable = (MovableEntity) entity;
+					movable.damage(attackDamage);
+					getCamera().shake(20, 50);
+					movable.setMovement(
+						new Vector3(
+							(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
+							(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
+							(float) Math.random()
+						)
+					);
+					movable.setSpeedHorizontal(2);
+				}
+			}
+
+			//damage blocks
+			Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
+			//check if the player can damage the blocks
+			if (aimCoord.getBlock() != null) {
+				getCamera().shake(20, 50);
+				byte id = aimCoord.getBlock().getId();
+				if (!CavelandBlocks.hardMaterial( id )){
+					//destructible by hand
+					if (aimCoord.damage(attackDamage)) {
+						if (id == 72)
+							Controller.getSoundEngine().play("treehit");
+						else
+							Controller.getSoundEngine().play("impact");
+						MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
+						dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
+						dirt.setRotation((float) Math.random()*360);
+					}
+				} else {
+					//indestructible by hand
+					Controller.getSoundEngine().play("impact");//todo different sound
+					//spawn particle
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy().addVector(0, 0, 30));
+					dirt.setTTL(400);
+					dirt.addMovement(new Vector3(
+						(float) (Math.random()-0.5f)*10.0f,
+						(float) (Math.random()-0.5f)*10.0f,
+						(float) Math.random()*2f)
+					);
 					dirt.setRotation((float) Math.random()*360);
 				}
-			} else {
-				//indestructible by hand
-				Controller.getSoundEngine().play("impact");//todo different sound
-				//spawn particle
-				Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy().addVector(0, 0, 30));
-				dirt.setTTL(400);
-				dirt.addMovement(new Vector3(
-					(float) (Math.random()-0.5f)*10.0f,
-					(float) (Math.random()-0.5f)*10.0f,
-					(float) Math.random()*2f)
-				);
-				dirt.setRotation((float) Math.random()*360);
 			}
 		}
 	}

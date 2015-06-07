@@ -42,7 +42,7 @@ import java.util.ArrayList;
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject {
+public abstract class AbstractEntity extends AbstractGameObject implements HasID {
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 
@@ -71,6 +71,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		return entityMap;
 	}
 	
+	private byte id = 0;
+	private byte value = 0;
+	private float lightlevel = 1f;
+	private float health = 100f;
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
@@ -95,8 +99,20 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * Create an abstractEntity.
      * @param id objects with id -1 are to deleted. 0 are invisible objects
      */
-    protected AbstractEntity(byte id){
-        super(id,(byte) 0);
+    public AbstractEntity(byte id){
+        super(id);
+		this.id = id;
+    }
+	
+	 /**
+     * Create an abstractEntity.
+     * @param id objects with id -1 are to deleted. 0 are invisible objects
+	 * @param value
+     */
+    public AbstractEntity(byte id, byte value){
+        super(id);
+		this.id = id;
+		this.value = value;
     }
 
 	/**
@@ -416,5 +432,52 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
 	public ArrayList<AbstractEntity> getChildren() {
 		return children;
+	}
+	
+		@Override
+    public byte getId() {
+        return id;
+    }
+	
+	@Override
+    public byte getValue() {
+        return value;
+    }
+	
+	@Override
+    public float getLightlevel() {
+        return lightlevel;
+    }
+
+	@Override
+	public void setLightlevel(float lightlevel) {
+		this.lightlevel = lightlevel;
+	}
+	
+	/**
+	 * Set the value of the object.
+	 * @param value
+	 */
+	@Override
+	public void setValue(byte value) {
+		this.value = value;
+	}
+	
+	/**
+     *
+     * @return from maximum 100
+     */
+	public float getHealth() {
+		return health;
+	}
+	
+	/**
+	 * clamps to [0..100]
+	 * @param health 
+	 */
+	public void setHealth(float health) {
+		if (health>100) health=100;
+		if (health<0) health=0;
+		this.health = health;
 	}
 }

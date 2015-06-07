@@ -130,6 +130,7 @@ public class CoreData implements HasID, Serializable {
 		return value;
 	}
 	
+	@Override
 	public void setValue(byte value) {
 		this.value = value;
 	}

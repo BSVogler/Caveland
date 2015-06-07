@@ -89,6 +89,10 @@ public class Block implements HasID, Serializable {
 	private byte value;
 	private byte health = 100;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
+	/**
+	 * byte 0: bottom left, byte 1: bottom right, byte 2:top left, byte 3: top right
+	 */
+	private byte ssao;
 
 	private Block(byte id) {
 		this.id = id;
@@ -283,4 +287,25 @@ public class Block implements HasID, Serializable {
 	public boolean hidingPastBlock() {
 		return hasSides() && !isTransparent();
 	}
+
+	public byte getSSAOId() {
+		if ((ssao & 0b00000010) == 0b00000010)//if flag for right is set
+			if ((ssao & 0b00000001) == 0b00000001)//if also flag for left is set
+				return 2;
+			else
+				return 0;
+		if ((ssao & 0b00000001) == 0b00000001)//if flag for left is set
+			return 1;
+		
+		return -1;
+	}
+
+	public void setSSAObackRight(boolean block) {
+		this.ssao |= 1 << 1;//set second bit to true via or operator
+	}
+	
+	public void setSSAObackLeft(boolean block) {
+		this.ssao |= 1;//set first bit to true via or operator
+	}
+	
 }

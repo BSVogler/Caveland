@@ -3,7 +3,7 @@ package com.bombinggames.caveland.GameObjects;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
@@ -92,7 +92,7 @@ public class Enemy extends MovableEntity{
 			
 			//find nearby target if there is none
 			if (target==null){
-				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(CoreData.GAME_DIAGLENGTH*4, CustomPlayer.class);
+				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH*4, CustomPlayer.class);
 				if (!nearby.isEmpty())
 					target = nearby.get(0);
 			}

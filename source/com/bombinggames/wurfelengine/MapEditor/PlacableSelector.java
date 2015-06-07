@@ -32,7 +32,7 @@
 package com.bombinggames.wurfelengine.MapEditor;
 
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
@@ -96,7 +96,7 @@ public class PlacableSelector extends Table {
 			
 			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
-					for (byte i = 1; i < CoreData.OBJECTTYPESNUM; i++) {
+					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {
 						table.row();
 						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
 						
@@ -200,7 +200,7 @@ public class PlacableSelector extends Table {
 			if (id==0)
 				placableGUI.setBlock(null);
 			else
-				placableGUI.setBlock(CoreData.getInstance(id));
+				placableGUI.setBlock(Block.getInstance(id));
         };
      }
 	

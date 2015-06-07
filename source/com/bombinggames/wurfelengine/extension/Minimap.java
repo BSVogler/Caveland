@@ -40,7 +40,7 @@ import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
@@ -147,7 +147,7 @@ public class Minimap implements LinkedWithMap {
                 if (topTileZ[x][y]<0)//ground floor
                     mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getGroundBlock().getId(),(byte) 0);
                 else {
-                    CoreData block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
+                    Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
                     if (block.getId()!=0)
                         mapdata[x][y] = RenderBlock.getRepresentingColor(block.getId(), block.getValue());
                     else 
@@ -202,11 +202,11 @@ public class Minimap implements LinkedWithMap {
 					float rectX = 
 						+ ((ent.getPosition().getX()
 						+ (ent.getPosition().toCoord().getY()%2==1?0.5f:0)
-						)/CoreData.GAME_DIAGLENGTH
+						)/Block.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
 					float rectY = 
-						- (ent.getPosition().getY()/CoreData.GAME_DIAGLENGTH
+						- (ent.getPosition().getY()/Block.GAME_DIAGLENGTH
 						+ 0.5f
 						)* scaleY*2;
 					sh.translate(rectX, rectY, 0);
@@ -226,9 +226,9 @@ public class Minimap implements LinkedWithMap {
 					rectX = (int) (
 						(tmpPos.getX()
 							+ (tmpPos.toCoord().getY()%2==1 ? 0.5f : 0)
-						  ) / CoreData.GAME_DIAGLENGTH * scaleX
+						  ) / Block.GAME_DIAGLENGTH * scaleX
 					);
-					rectY = (int) (tmpPos.getY()/CoreData.GAME_DIAGLENGTH2 * scaleY);
+					rectY = (int) (tmpPos.getY()/Block.GAME_DIAGLENGTH2 * scaleY);
 
 					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
@@ -296,10 +296,10 @@ public class Minimap implements LinkedWithMap {
 						//ground level
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
-					sh.rect(scaleX * camera.getViewSpaceX() / CoreData.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / CoreData.VIEW_DEPTH2,
-						scaleX*camera.getWidthInProjSpc()/ CoreData.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc()/ CoreData.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2,
+						scaleX*camera.getWidthInProjSpc()/ Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ Block.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
@@ -316,11 +316,11 @@ public class Minimap implements LinkedWithMap {
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
-					sh.rect(scaleX * camera.getViewSpaceX() / CoreData.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / CoreData.VIEW_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * CoreData.VIEW_HEIGHT)/ CoreData.VIEW_DEPTH,
-						scaleX*camera.getWidthInProjSpc() / CoreData.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc() / CoreData.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
+						scaleX*camera.getWidthInProjSpc() / Block.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / Block.VIEW_DEPTH2
 					);
 					
 				sh.end();

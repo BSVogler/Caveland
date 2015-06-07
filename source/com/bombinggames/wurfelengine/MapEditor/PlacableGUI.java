@@ -38,7 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Selection;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class PlacableGUI extends WidgetGroup {
-	private CoreData block = CoreData.getInstance((byte) 1);
+	private Block block = Block.getInstance((byte) 1);
 	private Image image;
 	private Label label;
 	private Label blockPosition;
@@ -119,7 +119,7 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @param block
 	 */
-	public void setBlock(CoreData block) {
+	public void setBlock(Block block) {
 		this.block = block;
 		if (block!=null) {
 			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
@@ -132,7 +132,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param id
 	 */
 	public void setId(byte id) {
-		this.block = CoreData.getInstance(id, block.getValue());
+		this.block = Block.getInstance(id, block.getValue());
 		label.setText(Integer.toString(id) + " - "+ Integer.toString(block.getValue()));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}
@@ -142,7 +142,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		this.block = CoreData.getInstance(block.getId(), value);
+		this.block = Block.getInstance(block.getId(), value);
 		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
 		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
 	}

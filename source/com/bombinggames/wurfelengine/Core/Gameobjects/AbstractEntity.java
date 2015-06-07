@@ -30,7 +30,7 @@ package com.bombinggames.wurfelengine.Core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.Core.Controller;
-import static com.bombinggames.wurfelengine.Core.Gameobjects.CoreData.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.Core.Map.Point;
@@ -152,7 +152,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
             int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
             if (z > getPosition().getMap().getBlocksZ()-1) z = getPosition().getMap().getBlocksZ()-1;
 
-			CoreData block = new Coordinate(
+			Block block = new Coordinate(
 				getPosition().getMap(), 
 				position.toCoord().getX(),
 				position.toCoord().getY(),

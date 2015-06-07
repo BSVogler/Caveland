@@ -41,7 +41,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
@@ -665,17 +665,17 @@ map.getGameWidth(),
 		return 
 				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY - CoreData.VIEW_HEIGHT * 2)//bottom of sprite
+				(proY - Block.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY + CoreData.VIEW_HEIGHT2 + CoreData.VIEW_DEPTH)//top of sprite
+				(proY + Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX + CoreData.VIEW_WIDTH2)//right side of sprite
+				(proX + Block.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX - CoreData.VIEW_WIDTH2)//left side of sprite
+				(proX - Block.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInProjSpc() / 2
 		;
@@ -799,7 +799,7 @@ map.getGameWidth(),
 		);
 		
 		while (csIter.hasNext()) {
-			CoreData block = csIter.next();
+			Block block = csIter.next();
 			if (block != null) {
 				int[] ind = csIter.getCurrentIndex();
 				cameraContent[ind[0]][ind[1]][ind[2]+1] = block.toBlock();
@@ -890,7 +890,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / CoreData.VIEW_WIDTH-1);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / Block.VIEW_WIDTH-1);
 	}
 
 	/**
@@ -908,7 +908,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc() / 2) / CoreData.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc() / 2) / Block.VIEW_WIDTH + 1);
 	}
 
 	/**
@@ -929,7 +929,7 @@ map.getGameWidth(),
 		//TODO verify
 		return (int) (
 			(position.y + getHeightInProjSpc() / 2)//camera top border
-			/ -CoreData.VIEW_DEPTH2//back to game space
+			/ -Block.VIEW_DEPTH2//back to game space
 		);
 	}
 
@@ -950,7 +950,7 @@ map.getGameWidth(),
 	public int getVisibleFrontBorderLow() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -CoreData.VIEW_DEPTH2 //back to game coordinates
+			/ -Block.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
 	
@@ -963,8 +963,8 @@ map.getGameWidth(),
 	public int getVisibleFrontBorderHigh() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -CoreData.VIEW_DEPTH2 //back to game coordinates
-			+cameraContent[0][0].length*CoreData.VIEW_HEIGHT/CoreData.VIEW_DEPTH2 //todo verify, try to add z component
+			/ -Block.VIEW_DEPTH2 //back to game coordinates
+			+cameraContent[0][0].length*Block.VIEW_HEIGHT/Block.VIEW_DEPTH2 //todo verify, try to add z component
 		);
 	}
 

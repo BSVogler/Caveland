@@ -7,7 +7,7 @@ import java.io.Serializable;
  *A small block object hich stores only id and value and is only used for storing in memory. Stores only 8 byte.
  * @author Benedikt Vogler
  */
-public class CoreData implements HasID, Serializable {
+public class Block implements HasID, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**Screen depth of a block/object sprite in pixels. This is the length from the top to the middle border of the block.
@@ -78,7 +78,7 @@ public class CoreData implements HasID, Serializable {
 	 * @param customBlockFactory new value of customBlockFactory
 	 */
 	public static void setCustomBlockFactory(CustomBlocks customBlockFactory) {
-		CoreData.customBlocks = customBlockFactory;
+		Block.customBlocks = customBlockFactory;
 	}
 
 	public static CustomBlocks getFactory() {
@@ -90,11 +90,11 @@ public class CoreData implements HasID, Serializable {
 	private byte health = 100;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 
-	private CoreData(byte id) {
+	private Block(byte id) {
 		this.id = id;
 	}
 	
-	private CoreData(byte id, byte value) {
+	private Block(byte id, byte value) {
 		this.id = id;
 		this.value = value;
 	}
@@ -104,9 +104,9 @@ public class CoreData implements HasID, Serializable {
 	 * @param id
 	 * @return 
 	 */
-	public static CoreData getInstance(byte id){
+	public static Block getInstance(byte id){
 		if (id==0) return null;
-		return new CoreData(id, (byte) 0);
+		return new Block(id, (byte) 0);
 	}
 	
 	/**
@@ -115,9 +115,9 @@ public class CoreData implements HasID, Serializable {
 	 * @param value
 	 * @return 
 	 */
-	public static CoreData getInstance(byte id, byte value){
+	public static Block getInstance(byte id, byte value){
 		if (id==0) return null;
-		return new CoreData(id, value);
+		return new Block(id, value);
 	}
 	
 	@Override

@@ -34,7 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.WE;
@@ -82,7 +82,7 @@ public class Chunk {
 	/**
 	 * the ids are stored here
 	 */
-    private final CoreData data[][][];
+    private final Block data[][][];
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
@@ -111,7 +111,7 @@ public class Chunk {
 		blocksZ = WE.CVARS.getChildSystem().getValueI("chunkBlocksZ");
 		
 		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
-		data = new CoreData[blocksX][blocksY][blocksZ];
+		data = new Block[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
@@ -186,7 +186,7 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					CoreData block = CoreData.getInstance(
+					Block block = Block.getInstance(
 						generator.generate(
 							left+x,
 							top+y,
@@ -256,7 +256,7 @@ public class Chunk {
 										id = (byte) fis.read();
 									byte value = (byte) fis.read();
 									if (id > 0) {
-										data[x][y][z] = CoreData.getInstance(id, value);
+										data[x][y][z] = Block.getInstance(id, value);
 									} else 
 										data[x][y][z] =null;
 									x++;
@@ -419,7 +419,7 @@ public class Chunk {
      * Returns the data of the chunk
      * @return 
      */
-    public CoreData[][][] getData() {
+    public Block[][][] getData() {
         return data;
     }
 
@@ -428,7 +428,7 @@ public class Chunk {
      * @return
      */
     public static int getViewWidth(){
-        return blocksX*CoreData.VIEW_WIDTH;
+        return blocksX*Block.VIEW_WIDTH;
     }
     
     /**
@@ -436,7 +436,7 @@ public class Chunk {
      * @return
      */
     public static int getViewDepth() {
-        return blocksY*CoreData.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
+        return blocksY*Block.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
     }
     
     /**
@@ -444,7 +444,7 @@ public class Chunk {
      * @return
      */
     public static int getGameWidth(){
-        return blocksX*CoreData.GAME_DIAGLENGTH;
+        return blocksX*Block.GAME_DIAGLENGTH;
     }
     
     /**
@@ -452,7 +452,7 @@ public class Chunk {
      * @return
      */
     public static int getGameDepth() {
-        return blocksY*CoreData.GAME_DIAGLENGTH2;
+        return blocksY*Block.GAME_DIAGLENGTH2;
     }
     
         /**
@@ -460,7 +460,7 @@ public class Chunk {
      * @return in game size
      */
     public static int getGameHeight(){
-        return blocksZ*CoreData.GAME_EDGELENGTH;
+        return blocksZ*Block.GAME_EDGELENGTH;
     }
 	
 	
@@ -566,7 +566,7 @@ public class Chunk {
 	 * @param z coordinate
 	 * @return can be null
 	 */
-	public CoreData getBlock(int x, int y, int z) {
+	public Block getBlock(int x, int y, int z) {
 		int xIndex = x-topleft.getX();
 		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];
@@ -579,7 +579,7 @@ public class Chunk {
 	 * @param z index pos
 	 * @return 
 	 */
-	public CoreData getBlockViaIndex(int x, int y, int z) {
+	public Block getBlockViaIndex(int x, int y, int z) {
 		return data[x][y][z];
 	}
 
@@ -602,7 +602,7 @@ public class Chunk {
 	 * @param coord
 	 * @param block 
 	 */
-	public void setBlock(Coordinate coord, CoreData block) {
+	public void setBlock(Coordinate coord, Block block) {
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();

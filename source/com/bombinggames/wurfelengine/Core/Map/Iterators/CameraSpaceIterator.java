@@ -30,7 +30,7 @@
  */
 package com.bombinggames.wurfelengine.Core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
 import com.bombinggames.wurfelengine.Core.Map.ChunkMap;
@@ -83,7 +83,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @return 
 	 */
 	@Override
-	public CoreData next() throws NoSuchElementException {
+	public Block next() throws NoSuchElementException {
 		if (useChunks) {
 			if (!blockIterator.hasNext()){
 				//reached end of chunk, move to next chunk
@@ -108,7 +108,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 				}
 			}
 
-			return (CoreData) blockIterator.next();
+			return (Block) blockIterator.next();
 		} else {
 			return mmI.next();//todo only return blocks in viewport
 		}

@@ -33,7 +33,7 @@ package com.bombinggames.wurfelengine.Core.Map;
 import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.Core.Camera;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.CoreData;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.Core.Map.Iterators.MemoryMapIterator;
@@ -167,14 +167,14 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	public void hiddenSurfaceDetection(Camera camera, int chunkX, int chunkY) {
 		Gdx.app.debug("Camera", "hsd for chunk " + chunkX + "," + chunkY);
 		Chunk chunk = getChunk(chunkX, chunkY);
-		CoreData[][][] chunkData = chunk.getData();
+		Block[][][] chunkData = chunk.getData();
 		
 		chunk.resetClipping();
 		
 		//loop over floor for ground level
 		DataIterator floorIterator = chunk.getIterator(0, 0);
 		while (floorIterator.hasNext()) {
-			if (((CoreData) floorIterator.next()).hidingPastBlock())
+			if (((Block) floorIterator.next()).hidingPastBlock())
 				chunk.setClippedTop(
 					floorIterator.getCurrentIndex()[0],
 					floorIterator.getCurrentIndex()[1],
@@ -190,7 +190,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		);
 		
 		while (dataIter.hasNext()) {
-			CoreData current = (CoreData) dataIter.next();//next is the current block
+			Block current = (Block) dataIter.next();//next is the current block
 			
 			if (current != null) {
 				//calculate index position relative to camera border
@@ -198,7 +198,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				int y = dataIter.getCurrentIndex()[1];
 				int z = dataIter.getCurrentIndex()[2];
 				
-				CoreData neighbour;
+				Block neighbour;
 				//left side
 				//get neighbour block
 				if (y % 2 == 0) {//next row is shifted right
@@ -249,7 +249,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 * @param z
 	 * @return 
 	 */
-	private CoreData getIndex(Chunk chunk, int x, int y, int z){
+	private Block getIndex(Chunk chunk, int x, int y, int z){
 		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX())//index outside current chunk
 			return getBlock(
 				chunk.getTopLeftCoordinate().getX()+x,
@@ -287,12 +287,12 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      * @return the single block you wanted
      */
 	@Override
-    public CoreData getBlock(final int x, final int y, final int z){
+    public Block getBlock(final int x, final int y, final int z){
 		return getBlock(new Coordinate(this, x, y, z)); 
     }
     
 	@Override
-    public CoreData getBlock(final Coordinate coord){
+    public Block getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)
 			return getGroundBlock();
 		Chunk chunk = getChunk(coord);
@@ -309,7 +309,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
     }
 
 	@Override
-	public void setBlock(Coordinate coord, CoreData block) {
+	public void setBlock(Coordinate coord, Block block) {
 		getChunk(coord).setBlock(coord, block);
 	}
 	
@@ -452,7 +452,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			//if (!iter.hasNsextX())
 			//	System.out.print("\n");
 			
-			CoreData block = iter.next();
+			Block block = iter.next();
 			if (block.getId()==0)
 				System.out.print("  ");
 			else

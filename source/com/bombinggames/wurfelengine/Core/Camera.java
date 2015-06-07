@@ -602,6 +602,7 @@ map.getGameWidth(),
 				RenderBlock block = (RenderBlock) iterator.next();
 				//only add if in view plane to-do
 				if (block != null) {
+					//copy the clipping to the renderBlock
 					block.setClipping( Controller.getMap().getClipping( block.getPosition() ) );
 					if (
 						!block.isClipped()

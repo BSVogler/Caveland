@@ -34,6 +34,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.HasID;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
@@ -333,24 +334,39 @@ public class LightEngine implements LinkedWithMap {
      * Calculates the light level based on the sun shining straight from the top
 	 * @param data
      */
-    public void calcSimpleLight(HasID[][][] data){
-        for (HasID[][] x : data) {
-            for (HasID[] y : x) {
+    public void calcSimpleLight(Block[][][] data){
+		for (int x = 0; x < data.length; x++) {
+			for (int y = 0; y < data[x].length; y++) {
                 //find top most renderobject
                 int topmost = Chunk.getBlocksZ();//start at top
-				HasID block;
+				Block block;
                 
 				do {
                     topmost--;
-					block = y[topmost];
+					block = data[x][y][topmost];
                 } while ((block == null || block.isTransparent()) && topmost > 0);
                 
                 if (topmost>0) {
                     //start at topmost renderobject and go down. Every step make it a bit darker
                     for (int z = 9; z >= 0; z--){
-						HasID blockToLit = y[z];
-						if (blockToLit!=null)
+						Block blockToLit = data[x][y][z];
+						if (blockToLit!=null) {
 							blockToLit.setLightlevel(.5f + .5f*z / (float) topmost);
+							//right bottom ssao
+							int ssaoX = x+(y % 2 != 0 ? 1 : 0);
+							if (y>0 && ssaoX < data.length && z+1 < data[x][y].length) {
+								HasID neighborBackRight = data[ssaoX][y-1][z+1];
+								if (neighborBackRight != null && neighborBackRight.hasSides())
+									blockToLit.setSSAObackRight(true);
+							}
+							//left bottom ssao
+							ssaoX = x+(y % 2 == 0 ? -1 : 0);
+							if (y>0 && ssaoX >= 0 && z+1 < data[x][y].length) {
+								HasID neighborBackRight = data[ssaoX][y-1][z+1];
+								if (neighborBackRight != null && neighborBackRight.hasSides())
+									blockToLit.setSSAObackLeft(true);
+							}
+						}
                     }
                 }
             }

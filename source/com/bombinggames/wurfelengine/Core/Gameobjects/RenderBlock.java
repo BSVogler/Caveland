@@ -265,6 +265,13 @@ public class RenderBlock extends AbstractGameObject {
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
                 if (!clipping[2])
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
+				//render SSAO
+				byte ssaoId = getCoreData().getSSAOId();
+				if (ssaoId > -1){
+					SimpleEntity ssao = new SimpleEntity((byte) 2, ssaoId);
+					ssao.setPosition(getPosition().cpy().addVector(0, 0, 1).toPoint());
+					ssao.render(view, camera);
+				}
             } else
                 super.render(view, camera);
         }

@@ -197,16 +197,17 @@ public class Block implements HasID, Serializable {
         }
 		if (id==9)
 			return false;
-		return id != 0;
+		if (id==0) return false;
+		return true;
 	}
 
 	@Override
 	public boolean isTransparent() {
+		if (id==9)
+			return true;
 		if (id>9 && customBlocks != null){
             return customBlocks.isTransparent(id, value);
         }
-		if (id==9)
-			return true;
 		return false;
 	}
 	
@@ -276,17 +277,10 @@ public class Block implements HasID, Serializable {
 	@Override
 	public boolean hasSides() {
 		if (id==0) return false;
-		else {
-			if (id > 9) {
-				if (customBlocks!=null){
-					return customBlocks.hasSides(id, value);
-				} else {
-					return true;
-				}
-			} else {
-				return true;
-			}
+		if (id>9 && customBlocks != null){
+			return customBlocks.hasSides(id, value);
 		}
+		return true;
 	}
 
 	public boolean hidingPastBlock() {

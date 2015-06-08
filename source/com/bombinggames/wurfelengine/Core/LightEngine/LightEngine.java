@@ -585,24 +585,25 @@ public class LightEngine implements LinkedWithMap {
 					}
 				);
 				
+				int aoFlags = 0;
 				//first check 0,2,4,6 then check 1,3,5,7
 				for (int side = 0; side < 9; side+=2) {//first round even sides
 					//second round odd sides
 					if (side == 8)
 						side=1;
 					Block neighbor = coord.cpy().goToNeighbour(side).getBlock();
-					next.setAOFlagTrue(side);
 					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()){
-						next.setAOFlagTrue(side);
+						aoFlags |= 1 << side;
 						//don't double draw the sides in between
 						if (side%2==1) {
-							next.setAOFlagFalse((side+1)%8);
-							next.setAOFlagFalse((side+7)%8);
+							aoFlags &= ~(1 << ((side+1)%8));//set next to false
+							aoFlags &= ~(1 << ((side+7)%8));//Set previous to false
 						}
 					} else {
-						next.setAOFlagFalse(side);
+						aoFlags &= ~(1 << side);
 					}
 				}
+				next.setAoFlags(aoFlags);
 			}
 		}
 	}

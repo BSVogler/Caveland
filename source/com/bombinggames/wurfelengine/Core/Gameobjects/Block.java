@@ -311,4 +311,8 @@ public class Block implements HasID, Serializable {
 	public int getAOFlags() {
 		return aoFlags;
 	}
+
+	public void setAoFlags(int aoFlags) {
+		this.aoFlags = aoFlags;
+	}
 }

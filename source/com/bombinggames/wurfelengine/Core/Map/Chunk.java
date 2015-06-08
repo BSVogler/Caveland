@@ -522,7 +522,7 @@ public class Chunk {
 	}
 	
 	/**
-	 *
+	 *Returns an iterator which iterates over the data in this chunk.
 	 * @param startingZ
 	 * @param limitZ
 	 * @return

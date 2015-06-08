@@ -39,6 +39,9 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public class DataIterator implements Iterator<HasID>{
+	/**
+	 * current position
+	 */
 	private int[] pos;
 	private HasID[][][] data;
 	private int limitZ;

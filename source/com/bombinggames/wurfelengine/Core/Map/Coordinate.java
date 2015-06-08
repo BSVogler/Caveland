@@ -204,11 +204,10 @@ public class Coordinate extends AbstractPosition {
 	}
 	
 	/**
-	 * Add a vector to the coordinates. If you just want the result and don't
-	 * change the coordiantes use addVectorCpy.
+	 * Add a vector to the coordinates.
 	 *
-	 * @param vector
-	 * @return the new coordiantes which resulted of the addition
+	 * @param vector integer coordinates stored as float
+	 * @return the new coordinates which resulted of the addition
 	 */
 	@Override
 	public Coordinate addVector(float[] vector) {

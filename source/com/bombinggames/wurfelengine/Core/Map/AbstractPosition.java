@@ -135,7 +135,7 @@ public abstract class AbstractPosition implements Serializable {
     
     /**
      *
-     * @param vector
+     * @param vector Dependent on implementation.
      * @return returns itself
      */
     public abstract AbstractPosition addVector(float[] vector);

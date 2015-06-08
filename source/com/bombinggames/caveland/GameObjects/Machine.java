@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
@@ -17,9 +18,10 @@ public class Machine extends RenderBlock {
 
 	/**
 	 *
+	 * @param data
 	 */
-	public Machine() {
-		super((byte) 60);
+	public Machine(Block data) {
+		super(data);
 	}
 
 	@Override

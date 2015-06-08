@@ -6,8 +6,8 @@ import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.Core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
@@ -22,21 +22,19 @@ public class CavelandBlocks implements CustomBlocks {
 @Override
 public RenderBlock toRenderBlock(Block data) {
 	RenderBlock block;
-	byte id = data.getId();
-	byte value = data.getValue();
-	switch (id){
+	switch (data.getId()){
 		case 60:
-			block = new Machine();
+			block = new Machine(data);
 		break;
 		case 72:
-			block = new CustomTree(value);
+			block = new CustomTree(data);
 		break;
 //		case 72:
 //			block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting
 //			block.setObstacle(true);
 //		break;
 		default:
-			block = new RenderBlock(id, value);
+			block = new RenderBlock(data);
 		}
 		return block;
 	}	

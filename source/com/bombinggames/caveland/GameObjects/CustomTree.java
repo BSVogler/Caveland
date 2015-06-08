@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 
@@ -19,16 +20,16 @@ public class CustomTree extends RenderBlock {
 	 * creates a tree in a random shape
 	 */
 	public CustomTree(){
-		this((byte) (Math.random()*8));
+		this(Block.getInstance((byte)72, (byte) (Math.random()*8)));
 	}
 	
 	/**
 	 *
-	 * @param value
+	 * @param data
 	 */
-	public CustomTree(byte value) {
-		super((byte) 72);
-		setValue(value);
+	public CustomTree(Block data) {
+		super((byte) data.getId());
+		setValue(data.getValue());
 		
 		if (getValue()==TREETOPVALUE)
 			setHidden(true);

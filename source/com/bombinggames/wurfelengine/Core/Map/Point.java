@@ -250,7 +250,6 @@ public class Point extends AbstractPosition {
      * @param vector all values in game world values
      * @return
      */
-    @Override
     public Point addVector(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
@@ -289,7 +288,6 @@ public class Point extends AbstractPosition {
      * @param z height to add
      * @return
      */
-    @Override
     public Point addVector(float x, float y, float z) {
         this.x += x;
         this.y += y;

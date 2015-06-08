@@ -132,30 +132,12 @@ public abstract class AbstractPosition implements Serializable {
     public abstract boolean isInMemoryArea();
 	
 	
-    
-    /**
-     *
-     * @param vector Dependent on implementation.
-     * @return returns itself
-     */
-    public abstract AbstractPosition addVector(float[] vector);
-    
     /**
      *
      * @param vector
      * @return returns itself
      */
     public abstract AbstractPosition addVector(Vector3 vector);
-    
-    /**
-     * Add a vector to the position. Implementation may differ.
-     * @param x  Dependent on implementation.
-     * @param y Dependent on implementation.
-     * @param z Dependent on implementation.
-     * @return returns itself
-     */
-    public abstract AbstractPosition addVector(float x, float y, float z);
-	
     
         /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.

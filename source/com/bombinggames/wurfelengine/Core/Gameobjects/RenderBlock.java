@@ -265,12 +265,45 @@ public class RenderBlock extends AbstractGameObject {
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
                 if (!clipping[2])
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
-				//render SSAO
-				byte ssaoId = getCoreData().getSSAOId();
-				if (ssaoId > -1){
-					SimpleEntity ssao = new SimpleEntity((byte) 2, ssaoId);
-					ssao.setPosition(getPosition().cpy().addVector(0, 0, 1).toPoint());
-					ssao.render(view, camera);
+						//render ambient occlusion
+				int aoFlags = getCoreData().getAOFlags();
+				if (((byte) aoFlags) != 0){//only if top side and there is ambient occlusion
+					Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
+					if ((aoFlags & 1) != 0){//if back
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 2);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 1)) != 0){//if back right
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 0);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 2)) != 0){//if right
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 3);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 3)) != 0){//if front right
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 4);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 5)) != 0){//if front left
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 5);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 6)) != 0){//if left
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 6);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
+					if ((aoFlags & (1 << 7)) != 0){//if back left
+						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 1);
+						ao.setPosition(aopos);
+						ao.render(view, camera);
+					}
 				}
             } else
                 super.render(view, camera);

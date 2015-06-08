@@ -35,9 +35,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core.Gameobjects.HasID;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.Core.Map.Chunk;
+import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.Core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.Core.Map.LinkedWithMap;
 import com.bombinggames.wurfelengine.WE;
 
@@ -352,20 +353,6 @@ public class LightEngine implements LinkedWithMap {
 						Block blockToLit = data[x][y][z];
 						if (blockToLit!=null) {
 							blockToLit.setLightlevel(.5f + .5f*z / (float) topmost);
-							//right bottom ssao
-							int ssaoX = x+(y % 2 != 0 ? 1 : 0);
-							if (y>0 && ssaoX < data.length && z+1 < data[x][y].length) {
-								HasID neighborBackRight = data[ssaoX][y-1][z+1];
-								if (neighborBackRight != null && neighborBackRight.hasSides())
-									blockToLit.setSSAObackRight(true);
-							}
-							//left bottom ssao
-							ssaoX = x+(y % 2 == 0 ? -1 : 0);
-							if (y>0 && ssaoX >= 0 && z+1 < data[x][y].length) {
-								HasID neighborBackRight = data[ssaoX][y-1][z+1];
-								if (neighborBackRight != null && neighborBackRight.hasSides())
-									blockToLit.setSSAObackLeft(true);
-							}
 						}
                     }
                 }
@@ -575,7 +562,48 @@ public class LightEngine implements LinkedWithMap {
 	public void onChunkChange(Chunk chunk) {
 		//perform light change only on this chunk
 		calcSimpleLight(chunk.getData());
+		calcAO(chunk);
 	}
-	
-	
+
+	/**
+	 * calcualtes the ambient occlusion for a chunk
+	 * @param chunk 
+	 */
+	private void calcAO(Chunk chunk) {
+		//iterate over every block in chunk
+		DataIterator iterator = chunk.getIterator(0, Chunk.getBlocksZ()-1);
+		while (iterator.hasNext()) {
+			Block next = (Block) iterator.next();
+			//skip air and blocks without sides
+			if (next != null && next.hasSides()){
+				//analyze top side
+				Coordinate coord = chunk.getTopLeftCoordinate().cpy().addVector(
+					new int[]{
+						iterator.getCurrentIndex()[0],
+						iterator.getCurrentIndex()[1],
+						iterator.getCurrentIndex()[2]+1
+					}
+				);
+				
+				//first check 0,2,4,6 then check 1,3,5,7
+				for (int side = 0; side < 9; side+=2) {//first round even sides
+					//second round odd sides
+					if (side == 8)
+						side=1;
+					Block neighbor = coord.cpy().goToNeighbour(side).getBlock();
+					next.setAOFlagTrue(side);
+					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()){
+						next.setAOFlagTrue(side);
+						//don't double draw the sides in between
+						if (side%2==1) {
+							next.setAOFlagFalse((side+1)%8);
+							next.setAOFlagFalse((side+7)%8);
+						}
+					} else {
+						next.setAOFlagFalse(side);
+					}
+				}
+			}
+		}
+	}
 }

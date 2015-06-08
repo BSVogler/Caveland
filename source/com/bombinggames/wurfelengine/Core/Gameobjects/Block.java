@@ -90,9 +90,14 @@ public class Block implements HasID, Serializable {
 	private byte health = 100;
 	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
 	/**
-	 * byte 0: bottom left, byte 1: bottom right, byte 2:top left, byte 3: top right
+	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte bit order: <br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | - | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
 	 */
-	private byte ssao;
+	private int aoFlags;
 
 	private Block(byte id) {
 		this.id = id;
@@ -288,24 +293,28 @@ public class Block implements HasID, Serializable {
 		return hasSides() && !isTransparent();
 	}
 
-	public byte getSSAOId() {
-		if ((ssao & 0b00000010) == 0b00000010)//if flag for right is set
-			if ((ssao & 0b00000001) == 0b00000001)//if also flag for left is set
-				return 2;
-			else
-				return 0;
-		if ((ssao & 0b00000001) == 0b00000001)//if flag for left is set
-			return 1;
-		
-		return -1;
+	/**
+	 * 
+	 * @param side 
+	 */
+	public void setAOFlagTrue(int side) {
+		this.aoFlags |= 1 << side;//set n'th bit to true via OR operator
+	}
+	
+	public void setAOFlagFalse(int side){
+		this.aoFlags &= ~(1 << side);//set n'th bit to false via AND operator
 	}
 
-	public void setSSAObackRight(boolean block) {
-		this.ssao |= 1 << 1;//set second bit to true via or operator
+	/**
+	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte bit order: <br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | - | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
+	 * @return 
+	 */
+	public int getAOFlags() {
+		return aoFlags;
 	}
-	
-	public void setSSAObackLeft(boolean block) {
-		this.ssao |= 1;//set first bit to true via or operator
-	}
-	
 }

@@ -120,8 +120,10 @@ public class CVarSystem {
 				);
 			}
 			return childSystem.get(cvar.toLowerCase());
-		} else 
+		} else {
+			cvar = cvar.replace("/", "");
 			return cvars.get(cvar.toLowerCase());
+		}
 	}
 	
 	public boolean getValueB(String cvar){

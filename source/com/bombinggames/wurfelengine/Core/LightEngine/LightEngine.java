@@ -593,16 +593,43 @@ public class LightEngine implements LinkedWithMap {
 						side=1;
 					Block neighbor = coord.cpy().goToNeighbour(side).getBlock();
 					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()){
-						aoFlags |= 1 << side;
+						aoFlags |= 1 << (side+8);
 						//don't double draw the sides in between
 						if (side%2==1) {
-							aoFlags &= ~(1 << ((side+1)%8));//set next to false
-							aoFlags &= ~(1 << ((side+7)%8));//Set previous to false
+							aoFlags &= ~(1 << (((side+1)%8)+8));//set next to false
+							aoFlags &= ~(1 << (((side+7)%8)+8));//Set previous to false
 						}
 					} else {
-						aoFlags &= ~(1 << side);
+						aoFlags &= ~(1 << (side+8));
 					}
 				}
+				
+				//right side, side 2
+				//check right half, which is equivalent to top right at pos 1
+				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());
+				Block neighbor = coord.cpy().addVector(1, 0, 0).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
+					aoFlags |= 1 << 17;//third byte position 1
+				
+				//check bottom side, which is equivalent ot top right at pos 3
+				neighbor = coord.cpy().addVector(0, 0, -1).goToNeighbour(3).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
+					aoFlags |= 1 << 19;//third byte position 3
+				
+				next.setAoFlags(aoFlags);
+				
+				//left side, side 0
+				//check left half, which is equivalent to top right at pos 7
+				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());
+				neighbor = coord.cpy().addVector(-1, 0, 0).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
+					aoFlags |= 1 << 7;//first byte position 1
+				
+				//check bottom side, which is equivalent ot top right at pos 5
+				neighbor = coord.cpy().addVector(0, 0, -1).goToNeighbour(5).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
+					aoFlags |= 1 << 5;//first byte position 3
+				
 				next.setAoFlags(aoFlags);
 			}
 		}

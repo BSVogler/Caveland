@@ -265,46 +265,6 @@ public class RenderBlock extends AbstractGameObject {
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
                 if (!clipping[2])
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
-						//render ambient occlusion
-				int aoFlags = getCoreData().getAOFlags();
-				if (((byte) aoFlags) != 0){//only if top side and there is ambient occlusion
-					Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
-					if ((aoFlags & 1) != 0){//if back
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 2);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 1)) != 0){//if back right
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 0);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 2)) != 0){//if right
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 3);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 3)) != 0){//if front right
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 4);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 5)) != 0){//if front left
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 5);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 6)) != 0){//if left
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 6);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-					if ((aoFlags & (1 << 7)) != 0){//if back left
-						SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 1);
-						ao.setPosition(aopos);
-						ao.render(view, camera);
-					}
-				}
             } else
                 super.render(view, camera);
         }
@@ -421,6 +381,74 @@ public class RenderBlock extends AbstractGameObject {
 					)
 				: color//pass color if not shading static
         );
+		//render ambient occlusion
+		int aoFlags = getCoreData().getAOFlags();
+		if (side==Side.LEFT && ((byte) (aoFlags)) != 0){//only if top side and there is ambient occlusion
+			Coordinate aopos = getPosition().cpy();
+			if ((aoFlags & (1 << 5)) != 0){//if bottom
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 10);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 7)) != 0){//if left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 9);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+		}
+		
+		if (side==Side.TOP && ((byte) (aoFlags>>8)) != 0){//only if top side and there is ambient occlusion
+			Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
+			if ((aoFlags & 1 << 8) != 0){//if back
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 2);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 9)) != 0){//if back right
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 0);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 10)) != 0){//if right
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 3);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 11)) != 0){//if front right
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 4);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 13)) != 0){//if front left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 5);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 14)) != 0){//if left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 6);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 15)) != 0){//if back left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 1);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+		}
+		
+		if (side==Side.RIGHT && ((byte) (aoFlags>>16)) != 0){//only if top side and there is ambient occlusion
+			Coordinate aopos = getPosition().cpy();
+			if ((aoFlags & (1 << 17)) != 0){//if left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 7);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+			if ((aoFlags & (1 << 19)) != 0){//if back left
+				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 8);
+				ao.setPosition(aopos);
+				ao.render(view, camera);
+			}
+		}
     }
 	
 	

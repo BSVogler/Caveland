@@ -553,7 +553,7 @@ public class Chunk {
 	
 	/**
 	 *
-	 * @return
+	 * @return not copy safe
 	 */
 	public Coordinate getTopLeftCoordinate(){
 		return topleft;

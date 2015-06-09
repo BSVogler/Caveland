@@ -65,7 +65,6 @@ public class Console implements CommandsInterface  {
 	/**
 	 * suggestions stuff
 	 */
-	private int nextSuggestionNo =0;
 	private boolean keySuggestionDown;
 	private String path = "/";
 
@@ -130,7 +129,7 @@ public class Console implements CommandsInterface  {
 		//log.setStyle(customStyle);
 		log.setVisible(false);
 		WE.getEngineView().getStage().addActor(log);//add it to the global stage
-        textinput = new TextField("$", skin);
+        textinput = new TextField(path+" $ ", skin);
         textinput.setBounds(xPos, yPos, 750, 50);
         textinput.setBlinkTime(0.3f);
 		textinput.setColor(1, 1, 1, 0.5f);
@@ -202,7 +201,7 @@ public class Console implements CommandsInterface  {
 			&& Gdx.input.isKeyPressed( WE.CVARS.getValueI("KeySuggestion") )
 			&& isActive()
 		) {
-            autoSuggestion();
+            autoComplete();
         }
         keySuggestionDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeySuggestion"));
 		
@@ -269,8 +268,8 @@ public class Console implements CommandsInterface  {
     }
 	
 	public void clearCommandLine(){
-		textinput.setText("$");
-		textinput.setCursorPosition(1);
+		textinput.setText(path+" $ ");
+		textinput.setCursorPosition((path+" $ ").length());
 	}
     
     /**
@@ -310,33 +309,35 @@ public class Console implements CommandsInterface  {
     public void setText(String text){
         textinput.setText(text);
         textinput.setCursorPosition(textinput.getText().length());
-		nextSuggestionNo=0;//start with suggestions all over
+		//nextSuggestionNo=0;//start with suggestions all over
     }
 	
 	/**
-	 * suggests a cvar
+	 * suggests a cvar or a dir if cd entered
+	 * @return the possible completions
 	 */
-	public void autoSuggestion(){
-		//get until cursor position
-		ArrayList<String> suggestions = WE.CVARS.getSuggestions(getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3));
-		
-		//if at end start all overs
-		if (nextSuggestionNo >= suggestions.size()){
-			nextSuggestionNo=0;
+	public ArrayList<String> autoComplete(){
+		ArrayList<String> suggestions = new ArrayList<>(1);
+		if ("cd".equals(getCurrentCommand())){
+			suggestions.add("cd ");
+		}else {
+			if ("cd ".equals(getCurrentCommand())){
+				suggestions = ls();
+				for (int i = 0; i < suggestions.size(); i++) {
+					suggestions.set(i, "cd ".concat(suggestions.get(i)));
+				}
+			}else {
+				//get until cursor position
+				suggestions = WE.CVARS.getSuggestions(getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3));
+			}
 		}
 		
 		//displaySuggestion
-		if (suggestions.size()>0) {
-			int saveCursorPos = textinput.getCursorPosition();
-			textinput.setText(suggestions.get(nextSuggestionNo));
-			textinput.setCursorPosition(saveCursorPos);
-
-			//if only one available
-			if (suggestions.size()==1)
-				textinput.setCursorPosition(textinput.getText().length());
-
-			nextSuggestionNo++;
+		if (suggestions.size()==1) {
+			textinput.setText(path+" $ "+suggestions.get(0)+" ");
+			textinput.setCursorPosition(textinput.getText().length());
 		}
+		return suggestions;
 	}
     
 	/**
@@ -368,6 +369,17 @@ public class Console implements CommandsInterface  {
 		return textinput.getText().substring(textinput.getText().indexOf("$ ")+2);
 	}
 	
+	public ArrayList<String> ls(){
+		ArrayList<String> result = new ArrayList<>(10);
+		File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
+		for (final File fileEntry : mapsFolder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				result.add(fileEntry.getName()+"\n");
+			}
+		}
+		return result;
+	}
+		
     /**
      * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
@@ -380,12 +392,7 @@ public class Console implements CommandsInterface  {
 		String first = st.nextToken().toLowerCase();
         switch (first) {
 			case "ls":
-				File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
-                for (final File fileEntry : mapsFolder.listFiles()) {
-                    if (fileEntry.isDirectory()) {
-                        add(fileEntry.getName()+"\n");
-                    }
-                }
+				ls().forEach((dir) -> add(dir));
 				return true;
 			case "clear":
 				log.setText("");
@@ -537,7 +544,7 @@ public class Console implements CommandsInterface  {
     
     private class StageInputProcessor extends InputListener {
         private Console parentRef;
-		private long timeLastTab;
+		private boolean lastKeyWasTab;
 
         private StageInputProcessor(Console parent) {
             this.parentRef = parent;
@@ -557,14 +564,19 @@ public class Console implements CommandsInterface  {
             }
 			
 			if (keycode == Keys.TAB){
-				if (timeLastTab > 0 && System.currentTimeMillis()-timeLastTab<300){
-					if ("cd ".equals(parentRef.getCurrentCommand()))
-						executeCommand("ls");
-					else
-						add(WE.CVARS.getSystem(path).showAll()+"\n");
+				ArrayList<String> possibilities = autoComplete();
+				if (possibilities.size()>1){
+					if (lastKeyWasTab){
+						add(possibilities+"\n");
+					}
+				} else {
+					if (possibilities.size()>0)
+						setText(path + " $ "+possibilities.get(0));
 				}
-				timeLastTab = System.currentTimeMillis();
-            }
+				lastKeyWasTab = true;
+            }else {
+				lastKeyWasTab = false;
+			}
             return true;
         }
     }

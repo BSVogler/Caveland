@@ -160,9 +160,8 @@ public class RenderBlock extends AbstractGameObject {
     }
 	
 	
-	private Block blockData;
+	private final Block blockData;
 	private Coordinate coord;
-    private boolean[] clipping = new boolean[]{false, false, false};
 	
 	/**
 	 * 
@@ -204,43 +203,6 @@ public class RenderBlock extends AbstractGameObject {
 		return blockData.isObstacle();
 	}
 
-	/**
-	 *
-	 */
-	public void setClippedLeft() {
-		clipping[0] = true;
-	}
-
-	/**
-	 *
-	 */
-	public void setClippedRight() {
-		clipping[2] = true;
-	}
-
-	/**
-	 *
-	 */
-	public void setClippedTop() {
-		clipping[1] = true;
-	}
-
-	/**
-	 * a block is only clipped if every side is clipped
-	 * @return 
-	 */
-	public boolean isClipped() {
-		return clipping[0] && clipping[2] && clipping[1];
-	}
-	
-	/**
-	 *
-	 * @param clipping
-	 */
-	public void setClipping(boolean[] clipping) {
-		this.clipping = clipping;
-	}
-
     @Override
     public String getName() {
         return  blockData.getName();
@@ -262,11 +224,12 @@ public class RenderBlock extends AbstractGameObject {
         if (!isHidden()) {
             if (hasSides()) {
 				Coordinate coords = getPosition();
-                if (!clipping[1])
+				byte clipping = blockData.getClipping();
+                if ((clipping & (1 << 1)) == 0)
                     renderSide(view, camera, coords, Side.TOP, staticShade);
-                if (!clipping[0])
+				if ((clipping & 1) == 0)
                     renderSide(view, camera, coords, Side.LEFT, staticShade);
-                if (!clipping[2])
+                if ((clipping & (1 << 2)) == 0)
                     renderSide(view, camera, coords, Side.RIGHT, staticShade);
             } else
                 super.render(view, camera);

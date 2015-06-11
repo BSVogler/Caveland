@@ -574,5 +574,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param coord
 	 * @return
 	 */
-	public abstract boolean[] getClipping(Coordinate coord);
+	public byte getClipping(Coordinate coord){
+		return getBlock(coord.getX(), coord.getY(), coord.getZ()).getClipping();
+	}
 }

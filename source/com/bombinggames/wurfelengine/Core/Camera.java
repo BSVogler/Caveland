@@ -603,9 +603,8 @@ map.getGameWidth(),
 				//only add if in view plane to-do
 				if (block != null) {
 					//copy the clipping to the renderBlock
-					block.setClipping( Controller.getMap().getClipping( block.getPosition() ) );
 					if (
-						!block.isClipped()
+						!block.getBlockData().isClipped()
 						&& !block.isHidden()
 						&& inViewFrustum(
 							block.getPosition().getViewSpcX(gameView),
@@ -1221,7 +1220,7 @@ map.getGameWidth(),
 			&& indexY < cameraContent[0].length
 			&& cameraContent[indexX][indexY][coords.getZ()+1] != null //not air
 		) {
-			return cameraContent[indexX][indexY][coords.getZ()+1].isClipped();
+			return cameraContent[indexX][indexY][coords.getZ()+1].getBlockData().isClipped();
 		} else {
 			//if not return fully clipped
 			return true;

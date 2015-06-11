@@ -89,10 +89,6 @@ public class Chunk {
 	 */
 	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
-	/**
-	 * stores on z axis one additional block because 0 is the ground layer
-	 */
-	private boolean[][][][] clipping;
   
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -117,8 +113,6 @@ public class Chunk {
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = null;
-		
-		clipping = new boolean[blocksX][blocksY][blocksZ+1][3];
 		
         resetClipping();
 						
@@ -655,58 +649,12 @@ public class Chunk {
 		}
 	}
 
-	protected void setClippedLeft(int x, int y, int z) {
-		clipping[x][y][z+1][0] = true;
-	}
-
-	protected void setClippedRight(int x, int y, int z) {
-		clipping[x][y][z+1][2] = true;
-	}
-	
-	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
-	protected void setClippedTop(int x, int y, int z) {
-		clipping[x][y][z+1][1] = true;
-	}
-	
-	/**
-	 * a block is only clipped if every side is clipped
-	 * @param x coord
-	 * @param y index
-	 * @param z index 
-	 * @return 
-	 */
-	public boolean[] getClipping(int x, int y, int z) {
-		int xIndex = x-topleft.getX();
-		int yIndex = y-topleft.getY();
-		return clipping[xIndex][yIndex][z+1];
-	}
-	
-	/**
-	 * a block is only clipped if every side is clipped
-	 * @param x index
-	 * @param y index
-	 * @param z  index
-	 * @return 
-	 */
-	public boolean isClipped(int x, int y, int z) {
-		int xIndex = x-topleft.getX();
-		int yIndex = y-topleft.getY();
-		return clipping[xIndex][yIndex][z+1][0]
-			&& clipping[xIndex][yIndex][z+1][2]
-			&& clipping[xIndex][yIndex][z+1][1];
-	}
-
 	protected void resetClipping() {
 		for (int x=0; x < blocksX; x++)
 			for (int y=0; y < blocksY; y++) {
-				clipping[x][y][0] = new boolean[]{true, false, true};
-				for (int z=1; z < blocksZ+1; z++)
-					clipping[x][y][z] = new boolean[]{false, false, false};
+				for (int z=0; z < blocksZ; z++)
+					if (data[x][y][z]!=null)
+						data[x][y][z].setUnclipped();
 			}
 	}
 

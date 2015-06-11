@@ -98,6 +98,7 @@ public class Block implements HasID, Serializable {
 	 * 5 / 4 \ 3<br>
 	 */
 	private int aoFlags;
+	private byte clipping;
 
 	private Block(byte id) {
 		this.id = id;
@@ -314,5 +315,37 @@ public class Block implements HasID, Serializable {
 
 	public void setAoFlags(int aoFlags) {
 		this.aoFlags = aoFlags;
+	}
+	
+	/**
+	 * a block is only clipped if every side is clipped
+	 * @return 
+	 */
+	public byte getClipping() {
+		return clipping;
+	}
+	
+	/**
+	 * a block is only clipped if every side is clipped
+	 * @return 
+	 */
+	public boolean isClipped() {
+		return clipping!=0;
+	}
+	
+	public void setClippedLeft(){
+		clipping |= 1;
+	}
+	
+	public void setClippedTop(){
+		clipping |= 1 << 1;
+	}
+	
+	public void setClippedRight(){
+		clipping |= 1 << 2;
+	}
+
+	public void setUnclipped() {
+		clipping=(byte)0;
 	}
 }

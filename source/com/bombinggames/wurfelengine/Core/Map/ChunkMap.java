@@ -164,7 +164,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 * @param chunkX
 	 * @param chunkY
 	 */
-	public void hiddenSurfaceDetection(Camera camera, int chunkX, int chunkY) {
+	public void hiddenSurfaceDetection(final Camera camera, final int chunkX, final int chunkY) {
 		Gdx.app.debug("Camera", "hsd for chunk " + chunkX + "," + chunkY);
 		Chunk chunk = getChunk(chunkX, chunkY);
 		Block[][][] chunkData = chunk.getData();
@@ -172,15 +172,18 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		chunk.resetClipping();
 		
 		//loop over floor for ground level
-		DataIterator floorIterator = chunk.getIterator(0, 0);
-		while (floorIterator.hasNext()) {
-			if (((Block) floorIterator.next()).hidingPastBlock())
-				chunk.setClippedTop(
-					floorIterator.getCurrentIndex()[0],
-					floorIterator.getCurrentIndex()[1],
-					-1
-				);
-		}
+		//DataIterator floorIterator = chunk.getIterator(0, 0);
+//		while (floorIterator.hasNext()) {
+//			if (((Block) floorIterator.next()).hidingPastBlock())
+//				chunk.getBlock(
+//					floorIterator.getCurrentIndex()[0],
+//					floorIterator.getCurrentIndex()[1],
+//					chunkY)setClippedTop(
+//					floorIterator.getCurrentIndex()[0],
+//					floorIterator.getCurrentIndex()[1],
+//					-1
+//				);
+//		}
 		
 		//iterate over chunk
 		DataIterator dataIter = new DataIterator(
@@ -194,9 +197,9 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 			
 			if (current != null) {
 				//calculate index position relative to camera border
-				int x = dataIter.getCurrentIndex()[0];
-				int y = dataIter.getCurrentIndex()[1];
-				int z = dataIter.getCurrentIndex()[2];
+				final int x = dataIter.getCurrentIndex()[0];
+				final int y = dataIter.getCurrentIndex()[1];
+				final int z = dataIter.getCurrentIndex()[2];
 				
 				Block neighbour;
 				//left side
@@ -209,7 +212,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.setClippedLeft(x, y, z);
+					chunk.getBlockViaIndex(x, y, z).setClippedLeft();
 				}
 
 				//right side
@@ -223,7 +226,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.setClippedRight(x, y, z);
+					chunk.getBlockViaIndex(x, y, z).setClippedRight();
 				}
 
 				//check top
@@ -235,7 +238,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 						|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
 					)
 				) {
-					chunk.setClippedTop(x, y, z);
+					chunk.getBlockViaIndex(x, y, z).setClippedTop();
 				}
 			}
 		}
@@ -268,16 +271,6 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		return data;
 	}
 	
-	/**
-	 * 
-	 * @param coord
-	 * @return 
-	 */
-	@Override
-	public boolean[] getClipping(Coordinate coord){
-		return getChunk(coord).getClipping(coord.getX(), coord.getY(), coord.getZ());
-	}
-     
     /**
      * Returns a block without checking the parameters first. Good for debugging and also faster.
 	 * O(n)

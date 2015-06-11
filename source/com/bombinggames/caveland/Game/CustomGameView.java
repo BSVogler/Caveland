@@ -45,7 +45,8 @@ public class CustomGameView extends GameView{
         super.init(controller);
         Gdx.app.debug("CustomGameView", "Initializing");
 		
-		CustomPlayer.loadSheet();
+		if (!WE.CVARS.getValueB("ignorePlayer"))
+			CustomPlayer.loadSheet();
 		
 		//register Sounds
 		Controller.getSoundEngine().register("jetpack", "com/bombinggames/Caveland/sounds/jetpack.wav");

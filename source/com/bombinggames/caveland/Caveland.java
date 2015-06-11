@@ -48,6 +48,7 @@ public class Caveland {
 		WE.CVARS.register( new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//register map cvars
 		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());

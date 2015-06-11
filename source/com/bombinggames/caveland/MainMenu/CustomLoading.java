@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bombinggames.wurfelengine.Core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *
@@ -15,8 +16,10 @@ public class CustomLoading extends LoadingScreen {
 	@Override
 	public void customLoading(AssetManager manager) {
 		//manager.load("com/bombinggames/Caveland/sounds/victorcenusa_running.ogg", Sound.class);
-		manager.load("com/bombinggames/Caveland/playerSheet.txt", TextureAtlas.class);
-		manager.load("com/bombinggames/Caveland/playerSheetNormal.png", Texture.class);
+		if (!WE.CVARS.getValueB("ignorePlayer")) {
+			manager.load("com/bombinggames/Caveland/playerSheet.txt", TextureAtlas.class);
+			manager.load("com/bombinggames/Caveland/playerSheetNormal.png", Texture.class);
+		}
         manager.load("com/bombinggames/Caveland/sounds/jump_man.wav", Sound.class);
 		manager.load("com/bombinggames/Caveland/sounds/jetpack.wav", Sound.class);
 		manager.load("com/bombinggames/Caveland/sounds/step.wav", Sound.class);

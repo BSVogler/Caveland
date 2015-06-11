@@ -14,12 +14,12 @@ import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
-import com.bombinggames.wurfelengine.Core.Gameobjects.Controllable;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.Core.Gameobjects.Block.VIEW_HEIGHT2;
+import com.bombinggames.wurfelengine.Core.Gameobjects.BlockDirt;
+import com.bombinggames.wurfelengine.Core.Gameobjects.Controllable;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
@@ -352,71 +352,73 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		view.getBatch().end();//inject new batch here
+		if (!WE.CVARS.getValueB("ignorePlayer")) {
+			view.getBatch().end();//inject new batch here
 
-		//bind normal map to texture unit 1
-		if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
-			textureNormal.bind(1);
-		}
+			//bind normal map to texture unit 1
+			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
+				textureNormal.bind(1);
+			}
 
-		textureDiff.bind(0);
+			textureDiff.bind(0);
 
-		view.getBatch().begin();
-			AtlasRegion texture = getSprite(action, spriteNum);
-			Sprite sprite = new Sprite(texture);
-			sprite.setOrigin(
-					texture.originalWidth/2 - texture.offsetX,
-					VIEW_HEIGHT2 - texture.offsetY
-				);
-			//sprite.scale(get);
-			sprite.setColor(getColor());
-
-			sprite.setPosition(
-				getPosition().getViewSpcX(view) + texture.offsetX - texture.originalWidth / 2,
-				getPosition().getViewSpcY(view)//center
-				- VIEW_HEIGHT2
-				+ texture.offsetY
-				- 50 //only this player sprite has an offset because it has overize
-			);
-			sprite.draw(view.getBatch());
-			
-			//overlay
-			if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
-				AtlasRegion overlayTexture;
-				if (action=='i'){
-					overlayTexture = getSprite('o', spriteNum);
-				} else {
-					overlayTexture = getSprite('s', spriteNumOverlay);
-				}
-				
-				Sprite overlaySprite = new Sprite(overlayTexture);
+			view.getBatch().begin();
+				AtlasRegion texture = getSprite(action, spriteNum);
+				Sprite sprite = new Sprite(texture);
 				sprite.setOrigin(
-					overlayTexture.originalWidth/2 - overlayTexture.offsetX,
-					VIEW_HEIGHT2 - overlayTexture.offsetY
-				);
-				overlaySprite.scale(1f);
-				overlaySprite.setColor(getColor());
+						texture.originalWidth/2 - texture.offsetX,
+						VIEW_HEIGHT2 - texture.offsetY
+					);
+				//sprite.scale(get);
+				sprite.setColor(getColor());
 
-				overlaySprite.setPosition(
-					getPosition().getViewSpcX(view) + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
+				sprite.setPosition(
+					getPosition().getViewSpcX(view) + texture.offsetX - texture.originalWidth / 2,
 					getPosition().getViewSpcY(view)//center
 					- VIEW_HEIGHT2
-					+ overlayTexture.offsetY
-					+100 //offset for overlay
+					+ texture.offsetY
+					- 50 //only this player sprite has an offset because it has overize
 				);
-				overlaySprite.draw(view.getBatch());
+				sprite.draw(view.getBatch());
+
+				//overlay
+				if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
+					AtlasRegion overlayTexture;
+					if (action=='i'){
+						overlayTexture = getSprite('o', spriteNum);
+					} else {
+						overlayTexture = getSprite('s', spriteNumOverlay);
+					}
+
+					Sprite overlaySprite = new Sprite(overlayTexture);
+					sprite.setOrigin(
+						overlayTexture.originalWidth/2 - overlayTexture.offsetX,
+						VIEW_HEIGHT2 - overlayTexture.offsetY
+					);
+					overlaySprite.scale(1f);
+					overlaySprite.setColor(getColor());
+
+					overlaySprite.setPosition(
+						getPosition().getViewSpcX(view) + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
+						getPosition().getViewSpcY(view)//center
+						- VIEW_HEIGHT2
+						+ overlayTexture.offsetY
+						+100 //offset for overlay
+					);
+					overlaySprite.draw(view.getBatch());
+				}
+			view.getBatch().end();
+
+			//bind normal map to texture unit 1
+			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
+				AbstractGameObject.getTextureNormal().bind(1);
 			}
-		view.getBatch().end();
 
-		//bind normal map to texture unit 1
-		if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
-			AbstractGameObject.getTextureNormal().bind(1);
+			//bind diffuse color to texture unit 0
+			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+			AbstractGameObject.getTextureDiffuse().bind(0);
+			view.getBatch().begin();
 		}
-
-		//bind diffuse color to texture unit 0
-		//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
-		AbstractGameObject.getTextureDiffuse().bind(0);
-		view.getBatch().begin();
 	}
 
 	/**

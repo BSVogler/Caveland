@@ -67,6 +67,7 @@ public class RenderBlock extends AbstractGameObject {
     private static final Color[][] colorlist = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
+	private static float ambientOcclusion;
 
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
@@ -86,6 +87,7 @@ public class RenderBlock extends AbstractGameObject {
         super(id);
 		coreData = Block.getInstance(id);
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
     }
 	
 	/**
@@ -97,6 +99,7 @@ public class RenderBlock extends AbstractGameObject {
 		super(id);
 		coreData = Block.getInstance(id, value);
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
 	}
 	
 	/**
@@ -107,6 +110,7 @@ public class RenderBlock extends AbstractGameObject {
 		super(data.getId());
 		coreData = data;
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
 	}
 	
 	
@@ -184,7 +188,7 @@ public class RenderBlock extends AbstractGameObject {
         return  coreData.getName();
     }
 	
-		/**
+	/**
 	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call.
 	 * @param coord the position on the map
 	 * @return itself
@@ -382,75 +386,68 @@ public class RenderBlock extends AbstractGameObject {
 				: color//pass color if not shading static
         );
 		//render ambient occlusion
-		int aoFlags = getCoreData().getAOFlags();
-		if (side==Side.LEFT && ((byte) (aoFlags)) != 0){//only if top side and there is ambient occlusion
-			Coordinate aopos = getPosition().cpy();
-			if ((aoFlags & (1 << 5)) != 0){//if bottom
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 10);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
+		if (ambientOcclusion>0) {
+			int aoFlags = getCoreData().getAOFlags();
+			if (side==Side.LEFT && ((byte) (aoFlags)) != 0){//only if top side and there is ambient occlusion
+				Coordinate aopos = getPosition().cpy();
+				if ((aoFlags & (1 << 5)) != 0){//if bottom
+					renderAO(view, camera, aopos, (byte) 10);
+				}
+				if ((aoFlags & (1 << 7)) != 0){//if left
+					renderAO(view, camera, aopos, (byte) 9);
+				}
 			}
-			if ((aoFlags & (1 << 7)) != 0){//if left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 9);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
+
+			if (side==Side.TOP && ((byte) (aoFlags>>8)) != 0){//only if top side and there is ambient occlusion
+				Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
+				if ((aoFlags & 1 << 8) != 0){//if back
+					renderAO(view, camera, aopos, (byte) 2);
+				}
+				if ((aoFlags & (1 << 9)) != 0){//if back right
+					renderAO(view, camera, aopos, (byte) 0);
+				}
+				if ((aoFlags & (1 << 10)) != 0){//if right
+					renderAO(view, camera, aopos, (byte) 3);
+				}
+				if ((aoFlags & (1 << 11)) != 0){//if front right
+					renderAO(view, camera, aopos, (byte) 4);
+				}
+				if ((aoFlags & (1 << 13)) != 0){//if front left
+					renderAO(view, camera, aopos, (byte) 5);
+				}
+				if ((aoFlags & (1 << 14)) != 0){//if left
+					renderAO(view, camera, aopos, (byte) 6);
+				}
+				if ((aoFlags & (1 << 15)) != 0){//if back left
+					renderAO(view, camera, aopos, (byte) 1);
+				}
 			}
-		}
-		
-		if (side==Side.TOP && ((byte) (aoFlags>>8)) != 0){//only if top side and there is ambient occlusion
-			Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
-			if ((aoFlags & 1 << 8) != 0){//if back
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 2);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 9)) != 0){//if back right
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 0);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 10)) != 0){//if right
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 3);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 11)) != 0){//if front right
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 4);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 13)) != 0){//if front left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 5);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 14)) != 0){//if left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 6);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 15)) != 0){//if back left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 1);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-		}
-		
-		if (side==Side.RIGHT && ((byte) (aoFlags>>16)) != 0){//only if top side and there is ambient occlusion
-			Coordinate aopos = getPosition().cpy();
-			if ((aoFlags & (1 << 17)) != 0){//if left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 7);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
-			}
-			if ((aoFlags & (1 << 19)) != 0){//if back left
-				SimpleEntity ao = new SimpleEntity((byte) 2, (byte) 8);
-				ao.setPosition(aopos);
-				ao.render(view, camera);
+
+			if (side==Side.RIGHT && ((byte) (aoFlags>>16)) != 0){//only if top side and there is ambient occlusion
+				Coordinate aopos = getPosition().cpy();
+				if ((aoFlags & (1 << 17)) != 0){//if left
+					renderAO(view, camera, aopos, (byte) 7);
+				}
+				if ((aoFlags & (1 << 19)) != 0){//if back left
+					renderAO(view, camera, aopos, (byte) 8);
+				}
 			}
 		}
     }
 	
+	/**
+	 * helper function
+	 * @param view
+	 * @param camera
+	 * @param aopos
+	 * @param value 
+	 */
+	private void renderAO(final GameView view, final Camera camera, final AbstractPosition aopos, final byte value){
+		SimpleEntity ao = new SimpleEntity((byte) 2, value);
+		ao.setPosition(aopos);
+		ao.setColor(new Color(0.5f, 0.5f, 0.5f, ambientOcclusion));
+		ao.render(view, camera);
+	}
 	
     /**
      * Ignores lightlevel.

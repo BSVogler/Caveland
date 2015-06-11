@@ -13,7 +13,7 @@ void main() {
     v_color = a_color*2.0;
     v_color.a = a_color.a;
 #else
-    v_color = a_color*gl_Color*2.0;//multiply by 2 and use vertex color because normal vertex color is expected to be at 0.5
+    v_color.rgb = a_color.rgb*gl_Color.rgb*2.0;//multiply by 2 and use vertex color because normal vertex color is expected to be at 0.5
     v_color.a = gl_Color.a*a_color.a;//use alpha of texture and multiply by blending color alpha
 #endif
     v_texCoords = a_texCoord0;

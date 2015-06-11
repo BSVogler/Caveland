@@ -77,6 +77,89 @@ public class RenderBlock extends AbstractGameObject {
 		staticShade = shade;
 	}
 	
+	    /**
+     *  Returns a sprite sprite of a specific side of the block
+     * @param id the id of the block
+     * @param value the value of teh block
+     * @param side Which side?
+     * @return an sprite of the side
+     */
+    public static AtlasRegion getBlockSprite(final int id, final int value, final Side side) {
+        if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
+        
+        if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
+            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side.getCode());
+            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
+                
+                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
+                
+                sprite = getSpritesheet().findRegion("b0-0-"+side.getCode());
+                
+                if (sprite == null) {//load generic error sprite if category sprite failed
+                    sprite = getSpritesheet().findRegion("error");
+                    if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
+                }
+            }
+            blocksprites[id][value][side.getCode()] = sprite;
+            return sprite;
+        } else {
+            return blocksprites[id][value][side.getCode()];
+        }
+    }
+    
+
+    
+   /**
+     * Returns a color representing the block. Picks from the sprite sprite.
+     * @param id id of the RenderBlock
+     * @param value the value of the block.
+     * @return copy of a color representing the block
+     */
+    public static Color getRepresentingColor(final byte id, final byte value){
+        if (colorlist[id][value] == null){ //if not in list, add it to the list
+            colorlist[id][value] = new Color();
+            int colorInt;
+            
+            if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
+                AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
+                if (texture == null) return new Color();
+                colorInt = getPixmap().getPixel(
+                    texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH4);
+            } else {
+                AtlasRegion texture = getSprite('b', id, value);
+                if (texture == null) return new Color();
+                colorInt = getPixmap().getPixel(
+                    texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH2);
+            }
+            Color.rgba8888ToColor(colorlist[id][value], colorInt);
+            return colorlist[id][value].cpy(); 
+        } else return colorlist[id][value].cpy(); //return value when in list
+    }
+	
+	/**
+	 * set the sound to be played if a block gets destroyed.
+	 * @param destructionSound 
+	 */
+	public static void setDestructionSound(String destructionSound) {
+		RenderBlock.destructionSound = destructionSound;
+	}
+	
+	/**
+     *
+     * @return
+     */
+    public static AtlasRegion[][][] getBlocksprites() {
+        return blocksprites;
+    }
+	
+    /**
+     *
+     */
+    public static void staticDispose(){
+        blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];//{id}{value}{side}
+    }
+	
+	
 	private Block coreData;
 	
 	/**
@@ -159,30 +242,6 @@ public class RenderBlock extends AbstractGameObject {
 		this.clipping = clipping;
 	}
 
-	/**
-     *
-     * @return
-     */
-    public static AtlasRegion[][][] getBlocksprites() {
-        return blocksprites;
-    }
-
-	/**
-	 * set the sound to be played if a block gets destroyed.
-	 * @param destructionSound 
-	 */
-	public static void setDestructionSound(String destructionSound) {
-		RenderBlock.destructionSound = destructionSound;
-	}
-	
-    
-    /**
-     *
-     */
-    public static void staticDispose(){
-        blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];//{id}{value}{side}
-    }
-
     @Override
     public String getName() {
         return  coreData.getName();
@@ -199,65 +258,6 @@ public class RenderBlock extends AbstractGameObject {
 		return this;
 	};
     
-     /**
-     *  Returns a sprite sprite of a specific side of the block
-     * @param id the id of the block
-     * @param value the value of teh block
-     * @param side Which side?
-     * @return an sprite of the side
-     */
-    public static AtlasRegion getBlockSprite(final int id, final int value, final Side side) {
-        if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
-        
-        if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
-            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side.getCode());
-            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                
-                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
-                
-                sprite = getSpritesheet().findRegion("b0-0-"+side.getCode());
-                
-                if (sprite == null) {//load generic error sprite if category sprite failed
-                    sprite = getSpritesheet().findRegion("error");
-                    if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
-                }
-            }
-            blocksprites[id][value][side.getCode()] = sprite;
-            return sprite;
-        } else {
-            return blocksprites[id][value][side.getCode()];
-        }
-    }
-    
-
-    
-   /**
-     * Returns a color representing the block. Picks from the sprite sprite.
-     * @param id id of the RenderBlock
-     * @param value the value of the block.
-     * @return copy of a color representing the block
-     */
-    public static Color getRepresentingColor(final byte id, final byte value){
-        if (colorlist[id][value] == null){ //if not in list, add it to the list
-            colorlist[id][value] = new Color();
-            int colorInt;
-            
-            if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
-                AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
-                if (texture == null) return new Color();
-                colorInt = getPixmap().getPixel(
-                    texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH4);
-            } else {
-                AtlasRegion texture = getSprite('b', id, value);
-                if (texture == null) return new Color();
-                colorInt = getPixmap().getPixel(
-                    texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH2);
-            }
-            Color.rgba8888ToColor(colorlist[id][value], colorInt);
-            return colorlist[id][value].cpy(); 
-        } else return colorlist[id][value].cpy(); //return value when in list
-    }
-
     @Override
     public void render(final GameView view, final Camera camera) {
         if (!isHidden()) {

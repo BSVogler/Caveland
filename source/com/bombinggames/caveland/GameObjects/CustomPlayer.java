@@ -122,8 +122,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private boolean prepareThrow;
 	private boolean bunnyHopForced;
 	private boolean usedLoadAttackInAir;
-	private SmokeEmitter emitter;
-	private SmokeEmitter emitter2;
+	private final SmokeEmitter emitter;
+	private final SmokeEmitter emitter2;
 	private SimpleEntity interactButton = null;
 	private Coordinate nearestInteractableBlock = null;
 	private int spriteNumOverlay;

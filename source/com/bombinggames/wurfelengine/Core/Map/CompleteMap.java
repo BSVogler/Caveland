@@ -79,7 +79,7 @@ public class CompleteMap extends AbstractMap {
 
 	@Override
 	public void setBlock(RenderBlock block) {
-		data[block.getPosition().getX()][block.getPosition().getX()][block.getPosition().getZ()] = block.getCoreData();
+		data[block.getPosition().getX()][block.getPosition().getX()][block.getPosition().getZ()] = block.getBlockData();
 	}
 
 	@Override

@@ -160,7 +160,7 @@ public class RenderBlock extends AbstractGameObject {
     }
 	
 	
-	private Block coreData;
+	private Block blockData;
 	private Coordinate coord;
     private boolean[] clipping = new boolean[]{false, false, false};
 	
@@ -170,7 +170,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
     public RenderBlock(byte id){
         super(id);
-		coreData = Block.getInstance(id);
+		blockData = Block.getInstance(id);
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
     }
@@ -182,7 +182,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id);
-		coreData = Block.getInstance(id, value);
+		blockData = Block.getInstance(id, value);
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
 	}
@@ -193,7 +193,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public RenderBlock(Block data){
 		super(data.getId());
-		coreData = data;
+		blockData = data;
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
 	}
@@ -201,7 +201,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 	@Override
 	public boolean isObstacle() {
-		return coreData.isObstacle();
+		return blockData.isObstacle();
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class RenderBlock extends AbstractGameObject {
 
     @Override
     public String getName() {
-        return  coreData.getName();
+        return  blockData.getName();
     }
 	
 	/**
@@ -386,7 +386,7 @@ public class RenderBlock extends AbstractGameObject {
         );
 		//render ambient occlusion
 		if (ambientOcclusion>0) {
-			int aoFlags = getCoreData().getAOFlags();
+			int aoFlags = getBlockData().getAOFlags();
 			if (side==Side.LEFT && ((byte) (aoFlags)) != 0){//only if top side and there is ambient occlusion
 				Coordinate aopos = getPosition().cpy();
 				if ((aoFlags & (1 << 5)) != 0){//if bottom
@@ -538,7 +538,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @since v1.4
 	 */
 	public void onDestroy() {
-		coreData.setValue((byte) -1);
+		blockData.setValue((byte) -1);
 		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
 	}
 
@@ -565,49 +565,49 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public boolean hidingPastBlock(){
-		return coreData.hasSides() && !coreData.isTransparent();
+		return blockData.hasSides() && !blockData.isTransparent();
 	}
 
 	@Override
 	public boolean isTransparent() {
-		return coreData.isTransparent();
+		return blockData.isTransparent();
 	}
 
 	@Override
 	public boolean hasSides() {
-		return coreData.hasSides();
+		return blockData.hasSides();
 	}
 
 	@Override
 	public byte getId() {
-		return coreData.getId();
+		return blockData.getId();
 	}
 
 	@Override
 	public byte getValue() {
-		return coreData.getValue();
+		return blockData.getValue();
 	}
 
 	@Override
 	public float getLightlevel() {
-		return coreData.getLightlevel();
+		return blockData.getLightlevel();
 	}
 
 	@Override
 	public void setLightlevel(float lightlevel) {
-		coreData.setLightlevel(lightlevel);
+		blockData.setLightlevel(lightlevel);
 	}
 
 	@Override
 	public void setValue(byte value) {
-		coreData.setValue(value);
+		blockData.setValue(value);
 	}
 
 	/**
 	 *
 	 * @return
 	 */
-	public Block getCoreData() {
-		return coreData;
+	public Block getBlockData() {
+		return blockData;
 	}
 }

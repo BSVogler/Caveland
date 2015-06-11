@@ -119,7 +119,7 @@ public class Camera implements LinkedWithMap {
 	 */
 	private float damageoverlay = 0f;
 
-	private Vector2 screenshake = new Vector2(0, 0);
+	private final Vector2 screenshake = new Vector2(0, 0);
 	private float shakeAmplitude;
 	private float shakeTime;
 

@@ -161,6 +161,8 @@ public class RenderBlock extends AbstractGameObject {
 	
 	
 	private Block coreData;
+	private Coordinate coord;
+    private boolean[] clipping = new boolean[]{false, false, false};
 	
 	/**
 	 * 
@@ -201,9 +203,6 @@ public class RenderBlock extends AbstractGameObject {
 	public boolean isObstacle() {
 		return coreData.isObstacle();
 	}
-	
-	private Coordinate coord;
-    private boolean[] clipping = new boolean[]{false, false, false};
 
 	/**
 	 *

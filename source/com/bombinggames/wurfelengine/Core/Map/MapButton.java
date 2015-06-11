@@ -61,7 +61,6 @@ public class MapButton extends TextButton {
         setName(fileName);
         setSize(150, 50);
 		CVarSystem cvars = new CVarSystem(
-			"/"+WorkingDirectory.getMapsFolder()+"/",
 			new File(WorkingDirectory.getMapsFolder()+"/"+fileName+"/meta.wecvar")
 		);
 		cvars.register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);

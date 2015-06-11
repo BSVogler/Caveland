@@ -114,7 +114,7 @@ public abstract class AbstractMap implements Cloneable {
 	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
 		this.directory = directory;
 		this.generator = generator;
-		CVarSystem cvars = new CVarSystem(directory.getName(), new File(directory + "/meta.wecvar"));
+		CVarSystem cvars = new CVarSystem(new File(directory + "/meta.wecvar"));
 		//engine cvar registration
 		cvars.register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
 		cvars.register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
@@ -524,7 +524,6 @@ public abstract class AbstractMap implements Cloneable {
 		this.activeSaveSlot = slot;
 		WE.CVARS.getChildSystem().setChildSystem(
 			new CVarSystem(
-				WE.CVARS.getChildSystem().getInternalPath()+"save" + activeSaveSlot,
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
@@ -540,7 +539,6 @@ public abstract class AbstractMap implements Cloneable {
 		createSaveSlot(activeSaveSlot);
 		WE.CVARS.getChildSystem().setChildSystem(
 			new CVarSystem(
-				WE.CVARS.getChildSystem().getInternalPath()+"save" + activeSaveSlot,
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);

@@ -60,7 +60,6 @@ public class CVarSystem {
 	 * path of the cvar file
 	 */
 	private final File fileSystemPath;
-	private final String internalPath;
 	/**list of all CVars**/
 	private HashMap<String, CVar> cvars = new HashMap<>(50);
 	
@@ -68,11 +67,9 @@ public class CVarSystem {
 
 	/**
 	 * you have to manually call {@link #load} to load from path.
-	 * @param internalPath
 	 * @param path path to the .cvar file
 	 */
-	public CVarSystem(String internalPath, File path) {
-		this.internalPath = internalPath;
+	public CVarSystem(File path) {
 		this.fileSystemPath = path;
 	}
 	
@@ -88,42 +85,13 @@ public class CVarSystem {
 		return childSystem;
 	}
 
-	public String getInternalPath() {
-		return internalPath;
-	}
-	
-	public CVarSystem getSystem(String path){
-		if (path.equalsIgnoreCase(internalPath))
-			return this;
-		//no child system so create one
-		if (childSystem == null) {
-			int lastSlash = path.lastIndexOf('/');
-			childSystem = new CVarSystem(
-					path.substring(0, lastSlash+1),
-					new File(fileSystemPath, path.substring(0, lastSlash))
-				);
-		}
-		return childSystem.getSystem(path);
-	}
 	/**
 	 * 
 	 * @param cvar can include a path
 	 * @return 
 	 */
 	public CVar get(String cvar){
-		int lastSlash = cvar.lastIndexOf('/');
-		if (lastSlash > 0 && !internalPath.equalsIgnoreCase( cvar.substring(0, lastSlash) ) ) {
-			if (childSystem==null) {
-				childSystem = new CVarSystem(
-					cvar.substring(0, lastSlash+1),
-					new File(fileSystemPath, cvar.substring(0, lastSlash))
-				);
-			}
-			return childSystem.get(cvar.toLowerCase());
-		} else {
-			cvar = cvar.replace("/", "");
-			return cvars.get(cvar.toLowerCase());
-		}
+		return cvars.get(cvar.toLowerCase());
 	}
 	
 	public boolean getValueB(String cvar){

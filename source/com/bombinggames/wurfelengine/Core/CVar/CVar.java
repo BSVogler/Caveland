@@ -63,6 +63,10 @@ public abstract class CVar {
 		return name;
 	}
 	
+	/**
+	 * The values as string representation.
+	 * @return 
+	 */
 	@Override
 	public abstract String toString();
 	

@@ -38,6 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
+import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.Core.Gameobjects.BenchmarkBall;
 import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.WE;
@@ -66,7 +67,7 @@ public class Console implements CommandsInterface  {
 	 * suggestions stuff
 	 */
 	private boolean keySuggestionDown;
-	private String path = "/";
+	private String path = "";
 
 
     
@@ -327,8 +328,16 @@ public class Console implements CommandsInterface  {
 					suggestions.set(i, "cd ".concat(suggestions.get(i)));
 				}
 			}else {
+				String commandTillCursor = getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3);
 				//get until cursor position
-				suggestions = WE.CVARS.getSuggestions(getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3));
+				if ("".equals(path)) {
+					suggestions = WE.CVARS.getSuggestions(commandTillCursor);
+				} else {
+					if (!path.contains(":"))
+						suggestions = WE.CVARS.getChildSystem().getSuggestions(commandTillCursor);
+					else 
+						suggestions = WE.CVARS.getChildSystem().getChildSystem().getSuggestions(commandTillCursor);
+				}
 			}
 		}
 		
@@ -349,15 +358,18 @@ public class Console implements CommandsInterface  {
 		externalCommands.setGameplayRef(gameplayRef);
 	}
 	
-	private boolean checkPath(){
-		if (path.equals("/")) {
+	private boolean checkPath(String newPath){
+		if (newPath.equals("/") || newPath.isEmpty()) {
 			return true;
 		} else {
-			StringTokenizer tokenizer = new StringTokenizer(path, "/");
+			StringTokenizer tokenizer = new StringTokenizer(newPath, ":");
 			String mapname = tokenizer.nextToken();
-			if (new File(WorkingDirectory.getMapsFolder(), mapname).isDirectory())
-				return true;
-			return false;
+			if (!new File(WorkingDirectory.getMapsFolder(), mapname).isDirectory())
+				return false;
+			if (tokenizer.hasMoreTokens() && tokenizer.nextToken().length()!=1){
+				return false;
+			}
+			return true;
 		}
 	}
 	
@@ -371,13 +383,28 @@ public class Console implements CommandsInterface  {
 	
 	public ArrayList<String> ls(){
 		ArrayList<String> result = new ArrayList<>(10);
-		File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
-		for (final File fileEntry : mapsFolder.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				result.add(fileEntry.getName()+"\n");
+		if (path.isEmpty()){
+			File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
+			for (final File fileEntry : mapsFolder.listFiles()) {
+				if (fileEntry.isDirectory()) {
+					result.add(fileEntry.getName()+"\n");
+				}
+			}
+		} else {
+			File mapFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+"/" +getMapNameFromPath());
+			for (final File fileEntry : mapFolder.listFiles()) {
+				if (fileEntry.isDirectory()) {
+					result.add(fileEntry.getName().substring(fileEntry.getName().length()-2)+"\n");
+				}
 			}
 		}
 		return result;
+	}
+	
+	private String getMapNameFromPath(){
+		if (path.indexOf(':')>0)
+			return path.substring(0, path.indexOf(':'));
+		else return path;
 	}
 		
     /**
@@ -446,19 +473,38 @@ public class Console implements CommandsInterface  {
             
             String enteredPath = st.nextToken();
 			if (enteredPath.length()>0) {
-				if ("/".equals(enteredPath)) {
-					path="/";
-				} else if ("..".equals(enteredPath)) {
-					if (path.length()>1)
-						path="/";
-				} else {
-					path = path.concat(enteredPath+"/");//then add new path
-				}
-				if (!checkPath()) {
+				if (!checkPath(enteredPath)) {
 					add("not a valid path");
-					path = "/";
+				} else {
+					switch (enteredPath) {
+						case "/":
+							path="";
+							break;
+						case "..":
+							if (path.length()>1)
+								path="";
+							break;
+						default:
+							path = path.concat(enteredPath);//then add new path
+							//if access to map
+							if (path.length()>0) {
+								//make sure it gets loaded
+								if (WE.CVARS.getChildSystem()==null)
+									if (path.contains(":"))
+										WE.CVARS.setChildSystem(new CVarSystem(
+											new File(WorkingDirectory.getMapsFolder()+"/"+path.substring(0, path.indexOf(':')))
+										));
+									else
+										WE.CVARS.setChildSystem(new CVarSystem(new File(WorkingDirectory.getMapsFolder()+"/"+path)));
+								//access save
+								if (path.contains(":"))
+										WE.CVARS.getChildSystem().setChildSystem(new CVarSystem(
+											new File(WorkingDirectory.getMapsFolder()+"/save"+path.substring(path.indexOf(':')))
+										));
+							}
+							break;
+					}
 				}
-				
 			}
 			return true;
         }
@@ -520,17 +566,26 @@ public class Console implements CommandsInterface  {
         }
          
 		//if not a command try setting a cvar
-		CVar cvar = WE.CVARS.get(path+first);
+		CVar cvar;
+		if ("".equals(path)) {
+			cvar = WE.CVARS.get(first);
+		} else {
+			if (!path.contains(":"))
+				cvar = WE.CVARS.getChildSystem().get(first);
+			else 
+				cvar = WE.CVARS.getChildSystem().getChildSystem().get(first);
+		}
+		
 		if (cvar!=null) {//if registered
 			if (st.hasMoreTokens()){
 				//set cvar
 				String value = st.nextToken();
-				WE.CVARS.get(path+first).setValue(value);
-				add("Set CVar \""+ first + "\" to "+value+"\n", "System");
+				cvar.setValue(value);
+				add("Set cvar \""+ first + "\" to "+value+"\n", "System");
 				return true;
 			} else {
 				//read cvar
-				add("cvar has value "+cvar.toString()+"\n", "System");
+				add("cvar "+ first +" has value "+cvar.toString()+"\n", "System");
 				return true;
 			}
 		} else {

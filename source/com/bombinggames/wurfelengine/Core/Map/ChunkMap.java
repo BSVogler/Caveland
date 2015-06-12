@@ -158,14 +158,14 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		modified();
 	}
 	
-		/**
+	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
-	 * @param camera
-	 * @param chunkX
-	 * @param chunkY
+	 * @param camera the camera which is used for the limits. Gets stored globally so only one camera can be used. Calling this method more then once ith different cameras overwrites the result.
+	 * @param chunkX chunk coordinate
+	 * @param chunkY chunk coordinate
 	 */
 	public void hiddenSurfaceDetection(final Camera camera, final int chunkX, final int chunkY) {
-		Gdx.app.debug("Camera", "hsd for chunk " + chunkX + "," + chunkY);
+		Gdx.app.debug("ChunkMap", "HSD for chunk " + chunkX + "," + chunkY);
 		Chunk chunk = getChunk(chunkX, chunkY);
 		Block[][][] chunkData = chunk.getData();
 		

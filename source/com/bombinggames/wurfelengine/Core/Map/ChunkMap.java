@@ -212,7 +212,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.getBlockViaIndex(x, y, z).setClippedLeft();
+					current.setClippedLeft();
 				}
 
 				//right side
@@ -226,7 +226,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				if (neighbour!= null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
 				) {
-					chunk.getBlockViaIndex(x, y, z).setClippedRight();
+					current.setClippedRight();
 				}
 
 				//check top
@@ -238,7 +238,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 						|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
 					)
 				) {
-					chunk.getBlockViaIndex(x, y, z).setClippedTop();
+					current.setClippedTop();
 				}
 			}
 		}

@@ -47,7 +47,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *Each cvar system manages one file
+ *Each cvar system manages one file. Cvars get registered first and then overwritten by the local file. If a cvar is in the file but not registered it gets ignored.
  * @author Benedikt Vogler
  */
 public class CVarSystem {

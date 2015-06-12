@@ -773,23 +773,8 @@ map.getGameWidth(),
 	private void fillCameraContentBlocks(){
 	//fill viewFrustum with RenderBlock data
 		cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
-		
-		//1. add ground layer
-		for (int x = 0; x < cameraContent.length; x++) {
-			for (int y = 0; y < cameraContent[x].length; y++) {
-				cameraContent[x][y][0] = map.getGroundBlock().toBlock();
-				cameraContent[x][y][0].setPosition(
-					new Coordinate(
-						map,
-						getCoveredLeftBorder()+x,
-						getCoveredBackBorder()+y,
-						-1
-					)
-				);
-			}
-		}
-		
-		//2. put every other block in the view frustum
+				
+		//1. put every block in the view frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			map,
 			centerChunkX,
@@ -812,6 +797,25 @@ map.getGameWidth(),
 							ind[2]
 						)
 					);
+			}
+		}
+		
+		//2. add ground layer
+		for (int x = 0; x < cameraContent.length; x++) {
+			for (int y = 0; y < cameraContent[x].length; y++) {
+				cameraContent[x][y][0] = new RenderBlock(map.getGroundBlock().getId(), map.getGroundBlock().getValue());
+				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
+				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent())
+					cameraContent[x][y][0].getBlockData().setClippedTop();//always clipped right
+				cameraContent[x][y][0].getBlockData().setClippedRight();
+				cameraContent[x][y][0].setPosition(
+					new Coordinate(
+						map,
+						getCoveredLeftBorder()+x,
+						getCoveredBackBorder()+y,
+						-1
+					)
+				);
 			}
 		}
 	}
@@ -1246,4 +1250,10 @@ map.getGameWidth(),
 
 		this.active = active;
 	}
+
+	public RenderBlock[][][] getCameraContent() {
+		return cameraContent;
+	}
+	
+	
 }

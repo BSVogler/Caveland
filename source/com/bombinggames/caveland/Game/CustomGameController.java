@@ -3,6 +3,7 @@ package com.bombinggames.caveland.Game;
 import com.badlogic.gdx.Gdx;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.wurfelengine.Core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVar;
 import com.bombinggames.wurfelengine.Core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.Core.CVar.IntCVar;
@@ -30,9 +31,11 @@ public class CustomGameController extends Controller {
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new BooleanCVar(false), "P1InCave", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new BooleanCVar(false), "P2InCave", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.load();
 		
-		player1 = new CustomPlayer();
+		player1 = new CustomPlayer(1);
 		
 		player1.spawn(
 			new Coordinate(
@@ -113,6 +116,6 @@ public class CustomGameController extends Controller {
 	 * Adds the second player to the game. Will not be spawned until in {@link #onEnter() }.
 	 */
 	public void activatePlayer2() {
-		player2 = new CustomPlayer();
+		player2 = new CustomPlayer(2);
 	}
 }

@@ -31,45 +31,24 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core.Controller;
 import com.bombinggames.wurfelengine.Core.GameView;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Map.Chunk;
-import com.bombinggames.wurfelengine.Core.Map.Coordinate;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Portal extends AbstractEntity implements Interactable{
-	private static final long serialVersionUID = 2L;
-	private Coordinate target;
-	
-	/**
-	 * teleports to 0 0 0
-	 */
-	public Portal(){
-		super((byte) 70);
-		setName("Portal");
-		setHidden(true);
-		this.target = new Coordinate(Controller.getMap(), 0, 0, Chunk.getBlocksZ()-1);
-	}
-	
-	/**
-	 * teleport to custom aim
-	 * @param target 
-	 */
-	public Portal(Coordinate target) {
-		this();
-		this.target = target;
-	}
-	
+public class EntryPortal extends Portal{
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void interact(AbstractEntity actor, GameView view) {
-		actor.setPosition(target.cpy());
-	}
-
-	public void setTarget(Coordinate target) {
-		this.target = target;
+		super.interact(actor, view);
+		if (actor instanceof CustomPlayer)
+			if (((CustomPlayer) actor).getPlayerNumber()==2)
+				WE.CVARS.getChildSystem().getChildSystem().get("P2InCave").setValue(true);
+			else
+				WE.CVARS.getChildSystem().getChildSystem().get("P1InCave").setValue(true);
 	}
 }

@@ -24,6 +24,7 @@ import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.Core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.Core.Map.Chunk;
 import com.bombinggames.wurfelengine.Core.Map.Coordinate;
 import com.bombinggames.wurfelengine.Core.Map.Point;
 import com.bombinggames.wurfelengine.WE;
@@ -83,6 +84,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			return sprites[category][value];
 		}
 	}
+	
+	private final int playerNumber;
 
 	private boolean canPlayLoadingSound = false;
 
@@ -143,10 +146,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	
 	/**
 	 * creates a new Ejira
+	 * @param number
 	 */
-	public CustomPlayer() {
+	public CustomPlayer(int number) {
 		super((byte) 30, 0);
-
+		playerNumber = number;
 		setName("Ejira");
 		setStepSound1Grass("step");
 		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/Caveland/sounds/victorcenusa_running.ogg"));
@@ -198,6 +202,12 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (usedLoadAttackInAir)
 				setFriction((float) WE.CVARS.get("playerfriction").getValue());
 			usedLoadAttackInAir = false;
+		}
+		
+		//if in cave force in it
+		if (( WE.CVARS.getChildSystem().getChildSystem().getValueB("P"+playerNumber+"InCave") )){
+			if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
+				pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
 		}
 
 		inventory.update(dt);
@@ -916,6 +926,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			interactButton.dispose();
 			interactButton = null;
 		}
+	}
+
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 
 }

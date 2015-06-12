@@ -566,6 +566,12 @@ public class RenderBlock extends AbstractGameObject {
 		blockData.setValue(value);
 	}
 
+	@Override
+	public boolean isLiquid() {
+		return blockData.isLiquid();
+	}
+	
+
 	/**
 	 *
 	 * @return

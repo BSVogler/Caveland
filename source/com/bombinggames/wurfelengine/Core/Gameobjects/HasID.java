@@ -58,6 +58,8 @@ public interface HasID {
 	 */
 	public abstract boolean hasSides();
 	
+	public abstract boolean isLiquid();
+	
 	/**
 	 * Read the name of a id value combination.
 	 * @return the name for this block.

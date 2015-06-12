@@ -377,6 +377,11 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	}
 
 	@Override
+	public boolean isLiquid() {
+		return false;
+	}
+
+	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
 		for (AbstractEntity child : children) {

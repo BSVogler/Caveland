@@ -230,22 +230,34 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 				}
 
 				//check top
-				if (
-					z < getBlocksZ()-1
-					&& chunkData[x][y][z+1] != null
-					&& (
-						chunkData[x][y][z+1].hidingPastBlock()
-						|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
-					)
-				) {
-					current.setClippedTop();
+				if (z < getBlocksZ()-1) {
+					neighbour = getIndex(chunk, x, y+2, z+1);
+					if (
+						(
+							chunkData[x][y][z+1] != null
+							&& (
+								chunkData[x][y][z+1].hidingPastBlock()
+								|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
+							)
+						)
+						||
+						(
+							neighbour != null
+							&& (
+								neighbour.hidingPastBlock()
+								|| neighbour.isLiquid() && current.isLiquid()
+							)
+						)
+					) {
+						current.setClippedTop();
+					}
 				}
 			}
 		}
 	}
     
 	/**
-	 * 
+	 * Helper function. Gets a block at an index. can be outside of this chunk
 	 * @param chunk
 	 * @param x
 	 * @param y

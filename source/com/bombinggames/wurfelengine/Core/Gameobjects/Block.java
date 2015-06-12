@@ -330,7 +330,7 @@ public class Block implements HasID, Serializable {
 	 * @return 
 	 */
 	public boolean isClipped() {
-		return clipping!=0;
+		return clipping == 0b111;
 	}
 	
 	public void setClippedLeft(){

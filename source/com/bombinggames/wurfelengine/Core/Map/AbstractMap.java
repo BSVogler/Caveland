@@ -568,13 +568,4 @@ public abstract class AbstractMap implements Cloneable {
 	public int getSavesCount() {
 		return getSavesCount(directory);
 	}
-
-	/**
-	 *
-	 * @param coord
-	 * @return
-	 */
-	public byte getClipping(Coordinate coord){
-		return getBlock(coord.getX(), coord.getY(), coord.getZ()).getClipping();
-	}
 }

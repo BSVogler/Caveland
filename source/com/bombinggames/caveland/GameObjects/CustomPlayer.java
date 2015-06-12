@@ -42,7 +42,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private static final long serialVersionUID = 2L;
 
 	private transient static TextureAtlas spritesheet;
-	private transient static AtlasRegion[][] sprites = new AtlasRegion['z'][65];
+	private static final transient AtlasRegion[][] sprites = new AtlasRegion['z'][65];
 	private transient static Texture textureDiff;
 	private transient static Texture textureNormal;
 		

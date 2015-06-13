@@ -740,10 +740,16 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		Particle dust = (Particle) new Particle(
 			(byte) 22,
 			1000f
-		).spawn(getPosition().cpy());
+		).spawn(getPosition().cpy().addVector((float) (40*Math.random()-20), (float) (40*Math.random()-20), 0));
 		dust.setType(Particle.ParticleType.SMOKE);
 		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
-		dust.addMovement(new Vector3(0, 0, Block.GAME_EDGELENGTH / 500f));
+		dust.addMovement(
+			new Vector3(
+				-getMovementHor().x*0.1f,
+				-getMovementHor().y*0.1f,
+				Block.GAME_EDGELENGTH / 500f
+			)
+		);
 	}
 
 	@Override

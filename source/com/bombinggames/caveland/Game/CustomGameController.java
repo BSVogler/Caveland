@@ -1,6 +1,7 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.wurfelengine.Core.CVar.BooleanCVar;
@@ -117,5 +118,6 @@ public class CustomGameController extends Controller {
 	 */
 	public void activatePlayer2() {
 		player2 = new CustomPlayer(2);
+		player2.setColor(new Color(0.4f,0.55f,0.55f,1));
 	}
 }

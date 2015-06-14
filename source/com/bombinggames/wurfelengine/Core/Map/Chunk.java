@@ -265,24 +265,30 @@ public class Chunk {
 				}
 
 				if (WE.CVARS.getValueB("loadEntities")) {
-					//loading entities
-					if (bufChar==SIGN_ENTITIES){
-						int length = fis.read(); //amount of entities
-						Gdx.app.debug("Chunk", "Loading " + length+" entities");
+					try {
+						//loading entities
+						if (bufChar==SIGN_ENTITIES){
+							int length = fis.read(); //amount of entities
+							Gdx.app.debug("Chunk", "Loading " + length+" entities");
 
-						AbstractEntity object;
-						for (int i = 0; i < length; i++) {
-							try {
-								ObjectInputStream objectIn = new ObjectInputStream(fis);
-								object = (AbstractEntity) objectIn.readObject();
-								Controller.getMap().getEntitys().add(object);
-								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
-								//objectIn.close();
-							} catch (ClassNotFoundException | InvalidClassException ex) {
-								Gdx.app.error("Chunk", "An entity could not be loaded");
-								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+							AbstractEntity object;
+							for (int i = 0; i < length; i++) {
+								try {
+									ObjectInputStream objectIn = new ObjectInputStream(fis);
+									object = (AbstractEntity) objectIn.readObject();
+									Controller.getMap().getEntitys().add(object);
+									Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
+									//objectIn.close();
+								} catch (ClassNotFoundException | InvalidClassException ex) {
+									Gdx.app.error("Chunk", "An entity could not be loaded");
+									Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+								}
 							}
 						}
+					} catch (IOException ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+					} catch (java.lang.NoClassDefFoundError ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 					}
 				}
 				modified = true;

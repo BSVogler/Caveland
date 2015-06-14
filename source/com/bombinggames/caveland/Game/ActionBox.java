@@ -8,16 +8,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import java.util.ArrayList;
+import java.util.Arrays;
 /**
  *
  * @author Benedikt Vogler
  */
 public class ActionBox extends WidgetGroup {
+	/**
+	 * contains the content of the window
+	 */
 	private final Window window;
 	private BoxModes mode;
 	private final Image confirm;
 	private Image cancel;
-	
+	private ArrayList<String> selectionOptions;
+	private String text;
 	
 	public static enum BoxModes {
 		/**
@@ -25,7 +31,7 @@ public class ActionBox extends WidgetGroup {
 		 */
 		BOOLEAN(),
 		/**
-		 * Selectr from various entries
+		 * Select from various entries
 		 */
 		SELECTION(),
 		/**
@@ -34,7 +40,7 @@ public class ActionBox extends WidgetGroup {
 		SIMPLE(),
 		
 		/**
-		 * 
+		 * reserved for later use
 		 */
 		CUSTOM();
 	}
@@ -53,6 +59,7 @@ public class ActionBox extends WidgetGroup {
 		window.setHeight(200);
 		addActor(window);
 		if (text!=null) {
+			this.text=text;
 			Label textArea = new Label(text, WE.getEngineView().getSkin());
 			textArea.setX(10);
 			textArea.setWrap(true);
@@ -86,6 +93,46 @@ public class ActionBox extends WidgetGroup {
 	
 	public void cancel(){
 		remove();
+	}
+	
+	/**
+	 * 
+	 * @param options
+	 */
+	public void addSelectionOptions(String... options){
+		if (mode==BoxModes.SELECTION){
+			if (selectionOptions==null)
+				selectionOptions = new ArrayList<>(4);
+			selectionOptions.addAll(Arrays.asList(options));
+			//clear window content and add new
+			window.clear();
+			Label textArea = new Label(text, WE.getEngineView().getSkin());
+			textArea.setX(10);
+			textArea.setWrap(true);
+			textArea.setWidth(580);
+			textArea.setHeight(30);
+			window.addActor(textArea);
+			for (String entry : selectionOptions) {
+				Label label = new Label(entry, WE.getEngineView().getSkin());
+				label.setX(10);
+				label.setWidth(580);
+				window.add(label);
+			}
+		}
+	}
+	
+	/**
+	 * go a selection upwards
+	 */
+	public void down(){
+	
+	}
+	
+	/**
+	 * go a selection downwards
+	 */
+	public void up(){
+	
 	}
 	
 }

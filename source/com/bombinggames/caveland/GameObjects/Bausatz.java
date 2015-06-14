@@ -26,7 +26,8 @@ public class Bausatz extends Collectible {
 	private class SelectionWindow extends ActionBox{
 
 		SelectionWindow(Stage stage) {
-			super(stage, "Choose construcion", BoxModes.SELECTION, null);
+			super(stage, "Choose construction", BoxModes.SELECTION, null);
+			addSelectionOptions("Oven","Rails","Factory");
 		}
 		
 	}

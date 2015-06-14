@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.wurfelengine.Core2.CVar.BooleanCVar;
-import com.bombinggames.wurfelengine.Core2.CVar.CVar;
-import com.bombinggames.wurfelengine.Core2.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.Core2.CVar.IntCVar;
-import com.bombinggames.wurfelengine.Core2.Controller;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
+import com.bombinggames.wurfelengine.core.CVar.CVar;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.CVar.IntCVar;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.WE;
 
 /**

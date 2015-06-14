@@ -37,12 +37,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Selection;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

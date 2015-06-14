@@ -2,9 +2,9 @@ package com.bombinggames.caveland.MainMenu;
 
 import com.bombinggames.caveland.Game.CustomGameController;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.wurfelengine.Core2.Map.AbstractMap;
-import com.bombinggames.wurfelengine.Core2.WEScreen;
-import com.bombinggames.wurfelengine.Core2.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.WEScreen;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;

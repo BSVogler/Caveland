@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.bombinggames.wurfelengine.Core2.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 import com.bombinggames.wurfelengine.WE;
 
 /**

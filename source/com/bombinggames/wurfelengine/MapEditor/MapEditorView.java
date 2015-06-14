@@ -40,18 +40,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.wurfelengine.Core2.Camera;
-import com.bombinggames.wurfelengine.Core2.Controller;
-import static com.bombinggames.wurfelengine.Core2.Controller.getMap;
-import com.bombinggames.wurfelengine.Core2.GameView;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.EntityShadow;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Selection;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
 import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Controller;
+import static com.bombinggames.wurfelengine.core.Controller.getMap;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**

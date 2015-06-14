@@ -31,8 +31,8 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 

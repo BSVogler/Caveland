@@ -1,9 +1,9 @@
 package com.bombinggames.caveland;
 
-import com.bombinggames.wurfelengine.Core2.CVar.CVar;
-import com.bombinggames.wurfelengine.Core2.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.Core2.CVar.IntCVar;
-import com.bombinggames.wurfelengine.Core2.Map.CustomMapCVarRegistration;
+import com.bombinggames.wurfelengine.core.CVar.CVar;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.CVar.IntCVar;
+import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
 
 /**
  *

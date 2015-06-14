@@ -31,13 +31,13 @@
 package com.bombinggames.wurfelengine.extension.shooting;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.Core2.Controller;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.EntityAnimation;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Explosion;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import java.util.ArrayList;
 
 /**
@@ -57,8 +57,8 @@ public class Bullet extends AbstractEntity {
     private int impactSprite;
     
     /**
-	 * You can set a different sprite via {@link #setGraphicsId(int) }. It uses the engine default sprite.
-     * @see #setGraphicsId(int) 
+	 * You can set a different sprite via {@link #setGraphicsId(byte)}. It uses the engine default sprite.
+     * @see #setGraphicsId(byte) 
      */
     public Bullet(){
         super((byte) 12);//default graphics id is 12

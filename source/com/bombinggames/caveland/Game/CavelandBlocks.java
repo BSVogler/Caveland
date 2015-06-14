@@ -5,13 +5,13 @@ import com.bombinggames.caveland.GameObjects.Collectible;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Machine;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.BlockDirt;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.CustomBlocks;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.BlockDirt;
+import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *

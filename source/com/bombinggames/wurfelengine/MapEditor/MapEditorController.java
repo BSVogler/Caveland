@@ -29,15 +29,15 @@
 
 package com.bombinggames.wurfelengine.MapEditor;
 
-import com.bombinggames.wurfelengine.Core2.Controller;
-import com.bombinggames.wurfelengine.Core2.GameView;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.EntityShadow;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Selection;
-import com.bombinggames.wurfelengine.Core2.Map.AbstractMap;
-import com.bombinggames.wurfelengine.Core2.Map.Point;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

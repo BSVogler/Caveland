@@ -9,11 +9,11 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.wurfelengine.Core2.Camera;
-import com.bombinggames.wurfelengine.Core2.Controller;
-import static com.bombinggames.wurfelengine.Core2.Controller.getLightEngine;
-import com.bombinggames.wurfelengine.Core2.GameView;
-import com.bombinggames.wurfelengine.Core2.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Controller;
+import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.WE;
 
 

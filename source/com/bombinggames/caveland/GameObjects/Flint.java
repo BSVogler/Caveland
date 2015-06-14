@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Explosion;
+import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.WE;
 
 /**

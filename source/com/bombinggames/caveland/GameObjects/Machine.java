@@ -1,9 +1,9 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**

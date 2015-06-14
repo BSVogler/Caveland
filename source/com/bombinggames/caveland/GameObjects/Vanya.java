@@ -2,9 +2,9 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.wurfelengine.Core2.GameView;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 

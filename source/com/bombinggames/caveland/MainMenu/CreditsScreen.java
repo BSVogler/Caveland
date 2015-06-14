@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Caveland;
-import com.bombinggames.wurfelengine.Core2.WEScreen;
+import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.WE;
 
 /**

@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.MainMenu;
 
-import com.bombinggames.wurfelengine.Core2.WEScreen;
+import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;

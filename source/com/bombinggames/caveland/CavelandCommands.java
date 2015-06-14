@@ -3,11 +3,11 @@ package com.bombinggames.caveland;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.TFlint;
-import com.bombinggames.wurfelengine.Core2.CommandsInterface;
-import com.bombinggames.wurfelengine.Core2.Controller;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core2.GameplayScreen;
-import com.bombinggames.wurfelengine.Core2.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.CommandsInterface;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.GameplayScreen;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.Collectible;
 import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
 import com.bombinggames.caveland.GameObjects.Inventory;
-import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.WE;
 
 /**

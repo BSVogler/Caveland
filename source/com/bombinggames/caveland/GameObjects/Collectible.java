@@ -2,6 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
@@ -207,10 +208,11 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	/**
 	 * the action if you active the item in the inventory
+	 * @param view
 	 * @param actor
 	 */
-	public void action(AbstractEntity actor) {
-
+	public void action(GameView view, AbstractEntity actor) {
+		
 	}
 
 	@Override

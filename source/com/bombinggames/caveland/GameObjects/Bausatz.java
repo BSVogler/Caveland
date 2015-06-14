@@ -1,8 +1,9 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Controller;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 
 /**
  *
@@ -16,11 +17,18 @@ public class Bausatz extends Collectible {
 	}
 
 	@Override
-	public void action(AbstractEntity actor) {
-		Controller.getSoundEngine().play("robotHit", getPosition());
-		actor.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
-		dispose();
+	public void action(GameView view, AbstractEntity actor) {
+		SelectionWindow selectionWindow = new SelectionWindow(view.getStage());
+		view.getStage().addActor(selectionWindow);
+		
 	}
+	
+	private class SelectionWindow extends ActionBox{
 
+		SelectionWindow(Stage stage) {
+			super(stage, "Choose construcion", BoxModes.SELECTION, null);
+		}
+		
+	}
 	
 }

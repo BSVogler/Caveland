@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -27,7 +28,6 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.WE;
 import java.util.ArrayList;
 
 /**
@@ -487,8 +487,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 	}
 	
-	public void useItem(){
-		inventory.action(this);
+	public void useItem(GameView view){
+		inventory.action(view, this);
 	}
 
 	/**

@@ -1,10 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -232,13 +232,14 @@ public class Inventory implements Serializable {
 	
 	/**
 	 * calls the action method for the first slot item.
+	 * @param view
 	 * @param actor
 	 */
-	public void action(AbstractEntity actor){
+	public void action(GameView view, AbstractEntity actor){
 		//Get the first item and activate it. Then put it back.
 		Collectible item = fetchFrontItem();
 		if(item!=null) {
-			item.action(actor);
+			item.action(view, actor);
 			add(item);
 		}
 	}

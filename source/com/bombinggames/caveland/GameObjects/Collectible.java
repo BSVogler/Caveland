@@ -1,11 +1,11 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.math.Vector3;
 import java.io.IOException;
 import java.io.Serializable;
 

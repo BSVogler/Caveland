@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.MainMenu;
 
 import com.bombinggames.caveland.Caveland;
-import com.bombinggames.wurfelengine.Core.AbstractMainMenu;
+import com.bombinggames.wurfelengine.Core2.AbstractMainMenu;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;

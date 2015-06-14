@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core.Controller;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.Core2.Controller;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
 
 /**
  *
@@ -21,6 +21,6 @@ public class Bausatz extends Collectible {
 		actor.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
 		dispose();
 	}
-	
+
 	
 }

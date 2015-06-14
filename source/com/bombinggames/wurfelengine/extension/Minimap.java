@@ -36,16 +36,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.bombinggames.wurfelengine.Core.Camera;
-import com.bombinggames.wurfelengine.Core.Controller;
-import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.Core.Map.AbstractMap;
-import com.bombinggames.wurfelengine.Core.Map.Chunk;
-import com.bombinggames.wurfelengine.Core.Map.LinkedWithMap;
-import com.bombinggames.wurfelengine.Core.Map.Point;
+import com.bombinggames.wurfelengine.Core2.Camera;
+import com.bombinggames.wurfelengine.Core2.Controller;
+import com.bombinggames.wurfelengine.Core2.GameView;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core2.Map.AbstractMap;
+import com.bombinggames.wurfelengine.Core2.Map.Chunk;
+import com.bombinggames.wurfelengine.Core2.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.Core2.Map.Point;
 import java.util.ArrayList;
 
 /**

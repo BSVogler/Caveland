@@ -31,9 +31,9 @@
 
 package com.bombinggames.wurfelengine.MapEditor;
 
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

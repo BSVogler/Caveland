@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.GameView;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
 
 /**
  *

@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.WE;
 /**
  *

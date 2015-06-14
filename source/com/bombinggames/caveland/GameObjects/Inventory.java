@@ -1,9 +1,9 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.Core.Camera;
-import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core2.Camera;
+import com.bombinggames.wurfelengine.Core2.GameView;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
 import java.util.ArrayList;

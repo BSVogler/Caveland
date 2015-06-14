@@ -30,13 +30,13 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
-import com.bombinggames.wurfelengine.Core.GameView;
-import com.bombinggames.wurfelengine.Core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.Core.Gameobjects.EntityAnimation;
-import com.bombinggames.wurfelengine.Core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.Core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.Core.Map.Point;
+import com.bombinggames.wurfelengine.Core2.GameView;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.Block;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.Core2.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.Core2.Map.Point;
 import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.backends.lwjgl.audio.Wav.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;

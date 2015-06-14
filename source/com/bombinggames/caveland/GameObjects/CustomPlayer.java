@@ -96,7 +96,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	/**
 	 * true if last jump was airjump.
 	 */
-	private boolean airjump = false;
+	private boolean isInAirJump = false;
 
 	private transient Camera camera;
 
@@ -346,11 +346,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 //		}
 
 		if (isOnGround()) {
-			airjump = false;
+			isInAirJump = false;
 		}
 		
 		//update emitter
-		if (airjump) {
+		if (isInAirJump) {
 			emitter.setActive(getMovement().z>2f);
 			emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 			emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
@@ -611,9 +611,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	@Override
 	public void jump() {
-		if (!airjump || bunnyHopAllowed()) {
-			if (!bunnyHopAllowed()) {
-				airjump = true;//do an airjump
+		//check if an arijump can be performed
+		if (!isInAirJump || canJumpFromGround()) {
+			if (!canJumpFromGround()) {
+				//do an airjump
+				isInAirJump = true;
 			} else {
 				if (!isOnGround()) {//doing bunnyhop and not on ground
 					onCollide();
@@ -624,13 +626,14 @@ public class CustomPlayer extends Controllable implements EntityNode {
 					}
 					step();
 				}
+				//cancel z movement
 				Vector3 resetZ = getMovement().cpy();
 				resetZ.z = 0;
 				setMovement(resetZ);
 			}
-			jump(5, !airjump);
+			jump(5, !isInAirJump);
 			playAnimation('j');
-			if (airjump) {
+			if (isInAirJump) {
 				Controller.getSoundEngine().play("jetpack");
 //				for (int i = 0; i < 80; i++) {
 //					Dust dust = (Dust) new Dust(
@@ -652,16 +655,17 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	}
 
 	/**
-	 * Checks if the groudn is near. Allows jumping wihtout checking the floor
+	 * Checks if the ground is near. Allows jumping without touching the floor.
 	 *
-	 * @return
+	 * @return ture if a bit above groudn or at ground
 	 * @see AbstractEntity#isOnGround()
 	 */
-	private boolean bunnyHopAllowed() {
+	private boolean canJumpFromGround() {
 		if (bunnyHopForced) {
 			bunnyHopForced = false;
 			return true;
 		}
+		//check if the ground is below
 		final int bunnyhopDistance = 20;
 		getPosition().setZ(getPosition().getZ() - bunnyhopDistance);
 		boolean colission = isOnGround();

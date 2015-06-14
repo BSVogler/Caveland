@@ -617,7 +617,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				//do an airjump
 				isInAirJump = true;
 			} else {
-				if (!isOnGround()) {//doing bunnyhop and not on ground
+				if (!isOnGround()) {//must perform a bunnyhop b/c not on ground
 					onCollide();
 					onLand();
 					String landingSound = getLandingSound();
@@ -631,7 +631,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				resetZ.z = 0;
 				setMovement(resetZ);
 			}
-			jump(5, !isInAirJump);
+			if (isInAirJump)
+				jump(6, true);
+			else 
+				jump(4.7f, false);
 			playAnimation('j');
 			if (isInAirJump) {
 				Controller.getSoundEngine().play("jetpack");

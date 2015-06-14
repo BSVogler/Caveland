@@ -183,7 +183,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param playSound
      */
     public void jump(float velo, boolean playSound) {
-		addMovement(new Vector3(0, 0, velo));
+		final Vector2 horMov = getMovementHor();
+		setMovement(new Vector3(horMov.x, horMov.y, velo));
 		if (playSound && jumpingSound != null)
 			Controller.getSoundEngine().play(jumpingSound, getPosition());
     }

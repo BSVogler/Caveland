@@ -12,6 +12,7 @@ import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.FloatCVar;
@@ -21,7 +22,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
-import com.bombinggames.wurfelengine.WE;
 import java.io.File;
 import java.io.InputStream;
 

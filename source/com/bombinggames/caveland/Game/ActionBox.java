@@ -6,15 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 /**
  *
  * @author Benedikt Vogler
  */
 public class ActionBox extends WidgetGroup {
-	private Window window;
-	private String text;
+	private final Window window;
 	private BoxModes mode;
 	private final Image confirm;
 	private Image cancel;

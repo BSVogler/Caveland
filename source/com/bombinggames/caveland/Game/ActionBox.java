@@ -112,7 +112,7 @@ public class ActionBox extends WidgetGroup {
 	public void addSelectionOptions(String... options){
 		if (mode==BoxModes.SELECTION){
 			if (selectionOptions==null)
-				selectionOptions = new ArrayList<>(4);
+				selectionOptions = new ArrayList<>(options.length);
 			selectionOptions.addAll(Arrays.asList(options));
 			//clear window content then add new
 			window.clear();

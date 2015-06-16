@@ -83,6 +83,7 @@ public class ActionBox extends WidgetGroup {
 			cancel.setPosition(window.getWidth()-250, -40);
 			addActor(cancel);
 		}
+		//bad coding style:
 		view.setModalDialogue(this, playerId);
 		view.getStage().addActor(this);
 

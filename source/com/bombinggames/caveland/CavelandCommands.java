@@ -1,7 +1,7 @@
 package com.bombinggames.caveland;
 
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.caveland.GameObjects.Portal.Portal;
 import com.bombinggames.caveland.GameObjects.TFlint;
 import com.bombinggames.wurfelengine.core.CommandsInterface;
 import com.bombinggames.wurfelengine.core.Controller;

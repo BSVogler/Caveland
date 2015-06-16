@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.Game;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
@@ -24,6 +23,8 @@ public class ActionBox extends WidgetGroup {
 	private Image cancel;
 	private ArrayList<String> selectionOptions;
 	private String text;
+	private final CustomGameView view;
+	private final int playerNum;
 	
 	public static enum BoxModes {
 		/**
@@ -46,14 +47,18 @@ public class ActionBox extends WidgetGroup {
 	}
 
 	/**
-	 * creates a new chat box
-	 * @param stage
+	 * creates a new chat box and set this as a modal window
+	 * @param view
+	 * @param playerId
 	 * @param title the title of the box
 	 * @param text the text of the box. can be null
 	 * @param mode 
 	 */
-	public ActionBox(Stage stage, String title, BoxModes mode, String text) {
-		setPosition(stage.getWidth()/2, stage.getHeight()/2);
+	public ActionBox(CustomGameView view, int playerId, String title, BoxModes mode, String text) {
+		this.view = view;
+		this.playerNum = playerId;
+		
+		setPosition(view.getStage().getWidth()/2, view.getStage().getHeight()/2);
 		window = new Window(title, WE.getEngineView().getSkin());
 		window.setWidth(600);
 		window.setHeight(200);
@@ -77,6 +82,9 @@ public class ActionBox extends WidgetGroup {
 			cancel.setPosition(window.getWidth()-250, -40);
 			addActor(cancel);
 		}
+		view.setModalDialogue(this, playerId);
+		view.getStage().addActor(this);
+
 	}
 
 	public Window getWindow() {
@@ -89,10 +97,12 @@ public class ActionBox extends WidgetGroup {
 	
 	public void confirm(){
 		remove();
+		view.setModalDialogue(null, playerNum);
 	}
 	
 	public void cancel(){
 		remove();
+		view.setModalDialogue(null, playerNum);
 	}
 	
 	/**

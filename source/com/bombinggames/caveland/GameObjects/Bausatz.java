@@ -1,8 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 
 /**
@@ -17,16 +16,21 @@ public class Bausatz extends Collectible {
 	}
 
 	@Override
-	public void action(GameView view, AbstractEntity actor) {
-		SelectionWindow selectionWindow = new SelectionWindow(view.getStage());
-		view.getStage().addActor(selectionWindow);
+	public void action(CustomGameView view, AbstractEntity actor) {
+		if (actor instanceof CustomPlayer) {
+			SelectionWindow selectionWindow = new SelectionWindow(
+				view,
+				((CustomPlayer) actor).getPlayerNumber()
+				);
+			view.getStage().addActor(selectionWindow);
+		}
 		
 	}
 	
 	private class SelectionWindow extends ActionBox{
 
-		SelectionWindow(Stage stage) {
-			super(stage, "Choose construction", BoxModes.SELECTION, null);
+		SelectionWindow(CustomGameView view, int playerId) {
+			super(view, playerId, "Choose construction", BoxModes.SELECTION, null);
 			addSelectionOptions("Oven","Rails","Factory");
 		}
 		

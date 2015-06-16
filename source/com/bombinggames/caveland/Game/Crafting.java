@@ -1,15 +1,15 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.Collectible;
 import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Inventory;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 
 /**
  *Shows a HUD for crafting via inventory
@@ -21,12 +21,12 @@ public class Crafting extends ActionBox {
 
 	/**
 	 * creates a new inventory
-	 * @param stage
-	 * @param inventory 
+	 * @param view
+	 * @param player 
 	 */
-	public Crafting(Stage stage, Inventory inventory) {
-		super(stage, "Crafting", BoxModes.CUSTOM, null);
-		this.inventory = inventory;
+	public Crafting(CustomGameView view, CustomPlayer player) {
+		super(view, player.getPlayerNumber(), "Crafting", BoxModes.CUSTOM, null);
+		this.inventory = player.getInventory();
 		RecipesList.Recipe recipe = findRecipe();
 		if (recipe!=null) {
 			//A

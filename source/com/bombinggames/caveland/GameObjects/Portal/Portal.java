@@ -31,9 +31,9 @@
  */
 package com.bombinggames.caveland.GameObjects.Portal;
 
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -66,7 +66,7 @@ public class Portal extends AbstractEntity implements Interactable{
 	}
 	
 	@Override
-	public void interact(AbstractEntity actor, GameView view) {
+	public void interact(AbstractEntity actor, CustomGameView view) {
 		actor.setPosition(target.cpy());
 	}
 

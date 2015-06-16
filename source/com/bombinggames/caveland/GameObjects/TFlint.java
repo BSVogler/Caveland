@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 
@@ -55,7 +55,7 @@ public class TFlint extends Collectible {
 	}
 
 	@Override
-	public void action(GameView view, AbstractEntity actor) {
+	public void action(CustomGameView view, AbstractEntity actor) {
 		super.action(view, actor);
 		Controller.getSoundEngine().play("hiss", getPosition());
 		setValue((byte) 5);

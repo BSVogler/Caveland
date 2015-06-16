@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -235,7 +236,7 @@ public class Inventory implements Serializable {
 	 * @param view
 	 * @param actor
 	 */
-	public void action(GameView view, AbstractEntity actor){
+	public void action(CustomGameView view, AbstractEntity actor){
 		//Get the first item and activate it. Then put it back.
 		Collectible item = fetchFrontItem();
 		if(item!=null) {

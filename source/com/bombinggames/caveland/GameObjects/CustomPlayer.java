@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -146,7 +147,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	
 	/**
 	 * creates a new Ejira
-	 * @param number
+	 * @param number should start by 1
 	 */
 	public CustomPlayer(int number) {
 		super((byte) 30, 0);
@@ -435,7 +436,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 *interacts with the nearest thign if there is one
 	 * @param view
 	 */
-	public void interactWithNearestThing(GameView view) {
+	public void interactWithNearestThing(CustomGameView view) {
 		if (nearestEntity!=null)
 			((Interactable) nearestEntity).interact(this, view);
 		else {
@@ -487,7 +488,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 	}
 	
-	public void useItem(GameView view){
+	public void useItem(CustomGameView view){
 		inventory.action(view, this);
 	}
 
@@ -941,6 +942,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 	}
 
+	/**
+	 * starts with 1
+	 * @return 
+	 */
 	public int getPlayerNumber() {
 		return playerNumber;
 	}

@@ -2,7 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import java.io.IOException;
@@ -51,30 +51,32 @@ public class Vanya extends MovableEntity implements Interactable {
 
 	
 	@Override
-	public void interact(AbstractEntity actor, GameView view) {
-		//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
-		chatCounter++;
-		if (currentChat!=null)
-			currentChat.remove();
-		String text = "";
-		switch(chatCounter) {
-			case 1:
-				text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. \n"
-					+ "Welcome to Caveland! I will be your guide.\n";
-				break;
-			case 2:	
-				text = " I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
-				break;
-			case 3:	
-				text = "You should definetely check the map editor by pressing 'G'.";
-				break;
-			case 4:	
-				chatCounter = 0;
-				break;
-		}
-		if (!"".equals(text)) {
-			currentChat = new ActionBox(view.getStage(), getName(), ActionBox.BoxModes.SIMPLE, text);
-			view.getStage().addActor(currentChat);
+	public void interact(AbstractEntity actor, CustomGameView view) {
+		if (actor instanceof CustomPlayer){
+			//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
+			chatCounter++;
+			if (currentChat!=null)
+				currentChat.remove();
+			String text = "";
+			switch(chatCounter) {
+				case 1:
+					text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. \n"
+						+ "Welcome to Caveland! I will be your guide.\n";
+					break;
+				case 2:	
+					text = " I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+					break;
+				case 3:	
+					text = "You should definetely check the map editor by pressing 'G'.";
+					break;
+				case 4:	
+					chatCounter = 0;
+					break;
+			}
+			if (!"".equals(text)) {
+				currentChat = new ActionBox(view, ((CustomPlayer)actor).getPlayerNumber(),getName(), ActionBox.BoxModes.SIMPLE, text);
+				view.getStage().addActor(currentChat);
+			}
 		}
 	}
 

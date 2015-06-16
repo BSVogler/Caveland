@@ -159,7 +159,7 @@ public class CustomGameView extends GameView{
 	
 	private void toogleCrafting(int id) {
 		if (openDialogue[id]==null) {
-			openDialogue[id] = new Crafting(getStage(), getPlayer(id).getInventory());
+			openDialogue[id] = new Crafting(this, getPlayer(id));
 			openDialogue[id].setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
 			getStage().addActor(openDialogue[id]);
 		} else {
@@ -495,24 +495,35 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean keyDown(int keycode) {
-            if (!WE.getConsole().isActive()) {
-				//use inventory
-				if (keycode == Input.Keys.E){
-					inventoryDownP1 = 0;//register on down
+			if (!WE.getConsole().isActive()) {
+				if (focusOnGame(0)) {
+					//use inventory
+					if (keycode == Input.Keys.E){
+						inventoryDownP1 = 0;//register on down
+					}
+
+					//interact
+					if (keycode == Input.Keys.F){
+						 useDownP1 = 0;//register on down
+					}
+
+					if (keycode == Input.Keys.C) //Select
+						toogleCrafting(0);
+					
+				if (keycode==Input.Keys.NUM_1)
+					getPlayer(0).getInventory().switchItems(true);
+			
+				if (keycode==Input.Keys.NUM_2)
+					getPlayer(0).getInventory().switchItems(false);
+				
+				if (keycode==Input.Keys.SPACE)
+					getPlayer(0).jump();
 				}
 
-				//interact
-				if (keycode == Input.Keys.F){
-					 useDownP1 = 0;//register on down
-				}
-				
 				//editor
 				if (keycode == Input.Keys.G){
 					 WE.loadEditor(false);
 				}
-				
-				if (keycode == Input.Keys.C) //Select
-					toogleCrafting(0);
 				
 
 				//pause
@@ -536,14 +547,6 @@ public class CustomGameView extends GameView{
                  if (keycode == Input.Keys.ESCAPE)
                      WE.showMainMenu();
 				 
-				if (keycode==Input.Keys.NUM_1)
-					getPlayer(0).getInventory().switchItems(true);
-			
-				if (keycode==Input.Keys.NUM_2)
-					getPlayer(0).getInventory().switchItems(false);
-				
-				if (keycode==Input.Keys.SPACE)
-					getPlayer(0).jump();
 				
 				if (keycode==Input.Keys.TAB)
 					if (getOrientation()==0)
@@ -554,40 +557,44 @@ public class CustomGameView extends GameView{
 				//coop controlls
 				if (coop==0){
 					//p1
-					if (keycode == Input.Keys.N) {
-						getPlayer(0).attack();
-					}
-					
-					if (keycode == Input.Keys.M) {
-						throwDownP1 = 0;
+					if (focusOnGame(0)) {
+						if (keycode == Input.Keys.N) {
+							getPlayer(0).attack();
+						}
+
+						if (keycode == Input.Keys.M) {
+							throwDownP1 = 0;
+						}
 					}
 					
 					//p2
-					if (keycode == Input.Keys.NUMPAD_0) {
-						getPlayer(1).jump();
-					}
-						
-					if (keycode == Input.Keys.NUMPAD_1) {
-						getPlayer(1).attack();
-					}
-					
-					if (keycode == Input.Keys.NUMPAD_2) {
-						throwDownP2=0;
-					}
-					
-					if (keycode == Input.Keys.NUMPAD_3) {
-						inventoryDownP2 = 0;//register on down
-					}
-					
-					if (keycode==Input.Keys.NUMPAD_4)
-						getPlayer(1).getInventory().switchItems(true);
-			
-					if (keycode==Input.Keys.NUMPAD_5){
-						getPlayer(1).getInventory().switchItems(false);
-					}
-					
-					if (keycode==Input.Keys.NUMPAD_6){
-						useDownP2 =0;
+					if (focusOnGame(1)) {
+						if (keycode == Input.Keys.NUMPAD_0) {
+							getPlayer(1).jump();
+						}
+
+						if (keycode == Input.Keys.NUMPAD_1) {
+							getPlayer(1).attack();
+						}
+
+						if (keycode == Input.Keys.NUMPAD_2) {
+							throwDownP2=0;
+						}
+
+						if (keycode == Input.Keys.NUMPAD_3) {
+							inventoryDownP2 = 0;//register on down
+						}
+
+						if (keycode==Input.Keys.NUMPAD_4)
+							getPlayer(1).getInventory().switchItems(true);
+
+						if (keycode==Input.Keys.NUMPAD_5){
+							getPlayer(1).getInventory().switchItems(false);
+						}
+
+						if (keycode==Input.Keys.NUMPAD_6){
+							useDownP2 =0;
+						}
 					}
 				}
             }
@@ -680,5 +687,14 @@ public class CustomGameView extends GameView{
 	
 	private boolean focusOnGame(int playerId){
 		return !WE.getConsole().isActive() && openDialogue[playerId]==null;
+	}
+	
+	/**
+	 * 
+	 * @param actionBox can be null
+	 * @param playerNumber starts with 1
+	 */
+	public void setModalDialogue(ActionBox actionBox, int playerNumber){
+		this.openDialogue[playerNumber-1] = actionBox;
 	}
 }

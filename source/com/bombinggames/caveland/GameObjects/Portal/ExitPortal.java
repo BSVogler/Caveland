@@ -31,10 +31,10 @@
  */
 package com.bombinggames.caveland.GameObjects.Portal;
 
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 
 /**
  *
@@ -44,7 +44,7 @@ public class ExitPortal extends Portal{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void interact(AbstractEntity actor, GameView view) {
+	public void interact(AbstractEntity actor, CustomGameView view) {
 		super.interact(actor, view);
 		if (actor instanceof CustomPlayer)
 			if (((CustomPlayer) actor).getPlayerNumber()==2)

@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
@@ -211,7 +211,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	 * @param view
 	 * @param actor
 	 */
-	public void action(GameView view, AbstractEntity actor) {
+	public void action(CustomGameView view, AbstractEntity actor) {
 		
 	}
 

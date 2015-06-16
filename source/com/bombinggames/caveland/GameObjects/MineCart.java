@@ -2,8 +2,8 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
@@ -301,7 +301,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public void interact(AbstractEntity actor, GameView view) {
+	public void interact(AbstractEntity actor, CustomGameView view) {
 		if (actor instanceof MovableEntity){
 			if (passenger==null){
 				setPassanger((MovableEntity) actor);

@@ -38,7 +38,7 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
-	private ActionBox[] openDialogue = new ActionBox[2];
+	private final ActionBox[] openDialogue = new ActionBox[2];
 	
     @Override
     public void init(Controller controller) {
@@ -327,10 +327,10 @@ public class CustomGameView extends GameView{
 		 * speed of one player
 		 */
 		public static float[] speed = new float[]{-1,-1};
-		private int id;
+		private final int id;
 		private final CustomGameView parent;
 		private float oldRTvalue = -1;
-		private String OS;
+		private final String OS;
 
 		XboxListener(CustomGameView parent, CustomPlayer controllable, int id) {
 			this.player = controllable;

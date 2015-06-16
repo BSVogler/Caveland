@@ -18,7 +18,7 @@ public class ActionBox extends WidgetGroup {
 	 * contains the content of the window
 	 */
 	private final Window window;
-	private BoxModes mode;
+	private final BoxModes mode;
 	private final Image confirm;
 	private Image cancel;
 	private ArrayList<String> selectionOptions;
@@ -54,9 +54,10 @@ public class ActionBox extends WidgetGroup {
 	 * @param text the text of the box. can be null
 	 * @param mode 
 	 */
-	public ActionBox(CustomGameView view, int playerId, String title, BoxModes mode, String text) {
+	public ActionBox(final CustomGameView view, final int playerId, final String title, final BoxModes mode, final String text) {
 		this.view = view;
 		this.playerNum = playerId;
+		this.mode = mode;
 		
 		setPosition(view.getStage().getWidth()/2, view.getStage().getHeight()/2);
 		window = new Window(title, WE.getEngineView().getSkin());

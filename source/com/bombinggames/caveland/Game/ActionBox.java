@@ -104,7 +104,7 @@ public class ActionBox extends WidgetGroup {
 			if (selectionOptions==null)
 				selectionOptions = new ArrayList<>(4);
 			selectionOptions.addAll(Arrays.asList(options));
-			//clear window content and add new
+			//clear window content then add new
 			window.clear();
 			Label textArea = new Label(text, WE.getEngineView().getSkin());
 			textArea.setX(10);

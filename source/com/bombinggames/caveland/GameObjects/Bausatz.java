@@ -21,8 +21,7 @@ public class Bausatz extends Collectible {
 			SelectionWindow selectionWindow = new SelectionWindow(
 				view,
 				((CustomPlayer) actor).getPlayerNumber()
-				);
-			view.getStage().addActor(selectionWindow);
+			);
 		}
 		
 	}

@@ -38,6 +38,9 @@ public class CustomGameView extends GameView{
 	private XboxListener controllerListener1;
 	private XboxListener controllerListener2;
 	
+	/**
+	 * contains or may not contain currently active dialogues
+	 */
 	private final ActionBox[] openDialogue = new ActionBox[2];
 	
     @Override
@@ -192,40 +195,44 @@ public class CustomGameView extends GameView{
     @Override
     public void update(float dt) {
         super.update(dt);
-        //get input and do actions
-        Input input = Gdx.input;
-        
-		//walk
-		if (getPlayer(0) != null){
-			getPlayer(0).walk(
-				input.isKeyPressed(Input.Keys.W),
-				input.isKeyPressed(Input.Keys.S),
-				input.isKeyPressed(Input.Keys.A),
-				input.isKeyPressed(Input.Keys.D),
-				WE.CVARS.getValueF("playerWalkingSpeed")*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
-				dt
-			);
-		} else {
-			//update camera position
-			Camera camera = getCameras().get(0);
-			camera.move(
-				(input.isKeyPressed(Input.Keys.D)? 3: 0)
-				- (input.isKeyPressed(Input.Keys.A)? 3: 0),
-				- (input.isKeyPressed(Input.Keys.W)? 3: 0)
-				+ (input.isKeyPressed(Input.Keys.S)? 3: 0)
-			);
+		//get input and do actions
+		Input input = Gdx.input;
+
+		if (focusOnGame(0)) {
+			//walk
+			if (getPlayer(0) != null){
+				getPlayer(0).walk(
+					input.isKeyPressed(Input.Keys.W),
+					input.isKeyPressed(Input.Keys.S),
+					input.isKeyPressed(Input.Keys.A),
+					input.isKeyPressed(Input.Keys.D),
+					WE.CVARS.getValueF("playerWalkingSpeed")*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+					dt
+				);
+			} else {
+				//update camera position
+				Camera camera = getCameras().get(0);
+				camera.move(
+					(input.isKeyPressed(Input.Keys.D)? 3: 0)
+					- (input.isKeyPressed(Input.Keys.A)? 3: 0),
+					- (input.isKeyPressed(Input.Keys.W)? 3: 0)
+					+ (input.isKeyPressed(Input.Keys.S)? 3: 0)
+				);
+			}
 		}
 		
-		//update player2
-		if (getPlayer(1) != null){
-			getPlayer(1).walk(
-				input.isKeyPressed(Input.Keys.UP),
-				input.isKeyPressed(Input.Keys.DOWN),
-				input.isKeyPressed(Input.Keys.LEFT),
-				input.isKeyPressed(Input.Keys.RIGHT),
-				WE.CVARS.getValueF("playerWalkingSpeed"),
-				dt
-			);
+		if (focusOnGame(1)) {
+			//update player2
+			if (getPlayer(1) != null){
+				getPlayer(1).walk(
+					input.isKeyPressed(Input.Keys.UP),
+					input.isKeyPressed(Input.Keys.DOWN),
+					input.isKeyPressed(Input.Keys.LEFT),
+					input.isKeyPressed(Input.Keys.RIGHT),
+					WE.CVARS.getValueF("playerWalkingSpeed"),
+					dt
+				);
+			}
 		}
 
 		if (coop !=1) {//P1 controlled by keyboard
@@ -526,7 +533,7 @@ public class CustomGameView extends GameView{
                      if (getLightEngine() != null) getLightEngine().setDebug(!getLightEngine().isInDebug());
                   } 
 
-                 if (keycode == Input.Keys.ESCAPE)// Gdx.app.exit();
+                 if (keycode == Input.Keys.ESCAPE)
                      WE.showMainMenu();
 				 
 				if (keycode==Input.Keys.NUM_1)
@@ -591,23 +598,25 @@ public class CustomGameView extends GameView{
         @Override
         public boolean keyUp(int keycode) {
 			if (coop==0){
-				if (keycode == Input.Keys.N){
-					getPlayer(0).attackLoadingStopped();
+				if (focusOnGame(0)) {
+					if (keycode == Input.Keys.N){
+						getPlayer(0).attackLoadingStopped();
+					}
+
+					if (keycode == Input.Keys.M){
+						getPlayer(0).throwItem();
+					}
 				}
 				
-				if (keycode == Input.Keys.M){
-					getPlayer(0).throwItem();
+				if (focusOnGame(0)) {
+					if (keycode==Input.Keys.NUMPAD_1){
+						getPlayer(1).attackLoadingStopped();
+					}
+
+					if (keycode==Input.Keys.NUMPAD_2){
+						getPlayer(1).throwItem();
+					}
 				}
-				
-				if (keycode==Input.Keys.NUMPAD_1){
-					getPlayer(1).attackLoadingStopped();
-				}
-				
-				if (keycode==Input.Keys.NUMPAD_2){
-					getPlayer(1).throwItem();
-				}
-				
-				
 			}
 			
             return false;
@@ -668,4 +677,8 @@ public class CustomGameView extends GameView{
             return true;
         }
     }
+	
+	private boolean focusOnGame(int playerId){
+		return !WE.getConsole().isActive() && openDialogue[playerId]==null;
+	}
 }

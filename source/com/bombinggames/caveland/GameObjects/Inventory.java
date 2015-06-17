@@ -35,10 +35,11 @@ public class Inventory implements Serializable {
 	}
 	
 	/**
-	 * reduces the counter and deletes the object from inventory
-	 * @return the frontmost element. can return null if empty.
+	 * reduces the counter and deletes the object from inventory. Makes the object appear in the world.
+	 * @return the frontmost element. Can return null if empty.
+	 * @see #fetchFrontItemAndDisposeFromWorld() 
 	 */
-	public Collectible fetchFrontItem() {
+	public Collectible retrieveFrontItem() {
 		Collectible result = null;
 		if (slot[0].counter>0){
 			result = slot[0].take();
@@ -49,6 +50,26 @@ public class Inventory implements Serializable {
 		}
 		
 		if (result==null) return null;
+		return result;
+	}
+	
+	/**
+	 * reduces the counter and deletes the object from inventory. makes the object appear not in the world.
+	 * @return the frontmost element. can return null if empty.
+	 * @see #retrieveFrontItem() 
+	 */
+	public Collectible fetchFrontItemAndDisposeFromWorld() {
+		Collectible result = null;
+		if (slot[0].counter>0){
+			result = slot[0].take();
+		} else if (slot[1].counter>0){
+			result = slot[1].take();
+		}else if (slot[2].counter>0){
+			result = slot[2].take();
+		}
+		
+		if (result==null) return null;
+		result.disposeFromMap();
 		return result;
 	}
 	
@@ -238,7 +259,7 @@ public class Inventory implements Serializable {
 	 */
 	public void action(CustomGameView view, AbstractEntity actor){
 		//Get the first item and activate it. Then put it back.
-		Collectible item = fetchFrontItem();
+		Collectible item = retrieveFrontItem();
 		if(item!=null) {
 			item.action(view, actor);
 			add(item);

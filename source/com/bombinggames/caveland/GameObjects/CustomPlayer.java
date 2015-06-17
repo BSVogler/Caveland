@@ -460,7 +460,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * try throwing an item from inventory
 	 */
 	public void throwItem() {
-		Collectible item = inventory.fetchFrontItem();
+		Collectible item = inventory.retrieveFrontItem();
 		if (item != null) {//throw is performed if there is an item to throw
 			//play animation
 			if (action != 't') {//check if not in loaded position
@@ -480,7 +480,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * drop an item by laying it down
 	 */
 	public void dropItem(){
-		Collectible item = inventory.fetchFrontItem();
+		Collectible item = inventory.retrieveFrontItem();
 		if (item != null) {//throw is performed if there is an item to throw
 			item.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 0.1f));
 			item.setMovement(Vector3.Zero.cpy());//throw with 3 m/s+current movement

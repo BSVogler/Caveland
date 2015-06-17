@@ -164,7 +164,7 @@ public RenderBlock toRenderBlock(Block data) {
 			if (id==11) {//construction site
 				if (actor instanceof CustomPlayer){
 					//lege objekte aus Inventar  hier rein
-					Collectible frontItem = ((CustomPlayer) actor).getInventory().fetchFrontItem();
+					Collectible frontItem = ((CustomPlayer) actor).getInventory().retrieveFrontItem();
 					if (frontItem!=null)
 						frontItem.spawn(coord.toPoint());
 				}

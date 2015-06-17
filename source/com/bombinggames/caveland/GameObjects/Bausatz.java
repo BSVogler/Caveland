@@ -36,14 +36,13 @@ public class Bausatz extends Collectible {
 			int num = super.confirm(view, actor);
 			//build
 			if (num==0) {
+				//spawn construction site
 				actor.getPosition().toCoord().setBlock( Block.getInstance((byte) 11) );
+				new InteractableCollectibleContainer().spawn(actor.getPosition().toCoord().toPoint());
+				dispose();//dispose tool kit
 			}
 			return num;
 		}
 
-		
-		
-		
 	}
-	
 }

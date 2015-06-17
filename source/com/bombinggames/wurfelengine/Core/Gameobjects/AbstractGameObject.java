@@ -36,13 +36,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
-import com.bombinggames.wurfelengine.WE;
 import java.io.Serializable;
 
 /**
@@ -428,7 +428,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     }
 
     /**
-     * Hide an object. It won't be rendered even if it is clipped.
+     * Hides an object. It won't be rendered.
      * @param hidden
      */
     public void setHidden(boolean hidden){

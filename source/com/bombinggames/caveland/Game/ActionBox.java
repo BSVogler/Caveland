@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +22,11 @@ public class ActionBox extends WidgetGroup {
 	private final BoxModes mode;
 	private final Image confirm;
 	private Image cancel;
-	private ArrayList<String> selectionOptions;
+	private ArrayList<String> selectionNames;
+	private int selection;
 	private String text;
 	private final CustomGameView view;
-	private final int playerNum;
+	private int playerNum;
 	
 	public static enum BoxModes {
 		/**
@@ -49,14 +51,12 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * creates a new chat box and set this as a modal window
 	 * @param view
-	 * @param playerId
 	 * @param title the title of the box
 	 * @param text the text of the box. can be null
 	 * @param mode 
 	 */
-	public ActionBox(final CustomGameView view, final int playerId, final String title, final BoxModes mode, final String text) {
+	public ActionBox(final CustomGameView view, final String title, final BoxModes mode, final String text) {
 		this.view = view;
-		this.playerNum = playerId;
 		this.mode = mode;
 		
 		setPosition(view.getStage().getWidth()/2, view.getStage().getHeight()/2);
@@ -83,10 +83,17 @@ public class ActionBox extends WidgetGroup {
 			cancel.setPosition(window.getWidth()-250, -40);
 			addActor(cancel);
 		}
-		//bad coding style:
+	}
+	
+	/**
+	 * registeres
+	 * @param view 
+	 * @param playerId starting with 1
+	 */
+	public void register(final CustomGameView view, final int playerId){
+		this.playerNum = playerId;
 		view.setModalDialogue(this, playerId);
 		view.getStage().addActor(this);
-
 	}
 
 	public Window getWindow() {
@@ -97,39 +104,47 @@ public class ActionBox extends WidgetGroup {
 		return mode;
 	}
 	
-	public void confirm(){
+	/**
+	 * unregisters this window
+	 * @param view
+	 * @param actor
+	 * @return 
+	 */
+	public int confirm(CustomGameView view, AbstractEntity actor){
+		int selectionNum = 0;
+		if (mode==BoxModes.SELECTION){
+			selectionNum = selection;
+		}
 		remove();
 		view.setModalDialogue(null, playerNum);
+		return selectionNum;
 	}
 	
-	public void cancel(){
+	/**
+	 * unregisters this window
+	 * @param view
+	 * @param actor
+	 */
+	public int cancel(CustomGameView view, AbstractEntity actor){
+		int selectionNum = 0;
+		if (mode==BoxModes.SELECTION){
+			selectionNum = selection;
+		}
 		remove();
 		view.setModalDialogue(null, playerNum);
+		return selectionNum;
 	}
 	
 	/**
 	 * 
 	 * @param options
 	 */
-	public void addSelectionOptions(String... options){
+	public void addSelectionNames(String... options){
 		if (mode==BoxModes.SELECTION){
-			if (selectionOptions==null)
-				selectionOptions = new ArrayList<>(options.length);
-			selectionOptions.addAll(Arrays.asList(options));
-			//clear window content then add new
-			window.clear();
-			Label textArea = new Label(text, WE.getEngineView().getSkin());
-			textArea.setX(10);
-			textArea.setWrap(true);
-			textArea.setWidth(580);
-			textArea.setHeight(30);
-			window.addActor(textArea);
-			for (String entry : selectionOptions) {
-				Label label = new Label(entry, WE.getEngineView().getSkin());
-				label.setX(10);
-				label.setWidth(580);
-				window.add(label);
-			}
+			if (selectionNames == null)
+				selectionNames = new ArrayList<>(options.length);
+			selectionNames.addAll(Arrays.asList(options));
+			updateContent();
 		}
 	}
 	
@@ -137,14 +152,44 @@ public class ActionBox extends WidgetGroup {
 	 * go a selection upwards
 	 */
 	public void down(){
-	
+		if (selection > 0){
+			selection--;
+		}
+		updateContent();
 	}
 	
 	/**
 	 * go a selection downwards
 	 */
 	public void up(){
-	
+		if (selection<selectionNames.size()-1){
+			selection++;
+		}
+		updateContent();
 	}
 	
+	/**
+	 * clears window content then add new
+	 */
+	private void updateContent(){
+		window.clear();
+		Label textArea = new Label(text, WE.getEngineView().getSkin());
+		textArea.setX(10);
+		textArea.setWrap(true);
+		textArea.setWidth(window.getWidth());
+		textArea.setHeight(30);
+		window.addActor(textArea);
+		for (int i = 0; i < selectionNames.size(); i++) {
+			String entry = selectionNames.get(i);
+			Label label;
+			if (selection==i)
+				label= new Label("["+entry+"]", WE.getEngineView().getSkin());
+			else 
+				label= new Label(entry, WE.getEngineView().getSkin());
+			label.setX(10);
+			label.setY(window.getHeight()-50-i*20);
+			label.setWidth(window.getWidth());
+			window.add(label);
+		}
+	}
 }

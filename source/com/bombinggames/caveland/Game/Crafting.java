@@ -9,6 +9,7 @@ import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Inventory;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 
 /**
@@ -25,7 +26,7 @@ public class Crafting extends ActionBox {
 	 * @param player 
 	 */
 	public Crafting(CustomGameView view, CustomPlayer player) {
-		super(view, player.getPlayerNumber(), "Crafting", BoxModes.CUSTOM, null);
+		super(view, "Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		RecipesList.Recipe recipe = findRecipe();
 		if (recipe!=null) {
@@ -146,13 +147,13 @@ public class Crafting extends ActionBox {
 	}
 
 	@Override
-	public void confirm() {
-		super.confirm();
+	public int confirm(CustomGameView view, AbstractEntity actor) {
 		craft();
+		return super.confirm(view, actor);
 	}
 
 	@Override
-	public void cancel() {
-		super.cancel();
+	public int cancel(CustomGameView view, AbstractEntity actor) {
+		return super.cancel(view, actor);
 	}
 }

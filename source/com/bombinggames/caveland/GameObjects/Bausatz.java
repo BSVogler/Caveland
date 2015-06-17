@@ -3,6 +3,7 @@ package com.bombinggames.caveland.GameObjects;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 
 /**
  *
@@ -18,20 +19,30 @@ public class Bausatz extends Collectible {
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer) {
-			SelectionWindow selectionWindow = new SelectionWindow(
-				view,
-				((CustomPlayer) actor).getPlayerNumber()
-			);
+			SelectionWindow selectionWindow = new SelectionWindow(view);
+			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
 		}
-		
 	}
 	
 	private class SelectionWindow extends ActionBox{
 
-		SelectionWindow(CustomGameView view, int playerId) {
-			super(view, playerId, "Choose construction", BoxModes.SELECTION, null);
-			addSelectionOptions("Oven","Rails","Factory");
+		SelectionWindow(CustomGameView view) {
+			super(view, "Choose construction", BoxModes.SELECTION, null);
+			addSelectionNames("Oven","Rails","Factory");
 		}
+
+		@Override
+		public int confirm(CustomGameView view, AbstractEntity actor) {
+			int num = super.confirm(view, actor);
+			//build
+			if (num==0) {
+				actor.getPosition().toCoord().setBlock( Block.getInstance((byte) 11) );
+			}
+			return num;
+		}
+
+		
+		
 		
 	}
 	

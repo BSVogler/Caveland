@@ -10,6 +10,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 /**
  *
  * @author Benedikt Vogler
@@ -136,7 +137,7 @@ public class ActionBox extends WidgetGroup {
 	}
 	
 	/**
-	 * 
+	 * Adds strings as options.
 	 * @param options
 	 */
 	public void addSelectionNames(String... options){
@@ -144,6 +145,19 @@ public class ActionBox extends WidgetGroup {
 			if (selectionNames == null)
 				selectionNames = new ArrayList<>(options.length);
 			selectionNames.addAll(Arrays.asList(options));
+			updateContent();
+		}
+	}
+	
+	/**
+	 * Adds a list of strings as options.
+	 * @param options
+	 */
+	public void addSelectionNames(Collection<String> options){
+		if (mode==BoxModes.SELECTION){
+			if (selectionNames == null)
+				selectionNames = new ArrayList<>(options.size());
+			selectionNames.addAll(options);
 			updateContent();
 		}
 	}

@@ -32,10 +32,16 @@ public class CustomGameView extends GameView{
 	private float useDownP1 =-1;
 	private float useDownP2 =-1;
 	/**
-	 * -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
+	 * -1 disable, 0 keyboard only, 1 one or two controller
 	 */
 	private int coop = -1;
+	/**
+	 * listener 1 controls player 2
+	 */
 	private XboxListener controllerListener1;
+	/**
+	 * listener 2 controls player 1
+	 */
 	private XboxListener controllerListener2;
 	
 	/**
@@ -119,13 +125,8 @@ public class CustomGameView extends GameView{
 			}
 			addCamera(camera1);
 			getPlayer(1).setCamera(camera1);
-			
-			//if there is second controller use it for second player
-			if (Controllers.getControllers().size > 1){
-				controllerListener2 = new XboxListener(this, getPlayer(1), 1);
-				Controllers.getControllers().get(1).addListener(controllerListener2);
-			}
 		} else {
+			//it's a singleplayer game
 			Camera camera0  = new Camera(
 				getPlayer(0),
 				0, //left
@@ -138,7 +139,6 @@ public class CustomGameView extends GameView{
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 		}
-		
 		
 		WE.getEngineView().setMusic("com/bombinggames/Caveland/music/overworld.mp3");
 		WE.getEngineView().setMusicLoudness(WE.CVARS.getValueF("music"));
@@ -157,27 +157,36 @@ public class CustomGameView extends GameView{
 		return ((CustomGameController) getController()).getPlayer(id);
 	}
 	
+	/**
+	 * 
+	 * @param id player number starting at 0
+	 */
 	private void toogleCrafting(int id) {
 		if (openDialogue[id]==null) {
-			openDialogue[id] = new Crafting(this, getPlayer(id));
+			//open
+			Crafting crafting = new Crafting(this, getPlayer(id));
+			crafting.register(this, id+1);
 			openDialogue[id].setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
-			getStage().addActor(openDialogue[id]);
 		} else {
-			openDialogue[id].remove();
-			openDialogue[id]=null;
+			//close
+			openDialogue[id].cancel(this, getPlayer(id));
 		}
 	}
 	
 	@Override
     public void onEnter() {
-        WE.getEngineView().addInputProcessor(new MouseKeyboardListener());
-		int playerId = 0;
-		if (coop==1) playerId = 1;
-		if (Controllers.getControllers().size > 0){
-			controllerListener1 = new XboxListener(this,getPlayer(playerId),playerId);
-			Controllers.getControllers().get(0).addListener(controllerListener1);
-		}
+        WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard
 		
+		//if there is second controller use it for second player
+		if (Controllers.getControllers().size > 0){
+			controllerListener1 = new XboxListener(this,getPlayer(1),1);
+			Controllers.getControllers().get(0).addListener(controllerListener1);
+			//check if there is a second controller
+			if (Controllers.getControllers().size > 1){
+				controllerListener2 = new XboxListener(this, getPlayer(0), 0);
+				Controllers.getControllers().get(1).addListener(controllerListener2);
+			}
+		}
 		//hide cursor
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(200, 200);
@@ -235,23 +244,22 @@ public class CustomGameView extends GameView{
 			}
 		}
 
-		if (coop !=1) {//P1 controlled by keyboard
-			if (XboxListener.speed[0] > 0){
+		if (controllerListener2 != null) {//P1 controlled by controller
+			if (controllerListener2.speed > 0){
 				getPlayer(0).setSpeedHorizontal(
-					(WE.CVARS.getValueF("playerWalkingSpeed")*XboxListener.speed[0])
+					(WE.CVARS.getValueF("playerWalkingSpeed")*controllerListener2.speed)
 				);
 			}
 		}
 		
-		if (coop > 0) {
-			if (XboxListener.speed[1] > 0){
+		if (controllerListener1 != null) {//P2 controller by controller
+			if (controllerListener1.speed > 0){
 				getPlayer(1).setSpeedHorizontal(
-					(WE.CVARS.getValueF("playerWalkingSpeed")*XboxListener.speed[1])
+					(WE.CVARS.getValueF("playerWalkingSpeed")*controllerListener1.speed)
 				);
 			}
 		}
 		
-
 		if (useDownP1==0){
 			getPlayer(0).interactWithNearestThing(this);
 			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
@@ -322,23 +330,29 @@ public class CustomGameView extends GameView{
 
 	/**
 	 * 
-	 * @param flag -1 disable, 0 keyboard only, 1 one controller, 2 two controllers
+	 * @param flag -1 disable, 0 keyboard only, 1 one or two controller
 	 */
 	public void enableCoop(int flag) {
 		coop = flag;
 	}
 
-	private static class XboxListener implements ControllerListener {
+	private class XboxListener implements ControllerListener {
 		private final CustomPlayer player;
 		/**
 		 * speed of one player
 		 */
-		public static float[] speed = new float[]{-1,-1};
+		protected float speed =-1;
 		private final int id;
 		private final CustomGameView parent;
 		private float oldRTvalue = -1;
 		private final String OS;
 
+		/**
+		 * 
+		 * @param parent
+		 * @param controllable
+		 * @param id  starting with 0
+		 */
 		XboxListener(CustomGameView parent, CustomPlayer controllable, int id) {
 			this.player = controllable;
 			this.id=id;
@@ -362,7 +376,7 @@ public class CustomGameView extends GameView{
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) { //X
 				if (parent.openDialogue[id] !=null)
-					parent.openDialogue[id].confirm();
+					parent.openDialogue[id].confirm(parent, parent.getPlayer(id));
 				else
 					player.attack();
 			}
@@ -442,12 +456,12 @@ public class CustomGameView extends GameView{
 			
 				float xDeflec = controller.getAxis(WE.CVARS.getValueI("controller"+OS+"AxisLX"));
 				float yDeflec = controller.getAxis(WE.CVARS.getValueI("controller"+OS+"AxisLY"));
-				speed[id] = (float) Math.sqrt(
+				speed = (float) Math.sqrt(
 					 xDeflec*xDeflec
 					+yDeflec*yDeflec
 				);
 
-				if (speed[id]>0.1f)  //move only if stick is a bit moved
+				if (speed > 0.1f)  //move only if stick is a bit moved
 					player.setMovement(new Vector3(
 							xDeflec,
 							yDeflec,
@@ -455,12 +469,12 @@ public class CustomGameView extends GameView{
 						)
 					);
 
-				if (speed[id] < 0.2f){//if moving to little only set orientation
-					speed[id] = 0;
+				if (speed < 0.2f){//if moving to little only set orientation
+					speed = 0;
 				}
 
 				player.setSpeedHorizontal(
-					(WE.CVARS.getValueF("playerWalkingSpeed")*XboxListener.speed[id])
+					(WE.CVARS.getValueF("playerWalkingSpeed")*speed)
 				);
 			
 			}
@@ -489,8 +503,10 @@ public class CustomGameView extends GameView{
 	}
     
     private class MouseKeyboardListener implements InputProcessor {
+		private final CustomGameView parent;
 
-		MouseKeyboardListener() {
+		MouseKeyboardListener(CustomGameView parent) {
+			this.parent = parent;
 		}
 
         @Override
@@ -638,7 +654,7 @@ public class CustomGameView extends GameView{
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.LEFT)
 				if (openDialogue[0] !=null)
-					openDialogue[0].confirm();
+					openDialogue[0].confirm(parent, getPlayer(0));
 				else {
 					getPlayer(0).attack();
 				}

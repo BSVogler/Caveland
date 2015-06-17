@@ -1,7 +1,5 @@
 package com.bombinggames.caveland.MainMenu;
 
-import com.bombinggames.wurfelengine.core.WEScreen;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.WEScreen;
 
 /**
  *
@@ -37,27 +37,15 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		this.mainbg = background;
 		
 		//stage
-		if (Controllers.getControllers().size > 1) {//setDisabled(true) does not work
-			TextButton twoControllersButton = new TextButton("Choose", WE.getEngineView().getSkin());
-			twoControllersButton.setPosition(200, 600);
-			twoControllersButton.addListener(new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new SaveSelectionScreen(2, batch, mainbg));
-				}
-			});
-			stage.addActor(twoControllersButton);
-		} else {
+		if (Controllers.getControllers().size <= 1) {
 			Label label = new Label("No second controller found.", WE.getEngineView().getSkin());
-			label.setPosition(200, 600);
+			label.setPosition(400, 600);
 			stage.addActor(label);
 		}
 		
-		
 		if (Controllers.getControllers().size > 0) {
 			TextButton splitControlsButton = new TextButton("Choose", WE.getEngineView().getSkin());
-			splitControlsButton.setPosition(800, 400);
+			splitControlsButton.setPosition(600, 150);
 			splitControlsButton.addListener(new ChangeListener() {
 
 				@Override
@@ -68,12 +56,12 @@ public class CoopControlsSelectionScreen extends WEScreen {
 			stage.addActor(splitControlsButton);
 		} else {
 			Label label = new Label("No controller found.", WE.getEngineView().getSkin());
-			label.setPosition(800, 400);
+			label.setPosition(600, 150);
 			stage.addActor(label);
 		}
 		
 		TextButton twoKeyboardButton = new TextButton("Choose", WE.getEngineView().getSkin());
-		twoKeyboardButton.setPosition(1200, 200);
+		twoKeyboardButton.setPosition(1300, 150);
 		twoKeyboardButton.addListener(new ChangeListener() {
 
 			@Override
@@ -84,7 +72,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		stage.addActor(twoKeyboardButton);
 		
 		TextButton backButton = new TextButton("Back", WE.getEngineView().getSkin());
-		backButton.setPosition(100, 150);
+		backButton.setPosition(100, 50);
 		backButton.addListener(new ChangeListener() {
 
 			@Override

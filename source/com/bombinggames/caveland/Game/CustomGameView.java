@@ -38,11 +38,11 @@ public class CustomGameView extends GameView{
 	/**
 	 * listener 1 controls player 2
 	 */
-	private XboxListener controllerListener1;
+	private XboxListener controllerListenerB;
 	/**
 	 * listener 2 controls player 1
 	 */
-	private XboxListener controllerListener2;
+	private XboxListener controllerListenerA;
 	
 	/**
 	 * contains or may not contain currently active dialogues
@@ -177,14 +177,19 @@ public class CustomGameView extends GameView{
     public void onEnter() {
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard
 		
-		//if there is second controller use it for second player
+		//is there a controller?
 		if (Controllers.getControllers().size > 0){
-			controllerListener1 = new XboxListener(this,getPlayer(1),1);
-			Controllers.getControllers().get(0).addListener(controllerListener1);
-			//check if there is a second controller
-			if (Controllers.getControllers().size > 1){
-				controllerListener2 = new XboxListener(this, getPlayer(0), 0);
-				Controllers.getControllers().get(1).addListener(controllerListener2);
+			//if there is second controller use it for second player
+			int playerId=0;
+			if (coop>0) playerId=1;
+			controllerListenerA = new XboxListener(this,getPlayer(playerId), playerId);
+			Controllers.getControllers().get(0).addListener(controllerListenerA);
+			if (coop>0) {
+				//check if there is a second controller
+				if (Controllers.getControllers().size > 1){
+					controllerListenerB = new XboxListener(this, getPlayer(1), 1);
+					Controllers.getControllers().get(1).addListener(controllerListenerB);
+				}
 			}
 		}
 		//hide cursor
@@ -195,10 +200,10 @@ public class CustomGameView extends GameView{
 	@Override
 	public void exit() {
 		super.exit();
-		if (controllerListener1 !=null)
-			Controllers.getControllers().get(0).removeListener(controllerListener1);
-		if (controllerListener2 !=null)
-			Controllers.getControllers().get(1).removeListener(controllerListener2);
+		if (controllerListenerA !=null)
+			Controllers.getControllers().get(0).removeListener(controllerListenerA);
+		if (controllerListenerB !=null)
+			Controllers.getControllers().get(1).removeListener(controllerListenerB);
 	}
 	
     @Override
@@ -244,18 +249,16 @@ public class CustomGameView extends GameView{
 			}
 		}
 
-		if (controllerListener2 != null) {//P1 controlled by controller
-			if (controllerListener2.speed > 0){
-				getPlayer(0).setSpeedHorizontal(
-					(WE.CVARS.getValueF("playerWalkingSpeed")*controllerListener2.speed)
+		if (controllerListenerA != null) {//first controlelr used
+			if (controllerListenerA.speed > 0){
+				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.CVARS.getValueF("playerWalkingSpeed")*controllerListenerA.speed)
 				);
 			}
 		}
 		
-		if (controllerListener1 != null) {//P2 controller by controller
-			if (controllerListener1.speed > 0){
-				getPlayer(1).setSpeedHorizontal(
-					(WE.CVARS.getValueF("playerWalkingSpeed")*controllerListener1.speed)
+		if (controllerListenerB != null) {//second controller used
+			if (controllerListenerB.speed > 0){
+				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.CVARS.getValueF("playerWalkingSpeed")*controllerListenerB.speed)
 				);
 			}
 		}

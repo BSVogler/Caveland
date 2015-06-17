@@ -59,16 +59,16 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 
 /**
- *The Main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
- * The Wurfel Engine needs Java &gt;= v1.8 and the API libGDX v1.5.6 (may work with older version).
+ *The main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
+ * The Wurfel Engine needs Java &gt;= v1.8 and the API libGDX v1.6.2 (may work with older versions).
  * @author Benedikt S. Vogler
- * @version 1.6.0
+ * @version 1.6.1
  */
 public class WE {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.6.0";  
+    public static final String VERSION = "1.6.1";  
 	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
 
 	/**

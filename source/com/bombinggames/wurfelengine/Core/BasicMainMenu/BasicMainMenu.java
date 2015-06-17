@@ -41,7 +41,7 @@ public class BasicMainMenu extends AbstractMainMenu {
  
     private static MenuView view;
     private static MenuController controller;
-    private BasicMenuItem[] menuItems;
+    private final BasicMenuItem[] menuItems;
     private boolean warning = true;
 
     /**

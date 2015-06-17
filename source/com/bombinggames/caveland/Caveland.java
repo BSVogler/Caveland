@@ -33,7 +33,7 @@ public class Caveland {
 	/**
 	 * version string of the game Caveland
 	 */
-	public static final String VERSION = "Alpha 3";
+	public static final String VERSION = "Alpha 4";
 	
     /**
      * @param args the command line arguments

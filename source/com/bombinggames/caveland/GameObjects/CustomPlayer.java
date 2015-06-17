@@ -335,6 +335,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			showButton(Interactable.RT, nearestInteractableBlock);
 		} else {
 			//no nearby block
+			nearestInteractableBlock = null;
 			//hide button if also no nearestEntity
 			if (nearestEntity==null)
 				hideButton();

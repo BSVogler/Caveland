@@ -152,6 +152,11 @@ public RenderBlock toRenderBlock(Block data) {
 	}
 	
 	
+	/**
+	 * if you interact with a block which is interactable
+	 * @param coord
+	 * @param actor 
+	 */
 	public static void interact(Coordinate coord, AbstractEntity actor){
 		Block block = coord.getBlock();
 		if (block!=null) {

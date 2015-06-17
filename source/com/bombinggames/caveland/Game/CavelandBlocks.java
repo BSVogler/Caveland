@@ -160,7 +160,7 @@ public RenderBlock toRenderBlock(Block data) {
 	public static void interact(Coordinate coord, AbstractEntity actor){
 		Block block = coord.getBlock();
 		if (block!=null) {
-			byte id = coord.getBlock().getId();
+			byte id = block.getId();
 			if (id==11) {//construction site
 				if (actor instanceof CustomPlayer){
 					//lege objekte aus Inventar  hier rein

@@ -93,11 +93,11 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
-	private ArrayList<AbstractEntity> children = new ArrayList<>(0);
+	private final ArrayList<AbstractEntity> children = new ArrayList<>(0);
    
     /**
      * Create an abstractEntity.
-     * @param id objects with id -1 are to deleted. 0 are invisible objects
+     * @param id objects with id = -1 will be deleted. 0 are invisible objects
      */
     public AbstractEntity(byte id){
         super(id);

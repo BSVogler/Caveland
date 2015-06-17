@@ -92,7 +92,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	private int timeSinceDamage;
 
-	private Inventory inventory = new Inventory(this);
+	private final Inventory inventory = new Inventory(this);
 
 	/**
 	 * true if last jump was airjump.

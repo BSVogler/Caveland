@@ -93,6 +93,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
+	/**
+	 * Spawning and disposing the parent also calls the children.
+	 */
 	private final ArrayList<AbstractEntity> children = new ArrayList<>(0);
    
     /**
@@ -431,15 +434,23 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 		damageSounds = sound;
 	}
 	
+	/**
+	 * Children linked objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
+	 * @param child 
+	 */
 	public void addChild(AbstractEntity child){
 		children.add(child);	
 	}
 
+	/**
+	 * Children linked objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
+	 * @return 
+	 */
 	public ArrayList<AbstractEntity> getChildren() {
 		return children;
 	}
 	
-		@Override
+	@Override
     public byte getId() {
         return id;
     }

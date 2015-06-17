@@ -439,7 +439,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	public void interactWithNearestThing(CustomGameView view) {
 		if (nearestEntity!=null)
-			((Interactable) nearestEntity).interact(this, view);
+			((Interactable) nearestEntity).interact(view, this);
 		else {
 			if (nearestInteractableBlock!=null)
 				CavelandBlocks.interact(nearestInteractableBlock, this);

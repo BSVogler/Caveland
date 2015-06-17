@@ -66,7 +66,7 @@ public class Portal extends AbstractEntity implements Interactable{
 	}
 	
 	@Override
-	public void interact(AbstractEntity actor, CustomGameView view) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		actor.setPosition(target.cpy());
 	}
 

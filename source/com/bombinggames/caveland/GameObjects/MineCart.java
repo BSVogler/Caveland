@@ -301,7 +301,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public void interact(AbstractEntity actor, CustomGameView view) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof MovableEntity){
 			if (passenger==null){
 				setPassanger((MovableEntity) actor);

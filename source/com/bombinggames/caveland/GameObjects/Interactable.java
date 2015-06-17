@@ -105,5 +105,5 @@ public interface Interactable{
 	 * @param view the view by which the interaction is caused and feedback is
 	 * send to
 	 */
-	public abstract void interact(AbstractEntity actor, CustomGameView view);
+	public abstract void interact(CustomGameView view, AbstractEntity actor);
 }

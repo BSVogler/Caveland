@@ -51,7 +51,7 @@ public class Vanya extends MovableEntity implements Interactable {
 
 	
 	@Override
-	public void interact(AbstractEntity actor, CustomGameView view) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer){
 			//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
 			chatCounter++;

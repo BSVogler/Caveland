@@ -44,8 +44,8 @@ public class ExitPortal extends Portal{
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void interact(AbstractEntity actor, CustomGameView view) {
-		super.interact(actor, view);
+	public void interact(CustomGameView view, AbstractEntity actor) {
+		super.interact(view, actor);
 		if (actor instanceof CustomPlayer)
 			if (((CustomPlayer) actor).getPlayerNumber()==2)
 				WE.CVARS.getChildSystem().getChildSystem().get("P2InCave").setValue(false);

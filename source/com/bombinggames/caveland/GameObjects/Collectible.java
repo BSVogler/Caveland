@@ -16,9 +16,7 @@ import java.io.Serializable;
  * @author Benedikt Vogler
  */
 public class Collectible extends MovableEntity implements Serializable {
-
 	private static final long serialVersionUID = 2L;
-	private boolean preventPickup;
 
 	/**
 	 * a enum which lists the types of collectibles
@@ -95,6 +93,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		return obj;
 	}
 
+	private boolean preventPickup;
 	private transient CollectibleType def;
 	/**
 	 * the last object which held the item for pickup prevention

@@ -31,13 +31,13 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.MemoryMapIterator;
-import com.bombinggames.wurfelengine.WE;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -293,7 +293,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
      */
 	@Override
     public Block getBlock(final int x, final int y, final int z){
-		return getBlock(new Coordinate(this, x, y, z)); 
+		return getBlock(new Coordinate(x, y, z)); 
     }
     
 	@Override

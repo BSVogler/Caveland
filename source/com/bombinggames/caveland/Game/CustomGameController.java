@@ -40,7 +40,6 @@ public class CustomGameController extends Controller {
 		
 		player1.spawn(
 			new Coordinate(
-				Controller.getMap(),
 				saveCvars.getValueI("PlayerLastSaveX"),
 				saveCvars.getValueI("PlayerLastSaveY"),
 				saveCvars.getValueI("PlayerLastSaveZ")
@@ -49,7 +48,6 @@ public class CustomGameController extends Controller {
 		if (player2!=null && !player2.isSpawned())
 			player2.spawn(
 				new Coordinate(
-					Controller.getMap(),
 					saveCvars.getValueI("PlayerLastSaveX"),
 					saveCvars.getValueI("PlayerLastSaveY"),
 					saveCvars.getValueI("PlayerLastSaveZ")

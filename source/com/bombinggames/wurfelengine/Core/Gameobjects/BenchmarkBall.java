@@ -31,9 +31,10 @@
 
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Controller;
+import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 
 /**
  *
@@ -61,7 +62,7 @@ public class BenchmarkBall extends MovableEntity {
         if (timer >timeTillBall){
             if (Gdx.graphics.getDeltaTime()<0.013f)//over 60 FPS
                 new BenchmarkBall().spawn(
-					getPosition().getMap().getCenter(getPosition().getMap().getGameHeight()-2*GAME_EDGELENGTH)
+					Controller.getMap().getCenter(Controller.getMap().getGameHeight()-2*GAME_EDGELENGTH)
 				);
             timer=0;
         }

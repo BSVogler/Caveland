@@ -790,7 +790,6 @@ map.getGameWidth(),
 				if (cameraContent[ind[0]][ind[1]][ind[2]+1] != null)
 					cameraContent[ind[0]][ind[1]][ind[2]+1].setPosition(
 						new Coordinate(
-							map,
 							getCoveredLeftBorder() + ind[0],
 							getCoveredBackBorder() + ind[1],
 							ind[2]
@@ -809,7 +808,6 @@ map.getGameWidth(),
 				cameraContent[x][y][0].getBlockData().setClippedRight();
 				cameraContent[x][y][0].setPosition(
 					new Coordinate(
-						map,
 						getCoveredLeftBorder()+x,
 						getCoveredBackBorder()+y,
 						-1
@@ -1193,7 +1191,6 @@ map.getGameWidth(),
 			return focusEntity.getPosition();
 		} else {
 			return new Point(
-				map,
 				position.x,
 				-position.y * 2,
 				0

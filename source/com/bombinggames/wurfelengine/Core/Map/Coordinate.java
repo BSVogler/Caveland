@@ -31,12 +31,12 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.WE;
 import java.util.ArrayList;
 
 /**
@@ -76,10 +76,9 @@ public class Coordinate extends AbstractPosition {
 	 * @param x The x value as coordinate.
 	 * @param y The y value as coordinate.
 	 * @param z The z value as coordinate.
-	 * @param map
 	 */
-	public Coordinate(AbstractMap map, int x, int y, int z) {
-		super(map);
+	public Coordinate(int x, int y, int z) {
+		super();
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -92,7 +91,6 @@ public class Coordinate extends AbstractPosition {
 	 * @param coord the Coordinate you want to copy
 	 */
 	public Coordinate(Coordinate coord) {
-		super(coord.map);
 		this.x = coord.x;
 		this.y = coord.y;
 		this.z = coord.z;
@@ -132,8 +130,8 @@ public class Coordinate extends AbstractPosition {
 	 * @see #getZ()
 	 */
 	public int getZClamp() {
-		if (z >= map.getBlocksZ()) {
-			return map.getBlocksZ() - 1;
+		if (z >= Chunk.getBlocksZ()) {
+			return Chunk.getBlocksZ() - 1;
 		} else if (z < 0) {
 			return 0;
 		} else {
@@ -276,7 +274,7 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		if (WE.CVARS.getValueB("mapUseChunks")){
-			if (((ChunkMap) map).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
+			if (((ChunkMap) Controller.getMap()).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
 				return true;
 			}
 		} else {
@@ -294,9 +292,9 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryArea() {
 		boolean found = false;
-		if (getZ() >= 0 && getZ() < map.getBlocksZ()) {
+		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
 			if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
-				for (Chunk chunk : ((ChunkMap) map).getData()) {
+				for (Chunk chunk : ((ChunkMap) Controller.getMap()).getData()) {
 					if (chunk.hasCoord(this)) {
 						found = true;
 					}
@@ -423,7 +421,6 @@ public class Coordinate extends AbstractPosition {
 	 */
 	private void refreshCachedPoint() {
 		cachedPoint = new Point(
-			map,
 			x * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
 			y * Block.GAME_DIAGLENGTH2,
 			z * Block.GAME_EDGELENGTH

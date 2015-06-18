@@ -192,7 +192,6 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public Point getCenter(final float height) {
 		return new Point(
-			this,
 			Chunk.getGameWidth() / 2,
 			Chunk.getGameDepth() / 2,
 			height

@@ -102,7 +102,7 @@ public class MapEditorController extends Controller {
         super.init();
         Gdx.app.log("MapEditorController", "Initializing");
 		if (!selectionEntity.isSpawned()) selectionEntity.spawn(
-			new Point(getMap(), 0, 0, getMap().getBlocksZ()-1)
+			new Point(0, 0, getMap().getBlocksZ()-1)
 		);
     }
     
@@ -118,7 +118,7 @@ public class MapEditorController extends Controller {
             mapsave = null;
 		
         if (!selectionEntity.isSpawned()) selectionEntity.spawn(
-			new Point(getMap(),0, 0, getMap().getBlocksZ()-1)
+			new Point(0, 0, getMap().getBlocksZ()-1)
 		);
     }
     

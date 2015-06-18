@@ -40,6 +40,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -47,7 +48,6 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.LoadMenu;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.WE;
 import java.util.ArrayList;
 
 /**
@@ -284,7 +284,6 @@ public class GameView extends View implements GameManager {
 
 			//find points
 			return new Point(
-				Controller.getMap(),
 				screenXtoView(x, camera),
 				screenYtoView(y, camera)*-2,
 				0

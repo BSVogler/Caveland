@@ -34,7 +34,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -54,27 +53,7 @@ public abstract class AbstractPosition implements Serializable {
      */
     public static final float SQRT12 = 0.7071067811865475244008443621048490392848359376884740f;
 	
-	/**
-	 *
-	 */
-	protected transient AbstractMap map;
-
-	/**
-	 * 
-	 * @param map 
-	 */
-	protected AbstractPosition(AbstractMap map) {
-		this.map = map;
-	}
 	
-	/**
-	 * the map where the position is located on
-	 * @return 
-	 */
-	public AbstractMap getMap() {
-		return map;
-	}
-	  
 	/**
      * If needed calculates it and creates new instance else return itself.
      * @return the point representation
@@ -154,7 +133,7 @@ public abstract class AbstractPosition implements Serializable {
 					(
 						view.getOrientation()==2
 						?
-							map.getGameDepth()-toPoint().getY()//Y
+							Controller.getMap().getGameDepth()-toPoint().getY()//Y
 						:
 							0
 					)
@@ -162,16 +141,4 @@ public abstract class AbstractPosition implements Serializable {
             + toPoint().getZ()*SQRT12//Z
         );
     }
-	
-	/**
-	 * overrides deserialisation
-	 *
-	 * @param stream
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		stream.defaultReadObject(); //fills fld1 and fld2;
-		map = Controller.getMap();//use defautl map
-	}
 }

@@ -4,7 +4,6 @@ import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Portal.Portal;
 import com.bombinggames.caveland.GameObjects.TFlint;
 import com.bombinggames.wurfelengine.core.CommandsInterface;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -40,7 +39,7 @@ public class CavelandCommands implements CommandsInterface {
 					int z = Integer.parseInt(st.nextToken());
 			for (AbstractEntity ent : selected) {
 				if (ent instanceof Portal){
-					((Portal)ent).setTarget(new Coordinate(Controller.getMap(), x, y, z));
+					((Portal)ent).setTarget(new Coordinate(x, y, z));
 					return true;
 				}
 			}

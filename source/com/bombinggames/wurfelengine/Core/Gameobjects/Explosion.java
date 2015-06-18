@@ -1,10 +1,10 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.badlogic.gdx.graphics.Color;
 import java.util.ArrayList;
 
 /**
@@ -68,7 +68,7 @@ public class Explosion extends AbstractEntity {
 						
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list =
-							point.getMap().getEntitysOnCoord(coord,
+							Controller.getMap().getEntitysOnCoord(coord,
 								MovableEntity.class
 							);
 						for (MovableEntity ent : list) {

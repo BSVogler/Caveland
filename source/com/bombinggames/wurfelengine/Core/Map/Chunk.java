@@ -106,7 +106,7 @@ public class Chunk {
 		blocksY = WE.CVARS.getChildSystem().getValueI("chunkBlocksY");
 		blocksZ = WE.CVARS.getChildSystem().getValueI("chunkBlocksZ");
 		
-		topleft = new Coordinate(map, coordX*blocksX, coordY*blocksY, 0);
+		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
 		data = new Block[blocksX][blocksY][blocksZ];
         
         for (int x=0; x < blocksX; x++)

@@ -2,7 +2,6 @@ package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
@@ -10,6 +9,7 @@ import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.MemoryMapIterator;
 import java.io.File;
 import java.io.IOException;
@@ -145,8 +145,7 @@ public abstract class AbstractMap implements Cloneable {
 		//update every entity
 		for (int i = 0; i < getEntitys().size(); i++) {
 			AbstractEntity entity = getEntitys().get(i);
-			if (entity.isInMemoryArea())//only update entities in memory
-			{
+			if (entity.isInMemoryArea()) {//only update entities in memory
 				entity.update(dt);
 			}
 		}

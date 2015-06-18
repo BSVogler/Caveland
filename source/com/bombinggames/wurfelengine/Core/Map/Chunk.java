@@ -32,12 +32,12 @@ package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import com.bombinggames.wurfelengine.WE;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

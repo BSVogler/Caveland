@@ -42,7 +42,7 @@ public class EntityShadow extends AbstractEntity {
 	/**
 	 * the parent class. The object where this is the shadow
 	 */
-    private AbstractEntity character;
+    private final AbstractEntity character;
 
 	/**
 	 *
@@ -60,6 +60,11 @@ public class EntityShadow extends AbstractEntity {
 		if (character==null)
 			dispose();
 		else {
+			//inherit isHidden
+			if (character.isHidden())
+				setHidden(true);
+			else setHidden(false);
+			
 			//find height of shadow surface
 			Coordinate newHeight = character.getPosition().toCoord();//start at same height
 			Block block = newHeight.getBlock();

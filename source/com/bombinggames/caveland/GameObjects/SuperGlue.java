@@ -31,8 +31,8 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 
 /**
  *Glue two objects together by comparing their offset and moving the smaller object to keep it.
@@ -52,6 +52,9 @@ public class SuperGlue extends AbstractEntity {
 		super((byte) 1);//use any id but 0
 		setHidden(true);
 		this.main = main;
+		//if one of both is not getting saved then also don't get saved
+		if (!main.isGettingSaved() || !smaller.isGettingSaved())
+			setSaveToDisk(false);
 		addChild(smaller);
 		
 	}

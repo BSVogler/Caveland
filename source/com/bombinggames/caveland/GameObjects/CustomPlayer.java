@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.Game.Inventory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -86,25 +87,25 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 	}
 	
-	private final int playerNumber;
+	private transient final int playerNumber;
 
-	private boolean canPlayLoadingSound = false;
+	private transient boolean canPlayLoadingSound = false;
 
-	private int timeSinceDamage;
+	private transient int timeSinceDamage;
 
-	private final Inventory inventory = new Inventory(this);
+	private transient Inventory inventory;
 
 	/**
 	 * true if last jump was airjump.
 	 */
-	private boolean isInAirJump = false;
+	private transient boolean isInAirJump = false;
 
 	private transient Camera camera;
 
 	/**
 	 * time of loading
 	 */
-	private float loadAttack = Float.NEGATIVE_INFINITY;
+	private transient float loadAttack = Float.NEGATIVE_INFINITY;
 	private transient final float LOAD_THRESHOLD = 300;//300ms until loading starts
 	private transient AbstractEntity nearestEntity;
 
@@ -123,27 +124,27 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	/**
 	 * play the throw animation till load is finished
 	 */
-	private boolean prepareThrow;
-	private boolean bunnyHopForced;
-	private boolean usedLoadAttackInAir;
-	private final SmokeEmitter emitter;
-	private final SmokeEmitter emitter2;
-	private SimpleEntity interactButton = null;
-	private Coordinate nearestInteractableBlock = null;
-	private int spriteNumOverlay;
+	private transient boolean prepareThrow;
+	private transient boolean bunnyHopForced;
+	private transient boolean usedLoadAttackInAir;
+	private transient final SmokeEmitter emitter;
+	private transient final SmokeEmitter emitter2;
+	private transient SimpleEntity interactButton = null;
+	private transient Coordinate nearestInteractableBlock = null;
+	private transient int spriteNumOverlay;
 	/**
 	 * true if attack in loadattackMode
 	 */
-	private boolean performingLoadAttack = false;
+	private transient boolean performingLoadAttack = false;
 	
 	/**
 	 * timer for delaying impact
 	 */
-	private float timeTillImpact; 
+	private transient float timeTillImpact; 
 	/**
 	 * save the damage until it is used on the impact
 	 */
-	private byte attackDamage;
+	private transient byte attackDamage;
 	
 	/**
 	 * creates a new Ejira
@@ -176,6 +177,15 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		addChild(conection2);
 		setSaveToDisk(false);
 	}
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		inventory = new Inventory(this);
+		return this;
+	}
+	
+	
 
 	/**
 	 * Get the value of inventory
@@ -210,8 +220,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
 				pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
 		}
-
-		inventory.update(dt);
 
 		/*ANIMATION*/
 		{

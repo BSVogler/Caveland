@@ -36,6 +36,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -96,7 +97,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	/**
 	 * Spawning and disposing the parent also calls the children.
 	 */
-	private final ArrayList<AbstractEntity> children = new ArrayList<>(0);
+	private transient ArrayList<AbstractEntity> children = new ArrayList<>(0);
    
     /**
      * Create an abstractEntity.
@@ -421,13 +422,22 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 			setHealth((byte) (getHealth()+value));
 	}
 	
+	private void writeObject(ObjectOutputStream out)throws IOException {
+		out.defaultWriteObject();
+		//don't save objects which are flagged to be ignored during save
+		children.removeIf(ent -> !ent.isGettingSaved());
+		out.writeObject(children);
+	
+	}
+	@SuppressWarnings({"unchecked"})
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-		enableShadow();
+		children = (ArrayList<AbstractEntity>) in.readObject();
+		enableShadow(); 
     }
 
 	/**
-	 *
+	 * 
 	 * @param sound
 	 */
 	public void setDamageSounds(String[] sound) {

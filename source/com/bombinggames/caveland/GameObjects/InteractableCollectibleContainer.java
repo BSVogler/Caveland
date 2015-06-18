@@ -34,42 +34,86 @@ package com.bombinggames.caveland.GameObjects;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *An object which contains collectibles
+ *An entity which contains collectibles.
  * @author Benedikt Vogler
  */
 public class InteractableCollectibleContainer extends AbstractEntity implements Interactable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+	private boolean backpack;
 
 	public InteractableCollectibleContainer() {
-		super((byte) 0);
+		super((byte) 43);//use spirte of construction box temp
+		setName("Container");
 		setHidden(true);
-	}
-	
-	/**
-	 * Stores the objects as children. Hides the collectible.
-	 * @param collectible 
-	 */
-	public void addCollectible(Collectible collectible){
-		collectible.setHidden(true);
-		addChild(collectible);
+		setIndestructible(true);
 	}
 
-	/**
-	 * only allows collectibles to be added
-	 * @param child 
-	 */
-	@Override
-	public void addChild(AbstractEntity child) {
-		if (child instanceof Collectible)
-			super.addChild(child);
+	public void setBackpack(boolean backpack) {
+		this.backpack = backpack;
 	}
 	
+	/**
+	 * only allows collectibles to be added 
+	 * @param collectible
+	 */
+	@Override
+	public void addChild(AbstractEntity collectible) {
+		if (collectible instanceof Collectible){
+			collectible.setHidden(true);
+			collectible.setPosition(getPosition().cpy());
+			collectible.setHidden(true);
+			collectible.setSaveToDisk(false);//don't save them
+			((Collectible) collectible).preventPickup();
+			((Collectible) collectible).setFloating(true);
+			super.addChild(collectible);
+		}
+	}
+	
+	/**
+	 * Get the n't element from inventory. in future should skip stuff like the shadow.
+	 * @param index
+	 * @return 
+	 */
+	public Collectible get(int index){
+		if (getChildren().size() > index)
+			return (Collectible) getChildren().get(index);
+		else return null;
+	}
+	
+	/**
+	 * amount of contained items
+	 * @return 
+	 */
+	public int size(){
+		return getChildren().size();
+	}
+	
+	/**
+	 * makes the object appear in the world
+	 * @param pos
+	 * @return 
+	 */
 	public Collectible retrieveCollectible(int pos){
 		Collectible collectible = (Collectible) getChildren().remove(pos);
+		collectible.setFloating(false);
+		collectible.allowPickup();
 		collectible.setHidden(false);
+		collectible.setSaveToDisk(true);
+		return collectible;
+	}
+	
+	/**
+	 * remves the object from the container/world and returns only the reference
+	 * @param pos
+	 * @return 
+	 */
+	public Collectible retrieveCollectibleReference(int pos){
+		Collectible collectible = retrieveCollectible(pos);
+		collectible.disposeFromMap();
 		return collectible;
 	}
 
@@ -104,16 +148,53 @@ public class InteractableCollectibleContainer extends AbstractEntity implements 
 				CustomPlayer player = (CustomPlayer) actor;
 				//add item?
 				if (num==0) {
-					Collectible frontItem = player.getInventory().fetchFrontItemAndDisposeFromWorld();
+					Collectible frontItem = player.getInventory().fetchFrontItemReference();
 					if (frontItem != null)
-						parent.addCollectible(frontItem);
+						parent.addChild(frontItem);
 				} else {
 					//fetch item
-					Collectible fetch = parent.retrieveCollectible(num-1);
+					parent.retrieveCollectible(num-1);
 				}
 			}
 			return num;
 		}
 	}
 	
+	/**
+	 * Updates the items in the slots.
+	 * @param dt 
+	 */
+	@Override
+	public void update(float dt){
+		super.update(dt);
+		//put every child at the position if the container
+		for (AbstractEntity item : getChildren()) {
+			if (item != null){
+				item.setPosition(getPosition().cpy());
+			}
+		}
+	}
+	
+	/**
+	 * Works only for three stacks.
+	 * @param left true if left, false to right
+	 */
+	public void switchItems(boolean left){
+		if (left)
+			getChildren().add(getChildren().remove(0));
+		else
+			getChildren().add(0, getChildren().remove(getChildren().size()-1));
+	}
+	
+	/**
+	 * overrides deserialisation
+	 *
+	 * @param stream
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
+		if (backpack) setHidden(false);//show if loaded a backpack
+	}
 }

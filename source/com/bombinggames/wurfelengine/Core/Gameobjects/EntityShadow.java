@@ -57,9 +57,9 @@ public class EntityShadow extends AbstractEntity {
 
     @Override
     public void update(float dt) {
-		if (character==null || !character.isSpawned())
+		if (character==null || character.getPosition()==null) {
 			dispose();
-		else {
+		} else {
 			//inherit isHidden
 			if (character.isHidden())
 				setHidden(true);

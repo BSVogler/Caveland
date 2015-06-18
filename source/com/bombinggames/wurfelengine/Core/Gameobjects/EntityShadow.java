@@ -51,6 +51,7 @@ public class EntityShadow extends AbstractEntity {
 	protected EntityShadow(AbstractEntity character) {
 		super((byte)32);
 		this.disableShadow();
+		this.setName("Shadow");
 		this.character = character;
     }
 

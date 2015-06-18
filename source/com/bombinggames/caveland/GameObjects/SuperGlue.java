@@ -41,7 +41,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 public class SuperGlue extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	private final AbstractEntity main;
-	private Vector3 offset;
+	private Vector3 offset = new Vector3();
 	
 	/**
 	 * glue some object to another object. If you move

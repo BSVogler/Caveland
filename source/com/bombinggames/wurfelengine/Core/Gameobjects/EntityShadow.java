@@ -52,11 +52,11 @@ public class EntityShadow extends AbstractEntity {
 		super((byte)32);
 		this.disableShadow();
 		this.character = character;
-		setSaveToDisk(false);
     }
 
     @Override
     public void update(float dt) {
+		setSaveToDisk(false);
 		if (character==null || character.getPosition()==null) {
 			dispose();
 		} else {

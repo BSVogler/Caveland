@@ -50,6 +50,7 @@ public class SuperGlue extends AbstractEntity {
 	 */
 	public SuperGlue(AbstractEntity main, AbstractEntity smaller){
 		super((byte) 1);//use any id but 0
+		setName("SuperGlue: "+ main.getName() +"<-"+ smaller.getName() );
 		setHidden(true);
 		this.main = main;
 		//if one of both is not getting saved then also don't get saved

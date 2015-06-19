@@ -31,21 +31,18 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  *An entity which contains collectibles.
  * @author Benedikt Vogler
  */
-public class InteractableCollectibleContainer extends AbstractEntity implements Interactable {
+public class CollectibleContainer extends AbstractEntity{
 	private static final long serialVersionUID = 2L;
 	private boolean backpack;
 
-	public InteractableCollectibleContainer() {
+	public CollectibleContainer() {
 		super((byte) 53);//use sprite of construction box temp
 		setName("Container");
 		setHidden(true);
@@ -115,49 +112,6 @@ public class InteractableCollectibleContainer extends AbstractEntity implements 
 		return collectible;
 	}
 
-	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer) {
-			SelectionWindow selectionWindow = new SelectionWindow(view, this);
-			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
-		}
-	}
-
-	
-	private class SelectionWindow extends ActionBox{
-		private final InteractableCollectibleContainer parent;
-
-		SelectionWindow(CustomGameView view, InteractableCollectibleContainer parent) {
-			super(view, "Choose construction", ActionBox.BoxModes.SELECTION, null);
-			this.parent = parent;
-			//make list of options
-			ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
-			list.add("Add");
-			for (Object collectible : parent.getChildren()) {
-				list.add("Take out "+((Collectible) collectible).getName());
-			}
-			addSelectionNames(list);
-		}
-
-		@Override
-		public int confirm(CustomGameView view, AbstractEntity actor) {
-			int num = super.confirm(view, actor);
-			if (actor instanceof CustomPlayer) {
-				CustomPlayer player = (CustomPlayer) actor;
-				//add item?
-				if (num==0) {
-					Collectible frontItem = player.getInventory().fetchFrontItemReference();
-					if (frontItem != null)
-						parent.addChild(frontItem);
-				} else {
-					//fetch item
-					parent.retrieveCollectible(num-1);
-				}
-			}
-			return num;
-		}
-	}
-	
 	/**
 	 * Updates the items in the slots.
 	 * @param dt 

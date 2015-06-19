@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.Collectible;
+import com.bombinggames.caveland.GameObjects.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.caveland.GameObjects.InteractableCollectibleContainer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -18,14 +18,14 @@ public class Inventory {
 	/**
 	 * contains the objects
 	 */
-	private final InteractableCollectibleContainer container;
+	private final CollectibleContainer container;
 
 	/**
 	 *Creating a new inventory spawns a container at the position of the player
 	 * @param player
 	 */
 	public Inventory(CustomPlayer player) {
-		container = (InteractableCollectibleContainer) new InteractableCollectibleContainer().spawn(player.getPosition());
+		container = (CollectibleContainer) new CollectibleContainer().spawn(player.getPosition());
 		container.setBackpack(true);
 		new SuperGlue(player, container).spawn(player.getPosition());
 	}

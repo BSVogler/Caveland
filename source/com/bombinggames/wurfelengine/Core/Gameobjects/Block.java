@@ -125,8 +125,10 @@ public class Block implements HasID, Serializable {
 	 * @param value
 	 * @return 
 	 */
-	public static Block getInstance(byte id, byte value){
+	public static Block getInstance(byte id, byte value) {
 		if (id==0) return null;
+		if (id>OBJECTTYPESNUM) return null;
+		if (value>VALUESNUM) return null;
 		return new Block(id, value);
 	}
 	

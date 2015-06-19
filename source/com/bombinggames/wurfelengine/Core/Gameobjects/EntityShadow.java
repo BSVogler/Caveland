@@ -58,7 +58,7 @@ public class EntityShadow extends AbstractEntity {
     @Override
     public void update(float dt) {
 		setSaveToDisk(false);
-		if (character==null || character.getPosition()==null) {
+		if (character==null || character.getPosition()==null || getPosition()==null) {
 			dispose();
 		} else {
 			//inherit isHidden
@@ -80,10 +80,10 @@ public class EntityShadow extends AbstractEntity {
 			newHeight.addVector(0, 0, 1);
 			setPosition(character.getPosition().cpy());
 			getPosition().setZ(newHeight.toPoint().getZ());
+			setColor(
+				new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
+			);
 		}
-		setColor(
-			new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
-		);
     }
 
     @Override

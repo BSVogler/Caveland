@@ -243,7 +243,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				//land if standing in or under 0-level or there is an obstacle
 				if (movement.z < 0 && isOnGround()){
 					onCollide();
+					if (!isSpawned()) return;//object may be destroyed during colission
 					onLand();
+					if (!isSpawned()) return;//object may be destroyed during colission
 
 					if (landingSound != null && !floating)
 						Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound

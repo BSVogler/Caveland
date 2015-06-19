@@ -534,7 +534,7 @@ public class Point extends AbstractPosition {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (distanceTo(entity.getPosition().toPoint()) < radius){
+            if (entity.isSpawned() && distanceTo(entity.getPosition().toPoint()) < radius){
                 result.add(entity);
             } 
         }

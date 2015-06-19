@@ -82,7 +82,7 @@ public class Caveland {
 				in
 			);
 		} else {
-			//checck if old format is already there. delete it
+			//checck if old format is already there. delete it. also delete if there is 
 			if (new File(WorkingDirectory.getMapsFolder()+"/default/map.wem").exists()) {
 				deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
 				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/Caveland/defaultmap.zip");

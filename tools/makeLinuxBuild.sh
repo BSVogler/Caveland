@@ -7,5 +7,5 @@ exec java -jar \"\$0\" \"\$@\"
 " > ./caveland
 
 #attach the .jar
-cat ./CavelandObf.jar >> ./caveland
+cat ./Caveland.jar >> ./caveland
 chmod +x ./caveland

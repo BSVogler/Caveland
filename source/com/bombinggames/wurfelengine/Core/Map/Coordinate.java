@@ -452,7 +452,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param type the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
-	public <type> ArrayList<type> getEntitysInside(final Class<? extends AbstractEntity> type) {
+	public <type> ArrayList<type> getEntitiesInside(final Class<? extends AbstractEntity> type) {
 		return Controller.getMap().getEntitysOnCoord(this, type);
 	}
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -301,7 +302,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 
 		//collect collectibles
-		ArrayList<Collectible> collectibles = pos.toCoord().getEntitysInside(Collectible.class);
+		ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);
 		boolean playCollectSound = false;
 		for (Collectible collectible : collectibles) {
 			if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {

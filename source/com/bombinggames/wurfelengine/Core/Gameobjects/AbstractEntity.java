@@ -151,13 +151,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
     public boolean isOnGround(){
         if (getPosition().getZ() <= 0) return true; //if entity is under the map
         
-        if (getPosition().getZ() < getPosition().getMap().getGameHeight()){
+        if (getPosition().getZ() < Chunk.getGameHeight()){
             //check if one pixel deeper is on ground.
             int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
-            if (z > getPosition().getMap().getBlocksZ()-1) z = getPosition().getMap().getBlocksZ()-1;
+            if (z > Chunk.getBlocksZ()-1) z = Chunk.getBlocksZ()-1;
 
 			Block block = new Coordinate(
-				getPosition().getMap(), 
 				position.toCoord().getX(),
 				position.toCoord().getY(),
 				z

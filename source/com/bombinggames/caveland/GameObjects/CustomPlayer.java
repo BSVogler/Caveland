@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.caveland.Game.Inventory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -337,7 +336,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 		
 		//check interactable blocks
-		Block blockBelow = getPosition().toCoord().getBlock();
+		Block blockBelow = pos.toCoord().getBlock();
 		if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
 			//todo only overwrite if block is nearer
 			nearestInteractableBlock = getPosition().toCoord();
@@ -348,6 +347,18 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			//hide button if also no nearestEntity
 			if (nearestEntity==null)
 				hideButton();
+		}
+		
+		//if collecting a backpack
+		ArrayList<CollectibleContainer> backpacksOnCoord = pos.toCoord().getEntitiesInside(CollectibleContainer.class);
+		CollectibleContainer backpack=null;
+		if (backpacksOnCoord.size()>0)
+			backpack = backpacksOnCoord.get(0);
+		if (backpack != null && !backpack.isHidden()){
+			for (int i = 0; i < backpack.size(); i++) {
+				backpack.retrieveCollectible(i);
+			}
+			backpack.dispose();
 		}
 			
 		//play walking animation

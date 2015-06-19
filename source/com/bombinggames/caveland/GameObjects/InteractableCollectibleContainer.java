@@ -46,7 +46,7 @@ public class InteractableCollectibleContainer extends AbstractEntity implements 
 	private boolean backpack;
 
 	public InteractableCollectibleContainer() {
-		super((byte) 43);//use spirte of construction box temp
+		super((byte) 53);//use sprite of construction box temp
 		setName("Container");
 		setHidden(true);
 		setIndestructible(true);

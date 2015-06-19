@@ -32,6 +32,7 @@ import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
@@ -194,7 +195,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
-		addChild(shadow);
 		if (position!=null) shadow.spawn(position.cpy());
 	}
 	
@@ -203,7 +203,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void disableShadow(){
 		if (shadow!=null) {
-			getChildren().remove(shadow);
 			shadow.dispose();
 			shadow = null;
 		}

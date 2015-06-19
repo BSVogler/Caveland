@@ -26,7 +26,6 @@ public class Inventory {
 	 */
 	public Inventory(CustomPlayer player) {
 		container = (InteractableCollectibleContainer) new InteractableCollectibleContainer().spawn(player.getPosition());
-		container.setSaveToDisk(false);
 		container.setBackpack(true);
 		new SuperGlue(player, container).spawn(player.getPosition());
 	}

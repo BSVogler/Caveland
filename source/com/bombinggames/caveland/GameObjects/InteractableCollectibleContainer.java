@@ -66,7 +66,6 @@ public class InteractableCollectibleContainer extends AbstractEntity implements 
 			collectible.setHidden(true);
 			collectible.setPosition(getPosition().cpy());
 			collectible.setHidden(true);
-			collectible.setSaveToDisk(false);//don't save them
 			((Collectible) collectible).preventPickup();
 			((Collectible) collectible).setFloating(true);
 			super.addChild(collectible);
@@ -102,7 +101,6 @@ public class InteractableCollectibleContainer extends AbstractEntity implements 
 		collectible.setFloating(false);
 		collectible.allowPickup();
 		collectible.setHidden(false);
-		collectible.setSaveToDisk(true);
 		return collectible;
 	}
 	

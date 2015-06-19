@@ -204,7 +204,7 @@ public class Chunk {
 		if (savepath.exists()) {
 			Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
 			//Reading map files test
-			try (FileInputStream fis = new FileInputStream(savepath.file())) {
+			try (ObjectInputStream fis = new ObjectInputStream(new FileInputStream(savepath.file()))) {
 				int z = 0;
 				int x;
 				int y;
@@ -216,7 +216,7 @@ public class Chunk {
 					if (bufChar == SIGN_LINEFEED) //skip line breaks
 						bufChar = fis.read();
 
-					if (bufChar != SIGN_LINEFEED){//not a line break
+					if (bufChar != SIGN_LINEFEED && bufChar != SIGN_ENDCOMMENTS){//not a line break
 
 						//jump over optional comment line
 						if (bufChar == SIGN_STARTCOMMENTS){
@@ -274,8 +274,7 @@ public class Chunk {
 							AbstractEntity object;
 							for (int i = 0; i < length; i++) {
 								try {
-									ObjectInputStream objectIn = new ObjectInputStream(fis);
-									object = (AbstractEntity) objectIn.readObject();
+									object = (AbstractEntity) fis.readObject();
 									Controller.getMap().getEntitys().add(object);
 									Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
 									//objectIn.close();
@@ -336,7 +335,7 @@ public class Chunk {
         File savepath = new File(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
         
         savepath.createNewFile();
-        try (FileOutputStream fileOut = new FileOutputStream(savepath)) {		
+        try (ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream(savepath))) {		
 			try {
 				for (int z = 0; z < blocksZ; z++) {
 					//check if layer is empty
@@ -366,27 +365,26 @@ public class Chunk {
 						fileOut.write(SIGN_EMPTYLAYER);
 					}
 				}
+				fileOut.flush();
 				
 				//save entities
 				ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 				if (entities.size() > 0) {
 					fileOut.write(SIGN_ENTITIES);
 					fileOut.write(entities.size());
-					try (ObjectOutputStream outStream = new ObjectOutputStream(fileOut)) {
-						for (AbstractEntity ent : entities){
-							Gdx.app.debug("Chunk", "Saving entity:"+ent.getName());
-							try {
-								outStream.writeObject(ent);
-							} catch(java.io.NotSerializableException ex){
-								Gdx.app.error("Chunk", "Something is not NotSerializable: "+ex.getMessage()+":"+ex.toString());
-							}
+					for (AbstractEntity ent : entities){
+						Gdx.app.debug("Chunk", "Saving entity:"+ent.getName());
+						try {
+							fileOut.writeObject(ent);
+						} catch(java.io.NotSerializableException ex){
+							Gdx.app.error("Chunk", "Something is not NotSerializable: "+ex.getMessage()+":"+ex.toString());
 						}
-						outStream.close();
 					}
 				}
 			} catch (IOException ex){
 				throw ex;
 			}
+			fileOut.close();
 		}
 		return true;
     }

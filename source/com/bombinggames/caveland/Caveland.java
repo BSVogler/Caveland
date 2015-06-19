@@ -131,15 +131,14 @@ public class Caveland {
 			"Quality Assurance\n" +
 			"Thomas Vogt\n" +
 			"\n" +
-			"Web Development\n" +
-			"Rene Weiszer\n" +
-			"\n" +
 			"Special Thanks to\n" +
 			"Felix Guenther\n" +
 			"Vanya Gercheva\n" +
 			"Ulrike Vogler\n" +
 			"Gereon Vogler\n" +
+			"Rene Weiszer\n" +
 			"Bernhard Vogler\n" +
+			"Janosch\n" +
 			"Pia Lenszen\n" +
 			"reddit.com/r/gamedev\n" +
 			"Bauhaus University Weimar\n\n"

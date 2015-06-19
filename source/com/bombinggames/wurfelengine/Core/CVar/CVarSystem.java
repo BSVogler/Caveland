@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core.CVar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
+import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,7 +61,7 @@ public class CVarSystem {
 	 */
 	private final File fileSystemPath;
 	/**list of all CVars**/
-	private HashMap<String, CVar> cvars = new HashMap<>(50);
+	private final HashMap<String, CVar> cvars = new HashMap<>(50);
 	
 	private CVarSystem childSystem;//first level has map, second level has save
 
@@ -68,8 +69,26 @@ public class CVarSystem {
 	 * you have to manually call {@link #load} to load from path.
 	 * @param path path to the .cvar file
 	 */
-	public CVarSystem(File path) {
+	private CVarSystem(File path) {
 		this.fileSystemPath = path;
+	}
+	
+	public static  CVarSystem getInstanceEngineSystem(File path){
+		CVarSystem tmp = new CVarSystem(path);
+		tmp.initEngineCVars();
+		return tmp;
+	}
+	
+	public static CVarSystem getInstanceMapSystem(File path){
+		CVarSystem tmp = new CVarSystem(path);
+		tmp.initMapCVars();
+		return tmp;
+	}
+	
+	public static  CVarSystem getInstanceSaveSystem(File path){
+		CVarSystem tmp = new CVarSystem(path);
+		tmp.initSaveCVars();
+		return tmp;
 	}
 	
 	public void setChildSystem(CVarSystem child){
@@ -240,7 +259,8 @@ public class CVarSystem {
 	/*
 	 * initializes engine cvars
 	 */
-	public void initEngineCVars(){
+	private void initEngineCVars(){
+		System.out.println("Init Engine CVars…");
 		register(new FloatCVar(9.81f), "gravity", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(-40), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new BooleanCVar(false), "loadPixmap", CVar.CVarFlags.CVAR_ARCHIVE);
@@ -315,8 +335,23 @@ public class CVarSystem {
 		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(500), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.8f), "ambientOcclusion", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(90), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new FloatCVar(0.5f), "ambientOcclusion", CVar.CVarFlags.CVAR_ARCHIVE);
+	}
+	
+	private void initMapCVars(){
+		//engine cvar registration
+		register(new IntCVar(AbstractMap.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new StringCVar(""), "description", CVar.CVarFlags.CVAR_ARCHIVE);
+	}
+	
+	private void initSaveCVars(){
+		register(new IntCVar(AbstractMap.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
 	}
 	
 	public String showAll(){

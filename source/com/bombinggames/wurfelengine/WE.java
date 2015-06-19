@@ -74,7 +74,7 @@ public class WE {
 	/**
 	 *The CVar system used by the engine.
 	 */
-	public static final CVarSystem CVARS = new CVarSystem(new File(workingDirectory+"/engine.wecvars"));
+	public final static CVarSystem CVARS = CVarSystem.getInstanceEngineSystem(new File(workingDirectory+"/engine.wecvars"));
     private static final WEGame game = new WEGame();
     private static GameplayScreen gameplayScreen;
     private static AbstractMainMenu mainMenu;
@@ -115,13 +115,8 @@ public class WE {
      * @see #setMainMenu(com.bombinggames.wurfelengine.Core.MainMenuInterface)
      */
     public static void launch(final String title, final String[] args){
-		System.out.println("Load Engine…");
-		
-		System.out.println("Init Engine CVars…");
-		CVARS.initEngineCVars();
-		
 		//load cvars
-		System.out.println("Loading Custom CVars…");
+		System.out.println("Loading saved CVars…");
 		CVARS.load();
 		
 		// set the name of the application menu item on mac

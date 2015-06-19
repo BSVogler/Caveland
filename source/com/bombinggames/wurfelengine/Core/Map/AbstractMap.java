@@ -3,9 +3,7 @@ package com.bombinggames.wurfelengine.core.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 public abstract class AbstractMap implements Cloneable {
 
 	private static Generator defaultGenerator = new AirGenerator();
+	public final static Integer MAPVERSION = 3;
 
 	/**
 	 *
@@ -114,18 +113,13 @@ public abstract class AbstractMap implements Cloneable {
 	public AbstractMap(final File directory, Generator generator, int saveSlot) throws IOException {
 		this.directory = directory;
 		this.generator = generator;
-		CVarSystem cvars = new CVarSystem(new File(directory + "/meta.wecvar"));
-		//engine cvar registration
-		cvars.register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
-		cvars.register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.setChildSystem(cvars);
+		CVarSystem cvars = CVarSystem.getInstanceMapSystem(new File(directory + "/meta.wecvar"));
 		
 		//custom registration of cvars
 		if (customRegistration != null) {
 			customRegistration.register(cvars);
 		}
+		WE.CVARS.setChildSystem(cvars);
 
 		cvars.load();
 
@@ -521,7 +515,7 @@ public abstract class AbstractMap implements Cloneable {
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
 		WE.CVARS.getChildSystem().setChildSystem(
-			new CVarSystem(
+			CVarSystem.getInstanceSaveSystem(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
@@ -536,7 +530,7 @@ public abstract class AbstractMap implements Cloneable {
 		activeSaveSlot = getSavesCount();
 		createSaveSlot(activeSaveSlot);
 		WE.CVARS.getChildSystem().setChildSystem(
-			new CVarSystem(
+			CVarSystem.getInstanceSaveSystem(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);

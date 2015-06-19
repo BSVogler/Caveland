@@ -491,14 +491,14 @@ public class Console implements CommandsInterface  {
 								//make sure it gets loaded
 								if (WE.CVARS.getChildSystem()==null)
 									if (path.contains(":"))
-										WE.CVARS.setChildSystem(new CVarSystem(
+										WE.CVARS.setChildSystem(CVarSystem.getInstanceMapSystem(
 											new File(WorkingDirectory.getMapsFolder()+"/"+path.substring(0, path.indexOf(':')))
 										));
 									else
-										WE.CVARS.setChildSystem(new CVarSystem(new File(WorkingDirectory.getMapsFolder()+"/"+path)));
+										WE.CVARS.setChildSystem(CVarSystem.getInstanceMapSystem(new File(WorkingDirectory.getMapsFolder()+"/"+path)));
 								//access save
 								if (path.contains(":"))
-										WE.CVARS.getChildSystem().setChildSystem(new CVarSystem(
+										WE.CVARS.getChildSystem().setChildSystem(CVarSystem.getInstanceSaveSystem(
 											new File(WorkingDirectory.getMapsFolder()+"/save"+path.substring(path.indexOf(':')))
 										));
 							}

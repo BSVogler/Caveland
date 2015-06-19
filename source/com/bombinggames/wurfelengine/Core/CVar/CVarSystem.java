@@ -208,6 +208,7 @@ public class CVarSystem {
 					if (
 						cvar.flags == CVar.CVarFlags.CVAR_ARCHIVE
 						&& !cvar.getDefaultValue().equals(cvar.getValue())
+						|| cvar.flags == CVar.CVarFlags.CVAR_ALWAYSSAVE
 					)
 						writer.write(pairs.getKey() + " "+cvar.toString()+"\n");
 

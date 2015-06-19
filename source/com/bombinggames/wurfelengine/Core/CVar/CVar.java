@@ -47,7 +47,11 @@ public abstract class CVar {
 		/**
 		 * never saved to file
 		 */
-		 CVAR_VOLATILE
+		 CVAR_VOLATILE,
+		 /**
+		 * gets in all cases saved
+		 */
+		 CVAR_ALWAYSSAVE
 	}
 	
 	protected CVarSystem parent;

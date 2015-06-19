@@ -38,9 +38,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.text.NumberFormat;
 
 /**
@@ -310,7 +310,7 @@ public class DevTools {
      */
     private void showEditorButtons(final GameView view){
         if (editorbutton==null || editorreversebutton==null){    
-            TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/Core/skin/gui.txt");
+            TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
             
             if (editorbutton==null){
                 //add editor button

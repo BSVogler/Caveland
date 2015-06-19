@@ -58,24 +58,24 @@ public class CustomGameView extends GameView{
 			CustomPlayer.loadSheet();
 		
 		//register Sounds
-		Controller.getSoundEngine().register("jetpack", "com/bombinggames/Caveland/sounds/jetpack.wav");
-		Controller.getSoundEngine().register("step", "com/bombinggames/Caveland/sounds/step.wav");
-		Controller.getSoundEngine().register("urfJump", "com/bombinggames/Caveland/sounds/urf_jump.wav");
-		Controller.getSoundEngine().register("urfHurt", "com/bombinggames/Caveland/sounds/urfHurt.wav");
-		Controller.getSoundEngine().register("loadAttack", "com/bombinggames/Caveland/sounds/loadAttack.wav");
-		Controller.getSoundEngine().register("ha", "com/bombinggames/Caveland/sounds/ha.wav");
-		Controller.getSoundEngine().register("release", "com/bombinggames/Caveland/sounds/release.wav");
-		Controller.getSoundEngine().register("impact", "com/bombinggames/Caveland/sounds/impact.wav");
-		Controller.getSoundEngine().register("robot1destroy", "com/bombinggames/Caveland/sounds/robot1destroy.wav");
-		Controller.getSoundEngine().register("robot1Wobble", "com/bombinggames/Caveland/sounds/robot1Wobble.mp3");
-		Controller.getSoundEngine().register("robotHit", "com/bombinggames/Caveland/sounds/robotHit.wav");
-		Controller.getSoundEngine().register("blockDestroy", "com/bombinggames/Caveland/sounds/poch.wav");
-		Controller.getSoundEngine().register("vanya_jump", "com/bombinggames/Caveland/sounds/vanya_jump.wav");
-		Controller.getSoundEngine().register("wagon", "com/bombinggames/Caveland/sounds/wagon.mp3");
-		Controller.getSoundEngine().register("collect", "com/bombinggames/Caveland/sounds/collect.wav");
-		Controller.getSoundEngine().register("sword", "com/bombinggames/Caveland/sounds/sword.wav");
-		Controller.getSoundEngine().register("hiss", "com/bombinggames/Caveland/sounds/hiss.wav");
-		Controller.getSoundEngine().register("treehit", "com/bombinggames/Caveland/sounds/treehit.wav");
+		Controller.getSoundEngine().register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
+		Controller.getSoundEngine().register("step", "com/bombinggames/caveland/sounds/step.wav");
+		Controller.getSoundEngine().register("urfJump", "com/bombinggames/caveland/sounds/urf_jump.wav");
+		Controller.getSoundEngine().register("urfHurt", "com/bombinggames/caveland/sounds/urfHurt.wav");
+		Controller.getSoundEngine().register("loadAttack", "com/bombinggames/caveland/sounds/loadAttack.wav");
+		Controller.getSoundEngine().register("ha", "com/bombinggames/caveland/sounds/ha.wav");
+		Controller.getSoundEngine().register("release", "com/bombinggames/caveland/sounds/release.wav");
+		Controller.getSoundEngine().register("impact", "com/bombinggames/caveland/sounds/impact.wav");
+		Controller.getSoundEngine().register("robot1destroy", "com/bombinggames/caveland/sounds/robot1destroy.wav");
+		Controller.getSoundEngine().register("robot1Wobble", "com/bombinggames/caveland/sounds/robot1Wobble.mp3");
+		Controller.getSoundEngine().register("robotHit", "com/bombinggames/caveland/sounds/robotHit.wav");
+		Controller.getSoundEngine().register("blockDestroy", "com/bombinggames/caveland/sounds/poch.wav");
+		Controller.getSoundEngine().register("vanya_jump", "com/bombinggames/caveland/sounds/vanya_jump.wav");
+		Controller.getSoundEngine().register("wagon", "com/bombinggames/caveland/sounds/wagon.mp3");
+		Controller.getSoundEngine().register("collect", "com/bombinggames/caveland/sounds/collect.wav");
+		Controller.getSoundEngine().register("sword", "com/bombinggames/caveland/sounds/sword.wav");
+		Controller.getSoundEngine().register("hiss", "com/bombinggames/caveland/sounds/hiss.wav");
+		Controller.getSoundEngine().register("treehit", "com/bombinggames/caveland/sounds/treehit.wav");
 		
 		if (coop >- 1){//it is a coop game
 			Camera camera0;
@@ -140,7 +140,7 @@ public class CustomGameView extends GameView{
 			addCamera(camera0);
 		}
 		
-		WE.getEngineView().setMusic("com/bombinggames/Caveland/music/overworld.mp3");
+		WE.getEngineView().setMusic("com/bombinggames/caveland/music/overworld.mp3");
 		WE.getEngineView().setMusicLoudness(WE.CVARS.getValueF("music"));
         
 //        controller.setMinimap(

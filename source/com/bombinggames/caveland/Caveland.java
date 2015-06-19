@@ -57,7 +57,7 @@ public class Caveland {
 		//configure
         WE.setMainMenu(new MainMenuScreen());
 		Block.setCustomBlockFactory(new CavelandBlocks());
-		AbstractGameObject.setCustomSpritesheet("com/bombinggames/Caveland/Spritesheet");
+		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
 		
 		//register entities
 		AbstractEntity.registerEntity("Emitter", SmokeEmitter.class);
@@ -76,7 +76,7 @@ public class Caveland {
 		
 		//unpack map
 		if (!new File(WorkingDirectory.getMapsFolder()+"/default").exists()){
-			InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/Caveland/defaultmap.zip");
+			InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
 			WorkingDirectory.unpackMap(
 				"default",
 				in
@@ -85,7 +85,7 @@ public class Caveland {
 			//checck if old format is already there. delete it. also delete if there is 
 			if (new File(WorkingDirectory.getMapsFolder()+"/default/map.wem").exists()) {
 				deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
-				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/Caveland/defaultmap.zip");
+				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
 				WorkingDirectory.unpackMap(
 					"default",
 					in

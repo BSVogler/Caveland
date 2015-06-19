@@ -54,7 +54,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
     /**The sprite texture which contains every object texture*/
     private transient static TextureAtlas spritesheet;
-	private transient static String spritesheetPath = "com/bombinggames/wurfelengine/Core/images/Spritesheet";
+	private transient static String spritesheetPath = "com/bombinggames/wurfelengine/core/images/Spritesheet";
     private transient static Pixmap pixmap;
     private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][Block.OBJECTTYPESNUM][Block.VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
@@ -99,7 +99,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	
 	/**
 	 * Set your custom spritesheet path. the suffix will be added
-	 * @param customPath format like "com/bombinggames/wurfelengine/Core/images/Spritesheet" without suffix 
+	 * @param customPath format like "com/bombinggames/wurfelengine/core/images/Spritesheet" without suffix 
 	 */
 	public static void setCustomSpritesheet(String customPath) {
 		AbstractGameObject.spritesheetPath = customPath;

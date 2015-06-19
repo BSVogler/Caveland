@@ -80,7 +80,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
         //load sprites
         Gdx.input.setInputProcessor(getStage());
 
-        skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/Core/skin/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/core/skin/uiskin.json"));
         
 		setMusicLoudness((float) WE.CVARS.get("music").getValue());
 		
@@ -160,15 +160,15 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		cursorId = id;
 		if (id==0) {
 			if (cursor == null)
-				cursor = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/cursor.png"));
+				cursor = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor.png"));
 			Gdx.input.setCursorImage(cursor, 8, 8);
 		} else if (id==1) {
 			if (cursorPointer==null)
-				cursorPointer = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/wecursor.png"));
+				cursorPointer = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/wecursor.png"));
 			Gdx.input.setCursorImage(cursorPointer, 0, 0);
 		} else if (id==2) {
 			if (cursorPointer==null)
-				cursorDrag = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/cursor_drag.png"));
+				cursorDrag = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor_drag.png"));
 			Gdx.input.setCursorImage(cursorDrag, 0, 0);
 		} else {
 			Gdx.input.setCursorImage(cursor, 0, 0);

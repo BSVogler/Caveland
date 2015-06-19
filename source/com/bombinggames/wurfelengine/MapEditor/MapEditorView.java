@@ -113,7 +113,7 @@ public class MapEditorView extends GameView {
         getStage().addActor(rightSelector);
 
         //setup GUI
-        TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/Core/skin/gui.txt");
+        TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
         
         //add play button
         final Image playbutton = new Image(spritesheet.findRegion("play_button"));

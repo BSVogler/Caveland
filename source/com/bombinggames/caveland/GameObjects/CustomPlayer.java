@@ -54,11 +54,11 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	public static void loadSheet() {
 		if (spritesheet == null) {
-			spritesheet = WE.getAsset("com/bombinggames/Caveland/playerSheet.txt");
+			spritesheet = WE.getAsset("com/bombinggames/caveland/playerSheet.txt");
 		}
 		textureDiff = spritesheet.getTextures().first();
 		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
-			textureNormal = WE.getAsset("com/bombinggames/Caveland/playerSheetNormal.png");
+			textureNormal = WE.getAsset("com/bombinggames/caveland/playerSheetNormal.png");
 		}
 	}
 
@@ -155,7 +155,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		playerNumber = number;
 		setName("Ejira");
 		setStepSound1Grass("step");
-		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/Caveland/sounds/victorcenusa_running.ogg"));
+		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(Block.GAME_EDGELENGTH);

@@ -53,10 +53,10 @@ public class SoundEngine {
 	 *
 	 */
 	public SoundEngine() {
-		register("landing", "com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/landing.wav");
-		register("splash", "com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/splash.wav");
-		register("wind", "com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/wind.ogg");
-		register("explosion", "com/bombinggames/wurfelengine/Core/SoundEngine/Sounds/explosion2.wav");
+		register("landing", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav");
+		register("splash", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav");
+		register("wind", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg");
+		register("explosion", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav");
 	}
 	
 	/**

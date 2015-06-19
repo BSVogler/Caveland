@@ -1,7 +1,5 @@
 package com.bombinggames.caveland.MainMenu;
 
-import com.bombinggames.wurfelengine.core.WEScreen;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input;
@@ -22,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.WEScreen;
 
 /**
  *
@@ -150,7 +150,7 @@ public class OptionScreen extends WEScreen {
 		});
 		stage.addActor(cancelButton);
                 
-        font = new BitmapFont(Gdx.files.internal("com/bombinggames/wurfelengine/Core/arial.fnt"), true);
+        font = new BitmapFont(Gdx.files.internal("com/bombinggames/wurfelengine/core/arial.fnt"), true);
         font.setColor(Color.WHITE);
 		
 	}

@@ -45,7 +45,7 @@ public class MenuController {
      */
     public MenuController(BasicMenuItem[] menuItems) {
         this.menuItems = menuItems;
-        BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/Core/BasicMainMenu/click2.wav")));
+        BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/core/BasicMainMenu/click2.wav")));
     }
     
     /**

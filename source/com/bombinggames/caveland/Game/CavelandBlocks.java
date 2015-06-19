@@ -90,6 +90,7 @@ public RenderBlock toRenderBlock(Block data) {
 	public boolean isTransparent(byte id, byte value) {
 		if (id==11) return true;
 		if (id==55) return true;
+		if (id==72) return true;
 		return false;
 	}
 

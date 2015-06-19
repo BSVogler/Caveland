@@ -148,6 +148,17 @@ public class CollectibleContainer extends AbstractEntity{
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-		if (backpack) setHidden(false);//show if loaded a backpack
+		//show if loaded a backpack
+		if (backpack) {
+			if(getChildren().isEmpty())
+				dispose();
+			else {
+				setHidden(false);
+				//keep children hidden
+				for (AbstractEntity children : getChildren()) {
+					children.setHidden(true);
+				}
+			}
+		}
 	}
 }

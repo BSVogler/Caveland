@@ -230,7 +230,7 @@ public abstract class AbstractMap implements Cloneable {
 
 	/**
 	 * Find every instance of a special class. E.g. find every
-	 * <i>AbstractCharacter</i>.
+	 * <i>AbstractCharacter</i>. They must be spawned to appear in the results.
 	 *
 	 * @param <type>
 	 * @param type
@@ -241,7 +241,7 @@ public abstract class AbstractMap implements Cloneable {
 		ArrayList<type> list = new ArrayList<>(30); //defautl size 30
 		for (AbstractEntity entity : entityList) {
 			//check every entity
-			if (type.isInstance(entity)) {
+			if (entity.isSpawned() && type.isInstance(entity)) {
 				//if the entity is of the wanted type
 				list.add((type) entity); //add it to list
 			}

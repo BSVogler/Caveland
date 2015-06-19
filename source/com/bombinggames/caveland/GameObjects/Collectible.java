@@ -230,7 +230,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		stream.defaultReadObject(); //fills fld1 and fld2;
 		String defString = (String) stream.readObject();
 		def = CollectibleType.fromValue(defString);
-		//http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
+		//based on http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
 	}
 	
 	private void writeObject(java.io.ObjectOutputStream oos) throws IOException {

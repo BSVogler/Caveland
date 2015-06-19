@@ -128,14 +128,15 @@ public class CollectibleContainer extends AbstractEntity{
 	}
 	
 	/**
-	 * Works only for three stacks.
+	 * Switches the order of the items.
 	 * @param left true if left, false to right
 	 */
 	public void switchItems(boolean left){
-		if (left)
-			getChildren().add(getChildren().remove(0));
-		else
-			getChildren().add(0, getChildren().remove(getChildren().size()-1));
+		if (!getChildren().isEmpty())
+			if (left)
+				getChildren().add(getChildren().remove(0));
+			else
+				getChildren().add(0, getChildren().remove(getChildren().size()-1));
 	}
 	
 	/**

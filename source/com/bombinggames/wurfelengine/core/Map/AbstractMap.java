@@ -96,7 +96,10 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
 	private boolean modified = true;
-	private ArrayList<LinkedWithMap> linkedObjects = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
+	/**
+	 * observer pattern
+	 */
+	private final ArrayList<LinkedWithMap> observers = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
 	private float gameSpeed;
 	private final Block groundBlock = Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
@@ -165,7 +168,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @param object
 	 */
 	public void addLinkedObject(LinkedWithMap object) {
-		linkedObjects.add(object);
+		observers.add(object);
 	}
 
 	/**
@@ -332,7 +335,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return
 	 */
 	public ArrayList<LinkedWithMap> getLinkedObjects() {
-		return linkedObjects;
+		return observers;
 	}
 
 	/**
@@ -354,7 +357,7 @@ public abstract class AbstractMap implements Cloneable {
 	protected void onModified() {
 		//recalculates the light if requested
 		Gdx.app.debug("Map", "onModified");
-		for (LinkedWithMap object : linkedObjects) {
+		for (LinkedWithMap object : observers) {
 			object.onMapChange();
 		}
 	}

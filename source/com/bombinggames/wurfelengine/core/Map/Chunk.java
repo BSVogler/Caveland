@@ -162,8 +162,9 @@ public class Chunk {
 		if (modified){
 			modified = false;
 			Controller.getMap().modified();
-			for (LinkedWithMap object : Controller.getMap().getLinkedObjects()){
-				object.onChunkChange(this);
+			//notify observers that a chunk changed
+			for (MapObserver observer : Controller.getMap().getOberserverList()){
+				observer.onChunkChange(this);
 			}
 		}
 	}

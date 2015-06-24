@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
+ * If a class wants to be notified if a change on the map happens it must register as an {@link com.bombinggames.wurfelengine.core.Map.MapObserver} in the {@link #getOberserverList() } first.
  * @author Benedikt Vogler
  */
 public abstract class AbstractMap implements Cloneable {
@@ -94,12 +94,12 @@ public abstract class AbstractMap implements Cloneable {
 	/**
 	 * every entity on the map is stored in this field
 	 */
-	private ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
+	private final ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
 	private boolean modified = true;
 	/**
 	 * observer pattern
 	 */
-	private final ArrayList<LinkedWithMap> observers = new ArrayList<>(3);//camera + minimap + light engine=3 minimum
+	private final ArrayList<MapObserver> observers = new ArrayList<>(2);//camera + light engine=2 minimum
 	private float gameSpeed;
 	private final Block groundBlock = Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
@@ -161,14 +161,6 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public int getWorldSpinDirection() {
 		return WE.CVARS.getValueI("worldSpinAngle");
-	}
-
-	/**
-	 *
-	 * @param object
-	 */
-	public void addLinkedObject(LinkedWithMap object) {
-		observers.add(object);
 	}
 
 	/**
@@ -331,10 +323,10 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 *
-	 * @return
+	 * 
+	 * @return reference to list containing the observers
 	 */
-	public ArrayList<LinkedWithMap> getLinkedObjects() {
+	public ArrayList<MapObserver> getOberserverList() {
 		return observers;
 	}
 
@@ -357,8 +349,8 @@ public abstract class AbstractMap implements Cloneable {
 	protected void onModified() {
 		//recalculates the light if requested
 		Gdx.app.debug("Map", "onModified");
-		for (LinkedWithMap object : observers) {
-			object.onMapChange();
+		for (MapObserver observer : observers) {
+			observer.onMapChange();
 		}
 	}
 

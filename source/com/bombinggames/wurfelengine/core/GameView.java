@@ -75,7 +75,7 @@ public class GameView extends View implements GameManager {
      * game related stage. e.g. holds hud and gui
      */
     private Stage stage;
-    private SpriteBatch batch = new SpriteBatch(2000);
+    private final SpriteBatch batch = new SpriteBatch(2000);
     
     private LoadMenu loadMenu;
     
@@ -427,7 +427,7 @@ public class GameView extends View implements GameManager {
      */
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
-		Controller.getMap().addLinkedObject(camera);
+		Controller.getMap().getOberserverList().add(camera);
     }
     
      /**

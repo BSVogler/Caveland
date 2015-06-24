@@ -39,7 +39,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import com.bombinggames.wurfelengine.core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.WE;
 
 
@@ -49,7 +49,7 @@ import com.bombinggames.wurfelengine.WE;
  * @version 1.1.7
  * @since  WE1.1
  */
-public class LightEngine implements LinkedWithMap {
+public class LightEngine implements MapObserver {
     /**
      * The Version of the light engine.
      */

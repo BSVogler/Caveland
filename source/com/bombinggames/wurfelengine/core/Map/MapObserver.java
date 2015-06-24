@@ -31,10 +31,10 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 /**
- *Every class wich is associated with the map content
+ *Every class wich is associated with the map content. Implements the "observer" pattern.
  * @author Benedikt Vogler
  */
-public interface LinkedWithMap {
+public interface MapObserver {
 
 	/**
 	 * called if the map content (blocks) changes.

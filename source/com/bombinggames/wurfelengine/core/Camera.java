@@ -51,7 +51,7 @@ import com.bombinggames.wurfelengine.core.Map.ChunkMap;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import com.bombinggames.wurfelengine.core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +61,7 @@ import java.util.Arrays;
  *
  * @author Benedikt Vogler
  */
-public class Camera implements LinkedWithMap {
+public class Camera implements MapObserver {
 	/**
 	 * the map which is covered by the camera
 	 */

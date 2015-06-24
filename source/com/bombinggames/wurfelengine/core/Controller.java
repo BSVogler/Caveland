@@ -38,10 +38,11 @@ import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.ChunkMap;
 import com.bombinggames.wurfelengine.core.Map.CompleteMap;
-import com.bombinggames.wurfelengine.core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *A controller manages the map and the game data.
@@ -73,9 +74,9 @@ public class Controller implements GameManager {
 		if (map != null)
 			map.dispose();
         try {
-			Iterable<LinkedWithMap> linked = null;
+			ArrayList<MapObserver> linked = null;
 			if (map != null) {//if loading another map save linked objects
-				linked = map.getLinkedObjects();
+				linked = map.getOberserverList();
 			}
 				
 			if (WE.CVARS.getValueB("mapUseChunks"))
@@ -84,9 +85,7 @@ public class Controller implements GameManager {
 				map = new CompleteMap(path, saveslot);
 
 			if (linked != null) {
-				for (LinkedWithMap linkedObj : linked) {
-					map.addLinkedObject(linkedObj);
-				}
+				map.getOberserverList().addAll(linked);
 			}
 			
             return true;
@@ -198,7 +197,7 @@ public class Controller implements GameManager {
 		
         if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null){
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-			getMap().addLinkedObject(lightEngine);
+			getMap().getOberserverList().add(lightEngine);
         }
 		
 		//only initialize static variable once

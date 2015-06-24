@@ -44,7 +44,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.LinkedWithMap;
+import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  *A minimap is a view that draws the map from top in a small window.
  * @author Benedikt
  */
-public class Minimap implements LinkedWithMap {
+public class Minimap implements MapObserver {
     /**
 	 * distance from left
 	 */

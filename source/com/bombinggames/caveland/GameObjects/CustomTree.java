@@ -28,7 +28,7 @@ public class CustomTree extends RenderBlock {
 	 * @param data
 	 */
 	public CustomTree(Block data) {
-		super((byte) data.getId());
+		super(data.getId());
 		setValue(data.getValue());
 		
 		if (getValue()==TREETOPVALUE)

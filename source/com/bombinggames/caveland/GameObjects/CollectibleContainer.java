@@ -125,6 +125,7 @@ public class CollectibleContainer extends AbstractEntity{
 				item.setPosition(getPosition().cpy());
 			}
 		}
+		getChildren().removeIf((AbstractEntity item) -> item.shouldBeDisposed());
 	}
 	
 	/**

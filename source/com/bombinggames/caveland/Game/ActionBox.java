@@ -28,6 +28,8 @@ public class ActionBox extends WidgetGroup {
 	private String text;
 	private final CustomGameView view;
 	private int playerNum;
+	private ActionBoxConfirmAction confirmAction;
+	private ActionBoxCancelAction cancelAction;
 	
 	public static enum BoxModes {
 		/**
@@ -90,11 +92,13 @@ public class ActionBox extends WidgetGroup {
 	 * registeres
 	 * @param view 
 	 * @param playerId starting with 1
+	 * @return 
 	 */
-	public void register(final CustomGameView view, final int playerId){
+	public ActionBox register(final CustomGameView view, final int playerId){
 		this.playerNum = playerId;
 		view.setModalDialogue(this, playerId);
 		view.getStage().addActor(this);
+		return this;
 	}
 
 	public Window getWindow() {
@@ -105,6 +109,10 @@ public class ActionBox extends WidgetGroup {
 		return mode;
 	}
 	
+	public ActionBox setConfirmAction(ActionBoxConfirmAction action){
+		this.confirmAction = action;
+		return this;
+	}
 	/**
 	 * unregisters this window
 	 * @param view
@@ -118,6 +126,8 @@ public class ActionBox extends WidgetGroup {
 		}
 		remove();
 		view.setModalDialogue(null, playerNum);
+		if (confirmAction != null)
+			confirmAction.confirm(selectionNum, view, actor);
 		return selectionNum;
 	}
 	
@@ -125,6 +135,7 @@ public class ActionBox extends WidgetGroup {
 	 * unregisters this window
 	 * @param view
 	 * @param actor
+	 * @return 
 	 */
 	public int cancel(CustomGameView view, AbstractEntity actor){
 		int selectionNum = 0;
@@ -133,20 +144,24 @@ public class ActionBox extends WidgetGroup {
 		}
 		remove();
 		view.setModalDialogue(null, playerNum);
+		if (cancelAction != null)
+			cancelAction.cancel(selectionNum, view, actor);
 		return selectionNum;
 	}
 	
 	/**
 	 * Adds strings as options.
 	 * @param options
+	 * @return 
 	 */
-	public void addSelectionNames(String... options){
+	public ActionBox addSelectionNames(String... options){
 		if (mode==BoxModes.SELECTION){
 			if (selectionNames == null)
 				selectionNames = new ArrayList<>(options.length);
 			selectionNames.addAll(Arrays.asList(options));
 			updateContent();
 		}
+		return this;
 	}
 	
 	/**
@@ -206,4 +221,21 @@ public class ActionBox extends WidgetGroup {
 			window.add(label);
 		}
 	}
+	
+	@FunctionalInterface
+	public interface ActionBoxCancelAction {
+		public int cancel(int result, CustomGameView view, AbstractEntity actor);
+	}
+	
+	/**
+	 *Actions which are called if you close the window
+	 * @author Benedikt Vogler
+	 */
+	@FunctionalInterface
+	public interface ActionBoxConfirmAction {
+
+		public int confirm(int result, CustomGameView view, AbstractEntity actor);
+
+	}
+	
 }

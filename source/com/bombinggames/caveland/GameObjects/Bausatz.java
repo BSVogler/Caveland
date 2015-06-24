@@ -1,6 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -19,30 +20,20 @@ public class Bausatz extends Collectible {
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer) {
-			SelectionWindow selectionWindow = new SelectionWindow(view);
-			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
+			new ActionBox(view, "Choose construction", BoxModes.SELECTION, null)
+				.addSelectionNames("Oven","Rails","Factory")
+				.setConfirmAction(
+					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+						if (result==0) {
+							//spawn construction site
+							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
+							new InteractableCollectibleContainer().spawn(actor1.getPosition().toCoord().toPoint());
+							dispose();//dispose tool kit
+						}
+						return result;
+					}
+				)
+				.register(view, ((CustomPlayer) actor).getPlayerNumber());
 		}
-	}
-	
-	private class SelectionWindow extends ActionBox{
-
-		SelectionWindow(CustomGameView view) {
-			super(view, "Choose construction", BoxModes.SELECTION, null);
-			addSelectionNames("Oven","Rails","Factory");
-		}
-
-		@Override
-		public int confirm(CustomGameView view, AbstractEntity actor) {
-			int num = super.confirm(view, actor);
-			//build
-			if (num==0) {
-				//spawn construction site
-				actor.getPosition().toCoord().setBlock( Block.getInstance((byte) 11) );
-				new InteractableCollectibleContainer().spawn(actor.getPosition().toCoord().toPoint());
-				dispose();//dispose tool kit
-			}
-			return num;
-		}
-
 	}
 }

@@ -1,7 +1,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 /**
- *
+ *A piece of dirt which flies around.
  * @author Benedikt Vogler
  */
 public class BlockDirt extends MovableEntity {

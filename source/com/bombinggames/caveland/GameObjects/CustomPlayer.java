@@ -577,7 +577,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			//damage blocks
 			Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
 			//check if the player can damage the blocks
-			if (aimCoord.getBlock() != null) {
+			if (aimCoord.getBlock() != null && !aimCoord.getBlock().isLiquid()) {
 				getCamera().shake(20, 50);
 				byte id = aimCoord.getBlock().getId();
 				if (!CavelandBlocks.hardMaterial( id )){

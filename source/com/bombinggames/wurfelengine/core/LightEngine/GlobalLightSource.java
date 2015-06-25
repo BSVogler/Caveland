@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine.core.LightEngine;
 
-import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 
 /**
  *
@@ -183,15 +183,15 @@ public class GlobalLightSource {
      * @return applied with pseudogray, copy safe
      */
     public Color getLight() {
-        return tone.cpy().mul(PseudoGrey.toColor(power));
+        return tone.cpy().mul(power);
     }
     
-        /**
+    /**
      * Returns the ambient the GLS emits.
      * @return applied with pseudogray. "pointer-safe"
      */
     public Color getAmbient() {
-        return ambient.cpy().mul(PseudoGrey.toColor(power));
+        return ambient.cpy().mul(power);
     }
 	
 	/**

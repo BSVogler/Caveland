@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -66,6 +67,7 @@ public class ActionBox extends WidgetGroup {
 		window = new Window(title, WE.getEngineView().getSkin());
 		window.setWidth(600);
 		window.setHeight(200);
+		window.align(Align.center);
 		addActor(window);
 		if (text!=null) {
 			this.text=text;
@@ -182,7 +184,7 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public void down(){
 		if (mode == BoxModes.SELECTION) {
-			if (selection > 0){
+			if (selection<selectionNames.size()-1){
 				selection++;
 			}
 			updateContent();
@@ -194,7 +196,7 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public void up(){
 		if (mode == BoxModes.SELECTION) {
-			if (selection<selectionNames.size()-1){
+			if (selection > 0){
 				selection--;
 			}
 			updateContent();
@@ -206,24 +208,18 @@ public class ActionBox extends WidgetGroup {
 	 */
 	private void updateContent(){
 		window.clear();
-		Label textArea = new Label(text, WE.getEngineView().getSkin());
-		textArea.setX(10);
-		textArea.setWrap(true);
-		textArea.setWidth(window.getWidth());
-		textArea.setHeight(30);
-		window.addActor(textArea);
+		window.add(text);
+		window.row();
+		//adds every selection
 		for (int i = 0; i < selectionNames.size(); i++) {
 			String entry = selectionNames.get(i);
-			Label label;
 			if (selection==i)
-				label= new Label("["+entry+"]", WE.getEngineView().getSkin());
+				window.add("["+entry+"]");
 			else 
-				label= new Label(entry, WE.getEngineView().getSkin());
-			label.setX(10);
-			label.setY(window.getHeight()-50-i*20);
-			label.setWidth(window.getWidth());
-			window.add(label);
+				window.add(entry);
+			window.row();
 		}
+		//window.pack();
 	}
 	
 	@FunctionalInterface

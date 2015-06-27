@@ -300,7 +300,7 @@ public class Console implements CommandsInterface  {
         while (i>=0 && !messages.get(i).sender.equals(sender)) {
             i--;
         }
-        return i>=0 ? messages.get(i).message.substring(0, messages.get(i).message.length()-2) : "";
+        return i>=0 ? messages.get(i).message.substring(0, messages.get(i).message.length()-1) : "";
     }
     
     /**
@@ -394,7 +394,7 @@ public class Console implements CommandsInterface  {
 			File mapFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+"/" +getMapNameFromPath());
 			for (final File fileEntry : mapFolder.listFiles()) {
 				if (fileEntry.isDirectory()) {
-					result.add(fileEntry.getName().substring(fileEntry.getName().length()-2)+"\n");
+					result.add(fileEntry.getName().substring(fileEntry.getName().length()-1)+"\n");
 				}
 			}
 		}

@@ -381,16 +381,20 @@ public class Console implements CommandsInterface  {
 		return textinput.getText().substring(textinput.getText().indexOf("$ ")+2);
 	}
 	
+	/**
+	 * displays the content of a folder.
+	 * @return 
+	 */
 	public ArrayList<String> ls(){
 		ArrayList<String> result = new ArrayList<>(10);
-		if (path.isEmpty()){
+		if (path.isEmpty()){//display maps
 			File mapsFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+ path);
 			for (final File fileEntry : mapsFolder.listFiles()) {
 				if (fileEntry.isDirectory()) {
 					result.add(fileEntry.getName()+"\n");
 				}
 			}
-		} else {
+		} else {//display saves
 			File mapFolder = new File(WorkingDirectory.getMapsFolder().getAbsoluteFile()+"/" +getMapNameFromPath());
 			for (final File fileEntry : mapFolder.listFiles()) {
 				if (fileEntry.isDirectory()) {
@@ -498,9 +502,9 @@ public class Console implements CommandsInterface  {
 										WE.CVARS.setChildSystem(CVarSystem.getInstanceMapSystem(new File(WorkingDirectory.getMapsFolder()+"/"+path)));
 								//access save
 								if (path.contains(":"))
-										WE.CVARS.getChildSystem().setChildSystem(CVarSystem.getInstanceSaveSystem(
-											new File(WorkingDirectory.getMapsFolder()+"/save"+path.substring(path.indexOf(':')))
-										));
+									WE.CVARS.getChildSystem().setChildSystem(CVarSystem.getInstanceSaveSystem(
+										new File(WorkingDirectory.getMapsFolder()+"/save"+path.substring(path.indexOf(':')))
+									));
 							}
 							break;
 					}

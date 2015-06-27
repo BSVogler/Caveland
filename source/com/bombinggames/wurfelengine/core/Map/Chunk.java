@@ -157,6 +157,7 @@ public class Chunk {
 	}
 	
 	/** 
+	 * checks if the chunk got modified and if that is the case calls the modification methods
 	 */
 	public void processModification(){
 		if (modified){
@@ -521,7 +522,7 @@ public class Chunk {
 	}
 	
 	/**
-	 *Returns an iterator which iterates over the data in this chunk.
+	 * Returns an iterator which iterates over the data in this chunk.
 	 * @param startingZ
 	 * @param limitZ
 	 * @return

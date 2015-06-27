@@ -73,6 +73,9 @@ public class Camera implements MapObserver {
 	
 	private boolean zRenderinlimitEnabled = false;
 
+	/**
+	 * has the groudn layer in 0, therefore offset in z of one
+	 */
 	private RenderBlock[][][] cameraContent;
 	
 	/**

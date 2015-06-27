@@ -67,6 +67,9 @@ public class Console implements CommandsInterface  {
 	 * suggestions stuff
 	 */
 	private boolean keySuggestionDown;
+	/**
+	 * current path where the console is in
+	 */
 	private String path = "";
 
 
@@ -320,7 +323,7 @@ public class Console implements CommandsInterface  {
 	public ArrayList<String> autoComplete(){
 		ArrayList<String> suggestions = new ArrayList<>(1);
 		if ("cd".equals(getCurrentCommand())){
-			suggestions.add("cd ");
+			suggestions.add("cd ");//only add space
 		}else {
 			if ("cd ".equals(getCurrentCommand())){
 				suggestions = ls();
@@ -328,15 +331,16 @@ public class Console implements CommandsInterface  {
 					suggestions.set(i, "cd ".concat(suggestions.get(i)));
 				}
 			}else {
-				String commandTillCursor = getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3);
 				//get until cursor position
+				String commandTillCursor = getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3);
+				
 				if ("".equals(path)) {
 					suggestions = WE.CVARS.getSuggestions(commandTillCursor);
 				} else {
-					if (!path.contains(":"))
-						suggestions = WE.CVARS.getChildSystem().getSuggestions(commandTillCursor);
-					else 
-						suggestions = WE.CVARS.getChildSystem().getChildSystem().getSuggestions(commandTillCursor);
+					if (path.contains(":"))
+						suggestions = WE.getLoadedCVarSystemSave().getSuggestions(commandTillCursor);
+					else
+						suggestions = WE.getLoadedCVarSystemMap().getSuggestions(commandTillCursor);
 				}
 			}
 		}
@@ -366,9 +370,10 @@ public class Console implements CommandsInterface  {
 			String mapname = tokenizer.nextToken();
 			if (!new File(WorkingDirectory.getMapsFolder(), mapname).isDirectory())
 				return false;
-			if (tokenizer.hasMoreTokens() && tokenizer.nextToken().length()!=1){
+			if (tokenizer.hasMoreTokens() && (tokenizer.nextToken().length()!=1 || path.contains(":"))){
 				return false;
 			}
+			if (tokenizer.countTokens()>2) return false;
 			return true;
 		}
 	}
@@ -492,19 +497,35 @@ public class Console implements CommandsInterface  {
 							path = path.concat(enteredPath);//then add new path
 							//if access to map
 							if (path.length()>0) {
-								//make sure it gets loaded
-								if (WE.CVARS.getChildSystem()==null)
-									if (path.contains(":"))
-										WE.CVARS.setChildSystem(CVarSystem.getInstanceMapSystem(
-											new File(WorkingDirectory.getMapsFolder()+"/"+path.substring(0, path.indexOf(':')))
-										));
-									else
-										WE.CVARS.setChildSystem(CVarSystem.getInstanceMapSystem(new File(WorkingDirectory.getMapsFolder()+"/"+path)));
-								//access save
+								String mapName;
 								if (path.contains(":"))
-									WE.CVARS.getChildSystem().setChildSystem(CVarSystem.getInstanceSaveSystem(
-										new File(WorkingDirectory.getMapsFolder()+"/save"+path.substring(path.indexOf(':')))
-									));
+									mapName = path.substring(0, path.indexOf(':'));
+								else 
+									mapName = path;
+								//make sure it gets loaded
+								if (WE.CVARS.getChildSystem()==null) {
+									WE.CVARS.setChildSystem(
+										CVarSystem.getInstanceMapSystem(
+											new File(
+												WorkingDirectory.getMapsFolder()+"/"+mapName+"/meta.wecvar"
+											)
+										)
+									);
+									WE.getLoadedCVarSystemMap().load();
+								}
+								
+								//access save
+								if (path.contains(":")) {
+									WE.getLoadedCVarSystemMap().setChildSystem(
+										CVarSystem.getInstanceSaveSystem(
+											new File(
+												WorkingDirectory.getMapsFolder()+"/"+mapName+"/save"+path.substring(path.indexOf(':')+1)+"/meta.wecvar"
+											)
+										)
+									);
+									WE.getLoadedCVarSystemSave().load();
+								}
+								
 							}
 							break;
 					}
@@ -602,7 +623,7 @@ public class Console implements CommandsInterface  {
     }
     
     private class StageInputProcessor extends InputListener {
-        private Console parentRef;
+        private final Console parentRef;
 		private boolean lastKeyWasTab;
 
         private StageInputProcessor(Console parent) {
@@ -629,7 +650,7 @@ public class Console implements CommandsInterface  {
 						add(possibilities+"\n");
 					}
 				} else {
-					if (possibilities.size()>0)
+					if (possibilities.size()==1)
 						setText(path + " $ "+possibilities.get(0));
 				}
 				lastKeyWasTab = true;

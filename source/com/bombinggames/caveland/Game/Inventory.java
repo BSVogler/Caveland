@@ -39,10 +39,6 @@ public class Inventory {
 		Collectible result = null;
 		if (container.get(0) != null){
 			result = container.retrieveCollectible(0);
-		} else if (container.get(1) != null){
-			result = container.retrieveCollectible(1);
-		}else if (container.get(2) != null){
-			result = container.retrieveCollectible(2);
 		}
 		
 		if (result==null) return null;
@@ -50,7 +46,7 @@ public class Inventory {
 	}
 	
 	/**
-	 * reduces the counter and deletes the object from inventory. makes the object appear not in the world.
+	 * Deletes the object from inventory. makes the object appear not in the world.
 	 * @return the frontmost element. can return null if empty.
 	 * @see #retrieveFrontItem() 
 	 */
@@ -58,10 +54,6 @@ public class Inventory {
 		Collectible result = null;
 		if (container.get(0) != null){
 			result = container.retrieveCollectibleReference(0);
-		} else if (container.getChildren().get(1) != null){
-			result = container.retrieveCollectibleReference(1);
-		}else if (container.get(2) != null){
-			result = container.retrieveCollectibleReference(2);
 		}
 		
 		if (result==null) return null;
@@ -70,28 +62,12 @@ public class Inventory {
 	}
 	
 	/**
-	 * tries to take the wanted type out of the inventory 
-	 * @param def
-	 * @return can return null
-	 * @see #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
-	 */
-	public Collectible fetchCollectible(Collectible.CollectibleType def){
-		if (container.get(2)!=null && container.get(2).getType() == def)
-			return container.retrieveCollectible(2);
-		if (container.get(1) !=null && container.get(1).getType() == def)
-			return container.retrieveCollectible(1);
-		if (container.get(0) !=null && container.get(0).getType() == def)
-			return container.retrieveCollectible(0);
-		return null;
-	}
-	
-		/**
 	 * Get a reference to the prototype and keeps the item in inventory.
 	 * @param def
 	 * @return can return null
 	 * @see #fetchCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 */
-	public Collectible getCollectible(Collectible.CollectibleType def){
+	public Collectible fetchCollectible(Collectible.CollectibleType def){
 		if (container.get(2)!=null && container.get(2).getType() == def)
 			return container.get(2);
 		if (container.get(1) !=null && container.get(1).getType() == def)

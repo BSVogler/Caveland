@@ -33,6 +33,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  *An entity which contains collectibles.
@@ -89,7 +90,7 @@ public class CollectibleContainer extends AbstractEntity{
 	}
 	
 	/**
-	 * makes the object appear in the world
+	 * Makes the object appear in the world
 	 * @param pos
 	 * @return 
 	 */
@@ -102,13 +103,36 @@ public class CollectibleContainer extends AbstractEntity{
 	}
 	
 	/**
-	 * remves the object from the container/world and returns only the reference
+	 * Removes the object from the container/world and returns only the reference
 	 * @param pos
 	 * @return 
 	 */
 	public Collectible retrieveCollectibleReference(int pos){
 		Collectible collectible = retrieveCollectible(pos);
 		collectible.disposeFromMap();
+		return collectible;
+	}
+	
+	/**
+	 * Removes the first occurance of this tipes from the container.
+	 * @param def
+	 * @return can return null
+	 * @see #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
+	 */
+	public Collectible fetchCollectible(Collectible.CollectibleType def){
+		Iterator<AbstractEntity> iter = getChildren().iterator();
+		Collectible collectible = null;
+		while (iter.hasNext()) {
+			collectible = (Collectible) iter.next();
+			if (collectible.getType().equals(def))
+				break;
+		}
+		if (collectible!=null) {
+			getChildren().remove(collectible);
+			collectible.setFloating(false);
+			collectible.allowPickup();
+			collectible.setHidden(false);
+		}
 		return collectible;
 	}
 

@@ -178,7 +178,7 @@ public class ActionBox extends WidgetGroup {
 	}
 	
 	/**
-	 * go a selection upwards
+	 * go a selection downwards
 	 */
 	public void down(){
 		if (selection > 0){
@@ -188,7 +188,7 @@ public class ActionBox extends WidgetGroup {
 	}
 	
 	/**
-	 * go a selection downwards
+	 * go a selection upwards
 	 */
 	public void up(){
 		if (selection<selectionNames.size()-1){

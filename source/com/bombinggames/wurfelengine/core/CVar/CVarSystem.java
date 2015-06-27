@@ -343,6 +343,7 @@ public class CVarSystem {
 		register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(90), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new FloatCVar(0.5f), "ambientOcclusion", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new FloatCVar(200), "MaxDelta", CVar.CVarFlags.CVAR_ARCHIVE);//skip delta if under 5 FPS to prevent glitches
 	}
 	
 	private void initMapCVars(){

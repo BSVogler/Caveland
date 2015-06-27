@@ -30,8 +30,8 @@
  */
 package com.bombinggames.wurfelengine.core;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Screen;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  *A WEScreen is a {@link Screen} which supports Wurfel Engine features liek the {@link Console}.
@@ -42,13 +42,13 @@ public abstract class WEScreen implements Screen {
 	@Override
 	public final void render(float delta){
 		delta *= 1000;//to ms
-		if (delta >= 1000) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 17ms ^= 58FPS
+		if (delta >= WE.CVARS.getValueF("MaxDelta")) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
 		renderImpl(delta);
 		WE.updateAndRender(delta);
 	}
 	
 	/**
-	 * 
+	 * Main method which get's called every frame. Should be split up in data managment and data displaying.
 	 * @param dt time in ms 
 	 */
 	public abstract void renderImpl(float dt);

@@ -529,14 +529,34 @@ public class CustomGameView extends GameView{
 					if (keycode == Input.Keys.C) //Select
 						toogleCrafting(0);
 					
-				if (keycode==Input.Keys.NUM_1)
-					getPlayer(0).getInventory().switchItems(true);
+					if (keycode==Input.Keys.NUM_1)
+						getPlayer(0).getInventory().switchItems(true);
+
+					if (keycode==Input.Keys.NUM_2)
+						getPlayer(0).getInventory().switchItems(false);
+
+					if (keycode==Input.Keys.SPACE)
+						getPlayer(0).jump();
+				}
 			
-				if (keycode==Input.Keys.NUM_2)
-					getPlayer(0).getInventory().switchItems(false);
+				if (openDialogue[0]!=null) {
+					if (keycode==Input.Keys.W) {
+						openDialogue[0].up();
+					}
+					
+					if (keycode==Input.Keys.S) {
+						openDialogue[0].down();
+					}
+				}
 				
-				if (keycode==Input.Keys.SPACE)
-					getPlayer(0).jump();
+				if (openDialogue[1]!=null) {
+					if (keycode==Input.Keys.UP) {
+						openDialogue[1].up();
+					}
+					
+					if (keycode==Input.Keys.DOWN) {
+						openDialogue[1].down();
+					}
 				}
 
 				//editor

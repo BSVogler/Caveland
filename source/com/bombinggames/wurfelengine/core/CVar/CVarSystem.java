@@ -85,6 +85,11 @@ public class CVarSystem {
 		return tmp;
 	}
 	
+	/**
+	 * creates a new cvar system
+	 * @param path
+	 * @return 
+	 */
 	public static  CVarSystem getInstanceSaveSystem(File path){
 		CVarSystem tmp = new CVarSystem(path);
 		tmp.initSaveCVars();
@@ -230,7 +235,7 @@ public class CVarSystem {
 	 * @return A list containing every cvar starting with the prefix
 	 */
 	public ArrayList<String> getSuggestions(String prefix){
-		ArrayList<String> resultList = new ArrayList<>(1);
+		ArrayList<String> resultList = new ArrayList<>(5);
 		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, CVar> cvarEntry = it.next();

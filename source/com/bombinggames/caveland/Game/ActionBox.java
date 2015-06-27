@@ -181,20 +181,24 @@ public class ActionBox extends WidgetGroup {
 	 * go a selection downwards
 	 */
 	public void down(){
-		if (selection > 0){
-			selection--;
+		if (mode == BoxModes.SELECTION) {
+			if (selection > 0){
+				selection++;
+			}
+			updateContent();
 		}
-		updateContent();
 	}
 	
 	/**
 	 * go a selection upwards
 	 */
 	public void up(){
-		if (selection<selectionNames.size()-1){
-			selection++;
+		if (mode == BoxModes.SELECTION) {
+			if (selection<selectionNames.size()-1){
+				selection--;
+			}
+			updateContent();
 		}
-		updateContent();
 	}
 	
 	/**

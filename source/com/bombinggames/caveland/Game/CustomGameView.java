@@ -676,11 +676,8 @@ public class CustomGameView extends GameView{
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (button ==Buttons.LEFT)
-				if (openDialogue[0] !=null)
-					openDialogue[0].confirm(parent, getPlayer(0));
-				else {
+				if (openDialogue[0] ==null)
 					getPlayer(0).attack();
-				}
 			
 			if (button ==Buttons.RIGHT) {
 				if (openDialogue[0] ==null) {
@@ -692,14 +689,17 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.LEFT)
+			if (button ==Buttons.LEFT) {
+				if (openDialogue[0] !=null)
+					openDialogue[0].confirm(parent, getPlayer(0));
 				getPlayer(0).attackLoadingStopped();
-			if (button ==Buttons.RIGHT) {
+			}
+			if (button == Buttons.RIGHT) {
 				if (openDialogue[0] ==null) {
 					getPlayer(0).throwItem();
 					throwDownP1 = -1;
 				} else {
-					toogleCrafting(0);
+					openDialogue[0].cancel(parent, getPlayer(0));
 				}
 			}
             return true;

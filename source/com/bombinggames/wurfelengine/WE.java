@@ -398,6 +398,16 @@ public class WE {
 		return gameplayScreen;
 	}
 	
+	public static CVarSystem getLoadedCVarSystemMap(){
+		return CVARS.getChildSystem();
+	}
+	
+	public static CVarSystem getLoadedCVarSystemSave(){
+		if (CVARS.getChildSystem()!=null)
+			return CVARS.getChildSystem().getChildSystem();
+		return null;
+	}
+	
 	private static class WurfelEngineIntro extends WEScreen {
 		private final Sprite lettering;
 		private final SpriteBatch batch;

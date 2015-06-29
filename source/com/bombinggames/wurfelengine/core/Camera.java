@@ -1230,10 +1230,6 @@ map.getGameWidth(),
 		}
 	}
 
-	public void orientationChange() {
-		//hiddenSurfaceDetection();
-	}
-
 	/**
 	 * enable or disable the camera
 	 *

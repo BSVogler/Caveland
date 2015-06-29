@@ -577,10 +577,10 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Fills the map into a list and sorts it in the order of the rendering,
-	 * called the "depthlist".
+	 * Fills the cameracontent plus entities into a list and sorts it in the order of the rendering,
+	 * called the "depthlist". This is done every frame.
 	 *
-	 * @return
+	 * @return the depthlist
 	 */
 	private AbstractGameObject[] createDepthList() {
 		//register memory space onyl once then reuse
@@ -778,7 +778,7 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * fill the view frustum in the camera with renderblocks
+	 * fill the view frustum in the camera with renderblocks. Only done sometimes.
 	 */
 	private void fillCameraContentBlocks() {
 		//fill viewFrustum with RenderBlock data

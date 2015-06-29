@@ -7,12 +7,12 @@
  *
  * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
  *   visible in an intro screen or main menu.
- * * Redistributions of source code must retain the above copyright notice, 
+ * * Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice, 
- *   this list of conditions and the following disclaimer in the documentation 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of Benedikt Vogler nor the names of its contributors 
+ * * Neither the name of Benedikt Vogler nor the names of its contributors
  *   may be used to endorse or promote products derived from this software without specific
  *   prior written permission.
  *
@@ -70,14 +70,14 @@ public class Camera implements MapObserver {
 	 * top limit
 	 */
 	private int zRenderingLimit = map.getBlocksZ();
-	
+
 	private boolean zRenderinlimitEnabled = false;
 
 	/**
-	 * has the groudn layer in 0, therefore offset in z of one
+	 * has the ground layer in 0, therefore offset in z of one
 	 */
 	private RenderBlock[][][] cameraContent;
-	
+
 	/**
 	 * the position of the camera in view space. Y-up. Read only field.
 	 */
@@ -141,7 +141,7 @@ public class Camera implements MapObserver {
 	 */
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
-	
+
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
 	 * camera. It is set via an absolute value.
@@ -169,7 +169,7 @@ public class Camera implements MapObserver {
 	public Camera(final int x, final int y, final int width, final int height, GameView view) {
 		map = Controller.getMap();
 		zRenderingLimit = map.getBlocksZ();
-		
+
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -284,7 +284,7 @@ public class Camera implements MapObserver {
 					  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
 						)
 				);
-				
+
 				if ( position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius") ) {
 					Vector2 diff = position.cpy().sub(newPos);
 					diff.nor().scl(WE.CVARS.getValueI("CameraLeapRadius"));
@@ -306,11 +306,11 @@ public class Camera implements MapObserver {
 
 			position.x += screenshake.x;
 			position.y += screenshake.y;
-			
+
 			//recalculate the center position
 			updateCenter();
-			
-			//move camera to the focus 
+
+			//move camera to the focus
 			view.setToLookAt(
 				new Vector3(position, 0),
 				new Vector3(position, -1),
@@ -330,7 +330,7 @@ public class Camera implements MapObserver {
 			//set up projection matrices
 			combined.set(projection);
 			Matrix4.mul(combined.val, view.val);
-			
+
 			if (cameraContent!=null) {
 				for (RenderBlock[][] x : cameraContent) {
 					for (RenderBlock[] y : x) {
@@ -351,7 +351,7 @@ public class Camera implements MapObserver {
 			//Matrix4.inv(invProjectionView.val);
 		}
 	}
-	
+
 	/**
 	 * Check if center has to be moved and if chunks must be loaded or unloaded performs according actions.
 	 */
@@ -360,10 +360,10 @@ public class Camera implements MapObserver {
 		if (WE.CVARS.getValueB("mapUseChunks")) {
 			int oldX = centerChunkX;
 			int oldY = centerChunkY;
-			
+
 			ChunkMap chunkMap = (ChunkMap) map;
 
-			
+
 			//check if chunkswitch left
 			if (
 				getVisibleLeftBorder()
@@ -405,10 +405,10 @@ public class Camera implements MapObserver {
 				) {
 				centerChunkY++;
 			}*/
-			
+
 			//his line is needed because the above does not work
 			centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-			
+
 			updateNeededChunks();
 			if (oldX!=centerChunkX || oldY!=centerChunkY)
 				updateCache();
@@ -447,7 +447,7 @@ public class Camera implements MapObserver {
 			chunkMap.getChunk(x, y).increaseCameraHandleCounter();//mark that it was accessed
 		}
 	}
-	
+
 	/**
 	 * Renders the viewport
 	 *
@@ -455,7 +455,7 @@ public class Camera implements MapObserver {
 	 * @param camera
 	 */
 	public void render(final GameView view, final Camera camera) {
-		if (active && Controller.getMap() != null) { //render only if map exists 
+		if (active && Controller.getMap() != null) { //render only if map exists
 
 			view.getBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
@@ -470,7 +470,7 @@ public class Camera implements MapObserver {
 			//render map
 			createDepthList();
 
-			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality 
+			Gdx.gl20.glEnable(GL_BLEND); // Enable the OpenGL Blending functionality
 			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR);
 
 			view.setDebugRendering(false);
@@ -510,7 +510,7 @@ public class Camera implements MapObserver {
 
 				//settings for this frame
 				RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
-								
+
 				//render vom bottom to top
 				for (int i = 0; i < objectsToBeRendered; i++) {
 					depthlist[i].render(view, camera);
@@ -585,7 +585,7 @@ map.getGameWidth(),
 		//register memory space onyl once then reuse
 		if (depthlist==null || WE.CVARS.getValueI("MaxSprites") != depthlist.length)
 			depthlist = new AbstractGameObject[WE.CVARS.getValueI("MaxSprites")];
-		
+
 		objectsToBeRendered=0;
 		DataIterator iterator = new DataIterator(
 			cameraContent,//iterate over camera content
@@ -598,7 +598,7 @@ map.getGameWidth(),
 			getVisibleBackBorder()-getCoveredBackBorder(),
 			getVisibleFrontBorderHigh()-getCoveredBackBorder()
 		);
-		
+
 		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
@@ -629,7 +629,7 @@ map.getGameWidth(),
 				}
 			}
 		}
-		
+
 		if (objectsToBeRendered < depthlist.length) {
 
 			//add entitys
@@ -664,7 +664,7 @@ map.getGameWidth(),
 	 * @return
 	 */
 	private boolean inViewFrustum(int proX, int proY){
-		return 
+		return
 				(position.y + getHeightInProjSpc() / 2)
 				>
 				(proY - Block.VIEW_HEIGHT * 2)//bottom of sprite
@@ -702,7 +702,7 @@ map.getGameWidth(),
 			while (depthsort.get(right).getDepth(gameView) > middle) {
 				right--;
 			}
-		
+
 			if (left <= right) {
 				AbstractGameObject tmp = depthsort.set(left, depthsort.get(right));
 				depthsort.set(right, tmp);
@@ -712,11 +712,11 @@ map.getGameWidth(),
 		}
 		return depthsort;
 	}
-	
+
 	/**
 	 * experimental feature. Can be slower or faster depending on the scene.
 	 * @param depthsort the unsorted list
-	 * @return sorted ArrayList 
+	 * @return sorted ArrayList
 	 * @since v1.5.3
 	 */
 	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort){
@@ -734,7 +734,7 @@ map.getGameWidth(),
 					return 1;
 			}
 		);
-		
+
 		return depthsort;
 	}
 
@@ -761,7 +761,7 @@ map.getGameWidth(),
 		return depthsort;
 	}
 
-	
+
 	/**
 	 * updates cached values like clipping
 	 */
@@ -775,7 +775,7 @@ map.getGameWidth(),
 	private void fillCameraContentBlocks(){
 	//fill viewFrustum with RenderBlock data
 		cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
-				
+
 		//1. put every block in the view frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			map,
@@ -784,7 +784,7 @@ map.getGameWidth(),
 			0,
 			map.getBlocksZ()-1
 		);
-		
+
 		while (csIter.hasNext()) {
 			Block block = csIter.next();
 			if (block != null) {
@@ -800,7 +800,7 @@ map.getGameWidth(),
 					);
 			}
 		}
-		
+
 		//2. add ground layer
 		for (int x = 0; x < cameraContent.length; x++) {
 			for (int y = 0; y < cameraContent[x].length; y++) {
@@ -819,7 +819,7 @@ map.getGameWidth(),
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the zoom factor and regenerates the sprites.
 	 *
@@ -829,8 +829,8 @@ map.getGameWidth(),
 		this.zoom = zoom;
 		updateViewSpaceSize();//todo check for redundant call?
 	}
-	
-	
+
+
 	/**
 	 * the width of the internal render resolution
 	 * @param resolution
@@ -876,7 +876,7 @@ map.getGameWidth(),
 
 			zRenderingLimit = limit;
 			zRenderinlimitEnabled = true;
-			
+
 			//clamp
 			if (limit >= map.getBlocksZ()) {
 				zRenderingLimit = map.getBlocksZ();
@@ -949,7 +949,7 @@ map.getGameWidth(),
 	 * Returns the bottom seight border y-coordinate of the lowest block
 	 *
 	 * @return measured in grid-coordinates
-	 * @see #getVisibleFrontBorderHigh() 
+	 * @see #getVisibleFrontBorderHigh()
 	 */
 	public int getVisibleFrontBorderLow() {
 		return (int) (
@@ -957,12 +957,12 @@ map.getGameWidth(),
 			/ -Block.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
-	
+
 		/**
 	 * Returns the bottom seight border y-coordinate of the highest block
 	 *
 	 * @return measured in grid-coordinates
-	 * @see #getVisibleFrontBorderLow() 
+	 * @see #getVisibleFrontBorderLow()
 	 */
 	public int getVisibleFrontBorderHigh() {
 		return (int) (
@@ -1246,9 +1246,14 @@ map.getGameWidth(),
 		this.active = active;
 	}
 
+	/**
+	 * has the ground layer in 0, therefore offset in z of one
+	 *
+	 * @return
+	 */
 	public RenderBlock[][][] getCameraContent() {
 		return cameraContent;
 	}
-	
-	
+
+
 }

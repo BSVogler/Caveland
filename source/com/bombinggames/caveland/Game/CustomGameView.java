@@ -216,16 +216,25 @@ public class CustomGameView extends GameView{
 		Input input = Gdx.input;
 
 		
-		//clipping in caves
+		//manual clipping in caves for black areas
 		for (Camera camera : getCameras()) {
 			RenderBlock[][][] cc = camera.getCameraContent();
 			//if bottom is a cave
 			if (cc[cc.length-1][cc[0].length-1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER){
-				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 1, Chunk.getBlocksZ());
+				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 0, Chunk.getBlocksZ());
 				while (iterator.hasNext()) {
 					RenderBlock next = iterator.next();
-					if (next!=null && ChunkGenerator.insideOutside(next.getPosition())==-1)
-						next.setHidden(true);
+					if (next!=null) {
+						//clip floor
+						if (iterator.getCurrentIndex()[2]==0)
+							next.getBlockData().setClippedTop();
+						////h
+//						int iout = ChunkGenerator.insideOutside(next.getPosition());
+//						if (iout==-1)
+//							next.setHidden(true);
+//						else if (iout==0)
+//							next.getBlockData().setUnclipped();
+					}
 				}
 			}
 		}

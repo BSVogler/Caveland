@@ -45,10 +45,10 @@ public class ChunkGenerator implements Generator {
 			
 			//walls
 			if (insideout==0 && z<=5)//build a wall
-				return 2;
-			
-			if (insideout==-1 && z<=5)//build stone for outside
 				return 3;
+			
+			if (insideout==-1 && z<=5)//build air for outside
+				return 0;
 			
 			//floor
 			if (z<=3)

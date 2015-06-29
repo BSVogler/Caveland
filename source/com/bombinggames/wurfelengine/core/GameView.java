@@ -195,10 +195,11 @@ public class GameView extends View implements GameManager {
 		//end of setup
 		if (controller.getDevTools() != null)
 			controller.getDevTools().render(this);
-
-		if (Controller.getLightEngine() != null)
-			Controller.getLightEngine().render(this);
-
+			
+		//render light engine based in first camera
+		if (Controller.getLightEngine() != null && !getCameras().isEmpty())
+			Controller.getLightEngine().render(this, getCameras().get(0).getCenter());
+		
 		//render buttons
 		stage.draw();
     }

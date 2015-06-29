@@ -150,7 +150,7 @@ public class MapEditorView extends GameView {
         getStage().addActor(replaybutton);
         
         if (Controller.getLightEngine() != null)
-            Controller.getLightEngine().setToNoon();
+            Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 		
 		toolSelection = new Toolbar(getStage(), spritesheet, leftSelector, rightSelector);
 		getStage().addActor(toolSelection);

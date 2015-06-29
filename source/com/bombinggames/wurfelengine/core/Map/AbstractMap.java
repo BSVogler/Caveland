@@ -139,16 +139,6 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 * Returns the degree of the world spin. This changes where the sun rises
-	 * and falls.
-	 *
-	 * @return a number between 0 and 360
-	 */
-	public int getWorldSpinDirection() {
-		return WE.CVARS.getValueI("worldSpinAngle");
-	}
-
-	/**
 	 * Returns a coordinate pointing to the absolute center of the map. Height
 	 * is half the map's height.
 	 *

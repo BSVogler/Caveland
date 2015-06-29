@@ -33,10 +33,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -45,15 +45,16 @@ import com.bombinggames.wurfelengine.core.Map.MapObserver;
 
 /**
  * This Light engine calculates phong shading for three normals over the day.
+ * The data is relative to a position on a map because the lighting can be different on different positions on the map.
  * @author Benedikt Vogler
- * @version 1.1.7
+ * @version 1.1.8
  * @since  WE1.1
  */
 public class LightEngine implements MapObserver {
     /**
      * The Version of the light engine.
      */
-    public static final String Version = "1.1.7";
+    public static final String Version = "1.1.8";
 	/** 
 	 * display a visual representation of the data?
 	 */
@@ -88,14 +89,14 @@ public class LightEngine implements MapObserver {
      */
     public LightEngine() {
         sun = new GlobalLightSource(
-			-Controller.getMap().getWorldSpinDirection(),
+			-WE.CVARS.getValueI("worldSpinAngle"),
 			0,
 			new Color(1, 1, 1, 1),
 			new Color(0.5f, 0.5f, 0.4f, 1),
 			60
 		);
 		moon = new GlobalLightSource(
-			180-Controller.getMap().getWorldSpinDirection(),
+			180-WE.CVARS.getValueI("worldSpinAngle"),
 			0,
 			new Color(0.4f,0.8f,0.8f,1),
 			new Color(0, 0, 0.1f, 1),
@@ -225,17 +226,19 @@ public class LightEngine implements MapObserver {
 	
 	/**
 	 *
+	 * @param pos relative to this position
 	 * @return
 	 */
-	public GlobalLightSource getSun() {
+	public GlobalLightSource getSun(AbstractPosition pos) {
 		return sun;
 	}
 
 	/**
 	 *
+	 * @param pos
 	 * @return
 	 */
-	public GlobalLightSource getMoon() {
+	public GlobalLightSource getMoon(AbstractPosition pos) {
 		return moon;
 	}
 	
@@ -311,9 +314,10 @@ public class LightEngine implements MapObserver {
     
     /**
      * Returns the sum of every light source's ambient light
+	 * @param pos
      * @return a color with a tone
      */
-    public Color getAmbient(){
+    public Color getAmbient(AbstractPosition pos){
 		Color amb = sun.getAmbient();
 		if (moon!= null)
 			amb.add(moon.getAmbient());
@@ -379,8 +383,9 @@ public class LightEngine implements MapObserver {
     /**
      *Shows the data of the light engine in diagramms.
      * @param view 
+	 * @param pos 
      */
-    public void render(GameView view){
+    public void render(GameView view, AbstractPosition pos){
         if (debuging) {
             
             //g.setLineWidth(2);
@@ -404,11 +409,11 @@ public class LightEngine implements MapObserver {
                 shR.setColor(Color.ORANGE);
                 if ((sun.getMaxAngle()/90f-0.5f) != 0) {
                     shR.translate(posX, posY, 0);
-                    shR.rotate(0, 0, 1, -Controller.getMap().getWorldSpinDirection());
+                    shR.rotate(0, 0, 1, -WE.CVARS.getValueI("worldSpinAngle"));
                     shR.scale(1f, (sun.getMaxAngle()/90f-0.5f), 1f);
                     shR.circle(0, 0, size);
                     shR.scale(1f, (1/(sun.getMaxAngle()/90f-0.5f)), 1f);
-                    shR.rotate(0, 0, 1, +Controller.getMap().getWorldSpinDirection());
+                    shR.rotate(0, 0, 1, +WE.CVARS.getValueI("worldSpinAngle"));
                     shR.translate(-posX, -posY, 0);
                 } else {
                     shR.line(posX-size, posY, posX+size, posY);
@@ -464,14 +469,14 @@ public class LightEngine implements MapObserver {
 			);
 			if (moon != null)
 				view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
-            view.drawString("Ambient: "+getAmbient().toString(), 600, y+=10, Color.WHITE);
+            view.drawString("Ambient: "+getAmbient(pos).toString(), 600, y+=10, Color.WHITE);
            // view.drawString("avg. color: "+sun.getColor().toString(), 600, y+=10, Color.WHITE);
 			
             shR.begin(ShapeType.Filled);
                 //draw ambient light
                 shR.setColor(Color.WHITE);
                 shR.rect(600, y+=10, 70, 70);
-                shR.setColor(getAmbient());
+                shR.setColor(getAmbient(pos));
                 shR.rect(610, y+=10, 50, 50);
 				if (moon != null) {
 					shR.setColor(moon.getAmbient());
@@ -503,7 +508,7 @@ public class LightEngine implements MapObserver {
 				
 				shR.setColor(Color.WHITE);
                 shR.rect(780, 390, 70, 70);
-                shR.setColor(getSun().getLight());
+                shR.setColor(getSun(pos).getLight());
                 shR.rect(780, 400, 50, 50);
 
 
@@ -537,8 +542,9 @@ public class LightEngine implements MapObserver {
     
     /**
      *
+	 * @param pos
      */
-    public void setToNoon(){
+    public void setToNoon(AbstractPosition pos){
         sun.setAzimuth(90);
 		if (moon != null) 
 			moon.setAzimuth(270);
@@ -546,8 +552,9 @@ public class LightEngine implements MapObserver {
     
     /**
      *
+	 * @param pos
      */
-    public void setToNight(){
+    public void setToNight(AbstractPosition pos){
         sun.setAzimuth(270);
         moon.setAzimuth(90);
     }

@@ -479,23 +479,23 @@ public class Camera implements MapObserver {
 				if (WE.CVARS.getValueB("enablelightengine")) {
 					view.getShader().setUniformf(
 						"sunNormal",
-						Controller.getLightEngine().getSun().getNormal()
+						Controller.getLightEngine().getSun(getCenter()).getNormal()
 					);
 					view.getShader().setUniformf(
 						"sunColor",
-						Controller.getLightEngine().getSun().getLight()
+						Controller.getLightEngine().getSun(getCenter()).getLight()
 					);
 					view.getShader().setUniformf(
 						"moonNormal",
-						Controller.getLightEngine().getMoon().getNormal()
+						Controller.getLightEngine().getMoon(getCenter()).getNormal()
 					);
 					view.getShader().setUniformf(
 						"moonColor",
-						Controller.getLightEngine().getMoon().getLight()
+						Controller.getLightEngine().getMoon(getCenter()).getLight()
 					);
 					view.getShader().setUniformf(
 						"ambientColor",
-						Controller.getLightEngine().getAmbient()
+						Controller.getLightEngine().getAmbient(getCenter())
 					);
 				}
 

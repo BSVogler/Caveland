@@ -57,6 +57,8 @@ public class CustomGameController extends Controller {
 		RenderBlock.setDestructionSound("blockDestroy");
 		
 		WE.getConsole().setCustomCommands(new CavelandCommands());
+		setLightEngine(new CustomLightEngine());
+		
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
 //		

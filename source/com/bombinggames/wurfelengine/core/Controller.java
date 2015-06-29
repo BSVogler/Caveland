@@ -123,6 +123,11 @@ public class Controller implements GameManager {
         return lightEngine;
     }
 	
+	public static void setLightEngine(LightEngine le){
+		lightEngine = le;
+		getMap().getOberserverList().add(lightEngine);
+	}
+	
 	/**
      *The sound engine managing the sfx.
      * @return
@@ -208,6 +213,7 @@ public class Controller implements GameManager {
             }
         }
 		
+		//create default light engine
         if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null){
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 			getMap().getOberserverList().add(lightEngine);

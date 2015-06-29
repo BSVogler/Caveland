@@ -1259,9 +1259,10 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * has the ground layer in 0, therefore offset in z of one
+	 * The camea content is the block content which is displayed by the camera.
+	 * Has the ground layer in 0, therefore offset in z of one.
 	 *
-	 * @return
+	 * @return reference
 	 */
 	public RenderBlock[][][] getCameraContent() {
 		return cameraContent;

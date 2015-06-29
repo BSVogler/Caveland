@@ -14,6 +14,7 @@ import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.FloatCVar;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -51,7 +52,7 @@ public class Caveland {
 		WE.CVARS.register( new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//register map cvars
-		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());
+		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
 		
 		//configure
         WE.setMainMenu(new MainMenuScreen());

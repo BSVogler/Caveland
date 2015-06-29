@@ -80,17 +80,6 @@ public abstract class AbstractMap implements Cloneable {
 		return i;
 	}
 
-	private static CustomMapCVarRegistration customRegistration;
-
-	/**
-	 * Set a custom registration of cvars before they are loaded.
-	 *
-	 * @param mapcvars
-	 */
-	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
-		customRegistration = mapcvars;
-	}
-
 	/**
 	 * every entity on the map is stored in this field
 	 */
@@ -118,10 +107,6 @@ public abstract class AbstractMap implements Cloneable {
 		this.generator = generator;
 		CVarSystem cvars = CVarSystem.getInstanceMapSystem(new File(directory + "/meta.wecvar"));
 		
-		//custom registration of cvars
-		if (customRegistration != null) {
-			customRegistration.register(cvars);
-		}
 		WE.CVARS.setChildSystem(cvars);
 
 		cvars.load();

@@ -34,6 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +53,18 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class CVarSystem {
+	private static CustomMapCVarRegistration customMapCVarsRegistration;
+	
+	/**
+	 * Set a custom registration of cvars before they are loaded.
+	 *
+	 * @param mapcvars
+	 */
+	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
+		customMapCVarsRegistration = mapcvars;
+	}
+	
+	
 	/**
 	 * true if currently reading. Prevents saving
 	 */
@@ -355,6 +368,11 @@ public class CVarSystem {
 		register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new StringCVar(""), "description", CVar.CVarFlags.CVAR_ARCHIVE);
+		
+		//custom registration of cvars
+		if (customMapCVarsRegistration != null) {
+			customMapCVarsRegistration.register(this);
+		}
 	}
 	
 	private void initSaveCVars(){

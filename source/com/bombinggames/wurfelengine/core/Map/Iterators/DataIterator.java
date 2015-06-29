@@ -30,20 +30,20 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
  *An iterator iterating over a 3d array
  * @author Benedikt Vogler
+ * @param <T>
  */
-public class DataIterator implements Iterator<HasID>{
+public class DataIterator<T extends HasID> implements Iterator<T>{
 	/**
 	 * current position
 	 */
 	private final int[] pos;
-	private final HasID[][][] data;
+	private final T[][][] data;
 	private int limitZ;
 	private int left, right, back, front;
 
@@ -54,7 +54,7 @@ public class DataIterator implements Iterator<HasID>{
 	 * @param limitZ  the last layer (including).
 	 */
 	public DataIterator(
-		HasID[][][] data,
+		T[][][] data,
 		final int startingZ,
 		final int limitZ
 	) {
@@ -86,7 +86,7 @@ public class DataIterator implements Iterator<HasID>{
 	}
 
 	@Override
-	public HasID next() {
+	public T next() {
 		if (pos[0] < right)
 			pos[0]++;
 		else if (pos[1] < front){
@@ -97,13 +97,7 @@ public class DataIterator implements Iterator<HasID>{
 			pos[1] = back;
 			pos[0] = left;
 		}
-		
-		if (pos[2] < 0){
-			//current pos -1 in z
-			return Controller.getMap().getGroundBlock();
-		} else {
-			return data[pos[0]][pos[1]][pos[2]];
-		}
+		return data[pos[0]][pos[1]][pos[2]];
 	}
 
 	@Override

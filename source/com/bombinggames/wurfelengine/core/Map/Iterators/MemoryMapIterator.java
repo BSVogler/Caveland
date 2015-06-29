@@ -64,7 +64,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 			chunkIterator = mapdata.iterator();
 			blockIterator = mapdata.get(0).getIterator(startingZ, getTopLimitZ());
 		} else {
-			blockIterator = new DataIterator(
+			blockIterator = new DataIterator<>(
 				((CompleteMap) map).getData(),
 				startingZ,
 				getTopLimitZ()
@@ -79,7 +79,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		Block block = (Block) blockIterator.next();
+		Block block = blockIterator.next();
 		if (useChunks && !blockIterator.hasNext()){
 			//end of chunk, move to next chunk
 			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());

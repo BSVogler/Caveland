@@ -576,9 +576,9 @@ public class LightEngine implements MapObserver {
 	 */
 	private void calcAO(Chunk chunk) {
 		//iterate over every block in chunk
-		DataIterator iterator = chunk.getIterator(0, Chunk.getBlocksZ()-1);
+		DataIterator<Block> iterator = chunk.getIterator(0, Chunk.getBlocksZ()-1);
 		while (iterator.hasNext()) {
-			Block next = (Block) iterator.next();
+			Block next = iterator.next();
 			//skip air and blocks without sides
 			if (next != null && next.hasSides()){
 				//analyze top side

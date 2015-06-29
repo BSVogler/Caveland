@@ -44,7 +44,7 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	/**
 	 * Always points to a block. Iterates over a chunk.
 	 */
-	protected DataIterator blockIterator;
+	protected DataIterator<Block> blockIterator;
 	private int topLimitZ;
 	private int startingZ = 0;
 	protected final boolean useChunks;

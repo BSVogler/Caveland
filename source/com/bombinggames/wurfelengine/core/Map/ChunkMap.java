@@ -186,14 +186,14 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 //		}
 		
 		//iterate over chunk
-		DataIterator dataIter = new DataIterator(
+		DataIterator<Block> dataIter = new DataIterator<>(
 			chunkData,
 			0,
 			camera.getZRenderingLimit()-1
 		);
 		
 		while (dataIter.hasNext()) {
-			Block current = (Block) dataIter.next();//next is the current block
+			Block current = dataIter.next();//next is the current block
 			
 			if (current != null) {
 				//calculate index position relative to camera border

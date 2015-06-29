@@ -589,7 +589,7 @@ public class Camera implements MapObserver {
 		}
 
 		objectsToBeRendered = 0;
-		DataIterator iterator = new DataIterator(
+		DataIterator<RenderBlock> iterator = new DataIterator<>(
 			cameraContent,//iterate over camera content
 			0, //from layer0
 			map.getBlocksZ()//one more because of ground layer
@@ -604,7 +604,7 @@ public class Camera implements MapObserver {
 		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
-				RenderBlock block = (RenderBlock) iterator.next();
+				RenderBlock block = iterator.next();
 				//only add if in view plane to-do
 				if (block != null) {
 					if (
@@ -625,7 +625,7 @@ public class Camera implements MapObserver {
 			}
 		} else {
 			while (iterator.hasNext()) {//up to zRenderingLimit
-				RenderBlock block = (RenderBlock) iterator.next();
+				RenderBlock block = iterator.next();
 				if (block != null && !block.isHidden()) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;

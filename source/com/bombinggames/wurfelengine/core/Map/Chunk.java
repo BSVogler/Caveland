@@ -527,8 +527,8 @@ public class Chunk {
 	 * @param limitZ
 	 * @return
 	 */
-	public DataIterator getIterator(final int startingZ, final int limitZ){
-		return new DataIterator(
+	public DataIterator<Block> getIterator(final int startingZ, final int limitZ){
+		return new DataIterator<>(
 			data,
 			startingZ,
 			limitZ

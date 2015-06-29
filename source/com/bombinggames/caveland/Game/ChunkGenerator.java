@@ -10,11 +10,11 @@ public class ChunkGenerator implements Generator {
 	/**
 	 * every block below this border is  a cave
 	 */
-	public final int cavesBorder = 1000;
+	public static final int CAVESBORDER = 1000;
 	
 	@Override
 	public byte generate(int x, int y, int z) {
-		if (y<cavesBorder) {//overworld
+		if (y<CAVESBORDER) {//overworld
 			
 			//floor
 			if (z<3) return 2;

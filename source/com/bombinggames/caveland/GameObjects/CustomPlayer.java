@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.Game.Inventory;
 import com.bombinggames.wurfelengine.WE;
@@ -216,7 +217,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		}
 		
 		//if in cave force in it
-		if (( WE.CVARS.getChildSystem().getChildSystem().getValueB("P"+playerNumber+"InCave") )){
+		if (( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER )){
 			if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
 				pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
 		}

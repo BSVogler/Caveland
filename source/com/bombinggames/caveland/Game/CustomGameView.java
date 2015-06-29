@@ -14,6 +14,9 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 
 
@@ -212,6 +215,21 @@ public class CustomGameView extends GameView{
 		//get input and do actions
 		Input input = Gdx.input;
 
+		
+		//clipping in caves
+		for (Camera camera : getCameras()) {
+			RenderBlock[][][] cc = camera.getCameraContent();
+			//if bottom is a cave
+			if (cc[cc.length-1][cc[0].length-1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER){
+				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 1, Chunk.getBlocksZ());
+				while (iterator.hasNext()) {
+					RenderBlock next = iterator.next();
+					if (next!=null && ChunkGenerator.insideOutside(next.getPosition())==-1)
+						next.setHidden(true);
+				}
+			}
+		}
+		
 		if (focusOnGame(0)) {
 			//walk
 			if (getPlayer(0) != null){

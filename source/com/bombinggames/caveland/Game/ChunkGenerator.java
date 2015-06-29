@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
 /**
@@ -105,4 +106,13 @@ public class ChunkGenerator implements Generator {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param coord
+	 * @return 
+	 * @see #insideOutside(int, int, int) 
+	 */
+	public static int insideOutside(Coordinate coord){
+		return insideOutside(coord.getX(), coord.getY(), coord.getZ());
+	}
 }

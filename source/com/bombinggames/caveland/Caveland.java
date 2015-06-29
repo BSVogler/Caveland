@@ -6,8 +6,7 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.Flint;
 import com.bombinggames.caveland.GameObjects.MineCart;
-import com.bombinggames.caveland.GameObjects.Portal.EntryPortal;
-import com.bombinggames.caveland.GameObjects.Portal.ExitPortal;
+import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
@@ -41,15 +40,15 @@ public class Caveland {
     public static void main(String[] args) {
 		WorkingDirectory.setApplicationName("Caveland");
 		//game cvars
-		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register( new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
 		
 		//register map cvars
 		AbstractMap.setCustomMapCVarRegistration(new CavelandMapCVars());
@@ -64,8 +63,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Flint", Flint.class);
 		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
-		AbstractEntity.registerEntity("EntryPortal", EntryPortal.class);
-		AbstractEntity.registerEntity("ExitPortal", ExitPortal.class);
+		AbstractEntity.registerEntity("Portal", Portal.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
 		AbstractEntity.registerEntity("Bird", Bird.class);

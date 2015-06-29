@@ -29,27 +29,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.Portal;
+package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class EntryPortal extends Portal{
-	private static final long serialVersionUID = 1L;
-
+public class Portal extends AbstractEntity implements Interactable{
+	private static final long serialVersionUID = 2L;
+	private Coordinate target;
+	
+	/**
+	 * teleports to 0 0 0
+	 */
+	public Portal(){
+		super((byte) 70);
+		setName("Portal");
+		setHidden(true);
+		this.target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
+	}
+	
+	/**
+	 * teleport to custom aim
+	 * @param target 
+	 */
+	public Portal(Coordinate target) {
+		this();
+		this.target = target;
+	}
+	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		super.interact(view, actor);
-		if (actor instanceof CustomPlayer)
-			if (((CustomPlayer) actor).getPlayerNumber()==2)
-				WE.CVARS.getChildSystem().getChildSystem().get("P2InCave").setValue(true);
-			else
-				WE.CVARS.getChildSystem().getChildSystem().get("P1InCave").setValue(true);
+		actor.setPosition(target.cpy());
+	}
+
+	public void setTarget(Coordinate target) {
+		this.target = target;
 	}
 }

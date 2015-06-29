@@ -42,8 +42,8 @@ public class DataIterator implements Iterator<HasID>{
 	/**
 	 * current position
 	 */
-	private int[] pos;
-	private HasID[][][] data;
+	private final int[] pos;
+	private final HasID[][][] data;
 	private int limitZ;
 	private int left, right, back, front;
 
@@ -51,7 +51,7 @@ public class DataIterator implements Iterator<HasID>{
 	 * 
 	 * @param data
 	 * @param startingZ the starting layer
-	 * @param limitZ  the last layer 
+	 * @param limitZ  the last layer (including).
 	 */
 	public DataIterator(
 		HasID[][][] data,

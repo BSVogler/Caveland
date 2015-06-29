@@ -62,6 +62,7 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class Camera implements MapObserver {
+
 	/**
 	 * the map which is covered by the camera
 	 */
@@ -149,8 +150,9 @@ public class Camera implements MapObserver {
 	private void initFocus() {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		if (WE.CVARS.getValueB("mapUseChunks"))
+		if (WE.CVARS.getValueB("mapUseChunks")) {
 			updateNeededChunks();
+		}
 	}
 
 	/**
@@ -279,13 +281,11 @@ public class Camera implements MapObserver {
 				//update camera's position according to focusEntity
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(gameView),
-					(int) (
-						focusEntity.getPosition().getViewSpcY(gameView)
-					  + focusEntity.getDimensionZ()*AbstractPosition.SQRT12/2
-						)
+					(int) (focusEntity.getPosition().getViewSpcY(gameView)
+					+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2)
 				);
 
-				if ( position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius") ) {
+				if (position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius")) {
 					Vector2 diff = position.cpy().sub(newPos);
 					diff.nor().scl(WE.CVARS.getValueI("CameraLeapRadius"));
 					position.x = newPos.x;
@@ -331,12 +331,13 @@ public class Camera implements MapObserver {
 			combined.set(projection);
 			Matrix4.mul(combined.val, view.val);
 
-			if (cameraContent!=null) {
+			if (cameraContent != null) {
 				for (RenderBlock[][] x : cameraContent) {
 					for (RenderBlock[] y : x) {
 						for (RenderBlock z : y) {
-							if (z != null)
+							if (z != null) {
 								z.update(dt);
+							}
 						}
 					}
 				}
@@ -353,16 +354,16 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Check if center has to be moved and if chunks must be loaded or unloaded performs according actions.
+	 * Check if center has to be moved and if chunks must be loaded or unloaded
+	 * performs according actions.
 	 */
-	public void updateCenter(){
+	public void updateCenter() {
 		//if chunkmap check for chunk movement
 		if (WE.CVARS.getValueB("mapUseChunks")) {
 			int oldX = centerChunkX;
 			int oldY = centerChunkY;
 
 			ChunkMap chunkMap = (ChunkMap) map;
-
 
 			//check if chunkswitch left
 			if (
@@ -385,33 +386,33 @@ public class Camera implements MapObserver {
 
 			//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative baded.
 			/*
-			if (
-				getVisibleBackBorder()
-				<
-				chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
-				//&& centerChunkX-1==//calculated xIndex -1
-				) {
-				centerChunkY--;
-			}
-			//check in view space
-			if (
-				position.y- getHeightInProjSpc()/2
-				<
-				map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
-				-AbstractGameObject.VIEW_DEPTH2*(
-				chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
-				)
-				//&& centerChunkX-1==//calculated xIndex -1
-				) {
-				centerChunkY++;
-			}*/
-
+			 if (
+			 getVisibleBackBorder()
+			 <
+			 chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+			 //&& centerChunkX-1==//calculated xIndex -1
+			 ) {
+			 centerChunkY--;
+			 }
+			 //check in view space
+			 if (
+			 position.y- getHeightInProjSpc()/2
+			 <
+			 map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
+			 -AbstractGameObject.VIEW_DEPTH2*(
+			 chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+			 )
+			 //&& centerChunkX-1==//calculated xIndex -1
+			 ) {
+			 centerChunkY++;
+			 }*/
 			//his line is needed because the above does not work
 			centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 
 			updateNeededChunks();
-			if (oldX!=centerChunkX || oldY!=centerChunkY)
+			if (oldX != centerChunkX || oldY != centerChunkY) {
 				updateCache();
+			}
 		}
 	}
 
@@ -475,46 +476,46 @@ public class Camera implements MapObserver {
 
 			view.setDebugRendering(false);
 			view.getBatch().begin();
-				//send a Vector4f to GLSL
-				if (WE.CVARS.getValueB("enablelightengine")) {
-					view.getShader().setUniformf(
-						"sunNormal",
-						Controller.getLightEngine().getSun(getCenter()).getNormal()
-					);
-					view.getShader().setUniformf(
-						"sunColor",
-						Controller.getLightEngine().getSun(getCenter()).getLight()
-					);
-					view.getShader().setUniformf(
-						"moonNormal",
-						Controller.getLightEngine().getMoon(getCenter()).getNormal()
-					);
-					view.getShader().setUniformf(
-						"moonColor",
-						Controller.getLightEngine().getMoon(getCenter()).getLight()
-					);
-					view.getShader().setUniformf(
-						"ambientColor",
-						Controller.getLightEngine().getAmbient(getCenter())
-					);
-				}
+			//send a Vector4f to GLSL
+			if (WE.CVARS.getValueB("enablelightengine")) {
+				view.getShader().setUniformf(
+					"sunNormal",
+					Controller.getLightEngine().getSun(getCenter()).getNormal()
+				);
+				view.getShader().setUniformf(
+					"sunColor",
+					Controller.getLightEngine().getSun(getCenter()).getLight()
+				);
+				view.getShader().setUniformf(
+					"moonNormal",
+					Controller.getLightEngine().getMoon(getCenter()).getNormal()
+				);
+				view.getShader().setUniformf(
+					"moonColor",
+					Controller.getLightEngine().getMoon(getCenter()).getLight()
+				);
+				view.getShader().setUniformf(
+					"ambientColor",
+					Controller.getLightEngine().getAmbient(getCenter())
+				);
+			}
 
-				//bind normal map to texture unit 1
-				if (WE.CVARS.getValueB("LEnormalMapRendering")) {
-					AbstractGameObject.getTextureNormal().bind(1);
-				}
+			//bind normal map to texture unit 1
+			if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+				AbstractGameObject.getTextureNormal().bind(1);
+			}
 
 				//bind diffuse color to texture unit 0
-				//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
-				AbstractGameObject.getTextureDiffuse().bind(0);
+			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
+			AbstractGameObject.getTextureDiffuse().bind(0);
 
-				//settings for this frame
-				RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
+			//settings for this frame
+			RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
 
-				//render vom bottom to top
-				for (int i = 0; i < objectsToBeRendered; i++) {
-					depthlist[i].render(view, camera);
-				}
+			//render vom bottom to top
+			for (int i = 0; i < objectsToBeRendered; i++) {
+				depthlist[i].render(view, camera);
+			}
 			view.getBatch().end();
 
 			//if debugging render outline again
@@ -534,7 +535,7 @@ public class Camera implements MapObserver {
 				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 				view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
 					-Chunk.getGameDepth(),//two chunks down
-map.getGameWidth(),
+					map.getGameWidth(),
 					map.getGameDepth() / 2
 				);
 				view.getShapeRenderer().line(-Chunk.getGameWidth(),
@@ -583,20 +584,21 @@ map.getGameWidth(),
 	 */
 	private AbstractGameObject[] createDepthList() {
 		//register memory space onyl once then reuse
-		if (depthlist==null || WE.CVARS.getValueI("MaxSprites") != depthlist.length)
+		if (depthlist == null || WE.CVARS.getValueI("MaxSprites") != depthlist.length) {
 			depthlist = new AbstractGameObject[WE.CVARS.getValueI("MaxSprites")];
+		}
 
-		objectsToBeRendered=0;
+		objectsToBeRendered = 0;
 		DataIterator iterator = new DataIterator(
 			cameraContent,//iterate over camera content
-			0,					//from layer0
+			0, //from layer0
 			map.getBlocksZ()//one more because of ground layer
 		);
 		iterator.setBorders(
-			getVisibleLeftBorder()-getCoveredLeftBorder(),
-			getVisibleRightBorder()-getCoveredLeftBorder(),
-			getVisibleBackBorder()-getCoveredBackBorder(),
-			getVisibleFrontBorderHigh()-getCoveredBackBorder()
+			getVisibleLeftBorder() - getCoveredLeftBorder(),
+			getVisibleRightBorder() - getCoveredLeftBorder(),
+			getVisibleBackBorder() - getCoveredBackBorder(),
+			getVisibleFrontBorderHigh() - getCoveredBackBorder()
 		);
 
 		if (WE.CVARS.getValueB("enableHSD")) {
@@ -615,17 +617,21 @@ map.getGameWidth(),
 					) {
 						depthlist[objectsToBeRendered] = block;
 						objectsToBeRendered++;
-						if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+						if (objectsToBeRendered >= depthlist.length) {
+							break;//fill only up to available size
+						}
 					}
 				}
 			}
 		} else {
 			while (iterator.hasNext()) {//up to zRenderingLimit
 				RenderBlock block = (RenderBlock) iterator.next();
-				if (block!= null && !block.isHidden()) {
+				if (block != null && !block.isHidden()) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+					if (objectsToBeRendered >= depthlist.length) {
+						break;//fill only up to available size
+					}
 				}
 			}
 		}
@@ -634,9 +640,8 @@ map.getGameWidth(),
 
 			//add entitys
 			for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-				if (
-					entity.isSpawned()
-				&& !entity.isHidden()
+				if (entity.isSpawned()
+					&& !entity.isHidden()
 					&& inViewFrustum(
 						entity.getPosition().getViewSpcX(gameView),
 						entity.getPosition().getViewSpcY(gameView)
@@ -645,7 +650,9 @@ map.getGameWidth(),
 				) {
 					depthlist[objectsToBeRendered] = entity;
 					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) break;//fill only up to available size
+					if (objectsToBeRendered >= depthlist.length) {
+						break;//fill only up to available size
+					}
 				}
 			}
 		}
@@ -715,23 +722,25 @@ map.getGameWidth(),
 
 	/**
 	 * experimental feature. Can be slower or faster depending on the scene.
+	 *
 	 * @param depthsort the unsorted list
 	 * @return sorted ArrayList
 	 * @since v1.5.3
 	 */
-	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort){
+	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort) {
 		Arrays.parallelSort(depthsort,
 			0,
 			objectsToBeRendered,
 			(AbstractGameObject o1, AbstractGameObject o2) -> {
 				int a = o1.getDepth(gameView);
 				int b = o2.getDepth(gameView);
-				if (a < b)
+				if (a < b) {
 					return -1;
-				else if (a==b)
+				} else if (a == b) {
 					return 0;
-				else
+				} else {
 					return 1;
+				}
 			}
 		);
 
@@ -761,19 +770,18 @@ map.getGameWidth(),
 		return depthsort;
 	}
 
-
 	/**
 	 * updates cached values like clipping
 	 */
-	protected void updateCache(){
+	protected void updateCache() {
 		fillCameraContentBlocks();
 	}
 
 	/**
 	 * fill the view frustum in the camera with renderblocks
 	 */
-	private void fillCameraContentBlocks(){
-	//fill viewFrustum with RenderBlock data
+	private void fillCameraContentBlocks() {
+		//fill viewFrustum with RenderBlock data
 		cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 
 		//1. put every block in the view frustum
@@ -782,22 +790,23 @@ map.getGameWidth(),
 			centerChunkX,
 			centerChunkY,
 			0,
-			map.getBlocksZ()-1
+			map.getBlocksZ() - 1
 		);
 
 		while (csIter.hasNext()) {
 			Block block = csIter.next();
 			if (block != null) {
 				int[] ind = csIter.getCurrentIndex();
-				cameraContent[ind[0]][ind[1]][ind[2]+1] = block.toBlock();
-				if (cameraContent[ind[0]][ind[1]][ind[2]+1] != null)
-					cameraContent[ind[0]][ind[1]][ind[2]+1].setPosition(
+				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toBlock();
+				if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
+					cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
 						new Coordinate(
 							getCoveredLeftBorder() + ind[0],
 							getCoveredBackBorder() + ind[1],
 							ind[2]
 						)
 					);
+				}
 			}
 		}
 
@@ -806,13 +815,14 @@ map.getGameWidth(),
 			for (int y = 0; y < cameraContent[x].length; y++) {
 				cameraContent[x][y][0] = new RenderBlock(map.getGroundBlock().getId(), map.getGroundBlock().getValue());
 				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
-				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent())
+				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
 					cameraContent[x][y][0].getBlockData().setClippedTop();//always clipped right
+				}
 				cameraContent[x][y][0].getBlockData().setClippedRight();
 				cameraContent[x][y][0].setPosition(
 					new Coordinate(
-						getCoveredLeftBorder()+x,
-						getCoveredBackBorder()+y,
+						getCoveredLeftBorder() + x,
+						getCoveredBackBorder() + y,
 						-1
 					)
 				);
@@ -830,12 +840,12 @@ map.getGameWidth(),
 		updateViewSpaceSize();//todo check for redundant call?
 	}
 
-
 	/**
 	 * the width of the internal render resolution
+	 *
 	 * @param resolution
 	 */
-	public void setInternalRenderResolution(int resolution){
+	public void setInternalRenderResolution(int resolution) {
 		renderResWidth = resolution;
 		updateViewSpaceSize();
 	}
@@ -869,6 +879,7 @@ map.getGameWidth(),
 
 	/**
 	 * If the limit is set to the map's height or more it becomes deactivated.
+	 *
 	 * @param limit minimum is 0, everything to this limit becomes rendered
 	 */
 	public void setZRenderingLimit(int limit) {
@@ -894,7 +905,7 @@ map.getGameWidth(),
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / Block.VIEW_WIDTH-1);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / Block.VIEW_WIDTH - 1);
 	}
 
 	/**
@@ -903,11 +914,12 @@ map.getGameWidth(),
 	 * @return the left (X) border coordinate
 	 */
 	public int getCoveredLeftBorder() {
-		return (centerChunkX-1)*Chunk.getBlocksX();
+		return (centerChunkX - 1) * Chunk.getBlocksX();
 	}
 
 	/**
-	 * Returns the right seight border of the camera covered area currently visible.
+	 * Returns the right seight border of the camera covered area currently
+	 * visible.
 	 *
 	 * @return measured in grid-coordinates
 	 */
@@ -921,7 +933,7 @@ map.getGameWidth(),
 	 * @return the right (X) border coordinate
 	 */
 	public int getCoveredRightBorder() {
-		return (centerChunkX + 1)*Chunk.getBlocksX() - 1;
+		return (centerChunkX + 1) * Chunk.getBlocksX() - 1;
 	}
 
 	/**
@@ -931,18 +943,18 @@ map.getGameWidth(),
 	 */
 	public int getVisibleBackBorder() {
 		//TODO verify
-		return (int) (
-			(position.y + getHeightInProjSpc() / 2)//camera top border
+		return (int) ((position.y + getHeightInProjSpc() / 2)//camera top border
 			/ -Block.VIEW_DEPTH2//back to game space
 		);
 	}
 
 	/**
 	 * Clipping
+	 *
 	 * @return the top/back (Y) border coordinate
 	 */
 	public int getCoveredBackBorder() {
-		return (centerChunkY-1)*Chunk.getBlocksY();
+		return (centerChunkY - 1) * Chunk.getBlocksY();
 	}
 
 	/**
@@ -958,18 +970,17 @@ map.getGameWidth(),
 		);
 	}
 
-		/**
+	/**
 	 * Returns the bottom seight border y-coordinate of the highest block
 	 *
 	 * @return measured in grid-coordinates
 	 * @see #getVisibleFrontBorderLow()
 	 */
 	public int getVisibleFrontBorderHigh() {
-		return (int) (
-			(position.y- getHeightInProjSpc()/2) //bottom camera border
+		return (int) ((position.y - getHeightInProjSpc() / 2) //bottom camera border
 			/ -Block.VIEW_DEPTH2 //back to game coordinates
-			+cameraContent[0][0].length*Block.VIEW_HEIGHT/Block.VIEW_DEPTH2 //todo verify, try to add z component
-		);
+			+ cameraContent[0][0].length * Block.VIEW_HEIGHT / Block.VIEW_DEPTH2 //todo verify, try to add z component
+			);
 	}
 
 	/**
@@ -977,7 +988,7 @@ map.getGameWidth(),
 	 * @return the bottom/front (Y) border coordinate
 	 */
 	public int getCoveredFrontBorder() {
-		return (centerChunkY + 1)*Chunk.getBlocksY() - 1;
+		return (centerChunkY + 1) * Chunk.getBlocksY() - 1;
 	}
 
 	/**
@@ -1023,7 +1034,7 @@ map.getGameWidth(),
 	 */
 	public final void updateViewSpaceSize() {
 		viewSpaceWidth = renderResWidth;
-		viewSpaceHeight = (int) (screenHeight /getScreenSpaceScaling());
+		viewSpaceHeight = (int) (screenHeight / getScreenSpaceScaling());
 	}
 
 	/**
@@ -1179,8 +1190,9 @@ map.getGameWidth(),
 	@Override
 	public void onChunkChange(Chunk chunk) {
 		if (active) {
-			if (WE.CVARS.getValueB("mapUseChunks"))
+			if (WE.CVARS.getValueB("mapUseChunks")) {
 				((ChunkMap) Controller.getMap()).hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
+			}
 		}
 	}
 
@@ -1216,14 +1228,13 @@ map.getGameWidth(),
 		int indexX = coords.getX() - getCoveredLeftBorder();
 		int indexY = coords.getY() - getCoveredBackBorder();
 		//check if covered by camera
-		if (
-			   indexX >= 0
+		if (indexX >= 0
 			&& indexX < cameraContent.length
 			&& indexY >= 0
 			&& indexY < cameraContent[0].length
-			&& cameraContent[indexX][indexY][coords.getZ()+1] != null //not air
-		) {
-			return cameraContent[indexX][indexY][coords.getZ()+1].getBlockData().isClipped();
+			&& cameraContent[indexX][indexY][coords.getZ() + 1] != null //not air
+			) {
+			return cameraContent[indexX][indexY][coords.getZ() + 1].getBlockData().isClipped();
 		} else {
 			//if not return fully clipped
 			return true;
@@ -1237,9 +1248,10 @@ map.getGameWidth(),
 	 */
 	public void setActive(boolean active) {
 		//turning on
-		if ( this.active == false && active == true ) {
-			if (WE.CVARS.getValueB("mapUseChunks"))
+		if (this.active == false && active == true) {
+			if (WE.CVARS.getValueB("mapUseChunks")) {
 				updateNeededChunks();
+			}
 			updateCache();
 		}
 
@@ -1254,6 +1266,5 @@ map.getGameWidth(),
 	public RenderBlock[][][] getCameraContent() {
 		return cameraContent;
 	}
-
 
 }

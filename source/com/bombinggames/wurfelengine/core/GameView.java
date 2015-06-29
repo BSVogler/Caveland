@@ -422,7 +422,7 @@ public class GameView extends View implements GameManager {
     }
 
     /**
-     * Add a camera.
+     * Add a camera to the game.
      * @param camera
      */
     protected void addCamera(final Camera camera) {

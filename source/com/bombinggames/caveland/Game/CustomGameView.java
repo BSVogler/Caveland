@@ -586,13 +586,6 @@ public class CustomGameView extends GameView{
                  if (keycode == Input.Keys.ESCAPE)
                      WE.showMainMenu();
 				 
-				
-				if (keycode==Input.Keys.TAB)
-					if (getOrientation()==0)
-						setOrientation(2);
-					else 
-						setOrientation(0);
-				
 				//coop controlls
 				if (coop==0){
 					//p1

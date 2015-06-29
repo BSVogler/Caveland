@@ -280,12 +280,6 @@ public class MapEditorView extends GameView {
 			if (keycode == Input.Keys.D)
 				view.setCameraMoveVector(1, view.getCameraMoveVector().y);
 
-			if (keycode==Input.Keys.TAB)
-				if (getOrientation()==0)
-					setOrientation(2);
-				else 
-					setOrientation(0);
-        
 			if (keycode==Input.Keys.FORWARD_DEL)
 				for (AbstractEntity ent : controller.getSelectedEntities()) {
 					ent.dispose();

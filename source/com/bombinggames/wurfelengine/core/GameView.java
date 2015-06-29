@@ -222,18 +222,6 @@ public class GameView extends View implements GameManager {
 		return orientation;
 	}
 
-	/**
-	 * Set the new value for the current orientation.
-	 * @param orientation 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
-	 * @since v1.3.12
-	 */
-	public void setOrientation(int orientation) {
-		this.orientation = orientation;
-		for (Camera camera : cameras) {
-			camera.orientationChange();
-		}
-	}
-    
    /**
      * Reverts the perspective and transforms it into a coordiante which can be used in the game logic. Should be verified if returning correct results.
      * @param screenX the x position on the screen

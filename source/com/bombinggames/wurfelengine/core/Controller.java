@@ -131,6 +131,19 @@ public class Controller implements GameManager {
         return soundEngine;
     }
 	
+	/**
+     *Disposes static stuff.
+     */
+    public static void staticDispose(){
+        Gdx.app.debug("ControllerClass", "Disposing.");
+        AbstractGameObject.staticDispose();
+        RenderBlock.staticDispose();
+        map.dispose();
+		map = null;
+        lightEngine = null;
+		soundEngine.dispose();
+		soundEngine = null;
+    }
 	
     private DevTools devtools;
     private boolean initalized= false;
@@ -263,18 +276,4 @@ public class Controller implements GameManager {
 	public void dispose() {
 	}
 	
-	    /**
-     *Disposes static stuff.
-     */
-    public static void disposeClass(){
-        Gdx.app.debug("ControllerClass", "Disposing.");
-        AbstractGameObject.staticDispose();
-        RenderBlock.staticDispose();
-        map.dispose();
-		map = null;
-        lightEngine = null;
-		soundEngine.dispose();
-		soundEngine = null;
-    }
-
 }

@@ -12,6 +12,25 @@ public class ChunkGenerator implements Generator {
 	 */
 	public static final int CAVESBORDER = 1000;
 	
+	
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		for (int y = -50; y < 50; y++) {
+			for (int x = -50; x < 50; x++) {
+				int result = insideOutside(x,y,4);
+				if (result ==1)
+					System.out.print(".");
+				else if (result ==0)
+					System.out.print("#");
+				else if (result ==-1)
+					System.out.print("_");
+			}
+			System.out.println("");
+		}
+	}
+	
 	@Override
 	public byte generate(int x, int y, int z) {
 		if (y<CAVESBORDER) {//overworld

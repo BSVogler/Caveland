@@ -7,10 +7,14 @@ import com.bombinggames.wurfelengine.core.Map.Generator;
  * @author Benedikt Vogler
  */
 public class ChunkGenerator implements Generator {
-
+	/**
+	 * every block below this border is  a cave
+	 */
+	public final int cavesBorder = 1000;
+	
 	@Override
 	public byte generate(int x, int y, int z) {
-		if (y<1000) {//overworld
+		if (y<cavesBorder) {//overworld
 			
 			//floor
 			if (z<3) return 2;

@@ -4,19 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Caveland;
 import com.bombinggames.wurfelengine.WE;
@@ -27,7 +22,7 @@ import com.bombinggames.wurfelengine.core.AbstractMainMenu;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
-	private final TextButton[] menuItems = new TextButton[3];
+	private final MenuItem[] menuItems = new MenuItem[5];
 	private Stage stage;
 	private Image lettering;
 	private Image alphaTag; 
@@ -55,90 +50,79 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
-		Image button1Player = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
+		MenuItem button1Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
 		button1Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
 			stage.getHeight()/2-200
 		);
 		stage.addActor(button1Player);
-		
-		button1Player.addListener(
-			new ClickListener(){
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					WE.setScreen(new SaveSelectionScreen(-1,batch, background));
-				}
+		menuItems[0] = button1Player;
+		button1Player.addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				WE.setScreen(new SaveSelectionScreen(-1,batch, background));
+				return true;
 			}
-		);
+		});
 		
-		Image button2Player = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
+		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
 			stage.getHeight()/2-200
 		);
 		stage.addActor(button2Player);
-		
-		button2Player.addListener(
-			new ClickListener(){
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					WE.setScreen(new CoopControlsSelectionScreen(batch, background));
-				}
+		menuItems[1] = button2Player;
+		button2Player.addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				WE.setScreen(new CoopControlsSelectionScreen(batch, background));
+				return true;
 			}
-		);
+		});
 		
 		//add buttons
-		int i=0;
+		int i=2;
 		final int top = (int) (stage.getHeight()*0.1f);
 		
-		menuItems[i]=new TextButton("Options", WE.getEngineView().getSkin());
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new OptionScreen(batch));
-				}
+		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
+		menuItems[i].addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				WE.setScreen(new OptionScreen(batch));
+				return true;
 			}
-		);
-			menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2-200, top);
+		});
+		menuItems[i].setPosition(stage.getWidth()/2-400, top);
 		
 		i++;
-		menuItems[i]=new TextButton("Credits", WE.getEngineView().getSkin());
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new CreditsScreen());
-				}
+		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_credits.png")));
+		menuItems[i].addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				WE.setScreen(new CreditsScreen());
+				return true;
 			}
-		);
+		});
 			menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top);
 		
 		i++;
-		menuItems[i]=new TextButton("Exit", WE.getEngineView().getSkin());
-		menuItems[i].addListener(
-			new ChangeListener() {
-
-				@Override
-				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					Gdx.app.exit();
-				}
+		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_exit.png")));
+		menuItems[i].addAction(new Action() {
+			@Override
+			public boolean act(float delta) {
+				Gdx.app.exit();
+				return true;
 			}
-		);
-		menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2+200, top);
+		});
+		menuItems[i].setPosition(stage.getWidth()/2+150, top);
 		
-		for (TextButton menuItem : menuItems) {
-			menuItem.setWidth(100);
-			menuItem.setHeight(100);
+		for (Image menuItem : menuItems) {
 			stage.addActor(menuItem);
 		}
 		
         background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/background.jpg"));
 		
-        font = new BitmapFont(Gdx.files.internal("com/bombinggames/wurfelengine/core/arial.fnt"), false);
-        font.setColor(Color.WHITE);
+        font = new BitmapFont();
 		
 		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/caveland/MainMenu/menusound.wav"));
 		//to-do play when button is pressed
@@ -154,7 +138,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		
 		for (int i = 0; i < menuItems.length; i++) {
-			TextButton menuItem = menuItems[i];
+			Image menuItem = menuItems[i];
 			if 	(i==selectionIndex)
 				menuItem.setColor(1, 0, 0, 1);
 			else menuItem.setColor(1, 1, 1, 1);

@@ -150,7 +150,7 @@ public class OptionScreen extends WEScreen {
 		});
 		stage.addActor(cancelButton);
                 
-        font = new BitmapFont(Gdx.files.internal("com/bombinggames/wurfelengine/core/arial.fnt"), true);
+        font = new BitmapFont();
         font.setColor(Color.WHITE);
 		
 	}

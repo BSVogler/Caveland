@@ -38,8 +38,8 @@ import com.badlogic.gdx.math.Vector3;
  * @author Benedikt Vogler
  */
 public class Intersection {
-    private Vector3 normal;
-    private Point point;
+    private final Vector3 normal;
+    private final Point point;
     private float distance;
 
     /**

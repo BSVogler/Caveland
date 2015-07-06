@@ -33,6 +33,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -45,7 +46,6 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.View;
-import com.bombinggames.wurfelengine.WE;
 
 /**
  * A RenderBlock is a wonderful piece of information and a geometrical object. It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. It is an extension to the coredata saved in the map. The core data is shared so changing this renderblock changes the data in the map.
@@ -450,9 +450,9 @@ public class RenderBlock extends AbstractGameObject {
         }
 		
 		if (color!=null) {
-			color.r *= getLightlevel();
-			color.g *= getLightlevel();
-			color.b *= getLightlevel();
+			color.r *= blockData.getLightlevel(side);
+			color.g *= blockData.getLightlevel(side);
+			color.b *= blockData.getLightlevel(side);
 
 			sprite.setColor(color);
 		}

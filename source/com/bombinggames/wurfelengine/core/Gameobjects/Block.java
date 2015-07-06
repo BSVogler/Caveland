@@ -88,7 +88,10 @@ public class Block implements HasID, Serializable {
 	private byte id;
 	private byte value;
 	private byte health = 100;
-	private float lightlevel = 1f;//saved here because it saves recalcualtion for every camera
+	/**
+	 *  byte 0: left side, byte 1: top side, byte 2: right side.<br>Each byte stores lightlevel between 0 and 127.
+	 */
+	private int lightlevel = (127<<16)+(127<<8)+127;
 	/**
 	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte bit order: <br>
 	 * 7 \ 0 / 1<br>
@@ -218,6 +221,7 @@ public class Block implements HasID, Serializable {
      * Check if the block is liquid.
      * @return true if liquid, false if not 
      */
+	@Override
 	public boolean isLiquid() {
 		if (id>9 && customBlocks != null){
             return customBlocks.isLiquid(id, value);
@@ -227,14 +231,37 @@ public class Block implements HasID, Serializable {
 		return false;
 	}
 	
+	/**
+	 * get the average brightness above all the sides
+	 * @return 
+	 */
 	@Override
 	public float getLightlevel() {
-		return lightlevel;
+		return (((lightlevel>>16)&0xFF)+((lightlevel>>8)&0xFF)+(lightlevel&0xFF))/383f;
+	}
+	
+	/**
+	 * 
+	 * @param side
+	 * @return 
+	 */
+	public float getLightlevel(Side side){
+		if (side==Side.LEFT)
+			return (lightlevel&0xFF)/127f;
+		else if (side==Side.TOP)
+			return ((lightlevel>>8)&0xFF)/127f;
+		else
+			return ((lightlevel>>16)&0xFF)/127f;
 	}
 
+	/**
+	 * stores the lightlevel overriding each side
+	 * @param lightlevel 
+	 */
 	@Override
 	public void setLightlevel(float lightlevel) {
-		this.lightlevel = lightlevel;
+		byte level = (byte) (lightlevel*127);
+		this.lightlevel = (level<<16)+(level<<8)+level;
 	}
 	
 	/**

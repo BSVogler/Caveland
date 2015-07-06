@@ -29,7 +29,9 @@ public interface HasID {
 	 * The lightlevel is a scale applied to the color. 1 is default value.
 	 * @return 1 is default bright. 0 is black.
 	 */
-	float getLightlevel();
+	float getLightlevelR();
+	float getLightlevelG();
+	float getLightlevelB();
 
 	/**
 	 * Set the brightness of the object.

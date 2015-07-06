@@ -89,9 +89,11 @@ public class Block implements HasID, Serializable {
 	private byte value;
 	private byte health = 100;
 	/**
-	 *  byte 0: left side, byte 1: top side, byte 2: right side.<br>Each byte stores lightlevel between 0 and 127.
+	 *  each side has RGB color stored as 10bit float. Obtained by dividing bits by fraction /1023.
 	 */
-	private int lightlevel = (127<<16)+(127<<8)+127;
+	private int colorLeft = (55<<16)+(55<<8)+55;
+	private int colorTop = (55<<16)+(55<<8)+55;;
+	private int colorRight = (55<<16)+(55<<8)+55;
 	/**
 	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte bit order: <br>
 	 * 7 \ 0 / 1<br>
@@ -236,8 +238,18 @@ public class Block implements HasID, Serializable {
 	 * @return 
 	 */
 	@Override
-	public float getLightlevel() {
-		return (((lightlevel>>16)&0xFF)+((lightlevel>>8)&0xFF)+(lightlevel&0xFF))/383f;
+	public float getLightlevelR() {
+		return (getLightlevelR(Side.LEFT)+getLightlevelR(Side.TOP)+getLightlevelR(Side.RIGHT))/3f;
+	}
+	
+	@Override
+	public float getLightlevelG() {
+		return (getLightlevelG(Side.LEFT)+getLightlevelG(Side.TOP)+getLightlevelG(Side.RIGHT))/3f;
+	}
+	
+	@Override
+	public float getLightlevelB() {
+		return (getLightlevelB(Side.LEFT)+getLightlevelB(Side.TOP)+getLightlevelB(Side.RIGHT))/3f;
 	}
 	
 	/**
@@ -245,13 +257,41 @@ public class Block implements HasID, Serializable {
 	 * @param side
 	 * @return 
 	 */
-	public float getLightlevel(Side side){
+	public float getLightlevelR(Side side){
 		if (side==Side.LEFT)
-			return (lightlevel&0xFF)/127f;
+			return ((colorLeft >> 20) & 0x3FF)/1023f;
 		else if (side==Side.TOP)
-			return ((lightlevel>>8)&0xFF)/127f;
+			return ((colorTop >> 20) & 0x3FF)/1023f;
 		else
-			return ((lightlevel>>16)&0xFF)/127f;
+			return ((colorRight >> 20) & 0x3FF)/1023f;
+	}
+	
+	/**
+	 * 
+	 * @param side
+	 * @return 
+	 */
+	public float getLightlevelG(Side side){
+		if (side==Side.LEFT)
+			return ((colorLeft >> 10) & 0x3FF)/1023f;
+		else if (side==Side.TOP)
+			return ((colorTop >> 10) & 0x3FF)/1023f;
+		else
+			return ((colorRight >> 10) & 0x3FF)/1023f;
+	}
+	
+	/**
+	 * 
+	 * @param side
+	 * @return 
+	 */
+	public float getLightlevelB(Side side){
+		if (side==Side.LEFT)
+			return (colorLeft & 0x3FF)/1023f;
+		else if (side==Side.TOP)
+			return (colorTop & 0x3FF)/1023f;
+		else
+			return (colorRight & 0x3FF)/1023f;
 	}
 
 	/**
@@ -260,8 +300,9 @@ public class Block implements HasID, Serializable {
 	 */
 	@Override
 	public void setLightlevel(float lightlevel) {
-		byte level = (byte) (lightlevel*127);
-		this.lightlevel = (level<<16)+(level<<8)+level;
+		this.colorLeft =  ((int) (lightlevel*1023)<<20)+((int) (lightlevel*1023)<<10)+(int) (lightlevel*1023);//RGB
+		this.colorTop =   colorLeft;
+		this.colorRight = colorLeft;
 	}
 	
 	/**

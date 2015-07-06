@@ -75,7 +75,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	
 	private byte id = 0;
 	private byte value = 0;
-	private float lightlevel = 1f;
+	private float lightlevelG;
+	private float lightlevelR;
+	private float lightlevelB;
 	private float health = 100f;
     private Point position;//the position in the map-grid
     private int dimensionZ = GAME_EDGELENGTH;  
@@ -469,13 +471,25 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
     }
 	
 	@Override
-    public float getLightlevel() {
-        return lightlevel;
-    }
+	public float getLightlevelR() {
+		return lightlevelR;
+	}
+	
+	@Override
+	public float getLightlevelG() {
+		return lightlevelG;
+	}
+
+	@Override
+	public float getLightlevelB() {
+		return lightlevelB;
+	}
+	
+	
 
 	@Override
 	public void setLightlevel(float lightlevel) {
-		this.lightlevel = lightlevel;
+		this.lightlevelR = lightlevel;
 	}
 	
 	/**

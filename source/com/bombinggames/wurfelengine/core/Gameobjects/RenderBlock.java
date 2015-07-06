@@ -450,9 +450,9 @@ public class RenderBlock extends AbstractGameObject {
         }
 		
 		if (color!=null) {
-			color.r *= blockData.getLightlevel(side);
-			color.g *= blockData.getLightlevel(side);
-			color.b *= blockData.getLightlevel(side);
+			color.r *= blockData.getLightlevelR(side);
+			color.g *= blockData.getLightlevelG(side);
+			color.b *= blockData.getLightlevelB(side);
 
 			sprite.setColor(color);
 		}
@@ -552,8 +552,18 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	@Override
-	public float getLightlevel() {
-		return blockData.getLightlevel();
+	public float getLightlevelR() {
+		return blockData.getLightlevelR();
+	}
+	
+	@Override
+	public float getLightlevelG() {
+		return blockData.getLightlevelG();
+	}
+	
+	@Override
+	public float getLightlevelB() {
+		return blockData.getLightlevelB();
 	}
 
 	@Override

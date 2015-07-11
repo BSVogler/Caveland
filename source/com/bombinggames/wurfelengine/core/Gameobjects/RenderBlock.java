@@ -451,9 +451,12 @@ public class RenderBlock extends AbstractGameObject {
 		
 		if (color!=null) {
 			color.r *= blockData.getLightlevelR(side);
+			if (color.r>1) color.r=1;
 			color.g *= blockData.getLightlevelG(side);
+			if (color.g>1) color.g=1;
 			color.b *= blockData.getLightlevelB(side);
-
+			if (color.b>1) color.b=1;
+			
 			sprite.setColor(color);
 		}
  

@@ -48,9 +48,8 @@ public class Portal extends AbstractEntity implements Interactable{
 	 * teleports to 0 0 0
 	 */
 	public Portal(){
-		super((byte) 70);
+		super((byte) 15);
 		setName("Portal");
-		setHidden(true);
 		this.target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
 	}
 	

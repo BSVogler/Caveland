@@ -185,7 +185,7 @@ public class Block implements HasID, Serializable {
 	 * creates a new RenderBlock instance based on he data
 	 * @return 
 	 */
-	public RenderBlock toBlock(){
+	public RenderBlock toRenderBlock(){
 		if (id==0)
 			return null;
 		

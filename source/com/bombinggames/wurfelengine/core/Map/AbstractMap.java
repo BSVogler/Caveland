@@ -118,7 +118,7 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 *
+	 *Updates mostly the entities.
 	 * @param dt
 	 */
 	public void update(float dt) {

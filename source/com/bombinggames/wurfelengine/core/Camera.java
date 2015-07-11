@@ -77,7 +77,7 @@ public class Camera implements MapObserver {
 	/**
 	 * has the ground layer in 0, therefore offset in z of one
 	 */
-	private RenderBlock[][][] cameraContent;
+	private final RenderBlock[][][] cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 
 	/**
 	 * the position of the camera in view space. Y-up. Read only field.
@@ -778,12 +778,11 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * fill the view frustum in the camera with renderblocks. Only done sometimes.
+	 * fill the view frustum in the camera with renderblocks. Only done when content changes.
 	 */
 	private void fillCameraContentBlocks() {
 		//fill viewFrustum with RenderBlock data
-		cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
-
+		
 		//1. put every block in the view frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			map,
@@ -795,9 +794,11 @@ public class Camera implements MapObserver {
 
 		while (csIter.hasNext()) {
 			Block block = csIter.next();
-			if (block != null) {
-				int[] ind = csIter.getCurrentIndex();
-				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toBlock();
+			int[] ind = csIter.getCurrentIndex();
+			if (block == null) {
+				cameraContent[ind[0]][ind[1]][ind[2] + 1] = null;
+			} else {
+				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toRenderBlock();
 				if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
 					cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
 						new Coordinate(

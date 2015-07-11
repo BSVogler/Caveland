@@ -485,7 +485,7 @@ public class Point extends AbstractPosition {
 	/**
 	 * 
 	 * @param point
-	 * @return the distance from this point to the other point
+	 * @return the distance from this point to the other point in game coordinates
 	 */
 	public float distanceTo(Point point) {
 		float dX = x-point.x;

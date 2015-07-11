@@ -30,16 +30,26 @@ public interface HasID {
 	 * @return 1 is default bright. 0 is black.
 	 */
 	float getLightlevelR();
+	/**
+	 * How bright is the object?
+	 * The lightlevel is a scale applied to the color. 1 is default value.
+	 * @return 1 is default bright. 0 is black.
+	 */
 	float getLightlevelG();
+	/**
+	 * How bright is the object?
+	 * The lightlevel is a scale applied to the color. 1 is default value.
+	 * @return 1 is default bright. 0 is black.
+	 */
 	float getLightlevelB();
 
 	/**
 	 * Set the brightness of the object.
-	 * The lightlevel is a scaling factor between.
+	 * The lightlevel is a scaling factor. 1 is default value.
 	 * @param lightlevel 1 is default bright. 0 is black.
 	 */
 	void setLightlevel(float lightlevel);
-
+	
 	/**
 	 * Can light travel through object?
 	 * @return

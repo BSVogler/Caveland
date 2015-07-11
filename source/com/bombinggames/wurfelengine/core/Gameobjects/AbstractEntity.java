@@ -485,13 +485,11 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 		return lightlevelB;
 	}
 	
-	
-
 	@Override
 	public void setLightlevel(float lightlevel) {
 		this.lightlevelR = lightlevel;
 	}
-	
+
 	/**
 	 * Set the value of the object.
 	 * @param value

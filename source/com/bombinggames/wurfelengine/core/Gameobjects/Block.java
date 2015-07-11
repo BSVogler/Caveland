@@ -255,54 +255,77 @@ public class Block implements HasID, Serializable {
 	/**
 	 * 
 	 * @param side
-	 * @return 
+	 * @return range 0-2. 
 	 */
 	public float getLightlevelR(Side side){
 		if (side==Side.LEFT)
-			return ((colorLeft >> 20) & 0x3FF)/1023f;
+			return ((colorLeft >> 20) & 0x3FF)/511f;
 		else if (side==Side.TOP)
-			return ((colorTop >> 20) & 0x3FF)/1023f;
+			return ((colorTop >> 20) & 0x3FF)/511f;
 		else
-			return ((colorRight >> 20) & 0x3FF)/1023f;
+			return ((colorRight >> 20) & 0x3FF)/511f;
 	}
 	
 	/**
 	 * 
 	 * @param side
-	 * @return 
+	 * @return range 0-2.
 	 */
 	public float getLightlevelG(Side side){
 		if (side==Side.LEFT)
-			return ((colorLeft >> 10) & 0x3FF)/1023f;
+			return ((colorLeft >> 10) & 0x3FF)/511f;
 		else if (side==Side.TOP)
-			return ((colorTop >> 10) & 0x3FF)/1023f;
+			return ((colorTop >> 10) & 0x3FF)/511f;
 		else
-			return ((colorRight >> 10) & 0x3FF)/1023f;
+			return ((colorRight >> 10) & 0x3FF)/511f;
 	}
 	
 	/**
 	 * 
 	 * @param side
-	 * @return 
+	 * @return range 0 -2
 	 */
 	public float getLightlevelB(Side side){
 		if (side==Side.LEFT)
-			return (colorLeft & 0x3FF)/1023f;
+			return (colorLeft & 0x3FF)/511f;
 		else if (side==Side.TOP)
-			return (colorTop & 0x3FF)/1023f;
+			return (colorTop & 0x3FF)/511f;
 		else
-			return (colorRight & 0x3FF)/1023f;
+			return (colorRight & 0x3FF)/511f;
 	}
 
 	/**
 	 * stores the lightlevel overriding each side
-	 * @param lightlevel 
+	 * @param lightlevel  range 0 -2
 	 */
 	@Override
 	public void setLightlevel(float lightlevel) {
-		this.colorLeft =  ((int) (lightlevel*1023)<<20)+((int) (lightlevel*1023)<<10)+(int) (lightlevel*1023);//RGB
-		this.colorTop =   colorLeft;
+		if (lightlevel <0)
+			lightlevel=0;
+		int l = (int) (lightlevel*512);
+		if (l>1023) l=1023;
+		colorLeft = (l<<20)+(l<<10)+l;//RGB;
+		this.colorTop = colorLeft;
 		this.colorRight = colorLeft;
+	}
+	
+	/**
+	 * 
+	 * @param lightlevel range 0-2.
+	 * @param side
+	 */
+	public void setLightlevel(float lightlevel, Side side) {
+		if (lightlevel <0)
+			lightlevel=0;
+		int l = (int) (lightlevel*512);
+		if (l>1023) l=1023;
+		
+		if (side==Side.LEFT)
+			colorLeft = (l<<20)+(l<<10)+l;//RGB;
+		else if (side==Side.TOP)
+			colorTop = (l<<20)+(l<<10)+l;//RGB;
+		else
+			colorRight = (l<<20)+(l<<10)+l;//RGB
 	}
 	
 	/**
@@ -334,7 +357,7 @@ public class Block implements HasID, Serializable {
 				return "water";								
 			default:
 				if (id > 9) {
-                    if (customBlocks!=null){
+                    if (customBlocks != null){
                         return customBlocks.getName(id, value);
                     } else {
                         return "no custom blocks";

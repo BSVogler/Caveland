@@ -439,7 +439,7 @@ public class RenderBlock extends AbstractGameObject {
      * @param xPos rendering position
      * @param yPos rendering position
      * @param side The number identifying the side. 0=left, 1=top, 2=right
-     * @param color a tint in which the sprite gets rendered. If null lightlevel gets ignored
+     * @param color a tint in which the sprite gets rendered. If null color gets ignored
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color){
         Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
@@ -569,6 +569,15 @@ public class RenderBlock extends AbstractGameObject {
 	@Override
 	public void setLightlevel(float lightlevel) {
 		blockData.setLightlevel(lightlevel);
+	}
+
+	/**
+	 * 
+	 * @param lightlevel 1 default
+	 * @param side 
+	 */
+	public void setLightlevel(float lightlevel, Side side) {
+		blockData.setLightlevel(lightlevel, side);
 	}
 
 	@Override

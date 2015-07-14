@@ -472,7 +472,7 @@ public class Console implements CommandsInterface  {
 			case "printmap":
 				Controller.getMap().print();
 				return true;
-			case "reloadShaders":
+			case "reloadshaders":
 				gameplayRef.getView().loadShaders();
 				return true;
         }

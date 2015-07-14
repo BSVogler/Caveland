@@ -97,6 +97,7 @@ public abstract class View {
 	 * reloads the shaders
 	 */
 	public void loadShaders(){
+		Gdx.app.debug("Shader", "loading");
 		String vertexShader;
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box

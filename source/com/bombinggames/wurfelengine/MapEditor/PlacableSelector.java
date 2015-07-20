@@ -31,10 +31,6 @@
 
 package com.bombinggames.wurfelengine.MapEditor;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -44,6 +40,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.Map;
 
 /**
@@ -96,18 +96,15 @@ public class PlacableSelector extends Table {
 			
 			if (mode == PlaceMode.Blocks) {
 				if (!table.hasChildren()){//add blocks
-					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {
+					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 						table.row();
-						table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
-						
+						table.add(new Label(new RenderBlock(i, (byte) 0).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
 						BlockDrawable dbl = new BlockDrawable(i);
 						ImageButton button = new ImageButton(dbl);
-						dbl.setX(50);
+						//dbl.setX(50);
 						button.addListener(new BlockListener(i, button));
 						//button.setStyle(style);
 						table.add(button);
-
-						table.add(new Label(new RenderBlock(i, (byte) 0).getName(), WE.getEngineView().getSkin()));
 					}
 				}
 			} else {//add entities
@@ -115,17 +112,15 @@ public class PlacableSelector extends Table {
 					for (
 						Map.Entry<String, Class<? extends AbstractEntity>> entry
 						: AbstractEntity.getRegisteredEntities().entrySet()
-					) {
+					) {//add every registered entity class
 						table.row();
-						//table.add(new Label(Integer.toString(i), WE.getEngineView().getSkin())).expandX().fillX();
-
+						
+						table.add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
 						Drawable dbl = new EntityDrawable(entry.getValue());
-						Button button = new Button(dbl);
+						ImageButton button = new ImageButton(dbl);
 						button.addListener(new EntityListener(entry.getKey(), entry.getValue(), button));
 						//button.setStyle(style);
 						table.add(button);
-
-						table.add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
 					}
 				}
 			}

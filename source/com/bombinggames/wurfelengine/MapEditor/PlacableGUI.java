@@ -52,14 +52,14 @@ import java.util.logging.Logger;
  */
 public class PlacableGUI extends WidgetGroup {
 	private Block block = Block.getInstance((byte) 1);
-	private Image image;
-	private Label label;
-	private Label blockPosition;
+	private final Image image;
+	private final Label label;
+	private final Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
 	private PlaceMode mode = PlaceMode.Blocks;
 	private final Slider slider;
 	/** parent stage*/
-	private Stage stage;
+	private final Stage stage;
 
 /**
  * 
@@ -70,13 +70,8 @@ public class PlacableGUI extends WidgetGroup {
 	public PlacableGUI(Stage stage, Selection selection, boolean left) {
 		this.stage = stage;
 		
-		if (left)
-			setPosition(200, stage.getHeight()-300);
-		else
-			setPosition(stage.getWidth()-200, stage.getHeight()-300);
-		
 		image = new Image(new BlockDrawable(getId(),getValue(),-0.4f));
-		image.setPosition(50, 60);
+		image.setPosition(getX()+50, getY()+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
 		addActor(image);
 		slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
@@ -88,7 +83,31 @@ public class PlacableGUI extends WidgetGroup {
 		
 		blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
 		blockPosition.setPosition(50, 0);
+		
+		if (left)
+			setPosition(200, stage.getHeight()-300);
+		else
+			setPosition(stage.getWidth()-200, stage.getHeight()-300);
+				
 		addActor(blockPosition);
+	}
+
+	@Override
+	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
+		image.setPosition(x+50, y+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+	}
+
+	@Override
+	public void setX(float x) {
+		super.setX(x);
+		image.setPosition(x+50, getY()+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+	}
+
+	@Override
+	public void setY(float y) {
+		super.setY(y);
+		image.setPosition(getX()+50, y+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
 	}
 	
 	/**
@@ -173,8 +192,8 @@ public class PlacableGUI extends WidgetGroup {
 	}
 
 	/**
-	 *
-	 * @param name
+	 * Sets the current color to this entity class.
+	 * @param name name which gets displayed
 	 * @param entclass
 	 */
 	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {

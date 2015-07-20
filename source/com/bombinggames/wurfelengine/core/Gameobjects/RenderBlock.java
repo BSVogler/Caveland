@@ -258,8 +258,8 @@ public class RenderBlock extends AbstractGameObject {
     /**
      * Renders the whole block at a custom position.
      * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
+     * @param xPos rendering position of the center
+     * @param yPos rendering position of the center
      * @param color when the block has sides its sides gets shaded using this color.
      * @param staticShade makes one side brighter, opposite side darker
      */
@@ -299,7 +299,7 @@ public class RenderBlock extends AbstractGameObject {
 					color
 				);
             } else
-                super.render(view, xPos, yPos, color);
+                super.render(view, xPos, yPos+VIEW_DEPTH4, color);
         }
     }
        

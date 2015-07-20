@@ -33,9 +33,9 @@ package com.bombinggames.wurfelengine.MapEditor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.WE;
 
 /**
  * a class what renders a block using the drawableinterface.
@@ -43,6 +43,9 @@ import com.bombinggames.wurfelengine.WE;
  */
 public class BlockDrawable extends TextureRegionDrawable {
     private RenderBlock block;
+	/**
+	 * a factor relative to original size. 0 is default
+	 */
     private float size = -0.5f;
 	private float x;
     
@@ -82,7 +85,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 		WE.getGameplay().getView().getBatch().begin();
 		if (block.getId()!=0) {
 			//block.setColor(new Color(1, 1, 1, 1));
-			block.render(WE.getGameplay().getView(), (int) (x+this.x), (int) y, null, true);
+			block.render(WE.getGameplay().getView(), (int) (x+Block.VIEW_WIDTH2*(1f+size)), (int) y, null, true);
 		}
 		WE.getGameplay().getView().getBatch().end();
 		batch.begin();
@@ -112,7 +115,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getTopHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
+		return 0;
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getBottomHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(1f+size);
+		return 0;
 	}
 	
     /**

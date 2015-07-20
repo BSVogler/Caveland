@@ -54,6 +54,7 @@ public class PlacableGUI extends WidgetGroup {
 	private Block block = Block.getInstance((byte) 1);
 	private final Image image;
 	private final Label label;
+	private String name;
 	private final Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
 	private PlaceMode mode = PlaceMode.Blocks;
@@ -73,7 +74,7 @@ public class PlacableGUI extends WidgetGroup {
 		image = new Image(new BlockDrawable(getId(),getValue(),-0.4f));
 		image.setPosition(getX()+50, getY()+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
 		addActor(image);
-		slider = new Slider(0, 10, 1, false, WE.getEngineView().getSkin());
+		slider = new Slider(-1, Block.VALUESNUM-1, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
@@ -82,7 +83,7 @@ public class PlacableGUI extends WidgetGroup {
 		addActor(label);
 		
 		blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
-		blockPosition.setPosition(50, 0);
+		blockPosition.setPosition(60, 30);
 		
 		if (left)
 			setPosition(200, stage.getHeight()-300);
@@ -143,27 +144,25 @@ public class PlacableGUI extends WidgetGroup {
 		if (block!=null) {
 			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
 			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+			this.name = block.getName();
 		}
 	}
 
 	/**
-	 *
-	 * @param id
-	 */
-	public void setId(byte id) {
-		this.block = Block.getInstance(id, block.getValue());
-		label.setText(Integer.toString(id) + " - "+ Integer.toString(block.getValue()));
-		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
-	}
-
-	/**
-	 *
+	 *Set the value byte of the block or entity
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		this.block = Block.getInstance(block.getId(), value);
-		label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
-		image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		if (mode==PlaceMode.Blocks) {
+			this.block = Block.getInstance(block.getId(), value);
+			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
+			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		} else {
+			if (value==-1)
+				label.setText(name);
+			else
+				label.setText(name + " force value: "+value);
+		}
 	}
 	
 	/**
@@ -184,7 +183,10 @@ public class PlacableGUI extends WidgetGroup {
 	public AbstractEntity getEntity(){
 		if (entityClass == null) return null;
 		try {
-			return entityClass.newInstance();
+			AbstractEntity ent = entityClass.newInstance();
+			if (slider.getValue()>-1)
+				ent.setValue((byte) slider.getValue());
+			return ent;
 		} catch (InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(PlacableGUI.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -198,6 +200,7 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {
 		entityClass = entclass;
+		this.name = name; 
 		label.setText(name);
 		image.setDrawable(new EntityDrawable(entclass));
 	}
@@ -208,9 +211,6 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setMode(PlaceMode mode) {
 		this.mode = mode;
-		if (mode==PlaceMode.Blocks)
-			slider.setVisible(true);
-		else slider.setVisible(false);
 	}
 	
 	/**
@@ -256,7 +256,8 @@ public class PlacableGUI extends WidgetGroup {
 
 		@Override
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			parent.setValue((byte) ((Slider)actor).getValue());
+			if (((Slider)actor).getValue() > -1)
+				parent.setValue((byte) ((Slider)actor).getValue());
 		}
 	}
 }

@@ -31,6 +31,7 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -76,5 +77,10 @@ public class IslandGenerator implements Generator {
         //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
         //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);
     }
+
+	@Override
+	public AbstractEntity[] generateEntities(int x, int y, int z) {
+		return null;
+	}
     
 }

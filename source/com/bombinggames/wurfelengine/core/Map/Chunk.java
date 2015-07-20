@@ -46,6 +46,7 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -171,7 +172,7 @@ public class Chunk {
 	}
     
     /**
-     * Fills the chunk using a generator.
+     * Fills the chunk's block using a generator.
      * @param chunkCoordX
      * @param chunkCoordY
      * @param generator 
@@ -191,6 +192,13 @@ public class Chunk {
 						(byte) 0
 					);
                     data[x][y][z] = block;
+					AbstractEntity[] entities = generator.generateEntities(
+						left+x,
+						top+y,
+						z
+					);
+					if (entities != null && entities.length>0)
+						Controller.getMap().getEntitys().addAll(Arrays.asList(entities));
 				}
 		modified = true;
     }

@@ -1,5 +1,7 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -13,6 +15,11 @@ public class ChunkGenerator implements Generator {
 	 */
 	public static final int CAVESBORDER = 1000;
 	
+	static final float g = 15;
+	static final float p = 5;
+	static final float yStrech = 0.5f;
+	static final float wallsize =1;
+	static final float roomWithPadding = g+p+wallsize;
 	
 	/**
 	 * @param args the command line arguments
@@ -27,6 +34,10 @@ public class ChunkGenerator implements Generator {
 					System.out.print("#");
 				else if (result ==-1)
 					System.out.print("_");
+				else if (result ==2)
+					System.out.print("i");
+				else if (result ==3)
+					System.out.print("o");
 			}
 			System.out.println("");
 		}
@@ -59,19 +70,39 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	/**
+	 * the the entities which should be spawned at this coordiante
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
+	@Override
+	public AbstractEntity[] generateEntities(int x, int y, int z){
+		//apply p
+		float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+		float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+		
+		//entry
+		if (xRoom==5 && yRoom==g-5 && z == 8)
+			return new AbstractEntity[]{new Portal(new Coordinate((int) (x-roomWithPadding), y, z))};
+		
+		//exit
+		if (xRoom==g-5 && yRoom==5 && z == 8){
+			Portal portal = new Portal(new Coordinate((int) (x+roomWithPadding), y, z));
+			portal.setValue((byte) 1);
+			return new AbstractEntity[]{portal};
+		}
+		return null;
+	}
+	
+	/**
 	 * 
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return -1 outside, 0 middle, 1 inside
+	 * @return -1 outside, 0 middle, 1 inside, 2 entry, 3 exit
 	 */
 	public static int insideOutside(int x, int y, int z){
-		final float g = 15;
-		final float p = 5;
-		float yStrech=0.5f;
-		final float wallsize =1;
-		final float roomWithPadding = g+p+wallsize;
-		
 		//apply p
 		float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 		float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
@@ -102,7 +133,13 @@ public class ChunkGenerator implements Generator {
 		} else {
 			if (firstCheckInside==false)
 				return 0;//must be in middle if was outside and now inside
-			return 1;//still inside
+			else {
+				if (xRoom==5 && yRoom==g-5)
+					return 2;
+				if (xRoom==g-5 && yRoom==5)
+					return 3;
+				return 1;//still inside
+			}
 		}
 	}
 	

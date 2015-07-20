@@ -31,6 +31,7 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.OBJECTTYPESNUM;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -46,5 +47,10 @@ public class BlockTestGenerator implements Generator{
         else
             return 0;
     }
+
+	@Override
+	public AbstractEntity[] generateEntities(int x, int y, int z) {
+		return null;
+	}
     
 }

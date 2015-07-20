@@ -31,6 +31,7 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
 /**
@@ -44,6 +45,10 @@ public class AirGenerator implements Generator {
     public byte generate(int x, int y, int z) {
         return 0;
     }
-    
-    
+
+	@Override
+	public AbstractEntity[] generateEntities(int x, int y, int z) {
+		return null;
+	}
+	
 }

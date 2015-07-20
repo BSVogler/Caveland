@@ -10,8 +10,11 @@ import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *The <i>CustomGameController</i> is for the game code. Put engine code into <i>Controller</i>.
@@ -20,6 +23,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class CustomGameController extends Controller {
 	private CustomPlayer player1;
 	private CustomPlayer player2;
+	private HashMap<String, ArrayList<AbstractEntity>> caves;
         
     @Override
     public void init(){
@@ -98,6 +102,9 @@ public class CustomGameController extends Controller {
 //			);
 //			enemy.setTarget(getPlayer(0));
 //		}
+		//check if each cave has two portals
+		//add onChunkLoad and add this class to map observers
+		//each x blocks a new cave beginns, if not already a collection available for it, the nmake new one
 	}
 
 	/**

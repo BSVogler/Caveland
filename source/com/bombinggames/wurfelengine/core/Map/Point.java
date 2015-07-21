@@ -589,7 +589,7 @@ public class Point extends AbstractPosition {
 	@SuppressWarnings("unchecked")
 	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type){
 		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
-		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
+		AbstractEntity[] entityList = Controller.getMap().getEntitys();
 
         for (AbstractEntity entity : entityList) {//check every entity
             if (

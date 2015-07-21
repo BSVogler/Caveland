@@ -46,7 +46,6 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -198,7 +197,7 @@ public class Chunk {
 						z
 					);
 					if (entities != null && entities.length>0)
-						Controller.getMap().getEntitys().addAll(Arrays.asList(entities));
+						Controller.getMap().addEntities(entities);
 				}
 		modified = true;
     }
@@ -285,7 +284,7 @@ public class Chunk {
 							for (int i = 0; i < length; i++) {
 								try {
 									object = (AbstractEntity) fis.readObject();
-									Controller.getMap().getEntitys().add(object);
+									Controller.getMap().addEntities(object);
 									Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
 									//objectIn.close();
 								} catch (ClassNotFoundException | InvalidClassException ex) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -12,6 +13,7 @@ import com.bombinggames.wurfelengine.core.Map.Iterators.MemoryMapIterator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * If a class wants to be notified if a change on the map happens it must register as an {@link com.bombinggames.wurfelengine.core.Map.MapObserver} in the {@link #getOberserverList() } first.
@@ -123,17 +125,16 @@ public abstract class AbstractMap implements Cloneable {
 	 */
 	public void update(float dt) {
 		dt *= gameSpeed;//aplly game speed
-
 		//update every entity
-		for (int i = 0; i < getEntitys().size(); i++) {
-			AbstractEntity entity = getEntitys().get(i);
+		for (int i = 0; i < entityList.size(); i++) {//old style for loop because allows modification during loop
+			AbstractEntity entity = entityList.get(i);
 			if (entity.isInMemoryArea()) {//only update entities in memory
 				entity.update(dt);
 			}
 		}
 
 		//remove not spawned objects from list
-		getEntitys().removeIf(
+		entityList.removeIf(
 			(AbstractEntity entity) -> !entity.isSpawned()
 		);
 	}
@@ -163,39 +164,30 @@ public abstract class AbstractMap implements Cloneable {
 	}
 
 	/**
-	 * Returns the entityList
+	 * Returns a copy of the entityList.
 	 *
-	 * @return
+	 * @return every item on the map
 	 */
-	public ArrayList<AbstractEntity> getEntitys() {
-		return entityList;
+	public AbstractEntity[] getEntitys() {
+		return entityList.toArray(new AbstractEntity[]{});//it is a bit stupid to create a new array which will not be used but wihtout you get Object[] which can not be casted to AbstractEntity[].
 	}
-
+	
 	/**
-	 * The width of the map with three chunks in use
 	 *
-	 * @return amount of bluck multiplied by the size in game space.
+	 * @param ent
 	 */
-	public int getGameWidth() {
-		return getBlocksX() * Block.GAME_DIAGLENGTH;
+	public void addEntities(AbstractEntity... ent){
+		entityList.addAll(Arrays.asList(ent));
 	}
-
+	
 	/**
-	 * The depth of the map in game size
-	 *
-	 * @return
+	 *Disposes every entity on the map and clears the list.
 	 */
-	public int getGameDepth() {
-		return getBlocksY() * Block.GAME_DIAGLENGTH2;
-	}
-
-	/**
-	 * Game size
-	 *
-	 * @return
-	 */
-	public int getGameHeight() {
-		return getBlocksZ() * Block.GAME_EDGELENGTH;
+	public void disposeEntities(){
+		for (int i = 0; i < Controller.getMap().getEntitys().length; i++) {
+			entityList.get(i).dispose();
+		}
+		entityList.clear();
 	}
 
 	/**
@@ -259,6 +251,33 @@ public abstract class AbstractMap implements Cloneable {
 		}
 
 		return list;
+	}
+	
+	/**
+	 * The width of the map with three chunks in use
+	 *
+	 * @return amount of bluck multiplied by the size in game space.
+	 */
+	public int getGameWidth() {
+		return getBlocksX() * Block.GAME_DIAGLENGTH;
+	}
+
+	/**
+	 * The depth of the map in game size
+	 *
+	 * @return
+	 */
+	public int getGameDepth() {
+		return getBlocksY() * Block.GAME_DIAGLENGTH2;
+	}
+
+	/**
+	 * Game size
+	 *
+	 * @return
+	 */
+	public int getGameHeight() {
+		return getBlocksZ() * Block.GAME_EDGELENGTH;
 	}
 
 	/**
@@ -395,12 +414,8 @@ public abstract class AbstractMap implements Cloneable {
 	 *
 	 */
 	public void dispose() {
-		for (int i = 0; i < entityList.size(); i++) {
-			entityList.get(i).dispose();
-		}
+		disposeEntities();
 	}
-
-	;
 
 	/**
 	 * The name of the map on the file.

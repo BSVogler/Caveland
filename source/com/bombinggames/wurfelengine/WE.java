@@ -225,7 +225,7 @@ public class WE {
         gameplayScreen.setController(controller);
         gameplayScreen.setView(view);
         //initialize
-		Controller.getMap().getEntitys().clear();
+		Controller.getMap().disposeEntities();
         controller.init();
         view.init(controller);
         //enter

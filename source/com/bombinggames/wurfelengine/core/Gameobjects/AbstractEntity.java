@@ -178,7 +178,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
      */
     public AbstractEntity spawn(Point point){
 		if (position==null) {
-			Controller.getMap().getEntitys().add(this);
+			Controller.getMap().addEntities(this);
 			for (AbstractEntity child : children) {
 				child.spawn(point);
 			}

@@ -174,7 +174,8 @@ public class MapEditorController extends Controller {
 		selectedEntities.clear();
 		for (AbstractEntity ent : getMap().getEntitys()) {
 			if (
-				ent.getPosition().getViewSpcX(gameplayView) + ent.getAtlasRegion().getRegionWidth()/2 >= x1 //right sprite borde
+				ent.getPosition() != null
+				&& ent.getPosition().getViewSpcX(gameplayView) + ent.getAtlasRegion().getRegionWidth()/2 >= x1 //right sprite borde
 				&& ent.getPosition().getViewSpcX(gameplayView) - ent.getAtlasRegion().getRegionWidth()/2 <= x2 //left spr. border
 				&& ent.getPosition().getViewSpcY(gameplayView) - ent.getAtlasRegion().getRegionHeight()/2 <= y2 //bottom spr. border
 				&& ent.getPosition().getViewSpcY(gameplayView) + ent.getAtlasRegion().getRegionHeight()/2 >= y1 //top spr. border

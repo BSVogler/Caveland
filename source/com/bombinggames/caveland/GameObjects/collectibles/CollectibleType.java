@@ -42,6 +42,7 @@ public enum CollectibleType {
 	COAL((byte) 49),
 	CRISTALL((byte) 50),
 	SULFUR((byte) 51),
+	STONE((byte) 52),
 	TOOLKIT((byte) 53),
 	TORCH((byte) 54),
 	IRON((byte) 55);

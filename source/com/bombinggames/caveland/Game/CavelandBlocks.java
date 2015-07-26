@@ -1,11 +1,11 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.caveland.GameObjects.Torch;
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -107,7 +107,9 @@ public RenderBlock toRenderBlock(Block data) {
 	@Override
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0 ){
-			if (id==41) {
+			if (id==3) {
+				Collectible.create(CollectibleType.STONE).spawn(coord.toPoint().cpy());
+			} else if (id==41) {
 				Collectible.create(CollectibleType.CRISTALL).spawn(coord.toPoint().cpy());
 			} else if (id==42){
 				Collectible.create(CollectibleType.SULFUR).spawn(coord.toPoint().cpy());

@@ -286,7 +286,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
     }
     
    /**
-     * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely.<br>
+     * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely; makes it dissapear completely.<br>
 	 * Disposes all the children.
 	 * @see #shouldBeDisposed() 
 	 * @see #disposeFromMap() 

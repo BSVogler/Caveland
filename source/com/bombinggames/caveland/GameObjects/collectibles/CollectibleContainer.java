@@ -74,8 +74,8 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * Get the n't element from inventory. in future should skip stuff like the
-	 * shadow.
+	 * Get the n't element from inventory. In future versions this should skip stuff like the
+	 * shadow. So beware.
 	 *
 	 * @param index
 	 * @return

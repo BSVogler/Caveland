@@ -72,6 +72,9 @@ public class RecipesList extends Table {
 	class Recipe {
 		protected final CollectibleType[] ingredients;
 		protected final String name;
+		/**
+		 * what is the results of the recipe.
+		 */
 		protected final CollectibleType result;
 
 		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {

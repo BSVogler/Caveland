@@ -32,7 +32,7 @@ public class Inventory {
 	}
 	
 	/**
-	 * reduces the counter and deletes the object from inventory. Makes the object appear in the world.
+	 * Deletes the object from inventory. Makes the object appear in the world.
 	 * @return the frontmost element. Can return null if empty.
 	 * @see #fetchFrontItemAndDisposeFromWorld() 
 	 */

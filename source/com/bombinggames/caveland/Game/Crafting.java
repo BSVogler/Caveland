@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -131,17 +131,31 @@ public class Crafting extends ActionBox {
 	public void craft(){
 		RecipesList.Recipe recipe = findRecipe();
 		if (recipe != null){
-			Collectible a = inventory.fetchCollectible(recipe.ingredients[0]);
-			Collectible b = inventory.fetchCollectible(recipe.ingredients[1]);
-			//Collectible c = inventory.fetchCollectible(recipe.ingredients[2]);
-			if (a!=null && b!=null) {
-				//create new object at same position of old iinventory items
-				Collectible.create(recipe.result).spawn(a.getPosition().cpy());
+			Collectible a = inventory.retrieveCollectible(recipe.ingredients[0]);
+			Collectible b = inventory.retrieveCollectible(recipe.ingredients[1]);
+			boolean thirdingredient = true;
+			Collectible c = null;
+			if (recipe.ingredients.length>2) {
+				thirdingredient = false;
+				c = inventory.getCollectible(recipe.ingredients[2]);
+			}
+			if (a != null && b != null && (thirdingredient || c != null)) {//can be crafted
+				//create new object at same position of inventory
+				Collectible.create(recipe.result).spawn(inventory.getPosition());
 				//delete them
-				a.disposeFromMap();
-				b.disposeFromMap();
+				a.dispose();
+				a = null;
+				b.dispose();
+				b = null;
+				if (c != null)
+					c.dispose();
 				clear();//empty the crafting menu
 			}
+			//crafting failed: items still there, so put them back
+			if (a != null)
+				inventory.add(a);
+			if (b != null)
+				inventory.add(b);
 		}
 	}
 

@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Creates a virtual camera wich displays the game world on the viewport.
+ * Creates a virtual camera wich displays the game world on the viewport. A camer acan be locked to an entity.
  *
  * @author Benedikt Vogler
  */
@@ -1212,6 +1212,16 @@ public class Camera implements MapObserver {
 				0
 			);//view to game
 		}
+	}
+	
+	/**
+	 * Set the cameras center to a point. If the camera is locked to a an entity this lock will be removed.
+	 * @param point z gets ignored
+	 */
+	public void setCenter(Point point){
+		focusEntity = null;
+		position.x = point.getX();
+		position.y = -point.getY()/2;//game to view transformation
 	}
 
 	/**

@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Gameobjects.BenchmarkBall;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -474,6 +475,21 @@ public class Console implements CommandsInterface  {
 				return true;
         }
 		
+		if (command.toLowerCase().startsWith("tp")){
+			if (!st.hasMoreTokens()) {
+				add("Expected more parameters", "System");
+				return false;
+			}
+			int x = Integer.parseInt(st.nextToken());
+			if (!st.hasMoreTokens()) {
+				add("Expected more parameters", "System");
+				return false;
+			}
+			int y = Integer.parseInt(st.nextToken());
+			gameplayRef.getView().getCameras().get(0).setCenter(new Coordinate(x, y, 0).toPoint());
+			return true;
+		}
+			
 		if (command.startsWith("cd")){
             if (!st.hasMoreElements()) return false;
             

@@ -51,7 +51,12 @@ public class Collectible extends MovableEntity implements Serializable {
 		/**
 		 *
 		 */
-		TOOLKIT((byte) 53);
+		TOOLKIT((byte) 53),
+		
+		/**
+		 * when places it spawns light
+		 */
+		TORCH( (byte) 54);
 
 		private static CollectibleType fromValue(String value) {
 			if (value != null) {  

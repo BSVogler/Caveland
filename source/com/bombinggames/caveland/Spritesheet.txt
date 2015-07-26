@@ -1416,6 +1416,13 @@ e53-0
   orig: 200, 223
   offset: 26, 15
   index: -1
+e54-0
+  rotate: false
+  xy: 1365, 986
+  size: 48, 54
+  orig: 200, 223
+  offset: 76, 37
+  index: -1
 e80-0
   rotate: false
   xy: 717, 0

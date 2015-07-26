@@ -5,17 +5,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.Collectible.CollectibleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
 
 /**
- *
+ *A lsit which stores the possibles receipes.
  * @author Benedikt Vogler
  */
 public class RecipesList extends Table {
-	ArrayList<Recipe> receipts= new ArrayList<>(10);
+	private final ArrayList<Recipe> receipts= new ArrayList<>(10);
 	
+	/**
+	 * adds teh receipes to a list
+	 */
 	public RecipesList() {
 		setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		receipts.add(
@@ -35,8 +38,19 @@ public class RecipesList extends Table {
 					CollectibleType.WOOD,
 					CollectibleType.WOOD
 				},
-				"Bausatz",
+				"Construction Kit",
 				CollectibleType.TOOLKIT
+			)
+		);
+		
+		receipts.add(
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.WOOD,
+					CollectibleType.COAL
+				},
+				"Torch",
+				CollectibleType.TORCH
 			)
 		);
 		
@@ -48,11 +62,17 @@ public class RecipesList extends Table {
 			addActor(actor);
 		}
 	}
+
+	public ArrayList<Recipe> getReceipts() {
+		return receipts;
+	}
+	
+	
 	
 	class Recipe {
-		CollectibleType[] ingredients;
-		String name;
-		CollectibleType result;
+		protected final CollectibleType[] ingredients;
+		protected final String name;
+		protected final CollectibleType result;
 
 		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {
 			this.ingredients = ingredients;

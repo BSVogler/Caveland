@@ -90,7 +90,7 @@ public class Crafting extends ActionBox {
 	public RecipesList.Recipe findRecipe(){
 		CollectibleType[] invent = inventory.getContentDef();
 		RecipesList.Recipe finalRecipe = null;
-		for (RecipesList.Recipe recipe : recipes.receipts) {
+		for (RecipesList.Recipe recipe : recipes.getReceipts()) {
 			int ing1 = -1;//not found in receipt
 			if (recipe.ingredients[0]==invent[0])
 				ing1 = 0;

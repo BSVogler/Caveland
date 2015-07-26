@@ -611,12 +611,14 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	@Override
 	public void damage(byte value) {
-		super.damage(value);
-		Controller.getSoundEngine().play("urfHurt");
-		if (getCamera() != null) {
-			getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
+		if (!WE.CVARS.getValueB("godmode")) {
+			super.damage(value);
+			Controller.getSoundEngine().play("urfHurt");
+			if (getCamera() != null) {
+				getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
+			}
+			timeSinceDamage = 0;
 		}
-		timeSinceDamage = 0;
 	}
 
 	@Override

@@ -78,19 +78,21 @@ public class ChunkGenerator implements Generator {
 	 */
 	@Override
 	public AbstractEntity[] generateEntities(int x, int y, int z){
-		//apply p
-		float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
-		float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
-		
-		//entry
-		if (xRoom==5 && yRoom==g-5 && z == 8)
-			return new AbstractEntity[]{new Portal(new Coordinate((int) (x-roomWithPadding), y, z))};
-		
-		//exit
-		if (xRoom==g-5 && yRoom==5 && z == 8){
-			Portal portal = new Portal(new Coordinate((int) (x+roomWithPadding), y, z));
-			portal.setValue((byte) 1);
-			return new AbstractEntity[]{portal};
+		if (y>CAVESBORDER) {
+			//apply p
+			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+
+			//entry
+			if (xRoom==5 && yRoom==g-5 && z == 9)
+				return new AbstractEntity[]{new Portal(new Coordinate((int) (x-roomWithPadding), y, z))};
+
+			//exit
+			if (xRoom==g-5 && yRoom==5 && z == 9){
+				Portal portal = new Portal(new Coordinate((int) (x+roomWithPadding), y, z));
+				portal.setValue((byte) 1);
+				return new AbstractEntity[]{portal};
+			}
 		}
 		return null;
 	}

@@ -34,11 +34,13 @@ import com.bombinggames.wurfelengine.core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
- *An iterator iterating over a 3d array
+ * An iterator iterating over a 3d array
+ *
  * @author Benedikt Vogler
  * @param <T>
  */
-public class DataIterator<T extends HasID> implements Iterator<T>{
+public class DataIterator<T extends HasID> implements Iterator<T> {
+
 	/**
 	 * current position
 	 */
@@ -48,29 +50,30 @@ public class DataIterator<T extends HasID> implements Iterator<T>{
 	private int left, right, back, front;
 
 	/**
-	 * 
+	 *
 	 * @param data
 	 * @param startingZ the starting layer
-	 * @param limitZ  the last layer (including).
+	 * @param limitZ the last layer (including).
 	 */
 	public DataIterator(
 		T[][][] data,
 		final int startingZ,
 		final int limitZ
 	) {
-		pos = new int[]{ -1 , 0 , startingZ }; //start at -1 because the first call of next should return the first element
-		this.limitZ=limitZ;
+		pos = new int[]{-1, 0, startingZ}; //start at -1 because the first call of next should return the first element
+		this.limitZ = limitZ;
 		this.data = data;
-		
+
 		left = 0;
-		right = data.length-1;
+		right = data.length - 1;
 		back = 0;
-		front = data[0].length-1;
+		front = data[0].length - 1;
 	}
-	
+
 	/**
 	 * set the top/last limit of the iteration (including).
-	 * @param zLimit 
+	 *
+	 * @param zLimit
 	 */
 	public void setTopLimitZ(int zLimit) {
 		this.limitZ = zLimit;
@@ -78,21 +81,19 @@ public class DataIterator<T extends HasID> implements Iterator<T>{
 
 	@Override
 	public boolean hasNext() {
-		return (
-			   pos[0] < right
+		return (pos[0] < right
 			|| pos[1] < front
-			|| pos[2] < limitZ
-		);
+			|| pos[2] < limitZ);
 	}
 
 	@Override
 	public T next() {
-		if (pos[0] < right)
+		if (pos[0] < right) { // go right if it can
 			pos[0]++;
-		else if (pos[1] < front){
+		} else if (pos[1] < front) {// go down if it can and start at x=0
 			pos[1]++;
 			pos[0] = left;
-		} else if (pos[2] < limitZ) {
+		} else if (pos[2] < limitZ) {// go higher if it can and go to x=0, y=0
 			pos[2]++;
 			pos[1] = back;
 			pos[0] = left;
@@ -103,31 +104,38 @@ public class DataIterator<T extends HasID> implements Iterator<T>{
 	@Override
 	public void remove() {
 	}
-	
+
 	/**
 	 * get the reference to the indices position of the iterator
-	 * @return 
+	 *
+	 * @return
 	 */
-	public int[] getCurrentIndex(){
+	public int[] getCurrentIndex() {
 		return pos;
 	}
 
 	/**
-	 * sets index position borders during iterations. This reduces greatly the amount of blocks which are traversed.
+	 * sets index position borders during iterations. This reduces greatly the
+	 * amount of blocks which are traversed.
+	 *
 	 * @param left
 	 * @param right
 	 * @param back
-	 * @param front 
+	 * @param front
 	 */
 	public void setBorders(int left, int right, int back, int front) {
-		if (left>0)
+		if (left > 0) {
 			this.left = left;
-		if (right < data.length-1)
+		}
+		if (right < data.length - 1) {
 			this.right = right;
-		if (back>0)
+		}
+		if (back > 0) {
 			this.back = back;
-		if (front < data[0].length-1)
+		}
+		if (front < data[0].length - 1) {
 			this.front = front;
+		}
 	}
-	
+
 }

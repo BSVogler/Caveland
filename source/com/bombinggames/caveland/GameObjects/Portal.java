@@ -33,8 +33,10 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
@@ -43,6 +45,8 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class Portal extends AbstractEntity implements Interactable{
 	private static final long serialVersionUID = 2L;
 	private Coordinate target;
+	private boolean spawner;
+	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
 	
 	/**
 	 * teleports to 0 0 0
@@ -69,5 +73,33 @@ public class Portal extends AbstractEntity implements Interactable{
 
 	public void setTarget(Coordinate target) {
 		this.target = target;
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (spawner){
+			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*3, CustomPlayer.class).isEmpty()){//if a player is nearby
+				if (spawnedList.size()<3) {
+					Enemy e = (Enemy) new Enemy().spawn(getPosition().cpy().addVector((float) (Math.random()*Block.GAME_EDGELENGTH), (float) (Math.random()*Block.GAME_EDGELENGTH), 8));
+					spawnedList.add(e);
+				}
+				//remove killed enemys
+				for (int i = 0; i < spawnedList.size(); i++) {
+					Enemy e = spawnedList.get(i);
+					if (e.shouldBeDisposed()) spawnedList.remove(e);
+				}
+			}
+		
+		}
+	}
+	
+	
+	
+	/**
+	 * creates monsters
+	 */
+	public void enableEnemySpawner(){
+		spawner = true;
 	}
 }

@@ -15,9 +15,16 @@ public class ChunkGenerator implements Generator {
 	 */
 	public static final int CAVESBORDER = 1000;
 	
+	/**width of a room */
 	static final float g = 15;
+	/**
+	 * padding
+	 */
 	static final float p = 5;
 	static final float yStrech = 0.5f;
+	/**
+	 * how thick is the wall
+	 */
 	static final float wallsize =1;
 	static final float roomWithPadding = g+p+wallsize;
 	
@@ -25,8 +32,8 @@ public class ChunkGenerator implements Generator {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		for (int y = -50; y < 50; y++) {
-			for (int x = -50; x < 50; x++) {
+		for (int y = 1000; y < 1100; y++) {
+			for (int x = 0; x < 50; x++) {
 				int result = insideOutside(x,y,4);
 				if (result ==1)
 					System.out.print(".");
@@ -83,19 +90,46 @@ public class ChunkGenerator implements Generator {
 			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 
-			//entry
-			if (xRoom==5 && yRoom==g-5 && z == 9)
-				return new AbstractEntity[]{new Portal(new Coordinate((int) (x-roomWithPadding), y, z))};
-
-			//exit
-			if (xRoom==g-5 && yRoom==5 && z == 9){
-				Portal portal = new Portal(new Coordinate((int) (x+roomWithPadding), y, z));
+			//loch in der Decke
+			if (xRoom==g-5 && yRoom==5 && z == 4) {
+				Portal portal; 
+				if (getCaveNumber(x, y, z)==0) {
+					//exit to surface
+					portal = (Portal) new Portal(new Coordinate(0, 0, 5)).spawn(new Coordinate(x, y, z).toPoint());
+				} else {
+					portal = (Portal) new Portal(getCaveExit(getCaveNumber(x, y, z)+1)).spawn(new Coordinate(x, y, z).toPoint());
+				}
 				portal.setValue((byte) 1);
+				portal.enableEnemySpawner();
+				return new AbstractEntity[]{portal};
+			}
+			//loch im Boden
+			if (xRoom==5 && yRoom==g-5 && z == 4){
+				return new AbstractEntity[]{new Portal(getCaveEntry(getCaveNumber(x, y, z)-1).addVector(0, 0, 3)).spawn(new Coordinate(x, y, z).toPoint())};
+				
+			}
+		} else {
+			if (x==0 && y==0 && z==4) {
+				Portal portal = (Portal) new Portal(getCaveEntry(0).addVector(0, 0, 3)).spawn(new Coordinate(x, y, z).toPoint());
 				return new AbstractEntity[]{portal};
 			}
 		}
 		return null;
 	}
+	
+	private int getCaveNumber(int x, int y, int z){
+		return (int) Math.floor(x / roomWithPadding);
+	}
+	
+	private Coordinate getCaveEntry(int caveNumber){
+		return new Coordinate((int) (roomWithPadding*caveNumber+g), CAVESBORDER+23+5, 4);
+	}
+	
+	private Coordinate getCaveExit(int caveNumber){
+		return new Coordinate((int) (roomWithPadding*caveNumber+10), CAVESBORDER+28+(int) (g-5), 4);
+	}
+	
+	
 	
 	/**
 	 * 

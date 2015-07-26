@@ -67,7 +67,9 @@ public class SuperGlue extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		getChildren().get(0).setPosition(main.getPosition().cpy().addVector(offset));
+		if (main.isSpawned()) {
+			getChildren().get(0).setPosition(main.getPosition().cpy().addVector(offset));
+		}
 	}
 	
 	

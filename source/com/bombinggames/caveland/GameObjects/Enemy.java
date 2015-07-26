@@ -62,9 +62,9 @@ public class Enemy extends MovableEntity{
     public void update(float dt) {
 		//update as usual
         super.update(dt);
-        if (getPosition().toCoord().isInMemoryAreaHorizontal()) {
+        if (isSpawned() && getPosition().toCoord().isInMemoryAreaHorizontal()) {
             //follow the target
-            if (target != null) {
+            if (target != null && target.isSpawned()) {
 				Vector3 d = new Vector3();
 
 				d.x = target.getPosition().getX()-getPosition().getX();

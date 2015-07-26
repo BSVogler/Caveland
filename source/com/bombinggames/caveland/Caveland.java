@@ -4,12 +4,14 @@ import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
-import com.bombinggames.caveland.GameObjects.collectibles.Flint;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
+import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
+import com.bombinggames.caveland.GameObjects.collectibles.Flint;
+import com.bombinggames.caveland.GameObjects.collectibles.TorchCollectible;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
@@ -61,8 +63,10 @@ public class Caveland {
 		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
 		
 		//register entities
-		AbstractEntity.registerEntity("Emitter", SmokeEmitter.class);
+		AbstractEntity.registerEntity("Emitter Test", SmokeEmitter.class);
 		AbstractEntity.registerEntity("Flint", Flint.class);
+		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
+		AbstractEntity.registerEntity("Construction Kit", Bausatz.class);
 		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
 		AbstractEntity.registerEntity("Portal", Portal.class);

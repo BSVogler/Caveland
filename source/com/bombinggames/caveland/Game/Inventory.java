@@ -1,9 +1,9 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -42,16 +42,15 @@ public class Inventory {
 			result = container.retrieveCollectible(0);
 		}
 		
-		if (result==null) return null;
 		return result;
 	}
 	
 	/**
-	 * Deletes the object from inventory. makes the object appear not in the world.
+	 * Deletes the object from inventory. Makes the object appear not in the world.
 	 * @return the frontmost element. can return null if empty.
 	 * @see #retrieveFrontItem() 
 	 */
-	public Collectible fetchFrontItemReference() {
+	public Collectible retrieveFrontItemReference() {
 		Collectible result = null;
 		if (container.get(0) != null){
 			result = container.retrieveCollectibleReference(0);
@@ -66,9 +65,8 @@ public class Inventory {
 	 * Get a reference to the prototype and keeps the item in inventory.
 	 * @param def
 	 * @return can return null
-	 * @see #fetchCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 */
-	public Collectible fetchCollectible(CollectibleType def){
+	public Collectible getCollectible(CollectibleType def){
 		if (container.get(2)!=null && container.get(2).getType() == def)
 			return container.get(2);
 		if (container.get(1) !=null && container.get(1).getType() == def)

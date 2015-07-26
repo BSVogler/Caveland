@@ -81,7 +81,7 @@ public class InteractableCollectibleContainer extends CollectibleContainer imple
 				CustomPlayer player = (CustomPlayer) actor;
 				//add item?
 				if (num==0) {
-					Collectible frontItem = player.getInventory().fetchFrontItemReference();
+					Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 					if (frontItem != null)
 						parent.addChild(frontItem);
 				} else {

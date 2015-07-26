@@ -2,6 +2,8 @@ package com.bombinggames.caveland;
 
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
 import com.bombinggames.wurfelengine.core.CommandsInterface;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -25,6 +27,21 @@ public class CavelandCommands implements CommandsInterface {
         switch (first) {
             case "givetnt":
 				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(new TFlint());
+				return true;
+			 case "givewood":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.WOOD));
+				return true;
+			case "givecoal":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.COAL));
+				return true;
+			case "giveironore":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.IRONORE));
+				return true;
+			case "givesulfur":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.SULFUR));
+				return true;
+			case "giveiron":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.IRON));
 				return true;
         }
 		

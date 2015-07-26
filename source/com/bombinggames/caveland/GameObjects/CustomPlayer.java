@@ -201,185 +201,187 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	public void update(float dt) {
 		super.update(dt);
 		
-		Point pos = getPosition();
-		
-		//slow down in air
-		if (!isOnGround()) {
-			if (getMovementHor().len() > 0.1f) {
-				setHorMovement(getMovementHor().scl(1f / (dt * getFriction() + 1f)));//with this formula this fraction is always <1
-			} else {
-				setHorMovement(new Vector2());
-			}
-		} else {
-			if (usedLoadAttackInAir)
-				setFriction((float) WE.CVARS.get("playerfriction").getValue());
-			usedLoadAttackInAir = false;
-		}
-		
-		//if in cave force in it
-		if (( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER )){
-			if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
-				pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
-		}
+		if (isSpawned()) {
+			Point pos = getPosition();
 
-		/*ANIMATION*/
-		{
-			//some redundant code from movable to have a custom animation
-			if (playAnimation) {
-				if (action == 'w') {
-					animationCycle += dt * getSpeed() * (float) WE.CVARS.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
+			//slow down in air
+			if (!isOnGround()) {
+				if (getMovementHor().len() > 0.1f) {
+					setHorMovement(getMovementHor().scl(1f / (dt * getFriction() + 1f)));//with this formula this fraction is always <1
 				} else {
-					animationCycle += dt * 5;
+					setHorMovement(new Vector2());
+				}
+			} else {
+				if (usedLoadAttackInAir)
+					setFriction((float) WE.CVARS.get("playerfriction").getValue());
+				usedLoadAttackInAir = false;
+			}
+
+			//if in cave force in it
+			if (( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER )){
+				if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
+					pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
+			}
+
+			/*ANIMATION*/
+			{
+				//some redundant code from movable to have a custom animation
+				if (playAnimation) {
+					if (action == 'w') {
+						animationCycle += dt * getSpeed() * (float) WE.CVARS.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
+					} else {
+						animationCycle += dt * 5;
+					}
+				}
+				//update regular sprite
+				updateSprite(false);
+			}
+
+			//delay for attack
+			if (timeTillImpact != Float.POSITIVE_INFINITY){
+				timeTillImpact -= dt;
+				if (timeTillImpact <= 0)
+					attackImpact();
+			}
+
+			//stop loadAttack if speed it too low
+			if (performingLoadAttack && getSpeedHor() < 0.1){
+				performingLoadAttack=false;
+			}
+
+			//detect button hold
+			if (loadAttack != Float.NEGATIVE_INFINITY) {
+				loadAttack += dt;
+
+
+				//loading attack
+				if (loadAttack > LOAD_THRESHOLD) {//time till registered as a "hold"
+					if (action!='l' && action!='i' && !playAnimation)
+						playAnimation('l');
+					if (!canPlayLoadingSound) {
+						Controller.getSoundEngine().play("loadAttack");
+						canPlayLoadingSound = true;
+					}
+					Vector3 newmov = getMovement();
+					newmov.z /= 4;
+					setMovement(newmov);
+
+					//update overlay
+					updateSprite(true);
+				}
+
+				if (loadAttack >= LOADATTACKTIME) {
+					attackLoadingStopped();
 				}
 			}
-			//update regular sprite
-			updateSprite(false);
-		}
+	//		if (loadAttack > 0) {
+	//			Vector3 newmov = getMovement();
+	//			newmov.z /= 2;//half vertical speed
+	//			if (newmov.z < 0) {
+	//				newmov.z *= 2 / 3;//if falling then more "freeze in air"
+	//			}
+	//			setMovement(newmov);
+	//		}
 
-		//delay for attack
-		if (timeTillImpact != Float.POSITIVE_INFINITY){
-			timeTillImpact -= dt;
-			if (timeTillImpact <= 0)
-				attackImpact();
-		}
-		
-		//stop loadAttack if speed it too low
-		if (performingLoadAttack && getSpeedHor() < 0.1){
-			performingLoadAttack=false;
-		}
-		
-		//detect button hold
-		if (loadAttack != Float.NEGATIVE_INFINITY) {
-			loadAttack += dt;
-			
-			
-			//loading attack
-			if (loadAttack > LOAD_THRESHOLD) {//time till registered as a "hold"
-				if (action!='l' && action!='i' && !playAnimation)
-					playAnimation('l');
-				if (!canPlayLoadingSound) {
-					Controller.getSoundEngine().play("loadAttack");
-					canPlayLoadingSound = true;
-				}
-				Vector3 newmov = getMovement();
-				newmov.z /= 4;
-				setMovement(newmov);
-				
-				//update overlay
-				updateSprite(true);
-			}
 
-			if (loadAttack >= LOADATTACKTIME) {
-				attackLoadingStopped();
-			}
-		}
-//		if (loadAttack > 0) {
-//			Vector3 newmov = getMovement();
-//			newmov.z /= 2;//half vertical speed
-//			if (newmov.z < 0) {
-//				newmov.z *= 2 / 3;//if falling then more "freeze in air"
-//			}
-//			setMovement(newmov);
-//		}
 
-		
+			//get loren
+			ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
 
-		//get loren
-		ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
-
-		if (!nearbyLoren.isEmpty()) {
-			MineCart lore = nearbyLoren.get(0);
-			if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
-				if (pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)) {//enter chu chu
-					lore.setPassanger(this);
+			if (!nearbyLoren.isEmpty()) {
+				MineCart lore = nearbyLoren.get(0);
+				if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
+					if (pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)) {//enter chu chu
+						lore.setPassanger(this);
+					}
 				}
 			}
-		}
 
-		//loren anstupsen
-		if (nearbyLoren.size() > 0 && nearbyLoren.get(0).getSpeedHor() < 0.1) {//anstupsen
-			nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(getMovementHor().len() + 5f)));
-		}
-
-		//collect collectibles
-		ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);
-		boolean playCollectSound = false;
-		for (Collectible collectible : collectibles) {
-			if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {
-				playCollectSound = true;
+			//loren anstupsen
+			if (nearbyLoren.size() > 0 && nearbyLoren.get(0).getSpeedHor() < 0.1) {//anstupsen
+				nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(getMovementHor().len() + 5f)));
 			}
-		}
-		if (playCollectSound) {
-			Controller.getSoundEngine().play("collect");
-		}
 
-		//auto heal
-		if (timeSinceDamage > 4000) {
-			heal((byte) (dt / 2f));
-		} else {
-			timeSinceDamage += dt;
-		}
+			//collect collectibles
+			ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);
+			boolean playCollectSound = false;
+			for (Collectible collectible : collectibles) {
+				if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {
+					playCollectSound = true;
+				}
+			}
+			if (playCollectSound) {
+				Controller.getSoundEngine().play("collect");
+			}
 
-		//update interactable focus
-		//check entitys
-		ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
-			GAME_EDGELENGTH * 2,
-			Interactable.class
-		);
+			//auto heal
+			if (timeSinceDamage > 4000) {
+				heal((byte) (dt / 2f));
+			} else {
+				timeSinceDamage += dt;
+			}
 
-		if (!nearbyInteractable.isEmpty()) {
-			//check if a different one
-			nearestEntity = (AbstractEntity) nearbyInteractable.get(0);
-			showButton(Interactable.RT, nearestEntity.getPosition());
-		} else if (nearestEntity != null) {
-			hideButton();
-			nearestEntity = null;
-		}
-		
-		//check interactable blocks
-		Block blockBelow = pos.toCoord().getBlock();
-		if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
-			//todo only overwrite if block is nearer
-			nearestInteractableBlock = getPosition().toCoord();
-			showButton(Interactable.RT, nearestInteractableBlock);
-		} else {
-			//no nearby block
-			nearestInteractableBlock = null;
-			//hide button if also no nearestEntity
-			if (nearestEntity==null)
+			//update interactable focus
+			//check entitys
+			ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
+				GAME_EDGELENGTH * 2,
+				Interactable.class
+			);
+
+			if (!nearbyInteractable.isEmpty()) {
+				//check if a different one
+				nearestEntity = (AbstractEntity) nearbyInteractable.get(0);
+				showButton(Interactable.RT, nearestEntity.getPosition());
+			} else if (nearestEntity != null) {
 				hideButton();
-		}
-		
-		//if collecting a backpack
-		ArrayList<CollectibleContainer> backpacksOnCoord = pos.toCoord().getEntitiesInside(CollectibleContainer.class);
-		CollectibleContainer backpack=null;
-		if (backpacksOnCoord.size()>0)
-			backpack = backpacksOnCoord.get(0);
-		if (backpack != null && !backpack.isHidden()){
-			for (int i = 0; i < backpack.size(); i++) {
-				backpack.retrieveCollectible(i);
+				nearestEntity = null;
 			}
-			backpack.dispose();
-		}
-			
-		//play walking animation
-//		if (isOnGround() && getSpeedHor() > 0 && !playAnimation && loadAttack==Float.NEGATIVE_INFINITY) {
-//			if (action!='i')
-//				playAnimation('w');
-//		}
 
-		if (isOnGround()) {
-			isInAirJump = false;
-		}
-		
-		//update emitter
-		if (isInAirJump) {
-			emitter.setActive(getMovement().z>2f);
-			emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-			emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
-			emitter2.setActive(getMovement().z>2f);
-			emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-			emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
+			//check interactable blocks
+			Block blockBelow = pos.toCoord().getBlock();
+			if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
+				//todo only overwrite if block is nearer
+				nearestInteractableBlock = getPosition().toCoord();
+				showButton(Interactable.RT, nearestInteractableBlock);
+			} else {
+				//no nearby block
+				nearestInteractableBlock = null;
+				//hide button if also no nearestEntity
+				if (nearestEntity==null)
+					hideButton();
+			}
+
+			//if collecting a backpack
+			ArrayList<CollectibleContainer> backpacksOnCoord = pos.toCoord().getEntitiesInside(CollectibleContainer.class);
+			CollectibleContainer backpack=null;
+			if (backpacksOnCoord.size()>0)
+				backpack = backpacksOnCoord.get(0);
+			if (backpack != null && !backpack.isHidden()){
+				for (int i = 0; i < backpack.size(); i++) {
+					backpack.retrieveCollectible(i);
+				}
+				backpack.dispose();
+			}
+
+			//play walking animation
+	//		if (isOnGround() && getSpeedHor() > 0 && !playAnimation && loadAttack==Float.NEGATIVE_INFINITY) {
+	//			if (action!='i')
+	//				playAnimation('w');
+	//		}
+
+			if (isOnGround()) {
+				isInAirJump = false;
+			}
+
+			//update emitter
+			if (isInAirJump) {
+				emitter.setActive(getMovement().z>2f);
+				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+				emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
+				emitter2.setActive(getMovement().z>2f);
+				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
+			}
 		}
 	}
 

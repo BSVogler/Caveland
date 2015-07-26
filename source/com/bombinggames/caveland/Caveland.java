@@ -10,7 +10,7 @@ import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
-import com.bombinggames.caveland.GameObjects.collectibles.Flint;
+import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
 import com.bombinggames.caveland.GameObjects.collectibles.TorchCollectible;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.WE;
@@ -64,7 +64,7 @@ public class Caveland {
 		
 		//register entities
 		AbstractEntity.registerEntity("Emitter Test", SmokeEmitter.class);
-		AbstractEntity.registerEntity("Flint", Flint.class);
+		AbstractEntity.registerEntity("TFlint", TFlint.class);
 		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
 		AbstractEntity.registerEntity("Construction Kit", Bausatz.class);
 		AbstractEntity.registerEntity("Mine Cart", MineCart.class);

@@ -34,62 +34,45 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
-import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.util.ArrayList;
 
 /**
- *An entity which contains collectibles and with which actors can interact.
+ *A window which lets you add and take out items.
  * @author Benedikt Vogler
  */
-public class InteractableCollectibleContainer extends CollectibleContainer implements Interactable {
-	private static final long serialVersionUID = 2L;
+public class CollectibleContainerWindow extends ActionBox {
+	private final CollectibleContainer parent;
 
-	public InteractableCollectibleContainer() {
-		super();
-		setName("Interactable Container");
+	CollectibleContainerWindow(CustomGameView view, CollectibleContainer parent) {
+		super(view, "Choose construction", ActionBox.BoxModes.SELECTION, null);
+		this.parent = parent;
+		//make list of options
+		ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
+		list.add("Add");
+		if (parent.getChildren().size() > 0)
+			list.add("Take item out " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
+		else list.add("Empty");
+		addSelectionNames(list);
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public int confirm(CustomGameView view, AbstractEntity actor) {
+		int num = super.confirm(view, actor);
 		if (actor instanceof CustomPlayer) {
-			SelectionWindow selectionWindow = new SelectionWindow(view, this);
-			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
-		}
-	}
-
-	
-	private class SelectionWindow extends ActionBox{
-		private final InteractableCollectibleContainer parent;
-
-		SelectionWindow(CustomGameView view, InteractableCollectibleContainer parent) {
-			super(view, "Choose construction", ActionBox.BoxModes.SELECTION, null);
-			this.parent = parent;
-			//make list of options
-			ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
-			list.add("Add");
-			for (Object collectible : parent.getChildren()) {
-				list.add("Take out "+((Collectible) collectible).getName());
-			}
-			addSelectionNames(list);
-		}
-
-		@Override
-		public int confirm(CustomGameView view, AbstractEntity actor) {
-			int num = super.confirm(view, actor);
-			if (actor instanceof CustomPlayer) {
-				CustomPlayer player = (CustomPlayer) actor;
-				//add item?
-				if (num==0) {
-					Collectible frontItem = player.getInventory().retrieveFrontItemReference();
-					if (frontItem != null)
-						parent.addChild(frontItem);
-				} else {
-					//fetch item
-					parent.retrieveCollectible(num-1);
+			CustomPlayer player = (CustomPlayer) actor;
+			//add item?
+			if (num == 0) {
+				Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+				if (frontItem != null) {
+					parent.addChild(frontItem);
 				}
+			} else if (num==1){
+				//fetch item
+				parent.retrieveCollectible(num - 1);
 			}
-			return num;
 		}
+		return num;
 	}
+	
 }

@@ -31,11 +31,78 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+
 /**
  *
  * @author Benedikt Vogler
  */
-public class ConstructionSite extends CollectibleContainer {
+public class ConstructionSite extends CollectibleContainer implements Interactable  {
 	private static final long serialVersionUID = 1L;
+	private final byte result;
+	private final CollectibleType[] neededItems;
+	private final int[] neededAmount;
+
+	/**
+	 * the resulting block
+	 * @param result 
+	 */
+	public ConstructionSite(byte result) {
+		super();
+		this.result = result;
+		//if (result==11) {
+			neededAmount = new int[]{2,1};
+			neededItems = new CollectibleType[]{CollectibleType.STONE, CollectibleType.WOOD };
+		//}
+	}
 	
+	public String getStatusString(){
+		String string = "";
+		for (int i = 0; i < neededItems.length; i++) {
+			string += count(neededItems[i])+"/"+ neededAmount[i] +" "+neededItems[i] + ", ";
+		}
+		return string;
+	}
+	
+	/**
+	 * transforms the construction site into the wanted building
+	 * @return true if success
+	 */
+	public boolean build(){
+		//check ingredients
+		for (int i = 0; i < neededItems.length; i++) {
+			if (count(neededItems[i]) < neededAmount[i])
+				return false;
+		}
+		getPosition().toCoord().setBlock(Block.getInstance(result));
+		dispose();
+		return true;
+	}
+	
+	@Override
+	public void interact(CustomGameView view, AbstractEntity actor) {
+		if (actor instanceof CustomPlayer) {
+			CollectibleContainerWindow selectionWindow = new ConstructionSiteWindow(view, this);
+			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
+		}
+	}
+	
+	private class ConstructionSiteWindow extends CollectibleContainerWindow {
+
+		public ConstructionSiteWindow(CustomGameView view, ConstructionSite parent) {
+			super(view, parent);
+			addSelectionNames("Build:"+ parent.getStatusString());
+		}
+
+		@Override
+		public int confirm(CustomGameView view, AbstractEntity actor) {
+			int num = super.confirm(view, actor);
+			if (num==2) build();
+			return num;
+		}
+	}
 }

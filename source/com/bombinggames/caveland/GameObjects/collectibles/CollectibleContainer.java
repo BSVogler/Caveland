@@ -151,6 +151,20 @@ public class CollectibleContainer extends AbstractEntity {
 		}
 		return collectible;
 	}
+	
+	/**
+	 * how many of this type are in this container?
+	 * @param def
+	 * @return 
+	 */
+	public int count(CollectibleType def) {
+		int counter = 0;
+		for (AbstractEntity children : getChildren()) {
+			if (children instanceof Collectible && ((Collectible) children).getType() == def)
+				counter++;
+		}
+		return counter;
+	}
 
 	/**
 	 * Updates the items in the slots.

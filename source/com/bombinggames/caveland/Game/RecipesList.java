@@ -10,7 +10,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
 
 /**
- *A lsit which stores the possibles receipes.
+ *A list which stores the possibles recipes.
  * @author Benedikt Vogler
  */
 public class RecipesList extends Table {

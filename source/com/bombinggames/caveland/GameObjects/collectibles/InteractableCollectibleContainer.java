@@ -39,7 +39,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.util.ArrayList;
 
 /**
- *An entity which contains collectibles.
+ *An entity which contains collectibles and with which actors can interact.
  * @author Benedikt Vogler
  */
 public class InteractableCollectibleContainer extends CollectibleContainer implements Interactable {

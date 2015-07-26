@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.Game.Inventory;
+import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;

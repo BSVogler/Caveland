@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 /**
- *
+ * A dialog which can fucntion as a selection tool or a message.
  * @author Benedikt Vogler
  */
 public class ActionBox extends WidgetGroup {
@@ -111,6 +111,11 @@ public class ActionBox extends WidgetGroup {
 		return mode;
 	}
 	
+	/**
+	 * Set the command which should be triggered once you confirm the dialogue.
+	 * @param action
+	 * @return itself for chaining
+	 */
 	public ActionBox setConfirmAction(ActionBoxConfirmAction action){
 		this.confirmAction = action;
 		return this;
@@ -154,7 +159,7 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * Adds strings as options.
 	 * @param options
-	 * @return 
+	 * @return itself for chaining
 	 */
 	public ActionBox addSelectionNames(String... options){
 		if (mode==BoxModes.SELECTION){
@@ -224,16 +229,30 @@ public class ActionBox extends WidgetGroup {
 	
 	@FunctionalInterface
 	public interface ActionBoxCancelAction {
+		/**
+		 * 
+		 * @param result
+		 * @param view
+		 * @param actor
+		 * @return 
+		 */
 		public int cancel(int result, CustomGameView view, AbstractEntity actor);
 	}
 	
 	/**
-	 *Actions which are called if you close the window
+	 *Actions which are called if you close the window by confirming
 	 * @author Benedikt Vogler
 	 */
 	@FunctionalInterface
 	public interface ActionBoxConfirmAction {
 
+		/**
+		 * 
+		 * @param result the number of the selection
+		 * @param view
+		 * @param actor
+		 * @return 
+		 */
 		public int confirm(int result, CustomGameView view, AbstractEntity actor);
 
 	}

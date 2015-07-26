@@ -1,5 +1,6 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;

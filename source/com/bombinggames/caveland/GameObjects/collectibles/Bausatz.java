@@ -28,7 +28,7 @@ public class Bausatz extends Collectible {
 						if (result==0) {
 							//spawn construction site
 							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
-							new InteractableCollectibleContainer().spawn(actor1.getPosition().toCoord().toPoint());
+							new ConstructionSite().spawn(actor1.getPosition().toCoord().toPoint());
 							dispose();//dispose tool kit
 						}
 						return result;

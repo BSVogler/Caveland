@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

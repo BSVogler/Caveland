@@ -96,7 +96,6 @@ public class Portal extends AbstractEntity implements Interactable{
 					if (e.shouldBeDisposed()) spawnedList.remove(e);
 				}
 			}
-		
 		}
 	}
 	

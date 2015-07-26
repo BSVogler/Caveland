@@ -104,11 +104,13 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return
 	 */
 	public Collectible retrieveCollectible(int pos) {
-		Collectible collectible = (Collectible) getChildren().remove(pos);
-		collectible.setFloating(false);
-		collectible.allowPickup();
-		collectible.setHidden(false);
-		return collectible;
+		if (getChildren().size() > pos) {
+			Collectible collectible = (Collectible) getChildren().remove(pos);
+			collectible.setFloating(false);
+			collectible.allowPickup();
+			collectible.setHidden(false);
+			return collectible;
+		} else return null;
 	}
 
 	/**

@@ -30,13 +30,14 @@ public class CavelandCommands implements CommandsInterface {
 		
 		//sets the target of the selected portals
 		if (first.toLowerCase().startsWith("setportaltarget")){
-			ArrayList<AbstractEntity> selected = gameplayRef.getEditorController().getSelectedEntities();
 			if (!st.hasMoreTokens()) return false;
-					int x = Integer.parseInt(st.nextToken());
-					if (!st.hasMoreTokens()) return false;
-					int y = Integer.parseInt(st.nextToken());
-					if (!st.hasMoreTokens()) return false;
-					int z = Integer.parseInt(st.nextToken());
+			int x = Integer.parseInt(st.nextToken());
+			if (!st.hasMoreTokens()) return false;
+			int y = Integer.parseInt(st.nextToken());
+			if (!st.hasMoreTokens()) return false;
+			int z = Integer.parseInt(st.nextToken());
+			
+			ArrayList<AbstractEntity> selected = gameplayRef.getEditorController().getSelectedEntities();
 			for (AbstractEntity ent : selected) {
 				if (ent instanceof Portal){
 					((Portal)ent).setTarget(new Coordinate(x, y, z));

@@ -1,5 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -62,7 +64,7 @@ public class CustomTree extends RenderBlock {
 		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
 			otherHalf.destroy();
 			
-		Collectible.create(Collectible.CollectibleType.WOOD).spawn(getPosition().toPoint());			
+		Collectible.create(CollectibleType.WOOD).spawn(getPosition().toPoint());			
 	}
 
 	

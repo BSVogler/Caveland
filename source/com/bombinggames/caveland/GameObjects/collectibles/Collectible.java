@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
@@ -18,69 +18,9 @@ import java.io.Serializable;
 public class Collectible extends MovableEntity implements Serializable {
 	private static final long serialVersionUID = 2L;
 
-	/**
-	 * a enum which lists the types of collectibles
-	 */
-	public static enum CollectibleType {
-
-		/**
-		 *
-		 */
-		WOOD((byte) 46),
-		/**
-		 * T.N.T.! I'm dynamite!
-		 */
-		EXPLOSIVES((byte) 47),
-		/**
-		 *
-		 */
-		IRONORE((byte) 48),
-		/**
-		 *
-		 */
-		COAL((byte) 49),
-		/**
-		 *
-		 */
-		CRISTALL((byte) 50),
-		/**
-		 *
-		 */
-		SULFUR((byte) 51),
-		
-		/**
-		 *
-		 */
-		TOOLKIT((byte) 53),
-		
-		/**
-		 * when places it spawns light
-		 */
-		TORCH( (byte) 54);
-
-		private static CollectibleType fromValue(String value) {
-			if (value != null) {  
-				for (CollectibleType type : values()) {  
-					if (type.name().equals(value)) {  
-						return type;  
-					}  
-				}
-			} return null;
-		}  
-
-		private byte id;
-
-		private CollectibleType(byte id) {
-			this.id = id;
-		}
-
-		public byte getId() {
-			return id;
-		}
-	}
 
 	/**
-	 * factory method
+	 * factory method to create an abstract entitiy from the definition
 	 *
 	 * @param def
 	 * @return
@@ -91,7 +31,9 @@ public class Collectible extends MovableEntity implements Serializable {
 			obj = new TFlint();
 		} else if (def == CollectibleType.TOOLKIT){
 			obj = new Bausatz();
-		}else {
+		} else if (def == CollectibleType.TORCH){
+			obj = new TorchCollectible();
+		} else {
 			obj = new Collectible(def);
 		}
 		obj.setIndestructible(true);
@@ -107,11 +49,11 @@ public class Collectible extends MovableEntity implements Serializable {
 	private transient float timeParentBlocked = 1500;
 
 	/**
-	 *@see #create(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
+	 *@see #create(com.bombinggames.caveland.GameObjects.collectibles.CollectibleType)
 	 * @param def
 	 */
 	protected Collectible(CollectibleType def) {
-		super(def.id, 0);
+		super(def.getId(), 0);
 		this.def = def;
 		setFloating(false);
 		enableShadow();
@@ -211,7 +153,8 @@ public class Collectible extends MovableEntity implements Serializable {
 	}
 
 	/**
-	 * the action if you active the item in the inventory
+	 * Defines the action if you use the collectible.
+	 * 
 	 * @param view
 	 * @param actor
 	 */

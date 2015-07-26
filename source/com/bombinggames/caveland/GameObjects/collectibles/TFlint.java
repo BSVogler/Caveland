@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;

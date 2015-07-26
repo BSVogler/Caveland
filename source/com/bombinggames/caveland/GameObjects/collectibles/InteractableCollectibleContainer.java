@@ -29,10 +29,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.util.ArrayList;
 

@@ -1,5 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.GameObjects.collectibles.Flint;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -65,10 +68,10 @@ public class Machine extends RenderBlock {
 		for (int i = 0; i < content.size(); i++) {
 			MovableEntity obj = content.get(i);
 			if (obj instanceof Collectible){
-				if (((Collectible) obj).getType()==Collectible.CollectibleType.COAL){
+				if (((Collectible) obj).getType()==CollectibleType.COAL){
 					coalcount++;
 					content.remove(i);
-				}else if (((Collectible) obj).getType()==Collectible.CollectibleType.SULFUR){
+				}else if (((Collectible) obj).getType()==CollectibleType.SULFUR){
 					sulfurcount++;
 					content.remove(i);
 				}

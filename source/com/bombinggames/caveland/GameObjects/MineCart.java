@@ -1,8 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -284,7 +286,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		if (getHealth()<=0) {
 			Controller.getSoundEngine().stop("wagon", isPlayingSound);
 			Controller.getSoundEngine().play("robot1destroy", getPosition());
-			((Collectible) Collectible.create(Collectible.CollectibleType.IRONORE).spawn(getPosition())).sparkle();
+			((Collectible) Collectible.create(CollectibleType.IRONORE).spawn(getPosition())).sparkle();
 		}
 	}
 	

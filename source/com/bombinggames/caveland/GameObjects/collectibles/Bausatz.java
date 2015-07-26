@@ -1,8 +1,9 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 

@@ -29,17 +29,19 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.io.IOException;
 import java.util.Iterator;
 
 /**
- *An entity which contains collectibles.
+ * An entity which contains collectibles.
+ *
  * @author Benedikt Vogler
  */
-public class CollectibleContainer extends AbstractEntity{
+public class CollectibleContainer extends AbstractEntity {
+
 	private static final long serialVersionUID = 2L;
 	private boolean backpack;
 
@@ -53,14 +55,15 @@ public class CollectibleContainer extends AbstractEntity{
 	public void setBackpack(boolean backpack) {
 		this.backpack = backpack;
 	}
-	
+
 	/**
-	 * only allows collectibles to be added 
+	 * only allows collectibles to be added
+	 *
 	 * @param collectible
 	 */
 	@Override
 	public void addChild(AbstractEntity collectible) {
-		if (collectible instanceof Collectible){
+		if (collectible instanceof Collectible) {
 			collectible.setHidden(true);
 			collectible.setPosition(getPosition().cpy());
 			collectible.setHidden(true);
@@ -69,65 +72,76 @@ public class CollectibleContainer extends AbstractEntity{
 			super.addChild(collectible);
 		}
 	}
-	
+
 	/**
-	 * Get the n't element from inventory. in future should skip stuff like the shadow.
+	 * Get the n't element from inventory. in future should skip stuff like the
+	 * shadow.
+	 *
 	 * @param index
-	 * @return 
+	 * @return
 	 */
-	public Collectible get(int index){
-		if (getChildren().size() > index)
+	public Collectible get(int index) {
+		if (getChildren().size() > index) {
 			return (Collectible) getChildren().get(index);
-		else return null;
+		} else {
+			return null;
+		}
 	}
-	
+
 	/**
 	 * amount of contained items
-	 * @return 
+	 *
+	 * @return
 	 */
-	public int size(){
+	public int size() {
 		return getChildren().size();
 	}
-	
+
 	/**
 	 * Makes the object appear in the world
+	 *
 	 * @param pos
-	 * @return 
+	 * @return
 	 */
-	public Collectible retrieveCollectible(int pos){
+	public Collectible retrieveCollectible(int pos) {
 		Collectible collectible = (Collectible) getChildren().remove(pos);
 		collectible.setFloating(false);
 		collectible.allowPickup();
 		collectible.setHidden(false);
 		return collectible;
 	}
-	
+
 	/**
-	 * Removes the object from the container/world and returns only the reference
+	 * Removes the object from the container/world and returns only the
+	 * reference
+	 *
 	 * @param pos
-	 * @return 
+	 * @return
 	 */
-	public Collectible retrieveCollectibleReference(int pos){
+	public Collectible retrieveCollectibleReference(int pos) {
 		Collectible collectible = retrieveCollectible(pos);
 		collectible.disposeFromMap();
 		return collectible;
 	}
-	
+
 	/**
 	 * Removes the first occurance of this tipes from the container.
+	 *
 	 * @param def
 	 * @return can return null
-	 * @see #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
+	 * @see
+	 * #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType)
 	 */
-	public Collectible fetchCollectible(Collectible.CollectibleType def){
+	public Collectible fetchCollectible(CollectibleType def) {
 		Iterator<AbstractEntity> iter = getChildren().iterator();
 		Collectible collectible = null;
 		while (iter.hasNext()) {
 			collectible = (Collectible) iter.next();
-			if (collectible.getType().equals(def))
+			if (collectible.getType().equals(def)) {
 				break;
+			}
 		}
-		if (collectible!=null) {
+		if (collectible != null) {
 			getChildren().remove(collectible);
 			collectible.setFloating(false);
 			collectible.allowPickup();
@@ -138,32 +152,36 @@ public class CollectibleContainer extends AbstractEntity{
 
 	/**
 	 * Updates the items in the slots.
-	 * @param dt 
+	 *
+	 * @param dt
 	 */
 	@Override
-	public void update(float dt){
+	public void update(float dt) {
 		super.update(dt);
 		//put every child at the position if the container
 		for (AbstractEntity item : getChildren()) {
-			if (item != null){
+			if (item != null) {
 				item.setPosition(getPosition().cpy());
 			}
 		}
 		getChildren().removeIf((AbstractEntity item) -> item.shouldBeDisposed());
 	}
-	
+
 	/**
 	 * Switches the order of the items.
+	 *
 	 * @param left true if left, false to right
 	 */
-	public void switchItems(boolean left){
-		if (!getChildren().isEmpty())
-			if (left)
+	public void switchItems(boolean left) {
+		if (!getChildren().isEmpty()) {
+			if (left) {
 				getChildren().add(getChildren().remove(0));
-			else
-				getChildren().add(0, getChildren().remove(getChildren().size()-1));
+			} else {
+				getChildren().add(0, getChildren().remove(getChildren().size() - 1));
+			}
+		}
 	}
-	
+
 	/**
 	 * overrides deserialisation
 	 *
@@ -175,9 +193,9 @@ public class CollectibleContainer extends AbstractEntity{
 		stream.defaultReadObject();
 		//show if loaded a backpack
 		if (backpack) {
-			if(getChildren().isEmpty())
+			if (getChildren().isEmpty()) {
 				dispose();
-			else {
+			} else {
 				setHidden(false);
 				//keep children hidden
 				for (AbstractEntity children : getChildren()) {

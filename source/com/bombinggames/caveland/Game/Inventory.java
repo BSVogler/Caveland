@@ -1,9 +1,10 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.Collectible;
-import com.bombinggames.caveland.GameObjects.CollectibleContainer;
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -67,7 +68,7 @@ public class Inventory {
 	 * @return can return null
 	 * @see #fetchCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType) 
 	 */
-	public Collectible fetchCollectible(Collectible.CollectibleType def){
+	public Collectible fetchCollectible(CollectibleType def){
 		if (container.get(2)!=null && container.get(2).getType() == def)
 			return container.get(2);
 		if (container.get(1) !=null && container.get(1).getType() == def)
@@ -103,9 +104,9 @@ public class Inventory {
 	 * Get a copy of the content. Does not change anything
 	 * @return can have null in array
 	 */
-	public Collectible.CollectibleType[] getContentDef(){
+	public CollectibleType[] getContentDef(){
 		Collectible[] tmp = getContent();
-		return new Collectible.CollectibleType[]{
+		return new CollectibleType[]{
 			(tmp[0]==null ? null : tmp[0].getType()),
 			(tmp[1]==null ? null : tmp[1].getType()),
 			(tmp[2]==null ? null : tmp[2].getType()),

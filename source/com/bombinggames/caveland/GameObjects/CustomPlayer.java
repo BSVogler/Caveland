@@ -1,5 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

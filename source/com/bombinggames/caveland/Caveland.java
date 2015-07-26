@@ -4,7 +4,7 @@ import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
-import com.bombinggames.caveland.GameObjects.Flint;
+import com.bombinggames.caveland.GameObjects.collectibles.Flint;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.SmokeEmitter;

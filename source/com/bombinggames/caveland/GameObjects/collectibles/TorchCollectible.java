@@ -44,7 +44,6 @@ public class TorchCollectible extends Collectible {
 
 	public TorchCollectible() {
 		super(CollectibleType.TORCH);
-		
 	}
 	
 	public TorchCollectible(CollectibleType def) {

@@ -43,7 +43,8 @@ public enum CollectibleType {
 	CRISTALL((byte) 50),
 	SULFUR((byte) 51),
 	TOOLKIT((byte) 53),
-	TORCH((byte) 54);
+	TORCH((byte) 54),
+	IRON((byte) 55);
 
 	static CollectibleType fromValue(String value) {
 		if (value != null) {

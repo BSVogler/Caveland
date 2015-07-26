@@ -79,9 +79,15 @@ public class Portal extends AbstractEntity implements Interactable{
 	public void update(float dt) {
 		super.update(dt);
 		if (spawner){
-			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*3, CustomPlayer.class).isEmpty()){//if a player is nearby
+			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, CustomPlayer.class).isEmpty()){//if a player is nearby
 				if (spawnedList.size()<3) {
-					Enemy e = (Enemy) new Enemy().spawn(getPosition().cpy().addVector((float) (Math.random()*Block.GAME_EDGELENGTH), (float) (Math.random()*Block.GAME_EDGELENGTH), 8));
+					Enemy e = (Enemy) new Enemy().spawn(
+						getPosition().cpy().addVector(
+							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
+							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
+							8
+						)
+					);
 					spawnedList.add(e);
 				}
 				//remove killed enemys

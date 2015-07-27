@@ -159,7 +159,8 @@ public class Chunk {
 		for (Block[][] x : data) {
 			for (Block[] y : x) {
 				for (Block z : y) {
-					z.setLightlevel(0);
+					if (z!=null)
+						z.setLightlevel(0);
 				}
 			}
 		}

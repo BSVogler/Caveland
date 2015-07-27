@@ -169,20 +169,18 @@ public RenderBlock toRenderBlock(Block data) {
 		byte id = coord.getBlock().getId();
 		byte value = coord.getBlock().getId();
 		if (interactAble(id)) {
-			if (id==11) {
-				boolean found = false;
-				ArrayList<AbstractEntity> everyEntity = coord.getEntitiesInside();
-				for (AbstractEntity ent : everyEntity) {
-					if (ent instanceof Interactable) {
-						found = true;
+			ArrayList<AbstractEntity> everyEntity = coord.getEntitiesInside();
+			for (AbstractEntity ent : everyEntity) {
+				if (id==11) {
+					if (ent instanceof OvenLogic) {
 						return (Interactable) ent;
 					}
 				}
-				//not found, so create new one
-				return (Interactable) new OvenLogic().spawn(coord.toPoint());
-			} else {
-				return null;
 			}
+			//not found, so create new one
+			if (id==11) {
+				return (Interactable) new OvenLogic().spawn(coord.toPoint());
+			} else return null;
 		} else {
 			return null;
 		}

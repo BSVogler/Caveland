@@ -300,18 +300,22 @@ public class Block implements HasID, Serializable {
 	}
 
 	/**
-	 * stores the lightlevel overriding each side
+	 * Stores the lightlevel overriding each side
 	 * @param lightlevel  range 0 -2
 	 */
 	@Override
 	public void setLightlevel(float lightlevel) {
-		if (lightlevel <0)
-			lightlevel=0;
-		int l = (int) (lightlevel*512);
-		if (l>1023) l=1023;
-		colorLeft = (l<<20)+(l<<10)+l;//RGB;
-		this.colorTop = colorLeft;
-		this.colorRight = colorLeft;
+		if (lightlevel <= 0) {
+			colorLeft = 0;
+			this.colorTop = colorLeft;
+			this.colorRight = colorLeft;
+		} else {
+			int l = (int) (lightlevel*512);
+			if (l > 1023) l = 1023;
+			colorLeft = (l<<20) + (l<<10)+l;//RGB;
+			this.colorTop = colorLeft;
+			this.colorRight = colorLeft;
+		}
 	}
 	
 	/**
@@ -322,15 +326,15 @@ public class Block implements HasID, Serializable {
 	public void setLightlevel(float lightlevel, Side side) {
 		if (lightlevel <0)
 			lightlevel=0;
-		int l = (int) (lightlevel*512);
-		if (l>1023) l=1023;
+		int l = (int) (lightlevel * 512);
+		if (l > 1023) l = 1023;
 		
 		if (side==Side.LEFT)
-			colorLeft = (l<<20)+(l<<10)+l;//RGB;
+			colorLeft = (l<<20) + (l<<10)+l;//RGB;
 		else if (side==Side.TOP)
-			colorTop = (l<<20)+(l<<10)+l;//RGB;
+			colorTop = (l<<20) + (l<<10)+l;//RGB;
 		else
-			colorRight = (l<<20)+(l<<10)+l;//RGB
+			colorRight = (l<<20) + (l<<10)+l;//RGB
 	}
 	
 	/**

@@ -16,7 +16,7 @@ public class ChunkGenerator implements Generator {
 	public static final int CAVESBORDER = 1000;
 	
 	/**width of a room */
-	static final float g = 15;
+	static final float g = 21;
 	/**
 	 * padding
 	 */
@@ -62,14 +62,28 @@ public class ChunkGenerator implements Generator {
 			int insideout = insideOutside(x, y, z);
 			
 			//walls
-			if (insideout==0 && z<=5)//build a wall
+			if (insideout==0 && z<=4)//build a wall
 				return 3;
 			
-			if (insideout==-1 && z<=5)//build air for outside
-				return 0;
+			if (insideout==-1)//build air for outside
+				return 0;	
+			
+			if (z==3)
+				if ((x*y*2+x+y*3+500) % 8==y % 7)
+					if (x%2==0 && y%2==0){
+						if (y%5==0)
+							return 42;
+						else
+							return 44;
+					} else {
+						if (y%8==0)
+							return 43;
+						else
+							return 3;
+					}
 			
 			//floor
-			if (z<=3)
+			if (z<=2)
 				return 2;
 			
 		}
@@ -91,7 +105,7 @@ public class ChunkGenerator implements Generator {
 			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 
 			//loch in der Decke
-			if (xRoom==g-5 && yRoom==5 && z == 4) {
+			if (xRoom==g-5 && yRoom==p+2 && z == 4) {
 				Portal portal; 
 				if (getCaveNumber(x, y, z)==0) {
 					//exit to surface
@@ -104,7 +118,7 @@ public class ChunkGenerator implements Generator {
 				return new AbstractEntity[]{portal};
 			}
 			//loch im Boden
-			if (xRoom==5 && yRoom==g-5 && z == 4){
+			if (xRoom==5 && yRoom==g-p-4 && z == 4){
 				return new AbstractEntity[]{new Portal(getCaveEntry(getCaveNumber(x, y, z)-1).addVector(0, 0, 3)).spawn(new Coordinate(x, y, z).toPoint())};
 				
 			}
@@ -122,11 +136,11 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	private Coordinate getCaveEntry(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+g), CAVESBORDER+23+5, 4);
+		return new Coordinate((int) (roomWithPadding*caveNumber+g), CAVESBORDER+52, 4);
 	}
 	
 	private Coordinate getCaveExit(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+10), CAVESBORDER+28+(int) (g-5), 4);
+		return new Coordinate((int) (roomWithPadding*caveNumber+10), CAVESBORDER+62, 4);
 	}
 	
 	
@@ -148,6 +162,10 @@ public class ChunkGenerator implements Generator {
 		//yRoom*=yStrech;//strech;
 
 		boolean firstCheckInside = true;//standard firstCheckInside is inside
+		
+		//fix/hack for even walls and staggered map
+		if (xRoom < g/2 && y%2 == 1)
+			xRoom++;
 		
 		if (
 			   xRoom + yRoom <= g/2.0f//top left

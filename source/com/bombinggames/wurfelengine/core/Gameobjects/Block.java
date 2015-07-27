@@ -323,17 +323,17 @@ public class Block implements HasID, Serializable {
 	 */
 	@Override
 	public float getLightlevelR() {
-		return heightLightlevel+(getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
+		return heightLightlevel/Byte.MAX_VALUE+(getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelG() {
-		return heightLightlevel+(getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
+		return heightLightlevel/Byte.MAX_VALUE + (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelB() {
-		return heightLightlevel+(getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
+		return heightLightlevel/(float) Byte.MAX_VALUE+(getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
 	}
 
 	/**
@@ -343,11 +343,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelR(Side side) {
 		if (side == Side.LEFT) {
-			return ((colorLeft >> 20) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorLeft >> 20) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return ((colorTop >> 20) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorTop >> 20) & 0x3FF) / 511f;
 		} else {
-			return ((colorRight >> 20) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorRight >> 20) & 0x3FF) / 511f;
 		}
 	}
 
@@ -358,11 +358,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelG(Side side) {
 		if (side == Side.LEFT) {
-			return ((colorLeft >> 10) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorLeft >> 10) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return ((colorTop >> 10) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorTop >> 10) & 0x3FF) / 511f;
 		} else {
-			return ((colorRight >> 10) & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorRight >> 10) & 0x3FF) / 511f;
 		}
 	}
 
@@ -373,11 +373,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelB(Side side) {
 		if (side == Side.LEFT) {
-			return (colorLeft & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + (colorLeft & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return (colorTop & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + (colorTop & 0x3FF) / 511f;
 		} else {
-			return (colorRight & 0x3FF) / 511f;
+			return heightLightlevel/(float) Byte.MAX_VALUE + (colorRight & 0x3FF) / 511f;
 		}
 	}
 
@@ -405,7 +405,7 @@ public class Block implements HasID, Serializable {
 
 	/**
 	 *
-	 * @param lightlevel range 0-2.
+	 * @param lightlevel a factor in range [0-2]
 	 * @param side
 	 */
 	public void setLightlevel(float lightlevel, Side side) {
@@ -423,6 +423,77 @@ public class Block implements HasID, Serializable {
 			colorTop = (l << 20) + (l << 10) + l;//RGB;
 		} else {
 			colorRight = (l << 20) + (l << 10) + l;//RGB
+		}
+	}
+	
+		/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 * @param channel
+	 */
+	public void setLightlevel(float lightlevel, Side side, int channel) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+		
+		byte colorBitshift = 0;
+		if (channel==0)
+			colorBitshift = 20;
+		else if (channel==1)
+			colorBitshift = 10;
+		
+		int l = (int) (lightlevel * 512);
+		if (l > 1023) {
+			l = 1023;
+		}
+		
+		if (side == Side.LEFT) {
+			colorLeft |= (l << colorBitshift);
+		} else if (side == Side.TOP) {
+			colorTop |= (l << colorBitshift);
+		} else {
+			colorRight |= (l << colorBitshift);
+		}
+	}
+	
+		/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 * @param channel 0 = R, 1 =G, 2=B
+	 */
+	public void addLightlevel(float lightlevel, Side side, int channel) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+		
+		byte colorBitshift = 0;
+		if (channel==0)
+			colorBitshift = 20;
+		else if (channel==1)
+			colorBitshift = 10;
+		
+		float l = lightlevel * 512;
+		if (l > 1023) {
+			l = 1023;
+		}
+		
+		if (side == Side.LEFT) {
+			int newl = (int) (((colorLeft >> colorBitshift) & 0x3FF) / 511f+l);
+			if (newl > 1023)
+				newl = 1023;
+			colorLeft |= (newl << colorBitshift);
+		} else if (side == Side.TOP) {
+			int newl = (int) (((colorTop >> colorBitshift) & 0x3FF) / 511f+l);
+			if (newl > 1023)
+				newl = 1023;
+			colorTop  |= (newl << colorBitshift);
+		} else {
+			int newl = (int) (((colorRight >> colorBitshift) & 0x3FF) / 511f+l);
+			if (newl > 1023)
+				newl = 1023;
+			colorRight |= (newl << colorBitshift);
 		}
 	}
 

@@ -57,9 +57,9 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * only allows collectibles to be added
+	 * only allows collectibles to be added.
 	 *
-	 * @param collectible
+	 * @param collectible if not an collectible nothing happens
 	 */
 	@Override
 	public void addChild(AbstractEntity collectible) {
@@ -115,7 +115,7 @@ public class CollectibleContainer extends AbstractEntity {
 
 	/**
 	 * Removes the object from the container/world and returns only the
-	 * reference
+	 * reference.
 	 *
 	 * @param pos
 	 * @return
@@ -127,12 +127,12 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * Removes the first occurance of this tipes from the container.
+	 * Removes the first occurance of this type from the container. Makes the object appear in the world.
 	 *
-	 * @param def
-	 * @return can return null
+	 * @param def the definition of the object you are want to fetch.
+	 * @return can return null if not found
 	 * @see
-	 * #getCollectible(com.bombinggames.caveland.GameObjects.Collectible.CollectibleType)
+	 * #retrieveCollectible(int)
 	 */
 	public Collectible fetchCollectible(CollectibleType def) {
 		Iterator<AbstractEntity> iter = getChildren().iterator();

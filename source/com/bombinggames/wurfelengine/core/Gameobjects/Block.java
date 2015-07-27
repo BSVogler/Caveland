@@ -89,6 +89,11 @@ public class Block implements HasID, Serializable {
 	private byte value;
 	private byte health = 100;
 	/**
+	 * stores the lightlevel based on the height as percentile /127
+	 */
+	private byte heightLightlevel;
+	
+	/**
 	 *  each side has RGB color stored as 10bit float. Obtained by dividing bits by fraction /1023.
 	 */
 	private int colorLeft = (55<<16)+(55<<8)+55;
@@ -440,5 +445,13 @@ public class Block implements HasID, Serializable {
 
 	public void setUnclipped() {
 		clipping=(byte)0;
+	}
+
+	/**
+	 * 
+	 * @param l value [0;1]
+	 */
+	public void setHeightLightlevel(float l) {
+		heightLightlevel = (byte) (l*127);
 	}
 }

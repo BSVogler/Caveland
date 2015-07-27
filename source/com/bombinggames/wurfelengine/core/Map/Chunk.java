@@ -149,11 +149,20 @@ public class Chunk {
     }
 	
 	/**
-	 *
+	 * Updates the chunk. should be called once per frame.
+	 * 
 	 * @param dt
 	 */
 	public void update(float dt){	
 		processModification();
+		//reset light to zero
+		for (Block[][] x : data) {
+			for (Block[] y : x) {
+				for (Block z : y) {
+					z.setLightlevel(0);
+				}
+			}
+		}
 	}
 	
 	/** 

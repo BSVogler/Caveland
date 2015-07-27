@@ -66,12 +66,14 @@ public class Torch extends RenderBlock {
 			Point torchP = getPosition().toPoint();
 			//light blocks under the torch
 			for (int x = -RADIUS; x < RADIUS; x++) {
-				for (int y = -RADIUS; y < RADIUS; y++) {
+				for (int y = -RADIUS*2; y < RADIUS*2; y++) {
 					Block block = getPosition().cpy().addVector(x, y, -1).getBlock();
 					if (block!=null) {
 						float l  = (float) (1 +BRIGHTNESS / Math.pow(
 							torchP.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/Block.GAME_EDGELENGTH+1,2));
-						block.setLightlevel(l, Side.TOP);
+						block.addLightlevel((float) (l*(0.15f+Math.random()*0.03f)), Side.TOP,0);
+						block.addLightlevel((float) (l*(0.15f+Math.random()*0.005f)), Side.TOP,1);
+						block.addLightlevel((float) (l*(0.15f+Math.random()*0.005f)), Side.TOP,2);
 					}
 				}
 			}
@@ -81,10 +83,7 @@ public class Torch extends RenderBlock {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (!postSpawnUpdate){
-			postSpawnUpdate=true;
-			lightNearbyBlocks();
-		}
+		lightNearbyBlocks();
 	}
 	
 }

@@ -354,7 +354,7 @@ public class LightEngine implements MapObserver {
 					for (int z = 9; z >= 0; z--) {
 						Block blockToLit = y[z];
 						if (blockToLit != null) {
-							blockToLit.setLightlevel(.5f + .5f*z / (float) topmost);
+							blockToLit.setHeightLightlevel(.5f + .5f*z / (float) topmost);
 						}
 					}
 				}

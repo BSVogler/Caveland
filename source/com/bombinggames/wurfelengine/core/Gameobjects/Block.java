@@ -323,17 +323,17 @@ public class Block implements HasID, Serializable {
 	 */
 	@Override
 	public float getLightlevelR() {
-		return (getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
+		return heightLightlevel+(getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelG() {
-		return (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
+		return heightLightlevel+(getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelB() {
-		return (getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
+		return heightLightlevel+(getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
 	}
 
 	/**

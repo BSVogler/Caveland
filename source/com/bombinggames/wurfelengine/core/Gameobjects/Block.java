@@ -552,6 +552,6 @@ public class Block implements HasID, Serializable {
 	 * @param l value [0;1]
 	 */
 	public void setHeightLightlevel(float l) {
-		heightLightlevel = (byte) (l * 127);
+		heightLightlevel = (byte) (l * Byte.MAX_VALUE);
 	}
 }

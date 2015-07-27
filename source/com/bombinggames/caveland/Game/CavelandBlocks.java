@@ -1,9 +1,10 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.CustomTree;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Machine;
+import com.bombinggames.caveland.GameObjects.OvenLogic;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -14,6 +15,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
@@ -151,35 +153,38 @@ public RenderBlock toRenderBlock(Block data) {
 	/**
 	 * is it possible to interact with this
 	 * @param id
-	 * @param value
 	 * @return 
 	 */
-	public static boolean interactAble(byte id, byte value){
+	private static boolean interactAble(byte id){
 		if (id==11 || id==12) return true;
 		return false;
 	}
 	
-	
 	/**
-	 * if you interact with a block which is interactable
+	 * 
 	 * @param coord
-	 * @param actor 
+	 * @return null if not interactable 
 	 */
-	public static void interact(Coordinate coord, AbstractEntity actor){
-		Block block = coord.getBlock();
-		if (block!=null) {
-			byte id = block.getId();
-			if (id==11) {//construction site
-				if (actor instanceof CustomPlayer){
-					//lege objekte aus Inventar  hier rein
-					Collectible frontItem = ((CustomPlayer) actor).getInventory().retrieveFrontItem();
-					if (frontItem!=null)
-						frontItem.spawn(coord.toPoint());
+	public static Interactable verifyInteractableExistence(Coordinate coord){
+		byte id = coord.getBlock().getId();
+		byte value = coord.getBlock().getId();
+		if (interactAble(id)) {
+			if (id==11) {
+				boolean found = false;
+				ArrayList<AbstractEntity> everyEntity = coord.getEntitiesInside();
+				for (AbstractEntity ent : everyEntity) {
+					if (ent instanceof Interactable) {
+						found = true;
+						return (Interactable) ent;
+					}
 				}
-				//sind alle da dannn baue
+				//not found, so create new one
+				return (Interactable) new OvenLogic().spawn(coord.toPoint());
+			} else {
+				return null;
 			}
+		} else {
+			return null;
 		}
-		
 	}
-	
 }

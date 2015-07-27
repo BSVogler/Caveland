@@ -1,7 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -341,7 +341,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 			//check interactable blocks
 			Block blockBelow = pos.toCoord().getBlock();
-			if (blockBelow!= null && CavelandBlocks.interactAble(blockBelow.getId(), blockBelow.getValue())){
+			if (blockBelow!= null && CavelandBlocks.verifyInteractableExistence(pos.toCoord()) != null){
 				//todo only overwrite if block is nearer
 				nearestInteractableBlock = getPosition().toCoord();
 				showButton(Interactable.RT, nearestInteractableBlock);
@@ -463,12 +463,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * @param view
 	 */
 	public void interactWithNearestThing(CustomGameView view) {
-		if (nearestEntity!=null)
+		if (nearestEntity != null)
 			((Interactable) nearestEntity).interact(view, this);
-		else {
-			if (nearestInteractableBlock!=null)
-				CavelandBlocks.interact(nearestInteractableBlock, this);
-		}
 	}
 
 	/**

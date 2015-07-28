@@ -101,6 +101,10 @@ public class SmokeEmitter extends AbstractEntity {
 		active= !active;
 	}
 
+	/**
+	 * Makes the emitter spawn objects
+	 * @param active 
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}

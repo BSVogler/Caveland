@@ -70,7 +70,6 @@ public class CollectibleContainer extends AbstractEntity {
 		if (collectible instanceof Collectible) {
 			collectible.setHidden(true);
 			collectible.setPosition(getPosition().cpy());
-			collectible.setHidden(true);
 			((Collectible) collectible).preventPickup();
 			((Collectible) collectible).setFloating(true);
 			super.addChild(collectible);

@@ -19,10 +19,10 @@ import com.bombinggames.wurfelengine.core.WEScreen;
  * @author Benedikt Vogler
  */
 public class CoopControlsSelectionScreen extends WEScreen {
-	private final Texture background;
+	private final Texture content;
 	private Stage stage;
 	private final SpriteBatch batch;
-	private final Texture mainbg;
+	//private final Texture mainbg;
 
 	/**
 	 *
@@ -33,8 +33,8 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
-		this.background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/controlScreen.jpg"));
-		this.mainbg = background;
+		this.content = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/controlScreen.png"));
+		//this.mainbg = background;
 		
 		//stage
 		if (Controllers.getControllers().size <= 1) {
@@ -50,7 +50,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.setScreen(new SaveSelectionScreen(1, batch, mainbg));
+					WE.setScreen(new SaveSelectionScreen(1, batch, null));
 				}
 			});
 			stage.addActor(splitControlsButton);
@@ -66,7 +66,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				WE.setScreen(new SaveSelectionScreen(0, batch, mainbg));
+				WE.setScreen(new SaveSelectionScreen(0, batch, null));
 			}
 		});
 		stage.addActor(twoKeyboardButton);
@@ -87,11 +87,11 @@ public class CoopControlsSelectionScreen extends WEScreen {
 	
 	@Override
 	public void renderImpl(float dt) {
-		Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
+		Gdx.gl20.glClearColor( 0.36f, 0.76f, 0.98f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.draw(content, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 		
 		stage.draw();

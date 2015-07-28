@@ -34,6 +34,9 @@ public class MainMenuScreen extends AbstractMainMenu {
 	
 	private Sound selectionSound;
 	private Sound abortSound;
+	private float backgroundPosY;
+	private boolean fadeout;
+	private Action fadeOutAction;
 
 
 	@Override
@@ -57,13 +60,24 @@ public class MainMenuScreen extends AbstractMainMenu {
 		);
 		stage.addActor(button1Player);
 		menuItems[0] = button1Player;
-		button1Player.addAction(new Action() {
-			@Override
-			public boolean act(float delta) {
-				WE.setScreen(new SaveSelectionScreen(-1,batch, background));
-				return true;
+		button1Player.addAction(
+			new Action() {
+				@Override
+				public boolean act(float delta) {
+					fadeOut(
+						new Action() {
+
+							@Override
+							public boolean act(float delta) {
+								WE.setScreen(new SaveSelectionScreen(-1,batch, background));
+								return true;
+							}
+						}
+					);
+					return true;
+				}
 			}
-		});
+		);
 		
 		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
 		button2Player.setPosition(
@@ -72,26 +86,48 @@ public class MainMenuScreen extends AbstractMainMenu {
 		);
 		stage.addActor(button2Player);
 		menuItems[1] = button2Player;
-		button2Player.addAction(new Action() {
-			@Override
-			public boolean act(float delta) {
-				WE.setScreen(new CoopControlsSelectionScreen(batch, background));
-				return true;
+		button2Player.addAction(
+			new Action() {
+				@Override
+				public boolean act(float delta) {
+					fadeOut(
+						new Action() {
+
+							@Override
+							public boolean act(float delta) {
+								WE.setScreen(new CoopControlsSelectionScreen(batch, background));
+								return true;
+							}
+						}
+					);
+					return true;
+				}
 			}
-		});
+		);
 		
 		//add buttons
 		int i=2;
 		final int top = (int) (stage.getHeight()*0.1f);
 		
 		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
-		menuItems[i].addAction(new Action() {
-			@Override
-			public boolean act(float delta) {
-				WE.setScreen(new OptionScreen(batch));
-				return true;
+		menuItems[i].addAction(
+			new Action() {
+				@Override
+				public boolean act(float delta) {
+					fadeOut(
+						new Action() {
+
+							@Override
+							public boolean act(float delta) {
+								WE.setScreen(new OptionScreen(batch));
+								return true;
+							}
+						}
+					);
+					return true;
+				}
 			}
-		});
+		);
 		menuItems[i].setPosition(stage.getWidth()/2-400, top);
 		
 		i++;
@@ -121,6 +157,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		}
 		
         background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/background.jpg"));
+		backgroundPosY = -Gdx.graphics.getHeight();
 		
         font = new BitmapFont();
 		
@@ -133,9 +170,28 @@ public class MainMenuScreen extends AbstractMainMenu {
 	public void renderImpl(float dt) {
 		//update
 
-		alpha += dt/1000f;
-		if (alpha>1) alpha=1;
+		//tweening on start
+		if (alpha >= 1) {
+			alpha=1;
+		} else {
+			alpha += dt/1000f;
+		}
 		
+		if (fadeout==false) {
+			if (backgroundPosY >= 0) {
+				backgroundPosY = 0;
+			} else {
+				backgroundPosY += dt;
+			}
+		} else {
+			if (backgroundPosY <= -Gdx.graphics.getHeight()) {
+				backgroundPosY = -Gdx.graphics.getHeight();
+				fadeout=false;
+				fadeOutAction.act(dt);
+			} else {
+				backgroundPosY -= dt*3;//3px/ms
+			}
+		}
 		
 		for (int i = 0; i < menuItems.length; i++) {
 			Image menuItem = menuItems[i];
@@ -164,14 +220,17 @@ public class MainMenuScreen extends AbstractMainMenu {
 		);
 		//alphaTag.setScale(WE.getEngineView().getEqualizationScale());
 		
+		
+		//fadeout
+		
 		//render
 		 //clear & set background to black
-        Gdx.gl20.glClearColor( 0f, 0f, 0f, 1f );
+        Gdx.gl20.glClearColor( 0.36f, 0.76f, 0.98f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //Background        
         batch.begin();
-			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.draw(background, 0, backgroundPosY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			// render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 
@@ -209,6 +268,15 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void dispose() {
+	}
+	
+	/**
+	 * first fades out then performs action
+	 * @param action 
+	 */
+	public void fadeOut(Action action){
+		fadeout = true;
+		fadeOutAction = action;
 	}
 	
 	private class InputListener implements InputProcessor {

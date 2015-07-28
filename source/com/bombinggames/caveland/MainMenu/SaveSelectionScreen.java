@@ -1,11 +1,5 @@
 package com.bombinggames.caveland.MainMenu;
 
-import com.bombinggames.caveland.Game.CustomGameController;
-import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
-import com.bombinggames.wurfelengine.core.WEScreen;
-import com.bombinggames.wurfelengine.core.WorkingDirectory;
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.bombinggames.caveland.Game.CustomGameController;
+import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.WEScreen;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 
 /**
@@ -30,7 +30,7 @@ public class SaveSelectionScreen extends WEScreen {
 	private Stage stage;
 	private final SelectBox<String> selectBox;
 	private int coop;
-	private final Texture background;
+	//private final Texture background;
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class SaveSelectionScreen extends WEScreen {
 	public SaveSelectionScreen(int coop, SpriteBatch batch, Texture background) {
 		this.batch = batch;
 		this.coop = coop;
-		this.background = background;
+		//this.background = background;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Skin skin = WE.getEngineView().getSkin();
 		
@@ -120,11 +120,11 @@ public class SaveSelectionScreen extends WEScreen {
 	
 	@Override
 	public void renderImpl(float dt) {
-		Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
+		Gdx.gl20.glClearColor( 0.36f, 0.76f, 0.98f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
-			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			//batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 		stage.act(dt);
 		stage.draw();

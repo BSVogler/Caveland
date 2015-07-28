@@ -162,7 +162,7 @@ public class OptionScreen extends WEScreen {
 			
 		//render
 		 //clear & set background to black
-        Gdx.gl20.glClearColor( 0.1f, 0f, 0f, 1f );
+        Gdx.gl20.glClearColor( 0.36f, 0.76f, 0.98f, 1f );
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
 		stage.draw();

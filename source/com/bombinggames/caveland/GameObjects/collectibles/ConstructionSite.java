@@ -31,11 +31,13 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import java.util.ArrayList;
 
 /**
  *
@@ -86,22 +88,57 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer) {
-			CollectibleContainerWindow selectionWindow = new ConstructionSiteWindow(view, this);
+			ConstructionSiteWindow selectionWindow = new ConstructionSiteWindow(view, actor, this);
 			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
 		}
 	}
 	
-	private class ConstructionSiteWindow extends CollectibleContainerWindow {
+	private class ConstructionSiteWindow extends ActionBox {
+		private final CollectibleContainer parent;
 
-		public ConstructionSiteWindow(CustomGameView view, ConstructionSite parent) {
-			super(view, parent);
-			addSelectionNames("Build:"+ parent.getStatusString());
+		public ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
+			super(view, "Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
+			this.parent = parent;
+			//make list of options
+			ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
+			if (actor instanceof CustomPlayer) {
+				Collectible frontItem = ((CustomPlayer)actor).getInventory().getFrontCollectible();
+				boolean found = false;
+				if (frontItem != null) {
+					for (CollectibleType type : neededItems) {
+						if (frontItem.getType() == type)
+							found = true;
+					}
+				}
+				if (found)
+					list.add("Add: " + ((CustomPlayer)actor).getInventory().getFrontCollectible());
+				else
+					list.add("Add: You have nothing to add");
+			} else
+				list.add("Add");
+			
+			if (parent.getChildren().size() > 0)
+				list.add("Take item out " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
+			else list.add("Empty");
+			addSelectionNames(list);
 		}
 
 		@Override
 		public int confirm(CustomGameView view, AbstractEntity actor) {
 			int num = super.confirm(view, actor);
-			if (num==2) build();
+			if (actor instanceof CustomPlayer) {
+				CustomPlayer player = (CustomPlayer) actor;
+				//add item?
+				if (num == 0) {
+					Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+					if (frontItem != null) {
+						parent.addChild(frontItem);
+					}
+				} else if (num==1){
+					//fetch item
+					parent.retrieveCollectible(num - 1);
+				} else if (num==2) build();
+			}
 			return num;
 		}
 	}

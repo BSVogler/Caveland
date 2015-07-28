@@ -43,7 +43,13 @@ import com.badlogic.gdx.math.Vector3;
 public class SmokeEmitter extends AbstractEntity {
 	private static final long serialVersionUID = 2L;
 	private boolean active = false;
+	/**
+	 * counts the time
+	 */
 	private float timer;
+	/**
+	 * the amoutn of time to pass before a new object is spawned. In ms.
+	 */
 	private float timeEachSpawn = 100;
 	//private final Class<? extends MovableEntity> particleClass;
 	private Vector3 startingVector = new Vector3(0, 0, 0);
@@ -52,7 +58,6 @@ public class SmokeEmitter extends AbstractEntity {
 
 	/**
 	 *
-	 * @param emitterClass
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
 	public SmokeEmitter() {

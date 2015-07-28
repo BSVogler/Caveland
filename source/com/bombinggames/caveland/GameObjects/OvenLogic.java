@@ -31,11 +31,13 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  * The manager of the logic of the oven block.
@@ -43,35 +45,72 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
  */
 public class OvenLogic extends CollectibleContainer implements Interactable{
 	private static final long serialVersionUID = 1L;
+	private SmokeEmitter emitter;
+	private final float PRODUCTIONTIME = 3000;
+	private float productionCountDown;
 
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		emitter = (SmokeEmitter) new SmokeEmitter().spawn(point);
+		emitter.setHidden(true);
+		emitter.setParticleStartMovement(Vector3.Z.cpy());
+		emitter.setParticleTTL(1000);
+		return this;
+	}
+	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer){
 			//lege objekte aus Inventar  hier rein
 			Collectible frontItem = ((CustomPlayer) actor).getInventory().retrieveFrontItem();
-			if (frontItem != null)
+			if (frontItem != null && (frontItem.getType()==CollectibleType.Coal || frontItem.getType()==CollectibleType.Ironore))
 				addChild(frontItem);
 		}
 	}
-	
-	public boolean canProduce(){
-		Collectible coal = fetchCollectible(CollectibleType.COAL);
-		if (coal == null) return false;
-		Collectible ironore = fetchCollectible(CollectibleType.IRONORE);
-		if (ironore == null) return false;
-		//put them back in
-		addChild(coal);
-		addChild(ironore);
-		return true;
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		startProduction();
+		
+		float oldCountDown = productionCountDown;
+		if (productionCountDown > 0)
+			productionCountDown -= dt;
+		
+		if (productionCountDown<0)
+			productionCountDown = 0;
+		
+		//if reached zero this frame
+		if (oldCountDown > 0 && productionCountDown==0) {
+			//produce
+			Collectible coal = fetchCollectible(CollectibleType.Coal);
+			if (coal != null) coal.dispose();
+			Collectible ironore = fetchCollectible(CollectibleType.Ironore);
+			if (ironore != null) ironore.dispose();
+			( (Collectible) Collectible.create(CollectibleType.Iron).spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+			emitter.setActive(false);
+		}
 	}
 	
-	protected void produce(){
-		if (canProduce()) {
-			Collectible coal = fetchCollectible(CollectibleType.COAL);
-			if (coal != null) coal.dispose();
-			Collectible ironore = fetchCollectible(CollectibleType.IRONORE);
-			if (ironore != null) ironore.dispose();
-			( (Collectible) Collectible.create(CollectibleType.IRON).spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+	public boolean canStartProduction(){
+		if (productionCountDown==0) {
+			Collectible coal = fetchCollectible(CollectibleType.Coal);
+			if (coal == null) return false;
+			addChild(coal);
+			Collectible ironore = fetchCollectible(CollectibleType.Ironore);
+			if (ironore == null) return false;
+			addChild(ironore);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	protected void startProduction(){
+		if (canStartProduction()) {
+			emitter.setActive(true);
+			productionCountDown = PRODUCTIONTIME;
 		}
 	}
 }

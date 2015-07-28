@@ -1,60 +1,20 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class Particle extends MovableEntity {
-	
-	public static enum ParticleType {
-		/**
-		 *Starting as fire, then becomes smoke
-		 */
-		FIRE(true, true),
-		/**
-		 * Just fades.
-		 */
-		SMOKE(true, false),
-		/**
-		 *Just dissapeares.
-		 */
-		REGULAR(false, false);
-
-//		private static Collectible.CollectibleType fromValue(String value) {
-//			if (value != null) {  
-//				for (Collectible.CollectibleType type : values()) {  
-//					if (type.name().equals(value)) {  
-//						return type;  
-//					}  
-//				}
-//			} return null;
-//		}  
-
-		private boolean fade;
-		private boolean fadeToBlack;
-
-		private ParticleType(boolean fade, boolean fadeToBlack) {
-			this.fade = fade;
-			this.fadeToBlack = fadeToBlack;
-		}
-
-		public boolean fade() {
-			return fade;
-		}
-		
-		public boolean fadeToBlack() {
-			return fadeToBlack;
-		}
-	}
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private float maxtime;
 	private float timeTillDeath;
 	private Color startingColor;
 	private ParticleType type;
+	private float brightness = 0f;
 
 	public Particle() {
 		this((byte) 22, 2000f);
@@ -92,7 +52,7 @@ public class Particle extends MovableEntity {
 	}
 	
 	/**
-	 * Time to live
+	 * Time to live for each particle.
 	 * @param time in ms
 	 */
 	public void setTTL(float time){
@@ -102,6 +62,13 @@ public class Particle extends MovableEntity {
 			timeTillDeath=maxtime;
 	}
 	
+	/**
+	 * if the particle emits light youcan set the brightness
+	 * @param brightness
+	 */
+	public void setBrightness(float brightness){
+		this.brightness = brightness;
+	}
 	
 	@Override
 	public void update(float dt) {
@@ -128,6 +95,38 @@ public class Particle extends MovableEntity {
 			getColor().g = startingColor.g*((timeTillDeath)/maxtime);
 			getColor().b = startingColor.b*((timeTillDeath)/maxtime);
 		}
+		
+		if (type==ParticleType.FIRE) {
+			//licht
+			Point pos = getPosition().toPoint();
+			float flicker = (float) Math.random();
+			for (int x = -3; x < 3; x++) {
+				for (int y = -6; y < 6; y++) {
+					for (int z = -3; z < 3; z++) {
+						Block blockToLight = getPosition().toCoord().addVector(x, y, z).getBlock(); 
+						if (blockToLight != null) {
+							float pow = pos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/(float) Block.GAME_EDGELENGTH+1;
+							float l  = (1 +brightness) / (pow*pow);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.TOP, 0);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.000005f), Side.TOP, 1);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.000005f), Side.TOP, 2);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.RIGHT, 0);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.RIGHT, 1);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.RIGHT, 2);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.LEFT, 0);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.LEFT, 1);
+							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.LEFT, 2);
+						}
+					}
+				}
+			}
+		}
+		
 		if (timeTillDeath <= 0) dispose();
+	}
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 }

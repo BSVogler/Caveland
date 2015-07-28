@@ -31,10 +31,11 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 
 /**
  *
@@ -55,6 +56,7 @@ public class SmokeEmitter extends AbstractEntity {
 	private Vector3 startingVector = new Vector3(0, 0, 0);
 	private Vector3 spread = new Vector3(0, 0, 0);
 	private float TTL;
+	private float brightness;
 
 	/**
 	 *
@@ -78,8 +80,9 @@ public class SmokeEmitter extends AbstractEntity {
 			if (timer >= timeEachSpawn){
 				timer %= timeEachSpawn;
 				Particle particle = (Particle) new Particle((byte) 22, TTL).spawn(getPosition().cpy());
-				particle.setType(Particle.ParticleType.FIRE);
+				particle.setType(ParticleType.FIRE);
 				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
+				particle.setBrightness(brightness);
 				particle.addMovement(
 					startingVector.add(
 						(float) (Math.random()-0.5f)*2*spread.x,
@@ -131,5 +134,13 @@ public class SmokeEmitter extends AbstractEntity {
 
 	void setParticleTTL(int ttl) {
 		this.TTL = ttl;
+	}
+	
+	/**
+	 * if it can emit light
+	 * @param brightness 
+	 */
+	public void setParticleBrightness(float brightness){
+		this.brightness = brightness;
 	}
 }

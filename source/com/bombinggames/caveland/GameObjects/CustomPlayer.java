@@ -28,6 +28,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.core.Gameobjects.Controllable;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
@@ -166,6 +167,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter = new SmokeEmitter();
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
+		emitter.setParticleBrightness(0.1f);
 		emitter.setHidden(true);
 		SuperGlue connection1 = new SuperGlue(this, emitter);
 		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
@@ -174,6 +176,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter2 = new SmokeEmitter();
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
+		emitter2.setParticleBrightness(0.1f);
 		emitter2.setHidden(true);
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
 		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
@@ -773,7 +776,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			(byte) 22,
 			1000f
 		).spawn(getPosition().cpy().addVector((float) (40*Math.random()-20), (float) (40*Math.random()-20), 0));
-		dust.setType(Particle.ParticleType.SMOKE);
+		dust.setType(ParticleType.SMOKE);
 		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
 		dust.addMovement(
 			new Vector3(

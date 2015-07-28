@@ -3,9 +3,6 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -74,6 +71,20 @@ public class Inventory {
 		else if (container.get(1) !=null && container.get(1).getType() == def)
 			return container.get(1);
 		else if (container.get(0) !=null && container.get(0).getType() == def)
+			return container.get(0);
+		return null;
+	}
+	
+	/**
+	 * Does not alter the invetory.
+	 * @return Only reference. Can return null.
+	 */
+	public Collectible getFrontCollectible(){
+		if (container.get(2)!=null)
+			return container.get(2);
+		else if (container.get(1) !=null)
+			return container.get(1);
+		else if (container.get(0) !=null)
 			return container.get(0);
 		return null;
 	}

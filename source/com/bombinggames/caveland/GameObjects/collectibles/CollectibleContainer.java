@@ -44,6 +44,10 @@ public class CollectibleContainer extends AbstractEntity {
 
 	private static final long serialVersionUID = 2L;
 	private boolean backpack;
+	/**
+	 * experimental feature. may cause problems when leaving the game and the saving
+	 */
+	private boolean releaseContentOnDestroy = false;
 
 	public CollectibleContainer() {
 		super((byte) 53);//use sprite of construction box temp
@@ -222,4 +226,19 @@ public class CollectibleContainer extends AbstractEntity {
 			}
 		}
 	}
+
+	/**
+	 * makes the content appear in the world if configured
+	 */
+	@Override
+	public void disposeFromMap() {
+		if (releaseContentOnDestroy) {
+			//makes the content appear in the world
+			for (int i = 0; i < size(); i++) {
+				retrieveCollectible(0);
+			}
+		}
+		super.disposeFromMap();
+	}
+	
 }

@@ -116,12 +116,12 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 	 */
 	@Override
 	public void update(float dt){
-		super.update(dt);
-		
 		//update every block on the map
 		for (Chunk chunk : data) {
 			chunk.update(dt);
 		}
+		//update entities
+		super.update(dt);
 	}
 	
 	/**

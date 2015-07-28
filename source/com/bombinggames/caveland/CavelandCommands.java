@@ -43,6 +43,9 @@ public class CavelandCommands implements CommandsInterface {
 			case "giveiron":
 				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Iron));
 				return true;
+			case "give":
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.valueOf(st.nextToken())));
+				return true;
         }
 		
 		//sets the target of the selected portals

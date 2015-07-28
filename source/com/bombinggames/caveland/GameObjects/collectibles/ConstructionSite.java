@@ -58,7 +58,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 		this.result = result;
 		//if (result==11) {
 			neededAmount = new int[]{2,1};
-			neededItems = new CollectibleType[]{CollectibleType.STONE, CollectibleType.WOOD };
+			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood };
 		//}
 	}
 	
@@ -111,7 +111,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 					}
 				}
 				if (found)
-					list.add("Add: " + ((CustomPlayer)actor).getInventory().getFrontCollectible());
+					list.add("Add: " + ((CustomPlayer)actor).getInventory().getFrontCollectible().getName());
 				else
 					list.add("Add: You have nothing to add");
 			} else
@@ -120,6 +120,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			if (parent.getChildren().size() > 0)
 				list.add("Take item out " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
 			else list.add("Empty");
+			list.add("Build:"+ parent.getStatusString());
 			addSelectionNames(list);
 		}
 

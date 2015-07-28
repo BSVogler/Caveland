@@ -14,7 +14,7 @@ public class Flint extends Collectible{
 	 *
 	 */
 	public Flint() {
-		super(CollectibleType.EXPLOSIVES);
+		super(CollectibleType.Explosives);
 		setFriction(2000);
 		setName("Flint");
 	}

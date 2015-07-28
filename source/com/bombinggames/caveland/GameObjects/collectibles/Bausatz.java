@@ -15,7 +15,7 @@ public class Bausatz extends Collectible {
 	private static final long serialVersionUID = 1L;
 
 	public Bausatz() {
-		super(CollectibleType.TOOLKIT);
+		super(CollectibleType.Toolkit);
 	}
 
 	@Override

@@ -110,17 +110,17 @@ public RenderBlock toRenderBlock(Block data) {
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0 ){
 			if (id==3) {
-				Collectible.create(CollectibleType.STONE).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Stone).spawn(coord.toPoint().cpy());
 			} else if (id==41) {
-				Collectible.create(CollectibleType.CRISTALL).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Cristall).spawn(coord.toPoint().cpy());
 			} else if (id==42){
-				Collectible.create(CollectibleType.SULFUR).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Sulfur).spawn(coord.toPoint().cpy());
 			} else if (id==43){
-				Collectible.create(CollectibleType.IRONORE).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Ironore).spawn(coord.toPoint().cpy());
 			} else if (id==44){
-				Collectible.create(CollectibleType.COAL).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Coal).spawn(coord.toPoint().cpy());
 			}else if (id==72){
-				Collectible.create(CollectibleType.WOOD).spawn(coord.toPoint().cpy());
+				Collectible.create(CollectibleType.Wood).spawn(coord.toPoint().cpy());
 			}
 			
 			//view only relevant. should only be done if visible

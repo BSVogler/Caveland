@@ -36,16 +36,16 @@ package com.bombinggames.caveland.GameObjects.collectibles;
  */
 public enum CollectibleType {
 
-	WOOD((byte) 46),
-	EXPLOSIVES((byte) 47),
-	IRONORE((byte) 48),
-	COAL((byte) 49),
-	CRISTALL((byte) 50),
-	SULFUR((byte) 51),
-	STONE((byte) 52),
-	TOOLKIT((byte) 53),
-	TORCH((byte) 54),
-	IRON((byte) 55);
+	Wood((byte) 46),
+	Explosives((byte) 47),
+	Ironore((byte) 48),
+	Coal((byte) 49),
+	Cristall((byte) 50),
+	Sulfur((byte) 51),
+	Stone((byte) 52),
+	Toolkit((byte) 53),
+	Torch((byte) 54),
+	Iron((byte) 55);
 
 	static CollectibleType fromValue(String value) {
 		if (value != null) {
@@ -57,7 +57,7 @@ public enum CollectibleType {
 		}
 		return null;
 	}
-	
+
 	private final byte id;
 
 	private CollectibleType(byte id) {

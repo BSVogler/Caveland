@@ -24,33 +24,33 @@ public class RecipesList extends Table {
 		receipts.add(
 			new Recipe(
 				new CollectibleType[]{
-					CollectibleType.SULFUR,
-					CollectibleType.COAL
+					CollectibleType.Sulfur,
+					CollectibleType.Coal
 				},
 				"TFlint",
-				CollectibleType.EXPLOSIVES
+				CollectibleType.Explosives
 			)
 		);
 		
 		receipts.add(
 			new Recipe(
 				new CollectibleType[]{
-					CollectibleType.WOOD,
-					CollectibleType.WOOD
+					CollectibleType.Wood,
+					CollectibleType.Wood
 				},
 				"Construction Kit",
-				CollectibleType.TOOLKIT
+				CollectibleType.Toolkit
 			)
 		);
 		
 		receipts.add(
 			new Recipe(
 				new CollectibleType[]{
-					CollectibleType.WOOD,
-					CollectibleType.COAL
+					CollectibleType.Wood,
+					CollectibleType.Coal
 				},
 				"Torch",
-				CollectibleType.TORCH
+				CollectibleType.Torch
 			)
 		);
 		

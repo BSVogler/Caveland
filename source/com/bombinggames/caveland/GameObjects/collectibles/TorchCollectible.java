@@ -43,7 +43,7 @@ public class TorchCollectible extends Collectible {
 	private static final long serialVersionUID = 1L;
 
 	public TorchCollectible() {
-		super(CollectibleType.TORCH);
+		super(CollectibleType.Torch);
 	}
 	
 	public TorchCollectible(CollectibleType def) {

@@ -20,7 +20,7 @@ public class TFlint extends Collectible {
 	 *
 	 */
 	public TFlint() {
-		super(CollectibleType.EXPLOSIVES);
+		super(CollectibleType.Explosives);
 		setFriction(0.02f);
 	}
 

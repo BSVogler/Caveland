@@ -27,11 +27,11 @@ public class Collectible extends MovableEntity implements Serializable {
 	 */
 	public static Collectible create(CollectibleType def) {
 		Collectible obj;
-		if (def == CollectibleType.EXPLOSIVES) {
+		if (def == CollectibleType.Explosives) {
 			obj = new TFlint();
-		} else if (def == CollectibleType.TOOLKIT){
+		} else if (def == CollectibleType.Toolkit){
 			obj = new Bausatz();
-		} else if (def == CollectibleType.TORCH){
+		} else if (def == CollectibleType.Torch){
 			obj = new TorchCollectible();
 		} else {
 			obj = new Collectible(def);
@@ -163,7 +163,7 @@ public class Collectible extends MovableEntity implements Serializable {
 
 	@Override
 	public String getName() {
-		return "Collectible "+def.name();
+		return def.name();
 	}
 	
 	/**

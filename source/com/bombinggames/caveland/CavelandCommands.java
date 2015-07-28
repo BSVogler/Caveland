@@ -29,19 +29,19 @@ public class CavelandCommands implements CommandsInterface {
 				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(new TFlint());
 				return true;
 			 case "givewood":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.WOOD));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Wood));
 				return true;
 			case "givecoal":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.COAL));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Coal));
 				return true;
 			case "giveironore":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.IRONORE));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Ironore));
 				return true;
 			case "givesulfur":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.SULFUR));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Sulfur));
 				return true;
 			case "giveiron":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.IRON));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Iron));
 				return true;
         }
 		

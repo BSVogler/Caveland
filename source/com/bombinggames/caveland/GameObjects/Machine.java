@@ -68,10 +68,10 @@ public class Machine extends RenderBlock {
 		for (int i = 0; i < content.size(); i++) {
 			MovableEntity obj = content.get(i);
 			if (obj instanceof Collectible){
-				if (((Collectible) obj).getType()==CollectibleType.COAL){
+				if (((Collectible) obj).getType()==CollectibleType.Coal){
 					coalcount++;
 					content.remove(i);
-				}else if (((Collectible) obj).getType()==CollectibleType.SULFUR){
+				}else if (((Collectible) obj).getType()==CollectibleType.Sulfur){
 					sulfurcount++;
 					content.remove(i);
 				}

@@ -221,9 +221,10 @@ public abstract class AbstractMap implements Cloneable {
 		ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
 
 		for (AbstractEntity ent : entityList) {
-			if (ent.getPosition().toCoord().equals(coord)) {
-				list.add(ent);//add it to list
-			}
+			if (ent.getPosition() != null)
+				if (ent.getPosition().toCoord().equals(coord)) {
+					list.add(ent);//add it to list
+				}
 		}
 
 		return list;

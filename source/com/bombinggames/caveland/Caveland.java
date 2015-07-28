@@ -2,6 +2,8 @@ package com.bombinggames.caveland;
 
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
+import com.bombinggames.caveland.Game.CustomGameController;
+import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.MineCart;
@@ -12,6 +14,7 @@ import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
 import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
 import com.bombinggames.caveland.GameObjects.collectibles.TorchCollectible;
+import com.bombinggames.caveland.MainMenu.CustomLoading;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
@@ -75,7 +78,24 @@ public class Caveland {
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		
 		AbstractMap.setDefaultGenerator(new ChunkGenerator());
-				
+			
+		if (args.length > 0){
+            //look if contains launch parameters
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "-quickstart":
+						WE.addLaunchCommands(
+							() -> {
+									CustomGameController controller = new CustomGameController();
+									controller.useSaveSlot(0);
+									WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+								}
+						);
+                        break;
+                }
+            }
+        }  
+		
         WE.launch("Caveland " + VERSION, args);
 		
 		//unpack map
@@ -147,7 +167,5 @@ public class Caveland {
 			"reddit.com/r/gamedev\n" +
 			"Bauhaus University Weimar\n\n"
 			+ "Wurfel Engine uses libGDX.\n";
-	
 	}	
-    
 }

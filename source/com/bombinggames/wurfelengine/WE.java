@@ -57,6 +57,7 @@ import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  *The main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
@@ -85,6 +86,7 @@ public class WE {
 	private static LwjglApplication application;
 	private static boolean skipintro =false;
 	private static String iconPath = null;
+	private static ArrayList<Command> onlaunchedCommands = new ArrayList<>(0);
 	
     /**
      * Pass the mainMenu which gets displayed when you call launch().
@@ -103,8 +105,16 @@ public class WE {
 		engineView.resetInputProcessors();
 		game.setScreen(screen);
 	}
+
+	/**
+	 *
+	 * @param command
+	 */
+	public static void addLaunchCommands(Command command) {
+		onlaunchedCommands.add(command);
+	}
 	
-	public void addIcon(String internalPath){
+	public static void addIcon(String internalPath){
 		iconPath = internalPath;
 	}
     
@@ -511,14 +521,15 @@ public class WE {
 				50,
 				Gdx.graphics.getHeight()-700
 			);
-						
+			
 			Gdx.app.debug("WE","Initializing main menu...");
 			mainMenu.init();
-
 
 			if (skipintro){
 				setScreen(mainMenu);
 			}
+			
+			onlaunchedCommands.forEach(a -> {a.perform();});
 		}
 
 		@Override

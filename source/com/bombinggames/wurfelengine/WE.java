@@ -86,7 +86,7 @@ public class WE {
 	private static LwjglApplication application;
 	private static boolean skipintro =false;
 	private static String iconPath = null;
-	private static ArrayList<Command> onlaunchedCommands = new ArrayList<>(0);
+	private static final ArrayList<Command> commandsAfterLaunch = new ArrayList<>(0);
 	
     /**
      * Pass the mainMenu which gets displayed when you call launch().
@@ -111,7 +111,7 @@ public class WE {
 	 * @param command
 	 */
 	public static void addLaunchCommands(Command command) {
-		onlaunchedCommands.add(command);
+		commandsAfterLaunch.add(command);
 	}
 	
 	public static void addIcon(String internalPath){
@@ -529,7 +529,7 @@ public class WE {
 				setScreen(mainMenu);
 			}
 			
-			onlaunchedCommands.forEach(a -> {a.perform();});
+			commandsAfterLaunch.forEach(a -> {a.perform();});
 		}
 
 		@Override

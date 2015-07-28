@@ -3,6 +3,7 @@ package com.bombinggames.caveland.MainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -31,6 +32,7 @@ public class SaveSelectionScreen extends WEScreen {
 	private final SelectBox<String> selectBox;
 	private int coop;
 	//private final Texture background;
+	private final Sprite ship;
 
 	/**
 	 * 
@@ -44,6 +46,9 @@ public class SaveSelectionScreen extends WEScreen {
 		//this.background = background;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		Skin skin = WE.getEngineView().getSkin();
+		
+		this.ship = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/ship.png")));
+		this.ship.setPosition(Gdx.graphics.getWidth()*1.5f, Gdx.graphics.getHeight()*0.7f);
 		
 		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
 		
@@ -124,6 +129,10 @@ public class SaveSelectionScreen extends WEScreen {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
+			ship.setX(ship.getX()-dt);
+			if (ship.getX()<-5000)
+				ship.setX(Gdx.graphics.getWidth());
+			ship.draw(batch);
 			//batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 		stage.act(dt);

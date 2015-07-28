@@ -371,7 +371,8 @@ public class Coordinate extends AbstractPosition {
 	 * 6 | 8 | 2<br>
 	 * -------<br>
 	 * 5 / 4 \ 3<br>
-	 * O(const)
+	 * <br>
+	 * Runtime: O(const)
 	 *
 	 * @param neighbourSide the side number of the given coordinates
 	 * @return itself for chaining

@@ -108,7 +108,7 @@ public class Point extends AbstractPosition {
     
     /**
      * returns coordinate aquivalent. Removes floating of block.<br> Copy safe.<br>
-	 * Looks complicated but is O(const)
+	 * Looks complicated but has runtime O(const)
      * @return coordinate aquivalent
      */
     @Override

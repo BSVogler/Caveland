@@ -473,7 +473,7 @@ public class RenderBlock extends AbstractGameObject {
     }
 
 	/**
-	 * Update the block.
+	 * Update the block. Should only be used for cosmetic logic because this is only called for blocks which are covered by a camera.
 	 * @param dt time in ms since last update
 	 */
     public void update(float dt) {

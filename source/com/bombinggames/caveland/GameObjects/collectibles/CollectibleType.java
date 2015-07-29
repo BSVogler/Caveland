@@ -88,6 +88,8 @@ public enum CollectibleType {
 			obj = new Bausatz();
 		} else if (this == CollectibleType.Torch){
 			obj = new TorchCollectible();
+		} else if (this == CollectibleType.Rails) {
+			obj = new RailsConstructionKit();
 		} else {
 			obj = new Collectible(this);
 		}

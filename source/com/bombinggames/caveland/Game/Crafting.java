@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -8,12 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 
 /**
- *Shows a HUD for crafting via inventory
+ *A HUD for crafting via inventory
  * @author Benedikt Vogler
  */
 public class Crafting extends ActionBox {

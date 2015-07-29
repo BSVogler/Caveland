@@ -40,7 +40,7 @@ public class Sea extends AnimatedBlock {
      * @param id
      */
     public Sea(final byte id) {
-        super(id,new int[]{200,200,200,200}, true, true);
+        super(id,new int[]{400,400,400,400}, true, true);
 		setBounce(true);
 		setValue((byte) (Math.random()*4));
     }

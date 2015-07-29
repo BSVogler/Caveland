@@ -28,7 +28,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	private transient float timeParentBlocked = 1500;
 
 	/**
-	 *@see #create(com.bombinggames.caveland.GameObjects.collectibles.CollectibleType)
+	 * @see #create(com.bombinggames.caveland.GameObjects.collectibles.CollectibleType)
 	 * @param def
 	 */
 	protected Collectible(CollectibleType def) {
@@ -39,9 +39,14 @@ public class Collectible extends MovableEntity implements Serializable {
 		//setSpeed(0.2f);
 		setFriction(WE.CVARS.getValueF("friction"));
 		setIndestructible(true);
+		int[] animationsteps = new int[def.getAnimationSteps()];
+		for (int i = 0; i < animationsteps.length; i++) {
+			animationsteps[i] = 80;
+		}
+		
 		setAnimation(
 			new EntityAnimation(
-				new int[]{80, 80, 80, 80, 80},
+				animationsteps,
 				true,
 				true
 			)

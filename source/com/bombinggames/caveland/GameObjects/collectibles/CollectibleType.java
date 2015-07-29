@@ -36,17 +36,17 @@ package com.bombinggames.caveland.GameObjects.collectibles;
  */
 public enum CollectibleType {
 
-	Rails((byte) 16),
-	Wood((byte) 46),
-	Explosives((byte) 47),
-	Ironore((byte) 48),
-	Coal((byte) 49),
-	Cristall((byte) 50),
-	Sulfur((byte) 51),
-	Stone((byte) 52),
-	Toolkit((byte) 53),
-	Torch((byte) 54),
-	Iron((byte) 55);
+	Rails((byte) 16, (byte) 2),
+	Wood((byte) 46, (byte) 5),
+	Explosives((byte) 47, (byte) 5),
+	Ironore((byte) 48, (byte) 5),
+	Coal((byte) 49, (byte) 5),
+	Cristall((byte) 50, (byte) 5),
+	Sulfur((byte) 51, (byte) 5),
+	Stone((byte) 52, (byte) 5),
+	Toolkit((byte) 53, (byte) 2),
+	Torch((byte) 54, (byte) 2),
+	Iron((byte) 55, (byte) 5);
 
 	static CollectibleType fromValue(String value) {
 		if (value != null) {
@@ -60,13 +60,19 @@ public enum CollectibleType {
 	}
 
 	private final byte id;
+	private final int steps;
 
-	private CollectibleType(byte id) {
+	private CollectibleType(byte id, int steps) {
 		this.id = id;
+		this.steps = steps;
 	}
 
 	public byte getId() {
 		return id;
+	}
+	
+	int getAnimationSteps() {
+		return steps;
 	}
 	
 	/**

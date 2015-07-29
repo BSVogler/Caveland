@@ -755,5 +755,7 @@ public class CustomGameView extends GameView{
 	 */
 	public void setModalDialogue(ActionBox actionBox, int playerNumber){
 		this.openDialogue[playerNumber-1] = actionBox;
+		if (actionBox != null)
+			getStage().addActor(actionBox);
 	}
 }

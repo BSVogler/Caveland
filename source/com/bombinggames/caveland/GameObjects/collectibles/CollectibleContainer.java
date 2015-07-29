@@ -124,7 +124,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return
 	 */
 	public Collectible retrieveCollectibleReference(int pos) {
-		Collectible collectible = retrieveCollectible(pos);
+		Collectible collectible = CollectibleContainer.this.retrieveCollectible(pos);
 		collectible.disposeFromMap();
 		return collectible;
 	}
@@ -137,7 +137,23 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @see
 	 * #retrieveCollectible(int)
 	 */
-	public Collectible fetchCollectible(CollectibleType def) {
+	public Collectible retrieveCollectible(CollectibleType def) {
+		Collectible collectible = getCollectible(def);
+		if (collectible != null) {
+			getChildren().remove(collectible);
+			collectible.setFloating(false);
+			collectible.allowPickup();
+			collectible.setHidden(false);
+		}
+		return collectible;
+	}
+	
+	/**
+	 * Does not alter the container.
+	 * @param def
+	 * @return 
+	 */
+	public Collectible getCollectible(CollectibleType def){
 		Iterator<AbstractEntity> iter = getChildren().iterator();
 		Collectible collectible = null;
 		while (iter.hasNext()) {
@@ -145,12 +161,6 @@ public class CollectibleContainer extends AbstractEntity {
 			if (collectible.getType().equals(def)) {
 				break;
 			}
-		}
-		if (collectible != null) {
-			getChildren().remove(collectible);
-			collectible.setFloating(false);
-			collectible.allowPickup();
-			collectible.setHidden(false);
 		}
 		return collectible;
 	}
@@ -234,7 +244,7 @@ public class CollectibleContainer extends AbstractEntity {
 		if (releaseContentOnDestroy) {
 			//makes the content appear in the world
 			for (int i = 0; i < size(); i++) {
-				retrieveCollectible(0);
+				CollectibleContainer.this.retrieveCollectible(0);
 			}
 		}
 		super.disposeFromMap();

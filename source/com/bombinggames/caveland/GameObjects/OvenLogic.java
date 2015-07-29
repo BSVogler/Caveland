@@ -84,9 +84,9 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 		//if reached zero this frame
 		if (oldCountDown > 0 && productionCountDown==0) {
 			//produce
-			Collectible coal = fetchCollectible(CollectibleType.Coal);
+			Collectible coal = getCollectible(CollectibleType.Coal);
 			if (coal != null) coal.dispose();
-			Collectible ironore = fetchCollectible(CollectibleType.Ironore);
+			Collectible ironore = getCollectible(CollectibleType.Ironore);
 			if (ironore != null) ironore.dispose();
 			( (Collectible) Collectible.create(CollectibleType.Iron).spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
 			emitter.setActive(false);
@@ -95,12 +95,10 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 	
 	public boolean canStartProduction(){
 		if (productionCountDown==0) {
-			Collectible coal = fetchCollectible(CollectibleType.Coal);
+			Collectible coal = getCollectible(CollectibleType.Coal);
 			if (coal == null) return false;
-			addChild(coal);
-			Collectible ironore = fetchCollectible(CollectibleType.Ironore);
+			Collectible ironore = getCollectible(CollectibleType.Ironore);
 			if (ironore == null) return false;
-			addChild(ironore);
 			return true;
 		} else {
 			return false;

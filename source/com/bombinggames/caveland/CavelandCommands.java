@@ -5,6 +5,7 @@ import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CommandsInterface;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
@@ -44,7 +45,12 @@ public class CavelandCommands implements CommandsInterface {
 				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Iron));
 				return true;
 			case "give":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.valueOf(st.nextToken())));
+				try {
+					((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.valueOf(st.nextToken())));
+				} catch (IllegalArgumentException ex) {
+					WE.getConsole().add("Collectible not found.", "System");
+					return false;
+				}
 				return true;
         }
 		

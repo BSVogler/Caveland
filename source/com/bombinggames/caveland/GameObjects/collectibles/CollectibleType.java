@@ -67,5 +67,24 @@ public enum CollectibleType {
 	public byte getId() {
 		return id;
 	}
+	
+	/**
+	 * factory method to createInstance an abstract entitiy from the definition
+	 *
+	 * @return
+	 */
+	public Collectible createInstance() {
+		Collectible obj;
+		if (this == CollectibleType.Explosives) {
+			obj = new TFlint();
+		} else if (this == CollectibleType.Toolkit){
+			obj = new Bausatz();
+		} else if (this == CollectibleType.Torch){
+			obj = new TorchCollectible();
+		} else {
+			obj = new Collectible(this);
+		}
+		return obj;
+	}
 
 }

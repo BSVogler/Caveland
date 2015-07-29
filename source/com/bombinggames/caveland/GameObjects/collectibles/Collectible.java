@@ -19,26 +19,6 @@ public class Collectible extends MovableEntity implements Serializable {
 	private static final long serialVersionUID = 2L;
 
 
-	/**
-	 * factory method to create an abstract entitiy from the definition
-	 *
-	 * @param def
-	 * @return
-	 */
-	public static Collectible create(CollectibleType def) {
-		Collectible obj;
-		if (def == CollectibleType.Explosives) {
-			obj = new TFlint();
-		} else if (def == CollectibleType.Toolkit){
-			obj = new Bausatz();
-		} else if (def == CollectibleType.Torch){
-			obj = new TorchCollectible();
-		} else {
-			obj = new Collectible(def);
-		}
-		return obj;
-	}
-
 	private boolean preventPickup;
 	private transient CollectibleType def;
 	/**

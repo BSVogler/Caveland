@@ -2,7 +2,6 @@ package com.bombinggames.caveland;
 
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Portal;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
 import com.bombinggames.wurfelengine.WE;
@@ -30,23 +29,23 @@ public class CavelandCommands implements CommandsInterface {
 				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(new TFlint());
 				return true;
 			 case "givewood":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Wood));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.Wood.createInstance());
 				return true;
 			case "givecoal":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Coal));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.Coal.createInstance());
 				return true;
 			case "giveironore":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Ironore));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.Ironore.createInstance());
 				return true;
 			case "givesulfur":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Sulfur));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.Sulfur.createInstance());
 				return true;
 			case "giveiron":
-				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.Iron));
+				((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.Iron.createInstance());
 				return true;
 			case "give":
 				try {
-					((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(Collectible.create(CollectibleType.valueOf(st.nextToken())));
+					((CustomGameView) gameplayRef.getView()).getPlayer(0).getInventory().add(CollectibleType.valueOf(st.nextToken()).createInstance());
 				} catch (IllegalArgumentException ex) {
 					WE.getConsole().add("Collectible not found.", "System");
 					return false;

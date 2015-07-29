@@ -6,7 +6,6 @@ import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.caveland.GameObjects.OvenLogic;
 import com.bombinggames.caveland.GameObjects.Torch;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -111,17 +110,17 @@ public RenderBlock toRenderBlock(Block data) {
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0 ){
 			if (id==3) {
-				Collectible.create(CollectibleType.Stone).spawn(coord.toPoint().cpy());
+				CollectibleType.Stone.createInstance().spawn(coord.toPoint().cpy());
 			} else if (id==41) {
-				Collectible.create(CollectibleType.Cristall).spawn(coord.toPoint().cpy());
+				CollectibleType.Cristall.createInstance().spawn(coord.toPoint().cpy());
 			} else if (id==42){
-				Collectible.create(CollectibleType.Sulfur).spawn(coord.toPoint().cpy());
+				CollectibleType.Sulfur.createInstance().spawn(coord.toPoint().cpy());
 			} else if (id==43){
-				Collectible.create(CollectibleType.Ironore).spawn(coord.toPoint().cpy());
+				CollectibleType.Ironore.createInstance().spawn(coord.toPoint().cpy());
 			} else if (id==44){
-				Collectible.create(CollectibleType.Coal).spawn(coord.toPoint().cpy());
+				CollectibleType.Coal.createInstance().spawn(coord.toPoint().cpy());
 			}else if (id==72){
-				Collectible.create(CollectibleType.Wood).spawn(coord.toPoint().cpy());
+				CollectibleType.Wood.createInstance().spawn(coord.toPoint().cpy());
 			}
 			
 			//view only relevant. should only be done if visible

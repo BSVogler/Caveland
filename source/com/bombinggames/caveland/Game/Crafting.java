@@ -142,7 +142,7 @@ public class Crafting extends ActionBox {
 			}
 			if (a != null && b != null && (thirdingredient || c != null)) {//can be crafted
 				//create new object at same position of inventory
-				Collectible.create(recipe.result).spawn(inventory.getPosition());
+				recipe.result.createInstance().spawn(inventory.getPosition());
 				//delete them
 				a.dispose();
 				a = null;

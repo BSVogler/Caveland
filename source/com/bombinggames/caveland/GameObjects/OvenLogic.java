@@ -88,7 +88,7 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 			if (coal != null) coal.dispose();
 			Collectible ironore = getCollectible(CollectibleType.Ironore);
 			if (ironore != null) ironore.dispose();
-			( (Collectible) Collectible.create(CollectibleType.Iron).spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+			( (Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
 			emitter.setActive(false);
 		}
 	}

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Enemy extends MovableEntity{
 	private static final long serialVersionUID = 1L;
 	private static int killcounter = 0;
-	private static String killSound = "robot1destroy";
+	private static final String killSound = "robot1destroy";
 	private static final String movementSound = "robot1Wobble";
 	
     private transient MovableEntity target;
@@ -62,6 +62,7 @@ public class Enemy extends MovableEntity{
     public void update(float dt) {
 		//update as usual
         super.update(dt);
+		
         if (isSpawned() && getPosition().toCoord().isInMemoryAreaHorizontal()) {
             //follow the target
             if (target != null && target.isSpawned()) {

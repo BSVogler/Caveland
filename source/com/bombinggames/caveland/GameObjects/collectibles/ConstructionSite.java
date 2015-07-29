@@ -48,14 +48,17 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 	private final byte result;
 	private final CollectibleType[] neededItems;
 	private final int[] neededAmount;
+	private final byte resultValue;
 
 	/**
 	 * the resulting block
-	 * @param result 
+	 * @param resultId 
+	 * @param resultValue 
 	 */
-	public ConstructionSite(byte result) {
+	public ConstructionSite(byte resultId, byte resultValue) {
 		super();
-		this.result = result;
+		this.result = resultId;
+		this.resultValue = resultValue;
 		//if (result==11) {
 			neededAmount = new int[]{2,1};
 			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood };
@@ -80,7 +83,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			if (count(neededItems[i]) < neededAmount[i])
 				return false;
 		}
-		getPosition().toCoord().setBlock(Block.getInstance(result));
+		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
 		dispose();
 		return true;
 	}

@@ -31,6 +31,7 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -81,8 +82,10 @@ public class Portal extends AbstractEntity implements Interactable{
 		if (spawner){
 			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, CustomPlayer.class).isEmpty()){//if a player is nearby
 				if (spawnedList.size()<3) {
+					Coordinate coord = getPosition().toCoord();
+					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4); 
 					Enemy e = (Enemy) new Enemy().spawn(
-						getPosition().cpy().addVector(
+						ChunkGenerator.getCaveCenter(cavenumber).toPoint().addVector(
 							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
 							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
 							8

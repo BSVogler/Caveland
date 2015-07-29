@@ -135,18 +135,43 @@ public class ChunkGenerator implements Generator {
 		return null;
 	}
 	
-	private int getCaveNumber(int x, int y, int z){
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
+	public static int getCaveNumber(int x, int y, int z){
 		return (int) Math.floor(x / roomWithPadding);
 	}
 	
-	private Coordinate getCaveEntry(int caveNumber){
+	/**
+	 * copy safe
+	 * @param caveNumber
+	 * @return 
+	 */
+	public static Coordinate getCaveEntry(int caveNumber){
 		return new Coordinate((int) (roomWithPadding*caveNumber+g), CAVESBORDER+52, 4);
 	}
 	
-	private Coordinate getCaveExit(int caveNumber){
+	/**
+	 * copy safe
+	 * @param caveNumber
+	 * @return 
+	 */
+	public static Coordinate getCaveExit(int caveNumber){
 		return new Coordinate((int) (roomWithPadding*caveNumber+10), CAVESBORDER+62, 4);
 	}
 	
+	/**
+	 * copy safe
+	 * @param caveNumber
+	 * @return 
+	 */
+	public static Coordinate getCaveCenter(int caveNumber){
+		return new Coordinate((int) (roomWithPadding*caveNumber+p+wallsize+g/2), (int) (CAVESBORDER+(p+g)/yStrech), 4);
+	}
 	
 	
 	/**

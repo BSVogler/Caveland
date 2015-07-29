@@ -169,7 +169,7 @@ public class Enemy extends MovableEntity{
 	private void performAttack() {
 		if (mana >= 1000 && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH*2f ){
 			mana = 0;//reset
-			new SimpleEntity((byte) 33).spawn(getPosition().cpy()).setAnimation(
+			new SimpleEntity((byte) 33).spawn(target.getPosition().cpy()).setAnimation(
 				new EntityAnimation(new int[]{300}, true, false)
 			);
 			target.damage((byte)50);

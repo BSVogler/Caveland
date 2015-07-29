@@ -263,6 +263,12 @@ public class Block implements HasID, Serializable {
 		if (id == 0) {
 			return null;
 		}
+		
+		if (id == 3) {
+			RenderBlock a = new RenderBlock(this);
+			a.setHidden(true);
+			return a;
+		}
 
 		if (id == 9) {
 			return new Sea(id);
@@ -283,6 +289,11 @@ public class Block implements HasID, Serializable {
 		if (id == 9) {
 			return false;
 		}
+		
+		if (id == 3) {
+			return true;
+		}
+		
 		if (id == 0) {
 			return false;
 		}
@@ -294,6 +305,11 @@ public class Block implements HasID, Serializable {
 		if (id == 9) {
 			return true;
 		}
+		
+		if (id == 3) {
+			return true;
+		}
+		
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isTransparent(id, value);
 		}
@@ -512,7 +528,7 @@ public class Block implements HasID, Serializable {
 			case 2:
 				return "dirt";
 			case 3:
-				return "???";
+				return "invisible wall";
 			case 4:
 				return "???";
 			case 5:
@@ -543,6 +559,10 @@ public class Block implements HasID, Serializable {
 		if (id == 0) {
 			return false;
 		}
+		
+		if (id==3)
+			return false;
+		
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.hasSides(id, value);
 		}

@@ -35,6 +35,7 @@ import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 				return false;
 		}
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
+		Controller.getSoundEngine().play("construct");
 		dispose();
 		return true;
 	}

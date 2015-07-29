@@ -34,6 +34,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 
@@ -59,6 +60,7 @@ public class RailsConstructionKit extends Collectible {
 						//spawn construction site
 						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
 						new ConstructionSite((byte) 55, (byte) result).spawn(actor1.getPosition().toCoord().toPoint());
+						Controller.getSoundEngine().play("metallic");
 						dispose();//dispose tool kit
 						return result;
 					}

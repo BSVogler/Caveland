@@ -4,6 +4,7 @@ import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 
@@ -29,6 +30,7 @@ public class Bausatz extends Collectible {
 							//spawn construction site
 							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
 							new ConstructionSite((byte) 12, (byte) 0).spawn(actor1.getPosition().toCoord().toPoint());
+							Controller.getSoundEngine().play("metallic");
 							dispose();//dispose tool kit
 						}
 						return result;

@@ -9,6 +9,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 
@@ -150,6 +151,7 @@ public class Crafting extends ActionBox {
 				b = null;
 				if (c != null)
 					c.dispose();
+				Controller.getSoundEngine().play("metallic");
 				clear();//empty the crafting menu
 			}
 			//crafting failed: items still there, so put them back

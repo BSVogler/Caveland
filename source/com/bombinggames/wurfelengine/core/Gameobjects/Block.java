@@ -264,7 +264,7 @@ public class Block implements HasID, Serializable {
 			return null;
 		}
 		
-		if (id == 3) {
+		if (id == 4) {
 			RenderBlock a = new RenderBlock(this);
 			a.setHidden(true);
 			return a;
@@ -290,10 +290,6 @@ public class Block implements HasID, Serializable {
 			return false;
 		}
 		
-		if (id == 3) {
-			return true;
-		}
-		
 		if (id == 0) {
 			return false;
 		}
@@ -306,7 +302,7 @@ public class Block implements HasID, Serializable {
 			return true;
 		}
 		
-		if (id == 3) {
+		if (id == 4) {
 			return true;
 		}
 		
@@ -528,9 +524,9 @@ public class Block implements HasID, Serializable {
 			case 2:
 				return "dirt";
 			case 3:
-				return "invisible wall";
+				return "stone";
 			case 4:
-				return "???";
+				return "invisible obstacle";
 			case 5:
 				return "???";
 			case 6:

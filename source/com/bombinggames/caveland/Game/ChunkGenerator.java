@@ -62,8 +62,12 @@ public class ChunkGenerator implements Generator {
 			int insideout = insideOutside(x, y, z);
 			
 			//walls
-			if (insideout==0 && z<=4)//build a wall
-				return 3;
+			if (insideout==0) {//build a wall
+				if (z<=4)
+					return 3;
+				else 
+					return 4;//invisible wall
+			}
 			
 			if (insideout==-1)//build air for outside
 				return 0;	

@@ -36,6 +36,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
  */
 public enum CollectibleType {
 
+	Rails((byte) 16),
 	Wood((byte) 46),
 	Explosives((byte) 47),
 	Ironore((byte) 48),

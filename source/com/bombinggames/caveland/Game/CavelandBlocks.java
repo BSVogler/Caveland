@@ -83,6 +83,7 @@ public RenderBlock toRenderBlock(Block data) {
 	
 	@Override
 	public boolean isObstacle(byte id, byte value) {
+		if (id==12) return false;
 		if (id==13) return false;
 		if (id==11) return false;
 		if (id>=41 && id<=44)//ores

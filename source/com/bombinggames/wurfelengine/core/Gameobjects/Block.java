@@ -556,7 +556,7 @@ public class Block implements HasID, Serializable {
 			return false;
 		}
 		
-		if (id==3)
+		if (id==4)
 			return false;
 		
 		if (id > 9 && customBlocks != null) {

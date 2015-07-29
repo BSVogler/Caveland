@@ -83,7 +83,7 @@ public class ChunkGenerator implements Generator {
 						if (y%8==0)
 							return 43;
 						else
-							return 3;
+							return 2;
 					}
 			
 			//floor

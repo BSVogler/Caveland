@@ -169,7 +169,6 @@ public class CustomGameView extends GameView{
 			//open
 			Crafting crafting = new Crafting(this, getPlayer(id));
 			crafting.register(this, id+1);
-			openDialogue[id].setBounds(getStage().getWidth()/2-200, getStage().getHeight()/2+200, 400, 400);
 		} else {
 			//close
 			openDialogue[id].cancel(this, getPlayer(id));
@@ -755,7 +754,17 @@ public class CustomGameView extends GameView{
 	 */
 	public void setModalDialogue(ActionBox actionBox, int playerNumber){
 		this.openDialogue[playerNumber-1] = actionBox;
-		if (actionBox != null)
+		if (actionBox != null) {
+			if (coop==-1)
+				actionBox.setPosition(getStage().getWidth() / 2 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
+			else {
+				if (playerNumber==1){
+					actionBox.setPosition(getStage().getWidth() / 4 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
+				} else {
+					actionBox.setPosition(getStage().getWidth()*3 / 4 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
+				}
+			}
 			getStage().addActor(actionBox);
+		}
 	}
 }

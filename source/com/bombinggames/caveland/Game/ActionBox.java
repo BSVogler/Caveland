@@ -67,7 +67,6 @@ public class ActionBox extends WidgetGroup {
 		this.view = view;
 		this.mode = mode;
 
-		setPosition(view.getStage().getWidth() / 2, view.getStage().getHeight() / 2);
 		window = new Window(title, WE.getEngineView().getSkin());
 		window.setWidth(600);
 		window.setHeight(200);

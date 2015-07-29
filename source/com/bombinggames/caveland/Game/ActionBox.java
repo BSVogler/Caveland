@@ -12,11 +12,14 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
 /**
  * A dialog which can fucntion as a selection tool or a message.
+ *
  * @author Benedikt Vogler
  */
 public class ActionBox extends WidgetGroup {
+
 	/**
 	 * contains the content of the window
 	 */
@@ -31,10 +34,11 @@ public class ActionBox extends WidgetGroup {
 	private int playerNum;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
-	
+
 	public static enum BoxModes {
+
 		/**
-		 *select from yes or no
+		 * select from yes or no
 		 */
 		BOOLEAN(),
 		/**
@@ -42,10 +46,9 @@ public class ActionBox extends WidgetGroup {
 		 */
 		SELECTION(),
 		/**
-		 *Just a message to confirm
+		 * Just a message to confirm
 		 */
 		SIMPLE(),
-		
 		/**
 		 * reserved for later use
 		 */
@@ -54,23 +57,24 @@ public class ActionBox extends WidgetGroup {
 
 	/**
 	 * creates a new chat box and set this as a modal window
+	 *
 	 * @param view
 	 * @param title the title of the box
 	 * @param text the text of the box. can be null
-	 * @param mode 
+	 * @param mode
 	 */
 	public ActionBox(final CustomGameView view, final String title, final BoxModes mode, final String text) {
 		this.view = view;
 		this.mode = mode;
-		
-		setPosition(view.getStage().getWidth()/2, view.getStage().getHeight()/2);
+
+		setPosition(view.getStage().getWidth() / 2, view.getStage().getHeight() / 2);
 		window = new Window(title, WE.getEngineView().getSkin());
 		window.setWidth(600);
 		window.setHeight(200);
 		window.align(Align.center);
 		addActor(window);
-		if (text!=null) {
-			this.text=text;
+		if (text != null) {
+			this.text = text;
 			Label textArea = new Label(text, WE.getEngineView().getSkin());
 			textArea.setX(10);
 			textArea.setWrap(true);
@@ -78,28 +82,29 @@ public class ActionBox extends WidgetGroup {
 			textArea.setHeight(180);
 			window.addActor(textArea);
 		}
-		
+
 		confirm = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('e', 23, 0)));
-		confirm.setPosition(window.getWidth()-50, -40);
+		confirm.setPosition(window.getWidth() - 50, -40);
 		addActor(confirm);
-		
-		if (mode != BoxModes.SIMPLE){
+
+		if (mode != BoxModes.SIMPLE) {
 			cancel = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('e', 23, 2)));
-			cancel.setPosition(window.getWidth()-250, -40);
+			cancel.setPosition(window.getWidth() - 250, -40);
 			addActor(cancel);
 		}
 	}
-	
+
 	/**
-	 * registeres
-	 * @param view 
+	 * registeres the window as a modal box so that the input gets redirected to
+	 * it.
+	 *
+	 * @param view
 	 * @param playerId starting with 1
-	 * @return 
+	 * @return
 	 */
-	public ActionBox register(final CustomGameView view, final int playerId){
+	public ActionBox register(final CustomGameView view, final int playerId) {
 		this.playerNum = playerId;
 		view.setModalDialogue(this, playerId);
-		view.getStage().addActor(this);
 		return this;
 	}
 
@@ -110,151 +115,164 @@ public class ActionBox extends WidgetGroup {
 	public BoxModes getMode() {
 		return mode;
 	}
-	
+
 	/**
 	 * Set the command which should be triggered once you confirm the dialogue.
+	 *
 	 * @param action
 	 * @return itself for chaining
 	 */
-	public ActionBox setConfirmAction(ActionBoxConfirmAction action){
+	public ActionBox setConfirmAction(ActionBoxConfirmAction action) {
 		this.confirmAction = action;
 		return this;
 	}
+
 	/**
 	 * unregisters this window
+	 *
 	 * @param view
 	 * @param actor
-	 * @return 
+	 * @return
 	 */
-	public int confirm(CustomGameView view, AbstractEntity actor){
+	public int confirm(CustomGameView view, AbstractEntity actor) {
 		int selectionNum = 0;
-		if (mode==BoxModes.SELECTION){
+		if (mode == BoxModes.SELECTION) {
 			selectionNum = selection;
 		}
 		remove();
 		view.setModalDialogue(null, playerNum);
-		if (confirmAction != null)
+		if (confirmAction != null) {
 			confirmAction.confirm(selectionNum, view, actor);
+		}
 		return selectionNum;
 	}
-	
+
 	/**
 	 * unregisters this window
+	 *
 	 * @param view
 	 * @param actor
-	 * @return 
+	 * @return
 	 */
-	public int cancel(CustomGameView view, AbstractEntity actor){
+	public int cancel(CustomGameView view, AbstractEntity actor) {
 		int selectionNum = 0;
-		if (mode==BoxModes.SELECTION){
+		if (mode == BoxModes.SELECTION) {
 			selectionNum = selection;
 		}
 		remove();
 		view.setModalDialogue(null, playerNum);
-		if (cancelAction != null)
+		if (cancelAction != null) {
 			cancelAction.cancel(selectionNum, view, actor);
+		}
 		return selectionNum;
 	}
-	
+
 	/**
 	 * Adds strings as options.
+	 *
 	 * @param options
 	 * @return itself for chaining
 	 */
-	public ActionBox addSelectionNames(String... options){
-		if (mode==BoxModes.SELECTION){
-			if (selectionNames == null)
+	public ActionBox addSelectionNames(String... options) {
+		if (mode == BoxModes.SELECTION) {
+			if (selectionNames == null) {
 				selectionNames = new ArrayList<>(options.length);
+			}
 			selectionNames.addAll(Arrays.asList(options));
 			updateContent();
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Adds a list of strings as options.
+	 *
 	 * @param options
 	 */
-	public void addSelectionNames(Collection<String> options){
-		if (mode==BoxModes.SELECTION){
-			if (selectionNames == null)
+	public void addSelectionNames(Collection<String> options) {
+		if (mode == BoxModes.SELECTION) {
+			if (selectionNames == null) {
 				selectionNames = new ArrayList<>(options.size());
+			}
 			selectionNames.addAll(options);
 			updateContent();
 		}
 	}
-	
+
 	/**
 	 * go a selection downwards
 	 */
-	public void down(){
+	public void down() {
 		if (mode == BoxModes.SELECTION) {
-			if (selection<selectionNames.size()-1){
+			if (selection < selectionNames.size() - 1) {
 				selection++;
 			}
 			updateContent();
 		}
 	}
-	
+
 	/**
 	 * go a selection upwards
 	 */
-	public void up(){
+	public void up() {
 		if (mode == BoxModes.SELECTION) {
-			if (selection > 0){
+			if (selection > 0) {
 				selection--;
 			}
 			updateContent();
 		}
 	}
-	
+
 	/**
 	 * clears window content then add new
 	 */
-	private void updateContent(){
+	private void updateContent() {
 		window.clear();
 		window.add(text);
 		window.row();
 		//adds every selection
 		for (int i = 0; i < selectionNames.size(); i++) {
 			String entry = selectionNames.get(i);
-			if (selection==i)
-				window.add("["+entry+"]");
-			else 
+			if (selection == i) {
+				window.add("[" + entry + "]");
+			} else {
 				window.add(entry);
+			}
 			window.row();
 		}
 		//window.pack();
 	}
-	
+
 	@FunctionalInterface
 	public interface ActionBoxCancelAction {
+
 		/**
-		 * 
+		 *
 		 * @param result
 		 * @param view
 		 * @param actor
-		 * @return 
+		 * @return
 		 */
 		public int cancel(int result, CustomGameView view, AbstractEntity actor);
 	}
-	
+
 	/**
-	 *Actions which are called if you close the window by confirming
+	 * Actions which are called if you close the window by confirming
+	 *
 	 * @author Benedikt Vogler
 	 */
 	@FunctionalInterface
 	public interface ActionBoxConfirmAction {
 
 		/**
-		 * 
+		 *
 		 * @param result the number of the selection
 		 * @param view
 		 * @param actor
-		 * @return 
+		 * @return
 		 */
 		public int confirm(int result, CustomGameView view, AbstractEntity actor);
 
 	}
-	
+
 }

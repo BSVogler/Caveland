@@ -103,6 +103,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private float walkOnTheSpot = 0;
 	private boolean stepMode = true;
+	private boolean walkingPaused = false;
 
 	/**
 	 * Simple MovableEntity with no animation.
@@ -264,116 +265,118 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					inliquid = block.isLiquid();//save if in water
 				else inliquid=false;
 
-				if(walkOnTheSpot > 0) {
-					walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
-				} else { 
-					//walking cycle
+				if (!walkingPaused) {
+					if(walkOnTheSpot > 0) {
+						walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
+					} else { 
+						//walking cycle
+						if (floating || isOnGround()) {
+							walkingCycle += dt*getSpeed()*WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
+						}
+					}
+
+					if (walkingCycle >= 1000) {
+						walkingCycle %= 1000;
+						stepSoundPlayedInCiclePhase = false;//reset variable
+					}
+
+					//make a step
 					if (floating || isOnGround()) {
-						walkingCycle += dt*getSpeed()*WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
-					}
-				}
-
-				if (walkingCycle >= 1000) {
-					walkingCycle %= 1000;
-					stepSoundPlayedInCiclePhase = false;//reset variable
-				}
-
-				//make a step
-				if (floating || isOnGround()) {
-					//play sound twice a cicle
-					if (walkingCycle<250){
-						if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-							step();
-						}
-					} else if (walkingCycle < 500){
-						stepSoundPlayedInCiclePhase=false;
-					} else if (walkingCycle > 500){
-						if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
-							step();
-						}
-					}
-				}
-
-				//slow walking down
-				if (isOnGround()) {
-					//stop at a threshold
-					if (getMovementHor().len() > 0.1f)
-						setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
-					else {
-						setHorMovement(new Vector2());
-					}
-				}
-
-
-				/* update sprite*/
-				if (spritesPerDir>0) {
-					if (orientation.x < -Math.sin(Math.PI/3)){
-						setValue((byte) 1);//west
-					} else {
-						if (orientation.x < - 0.5){
-							//y
-							if (orientation.y<0){
-								setValue((byte) 2);//north-west
-							} else {
-								setValue((byte) 0);//south-east
+						//play sound twice a cicle
+						if (walkingCycle<250){
+							if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+								step();
 							}
+						} else if (walkingCycle < 500){
+							stepSoundPlayedInCiclePhase=false;
+						} else if (walkingCycle > 500){
+							if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+								step();
+							}
+						}
+					}
+
+					//slow walking down
+					if (isOnGround()) {
+						//stop at a threshold
+						if (getMovementHor().len() > 0.1f)
+							setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
+						else {
+							setHorMovement(new Vector2());
+						}
+					}
+
+
+					/* update sprite*/
+					if (spritesPerDir>0) {
+						if (orientation.x < -Math.sin(Math.PI/3)){
+							setValue((byte) 1);//west
 						} else {
-							if (orientation.x <  0.5){
+							if (orientation.x < - 0.5){
 								//y
 								if (orientation.y<0){
-									setValue((byte) 3);//north
-								}else{
-									setValue((byte) 7);//south
+									setValue((byte) 2);//north-west
+								} else {
+									setValue((byte) 0);//south-east
 								}
-							}else {
-								if (orientation.x < Math.sin(Math.PI/3)) {
+							} else {
+								if (orientation.x <  0.5){
 									//y
-									if (orientation.y < 0){
-										setValue((byte) 4);//north-east
-									} else{
-										setValue((byte) 6);//sout-east
+									if (orientation.y<0){
+										setValue((byte) 3);//north
+									}else{
+										setValue((byte) 7);//south
 									}
-								} else{
-									setValue((byte)5);//east
+								}else {
+									if (orientation.x < Math.sin(Math.PI/3)) {
+										//y
+										if (orientation.y < 0){
+											setValue((byte) 4);//north-east
+										} else{
+											setValue((byte) 6);//sout-east
+										}
+									} else{
+										setValue((byte)5);//east
+									}
 								}
 							}
 						}
-					}
 
-					if (cycleAnimation){
-						setValue((byte) (getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
-					} else {//bounce
-						if (stepMode) {//some strange step order
-							if (spritesPerDir==2){
-								if (walkingCycle >500)
-									setValue((byte) (getValue()+8));
-							} else if (spritesPerDir==3){
-								if (walkingCycle >750)
-									setValue((byte) (getValue()+16));
-								else
-									if (walkingCycle >250 && walkingCycle <500)
+						if (cycleAnimation){
+							setValue((byte) (getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
+						} else {//bounce
+							if (stepMode) {//some strange step order
+								if (spritesPerDir==2){
+									if (walkingCycle >500)
 										setValue((byte) (getValue()+8));
-							} else if (spritesPerDir==4){
-								if (walkingCycle >=166 && walkingCycle <333)
-									setValue((byte) (getValue()+8));
-								else {
-									if ((walkingCycle >=500 && walkingCycle <666)
-										||
-										(walkingCycle >=833 && walkingCycle <1000)
-									){
+								} else if (spritesPerDir==3){
+									if (walkingCycle >750)
 										setValue((byte) (getValue()+16));
-									} else if (walkingCycle >=666 && walkingCycle < 833) {
-										setValue((byte) (getValue()+24));
+									else
+										if (walkingCycle >250 && walkingCycle <500)
+											setValue((byte) (getValue()+8));
+								} else if (spritesPerDir==4){
+									if (walkingCycle >=166 && walkingCycle <333)
+										setValue((byte) (getValue()+8));
+									else {
+										if ((walkingCycle >=500 && walkingCycle <666)
+											||
+											(walkingCycle >=833 && walkingCycle <1000)
+										){
+											setValue((byte) (getValue()+16));
+										} else if (walkingCycle >=666 && walkingCycle < 833) {
+											setValue((byte) (getValue()+24));
+										}
 									}
 								}
-							}
-						} else {
-							//regular bounce
-							if (walkingCycle < 500) {//forth
-								setValue((byte) (getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
-							} else {//back
-								setValue((byte) (getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+							} else {
+								//regular bounce
+								if (walkingCycle < 500) {//forth
+									setValue((byte) (getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+								} else {//back
+									setValue((byte) (getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
 
+								}
 							}
 						}
 					}
@@ -744,5 +747,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			(float) (Math.random()-1/2f)
 		);
 		stepSoundPlayedInCiclePhase = true;
+	}
+	
+	/**
+	 * Pauses the movement animation. A use case is when you want to play a different animation then walking while the object may still move.
+	 * @see #playMovementAnimation() 
+	 */
+	public void pauseMovementAnimation(){
+		walkingPaused = true;
+	}
+	
+	/**
+	 * Continues the movement animation when it was stopped before with {@link #pauseMovementAnimation() }.
+	 */
+	public void playMovementAnimation(){
+		walkingPaused = false;
 	}
 }

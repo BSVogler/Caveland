@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.Game;
 
-import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Machine;
@@ -9,9 +8,8 @@ import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -126,9 +124,7 @@ public RenderBlock toRenderBlock(Block data) {
 			//view only relevant. should only be done if visible
 			//todo, check if visible
 			for (int i = 0; i < 10; i++) {
-				MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(coord.toPoint().cpy());
-				dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-				dirt.setRotation((float) Math.random()*360);
+				new DestructionParticle((byte) 44).spawn(coord.toPoint().cpy());
 			}
 		}
 	}

@@ -24,8 +24,8 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
-import com.bombinggames.wurfelengine.core.Gameobjects.BlockDirt;
 import com.bombinggames.wurfelengine.core.Gameobjects.Controllable;
+import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
@@ -558,23 +558,25 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		if (isSpawned()) {
 			timeTillImpact = Float.POSITIVE_INFINITY;
 
-			//from current position go 80px in aiming direction and get entities 80px around there
-			ArrayList<AbstractEntity> entities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-			entities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add entities under player, what if duplicate?
+			//from current position go 80px in aiming direction and get nearbyEntities 80px around there
+			ArrayList<AbstractEntity> nearbyEntities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
+			nearbyEntities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add nearbyEntities under player, what if duplicate?
 			//check hit
-			for (AbstractEntity entity : entities) {
-				if (entity instanceof MovableEntity && entity != this && !entity.isHidden()) {
-					MovableEntity movable = (MovableEntity) entity;
-					movable.damage(attackDamage);
+			for (AbstractEntity entity : nearbyEntities) {
+				if ( entity != this && !entity.isHidden()) {
+					entity.damage(attackDamage);
 					getCamera().shake(20, 50);
-					movable.setMovement(
-						new Vector3(
-							(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
-							(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
-							(float) Math.random()
-						)
-					);
-					movable.setSpeedHorizontal(2);
+				
+					if (entity instanceof MovableEntity) {
+						((MovableEntity) entity).setMovement(
+							new Vector3(
+								(float) (getAiming().x + Math.random() * 0.5f - 0.25f),
+								(float) (getAiming().y + Math.random() * 0.5f - 0.25f),
+								(float) Math.random()
+							)
+						);
+						((MovableEntity) entity).setSpeedHorizontal(2);
+					}
 				}
 			}
 
@@ -591,9 +593,8 @@ public class CustomPlayer extends Controllable implements EntityNode {
 							Controller.getSoundEngine().play("treehit");
 						else
 							Controller.getSoundEngine().play("impact");
-						MovableEntity dirt = (MovableEntity) new BlockDirt().spawn(aimCoord.toPoint().cpy());
-						dirt.addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
-						dirt.setRotation((float) Math.random()*360);
+						//one particle
+						new DestructionParticle((byte) 44).spawn(aimCoord.toPoint().cpy());
 					}
 				} else {
 					//indestructible by hand

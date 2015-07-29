@@ -13,13 +13,13 @@ import java.util.ArrayList;
  *A list which stores the possibles recipes.
  * @author Benedikt Vogler
  */
-public class RecipesList extends Table {
+public class CraftingRecipesList extends Table {
 	private final ArrayList<Recipe> receipts= new ArrayList<>(10);
 	
 	/**
 	 * adds teh receipes to a list
 	 */
-	public RecipesList() {
+	public CraftingRecipesList() {
 		setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		receipts.add(
 			new Recipe(
@@ -51,6 +51,17 @@ public class RecipesList extends Table {
 				},
 				"Torch",
 				CollectibleType.Torch
+			)
+		);
+		
+		receipts.add(
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.Iron,
+					CollectibleType.Iron
+				},
+				"Rails Construction Kit",
+				CollectibleType.Rails
 			)
 		);
 		

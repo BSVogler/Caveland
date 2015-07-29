@@ -18,7 +18,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
  */
 public class Crafting extends ActionBox {
 	private final Inventory inventory;
-	private final RecipesList recipes = new RecipesList();
+	private final CraftingRecipesList recipes = new CraftingRecipesList();
 
 	/**
 	 * creates a new inventory
@@ -28,7 +28,7 @@ public class Crafting extends ActionBox {
 	public Crafting(CustomGameView view, CustomPlayer player) {
 		super(view, "Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
-		RecipesList.Recipe recipe = findRecipe();
+		CraftingRecipesList.Recipe recipe = findRecipe();
 		if (recipe!=null) {
 			//A
 			Image a = new Image(
@@ -88,10 +88,10 @@ public class Crafting extends ActionBox {
 	 * check wheter you can craft with the ingredients
 	 * @return 
 	 */
-	public RecipesList.Recipe findRecipe(){
+	public CraftingRecipesList.Recipe findRecipe(){
 		CollectibleType[] invent = inventory.getContentDef();
-		RecipesList.Recipe finalRecipe = null;
-		for (RecipesList.Recipe recipe : recipes.getReceipts()) {
+		CraftingRecipesList.Recipe finalRecipe = null;
+		for (CraftingRecipesList.Recipe recipe : recipes.getReceipts()) {
 			int ing1 = -1;//not found in receipt
 			if (recipe.ingredients[0]==invent[0])
 				ing1 = 0;
@@ -130,7 +130,7 @@ public class Crafting extends ActionBox {
 	 * removes the items from inventory
 	 */
 	public void craft(){
-		RecipesList.Recipe recipe = findRecipe();
+		CraftingRecipesList.Recipe recipe = findRecipe();
 		if (recipe != null){
 			Collectible a = inventory.retrieveCollectible(recipe.ingredients[0]);
 			Collectible b = inventory.retrieveCollectible(recipe.ingredients[1]);

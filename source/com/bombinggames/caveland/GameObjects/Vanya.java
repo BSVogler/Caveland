@@ -40,7 +40,7 @@ public class Vanya extends MovableEntity implements Interactable {
 			//new BlümchenKacke().spawn(getPosition().cpy());
 		
 		if (dt>0) {//update only if time is running
-			if (getPosition().isInMemoryAreaHorizontal() && isOnGround()) jump();
+			if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) jump();
 		}
 	}
 

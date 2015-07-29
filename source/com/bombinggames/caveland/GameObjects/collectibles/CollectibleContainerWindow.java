@@ -51,7 +51,7 @@ public class CollectibleContainerWindow extends ActionBox {
 		ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
 		list.add("Add");
 		if (parent.getChildren().size() > 0)
-			list.add("Take item out " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
+			list.add("Take: " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
 		else list.add("Empty");
 		addSelectionNames(list);
 	}

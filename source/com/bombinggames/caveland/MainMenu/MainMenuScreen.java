@@ -178,18 +178,17 @@ public class MainMenuScreen extends AbstractMainMenu {
 		}
 		
 		if (fadeout==false) {
+			backgroundPosY += dt;
 			if (backgroundPosY >= 0) {
 				backgroundPosY = 0;
-			} else {
-				backgroundPosY += dt;
-			}
+			} 
 		} else {
+				backgroundPosY -= dt*3; //3px/ms
+				
 			if (backgroundPosY <= -Gdx.graphics.getHeight()) {
 				backgroundPosY = -Gdx.graphics.getHeight();
 				fadeout=false;
 				fadeOutAction.act(dt);
-			} else {
-				backgroundPosY -= dt*3;//3px/ms
 			}
 		}
 		

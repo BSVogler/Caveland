@@ -61,7 +61,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		}
 		
 		TextButton twoKeyboardButton = new TextButton("Choose", WE.getEngineView().getSkin());
-		twoKeyboardButton.setPosition(1300, 150);
+		twoKeyboardButton.setPosition(stage.getWidth()*0.7f, 150);
 		twoKeyboardButton.addListener(new ChangeListener() {
 
 			@Override

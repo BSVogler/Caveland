@@ -160,6 +160,8 @@ public class MapEditorView extends GameView {
 
 	@Override
     public void onEnter() {
+		camera.setCenter(this.controller.getGameplayView().getCameras().get(0).getCenter().cpy());//always keep the camera position
+		camera.move(0, -camera.getWidthInViewSpc()/2);
         WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.getEngineView().setMusicLoudness(0);

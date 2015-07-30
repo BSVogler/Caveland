@@ -257,8 +257,8 @@ public class CustomGameView extends GameView{
 				camera.move(
 					(input.isKeyPressed(Input.Keys.D)? 3: 0)
 					- (input.isKeyPressed(Input.Keys.A)? 3: 0),
-					- (input.isKeyPressed(Input.Keys.W)? 3: 0)
-					+ (input.isKeyPressed(Input.Keys.S)? 3: 0)
+					+ (input.isKeyPressed(Input.Keys.W)? 3: 0)
+					- (input.isKeyPressed(Input.Keys.S)? 3: 0)
 				);
 			}
 		}

@@ -1149,15 +1149,15 @@ public class Camera implements MapObserver {
 	/**
 	 * Move xIndex and yIndex coordinate
 	 *
-	 * @param x in game space if has focusentity, else in view space (?)
-	 * @param y in game space if has focusentity, else in view space (?)
+	 * @param x in game space
+	 * @param y in game space
 	 */
 	public void move(int x, int y) {
 		if (focusEntity != null) {
 			focusEntity.getPosition().addVector(x, y, 0);
 		} else {
 			position.x += x;
-			position.y += y;
+			position.y -= y/2;
 		}
 		updateCenter();
 	}
@@ -1200,7 +1200,7 @@ public class Camera implements MapObserver {
 	/**
 	 * Returns the focuspoint
 	 *
-	 * @return
+	 * @return in game space
 	 */
 	public Point getCenter() {
 		if (focusEntity != null) {
@@ -1216,7 +1216,7 @@ public class Camera implements MapObserver {
 	
 	/**
 	 * Set the cameras center to a point. If the camera is locked to a an entity this lock will be removed.
-	 * @param point z gets ignored
+	 * @param point game space. z gets ignored
 	 */
 	public void setCenter(Point point){
 		focusEntity = null;

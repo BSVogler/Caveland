@@ -93,13 +93,15 @@ public class MapEditorView extends GameView {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        addCamera(camera = new Camera(
-			this.controller.getGameplayView().getCameras().get(0).getCenter(),
-			0,
-			0,
-			Gdx.graphics.getWidth(),
-			Gdx.graphics.getHeight(),
-			this)
+        addCamera(
+			camera = new Camera(
+				this.controller.getGameplayView().getCameras().get(0).getCenter(),//keep position
+				0,
+				0,
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(),
+				this
+			)
 		);
         
 		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
@@ -173,8 +175,8 @@ public class MapEditorView extends GameView {
     
     /**
      *
-     * @param x in view space (?)
-     * @param y in view space (?)
+     * @param x in game space
+     * @param y in game space
      */
     protected void setCameraMoveVector(float x,float y){
         camermove.x = x;
@@ -272,9 +274,9 @@ public class MapEditorView extends GameView {
         
 			//manage camera movement
 			if (keycode == Input.Keys.W)
-				view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
-			if (keycode == Input.Keys.S)
 				view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
+			if (keycode == Input.Keys.S)
+				view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
 			if (keycode == Input.Keys.A)
 				view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
 			if (keycode == Input.Keys.D)

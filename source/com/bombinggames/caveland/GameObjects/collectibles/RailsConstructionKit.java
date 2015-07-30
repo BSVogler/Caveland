@@ -57,9 +57,8 @@ public class RailsConstructionKit extends Collectible {
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up","up","up","up")
 				.setConfirmAction(
 					(int result, CustomGameView view1, AbstractEntity actor1) -> {
-						//spawn construction site
-						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
-						new ConstructionSite((byte) 55, (byte) result).spawn(actor1.getPosition().toCoord().toPoint());
+						//spawn rails
+						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
 						Controller.getSoundEngine().play("metallic");
 						dispose();//dispose tool kit
 						return result;

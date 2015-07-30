@@ -230,12 +230,22 @@ public class ActionBox extends WidgetGroup {
 		window.add(text);
 		window.row();
 		//adds every selection
-		for (int i = 0; i < selectionNames.size(); i++) {
+		int max = selectionNames.size();
+		if (max > 4) max = 4;
+		for (int i = 0; i < max; i++) {
 			String entry = selectionNames.get(i);
 			if (selection == i) {
-				window.add("[" + entry + "]");
+				window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 			} else {
-				window.add(entry);
+				window.add(new Label(entry, WE.getEngineView().getSkin()));
+			}
+			if (selectionNames.size()>4) {
+				entry = selectionNames.get(i+4);
+				if (selection == i+4) {
+					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
+				} else {
+					window.add(new Label(entry, WE.getEngineView().getSkin()));
+				}
 			}
 			window.row();
 		}

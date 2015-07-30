@@ -273,6 +273,9 @@ public class MapEditorView extends GameView {
             //manage camera speed
             if (keycode == Keys.SHIFT_LEFT)
                 view.setCameraSpeed(1);
+			
+			if (keycode == Keys.G)
+				controller.switchToGame(false);
         
 			//manage camera movement
 			if (keycode == Input.Keys.W)

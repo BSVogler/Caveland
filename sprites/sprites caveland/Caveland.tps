@@ -199,6 +199,7 @@
             <filename>entities</filename>
             <filename>normals/blocksNormal</filename>
             <filename>Normals/entitiesNormal</filename>
+            <filename>interface</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

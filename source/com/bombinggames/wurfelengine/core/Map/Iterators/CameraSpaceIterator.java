@@ -108,7 +108,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 				}
 			}
 
-			return (Block) blockIterator.next();
+			return blockIterator.next();
 		} else {
 			return mmI.next();//todo only return blocks in viewport
 		}

@@ -1,11 +1,13 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
@@ -149,11 +151,24 @@ public class Inventory {
 	 * @param camera
 	 */
 	public void render(GameView view, Camera camera){
+		int inventoryPadding = 100;
+		float left = (view.getStage().getWidth()-400)/view.getEqualizationScale();
+		int y = (int) ((view.getStage().getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10)/view.getEqualizationScale()); 
+		
+		//draw background for highlit sprite
+		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
+		bgSprite.setPosition(left, y);
+		bgSprite.draw(view.getBatch());
+		bgSprite.setX(left+inventoryPadding/view.getEqualizationScale());
+		bgSprite.setScale(0.5f);
+		bgSprite.draw(view.getBatch());
+		bgSprite.setX(left+2*inventoryPadding/view.getEqualizationScale());
+		bgSprite.draw(view.getBatch());
+		
 		for (int i = 0; i < container.size(); i++) {
 			MovableEntity ent = container.get(i);
 			if (ent != null) {
-				int x = (int) ((int) (view.getStage().getWidth()-400+i*100)/view.getEqualizationScale());
-				int y = (int) ((view.getStage().getHeight()-camera.getScreenPosY()-camera.getHeightInScreenSpc()+10)/view.getEqualizationScale()); 
+				int x = (int) ((int) left+(i*inventoryPadding)/view.getEqualizationScale());
 				ent.render(view, x, y);
 			}
 		}

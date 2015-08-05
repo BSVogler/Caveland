@@ -305,19 +305,20 @@ public class Point extends AbstractPosition {
 	}
     
     /**
-     * Trace a ray through the map until ray hits non air block.
-     * 
+     * Trace a ray through the map until ray hits non air block.<br />
+     * Slow as hell. Avoid use.
      * @param direction direction of the ray
-     * @param radius the distane after which it should stop.
-     * @param camera if set only intersect with blocks which are rendered (not clipped). ignoring clipping if <i>null</i>
-     * @param onlySolid only intersect if true with block which are not transparent =solid
+     * @param maxDistance the distane after which it should stop. (in game pixels?)
+     * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>
+     * @param hitFullOpaque if true only intersects with blocks which are not transparent =full opaque
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
+	 * @deprecated slow as hell because of wrong implementation.
      */
-		public Intersection raycast(Vector3 direction, float radius, Camera camera, boolean onlySolid) {
+		public Intersection raycast(Vector3 direction, float maxDistance, Camera camera, boolean hitFullOpaque) {
       /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
  segment from point 'origin' in vector direction 'direction' of length
- 'radius'. 'radius' may be infinite.
+ 'maxDistance'. 'maxDistance' may be infinite.
 
  'normal' is the normal vector of the normal of that block that was entered.
  It should not be used after the callback returns.
@@ -372,7 +373,7 @@ public class Point extends AbstractPosition {
 
         // Rescale from units of 1 cube-edge to units of 'direction' so we can
         // compare with 't'.
-        radius /= Math.sqrt(dx*dx+dy*dy+dz*dz);
+        maxDistance /= Math.sqrt(dx*dx+dy*dy+dz*dz);
 
         while (/* ray has not gone past bounds of world */
                stepZ > 0 ? curZ < Chunk.getGameHeight() : curZ >= 0) {
@@ -393,7 +394,7 @@ public class Point extends AbstractPosition {
 					)
 				   )
 					&& block != null
-                    && (!onlySolid || (onlySolid && !block.isTransparent()))
+                    && (!hitFullOpaque || (hitFullOpaque && !block.isTransparent()))
                     
 				){
                     //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
@@ -416,7 +417,7 @@ public class Point extends AbstractPosition {
             has been commented in detail.*/
             if (tMaxX < tMaxY) {
                 if (tMaxX < tMaxZ) {
-                    if (tMaxX > radius) break;
+                    if (tMaxX > maxDistance) break;
                     // Update which cube we are now in.
                     curX += stepX;
                     // Adjust tMaxX to the next X-oriented boundary crossing.
@@ -426,7 +427,7 @@ public class Point extends AbstractPosition {
                     normal.y = 0;
                     normal.z = 0;
                 } else {
-                    if (tMaxZ > radius) break;
+                    if (tMaxZ > maxDistance) break;
                     curZ += stepZ;
                     tMaxZ += tDeltaZ;
                     normal.x = 0;
@@ -435,7 +436,7 @@ public class Point extends AbstractPosition {
                 }
             } else {
                 if (tMaxY < tMaxZ) {
-                    if (tMaxY > radius) break;
+                    if (tMaxY > maxDistance) break;
                     curY += stepY;
                     tMaxY += tDeltaY;
                     normal.x = 0;
@@ -444,7 +445,7 @@ public class Point extends AbstractPosition {
                 } else {
                   // Identical to the second case, repeated for simplicity in
                   // the conditionals.
-                  if (tMaxZ > radius) break;
+                  if (tMaxZ > maxDistance) break;
                   curZ += stepZ;
                   tMaxZ += tDeltaZ;
                   normal.x = 0;

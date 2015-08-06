@@ -64,21 +64,21 @@ public class WorkingDirectory {
         String userHome = System.getProperty("user.home", ".");
         File workingDirectory;
         switch (getPlatform()) {
-        case linux:
-        case solaris:
+        case LINUX:
+        case SOLARIS:
                 workingDirectory = new File(userHome, '.' + applicationName + '/');
                 break;
-        case windows:
+        case WINDOWS:
                 String applicationData = System.getenv("APPDATA");
                 if (applicationData != null)
                         workingDirectory = new File(applicationData, applicationName + '/');
                 else
                         workingDirectory = new File(userHome, '.' + applicationName + '/');
                 break;
-        case mac:
+        case MAC:
                 workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
                 break;
-        case android:
+        case ANDROID:
             workingDirectory = new File(System.getenv("EXTERNAL_STORAGE"), applicationName + '/');
             break;
         default:
@@ -96,24 +96,24 @@ public class WorkingDirectory {
     public static OS getPlatform() {
 		String osName = System.getProperty("os.name").toLowerCase();
 		if (osName.contains("win"))
-				return OS.windows;
+				return OS.WINDOWS;
 		if (osName.contains("mac"))
-				return OS.mac;
+				return OS.MAC;
 		if (osName.contains("solaris"))
-				return OS.solaris;
+				return OS.SOLARIS;
 		if (osName.contains("sunos"))
-				return OS.solaris;
+				return OS.SOLARIS;
 		if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik"))
-			return OS.android;
+			return OS.ANDROID;
 		if (osName.contains("linux"))
-				return OS.linux;
+				return OS.LINUX;
 		if (osName.contains("unix"))
-				return OS.linux;
-		return OS.unknown;
+				return OS.LINUX;
+		return OS.UNKNOWN;
     }
 
     public static enum OS {
-		linux, solaris, windows, mac, android, unknown;
+		LINUX, SOLARIS, WINDOWS, MAC, ANDROID, UNKNOWN;
     }
     
     /**
@@ -132,6 +132,7 @@ public class WorkingDirectory {
 	 * @return trlue if everything went okay
 	 * @since 1.3.13
 	 */
+	@SuppressWarnings("NestedAssignment")
 	public static boolean unpackMap(String foldername, InputStream source) {
 		File dest = new File(getMapsFolder().getAbsolutePath()+"/"+foldername+"/");
 		//if directory not exists, create it

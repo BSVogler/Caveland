@@ -305,7 +305,7 @@ public class Point extends AbstractPosition {
 	}
     
     /**
-     * Trace a ray through the map until ray hits non air block.<br />
+     * Trace a ray through the map until ray hits non air block.<br>
      * Slow as hell. Avoid use.
      * @param direction direction of the ray
      * @param maxDistance the distane after which it should stop. (in game pixels?)

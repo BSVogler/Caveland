@@ -86,10 +86,10 @@ public class Caveland {
                     case "-quickstart":
 						WE.addLaunchCommands(
 							() -> {
-									CustomGameController controller = new CustomGameController();
-									controller.useSaveSlot(0);
-									WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
-								}
+							CustomGameController controller = new CustomGameController();
+							controller.useSaveSlot(0);
+							WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+							}
 						);
                         break;
                 }

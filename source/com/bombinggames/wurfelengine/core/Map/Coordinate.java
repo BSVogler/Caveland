@@ -82,7 +82,6 @@ public class Coordinate extends AbstractPosition {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		refreshCachedPoint();
 	}
 
 	/**
@@ -94,7 +93,6 @@ public class Coordinate extends AbstractPosition {
 		this.x = coord.x;
 		this.y = coord.y;
 		this.z = coord.z;
-		refreshCachedPoint();
 	}
 
 	/**
@@ -151,7 +149,6 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void setX(int x) {
 		this.x = x;
-		refreshCachedPoint();
 	}
 
 	/**
@@ -161,7 +158,6 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void setY(int y) {
 		this.y = y;
-		refreshCachedPoint();
 	}
 
 	/**
@@ -171,7 +167,6 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void setZ(int z) {
 		this.z = z;
-		refreshCachedPoint();
 	}
 
 	/**
@@ -211,7 +206,6 @@ public class Coordinate extends AbstractPosition {
 		this.x += vector[0];
 		this.y += vector[1];
 		this.z += vector[2];
-		refreshCachedPoint();
 		return this;
 	}
 
@@ -225,7 +219,6 @@ public class Coordinate extends AbstractPosition {
 		this.x += vector.x;
 		this.y += vector.y;
 		this.z += vector.z;
-		refreshCachedPoint();
 		return this;
 	}
 
@@ -242,7 +235,6 @@ public class Coordinate extends AbstractPosition {
 		this.x += x;
 		this.y += y;
 		this.z += z;
-		refreshCachedPoint();
 		return this;
 	}
 
@@ -414,14 +406,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	@Override
 	public Point toPoint() {
-		return cachedPoint;
-	}
-
-	/**
-	 * refresh the field cachedPoint. Does a coord -> point transform.
-	 */
-	private void refreshCachedPoint() {
-		cachedPoint = new Point(
+		return new Point(
 			x * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
 			y * Block.GAME_DIAGLENGTH2,
 			z * Block.GAME_EDGELENGTH

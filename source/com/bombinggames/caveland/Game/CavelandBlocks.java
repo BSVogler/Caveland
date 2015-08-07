@@ -107,18 +107,26 @@ public RenderBlock toRenderBlock(Block data) {
 	@Override
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0 ){
-			if (id==3) {
-				CollectibleType.Stone.createInstance().spawn(coord.toPoint().cpy());
-			} else if (id==41) {
-				CollectibleType.Cristall.createInstance().spawn(coord.toPoint().cpy());
-			} else if (id==42){
-				CollectibleType.Sulfur.createInstance().spawn(coord.toPoint().cpy());
-			} else if (id==43){
-				CollectibleType.Ironore.createInstance().spawn(coord.toPoint().cpy());
-			} else if (id==44){
-				CollectibleType.Coal.createInstance().spawn(coord.toPoint().cpy());
-			}else if (id==72){
-				CollectibleType.Wood.createInstance().spawn(coord.toPoint().cpy());
+			switch (id) {
+				case 3:
+					CollectibleType.Stone.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				case 41:
+					CollectibleType.Cristall.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				case 42:
+					CollectibleType.Sulfur.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				case 43:
+					CollectibleType.Ironore.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				case 44:
+					CollectibleType.Coal.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				case 72:
+					CollectibleType.Wood.createInstance().spawn(coord.toPoint().cpy());
+					break;
+				default:
 			}
 			
 			//view only relevant. should only be done if visible

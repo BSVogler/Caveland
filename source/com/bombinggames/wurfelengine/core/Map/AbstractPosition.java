@@ -55,14 +55,14 @@ public abstract class AbstractPosition implements Serializable {
 	
 	
 	/**
-     * If needed calculates it and creates new instance else return itself.
-     * @return the point representation
+     * Calculates it and creates new instance if not already in correct format then return itself.
+     * @return the point representation. Copy safe.
      */
     public abstract Point toPoint();
     
     /**
-     * If needed calculates it and creates new instance else return itself.
-     * @return the coordinate representation
+     * Calculates it and creates new instance if not already in correct format then return itself.
+     * @return the coordinate representation. Copy safe
      */
     public abstract Coordinate toCoord();
 	

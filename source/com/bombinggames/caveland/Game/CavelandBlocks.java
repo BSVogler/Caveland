@@ -109,22 +109,22 @@ public RenderBlock toRenderBlock(Block data) {
 		if (health <= 0 ){
 			switch (id) {
 				case 3:
-					CollectibleType.Stone.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Stone.createInstance().spawn(coord.toPoint());
 					break;
 				case 41:
-					CollectibleType.Cristall.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Cristall.createInstance().spawn(coord.toPoint());
 					break;
 				case 42:
-					CollectibleType.Sulfur.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Sulfur.createInstance().spawn(coord.toPoint());
 					break;
 				case 43:
-					CollectibleType.Ironore.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Ironore.createInstance().spawn(coord.toPoint());
 					break;
 				case 44:
-					CollectibleType.Coal.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Coal.createInstance().spawn(coord.toPoint());
 					break;
 				case 72:
-					CollectibleType.Wood.createInstance().spawn(coord.toPoint().cpy());
+					CollectibleType.Wood.createInstance().spawn(coord.toPoint());
 					break;
 				default:
 			}
@@ -132,7 +132,7 @@ public RenderBlock toRenderBlock(Block data) {
 			//view only relevant. should only be done if visible
 			//todo, check if visible
 			for (int i = 0; i < 10; i++) {
-				new DestructionParticle((byte) 44).spawn(coord.toPoint().cpy());
+				new DestructionParticle((byte) 44).spawn(coord.toPoint());
 			}
 		}
 	}

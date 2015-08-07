@@ -74,12 +74,12 @@ public class Point extends AbstractPosition {
     }
 
     /**
-     *Returns itself.
+     *Returns copy of itself.
      * @return
      */
     @Override
     public Point toPoint() {
-       return this;
+       return this.cpy();
     }
 	
 	    /**

@@ -190,9 +190,9 @@ public class Enemy extends MovableEntity{
 	public void damage(byte value) {
 		super.damage(value);
 		if (getHealth() <= 0){
-			new DestructionParticle((byte) 34).spawn(getPosition().toPoint().cpy());
-			new DestructionParticle((byte) 35).spawn(getPosition().toPoint().cpy());
-			new DestructionParticle((byte) 36).spawn(getPosition().toPoint().cpy());
+			new DestructionParticle((byte) 34).spawn(getPosition().toPoint());
+			new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
+			new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 			
 			Controller.getSoundEngine().stop(MOVEMENTSOUND, movementSoundPlaying);
 			if (getHealth() <= 0 && KILLSOUND != null)

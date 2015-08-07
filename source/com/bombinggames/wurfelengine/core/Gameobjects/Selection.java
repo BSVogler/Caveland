@@ -86,7 +86,7 @@ public class Selection extends AbstractEntity {
     public void setPosition(AbstractPosition pos) {
         super.setPosition( pos.toCoord());
         setHidden(getPosition().getZ() < 0);//hide if is under map
-        normal.setPosition(pos.toCoord().cpy().addVector(0, 0, 1));
+        normal.setPosition(pos.toCoord().addVector(0, 0, 1));
     }
         
     /**

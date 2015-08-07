@@ -594,13 +594,13 @@ public class CustomPlayer extends Controllable implements EntityNode {
 						else
 							Controller.getSoundEngine().play("impact");
 						//one particle
-						new DestructionParticle((byte) 44).spawn(aimCoord.toPoint().cpy());
+						new DestructionParticle((byte) 44).spawn(aimCoord.toPoint());
 					}
 				} else {
 					//indestructible by hand
 					Controller.getSoundEngine().play("impact");//todo different sound
 					//spawn particle
-					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().cpy().addVector(0, 0, 30));
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().addVector(0, 0, 30));
 					dirt.setTTL(400);
 					dirt.addMovement(new Vector3(
 						(float) (Math.random()-0.5f)*10.0f,
@@ -950,13 +950,13 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 */
 	public void showButton(byte buttonID, AbstractPosition pos) {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().cpy().addVector(0, 0, Block.GAME_EDGELENGTH)
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)
 			);
 			addChild(interactButton);
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {
-			interactButton.setPosition(pos.toPoint().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
+			interactButton.setPosition(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH));
 		}
 	}
 

@@ -62,7 +62,7 @@ public class Torch extends RenderBlock {
 	
 	public void lightNearbyBlocks(){
 		if (getPosition()!=null) {
-			Point lightPos = getPosition().toPoint().cpy().addVector(0,0,30);
+			Point lightPos = getPosition().toPoint().addVector(0,0,30);
 			float flicker = (float) Math.random();
 			//light blocks under the torch
 			for (int x = -RADIUS; x < RADIUS; x++) {

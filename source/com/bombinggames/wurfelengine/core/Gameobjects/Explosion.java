@@ -79,7 +79,7 @@ public class Explosion extends AbstractEntity {
 						Particle dust = (Particle) new Particle(
 							(byte) 22,
 							1700
-						).spawn(coord.toPoint().cpy());//spawn at center
+						).spawn(coord.toPoint());//spawn at center
 						dust.setColor(new Color(0.5f,0.45f,0.4f,1f));
 						dust.setType(ParticleType.FIRE);
 						dust.addMovement(

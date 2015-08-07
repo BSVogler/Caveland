@@ -400,7 +400,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 *
+	 * O(const)
 	 * @return the coordiante's origin is the center
 	 * @see #refreshCachedPoint()
 	 */
@@ -413,13 +413,9 @@ public class Coordinate extends AbstractPosition {
 		);
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public Coordinate toCoord() {
-		return this;
+		return this.cpy();
 	}
 
 	/**

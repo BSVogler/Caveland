@@ -50,7 +50,7 @@ import java.util.Map;
  * A table containing all blocks where you can choose your block.
  * @author Benedikt Vogler
  */
-public class PlacableSelector extends Table {
+public class PlacableTable extends Table {
     private Table table;
     private ScrollPane scroll; 
 	private final PlacableGUI placableGUI;
@@ -63,7 +63,7 @@ public class PlacableSelector extends Table {
      * @param colorGUI the linked preview of the selection
 	 * @param left
      */
-    public PlacableSelector(PlacableGUI colorGUI, boolean left) {
+    public PlacableTable(PlacableGUI colorGUI, boolean left) {
         this.placableGUI = colorGUI;
         
 		setWidth(400);

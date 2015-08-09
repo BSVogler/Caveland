@@ -131,7 +131,7 @@ public class Toolbar extends Window {
 	 * @param left
 	 * @param right
 	 */
-	public Toolbar(Stage stage, TextureAtlas sprites, PlacableSelector left, PlacableSelector right) {
+	public Toolbar(Stage stage, TextureAtlas sprites, PlacableTable left, PlacableTable right) {
 		super("Tools", WE.getEngineView().getSkin());
 		leftPos = (int) (stage.getWidth() / 2 - items.length * 50 / 2);
 		bottomPos = (int) (stage.getHeight() - 100);
@@ -210,10 +210,10 @@ public class Toolbar extends Window {
 	private class ToolSelectionListener extends InputListener {
 
 		private final Tool tool;
-		private final PlacableSelector left;
-		private final PlacableSelector right;
+		private final PlacableTable left;
+		private final PlacableTable right;
 
-		ToolSelectionListener(Tool tool, PlacableSelector left, PlacableSelector right) {
+		ToolSelectionListener(Tool tool, PlacableTable left, PlacableTable right) {
 			this.tool = tool;
 			this.left = left;
 			this.right = right;

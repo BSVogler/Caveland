@@ -71,9 +71,9 @@ public class MapEditorView extends GameView {
     private Vector2 camermove = new Vector2(); 
     
     private Navigation nav = new Navigation();
-    private PlacableSelector leftSelector;
+    private PlacableTable leftSelector;
 	private PlacableGUI leftColorGUI;
-	private PlacableSelector rightSelector;
+	private PlacableTable rightSelector;
 	private PlacableGUI rightColorGUI;
 	
 	private Toolbar toolSelection;
@@ -106,12 +106,12 @@ public class MapEditorView extends GameView {
         
 		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
 		getStage().addActor(leftColorGUI);
-        leftSelector = new PlacableSelector(leftColorGUI, true);
+        leftSelector = new PlacableTable(leftColorGUI, true);
         getStage().addActor(leftSelector);
 		
 		rightColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), false);
 		getStage().addActor(rightColorGUI);
-        rightSelector = new PlacableSelector(rightColorGUI, false);
+        rightSelector = new PlacableTable(rightColorGUI, false);
         getStage().addActor(rightSelector);
 
         //setup GUI

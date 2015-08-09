@@ -86,7 +86,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 		batch.end();
 		WE.getGameplay().getView().getBatch().setShader(WE.getGameplay().getView().getShader());
 		WE.getGameplay().getView().getBatch().begin();
-		if (block.getId()!=0) {
+		if (block != null&& block.getId() != 0) {
 			//block.setColor(new Color(1, 1, 1, 1));
 			block.render(WE.getGameplay().getView(), (int) (x+Block.VIEW_WIDTH2*(1f+size)), (int) y, null, true);
 		}

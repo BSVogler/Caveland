@@ -58,7 +58,7 @@ public class TFlint extends Collectible {
 	public void action(CustomGameView view, AbstractEntity actor) {
 		super.action(view, actor);
 		Controller.getSoundEngine().play("hiss", getPosition());
-		setValue((byte) 5);
+		setValue((byte) 8);//ignite sprite
 		lit = true;
 		timer = TIMETILLEXPLOSION;
 	}

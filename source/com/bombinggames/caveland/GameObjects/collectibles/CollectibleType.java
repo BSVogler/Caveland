@@ -81,17 +81,23 @@ public enum CollectibleType {
 	 * @return
 	 */
 	public Collectible createInstance() {
-		Collectible obj;
-		if (this == CollectibleType.Explosives) {
-			obj = new TFlint();
-		} else if (this == CollectibleType.Toolkit){
-			obj = new Bausatz();
-		} else if (this == CollectibleType.Torch){
-			obj = new TorchCollectible();
-		} else if (this == CollectibleType.Rails) {
-			obj = new RailsConstructionKit();
-		} else {
-			obj = new Collectible(this);
+		Collectible obj = null;
+		if (null != this) switch (this) {
+			case Explosives:
+				obj = new TFlint();
+				break;
+			case Toolkit:
+				obj = new Bausatz();
+				break;
+			case Torch:
+				obj = new TorchCollectible();
+				break;
+			case Rails:
+				obj = new RailsConstructionKit();
+				break;
+			default:
+				obj = new Collectible(this);
+				break;
 		}
 		return obj;
 	}

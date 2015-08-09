@@ -54,7 +54,10 @@ public class BlockDrawable extends TextureRegionDrawable {
      * @param id
      */
     public BlockDrawable(byte id) {
-        this.block = new RenderBlock(id,(byte) 0);
+		if (id >= Block.OBJECTTYPESNUM)
+			this.block = new RenderBlock((byte) 0);
+        else
+			this.block = new RenderBlock(id);
 		block.setScaling(size);
     }
 	

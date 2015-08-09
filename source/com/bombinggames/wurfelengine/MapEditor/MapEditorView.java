@@ -485,21 +485,21 @@ public class MapEditorView extends GameView {
 
 					
 			//show selection list if mouse is at position and if tool supports selection		
-            if (
-				screenX<100
-				&& (toolSelection.getLeftTool().selectFromBlocks() || toolSelection.getLeftTool().selectFromEntities())
-			)
-                view.leftSelector.show();
-            else if (view.leftSelector.isVisible() && screenX > view.leftSelector.getWidth())
-                view.leftSelector.hide(false);
-			
-			if (
-				screenX > getStage().getWidth()-100
-				&& (toolSelection.getRightTool().selectFromBlocks() || toolSelection.getRightTool().selectFromEntities())
-			)
-                view.rightSelector.show();
-            else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
-                view.rightSelector.hide(false);
+//            if (
+//				screenX<100
+//				&& (toolSelection.getLeftTool().selectFromBlocks() || toolSelection.getLeftTool().selectFromEntities())
+//			)
+//                view.leftSelector.show();
+//            else if (view.leftSelector.isVisible() && screenX > view.leftSelector.getWidth())
+//                view.leftSelector.hide(false);
+//			
+//			if (
+//				screenX > getStage().getWidth()-100
+//				&& (toolSelection.getRightTool().selectFromBlocks() || toolSelection.getRightTool().selectFromEntities())
+//			)
+//                view.rightSelector.show();
+//            else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
+//                view.rightSelector.hide(false);
 			
 			lastX = screenX; 	
 			lastY = screenY;

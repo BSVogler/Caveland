@@ -96,7 +96,7 @@ public class Particle extends MovableEntity {
 			getColor().b = startingColor.b*((timeTillDeath)/maxtime);
 		}
 		
-		if (type==ParticleType.FIRE) {
+		if (getPosition()!=null && type==ParticleType.FIRE) {
 			//licht
 			Point pos = getPosition().toPoint();
 			float flicker = (float) Math.random();

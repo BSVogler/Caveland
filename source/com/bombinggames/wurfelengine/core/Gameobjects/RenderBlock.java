@@ -541,16 +541,19 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public boolean hasSides() {
+		if (blockData==null) return false;
 		return blockData.hasSides();
 	}
 
 	@Override
 	public byte getId() {
+		if (blockData==null) return 0;
 		return blockData.getId();
 	}
 
 	@Override
 	public byte getValue() {
+		if (blockData==null) return 0;
 		return blockData.getValue();
 	}
 
@@ -590,6 +593,7 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public boolean isLiquid() {
+		if (blockData==null) return false;
 		return blockData.isLiquid();
 	}
 	

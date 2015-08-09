@@ -33,11 +33,8 @@ package com.bombinggames.wurfelengine.MapEditor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -88,24 +85,27 @@ public class PlacableTable extends Table {
 					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 						//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
 						if (RenderBlock.isSpriteDefined(Block.getInstance(i))) {
-							BlockDrawable dbl = new BlockDrawable(i);
-							ImageButton button = new ImageButton(dbl);
-							button.addListener(new BlockListener(i));
+							SelectionItem button = new SelectionItem(
+								this,
+								new BlockDrawable(i),
+								new BlockListener(i)
+							);
 							add(button);
 							foundItems++;
 							if (foundItems % 4 == 0)
 								row();//make new row
 						}
 					}
-				} else {//add entities
+				} else {//add every registered entity class
 					for (
 						Map.Entry<String, Class<? extends AbstractEntity>> entry
 						: AbstractEntity.getRegisteredEntities().entrySet()
-					) {//add every registered entity class
-						//add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
-						Drawable dbl = new EntityDrawable(entry.getValue());
-						ImageButton button = new ImageButton(dbl);
-						button.addListener(new EntityListener(entry.getKey(), entry.getValue(), button));
+					) {
+						SelectionItem button = new SelectionItem(
+							this,
+							new EntityDrawable(entry.getValue()),
+							new EntityListener(entry.getKey(), entry.getValue())
+						);
 						add(button);
 
 						foundItems++;
@@ -162,6 +162,28 @@ public class PlacableTable extends Table {
 		show();
 	}
 
+	public PlacableGUI getPlacableGUI() {
+		return placableGUI;
+	}
+	
+	/**
+	 * detects a click on an entity in the list
+	 */
+	private class EntityListener extends ClickListener {
+        private final Class<? extends AbstractEntity> entclass;
+		private final String name;
+        
+		EntityListener(String name, Class<? extends AbstractEntity> entclass){
+            this.entclass = entclass;
+			this.name = name;
+        }
+                
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            placableGUI.setEntity(name, entclass);
+        }
+     }
+	
 	/**
 	 * detects a click on the RenderBlock in the list
 	 */
@@ -179,24 +201,6 @@ public class PlacableTable extends Table {
 			else
 				placableGUI.setBlock(Block.getInstance(id));
         }
-     }
-	
-	/**
-	 * detects a click on an entity in the list
-	 */
-	private class EntityListener extends ClickListener {
-        private final Class<? extends AbstractEntity> entclass;
-		private final String name;
-        
-		EntityListener(String name, Class<? extends AbstractEntity> entclass, Button parent){
-            this.entclass = entclass;
-			this.name = name;
-        }
-                
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setEntity(name, entclass);
-        };
      }
     
 }

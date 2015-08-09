@@ -38,7 +38,7 @@ public enum CollectibleType {
 
 	Rails((byte) 16, (byte) 2),
 	Wood((byte) 46, (byte) 5),
-	Explosives((byte) 47, (byte) 5),
+	Explosives((byte) 47, (byte) 8),
 	Ironore((byte) 48, (byte) 5),
 	Coal((byte) 49, (byte) 5),
 	Cristall((byte) 50, (byte) 5),

@@ -68,9 +68,9 @@ public class MapEditorView extends GameView {
     /**
      * vector holding information about movement of the camera
      */
-    private Vector2 camermove = new Vector2(); 
+    private final Vector2 camermove = new Vector2(); 
     
-    private Navigation nav = new Navigation();
+    private final Navigation nav = new Navigation();
     private PlacableTable leftSelector;
 	private PlacableGUI leftColorGUI;
 	private PlacableTable rightSelector;

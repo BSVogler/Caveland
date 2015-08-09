@@ -67,7 +67,7 @@ public class PlacableTable extends Table {
 		if (left) {
 			setX(0);
 		} else {
-			setX(1580);
+			setX(1480);
 		}
     }
 

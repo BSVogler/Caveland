@@ -165,8 +165,8 @@ public RenderBlock toRenderBlock(Block data) {
 	}
 	
 	/**
-	 * 
-	 * @param coord
+	 * Checks if the block is interactable and if the logic entity is missing creates it.
+	 * @param coord the coordinate where the interactable should be
 	 * @return null if not interactable 
 	 */
 	public static Interactable verifyInteractableExistence(Coordinate coord){

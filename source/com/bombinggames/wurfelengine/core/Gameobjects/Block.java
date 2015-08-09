@@ -178,8 +178,8 @@ public class Block implements HasID, Serializable {
 	/**
 	 * Use for creating new objects.
 	 *
-	 * @param id
-	 * @return
+	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
+	 * @return returns null for id==0
 	 */
 	public static Block getInstance(byte id) {
 		if (id == 0) {
@@ -191,9 +191,9 @@ public class Block implements HasID, Serializable {
 	/**
 	 * Use for creating new objects.
 	 *
-	 * @param id
+	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
 	 * @param value
-	 * @return
+	 * @return returns null for id==0
 	 */
 	public static Block getInstance(byte id, byte value) {
 		if (id == 0) {

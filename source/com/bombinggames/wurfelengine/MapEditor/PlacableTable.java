@@ -35,12 +35,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -51,15 +48,12 @@ import java.util.Map;
  * @author Benedikt Vogler
  */
 public class PlacableTable extends Table {
-    private Table table;
-    private ScrollPane scroll; 
 	private final PlacableGUI placableGUI;
-	private float lastPosition;
 	
 	private PlaceMode mode = PlaceMode.Blocks;
 	
 	/**
-     *
+     * 
      * @param colorGUI the linked preview of the selection
 	 * @param left
      */
@@ -83,52 +77,44 @@ public class PlacableTable extends Table {
     public void show(){
 		if (!isVisible()) {
 			placableGUI.setVisible(true);
-			placableGUI.moveToCenter(getWidth());
+			//placableGUI.moveToCenter(getWidth());//moving to center not needed with new reduced table
 			setVisible(true);
 		}
 		
         if (!hasChildren()){
-            table = new Table();
-            table.pad(10).defaults().expandX().space(4);
-
-            scroll = new ScrollPane(table, WE.getEngineView().getSkin());
-            add(scroll).expand().fill();
-			
-			if (mode == PlaceMode.Blocks) {
-				if (!table.hasChildren()){//add blocks
+			if (!hasChildren()){
+				int foundItems = 0;
+				if (mode == PlaceMode.Blocks) {//add blocks
 					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
-						table.row();
-						table.add(new Label(new RenderBlock(i, (byte) 0).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
-						BlockDrawable dbl = new BlockDrawable(i);
-						ImageButton button = new ImageButton(dbl);
-						//dbl.setX(50);
-						button.addListener(new BlockListener(i, button));
-						//button.setStyle(style);
-						table.add(button);
+						//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
+						if (RenderBlock.isSpriteDefined(Block.getInstance(i))) {
+							BlockDrawable dbl = new BlockDrawable(i);
+							ImageButton button = new ImageButton(dbl);
+							button.addListener(new BlockListener(i));
+							add(button);
+							foundItems++;
+							if (foundItems % 4 == 0)
+								row();//make new row
+						}
 					}
-				}
-			} else {//add entities
-				if (!table.hasChildren()){
+				} else {//add entities
 					for (
 						Map.Entry<String, Class<? extends AbstractEntity>> entry
 						: AbstractEntity.getRegisteredEntities().entrySet()
 					) {//add every registered entity class
-						table.row();
-						
-						table.add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
+						//add(new Label(entry.getKey(), WE.getEngineView().getSkin()));
 						Drawable dbl = new EntityDrawable(entry.getValue());
 						ImageButton button = new ImageButton(dbl);
 						button.addListener(new EntityListener(entry.getKey(), entry.getValue(), button));
-						//button.setStyle(style);
-						table.add(button);
+						add(button);
+
+						foundItems++;
+						if (foundItems % 4 == 0)
+							row();//make new row
 					}
 				}
 			}
-			
-			scroll.setForceScroll(false, true);
-			scroll.setScrollBarPositions(false, true);
-			scroll.setScrollX(lastPosition);
-        }
+		}
     }
     
     /**
@@ -137,8 +123,6 @@ public class PlacableTable extends Table {
      */
     public void hide(boolean includingSelection){
         if (hasChildren()){
-			lastPosition = scroll.getScrollX();
-            scroll.clearListeners();
             clear();
         }
 		
@@ -157,8 +141,8 @@ public class PlacableTable extends Table {
 	protected void showBlocks() {
 		mode = PlaceMode.Blocks;
 		placableGUI.setMode(mode);
-		if (table !=null)
-			table.clearChildren();
+//		if (table !=null)
+		clearChildren();
 		show();
 	}
 
@@ -173,8 +157,8 @@ public class PlacableTable extends Table {
 				AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
-		if (table !=null)
-			table.clearChildren();
+	
+		clearChildren();
 		show();
 	}
 
@@ -182,12 +166,10 @@ public class PlacableTable extends Table {
 	 * detects a click on the RenderBlock in the list
 	 */
     private class BlockListener extends ClickListener {
-        private byte id;
-        private Button parent; 
-        
-		BlockListener(byte id, Button parent){
+        private final byte id;
+		
+		BlockListener(byte id){
             this.id = id;
-            this.parent = parent;
         }
                 
         @Override
@@ -196,21 +178,19 @@ public class PlacableTable extends Table {
 				placableGUI.setBlock(null);
 			else
 				placableGUI.setBlock(Block.getInstance(id));
-        };
+        }
      }
 	
 	/**
 	 * detects a click on an entity in the list
 	 */
 	private class EntityListener extends ClickListener {
-        private Class<? extends AbstractEntity> entclass;
-        private Button parent; 
+        private final Class<? extends AbstractEntity> entclass;
 		private final String name;
         
 		EntityListener(String name, Class<? extends AbstractEntity> entclass, Button parent){
             this.entclass = entclass;
 			this.name = name;
-            this.parent = parent;
         }
                 
         @Override

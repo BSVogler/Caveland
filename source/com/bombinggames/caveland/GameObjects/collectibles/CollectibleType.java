@@ -46,7 +46,7 @@ public enum CollectibleType {
 	Stone((byte) 52, (byte) 5),
 	Toolkit((byte) 53, (byte) 2),
 	Torch((byte) 54, (byte) 2),
-	Iron((byte) 55, (byte) 5);
+	Iron((byte) 55, (byte) 4);
 
 	static CollectibleType fromValue(String value) {
 		if (value != null) {

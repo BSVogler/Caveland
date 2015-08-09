@@ -106,7 +106,21 @@ public class RenderBlock extends AbstractGameObject {
             return blocksprites[id][value][side.getCode()];
         }
     }
-    
+	
+	/**
+	 * checks if a sprite is defined. if not the error sprite will be rendered
+	 * @param block
+	 * @return 
+	 */
+	public static boolean isSpriteDefined(final Block block){
+		if (getSpritesheet() == null) return false;
+		AtlasRegion sprite;
+		if (block.hasSides())
+			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getId())+"-"+block.getValue()+"-0");
+		else
+			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getId())+"-"+block.getValue());
+		return 	sprite != null;
+	}
 
     
    /**

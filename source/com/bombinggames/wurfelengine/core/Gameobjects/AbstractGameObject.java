@@ -389,7 +389,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
 	 * @return 
 	 */
-	public int getSpriteId() {
+	public byte getSpriteId() {
 		return graphicsID;
 	}
 

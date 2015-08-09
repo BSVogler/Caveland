@@ -84,14 +84,14 @@ public class RenderBlock extends AbstractGameObject {
      * @param side Which side?
      * @return an sprite of the side
      */
-    public static AtlasRegion getBlockSprite(final int id, final int value, final Side side) {
+    public static AtlasRegion getBlockSprite(final byte id, final byte value, final Side side) {
         if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
         
         if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
-            AtlasRegion sprite = getSpritesheet().findRegion('b'+Integer.toString(id)+"-"+value+"-"+side.getCode());
+            AtlasRegion sprite = getSpritesheet().findRegion('b'+Byte.toString(id)+"-"+value+"-"+side.getCode());
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
                 
-                Gdx.app.debug("debug", 'b'+Integer.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
+                Gdx.app.debug("debug", 'b'+Byte.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
                 
                 sprite = getSpritesheet().findRegion("b0-0-"+side.getCode());
                 

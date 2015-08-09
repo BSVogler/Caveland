@@ -72,7 +72,6 @@ public RenderBlock toRenderBlock(Block data) {
 	public boolean hasSides(byte id, byte value) {
 		if (id==13) return false;
 		if (id==11) return false;
-		if (id==12) return false;
 		if (id==55) return false;
 		if (id==72) return false;
 		return true;

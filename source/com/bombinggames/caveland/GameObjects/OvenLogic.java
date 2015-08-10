@@ -48,7 +48,14 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 	private SmokeEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
+	private float burntime;
 
+	public OvenLogic() {
+		super((byte) 17);
+		setHidden(true);
+		disableShadow();
+	}
+	
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
@@ -65,34 +72,70 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 			//lege objekte aus Inventar  hier rein
 			Collectible frontItem = ((CustomPlayer) actor).getInventory().retrieveFrontItem();
 			if (frontItem != null && (frontItem.getType()==CollectibleType.Coal || frontItem.getType()==CollectibleType.Ironore))
-				addChild(frontItem);
+				addCollectible(frontItem);
 		}
 	}
 
 	@Override
+	public void addCollectible(Collectible collectible) {
+		if (collectible.getType() == CollectibleType.Coal) {
+			burntime += 20000;//20s
+		} else {
+			super.addCollectible(collectible);
+		}
+	}
+	
+	@Override
 	public void update(float dt) {
 		super.update(dt);
-		startProduction();
 		
-		float oldCountDown = productionCountDown;
-		if (productionCountDown > 0)
-			productionCountDown -= dt;
-		
-		if (productionCountDown<0)
-			productionCountDown = 0;
-		
-		//if reached zero this frame
-		if (oldCountDown > 0 && productionCountDown==0) {
-			//produce
-			Collectible coal = getCollectible(CollectibleType.Coal);
-			if (coal != null) coal.dispose();
-			Collectible ironore = getCollectible(CollectibleType.Ironore);
-			if (ironore != null) ironore.dispose();
-			( (Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+		if (burntime > 0) {//while the oven is burning
+			emitter.setActive(true);
+			setHidden(false);
+			emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
+			
+			//burn ironore
+			if (productionCountDown==0) {
+				Collectible ironore = retrieveCollectibleReference(CollectibleType.Ironore);
+				if (ironore != null) {
+					ironore.dispose();
+					productionCountDown = PRODUCTIONTIME;
+				}
+			}
+			
+			//check if production timer reaches zero
+			float oldCountDown = productionCountDown;
+			//decrease timer
+			if (productionCountDown > 0) {
+				productionCountDown -= dt;
+				emitter.setParticleSpread(new Vector3(3f, 1f, -0.5f));
+			}
+			//clamp
+			if (productionCountDown < 0)
+				productionCountDown = 0;
+
+			//if reached zero this frame
+			if (oldCountDown > 0 && productionCountDown==0) {
+				//produce
+				( (Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+			}
+		}
+		//decrease timer
+		if (burntime > 0)
+			burntime -= dt;
+		//clamp if reached bottom
+		if (burntime < 0) {
+			burntime = 0;
+			setHidden(true);
 			emitter.setActive(false);
 		}
 	}
 	
+	/**
+	 * 
+	 * @return 
+	 * @deprecated 
+	 */
 	public boolean canStartProduction(){
 		if (productionCountDown==0) {
 			Collectible coal = getCollectible(CollectibleType.Coal);
@@ -102,13 +145,6 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 			return true;
 		} else {
 			return false;
-		}
-	}
-	
-	protected void startProduction(){
-		if (canStartProduction()) {
-			emitter.setActive(true);
-			productionCountDown = PRODUCTIONTIME;
 		}
 	}
 }

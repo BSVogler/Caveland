@@ -73,6 +73,19 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setFloating(true);
 		super.addChild(collectible);
 	}
+	
+	/**
+	 * only allows collectibles to be added.
+	 *
+	 * @param collectible if not an collectible nothing happens
+	 */
+	public void addCollectibleFront(Collectible collectible) {
+		collectible.setHidden(true);
+		collectible.setPosition(getPosition().cpy());
+		collectible.preventPickup();
+		collectible.setFloating(true);
+		super.getChildren().add(0,collectible);
+	}
 
 	/**
 	 * Get the n't collectible from inventory.

@@ -113,12 +113,12 @@ public class Inventory extends CollectibleContainer {
 	
 	/**
 	 * Add item at the back.
-	 * @param ent
+	 * @param col
 	 * @return false if inventory is full. True if sucessfull.
 	 */
-	public final boolean add(Collectible ent) {
+	public final boolean add(Collectible col) {
 		if (size() < 3) {
-			addChild(ent);
+			addCollectible(col);
 			return true;
 		}
 		return false;
@@ -126,12 +126,12 @@ public class Inventory extends CollectibleContainer {
 	
 	/**
 	 * Add item at the front.
-	 * @param ent
+	 * @param col
 	 * @return false if inventory is full. True if sucessfull.
 	 */
-	public final boolean addFront(Collectible ent) {
+	public final boolean addFront(Collectible col) {
 		if (size() < 3) {
-			getChildren().add(0, ent);
+			addCollectibleFront(col);
 			return true;
 		}
 		return false;

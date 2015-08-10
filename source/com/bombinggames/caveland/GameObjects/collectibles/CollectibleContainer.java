@@ -33,6 +33,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -45,7 +46,7 @@ public class CollectibleContainer extends AbstractEntity {
 	private static final long serialVersionUID = 2L;
 	private boolean backpack;
 	/**
-	 * experimental feature. may cause problems when leaving the game and the saving
+	 * experimental feature. may cause problems when leaving the game and the saving. todo
 	 */
 	private boolean releaseContentOnDestroy = false;
 
@@ -65,30 +66,41 @@ public class CollectibleContainer extends AbstractEntity {
 	 *
 	 * @param collectible if not an collectible nothing happens
 	 */
-	@Override
-	public void addChild(AbstractEntity collectible) {
-		if (collectible instanceof Collectible) {
-			collectible.setHidden(true);
-			collectible.setPosition(getPosition().cpy());
-			((Collectible) collectible).preventPickup();
-			((Collectible) collectible).setFloating(true);
-			super.addChild(collectible);
-		}
+	public void addCollectible(Collectible collectible) {
+		collectible.setHidden(true);
+		collectible.setPosition(getPosition().cpy());
+		collectible.preventPickup();
+		collectible.setFloating(true);
+		super.addChild(collectible);
 	}
 
 	/**
-	 * Get the n't element from inventory. In future versions this should skip stuff like the
-	 * shadow. So beware.
+	 * Get the n't collectible from inventory.
 	 *
 	 * @param index
-	 * @return
+	 * @return can return null
 	 */
 	public Collectible get(int index) {
 		if (getChildren().size() > index) {
-			return (Collectible) getChildren().get(index);
+			return getCollectibles().get(index);
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * Get the content of the container.
+	 * @return 
+	 */
+	public ArrayList<Collectible> getCollectibles(){
+		ArrayList<Collectible> col = new ArrayList<>(3);
+		getChildren().stream().forEach(
+			(AbstractEntity ent) -> {
+				if (ent instanceof Collectible)
+					col.add((Collectible) ent);
+			}
+		);
+		return col;
 	}
 
 	/**
@@ -149,7 +161,7 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 	
 	/**
-	 * Does not alter the container.
+	 * Does not alter the container. Looks for the definition and retrieves the first occurence.
 	 * @param def
 	 * @return 
 	 */

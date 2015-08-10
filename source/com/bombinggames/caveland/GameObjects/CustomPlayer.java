@@ -187,12 +187,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		inventory = new Inventory(this);
+		inventory = (Inventory) new Inventory(this).spawn();
 		return this;
 	}
 	
-	
-
 	/**
 	 * Get the value of inventory
 	 *

@@ -53,7 +53,12 @@ public class CollectibleContainer extends AbstractEntity {
 	public CollectibleContainer() {
 		super((byte) 56);
 		setName("Container");
-		setHidden(true);
+		setIndestructible(true);
+	}
+	
+	public CollectibleContainer(byte id) {
+		super(id);
+		setName("Container");
 		setIndestructible(true);
 	}
 
@@ -169,6 +174,22 @@ public class CollectibleContainer extends AbstractEntity {
 			collectible.setFloating(false);
 			collectible.allowPickup();
 			collectible.setHidden(false);
+		}
+		return collectible;
+	}
+	
+	/**
+	 * Removes the object from the container/world and returns only the
+	 * reference.
+	 * 
+	 * @param def
+	 * @return 
+	 */
+	public Collectible retrieveCollectibleReference(CollectibleType def) {
+		Collectible collectible = getCollectible(def);
+		if (collectible != null) {
+			getChildren().remove(collectible);
+			collectible.disposeFromMap();
 		}
 		return collectible;
 	}

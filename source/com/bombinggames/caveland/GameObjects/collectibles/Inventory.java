@@ -27,9 +27,11 @@ public class Inventory extends CollectibleContainer {
 	 * @param player
 	 */
 	public Inventory(CustomPlayer player) {
+		super();
 		this.player = player;
 		setBackpack(true);
 		setName("Inventory");
+		setHidden(true);
 	}
 
 	/**

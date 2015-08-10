@@ -201,10 +201,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	}
 	
 	/**
-	 *
+	 * Disables the shadow.
 	 */
 	public void disableShadow(){
-		if (shadow!=null) {
+		if (shadow != null) {
 			shadow.dispose();
 			shadow = null;
 		}

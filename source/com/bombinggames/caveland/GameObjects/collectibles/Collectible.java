@@ -41,7 +41,6 @@ public class Collectible extends MovableEntity implements Serializable {
 		setIndestructible(true);
 		int[] animationsteps = new int[def.getAnimationSteps()];
 		for (int i = 0; i < animationsteps.length; i++) {
-			animationsteps[i] = 80;
 			animationsteps[i] = 100;//tiem in ms for each step
 		}
 		

@@ -174,19 +174,23 @@ public class Inventory extends CollectibleContainer {
 
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
-		bgSprite.setPosition(left, y);
+		float leftbgSprite = (view.getStage().getWidth() - 400 - bgSprite.getWidth()/2) / view.getEqualizationScale();
+		bgSprite.setPosition(leftbgSprite, y);
 		bgSprite.draw(view.getBatch());
-		bgSprite.setX(left + inventoryPadding / view.getEqualizationScale());
+		bgSprite.setX(leftbgSprite + inventoryPadding / view.getEqualizationScale());
 		bgSprite.setScale(0.5f);
+		bgSprite.setY(bgSprite.getY()-20);
 		bgSprite.draw(view.getBatch());
-		bgSprite.setX(left + 2 * inventoryPadding / view.getEqualizationScale());
+		bgSprite.setX(leftbgSprite + 2 * inventoryPadding / view.getEqualizationScale());
 		bgSprite.draw(view.getBatch());
 
 		for (int i = 0; i < size(); i++) {
 			MovableEntity ent = get(i);
 			if (ent != null) {
-				int x = (int) ((int) left + (i * inventoryPadding) / view.getEqualizationScale());
+				int x = (int) ((int) left + i * inventoryPadding / view.getEqualizationScale());
+				if (i!=0) ent.setScaling(-0.4f);
 				ent.render(view, x, y);
+				if (i!=0) ent.setScaling(0);
 			}
 		}
 	}

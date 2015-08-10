@@ -23,7 +23,7 @@ public class Bausatz extends Collectible {
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof CustomPlayer) {
 			new ActionBox(view, "Choose construction", BoxModes.SELECTION, null)
-				.addSelectionNames("Oven","Rails","Factory")
+				.addSelectionNames("Oven","Factory (not implemented yet)")
 				.setConfirmAction(
 					(int result, CustomGameView view1, AbstractEntity actor1) -> {
 						if (result==0) {

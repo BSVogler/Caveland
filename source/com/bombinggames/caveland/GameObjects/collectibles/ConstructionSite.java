@@ -58,6 +58,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 	 */
 	public ConstructionSite(byte resultId, byte resultValue) {
 		super();
+		setHidden(true);
 		this.result = resultId;
 		this.resultValue = resultValue;
 		//if (result==11) {
@@ -98,6 +99,20 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 		}
 	}
 	
+	public boolean canAddFrontItem(AbstractEntity actor){
+		if (!(actor instanceof CustomPlayer))
+			return false;
+		Collectible frontItem = ((CustomPlayer) actor).getInventory().getFrontCollectible();
+		boolean found = false;
+		if (frontItem != null) {
+			for (CollectibleType type : neededItems) {
+				if (frontItem.getType() == type)
+					found = true;
+			}
+		}
+		return found;
+	}
+	
 	private class ConstructionSiteWindow extends ActionBox {
 		private final CollectibleContainer parent;
 
@@ -107,15 +122,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			//make list of options
 			ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
 			if (actor instanceof CustomPlayer) {
-				Collectible frontItem = ((CustomPlayer)actor).getInventory().getFrontCollectible();
-				boolean found = false;
-				if (frontItem != null) {
-					for (CollectibleType type : neededItems) {
-						if (frontItem.getType() == type)
-							found = true;
-					}
-				}
-				if (found)
+				if (canAddFrontItem(actor))
 					list.add("Add: " + ((CustomPlayer)actor).getInventory().getFrontCollectible().getName());
 				else
 					list.add("Add: You have nothing to add");
@@ -123,7 +130,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 				list.add("Add");
 			
 			if (parent.getChildren().size() > 0)
-				list.add("Take: " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
+				list.add("Take: " + parent.getChildren().get(parent.getChildren().size()-1).getName());
 			else list.add("Empty");
 			list.add("Build: "+ parent.getStatusString());
 			addSelectionNames(list);
@@ -136,9 +143,11 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 				CustomPlayer player = (CustomPlayer) actor;
 				//add item?
 				if (num == 0) {
-					Collectible frontItem = player.getInventory().retrieveFrontItemReference();
-					if (frontItem != null) {
-						parent.addChild(frontItem);
+					if (canAddFrontItem(actor)) {
+						Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+						if (frontItem != null) {
+							parent.addCollectible(frontItem);
+						}
 					}
 				} else if (num==1){
 					//fetch item

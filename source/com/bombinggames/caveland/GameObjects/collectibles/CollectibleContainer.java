@@ -51,7 +51,7 @@ public class CollectibleContainer extends AbstractEntity {
 	private boolean releaseContentOnDestroy = false;
 
 	public CollectibleContainer() {
-		super((byte) 53);//use sprite of construction box temp
+		super((byte) 56);
 		setName("Container");
 		setHidden(true);
 		setIndestructible(true);

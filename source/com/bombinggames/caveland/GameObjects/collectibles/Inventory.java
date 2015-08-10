@@ -22,17 +22,18 @@ public class Inventory extends CollectibleContainer {
 	private final CustomPlayer player;
 
 	/**
-	 * Creating a new inventory spawns a container at the position of the player
 	 *
+	 *an invnetory needs a player where it is attached to
 	 * @param player
 	 */
 	public Inventory(CustomPlayer player) {
 		this.player = player;
 		setBackpack(true);
+		setName("Inventory");
 	}
 
 	/**
-	 *
+	 * Attaches/glues the inventory to the player
 	 * @return
 	 */
 	public AbstractEntity spawn() {

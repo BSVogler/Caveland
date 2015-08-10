@@ -112,13 +112,26 @@ public class Inventory extends CollectibleContainer {
 	}
 	
 	/**
-	 *
+	 * Add item at the back.
 	 * @param ent
 	 * @return false if inventory is full. True if sucessfull.
 	 */
 	public final boolean add(Collectible ent) {
 		if (size() < 3) {
 			addChild(ent);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Add item at the front.
+	 * @param ent
+	 * @return false if inventory is full. True if sucessfull.
+	 */
+	public final boolean addFront(Collectible ent) {
+		if (size() < 3) {
+			getChildren().add(0, ent);
 			return true;
 		}
 		return false;
@@ -134,7 +147,7 @@ public class Inventory extends CollectibleContainer {
 	}
 
 	/**
-	 * Get a copy of the content. Does not alter anything.
+	 * Get type definitions. Does not alter anything.
 	 *
 	 * @return can have null in array
 	 */
@@ -189,7 +202,7 @@ public class Inventory extends CollectibleContainer {
 		Collectible item = retrieveFrontItem();
 		if (item != null) {
 			item.action(view, actor);
-			add(item);
+			addFront(item);
 		}
 	}
 

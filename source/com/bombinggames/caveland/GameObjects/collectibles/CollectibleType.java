@@ -44,7 +44,7 @@ public enum CollectibleType {
 	Cristall((byte) 50, (byte) 5),
 	Sulfur((byte) 51, (byte) 5),
 	Stone((byte) 52, (byte) 5),
-	Toolkit((byte) 53, (byte) 2),
+	Toolkit((byte) 53, (byte) 8),
 	Torch((byte) 54, (byte) 2),
 	Iron((byte) 55, (byte) 4);
 

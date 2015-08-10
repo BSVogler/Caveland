@@ -445,7 +445,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	}
 	
 	/**
-	 * Children linked objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
+	 * Children linkes objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
 	 * @param child 
 	 */
 	public void addChild(AbstractEntity child){

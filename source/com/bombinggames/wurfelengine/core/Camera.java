@@ -277,7 +277,7 @@ public class Camera implements MapObserver {
 	 */
 	public final void update(float dt) {
 		if (active) {
-			if (focusEntity != null) {
+			if (focusEntity != null && focusEntity.isSpawned()) {
 				//update camera's position according to focusEntity
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(gameView),

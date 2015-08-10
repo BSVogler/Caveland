@@ -930,7 +930,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (loadAttack-LOAD_THRESHOLD >= LOADATTACKTIME)
 				return 7;
 			else
-				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / (float) steps));//six sprites for each animation	
+				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / steps));//six sprites for each animation	
 		} else
 			return (int) (animationCycle / (1000 / (float) steps));//animation sprites with 8 steps
 	}

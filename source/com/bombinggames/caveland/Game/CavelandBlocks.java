@@ -182,7 +182,7 @@ public RenderBlock toRenderBlock(Block data) {
 			}
 			//not found, so create new one
 			if (id==11) {
-				return (Interactable) new OvenLogic().spawn(coord.toPoint());
+				return (Interactable) new OvenLogic().spawn(coord.toPoint().addVector(0, 20, Block.GAME_EDGELENGTH*1.1f));
 			} else return null;
 		} else {
 			return null;

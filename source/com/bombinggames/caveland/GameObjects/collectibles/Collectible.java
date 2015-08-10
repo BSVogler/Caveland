@@ -42,6 +42,7 @@ public class Collectible extends MovableEntity implements Serializable {
 		int[] animationsteps = new int[def.getAnimationSteps()];
 		for (int i = 0; i < animationsteps.length; i++) {
 			animationsteps[i] = 80;
+			animationsteps[i] = 100;//tiem in ms for each step
 		}
 		
 		setAnimation(
@@ -122,7 +123,7 @@ public class Collectible extends MovableEntity implements Serializable {
 	}
 
 	/**
-	 * some effect
+	 * some movement effect
 	 */
 	public void sparkle() {
 		setMovement(new Vector3((float) Math.random() - 0.5f, (float) Math.random() - 0.5f, (float) Math.random()));

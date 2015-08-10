@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
 /**
- *
+ * The Ejira has two particle emitter attached via glue.
  * @author Benedikt Vogler
  */
 public class CustomPlayer extends Controllable implements EntityNode {

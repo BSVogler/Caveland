@@ -115,7 +115,7 @@ public class SmokeEmitter extends AbstractEntity {
 	 * @param dir the direction and speed where the particles leave, in m/s without unit
 	 */
 	public void setParticleStartMovement(Vector3 dir){
-		if (dir!=null)
+		if (dir != null)
 			this.startingVector = dir;
 	}
 	
@@ -124,8 +124,7 @@ public class SmokeEmitter extends AbstractEntity {
 	 * @param spread the range in which random noise gets aplied, in m/s without unit
 	 */
 	public void setParticleSpread(Vector3 spread){
-		if (spread!=null)
-			this.spread = spread;
+		this.spread = spread;
 	}
 
 	/**

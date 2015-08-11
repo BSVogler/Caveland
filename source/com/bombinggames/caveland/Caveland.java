@@ -108,7 +108,7 @@ public class Caveland {
 		} else {
 			//checck if old format is already there. delete it. also delete if there is 
 			if (new File(WorkingDirectory.getMapsFolder()+"/default/map.wem").exists()) {
-				deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
+				WorkingDirectory.deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
 				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
 				WorkingDirectory.unpackMap(
 					"default",
@@ -118,22 +118,6 @@ public class Caveland {
 		}
     }
 
-	public static boolean deleteDirectory(File directory) {
-		if(directory.exists()){
-			File[] files = directory.listFiles();
-			if(null!=files){
-				for (File file : files) {
-					if (file.isDirectory()) {
-						deleteDirectory(file);
-					} else {
-						file.delete();
-					}
-				}
-			}
-		}
-		return(directory.delete());
-	}
-	
 	/**
 	 * Credtis of caveland.
 	 * @return 

@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.WEScreen;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 
 /**
  *
@@ -149,7 +150,20 @@ public class OptionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(cancelButton);
-                
+		
+		TextButton resetButton = new TextButton("Reset Game", WE.getEngineView().getSkin());
+		resetButton.setPosition(stage.getWidth()/2+100, 300);
+		resetButton.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				WorkingDirectory.delete();
+				Gdx.app.exit();
+			}
+		});
+		stage.addActor(resetButton);
+		
+		
         font = new BitmapFont();
         font.setColor(Color.WHITE);
 		

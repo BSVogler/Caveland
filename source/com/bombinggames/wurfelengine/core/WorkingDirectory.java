@@ -57,7 +57,7 @@ public class WorkingDirectory {
 	
 	
     /**
-     * 
+     * Creates the folder.
      * @return Get the folder where the data is stored.
      */
     public static File getWorkingDirectory() {
@@ -172,5 +172,36 @@ public class WorkingDirectory {
 			Logger.getLogger(WorkingDirectory.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return true;
+	}
+	
+	/**
+	 * Delete the working directory. Game should be restarted after that.
+	 * @since WE v1.6.4
+	 */
+	public static void delete(){
+		deleteDirectory(getWorkingDirectory());
+	}
+	
+	/**
+	 * Deletes a directory and all its subfolders.
+	 * @param directory
+	 * @return
+	 * @since WE v1.6.4
+	 */
+	public static boolean deleteDirectory(File directory) {
+		if(directory.exists()){
+			File[] files = directory.listFiles();
+			if(null!=files){
+				for(int i=0; i<files.length; i++) {
+					if(files[i].isDirectory()) {
+						deleteDirectory(files[i]);
+					}
+					else {
+						files[i].delete();
+					}
+				}
+			}
+		}
+		return(directory.delete());
 	}
 }

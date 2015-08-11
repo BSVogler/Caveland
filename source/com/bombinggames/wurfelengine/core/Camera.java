@@ -1203,7 +1203,7 @@ public class Camera implements MapObserver {
 	 * @return in game space
 	 */
 	public Point getCenter() {
-		if (focusEntity != null) {
+		if (focusEntity != null && focusEntity.isSpawned()) {
 			return focusEntity.getPosition();
 		} else {
 			return new Point(

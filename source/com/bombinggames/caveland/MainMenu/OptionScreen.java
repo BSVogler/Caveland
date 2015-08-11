@@ -158,7 +158,7 @@ public class OptionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				WorkingDirectory.delete();
-				Gdx.app.exit();
+				System.exit(0);//exiting the game writes the cvars
 			}
 		});
 		stage.addActor(resetButton);

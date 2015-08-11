@@ -66,26 +66,26 @@ public class WorkingDirectory {
         switch (getPlatform()) {
         case LINUX:
         case SOLARIS:
-                workingDirectory = new File(userHome, '.' + applicationName + '/');
-                break;
+			workingDirectory = new File(userHome, '.' + applicationName + '/');
+			break;
         case WINDOWS:
-                String applicationData = System.getenv("APPDATA");
-                if (applicationData != null)
-                        workingDirectory = new File(applicationData, applicationName + '/');
-                else
-                        workingDirectory = new File(userHome, '.' + applicationName + '/');
-                break;
+			String applicationData = System.getenv("APPDATA");
+			if (applicationData != null)
+				workingDirectory = new File(applicationData, applicationName + '/');
+			else
+				workingDirectory = new File(userHome, '.' + applicationName + '/');
+			break;
         case MAC:
-                workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
-                break;
+			workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
+			break;
         case ANDROID:
             workingDirectory = new File(System.getenv("EXTERNAL_STORAGE"), applicationName + '/');
             break;
         default:
-                workingDirectory = new File(userHome, applicationName + '/');
+            workingDirectory = new File(userHome, applicationName + '/');
         }
         if ((!workingDirectory.exists()) && (!workingDirectory.mkdirs()))
-                throw new RuntimeException("The working directory could not be created: " + workingDirectory);
+			throw new RuntimeException("The working directory could not be created: " + workingDirectory);
         return workingDirectory;
     }
 
@@ -96,19 +96,19 @@ public class WorkingDirectory {
     public static OS getPlatform() {
 		String osName = System.getProperty("os.name").toLowerCase();
 		if (osName.contains("win"))
-				return OS.WINDOWS;
+			return OS.WINDOWS;
 		if (osName.contains("mac"))
-				return OS.MAC;
+			return OS.MAC;
 		if (osName.contains("solaris"))
-				return OS.SOLARIS;
+			return OS.SOLARIS;
 		if (osName.contains("sunos"))
-				return OS.SOLARIS;
+			return OS.SOLARIS;
 		if (System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik"))
 			return OS.ANDROID;
 		if (osName.contains("linux"))
-				return OS.LINUX;
+			return OS.LINUX;
 		if (osName.contains("unix"))
-				return OS.LINUX;
+			return OS.LINUX;
 		return OS.UNKNOWN;
     }
 

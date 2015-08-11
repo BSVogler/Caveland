@@ -37,6 +37,7 @@ package com.bombinggames.wurfelengine;
  */
 @FunctionalInterface
 public interface Command {
+	
 	public void perform();
 	
 }

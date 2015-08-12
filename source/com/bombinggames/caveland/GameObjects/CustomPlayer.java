@@ -169,6 +169,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter.setParticleTTL(800);
 		emitter.setParticleBrightness(0.1f);
 		emitter.setHidden(true);
+		addChild(emitter);
 		SuperGlue connection1 = new SuperGlue(this, emitter);
 		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
 		addChild(connection1);
@@ -178,6 +179,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		emitter2.setParticleTTL(800);
 		emitter2.setParticleBrightness(0.1f);
 		emitter2.setHidden(true);
+		addChild(emitter2);
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
 		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
 		addChild(conection2);

@@ -488,6 +488,16 @@ public class Point extends AbstractPosition {
 	 * @param point
 	 * @return the distance from this point to the other point in game coordinates
 	 */
+	@Override
+	public float distanceTo(AbstractPosition point) {
+		return distanceTo(point.toPoint());
+	}
+	
+	/**
+	 * 
+	 * @param point
+	 * @return the distance from this point to the other point in game coordinates
+	 */
 	public float distanceTo(Point point) {
 		float dX = x-point.x;
 		float dY = y-point.y;
@@ -500,12 +510,17 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other object
 	 */
+	@Override
 	public float distanceTo(AbstractGameObject object) {
 		return distanceTo(object.getPosition().toPoint());
 	}
 	
+	@Override
+	public float distanceToHorizontal(AbstractPosition pos) {
+		return distanceToHorizontal(pos.toPoint());
+	}
 	
-		/**
+	/**
 	 * checks only x and y.
 	 * @param point
 	 * @return the distance from this point to the other point only regarding horizontal components.
@@ -521,6 +536,7 @@ public class Point extends AbstractPosition {
 	 * @param object
 	 * @return the distance from this point to the other point only regarding horizontal components.
 	 */
+	@Override
 	public float distanceToHorizontal(AbstractGameObject object) {
 		return distanceToHorizontal(object.getPosition().toPoint());
 	}

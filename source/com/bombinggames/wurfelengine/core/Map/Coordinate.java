@@ -35,6 +35,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.ArrayList;
@@ -459,6 +460,26 @@ public class Coordinate extends AbstractPosition {
 			+ z * Block.VIEW_HEIGHT;
 	}
 
+	@Override
+	public float distanceTo(AbstractGameObject object) {
+		return toPoint().distanceTo(object);
+	}
+
+	@Override
+	public float distanceTo(AbstractPosition point) {
+		return toPoint().distanceTo(point);
+	}
+
+	@Override
+	public float distanceToHorizontal(AbstractGameObject object) {
+		return toPoint().distanceToHorizontal(object);
+	}
+
+	@Override
+	public float distanceToHorizontal(AbstractPosition point) {
+		return toPoint().distanceToHorizontal(point);
+	}
+	
 	/**
 	 * destroys the block at the current position, replacing by air.
 	 */

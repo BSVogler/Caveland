@@ -76,7 +76,7 @@ public class Spaceship extends MovableEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (crashing == false && crashCoordinates != null && crashCoordinates.toPoint().distanceTo(getPosition())<Block.GAME_EDGELENGTH*10) {
+		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceTo(getPosition()) < Block.GAME_EDGELENGTH*10) {
 			crash();
 		}
 

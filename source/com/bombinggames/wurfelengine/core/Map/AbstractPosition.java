@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core.Map;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import java.io.Serializable;
 
@@ -141,4 +142,32 @@ public abstract class AbstractPosition implements Serializable {
             + toPoint().getZ()*SQRT12//Z
         );
     }
+
+	/**
+	 *
+	 * @param object
+	 * @return the distance from this point to the other object
+	 */
+	public abstract float distanceTo(AbstractGameObject object);
+
+	/**
+	 *
+	 * @param pos
+	 * @return the distance from this pos to the other pos in game coordinates
+	 */
+	public abstract float distanceTo(AbstractPosition pos);
+
+	/**
+	 *  checks only x and y.
+	 * @param object
+	 * @return the distance from this point to the other point only regarding horizontal components.
+	 */
+	public abstract float distanceToHorizontal(AbstractGameObject object);
+
+	/**
+	 * checks only x and y.
+	 * @param pos
+	 * @return the distance from this pos to the other pos only regarding horizontal components.
+	 */
+	public abstract float distanceToHorizontal(AbstractPosition pos);
 }

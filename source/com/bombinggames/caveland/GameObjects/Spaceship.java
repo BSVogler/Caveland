@@ -2,8 +2,10 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *
@@ -13,20 +15,26 @@ public class Spaceship extends MovableEntity {
 
 	private static final long serialVersionUID = 2L;
 	private boolean crashing = false;
-	private boolean crashed = false;
-	private float timeTillCrash = 5000;//crash after 5 seconds
+	private boolean crashed = true;
+	private Coordinate crashCoordinates;//crash after 5 seconds
 	private AbstractEntity passenger;
 	private SuperGlue passengerGlue;
 
 	/**
 	 *
-	 * @param introcompleted
 	 */
-	public Spaceship(boolean introcompleted) {
+	public Spaceship() {
 		super((byte) 80, 0);
-		if (introcompleted) {
-			crashed = true;
-		}
+		crashed = true;
+	}
+	
+	/**
+	 * 
+	 * @param coord 
+	 */
+	public void enableCrash(Coordinate coord){
+		crashed = false;
+		crashCoordinates = coord;
 	}
 
 	public void setPassenger(AbstractEntity ent) {
@@ -68,12 +76,8 @@ public class Spaceship extends MovableEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (crashing == false) {
-			timeTillCrash -= dt;
-
-			if (timeTillCrash <= 0) {
-				crash();
-			}
+		if (crashing == false && crashCoordinates != null && crashCoordinates.toPoint().distanceTo(getPosition())<Block.GAME_EDGELENGTH*10) {
+			crash();
 		}
 
 		//crash on ground

@@ -41,6 +41,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 public class SuperGlue extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	private final AbstractEntity main;
+	private final AbstractEntity smaller;
 	private Vector3 offset = new Vector3();
 	
 	/**
@@ -53,11 +54,10 @@ public class SuperGlue extends AbstractEntity {
 		setName("SuperGlue: "+ main.getName() +"<-"+ smaller.getName() );
 		setHidden(true);
 		this.main = main;
+		this.smaller = smaller;
 		//if one of both is not getting saved then also don't get saved
 		if (!main.isGettingSaved() || !smaller.isGettingSaved())
 			setSaveToDisk(false);
-		addChild(smaller);
-		
 	}
 
 	public void setOffset(Vector3 offset) {
@@ -68,7 +68,7 @@ public class SuperGlue extends AbstractEntity {
 	public void update(float dt) {
 		super.update(dt);
 		if (main.isSpawned()) {
-			getChildren().get(0).setPosition(main.getPosition().cpy().addVector(offset));
+			smaller.setPosition(main.getPosition().cpy().addVector(offset));
 		}
 	}
 	

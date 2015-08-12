@@ -2,8 +2,10 @@ package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
@@ -11,8 +13,11 @@ import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,6 +29,7 @@ public class CustomGameController extends Controller {
 	private CustomPlayer player1;
 	private CustomPlayer player2;
 	private HashMap<String, ArrayList<AbstractEntity>> caves;
+	private Spaceship introSpaceship;
         
     @Override
     public void init(){
@@ -36,6 +42,7 @@ public class CustomGameController extends Controller {
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new BooleanCVar(false), "IntroCutsceneCompleted", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.load();
 		
 		player1 = new CustomPlayer(1);
@@ -61,6 +68,14 @@ public class CustomGameController extends Controller {
 		WE.getConsole().setCustomCommands(new CavelandCommands());
 		setLightEngine(new CustomLightEngine());
 		
+		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")){
+			introSpaceship = (Spaceship) new Spaceship(false).spawn(
+				new Point(Block.GAME_EDGELENGTH*300, 0, Chunk.getGameHeight())
+			);
+			introSpaceship.setFloating(true);
+			introSpaceship.setMovement(new Vector2(1, 1).nor().scl(11));
+			introSpaceship.setPassenger(player1);
+		}
 		
 //		new Collectible(Collectible.Def.COAL).spawn(new Coordinate(16, 50, 10, true).getPoint());
 //		
@@ -75,8 +90,8 @@ public class CustomGameController extends Controller {
 //		e1.setTarget(lore2);
 //		e2.setTarget(player1);
 //		
-//		Spaceship spaceship = (Spaceship) new Spaceship().spawn(new Coordinate(14, 69, 0, true).getPoint());
-//		spaceship.setDimensionZ(3*AbstractGameObject.GAME_EDGELENGTH);
+//		Spaceship introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(14, 69, 0, true).getPoint());
+//		introSpaceship.setDimensionZ(3*AbstractGameObject.GAME_EDGELENGTH);
 		//grass test
 //		for (int i = 0; i < 500; i++) {
 //			new SimpleEntity(44).spawn(

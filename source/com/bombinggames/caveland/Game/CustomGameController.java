@@ -36,8 +36,6 @@ public class CustomGameController extends Controller {
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
-		saveCvars.register(new BooleanCVar(false), "P1InCave", CVar.CVarFlags.CVAR_ARCHIVE);
-		saveCvars.register(new BooleanCVar(false), "P2InCave", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.load();
 		
 		player1 = new CustomPlayer(1);

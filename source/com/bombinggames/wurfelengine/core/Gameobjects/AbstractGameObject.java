@@ -235,7 +235,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     public abstract AbstractPosition getPosition();
     
     /**
-     * Set the coordinates without safety check.
+     * Set the coordinates without safety check. May use different object pointing to the same position.
      * @param pos the coordinates you want to set
      */
     public abstract void setPosition(AbstractPosition pos);

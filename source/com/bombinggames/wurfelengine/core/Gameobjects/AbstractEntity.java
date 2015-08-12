@@ -146,7 +146,15 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
     public void setPosition(AbstractPosition pos) {
         this.position = pos.toPoint();
     }
-  
+
+	/**
+	 * keeps the reference
+	 * @param position 
+	 */
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
     /**
      * Is the entity laying/standing on the ground?
      * @return true when on the ground. False if in air or not in memory.
@@ -177,12 +185,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
      * @return returns itself
      */
     public AbstractEntity spawn(Point point){
-		if (position==null) {
+		if (position == null) {
 			Controller.getMap().addEntities(this);
 			for (AbstractEntity child : children) {
 				child.spawn(point);
 			}
-			position = point;
+			setPosition(point);
 			dispose = false;
 			if (shadow != null && !shadow.isSpawned())
 				shadow.spawn(position.cpy());
@@ -197,7 +205,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void enableShadow(){
 		shadow = new EntityShadow(this);
-		if (position!=null) shadow.spawn(position.cpy());
+		if (position != null) shadow.spawn(position.cpy());
 	}
 	
 	/**
@@ -215,7 +223,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
      * @return
      */
     public boolean isSpawned(){
-        return position!=null;
+        return position != null;
     }
 
 	/**

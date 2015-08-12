@@ -533,6 +533,14 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	/**
+	 * keeps reference
+	 * @param coord 
+	 */
+	public void setPosition(Coordinate coord){
+		this.coord = coord;
+	}	
+	
+	/**
 	 * gets the identifier and stores them in the map
 	 * @return 
 	 */

@@ -13,12 +13,12 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class Spaceship extends MovableEntity {
 
-	private static final long serialVersionUID = 2L;
-	private boolean crashing = false;
-	private boolean crashed = true;
-	private Coordinate crashCoordinates;//crash after 5 seconds
-	private AbstractEntity passenger;
-	private SuperGlue passengerGlue;
+	private static final long serialVersionUID = 3L;
+	private transient boolean crashing = false;
+	private transient boolean crashed = true;
+	private transient Coordinate crashCoordinates;//crash after 5 seconds
+	private transient AbstractEntity passenger;
+	private transient SuperGlue passengerGlue;
 
 	/**
 	 *
@@ -52,6 +52,7 @@ public class Spaceship extends MovableEntity {
 	public void ejectPassenger() {
 		if (passenger != null) {
 			passenger.setHidden(false);
+			passenger = null;
 			passengerGlue.dispose();
 		}
 	}
@@ -82,7 +83,6 @@ public class Spaceship extends MovableEntity {
 
 		//crash on ground
 		if (crashing && !crashed && isOnGround()) {
-			ejectPassenger();
 			passenger.setIndestructible(true);
 			setIndestructible(true);
 			new Explosion(2, (byte) 100, null).spawn(getPosition());
@@ -91,6 +91,7 @@ public class Spaceship extends MovableEntity {
 			fireEmitter.setActive(true);
 			fireEmitter.setHidden(true);
 			passenger.setIndestructible(false);
+			ejectPassenger();
 			crashed = true;
 			//save that already crashed
 			WE.CVARS.getChildSystem().getChildSystem().get("IntroCutsceneCompleted").setValue(true);

@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -9,6 +10,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
  * @author Benedikt Vogler
  */
 public class Spaceship extends MovableEntity {
+
 	private static final long serialVersionUID = 2L;
 	private boolean crashing = false;
 	private boolean crashed = false;
@@ -21,12 +23,13 @@ public class Spaceship extends MovableEntity {
 	 * @param introcompleted
 	 */
 	public Spaceship(boolean introcompleted) {
-		super((byte) 80,0);
-		if (introcompleted) crashed = true;
+		super((byte) 80, 0);
+		if (introcompleted) {
+			crashed = true;
+		}
 	}
-	
-	
-	public void setPassenger(AbstractEntity ent){
+
+	public void setPassenger(AbstractEntity ent) {
 		if (passenger == null) {
 			passenger = ent;
 			passengerGlue = (SuperGlue) new SuperGlue(this, ent).spawn(getPosition());
@@ -34,11 +37,11 @@ public class Spaceship extends MovableEntity {
 			passenger.setHidden(true);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
-	public void ejectPassenger(){
+	public void ejectPassenger() {
 		if (passenger != null) {
 			passenger.setHidden(false);
 			passengerGlue.dispose();
@@ -46,17 +49,17 @@ public class Spaceship extends MovableEntity {
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public boolean isCrashed() {
 		return crashed;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
-	public void crash(){
+	public void crash() {
 		new Explosion(3, (byte) 0, null).spawn(getPosition());
 		setFloating(false);
 		crashing = true;
@@ -67,12 +70,12 @@ public class Spaceship extends MovableEntity {
 		super.update(dt);
 		if (crashing == false) {
 			timeTillCrash -= dt;
-			
-			if (timeTillCrash <= 0){
+
+			if (timeTillCrash <= 0) {
 				crash();
 			}
 		}
-		
+
 		//crash on ground
 		if (crashing && !crashed && isOnGround()) {
 			ejectPassenger();
@@ -85,6 +88,8 @@ public class Spaceship extends MovableEntity {
 			fireEmitter.setHidden(true);
 			passenger.setIndestructible(false);
 			crashed = true;
+			//save that already crashed
+			WE.CVARS.getChildSystem().getChildSystem().get("IntroCutsceneCompleted").setValue(true);
 		}
 	}
 
@@ -92,5 +97,5 @@ public class Spaceship extends MovableEntity {
 	public MovableEntity clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-	
+
 }

@@ -54,7 +54,7 @@ public class MapEditorController extends Controller {
      */
     private AbstractMap mapsave;
     private boolean reverseMap;
-    private Selection selectionEntity = new Selection();
+    private final Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
    /**

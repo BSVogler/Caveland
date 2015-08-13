@@ -2,7 +2,6 @@ package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.CustomPlayer;
 import com.bombinggames.caveland.GameObjects.Spaceship;
@@ -69,8 +68,6 @@ public class CustomGameController extends Controller {
 		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")){
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-20, -40, Chunk.getBlocksZ()-1).toPoint());
 			introSpaceship.enableCrash(new Coordinate(0, 0, 8));
-			introSpaceship.setFloating(true);
-			introSpaceship.setMovement(new Vector2(1, 1).nor().scl(11));
 			introSpaceship.setPassenger(player1);
 		}
 		

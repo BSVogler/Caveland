@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -14,6 +15,9 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class Spaceship extends MovableEntity {
 
 	private static final long serialVersionUID = 3L;
+	/**
+	 * true after first explosion
+	 */
 	private transient boolean crashing = false;
 	private transient boolean crashed = true;
 	private transient Coordinate crashCoordinates;//crash after 5 seconds
@@ -25,16 +29,16 @@ public class Spaceship extends MovableEntity {
 	 */
 	public Spaceship() {
 		super((byte) 80, 0);
-		crashed = true;
 	}
 	
 	/**
-	 * 
+	 * floating ship
 	 * @param coord 
 	 */
 	public void enableCrash(Coordinate coord){
 		crashed = false;
 		crashCoordinates = coord;
+		setFloating(true);
 	}
 
 	public void setPassenger(AbstractEntity ent) {
@@ -77,6 +81,12 @@ public class Spaceship extends MovableEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		
+		if (!crashed && !crashing && crashCoordinates != null) {
+			Vector3 dir = crashCoordinates.getVector().sub(getPosition().getVector());
+			dir.z = 0;
+			setMovement(dir.nor().scl(11));//always fly to crash point
+		}
 		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < Block.GAME_EDGELENGTH*10) {
 			crash();
 		}

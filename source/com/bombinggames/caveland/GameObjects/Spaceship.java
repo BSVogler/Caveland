@@ -97,10 +97,13 @@ public class Spaceship extends MovableEntity {
 			setIndestructible(true);
 			new Explosion(2, (byte) 100, null).spawn(getPosition());
 			setIndestructible(false);
+			passenger.setIndestructible(false);
+			
 			SmokeEmitter fireEmitter = (SmokeEmitter) new SmokeEmitter().spawn(getPosition().cpy());
 			fireEmitter.setActive(true);
-			fireEmitter.setHidden(true);
-			passenger.setIndestructible(false);
+			fireEmitter.setParticleStartMovement(new Vector3(0, 0, 3));
+			fireEmitter.setHidden(true);;
+			new SuperGlue(this, fireEmitter).spawn(getPosition().cpy());
 			ejectPassenger();
 			crashed = true;
 			//save that already crashed

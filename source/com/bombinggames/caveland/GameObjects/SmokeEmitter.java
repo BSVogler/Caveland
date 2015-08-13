@@ -55,11 +55,11 @@ public class SmokeEmitter extends AbstractEntity {
 	//private final Class<? extends MovableEntity> particleClass;
 	private Vector3 startingVector = new Vector3(0, 0, 0);
 	private Vector3 spread = new Vector3(0, 0, 0);
-	private float TTL;
+	private float TTL = 1000;//default 1 second
 	private float brightness;
 
 	/**
-	 *
+	 *active by default
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
 	public SmokeEmitter() {
@@ -68,6 +68,7 @@ public class SmokeEmitter extends AbstractEntity {
 		disableShadow();
 		setIndestructible(true);
 		setName("Smoke Emitter");
+		setActive(true);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class SmokeEmitter extends AbstractEntity {
 			timer+=dt;
 			if (timer >= timeEachSpawn){
 				timer %= timeEachSpawn;
-				Particle particle = (Particle) new Particle((byte) 22, TTL).spawn(getPosition().cpy());
+				Particle particle = new Particle((byte) 22, TTL);
 				particle.setType(ParticleType.FIRE);
 				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
 				particle.setBrightness(brightness);
@@ -90,6 +91,7 @@ public class SmokeEmitter extends AbstractEntity {
 						(float) (Math.random()-0.5f)*2*spread.z
 					)
 				);
+				particle.spawn(getPosition().cpy());
 			}
 		} else {
 			setColor(new Color(0.5f, 0.5f, 0.5f, 1));

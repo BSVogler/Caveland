@@ -30,6 +30,7 @@ public class EjiraNode extends EntityNode {
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setParticleBrightness(0.1f);
+		emitter.setActive(false);
 		emitter.setHidden(true);
 		addChild(emitter);
 		SuperGlue connection1 = new SuperGlue(this, emitter);
@@ -41,6 +42,7 @@ public class EjiraNode extends EntityNode {
 		emitter2.setParticleTTL(800);
 		emitter2.setParticleBrightness(0.1f);
 		emitter2.setHidden(true);
+		emitter2.setActive(false);
 		addChild(emitter2);
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
 		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));

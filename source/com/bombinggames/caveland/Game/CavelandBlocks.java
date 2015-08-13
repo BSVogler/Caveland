@@ -47,6 +47,8 @@ public RenderBlock toRenderBlock(Block data) {
 				return "Oven";	
 			case 13:
 				return "Torch";
+			case 14:
+				return "Power Station";
 			case 40:
 				return "Entity Spawner";
 			case 41:
@@ -70,7 +72,9 @@ public RenderBlock toRenderBlock(Block data) {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
+		if (id==12) return false;
 		if (id==13) return false;
+		if (id==14) return false;
 		if (id==11) return false;
 		if (id==55) return false;
 		if (id==72) return false;
@@ -81,6 +85,7 @@ public RenderBlock toRenderBlock(Block data) {
 	public boolean isObstacle(byte id, byte value) {
 		if (id==12) return true;
 		if (id==13) return false;
+		if (id==14) return true;
 		if (id==11) return false;
 		if (id>=41 && id<=44)//ores
 			return true;
@@ -91,7 +96,9 @@ public RenderBlock toRenderBlock(Block data) {
 
 	@Override
 	public boolean isTransparent(byte id, byte value) {
+		if (id==12) return true;
 		if (id==13) return true;
+		if (id==14) return true;
 		if (id==11) return true;
 		if (id==55) return true;
 		if (id==72) return true;
@@ -174,15 +181,15 @@ public RenderBlock toRenderBlock(Block data) {
 		if (interactAble(id)) {
 			ArrayList<AbstractEntity> everyEntity = coord.getEntitiesInside();
 			for (AbstractEntity ent : everyEntity) {
-				if (id==11) {
+				if (id==12) {
 					if (ent instanceof OvenLogic) {
 						return (Interactable) ent;
 					}
 				}
 			}
 			//not found, so create new one
-			if (id==11) {
-				return (Interactable) new OvenLogic().spawn(coord.toPoint().addVector(0, 20, Block.GAME_EDGELENGTH*1.1f));
+			if (id==12) {
+				return (Interactable) new OvenLogic().spawn(coord.toPoint());
 			} else return null;
 		} else {
 			return null;

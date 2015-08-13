@@ -63,6 +63,8 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 		emitter.setHidden(true);
 		emitter.setParticleStartMovement(Vector3.Z.cpy());
 		emitter.setParticleTTL(1000);
+		emitter.setActive(false);
+		setLightlevel(10);
 		return this;
 	}
 	
@@ -128,23 +130,6 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 			burntime = 0;
 			setHidden(true);
 			emitter.setActive(false);
-		}
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 * @deprecated 
-	 */
-	public boolean canStartProduction(){
-		if (productionCountDown==0) {
-			Collectible coal = getCollectible(CollectibleType.Coal);
-			if (coal == null) return false;
-			Collectible ironore = getCollectible(CollectibleType.Ironore);
-			if (ironore == null) return false;
-			return true;
-		} else {
-			return false;
 		}
 	}
 }

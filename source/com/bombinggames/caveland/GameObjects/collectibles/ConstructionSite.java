@@ -32,6 +32,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
@@ -86,6 +87,7 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 				return false;
 		}
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
+		CavelandBlocks.verifyInteractableExistence(getPosition().toCoord());
 		Controller.getSoundEngine().play("construct");
 		dispose();
 		return true;

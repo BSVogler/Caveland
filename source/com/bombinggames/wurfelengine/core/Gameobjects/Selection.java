@@ -117,12 +117,19 @@ public class Selection extends AbstractEntity {
 	 */
 	public Coordinate getCoordInNormalDirection(){
 		Coordinate coords = getPosition().toCoord();
-		if (normalSide==Side.LEFT)
-			coords = coords.goToNeighbour(5);
-		else if (normalSide==Side.TOP)
-			coords.addVector(0, 0, 1);
-		else if (normalSide==Side.RIGHT)
-			coords = coords.goToNeighbour(3);
+		if (null != normalSide)
+			switch (normalSide) {
+			case LEFT:
+				coords = coords.goToNeighbour(5);
+				break;
+			case TOP:
+				coords.addVector(0, 0, 1);
+				break;
+			case RIGHT:
+				coords = coords.goToNeighbour(3);
+				break;
+			default:
+		}
 		return coords;
 	}
 	

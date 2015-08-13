@@ -80,7 +80,7 @@ public class Portal extends AbstractEntity implements Interactable{
 	public void update(float dt) {
 		super.update(dt);
 		if (spawner){
-			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, CustomPlayer.class).isEmpty()){//if a player is nearby
+			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, Ejira.class).isEmpty()){//if a player is nearby
 				if (spawnedList.size()<3) {
 					Coordinate coord = getPosition().toCoord();
 					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4); 

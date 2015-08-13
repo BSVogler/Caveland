@@ -68,9 +68,9 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer){
+		if (actor instanceof Ejira){
 			//lege objekte aus Inventar  hier rein
-			Collectible frontItem = ((CustomPlayer) actor).getInventory().retrieveFrontItem();
+			Collectible frontItem = ((Ejira) actor).getInventory().retrieveFrontItem();
 			if (frontItem != null && (frontItem.getType()==CollectibleType.Coal || frontItem.getType()==CollectibleType.Ironore))
 				addCollectible(frontItem);
 		}

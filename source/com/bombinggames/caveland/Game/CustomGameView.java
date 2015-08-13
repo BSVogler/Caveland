@@ -8,7 +8,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -58,7 +58,7 @@ public class CustomGameView extends GameView{
         Gdx.app.debug("CustomGameView", "Initializing");
 		
 		if (!WE.CVARS.getValueB("ignorePlayer"))
-			CustomPlayer.loadSheet();
+			Ejira.loadSheet();
 		
 		//register Sounds
 		Controller.getSoundEngine().register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
@@ -158,7 +158,7 @@ public class CustomGameView extends GameView{
 	 * @param id 0 is first player, 1 is second
 	 * @return 
 	 */
-	public CustomPlayer getPlayer(int id){
+	public Ejira getPlayer(int id){
 		return ((CustomGameController) getController()).getPlayer(id);
 	}
 	
@@ -368,7 +368,7 @@ public class CustomGameView extends GameView{
 	}
 
 	private class XboxListener implements ControllerListener {
-		private final CustomPlayer player;
+		private final Ejira player;
 		/**
 		 * speed of one player
 		 */
@@ -384,7 +384,7 @@ public class CustomGameView extends GameView{
 		 * @param controllable
 		 * @param id  starting with 0
 		 */
-		XboxListener(CustomGameView parent, CustomPlayer controllable, int id) {
+		XboxListener(CustomGameView parent, Ejira controllable, int id) {
 			this.player = controllable;
 			this.id=id;
 			this.parent = parent;

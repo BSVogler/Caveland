@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -26,7 +26,7 @@ public class Crafting extends ActionBox {
 	 * @param view
 	 * @param player 
 	 */
-	public Crafting(CustomGameView view, CustomPlayer player) {
+	public Crafting(CustomGameView view, Ejira player) {
 		super(view, "Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		CraftingRecipesList.Recipe recipe = findRecipe();

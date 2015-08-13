@@ -30,26 +30,12 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
-import com.badlogic.gdx.math.Vector2;
-import com.bombinggames.wurfelengine.WE;
-
 /**
  *
  * @author Benedikt Vogler
  */
-public class Controllable extends MovableEntity {
-	private static final long serialVersionUID = 1L;
+public interface Controllable {
 
-	/**
-	 *
-	 * @param id
-	 * @param spritesPerDir
-	 */
-	public Controllable(byte id, int spritesPerDir) {
-		super(id, spritesPerDir);
-		setFriction(WE.CVARS.getValueF("friction"));
-	}
-	
    /**
      * Lets the object walk. Replaces the horizontal movement.
      * @param up move up?
@@ -59,44 +45,5 @@ public class Controllable extends MovableEntity {
      * @param walkingspeed the higher the speed the bigger the steps. Should be in m/s.
 	 * @param dt
      */
-    public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
-        if (up || down || left || right){
-			
-			//update the direction vector
-			Vector2 dir = new Vector2(0f,0f);
-
-            if (up)    dir.y += -1;
-            if (down)  dir.y += 1;
-            if (left)  dir.x += -1;
-            if (right) dir.x += 1;
-			dir.nor().scl(walkingspeed);
-			
-			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
-			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
-//			float accelaration =30;//in m/s^2
-//			dir.scl(accelaration*dt/1000f);//in m/s
-			
-			//check if will reach max velocity
-//			Vector3 res = getMovement().add(dir.cpy());
-//			res.z=0;
-//			if (res.len() > walkingspeed){
-//				//scale that it will not exceed the walkingspeed
-//				dir.nor().scl((walkingspeed-res.len()));
-//			}
-//			addMovement(dir);
-			
-			//repalce horizontal movement if walking
-			setHorMovement(dir);
-        }
-   }
-	@Override
-	public void jump() {
-		jump(3, true);
-	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
+    public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt);
 }

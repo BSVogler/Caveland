@@ -2,7 +2,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -19,14 +19,14 @@ import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 public class Inventory extends CollectibleContainer {
 
 	private static final long serialVersionUID = 3L;
-	private final CustomPlayer player;
+	private final Ejira player;
 
 	/**
 	 *
 	 *an invnetory needs a player where it is attached to
 	 * @param player
 	 */
-	public Inventory(CustomPlayer player) {
+	public Inventory(Ejira player) {
 		super();
 		this.player = player;
 		setBackpack(true);
@@ -144,7 +144,7 @@ public class Inventory extends CollectibleContainer {
 	 *
 	 * @return can have null in array
 	 */
-	public Collectible[] getContent() {
+	public Collectible[] getContentAsArray() {
 		return new Collectible[]{get(0), get(1), get(2)};
 	}
 
@@ -154,7 +154,7 @@ public class Inventory extends CollectibleContainer {
 	 * @return can have null in array
 	 */
 	public CollectibleType[] getContentDef() {
-		Collectible[] tmp = getContent();
+		Collectible[] tmp = getContentAsArray();
 		return new CollectibleType[]{
 			(tmp[0] == null ? null : tmp[0].getType()),
 			(tmp[1] == null ? null : tmp[1].getType()),

@@ -33,7 +33,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -93,16 +93,16 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer) {
+		if (actor instanceof Ejira) {
 			ConstructionSiteWindow selectionWindow = new ConstructionSiteWindow(view, actor, this);
-			selectionWindow.register(view, ((CustomPlayer) actor).getPlayerNumber());
+			selectionWindow.register(view, ((Ejira) actor).getPlayerNumber());
 		}
 	}
 	
 	public boolean canAddFrontItem(AbstractEntity actor){
-		if (!(actor instanceof CustomPlayer))
+		if (!(actor instanceof Ejira))
 			return false;
-		Collectible frontItem = ((CustomPlayer) actor).getInventory().getFrontCollectible();
+		Collectible frontItem = ((Ejira) actor).getInventory().getFrontCollectible();
 		boolean found = false;
 		if (frontItem != null) {
 			for (CollectibleType type : neededItems) {
@@ -120,17 +120,17 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			super(view, "Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
-			ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
-			if (actor instanceof CustomPlayer) {
+			ArrayList<String> list = new ArrayList<>(parent.getContent().size());
+			if (actor instanceof Ejira) {
 				if (canAddFrontItem(actor))
-					list.add("Add: " + ((CustomPlayer)actor).getInventory().getFrontCollectible().getName());
+					list.add("Add: " + ((Ejira)actor).getInventory().getFrontCollectible().getName());
 				else
 					list.add("Add: You have nothing to add");
 			} else
 				list.add("Add");
 			
-			if (parent.getChildren().size() > 0)
-				list.add("Take: " + parent.getChildren().get(parent.getChildren().size()-1).getName());
+			if (parent.getContent().size() > 0)
+				list.add("Take: " + parent.getContent().get(parent.getContent().size()-1).getName());
 			else list.add("Empty");
 			list.add("Build: "+ parent.getStatusString());
 			addSelectionNames(list);
@@ -139,8 +139,8 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 		@Override
 		public int confirm(CustomGameView view, AbstractEntity actor) {
 			int num = super.confirm(view, actor);
-			if (actor instanceof CustomPlayer) {
-				CustomPlayer player = (CustomPlayer) actor;
+			if (actor instanceof Ejira) {
+				Ejira player = (Ejira) actor;
 				//add item?
 				if (num == 0) {
 					if (canAddFrontItem(actor)) {

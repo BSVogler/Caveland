@@ -156,7 +156,7 @@ public class Enemy extends MovableEntity{
 			
 			//find nearby target if there is none
 			if (target == null){
-				ArrayList<CustomPlayer> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH*4, CustomPlayer.class);
+				ArrayList<Ejira> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH*4, Ejira.class);
 				if (!nearby.isEmpty())
 					target = nearby.get(0);
 			}

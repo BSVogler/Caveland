@@ -3,7 +3,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -21,7 +21,7 @@ public class Bausatz extends Collectible {
 
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer) {
+		if (actor instanceof Ejira) {
 			new ActionBox(view, "Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames("Oven","Factory (not implemented yet)")
 				.setConfirmAction(
@@ -36,7 +36,7 @@ public class Bausatz extends Collectible {
 						return result;
 					}
 				)
-				.register(view, ((CustomPlayer) actor).getPlayerNumber());
+				.register(view, ((Ejira) actor).getPlayerNumber());
 		}
 	}
 }

@@ -44,6 +44,8 @@ import java.util.Iterator;
 public class CollectibleContainer extends AbstractEntity {
 
 	private static final long serialVersionUID = 2L;
+	
+	private final ArrayList<Collectible> content = new ArrayList<>(3);
 	private boolean backpack;
 	/**
 	 * experimental feature. may cause problems when leaving the game and the saving. todo
@@ -76,7 +78,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setPosition(getPosition().cpy());
 		collectible.preventPickup();
 		collectible.setFloating(true);
-		super.addChild(collectible);
+		content.add(collectible);
 	}
 	
 	/**
@@ -89,7 +91,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setPosition(getPosition().cpy());
 		collectible.preventPickup();
 		collectible.setFloating(true);
-		super.getChildren().add(0,collectible);
+		content.add(0,collectible);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return can return null
 	 */
 	public Collectible get(int index) {
-		if (getChildren().size() > index) {
+		if (content.size() > index) {
 			return getCollectibles().get(index);
 		} else {
 			return null;
@@ -112,7 +114,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public ArrayList<Collectible> getCollectibles(){
 		ArrayList<Collectible> col = new ArrayList<>(3);
-		getChildren().stream().forEach(
+		content.stream().forEach(
 			(AbstractEntity ent) -> {
 				if (ent instanceof Collectible)
 					col.add((Collectible) ent);
@@ -127,7 +129,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return
 	 */
 	public int size() {
-		return getChildren().size();
+		return content.size();
 	}
 
 	/**
@@ -137,8 +139,8 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return
 	 */
 	public Collectible retrieveCollectible(int pos) {
-		if (getChildren().size() > pos) {
-			Collectible collectible = (Collectible) getChildren().remove(pos);
+		if (content.size() > pos) {
+			Collectible collectible = content.remove(pos);
 			collectible.setFloating(false);
 			collectible.allowPickup();
 			collectible.setHidden(false);
@@ -170,7 +172,7 @@ public class CollectibleContainer extends AbstractEntity {
 	public Collectible retrieveCollectible(CollectibleType def) {
 		Collectible collectible = getCollectible(def);
 		if (collectible != null) {
-			getChildren().remove(collectible);
+			content.remove(collectible);
 			collectible.setFloating(false);
 			collectible.allowPickup();
 			collectible.setHidden(false);
@@ -188,7 +190,7 @@ public class CollectibleContainer extends AbstractEntity {
 	public Collectible retrieveCollectibleReference(CollectibleType def) {
 		Collectible collectible = getCollectible(def);
 		if (collectible != null) {
-			getChildren().remove(collectible);
+			content.remove(collectible);
 			collectible.disposeFromMap();
 		}
 		return collectible;
@@ -200,10 +202,10 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return 
 	 */
 	public Collectible getCollectible(CollectibleType def){
-		Iterator<AbstractEntity> iter = getChildren().iterator();
+		Iterator<Collectible> iter = content.iterator();
 		Collectible collectible = null;
 		while (iter.hasNext()) {
-			collectible = (Collectible) iter.next();
+			collectible = iter.next();
 			if (collectible.getType().equals(def)) {
 				break;
 			}
@@ -218,7 +220,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public int count(CollectibleType def) {
 		int counter = 0;
-		for (AbstractEntity children : getChildren()) {
+		for (AbstractEntity children : content) {
 			if (children instanceof Collectible && ((Collectible) children).getType() == def)
 				counter++;
 		}
@@ -234,12 +236,12 @@ public class CollectibleContainer extends AbstractEntity {
 	public void update(float dt) {
 		super.update(dt);
 		//put every child at the position if the container
-		for (AbstractEntity item : getChildren()) {
+		for (AbstractEntity item : content) {
 			if (item != null) {
 				item.setPosition(getPosition().cpy());
 			}
 		}
-		getChildren().removeIf(
+		content.removeIf(
 			(AbstractEntity item) -> item.shouldBeDisposed()
 		);
 	}
@@ -250,11 +252,11 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @param left true if left, false to right
 	 */
 	public void switchItems(boolean left) {
-		if (!getChildren().isEmpty()) {
+		if (!content.isEmpty()) {
 			if (left) {
-				getChildren().add(getChildren().remove(0));
+				content.add(content.remove(0));
 			} else {
-				getChildren().add(0, getChildren().remove(getChildren().size() - 1));
+				content.add(0, content.remove(content.size() - 1));
 			}
 		}
 	}
@@ -270,12 +272,12 @@ public class CollectibleContainer extends AbstractEntity {
 		stream.defaultReadObject();
 		//show if loaded a backpack
 		if (backpack) {
-			if (getChildren().isEmpty()) {
+			if (content==null || content.isEmpty()) {
 				dispose();
 			} else {
 				setHidden(false);
 				//keep children hidden
-				for (AbstractEntity children : getChildren()) {
+				for (AbstractEntity children : content) {
 					children.setHidden(true);
 				}
 			}
@@ -295,5 +297,8 @@ public class CollectibleContainer extends AbstractEntity {
 		}
 		super.disposeFromMap();
 	}
-	
+
+	public ArrayList<Collectible> getContent() {
+		return content;
+	}
 }

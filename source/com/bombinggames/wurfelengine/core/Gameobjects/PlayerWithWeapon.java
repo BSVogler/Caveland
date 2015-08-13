@@ -28,17 +28,17 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
-import com.bombinggames.wurfelengine.core.Camera;
-import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 
 
 /**
  *The WeaponPlayer is a character who can walk and shoot.
  * @author Benedikt
  */
-public class PlayerWithWeapon extends Controllable {
+public class PlayerWithWeapon extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	
     private transient Camera camera;

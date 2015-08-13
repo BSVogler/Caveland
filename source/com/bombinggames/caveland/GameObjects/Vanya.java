@@ -52,7 +52,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer){
+		if (actor instanceof Ejira){
 			//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
 			chatCounter++;
 			if (currentChat!=null)
@@ -75,7 +75,7 @@ public class Vanya extends MovableEntity implements Interactable {
 			}
 			if (!"".equals(text)) {
 				currentChat = new ActionBox(view, getName(), ActionBox.BoxModes.SIMPLE, text);
-				currentChat.register(view, ((CustomPlayer)actor).getPlayerNumber());
+				currentChat.register(view, ((Ejira)actor).getPlayerNumber());
 			}
 		}
 	}

@@ -33,7 +33,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -52,7 +52,7 @@ public class RailsConstructionKit extends Collectible {
 	
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof CustomPlayer) {
+		if (actor instanceof Ejira) {
 			new ActionBox(view, "Choose rails type", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up","up","up","up")
 				.setConfirmAction(
@@ -64,7 +64,7 @@ public class RailsConstructionKit extends Collectible {
 						return result;
 					}
 				)
-				.register(view, ((CustomPlayer) actor).getPlayerNumber());
+				.register(view, ((Ejira) actor).getPlayerNumber());
 		}
 	}
 }

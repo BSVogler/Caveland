@@ -33,7 +33,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.util.ArrayList;
 
@@ -48,10 +48,10 @@ public class CollectibleContainerWindow extends ActionBox {
 		super(view, "Choose construction", ActionBox.BoxModes.SELECTION, null);
 		this.parent = parent;
 		//make list of options
-		ArrayList<String> list = new ArrayList<>(parent.getChildren().size());
+		ArrayList<String> list = new ArrayList<>(parent.getContent().size());
 		list.add("Add");
-		if (parent.getChildren().size() > 0)
-			list.add("Take: " + ((Collectible) parent.getChildren().get(parent.getChildren().size()-1)).getName());
+		if (parent.getContent().size() > 0)
+			list.add("Take: " + parent.getContent().get(parent.getContent().size()-1).getName());
 		else list.add("Empty");
 		addSelectionNames(list);
 	}
@@ -59,13 +59,13 @@ public class CollectibleContainerWindow extends ActionBox {
 	@Override
 	public int confirm(CustomGameView view, AbstractEntity actor) {
 		int num = super.confirm(view, actor);
-		if (actor instanceof CustomPlayer) {
-			CustomPlayer player = (CustomPlayer) actor;
+		if (actor instanceof Ejira) {
+			Ejira player = (Ejira) actor;
 			//add item?
 			if (num == 0) {
 				Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 				if (frontItem != null) {
-					parent.addChild(frontItem);
+					parent.addCollectible(frontItem);
 				}
 			} else if (num==1){
 				//fetch item

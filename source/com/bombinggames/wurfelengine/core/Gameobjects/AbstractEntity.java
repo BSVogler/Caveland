@@ -37,8 +37,6 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 /**
  *An entity is a game object wich is self aware that means it knows it's position.
@@ -97,11 +95,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
-	/**
-	 * Spawning and disposing the parent also calls the children.
-	 */
-	private transient ArrayList<AbstractEntity> children = new ArrayList<>(0);
-   
+	private EntityNode parent = null;
     /**
      * Create an abstractEntity.
      * @param id objects with id = -1 will be deleted. 0 are invisible objects
@@ -187,9 +181,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
     public AbstractEntity spawn(Point point){
 		if (position == null) {
 			Controller.getMap().addEntities(this);
-			for (AbstractEntity child : children) {
-				child.spawn(point);
-			}
 			setPosition(point);
 			dispose = false;
 			if (shadow != null && !shadow.isSpawned())
@@ -287,9 +278,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 * @see #shouldBeDisposed() 
      */
     public void disposeFromMap(){
-		for (AbstractEntity child : children) {
-			child.disposeFromMap();
-		}
 		position = null;
     }
     
@@ -301,9 +289,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
      */
     public void dispose(){
         dispose = true;
-		for (AbstractEntity child : children) {
-			child.dispose();
-		}
         disposeFromMap();
     }
 	
@@ -330,9 +315,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void setSaveToDisk(boolean saveToDisk) {
 		this.saveToDisk = saveToDisk;
-		for (AbstractEntity child : children) {
-			child.setSaveToDisk(saveToDisk);
-		}
 	}
 
 	/**
@@ -378,9 +360,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void setIndestructible(boolean indestructible) {
 		this.indestructible = indestructible;
-		for (AbstractEntity child : children) {
-			child.setIndestructible(indestructible);
-		}
 	}
 
 	@Override
@@ -393,16 +372,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 		return false;
 	}
 
-	@Override
-	public void setHidden(boolean hidden) {
-		super.setHidden(hidden);
-		for (AbstractEntity child : children) {
-			child.setHidden(hidden);
-		}
-	}
-	
-	
-	
 	/**
      * called when gets damage
      * @param value
@@ -430,17 +399,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 			setHealth((byte) (getHealth()+value));
 	}
 	
-	private void writeObject(ObjectOutputStream out)throws IOException {
-		out.defaultWriteObject();
-		//don't save objects which are flagged to be ignored during save
-		children.removeIf(ent -> !ent.isGettingSaved());
-		out.writeObject(children);
-	
-	}
 	@SuppressWarnings({"unchecked"})
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-		children = (ArrayList<AbstractEntity>) in.readObject();
 		enableShadow(); 
     }
 
@@ -450,22 +411,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	public void setDamageSounds(String[] sound) {
 		damageSounds = sound;
-	}
-	
-	/**
-	 * Children linkes objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
-	 * @param child 
-	 */
-	public void addChild(AbstractEntity child){
-		children.add(child);	
-	}
-
-	/**
-	 * Children linked objects together so that they inherit some properties. Spawning and disposing the parent also calls the children.
-	 * @return 
-	 */
-	public ArrayList<AbstractEntity> getChildren() {
-		return children;
 	}
 	
 	@Override
@@ -520,8 +465,16 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 * @param health 
 	 */
 	public void setHealth(float health) {
-		if (health>100) health=100;
-		if (health<0) health=0;
+		if (health > 100) health=  100;
+		if (health < 0) health = 0;
 		this.health = health;
+	}
+	
+	/**
+	 * if in some node, then returns the parent
+	 * @return can return null
+	 */
+	public EntityNode getParent(){
+		return parent;
 	}
 }

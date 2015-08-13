@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * The Ejira has two particle emitter attached via glue.
  * @author Benedikt Vogler
  */
-public class CustomPlayer extends Controllable implements EntityNode {
+public class Ejira extends MovableEntity implements Controllable {
 
 	/**
 	 * Time till fully loaded attack.
@@ -131,8 +131,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	private transient boolean prepareThrow;
 	private transient boolean bunnyHopForced;
 	private transient boolean usedLoadAttackInAir;
-	private transient final SmokeEmitter emitter;
-	private transient final SmokeEmitter emitter2;
 	private transient SimpleEntity interactButton = null;
 	private transient Coordinate nearestInteractableBlock = null;
 	private transient int spriteNumOverlay;
@@ -154,7 +152,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * creates a new Ejira
 	 * @param number should start by 1
 	 */
-	public CustomPlayer(int number) {
+	protected Ejira(int number) {
 		super((byte) 30, 0);
 		playerNumber = number;
 		setName("Ejira");
@@ -163,27 +161,6 @@ public class CustomPlayer extends Controllable implements EntityNode {
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(Block.GAME_EDGELENGTH);
-		
-		emitter = new SmokeEmitter();
-		emitter.setParticleDelay(10);
-		emitter.setParticleTTL(800);
-		emitter.setParticleBrightness(0.1f);
-		emitter.setHidden(true);
-		addChild(emitter);
-		SuperGlue connection1 = new SuperGlue(this, emitter);
-		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
-		addChild(connection1);
-		
-		emitter2 = new SmokeEmitter();
-		emitter2.setParticleDelay(10);
-		emitter2.setParticleTTL(800);
-		emitter2.setParticleBrightness(0.1f);
-		emitter2.setHidden(true);
-		addChild(emitter2);
-		SuperGlue conection2 = new SuperGlue(this, emitter2);
-		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
-		addChild(conection2);
-		setSaveToDisk(false);
 	}
 
 	@Override
@@ -336,9 +313,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (!nearbyInteractable.isEmpty()) {
 				//check if a different one
 				nearestEntity = (AbstractEntity) nearbyInteractable.get(0);
-				showButton(Interactable.RT, nearestEntity.getPosition());
+				showInteractButton(Interactable.RT, nearestEntity.getPosition());
 			} else if (nearestEntity != null) {
-				hideButton();
+				hideInteractButton();
 				nearestEntity = null;
 			}
 
@@ -347,13 +324,13 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (blockBelow!= null && CavelandBlocks.verifyInteractableExistence(pos.toCoord()) != null){
 				//todo only overwrite if block is nearer
 				nearestInteractableBlock = getPosition().toCoord();
-				showButton(Interactable.RT, nearestInteractableBlock);
+				showInteractButton(Interactable.RT, nearestInteractableBlock);
 			} else {
 				//no nearby block
 				nearestInteractableBlock = null;
 				//hide button if also no nearestEntity
 				if (nearestEntity==null)
-					hideButton();
+					hideInteractButton();
 			}
 
 			//if collecting a backpack
@@ -380,12 +357,15 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 			//update emitter
 			if (isInAirJump) {
-				emitter.setActive(getMovement().z>2f);
-				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-				emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
-				emitter2.setActive(getMovement().z>2f);
-				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
+				if (getParent() instanceof EjiraNode) {
+					EjiraNode ejiraNode = (EjiraNode) getParent();
+					ejiraNode.getEmitter().setActive(getMovement().z>2f);
+					ejiraNode.getEmitter().setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+					ejiraNode.getEmitter().setParticleSpread(new Vector3(1f, 1f, 0.7f));
+					ejiraNode.getEmitter2().setActive(getMovement().z>2f);
+					ejiraNode.getEmitter2().setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+					ejiraNode.getEmitter2().setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
+				}
 			}
 		}
 	}
@@ -406,9 +386,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 				AtlasRegion texture = getSprite(action, spriteNum);
 				Sprite sprite = new Sprite(texture);
 				sprite.setOrigin(
-						texture.originalWidth/2 - texture.offsetX,
-						VIEW_HEIGHT2 - texture.offsetY
-					);
+					texture.originalWidth/2 - texture.offsetX,
+					VIEW_HEIGHT2 - texture.offsetY
+				);
 				//sprite.scale(get);
 				sprite.setColor(getColor());
 
@@ -757,8 +737,36 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	@Override
 	public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
 		//if loading attack keep movement
-		Vector2 movementBefore = getMovementHor().cpy();
-		super.walk(up, down, left, right, walkingspeed, dt);
+		Vector2 movementBefore = getMovementHor();
+		if (up || down || left || right){
+
+			//update the direction vector
+			Vector2 dir = new Vector2(0f,0f);
+
+			if (up)    dir.y += -1;
+			if (down)  dir.y += 1;
+			if (left)  dir.x += -1;
+			if (right) dir.x += 1;
+			dir.nor().scl(walkingspeed);
+
+			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
+			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
+//			float accelaration =30;//in m/s^2
+//			dir.scl(accelaration*dt/1000f);//in m/s
+
+			//check if will reach max velocity
+//			Vector3 res = getMovement().add(dir.cpy());
+//			res.z=0;
+//			if (res.len() > walkingspeed){
+//				//scale that it will not exceed the walkingspeed
+//				dir.nor().scl((walkingspeed-res.len()));
+//			}
+//			addMovement(dir);
+
+			//repalce horizontal movement if walking
+			setHorMovement(dir);
+		}
+		 
 		if (loadAttack != Float.NEGATIVE_INFINITY || performingLoadAttack) {
 			setMovement(movementBefore);
 		} else {
@@ -796,10 +804,12 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 	@Override
 	public void dispose() {
-		Coordinate coord = getPosition().toCoord();
-		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
-		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
-		WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
+		if (isSpawned()) {
+			Coordinate coord = getPosition().toCoord();
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
+		}
 		super.dispose();
 	}
 
@@ -948,11 +958,10 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	 * @param buttonID
 	 * @param pos abot this position the button will appear
 	 */
-	public void showButton(byte buttonID, AbstractPosition pos) {
+	public void showInteractButton(byte buttonID, AbstractPosition pos) {
 		if (interactButton == null) {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)
 			);
-			addChild(interactButton);
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {
@@ -963,7 +972,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	/**
 	 * hide the interact button
 	 */
-	public void hideButton() {
+	public void hideInteractButton() {
 		if (interactButton != null) {
 			interactButton.dispose();
 			interactButton = null;

@@ -3,7 +3,8 @@ package com.bombinggames.caveland.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.CavelandCommands;
-import com.bombinggames.caveland.GameObjects.CustomPlayer;
+import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.EjiraNode;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
@@ -23,8 +24,8 @@ import java.util.HashMap;
  * @author Benedikt
  */
 public class CustomGameController extends Controller {
-	private CustomPlayer player1;
-	private CustomPlayer player2;
+	private EjiraNode player1;
+	private EjiraNode player2;
 	private HashMap<String, ArrayList<AbstractEntity>> caves;
 	private Spaceship introSpaceship;
         
@@ -42,7 +43,7 @@ public class CustomGameController extends Controller {
 		saveCvars.register(new BooleanCVar(false), "IntroCutsceneCompleted", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.load();
 		
-		player1 = new CustomPlayer(1);
+		player1 = new EjiraNode(1);
 		
 		player1.spawn(
 			new Coordinate(
@@ -119,11 +120,16 @@ public class CustomGameController extends Controller {
 	 * @param id 0 is first player, 1 is second
 	 * @return 
 	 */
-	public CustomPlayer getPlayer(int id) {
-		if (id==0)
-			return player1;
-		else
-			return player2;
+	public Ejira getPlayer(int id) {
+		if (id==0) {
+			if (player1==null)
+				return null;
+			return player1.getEjira();
+		} else{
+			if (player2==null)
+				return null;
+			return player2.getEjira();
+		}
 		
 	}
 
@@ -131,7 +137,7 @@ public class CustomGameController extends Controller {
 	 * Adds the second player to the game. Will not be spawned until in {@link #onEnter() }.
 	 */
 	public void activatePlayer2() {
-		player2 = new CustomPlayer(2);
+		player2 = new EjiraNode(2);
 		player2.setColor(new Color(0.4f,0.55f,0.55f,1));
 	}
 }

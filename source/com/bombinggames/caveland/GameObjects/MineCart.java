@@ -52,7 +52,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		super.spawn(point);
 		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
-		addChild(front);
+		//addChild(front);
 		return this;
 	}
 
@@ -179,9 +179,9 @@ public class MineCart extends MovableEntity implements Interactable {
 					tmp.setZ( pos.getZ()+BOTTOMHEIGHT );//a little bit higher then the minecart
 					passenger.setPosition(tmp);
 					passenger.setFloating(true);
-					if (passenger instanceof CustomPlayer) {
-						((CustomPlayer) passenger).idle();
-						((CustomPlayer) passenger).forceBunnyHop();
+					if (passenger instanceof Ejira) {
+						((Ejira) passenger).idle();
+						((Ejira) passenger).forceBunnyHop();
 					}
 				} else {
 					passenger.setFloating(false);

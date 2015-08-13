@@ -82,11 +82,16 @@ public class Selection extends AbstractEntity {
 //                normal.setPosition(getPosition().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
 	}
 
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		setPosition(pos.toPoint());
+	}
+	
     @Override
-    public void setPosition(AbstractPosition pos) {
+    public void setPosition(Point pos) {
         super.setPosition( pos.toCoord());
         setHidden(getPosition().getZ() < 0);//hide if is under map
-        normal.setPosition(pos.toCoord().addVector(0, 0, 1));
+        normal.setPosition(pos);
     }
         
     /**
@@ -151,7 +156,7 @@ public class Selection extends AbstractEntity {
         Intersection intersect = view.screenToGame(screenX, screenY);
                 
 		if (intersect.getPoint() != null){
-		   setPosition( intersect.getPoint());//temporary hack for intersection result one layer too deep 
+		   setPosition( intersect.getPoint());
 		   setNormal( Side.normalToSide( intersect.getNormal() ) );
 		}
     }

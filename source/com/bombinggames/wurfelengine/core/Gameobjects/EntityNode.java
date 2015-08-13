@@ -80,7 +80,8 @@ public class EntityNode extends AbstractEntity {
 	 * @param child 
 	 */
 	public void addChild(AbstractEntity child){
-		children.add(child);	
+		children.add(child);
+		child.setParent(this);
 	}
 
 	/**

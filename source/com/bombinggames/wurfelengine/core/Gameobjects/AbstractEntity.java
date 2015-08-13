@@ -477,4 +477,12 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	public EntityNode getParent(){
 		return parent;
 	}
+
+	/**
+	 * set the parentNode if it is inside a node
+	 * @param parent 
+	 */
+	public void setParent(EntityNode parent) {
+		this.parent = parent;
+	}
 }

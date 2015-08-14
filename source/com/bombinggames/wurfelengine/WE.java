@@ -63,13 +63,13 @@ import java.util.ArrayList;
  *The main class of the engine. To create a new engine use  {@link WE#launch(java.lang.String, java.lang.String[])}
  * The Wurfel Engine needs Java &gt;= v1.8 and the API libGDX v1.6.2 (may work with older versions).
  * @author Benedikt S. Vogler
- * @version 1.6.4
+ * @version 1.6.5
  */
 public class WE {
     /**
      * The version of the Engine
      */
-    public static final String VERSION = "1.6.4";  
+    public static final String VERSION = "1.6.5";  
 	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
 
 	/**

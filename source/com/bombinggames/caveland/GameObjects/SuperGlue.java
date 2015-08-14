@@ -35,7 +35,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 
 /**
- *Glue two objects together by comparing their offset and moving the smaller object to keep it.
+ * Attach two objects together by comparing their offset and moving the smaller object to keep it.
  * @author Benedikt Vogler
  */
 public class SuperGlue extends AbstractEntity {
@@ -70,6 +70,9 @@ public class SuperGlue extends AbstractEntity {
 		if (main.isSpawned()) {
 			smaller.setPosition(main.getPosition().cpy().addVector(offset));
 		}
+		//dispose glue if one component should be disposed.
+		if (main.shouldBeDisposed() || smaller.shouldBeDisposed())
+			dispose();
 	}
 	
 	

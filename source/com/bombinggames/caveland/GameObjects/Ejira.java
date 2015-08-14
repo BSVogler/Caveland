@@ -847,6 +847,8 @@ public class Ejira extends MovableEntity implements Controllable {
 			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
 			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
 		}
+		emitter.dispose();
+		emitter2.dispose();
 		super.dispose();
 	}
 

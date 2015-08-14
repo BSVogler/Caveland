@@ -148,11 +148,14 @@ public class Ejira extends MovableEntity implements Controllable {
 	 */
 	private transient byte attackDamage;
 	
+	private transient final SmokeEmitter emitter;
+	private transient final SmokeEmitter emitter2;
+	
 	/**
 	 * creates a new Ejira
 	 * @param number should start by 1
 	 */
-	protected Ejira(int number) {
+	public Ejira(int number) {
 		super((byte) 30, 0);
 		playerNumber = number;
 		setName("Ejira");
@@ -161,12 +164,42 @@ public class Ejira extends MovableEntity implements Controllable {
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(Block.GAME_EDGELENGTH);
+		
+		emitter = new SmokeEmitter();
+		emitter.setParticleDelay(10);
+		emitter.setParticleTTL(800);
+		emitter.setParticleBrightness(0.1f);
+		emitter.setActive(false);
+		emitter.setHidden(true);
+		emitter.setSaveToDisk(false);
+		
+		emitter2 = new SmokeEmitter();
+		emitter2.setParticleDelay(10);
+		emitter2.setParticleTTL(800);
+		emitter2.setParticleBrightness(0.1f);
+		emitter2.setHidden(true);
+		emitter2.setActive(false);
+		emitter2.setSaveToDisk(false);
+
+		setSaveToDisk(false);//don't save this and the children
 	}
 
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
 		inventory = (Inventory) new Inventory(this).spawn();
+		
+		emitter.spawn(point);
+		SuperGlue connection1 = new SuperGlue(this, emitter);
+		connection1.setSaveToDisk(false);
+		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
+		connection1.spawn(point);
+		
+		emitter2.spawn(point);
+		SuperGlue conection2 = new SuperGlue(this, emitter2);
+		conection2.setSaveToDisk(false);
+		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
+		conection2.spawn(point);
 		return this;
 	}
 	
@@ -357,18 +390,22 @@ public class Ejira extends MovableEntity implements Controllable {
 
 			//update emitter
 			if (isInAirJump) {
-				if (getParent() instanceof EjiraNode) {
-					EjiraNode ejiraNode = (EjiraNode) getParent();
-					ejiraNode.getEmitter().setActive(getMovement().z>2f);
-					ejiraNode.getEmitter().setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-					ejiraNode.getEmitter().setParticleSpread(new Vector3(1f, 1f, 0.7f));
-					ejiraNode.getEmitter2().setActive(getMovement().z>2f);
-					ejiraNode.getEmitter2().setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-					ejiraNode.getEmitter2().setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
-				}
+				emitter.setActive(getMovement().z>2f);
+				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+				emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
+				emitter2.setActive(getMovement().z>2f);
+				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 			}
 		}
 	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		super.setHidden(hidden);
+	}
+	
+	
 
 	@Override
 	public void render(GameView view, Camera camera) {

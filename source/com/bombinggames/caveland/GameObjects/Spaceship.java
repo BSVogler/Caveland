@@ -29,6 +29,7 @@ public class Spaceship extends MovableEntity {
 	 */
 	public Spaceship() {
 		super((byte) 80, 0);
+		setScaling(1);
 	}
 	
 	/**
@@ -72,7 +73,7 @@ public class Spaceship extends MovableEntity {
 	/**
 	 *
 	 */
-	public void crash() {
+	public void startCrash() {
 		new Explosion(3, (byte) 0, null).spawn(getPosition());
 		setFloating(false);
 		crashing = true;
@@ -85,10 +86,10 @@ public class Spaceship extends MovableEntity {
 		if (!crashed && !crashing && crashCoordinates != null) {
 			Vector3 dir = crashCoordinates.getVector().sub(getPosition().getVector());
 			dir.z = 0;
-			setMovement(dir.nor().scl(11));//always fly to crash point
+			setMovement(dir.nor().scl(11));//always fly to startCrash point
 		}
 		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < Block.GAME_EDGELENGTH*10) {
-			crash();
+			startCrash();
 		}
 
 		//crash on ground
@@ -102,7 +103,7 @@ public class Spaceship extends MovableEntity {
 			SmokeEmitter fireEmitter = (SmokeEmitter) new SmokeEmitter().spawn(getPosition().cpy());
 			fireEmitter.setActive(true);
 			fireEmitter.setParticleStartMovement(new Vector3(0, 0, 3));
-			fireEmitter.setHidden(true);;
+			fireEmitter.setHidden(true);
 			new SuperGlue(this, fireEmitter).spawn(getPosition().cpy());
 			ejectPassenger();
 			crashed = true;

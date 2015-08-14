@@ -95,7 +95,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
-	private EntityNode parent = null;
     /**
      * Create an abstractEntity.
      * @param id objects with id = -1 will be deleted. 0 are invisible objects
@@ -468,21 +467,5 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 		if (health > 100) health=  100;
 		if (health < 0) health = 0;
 		this.health = health;
-	}
-	
-	/**
-	 * if in some node, then returns the parent
-	 * @return can return null
-	 */
-	public EntityNode getParent(){
-		return parent;
-	}
-
-	/**
-	 * set the parentNode if it is inside a node
-	 * @param parent 
-	 */
-	public void setParent(EntityNode parent) {
-		this.parent = parent;
 	}
 }

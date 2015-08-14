@@ -220,7 +220,7 @@ public class Enemy extends MovableEntity{
 			new SimpleEntity((byte) 33).spawn(target.getPosition().cpy()).setAnimation(
 				new EntityAnimation(new int[]{300}, true, false)
 			);
-			target.damage((byte)50);
+			target.damage((byte)1);
 			pauseMovementAnimation();
 			attackInProgess = ATTACKTIME;//1500ms until the attack is done
 		}

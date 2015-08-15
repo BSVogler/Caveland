@@ -27,7 +27,7 @@ public class CreditsScreen extends WEScreen {
      *
      */
     public CreditsScreen() {
-        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());
                 
 		final Label credits = new Label(Caveland.getCredits(), WE.getEngineView().getSkin());
 		credits.setWidth(500);
@@ -66,11 +66,11 @@ public class CreditsScreen extends WEScreen {
         //Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
         //update camera and set the projection matrix
-        WE.getEngineView().getBatch().begin();
-			WE.getEngineView().getBatch().draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			if (WE.CVARS.getValueB("DevMode")) WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        WE.getEngineView().getBatch().end();
+        WE.getEngineView().getSpriteBatch().begin();
+			WE.getEngineView().getSpriteBatch().draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			WE.getEngineView().getFont().draw(WE.getEngineView().getSpriteBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+			if (WE.CVARS.getValueB("DevMode")) WE.getEngineView().getFont().draw(WE.getEngineView().getSpriteBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        WE.getEngineView().getSpriteBatch().end();
 		stage.act(dt);
 		stage.draw();
     }

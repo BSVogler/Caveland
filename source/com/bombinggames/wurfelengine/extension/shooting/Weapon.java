@@ -30,6 +30,11 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.backends.lwjgl.audio.Wav.Sound;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -37,11 +42,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.backends.lwjgl.audio.Wav.Sound;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  *
@@ -263,7 +263,7 @@ public class Weapon {
         sprite.setX(x);
         sprite.setY(y);
         sprite.scale(scaling);
-        sprite.draw(WE.getEngineView().getBatch());
+        sprite.draw(WE.getEngineView().getSpriteBatch());
     
     }
 

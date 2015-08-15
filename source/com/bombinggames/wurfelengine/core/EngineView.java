@@ -87,7 +87,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.update();
-        getBatch().setProjectionMatrix(camera.combined);
+        getSpriteBatch().setProjectionMatrix(camera.combined);
 		getShapeRenderer().setProjectionMatrix(camera.combined);
 	}
 	

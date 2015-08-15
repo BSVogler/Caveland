@@ -40,7 +40,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class CustomPlayer extends Controllable implements EntityNode {
+public class CustomPlayer extends Controllable {
 
 	/**
 	 * Time till fully loaded attack.
@@ -393,7 +393,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 	@Override
 	public void render(GameView view, Camera camera) {
 		if (!WE.CVARS.getValueB("ignorePlayer")) {
-			view.getBatch().end();//inject new batch here
+			view.getSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
@@ -402,7 +402,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 
 			textureDiff.bind(0);
 
-			view.getBatch().begin();
+			view.getSpriteBatch().begin();
 				AtlasRegion texture = getSprite(action, spriteNum);
 				Sprite sprite = new Sprite(texture);
 				sprite.setOrigin(
@@ -419,7 +419,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 					+ texture.offsetY
 					- 50 //only this player sprite has an offset because it has overize
 				);
-				sprite.draw(view.getBatch());
+				sprite.draw(view.getSpriteBatch());
 
 				//overlay
 				if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
@@ -445,9 +445,9 @@ public class CustomPlayer extends Controllable implements EntityNode {
 						+ overlayTexture.offsetY
 						+100 //offset for overlay
 					);
-					overlaySprite.draw(view.getBatch());
+					overlaySprite.draw(view.getSpriteBatch());
 				}
-			view.getBatch().end();
+			view.getSpriteBatch().end();
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
@@ -457,7 +457,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			//bind diffuse color to texture unit 0
 			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 			AbstractGameObject.getTextureDiffuse().bind(0);
-			view.getBatch().begin();
+			view.getSpriteBatch().begin();
 		}
 	}
 
@@ -930,7 +930,7 @@ public class CustomPlayer extends Controllable implements EntityNode {
 			if (loadAttack-LOAD_THRESHOLD >= LOADATTACKTIME)
 				return 7;
 			else
-				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / (float) steps));//six sprites for each animation	
+				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / steps));//six sprites for each animation	
 		} else
 			return (int) (animationCycle / (1000 / (float) steps));//animation sprites with 8 steps
 	}

@@ -30,8 +30,12 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -442,6 +446,17 @@ public class RenderBlock extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered. If null color gets ignored
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color){
+		final Mesh mesh = new Mesh(
+			true,
+			4 * 16,
+			6 * 16,
+			new VertexAttribute(Usage.Position, 3, "a_position"),
+			new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord0")
+		);
+		
+		Renderable renderable = new Renderable();
+		renderable.mesh = mesh;
+		
         Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
@@ -459,6 +474,8 @@ public class RenderBlock extends AbstractGameObject {
 			
 			sprite.setColor(color);
 		}
+		
+		mesh.setVertices(sprite.getVertices());
  
 		//draw only outline or regularly?
         if (view.debugRendering()){
@@ -467,7 +484,7 @@ public class RenderBlock extends AbstractGameObject {
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();
         } else {
-			sprite.draw(view.getBatch());
+			view.getModelBatch().render(renderable);
 			increaseDrawCalls();
 		}
     }

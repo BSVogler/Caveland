@@ -36,9 +36,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -75,7 +78,9 @@ public class GameView extends View implements GameManager {
      * game related stage. e.g. holds hud and gui
      */
     private Stage stage;
-    private final SpriteBatch batch = new SpriteBatch(2000);
+    private final SpriteBatch spriteBatch = new SpriteBatch(2000);
+	private final ModelBatch modelBatch = new ModelBatch((com.badlogic.gdx.graphics.Camera camera, Array<Renderable> renderables) -> {
+	});
     
     private LoadMenu loadMenu;
     
@@ -123,13 +128,13 @@ public class GameView extends View implements GameManager {
         shRenderer = new ShapeRenderer();
         
         //set up stage
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());//spawn at fullscreen
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());//spawn at fullscreen
         
         initalized = true;
 		
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		batch.setShader(null);//set default shader
+		spriteBatch.setShader(null);//set default shader
     }
     
     /**
@@ -175,15 +180,15 @@ public class GameView extends View implements GameManager {
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         } else {
-			batch.setShader(getShader());
+			spriteBatch.setShader(getShader());
             for (Camera camera : cameras) {
                 camera.render(this, camera);
             }
         }
                
         //render HUD and GUI
-		batch.setShader(null);//use default shader
-		batch.setProjectionMatrix(libGDXcamera.combined);
+		spriteBatch.setShader(null);//use default shader
+		spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 		shRenderer.setProjectionMatrix(libGDXcamera.combined);
 
 		//WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
@@ -331,11 +336,11 @@ public class GameView extends View implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
         if (openbatch) {
-			batch.setProjectionMatrix(libGDXcamera.combined);
-			batch.begin();
+			spriteBatch.setProjectionMatrix(libGDXcamera.combined);
+			spriteBatch.begin();
 		}
-			WE.getEngineView().getFont().draw(batch, msg, xPos, yPos);
-        if (openbatch) batch.end();
+			WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
+        if (openbatch) spriteBatch.end();
     }
     
     /**
@@ -346,10 +351,10 @@ public class GameView extends View implements GameManager {
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
-        batch.setColor(color);
-        batch.begin();
-            WE.getEngineView().getFont().draw( batch, msg, xPos, yPos);
-        batch.end();
+        spriteBatch.setColor(color);
+        spriteBatch.begin();
+            WE.getEngineView().getFont().draw( spriteBatch, msg, xPos, yPos);
+        spriteBatch.end();
     }
     
     /**
@@ -362,9 +367,9 @@ public class GameView extends View implements GameManager {
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
         WE.getEngineView().getFont().setColor(Color.BLACK);
         //WE.getEngineView().getFont().setScale(1.01f);
-        batch.begin();
-        WE.getEngineView().getFont().draw(batch, text, xPos, yPos);
-        batch.end();
+        spriteBatch.begin();
+        WE.getEngineView().getFont().draw(spriteBatch, text, xPos, yPos);
+        spriteBatch.end();
         
 //        WE.getEngineView().getFont().setColor(Color.WHITE);
 //        WE.getEngineView().getFont().setScale(1f);
@@ -448,9 +453,18 @@ public class GameView extends View implements GameManager {
      * @return 
      */
     @Override
-    public SpriteBatch getBatch() {
-        return batch;
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
     }
+
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public ModelBatch getModelBatch() {
+		return modelBatch;
+	}
     
     /**
      *
@@ -502,7 +516,8 @@ public class GameView extends View implements GameManager {
 	@Override
 	public void dispose() {
 		shRenderer.dispose();
-		batch.dispose();
+		spriteBatch.dispose();
+		modelBatch.dispose();
 		stage.dispose();
 	}
 	

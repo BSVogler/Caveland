@@ -58,6 +58,10 @@ public abstract class CVar {
 	protected CVarFlags flags;
 	protected String name;
 	
+	/**
+	 * get the content of the cvar
+	 * @return 
+	 */
 	public abstract Object getValue();
 	public abstract void setValue(Object value);
 	public abstract Object getDefaultValue();

@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -458,7 +459,7 @@ public class Camera implements MapObserver {
 	public void render(final GameView view, final Camera camera) {
 		if (active && Controller.getMap() != null) { //render only if map exists
 
-			view.getBatch().setProjectionMatrix(combined);
+			view.getSpriteBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
 			//set up the viewport, yIndex-up
 			Gdx.gl.glViewport(
@@ -475,7 +476,9 @@ public class Camera implements MapObserver {
 			//Gdx.gl20.glBlendFunc(GL_SRC_ALPHA, GL20.GL_CONSTANT_COLOR);
 
 			view.setDebugRendering(false);
-			view.getBatch().begin();
+			OrthographicCamera oCamera = new OrthographicCamera(screenWidth, screenHeight);
+			oCamera.lookAt(new Vector3(position, 0));
+			view.getModelBatch().begin(oCamera);
 			//send a Vector4f to GLSL
 			if (WE.CVARS.getValueB("enablelightengine")) {
 				view.getShader().setUniformf(
@@ -516,17 +519,17 @@ public class Camera implements MapObserver {
 			for (int i = 0; i < objectsToBeRendered; i++) {
 				depthlist[i].render(view, camera);
 			}
-			view.getBatch().end();
+			view.getModelBatch().end();
 
 			//if debugging render outline again
 			if (WE.CVARS.getValueB("DevDebugRendering")) {
 				view.setDebugRendering(true);
-				view.getBatch().begin();
+				view.getSpriteBatch().begin();
 				//render vom bottom to top
 				for (int i = 0; i < objectsToBeRendered; i++) {
 					depthlist[i].render(view, camera);
 				}
-				view.getBatch().end();
+				view.getSpriteBatch().end();
 			}
 
 			//outline 3x3 chunks
@@ -563,15 +566,15 @@ public class Camera implements MapObserver {
 				view.getShapeRenderer().end();
 			}
 			if (damageoverlay > 0.0f) {
-				WE.getEngineView().getBatch().begin();
+				WE.getEngineView().getSpriteBatch().begin();
 				Texture texture = WE.getAsset("com/bombinggames/wurfelengine/core/images/bloodblur.png");
 				Sprite overlay = new Sprite(texture);
 				overlay.setOrigin(0, 0);
 				//somehow reverse the viewport transformation, needed for split-screen
 				overlay.setSize(getWidthInScreenSpc(), getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc());
 				overlay.setColor(1, 0, 0, damageoverlay);
-				overlay.draw(WE.getEngineView().getBatch());
-				WE.getEngineView().getBatch().end();
+				overlay.draw(WE.getEngineView().getSpriteBatch());
+				WE.getEngineView().getSpriteBatch().end();
 			}
 		}
 	}

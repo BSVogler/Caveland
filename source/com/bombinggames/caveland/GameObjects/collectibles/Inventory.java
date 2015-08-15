@@ -158,12 +158,12 @@ public class Inventory {
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
 		bgSprite.setPosition(left, y);
-		bgSprite.draw(view.getBatch());
+		bgSprite.draw(view.getSpriteBatch());
 		bgSprite.setX(left+inventoryPadding/view.getEqualizationScale());
 		bgSprite.setScale(0.5f);
-		bgSprite.draw(view.getBatch());
+		bgSprite.draw(view.getSpriteBatch());
 		bgSprite.setX(left+2*inventoryPadding/view.getEqualizationScale());
-		bgSprite.draw(view.getBatch());
+		bgSprite.draw(view.getSpriteBatch());
 		
 		for (int i = 0; i < container.size(); i++) {
 			MovableEntity ent = container.get(i);

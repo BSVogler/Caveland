@@ -71,10 +71,10 @@ public class EntityDrawable extends TextureRegionDrawable {
     public void draw(Batch batch, float x, float y, float width, float height) {
 		if (instance !=null) {
 			batch.end();
-			WE.getGameplay().getView().getBatch().setShader(WE.getGameplay().getView().getShader());
-			WE.getGameplay().getView().getBatch().begin();
+			WE.getGameplay().getView().getSpriteBatch().setShader(WE.getGameplay().getView().getShader());
+			WE.getGameplay().getView().getSpriteBatch().begin();
 			instance.render(WE.getGameplay().getView(), (int) ((int) x+Block.VIEW_WIDTH2*(1f+size)), (int) y);
-			WE.getGameplay().getView().getBatch().end();
+			WE.getGameplay().getView().getSpriteBatch().end();
 			batch.begin();
 		}
     }

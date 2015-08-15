@@ -272,9 +272,9 @@ public class Minimap implements MapObserver {
         if (visible) {
             //this needs offscreen rendering for a single call with a recalc
 			if (fboRegion!=null){
-				view.getBatch().begin();
-				view.getBatch().draw(fboRegion, posX, posY);
-				view.getBatch().end();
+				view.getSpriteBatch().begin();
+				view.getSpriteBatch().draw(fboRegion, posX, posY);
+				view.getSpriteBatch().end();
 			}
 			
 			ShapeRenderer sh = view.getShapeRenderer();

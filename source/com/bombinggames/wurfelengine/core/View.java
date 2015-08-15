@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -49,7 +50,9 @@ public abstract class View {
 	 *
 	 * @return
 	 */
-	public abstract SpriteBatch getBatch();
+	public abstract SpriteBatch getSpriteBatch();
+	
+	public abstract ModelBatch getModelBatch();
 
 	/**
 	 *

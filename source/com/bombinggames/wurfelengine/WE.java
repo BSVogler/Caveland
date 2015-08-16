@@ -340,7 +340,7 @@ public class WE {
      */
     public static boolean isFullscreen() {
          if (game != null) {
-            return config.fullscreen;
+            return Gdx.graphics.isFullscreen();
         } else {
             Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
             return false;

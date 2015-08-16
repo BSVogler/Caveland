@@ -481,7 +481,7 @@ public class RenderBlock extends AbstractGameObject {
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();
         } else {
-			sprite.draw(view.getBatch());
+			sprite.draw(view.getSpriteBatch());
 			increaseDrawCalls();
 		}
     }

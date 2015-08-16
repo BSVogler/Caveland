@@ -49,7 +49,7 @@ public abstract class View {
 	 *
 	 * @return
 	 */
-	public abstract SpriteBatch getBatch();
+	public abstract SpriteBatch getSpriteBatch();
 
 	/**
 	 *

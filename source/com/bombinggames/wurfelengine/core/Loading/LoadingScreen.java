@@ -88,7 +88,7 @@ public class LoadingScreen extends WEScreen {
     @Override
     public void show() {       
         // Initialize the stage where we will place everything
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());
 
         // Get our textureatlas from the manager
         TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/core/Loading/loading.txt");

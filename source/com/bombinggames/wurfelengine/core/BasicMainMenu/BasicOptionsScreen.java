@@ -53,7 +53,7 @@ public class BasicOptionsScreen extends WEScreen {
      *
      */
     public BasicOptionsScreen() {
-        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getBatch());
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());
         WE.getEngineView().addInputProcessor(stage);
                 
         actor = new TestActor(new ShapeRenderer());
@@ -87,10 +87,10 @@ public class BasicOptionsScreen extends WEScreen {
         //update camera and set the projection matrix
         
         stage.draw();
-        WE.getEngineView().getBatch().begin();
-		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-		WE.getEngineView().getFont().draw(WE.getEngineView().getBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
-        WE.getEngineView().getBatch().end();
+        WE.getEngineView().getSpriteBatch().begin();
+		WE.getEngineView().getFont().draw(WE.getEngineView().getSpriteBatch(), "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
+		WE.getEngineView().getFont().draw(WE.getEngineView().getSpriteBatch(), Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+        WE.getEngineView().getSpriteBatch().end();
     }
 
     @Override

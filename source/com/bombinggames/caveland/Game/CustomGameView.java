@@ -351,12 +351,12 @@ public class CustomGameView extends GameView{
 	@Override
 	public void render() {
 		super.render();
-		getBatch().setShader(getShader());
-		getBatch().begin();
+		getSpriteBatch().setShader(getShader());
+		getSpriteBatch().begin();
 			getPlayer(0).getInventory().render(this, getCameras().get(0));
 			if (coop > -1)
 				getPlayer(1).getInventory().render(this,getCameras().get(1));
-		getBatch().end();
+		getSpriteBatch().end();
 	}
 
 	/**

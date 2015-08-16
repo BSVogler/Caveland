@@ -410,7 +410,7 @@ public class Ejira extends MovableEntity implements Controllable {
 	@Override
 	public void render(GameView view, Camera camera) {
 		if (!WE.CVARS.getValueB("ignorePlayer")) {
-			view.getBatch().end();//inject new batch here
+			view.getSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
@@ -419,7 +419,7 @@ public class Ejira extends MovableEntity implements Controllable {
 
 			textureDiff.bind(0);
 
-			view.getBatch().begin();
+			view.getSpriteBatch().begin();
 				AtlasRegion texture = getSprite(action, spriteNum);
 				Sprite sprite = new Sprite(texture);
 				sprite.setOrigin(
@@ -436,7 +436,7 @@ public class Ejira extends MovableEntity implements Controllable {
 					+ texture.offsetY
 					- 50 //only this player sprite has an offset because it has overize
 				);
-				sprite.draw(view.getBatch());
+				sprite.draw(view.getSpriteBatch());
 
 				//overlay
 				if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
@@ -462,9 +462,9 @@ public class Ejira extends MovableEntity implements Controllable {
 						+ overlayTexture.offsetY
 						+100 //offset for overlay
 					);
-					overlaySprite.draw(view.getBatch());
+					overlaySprite.draw(view.getSpriteBatch());
 				}
-			view.getBatch().end();
+			view.getSpriteBatch().end();
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
@@ -474,7 +474,7 @@ public class Ejira extends MovableEntity implements Controllable {
 			//bind diffuse color to texture unit 0
 			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 			AbstractGameObject.getTextureDiffuse().bind(0);
-			view.getBatch().begin();
+			view.getSpriteBatch().begin();
 		}
 	}
 

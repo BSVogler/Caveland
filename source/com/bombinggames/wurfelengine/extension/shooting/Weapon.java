@@ -263,7 +263,7 @@ public class Weapon {
         sprite.setX(x);
         sprite.setY(y);
         sprite.scale(scaling);
-        sprite.draw(WE.getEngineView().getBatch());
+        sprite.draw(WE.getEngineView().getSpriteBatch());
     
     }
 

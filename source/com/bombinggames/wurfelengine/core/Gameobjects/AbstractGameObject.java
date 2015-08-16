@@ -377,7 +377,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 				sh.line(xPos, yPos+VIEW_DEPTH2, xPos+VIEW_WIDTH2, yPos);
 				sh.end();
 			} else {
-				sprite.draw(view.getBatch());
+				sprite.draw(view.getSpriteBatch());
 				drawCalls++;
 			}
 		}

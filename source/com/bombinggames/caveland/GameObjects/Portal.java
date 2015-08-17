@@ -66,6 +66,14 @@ public class Portal extends AbstractEntity implements Interactable{
 		this();
 		this.target = target;
 	}
+
+	/**
+	 * copy safe
+	 * @return 
+	 */
+	public Coordinate getTarget() {
+		return target.cpy();
+	}
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {

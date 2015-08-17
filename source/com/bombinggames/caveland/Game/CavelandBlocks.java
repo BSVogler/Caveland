@@ -2,6 +2,7 @@ package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.caveland.GameObjects.LiftLogic;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.caveland.GameObjects.OvenLogic;
 import com.bombinggames.caveland.GameObjects.Torch;
@@ -72,10 +73,11 @@ public RenderBlock toRenderBlock(Block data) {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
+		if (id==11) return false;
 		if (id==12) return false;
 		if (id==13) return false;
 		if (id==14) return false;
-		if (id==11) return false;
+		if (id==15) return false;
 		if (id==55) return false;
 		if (id==72) return false;
 		return true;
@@ -171,7 +173,7 @@ public RenderBlock toRenderBlock(Block data) {
 	}
 	
 	/**
-	 * Checks if the block is interactable and if the logic entity is missing creates it.
+	 * Checks if the block is interactable and if the corresponding logic entity is missing creates it.
 	 * @param coord the coordinate where the interactable should be
 	 * @return null if not interactable 
 	 */
@@ -185,11 +187,17 @@ public RenderBlock toRenderBlock(Block data) {
 					if (ent instanceof OvenLogic) {
 						return (Interactable) ent;
 					}
+				} else if (id==15) {
+					if (ent instanceof LiftLogic) {
+						return (Interactable) ent;
+					}
 				}
 			}
 			//not found, so create new one
 			if (id==12) {
 				return (Interactable) new OvenLogic().spawn(coord.toPoint());
+			} else if (id==15) {
+				return (Interactable) new LiftLogic().spawn(coord.toPoint());
 			} else return null;
 		} else {
 			return null;

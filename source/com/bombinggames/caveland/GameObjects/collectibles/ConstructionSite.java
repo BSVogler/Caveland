@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import java.util.ArrayList;
 
 /**
- *
+ * The logic for a construciton site
  * @author Benedikt Vogler
  */
 public class ConstructionSite extends CollectibleContainer implements Interactable  {
@@ -62,10 +62,13 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 		setHidden(true);
 		this.result = resultId;
 		this.resultValue = resultValue;
-		//if (result==11) {
+		if (result==11) {
 			neededAmount = new int[]{2,1};
 			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood };
-		//}
+		} else {
+			neededAmount = new int[]{2,1};
+			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood };
+		}
 	}
 	
 	public String getStatusString(){
@@ -74,23 +77,6 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			string += count(neededItems[i])+"/"+ neededAmount[i] +" "+neededItems[i] + ", ";
 		}
 		return string;
-	}
-	
-	/**
-	 * transforms the construction site into the wanted building
-	 * @return true if success
-	 */
-	public boolean build(){
-		//check ingredients
-		for (int i = 0; i < neededItems.length; i++) {
-			if (count(neededItems[i]) < neededAmount[i])
-				return false;
-		}
-		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
-		CavelandBlocks.verifyInteractableExistence(getPosition().toCoord());
-		Controller.getSoundEngine().play("construct");
-		dispose();
-		return true;
 	}
 	
 	@Override
@@ -113,6 +99,23 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			}
 		}
 		return found;
+	}
+	
+	/**
+	 * transforms the construction site into the wanted building
+	 * @return true if success
+	 */
+	public boolean build(){
+		//check ingredients
+		for (int i = 0; i < neededItems.length; i++) {
+			if (count(neededItems[i]) < neededAmount[i])
+				return false;
+		}
+		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
+		CavelandBlocks.verifyInteractableExistence(getPosition().toCoord());
+		Controller.getSoundEngine().play("construct");
+		dispose();
+		return true;
 	}
 	
 	private class ConstructionSiteWindow extends ActionBox {

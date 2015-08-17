@@ -23,13 +23,24 @@ public class Bausatz extends Collectible {
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox(view, "Choose construction", BoxModes.SELECTION, null)
-				.addSelectionNames("Oven","Factory (not implemented yet)")
+				.addSelectionNames(
+					"Oven",
+					"Robot Factory (not implemented yet)",
+					"Power Station",
+					"Lift"
+				)
 				.setConfirmAction(
 					(int result, CustomGameView view1, AbstractEntity actor1) -> {
 						if (result==0) {
 							//spawn construction site
 							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
 							new ConstructionSite((byte) 12, (byte) 0).spawn(actor1.getPosition().toCoord().toPoint());
+							Controller.getSoundEngine().play("metallic");
+							dispose();//dispose tool kit
+						} else if (result==3) {
+							//spawn construction site
+							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
+							new ConstructionSite((byte) 15, (byte) 0).spawn(actor1.getPosition().toCoord().toPoint());
 							Controller.getSoundEngine().play("metallic");
 							dispose();//dispose tool kit
 						}

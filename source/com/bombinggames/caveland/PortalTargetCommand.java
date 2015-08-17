@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bombinggames.caveland;
 
-import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.console.ConsoleCommand;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -29,12 +22,12 @@ public class PortalTargetCommand implements ConsoleCommand {
 		int z = Integer.parseInt(parameters.nextToken());
 
 		ArrayList<AbstractEntity> selected = gameplay.getEditorController().getSelectedEntities();
-		for (AbstractEntity ent : selected) {
-			if (ent instanceof Portal){
-				((Portal)ent).setTarget(new Coordinate(x, y, z));
-				return true;
-			}
-		}
+//		for (Interactable ent : selected) {
+//			if (ent instanceof Portal){
+//				((Portal)ent).setTarget(new Coordinate(x, y, z));
+//				return true;
+//			}
+//		}
 		return true;
 	}
 

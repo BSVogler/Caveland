@@ -42,4 +42,12 @@ public interface CustomBlocks {
 	 * @param value 
 	 */
 	public void setHealth(Coordinate coord, byte health, byte id, byte value);
+
+	/**
+	 * 
+	 * @param block
+	 * @param coord
+	 * @return 
+	 */
+	public AbstractLogicBlock newLogicInstance(Block block, Coordinate coord);
 }

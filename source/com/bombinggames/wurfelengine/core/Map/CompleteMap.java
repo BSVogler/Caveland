@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.io.File;
@@ -135,5 +136,10 @@ public class CompleteMap extends AbstractMap {
 	@Override
 	public AbstractMap clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	@Override
+	public AbstractLogicBlock getLogic(Coordinate coord) {
+		return null;
 	}
 }

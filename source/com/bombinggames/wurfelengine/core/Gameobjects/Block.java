@@ -139,6 +139,49 @@ public class Block implements HasID, Serializable {
 		return customBlocks;
 	}
 
+	/**
+	 * Use for creating new objects.
+	 *
+	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
+	 * @return returns null for id==0
+	 */
+	public static Block getInstance(byte id) {
+		if (id == 0) {
+			return null;
+		}
+		return new Block(id, (byte) 0);
+	}
+
+	/**
+	 * Use for creating new objects.
+	 *
+	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
+	 * @param value
+	 * @return returns null for id==0
+	 */
+	public static Block getInstance(byte id, byte value) {
+		if (id == 0) {
+			return null;
+		}
+		if (id > OBJECTTYPESNUM) {
+			return null;
+		}
+		if (value > VALUESNUM) {
+			return null;
+		}
+		return new Block(id, value);
+	}
+
+	/**
+	 * Creates a new logic instance
+	 * @param coord
+	 * @return 
+	 */
+	public AbstractLogicBlock getLogicInstance(Coordinate coord){
+		if (customBlocks==null) return null;
+		return customBlocks.newLogicInstance(this, coord);
+	}
+	
 	private byte id;
 	private byte value;
 	private byte health = 100;
@@ -174,40 +217,6 @@ public class Block implements HasID, Serializable {
 		this.id = id;
 		this.value = value;
 	}
-
-	/**
-	 * Use for creating new objects.
-	 *
-	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
-	 * @return returns null for id==0
-	 */
-	public static Block getInstance(byte id) {
-		if (id == 0) {
-			return null;
-		}
-		return new Block(id, (byte) 0);
-	}
-
-	/**
-	 * Use for creating new objects.
-	 *
-	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
-	 * @param value
-	 * @return returns null for id==0
-	 */
-	public static Block getInstance(byte id, byte value) {
-		if (id == 0) {
-			return null;
-		}
-		if (id > OBJECTTYPESNUM) {
-			return null;
-		}
-		if (value > VALUESNUM) {
-			return null;
-		}
-		return new Block(id, value);
-	}
-
 	@Override
 	public byte getId() {
 		return id;

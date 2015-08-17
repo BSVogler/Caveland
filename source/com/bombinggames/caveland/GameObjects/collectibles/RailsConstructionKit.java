@@ -55,8 +55,7 @@ public class RailsConstructionKit extends Collectible {
 		if (actor instanceof Ejira) {
 			new ActionBox(view, "Choose rails type", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up","up","up","up")
-				.setConfirmAction(
-					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+				.setConfirmAction((int result, CustomGameView view1, AbstractEntity actor1) -> {
 						//spawn rails
 						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
 						Controller.getSoundEngine().play("metallic");

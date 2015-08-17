@@ -36,6 +36,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.ArrayList;
@@ -190,7 +191,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param block the block you want to set.
 	 */
 	public void setBlock(Block block) {
-		if (block!= null) {
+		if (block != null) {
 			Controller.getMap().setBlock(this, block);
 		} else {
 			Controller.getMap().setBlock(this, null);
@@ -247,6 +248,14 @@ public class Coordinate extends AbstractPosition {
 			return null;
 		} else {
 			return Controller.getMap().getBlock(this);
+		}
+	}
+	
+	public AbstractLogicBlock getLogic(){
+		if (z < 0 || z >= Chunk.getBlocksZ()) {
+			return null;
+		} else {
+			return Controller.getMap().getLogic(this);
 		}
 	}
 

@@ -153,8 +153,7 @@ public class PlacableTable extends Table {
 		mode = PlaceMode.Entities;
 		placableGUI.setMode(mode);
 		if (placableGUI.getEntity()==null)//no init value for entity
-			placableGUI.setEntity(
-				AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
+			placableGUI.setEntity(AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
 	

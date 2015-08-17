@@ -20,6 +20,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
@@ -111,7 +112,7 @@ public class Ejira extends MovableEntity implements Controllable {
 	 */
 	private transient float loadAttack = Float.NEGATIVE_INFINITY;
 	private transient final float LOAD_THRESHOLD = 300;//300ms until loading starts
-	private transient AbstractEntity nearestEntity;
+	private transient Interactable nearestInteractable;
 
 	/**
 	 * the current playing sprite value */
@@ -342,28 +343,33 @@ public class Ejira extends MovableEntity implements Controllable {
 				GAME_EDGELENGTH * 2,
 				Interactable.class
 			);
-
-			if (!nearbyInteractable.isEmpty()) {
-				//check if a different one
-				nearestEntity = (AbstractEntity) nearbyInteractable.get(0);
-				showInteractButton(Interactable.RT, nearestEntity.getPosition());
-			} else if (nearestEntity != null) {
-				hideInteractButton();
-				nearestEntity = null;
+			
+			//check nearby blocks
+			for (int x = -2; x < 2; x++) {
+				for (int y = -2; y < 2; y++) {
+					for (int z = -2; z < 2; z++) {
+						AbstractLogicBlock logic = getPosition().toCoord().addVector(x, y, z).getLogic();
+						if (
+							logic != null
+							&& logic instanceof Interactable
+							&& getPosition().toCoord().addVector(x, y, z).distanceTo(getPosition()) <= GAME_EDGELENGTH * 2
+						) {
+							nearbyInteractable.add((Interactable) logic);
+						}
+					}
+				}
 			}
 
-			//check interactable blocks
-			Block blockBelow = pos.toCoord().getBlock();
-			if (blockBelow!= null && CavelandBlocks.verifyInteractableExistence(pos.toCoord()) != null){
-				//todo only overwrite if block is nearer
-				nearestInteractableBlock = getPosition().toCoord();
-				showInteractButton(Interactable.RT, nearestInteractableBlock);
-			} else {
-				//no nearby block
-				nearestInteractableBlock = null;
-				//hide button if also no nearestEntity
-				if (nearestEntity==null)
-					hideInteractButton();
+			//todo sort to find nearest object
+			//nearbyInteractable.sort(new Comparator<Interactable>);
+			
+			if (!nearbyInteractable.isEmpty()) {
+				//check if a different one
+				nearestInteractable = nearbyInteractable.get(0);
+				showInteractButton(Interactable.RT, nearestInteractable.getPosition());
+			} else if (nearestInteractable != null) {
+				hideInteractButton();
+				nearestInteractable = null;
 			}
 
 			//if collecting a backpack
@@ -483,8 +489,8 @@ public class Ejira extends MovableEntity implements Controllable {
 	 * @param view
 	 */
 	public void interactWithNearestThing(CustomGameView view) {
-		if (nearestEntity != null)
-			((Interactable) nearestEntity).interact(view, this);
+		if (nearestInteractable != null)
+			nearestInteractable.interact(view, this);
 	}
 
 	/**

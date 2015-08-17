@@ -33,9 +33,11 @@ package com.bombinggames.wurfelengine.core.Map;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *A
@@ -170,4 +172,24 @@ public abstract class AbstractPosition implements Serializable {
 	 * @return the distance from this pos to the other pos only regarding horizontal components.
 	 */
 	public abstract float distanceToHorizontal(AbstractPosition pos);
+	
+	/**
+	 * get entities in radius
+	 * @param <type> returns only object if type which is the filter
+	 * @param radius in game dimension pixels
+	 * @param type the type you want to filter
+	 * @return every entitie in radius
+	 */
+	@SuppressWarnings("unchecked")
+	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type){
+		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
+
+        for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
+            if (distanceTo(entity.getPosition().toPoint()) < radius){
+                result.add((type) entity);
+            } 
+        }
+
+        return result;
+	}
 }

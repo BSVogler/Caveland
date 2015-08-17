@@ -37,35 +37,37 @@ import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  * The manager of the logic of the oven block.
  * @author Benedikt Vogler
  */
-public class OvenLogic extends CollectibleContainer implements Interactable{
+public class OvenLogic extends AbstractLogicBlock implements Interactable{
 	private static final long serialVersionUID = 1L;
-	private SmokeEmitter emitter;
+	private final SmokeEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
 	private float burntime;
+	private final CollectibleContainer container = new CollectibleContainer((byte) 0);
+	private final SimpleEntity fire = new SimpleEntity((byte) 17);
 
-	public OvenLogic() {
-		super((byte) 17);
-		setHidden(true);
-		disableShadow();
-	}
-	
-	@Override
-	public AbstractEntity spawn(Point point) {
-		super.spawn(point);
-		emitter = (SmokeEmitter) new SmokeEmitter().spawn(point);
+	/**
+	 * 
+	 * @param block
+	 * @param coord 
+	 */
+	public OvenLogic(Block block, Coordinate coord) {
+		super(block, coord);
+		emitter = (SmokeEmitter) new SmokeEmitter().spawn(coord.toPoint());
 		emitter.setHidden(true);
 		emitter.setParticleStartMovement(Vector3.Z.cpy());
 		emitter.setParticleTTL(1000);
 		emitter.setActive(false);
-		setLightlevel(10);
-		return this;
+		fire.setLightlevel(10);
 	}
 	
 	@Override
@@ -78,27 +80,24 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 		}
 	}
 
-	@Override
 	public void addCollectible(Collectible collectible) {
 		if (collectible.getType() == CollectibleType.Coal) {
 			burntime += 20000;//20s
 		} else {
-			super.addCollectible(collectible);
+			container.addCollectible(collectible);
 		}
 	}
 	
 	@Override
 	public void update(float dt) {
-		super.update(dt);
-		
 		if (burntime > 0) {//while the oven is burning
 			emitter.setActive(true);
-			setHidden(false);
+			fire.setHidden(false);
 			emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
 			
 			//burn ironore
 			if (productionCountDown==0) {
-				Collectible ironore = retrieveCollectibleReference(CollectibleType.Ironore);
+				Collectible ironore = container.retrieveCollectibleReference(CollectibleType.Ironore);
 				if (ironore != null) {
 					ironore.dispose();
 					productionCountDown = PRODUCTIONTIME;
@@ -128,7 +127,7 @@ public class OvenLogic extends CollectibleContainer implements Interactable{
 		//clamp if reached bottom
 		if (burntime < 0) {
 			burntime = 0;
-			setHidden(true);
+			fire.setHidden(true);
 			emitter.setActive(false);
 		}
 	}

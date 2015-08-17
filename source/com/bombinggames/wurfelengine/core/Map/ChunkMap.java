@@ -34,6 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -503,4 +504,10 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		return blocksZ;
 	}
 
+	@Override
+	public AbstractLogicBlock getLogic(Coordinate coord) {
+		Chunk chunk = getChunk(coord);
+		if (chunk==null) return null;
+		else return chunk.getLogic(coord);
+	}
 }

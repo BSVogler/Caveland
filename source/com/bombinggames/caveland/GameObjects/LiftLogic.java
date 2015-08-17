@@ -7,6 +7,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
@@ -16,7 +17,6 @@ import java.util.ArrayList;
  */
 public class LiftLogic extends AbstractEntity implements Interactable {
 	private static final long serialVersionUID = 1L;
-	private Portal hole;
 	
 	public LiftLogic() {
 		super((byte) 0);
@@ -25,7 +25,6 @@ public class LiftLogic extends AbstractEntity implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		hole = (Portal) getPosition().toCoord().getEntitiesInside(Portal.class).get(0);
 		return this;
 	}
 
@@ -34,7 +33,11 @@ public class LiftLogic extends AbstractEntity implements Interactable {
 	public void update(float dt) {
 		super.update(dt);
 		ArrayList<MineCart> nearbyLoren = getPosition().getEntitiesNearby(2, MineCart.class);
-		nearbyLoren.forEach((l) -> {l.setPosition(hole.getTarget());});
+		AbstractLogicBlock hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
+		if (hole != null && (hole instanceof Portal))
+			nearbyLoren.forEach((l) -> {
+				l.setPosition(((Portal) hole).getTarget());
+			});
 	}
 
 	@Override

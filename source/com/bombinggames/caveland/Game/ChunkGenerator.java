@@ -61,6 +61,12 @@ public class ChunkGenerator implements Generator {
 			//underworld
 			int insideout = insideOutside(x, y, z);
 			
+			if (insideout==2)
+				return 11;
+			
+			if (insideout==3)
+				return 11;
+				
 			//walls
 			if (insideout==0) {//build a wall
 				if (z<=4)
@@ -103,6 +109,17 @@ public class ChunkGenerator implements Generator {
 	 */
 	@Override
 	public AbstractEntity[] generateEntities(int x, int y, int z){
+		return null;
+	}
+	
+		/**
+	 * the the entities which should be spawned at this coordiante
+	 * @param x
+	 * @param y
+	 * @param z 
+	 */
+	@Override
+	public void configureLogicBlocks(int x, int y, int z){
 		if (y>CAVESBORDER) {
 			//apply p
 			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
@@ -113,26 +130,23 @@ public class ChunkGenerator implements Generator {
 				Portal portal; 
 				if (getCaveNumber(x, y, z)==0) {
 					//exit to surface
-					portal = (Portal) new Portal(new Coordinate(0, 0, 5)).spawn(new Coordinate(x, y, z).toPoint());
+					((Portal) new Coordinate(x, y, z).getLogic()).setTarget(new Coordinate(0, 0, 5));
 				} else {
-					portal = (Portal) new Portal(getCaveExit(getCaveNumber(x, y, z)+1)).spawn(new Coordinate(x, y, z).toPoint());
+					((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
 				}
-				portal.setValue((byte) 1);
-				portal.enableEnemySpawner();
-				return new AbstractEntity[]{portal};
+				//portal.setValue((byte) 1);
+				//portal.enableEnemySpawner();
 			}
 			//loch im Boden
 			if (xRoom==5 && yRoom==g-p-4 && z == 4){
-				return new AbstractEntity[]{new Portal(getCaveEntry(getCaveNumber(x, y, z)-1).addVector(0, 0, 3)).spawn(new Coordinate(x, y, z).toPoint())};
+				((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
 				
 			}
 		} else {
 			if (x==0 && y==0 && z==4) {
-				Portal portal = (Portal) new Portal(getCaveEntry(0).addVector(0, 0, 3)).spawn(new Coordinate(x, y, z).toPoint());
-				return new AbstractEntity[]{portal};
+				((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveEntry(0).addVector(0, 0, 3));
 			}
 		}
-		return null;
 	}
 	
 	/**
@@ -217,9 +231,9 @@ public class ChunkGenerator implements Generator {
 			if (firstCheckInside==false)
 				return 0;//must be in middle if was outside and now inside
 			else {
-				if (xRoom==5 && yRoom==g-5)
+				if (xRoom==5 && yRoom==g-5 && z==4)
 					return 2;
-				if (xRoom==g-5 && yRoom==5)
+				if (xRoom==g-5 && yRoom==5 && z==4)
 					return 3;
 				return 1;//still inside
 			}

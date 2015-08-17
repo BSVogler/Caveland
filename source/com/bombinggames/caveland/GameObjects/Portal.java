@@ -34,6 +34,7 @@ package com.bombinggames.caveland.GameObjects;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -43,30 +44,21 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Portal extends AbstractEntity implements Interactable{
+public class Portal extends AbstractLogicBlock implements Interactable {
 	private static final long serialVersionUID = 2L;
-	private Coordinate target;
+	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
 	private boolean spawner;
 	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
 	
 	/**
-	 * teleports to 0 0 0
+	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 * @param block
+	 * @param coord
 	 */
-	public Portal(){
-		super((byte) 15);
-		setName("Portal");
-		this.target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
+	public Portal(Block block, Coordinate coord){
+		super(block, coord);
 	}
 	
-	/**
-	 * teleport to custom aim
-	 * @param target 
-	 */
-	public Portal(Coordinate target) {
-		this();
-		this.target = target;
-	}
-
 	/**
 	 * copy safe
 	 * @return 
@@ -86,7 +78,6 @@ public class Portal extends AbstractEntity implements Interactable{
 
 	@Override
 	public void update(float dt) {
-		super.update(dt);
 		if (spawner){
 			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, Ejira.class).isEmpty()){//if a player is nearby
 				if (spawnedList.size()<3) {

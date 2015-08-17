@@ -52,18 +52,29 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	private boolean releaseContentOnDestroy = false;
 
+	/**
+	 * using the default backpack sprite
+	 */
 	public CollectibleContainer() {
 		super((byte) 56);
 		setName("Container");
 		setIndestructible(true);
 	}
 	
+	/**
+	 * 
+	 * @param id for custom sprite id
+	 */
 	public CollectibleContainer(byte id) {
 		super(id);
 		setName("Container");
 		setIndestructible(true);
 	}
 
+	/**
+	 * 
+	 * @param backpack 
+	 */
 	public void setBackpack(boolean backpack) {
 		this.backpack = backpack;
 	}
@@ -114,8 +125,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public ArrayList<Collectible> getCollectibles(){
 		ArrayList<Collectible> col = new ArrayList<>(3);
-		content.stream().forEach(
-			(AbstractEntity ent) -> {
+		content.stream().forEach((AbstractEntity ent) -> {
 				if (ent instanceof Collectible)
 					col.add((Collectible) ent);
 			}
@@ -241,8 +251,7 @@ public class CollectibleContainer extends AbstractEntity {
 				item.setPosition(getPosition().cpy());
 			}
 		}
-		content.removeIf(
-			(AbstractEntity item) -> item.shouldBeDisposed()
+		content.removeIf((AbstractEntity item) -> item.shouldBeDisposed()
 		);
 	}
 

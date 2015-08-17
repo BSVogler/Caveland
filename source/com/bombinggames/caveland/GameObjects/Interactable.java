@@ -1,13 +1,13 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CustomGameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public interface Interactable{
+public interface Interactable {
 	/**
 	 * Xbox controller sprite values.
 	 */
@@ -105,5 +105,11 @@ public interface Interactable{
 	 * @param view the view by which the interaction is caused and feedback is
 	 * send to
 	 */
-	public abstract void interact(CustomGameView view, AbstractEntity actor);
+	public abstract void interact(CustomGameView view, com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity actor);
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public abstract AbstractPosition getPosition();
 }

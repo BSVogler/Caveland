@@ -55,5 +55,13 @@ public interface Generator {
 	 * @param z
 	 * @return can be null
 	 */
-	public abstract AbstractEntity[] generateEntities(int x, int y, int z);   
+	public abstract AbstractEntity[] generateEntities(int x, int y, int z);
+	
+	/**
+	 * fill the logic
+	 * @param x
+	 * @param y
+	 * @param z 
+	 */
+	public abstract void configureLogicBlocks(int x, int y, int z);
 }

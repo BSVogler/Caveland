@@ -32,36 +32,36 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
  * The logic for a construciton site
  * @author Benedikt Vogler
  */
-public class ConstructionSite extends CollectibleContainer implements Interactable  {
+public class ConstructionSite extends AbstractLogicBlock implements Interactable  {
+	
 	private static final long serialVersionUID = 1L;
-	private final byte result;
+	private final CollectibleContainer container = new CollectibleContainer((byte) 0);
 	private final CollectibleType[] neededItems;
 	private final int[] neededAmount;
-	private final byte resultValue;
+	private byte result;
+	private byte resultValue;
 
 	/**
 	 * the resulting block
-	 * @param resultId 
-	 * @param resultValue 
+	 * @param block the block where this logic is performed
+	 * @param coord
 	 */
-	public ConstructionSite(byte resultId, byte resultValue) {
-		super();
-		setHidden(true);
-		this.result = resultId;
-		this.resultValue = resultValue;
+	public ConstructionSite(Block block, Coordinate coord) {
+		super(block, coord);
 		if (result==11) {
 			neededAmount = new int[]{2,1};
 			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood };
@@ -69,12 +69,18 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			neededAmount = new int[]{2,1};
 			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood };
 		}
+		container.spawn(coord.toPoint());
+	}
+
+	public void setResult(byte result, byte resultValue) {
+		this.result = result;
+		this.resultValue = resultValue;
 	}
 	
 	public String getStatusString(){
 		String string = "";
 		for (int i = 0; i < neededItems.length; i++) {
-			string += count(neededItems[i])+"/"+ neededAmount[i] +" "+neededItems[i] + ", ";
+			string += container.count(neededItems[i])+"/"+ neededAmount[i] +" "+neededItems[i] + ", ";
 		}
 		return string;
 	}
@@ -108,24 +114,27 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 	public boolean build(){
 		//check ingredients
 		for (int i = 0; i < neededItems.length; i++) {
-			if (count(neededItems[i]) < neededAmount[i])
+			if (container.count(neededItems[i]) < neededAmount[i])
 				return false;
 		}
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
-		CavelandBlocks.verifyInteractableExistence(getPosition().toCoord());
 		Controller.getSoundEngine().play("construct");
-		dispose();
+		container.dispose();
 		return true;
+	}
+
+	@Override
+	public void update(float dt) {
 	}
 	
 	private class ConstructionSiteWindow extends ActionBox {
-		private final CollectibleContainer parent;
+		private final ConstructionSite parent;
 
 		public ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
 			super(view, "Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
-			ArrayList<String> list = new ArrayList<>(parent.getContent().size());
+			ArrayList<String> list = new ArrayList<>(parent.container.getContent().size());
 			if (actor instanceof Ejira) {
 				if (canAddFrontItem(actor))
 					list.add("Add: " + ((Ejira)actor).getInventory().getFrontCollectible().getName());
@@ -134,8 +143,8 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 			} else
 				list.add("Add");
 			
-			if (parent.getContent().size() > 0)
-				list.add("Take: " + parent.getContent().get(parent.getContent().size()-1).getName());
+			if (parent.container.getContent().size() > 0)
+				list.add("Take: " + parent.container.getContent().get(parent.container.getContent().size()-1).getName());
 			else list.add("Empty");
 			list.add("Build: "+ parent.getStatusString());
 			addSelectionNames(list);
@@ -151,12 +160,12 @@ public class ConstructionSite extends CollectibleContainer implements Interactab
 					if (canAddFrontItem(actor)) {
 						Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 						if (frontItem != null) {
-							parent.addCollectible(frontItem);
+							parent.container.addCollectible(frontItem);
 						}
 					}
 				} else if (num==1){
 					//fetch item
-					parent.retrieveCollectible(num - 1);
+					parent.container.retrieveCollectible(num - 1);
 				} else if (num==2) build();
 			}
 			return num;

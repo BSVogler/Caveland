@@ -6,6 +6,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
@@ -134,8 +135,7 @@ public abstract class AbstractMap implements Cloneable {
 		}
 
 		//remove not spawned objects from list
-		entityList.removeIf(
-			(AbstractEntity entity) -> !entity.isSpawned()
+		entityList.removeIf((AbstractEntity entity) -> !entity.isSpawned()
 		);
 	}
 
@@ -169,7 +169,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return every item on the map
 	 */
 	public AbstractEntity[] getEntitys() {
-		return entityList.toArray(new AbstractEntity[]{});//it is a bit stupid to create a new array which will not be used but wihtout you get Object[] which can not be casted to AbstractEntity[].
+		return entityList.toArray(new AbstractEntity[]{});//it is a bit stupid to create a new array which will not be used but wihtout you get Object[] which can not be casted to Interactable[].
 	}
 	
 	/**
@@ -383,8 +383,7 @@ public abstract class AbstractMap implements Cloneable {
 	public abstract void setBlock(final RenderBlock block);
 
 	/**
-	 * Replace a block. Assume that the map already has been filled at this
-	 * coordinate.
+	 * Set a block at this coordinate. This creates a logic instance if the block if it has a logic.
 	 *
 	 * @param coord
 	 * @param block
@@ -469,8 +468,8 @@ public abstract class AbstractMap implements Cloneable {
 	public AbstractMap clone() throws CloneNotSupportedException {
 		//commented deep copy because the referals are still pointing to the old objects which causes invisible duplicates.
 //		clone.entityList = new ArrayList<>(entityList.size());
-//		for (AbstractEntity entity : entityList) {
-//			clone.entityList.add((AbstractEntity) entity.clone());
+//		for (Interactable entity : entityList) {
+//			clone.entityList.add((Interactable) entity.clone());
 //		}
 		return (AbstractMap) super.clone();
 	}
@@ -546,4 +545,11 @@ public abstract class AbstractMap implements Cloneable {
 	public int getSavesCount() {
 		return getSavesCount(directory);
 	}
+
+	/**
+	 * 
+	 * @param coord
+	 * @return 
+	 */
+	public abstract AbstractLogicBlock getLogic(Coordinate coord);
 }

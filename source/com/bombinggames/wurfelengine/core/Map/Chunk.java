@@ -35,6 +35,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -83,6 +84,7 @@ public class Chunk {
 	 * the ids are stored here
 	 */
     private final Block data[][][];
+	private final ArrayList<AbstractLogicBlock> logicBlocks = new ArrayList<>(2);
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
@@ -164,6 +166,14 @@ public class Chunk {
 				}
 			}
 		}
+		
+		for (AbstractLogicBlock logicBlock : logicBlocks) {
+			logicBlock.update(dt);
+		}
+		//check if block at position corespodends to saved, garbage collection
+		logicBlocks.removeIf((AbstractLogicBlock lb) -> {
+			return lb.getPosition().getBlock().getId() != lb.getBlock().getId();
+		});
 	}
 	
 	/** 
@@ -605,6 +615,13 @@ public class Chunk {
 	 * @param block no null pointer allowed
 	 */
 	public void setBlock(RenderBlock block) {
+		//get corresponding logic and update
+		if (block != null) {
+			AbstractLogicBlock logic = block.getBlockData().getLogicInstance(block.getPosition());
+			if (logic != null)
+				logicBlocks.add(logic);
+		}
+		
 		int xIndex = block.getPosition().getX()-topleft.getX();
 		int yIndex = block.getPosition().getY()-topleft.getY();
 		int z = block.getPosition().getZ();
@@ -620,6 +637,13 @@ public class Chunk {
 	 * @param block 
 	 */
 	public void setBlock(Coordinate coord, Block block) {
+		//get corresponding logic and update
+		if (block != null) {
+			AbstractLogicBlock logic = block.getLogicInstance(coord);
+			if (logic != null)
+			logicBlocks.add(block.getLogicInstance(coord));
+		}
+		
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();
@@ -627,6 +651,23 @@ public class Chunk {
 			data[xIndex][yIndex][z] = block;
 			modified = true;
 		}
+	}
+	
+	/**
+	 * Get the logic to a logicblock.
+	 * @param coord 
+	 * @return can return null
+	 */
+	public AbstractLogicBlock getLogic(Coordinate coord) {
+		Block block = coord.getBlock();
+		if (block != null) {
+			for (AbstractLogicBlock logicBlock : logicBlocks) {
+				if (logicBlock.getPosition().equals(coord) && logicBlock.getBlock().getId() == block.getId()) {
+					return logicBlock;
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**

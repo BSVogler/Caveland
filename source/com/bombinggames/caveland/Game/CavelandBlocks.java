@@ -1,19 +1,18 @@
 package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.CustomTree;
-import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.LiftLogic;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.caveland.GameObjects.OvenLogic;
+import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.caveland.GameObjects.collectibles.ConstructionSite;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import java.util.ArrayList;
 
 /**
  *
@@ -144,8 +143,7 @@ public RenderBlock toRenderBlock(Block data) {
 			}
 		}
 	}
-	
-	
+
 	//Caveland specific details
 	
 	/**
@@ -162,6 +160,8 @@ public RenderBlock toRenderBlock(Block data) {
 		return false;
 	}
 	
+	
+	
 	/**
 	 * is it possible to interact with this
 	 * @param id
@@ -171,36 +171,15 @@ public RenderBlock toRenderBlock(Block data) {
 		if (id==11 || id==12) return true;
 		return false;
 	}
-	
-	/**
-	 * Checks if the block is interactable and if the corresponding logic entity is missing creates it.
-	 * @param coord the coordinate where the interactable should be
-	 * @return null if not interactable 
-	 */
-	public static Interactable verifyInteractableExistence(Coordinate coord){
-		byte id = coord.getBlock().getId();
-		byte value = coord.getBlock().getId();
-		if (interactAble(id)) {
-			ArrayList<AbstractEntity> everyEntity = coord.getEntitiesInside();
-			for (AbstractEntity ent : everyEntity) {
-				if (id==12) {
-					if (ent instanceof OvenLogic) {
-						return (Interactable) ent;
-					}
-				} else if (id==15) {
-					if (ent instanceof LiftLogic) {
-						return (Interactable) ent;
-					}
-				}
-			}
-			//not found, so create new one
-			if (id==12) {
-				return (Interactable) new OvenLogic().spawn(coord.toPoint());
-			} else if (id==15) {
-				return (Interactable) new LiftLogic().spawn(coord.toPoint());
-			} else return null;
-		} else {
-			return null;
-		}
+
+	@Override
+	public AbstractLogicBlock newLogicInstance(Block block, Coordinate coord) {
+		if (block.getId() == 16)
+			return new Portal(block, coord);
+		if (block.getId() == 11)
+			return new ConstructionSite(block, coord);
+		if (block.getId() == 12)
+			return new OvenLogic(block, coord);
+		return null;
 	}
 }

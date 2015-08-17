@@ -52,5 +52,9 @@ public class BlockTestGenerator implements Generator{
 	public AbstractEntity[] generateEntities(int x, int y, int z) {
 		return null;
 	}
+
+	@Override
+	public void configureLogicBlocks(int x, int y, int z) {
+	}
     
 }

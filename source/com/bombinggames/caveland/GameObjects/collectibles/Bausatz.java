@@ -7,6 +7,7 @@ import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *
@@ -17,6 +18,15 @@ public class Bausatz extends Collectible {
 
 	public Bausatz() {
 		super(CollectibleType.Toolkit);
+	}
+	
+	protected void build(Coordinate coord, byte id){
+		//spawn construction site
+		coord.setBlock(Block.getInstance((byte) 11));
+		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);
+		constructionSiteLogic.setResult(id, (byte) 0);
+		Controller.getSoundEngine().play("metallic");
+		dispose();//dispose tool kit
 	}
 
 	@Override
@@ -29,20 +39,11 @@ public class Bausatz extends Collectible {
 					"Power Station",
 					"Lift"
 				)
-				.setConfirmAction(
-					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+				.setConfirmAction((int result, CustomGameView view1, AbstractEntity actor1) -> {
 						if (result==0) {
-							//spawn construction site
-							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
-							new ConstructionSite((byte) 12, (byte) 0).spawn(actor1.getPosition().toCoord().toPoint());
-							Controller.getSoundEngine().play("metallic");
-							dispose();//dispose tool kit
+							build(actor1.getPosition().toCoord(), (byte) 12);//spawn construction site
 						} else if (result==3) {
-							//spawn construction site
-							actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 11));
-							new ConstructionSite((byte) 15, (byte) 0).spawn(actor1.getPosition().toCoord().toPoint());
-							Controller.getSoundEngine().play("metallic");
-							dispose();//dispose tool kit
+							build(actor1.getPosition().toCoord(), (byte) 15);//spawn construction site
 						}
 						return result;
 					}

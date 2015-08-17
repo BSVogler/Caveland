@@ -2,7 +2,6 @@ package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.caveland.CavelandCommands;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.wurfelengine.WE;
@@ -62,7 +61,6 @@ public class CustomGameController extends Controller {
 		
 		RenderBlock.setDestructionSound("blockDestroy");
 		
-		WE.getConsole().setCustomCommands(new CavelandCommands());
 		setLightEngine(new CustomLightEngine());
 		
 		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")){

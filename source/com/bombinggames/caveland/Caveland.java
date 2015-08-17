@@ -78,7 +78,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		
 		AbstractMap.setDefaultGenerator(new ChunkGenerator());
-			
+		
 		if (args.length > 0){
             //look if contains launch parameters
             for (int i = 0; i < args.length; i++) {
@@ -94,7 +94,12 @@ public class Caveland {
                         break;
                 }
             }
-        }  
+        }
+		
+		WE.addLaunchCommands(() -> {
+			WE.getConsole().addCommand(new GiveCommand());
+			WE.getConsole().addCommand(new PortalTargetCommand());
+		});
 		
         WE.launch("Caveland " + VERSION, args);
 		
@@ -146,7 +151,7 @@ public class Caveland {
 			"Gereon Vogler\n" +
 			"Rene Weiszer\n" +
 			"Bernhard Vogler\n" +
-			"Janosch\n" +
+			"\"Janosch\" Frierich\n" +
 			"Pia Lenszen\n" +
 			"reddit.com/r/gamedev\n" +
 			"Bauhaus University Weimar\n\n"

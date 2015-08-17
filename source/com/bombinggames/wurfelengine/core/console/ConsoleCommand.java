@@ -14,7 +14,6 @@ import java.util.StringTokenizer;
  */
 public interface ConsoleCommand {
 	
-	
 	/**
 	 * 
 	 * @param parameters the value of parameters

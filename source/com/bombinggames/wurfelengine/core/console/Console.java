@@ -39,7 +39,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
-import com.bombinggames.wurfelengine.core.CommandsInterface;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
@@ -51,7 +50,7 @@ import java.util.StringTokenizer;
  *The message system can manage&show messages (Line).
  * @author Benedikt
  */
-public class Console implements CommandsInterface  {
+public class Console {
 	
     private int timelastupdate = 0;
     private GameplayScreen gameplayRef;//the reference to the associated gameplay
@@ -60,9 +59,8 @@ public class Console implements CommandsInterface  {
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
     private Modes mode;
-	private CommandsInterface externalCommands;
 	private final TextArea log;
-	private ArrayList<ConsoleCommand> registeredCommands = new ArrayList<>(10);
+	private final ArrayList<ConsoleCommand> registeredCommands = new ArrayList<>(10);
 	
 	/**
 	 * suggestions stuff
@@ -171,7 +169,6 @@ public class Console implements CommandsInterface  {
      *
      * @param gameplayRef
      */
-	@Override
     public void setGameplayRef(GameplayScreen gameplayRef) {
         this.gameplayRef = gameplayRef;
     }
@@ -385,12 +382,11 @@ public class Console implements CommandsInterface  {
 	}
     
 	/**
-	 * Set the factory for custom commands for delegation.
-	 * @param externalCommands 
+	 * Add new commands
+	 * @param command 
 	 */
-	public void setCustomCommands(CommandsInterface externalCommands){
-		this.externalCommands = externalCommands;	
-		externalCommands.setGameplayRef(gameplayRef);
+	public void addCommand(ConsoleCommand command){
+		registeredCommands.add(command);
 	}
 	
 	/**
@@ -457,7 +453,6 @@ public class Console implements CommandsInterface  {
      * @param command
      * @return 
      */
-	@Override
     public boolean executeCommand(String command){
         if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
@@ -493,13 +488,8 @@ public class Console implements CommandsInterface  {
 				add("cvar "+ first +" has value "+cvar.toString()+"\n", "System");
 				return true;
 			}
-		} else {
-			//try executing with custom commands
-			if (externalCommands!=null)
-				return externalCommands.executeCommand(command);
-			add("CVar or command \""+first+"\" not found.\n", "System");
-			return true;
 		}
+		return false;
     }
     
     private class StageInputProcessor extends InputListener {

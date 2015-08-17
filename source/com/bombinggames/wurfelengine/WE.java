@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.AbstractMainMenu;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMenuItem;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.core.Console;
+import com.bombinggames.wurfelengine.core.console.Console;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.EngineView;
 import com.bombinggames.wurfelengine.core.GameView;

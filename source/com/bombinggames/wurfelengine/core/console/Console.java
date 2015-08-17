@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core;
+package com.bombinggames.wurfelengine.core.console;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -39,10 +39,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
-import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
-import com.bombinggames.wurfelengine.core.Gameobjects.BenchmarkBall;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.CommandsInterface;
+import com.bombinggames.wurfelengine.core.GameplayScreen;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -56,13 +55,14 @@ public class Console implements CommandsInterface  {
 	
     private int timelastupdate = 0;
     private GameplayScreen gameplayRef;//the reference to the associated gameplay
-    private TextField textinput;
+    private final TextField textinput;
     private final Stack<Line> messages; 
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
     private Modes mode;
 	private CommandsInterface externalCommands;
 	private final TextArea log;
+	private ArrayList<ConsoleCommand> registeredCommands = new ArrayList<>(10);
 	
 	/**
 	 * suggestions stuff
@@ -72,6 +72,10 @@ public class Console implements CommandsInterface  {
 	 * current path where the console is in
 	 */
 	private String path = "";
+
+	public String getPath() {
+		return path;
+	}
 
 
     
@@ -122,6 +126,25 @@ public class Console implements CommandsInterface  {
      */
     public Console(Skin skin, final int xPos, final int yPos) {
         this.messages = new Stack<>();
+		
+		//register engine commands
+		registeredCommands.add(new BenchmarkCommand());
+		registeredCommands.add(new CdCommand());
+		registeredCommands.add(new LECommand());
+		registeredCommands.add(new CreditsCommand());
+		registeredCommands.add(new EditorCommand());
+		registeredCommands.add(new ExitCommand());
+		registeredCommands.add(new KillallCommand());
+		registeredCommands.add(new LoadMapCommand());
+		registeredCommands.add(new TeleportCommand());
+		registeredCommands.add(new ScreenshakeCommand());
+		registeredCommands.add(new SaveCommand());
+		registeredCommands.add(new ReloadShadersCommand());
+		registeredCommands.add(new SaveCommand());
+		registeredCommands.add(new PrintmapCommand());
+		registeredCommands.add(new MenuCommand());
+		registeredCommands.add(new LsCommand());
+		registeredCommands.add(new FullscreenCommand());
 		
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
 		log.setBounds(xPos, yPos+52, 750, 550);
@@ -325,18 +348,25 @@ public class Console implements CommandsInterface  {
 		ArrayList<String> suggestions = new ArrayList<>(1);
 		if ("cd".equals(getCurrentCommand())){
 			suggestions.add("cd ");//only add space
-		}else {
+		} else {
 			if ("cd ".equals(getCurrentCommand())){
 				suggestions = ls();
 				for (int i = 0; i < suggestions.size(); i++) {
 					suggestions.set(i, "cd ".concat(suggestions.get(i)));
 				}
-			}else {
+			} else {
 				//get until cursor position
 				String commandTillCursor = getCurrentCommand().substring(0, textinput.getCursorPosition()-path.length()-3);
 				
+				//suggest command
+				for (ConsoleCommand command : registeredCommands) {
+					if (command.getCommandName().startsWith(commandTillCursor.toLowerCase()))
+						suggestions.add(command.getCommandName());
+				}
+	
+				//suggest cvar
 				if ("".equals(path)) {
-					suggestions = WE.CVARS.getSuggestions(commandTillCursor);
+					suggestions.addAll(WE.CVARS.getSuggestions(commandTillCursor));
 				} else {
 					if (path.contains(":"))
 						suggestions = WE.getLoadedCVarSystemSave().getSuggestions(commandTillCursor);
@@ -363,7 +393,12 @@ public class Console implements CommandsInterface  {
 		externalCommands.setGameplayRef(gameplayRef);
 	}
 	
-	private boolean checkPath(String newPath){
+	/**
+	 * check if the path is valid relative to the current one
+	 * @param newPath
+	 * @return 
+	 */
+	public boolean checkPath(String newPath){
 		if (newPath.equals("/") || newPath.isEmpty()) {
 			return true;
 		} else {
@@ -416,7 +451,7 @@ public class Console implements CommandsInterface  {
 			return path.substring(0, path.indexOf(':'));
 		else return path;
 	}
-		
+	
     /**
      * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
@@ -427,182 +462,14 @@ public class Console implements CommandsInterface  {
         if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
 		String first = st.nextToken().toLowerCase();
-        switch (first) {
-			case "ls":
-				ls().forEach((dir) -> add(dir));
-				return true;
-			case "clear":
-				log.setText("");
-				return true;
-				
-			case "editor":
-                WE.loadEditor(true);
-                return true;
-            case "le":
-            case "lightengine":
-                if (Controller.getLightEngine()!=null)
-                    Controller.getLightEngine().setDebug(!Controller.getLightEngine().isInDebug());
-                return true;
-            case "quit":
-            case "exit":
-                Gdx.app.exit();
-                return true;
-            case "menu":
-                WE.showMainMenu();
-                return true;
-			case "killall":
-				Controller.getMap().disposeEntities();
-				return true;
-            case "fullscreen":
-                WE.setFullscreen(!WE.isFullscreen());
-                return true;
-            case "help":
-            case "about":
-            case "credits":
-                add("Wurfel Engine Version:"+WE.VERSION+"\nFor a list of available commands visit the GitHub Wiki.\n"+WE.getCredits(), "System");
-                return true;
-            case "save":
-                return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
-            case "benchmark":
-                new BenchmarkBall().spawn(Controller.getMap().getCenter(Controller.getMap().getGameHeight()));
-                //add("Spawned a benchmark ball.", "System");
-                return true;
-			case "printmap":
-				Controller.getMap().print();
-				return true;
-			case "reloadshaders":
-				gameplayRef.getView().loadShaders();
-				return true;
-        }
 		
-		if (command.toLowerCase().startsWith("tp")){
-			if (!st.hasMoreTokens()) {
-				add("Expected more parameters", "System");
-				return false;
-			}
-			int x = Integer.parseInt(st.nextToken());
-			if (!st.hasMoreTokens()) {
-				add("Expected more parameters", "System");
-				return false;
-			}
-			int y = Integer.parseInt(st.nextToken());
-			gameplayRef.getView().getCameras().get(0).setCenter(new Coordinate(x, y, 0).toPoint());
-			return true;
-		}
-			
-		if (command.startsWith("cd")){
-            if (!st.hasMoreElements()) return false;
-            
-            String enteredPath = st.nextToken();
-			if (enteredPath.length()>0) {
-				if (!checkPath(enteredPath)) {
-					add("not a valid path");
-				} else {
-					switch (enteredPath) {
-						case "/":
-							path="";
-							break;
-						case "..":
-							if (path.length()>1)
-								path="";
-							break;
-						default:
-							path = path.concat(enteredPath);//then add new path
-							//if access to map
-							if (path.length()>0) {
-								String mapName;
-								if (path.contains(":"))
-									mapName = path.substring(0, path.indexOf(':'));
-								else 
-									mapName = path;
-								//make sure it gets loaded
-								if (WE.CVARS.getChildSystem()==null) {
-									WE.CVARS.setChildSystem(
-										CVarSystem.getInstanceMapSystem(
-											new File(
-												WorkingDirectory.getMapsFolder()+"/"+mapName+"/meta.wecvar"
-											)
-										)
-									);
-									WE.getLoadedCVarSystemMap().load();
-								}
-								
-								//access save
-								if (path.contains(":")) {
-									WE.getLoadedCVarSystemMap().setChildSystem(
-										CVarSystem.getInstanceSaveSystem(
-											new File(
-												WorkingDirectory.getMapsFolder()+"/"+mapName+"/save"+path.substring(path.indexOf(':')+1)+"/meta.wecvar"
-											)
-										)
-									);
-									WE.getLoadedCVarSystemSave().load();
-								}
-								
-							}
-							break;
-					}
-				}
-			}
-			return true;
-        }
-        
-        
-		if (command.startsWith("screenshake")){
-			int id = 0;
-            if (st.hasMoreElements()){
-                id = Integer.valueOf(st.nextToken());  
-            }
-			float amp = 10;
-			if (st.hasMoreElements()){
-                amp = Float.valueOf(st.nextToken());  
-            }
-			float t = 500;
-			if (st.hasMoreElements()){
-                t = Float.valueOf(st.nextToken());  
-            }
-			if (id < gameplayRef.getView().getCameras().size())
-				gameplayRef.getView().getCameras().get(id).shake(amp, t);
-			else {
-				add("Camera ID out of range\n","System");
-				return false;
+		//first check if it a command
+		for (ConsoleCommand comm : registeredCommands) {
+			if (comm.getCommandName().equals(first)) {
+				return comm.perform(st, gameplayRef);
 			}
 		}
-        
-        if (command.startsWith("loadmap")){
-            if (!st.hasMoreElements()) return false;
-            
-            String mapname = st.nextToken();
-            if (mapname.length()>0) {
-				int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapname));
-                return Controller.loadMap(new File(WorkingDirectory.getMapsFolder()+"/"+mapname), slot);
-			}
-        }
-        
-        if (command.startsWith("newmap")){
-            String mapname;
-            if (st.hasMoreTokens())
-                mapname = st.nextToken();
-            else
-                return false;
-            
-//            Generator generator = new Generator() {
-//
-//                @Override
-//                public int generate(int x, int y, int z) {
-//                    return 0;
-//                }
-//            };
-//            Controller.getMap().setGenerator(generator);
-//            try {
-//                ChunkMap.createMapFile(mapname);
-//				return executeCommand("loadmap " +mapname);
-//            } catch (IOException ex) {
-//                add(ex.getMessage(), "Warning");
-//                return false;
-//            }
-        }
-         
+		
 		//if not a command try setting a cvar
 		CVar cvar;
 		if ("".equals(path)) {
@@ -614,7 +481,7 @@ public class Console implements CommandsInterface  {
 				cvar = WE.CVARS.getChildSystem().getChildSystem().get(first);
 		}
 		
-		if (cvar!=null) {//if registered
+		if (cvar != null) {//if registered
 			if (st.hasMoreTokens()){
 				//set cvar
 				String value = st.nextToken();
@@ -630,7 +497,7 @@ public class Console implements CommandsInterface  {
 			//try executing with custom commands
 			if (externalCommands!=null)
 				return externalCommands.executeCommand(command);
-			add("CVar \""+first+"\" not found.\n", "System");
+			add("CVar or command \""+first+"\" not found.\n", "System");
 			return true;
 		}
     }

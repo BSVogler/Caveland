@@ -3,7 +3,7 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
- *
+ * Manages the game logic for a block
  * @author Benedikt Vogler
  */
 public abstract class AbstractLogicBlock {
@@ -21,6 +21,10 @@ public abstract class AbstractLogicBlock {
 		this.coord = coord;
 	}
 
+	/**
+	 * must be named "getPosition" so that this method can implement the interface {@link com.bombinggames.caveland.GameObjects.Interactable}
+	 * @return 
+	 */
 	public Coordinate getPosition() {
 		return coord;
 	}

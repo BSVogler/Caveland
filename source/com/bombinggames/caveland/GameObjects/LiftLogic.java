@@ -34,9 +34,9 @@ public class LiftLogic extends AbstractEntity implements Interactable {
 		super.update(dt);
 		ArrayList<MineCart> nearbyLoren = getPosition().getEntitiesNearby(2, MineCart.class);
 		AbstractLogicBlock hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
-		if (hole != null && (hole instanceof Portal))
+		if (hole != null && (hole instanceof PortalBlock))
 			nearbyLoren.forEach((l) -> {
-				l.setPosition(((Portal) hole).getTarget());
+				l.setPosition(((PortalBlock) hole).getTarget());
 			});
 	}
 

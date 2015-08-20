@@ -3,7 +3,7 @@ package com.bombinggames.caveland.Game;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Machine;
 import com.bombinggames.caveland.GameObjects.OvenLogic;
-import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.caveland.GameObjects.PortalBlock;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.ConstructionSite;
@@ -175,7 +175,7 @@ public RenderBlock toRenderBlock(Block data) {
 	@Override
 	public AbstractLogicBlock newLogicInstance(Block block, Coordinate coord) {
 		if (block.getId() == 16)
-			return new Portal(block, coord);
+			return new PortalBlock(block, coord);
 		if (block.getId() == 11)
 			return new ConstructionSite(block, coord);
 		if (block.getId() == 12)

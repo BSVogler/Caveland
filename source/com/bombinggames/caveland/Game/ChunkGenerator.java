@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.caveland.GameObjects.PortalBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
@@ -127,24 +127,24 @@ public class ChunkGenerator implements Generator {
 
 			//loch in der Decke
 			if (xRoom==g-5 && yRoom==p+2 && z == 4) {
-				Portal portal; 
+				PortalBlock portal; 
 				if (getCaveNumber(x, y, z)==0) {
 					//exit to surface
-					((Portal) new Coordinate(x, y, z).getLogic()).setTarget(new Coordinate(0, 0, 5));
+					((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(new Coordinate(0, 0, 5));
 				} else {
-					((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
+					((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
 				}
 				//portal.setValue((byte) 1);
 				//portal.enableEnemySpawner();
 			}
 			//loch im Boden
 			if (xRoom==5 && yRoom==g-p-4 && z == 4){
-				((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
+				((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
 				
 			}
 		} else {
 			if (x==0 && y==0 && z==4) {
-				((Portal) new Coordinate(x, y, z).getLogic()).setTarget(getCaveEntry(0).addVector(0, 0, 3));
+				((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveEntry(0).addVector(0, 0, 3));
 			}
 		}
 	}

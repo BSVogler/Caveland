@@ -32,30 +32,27 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import java.util.ArrayList;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Portal extends AbstractLogicBlock implements Interactable {
+public class PortalBlock extends AbstractLogicBlock {
 	private static final long serialVersionUID = 2L;
-	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
-	private boolean spawner;
-	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
+	private Coordinate target = ChunkGenerator.getCaveEntry(0).addVector(0, 0, 4);
 	
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
 	 * @param block
 	 * @param coord
 	 */
-	public Portal(Block block, Coordinate coord){
+	public PortalBlock(Block block, Coordinate coord){
 		super(block, coord);
 	}
 	
@@ -67,46 +64,17 @@ public class Portal extends AbstractLogicBlock implements Interactable {
 		return target.cpy();
 	}
 	
-	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
-		actor.setPosition(target.cpy());
-	}
-
 	public void setTarget(Coordinate target) {
 		this.target = target;
 	}
 
 	@Override
 	public void update(float dt) {
-		if (spawner){
-			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*6, Ejira.class).isEmpty()){//if a player is nearby
-				if (spawnedList.size()<3) {
-					Coordinate coord = getPosition().toCoord();
-					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4); 
-					Enemy e = (Enemy) new Enemy().spawn(
-						ChunkGenerator.getCaveCenter(cavenumber).toPoint().addVector(
-							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
-							(float) ((Math.random()*4-2)*Block.GAME_EDGELENGTH),
-							8
-						)
-					);
-					spawnedList.add(e);
+		getPosition().getEntitiesInside(MovableEntity.class)
+			.forEach( (Object e) -> {
+				 if (((AbstractEntity) e).getPosition().getZ() <= getPosition().toPoint().getZ() + 10)
+					((AbstractGameObject) e).setPosition(target.cpy());
 				}
-				//remove killed enemys
-				for (int i = 0; i < spawnedList.size(); i++) {
-					Enemy e = spawnedList.get(i);
-					if (e.shouldBeDisposed()) spawnedList.remove(e);
-				}
-			}
-		}
-	}
-	
-	
-	
-	/**
-	 * creates monsters
-	 */
-	public void enableEnemySpawner(){
-		spawner = true;
+		);
 	}
 }

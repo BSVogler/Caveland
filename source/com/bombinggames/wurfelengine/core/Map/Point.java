@@ -91,7 +91,7 @@ public class Point extends AbstractPosition {
     }
 	
 	/**
-     * Get the z in grid coordinates of the coordinate. Faster then calculate the coordiante first.
+     * Get the z in block grid coordinates of the coordinate. Faster then calculate the coordiante first.
      * @return in grid coordinates.
      */
     public float getZGrid() {

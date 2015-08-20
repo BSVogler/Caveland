@@ -167,7 +167,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <false/>
+        <true/>
         <key>trimSpriteNames</key>
         <true/>
         <key>prependSmartFolderName</key>

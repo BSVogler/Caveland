@@ -24,4 +24,9 @@ public class ReloadShadersCommand implements ConsoleCommand {
 	public String getCommandName() {
 		return "reloadshaders";
 	}
+
+	@Override
+	public String getManual() {
+		return "reloads the shaders";
+	}
 }

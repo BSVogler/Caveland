@@ -143,6 +143,7 @@ public class Console {
 		registeredCommands.add(new MenuCommand());
 		registeredCommands.add(new LsCommand());
 		registeredCommands.add(new FullscreenCommand());
+		registeredCommands.add(new ManCommand());
 		
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
 		log.setBounds(xPos, yPos+52, 750, 550);
@@ -389,6 +390,10 @@ public class Console {
 		registeredCommands.add(command);
 	}
 	
+	protected ArrayList<ConsoleCommand> getRegisteredCommands(){
+		return registeredCommands;
+	}
+	
 	/**
 	 * check if the path is valid relative to the current one
 	 * @param newPath
@@ -489,6 +494,7 @@ public class Console {
 				return true;
 			}
 		}
+		add(command +": command not found\n", "System");
 		return false;
     }
     

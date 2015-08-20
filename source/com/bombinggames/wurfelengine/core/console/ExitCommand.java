@@ -25,5 +25,9 @@ public class ExitCommand implements ConsoleCommand {
 		Gdx.app.exit();
 		return false;//hey, your getting a response-> it failed
 	}
-	
+
+	@Override
+	public String getManual() {
+		return "exits the game";
+	}
 }

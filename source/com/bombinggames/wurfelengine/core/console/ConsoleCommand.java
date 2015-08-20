@@ -18,8 +18,10 @@ public interface ConsoleCommand {
 	public abstract boolean perform(StringTokenizer parameters, GameplayScreen gameplay);
 	
 	/**
-	 * always lowercase
+	 * always lowercase. The name is the identifier of this command.
 	 * @return 
 	 */
 	public abstract String getCommandName();
+	
+	public abstract String getManual();
 }

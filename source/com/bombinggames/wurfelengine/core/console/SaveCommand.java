@@ -24,5 +24,9 @@ public class SaveCommand implements ConsoleCommand {
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
 		return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
 	}
-	
+
+	@Override
+	public String getManual() {
+		return "saves the currently loaded map in the currenty active save slot";
+	}
 }

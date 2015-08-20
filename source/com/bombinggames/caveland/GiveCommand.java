@@ -21,7 +21,9 @@ public class GiveCommand implements ConsoleCommand {
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
 		try {
-			((CustomGameView) gameplay.getView()).getPlayer(0).getInventory().add(CollectibleType.valueOf(parameters.nextToken()).createInstance());
+			((CustomGameView) gameplay.getView()).getPlayer(0).getInventory().add(
+				CollectibleType.valueOf(parameters.nextToken()).createInstance()
+			);
 		} catch (IllegalArgumentException | java.lang.NullPointerException ex) {
 			WE.getConsole().add("Collectible not found or game not running.", "System");
 			return false;
@@ -33,5 +35,9 @@ public class GiveCommand implements ConsoleCommand {
 	public String getCommandName() {
 		return "give";
 	}
-	
+
+	@Override
+	public String getManual() {
+		return "gives you a collectible\nParameters: [name of collectible]";
+	}
 }

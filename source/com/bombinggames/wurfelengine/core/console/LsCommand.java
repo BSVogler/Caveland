@@ -25,4 +25,9 @@ public class LsCommand implements ConsoleCommand {
 		WE.getConsole().ls().forEach((dir) -> WE.getConsole().add(dir));
 		return true;
 	}
+
+	@Override
+	public String getManual() {
+		return "shows the content of the directory.";
+	}
 }

@@ -28,5 +28,10 @@ public class BenchmarkCommand implements ConsoleCommand {
             //add("Spawned a benchmark ball.", "System");
         return true;
 	}
+
+	@Override
+	public String getManual() {
+		return "spawns a benchmark ball";
+	}
 	
 }

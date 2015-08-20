@@ -25,5 +25,11 @@ public class MenuCommand implements ConsoleCommand {
 	public String getCommandName() {
 		return "menu";
 	}
+
+	@Override
+	public String getManual() {
+		return "goes to the main menu";
+	}
+	
 	
 }

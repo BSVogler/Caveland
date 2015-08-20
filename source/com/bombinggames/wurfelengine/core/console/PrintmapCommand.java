@@ -25,5 +25,9 @@ public class PrintmapCommand implements ConsoleCommand {
 	public String getCommandName() {
 		return "printmap";
 	}
-	
+
+	@Override
+	public String getManual() {
+		return "prints the map in the java console";
+	}
 }

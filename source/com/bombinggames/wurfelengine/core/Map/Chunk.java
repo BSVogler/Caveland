@@ -171,9 +171,13 @@ public class Chunk {
 			logicBlock.update(dt);
 		}
 		//check if block at position corespodends to saved, garbage collection
-		logicBlocks.removeIf((AbstractLogicBlock lb) -> {
-			return lb.getPosition().getBlock().getId() != lb.getBlock().getId();
-		});
+		logicBlocks.removeIf(
+			(AbstractLogicBlock lb) -> {
+				if (lb.getPosition().getBlock() == null)
+					return true;
+				return lb.getPosition().getBlock().getId() != lb.getBlock().getId();
+			}
+		);
 	}
 	
 	/** 

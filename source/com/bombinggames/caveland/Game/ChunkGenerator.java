@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.PortalBlock;
+import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;

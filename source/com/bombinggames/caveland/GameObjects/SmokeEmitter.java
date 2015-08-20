@@ -141,7 +141,7 @@ public class SmokeEmitter extends AbstractEntity {
 	 * 
 	 * @param ttl time in ms
 	 */
-	void setParticleTTL(int ttl) {
+	public void setParticleTTL(int ttl) {
 		this.TTL = ttl;
 	}
 	

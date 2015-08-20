@@ -1,12 +1,13 @@
 package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.CustomTree;
-import com.bombinggames.caveland.GameObjects.Machine;
-import com.bombinggames.caveland.GameObjects.OvenLogic;
-import com.bombinggames.caveland.GameObjects.PortalBlock;
+import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.Machine;
+import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.caveland.GameObjects.collectibles.ConstructionSite;
+import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
@@ -180,6 +181,8 @@ public RenderBlock toRenderBlock(Block data) {
 			return new ConstructionSite(block, coord);
 		if (block.getId() == 12)
 			return new OvenLogic(block, coord);
+		if (block.getId() == 15)
+			return new LiftLogic(block, coord);
 		return null;
 	}
 }

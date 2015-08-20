@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;

@@ -262,7 +262,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		return tmp;
 	}
 
-	boolean add(MovableEntity obj) {
+	public boolean add(MovableEntity obj) {
 		if (content.size() < 5) {
 			content.add(obj);
 			return true;

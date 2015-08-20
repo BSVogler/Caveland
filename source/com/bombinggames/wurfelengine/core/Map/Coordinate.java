@@ -251,6 +251,10 @@ public class Coordinate extends AbstractPosition {
 		}
 	}
 	
+	/**
+	 * get the logic to a block.
+	 * @return can return null if the block has no logic
+	 */
 	public AbstractLogicBlock getLogic(){
 		if (z < 0 || z >= Chunk.getBlocksZ()) {
 			return null;

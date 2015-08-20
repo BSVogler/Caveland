@@ -1,5 +1,6 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.Flint;
@@ -79,7 +80,4 @@ public class Machine extends RenderBlock {
 		}
 		return content;//return everything left
 	}
-	
-	
-	
 }

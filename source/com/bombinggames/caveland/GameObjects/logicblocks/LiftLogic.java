@@ -39,6 +39,8 @@ public class LiftLogic extends AbstractLogicBlock implements Interactable {
 
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
+		AbstractLogicBlock hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
+		if (hole != null && (hole instanceof PortalBlock))
+			actor.setPosition(((PortalBlock) hole).getTarget().cpy());
 	}
-	
 }

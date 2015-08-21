@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -130,12 +131,12 @@ public class MineCart extends MovableEntity implements Interactable {
 				if (getSpeedHor()> 0) {
 					setSpeedHorizontal(MAXSPEED);//start moving
 					if( isPlayingSound == 0)
-						isPlayingSound = Controller.getSoundEngine().loop("wagon", getPosition());
+						isPlayingSound = WE.getEngineView().getSoundEngine().loop("wagon", getPosition());
 				}
 			} else {//offroad
 				setFriction(0.005f);
 				if (isPlayingSound!=0) {
-					Controller.getSoundEngine().stop("wagon", isPlayingSound);
+					WE.getEngineView().getSoundEngine().stop("wagon", isPlayingSound);
 					isPlayingSound = 0;
 				}
 			}
@@ -284,8 +285,8 @@ public class MineCart extends MovableEntity implements Interactable {
 	public void damage(byte value) {
 		super.damage(value);
 		if (getHealth()<=0) {
-			Controller.getSoundEngine().stop("wagon", isPlayingSound);
-			Controller.getSoundEngine().play("robot1destroy", getPosition());
+			WE.getEngineView().getSoundEngine().stop("wagon", isPlayingSound);
+			WE.getEngineView().getSoundEngine().play("robot1destroy", getPosition());
 			((Collectible) CollectibleType.Ironore.createInstance().spawn(getPosition())).sparkle();
 		}
 	}

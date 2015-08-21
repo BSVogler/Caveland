@@ -33,7 +33,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 	private int selectionIndex =0;
 	
 	private Sound selectionSound;
-	private Sound abortSound;
 	private float backgroundPosY;
 	private boolean fadeout;
 	private Action fadeOutAction;
@@ -45,6 +44,16 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		
+		//load the needed assets
+		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/bong.wav", Sound.class);
+		WE.getAssetManager().finishLoading();
+		
+		WE.getEngineView().getSoundEngine().register("menuSelect", "com/bombinggames/caveland/MainMenu/menusound.wav");
+		WE.getEngineView().getSoundEngine().register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
+		WE.getEngineView().getSoundEngine().register("menuBong", "com/bombinggames/caveland/MainMenu/bong.wav");
+		
 		//load textures
         lettering = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/Lettering.png")));
 		lettering.scaleBy(WE.getEngineView().getEqualizationScale()-1);
@@ -53,10 +62,16 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
-		MenuItem button1Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
+		Image onePlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
+		onePlayer.setPosition(
+			stage.getWidth()/2-onePlayer.getWidth()/2-200,
+			stage.getHeight()/2-150
+		);
+		stage.addActor(onePlayer);
+		MenuItem button1Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1playerButton.png")));
 		button1Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
-			stage.getHeight()/2-200
+			stage.getHeight()/2-350
 		);
 		stage.addActor(button1Player);
 		menuItems[0] = button1Player;
@@ -79,10 +94,16 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
-		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
+		Image twoPlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
+		twoPlayer.setPosition(
+			stage.getWidth()/2-twoPlayer.getWidth()/2+200,
+			stage.getHeight()/2-150
+		);
+		stage.addActor(twoPlayer);
+		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2playersButton.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
-			stage.getHeight()/2-200
+			stage.getHeight()/2-350
 		);
 		stage.addActor(button2Player);
 		menuItems[1] = button2Player;
@@ -107,7 +128,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//add buttons
 		int i=2;
-		final int top = (int) (stage.getHeight()*0.1f);
+		final int top = (int) (stage.getHeight()*0.05f);
 		
 		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
 		menuItems[i].addAction(
@@ -160,10 +181,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		backgroundPosY = -Gdx.graphics.getHeight();
 		
         font = new BitmapFont();
-		
-		selectionSound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/caveland/MainMenu/menusound.wav"));
-		//to-do play when button is pressed
-		abortSound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/caveland/MainMenu/menusoundAbort.wav"));
 	}
 
 	@Override
@@ -250,7 +267,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		WE.getEngineView().addInputProcessor(new InputListener());
 		if (!WE.getEngineView().isMusicPlaying())
 			WE.getEngineView().setMusic(Gdx.files.internal("com/bombinggames/caveland/music/title.mp3").path());
-		abortSound.play();
+		WE.getEngineView().getSoundEngine().play("menuAbort");
 	}
 
 	@Override

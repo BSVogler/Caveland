@@ -39,7 +39,6 @@ import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.ChunkMap;
 import com.bombinggames.wurfelengine.core.Map.CompleteMap;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
-import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ import java.util.ArrayList;
  */
 public class Controller implements GameManager {
     private static LightEngine lightEngine;
-	private static SoundEngine soundEngine;
     private static AbstractMap map;
 	
 	/**
@@ -59,7 +57,6 @@ public class Controller implements GameManager {
 	 */
 	public static void staticUpdate(float dt){
 		if (lightEngine != null) lightEngine.update(dt);
-		if (soundEngine != null) soundEngine.update(dt);
 		map.update(dt);
 		map.modificationCheck();
 	}
@@ -129,14 +126,6 @@ public class Controller implements GameManager {
 	}
 	
 	/**
-     *The sound engine managing the sfx.
-     * @return
-     */
-    public static SoundEngine getSoundEngine() {
-        return soundEngine;
-    }
-	
-	/**
      *Disposes static stuff.
      */
     public static void staticDispose(){
@@ -146,8 +135,6 @@ public class Controller implements GameManager {
         map.dispose();
 		map = null;
         lightEngine = null;
-		soundEngine.dispose();
-		soundEngine = null;
     }
 	
     private DevTools devtools;
@@ -218,10 +205,6 @@ public class Controller implements GameManager {
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 			getMap().getOberserverList().add(lightEngine);
         }
-		
-		//only initialize static variable once
-		if (Controller.soundEngine == null)
-			soundEngine = new SoundEngine();
 		
         initalized = true;    
     }

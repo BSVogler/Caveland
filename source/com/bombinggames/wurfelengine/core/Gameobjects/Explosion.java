@@ -1,6 +1,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -93,7 +94,7 @@ public class Explosion extends AbstractEntity {
 		if (camera!=null)
 			camera.shake(radius*100/3f, 100);
 		if (explosionsound != null)
-			Controller.getSoundEngine().play(explosionsound);
+			WE.getEngineView().getSoundEngine().play(explosionsound);
 		dispose();
 		return this;
 	}

@@ -479,8 +479,8 @@ public class GameView extends View implements GameManager {
 			camera.setActive(true);
 		}
 		
-		if (Controller.getSoundEngine() != null)
-			Controller.getSoundEngine().setView(this);
+		if (WE.getEngineView().getSoundEngine() != null)
+			WE.getEngineView().getSoundEngine().setView(this);
 		
 		if ((boolean) WE.CVARS.get("DevMode").getValue())
 			WE.getEngineView().setCursor(0);

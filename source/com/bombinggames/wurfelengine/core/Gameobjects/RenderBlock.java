@@ -519,7 +519,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public void onDestroy() {
 		blockData.setValue((byte) -1);
-		if (destructionSound != null) Controller.getSoundEngine().play(destructionSound);
+		if (destructionSound != null) WE.getEngineView().getSoundEngine().play(destructionSound);
 	}
 
 	@Override

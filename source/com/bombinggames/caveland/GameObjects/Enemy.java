@@ -2,7 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
@@ -62,7 +62,7 @@ public class Enemy extends MovableEntity{
 
 	@Override
 	public AbstractEntity spawn(final Point point) {
-		movementSoundPlaying = Controller.getSoundEngine().loop(MOVEMENTSOUND, point);
+		movementSoundPlaying = WE.getEngineView().getSoundEngine().loop(MOVEMENTSOUND, point);
 		return super.spawn(point);
 	}
 
@@ -194,9 +194,9 @@ public class Enemy extends MovableEntity{
 			new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 			new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 			
-			Controller.getSoundEngine().stop(MOVEMENTSOUND, movementSoundPlaying);
+			WE.getEngineView().getSoundEngine().stop(MOVEMENTSOUND, movementSoundPlaying);
 			if (getHealth() <= 0 && KILLSOUND != null)
-				Controller.getSoundEngine().play(KILLSOUND);
+				WE.getEngineView().getSoundEngine().play(KILLSOUND);
 			killcounter++;
 		}
 	}

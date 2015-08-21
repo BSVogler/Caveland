@@ -1,10 +1,11 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
-import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -26,7 +27,7 @@ public class Bausatz extends Collectible {
 		coord.setBlock(Block.getInstance((byte) 11));
 		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);
 		constructionSiteLogic.setResult(id, (byte) 0);
-		Controller.getSoundEngine().play("metallic");
+		WE.getEngineView().getSoundEngine().play("metallic");
 		dispose();//dispose tool kit
 	}
 

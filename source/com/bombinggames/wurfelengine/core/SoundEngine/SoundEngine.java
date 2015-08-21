@@ -53,6 +53,12 @@ public class SoundEngine {
 	 *
 	 */
 	public SoundEngine() {
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav", Sound.class);
+		WE.getAssetManager().finishLoading();
+		
 		register("landing", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav");
 		register("splash", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav");
 		register("wind", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg");

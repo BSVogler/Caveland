@@ -43,6 +43,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 
 /**
  * A view which is not dependend on the currently active game. Singleton.
@@ -64,6 +65,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private Pixmap cursorPointer;
 	private int cursorId;
 	private OrthographicCamera camera;
+	private SoundEngine soundEngine;
     
 	@Override
 	public void init() {
@@ -89,6 +91,17 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		camera.update();
         getSpriteBatch().setProjectionMatrix(camera.combined);
 		getShapeRenderer().setProjectionMatrix(camera.combined);
+		
+		//only initialize static variable once
+		if (soundEngine == null)
+			soundEngine = new SoundEngine();
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (soundEngine != null)
+			soundEngine.update(dt);
 	}
 	
     /**
@@ -182,6 +195,23 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	public int getCursor() {
 		return cursorId;
 	}
+	
+	/**
+     *The sound engine managing the sfx.
+     * @return
+     */
+    public SoundEngine getSoundEngine() {
+        return soundEngine;
+    }
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		soundEngine.dispose();
+		soundEngine = null;
+	}
+	
+	
 
 	/**
 	 *

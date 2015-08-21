@@ -38,7 +38,7 @@ import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -121,7 +121,7 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 				return false;
 		}
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
-		Controller.getSoundEngine().play("construct");
+		WE.getEngineView().getSoundEngine().play("construct");
 		container.dispose();
 		return true;
 	}

@@ -187,7 +187,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		final Vector2 horMov = getMovementHor();
 		setMovement(new Vector3(horMov.x, horMov.y, velo));
 		if (playSound && jumpingSound != null)
-			Controller.getSoundEngine().play(jumpingSound, getPosition());
+			WE.getEngineView().getSoundEngine().play(jumpingSound, getPosition());
     }
 	
     /**
@@ -249,7 +249,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					if (!isSpawned()) return;//object may be destroyed during colission
 
 					if (landingSound != null && !floating)
-						Controller.getSoundEngine().play(landingSound, getPosition());//play landing sound
+						WE.getEngineView().getSoundEngine().play(landingSound, getPosition());//play landing sound
 
 					movement.z = 0;
 
@@ -259,7 +259,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 				Block block = getPosition().getBlock();
 				if (!inliquid && block != null && block.isLiquid())//if enterin water
-					if (waterSound!=null) Controller.getSoundEngine().play(waterSound);
+					if (waterSound!=null) WE.getEngineView().getSoundEngine().play(waterSound);
 
 				if (block != null)
 					inliquid = block.isLiquid();//save if in water
@@ -387,11 +387,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             //should the runningsound be played?
             if (runningSound != null) {
                 if (getSpeed() < 0.5f) {
-                    Controller.getSoundEngine().stop(runningSound);
+                    WE.getEngineView().getSoundEngine().stop(runningSound);
                     runningSoundPlaying = false;
                 } else {
                     if (!runningSoundPlaying){
-                        Controller.getSoundEngine().play(runningSound);
+                        WE.getEngineView().getSoundEngine().play(runningSound);
                         runningSoundPlaying = true;
                     }
                 }
@@ -401,11 +401,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             if (fallingSound != null) {
                 if (!floating && getMovement().z < 0 && movement.len2() > 0.0f) {
                     if (fallingSoundInstance == 0) {
-                        fallingSoundInstance = Controller.getSoundEngine().loop(fallingSound);
+                        fallingSoundInstance = WE.getEngineView().getSoundEngine().loop(fallingSound);
                     }
-					Controller.getSoundEngine().setVolume(fallingSound,fallingSoundInstance, getSpeed()/10f);
+					WE.getEngineView().getSoundEngine().setVolume(fallingSound,fallingSoundInstance, getSpeed()/10f);
                 } else {
-                    Controller.getSoundEngine().stop(fallingSound);
+                    WE.getEngineView().getSoundEngine().stop(fallingSound);
                     fallingSoundInstance = 0;
                 }
             }
@@ -740,7 +740,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * performs a step. Plays a sound.
 	 */
 	public void step() {
-		Controller.getSoundEngine().play(
+		WE.getEngineView().getSoundEngine().play(
 			stepSound1Grass,
 			0.3f,
 			(float) (0.9f+Math.random()/5f),

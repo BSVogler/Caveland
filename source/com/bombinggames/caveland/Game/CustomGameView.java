@@ -61,26 +61,26 @@ public class CustomGameView extends GameView{
 			Ejira.loadSheet();
 		
 		//register Sounds
-		Controller.getSoundEngine().register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
-		Controller.getSoundEngine().register("step", "com/bombinggames/caveland/sounds/step.wav");
-		Controller.getSoundEngine().register("urfJump", "com/bombinggames/caveland/sounds/urf_jump.wav");
-		Controller.getSoundEngine().register("urfHurt", "com/bombinggames/caveland/sounds/urfHurt.wav");
-		Controller.getSoundEngine().register("loadAttack", "com/bombinggames/caveland/sounds/loadAttack.wav");
-		Controller.getSoundEngine().register("ha", "com/bombinggames/caveland/sounds/ha.wav");
-		Controller.getSoundEngine().register("release", "com/bombinggames/caveland/sounds/release.wav");
-		Controller.getSoundEngine().register("impact", "com/bombinggames/caveland/sounds/impact.wav");
-		Controller.getSoundEngine().register("robot1destroy", "com/bombinggames/caveland/sounds/robot1destroy.wav");
-		Controller.getSoundEngine().register("robot1Wobble", "com/bombinggames/caveland/sounds/robot1Wobble.mp3");
-		Controller.getSoundEngine().register("robotHit", "com/bombinggames/caveland/sounds/robotHit.wav");
-		Controller.getSoundEngine().register("blockDestroy", "com/bombinggames/caveland/sounds/poch.wav");
-		Controller.getSoundEngine().register("vanya_jump", "com/bombinggames/caveland/sounds/vanya_jump.wav");
-		Controller.getSoundEngine().register("wagon", "com/bombinggames/caveland/sounds/wagon.mp3");
-		Controller.getSoundEngine().register("collect", "com/bombinggames/caveland/sounds/collect.wav");
-		Controller.getSoundEngine().register("sword", "com/bombinggames/caveland/sounds/sword.wav");
-		Controller.getSoundEngine().register("hiss", "com/bombinggames/caveland/sounds/hiss.wav");
-		Controller.getSoundEngine().register("treehit", "com/bombinggames/caveland/sounds/treehit.wav");
-		Controller.getSoundEngine().register("metallic", "com/bombinggames/caveland/sounds/metallic.wav");
-		Controller.getSoundEngine().register("construct", "com/bombinggames/caveland/sounds/construct.wav");
+		WE.getEngineView().getSoundEngine().register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
+		WE.getEngineView().getSoundEngine().register("step", "com/bombinggames/caveland/sounds/step.wav");
+		WE.getEngineView().getSoundEngine().register("urfJump", "com/bombinggames/caveland/sounds/urf_jump.wav");
+		WE.getEngineView().getSoundEngine().register("urfHurt", "com/bombinggames/caveland/sounds/urfHurt.wav");
+		WE.getEngineView().getSoundEngine().register("loadAttack", "com/bombinggames/caveland/sounds/loadAttack.wav");
+		WE.getEngineView().getSoundEngine().register("ha", "com/bombinggames/caveland/sounds/ha.wav");
+		WE.getEngineView().getSoundEngine().register("release", "com/bombinggames/caveland/sounds/release.wav");
+		WE.getEngineView().getSoundEngine().register("impact", "com/bombinggames/caveland/sounds/impact.wav");
+		WE.getEngineView().getSoundEngine().register("robot1destroy", "com/bombinggames/caveland/sounds/robot1destroy.wav");
+		WE.getEngineView().getSoundEngine().register("robot1Wobble", "com/bombinggames/caveland/sounds/robot1Wobble.mp3");
+		WE.getEngineView().getSoundEngine().register("robotHit", "com/bombinggames/caveland/sounds/robotHit.wav");
+		WE.getEngineView().getSoundEngine().register("blockDestroy", "com/bombinggames/caveland/sounds/poch.wav");
+		WE.getEngineView().getSoundEngine().register("vanya_jump", "com/bombinggames/caveland/sounds/vanya_jump.wav");
+		WE.getEngineView().getSoundEngine().register("wagon", "com/bombinggames/caveland/sounds/wagon.mp3");
+		WE.getEngineView().getSoundEngine().register("collect", "com/bombinggames/caveland/sounds/collect.wav");
+		WE.getEngineView().getSoundEngine().register("sword", "com/bombinggames/caveland/sounds/sword.wav");
+		WE.getEngineView().getSoundEngine().register("hiss", "com/bombinggames/caveland/sounds/hiss.wav");
+		WE.getEngineView().getSoundEngine().register("treehit", "com/bombinggames/caveland/sounds/treehit.wav");
+		WE.getEngineView().getSoundEngine().register("metallic", "com/bombinggames/caveland/sounds/metallic.wav");
+		WE.getEngineView().getSoundEngine().register("construct", "com/bombinggames/caveland/sounds/construct.wav");
 		
 		if (coop >- 1){//it is a coop game
 			Camera camera0;

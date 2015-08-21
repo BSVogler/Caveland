@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
- *A test project to test if the engine can run as a library.
+ * 
  * @author Benedikt Vogler
  */
 public class Caveland {

@@ -110,7 +110,7 @@ public class WE {
 	 * Add command which will be executed after the engine launched.
 	 * @param command
 	 */
-	public static void addLaunchCommands(Command command) {
+	public static void addPostLaunchCommands(Command command) {
 		commandsAfterLaunch.add(command);
 	}
 	

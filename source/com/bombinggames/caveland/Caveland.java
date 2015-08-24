@@ -97,6 +97,16 @@ public class Caveland {
 		WE.addLaunchCommands(() -> {
 			WE.getConsole().addCommand(new GiveCommand());
 			WE.getConsole().addCommand(new PortalTargetCommand());
+			
+			//load the needed assets
+			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
+			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
+			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/bong.wav", Sound.class);
+			WE.getAssetManager().finishLoading();
+
+			WE.getEngineView().getSoundEngine().register("menuSelect", "com/bombinggames/caveland/MainMenu/menusound.wav");
+			WE.getEngineView().getSoundEngine().register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
+			WE.getEngineView().getSoundEngine().register("menuBong", "com/bombinggames/caveland/MainMenu/bong.wav");
 		});
 		
         WE.launch("Caveland " + VERSION, args);

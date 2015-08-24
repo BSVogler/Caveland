@@ -46,13 +46,20 @@ import java.util.Iterator;
  */
 public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
-	private ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
+	private final ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 	private GameView view;
 
 	/**
 	 *
 	 */
 	public SoundEngine() {
+		
+	}
+	
+	/**
+	 * loads and registers the ig-sounds
+	 */
+	public void LoadRegisterIGSounds(){
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg", Sound.class);
@@ -64,6 +71,8 @@ public class SoundEngine {
 		register("wind", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg");
 		register("explosion", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav");
 	}
+	
+	
 	
 	/**
 	 * Registers a soundIterator. The soundIterator must be loaded via asset manager.

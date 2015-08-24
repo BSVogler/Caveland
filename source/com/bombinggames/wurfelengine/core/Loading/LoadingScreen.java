@@ -6,7 +6,6 @@ package com.bombinggames.wurfelengine.core.Loading;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -66,12 +65,7 @@ public class LoadingScreen extends WEScreen {
         manager.load("com/bombinggames/wurfelengine/core/skin/gui.txt", TextureAtlas.class);
 		manager.load("com/bombinggames/wurfelengine/core/images/bloodblur.png", Texture.class);
         
-       // manager.load("com/bombinggames/wurfelengine/Game/Blockimages/Spritesheet.png", Pixmap.class);
-        manager.load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg", Sound.class);
-        manager.load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav", Sound.class);
-        manager.load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav", Sound.class);
-        manager.load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav", Sound.class);
-        //manager.load("com/bombinggames/wurfelengine/core/arial.fnt", BitmapFont.class);
+		WE.getEngineView().getSoundEngine().LoadRegisterIGSounds();
         
         //load files from configRef
         customLoading(manager);

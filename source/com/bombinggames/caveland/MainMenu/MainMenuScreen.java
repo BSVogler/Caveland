@@ -3,7 +3,6 @@ package com.bombinggames.caveland.MainMenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -32,7 +31,6 @@ public class MainMenuScreen extends AbstractMainMenu {
     private float alpha =0;
 	private int selectionIndex =0;
 	
-	private Sound selectionSound;
 	private float backgroundPosY;
 	private boolean fadeout;
 	private Action fadeOutAction;
@@ -43,16 +41,6 @@ public class MainMenuScreen extends AbstractMainMenu {
 		batch = new SpriteBatch();
 		
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
-		
-		//load the needed assets
-		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
-		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
-		WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/bong.wav", Sound.class);
-		WE.getAssetManager().finishLoading();
-		
-		WE.getEngineView().getSoundEngine().register("menuSelect", "com/bombinggames/caveland/MainMenu/menusound.wav");
-		WE.getEngineView().getSoundEngine().register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
-		WE.getEngineView().getSoundEngine().register("menuBong", "com/bombinggames/caveland/MainMenu/bong.wav");
 		
 		//load textures
         lettering = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/Lettering.png")));
@@ -301,14 +289,14 @@ public class MainMenuScreen extends AbstractMainMenu {
         public boolean keyDown(int keycode) {
             if (keycode == Keys.DOWN || keycode == Keys.S){
                 selectionIndex++;
-				selectionSound.play();
+				WE.getEngineView().getSoundEngine().play("menuSelect");
 				if (selectionIndex>=menuItems.length)
 					selectionIndex=0;
 			}
 			
             if (keycode == Keys.UP || keycode == Keys.W){
 				selectionIndex--;
-				selectionSound.play();
+				WE.getEngineView().getSoundEngine().play("menuSelect");
 				if (selectionIndex<0)
 					selectionIndex=menuItems.length-1;
 			}

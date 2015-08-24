@@ -53,7 +53,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		Image onePlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
 		onePlayer.setPosition(
 			stage.getWidth()/2-onePlayer.getWidth()/2-200,
-			stage.getHeight()/2-150
+			stage.getHeight()/2-250
 		);
 		stage.addActor(onePlayer);
 		MenuItem button1Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1playerButton.png")));
@@ -85,7 +85,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		Image twoPlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
 		twoPlayer.setPosition(
 			stage.getWidth()/2-twoPlayer.getWidth()/2+200,
-			stage.getHeight()/2-150
+			stage.getHeight()/2-250
 		);
 		stage.addActor(twoPlayer);
 		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2playersButton.png")));
@@ -209,7 +209,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			- (Gdx.input.getX()/(float) Gdx.graphics.getWidth()-0.5f)*10//move by cursor
 		);
         lettering.setY(
-			Gdx.graphics.getHeight()- lettering.getHeight()*lettering.getScaleY()-30
+			Gdx.graphics.getHeight()- lettering.getHeight()*lettering.getScaleX()-10
 			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.5f)*10//move by cursor
 		);
 		//lettering.setScale(WE.getEngineView().getEqualizationScale());
@@ -219,7 +219,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			+300*alphaTag.getScaleX()
 		);
         alphaTag.setY(
-			Gdx.graphics.getHeight()- (alphaTag.getHeight()+350)*alphaTag.getScaleY()
+			Gdx.graphics.getHeight()- (alphaTag.getHeight()+250)*alphaTag.getScaleY()
 			+ (Gdx.input.getY()/(float) Gdx.graphics.getHeight()-0.6f)*5//move by cursor
 		);
 		//alphaTag.setScale(WE.getEngineView().getEqualizationScale());

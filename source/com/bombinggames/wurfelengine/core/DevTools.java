@@ -33,13 +33,8 @@ package com.bombinggames.wurfelengine.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.text.NumberFormat;
 
@@ -63,8 +58,6 @@ public class DevTools {
     private long allocatedMemory;
     private long maxMemory;
     private long usedMemory;
-    private Image editorbutton;
-    private Image editorreversebutton;
 
     /**
      *
@@ -115,14 +108,6 @@ public class DevTools {
      */
     public void render(final GameView view){
         if (visible){
-            
-            if (view instanceof MapEditorView) {
-                WE.getEngineView().getStage().getActors().removeValue(editorbutton, false);
-                WE.getEngineView().getStage().getActors().removeValue(editorreversebutton, false);
-            } else {
-                showEditorButtons(view);
-            }
-            
             //draw FPS-String
             view.drawString("FPS: "+ Gdx.graphics.getFramesPerSecond(), 15, 15,true);
             view.drawString("Drawcalls: "+ AbstractGameObject.getDrawCalls(), 15, 30,true);
@@ -303,58 +288,4 @@ public class DevTools {
     public int getWidth() {
         return width*data.length;
     }
-    
-      /**
-     *Adds the buttons to the satage if missing
-     * @param view The view which renders the buttons.
-     */
-    private void showEditorButtons(final GameView view){
-        if (editorbutton==null || editorreversebutton==null){    
-            TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
-            
-            if (editorbutton==null){
-                //add editor button
-                editorbutton = new Image(spritesheet.findRegion("editor_button"));
-                editorbutton.setX(leftOffset+width+40);
-                editorbutton.setY(Gdx.graphics.getHeight()-topOffset);
-                editorbutton.addListener(
-                    new ClickListener() {
-                        @Override
-                        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                            WE.loadEditor(false);
-                            return true;
-                       }
-                    }
-                );
-            }
-			view.getStage().addActor(editorbutton);
-            
-			if (WE.editorHasMapCopy()){
-				if (editorreversebutton==null){
-					//add reverse editor button
-					editorreversebutton = new Image(spritesheet.findRegion("editorreverse_button"));
-					editorreversebutton.setX(leftOffset+width+80);
-					editorreversebutton.setY(Gdx.graphics.getHeight()-topOffset);
-					editorreversebutton.addListener(
-						new ClickListener() {
-							@Override
-							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								WE.loadEditor(true);
-								return true;
-						   }
-						}
-					);
-				}
-				view.getStage().addActor(editorreversebutton);	
-			}
-		}
-    }
-	
-	/**
-	 * disposes the dev tool
-	 */
-	public void dispose(){
-		if (editorbutton!=null) editorbutton.remove();
-		if (editorreversebutton!=null) editorreversebutton.remove();
-	}
 }

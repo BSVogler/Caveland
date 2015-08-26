@@ -221,10 +221,7 @@ public class Controller implements GameManager {
 			}
 			devtools.update(Gdx.graphics.getRawDeltaTime()*1000f);
 		} else {
-			if (devtools != null ) {
-				devtools.dispose();
-				devtools = null;
-			}
+			devtools = null;
 		}
     }
 	

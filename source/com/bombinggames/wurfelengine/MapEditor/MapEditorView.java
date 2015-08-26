@@ -117,13 +117,6 @@ public class MapEditorView extends GameView {
         //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
         
-        //add play button
-        final Image playbutton = new Image(spritesheet.findRegion("play_button"));
-        playbutton.setX(Gdx.graphics.getWidth()-40);
-        playbutton.setY(Gdx.graphics.getHeight()-40);
-        playbutton.addListener(new PlayButton(controller, false));
-        getStage().addActor(playbutton);
-        
          //add load button
         final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
         loadbutton.setX(Gdx.graphics.getWidth()-80);
@@ -143,13 +136,6 @@ public class MapEditorView extends GameView {
 			}
 		});
         getStage().addActor(savebutton);
-        
-        //add replaybutton
-        final Image replaybutton = new Image(spritesheet.findRegion("replay_button"));
-        replaybutton.setX(Gdx.graphics.getWidth()-160);
-        replaybutton.setY(Gdx.graphics.getHeight()-40);
-        replaybutton.addListener(new PlayButton(controller, true));
-        getStage().addActor(replaybutton);
         
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
@@ -541,22 +527,6 @@ public class MapEditorView extends GameView {
 			}
 		}
 
-    }
-    
-    private static class PlayButton extends ClickListener{
-        private final MapEditorController controller;
-        private final boolean replay;
-        
-        private PlayButton(Controller controller, boolean replay) {
-            this.controller = (MapEditorController) controller;
-            this.replay = replay;
-        }
-        
-        @Override
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {            
-            controller.switchToGame(replay);
-            return true;
-        }
     }
     
     private class LoadButton extends ClickListener{

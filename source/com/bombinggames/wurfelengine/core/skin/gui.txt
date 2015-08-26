@@ -4,85 +4,85 @@ filter: Linear,Linear
 repeat: none
 bucket_button
   rotate: false
-  xy: 1, 43
+  xy: 108, 22
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
 draw_button
   rotate: false
-  xy: 1, 1
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
-editor_button
-  rotate: false
-  xy: 22, 1
-  size: 20, 20
-  orig: 20, 20
-  offset: 0, 0
-  index: -1
-editorreverse_button
-  rotate: false
-  xy: 43, 1
+  xy: 87, 1
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 entity_button
   rotate: false
-  xy: 20, 64
+  xy: 22, 85
   size: 14, 20
   orig: 20, 20
   offset: 3, 0
   index: -1
 eraser_button
   rotate: false
-  xy: 43, 22
+  xy: 37, 85
   size: 20, 17
   orig: 20, 20
   offset: 0, 0
   index: -1
 load_button
   rotate: false
-  xy: 20, 43
+  xy: 1, 106
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
+pause_button
+  rotate: false
+  xy: 1, 1
+  size: 42, 41
+  orig: 43, 42
+  offset: 0, 0
+  index: -1
 play_button
   rotate: false
-  xy: 39, 61
-  size: 18, 20
-  orig: 20, 20
-  offset: 1, 0
+  xy: 44, 1
+  size: 42, 41
+  orig: 43, 42
+  offset: 0, 0
   index: -1
 pointer_button
   rotate: false
-  xy: 1, 64
+  xy: 20, 106
   size: 18, 20
   orig: 20, 20
   offset: 2, 0
   index: -1
 replace_button
   rotate: false
-  xy: 43, 40
+  xy: 108, 1
   size: 19, 20
   orig: 20, 20
   offset: 1, 0
   index: -1
 replay_button
   rotate: false
-  xy: 1, 22
+  xy: 87, 22
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 save_button
   rotate: false
-  xy: 22, 22
+  xy: 1, 85
   size: 20, 20
   orig: 20, 20
+  offset: 0, 0
+  index: -1
+stop_button
+  rotate: false
+  xy: 1, 43
+  size: 42, 41
+  orig: 43, 42
   offset: 0, 0
   index: -1

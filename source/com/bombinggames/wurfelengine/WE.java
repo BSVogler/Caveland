@@ -268,7 +268,7 @@ public class WE {
      * Switch into the map editor
      * @param reverseMap reverse to the map at the point where you exited the editor?
      */
-    public static void loadEditor(boolean reverseMap){
+    public static void startEditor(boolean reverseMap){
         gameplayScreen.getEditorController().setReverseMap(reverseMap);
         WE.switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
     }

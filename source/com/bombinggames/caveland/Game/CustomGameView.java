@@ -589,7 +589,7 @@ public class CustomGameView extends GameView{
 
 				//editor
 				if (keycode == Input.Keys.G){
-					 WE.loadEditor(false);
+					 WE.startEditor(false);
 				}
 				
 

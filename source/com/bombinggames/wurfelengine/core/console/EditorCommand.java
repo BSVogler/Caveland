@@ -22,7 +22,7 @@ public class EditorCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer par1, GameplayScreen gameplay) {
-		WE.loadEditor(true);
+		WE.startEditor(true);
 		return true;
 	}
 

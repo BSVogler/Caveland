@@ -42,6 +42,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 
@@ -66,7 +67,8 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private int cursorId;
 	private OrthographicCamera camera;
 	private SoundEngine soundEngine;
-    
+    private EditorToggler editorToggler;
+	
 	@Override
 	public void init() {
 		super.init(null);
@@ -92,6 +94,8 @@ public class EngineView extends GameView {//is GameView so it can render in game
         getSpriteBatch().setProjectionMatrix(camera.combined);
 		getShapeRenderer().setProjectionMatrix(camera.combined);
 		
+		editorToggler = new EditorToggler();
+				
 		//only initialize static variable once
 		if (soundEngine == null)
 			soundEngine = new SoundEngine();
@@ -102,6 +106,8 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		super.update(dt);
 		if (soundEngine != null)
 			soundEngine.update(dt);
+		
+		editorToggler.update(this, dt);
 	}
 	
     /**
@@ -204,15 +210,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
         return soundEngine;
     }
 
-	@Override
-	public void dispose() {
-		super.dispose();
-		soundEngine.dispose();
-		soundEngine = null;
-	}
-	
-	
-
 	/**
 	 *
 	 * @return
@@ -267,5 +264,20 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	 */
 	public void disposeMusic() {
 		if (music!=null) music.dispose();
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		soundEngine.dispose();
+		soundEngine = null;
+	}
+
+	public EditorToggler getEditorToggler() {
+		return editorToggler;
+	}
+
+	@Override
+	public void onEnter() {
 	}
 }

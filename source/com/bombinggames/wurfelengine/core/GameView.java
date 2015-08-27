@@ -40,7 +40,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -104,7 +103,6 @@ public class GameView extends View implements GameManager {
         //load sprites
         RenderBlock.loadSheet();
     }
-	private EditorToggler editorToggler;
     
     /**
      *Loades some files and set up everything. This should be done after creating and linking the view.
@@ -127,8 +125,6 @@ public class GameView extends View implements GameManager {
         //set up stage
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());//spawn at fullscreen
         
-		editorToggler = new EditorToggler(controller);
-		
         initalized = true;
 		
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -153,8 +149,6 @@ public class GameView extends View implements GameManager {
             camera.update(dt);
         }
 		
-		editorToggler.update(this, dt);
-        
         // toggle the dev menu?
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
             controller.getDevTools().setVisible(!controller.getDevTools().isVisible());
@@ -469,7 +463,7 @@ public class GameView extends View implements GameManager {
 
  
    /**
-     *override to specify what should happen when the mangager becomes active
+     * Override to specify what should happen when the mangager becomes active. Called when the 
      */
     @Override
     public void onEnter(){

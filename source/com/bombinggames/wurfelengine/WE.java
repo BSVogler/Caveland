@@ -87,6 +87,11 @@ public class WE {
 	private static boolean skipintro =false;
 	private static String iconPath = null;
 	private static final ArrayList<Command> commandsAfterLaunch = new ArrayList<>(0);
+	/**
+	 * default is that every manager state is game.
+	 */
+	private static boolean inGame = false;
+	private static boolean inEditor = false;
 	
     /**
      * Pass the mainMenu which gets displayed when you call launch().
@@ -222,13 +227,15 @@ public class WE {
     }
     
     /**
-     * Use this if you want to use different controller and views. This reinitializes them.
+     * Use different controller and views, which reinitializes them. Enter the editor via {@link #startEditor(boolean)}
      * @param controller the new controller
      * @param view the new view
      */
     public static void switchSetupWithInit(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup and ReInit using Controller:" + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
+		inGame = true;
+		inEditor = false;
         engineView.resetInputProcessors();
 		gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
@@ -244,13 +251,15 @@ public class WE {
     }
     
     /**
-     * Use this if you want to continue to use already initialized controller and view.
+     * Continue to use already initialized controller and view. Enter the editor via {@link #startEditor(boolean)}
      * @param controller the new controller
      * @param view the new view
      */
     public static void switchSetup(final Controller controller, final GameView view){
         Gdx.app.debug("Wurfel Engine", "Switching setup using Controller: " + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
+		inGame = true;//assume that every game manager state is gamemode
+		inEditor = false;
         engineView.resetInputProcessors();
         gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
@@ -270,9 +279,15 @@ public class WE {
      */
     public static void startEditor(boolean reverseMap){
         gameplayScreen.getEditorController().setReverseMap(reverseMap);
-        WE.switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
+        switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
+		inGame = false;//set default true to false
+		inEditor = true;
     }
-    
+
+	public static boolean isInEditor() {
+		return inEditor;
+	}
+	
     /**
      * Starts the actual game using the custom gameplayScreen. This is called after the loading screen.
      */
@@ -280,8 +295,14 @@ public class WE {
 		engineView.disposeMusic();
 		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
 		game.setScreen(gameplayScreen);
+		inGame = true;
+		inEditor = false;
     }
-    
+
+	public static boolean isInGame() {
+		return inGame;
+	}
+	
      /**
      * Starts the actual game using the gameplayScreen you initialized with <i>initGame(Controller controller, GameView view)</i>. This is called after the loading screen.
      */

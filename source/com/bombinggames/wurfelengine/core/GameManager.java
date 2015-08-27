@@ -39,7 +39,7 @@ package com.bombinggames.wurfelengine.core;
 public interface GameManager {
     
     /**
-     *Overriding method should contain what should happen when the manager becomes active.
+     * Overriding method should contain what should happen when the manager becomes active.
      */
     public void onEnter();
     

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bombinggames.wurfelengine.MapEditor;
 
 import com.badlogic.gdx.Gdx;
@@ -25,10 +20,16 @@ public class EditorToggler {
 	private Image playButton;
 	private final float offsetX = 50;
 	private final float offsetY = 50;
-	private final Controller controller;
+	private Controller controller;
+	private GameView view;
 
-	public EditorToggler(Controller controller) {
+	/**
+	 * @param controller the controller used for play-mode
+	 * @param view the view used for play-mode
+	 */
+	public void setGameplayManagers(Controller controller, GameView view) {
 		this.controller = controller;
+		this.view = view;
 	}
 
 	/**
@@ -38,8 +39,7 @@ public class EditorToggler {
 	 * @param dt
 	 */
 	public void update(GameView view, float dt) {
-
-		if (view instanceof MapEditorView) {
+		if (WE.isInEditor()) {
 			if (pauseButton != null) {
 				pauseButton.remove();
 				pauseButton = null;
@@ -48,17 +48,17 @@ public class EditorToggler {
 				stopButton.remove();
 				stopButton = null;
 			}
-			
-			if (playButton == null) {
+
+			if (playButton == null && controller != null && this.view != null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 				//add play button
 				playButton = new Image(spritesheet.findRegion("play_button"));
 				playButton.setX(Gdx.graphics.getWidth() - offsetX);
 				playButton.setY(Gdx.graphics.getHeight() - offsetY);
-				playButton.addListener(new PlayButton(controller, false));
+				playButton.addListener(new PlayButton(controller, this.view, false));
 				view.getStage().addActor(playButton);
 			}
-		} else {
+		} else if (WE.isInGame()) {
 			if (playButton != null) {
 				playButton.remove();
 				playButton = null;
@@ -76,7 +76,7 @@ public class EditorToggler {
 						new ClickListener() {
 						@Override
 						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-							WE.loadEditor(false);
+							WE.startEditor(false);
 							return true;
 						}
 					}
@@ -94,7 +94,7 @@ public class EditorToggler {
 							new ClickListener() {
 							@Override
 							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								WE.loadEditor(true);
+								WE.startEditor(true);
 								return true;
 							}
 						}
@@ -120,17 +120,25 @@ public class EditorToggler {
 
 	private static class PlayButton extends ClickListener {
 
-		private final MapEditorController controller;
+		private final Controller controller;
 		private final boolean replay;
+		private final GameView gameview;
 
-		private PlayButton(Controller controller, boolean replay) {
-			this.controller = (MapEditorController) controller;
+		/**
+		 *
+		 * @param controller
+		 * @param gameview
+		 * @param replay ignored at the moment
+		 */
+		private PlayButton(Controller controller, GameView gameview, boolean replay) {
+			this.controller = controller;
+			this.gameview = gameview;
 			this.replay = replay;
 		}
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			controller.switchToGame(replay);
+			WE.switchSetupWithInit(controller, gameview);
 			return true;
 		}
 	}

@@ -30,12 +30,12 @@
  */
 package com.bombinggames.wurfelengine.core;
 
-import static com.bombinggames.wurfelengine.core.Controller.getMap;
-import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
+import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.MapEditor.MapEditorController;
 import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
 import com.bombinggames.wurfelengine.WE;
-import com.badlogic.gdx.Gdx;
+import static com.bombinggames.wurfelengine.core.Controller.getMap;
+import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 
 /**
  * The GameplayScreen State. This is state where the Wurfel Engine magic happens.
@@ -112,6 +112,7 @@ public class GameplayScreen extends WEScreen {
         controller.update(dt);
 		Controller.staticUpdate(dt);
         view.update(dt);
+		WE.getEngineView().update(dt);
 		getMap().postUpdate(dt);//hack to prevent 1-frame lag by too late write access via view update
 		//render data
         view.render();

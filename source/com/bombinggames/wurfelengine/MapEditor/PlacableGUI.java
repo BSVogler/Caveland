@@ -116,7 +116,8 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param selection the selection entity of the editor
 	 */
 	public void update(Selection selection){
-		blockPosition.setText(selection.getPosition().toCoord().toString());
+		if (selection.isSpawned())
+			blockPosition.setText(selection.getPosition().toCoord().toString());
 	}
 
 	/**

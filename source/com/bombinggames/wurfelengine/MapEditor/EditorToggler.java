@@ -16,7 +16,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 public class EditorToggler {
 
 	private Image pauseButton;
-	private Image stopButton;
+	private Image resetButton;
 	private Image playButton;
 	private final float offsetX = 50;
 	private final float offsetY = 50;
@@ -44,9 +44,9 @@ public class EditorToggler {
 				pauseButton.remove();
 				pauseButton = null;
 			}
-			if (stopButton != null) {
-				stopButton.remove();
-				stopButton = null;
+			if (resetButton != null) {
+				resetButton.remove();
+				resetButton = null;
 			}
 
 			if (playButton == null && controller != null && this.view != null) {
@@ -64,7 +64,7 @@ public class EditorToggler {
 				playButton = null;
 			}
 
-			if (pauseButton == null || stopButton == null) {
+			if (pauseButton == null || resetButton == null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 
 				if (pauseButton == null) {
@@ -74,34 +74,46 @@ public class EditorToggler {
 					pauseButton.setY(Gdx.graphics.getHeight() - offsetY);
 					pauseButton.addListener(
 						new ClickListener() {
-						@Override
-						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-							WE.startEditor(false);
-							return true;
+							@Override
+							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+								WE.startEditor(false);
+								return true;
+							}
 						}
-					}
 					);
 				}
 				view.getStage().addActor(pauseButton);
 
-				if (WE.editorHasMapCopy()) {
-					if (stopButton == null) {
-						//add reverse editor button
-						stopButton = new Image(spritesheet.findRegion("stop_button"));
-						stopButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
-						stopButton.setY(Gdx.graphics.getHeight() - offsetY);
-						stopButton.addListener(
-							new ClickListener() {
+				if (resetButton == null) {
+					//add reverse editor button
+					resetButton = new Image(spritesheet.findRegion("reset_button"));
+					resetButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
+					resetButton.setY(Gdx.graphics.getHeight() - offsetY);
+					resetButton.addListener(
+						new ClickListener() {
 							@Override
 							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								WE.startEditor(true);
+								Controller.loadMap(Controller.getMap().getPath(), controller.getSaveSlot());
+								WE.startEditor(false);
 								return true;
 							}
 						}
-						);
-					}
-					view.getStage().addActor(stopButton);
+					);
 				}
+				view.getStage().addActor(resetButton);
+				
+				//stop button
+				//if (WE.editorHasMapCopy()) {
+	//				resetButton.addListener(
+	//							new ClickListener() {
+	//								@Override
+	//								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+	//									WE.startEditor(true);
+	//									return true;
+	//								}
+	//							}
+	//						);
+				//}
 			}
 		}
 	}
@@ -113,8 +125,8 @@ public class EditorToggler {
 		if (pauseButton != null) {
 			pauseButton.remove();
 		}
-		if (stopButton != null) {
-			stopButton.remove();
+		if (resetButton != null) {
+			resetButton.remove();
 		}
 	}
 

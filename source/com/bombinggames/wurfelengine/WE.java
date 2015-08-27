@@ -213,6 +213,11 @@ public class WE {
             Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
             Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
             
+			getEngineView().getEditorToggler().setGameplayManagers(
+				controller,
+				view
+			);
+			
             if (gameplayScreen != null)
                 gameplayScreen.dispose();//remove gameplayscreen if it already exists
             gameplayScreen = new GameplayScreen(
@@ -222,8 +227,9 @@ public class WE {
             );
             getConsole().setGameplayRef(gameplayScreen);
 			mainMenu.dispose();
-        } else
+        } else {
             Gdx.app.error("Wurfel Engine", "You must construct a WE instance first before calling initGame.");
+		}
     }
     
     /**
@@ -236,6 +242,10 @@ public class WE {
         Gdx.app.debug("Wurfel Engine", "and View:" + view.toString());
 		inGame = true;
 		inEditor = false;
+		getEngineView().getEditorToggler().setGameplayManagers(
+			controller,
+			view
+		);
         engineView.resetInputProcessors();
 		gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
@@ -249,17 +259,28 @@ public class WE {
         controller.enter();
         view.enter();
     }
+	
+	public static void switchSetup(final Controller controller, final GameView view){
+		switchSetup(controller, view, false);
+	}
     
     /**
      * Continue to use already initialized controller and view. Enter the editor via {@link #startEditor(boolean)}
      * @param controller the new controller
      * @param view the new view
+	 * @param editor true if this is the editor setup
      */
-    public static void switchSetup(final Controller controller, final GameView view){
+    private static void switchSetup(final Controller controller, final GameView view, boolean editor){
         Gdx.app.debug("Wurfel Engine", "Switching setup using Controller: " + controller.toString());
         Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
-		inGame = true;//assume that every game manager state is gamemode
-		inEditor = false;
+		inGame = true;
+		inEditor = editor;
+		if (!inEditor){
+			getEngineView().getEditorToggler().setGameplayManagers(
+				controller,
+				view
+			);
+		}
         engineView.resetInputProcessors();
         gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
@@ -279,9 +300,7 @@ public class WE {
      */
     public static void startEditor(boolean reverseMap){
         gameplayScreen.getEditorController().setReverseMap(reverseMap);
-        switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView());
-		inGame = false;//set default true to false
-		inEditor = true;
+        switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView(), true);
     }
 
 	public static boolean isInEditor() {

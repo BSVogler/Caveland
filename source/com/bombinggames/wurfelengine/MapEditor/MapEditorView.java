@@ -152,11 +152,6 @@ public class MapEditorView extends GameView {
 		Gdx.input.setCursorCatched(false);
 		WE.getEngineView().getSoundEngine().setMusicLoudness(0);
 		Controller.getMap().setGameSpeed(0);
-		
-		WE.getEngineView().getEditorToggler().setGameplayManagers(
-			controller.getGameplayController(),
-			controller.getGameplayView()
-		);
     }
     /**
      *

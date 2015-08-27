@@ -341,14 +341,25 @@ public abstract class AbstractMap implements Cloneable {
 	/**
 	 * called when the map is modified
 	 */
-	protected void onModified() {
+	private void onModified() {
 		//recalculates the light if requested
 		Gdx.app.debug("Map", "onModified");
 		for (MapObserver observer : observers) {
 			observer.onMapChange();
 		}
 	}
-
+	
+	/**
+	 * called when the map reloaded. Ideally should find this out by itself.
+	 */
+	public void onReload(){
+		//recalculates the light if requested
+		Gdx.app.debug("Map", "onReload");
+		for (MapObserver observer : observers) {
+			observer.onMapReload();
+		}
+	}
+	
 	/**
 	 * set the modified flag to true. usually not manually called.
 	 */

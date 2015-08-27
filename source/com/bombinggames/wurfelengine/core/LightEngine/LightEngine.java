@@ -639,4 +639,8 @@ public class LightEngine implements MapObserver {
 			}
 		}
 	}
+
+	@Override
+	public void onMapReload() {
+	}
 }

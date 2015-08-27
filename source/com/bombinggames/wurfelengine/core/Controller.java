@@ -36,6 +36,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.ChunkMap;
 import com.bombinggames.wurfelengine.core.Map.CompleteMap;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
@@ -47,10 +48,10 @@ import java.util.ArrayList;
  *A controller manages the map and the game data.
  * @author Benedikt Vogler
  */
-public class Controller implements GameManager {
+public class Controller implements GameManager, MapObserver {
     private static LightEngine lightEngine;
     private static AbstractMap map;
-	
+
 	/**
 	 * update every static update method
 	 * @param dt 
@@ -72,7 +73,7 @@ public class Controller implements GameManager {
 			map.dispose();
         try {
 			ArrayList<MapObserver> linked = null;
-			if (map != null) {//if loading another map save linked objects
+			if (map != null) {//if loading another map, save linked objects
 				linked = map.getOberservers();
 			}
 				
@@ -84,6 +85,8 @@ public class Controller implements GameManager {
 			if (linked != null) {
 				map.getOberservers().addAll(linked);
 			}
+			
+			map.onReload();
 			
             return true;
         } catch (IOException ex) {
@@ -109,7 +112,7 @@ public class Controller implements GameManager {
     public static void setMap(AbstractMap map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
-        map.modified();
+        map.setModified();
     }
     
     /**
@@ -190,14 +193,19 @@ public class Controller implements GameManager {
             if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot)) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
 //                try {
-                    //ChunkMap.createMapFile("default");
-                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);
+//                    ChunkMap.createMapFile("default");
+//                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);
 //                } catch (IOException ex1) {
 //                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
-//                    WE.showMainMenu();
-//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
-//                }
+				WE.showMainMenu();
+				return;
+                   // Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
+               // }
             }
+			//add controller to observers
+			if (!map.getOberservers().contains(this)){
+				map.getOberservers().add(this);
+			}
         }
 		
 		//create default light engine
@@ -260,6 +268,18 @@ public class Controller implements GameManager {
 
 	@Override
 	public void dispose() {
+	}
+
+	@Override
+	public void onMapChange() {
+	}
+
+	@Override
+	public void onChunkChange(Chunk chunk) {
+	}
+
+	@Override
+	public void onMapReload() {
 	}
 	
 }

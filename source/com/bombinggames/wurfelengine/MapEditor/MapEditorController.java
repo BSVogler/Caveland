@@ -116,10 +116,6 @@ public class MapEditorController extends Controller {
             Controller.setMap(mapsave);
         else
             mapsave = null;
-		
-        if (!selectionEntity.isSpawned()) selectionEntity.spawn(
-			new Point(0, 0, getMap().getBlocksZ()-1)
-		);
     }
     
     /**
@@ -196,6 +192,15 @@ public class MapEditorController extends Controller {
 				selection.add(ent);
 		}
 		return selection;
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (!selectionEntity.isSpawned())
+			selectionEntity.spawn(
+			new Point(0, 0, getMap().getBlocksZ()-1)
+		);
 	}
 	
 	

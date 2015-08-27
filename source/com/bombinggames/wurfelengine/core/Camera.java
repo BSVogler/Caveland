@@ -1279,4 +1279,8 @@ public class Camera implements MapObserver {
 		return cameraContent;
 	}
 
+	@Override
+	public void onMapReload() {
+	}
+
 }

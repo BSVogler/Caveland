@@ -46,4 +46,9 @@ public interface MapObserver {
 	 * @param chunk the chunk that changed
 	 */
 	public void onChunkChange(Chunk chunk);
+	
+	/**
+	 * calen when the map is reloaded
+	 */
+	public void onMapReload();
 }

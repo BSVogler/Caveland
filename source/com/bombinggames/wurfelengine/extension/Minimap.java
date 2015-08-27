@@ -377,6 +377,10 @@ public class Minimap implements MapObserver {
 	@Override
 	public void onChunkChange(Chunk chunk) {
 	}
+
+	@Override
+	public void onMapReload() {
+	}
 	
 	
 }

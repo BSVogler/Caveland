@@ -82,7 +82,7 @@ public class MapEditorController extends Controller {
     }
 
 	/**
-	 *
+	 * The controller which is used for playing the game.
 	 * @return
 	 */
 	public Controller getGameplayController() {
@@ -90,7 +90,7 @@ public class MapEditorController extends Controller {
 	}
 
 	/**
-	 *
+	 * The GameView which is used for playing the game.
 	 * @return
 	 */
 	public GameView getGameplayView() {

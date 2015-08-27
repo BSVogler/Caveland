@@ -150,7 +150,7 @@ public class MapEditorView extends GameView {
 		camera.move(0, -camera.getWidthInViewSpc()/2);
         WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
-		WE.getEngineView().setMusicLoudness(0);
+		WE.getEngineView().getSoundEngine().setMusicLoudness(0);
 		Controller.getMap().setGameSpeed(0);
 		
 		WE.getEngineView().getEditorToggler().setGameplayManagers(

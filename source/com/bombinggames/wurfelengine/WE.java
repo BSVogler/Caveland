@@ -292,7 +292,7 @@ public class WE {
      * Starts the actual game using the custom gameplayScreen. This is called after the loading screen.
      */
     public static void startGame(){
-		engineView.disposeMusic();
+		engineView.getSoundEngine().disposeMusic();
 		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
 		game.setScreen(gameplayScreen);
 		inGame = true;

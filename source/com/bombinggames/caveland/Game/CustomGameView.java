@@ -145,8 +145,7 @@ public class CustomGameView extends GameView{
 			addCamera(camera0);
 		}
 		
-		WE.getEngineView().setMusic("com/bombinggames/caveland/music/overworld.mp3");
-		WE.getEngineView().setMusicLoudness(WE.CVARS.getValueF("music"));
+		WE.getEngineView().getSoundEngine().setMusic("com/bombinggames/caveland/music/overworld.mp3");
         
 //        controller.setMinimap(
 //            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,Gdx.graphics.getHeight()-10)

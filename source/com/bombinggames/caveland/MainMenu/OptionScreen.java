@@ -86,7 +86,7 @@ public class OptionScreen extends WEScreen {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.getEngineView().setMusicLoudness(((Slider)actor).getValue());
+					WE.getEngineView().getSoundEngine().setMusicLoudness(((Slider)actor).getValue());
 				}
 			}
 		);
@@ -134,7 +134,7 @@ public class OptionScreen extends WEScreen {
 				
 				//apply sound changes
 				WE.CVARS.get("music").setValue(musicSlider.getValue());
-				WE.getEngineView().setMusicLoudness(musicSlider.getValue());
+				WE.getEngineView().getSoundEngine().setMusicLoudness(musicSlider.getValue());
 				WE.CVARS.get("sound").setValue(soundSlider.getValue());
 			}
 		});

@@ -34,16 +34,13 @@ package com.bombinggames.wurfelengine.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 
 /**
@@ -57,11 +54,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
     private Pixmap cursor;
     private InputMultiplexer inpMulPlex;
     private Array<InputProcessor> inactiveInpProcssrs;
-	/**
-	 * loudness of the musicLoudness 0-1
-	 */
-	private float musicLoudness = 1;
-	private Music music;
 	private Pixmap cursorDrag;
 	private Pixmap cursorPointer;
 	private int cursorId;
@@ -86,8 +78,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
 
         skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/core/skin/uiskin.json"));
         
-		setMusicLoudness((float) WE.CVARS.get("music").getValue());
-		
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.update();
@@ -210,62 +200,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
         return soundEngine;
     }
 
-	/**
-	 *
-	 * @return
-	 */
-	public float getMusicLoudness() {
-		return musicLoudness;
-	}
-
-	/**
-	 * 
-	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it andc and &gt; 0 starts it
-	 */
-	public void setMusicLoudness(float loudness) {
-		this.musicLoudness = loudness;
-		if (music!=null){
-			music.setVolume(musicLoudness);
-			if (musicLoudness==0) music.pause();
-			else if (!music.isPlaying()) music.play();
-		}
-	}
-	
-	/**
-	 * Loads new music and plays them if a loudness is set.
-	 * @param path 
-	 */
-	public void setMusic(String path){
-		if (Gdx.files.internal(path).exists()){
-			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));
-			music.setVolume(musicLoudness);
-			music.setLooping(true);
-			if (musicLoudness>0)
-				try {
-					music.play();
-				} catch (GdxRuntimeException ex){
-					System.err.println("Failed playing music: " + path);
-				}
-		}
-	}
-	
-	/**
-	 * Check if music is playing
-	 * @return true if music is playing
-	 */
-	public boolean isMusicPlaying(){
-		if (music==null)
-			return false;
-		return music.isPlaying();
-	}
-
-	/**
-	 *
-	 */
-	public void disposeMusic() {
-		if (music!=null) music.dispose();
-	}
-	
 	@Override
 	public void dispose() {
 		super.dispose();

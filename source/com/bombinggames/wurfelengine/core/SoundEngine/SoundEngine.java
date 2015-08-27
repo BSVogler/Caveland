@@ -30,7 +30,10 @@
  */
 package com.bombinggames.wurfelengine.core.SoundEngine;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -48,12 +51,17 @@ public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
 	private final ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 	private GameView view;
+		/**
+	 * loudness of the musicLoudness 0-1
+	 */
+	private float musicLoudness = 1;
+	private Music music;
 
 	/**
 	 *
 	 */
 	public SoundEngine() {
-		
+		setMusicLoudness((float) WE.CVARS.get("music").getValue());
 	}
 	
 	/**
@@ -239,6 +247,7 @@ public class SoundEngine {
 	 * @param dt
 	 */
 	public void update(float dt){
+		WE.getEngineView().getSoundEngine().setMusicLoudness(WE.CVARS.getValueF("music"));
 		for (SoundInstance sound : playingLoops) {
 			sound.update();
 		}
@@ -285,6 +294,62 @@ public class SoundEngine {
 	 */
 	public void setView(GameView view) {
 		this.view = view;
+	}
+	
+	/**
+	 *
+	 * @return
+	 */
+	public float getMusicLoudness() {
+		return musicLoudness;
+	}
+
+	/**
+	 * 
+	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it andc and &gt; 0 starts it
+	 */
+	public void setMusicLoudness(float loudness) {
+		this.musicLoudness = loudness;
+		if (music!=null){
+			music.setVolume(musicLoudness);
+			if (musicLoudness==0) music.pause();
+			else if (!music.isPlaying()) music.play();
+		}
+	}
+	
+	/**
+	 * Loads new music and plays them if a loudness is set.
+	 * @param path 
+	 */
+	public void setMusic(String path){
+		if (Gdx.files.internal(path).exists()){
+			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));
+			music.setVolume(musicLoudness);
+			music.setLooping(true);
+			if (musicLoudness>0)
+				try {
+					music.play();
+				} catch (GdxRuntimeException ex){
+					System.err.println("Failed playing music: " + path);
+				}
+		}
+	}
+	
+	/**
+	 * Check if music is playing
+	 * @return true if music is playing
+	 */
+	public boolean isMusicPlaying(){
+		if (music==null)
+			return false;
+		return music.isPlaying();
+	}
+
+	/**
+	 *
+	 */
+	public void disposeMusic() {
+		if (music!=null) music.dispose();
 	}
 
 }

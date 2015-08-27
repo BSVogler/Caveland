@@ -485,7 +485,7 @@ public class GameView extends View implements GameManager {
 		if ((boolean) WE.CVARS.get("DevMode").getValue())
 			WE.getEngineView().setCursor(0);
 				
-		WE.getEngineView().setMusicLoudness((float) WE.CVARS.get("music").getValue());//reload music loudness
+		WE.getEngineView().getSoundEngine().setMusicLoudness((float) WE.CVARS.get("music").getValue());//reload music loudness
 		Controller.getMap().setGameSpeed(gameSpeed);
 		
         onEnter();

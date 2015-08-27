@@ -158,7 +158,7 @@ public class GameplayScreen extends WEScreen {
     public void dispose() {
 		controller.dispose();
 		view.dispose();
-		WE.getEngineView().disposeMusic();
+		WE.getEngineView().getSoundEngine().disposeMusic();
         Controller.staticDispose();
     }
 

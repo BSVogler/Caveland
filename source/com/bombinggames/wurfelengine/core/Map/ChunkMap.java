@@ -156,7 +156,7 @@ public class ChunkMap extends AbstractMap implements Cloneable {
 		data.add(
 			new Chunk(this, getPath(), chunkX, chunkY, getGenerator())
 		);
-		modified();
+		setModified();
 	}
 	
 	/**

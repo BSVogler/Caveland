@@ -352,7 +352,7 @@ public abstract class AbstractMap implements Cloneable {
 	/**
 	 * set the modified flag to true. usually not manually called.
 	 */
-	public void modified() {
+	public void setModified() {
 		this.modified = true;
 	}
 

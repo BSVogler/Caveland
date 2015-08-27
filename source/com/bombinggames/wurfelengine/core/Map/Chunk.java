@@ -186,7 +186,7 @@ public class Chunk {
 	public void processModification(){
 		if (modified){
 			modified = false;
-			Controller.getMap().modified();
+			Controller.getMap().setModified();
 			//notify observers that a chunk changed
 			for (MapObserver observer : Controller.getMap().getOberservers()){
 				observer.onChunkChange(this);

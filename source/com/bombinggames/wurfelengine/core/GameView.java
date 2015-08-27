@@ -108,7 +108,7 @@ public class GameView extends View implements GameManager {
     
     /**
      *Loades some files and set up everything. This should be done after creating and linking the view.
-     * @param controller
+     * @param controller The data sources used for the view. Can be null but should not.
      */
     public void init(final Controller controller){
         super.init();

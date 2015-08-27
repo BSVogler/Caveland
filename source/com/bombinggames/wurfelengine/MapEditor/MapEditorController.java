@@ -58,7 +58,7 @@ public class MapEditorController extends Controller {
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
    /**
-     * USe this constructor if there are no specific gameplay classes. The editor then chooses some basic classes.
+     * USe this constructor if there are no specific gameplay classes. The editor then uses the basic classes.
      */
     public MapEditorController() {
         this(null, null);

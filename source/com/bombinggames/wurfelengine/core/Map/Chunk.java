@@ -188,7 +188,7 @@ public class Chunk {
 			modified = false;
 			Controller.getMap().modified();
 			//notify observers that a chunk changed
-			for (MapObserver observer : Controller.getMap().getOberserverList()){
+			for (MapObserver observer : Controller.getMap().getOberservers()){
 				observer.onChunkChange(this);
 			}
 		}

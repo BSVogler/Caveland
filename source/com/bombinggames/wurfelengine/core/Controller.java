@@ -73,7 +73,7 @@ public class Controller implements GameManager {
         try {
 			ArrayList<MapObserver> linked = null;
 			if (map != null) {//if loading another map save linked objects
-				linked = map.getOberserverList();
+				linked = map.getOberservers();
 			}
 				
 			if (WE.CVARS.getValueB("mapUseChunks"))
@@ -82,7 +82,7 @@ public class Controller implements GameManager {
 				map = new CompleteMap(path, saveslot);
 
 			if (linked != null) {
-				map.getOberserverList().addAll(linked);
+				map.getOberservers().addAll(linked);
 			}
 			
             return true;
@@ -122,7 +122,7 @@ public class Controller implements GameManager {
 	
 	public static void setLightEngine(LightEngine le){
 		lightEngine = le;
-		getMap().getOberserverList().add(lightEngine);
+		getMap().getOberservers().add(lightEngine);
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class Controller implements GameManager {
 		//create default light engine
         if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null){
             lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-			getMap().getOberserverList().add(lightEngine);
+			getMap().getOberservers().add(lightEngine);
         }
 		
         initalized = true;    

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * If a class wants to be notified if a change on the map happens it must register as an {@link com.bombinggames.wurfelengine.core.Map.MapObserver} in the {@link #getOberserverList() } first.
+ * If a class wants to be notified if a change on the map happens it must register as an {@link com.bombinggames.wurfelengine.core.Map.MapObserver} in the {@link #getOberservers() } first.
  * @author Benedikt Vogler
  */
 public abstract class AbstractMap implements Cloneable {
@@ -321,7 +321,7 @@ public abstract class AbstractMap implements Cloneable {
 	 * 
 	 * @return reference to list containing the observers
 	 */
-	public ArrayList<MapObserver> getOberserverList() {
+	public ArrayList<MapObserver> getOberservers() {
 		return observers;
 	}
 

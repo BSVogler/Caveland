@@ -416,7 +416,7 @@ public class GameView extends View implements GameManager {
      */
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
-		Controller.getMap().getOberserverList().add(camera);
+		Controller.getMap().getOberservers().add(camera);
     }
     
      /**

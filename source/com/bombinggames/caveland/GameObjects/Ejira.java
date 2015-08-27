@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
 /**
- * The Ejira has two particle emitter attached via glue.
+ * The Ejira has two particle emitter attached via glue. Itself is not saved but it's position. The content of the backpack is dropped on disposing and saved separately.
  * @author Benedikt Vogler
  */
 public class Ejira extends MovableEntity implements Controllable {

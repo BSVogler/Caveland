@@ -142,4 +142,8 @@ public class CompleteMap extends AbstractMap {
 	public AbstractLogicBlock getLogic(Coordinate coord) {
 		return null;
 	}
+
+	@Override
+	public void addLogic(AbstractLogicBlock block) {
+	}
 }

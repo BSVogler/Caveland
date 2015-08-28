@@ -68,8 +68,10 @@ public class Chunk {
 	private final static char SIGN_ENTITIES = '|';//124 OR 0x7c
 	private final static char SIGN_STARTCOMMENTS = '{';//123 OR 0x7b
 	private final static char SIGN_ENDCOMMENTS = '}';//125 OR 0x7d
-	private final static char SIGN_EMPTYLAYER = '~';//126 OR 0x7e
+	private final static char SIGN_COMMAND = '~';//126 OR 0x7e
 	private final static char SIGN_LINEFEED = 0x0A;//10 or 0x0A
+	private final static char SIGN_EMTPYLAYER = 'e';//only valid after a command sign
+	private final static char SIGN_LOGICBLOCKS = 'l';//only valid after a command sign
 	
 	/**
 	 * the map in which the chunks are used
@@ -84,6 +86,9 @@ public class Chunk {
 	 * the ids are stored here
 	 */
     private final Block data[][][];
+	/**
+	 * a list containing the logic blocks which point to some blocks in this chunk
+	 */
 	private final ArrayList<AbstractLogicBlock> logicBlocks = new ArrayList<>(2);
 	private boolean modified;
 	/**
@@ -242,67 +247,98 @@ public class Chunk {
 				int x;
 				int y;
 
-				int bufChar = fis.read();
+				int bChar = fis.read();
 
-				//read a byte
-				while (bufChar != -1 && bufChar != SIGN_ENTITIES) {//read while not eof and not at entity part
-					if (bufChar == SIGN_LINEFEED) //skip line breaks
-						bufChar = fis.read();
-
-					if (bufChar != SIGN_LINEFEED && bufChar != SIGN_ENDCOMMENTS){//not a line break
-
-						//jump over optional comment line
-						if (bufChar == SIGN_STARTCOMMENTS){
-							bufChar = fis.read();
-							while (bufChar != SIGN_ENDCOMMENTS){
-								bufChar = fis.read();
-							}
-							bufChar = fis.read();
-							if (bufChar== SIGN_LINEFEED)//if following is a line break also skip it again
-								bufChar = fis.read();
-						}
-
-						//if layer is empty, fill with air
-						if (bufChar == SIGN_EMPTYLAYER ){
+				//read a byte for the blocks
+				while (bChar != -1) {//read while not eof
+					if (bChar == SIGN_COMMAND) {
+						bChar = fis.read();
+						
+						if (bChar == SIGN_EMTPYLAYER) {
 							for (x = 0; x < blocksX; x++) {
 								for (y = 0; y < blocksY; y++) {
 									data[x][y][z] = null;
 								}
 							}
-						} else {
-							//fill layer block by block
-							y = 0;
-							do {
-								x = 0;
-								do {
-
-									byte id; 
-									if (y==0 && x==0)//already got first one
-										 id = (byte) bufChar;
-									else 
-										id = (byte) fis.read();
-									byte value = (byte) fis.read();
-									if (id > 0) {
-										data[x][y][z] = Block.getInstance(id, value);
-									} else 
-										data[x][y][z] =null;
-									x++;
-								} while (x < blocksX);
-								y++;
-							} while (y < blocksY);
 						}
+						
+						if (bChar == SIGN_ENTITIES || bChar == SIGN_LOGICBLOCKS)
+							break;
+					}
+					
+					if (bChar != SIGN_LINEFEED && bChar != SIGN_ENDCOMMENTS){//not a line break
+
+						//jump over optional comment line
+						if (bChar == SIGN_STARTCOMMENTS){
+							do {
+								bChar = fis.read(); //read until the end of comments
+							} while (bChar != SIGN_ENDCOMMENTS);
+						}
+
+						//fill layer block by block
+						y = 0;
+						do {
+							x = 0;
+							do {
+								byte id; 
+								if (y==0 && x==0)//already read first one
+									 id = (byte) bChar;
+								else 
+									id = (byte) fis.read();
+								if (id > 0) {
+									data[x][y][z] = Block.getInstance(id, (byte) fis.read());
+								} else {
+									data[x][y][z] = null;
+								}
+								x++;
+							} while (x < blocksX);
+							y++;
+						} while (y < blocksY);
 						z++;
 					}
+					
 					//read next line
-					bufChar = fis.read();
+					bChar = fis.read();
 				}
-
-				if (WE.CVARS.getValueB("loadEntities")) {
+				//ends with a sign for logic or entities or eof
+				
+				if (bChar == SIGN_LOGICBLOCKS) {
+					//load logicblocks
 					try {
 						//loading entities
-						if (bufChar==SIGN_ENTITIES){
+						int length = fis.read(); //amount of entities
+						Gdx.app.debug("Chunk", "Loading " + length +" logic blocks.");
+
+						AbstractLogicBlock block;
+						for (int i = 0; i < length; i++) {
+							try {
+								block = (AbstractLogicBlock) fis.readObject();
+								Controller.getMap().addLogic(block);
+								Gdx.app.debug("Chunk", "Loaded entity: "+block.toString());
+								//objectIn.close();
+							} catch (ClassNotFoundException | InvalidClassException ex) {
+								Gdx.app.error("Chunk", "An logicBlock could not be loaded");
+								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+							}
+						}
+					} catch (IOException ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+					} catch (java.lang.NoClassDefFoundError ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+					}
+					
+					bChar = fis.read();
+					if (bChar == SIGN_COMMAND) {
+						bChar = fis.read();
+					}
+				}
+				
+				if (bChar==SIGN_ENTITIES){
+					if (WE.CVARS.getValueB("loadEntities")) {
+						try {
+							//loading entities
 							int length = fis.read(); //amount of entities
-							Gdx.app.debug("Chunk", "Loading " + length+" entities");
+							Gdx.app.debug("Chunk", "Loading " + length +" entities.");
 
 							AbstractEntity object;
 							for (int i = 0; i < length; i++) {
@@ -316,13 +352,14 @@ public class Chunk {
 									Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 								}
 							}
+						} catch (IOException ex) {
+							Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+						} catch (java.lang.NoClassDefFoundError ex) {
+							Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 						}
-					} catch (IOException ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-					} catch (java.lang.NoClassDefFoundError ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 					}
-				}
+				}	
+				
 				modified = true;
 				return true;
 			} catch (IOException ex) {
@@ -379,14 +416,11 @@ public class Chunk {
 								dirty=true;
 						}
 					}
-					fileOut.write(SIGN_STARTCOMMENTS);
-					fileOut.write(z);
-					fileOut.write(SIGN_ENDCOMMENTS);
+					fileOut.write(new byte[]{SIGN_STARTCOMMENTS, (byte) z, SIGN_ENDCOMMENTS});
 					if (dirty)
 						for (int y = 0; y < blocksY; y++) {
 							for (int x = 0; x < blocksX; x++) {
 								if (data[x][y][z]==null) {
-									fileOut.write(0);
 									fileOut.write(0);
 								} else {
 									fileOut.write(data[x][y][z].getId());
@@ -395,16 +429,29 @@ public class Chunk {
 							}
 						}
 					else {
-						fileOut.write(SIGN_EMPTYLAYER);
+						fileOut.write(SIGN_EMTPYLAYER);
 					}
 				}
 				fileOut.flush();
 				
+				//save logicblocks
+				ArrayList<AbstractLogicBlock> logicblocks = map.getLogicBlocksOnChunk(coordX, coordY);
+				if (logicblocks.size()>0){
+					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_LOGICBLOCKS, (byte) logicblocks.size()});
+					for (AbstractLogicBlock lb : logicblocks){
+						Gdx.app.debug("Chunk", "Saving block:"+lb.toString());
+						try {
+							fileOut.writeObject(lb);
+						} catch(java.io.NotSerializableException ex){
+							Gdx.app.error("Chunk", "Something is not NotSerializable: "+ex.getMessage()+":"+ex.toString());
+						}
+					}
+				}
+				
 				//save entities
 				ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 				if (entities.size() > 0) {
-					fileOut.write(SIGN_ENTITIES);
-					fileOut.write(entities.size());
+					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_ENTITIES, (byte) entities.size()});
 					for (AbstractEntity ent : entities){
 						Gdx.app.debug("Chunk", "Saving entity:"+ent.getName());
 						try {
@@ -657,6 +704,10 @@ public class Chunk {
 		}
 	}
 	
+	public void addLogic(AbstractLogicBlock block) {
+		logicBlocks.add(block);
+	}
+		
 	/**
 	 * Get the logic to a logicblock.
 	 * @param coord 
@@ -672,6 +723,10 @@ public class Chunk {
 			}
 		}
 		return null;
+	}
+
+	public ArrayList<AbstractLogicBlock> getLogicBlocks() {
+		return logicBlocks;
 	}
 	
 	/**

@@ -563,4 +563,10 @@ public abstract class AbstractMap implements Cloneable {
 	 * @return 
 	 */
 	public abstract AbstractLogicBlock getLogic(Coordinate coord);
+
+	/**
+	 * 
+	 * @param block 
+	 */
+	public abstract void addLogic(AbstractLogicBlock block);
 }

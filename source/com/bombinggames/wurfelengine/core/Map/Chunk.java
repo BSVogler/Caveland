@@ -392,8 +392,8 @@ public class Chunk {
     
 	
     /**
-     * 
-     * @param path the map name on disk
+     * Save this chunk on storage.
+     * @param path the map name on storage
 	 * @param saveSlot
 
      * @return 

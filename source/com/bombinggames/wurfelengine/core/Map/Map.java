@@ -7,12 +7,12 @@
  *
  * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
  *   visible in an intro screen or main menu.
- * * Redistributions of source code must retain the above copyright notice, 
+ * * Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice, 
- *   this list of conditions and the following disclaimer in the documentation 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of Benedikt Vogler nor the names of its contributors 
+ * * Neither the name of Benedikt Vogler nor the names of its contributors
  *   may be used to endorse or promote products derived from this software without specific
  *   prior written permission.
  *
@@ -51,15 +51,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *A map stores nine chunks as part of a bigger map. It also contains the entities.
+ * A map stores nine chunks as part of a bigger map. It also contains the
+ * entities.
+ *
  * @author Benedikt Vogler
  */
 public class Map implements Cloneable {
+
 	private static int blocksX;
 	private static int blocksY;
 	private static int blocksZ;
-	
-    
+
 	private static Generator defaultGenerator = new AirGenerator();
 	public final static Integer MAPVERSION = 3;
 
@@ -120,26 +122,29 @@ public class Map implements Cloneable {
 		}
 		return i;
 	}
-	    /**
-     * Copies an array with three dimensions. Deep copy until the cells content of cells shallow copy.
-     * @param array the data you want to copy
-     * @return The copy of the array-
-     */
-    private static RenderBlock[][][] copyBlocks(final RenderBlock[][][] array) {
-        RenderBlock[][][] copy = new RenderBlock[array.length][][];
-        for (int i = 0; i < array.length; i++) {
-            copy[i] = new RenderBlock[array[i].length][];
-            for (int j = 0; j < array[i].length; j++) {
-                copy[i][j] = new RenderBlock[array[i][j].length];
-                System.arraycopy(
-                    array[i][j], 0, copy[i][j], 0, 
-                    array[i][j].length
-                );
-            }
-        }
-        return copy;
-    } 
-	
+
+	/**
+	 * Copies an array with three dimensions. Deep copy until the cells content
+	 * of cells shallow copy.
+	 *
+	 * @param array the data you want to copy
+	 * @return The copy of the array-
+	 */
+	private static RenderBlock[][][] copyBlocks(final RenderBlock[][][] array) {
+		RenderBlock[][][] copy = new RenderBlock[array.length][][];
+		for (int i = 0; i < array.length; i++) {
+			copy[i] = new RenderBlock[array[i].length][];
+			for (int j = 0; j < array[i].length; j++) {
+				copy[i][j] = new RenderBlock[array[i][j].length];
+				System.arraycopy(
+					array[i][j], 0, copy[i][j], 0,
+					array[i][j].length
+				);
+			}
+		}
+		return copy;
+	}
+
 		/**
 	 * every entity on the map is stored in this field
 	 */
@@ -154,11 +159,11 @@ public class Map implements Cloneable {
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
-        
-    
+
+
     /** Stores the data of the map. */
     private ArrayList<Chunk> data;
-	
+
     /**
      * Loads a map using the default generator.
      * @param name if available on disk it will be load
@@ -168,7 +173,7 @@ public class Map implements Cloneable {
     public Map(final File name, int saveslot) throws IOException{
         this(name, getDefaultGenerator(), saveslot);
     }
-    
+
     /**
      * Loads a map.
      * @param name if available on disk it will load the meta file
@@ -180,7 +185,7 @@ public class Map implements Cloneable {
 		this.directory = name;
 		this.generator = generator;
 		CVarSystem cvars = CVarSystem.getInstanceMapSystem(new File(directory + "/meta.wecvar"));
-		
+
 		WE.CVARS.setChildSystem(cvars);
 
 		cvars.load();
@@ -189,7 +194,7 @@ public class Map implements Cloneable {
 			createSaveSlot(saveSlot);
 		}
 		useSaveSlot(saveSlot);
-		
+
         Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveSlot +" should be loaded");
 
         //save chunk size, which are now loaded
@@ -200,10 +205,10 @@ public class Map implements Cloneable {
 
 		//printCoords();
     }
-    
+
 	/**
 	 * Called after the view update to catch changes caused by the view
-	 * @param dt 
+	 * @param dt
 	 */
 	public void postUpdate(float dt) {
 		if (WE.CVARS.getValueB("mapChunkSwitch")) {
@@ -212,19 +217,19 @@ public class Map implements Cloneable {
 				data.get(i).resetCameraAccesCounter();
 			}
 		}
-		
+
 		//check for modification flag
 		for (Chunk chunk : data) {
 			chunk.processModification();
 		}
-		
+
 		modificationCheck();
 	}
-		
+
 	/**
 	 * loads a chunk from disk
 	 * @param chunkX
-	 * @param chunkY 
+	 * @param chunkY
 	 */
 	public void loadChunk(int chunkX, int chunkY){
 		//TODO if already there.
@@ -233,7 +238,7 @@ public class Map implements Cloneable {
 		);
 		setModified();
 	}
-	
+
 	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
 	 * @param camera the camera which is used for the limits. Gets stored globally so only one camera can be used. Calling this method more then once ith different cameras overwrites the result.
@@ -244,9 +249,9 @@ public class Map implements Cloneable {
 		Gdx.app.debug("ChunkMap", "HSD for chunk " + chunkX + "," + chunkY);
 		Chunk chunk = getChunk(chunkX, chunkY);
 		Block[][][] chunkData = chunk.getData();
-		
+
 		chunk.resetClipping();
-		
+
 		//loop over floor for ground level
 		//DataIterator floorIterator = chunk.getIterator(0, 0);
 //		while (floorIterator.hasNext()) {
@@ -260,23 +265,23 @@ public class Map implements Cloneable {
 //					-1
 //				);
 //		}
-		
+
 		//iterate over chunk
 		DataIterator<Block> dataIter = new DataIterator<>(
 			chunkData,
 			0,
 			camera.getZRenderingLimit()-1
 		);
-		
+
 		while (dataIter.hasNext()) {
 			Block current = dataIter.next();//next is the current block
-			
+
 			if (current != null) {
 				//calculate index position relative to camera border
 				final int x = dataIter.getCurrentIndex()[0];
 				final int y = dataIter.getCurrentIndex()[1];
 				final int z = dataIter.getCurrentIndex()[2];
-				
+
 				Block neighbour;
 				//left side
 				//get neighbour block
@@ -331,14 +336,14 @@ public class Map implements Cloneable {
 			}
 		}
 	}
-    
+
 	/**
 	 * Helper function. Gets a block at an index. can be outside of this chunk
 	 * @param chunk
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return 
+	 * @return
 	 */
 	private Block getIndex(Chunk chunk, int x, int y, int z){
 		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX())//index outside current chunk
@@ -350,7 +355,7 @@ public class Map implements Cloneable {
 		else
 			return chunk.getBlockViaIndex(x, y, z);
 	}
-	
+
     /**
      * Get the data of the map
      * @return
@@ -358,7 +363,7 @@ public class Map implements Cloneable {
 	public ArrayList<Chunk> getData() {
 		return data;
 	}
-	
+
    	/**
 	 * Returns a block without checking the parameters first. Good for debugging
 	 * and also faster. O(n)
@@ -369,9 +374,9 @@ public class Map implements Cloneable {
 	 * @return the single block you wanted
 	 */
     public Block getBlock(final int x, final int y, final int z){
-		return getBlock(new Coordinate(x, y, z)); 
+		return getBlock(new Coordinate(x, y, z));
     }
-	
+
     /**
 	 * If the block can not be found returns null pointer.
 	 *
@@ -388,7 +393,7 @@ public class Map implements Cloneable {
 			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 
     }
-    
+
 	/**
 	 * Replace a block. Assume that the map already has been filled at this
 	 * coordinate.
@@ -412,11 +417,11 @@ public class Map implements Cloneable {
 	public void setBlock(Coordinate coord, Block block) {
 		getChunk(coord).setBlock(coord, block);
 	}
-	
+
 	/**
 	 * get the chunk where the coordinates are on
 	 * @param coord
-	 * @return 
+	 * @return
 	 */
 	public Chunk getChunk(Coordinate coord){
 		for (Chunk chunk : data) {
@@ -427,38 +432,37 @@ public class Map implements Cloneable {
 				   left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
-				&& coord.getY() < top + Chunk.getBlocksY() 
+				&& coord.getY() < top + Chunk.getBlocksY()
 			) {
 				return chunk;
 			}
 		}
 		return null;//not found
 	}
-	
+
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c) where c = amount of chunks -&gt; O(1)
+	 * get the chunk with the given chunk coords. <br>Runtime: O(c) where c =
+	 * amount of chunks -&gt; O(1)
+	 *
 	 * @param chunkX
 	 * @param chunkY
 	 * @return if not in memory return null
 	 */
-	public Chunk getChunk(int chunkX, int chunkY){
+	public Chunk getChunk(int chunkX, int chunkY) {
 		for (Chunk chunk : data) {
-			if (
-				   chunkX == chunk.getChunkX()
-				&& chunkY == chunk.getChunkY()
-			) {
+			if (chunkX == chunk.getChunkX()
+				&& chunkY == chunk.getChunkY()) {
 				return chunk;
 			}
 		}
 		return null;//not found
 	}
-        
-    
+
 	/**
 	 * Get every entity on a chunk.
 	 * @param xChunk
 	 * @param yChunk
-	 * @return 
+	 * @return
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnChunk(final int xChunk, final int yChunk){
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
@@ -472,23 +476,23 @@ public class Map implements Cloneable {
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
 					ent.getPosition().getX() < (xChunk+1)*Chunk.getGameWidth() //left chunk border
-				&&	
+				&&
 					ent.getPosition().getY() > (yChunk)*Chunk.getGameDepth()//top chunk border
-				&& 
+				&&
 					ent.getPosition().getY() < (yChunk+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
-             } 
+             }
         }
 
         return list;
 	}
-	
+
 		/**
 	 * Get every entity on a chunk which should be saved
 	 * @param xChunk
 	 * @param yChunk
-	 * @return 
+	 * @return
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(final int xChunk, final int yChunk){
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
@@ -501,22 +505,18 @@ public class Map implements Cloneable {
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
 					ent.getPosition().getX() < (xChunk+1)*Chunk.getGameWidth() //left chunk border
-				&&	
+				&&
 					ent.getPosition().getY() > (yChunk)*Chunk.getGameDepth()//top chunk border
-				&& 
+				&&
 					ent.getPosition().getY() < (yChunk+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
-            } 
+            }
         }
 
         return list;
 	}
-    
 
-	
-
-        
     /**
 	 * saves every chunk on the map
 	 *
@@ -538,8 +538,6 @@ public class Map implements Cloneable {
         return true;
     }
 
-	
-
 
 	/**
 	 * prints the map to console
@@ -551,7 +549,7 @@ public class Map implements Cloneable {
 			//	System.out.print("\n\n");
 			//if (!iter.hasNsextX())
 			//	System.out.print("\n");
-			
+
 			Block block = iter.next();
 			if (block.getId()==0)
 				System.out.print("  ");
@@ -559,7 +557,7 @@ public class Map implements Cloneable {
 				System.out.print(block.getId() + " ");
 		}
 	}
-	
+
 	/**
      *
      */
@@ -599,17 +597,17 @@ public class Map implements Cloneable {
 		if (chunk==null) return null;
 		else return chunk.getLogic(coord);
 	}
-	
+
 	public void addLogic(AbstractLogicBlock block) {
 		Chunk chunk = getChunk(block.getPosition());
 		chunk.addLogic(block);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param coordX
 	 * @param coordY
-	 * @return 
+	 * @return
 	 */
 	ArrayList<AbstractLogicBlock> getLogicBlocksOnChunk(int coordX, int coordY) {
 		Chunk chunk = getChunk(coordX, coordY);
@@ -688,7 +686,7 @@ public class Map implements Cloneable {
 	public int getCurrentSaveSlot() {
 		return activeSaveSlot;
 	}
-	
+
 		/**
 	 * Set the speed of the world.
 	 *
@@ -716,8 +714,8 @@ public class Map implements Cloneable {
 	public File getPath() {
 		return directory;
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @return
@@ -727,7 +725,7 @@ public class Map implements Cloneable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return reference to list containing the observers
 	 */
 	public ArrayList<MapObserver> getOberservers() {
@@ -757,7 +755,7 @@ public class Map implements Cloneable {
 			observer.onMapChange();
 		}
 	}
-	
+
 	/**
 	 * called when the map reloaded. Ideally should find this out by itself.
 	 */
@@ -768,7 +766,7 @@ public class Map implements Cloneable {
 			observer.onMapReload();
 		}
 	}
-	
+
 	/**
 	 * set the modified flag to true. usually not manually called.
 	 */
@@ -783,14 +781,14 @@ public class Map implements Cloneable {
 	public float getGameSpeed() {
 		return gameSpeed;
 	}
-	
+
 		/**
 	 *Updates mostly the entities.
 	 * @param dt
 	 */
 	public void update(float dt) {
 		dt *= gameSpeed;//aplly game speed
-		
+
 	//update every block on the map
 		for (Chunk chunk : data) {
 			chunk.update(dt);
@@ -840,7 +838,7 @@ public class Map implements Cloneable {
 	public AbstractEntity[] getEntitys() {
 		return entityList.toArray(new AbstractEntity[]{});//it is a bit stupid to create a new array which will not be used but wihtout you get Object[] which can not be casted to Interactable[].
 	}
-	
+
 	/**
 	 *
 	 * @param ent
@@ -848,7 +846,7 @@ public class Map implements Cloneable {
 	public void addEntities(AbstractEntity... ent){
 		entityList.addAll(Arrays.asList(ent));
 	}
-	
+
 	/**
 	 *Disposes every entity on the map and clears the list.
 	 */
@@ -922,7 +920,7 @@ public class Map implements Cloneable {
 
 		return list;
 	}
-	
+
 	/**
 	 * The width of the map with three chunks in use
 	 *

@@ -66,12 +66,10 @@ public class Chunk {
 	 * save file stuff
 	 */
 	private final static char SIGN_ENTITIES = '|';//124 OR 0x7c
-	private final static char SIGN_STARTCOMMENTS = '{';//123 OR 0x7b
-	private final static char SIGN_ENDCOMMENTS = '}';//125 OR 0x7d
 	private final static char SIGN_COMMAND = '~';//126 OR 0x7e
-	private final static char SIGN_LINEFEED = 0x0A;//10 or 0x0A
 	private final static char SIGN_EMTPYLAYER = 'e';//only valid after a command sign
 	private final static char SIGN_LOGICBLOCKS = 'l';//only valid after a command sign
+		private final static char SIGN_ENDBLOCKS = 'b';//only valid after a command sign
 	
 	/**
 	 * the map in which the chunks are used
@@ -138,8 +136,8 @@ public class Chunk {
         this(map, coordX,coordY);
 		if (WE.CVARS.getValueB("shouldLoadMap")){
 			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY))
-				fill(coordX, coordY, generator);
-		} else fill(coordX, coordY, generator);
+				fill(generator);
+		} else fill(generator);
 		increaseCameraHandleCounter();
     }
     
@@ -152,7 +150,7 @@ public class Chunk {
     */
     public Chunk(final Map map, final int coordX, final int coordY, final Generator generator){
         this(map, coordX, coordY);
-        fill(coordX, coordY, generator);
+        fill(generator);
     }
 	
 	/**
@@ -201,13 +199,11 @@ public class Chunk {
     
     /**
      * Fills the chunk's block using a generator.
-     * @param chunkCoordX
-     * @param chunkCoordY
      * @param generator 
      */
-    private void fill(final int chunkCoordX, final int chunkCoordY, final Generator generator){
-		int left = blocksX*chunkCoordX;
-		int top = blocksY*chunkCoordY;
+    public void fill(final Generator generator){
+		int left = blocksX*coordX;
+		int top = blocksY*coordY;
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
@@ -230,154 +226,15 @@ public class Chunk {
 				}
 		modified = true;
     }
-    
-    /**
-     * Tries to load a chunk from disk.
-     */
-    private boolean load(final File path, int saveSlot, int coordX, int coordY){
-
-		//FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
-		FileHandle savepath = Gdx.files.absolute(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
-
-		if (savepath.exists()) {
-			Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
-			//Reading map files test
-			try (ObjectInputStream fis = new ObjectInputStream(new FileInputStream(savepath.file()))) {
-				int z = 0;
-				int x;
-				int y;
-
-				int bChar = fis.read();
-
-				//read a byte for the blocks
-				while (bChar != -1) {//read while not eof
-					if (bChar == SIGN_COMMAND) {
-						bChar = fis.read();
-						
-						if (bChar == SIGN_EMTPYLAYER) {
-							for (x = 0; x < blocksX; x++) {
-								for (y = 0; y < blocksY; y++) {
-									data[x][y][z] = null;
-								}
-							}
-						}
-						
-						if (bChar == SIGN_ENTITIES || bChar == SIGN_LOGICBLOCKS)
-							break;
-					}
-					
-					if (bChar != SIGN_LINEFEED && bChar != SIGN_ENDCOMMENTS){//not a line break
-
-						//jump over optional comment line
-						if (bChar == SIGN_STARTCOMMENTS){
-							do {
-								bChar = fis.read(); //read until the end of comments
-							} while (bChar != SIGN_ENDCOMMENTS);
-						}
-
-						//fill layer block by block
-						y = 0;
-						do {
-							x = 0;
-							do {
-								byte id; 
-								if (y==0 && x==0)//already read first one
-									 id = (byte) bChar;
-								else 
-									id = (byte) fis.read();
-								if (id > 0) {
-									data[x][y][z] = Block.getInstance(id, (byte) fis.read());
-								} else {
-									data[x][y][z] = null;
-								}
-								x++;
-							} while (x < blocksX);
-							y++;
-						} while (y < blocksY);
-						z++;
-					}
-					
-					//read next line
-					bChar = fis.read();
-				}
-				//ends with a sign for logic or entities or eof
-				
-				if (bChar == SIGN_LOGICBLOCKS) {
-					//load logicblocks
-					try {
-						//loading entities
-						int length = fis.read(); //amount of entities
-						Gdx.app.debug("Chunk", "Loading " + length +" logic blocks.");
-
-						AbstractLogicBlock block;
-						for (int i = 0; i < length; i++) {
-							try {
-								block = (AbstractLogicBlock) fis.readObject();
-								Controller.getMap().addLogic(block);
-								Gdx.app.debug("Chunk", "Loaded entity: "+block.toString());
-								//objectIn.close();
-							} catch (ClassNotFoundException | InvalidClassException ex) {
-								Gdx.app.error("Chunk", "An logicBlock could not be loaded");
-								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-							}
-						}
-					} catch (IOException ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-					} catch (java.lang.NoClassDefFoundError ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-					}
-					
-					bChar = fis.read();
-					if (bChar == SIGN_COMMAND) {
-						bChar = fis.read();
-					}
-				}
-				
-				if (bChar==SIGN_ENTITIES){
-					if (WE.CVARS.getValueB("loadEntities")) {
-						try {
-							//loading entities
-							int length = fis.read(); //amount of entities
-							Gdx.app.debug("Chunk", "Loading " + length +" entities.");
-
-							AbstractEntity object;
-							for (int i = 0; i < length; i++) {
-								try {
-									object = (AbstractEntity) fis.readObject();
-									Controller.getMap().addEntities(object);
-									Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
-									//objectIn.close();
-								} catch (ClassNotFoundException | InvalidClassException ex) {
-									Gdx.app.error("Chunk", "An entity could not be loaded");
-									Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-								}
-							}
-						} catch (IOException ex) {
-							Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-						} catch (java.lang.NoClassDefFoundError ex) {
-							Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-						}
-					}
-				}	
-				
-				modified = true;
-				return true;
-			} catch (IOException ex) {
-				Gdx.app.error("Chunk","Loading of chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-			} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
-				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-			} catch (ArrayIndexOutOfBoundsException ex){
-				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
-			}
-		} else {
-			Gdx.app.log("Chunk",savepath+" could not be found on disk. Trying to restore chunk.");
-			if (restoreFromRoot(path, saveSlot, coordX, coordY))
-				load(path, saveSlot, coordX, coordY);
-		}
-		
-        return false;
-    }
 	
+		/**
+	 * copies  something
+	 * @param path
+	 * @param saveSlot
+	 * @param coordX
+	 * @param coordY
+	 * @return 
+	 */
 	public boolean restoreFromRoot(final File path, int saveSlot, int coordX, int coordY){
 		FileHandle chunkInRoot = Gdx.files.absolute(path+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
 		if (chunkInRoot.exists() && !chunkInRoot.isDirectory()){
@@ -390,6 +247,190 @@ public class Chunk {
 		return true;
 	}
     
+	private byte loadBlocks(FileInputStream fis) throws IOException{
+		int z = 0;
+		int x = 0;
+		int y = 0;
+		byte id = -1;//undefined
+
+		byte bChar;
+		boolean command = false;
+		//read a byte for the blocks
+		do {
+			bChar = (byte) fis.read();//read while not eof
+			if (bChar == -1) return bChar;
+			boolean skip = false;
+
+			if (bChar == SIGN_COMMAND) {
+				skip = true;
+				command = true;
+			} else {
+				if (command) {
+					if (bChar == SIGN_EMTPYLAYER) {
+						for (x = 0; x < blocksX; x++) {
+							for (y = 0; y < blocksY; y++) {
+								data[x][y][z] = null;
+							}
+						}
+						skip = true;
+					}
+
+					if (bChar == SIGN_ENDBLOCKS || bChar==-1)
+						return bChar;
+
+					command = false;
+				}
+			}
+
+
+			if (bChar != SIGN_COMMAND && skip == false) {
+				//fill layer block by block
+				if (id == -1) {
+
+					id = bChar;
+					if (id == 0) {
+						data[x][y][z] = null;
+						id = -1;
+						x++;
+						if (x == blocksX) {
+							y++;
+							x=0;
+						}
+						if (y == blocksY) {
+							x=0;
+							y=0;
+							z++;
+						}
+					}
+				} else {
+					data[x][y][z] = Block.getInstance(id, bChar);
+					id = -1;
+					x++;
+					if (x == blocksX) {
+						y++;
+						x=0;
+					}
+					if (y == blocksY) {
+						x=0;
+						y=0;
+						z++;
+					}
+				}
+			}
+		} while (bChar != -1);
+		return bChar;
+	}
+	
+	
+	private void loadObjects(FileInputStream fis, File path){
+		//ends with a sign for logic or entities or eof
+		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+			byte bChar = ois.readByte();
+			if (bChar == SIGN_COMMAND)
+				bChar = ois.readByte();
+			
+//load logicblocks
+			if (bChar == SIGN_LOGICBLOCKS) {
+				try {
+					//loading entities
+					int length = ois.readByte(); //amount of entities
+					Gdx.app.debug("Chunk", "Loading " + length +" logic blocks.");
+
+					AbstractLogicBlock block;
+					for (int i = 0; i < length; i++) {
+						try {
+							block = (AbstractLogicBlock) ois.readObject();
+							Controller.getMap().addLogic(block);
+							Gdx.app.debug("Chunk", "Loaded entity: "+block.toString());
+							//objectIn.close();
+						} catch (ClassNotFoundException | InvalidClassException ex) {
+							Gdx.app.error("Chunk", "An logicBlock could not be loaded");
+							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+						}
+					}
+				} catch (IOException ex) {
+					Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+				} catch (java.lang.NoClassDefFoundError ex) {
+					Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+				}
+
+				bChar = ois.readByte();
+				if (bChar == SIGN_COMMAND) {
+					bChar = ois.readByte();
+				}
+			}
+
+			if (bChar==SIGN_ENTITIES){
+				if (WE.CVARS.getValueB("loadEntities")) {
+					try {
+						//loading entities
+						int length = fis.read(); //amount of entities
+						Gdx.app.debug("Chunk", "Loading " + length +" entities.");
+
+						AbstractEntity object;
+						for (int i = 0; i < length; i++) {
+							try {
+								object = (AbstractEntity) ois.readObject();
+								Controller.getMap().addEntities(object);
+								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
+								//objectIn.close();
+							} catch (ClassNotFoundException | InvalidClassException ex) {
+								Gdx.app.error("Chunk", "An entity could not be loaded");
+								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+							}
+						}
+					} catch (IOException ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+					} catch (java.lang.NoClassDefFoundError ex) {
+						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+					}
+				}
+			}	
+		} catch (IOException ex) {
+			Gdx.app.error("Chunk","Loading of chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+		} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
+			Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
+		} catch (ArrayIndexOutOfBoundsException ex){
+			Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
+		}
+	}
+		
+    /**
+     * Tries to load a chunk from disk.
+     */
+    private boolean load(final File path, int saveSlot, int coordX, int coordY) {
+
+		//FileHandle path = Gdx.files.internal("/map/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+		FileHandle savepath = Gdx.files.absolute(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+
+		if (savepath.exists()) {
+			Gdx.app.debug("Chunk","Loading Chunk: "+ coordX + ", "+ coordY);
+			//Reading map files test
+			try {
+				FileInputStream fis = new FileInputStream(savepath.file());
+			
+				byte bChar = loadBlocks(fis);
+				System.out.println("loaded block");
+				
+				if (bChar != -1) {//not eof
+					//loadObjects(fis, path);
+				}
+
+				modified = true;
+				return true;
+
+			} catch (IOException ex){
+				Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
+			}
+		} else {
+			Gdx.app.log("Chunk",savepath+" could not be found on disk. Trying to restore chunk.");
+			if (restoreFromRoot(path, saveSlot, coordX, coordY))
+				load(path, saveSlot, coordX, coordY);
+		}
+		
+        return false;
+    }
+	
 	
     /**
      * Save this chunk on storage.
@@ -405,37 +446,41 @@ public class Chunk {
         File savepath = new File(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
         
         savepath.createNewFile();
-        try (ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream(savepath))) {		
-			try {
-				for (int z = 0; z < blocksZ; z++) {
-					//check if layer is empty
-					boolean dirty = false;
-					for (int x = 0; x < blocksX; x++) {
-						for (int y = 0; y < blocksY; y++) {
-							if (data[x][y][z] != null)
-								dirty=true;
-						}
-					}
-					fileOut.write(new byte[]{SIGN_STARTCOMMENTS, (byte) z, SIGN_ENDCOMMENTS});
-					if (dirty)
-						for (int y = 0; y < blocksY; y++) {
-							for (int x = 0; x < blocksX; x++) {
-								if (data[x][y][z]==null) {
-									fileOut.write(0);
-								} else {
-									fileOut.write(data[x][y][z].getId());
-									fileOut.write(data[x][y][z].getValue());
-								}
-							}
-						}
-					else {
-						fileOut.write(SIGN_EMTPYLAYER);
+		
+		FileOutputStream fos = new FileOutputStream(savepath);
+		for (byte z = 0; z < blocksZ; z++) {
+			//check if layer is empty
+			boolean dirty = false;
+			for (int x = 0; x < blocksX; x++) {
+				for (int y = 0; y < blocksY; y++) {
+					if (data[x][y][z] != null) {
+						dirty = true;
 					}
 				}
-				fileOut.flush();
-				
+			}
+			if (dirty) {
+				for (int y = 0; y < blocksY; y++) {
+					for (int x = 0; x < blocksX; x++) {
+						if (data[x][y][z] == null) {
+							fos.write(0);
+						} else {
+							fos.write(new byte[]{data[x][y][z].getId(), data[x][y][z].getValue()});
+						}
+					}
+				}
+			} else {
+				fos.write(new byte[]{SIGN_COMMAND, SIGN_EMTPYLAYER});
+			}
+		}
+		fos.write(new byte[]{SIGN_COMMAND, SIGN_ENDBLOCKS});
+		fos.flush();
+		
+		ArrayList<AbstractLogicBlock> logicblocks = map.getLogicBlocksOnChunk(coordX, coordY);
+		ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
+		
+		if (logicblocks.size()>0 || entities.size() > 0){
+			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {	
 				//save logicblocks
-				ArrayList<AbstractLogicBlock> logicblocks = map.getLogicBlocksOnChunk(coordX, coordY);
 				if (logicblocks.size()>0){
 					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_LOGICBLOCKS, (byte) logicblocks.size()});
 					for (AbstractLogicBlock lb : logicblocks){
@@ -447,9 +492,8 @@ public class Chunk {
 						}
 					}
 				}
-				
+
 				//save entities
-				ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 				if (entities.size() > 0) {
 					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_ENTITIES, (byte) entities.size()});
 					for (AbstractEntity ent : entities){
@@ -461,11 +505,12 @@ public class Chunk {
 						}
 					}
 				}
+				fileOut.close();
 			} catch (IOException ex){
-				throw ex;
+			  throw ex;
 			}
-			fileOut.close();
 		}
+
 		return true;
     }
         /**

@@ -33,8 +33,8 @@ package com.bombinggames.wurfelengine.core.CVar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +43,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -216,10 +215,10 @@ public class CVarSystem {
 		if (!reading) {
 			Writer writer = Gdx.files.absolute(fileSystemPath.getAbsolutePath()).writer(false);
 
-			Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+			Iterator<java.util.Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 			while (it.hasNext()) {
 
-				Map.Entry<String, CVar> pairs = it.next();
+				java.util.Map.Entry<String, CVar> pairs = it.next();
 				CVar cvar = pairs.getValue();
 				try {
 					//if should be saved and different then default: save
@@ -249,9 +248,9 @@ public class CVarSystem {
 	 */
 	public ArrayList<String> getSuggestions(String prefix){
 		ArrayList<String> resultList = new ArrayList<>(5);
-		Iterator<Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
+		Iterator<java.util.Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<String, CVar> cvarEntry = it.next();
+			java.util.Map.Entry<String, CVar> cvarEntry = it.next();
 			if (cvarEntry.getKey().startsWith(prefix.toLowerCase()))
 				resultList.add(cvarEntry.getKey());
 		}
@@ -361,7 +360,7 @@ public class CVarSystem {
 	
 	private void initMapCVars(){
 		//engine cvar registration
-		register(new IntCVar(AbstractMap.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
 		register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
@@ -376,7 +375,7 @@ public class CVarSystem {
 	}
 	
 	private void initSaveCVars(){
-		register(new IntCVar(AbstractMap.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
 	}
 	
 	public String showAll(){

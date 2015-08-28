@@ -42,8 +42,8 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class Minimap implements MapObserver {
 	private FrameBuffer fbo;
 	private TextureRegion fboRegion;
 	private boolean needsrebuild = true;
-	private AbstractMap map;
+	private Map map;
 
 	/**
      * Create a minimap. Visible by default.

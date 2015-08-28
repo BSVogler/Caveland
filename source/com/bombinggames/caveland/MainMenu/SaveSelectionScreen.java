@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.CustomGameController;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
@@ -50,7 +50,7 @@ public class SaveSelectionScreen extends WEScreen {
 		this.ship = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/ship.png")));
 		this.ship.setPosition(Gdx.graphics.getWidth()*1.5f, Gdx.graphics.getHeight()*0.7f);
 		
-		int savesCount = AbstractMap.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
+		int savesCount = Map.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
 		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);

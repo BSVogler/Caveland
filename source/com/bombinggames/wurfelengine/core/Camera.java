@@ -44,10 +44,9 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.ChunkMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -66,7 +65,7 @@ public class Camera implements MapObserver {
 	/**
 	 * the map which is covered by the camera
 	 */
-	private AbstractMap map = Controller.getMap();
+	private Map map = Controller.getMap();
 	/**
 	 * top limit
 	 */
@@ -363,7 +362,7 @@ public class Camera implements MapObserver {
 			int oldX = centerChunkX;
 			int oldY = centerChunkY;
 
-			ChunkMap chunkMap = (ChunkMap) map;
+			Map chunkMap = (Map) map;
 
 			//check if chunkswitch left
 			if (
@@ -441,7 +440,7 @@ public class Camera implements MapObserver {
 	 * @param y
 	 */
 	private void checkChunk(int x, int y) {
-		ChunkMap chunkMap = (ChunkMap) map;
+		Map chunkMap = (Map) map;
 		if (chunkMap.getChunk(x, y) == null) {
 			chunkMap.loadChunk(x, y);//load missing chunks
 		} else {
@@ -1192,7 +1191,7 @@ public class Camera implements MapObserver {
 	public void onChunkChange(Chunk chunk) {
 		if (active) {
 			if (WE.CVARS.getValueB("mapUseChunks")) {
-				((ChunkMap) Controller.getMap()).hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
+				((Map) Controller.getMap()).hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
 			}
 		}
 	}

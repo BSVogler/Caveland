@@ -76,7 +76,7 @@ public class Chunk {
 	/**
 	 * the map in which the chunks are used
 	 */
-	private final ChunkMap map;
+	private final Map map;
 	
 	/**
 	 * chunk coordinate
@@ -103,7 +103,7 @@ public class Chunk {
 	 * @param coordX
 	 * @param coordY
      */
-    public Chunk(final ChunkMap map, final int coordX, final int coordY) {
+    public Chunk(final Map map, final int coordX, final int coordY) {
         this.coordX = coordX;
 		this.coordY = coordY;
 		this.map = map;
@@ -134,7 +134,7 @@ public class Chunk {
      * @param path filename
      * @param generator
     */
-    public Chunk(final ChunkMap map, final File path, final int coordX, final int coordY, final Generator generator){
+    public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
 		if (WE.CVARS.getValueB("shouldLoadMap")){
 			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY))
@@ -150,7 +150,7 @@ public class Chunk {
     * @param coordY the chunk coordinate
     * @param generator
     */
-    public Chunk(final ChunkMap map, final int coordX, final int coordY, final Generator generator){
+    public Chunk(final Map map, final int coordX, final int coordY, final Generator generator){
         this(map, coordX, coordY);
         fill(coordX, coordY, generator);
     }

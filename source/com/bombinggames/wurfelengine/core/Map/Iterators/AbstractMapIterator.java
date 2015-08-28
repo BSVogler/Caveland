@@ -30,9 +30,8 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import java.util.Iterator;
 
 /**
@@ -40,18 +39,16 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public abstract class AbstractMapIterator implements Iterator<Block>{
-	protected final AbstractMap map;
+	protected final Map map;
 	/**
 	 * Always points to a block. Iterates over a chunk.
 	 */
 	protected DataIterator<Block> blockIterator;
 	private int topLimitZ;
 	private int startingZ = 0;
-	protected final boolean useChunks;
 
-	public AbstractMapIterator(AbstractMap map) {
+	public AbstractMapIterator(Map map) {
 		this.map = map;
-		useChunks = WE.CVARS.getValueB("mapUseChunks");
 	}	
 	
 	/**

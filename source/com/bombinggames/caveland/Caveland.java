@@ -25,7 +25,7 @@ import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 import java.io.InputStream;
@@ -76,7 +76,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		
-		AbstractMap.setDefaultGenerator(new ChunkGenerator());
+		Map.setDefaultGenerator(new ChunkGenerator());
 		
 		if (args.length > 0){
             //look if contains launch parameters

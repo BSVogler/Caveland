@@ -280,7 +280,7 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
 		if (WE.CVARS.getValueB("mapUseChunks")){
-			if (((ChunkMap) Controller.getMap()).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
+			if (((Map) Controller.getMap()).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
 				return true;
 			}
 		} else {
@@ -300,7 +300,7 @@ public class Coordinate extends AbstractPosition {
 		boolean found = false;
 		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
 			if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
-				for (Chunk chunk : ((ChunkMap) Controller.getMap()).getData()) {
+				for (Chunk chunk : ((Map) Controller.getMap()).getData()) {
 					if (chunk.hasCoord(this)) {
 						found = true;
 					}

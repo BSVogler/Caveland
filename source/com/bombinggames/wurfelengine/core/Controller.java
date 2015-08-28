@@ -35,10 +35,8 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.ChunkMap;
-import com.bombinggames.wurfelengine.core.Map.CompleteMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +48,7 @@ import java.util.ArrayList;
  */
 public class Controller implements GameManager, MapObserver {
     private static LightEngine lightEngine;
-    private static AbstractMap map;
+    private static Map map;
 
 	/**
 	 * update every static update method
@@ -77,10 +75,7 @@ public class Controller implements GameManager, MapObserver {
 				linked = map.getOberservers();
 			}
 				
-			if (WE.CVARS.getValueB("mapUseChunks"))
-				map = new ChunkMap(path, saveslot);
-			else
-				map = new CompleteMap(path, saveslot);
+			map = new Map(path, saveslot);
 
 			if (linked != null) {
 				map.getOberservers().addAll(linked);
@@ -99,7 +94,7 @@ public class Controller implements GameManager, MapObserver {
      * Returns the currently loaded map.
      * @return the map
      */
-    public static AbstractMap getMap() {
+    public static Map getMap() {
         if (map == null)
             throw new NullPointerException("There is no map yet.");
         else return map;
@@ -109,7 +104,7 @@ public class Controller implements GameManager, MapObserver {
      *
      * @param map
      */
-    public static void setMap(AbstractMap map) {
+    public static void setMap(Map map) {
         Gdx.app.debug("Controller", "Map was replaced.");
         Controller.map = map;
         map.setModified();
@@ -168,7 +163,7 @@ public class Controller implements GameManager, MapObserver {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		saveSlot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default/"));
+		saveSlot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default/"));
 		if (map != null) map.useSaveSlot(saveSlot);
 		return saveSlot;
 	}
@@ -193,7 +188,7 @@ public class Controller implements GameManager, MapObserver {
             if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot)) {
                 Gdx.app.error("Controller", "Map default could not be loaded.");
 //                try {
-//                    ChunkMap.createMapFile("default");
+//                    Map.createMapFile("default");
 //                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);
 //                } catch (IOException ex1) {
 //                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");

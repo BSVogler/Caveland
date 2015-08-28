@@ -31,9 +31,8 @@
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.ChunkMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -62,20 +61,16 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 * @param startingZ to loop over ground level pass -1
 	 * @param topLevel the top limit of the z axis 
 	 */
-	public CameraSpaceIterator(AbstractMap map, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+	public CameraSpaceIterator(Map map, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
 		super(map);
 		setTopLimitZ(topLevel);
 		setStartingZ(startingZ);
 		centerChunkX = centerCoordX;
 		centerChunkY = centerCoordY;
-		if (useChunks) {
-			//bring starting position to top left
-			current = ((ChunkMap) map).getChunk(centerChunkX-1, centerChunkY-1);
-			blockIterator = current.getIterator(startingZ, topLevel);
-			updateChunkBorders();
-		} else {
-			mmI = map.getIterator(startingZ, topLevel);
-		}
+		//bring starting position to top left
+		current = map.getChunk(centerChunkX-1, centerChunkY-1);
+		blockIterator = current.getIterator(startingZ, topLevel);
+		updateChunkBorders();
 	}
 
 	/**
@@ -84,47 +79,39 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		if (useChunks) {
-			if (!blockIterator.hasNext()){
-				//reached end of chunk, move to next chunk
-				if (hasNextChunk()){//if has one move to next
-					if (centerChunkX >= current.getChunkX()) {//current is left or middle column
-						//continue one chunk to the right
-						current = ((ChunkMap) map).getChunk(
-							current.getChunkX()+1,
-							current.getChunkY()
-						);
-						updateChunkBorders();
-					} else {
-						//move one row down
-						current = ((ChunkMap) map).getChunk(
-							centerChunkX-1,
-							current.getChunkY()+1
-						);
-						updateChunkBorders();
-					}
-
-					blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
+		if (!blockIterator.hasNext()){
+			//reached end of chunk, move to next chunk
+			if (hasNextChunk()){//if has one move to next
+				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
+					//continue one chunk to the right
+					current = map.getChunk(
+						current.getChunkX()+1,
+						current.getChunkY()
+					);
+					updateChunkBorders();
+				} else {
+					//move one row down
+					current = map.getChunk(
+						centerChunkX-1,
+						current.getChunkY()+1
+					);
+					updateChunkBorders();
 				}
-			}
 
-			return blockIterator.next();
-		} else {
-			return mmI.next();//todo only return blocks in viewport
+				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
+			}
 		}
-	}
-	
+
+		return blockIterator.next();
+		}
+
 	/**
 	 * get the indices position inside the chunk/data matrix
 	 * @return 
 	 */
 	public int[] getCurrentIndex(){
-		if (useChunks){
-			int[] inChunk = blockIterator.getCurrentIndex();
-			return new int[]{inChunk[0]+chunkBorderX, inChunk[1]+chunkBorderY, inChunk[2]};
-		} else {
-			return mmI.getCurrentIndex();
-		}
+		int[] inChunk = blockIterator.getCurrentIndex();
+		return new int[]{inChunk[0]+chunkBorderX, inChunk[1]+chunkBorderY, inChunk[2]};
 	}
 	
 	/**
@@ -143,11 +130,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 
 	@Override
 	public boolean hasNext() {
-		if (useChunks) {
-			return blockIterator.hasNext() || hasNextChunk();
-		} else {
-			return mmI.hasNext();
-		}
+		return blockIterator.hasNext() || hasNextChunk();
 	}
 
 	private void updateChunkBorders() {

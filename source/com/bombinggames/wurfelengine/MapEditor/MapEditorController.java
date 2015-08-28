@@ -36,7 +36,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -52,7 +52,7 @@ public class MapEditorController extends Controller {
     /**
      * a clone of the map at the time when last tested.
      */
-    private AbstractMap mapsave;
+    private Map mapsave;
     private boolean reverseMap;
     private final Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
@@ -208,7 +208,7 @@ public class MapEditorController extends Controller {
     public void exit(){
         Gdx.app.debug("MEController", "exited");
         try {
-            mapsave = Controller.getMap().clone();
+            mapsave = (Map) Controller.getMap().clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
         }

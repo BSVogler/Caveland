@@ -7,7 +7,7 @@ package com.bombinggames.wurfelengine.core.console;
 
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.Map.AbstractMap;
+import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 import java.util.StringTokenizer;
@@ -24,7 +24,7 @@ public class LoadMapCommand implements ConsoleCommand {
 
 		String mapname = parameters.nextToken();
 		if (mapname.length()>0) {
-			int slot = AbstractMap.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapname));
+			int slot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapname));
 			return Controller.loadMap(new File(WorkingDirectory.getMapsFolder()+"/"+mapname), slot);
 		}
 		return true;

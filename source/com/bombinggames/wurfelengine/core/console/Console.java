@@ -144,6 +144,7 @@ public class Console {
 		registeredCommands.add(new LsCommand());
 		registeredCommands.add(new FullscreenCommand());
 		registeredCommands.add(new ManCommand());
+		registeredCommands.add(new FillWithAirCommand());
 		
 		log = new TextArea("Wurfel Engine "+ WE.VERSION +" Console\n", skin);
 		log.setBounds(xPos, yPos+52, 750, 550);

@@ -116,6 +116,7 @@ public class SaveSelectionScreen extends WEScreen {
 	public void startGame(boolean newslot){
 		CustomGameView view = new CustomGameView();
 		view.enableCoop(coop);
+		
 		CustomGameController controller = new CustomGameController();
 		if (newslot)
 			controller.newSaveSlot();

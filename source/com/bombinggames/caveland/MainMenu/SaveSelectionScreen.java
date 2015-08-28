@@ -54,13 +54,15 @@ public class SaveSelectionScreen extends WEScreen {
 		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);
-		continueButton.addListener(new ChangeListener() {
+		continueButton.addListener(
+				new ChangeListener() {
 
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				startGame(false);
+					@Override
+					public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+						startGame(false);
+					}
 			}
-		});
+		);
 		stage.addActor(continueButton);
 		if (savesCount<1) {
 			continueButton.setText("No previous game found.");

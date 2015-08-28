@@ -172,21 +172,22 @@ public class Controller implements GameManager, MapObserver {
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
     public void init(){
-        init(saveSlot);
+        init(saveSlot, "default");
     }
     
     /**
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
 	 * @param saveslot
+	 * @param mapName the value of mapName
      */
-    public void init(int saveslot){
+    public void init(int saveslot, String mapName){
         Gdx.app.log("Controller", "Initializing");
 
 		if (devtools == null && WE.CVARS.getValueB("DevMode"))
             devtools = new DevTools( 10, 50 );
         if (map == null){
-            if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot)) {
-                Gdx.app.error("Controller", "Map default could not be loaded.");
+            if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/"+mapName), saveslot)) {
+                Gdx.app.error("Controller", "Map "+ mapName +"could not be loaded.");
 //                try {
 //                    Map.createMapFile("default");
 //                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);

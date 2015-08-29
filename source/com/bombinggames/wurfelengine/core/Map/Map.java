@@ -840,8 +840,8 @@ public class Map implements Cloneable {
 	}
 
 	/**
-	 *
-	 * @param ent
+	 * Adds entities.
+	 * @param ent entities should be already spawned
 	 */
 	public void addEntities(AbstractEntity... ent){
 		entityList.addAll(Arrays.asList(ent));

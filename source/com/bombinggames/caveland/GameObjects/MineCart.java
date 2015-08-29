@@ -61,7 +61,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	public void update(float dt) {
 		super.update(dt);
 		
-		if (getPosition().isInMemoryAreaHorizontal()) {
+		if (isSpawned() && getPosition().isInMemoryAreaHorizontal()) {
 			Point pos = getPosition();
 			Block block = pos.getBlock();
 

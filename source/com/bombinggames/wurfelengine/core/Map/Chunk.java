@@ -247,6 +247,12 @@ public class Chunk {
 		return true;
 	}
     
+	/**
+	 * 
+	 * @param fis
+	 * @return -1 if eof, if sucessuf read then {@link #SIGN_ENDBLOCKS}
+	 * @throws IOException 
+	 */
 	private byte loadBlocks(FileInputStream fis) throws IOException{
 		int z = 0;
 		int x = 0;
@@ -323,13 +329,14 @@ public class Chunk {
 	
 	
 	private void loadObjects(FileInputStream fis, File path){
+		Gdx.app.debug("Chunk", "Loading objects blocks.");
 		//ends with a sign for logic or entities or eof
 		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
 			byte bChar = ois.readByte();
 			if (bChar == SIGN_COMMAND)
 				bChar = ois.readByte();
 			
-//load logicblocks
+			//load logicblocks
 			if (bChar == SIGN_LOGICBLOCKS) {
 				try {
 					//loading entities
@@ -364,7 +371,7 @@ public class Chunk {
 				if (WE.CVARS.getValueB("loadEntities")) {
 					try {
 						//loading entities
-						int length = fis.read(); //amount of entities
+						byte length = ois.readByte(); //amount of entities
 						Gdx.app.debug("Chunk", "Loading " + length +" entities.");
 
 						AbstractEntity object;
@@ -410,10 +417,11 @@ public class Chunk {
 				FileInputStream fis = new FileInputStream(savepath.file());
 			
 				byte bChar = loadBlocks(fis);
-				System.out.println("loaded block");
+				if (bChar == SIGN_ENDBLOCKS)
+					System.out.println("loaded block sucessfull");
 				
-				if (bChar != -1) {//not eof
-					//loadObjects(fis, path);
+				if (fis.available() > 0) {//not eof
+					loadObjects(fis, path);
 				}
 
 				modified = true;
@@ -478,7 +486,7 @@ public class Chunk {
 		ArrayList<AbstractLogicBlock> logicblocks = map.getLogicBlocksOnChunk(coordX, coordY);
 		ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 		
-		if (logicblocks.size()>0 || entities.size() > 0){
+		if (logicblocks.size() > 0 || entities.size() > 0){
 			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {	
 				//save logicblocks
 				if (logicblocks.size()>0){

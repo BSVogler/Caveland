@@ -34,6 +34,7 @@ public class ActionBox extends WidgetGroup {
 	private int playerNum;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
+	private ActionBoxSelectAction selectAction;
 
 	public static enum BoxModes {
 
@@ -99,11 +100,15 @@ public class ActionBox extends WidgetGroup {
 	 *
 	 * @param view
 	 * @param playerId starting with 1
+	 * @param actor the entitiy which is connected to the dialogue. can be null
 	 * @return
 	 */
-	public ActionBox register(final CustomGameView view, final int playerId) {
+	public ActionBox register(final CustomGameView view, final int playerId, AbstractEntity actor) {
 		this.playerNum = playerId;
 		view.setModalDialogue(this, playerId);
+		if (selectAction != null) {
+			selectAction.select(selection, view, actor);
+		}
 		return this;
 	}
 
@@ -123,6 +128,29 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public ActionBox setConfirmAction(ActionBoxConfirmAction action) {
 		this.confirmAction = action;
+		return this;
+	}
+
+	/**
+	 * Set the command which should be triggered once you confirm the dialogue.
+	 *
+	 * @param action
+	 * @return itself for chaining
+	 */
+	public ActionBox setCancelAction(ActionBoxCancelAction action) {
+		this.cancelAction = action;
+		return this;
+	}
+
+	/**
+	 * Set the action what should ahppen if you select something before
+	 * confirming it.
+	 *
+	 * @param hoverAction new value of selectAction
+	 * @return itself for chaining
+	 */
+	public ActionBox setSelectAction(ActionBoxSelectAction hoverAction) {
+		this.selectAction = hoverAction;
 		return this;
 	}
 
@@ -201,10 +229,13 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * go a selection downwards
 	 */
-	public void down() {
+	public void down(CustomGameView view, AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
 			if (selection < selectionNames.size() - 1) {
 				selection++;
+			}
+			if (selectAction != null) {
+				selectAction.select(selection, view, actor);
 			}
 			updateContent();
 		}
@@ -213,10 +244,13 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * go a selection upwards
 	 */
-	public void up() {
+	public void up(CustomGameView view, AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
 			if (selection > 0) {
 				selection--;
+			}
+			if (selectAction != null) {
+				selectAction.select(selection, view, actor);
 			}
 			updateContent();
 		}
@@ -231,7 +265,9 @@ public class ActionBox extends WidgetGroup {
 		window.row();
 		//adds every selection
 		int max = selectionNames.size();
-		if (max > 4) max = 4;
+		if (max > 4) {
+			max = 4;
+		}
 		for (int i = 0; i < max; i++) {
 			String entry = selectionNames.get(i);
 			if (selection == i) {
@@ -239,9 +275,9 @@ public class ActionBox extends WidgetGroup {
 			} else {
 				window.add(new Label(entry, WE.getEngineView().getSkin()));
 			}
-			if (selectionNames.size()>4) {
-				entry = selectionNames.get(i+4);
-				if (selection == i+4) {
+			if (selectionNames.size() > 4) {
+				entry = selectionNames.get(i + 4);
+				if (selection == i + 4) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
 					window.add(new Label(entry, WE.getEngineView().getSkin()));
@@ -259,10 +295,9 @@ public class ActionBox extends WidgetGroup {
 		 *
 		 * @param result
 		 * @param view
-		 * @param actor
-		 * @return
+		 * @param actor can be null
 		 */
-		public int cancel(int result, CustomGameView view, AbstractEntity actor);
+		public void cancel(int result, CustomGameView view, AbstractEntity actor);
 	}
 
 	/**
@@ -277,11 +312,22 @@ public class ActionBox extends WidgetGroup {
 		 *
 		 * @param result the number of the selection
 		 * @param view
-		 * @param actor
-		 * @return
+		 * @param actor can be null
 		 */
-		public int confirm(int result, CustomGameView view, AbstractEntity actor);
+		public void confirm(int result, CustomGameView view, AbstractEntity actor);
 
+	}
+
+	@FunctionalInterface
+	public interface ActionBoxSelectAction {
+
+		/**
+		 *
+		 * @param result
+		 * @param view
+		 * @param actor can be null
+		 */
+		public void select(int result, CustomGameView view, AbstractEntity actor);
 	}
 
 }

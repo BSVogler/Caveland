@@ -169,7 +169,7 @@ public class CustomGameView extends GameView{
 		if (openDialogue[id]==null) {
 			//open
 			Crafting crafting = new Crafting(this, getPlayer(id));
-			crafting.register(this, id+1);
+			crafting.register(this, id+1, getPlayer(id));
 		} else {
 			//close
 			openDialogue[id].cancel(this, getPlayer(id));
@@ -372,6 +372,9 @@ public class CustomGameView extends GameView{
 		 * speed of one player
 		 */
 		protected float speed =-1;
+		/**
+		 * starting at 0
+		 */
 		private final int id;
 		private final CustomGameView parent;
 		private float oldRTvalue = -1;
@@ -385,7 +388,7 @@ public class CustomGameView extends GameView{
 		 */
 		XboxListener(CustomGameView parent, Ejira controllable, int id) {
 			this.player = controllable;
-			this.id=id;
+			this.id = id;
 			this.parent = parent;
 			OS = WorkingDirectory.getPlatform().toString();
 		}
@@ -568,21 +571,21 @@ public class CustomGameView extends GameView{
 			
 				if (openDialogue[0]!=null) {
 					if (keycode==Input.Keys.W) {
-						openDialogue[0].up();
+						openDialogue[0].up(parent, getPlayer(0));
 					}
 					
 					if (keycode==Input.Keys.S) {
-						openDialogue[0].down();
+						openDialogue[0].down(parent, getPlayer(0));
 					}
 				}
 				
 				if (openDialogue[1]!=null) {
 					if (keycode==Input.Keys.UP) {
-						openDialogue[1].up();
+						openDialogue[1].up(parent, getPlayer(1));
 					}
 					
 					if (keycode==Input.Keys.DOWN) {
-						openDialogue[1].down();
+						openDialogue[1].down(parent, getPlayer(1));
 					}
 				}
 

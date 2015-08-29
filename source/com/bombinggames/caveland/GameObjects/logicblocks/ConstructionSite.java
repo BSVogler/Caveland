@@ -92,7 +92,7 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ConstructionSiteWindow selectionWindow = new ConstructionSiteWindow(view, actor, this);
-			selectionWindow.register(view, ((Ejira) actor).getPlayerNumber());
+			selectionWindow.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 	

@@ -47,10 +47,9 @@ public class Bausatz extends Collectible {
 						} else if (result==3) {
 							build(actor1.getPosition().toCoord(), (byte) 15);//spawn construction site
 						}
-						return result;
 					}
 				)
-				.register(view, ((Ejira) actor).getPlayerNumber());
+				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 }

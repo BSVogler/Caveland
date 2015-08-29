@@ -31,39 +31,64 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class RailsConstructionKit extends Collectible {
+
 	private static final long serialVersionUID = 1L;
+	private EntityBlock preview;
 	
-	public RailsConstructionKit(){
+	public RailsConstructionKit() {
 		super(CollectibleType.Rails);
-		
+
 	}
-	
+
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox(view, "Choose rails type", ActionBox.BoxModes.SELECTION, null)
-				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up","up","up","up")
-				.setConfirmAction((int result, CustomGameView view1, AbstractEntity actor1) -> {
+				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")
+				.setConfirmAction(
+					(int result, CustomGameView view1, AbstractEntity actor1) -> {
 						//spawn rails
 						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
 						WE.getEngineView().getSoundEngine().play("metallic");
+						if (preview != null) {
+							preview.dispose();
+							preview = null;
+						}
 						dispose();//dispose tool kit
-						return result;
 					}
 				)
-				.register(view, ((Ejira) actor).getPlayerNumber());
+				.setSelectAction(
+					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+						//spawn rails
+						if (preview == null) {
+							preview = (EntityBlock) new EntityBlock((byte) 55,(byte) result)
+								.spawn(actor1.getPosition().toCoord().toPoint());
+							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
+						} else preview.setValue((byte) result);
+					}
+				)
+				.setCancelAction(
+					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+						if (preview != null) {
+							preview.dispose();
+							preview = null;
+						}
+					})
+				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 }

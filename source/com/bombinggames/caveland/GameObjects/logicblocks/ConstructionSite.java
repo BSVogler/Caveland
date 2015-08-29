@@ -120,6 +120,10 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 			if (container.count(neededItems[i]) < neededAmount[i])
 				return false;
 		}
+		if (result == 15){
+			if (getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != 16)
+			return false;
+		}
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
 		WE.getEngineView().getSoundEngine().play("construct");
 		container.dispose();
@@ -133,7 +137,7 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 	private class ConstructionSiteWindow extends ActionBox {
 		private final ConstructionSite parent;
 
-		public ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
+		ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
 			super(view, "Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
@@ -159,17 +163,23 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 			if (actor instanceof Ejira) {
 				Ejira player = (Ejira) actor;
 				//add item?
-				if (num == 0) {
-					if (canAddFrontItem(actor)) {
-						Collectible frontItem = player.getInventory().retrieveFrontItemReference();
-						if (frontItem != null) {
-							parent.container.addCollectible(frontItem);
-						}
-					}
-				} else if (num==1){
-					//fetch item
-					parent.container.retrieveCollectible(num - 1);
-				} else if (num==2) build();
+				switch (num) {
+					case 0:
+						if (canAddFrontItem(actor)) {
+							Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+							if (frontItem != null) {
+								parent.container.addCollectible(frontItem);
+							}
+						}	break;
+					case 1:
+						//fetch item
+						parent.container.retrieveCollectible(num - 1);
+						break;
+					case 2:
+						build();
+						break;
+					default:
+				}
 			}
 			return num;
 		}

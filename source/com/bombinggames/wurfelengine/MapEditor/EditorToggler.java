@@ -40,15 +40,6 @@ public class EditorToggler {
 	 */
 	public void update(GameView view, float dt) {
 		if (WE.isInEditor()) {
-			if (pauseButton != null) {
-				pauseButton.remove();
-				pauseButton = null;
-			}
-			if (resetButton != null) {
-				resetButton.remove();
-				resetButton = null;
-			}
-
 			if (playButton == null && controller != null && this.view != null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 				//add play button
@@ -58,12 +49,14 @@ public class EditorToggler {
 				playButton.addListener(new PlayButton(controller, this.view, false));
 				view.getStage().addActor(playButton);
 			}
-		} else if (WE.isInGame()) {
+		} else {
 			if (playButton != null) {
 				playButton.remove();
 				playButton = null;
 			}
-
+		}
+			
+		if (WE.isInGame()) {
 			if (pauseButton == null || resetButton == null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 
@@ -114,6 +107,15 @@ public class EditorToggler {
 	//							}
 	//						);
 				//}
+			}
+		} else {
+			if (pauseButton != null) {
+				pauseButton.remove();
+				pauseButton = null;
+			}
+			if (resetButton != null) {
+				resetButton.remove();
+				resetButton = null;
 			}
 		}
 	}

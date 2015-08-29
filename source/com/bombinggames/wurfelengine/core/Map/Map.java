@@ -63,7 +63,7 @@ public class Map implements Cloneable {
 	private static int blocksZ;
 
 	private static Generator defaultGenerator = new AirGenerator();
-	public final static Integer MAPVERSION = 3;
+	public final static Integer MAPVERSION = 4;
 
 	/**
 	 *

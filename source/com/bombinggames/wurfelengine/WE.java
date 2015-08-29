@@ -53,6 +53,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.console.Console;
@@ -79,7 +80,11 @@ public class WE {
 	/**
 	 * The CVar system used by the engine.
 	 */
-	public final static CVarSystem CVARS = CVarSystem.getInstanceEngineSystem(new File(workingDirectory + "/engine.wecvars"));
+	public static final CVarSystem CVARS = CVarSystem.getInstanceEngineSystem(new File(workingDirectory + "/engine.wecvars"));
+	/**
+     *The sound engine managing the sfx.
+     */
+	public static final SoundEngine SOUND = new SoundEngine();
 	private static final WEGame game = new WEGame();
 	private static GameplayScreen gameplayScreen;
 	private static AbstractMainMenu mainMenu;
@@ -349,7 +354,7 @@ public class WE {
 	 * after the loading screen.
 	 */
 	public static void startGame() {
-		engineView.getSoundEngine().disposeMusic();
+		SOUND.disposeMusic();
 		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
 		game.setScreen(gameplayScreen);
 		inGame = true;
@@ -495,6 +500,8 @@ public class WE {
 	public static void updateAndRender(float dt) {
 		console.update(dt);
 		engineView.update(dt);
+		SOUND.update(dt);
+		
 		engineView.getStage().act(dt);
 		engineView.getStage().draw();
 	}
@@ -649,6 +656,7 @@ public class WE {
 		public void dispose() {
 			super.dispose();
 			CVARS.dispose();
+			SOUND.dispose();
 		}
 
 	}

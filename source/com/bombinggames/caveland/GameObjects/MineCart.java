@@ -131,12 +131,12 @@ public class MineCart extends MovableEntity implements Interactable {
 				if (getSpeedHor()> 0) {
 					setSpeedHorizontal(MAXSPEED);//start moving
 					if( isPlayingSound == 0)
-						isPlayingSound = WE.getEngineView().getSoundEngine().loop("wagon", getPosition());
+						isPlayingSound = WE.SOUND.loop("wagon", getPosition());
 				}
 			} else {//offroad
 				setFriction(0.005f);
 				if (isPlayingSound!=0) {
-					WE.getEngineView().getSoundEngine().stop("wagon", isPlayingSound);
+					WE.SOUND.stop("wagon", isPlayingSound);
 					isPlayingSound = 0;
 				}
 			}
@@ -285,8 +285,8 @@ public class MineCart extends MovableEntity implements Interactable {
 	public void damage(byte value) {
 		super.damage(value);
 		if (getHealth()<=0) {
-			WE.getEngineView().getSoundEngine().stop("wagon", isPlayingSound);
-			WE.getEngineView().getSoundEngine().play("robot1destroy", getPosition());
+			WE.SOUND.stop("wagon", isPlayingSound);
+			WE.SOUND.play("robot1destroy", getPosition());
 			((Collectible) CollectibleType.Ironore.createInstance().spawn(getPosition())).sparkle();
 		}
 	}

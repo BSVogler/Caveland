@@ -253,9 +253,9 @@ public class MainMenuScreen extends AbstractMainMenu {
 	public void show() {
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
-		if (!WE.getEngineView().getSoundEngine().isMusicPlaying())
-			WE.getEngineView().getSoundEngine().setMusic(Gdx.files.internal("com/bombinggames/caveland/music/title.mp3").path());
-		WE.getEngineView().getSoundEngine().play("menuAbort");
+		if (!WE.SOUND.isMusicPlaying())
+			WE.SOUND.setMusic(Gdx.files.internal("com/bombinggames/caveland/music/title.mp3").path());
+		WE.SOUND.play("menuAbort");
 	}
 
 	@Override
@@ -289,14 +289,14 @@ public class MainMenuScreen extends AbstractMainMenu {
         public boolean keyDown(int keycode) {
             if (keycode == Keys.DOWN || keycode == Keys.S){
                 selectionIndex++;
-				WE.getEngineView().getSoundEngine().play("menuSelect");
+				WE.SOUND.play("menuSelect");
 				if (selectionIndex>=menuItems.length)
 					selectionIndex=0;
 			}
 			
             if (keycode == Keys.UP || keycode == Keys.W){
 				selectionIndex--;
-				WE.getEngineView().getSoundEngine().play("menuSelect");
+				WE.SOUND.play("menuSelect");
 				if (selectionIndex<0)
 					selectionIndex=menuItems.length-1;
 			}

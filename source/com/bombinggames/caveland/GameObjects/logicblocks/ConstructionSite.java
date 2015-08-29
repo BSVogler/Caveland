@@ -122,7 +122,7 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 		}
 
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
-		WE.getEngineView().getSoundEngine().play("construct");
+		WE.SOUND.play("construct");
 		container.dispose();
 		return true;
 	}

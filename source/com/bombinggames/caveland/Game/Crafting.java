@@ -150,7 +150,7 @@ public class Crafting extends ActionBox {
 				b = null;
 				if (c != null)
 					c.dispose();
-				WE.getEngineView().getSoundEngine().play("metallic");
+				WE.SOUND.play("metallic");
 				clear();//empty the crafting menu
 			}
 			//crafting failed: items still there, so put them back

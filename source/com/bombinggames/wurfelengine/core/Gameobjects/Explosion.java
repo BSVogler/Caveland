@@ -94,7 +94,7 @@ public class Explosion extends AbstractEntity {
 		if (camera!=null)
 			camera.shake(radius*100/3f, 100);
 		if (explosionsound != null)
-			WE.getEngineView().getSoundEngine().play(explosionsound);
+			WE.SOUND.play(explosionsound);
 		dispose();
 		return this;
 	}

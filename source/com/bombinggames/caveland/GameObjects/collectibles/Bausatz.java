@@ -36,7 +36,7 @@ public class Bausatz extends Collectible {
 		coord.setBlock(Block.getInstance((byte) 11));
 		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);
 		constructionSiteLogic.setResult(id, (byte) 0);
-		WE.getEngineView().getSoundEngine().play("metallic");
+		WE.SOUND.play("metallic");
 		dispose();//dispose tool kit
 	}
 

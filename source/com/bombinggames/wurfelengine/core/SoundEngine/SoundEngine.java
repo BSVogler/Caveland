@@ -51,19 +51,12 @@ public class SoundEngine {
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
 	private final ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 	private GameView view;
-		/**
+	/**
 	 * loudness of the musicLoudness 0-1
 	 */
 	private float musicLoudness = 1;
 	private Music music;
 
-	/**
-	 *
-	 */
-	public SoundEngine() {
-		setMusicLoudness((float) WE.CVARS.get("music").getValue());
-	}
-	
 	/**
 	 * loads and registers the ig-sounds
 	 */
@@ -79,8 +72,6 @@ public class SoundEngine {
 		register("wind", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg");
 		register("explosion", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav");
 	}
-	
-	
 	
 	/**
 	 * Registers a soundIterator. The soundIterator must be loaded via asset manager.
@@ -247,7 +238,9 @@ public class SoundEngine {
 	 * @param dt
 	 */
 	public void update(float dt){
-		WE.getEngineView().getSoundEngine().setMusicLoudness(WE.CVARS.getValueF("music"));
+		float loudness = WE.CVARS.getValueF("music");
+		if (loudness != getMusicLoudness())
+			setMusicLoudness(loudness);
 		for (SoundInstance sound : playingLoops) {
 			sound.update();
 		}
@@ -289,7 +282,7 @@ public class SoundEngine {
 	}
 
 	/**
-	 *
+	 * Set the gameplay view to calcualte sound based on the gameplay.
 	 * @param view
 	 */
 	public void setView(GameView view) {
@@ -305,12 +298,12 @@ public class SoundEngine {
 	}
 
 	/**
-	 * 
+	 * Sets the volume and plays or pauses the music.
 	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it andc and &gt; 0 starts it
 	 */
-	public void setMusicLoudness(float loudness) {
+	private void setMusicLoudness(float loudness) {
 		this.musicLoudness = loudness;
-		if (music!=null){
+		if (music != null){
 			music.setVolume(musicLoudness);
 			if (musicLoudness==0) music.pause();
 			else if (!music.isPlaying()) music.play();
@@ -352,4 +345,7 @@ public class SoundEngine {
 		if (music!=null) music.dispose();
 	}
 
+	public void pauseMusic() {
+		if (music != null) music.pause();
+	}
 }

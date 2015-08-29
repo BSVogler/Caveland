@@ -274,7 +274,7 @@ public class Ejira extends MovableEntity implements Controllable {
 					if (action!='l' && action!='i' && !playAnimation)
 						playAnimation('l');
 					if (!canPlayLoadingSound) {
-						WE.getEngineView().getSoundEngine().play("loadAttack");
+						WE.SOUND.play("loadAttack");
 						canPlayLoadingSound = true;
 					}
 					Vector3 newmov = getMovement();
@@ -326,7 +326,7 @@ public class Ejira extends MovableEntity implements Controllable {
 				}
 			}
 			if (playCollectSound) {
-				WE.getEngineView().getSoundEngine().play("collect");
+				WE.SOUND.play("collect");
 			}
 
 			//auto heal
@@ -561,7 +561,7 @@ public class Ejira extends MovableEntity implements Controllable {
 					playAnimation('h');
 			}
 
-			WE.getEngineView().getSoundEngine().play("sword");
+			WE.SOUND.play("sword");
 			if (isOnGround())
 				addToHor(13f);//add 13 m/s in move direction
 
@@ -612,15 +612,15 @@ public class Ejira extends MovableEntity implements Controllable {
 					//destructible by hand
 					if (aimCoord.damage(attackDamage)) {
 						if (id == 72)
-							WE.getEngineView().getSoundEngine().play("treehit");
+							WE.SOUND.play("treehit");
 						else
-							WE.getEngineView().getSoundEngine().play("impact");
+							WE.SOUND.play("impact");
 						//one particle
 						new DestructionParticle((byte) 44).spawn(aimCoord.toPoint());
 					}
 				} else {
 					//indestructible by hand
-					WE.getEngineView().getSoundEngine().play("impact");//todo different sound
+					WE.SOUND.play("impact");//todo different sound
 					//spawn particle
 					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().addVector(0, 0, 30));
 					dirt.setTTL(400);
@@ -639,7 +639,7 @@ public class Ejira extends MovableEntity implements Controllable {
 	public void damage(byte value) {
 		if (!WE.CVARS.getValueB("godmode")) {
 			super.damage(value);
-			WE.getEngineView().getSoundEngine().play("urfHurt");
+			WE.SOUND.play("urfHurt");
 			if (getCamera() != null) {
 				getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
 			}
@@ -673,7 +673,7 @@ public class Ejira extends MovableEntity implements Controllable {
 					onLand();
 					String landingSound = getLandingSound();
 					if (landingSound != null) {
-						WE.getEngineView().getSoundEngine().play(landingSound, getPosition());//play landing sound
+						WE.SOUND.play(landingSound, getPosition());//play landing sound
 					}
 					step();
 				}
@@ -688,7 +688,7 @@ public class Ejira extends MovableEntity implements Controllable {
 				jump(4.7f, false);
 			playAnimation('j');
 			if (isInAirJump) {
-				WE.getEngineView().getSoundEngine().play("jetpack");
+				WE.SOUND.play("jetpack");
 //				for (int i = 0; i < 80; i++) {
 //					Dust dust = (Dust) new Dust(
 //						1000f,
@@ -742,7 +742,7 @@ public class Ejira extends MovableEntity implements Controllable {
 		if (loadAttack >= LOADATTACKTIME) {
 			//perform loadattack
 			playAnimation('i');
-			WE.getEngineView().getSoundEngine().play("release");
+			WE.SOUND.play("release");
 			if (!isOnGround()) {
 				setFriction((float) WE.CVARS.get("playerfriction").getValue()/3f);
 				addMovement(new Vector3(getOrientation().cpy().scl(30),-2f));

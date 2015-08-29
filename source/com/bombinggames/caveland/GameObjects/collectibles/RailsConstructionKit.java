@@ -63,7 +63,7 @@ public class RailsConstructionKit extends Collectible {
 					(int result, CustomGameView view1, AbstractEntity actor1) -> {
 						//spawn rails
 						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
-						WE.getEngineView().getSoundEngine().play("metallic");
+						WE.SOUND.play("metallic");
 						if (preview != null) {
 							preview.dispose();
 							preview = null;

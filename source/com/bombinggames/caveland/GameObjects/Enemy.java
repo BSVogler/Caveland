@@ -62,7 +62,7 @@ public class Enemy extends MovableEntity{
 
 	@Override
 	public AbstractEntity spawn(final Point point) {
-		movementSoundPlaying = WE.getEngineView().getSoundEngine().loop(MOVEMENTSOUND, point);
+		movementSoundPlaying = WE.SOUND.loop(MOVEMENTSOUND, point);
 		return super.spawn(point);
 	}
 
@@ -194,9 +194,9 @@ public class Enemy extends MovableEntity{
 			new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 			new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 			
-			WE.getEngineView().getSoundEngine().stop(MOVEMENTSOUND, movementSoundPlaying);
+			WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
 			if (getHealth() <= 0 && KILLSOUND != null)
-				WE.getEngineView().getSoundEngine().play(KILLSOUND);
+				WE.SOUND.play(KILLSOUND);
 			killcounter++;
 		}
 	}

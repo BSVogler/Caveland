@@ -381,7 +381,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements HasID
 			if (getHealth() >0){
 				if (damageSounds != null && soundTimeLimit<=0) {
 					//play random sound
-					WE.getEngineView().getSoundEngine().play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
+					WE.SOUND.play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
 					soundTimeLimit = 100;
 				}
 				setHealth((byte) (getHealth()-value));

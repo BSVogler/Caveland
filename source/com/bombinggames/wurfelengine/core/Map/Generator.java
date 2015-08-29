@@ -31,8 +31,6 @@
 
 package com.bombinggames.wurfelengine.core.Map;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-
 /**
  *An interface for a map generator.
  * @author Benedikt Vogler
@@ -49,13 +47,13 @@ public interface Generator {
     public abstract byte generate(int x, int y, int z);   
 	
 	/**
-	 * Define which entities should appear at which coordinate.
+	 * Define which entities should appear at which coordinate. This method should spawn them.
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return can be null
 	 */
-	public abstract AbstractEntity[] generateEntities(int x, int y, int z);
+	public abstract void spawnEntities(int x, int y, int z);
 	
 	/**
 	 * fill the logic

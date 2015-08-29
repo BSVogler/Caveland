@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -105,11 +105,28 @@ public class ChunkGenerator implements Generator {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return 
+	 * @return can be null
 	 */
 	@Override
-	public AbstractEntity[] generateEntities(int x, int y, int z){
-		return null;
+	public void spawnEntities(int x, int y, int z){
+		if (y > CAVESBORDER) {
+			//apply p
+			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
+
+			//loch in der Decke
+			if (xRoom==g-5 && yRoom==p+2 && z == 4) {
+				ExitPortal portal = (ExitPortal) new ExitPortal().spawn(new Coordinate(x, y, z).toPoint());
+				if (getCaveNumber(x, y, z)==0) {
+					//exit to surface
+					portal.setTarget(new Coordinate(0, 0, 5));
+				} else {
+					portal.setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
+				}
+				//portal.setValue((byte) 1);
+				//portal.enableEnemySpawner();
+			}
+		}
 	}
 	
 		/**
@@ -120,23 +137,11 @@ public class ChunkGenerator implements Generator {
 	 */
 	@Override
 	public void configureLogicBlocks(int x, int y, int z){
-		if (y>CAVESBORDER) {
+		if (y > CAVESBORDER) {
 			//apply p
 			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
 
-			//loch in der Decke
-			if (xRoom==g-5 && yRoom==p+2 && z == 4) {
-				PortalBlock portal; 
-				if (getCaveNumber(x, y, z)==0) {
-					//exit to surface
-					((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(new Coordinate(0, 0, 5));
-				} else {
-					((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
-				}
-				//portal.setValue((byte) 1);
-				//portal.enableEnemySpawner();
-			}
 			//loch im Boden
 			if (xRoom==5 && yRoom==g-p-4 && z == 4){
 				((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
@@ -150,6 +155,7 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	/**
+	 * Get the numbers of the cave. The entry cave is cave number 0.
 	 * 
 	 * @param x
 	 * @param y

@@ -216,13 +216,11 @@ public class Chunk {
 						(byte) 0
 					);
                     data[x][y][z] = block;
-					AbstractEntity[] entities = generator.generateEntities(
+					generator.spawnEntities(
 						left+x,
 						top+y,
 						z
 					);
-					if (entities != null && entities.length>0)
-						Controller.getMap().addEntities(entities);
 				}
 		modified = true;
     }

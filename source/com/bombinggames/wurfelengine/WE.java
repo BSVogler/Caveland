@@ -494,6 +494,7 @@ public class WE {
 	 */
 	public static void updateAndRender(float dt) {
 		console.update(dt);
+		engineView.update(dt);
 		engineView.getStage().act(dt);
 		engineView.getStage().draw();
 	}

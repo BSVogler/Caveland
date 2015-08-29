@@ -120,9 +120,7 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 			if (container.count(neededItems[i]) < neededAmount[i])
 				return false;
 		}
-		if (result == 15 && getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != 16){
-			return false;
-		}
+
 		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
 		WE.getEngineView().getSoundEngine().play("construct");
 		container.dispose();

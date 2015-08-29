@@ -22,7 +22,16 @@ public class Bausatz extends Collectible {
 		super(CollectibleType.Toolkit);
 	}
 	
+	/**
+	 * 
+	 * @param coord
+	 * @param id the goal id
+	 */
 	protected void build(Coordinate coord, byte id){
+		if (id == 15 && getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != 16){
+			return;
+		}
+				
 		//spawn construction site
 		coord.setBlock(Block.getInstance((byte) 11));
 		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);

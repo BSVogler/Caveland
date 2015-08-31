@@ -8,6 +8,8 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.bombinggames.caveland.Game.igmenu.IGMenu;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -51,6 +53,7 @@ public class CustomGameView extends GameView{
 	 * contains or may not contain currently active dialogues
 	 */
 	private final ActionBox[] openDialogue = new ActionBox[2];
+	private WidgetGroup modalGroup;
 	
     @Override
     public void init(Controller controller) {
@@ -608,13 +611,20 @@ public class CustomGameView extends GameView{
 				}  
 				 
 
-                 //show/hide light engine
-                 if (keycode == Input.Keys.L) {
-                     if (getLightEngine() != null) getLightEngine().setDebug(!getLightEngine().isInDebug());
-                  } 
+                //show/hide light engine
+                if (keycode == Input.Keys.L) {
+                    if (getLightEngine() != null) getLightEngine().setDebug(!getLightEngine().isInDebug());
+                } 
 
-                 if (keycode == Input.Keys.ESCAPE)
-                     WE.showMainMenu();
+                if (keycode == Input.Keys.ESCAPE) {
+                    if (modalGroup==null) {
+						setModal(new IGMenu());
+						pauseTime();
+					} else {
+						setModal(null);
+						continueTime();
+					}
+				}
 				 
 				//coop controlls
 				if (coop==0){
@@ -698,31 +708,32 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.LEFT)
-				if (openDialogue[0] ==null)
-					getPlayer(0).attack();
-			
-			if (button ==Buttons.RIGHT) {
-				if (openDialogue[0] ==null) {
-					throwDownP1 = 0;
-				}
+			if (focusOnGame(0)) {
+				if (button ==Buttons.LEFT)
+						getPlayer(0).attack();
+
+				if (button ==Buttons.RIGHT) {
+						throwDownP1 = 0;
+					}
 			}
             return true;
         }
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			if (button ==Buttons.LEFT) {
-				if (openDialogue[0] !=null)
-					openDialogue[0].confirm(parent, getPlayer(0));
-				getPlayer(0).attackLoadingStopped();
-			}
-			if (button == Buttons.RIGHT) {
-				if (openDialogue[0] ==null) {
-					getPlayer(0).throwItem();
-					throwDownP1 = -1;
-				} else {
-					openDialogue[0].cancel(parent, getPlayer(0));
+			if (focusOnGame(0)) {
+				if (button ==Buttons.LEFT) {
+					if (openDialogue[0] !=null)
+						openDialogue[0].confirm(parent, getPlayer(0));
+					getPlayer(0).attackLoadingStopped();
+				}
+				if (button == Buttons.RIGHT) {
+					if (openDialogue[0] ==null) {
+						getPlayer(0).throwItem();
+						throwDownP1 = -1;
+					} else {
+						openDialogue[0].cancel(parent, getPlayer(0));
+					}
 				}
 			}
             return true;
@@ -747,12 +758,17 @@ public class CustomGameView extends GameView{
         }
     }
 	
+	/**
+	 * is the focus of the player on the game or is it redirected?
+	 * @param playerId
+	 * @return 
+	 */
 	private boolean focusOnGame(int playerId){
-		return !WE.getConsole().isActive() && openDialogue[playerId]==null;
+		return !WE.getConsole().isActive() && openDialogue[playerId] == null && modalGroup == null;
 	}
 	
 	/**
-	 * 
+	 * Set an actionbox to a modal dialogue, so that the input gets redirected to the dialoge and not the character. The modality is only valid for one player.
 	 * @param actionBox can be null
 	 * @param playerNumber starts with 1
 	 */
@@ -770,5 +786,31 @@ public class CustomGameView extends GameView{
 			}
 			getStage().addActor(actionBox);
 		}
+	}
+	
+	/**
+	 * Set a global modal widget. Both inputs get redirected there. Adds the widget to the stage.
+	 * @param group can be null
+	 */
+	public void setModal(WidgetGroup group){
+		if (group == null && modalGroup != null) {
+			this.modalGroup.remove();
+		}
+		this.modalGroup = group;
+		if (this.modalGroup != null) {
+			getStage().addActor(modalGroup);
+			modalGroup.setPosition(
+				getStage().getWidth()/2 -modalGroup.getWidth()/2,
+				getStage().getHeight()/2-modalGroup.getHeight()/2
+			);
+		}
+	}
+	
+	public void pauseTime(){
+		WE.CVARS.get("timespeed").setValue(0f);
+	}
+	
+	public void continueTime(){
+		WE.CVARS.get("timespeed").setValue(1f);
 	}
 }

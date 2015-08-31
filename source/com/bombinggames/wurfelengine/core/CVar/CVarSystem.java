@@ -299,6 +299,7 @@ public class CVarSystem {
 		register(new BooleanCVar(true), "mapUseChunks", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new BooleanCVar(false), "DevMode", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new BooleanCVar(false), "DevDebugRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new BooleanCVar(false), "editorVisible", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(2), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new BooleanCVar(true), "preventUnloading", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);

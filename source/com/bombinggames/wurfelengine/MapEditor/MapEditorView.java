@@ -126,8 +126,8 @@ public class MapEditorView extends GameView {
         
          //add save button
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
-        savebutton.setX(Gdx.graphics.getWidth()-120);
-        savebutton.setY(Gdx.graphics.getHeight()-40);
+        savebutton.setX(Gdx.graphics.getWidth()  - 120);
+        savebutton.setY(Gdx.graphics.getHeight() - 40);
         savebutton.addListener(new ClickListener(){
 
 			@Override

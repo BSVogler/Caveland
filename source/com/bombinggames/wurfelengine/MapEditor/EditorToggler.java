@@ -10,7 +10,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 
 /**
- *
+ * Shows buttons to enter and leave the editor.
  * @author Benedikt Vogler
  */
 public class EditorToggler {
@@ -22,6 +22,7 @@ public class EditorToggler {
 	private final float offsetY = 50;
 	private Controller controller;
 	private GameView view;
+	private boolean visible = true;
 
 	/**
 	 * @param controller the controller used for play-mode
@@ -39,7 +40,7 @@ public class EditorToggler {
 	 * @param dt
 	 */
 	public void update(GameView view, float dt) {
-		if (WE.isInEditor()) {
+		if (WE.isInEditor() && visible) {
 			if (playButton == null && controller != null && this.view != null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 				//add play button
@@ -56,7 +57,7 @@ public class EditorToggler {
 			}
 		}
 			
-		if (WE.isInGame()) {
+		if (WE.isInGame() && visible) {
 			if (pauseButton == null || resetButton == null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 
@@ -129,6 +130,24 @@ public class EditorToggler {
 		}
 		if (resetButton != null) {
 			resetButton.remove();
+		}
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		if (!visible) {
+			if (playButton != null) {
+				playButton.remove();
+				playButton = null;
+			}
+			if (pauseButton != null) {
+				pauseButton.remove();
+				pauseButton = null;
+			}
+			if (resetButton != null) {
+				resetButton.remove();
+				resetButton = null;
+			}
 		}
 	}
 

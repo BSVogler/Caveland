@@ -41,6 +41,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
+import com.bombinggames.wurfelengine.WE;
 
 /**
  * A view which is not dependend on the currently active game. Singleton.
@@ -88,6 +89,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		editorToggler.setVisible(WE.CVARS.getValueB("editorVisible"));
 		editorToggler.update(this, dt);
 	}
 	

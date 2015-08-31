@@ -618,7 +618,7 @@ public class CustomGameView extends GameView{
 
                 if (keycode == Input.Keys.ESCAPE) {
                     if (modalGroup==null) {
-						setModal(new IGMenu());
+						setModal(new IGMenu(this.parent));
 						pauseTime();
 					} else {
 						setModal(null);

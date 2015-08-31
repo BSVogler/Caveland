@@ -218,7 +218,7 @@ public class Console {
     public void update(float dt){
        timelastupdate += dt;
        
-        //open close console/chat box
+        //open close console/chat box. Update is called when the console is not active. The StageInputProcessor oly when it is ipen
         if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"))) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
@@ -507,6 +507,12 @@ public class Console {
             this.parentRef = parent;
         }
 
+		/**
+		 * only called when the console is open
+		 * @param event
+		 * @param keycode
+		 * @return 
+		 */
         @Override
         public boolean keyDown(InputEvent event, int keycode){
             if (keycode == Keys.UP){
@@ -518,6 +524,10 @@ public class Console {
 			
             if (keycode == Keys.ENTER){
                 parentRef.enter();
+            }
+			
+			if (keycode == Keys.ESCAPE){
+                setActive(Modes.Console, false);//toggle
             }
 			
 			if (keycode == Keys.TAB){

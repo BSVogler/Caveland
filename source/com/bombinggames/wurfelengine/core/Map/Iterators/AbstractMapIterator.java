@@ -35,7 +35,7 @@ import com.bombinggames.wurfelengine.core.Map.Map;
 import java.util.Iterator;
 
 /**
- *
+ * FOr iteratos which iterate over a map.
  * @author Benedikt Vogler
  */
 public abstract class AbstractMapIterator implements Iterator<Block>{

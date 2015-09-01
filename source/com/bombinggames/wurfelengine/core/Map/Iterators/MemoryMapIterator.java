@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *Iterates over the blocks in memory.
+ * Iterates over the blocks in memory.
  * @author Benedikt Vogler
  */
 public class MemoryMapIterator extends AbstractMapIterator {

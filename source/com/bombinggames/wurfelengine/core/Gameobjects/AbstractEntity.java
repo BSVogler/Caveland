@@ -43,7 +43,7 @@ import java.io.ObjectInputStream;
  *An entity is a game object wich is self aware that means it knows it's position.
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject implements HasID {
+public abstract class AbstractEntity extends AbstractGameObject {
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
 

@@ -43,7 +43,7 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	private int centerChunkX;
 	private int centerChunkY;
 	private Chunk current;
-	private MemoryMapIterator mmI;
+	
 	/**
 	 * The left chunk border index position. not equivalent to a coordinate
 	 */

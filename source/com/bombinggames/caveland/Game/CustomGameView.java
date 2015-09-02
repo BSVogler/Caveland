@@ -279,7 +279,7 @@ public class CustomGameView extends GameView{
 			}
 		}
 
-		if (controllerListenerA != null) {//first controlelr used
+		if (controllerListenerA != null) {//first controller used
 			if (controllerListenerA.speed > 0){
 				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.CVARS.getValueF("playerWalkingSpeed")*controllerListenerA.speed)
 				);
@@ -311,7 +311,7 @@ public class CustomGameView extends GameView{
 			getPlayer(0).useItem(this);
 		}
 		
-		if (coop>-1)
+		if (coop > -1)
 			if (inventoryDownP2==0){
 				getPlayer(1).useItem(this);
 			}
@@ -709,35 +709,36 @@ public class CustomGameView extends GameView{
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (focusOnGame(0)) {
-				if (button ==Buttons.LEFT)
-						getPlayer(0).attack();
+				if (button == Buttons.LEFT)
+					getPlayer(0).attack();
 
-				if (button ==Buttons.RIGHT) {
-						throwDownP1 = 0;
-					}
+				if (button == Buttons.RIGHT) {
+					throwDownP1 = 0;
+				}
 			}
             return true;
         }
 
         @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			if (focusOnGame(0)) {
-				if (button ==Buttons.LEFT) {
-					if (openDialogue[0] !=null)
-						openDialogue[0].confirm(parent, getPlayer(0));
-					getPlayer(0).attackLoadingStopped();
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			if (button == Buttons.LEFT) {
+				if (openDialogue[0] != null) {
+					openDialogue[0].confirm(parent, getPlayer(0));
 				}
-				if (button == Buttons.RIGHT) {
-					if (openDialogue[0] ==null) {
-						getPlayer(0).throwItem();
-						throwDownP1 = -1;
-					} else {
-						openDialogue[0].cancel(parent, getPlayer(0));
-					}
+				if (focusOnGame(0))
+					getPlayer(0).attackLoadingStopped();
+			}
+			if (button == Buttons.RIGHT) {
+				if (focusOnGame(0)) {
+					getPlayer(0).throwItem();
+					throwDownP1 = -1;
+				}
+				if (openDialogue[0] != null) {
+					openDialogue[0].cancel(parent, getPlayer(0));
 				}
 			}
-            return true;
-        }
+			return true;
+		}
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -768,21 +769,22 @@ public class CustomGameView extends GameView{
 	}
 	
 	/**
-	 * Set an actionbox to a modal dialogue, so that the input gets redirected to the dialoge and not the character. The modality is only valid for one player.
+	 * Set an actionbox to a modal dialogue, so that the input gets redirected
+	 * to the dialoge and not the character. The modality is only valid for one
+	 * player.
+	 *
 	 * @param actionBox can be null
 	 * @param playerNumber starts with 1
 	 */
-	public void setModalDialogue(ActionBox actionBox, int playerNumber){
-		this.openDialogue[playerNumber-1] = actionBox;
+	public void setModalDialogue(ActionBox actionBox, int playerNumber) {
+		this.openDialogue[playerNumber - 1] = actionBox;
 		if (actionBox != null) {
-			if (coop==-1)
-				actionBox.setPosition(getStage().getWidth() / 2 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
-			else {
-				if (playerNumber==1){
-					actionBox.setPosition(getStage().getWidth() / 4 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
-				} else {
-					actionBox.setPosition(getStage().getWidth()*3 / 4 - actionBox.getWindow().getWidth()/2, getStage().getHeight() / 2);
-				}
+			if (coop == -1) {
+				actionBox.setPosition(getStage().getWidth() / 2 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
+			} else if (playerNumber == 1) {
+				actionBox.setPosition(getStage().getWidth() / 4 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
+			} else {
+				actionBox.setPosition(getStage().getWidth() * 3 / 4 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
 			}
 			getStage().addActor(actionBox);
 		}

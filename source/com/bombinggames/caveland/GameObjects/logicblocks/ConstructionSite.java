@@ -75,6 +75,11 @@ public class ConstructionSite extends AbstractLogicBlock implements Interactable
 		container.spawn(coord.toPoint());
 	}
 
+	/**
+	 * The result if you finish the construction.
+	 * @param result
+	 * @param resultValue 
+	 */
 	public void setResult(byte result, byte resultValue) {
 		this.result = result;
 		this.resultValue = resultValue;

@@ -70,6 +70,10 @@ public interface HasID {
 	 */
 	public abstract boolean hasSides();
 	
+	/**
+	 * A liquid has some physical properties which differ from solid blocks. The surface is rendered only once.
+	 * @return 
+	 */
 	public abstract boolean isLiquid();
 	
 	/**

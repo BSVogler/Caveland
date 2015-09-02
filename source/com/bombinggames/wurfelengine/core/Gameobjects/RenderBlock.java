@@ -167,7 +167,7 @@ public class RenderBlock extends AbstractGameObject {
     }
 	
     /**
-     *
+     *dipsose the static fields
      */
     public static void staticDispose(){
         blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];//{id}{value}{side}

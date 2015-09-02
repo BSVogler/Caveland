@@ -259,6 +259,10 @@ public class Block implements HasID, Serializable {
 		this.health = health;
 	}
 
+	/**
+	 * The health is stored in a byte in the range [0;100]
+	 * @return 
+	 */
 	public byte getHealth() {
 		return health;
 	}
@@ -574,18 +578,26 @@ public class Block implements HasID, Serializable {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @return true if it hides the block behind and below
+	 */
 	public boolean hidingPastBlock() {
 		return hasSides() && !isTransparent();
 	}
 
 	/**
-	 *
+	 * Set flags for the ambient occlusion algorithm to true
 	 * @param side
 	 */
 	public void setAOFlagTrue(int side) {
 		this.aoFlags |= 1 << side;//set n'th bit to true via OR operator
 	}
 
+	/**
+	 * Set flags for the ambient occlusion algorithm to false
+	 * @param side 
+	 */
 	public void setAOFlagFalse(int side) {
 		this.aoFlags &= ~(1 << side);//set n'th bit to false via AND operator
 	}
@@ -599,12 +611,16 @@ public class Block implements HasID, Serializable {
 	 * -------<br>
 	 * 5 / 4 \ 3<br>
 	 *
-	 * @return
+	 * @return four bytes in an int
 	 */
 	public int getAOFlags() {
 		return aoFlags;
 	}
 
+	/**
+	 * Set all flags at once
+	 * @param aoFlags 
+	 */
 	public void setAoFlags(int aoFlags) {
 		this.aoFlags = aoFlags;
 	}

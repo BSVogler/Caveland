@@ -598,21 +598,13 @@ public class Map implements Cloneable {
 		else return chunk.getLogic(coord);
 	}
 
+	/**
+	 * Add a logicblock to the map.
+	 * @param block 
+	 */
 	public void addLogic(AbstractLogicBlock block) {
 		Chunk chunk = getChunk(block.getPosition());
 		chunk.addLogic(block);
-	}
-
-	/**
-	 *
-	 * @param coordX
-	 * @param coordY
-	 * @return
-	 */
-	ArrayList<AbstractLogicBlock> getLogicBlocksOnChunk(int coordX, int coordY) {
-		Chunk chunk = getChunk(coordX, coordY);
-		if (chunk==null) return null;
-		else return chunk.getLogicBlocks();
 	}
 
 	/**

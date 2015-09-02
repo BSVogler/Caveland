@@ -68,8 +68,7 @@ public class Chunk {
 	private final static char SIGN_ENTITIES = '|';//124 OR 0x7c
 	private final static char SIGN_COMMAND = '~';//126 OR 0x7e
 	private final static char SIGN_EMTPYLAYER = 'e';//only valid after a command sign
-	private final static char SIGN_LOGICBLOCKS = 'l';//only valid after a command sign
-		private final static char SIGN_ENDBLOCKS = 'b';//only valid after a command sign
+	private final static char SIGN_ENDBLOCKS = 'b';//only valid after a command sign
 	
 	/**
 	 * the map in which the chunks are used
@@ -85,7 +84,7 @@ public class Chunk {
 	 */
     private final Block data[][][];
 	/**
-	 * a list containing the logic blocks which point to some blocks in this chunk
+	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
 	 */
 	private final ArrayList<AbstractLogicBlock> logicBlocks = new ArrayList<>(2);
 	private boolean modified;
@@ -176,9 +175,7 @@ public class Chunk {
 		//check if block at position corespodends to saved, garbage collection
 		logicBlocks.removeIf(
 			(AbstractLogicBlock lb) -> {
-				if (lb.getPosition().getBlock() == null)
-					return true;
-				return lb.getPosition().getBlock().getId() != lb.getBlock().getId();
+				return !lb.isValid();
 			}
 		);
 	}
@@ -225,7 +222,7 @@ public class Chunk {
 		modified = true;
     }
 	
-		/**
+	/**
 	 * copies  something
 	 * @param path
 	 * @param saveSlot
@@ -308,6 +305,12 @@ public class Chunk {
 					}
 				} else {
 					data[x][y][z] = Block.getInstance(id, bChar);
+					//if has logicblock then add logicblock
+					AbstractLogicBlock logic = data[x][y][z].getLogicInstance(
+						new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+					);
+					if (logic != null)
+						logicBlocks.add(logic);
 					id = -1;
 					x++;
 					if (x == blocksX) {
@@ -326,45 +329,13 @@ public class Chunk {
 	}
 	
 	
-	private void loadObjects(FileInputStream fis, File path){
-		Gdx.app.debug("Chunk", "Loading objects blocks.");
+	private void loadEntities(FileInputStream fis, File path){
 		//ends with a sign for logic or entities or eof
 		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
 			byte bChar = ois.readByte();
 			if (bChar == SIGN_COMMAND)
 				bChar = ois.readByte();
 			
-			//load logicblocks
-			if (bChar == SIGN_LOGICBLOCKS) {
-				try {
-					//loading entities
-					int length = ois.readByte(); //amount of entities
-					Gdx.app.debug("Chunk", "Loading " + length +" logic blocks.");
-
-					AbstractLogicBlock block;
-					for (int i = 0; i < length; i++) {
-						try {
-							block = (AbstractLogicBlock) ois.readObject();
-							Controller.getMap().addLogic(block);
-							Gdx.app.debug("Chunk", "Loaded entity: "+block.toString());
-							//objectIn.close();
-						} catch (ClassNotFoundException | InvalidClassException ex) {
-							Gdx.app.error("Chunk", "An logicBlock could not be loaded");
-							Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
-						}
-					}
-				} catch (IOException ex) {
-					Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-				} catch (java.lang.NoClassDefFoundError ex) {
-					Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-				}
-
-				bChar = ois.readByte();
-				if (bChar == SIGN_COMMAND) {
-					bChar = ois.readByte();
-				}
-			}
-
 			if (bChar==SIGN_ENTITIES){
 				if (WE.CVARS.getValueB("loadEntities")) {
 					try {
@@ -390,7 +361,7 @@ public class Chunk {
 						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 					}
 				}
-			}	
+			}
 		} catch (IOException ex) {
 			Gdx.app.error("Chunk","Loading of chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
 		} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
@@ -419,7 +390,7 @@ public class Chunk {
 					System.out.println("loaded block sucessfull");
 				
 				if (fis.available() > 0) {//not eof
-					loadObjects(fis, path);
+					loadEntities(fis, path);
 				}
 
 				modified = true;
@@ -481,24 +452,10 @@ public class Chunk {
 		fos.write(new byte[]{SIGN_COMMAND, SIGN_ENDBLOCKS});
 		fos.flush();
 		
-		ArrayList<AbstractLogicBlock> logicblocks = map.getLogicBlocksOnChunk(coordX, coordY);
 		ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
 		
-		if (logicblocks.size() > 0 || entities.size() > 0){
+		if (entities.size() > 0){
 			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {	
-				//save logicblocks
-				if (logicblocks.size()>0){
-					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_LOGICBLOCKS, (byte) logicblocks.size()});
-					for (AbstractLogicBlock lb : logicblocks){
-						Gdx.app.debug("Chunk", "Saving block:"+lb.toString());
-						try {
-							fileOut.writeObject(lb);
-						} catch(java.io.NotSerializableException ex){
-							Gdx.app.error("Chunk", "Something is not NotSerializable: "+ex.getMessage()+":"+ex.toString());
-						}
-					}
-				}
-
 				//save entities
 				if (entities.size() > 0) {
 					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_ENTITIES, (byte) entities.size()});
@@ -734,16 +691,17 @@ public class Chunk {
 	}
 	
 	/**
-	 * 
-	 * @param coord
+	 * Almost lowest level method to set a block in the map. If the block has logic a new logicinstance will be created.
+	 * @param coord The position where you insert the block. Must be inside the bounds of the chunk.
 	 * @param block 
 	 */
 	public void setBlock(Coordinate coord, Block block) {
 		//get corresponding logic and update
 		if (block != null) {
+			//create new instance
 			AbstractLogicBlock logic = block.getLogicInstance(coord);
 			if (logic != null)
-			logicBlocks.add(block.getLogicInstance(coord));
+				logicBlocks.add(logic);
 		}
 		
 		int xIndex = coord.getX()-topleft.getX();
@@ -755,7 +713,7 @@ public class Chunk {
 		}
 	}
 	
-	public void addLogic(AbstractLogicBlock block) {
+	protected void addLogic(AbstractLogicBlock block) {
 		logicBlocks.add(block);
 	}
 		
@@ -767,17 +725,14 @@ public class Chunk {
 	public AbstractLogicBlock getLogic(Coordinate coord) {
 		Block block = coord.getBlock();
 		if (block != null) {
+			//find the logicBlock
 			for (AbstractLogicBlock logicBlock : logicBlocks) {
-				if (logicBlock.getPosition().equals(coord) && logicBlock.getBlock().getId() == block.getId()) {
+				if (logicBlock.getPosition().equals(coord) && logicBlock.isValid()) {
 					return logicBlock;
 				}
 			}
 		}
 		return null;
-	}
-
-	public ArrayList<AbstractLogicBlock> getLogicBlocks() {
-		return logicBlocks;
 	}
 	
 	/**

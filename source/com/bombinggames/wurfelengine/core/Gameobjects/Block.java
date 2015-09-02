@@ -185,10 +185,6 @@ public class Block implements HasID, Serializable {
 	private byte id;
 	private byte value;
 	private byte health = 100;
-	/**
-	 * stores the lightlevel based on the height as percentile /127
-	 */
-	private byte heightLightlevel;
 
 	/**
 	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
@@ -348,17 +344,17 @@ public class Block implements HasID, Serializable {
 	 */
 	@Override
 	public float getLightlevelR() {
-		return heightLightlevel/Byte.MAX_VALUE+(getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
+		return (getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelG() {
-		return heightLightlevel/Byte.MAX_VALUE + (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
+		return (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelB() {
-		return heightLightlevel/(float) Byte.MAX_VALUE+(getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
+		return (getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
 	}
 
 	/**
@@ -368,11 +364,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelR(Side side) {
 		if (side == Side.LEFT) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorLeft >> 20) & 0x3FF) / 511f;
+			return ((colorLeft >> 20) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorTop >> 20) & 0x3FF) / 511f;
+			return ((colorTop >> 20) & 0x3FF) / 511f;
 		} else {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorRight >> 20) & 0x3FF) / 511f;
+			return ((colorRight >> 20) & 0x3FF) / 511f;
 		}
 	}
 
@@ -383,11 +379,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelG(Side side) {
 		if (side == Side.LEFT) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorLeft >> 10) & 0x3FF) / 511f;
+			return ((colorLeft >> 10) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorTop >> 10) & 0x3FF) / 511f;
+			return ((colorTop >> 10) & 0x3FF) / 511f;
 		} else {
-			return heightLightlevel/(float) Byte.MAX_VALUE + ((colorRight >> 10) & 0x3FF) / 511f;
+			return ((colorRight >> 10) & 0x3FF) / 511f;
 		}
 	}
 
@@ -398,11 +394,11 @@ public class Block implements HasID, Serializable {
 	 */
 	public float getLightlevelB(Side side) {
 		if (side == Side.LEFT) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + (colorLeft & 0x3FF) / 511f;
+			return (colorLeft & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return heightLightlevel/(float) Byte.MAX_VALUE + (colorTop & 0x3FF) / 511f;
+			return (colorTop & 0x3FF) / 511f;
 		} else {
-			return heightLightlevel/(float) Byte.MAX_VALUE + (colorRight & 0x3FF) / 511f;
+			return (colorRight & 0x3FF) / 511f;
 		}
 	}
 
@@ -657,13 +653,5 @@ public class Block implements HasID, Serializable {
 
 	public void setUnclipped() {
 		clipping = (byte) 0;
-	}
-
-	/**
-	 *
-	 * @param l value [0;1]
-	 */
-	public void setHeightLightlevel(float l) {
-		heightLightlevel = (byte) (l * Byte.MAX_VALUE);
 	}
 }

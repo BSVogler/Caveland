@@ -335,33 +335,6 @@ public class LightEngine implements MapObserver {
         return light;
     }
     
-     /**
-     * Calculates the light level based on the sun shining straight from the top
-	 * @param data
-     */
-    public void calcSimpleLight(Block[][][] data){
-		for (Block[][] x : data) {
-			for (Block[] y : x) {
-				//find top most renderobject
-				int topmost = Chunk.getBlocksZ();//start at top
-				Block block;
-				do {
-					topmost--;
-					block = y[topmost];
-				} while ((block == null || block.isTransparent()) && topmost > 0);
-				if (topmost>0) {
-					//start at topmost renderobject and go down. Every step make it a bit darker
-					for (int z = 9; z >= 0; z--) {
-						Block blockToLit = y[z];
-						if (blockToLit != null) {
-							blockToLit.setHeightLightlevel(.5f + .5f*z / (float) topmost);
-						}
-					}
-				}
-			}
-		}         
-    }
-
     /**
      *
      * @return
@@ -566,7 +539,6 @@ public class LightEngine implements MapObserver {
 	@Override
 	public void onChunkChange(Chunk chunk) {
 		//perform light change only on this chunk
-		calcSimpleLight(chunk.getData());
 		calcAO(chunk);
 	}
 

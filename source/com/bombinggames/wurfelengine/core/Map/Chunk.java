@@ -34,10 +34,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -160,11 +161,39 @@ public class Chunk {
 	public void update(float dt){	
 		processModification();
 		//reset light to zero
-		for (Block[][] x : data) {
-			for (Block[] y : x) {
-				for (Block z : y) {
-					if (z!=null)
-						z.setLightlevel(0);
+		for (int x = 0; x < data.length; x++) {
+			for (int y = 0; y < data[x].length; y++) {
+				for (int z = 0; z < data[x][y].length; z++) {
+					if (data[x][y][z] != null) {
+						data[x][y][z].setLightlevel(1.0f);
+						
+						if (
+							z < Chunk.getBlocksZ()-2
+							&& (
+								data[x][y][z+1] == null
+								|| data[x][y][z+1].isTransparent()
+							)
+							&& data[x][y][z+2] != null
+							&& !data[x][y][z+2].isTransparent()
+						) {
+							data[x][y][z].setLightlevel(0.8f, Side.TOP);
+						} else if (
+							z < Chunk.getBlocksZ()-3
+							&& (
+								data[x][y][z+1] == null
+								|| data[x][y][z+1].isTransparent()
+							)
+							&& ( 
+								data[x][y][z+2] == null
+								|| data[x][y][z+2].isTransparent()
+							)
+							&& data[x][y][z+3] != null
+							&& !data[x][y][z+3].isTransparent()
+						) {
+							data[x][y][z].setLightlevel(0.9f, Side.TOP);
+						}
+						
+					}
 				}
 			}
 		}

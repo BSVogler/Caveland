@@ -138,6 +138,7 @@ public class Controller implements GameManager, MapObserver {
     private DevTools devtools;
     private boolean initalized= false;
 	private int saveSlot;
+	private String mapName = "default";
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called before calling init().
@@ -146,6 +147,14 @@ public class Controller implements GameManager, MapObserver {
 	public void useSaveSlot(int slot){
 		this.saveSlot = slot;
 		if (map!=null) map.useSaveSlot(slot);
+	}
+	
+	/**
+	 * Set the map name which is loaded then. Should be called before the {@link #init()}
+	 * @param mapName 
+	 */
+	public void setMapName(String mapName){
+		this.mapName = mapName;
 	}
 
 	/**
@@ -163,7 +172,7 @@ public class Controller implements GameManager, MapObserver {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		saveSlot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/default/"));
+		saveSlot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapName+"/"));
 		if (map != null) map.useSaveSlot(saveSlot);
 		return saveSlot;
 	}
@@ -172,7 +181,7 @@ public class Controller implements GameManager, MapObserver {
      * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
      */
     public void init(){
-        init(saveSlot, "default");
+        init(saveSlot, mapName);
     }
     
     /**

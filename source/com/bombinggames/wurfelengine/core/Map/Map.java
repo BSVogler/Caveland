@@ -36,8 +36,8 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
@@ -114,6 +114,11 @@ public class Map implements Cloneable {
 		}
 	}
 
+	/**
+	 * Get the amount of save files for this map.
+	 * @param path
+	 * @return 
+	 */
 	public static int getSavesCount(File path) {
 		FileHandle children = Gdx.files.absolute(path.getAbsolutePath());
 		int i = 0;

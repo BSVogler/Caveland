@@ -21,6 +21,9 @@ import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *A screen to select the save file.
@@ -33,6 +36,7 @@ public class SaveSelectionScreen extends WEScreen {
 	private int coop;
 	//private final Texture background;
 	private final Sprite ship;
+	private SelectBox<String> mapSelection;
 
 	/**
 	 * 
@@ -51,6 +55,9 @@ public class SaveSelectionScreen extends WEScreen {
 		this.ship.setPosition(Gdx.graphics.getWidth()*1.5f, Gdx.graphics.getHeight()*0.7f);
 		
 		int savesCount = Map.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
+		ArrayList<File> mapList = new ArrayList<>(1);
+		mapList.addAll(Arrays.asList(WorkingDirectory.getMapsFolder().listFiles()));
+		mapList.removeIf(item -> !item.isDirectory());
 		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);
@@ -59,42 +66,73 @@ public class SaveSelectionScreen extends WEScreen {
 
 					@Override
 					public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-						startGame(false);
+						startGame(false, false);
 					}
 			}
 		);
 		stage.addActor(continueButton);
-		if (savesCount<1) {
+		
+		if (mapList.size() > 1){
+			//map selection
+			Label mapBoxLabel = new Label("Map", WE.getEngineView().getSkin());
+			mapBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+200);
+			stage.addActor(mapBoxLabel);
+			
+			mapSelection = new SelectBox<>(skin);
+			//conver files to names
+			Array<String> nameList = new Array<>(mapList.size());
+			mapList.forEach((File i) -> {
+				nameList.add(i.getName());
+			});
+			mapSelection.setItems(nameList);
+			mapSelection.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+150,150,50);
+			stage.addActor(mapSelection);
+		}
+		
+		//can load save save?
+		if (mapList.size() > 1 && savesCount < 1) {
 			continueButton.setText("No previous game found.");
 			continueButton.setDisabled(true);
 			selectBox = null;
 		} else {
 			//save slot selection
+			Label selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
+			selectBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+100);
+			stage.addActor(selectBoxLabel);
+			
+			selectBox = new SelectBox<>(skin);
 			Array<String> arstr = new Array<>(savesCount);
 			for (int i = 0; i < savesCount; i++) {
 				arstr.add(Integer.toString(i));
 			}
-			Label selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
-			selectBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+200);
-			stage.addActor(selectBoxLabel);
-			selectBox = new SelectBox<>(skin); 
 			selectBox.setItems(arstr);
-			selectBox.setWidth(40);
-			selectBox.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+150,50,50);
+			selectBox.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+50,50,50);
 			stage.addActor(selectBox);
 		}
 		
 		//new game button
-		TextButton newgameButton = new TextButton("New Game...", skin);
+		TextButton newgameButton = new TextButton("New Game", skin);
 		newgameButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2-200,400,150);
 		newgameButton.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				startGame(true);
+				startGame(true, false);
 			}
 		});
 		stage.addActor(newgameButton);
+		
+		//new empty map button
+		TextButton newEmptyMap = new TextButton("New empty map", skin);
+		newEmptyMap.setBounds(stage.getWidth()*0.8f, stage.getHeight()*0.2f,200,100);
+		newEmptyMap.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+				startGame(true, true);
+			}
+		});
+		stage.addActor(newEmptyMap);
 		
 		//back button
 		TextButton backButton = new TextButton("Back…", skin);
@@ -110,18 +148,24 @@ public class SaveSelectionScreen extends WEScreen {
 	}
 	
 	/**
-	 *
+	 * Start the game.
 	 * @param newslot if true uses new slot, if false uses slot selected in selection box
+	 * @param newMap if a new map should be generated or the default used
 	 */
-	public void startGame(boolean newslot){
+	public void startGame(boolean newslot, boolean newMap){
 		CustomGameView view = new CustomGameView();
 		view.enableCoop(coop);
 		
 		CustomGameController controller = new CustomGameController();
-		if (newslot)
-			controller.newSaveSlot();
-		else
-			controller.useSaveSlot(selectBox.getSelectedIndex());
+		if (newMap) {
+			controller.setMapName(Integer.toString(Math.abs(ZonedDateTime.now().hashCode())));
+		} else {
+			controller.setMapName(mapSelection.getSelected());
+			if (newslot)
+				controller.newSaveSlot();
+			else
+				controller.useSaveSlot(selectBox.getSelectedIndex());
+		}
 		if (coop >-1) controller.activatePlayer2();
 		WE.initAndStartGame(controller, view, new CustomLoading());
 	}

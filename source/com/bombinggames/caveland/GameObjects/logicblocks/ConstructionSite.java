@@ -40,7 +40,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ import java.util.ArrayList;
  * The logic for a construciton site
  * @author Benedikt Vogler
  */
-public class ConstructionSite extends AbstractLogicBlock implements Interactable  {
+public class ConstructionSite extends AbstractBlockLogicExtension implements Interactable  {
 	
 	private static final long serialVersionUID = 1L;
 	private final CollectibleContainer container = new CollectibleContainer((byte) 0);

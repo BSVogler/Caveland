@@ -36,7 +36,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.ArrayList;
@@ -255,7 +255,7 @@ public class Coordinate extends AbstractPosition {
 	 * get the logic to a block.
 	 * @return can return null if the block has no logic
 	 */
-	public AbstractLogicBlock getLogic(){
+	public AbstractBlockLogicExtension getLogic(){
 		if (z < 0 || z >= Chunk.getBlocksZ()) {
 			return null;
 		} else {

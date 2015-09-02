@@ -35,7 +35,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -86,7 +86,7 @@ public class Chunk {
 	/**
 	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
 	 */
-	private final ArrayList<AbstractLogicBlock> logicBlocks = new ArrayList<>(2);
+	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(2);
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
@@ -169,12 +169,11 @@ public class Chunk {
 			}
 		}
 		
-		for (AbstractLogicBlock logicBlock : logicBlocks) {
+		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
 			logicBlock.update(dt);
 		}
 		//check if block at position corespodends to saved, garbage collection
-		logicBlocks.removeIf(
-			(AbstractLogicBlock lb) -> {
+		logicBlocks.removeIf((AbstractBlockLogicExtension lb) -> {
 				return !lb.isValid();
 			}
 		);
@@ -306,7 +305,7 @@ public class Chunk {
 				} else {
 					data[x][y][z] = Block.getInstance(id, bChar);
 					//if has logicblock then add logicblock
-					AbstractLogicBlock logic = data[x][y][z].getLogicInstance(
+					AbstractBlockLogicExtension logic = data[x][y][z].getLogicInstance(
 						new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
 					);
 					if (logic != null)
@@ -676,7 +675,7 @@ public class Chunk {
 	public void setBlock(RenderBlock block) {
 		//get corresponding logic and update
 		if (block != null) {
-			AbstractLogicBlock logic = block.getBlockData().getLogicInstance(block.getPosition());
+			AbstractBlockLogicExtension logic = block.getBlockData().getLogicInstance(block.getPosition());
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -699,7 +698,7 @@ public class Chunk {
 		//get corresponding logic and update
 		if (block != null) {
 			//create new instance
-			AbstractLogicBlock logic = block.getLogicInstance(coord);
+			AbstractBlockLogicExtension logic = block.getLogicInstance(coord);
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -713,7 +712,7 @@ public class Chunk {
 		}
 	}
 	
-	protected void addLogic(AbstractLogicBlock block) {
+	protected void addLogic(AbstractBlockLogicExtension block) {
 		logicBlocks.add(block);
 	}
 		
@@ -722,11 +721,11 @@ public class Chunk {
 	 * @param coord 
 	 * @return can return null
 	 */
-	public AbstractLogicBlock getLogic(Coordinate coord) {
+	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
 		Block block = coord.getBlock();
 		if (block != null) {
 			//find the logicBlock
-			for (AbstractLogicBlock logicBlock : logicBlocks) {
+			for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
 				if (logicBlock.getPosition().equals(coord) && logicBlock.isValid()) {
 					return logicBlock;
 				}

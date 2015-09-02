@@ -49,5 +49,5 @@ public interface CustomBlocks {
 	 * @param coord
 	 * @return 
 	 */
-	public AbstractLogicBlock newLogicInstance(Block block, Coordinate coord);
+	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord);
 }

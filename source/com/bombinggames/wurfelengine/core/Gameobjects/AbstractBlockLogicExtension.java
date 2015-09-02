@@ -6,7 +6,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * Manages the game logic for a block. Points to a coordinate in the map. If the content of the coordinate changes it will be removed via {@link  com.bombinggames.wurfelengine.core.Map.Map}. Check this via {@link #isValid() }
  * @author Benedikt Vogler
  */
-public abstract class AbstractLogicBlock {
+public abstract class AbstractBlockLogicExtension {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * pointer
@@ -22,7 +22,7 @@ public abstract class AbstractLogicBlock {
 	 * @param block
 	 * @param coord 
 	 */
-	public AbstractLogicBlock(Block block, Coordinate coord) {
+	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
 		this.block = block;
 		this.coord = coord;
 	}

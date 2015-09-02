@@ -19,7 +19,7 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
@@ -347,7 +347,7 @@ public class Ejira extends MovableEntity implements Controllable {
 			for (int x = -2; x < 2; x++) {
 				for (int y = -2; y < 2; y++) {
 					for (int z = -2; z < 2; z++) {
-						AbstractLogicBlock logic = getPosition().toCoord().addVector(x, y, z).getLogic();
+						AbstractBlockLogicExtension logic = getPosition().toCoord().addVector(x, y, z).getLogic();
 						if (
 							logic != null
 							&& logic instanceof Interactable

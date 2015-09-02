@@ -40,7 +40,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -49,7 +49,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * The manager of the logic of the oven block.
  * @author Benedikt Vogler
  */
-public class OvenLogic extends AbstractLogicBlock implements Interactable{
+public class OvenLogic extends AbstractBlockLogicExtension implements Interactable{
 	private static final long serialVersionUID = 1L;
 	private final SmokeEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;

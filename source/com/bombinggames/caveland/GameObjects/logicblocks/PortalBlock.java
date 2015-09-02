@@ -34,7 +34,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -43,7 +43,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class PortalBlock extends AbstractLogicBlock {
+public class PortalBlock extends AbstractBlockLogicExtension {
 	private static final long serialVersionUID = 2L;
 	private Coordinate target = ChunkGenerator.getCaveEntry(0).addVector(0, 0, 4);
 	

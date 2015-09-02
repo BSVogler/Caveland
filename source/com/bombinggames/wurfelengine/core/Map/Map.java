@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
@@ -592,7 +592,7 @@ public class Map implements Cloneable {
 		return blocksZ;
 	}
 
-	public AbstractLogicBlock getLogic(Coordinate coord) {
+	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
 		Chunk chunk = getChunk(coord);
 		if (chunk==null) return null;
 		else return chunk.getLogic(coord);
@@ -602,7 +602,7 @@ public class Map implements Cloneable {
 	 * Add a logicblock to the map.
 	 * @param block 
 	 */
-	public void addLogic(AbstractLogicBlock block) {
+	public void addLogic(AbstractBlockLogicExtension block) {
 		Chunk chunk = getChunk(block.getPosition());
 		chunk.addLogic(block);
 	}

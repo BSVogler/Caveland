@@ -8,7 +8,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractLogicBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
@@ -174,7 +174,7 @@ public RenderBlock toRenderBlock(Block data) {
 	}
 
 	@Override
-	public AbstractLogicBlock newLogicInstance(Block block, Coordinate coord) {
+	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
 		if (block.getId() == 16)
 			return new PortalBlock(block, coord);
 		if (block.getId() == 11)

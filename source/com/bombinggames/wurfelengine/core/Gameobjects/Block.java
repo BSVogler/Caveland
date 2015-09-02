@@ -156,7 +156,7 @@ public class Block implements HasID, Serializable {
 	 * Use for creating new objects.
 	 *
 	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
-	 * @param value
+	 * @param value sub-id in range 0 to {@link #VALUESNUM}
 	 * @return returns null for id==0
 	 */
 	public static Block getInstance(byte id, byte value) {

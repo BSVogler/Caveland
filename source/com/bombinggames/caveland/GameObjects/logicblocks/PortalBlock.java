@@ -53,19 +53,20 @@ public class PortalBlock extends AbstractBlockLogicExtension {
 	 */
 	public PortalBlock(Block block, Coordinate coord){
 		super(block, coord);
-		ArrayList<AbstractEntity> portals = coord.getEntitiesInside(Portal.class);
-		if (!portals.isEmpty()){
-			portal = (Portal) portals.get(0);
-		} else {
-			portal = (Portal) new Portal().spawn(coord.toPoint());
-		}
 	}
 	
 
 	@Override
 	public void update(float dt) {
-		if (!portal.isSpawned()){
-			portal = (Portal) new Portal().spawn(getPosition().toPoint());
+		if (portal==null){
+			ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);
+			if (!portals.isEmpty()){
+				portal = (Portal) portals.get(0);
+			} else {
+				portal = (Portal) new Portal();
+			}
+			if (!portal.isSpawned())
+				portal.spawn(getPosition().toPoint());
 		}
 		portal.setPosition(getPosition().toPoint());
 	}

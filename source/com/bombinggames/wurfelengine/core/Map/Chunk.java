@@ -313,12 +313,33 @@ public class Chunk {
 
 
 			if (bChar != SIGN_COMMAND && skip == false) {
-				//fill layer block by block
-				if (id == -1) {
+				try {
+					//fill layer block by block
+					if (id == -1) {
 
-					id = bChar;
-					if (id == 0) {
-						data[x][y][z] = null;
+						id = bChar;
+						if (id == 0) {
+							data[x][y][z] = null;
+							id = -1;
+							x++;
+							if (x == blocksX) {
+								y++;
+								x=0;
+							}
+							if (y == blocksY) {
+								x=0;
+								y=0;
+								z++;
+							}
+						}
+					} else {
+						data[x][y][z] = Block.getInstance(id, bChar);
+						//if has logicblock then add logicblock
+						AbstractBlockLogicExtension logic = data[x][y][z].getLogicInstance(
+							new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+						);
+						if (logic != null)
+							logicBlocks.add(logic);
 						id = -1;
 						x++;
 						if (x == blocksX) {
@@ -331,25 +352,8 @@ public class Chunk {
 							z++;
 						}
 					}
-				} else {
-					data[x][y][z] = Block.getInstance(id, bChar);
-					//if has logicblock then add logicblock
-					AbstractBlockLogicExtension logic = data[x][y][z].getLogicInstance(
-						new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
-					);
-					if (logic != null)
-						logicBlocks.add(logic);
-					id = -1;
-					x++;
-					if (x == blocksX) {
-						y++;
-						x=0;
-					}
-					if (y == blocksY) {
-						x=0;
-						y=0;
-						z++;
-					}
+				} catch (ArrayIndexOutOfBoundsException ex){
+					Gdx.app.error("Chunk", "too much blocks loaded:"+x+","+y+","+z+". Map file corrrupt?");
 				}
 			}
 		} while (bChar != -1);

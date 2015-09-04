@@ -3,8 +3,8 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 		if (hole != null && (hole instanceof PortalBlock))
 			nearbyLoren.forEach(
 				(l) -> {
-					l.setPosition(((PortalBlock) hole).getTarget());
+					l.setPosition(((PortalBlock) hole).getPortal().getTarget());
 				}
 			);
 	}
@@ -36,6 +36,6 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (hole != null && (hole instanceof PortalBlock))
-			actor.setPosition(((PortalBlock) hole).getTarget().cpy());
+			actor.setPosition(((PortalBlock) hole).getPortal().getTarget().cpy());
 	}
 }

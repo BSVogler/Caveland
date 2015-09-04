@@ -31,13 +31,12 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
@@ -45,7 +44,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class PortalBlock extends AbstractBlockLogicExtension {
 	private static final long serialVersionUID = 2L;
-	private Coordinate target = ChunkGenerator.getCaveEntry(0).addVector(0, 0, 4);
+	private Portal portal = null;
 	
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -54,27 +53,28 @@ public class PortalBlock extends AbstractBlockLogicExtension {
 	 */
 	public PortalBlock(Block block, Coordinate coord){
 		super(block, coord);
+		ArrayList<AbstractEntity> portals = coord.getEntitiesInside(Portal.class);
+		if (!portals.isEmpty()){
+			portal = (Portal) portals.get(0);
+		} else {
+			portal = (Portal) new Portal().spawn(coord.toPoint());
+		}
 	}
 	
-	/**
-	 * copy safe
-	 * @return 
-	 */
-	public Coordinate getTarget() {
-		return target.cpy();
-	}
-	
-	public void setTarget(Coordinate target) {
-		this.target = target;
-	}
 
 	@Override
 	public void update(float dt) {
-		getPosition().getEntitiesInside(MovableEntity.class)
-			.forEach( (Object e) -> {
-				 if (((AbstractEntity) e).getPosition().getZ() <= getPosition().toPoint().getZ() + 10)
-					((AbstractGameObject) e).setPosition(target.cpy());
-				}
-		);
+		if (portal.shouldBeDisposed()){
+			portal = (Portal) new Portal().spawn(getPosition().toPoint());
+		}
 	}
+
+	/**
+	 * Get the portal inside the block
+	 * @return 
+	 */
+	public Portal getPortal() {
+		return portal;
+	}
+	
 }

@@ -144,12 +144,12 @@ public class ChunkGenerator implements Generator {
 
 			//loch im Boden
 			if (xRoom==5 && yRoom==g-p-4 && z == 4){
-				((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
+				((PortalBlock) new Coordinate(x, y, z).getLogic()).getPortal().setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
 				
 			}
 		} else {
 			if (x==0 && y==0 && z==4) {
-				((PortalBlock) new Coordinate(x, y, z).getLogic()).setTarget(getCaveEntry(0).addVector(0, 0, 3));
+				((PortalBlock) new Coordinate(x, y, z).getLogic()).getPortal().setTarget(getCaveEntry(0).addVector(0, 0, 3));
 			}
 		}
 	}

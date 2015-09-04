@@ -499,7 +499,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     }
 
 	/**
-	 * 
+	 * The sound string when landing
 	 * @return 
 	 */
 	public String getLandingSound() {

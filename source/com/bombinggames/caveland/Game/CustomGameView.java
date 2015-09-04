@@ -223,14 +223,15 @@ public class CustomGameView extends GameView{
 		for (Camera camera : getCameras()) {
 			RenderBlock[][][] cc = camera.getCameraContent();
 			//if bottom is a cave
-			if (cc[cc.length-1][cc[0].length-1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER){
+			if (cc[cc.length - 1][cc[0].length - 1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER) {
 				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 0, Chunk.getBlocksZ());
 				while (iterator.hasNext()) {
 					RenderBlock next = iterator.next();
-					if (next!=null) {
+					if (next != null) {
 						//clip floor
-						if (iterator.getCurrentIndex()[2]==0)
+						if (iterator.getCurrentIndex()[2] == 0) {
 							next.getBlockData().setClippedTop();
+						}
 						////h
 //						int iout = ChunkGenerator.insideOutside(next.getPosition());
 //						if (iout==-1)

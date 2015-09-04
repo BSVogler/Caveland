@@ -310,7 +310,7 @@ public class MapEditorView extends GameView {
 			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().toCoord();
             
-			if (button==Buttons.MIDDLE){//middle mouse button works as pipet
+			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
                 Block block = coords.getBlock();
 				leftColorGUI.setBlock(block);
             } else {

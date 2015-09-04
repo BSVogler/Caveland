@@ -51,7 +51,7 @@ public class CavelandBlocks implements CustomBlocks {
 			case 14:
 				return "Power Station";
 			case 17:
-				return "Dornbuschn";
+				return "Dornbusch";
 			case 41:
 				return "Crystal Block";
 			case 42:

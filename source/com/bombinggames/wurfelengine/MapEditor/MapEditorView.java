@@ -278,11 +278,39 @@ public class MapEditorView extends GameView {
 			if (keycode == Input.Keys.D)
 				view.setCameraMoveVector(1, view.getCameraMoveVector().y);
 
-			if (keycode==Input.Keys.FORWARD_DEL)
+			if (keycode==Input.Keys.FORWARD_DEL) {
 				for (AbstractEntity ent : controller.getSelectedEntities()) {
 					ent.dispose();
+
 				}
-        return false;
+			}
+			
+			if (keycode == Input.Keys.NUM_1) {
+				if (Tool.values().length > 0) {
+					toolSelection.selectTool(true, Tool.values()[0]);
+				}
+			}
+			if (keycode == Input.Keys.NUM_2) {
+				if (Tool.values().length > 1) {
+					toolSelection.selectTool(true, Tool.values()[1]);
+				}
+			}
+			if (keycode == Input.Keys.NUM_3) {
+				if (Tool.values().length > 2) {
+					toolSelection.selectTool(true, Tool.values()[2]);
+				}
+			}
+			if (keycode == Input.Keys.NUM_4) {
+				if (Tool.values().length > 3) {
+					toolSelection.selectTool(true, Tool.values()[3]);
+				}
+			}
+			if (keycode == Input.Keys.NUM_5) {
+				if (Tool.values().length > 4) {
+					toolSelection.selectTool(true, Tool.values()[4]);
+				}
+			}
+			return false;
         }
 
         @Override

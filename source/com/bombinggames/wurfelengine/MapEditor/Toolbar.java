@@ -122,7 +122,8 @@ public class Toolbar extends Window {
 	private int bottomPos;
 
 	private final Image[] items = new Image[Tool.values().length];
-
+	private final PlacableTable left;
+	private final PlacableTable right;
 	/**
 	 * creates a new toolbar
 	 *
@@ -139,11 +140,14 @@ public class Toolbar extends Window {
 		setPosition(leftPos, bottomPos);
 		setWidth(Tool.values().length * 25);
 		setHeight(45);
+		
+		this.left = left;
+		this.right = right;
 
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
 			items[i].setPosition(i * 25, 2);
-			items[i].addListener(new ToolSelectionListener(Tool.values()[i], left, right));
+			items[i].addListener(new ToolSelectionListener(Tool.values()[i]));
 			addActor(items[i]);
 		}
 
@@ -205,44 +209,52 @@ public class Toolbar extends Window {
 	public Tool getRightTool() {
 		return selectionRight;
 	}
+	
+	/**
+	 * select a tool
+	 * @param left
+	 * @param tool 
+	 */
+	public void selectTool(boolean left, Tool tool){
+		selectionLeft = tool;
+		if (left) {
+			if (tool.selectFromBlocks) { //show entities on left
+				this.left.showBlocks();
+			} else {//show blocks on left
+				if (tool.selectFromEntities) {
+					this.left.showEntities();
+				} else {
+					this.left.hide(true);
+				}
+			}
+		} else {
+			if (tool.selectFromBlocks) { //show entities on left
+				right.showBlocks();
+			} else { //show blocks on left
+				if (tool.selectFromEntities) {
+					right.showEntities();
+				} else {
+					right.hide(true);
+				}
+			}
+		}
+	}
 
 	//class to detect clicks
 	private class ToolSelectionListener extends InputListener {
 
 		private final Tool tool;
-		private final PlacableTable left;
-		private final PlacableTable right;
 
-		ToolSelectionListener(Tool tool, PlacableTable left, PlacableTable right) {
+		ToolSelectionListener(Tool tool) {
 			this.tool = tool;
-			this.left = left;
-			this.right = right;
 		}
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 			if (button == Buttons.LEFT) {
-				selectionLeft = tool;
-				if (tool.selectFromBlocks) { //show entities on left
-					left.showBlocks();
-				} else {//show blocks on left
-					if (tool.selectFromEntities) {
-						left.showEntities();
-					} else {
-						left.hide(true);
-					}
-				}
+				selectTool(true, tool);
 			} else if (button == Buttons.RIGHT) {
-				selectionRight = tool;
-				if (tool.selectFromBlocks) { //show entities on left
-					right.showBlocks();
-				} else { //show blocks on left
-					if (tool.selectFromEntities) {
-						right.showEntities();
-					} else {
-						right.hide(true);
-					}
-				}
+				selectTool(false, tool);
 			}
 
 			return true;

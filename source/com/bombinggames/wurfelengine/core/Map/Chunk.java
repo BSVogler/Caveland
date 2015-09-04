@@ -707,7 +707,7 @@ public class Chunk {
 	 */
 	public void setBlock(RenderBlock block) {
 		//get corresponding logic and update
-		if (block != null) {
+		if (block.getBlockData() != null) {
 			AbstractBlockLogicExtension logic = block.getBlockData().getLogicInstance(block.getPosition());
 			if (logic != null)
 				logicBlocks.add(logic);

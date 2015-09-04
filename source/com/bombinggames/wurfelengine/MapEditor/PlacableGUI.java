@@ -145,6 +145,9 @@ public class PlacableGUI extends WidgetGroup {
 		if (block != null) {
 			label.setText(block.getName() + " "+ block.getId() + " - "+ block.getValue());
 			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		} else {
+			label.setText("air 0 - 0");
+			image.setDrawable(new BlockDrawable((byte) 0, (byte) 0, -0.4f));
 		}
 	}
 
@@ -153,14 +156,16 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		if (mode == PlaceMode.Blocks) {
-			this.block = Block.getInstance(block.getId(), value);
-			label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
-		} else if (value == -1) {
-			label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-		} else {
-			label.setText(block.getName() + " " + block.getId() + " - forced: " + block.getValue());
+		if (block != null) {
+			if (mode == PlaceMode.Blocks) {
+				this.block = Block.getInstance(block.getId(), value);
+				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
+				image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+			} else if (value == -1) {
+				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
+			} else {
+				label.setText(block.getName() + " " + block.getId() + " - forced: " + block.getValue());
+			}
 		}
 	}
 	
@@ -170,7 +175,12 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return a new RenderBlock instance of the selected id and value.
 	 */
 	public RenderBlock getBlock(Coordinate coord){
-		RenderBlock rblock = new RenderBlock(block.getId(), block.getValue());
+		RenderBlock rblock;
+		if (block == null) {
+			rblock = new RenderBlock((byte) 0, (byte) 0);
+		} else {
+			rblock = new RenderBlock(block.getId(), block.getValue());
+		}
 		rblock.setPosition(coord);
 		return rblock;
 	}

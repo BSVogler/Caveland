@@ -165,19 +165,6 @@ public class CavelandBlocks implements CustomBlocks {
 		return false;
 	}
 
-	/**
-	 * is it possible to interact with this
-	 *
-	 * @param id
-	 * @return
-	 */
-	private static boolean interactAble(byte id) {
-		if (id == 11 || id == 12) {
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
 		if (block.getId() == 16) {

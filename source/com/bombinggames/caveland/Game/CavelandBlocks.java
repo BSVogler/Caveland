@@ -87,6 +87,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==12) return true;
 		if (id==13) return false;
 		if (id==14) return true;
+		if (id==17) return true;
 		if (id==11) return false;
 		if (id>=41 && id<=44)//ores
 			return true;

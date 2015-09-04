@@ -181,56 +181,56 @@ public class MapEditorView extends GameView {
     @Override
     public void render() {
         super.render();
-		
+
 		if (controller.getSelectedEntities() != null) {
 			ShapeRenderer shr = getShapeRenderer();
 			shr.begin(ShapeRenderer.ShapeType.Line);
-				shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
-				shr.translate(
-					-camera.getViewSpaceX()+camera.getWidthInProjSpc()/2,
-					-camera.getViewSpaceY()+camera.getHeightInProjSpc()/2,
-					0
+			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
+			shr.translate(
+				-camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2,
+				-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2,
+				0
+			);
+			//outlines for selected entities
+			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
+				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
+				shr.rect(
+					selectedEntity.getPosition().getViewSpcX(this) - aR.getRegionWidth() / 2,
+					selectedEntity.getPosition().getViewSpcY(this) - aR.getRegionWidth() / 2,
+					aR.getRegionWidth(),
+					aR.getRegionHeight()
 				);
-					//outlines for selected entities
-					for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
-						TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
-						shr.rect(
-							selectedEntity.getPosition().getViewSpcX(this)-aR.getRegionWidth()/2,
-							selectedEntity.getPosition().getViewSpcY(this)-aR.getRegionWidth()/2,
-							aR.getRegionWidth(),
-							aR.getRegionHeight()
-						);
-					}			
-				shr.translate(
-					camera.getViewSpaceX()-camera.getWidthInProjSpc()/2,
-					camera.getViewSpaceY()-camera.getHeightInProjSpc()/2,
-					0
-				);
+			}
+			shr.translate(
+				camera.getViewSpaceX() - camera.getWidthInProjSpc() / 2,
+				camera.getViewSpaceY() - camera.getHeightInProjSpc() / 2,
+				0
+			);
 
-				//selection outline
-				if (selecting) {
-					shr.rect(
-						viewToScreenX(selectDownX, camera),
-						viewToScreenY(selectDownY, camera),
-						viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera))-viewToScreenX(selectDownX, camera), camera),//todo bug here
-						viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera))-viewToScreenY(selectDownY, camera), camera)
-					);
-				}
+			//selection outline
+			if (selecting) {
+				shr.rect(
+					viewToScreenX(selectDownX, camera),
+					viewToScreenY(selectDownY, camera),
+					viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera)) - viewToScreenX(selectDownX, camera), camera),//todo bug here
+					viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera)) - viewToScreenY(selectDownY, camera), camera)
+				);
+			}
 			shr.end();
 		}
-        nav.render(this);
+		nav.render(this);
 		toolSelection.render(WE.getEngineView().getShapeRenderer());
     }
 
     @Override
-    public void update(final float dt) {
-        super.update(dt);
-        
-		if (camera!=null) {
-			float rdt= Gdx.graphics.getRawDeltaTime()*1000f;//use "scree"-game time
-			camera.move((int) (camermove.x*cameraspeed*rdt), (int) (camermove.y*cameraspeed*rdt));
+	public void update(final float dt) {
+		super.update(dt);
+
+		if (camera != null) {
+			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "scree"-game time
+			camera.move((int) (camermove.x * cameraspeed * rdt), (int) (camermove.y * cameraspeed * rdt));
 		}
-    }
+	}
 
     
     /**
@@ -239,8 +239,14 @@ public class MapEditorView extends GameView {
     private class MapEditorInputListener implements InputProcessor {
         private final MapEditorController controller;
         private final MapEditorView view;
+		/**
+		 * the last button which went down
+		 */
         private int buttondown =-1;
-        private int layerSelection;
+		/**
+		 * the z layer during touch down
+		 */
+        private int dragLayer;
         private final Selection selection;
 		private Coordinate bucketDown;
 		private int lastX;
@@ -325,10 +331,12 @@ public class MapEditorView extends GameView {
 				switch (toggledTool){
 					case DRAW:
 						RenderBlock block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
+						dragLayer = selection.getCoordInNormalDirection().getZ();
 						Controller.getMap().setBlock(block);
 						break;
 					case REPLACE:
 						block = leftColorGUI.getBlock(coords);
+						dragLayer = coords.getZ();
 						Controller.getMap().setBlock(block);
 						break;
 					case SELECT:
@@ -340,8 +348,9 @@ public class MapEditorView extends GameView {
 						}
 						break;
 					case ERASE:
-						if (coords.getZ()>=0)
+						if (coords.getZ() >= 0)
 							Controller.getMap().setBlock(coords, null);
+							dragLayer = coords.getZ();
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -350,7 +359,6 @@ public class MapEditorView extends GameView {
 						leftColorGUI.getEntity().spawn(selection.getNormal().getPosition().cpy());
 						break;
 				}
-				layerSelection = coords.getZ();
 			}
             return false;
         }
@@ -397,40 +405,47 @@ public class MapEditorView extends GameView {
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			selection.update(view, screenX, screenY);
-            leftColorGUI.update(selection);
+			leftColorGUI.update(selection);
 
 			//dragging selection?
-			if (WE.getEngineView().getCursor()==2){
+			if (WE.getEngineView().getCursor() == 2) {
 				ArrayList<AbstractEntity> selectedEnts = controller.getSelectedEntities();
 				for (AbstractEntity ent : selectedEnts) {
-					ent.getPosition().addVector(screenX-lastX, (screenY-lastY)*2, 0);
+					ent.getPosition().addVector(screenX - lastX, (screenY - lastY) * 2, 0);
 				}
-			} else {
-				if (selecting) {//currently selecting
-					controller.select(
-						selectDownX,
-						selectDownY,
-						(int) screenXtoView(screenX, camera),
-						(int) screenYtoView(screenY, camera)
-					);
-				}
+			} else if (selecting) {//currently selecting
+				controller.select(
+					selectDownX,
+					selectDownY,
+					(int) screenXtoView(screenX, camera),
+					(int) screenYtoView(screenY, camera)
+				);
 			}
 				
-			//dragging with left and has not bucket tool
-			if ( (buttondown==Buttons.LEFT && toolSelection.getLeftTool() != Toolbar.Tool.BUCKET)
-				&& (buttondown==Buttons.RIGHT && toolSelection.getRightTool() != Toolbar.Tool.BUCKET)
-				
-			) { 
+			//dragging with left and draw tool
+			if ((buttondown==Buttons.LEFT && toolSelection.getLeftTool()== Toolbar.Tool.DRAW)
+				|| (buttondown==Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)
+			) {
 				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
-				coords.setZ(layerSelection);
-				if (coords.getZ()>=0) {
-					if (buttondown==Buttons.LEFT && toolSelection.getLeftTool()==Tool.DRAW){
+				coords.setZ(dragLayer);
+				if (coords.getZ() >= 0) {
+					if (Controller.getMap().getBlock(coords) == null) {
 						RenderBlock block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setBlock(block);
-					} else if (buttondown == Buttons.RIGHT && toolSelection.getLeftTool()==Tool.DRAW) {
-						RenderBlock block = null;
+					}
+				}
+			}
+			
+			if ((buttondown==Buttons.LEFT && toolSelection.getLeftTool()== Toolbar.Tool.REPLACE)
+				|| (buttondown==Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.REPLACE)
+			) {
+				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
+				coords.setZ(dragLayer);
+				if (coords.getZ() >= 0) {
+					if (Controller.getMap().getBlock(coords) != null) {
+						RenderBlock block = leftColorGUI.getBlock(coords);
 						Controller.getMap().setBlock(block);
-					} else return false;
+					}
 				}
 			}
 			

@@ -18,7 +18,7 @@ public class Portal extends AbstractEntity  {
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
 	 */
 	public Portal() {
-		super((byte) -1);
+		super((byte) 0);
 		setIndestructible(true);
 	}
 	

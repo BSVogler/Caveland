@@ -48,7 +48,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.View;
 
 /**
- * A RenderBlock is a wonderful piece of information and a geometrical object. It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. It is an extension to the coredata saved in the map. The core data is shared so changing this renderblock changes the data in the map.
+ * A RenderBlock is a piece of information and a geometrical object.<br> It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. The class extends the simple data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared so changing this {@link RenderBlock} changes the data in the map.
  * @see Block
  * @author Benedikt Vogler
  */

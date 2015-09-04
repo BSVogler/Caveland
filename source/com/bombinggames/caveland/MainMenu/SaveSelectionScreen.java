@@ -30,10 +30,10 @@ import java.util.Arrays;
  * @author Benedikt Vogler
  */
 public class SaveSelectionScreen extends WEScreen {
-	private SpriteBatch batch;
-	private Stage stage;
+	private final SpriteBatch batch;
+	private final Stage stage;
 	private final SelectBox<String> selectBox;
-	private int coop;
+	private final int coop;
 	//private final Texture background;
 	private final Sprite ship;
 	private SelectBox<String> mapSelection;

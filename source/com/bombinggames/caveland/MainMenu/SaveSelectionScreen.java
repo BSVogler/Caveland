@@ -32,11 +32,13 @@ import java.util.Arrays;
 public class SaveSelectionScreen extends WEScreen {
 	private final SpriteBatch batch;
 	private final Stage stage;
-	private final SelectBox<String> selectBox;
+	private SelectBox<String> selectBox;
 	private final int coop;
 	//private final Texture background;
 	private final Sprite ship;
 	private SelectBox<String> mapSelection;
+	private ArrayList<File> mapList;
+	private Label selectBoxLabel;
 
 	/**
 	 * 
@@ -49,15 +51,49 @@ public class SaveSelectionScreen extends WEScreen {
 		this.coop = coop;
 		//this.background = background;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
-		Skin skin = WE.getEngineView().getSkin();
 		
 		this.ship = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/ship.png")));
 		this.ship.setPosition(Gdx.graphics.getWidth()*1.5f, Gdx.graphics.getHeight()*0.7f);
 		
-		int savesCount = Map.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/default"));
-		ArrayList<File> mapList = new ArrayList<>(1);
+		Skin skin = WE.getEngineView().getSkin();
+			
+		
+		mapList = new ArrayList<>(1);
 		mapList.addAll(Arrays.asList(WorkingDirectory.getMapsFolder().listFiles()));
 		mapList.removeIf(item -> !item.isDirectory());
+		
+
+		//map selection
+		Label mapBoxLabel = new Label("Map", WE.getEngineView().getSkin());
+		mapBoxLabel.setPosition(stage.getWidth()/2-400/2, stage.getHeight()*.8f);
+		stage.addActor(mapBoxLabel);
+		
+		if (mapList.size() > 1){	
+			mapSelection = new SelectBox<>(skin);
+			//conver files to names
+			Array<String> nameList = new Array<>(mapList.size());
+			mapList.forEach((File i) -> {
+				nameList.add(i.getName());
+			});
+			mapSelection.setItems(nameList);
+			mapSelection.setBounds(stage.getWidth()/2-400/2, stage.getHeight()*.75f,150,50);
+			mapSelection.addListener(new ChangeListener() {
+
+				@Override
+				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+					setupMapButtons();
+				}
+			});
+		}
+		setupMapButtons();
+	}
+	
+	private void setupMapButtons(){
+		stage.addActor(mapSelection);
+		
+		Skin skin = WE.getEngineView().getSkin();
+		
+		int savesCount = Map.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/"+mapSelection.getSelected()));
 		
 		TextButton continueButton = new TextButton("Continue", skin);
 		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);
@@ -72,31 +108,21 @@ public class SaveSelectionScreen extends WEScreen {
 		);
 		stage.addActor(continueButton);
 		
-		if (mapList.size() > 1){
-			//map selection
-			Label mapBoxLabel = new Label("Map", WE.getEngineView().getSkin());
-			mapBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+200);
-			stage.addActor(mapBoxLabel);
-			
-			mapSelection = new SelectBox<>(skin);
-			//conver files to names
-			Array<String> nameList = new Array<>(mapList.size());
-			mapList.forEach((File i) -> {
-				nameList.add(i.getName());
-			});
-			mapSelection.setItems(nameList);
-			mapSelection.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+150,150,50);
-			stage.addActor(mapSelection);
-		}
-		
 		//can load save save?
 		if (mapList.size() > 1 && savesCount < 1) {
 			continueButton.setText("No previous game found.");
 			continueButton.setDisabled(true);
-			selectBox = null;
+			if (selectBoxLabel != null) {
+				selectBoxLabel.remove();
+				selectBoxLabel = null;
+			}
+			if (selectBox != null) {
+				selectBox.remove();
+				selectBox = null;
+			}
 		} else {
 			//save slot selection
-			Label selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
+			selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
 			selectBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+100);
 			stage.addActor(selectBoxLabel);
 			

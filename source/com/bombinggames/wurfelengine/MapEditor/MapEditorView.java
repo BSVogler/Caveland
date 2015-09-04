@@ -242,7 +242,7 @@ public class MapEditorView extends GameView {
         private final MapEditorView view;
         private int buttondown =-1;
         private int layerSelection;
-        private Selection selection;
+        private final Selection selection;
 		private Coordinate bucketDown;
 		private int lastX;
 		private int lastY;
@@ -531,7 +531,7 @@ public class MapEditorView extends GameView {
     
     private class LoadButton extends ClickListener{
         private final MapEditorController controller;
-        private MapEditorView view;
+        private final MapEditorView view;
         
         private LoadButton(GameView view,Controller controller) {
             this.controller = (MapEditorController) controller;

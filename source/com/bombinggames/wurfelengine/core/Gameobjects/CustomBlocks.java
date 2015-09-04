@@ -20,6 +20,12 @@ public interface CustomBlocks {
      */
 	public boolean isLiquid(byte id, byte value);
 	
+	/**
+	 * Default is "undefined".
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
 	public String getName(byte id, byte value);
 	
 	public RenderBlock toRenderBlock(Block data);

@@ -1,7 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
@@ -38,9 +37,9 @@ public class Portal extends AbstractEntity  {
 	public void update(float dt) {
 		if (isSpawned()){
 			getPosition().toCoord().getEntitiesInside()
-			.forEach( (Object e) -> {
-				 if (((AbstractEntity) e).getPosition().getZ() <= getPosition().toPoint().getZ() + 10)
-					((AbstractGameObject) e).setPosition(target.cpy());
+			.forEach( (AbstractEntity e) -> {
+				 if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10 && e != this)
+					e.setPosition(target.cpy());
 				}
 			);
 		}

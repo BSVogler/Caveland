@@ -882,13 +882,12 @@ public class Map implements Cloneable {
 	 * @return a list with the entitys
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
-		ArrayList<AbstractEntity> list = new ArrayList<>(5);//defautl size 5
+		ArrayList<AbstractEntity> list = new ArrayList<>(5);//default size 5
 
 		for (AbstractEntity ent : entityList) {
-			if (ent.getPosition() != null)
-				if (ent.getPosition().toCoord().equals(coord)) {
-					list.add(ent);//add it to list
-				}
+			if (ent.getPosition() != null && ent.getPosition().toCoord().equals(coord)) {
+				list.add(ent);//add it to list
+			}
 		}
 
 		return list;

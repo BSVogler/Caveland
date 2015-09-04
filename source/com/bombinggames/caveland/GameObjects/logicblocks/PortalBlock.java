@@ -64,9 +64,10 @@ public class PortalBlock extends AbstractBlockLogicExtension {
 
 	@Override
 	public void update(float dt) {
-		if (portal.shouldBeDisposed()){
+		if (!portal.isSpawned()){
 			portal = (Portal) new Portal().spawn(getPosition().toPoint());
 		}
+		portal.setPosition(getPosition().toPoint());
 	}
 
 	/**

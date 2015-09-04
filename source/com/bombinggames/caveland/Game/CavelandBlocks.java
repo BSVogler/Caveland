@@ -153,6 +153,9 @@ public class CavelandBlocks implements CustomBlocks {
 	 * @return
 	 */
 	public static boolean hardMaterial(byte id) {
+		if (id == 17) {
+			return true;
+		}
 		if (id == 41) {
 			return true;
 		}

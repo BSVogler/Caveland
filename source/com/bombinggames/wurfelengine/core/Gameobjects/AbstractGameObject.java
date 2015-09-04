@@ -214,6 +214,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      */
     protected AbstractGameObject(byte id) {
 		this.graphicsID = id;
+		if (id == 0)
+			setHidden(true);
     }
 	
     /**

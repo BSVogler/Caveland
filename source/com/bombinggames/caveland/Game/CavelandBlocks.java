@@ -21,31 +21,31 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class CavelandBlocks implements CustomBlocks {
 
-@Override
-public RenderBlock toRenderBlock(Block data) {
-	switch (data.getId()){
-		case 13:
-			return new Torch(data);
-		case 60:
-			return new Machine(data);
-		case 72:
-			return new CustomTree(data);
+	@Override
+	public RenderBlock toRenderBlock(Block data) {
+		switch (data.getId()) {
+			case 13:
+				return new Torch(data);
+			case 60:
+				return new Machine(data);
+			case 72:
+				return new CustomTree(data);
 //		case 72:
 //			block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting
 //			block.setObstacle(true);
 //		break;
-		default:
-			return new RenderBlock(data);
+			default:
+				return new RenderBlock(data);
 		}
-	}	
+	}
 
 	@Override
 	public String getName(byte id, byte value) {
-		switch (id){
+		switch (id) {
 			case 11:
 				return "Construction Site";
 			case 12:
-				return "Oven";	
+				return "Oven";
 			case 13:
 				return "Torch";
 			case 14:
@@ -59,7 +59,7 @@ public RenderBlock toRenderBlock(Block data) {
 			case 44:
 				return "Coal Block";
 			case 55:
-				return "rails";	
+				return "rails";
 			case 72:
 				return "tree";
 			default:
@@ -78,7 +78,7 @@ public RenderBlock toRenderBlock(Block data) {
 		if (id==72) return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean isObstacle(byte id, byte value) {
 		if (id==12) return true;
@@ -89,8 +89,8 @@ public RenderBlock toRenderBlock(Block data) {
 			return true;
 		if (id==72) return true;
 		if (id==46) return true;
-		return false;
-	}
+			return false;
+		}
 
 	@Override
 	public boolean isTransparent(byte id, byte value) {
@@ -110,7 +110,7 @@ public RenderBlock toRenderBlock(Block data) {
 
 	@Override
 	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
-		if (health <= 0 ){
+		if (health <= 0) {
 			switch (id) {
 				case 3:
 					CollectibleType.Stone.createInstance().spawn(coord.toPoint());
@@ -132,7 +132,7 @@ public RenderBlock toRenderBlock(Block data) {
 					break;
 				default:
 			}
-			
+
 			//view only relevant. should only be done if visible
 			//todo, check if visible
 			for (int i = 0; i < 10; i++) {
@@ -142,43 +142,52 @@ public RenderBlock toRenderBlock(Block data) {
 	}
 
 	//Caveland specific details
-	
 	/**
 	 * indestructable by diggin
+	 *
 	 * @param id
-	 * @return 
+	 * @return
 	 */
-	public static boolean hardMaterial(byte id){
-		if (id==41)
+	public static boolean hardMaterial(byte id) {
+		if (id == 41) {
 			return true;
-		if (id==43)
+		}
+		if (id == 43) {
 			return true;
-		if (id==3) return true;//stone
+		}
+		if (id == 3) {
+			return true;//stone
+		}
 		return false;
 	}
-	
-	
-	
+
 	/**
 	 * is it possible to interact with this
+	 *
 	 * @param id
-	 * @return 
+	 * @return
 	 */
-	private static boolean interactAble(byte id){
-		if (id==11 || id==12) return true;
+	private static boolean interactAble(byte id) {
+		if (id == 11 || id == 12) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
-		if (block.getId() == 16)
+		if (block.getId() == 16) {
 			return new PortalBlock(block, coord);
-		if (block.getId() == 11)
+		}
+		if (block.getId() == 11) {
 			return new ConstructionSite(block, coord);
-		if (block.getId() == 12)
+		}
+		if (block.getId() == 12) {
 			return new OvenLogic(block, coord);
-		if (block.getId() == 15)
+		}
+		if (block.getId() == 15) {
 			return new LiftLogic(block, coord);
+		}
 		return null;
 	}
 }

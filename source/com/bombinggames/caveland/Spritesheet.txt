@@ -254,27 +254,6 @@ b44-0-2
   orig: 100, 173
   offset: 0, 0
   index: -1
-b46-0-0
-  rotate: false
-  xy: 795, 876
-  size: 100, 173
-  orig: 100, 173
-  offset: 0, 0
-  index: -1
-b46-0-1
-  rotate: false
-  xy: 567, 1005
-  size: 200, 100
-  orig: 200, 100
-  offset: 0, 0
-  index: -1
-b46-0-2
-  rotate: false
-  xy: 896, 887
-  size: 100, 173
-  orig: 100, 173
-  offset: 0, 0
-  index: -1
 b55-0
   rotate: false
   xy: 1107, 224
@@ -399,6 +378,27 @@ b72-7
   xy: 705, 0
   size: 200, 299
   orig: 200, 445
+  offset: 0, 0
+  index: -1
+b8-0-0
+  rotate: false
+  xy: 795, 876
+  size: 100, 173
+  orig: 100, 173
+  offset: 0, 0
+  index: -1
+b8-0-1
+  rotate: false
+  xy: 567, 1005
+  size: 200, 100
+  orig: 200, 100
+  offset: 0, 0
+  index: -1
+b8-0-2
+  rotate: false
+  xy: 896, 887
+  size: 100, 173
+  orig: 100, 173
   offset: 0, 0
   index: -1
 b9-0-0

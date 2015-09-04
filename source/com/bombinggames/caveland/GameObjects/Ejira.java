@@ -17,9 +17,9 @@ import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
@@ -671,10 +671,6 @@ public class Ejira extends MovableEntity implements Controllable {
 				if (!isOnGround()) {//must perform a bunnyhop b/c not on ground
 					onCollide();
 					onLand();
-					String landingSound = getLandingSound();
-					if (landingSound != null) {
-						WE.SOUND.play(landingSound, getPosition());//play landing sound
-					}
 					step();
 				}
 				//cancel z movement
@@ -682,12 +678,9 @@ public class Ejira extends MovableEntity implements Controllable {
 				resetZ.z = 0;
 				setMovement(resetZ);
 			}
-			if (isInAirJump)
-				jump(6, true);
-			else 
-				jump(4.7f, false);
 			playAnimation('j');
 			if (isInAirJump) {
+				jump(4.7f, true);
 				WE.SOUND.play("jetpack");
 //				for (int i = 0; i < 80; i++) {
 //					Dust dust = (Dust) new Dust(
@@ -704,6 +697,8 @@ public class Ejira extends MovableEntity implements Controllable {
 //						)
 //					);
 //				}
+			} else {
+				jump(4.7f, true);
 			}
 		}
 	}
@@ -840,6 +835,10 @@ public class Ejira extends MovableEntity implements Controllable {
 
 	@Override
 	public void onLand() {
+		String landingSound = getLandingSound();
+		if (landingSound != null) {
+			WE.SOUND.play(landingSound, getPosition());//play landing sound
+		}
 		playAnimation('w');
 		step();
 	}

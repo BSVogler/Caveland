@@ -93,16 +93,15 @@ public class MapEditorView extends GameView {
         Gdx.app.debug("MEView", "Initializing");
         this.controller = (MapEditorController) controller;     
         
-        addCamera(
-			camera = new Camera(
-				this.controller.getGameplayView().getCameras().get(0).getCenter(),//keep position
-				0,
-				0,
-				Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight(),
-				this
-			)
+		camera = new Camera(
+			this.controller.getGameplayView().getCameras().get(0).getCenter(),//keep position
+			0,
+			0,
+			Gdx.graphics.getWidth(),
+			Gdx.graphics.getHeight(),
+			this
 		);
+        addCamera(camera);
         
 		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
 		getStage().addActor(leftColorGUI);

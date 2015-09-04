@@ -525,37 +525,31 @@ public class Block implements HasID, Serializable {
 	 */
 	@Override
 	public String getName() {
-		switch (id) {
-			case 0:
-				return "air";
-			case 1:
-				return "grass";
-			case 2:
-				return "dirt";
-			case 3:
-				return "stone";
-			case 4:
-				return "invisible obstacle";
-			case 5:
-				return "???";
-			case 6:
-				return "???";
-			case 7:
-				return "???";
-			case 8:
-				return "sand";
-			case 9:
-				return "water";
-			default:
-				if (id > 9) {
-					if (customBlocks != null) {
-						return customBlocks.getName(id, value);
-					} else {
-						return "no custom blocks";
-					}
-				} else {
-					return "engine block not properly defined";
-				}
+		if (id < 10) {
+			switch (id) {
+				case 0:
+					return "air";
+				case 1:
+					return "grass";
+				case 2:
+					return "dirt";
+				case 3:
+					return "stone";
+				case 4:
+					return "invisible obstacle";
+				case 8:
+					return "sand";
+				case 9:
+					return "water";
+				default:
+					return "undefined";
+			}
+		} else {
+			if (customBlocks != null) {
+				return customBlocks.getName(id, value);
+			} else {
+				return "undefined";
+			}
 		}
 	}
 

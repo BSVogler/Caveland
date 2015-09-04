@@ -79,39 +79,38 @@ public class PlacableTable extends Table {
 		}
 		
         if (!hasChildren()){
-			if (!hasChildren()){
-				int foundItems = 0;
-				if (mode == PlaceMode.Blocks) {//add blocks
-					for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
-						//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
-						if (RenderBlock.isSpriteDefined(Block.getInstance(i))) {
-							SelectionItem button = new SelectionItem(
-								this,
-								new BlockDrawable(i),
-								new BlockListener(i)
-							);
-							add(button);
-							foundItems++;
-							if (foundItems % 4 == 0)
-								row();//make new row
-						}
-					}
-				} else {//add every registered entity class
-					for (
-						Map.Entry<String, Class<? extends AbstractEntity>> entry
-						: AbstractEntity.getRegisteredEntities().entrySet()
-					) {
+			int foundItems = 0;
+			if (mode == PlaceMode.Blocks) {//add blocks
+				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
+					//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
+					Block block = Block.getInstance(i);
+					if (block == null || RenderBlock.isSpriteDefined(block) || !block.getName().equals("undefined")) {
 						SelectionItem button = new SelectionItem(
 							this,
-							new EntityDrawable(entry.getValue()),
-							new EntityListener(entry.getKey(), entry.getValue())
+							new BlockDrawable(i),
+							new BlockListener(i)
 						);
 						add(button);
-
 						foundItems++;
 						if (foundItems % 4 == 0)
 							row();//make new row
 					}
+				}
+			} else {//add every registered entity class
+				for (
+					Map.Entry<String, Class<? extends AbstractEntity>> entry
+					: AbstractEntity.getRegisteredEntities().entrySet()
+				) {
+					SelectionItem button = new SelectionItem(
+						this,
+						new EntityDrawable(entry.getValue()),
+						new EntityListener(entry.getKey(), entry.getValue())
+					);
+					add(button);
+
+					foundItems++;
+					if (foundItems % 4 == 0)
+						row();//make new row
 				}
 			}
 		}

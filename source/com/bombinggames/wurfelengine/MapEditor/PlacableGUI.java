@@ -142,10 +142,9 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setBlock(Block block) {
 		this.block = block;
-		if (block!=null) {
-			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(block.getValue()));
+		if (block != null) {
+			label.setText(block.getName() + " "+ block.getId() + " - "+ block.getValue());
 			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
-			this.name = block.getName();
 		}
 	}
 
@@ -154,15 +153,14 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		if (mode==PlaceMode.Blocks) {
+		if (mode == PlaceMode.Blocks) {
 			this.block = Block.getInstance(block.getId(), value);
-			label.setText(Integer.toString(block.getId()) + " - "+ Integer.toString(value));
+			label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
 			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+		} else if (value == -1) {
+			label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
 		} else {
-			if (value==-1)
-				label.setText(name);
-			else
-				label.setText(name + " force value: "+value);
+			label.setText(block.getName() + " " + block.getId() + " - forced: " + block.getValue());
 		}
 	}
 	

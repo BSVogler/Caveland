@@ -1,13 +1,13 @@
 package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.CustomTree;
+import com.bombinggames.caveland.GameObjects.Torch;
+import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.Machine;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
-import com.bombinggames.caveland.GameObjects.Torch;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
@@ -50,8 +50,6 @@ public RenderBlock toRenderBlock(Block data) {
 				return "Torch";
 			case 14:
 				return "Power Station";
-			case 40:
-				return "Entity Spawner";
 			case 41:
 				return "Crystal Block";
 			case 42:
@@ -60,15 +58,13 @@ public RenderBlock toRenderBlock(Block data) {
 				return "Iron Ore Block";
 			case 44:
 				return "Coal Block";
-			case 46:
-				return "Sand Block";	
 			case 55:
 				return "rails";	
 			case 72:
-				return "tree";	
+				return "tree";
+			default:
+				return "undefined";
 		}
-			
-		return "not named yet";
 	}
 
 	@Override

@@ -113,6 +113,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public static boolean isSpriteDefined(final Block block){
+		if (block == null) return false;
 		if (getSpritesheet() == null) return false;
 		AtlasRegion sprite;
 		if (block.hasSides())

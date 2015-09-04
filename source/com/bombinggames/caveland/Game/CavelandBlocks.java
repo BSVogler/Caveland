@@ -50,6 +50,8 @@ public class CavelandBlocks implements CustomBlocks {
 				return "Torch";
 			case 14:
 				return "Power Station";
+			case 17:
+				return "Dornbuschn";
 			case 41:
 				return "Crystal Block";
 			case 42:
@@ -74,6 +76,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==13) return false;
 		if (id==14) return false;
 		if (id==15) return false;
+		if (id==17) return false;
 		if (id==55) return false;
 		if (id==72) return false;
 		return true;
@@ -97,6 +100,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==12) return true;
 		if (id==13) return true;
 		if (id==14) return true;
+		if (id==17) return true;
 		if (id==11) return true;
 		if (id==55) return true;
 		if (id==72) return true;

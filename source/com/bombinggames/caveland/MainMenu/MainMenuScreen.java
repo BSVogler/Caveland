@@ -21,6 +21,9 @@ import com.bombinggames.wurfelengine.core.AbstractMainMenu;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
+	/**
+	 * for acces via keys
+	 */
 	private final MenuItem[] menuItems = new MenuItem[5];
 	private Stage stage;
 	private Image lettering;
@@ -50,16 +53,18 @@ public class MainMenuScreen extends AbstractMainMenu {
 		alphaTag.scaleBy(WE.getEngineView().getEqualizationScale()-1);
 		stage.addActor(alphaTag);
 		
+		//one player button
 		Image onePlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1player.png")));
 		onePlayer.setPosition(
 			stage.getWidth()/2-onePlayer.getWidth()/2-200,
-			stage.getHeight()/2-250
+			stage.getHeight()*0.25f
 		);
 		stage.addActor(onePlayer);
+		
 		MenuItem button1Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/1playerButton.png")));
 		button1Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
-			stage.getHeight()/2-350
+			stage.getHeight()*0.2f
 		);
 		stage.addActor(button1Player);
 		menuItems[0] = button1Player;
@@ -82,16 +87,17 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		);
 		
+		//two players game
 		Image twoPlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
 		twoPlayer.setPosition(
 			stage.getWidth()/2-twoPlayer.getWidth()/2+200,
-			stage.getHeight()/2-250
+			stage.getHeight()*0.25f
 		);
 		stage.addActor(twoPlayer);
 		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2playersButton.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
-			stage.getHeight()/2-350
+			stage.getHeight()*0.2f
 		);
 		stage.addActor(button2Player);
 		menuItems[1] = button2Player;

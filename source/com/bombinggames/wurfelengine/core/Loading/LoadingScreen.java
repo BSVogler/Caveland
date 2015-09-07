@@ -65,7 +65,7 @@ public class LoadingScreen extends WEScreen {
         manager.load("com/bombinggames/wurfelengine/core/skin/gui.txt", TextureAtlas.class);
 		manager.load("com/bombinggames/wurfelengine/core/images/bloodblur.png", Texture.class);
         
-		WE.SOUND.LoadRegisterIGSounds();
+		WE.SOUND.loadRegisterIGSounds();
         
         //load files from configRef
         customLoading(manager);

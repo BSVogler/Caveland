@@ -60,7 +60,7 @@ public class SoundEngine {
 	/**
 	 * loads and registers the ig-sounds
 	 */
-	public void LoadRegisterIGSounds(){
+	public void loadRegisterIGSounds(){
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg", Sound.class);

@@ -45,7 +45,7 @@ public class CollectibleContainerWindow extends ActionBox {
 	private final CollectibleContainer parent;
 
 	CollectibleContainerWindow(CustomGameView view, CollectibleContainer parent) {
-		super(view, "Choose construction", ActionBox.BoxModes.SELECTION, null);
+		super("Choose construction", ActionBox.BoxModes.SELECTION, null);
 		this.parent = parent;
 		//make list of options
 		ArrayList<String> list = new ArrayList<>(parent.getContent().size());
@@ -57,8 +57,8 @@ public class CollectibleContainerWindow extends ActionBox {
 	}
 
 	@Override
-	public int confirm(CustomGameView view, AbstractEntity actor) {
-		int num = super.confirm(view, actor);
+	public int confirm(AbstractEntity actor) {
+		int num = super.confirm(actor);
 		if (actor instanceof Ejira) {
 			Ejira player = (Ejira) actor;
 			//add item?

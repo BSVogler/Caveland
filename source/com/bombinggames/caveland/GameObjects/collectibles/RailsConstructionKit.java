@@ -57,10 +57,10 @@ public class RailsConstructionKit extends Collectible {
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox(view, "Choose rails type", ActionBox.BoxModes.SELECTION, null)
+			new ActionBox("Choose rails type", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")
 				.setConfirmAction(
-					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+					(int result, AbstractEntity actor1) -> {
 						//spawn rails
 						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
 						WE.SOUND.play("metallic");
@@ -72,7 +72,7 @@ public class RailsConstructionKit extends Collectible {
 					}
 				)
 				.setSelectAction(
-					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+					(int result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
 							preview = (EntityBlock) new EntityBlock((byte) 55,(byte) result)
@@ -82,7 +82,7 @@ public class RailsConstructionKit extends Collectible {
 					}
 				)
 				.setCancelAction(
-					(int result, CustomGameView view1, AbstractEntity actor1) -> {
+					(int result, AbstractEntity actor1) -> {
 						if (preview != null) {
 							preview.dispose();
 							preview = null;

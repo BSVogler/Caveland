@@ -74,7 +74,7 @@ public class Vanya extends MovableEntity implements Interactable {
 					break;
 			}
 			if (!"".equals(text)) {
-				currentChat = new ActionBox(view, getName(), ActionBox.BoxModes.SIMPLE, text);
+				currentChat = new ActionBox(getName(), ActionBox.BoxModes.SIMPLE, text);
 				currentChat.register(view, ((Ejira)actor).getPlayerNumber(), actor);
 			}
 		}

@@ -26,7 +26,7 @@ public class Crafting extends ActionBox {
 	 * @param player 
 	 */
 	public Crafting(CustomGameView view, Ejira player) {
-		super(view, "Crafting", BoxModes.CUSTOM, null);
+		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		CraftingRecipesList.Recipe recipe = findRecipe();
 		if (recipe!=null) {
@@ -162,13 +162,8 @@ public class Crafting extends ActionBox {
 	}
 
 	@Override
-	public int confirm(CustomGameView view, AbstractEntity actor) {
+	public int confirm(AbstractEntity actor) {
 		craft();
-		return super.confirm(view, actor);
-	}
-
-	@Override
-	public int cancel(CustomGameView view, AbstractEntity actor) {
-		return super.cancel(view, actor);
+		return super.confirm(actor);
 	}
 }

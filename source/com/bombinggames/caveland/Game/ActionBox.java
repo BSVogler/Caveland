@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
@@ -25,16 +26,16 @@ public class ActionBox extends WidgetGroup {
 	 */
 	private final Window window;
 	private final BoxModes mode;
-	private final Image confirm;
+	private Image confirm;
 	private Image cancel;
 	private ArrayList<String> selectionNames;
 	private int selection;
 	private String text;
-	private final CustomGameView view;
-	private int playerNum;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
 	private ActionBoxSelectAction selectAction;
+	private boolean closed = false;
+
 
 	public static enum BoxModes {
 
@@ -64,8 +65,7 @@ public class ActionBox extends WidgetGroup {
 	 * @param text the text of the box. can be null
 	 * @param mode
 	 */
-	public ActionBox(final CustomGameView view, final String title, final BoxModes mode, final String text) {
-		this.view = view;
+	public ActionBox(final String title, final BoxModes mode, final String text) {
 		this.mode = mode;
 
 		window = new Window(title, WE.getEngineView().getSkin());
@@ -83,17 +83,33 @@ public class ActionBox extends WidgetGroup {
 			window.addActor(textArea);
 		}
 
-		confirm = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('e', 23, 0)));
-		confirm.setPosition(window.getWidth() - 50, -40);
-		addActor(confirm);
-
-		if (mode != BoxModes.SIMPLE) {
-			cancel = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('e', 23, 2)));
-			cancel.setPosition(window.getWidth() - 250, -40);
-			addActor(cancel);
+		TextureAtlas.AtlasRegion sprite = AbstractGameObject.getSprite('i', 23, 0);
+		if (sprite != null) {
+			confirm = new Image(new TextureRegionDrawable(sprite));
+			confirm.setPosition(window.getWidth() - 50, -40);
+			addActor(confirm);
+		}
+		
+		sprite = AbstractGameObject.getSprite('i', 23, 2);
+		if (sprite != null) {
+			if (mode != BoxModes.SIMPLE) {
+				cancel = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('i', 23, 2)));
+				cancel.setPosition(window.getWidth() - 250, -40);
+				addActor(cancel);
+			}
 		}
 	}
 
+	@Override
+	public float getWidth() {
+		return window.getWidth();
+	}
+	
+	@Override
+	public float getHeight() {
+		return window.getHeight();
+	}
+	
 	/**
 	 * registeres the window as a modal box so that the input gets redirected to
 	 * it.
@@ -104,10 +120,9 @@ public class ActionBox extends WidgetGroup {
 	 * @return
 	 */
 	public ActionBox register(final CustomGameView view, final int playerId, AbstractEntity actor) {
-		this.playerNum = playerId;
 		view.setModalDialogue(this, playerId);
 		if (selectAction != null) {
-			selectAction.select(selection, view, actor);
+			selectAction.select(selection, actor);
 		}
 		return this;
 	}
@@ -161,15 +176,15 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor
 	 * @return
 	 */
-	public int confirm(CustomGameView view, AbstractEntity actor) {
+	public int confirm(AbstractEntity actor) {
 		int selectionNum = 0;
 		if (mode == BoxModes.SELECTION) {
 			selectionNum = selection;
 		}
 		remove();
-		view.setModalDialogue(null, playerNum);
+		closed = true;
 		if (confirmAction != null) {
-			confirmAction.confirm(selectionNum, view, actor);
+			confirmAction.confirm(selectionNum, actor);
 		}
 		return selectionNum;
 	}
@@ -181,15 +196,15 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor
 	 * @return
 	 */
-	public int cancel(CustomGameView view, AbstractEntity actor) {
+	public int cancel(AbstractEntity actor) {
 		int selectionNum = 0;
 		if (mode == BoxModes.SELECTION) {
 			selectionNum = selection;
 		}
 		remove();
-		view.setModalDialogue(null, playerNum);
+		closed = true;
 		if (cancelAction != null) {
-			cancelAction.cancel(selectionNum, view, actor);
+			cancelAction.cancel(selectionNum, actor);
 		}
 		return selectionNum;
 	}
@@ -229,13 +244,13 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * go a selection downwards
 	 */
-	public void down(CustomGameView view, AbstractEntity actor) {
+	public void down(AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
 			if (selection < selectionNames.size() - 1) {
 				selection++;
 			}
 			if (selectAction != null) {
-				selectAction.select(selection, view, actor);
+				selectAction.select(selection, actor);
 			}
 			updateContent();
 		}
@@ -244,13 +259,13 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * go a selection upwards
 	 */
-	public void up(CustomGameView view, AbstractEntity actor) {
+	public void up(AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
 			if (selection > 0) {
 				selection--;
 			}
 			if (selectAction != null) {
-				selectAction.select(selection, view, actor);
+				selectAction.select(selection, actor);
 			}
 			updateContent();
 		}
@@ -288,6 +303,10 @@ public class ActionBox extends WidgetGroup {
 		//window.pack();
 	}
 
+	boolean closed() {
+		return closed;
+	}
+	
 	@FunctionalInterface
 	public interface ActionBoxCancelAction {
 
@@ -297,7 +316,7 @@ public class ActionBox extends WidgetGroup {
 		 * @param view
 		 * @param actor can be null
 		 */
-		public void cancel(int result, CustomGameView view, AbstractEntity actor);
+		public void cancel(int result, AbstractEntity actor);
 	}
 
 	/**
@@ -314,7 +333,7 @@ public class ActionBox extends WidgetGroup {
 		 * @param view
 		 * @param actor can be null
 		 */
-		public void confirm(int result, CustomGameView view, AbstractEntity actor);
+		public void confirm(int result, AbstractEntity actor);
 
 	}
 
@@ -327,7 +346,7 @@ public class ActionBox extends WidgetGroup {
 		 * @param view
 		 * @param actor can be null
 		 */
-		public void select(int result, CustomGameView view, AbstractEntity actor);
+		public void select(int result, AbstractEntity actor);
 	}
 
 }

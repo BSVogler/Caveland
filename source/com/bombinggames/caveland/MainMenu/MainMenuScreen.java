@@ -21,6 +21,8 @@ import com.bombinggames.wurfelengine.core.AbstractMainMenu;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
+	public static final ModalDialogueManager manager = new ModalDialogueManager();
+	
 	/**
 	 * for acces via keys
 	 */
@@ -257,6 +259,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 
 	@Override
 	public void show() {
+		WE.getEngineView().addInputProcessor(manager);
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
 		if (!WE.SOUND.isMusicPlaying())

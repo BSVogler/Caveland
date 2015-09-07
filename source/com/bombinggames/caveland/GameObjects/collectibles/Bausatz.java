@@ -43,14 +43,14 @@ public class Bausatz extends Collectible {
 	@Override
 	public void action(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox(view, "Choose construction", BoxModes.SELECTION, null)
+			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
 					"Oven",
 					"Robot Factory (not implemented yet)",
 					"Power Station",
 					"Lift"
 				)
-				.setConfirmAction((int result, CustomGameView view1, AbstractEntity actor1) -> {
+				.setConfirmAction((int result, AbstractEntity actor1) -> {
 						if (result==0) {
 							build(actor1.getPosition().toCoord(), (byte) 12);//spawn construction site
 						} else if (result==3) {

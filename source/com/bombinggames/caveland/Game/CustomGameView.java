@@ -53,6 +53,9 @@ public class CustomGameView extends GameView{
 	 * contains or may not contain currently active dialogues
 	 */
 	private final ActionBox[] openDialogue = new ActionBox[2];
+	/**
+	 * a widget group that can be opened modal.
+	 */
 	private WidgetGroup modalGroup;
 	
     @Override
@@ -169,13 +172,15 @@ public class CustomGameView extends GameView{
 	 * @param id player number starting at 0
 	 */
 	private void toogleCrafting(int id) {
-		if (openDialogue[id]==null) {
+		if (focusOnGame(id)) {
 			//open
 			Crafting crafting = new Crafting(this, getPlayer(id));
 			crafting.register(this, id+1, getPlayer(id));
 		} else {
 			//close
-			openDialogue[id].cancel(this, getPlayer(id));
+			if (openDialogue[id] instanceof Crafting) {
+				openDialogue[id].cancel(getPlayer(id));
+			}
 		}
 	}
 	
@@ -184,15 +189,17 @@ public class CustomGameView extends GameView{
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard
 		
 		//is there a controller?
-		if (Controllers.getControllers().size > 0){
+		if (Controllers.getControllers().size > 0) {
 			//if there is second controller use it for second player
-			int playerId=0;
-			if (coop>0) playerId=1;
-			controllerListenerA = new XboxListener(this,getPlayer(playerId), playerId);
+			int playerId = 0;
+			if (coop > 0) {
+				playerId = 1;
+			}
+			controllerListenerA = new XboxListener(this, getPlayer(playerId), playerId);
 			Controllers.getControllers().get(0).addListener(controllerListenerA);
-			if (coop>0) {
+			if (coop > 0) {
 				//check if there is a second controller
-				if (Controllers.getControllers().size > 1){
+				if (Controllers.getControllers().size > 1) {
 					controllerListenerB = new XboxListener(this, getPlayer(1), 1);
 					Controllers.getControllers().get(1).addListener(controllerListenerB);
 				}
@@ -218,6 +225,8 @@ public class CustomGameView extends GameView{
 		//get input and do actions
 		Input input = Gdx.input;
 
+		if (openDialogue[0]!=null && openDialogue[0].closed()) openDialogue[0]=null;
+		if (openDialogue[1]!=null && openDialogue[1].closed()) openDialogue[1]=null;
 		
 		//manual clipping in caves for black areas
 		for (Camera camera : getCameras()) {
@@ -412,8 +421,8 @@ public class CustomGameView extends GameView{
 			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) { //X
-				if (parent.openDialogue[id] !=null)
-					parent.openDialogue[id].confirm(parent, parent.getPlayer(id));
+				if (parent.openDialogue[id] != null)
+					parent.openDialogue[id].confirm(parent.getPlayer(id));
 				else
 					player.attack();
 			}
@@ -573,23 +582,23 @@ public class CustomGameView extends GameView{
 						getPlayer(0).jump();
 				}
 			
-				if (openDialogue[0]!=null) {
-					if (keycode==Input.Keys.W) {
-						openDialogue[0].up(parent, getPlayer(0));
+				if (openDialogue[0] != null) {
+					if (keycode == Input.Keys.W) {
+						openDialogue[0].up(getPlayer(0));
 					}
-					
-					if (keycode==Input.Keys.S) {
-						openDialogue[0].down(parent, getPlayer(0));
+
+					if (keycode == Input.Keys.S) {
+						openDialogue[0].down(getPlayer(0));
 					}
 				}
-				
-				if (openDialogue[1]!=null) {
-					if (keycode==Input.Keys.UP) {
-						openDialogue[1].up(parent, getPlayer(1));
+
+				if (openDialogue[1] != null) {
+					if (keycode == Input.Keys.UP) {
+						openDialogue[1].up(getPlayer(1));
 					}
-					
-					if (keycode==Input.Keys.DOWN) {
-						openDialogue[1].down(parent, getPlayer(1));
+
+					if (keycode == Input.Keys.DOWN) {
+						openDialogue[1].down(getPlayer(1));
 					}
 				}
 
@@ -724,10 +733,11 @@ public class CustomGameView extends GameView{
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			if (button == Buttons.LEFT) {
 				if (openDialogue[0] != null) {
-					openDialogue[0].confirm(parent, getPlayer(0));
+					openDialogue[0].confirm(getPlayer(0));
 				}
-				if (focusOnGame(0))
+				if (focusOnGame(0)) {
 					getPlayer(0).attackLoadingStopped();
+				}
 			}
 			if (button == Buttons.RIGHT) {
 				if (focusOnGame(0)) {
@@ -735,7 +745,7 @@ public class CustomGameView extends GameView{
 					throwDownP1 = -1;
 				}
 				if (openDialogue[0] != null) {
-					openDialogue[0].cancel(parent, getPlayer(0));
+					openDialogue[0].cancel(getPlayer(0));
 				}
 			}
 			return true;
@@ -762,7 +772,7 @@ public class CustomGameView extends GameView{
 	
 	/**
 	 * is the focus of the player on the game or is it redirected?
-	 * @param playerId
+	 * @param playerId starts with 0
 	 * @return 
 	 */
 	private boolean focusOnGame(int playerId){

@@ -2,11 +2,11 @@ package com.bombinggames.caveland.MainMenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.bombinggames.caveland.Game.ActionBox;
+import static com.bombinggames.caveland.MainMenu.MainMenuScreen.manager;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
@@ -30,16 +32,16 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
  */
 public class OptionScreen extends WEScreen {
 	private Stage stage;
-	private ShapeRenderer shr;
-    private SpriteBatch batch;
-    private BitmapFont font;
-	private final CheckBox fullscreenCB;
-	private final CheckBox vsyncCB;
-	private final TextButton applyButton;
-	private final TextButton cancelButton;
-	private final CheckBox limitFPSCB;
-	private final Slider musicSlider;
-	private final Slider soundSlider;
+	private final ShapeRenderer shr;
+    private final SpriteBatch batch;
+    private final BitmapFont font;
+	private CheckBox fullscreenCB;
+	private CheckBox vsyncCB;
+	private TextButton applyButton;
+	private TextButton cancelButton;
+	private CheckBox limitFPSCB;
+	private Slider musicSlider;
+	private Slider soundSlider;
 
 	/**
 	 *
@@ -48,27 +50,33 @@ public class OptionScreen extends WEScreen {
 	public OptionScreen(SpriteBatch batch) {
 		this.batch = batch;
 		shr = new ShapeRenderer();
-		OrthographicCamera libgdxcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		stage = new Stage(new ScreenViewport(libgdxcamera), batch);
+		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+		
+		fillStage();
+		
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
+	}
+	
+	private void fillStage() {
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
-		if (WE.CVARS.getValueB("DevMode"))  {
+		if (WE.CVARS.getValueB("DevMode")) {
 			//fill with display modes
+			DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
+			//try to find current displaymode
 			Array<String> arstr = new Array<>();
-			Graphics.DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
 			int indexCurrentDPM = 0;
-			for (
-				int i = 0; i < dpms.length; i++
-			) {
-				Graphics.DisplayMode dpm = dpms[i];
-				arstr.add(dpm.toString());
-				if (dpm.width==Gdx.graphics.getWidth() && dpm.height==Gdx.graphics.getHeight())
+			for (int i = 0; i < dpms.length; i++) {
+				arstr.add(dpms[i].toString().substring(0, dpms[i].toString().indexOf(",")));
+				if (dpms[i].width == Gdx.graphics.getWidth() && dpms[i].height == Gdx.graphics.getHeight()) {
 					indexCurrentDPM = i;
+				}
 			}
 
 			sbox.setItems(arstr);
 			sbox.setSelectedIndex(indexCurrentDPM);
-			sbox.setWidth(stage.getWidth()/6);
+			sbox.setWidth(150);
 			sbox.setPosition(stage.getWidth()/2-300, 500);
 		
 			stage.addActor(sbox);
@@ -78,7 +86,7 @@ public class OptionScreen extends WEScreen {
 		Label musicLabel = new Label("Music volume", WE.getEngineView().getSkin());
 		musicLabel.setPosition(stage.getWidth()/2-300, 420);
 		stage.addActor(musicLabel);
-		musicSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
+		musicSlider = new Slider(0, 1, 0.1f, false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(stage.getWidth()/2-300, 400);
 		musicSlider.setValue(WE.CVARS.getValueF("music"));
 		musicSlider.addListener(
@@ -95,27 +103,27 @@ public class OptionScreen extends WEScreen {
 		Label soundLabel = new Label("Sound volume", WE.getEngineView().getSkin());
 		soundLabel.setPosition(stage.getWidth()/2-300, 370);
 		stage.addActor(soundLabel);
-		soundSlider = new Slider(0, 1, 0.1f,false, WE.getEngineView().getSkin());
-		soundSlider.setPosition(stage.getWidth()/2-300, 350);
+		soundSlider = new Slider(0, 1, 0.1f, false, WE.getEngineView().getSkin());
+		soundSlider.setPosition(stage.getWidth() / 2 - 300, 350);
 		soundSlider.setValue(1f);
 		stage.addActor(soundSlider);
-		
+
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
-		fullscreenCB.setPosition(stage.getWidth()/2+100, 600);
-		
+		fullscreenCB.setPosition(stage.getWidth() / 2 + 100, 600);
+
 		stage.addActor(fullscreenCB);
-		
+
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
-		vsyncCB.setPosition(stage.getWidth()/2+100, 500);
+		vsyncCB.setPosition(stage.getWidth() / 2 + 100, 500);
 		stage.addActor(vsyncCB);
-		
+
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
 		limitFPSCB.setChecked(WE.CVARS.getValueI("limitFPS") > 0);
-		limitFPSCB.setPosition(stage.getWidth()/2+100, 400);
+		limitFPSCB.setPosition(stage.getWidth() / 2 + 100, 400);
 		stage.addActor(limitFPSCB);
-		
+
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
-		applyButton.setPosition(stage.getWidth()/2-100, 100);
+		applyButton.setPosition(stage.getWidth() / 2 - 100, 100);
 		applyButton.addListener(new ChangeListener() {
 
 			@Override
@@ -123,7 +131,12 @@ public class OptionScreen extends WEScreen {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
 				if (WE.CVARS.getValueB("DevMode"))  {
 					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
-					Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+					//Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+					
+					MainMenuScreen.manager.setActionBox(
+						stage,
+						new ActionBox("Restart", ActionBox.BoxModes.SIMPLE, "You need to restart the game in order to aply the resolution.")
+					);
 				}
 				
 				//get FPS limit
@@ -140,7 +153,7 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(applyButton);
 		
 		cancelButton = new TextButton("Back to Menu", WE.getEngineView().getSkin());
-		cancelButton.setPosition(stage.getWidth()/2+100, 100);
+		cancelButton.setPosition(stage.getWidth() / 2 + 100, 100);
 		cancelButton.addListener(new ChangeListener() {
 
 			@Override
@@ -161,12 +174,8 @@ public class OptionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(resetButton);
-		
-		
-        font = new BitmapFont();
-        font.setColor(Color.WHITE);
-		
 	}
+	
 
 	@Override
 	public void renderImpl(float dt) {
@@ -182,19 +191,26 @@ public class OptionScreen extends WEScreen {
 				
         batch.begin();
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			if (WE.CVARS.getValueB("DevMode")) font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
+			if (WE.CVARS.getValueB("DevMode"))
+				font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
-		stage.getViewport().setWorldSize(width, height);
+		//stage.getViewport().setWorldSize(width, height);
         Gdx.gl.glViewport(0, 0, width,height);
+//		stage.clear();
+//		stage = new Stage( new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+//		fillStage();
+//		WE.getEngineView().addInputProcessor(stage);
+//		WE.getEngineView().addInputProcessor(new InputListener());
 	}
 
 	@Override
 	public void show() {
+		WE.getEngineView().addInputProcessor(manager);
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
 	}
@@ -217,7 +233,7 @@ public class OptionScreen extends WEScreen {
 		batch.dispose();
 		shr.dispose();
 	}
-	
+
 	private class InputListener implements InputProcessor {
 
         @Override

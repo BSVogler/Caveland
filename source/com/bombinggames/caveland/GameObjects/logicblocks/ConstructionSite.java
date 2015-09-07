@@ -39,8 +39,8 @@ import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		private final ConstructionSite parent;
 
 		ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
-			super(view, "Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
+			super("Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
 			ArrayList<String> list = new ArrayList<>(parent.container.getContent().size());
@@ -160,8 +160,8 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 
 		@Override
-		public int confirm(CustomGameView view, AbstractEntity actor) {
-			int num = super.confirm(view, actor);
+		public int confirm(AbstractEntity actor) {
+			int num = super.confirm(actor);
 			if (actor instanceof Ejira) {
 				Ejira player = (Ejira) actor;
 				//add item?

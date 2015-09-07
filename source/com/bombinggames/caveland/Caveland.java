@@ -98,6 +98,7 @@ public class Caveland {
 		WE.addPostLaunchCommands(() -> {
 			WE.getConsole().addCommand(new GiveCommand());
 			WE.getConsole().addCommand(new PortalTargetCommand());
+			WE.getConsole().addCommand(new TeleportPlayerCommand());
 			
 			//load the needed assets
 			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);

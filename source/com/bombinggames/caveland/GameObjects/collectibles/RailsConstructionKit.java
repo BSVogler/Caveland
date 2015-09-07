@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
 public class RailsConstructionKit extends Collectible {
 
 	private static final long serialVersionUID = 1L;
-	private EntityBlock preview;
+	private transient EntityBlock preview;
 	
 	public RailsConstructionKit() {
 		super(CollectibleType.Rails);

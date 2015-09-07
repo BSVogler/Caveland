@@ -31,6 +31,10 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -42,7 +46,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class PortalBlock extends AbstractBlockLogicExtension {
+public class PortalBlock extends AbstractBlockLogicExtension implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
 	
@@ -77,6 +81,14 @@ public class PortalBlock extends AbstractBlockLogicExtension {
 	 */
 	public Portal getPortal() {
 		return portal;
+	}
+
+	@Override
+	public void interact(CustomGameView view, AbstractEntity actor) {
+		if (actor instanceof Ejira) {
+			new ActionBox("Construct a lift", ActionBox.BoxModes.SIMPLE, "You can build a lift in upcoming versions")
+				.register(view, ((Ejira)actor).getPlayerNumber(), actor);
+		}
 	}
 	
 }

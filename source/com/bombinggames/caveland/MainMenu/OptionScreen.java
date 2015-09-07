@@ -132,6 +132,8 @@ public class OptionScreen extends WEScreen {
 				if (WE.CVARS.getValueB("DevMode"))  {
 					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
 					//Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+					WE.CVARS.get("resolutionx").setValue(dpm.width);
+					WE.CVARS.get("resolutiony").setValue(dpm.height);
 					
 					MainMenuScreen.manager.setActionBox(
 						stage,

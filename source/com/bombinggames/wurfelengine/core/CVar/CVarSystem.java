@@ -353,6 +353,8 @@ public class CVarSystem {
 		register(new IntCVar(2), "controllerlinuxAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(0), "resolutionX", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(0), "resolutionY", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(90), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new FloatCVar(0.5f), "ambientOcclusion", CVar.CVarFlags.CVAR_ARCHIVE);

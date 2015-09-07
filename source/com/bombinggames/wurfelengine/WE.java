@@ -168,6 +168,16 @@ public class WE {
 		if (iconPath != null) {
 			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
 		}
+		int width = CVARS.getValueI("resolutionx");
+		if (width > 0) {
+			config.width = width;
+		}
+
+		int height = CVARS.getValueI("resolutiony");
+		if (height > 0) {
+			config.height = CVARS.getValueI("resolutiony");
+		}
+		
 		//arguments
 		if (args.length > 0) {
 			//look if contains launch parameters

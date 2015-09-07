@@ -96,6 +96,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
+	private char category = 'e';
     /**
      * Create an abstractEntity.
      * @param id objects with id = -1 will be deleted. 0 are invisible objects
@@ -237,9 +238,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
     @Override
     public char getCategory() {
-        return 'e';
-    } 
-    
+        return category;
+    }
+	
+	/**
+	 * Set the category used for the lookup of the sprite.
+	 * @param c 
+	 */
+	public void setCategory(char c) {
+		category = c;
+	}
     
     @Override
     public String getName() {

@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CustomGameView;
@@ -9,6 +10,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
@@ -17,6 +19,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class Bausatz extends Collectible {
 	private static final long serialVersionUID = 1L;
+	private transient EntityBlock preview;
 
 	public Bausatz() {
 		super(CollectibleType.Toolkit);
@@ -38,6 +41,20 @@ public class Bausatz extends Collectible {
 		constructionSiteLogic.setResult(id, (byte) 0);
 		WE.SOUND.play("metallic");
 		dispose();//dispose tool kit
+		if (preview != null) {
+			preview.dispose();
+			preview = null;
+		}
+	}
+	
+	byte getResult(int index){
+		if (index == 0) {
+			return 12;
+		} else if (index == 3) {
+			return 15;
+		} else {
+			return 12;
+		}
 	}
 
 	@Override
@@ -51,10 +68,26 @@ public class Bausatz extends Collectible {
 					"Lift"
 				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
-						if (result==0) {
-							build(actor1.getPosition().toCoord(), (byte) 12);//spawn construction site
-						} else if (result==3) {
-							build(actor1.getPosition().toCoord(), (byte) 15);//spawn construction site
+						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site
+					}
+				)
+				.setCancelAction(
+					(int result, AbstractEntity actor1) -> {
+						if (preview != null) {
+							preview.dispose();
+							preview = null;
+						}
+					}
+				)
+				.setSelectAction(
+					(int result, AbstractEntity actor1) -> {
+						//spawn rails
+						if (preview == null) {
+							preview = (EntityBlock) new EntityBlock(getResult(result),(byte) 0)
+								.spawn(actor1.getPosition().toCoord().toPoint());
+							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
+						} else {
+							preview.setValue((byte) result);
 						}
 					}
 				)

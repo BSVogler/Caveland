@@ -87,7 +87,8 @@ public class RailsConstructionKit extends Collectible {
 							preview.dispose();
 							preview = null;
 						}
-					})
+					}
+				)
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}

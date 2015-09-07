@@ -182,6 +182,7 @@ public class ActionBox extends WidgetGroup {
 			selectionNum = selection;
 		}
 		remove();
+		WE.SOUND.play("menuConfirm");
 		closed = true;
 		if (confirmAction != null) {
 			confirmAction.confirm(selectionNum, actor);
@@ -203,6 +204,7 @@ public class ActionBox extends WidgetGroup {
 		}
 		remove();
 		closed = true;
+		WE.SOUND.play("menuAbort");
 		if (cancelAction != null) {
 			cancelAction.cancel(selectionNum, actor);
 		}
@@ -252,6 +254,7 @@ public class ActionBox extends WidgetGroup {
 			if (selectAction != null) {
 				selectAction.select(selection, actor);
 			}
+			WE.SOUND.play("menuSelect");
 			updateContent();
 		}
 	}
@@ -267,6 +270,7 @@ public class ActionBox extends WidgetGroup {
 			if (selectAction != null) {
 				selectAction.select(selection, actor);
 			}
+			WE.SOUND.play("menuSelect");
 			updateContent();
 		}
 	}

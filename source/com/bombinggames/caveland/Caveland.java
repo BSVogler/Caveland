@@ -108,7 +108,7 @@ public class Caveland {
 
 			WE.SOUND.register("menuSelect", "com/bombinggames/caveland/MainMenu/menusound.wav");
 			WE.SOUND.register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
-			WE.SOUND.register("menuBong", "com/bombinggames/caveland/MainMenu/bong.wav");
+			WE.SOUND.register("menuConfirm", "com/bombinggames/caveland/MainMenu/bong.wav");
 		});
 		
         WE.launch("Caveland " + VERSION, args);

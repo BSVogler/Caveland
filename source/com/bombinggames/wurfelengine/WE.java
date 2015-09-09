@@ -347,7 +347,6 @@ public class WE {
 	 * editor?
 	 */
 	public static void startEditor(boolean reverseMap) {
-		gameplayScreen.getEditorController().setReverseMap(reverseMap);
 		switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView(), true);
 	}
 
@@ -468,17 +467,6 @@ public class WE {
 			Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
 			return null;
 		}
-	}
-
-	/**
-	 *
-	 * @return @since 1.3.4
-	 */
-	public static boolean editorHasMapCopy() {
-		if (gameplayScreen != null && gameplayScreen.getEditorController() != null) {
-			return gameplayScreen.getEditorController().hasMapSave();
-		}
-		return false;
 	}
 
 	/**

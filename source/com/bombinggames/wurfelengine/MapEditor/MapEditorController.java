@@ -36,11 +36,8 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
-import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -49,11 +46,6 @@ import java.util.logging.Logger;
 public class MapEditorController extends Controller {
     private final Controller gameplayController;
     private final GameView gameplayView;
-    /**
-     * a clone of the map at the time when last tested.
-     */
-    private Map mapsave;
-    private boolean reverseMap;
     private final Selection selectionEntity = new Selection();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
@@ -112,18 +104,6 @@ public class MapEditorController extends Controller {
 		super.onEnter();
 		WE.CVARS.get("timespeed").setValue(0f);//stop the game time
         Gdx.app.debug("MEController", "entered");
-        if (reverseMap && mapsave != null)
-            Controller.setMap(mapsave);
-        else
-            mapsave = null;
-    }
-    
-    /**
-     *
-     * @param reverseMap
-     */
-    public void setReverseMap(boolean reverseMap) {
-        this.reverseMap = reverseMap;
     }
     
     /**
@@ -207,19 +187,5 @@ public class MapEditorController extends Controller {
 	@Override
     public void exit(){
         Gdx.app.debug("MEController", "exited");
-        try {
-            mapsave = (Map) Controller.getMap().clone();
-        } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(MapEditorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
-	
-	/**
-	 *
-	 * @return
-	 */
-	public boolean hasMapSave(){
-		return mapsave != null;
-	}
-    
 }

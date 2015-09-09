@@ -3,6 +3,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
@@ -49,11 +50,11 @@ public class Bausatz extends Collectible {
 	
 	byte getResult(int index){
 		if (index == 0) {
-			return 12;
-		} else if (index == 3) {
-			return 15;
+			return CavelandBlocks.CLBlocks.OVEN.getId();
+		} else if (index == 2) {
+			return CavelandBlocks.CLBlocks.POWERSTATION.getId();
 		} else {
-			return 12;
+			return CavelandBlocks.CLBlocks.LIFT.getId();
 		}
 	}
 
@@ -62,10 +63,10 @@ public class Bausatz extends Collectible {
 		if (actor instanceof Ejira) {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
-					"Oven",
+					CavelandBlocks.CLBlocks.OVEN.name(),
 					"Robot Factory (not implemented yet)",
-					"Power Station",
-					"Lift"
+					CavelandBlocks.CLBlocks.POWERSTATION.name(),
+					CavelandBlocks.CLBlocks.LIFT.name()
 				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site

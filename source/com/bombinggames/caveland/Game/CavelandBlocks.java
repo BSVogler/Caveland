@@ -21,6 +21,71 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class CavelandBlocks implements CustomBlocks {
 
+	public enum CLBlocks {
+		CONSTRUCTIONSITE((byte) 11, "Construction Site", false),
+		OVEN((byte) 12, "Oven", false),
+		TORCH((byte) 13, "Torch", false),
+		POWERSTATION((byte) 14, "Power Station", false),
+		LIFT((byte) 15, "Lift", false),
+		ENTRY((byte) 16, "Cave Entry", true),
+		DORNBUSCH((byte) 17, "Dornbusch", false),
+		CRYSTAL((byte) 41, "Crystal Block", true),
+		SULFUR((byte) 42, "Sulfur Block", true),
+		IRONORE((byte) 43, "Iron Ore Block", true),
+		COAL((byte) 44, "Coal Block", true),
+		RAILS((byte) 55, "rails", false),
+		TREE((byte) 72, "tree", false),
+		UNDEFINED((byte) -1, "undefined", true);
+		
+		/**
+		 * reverse loookup
+		 * @param id
+		 * @return 
+		 */
+		public static CLBlocks valueOf(byte id){
+			if (id==11) return CONSTRUCTIONSITE;
+			else if (id==12) return OVEN;
+			else if (id==13) return TORCH;
+			else if (id==14) return POWERSTATION;
+			else if (id==15) return LIFT;
+			else if (id==16) return ENTRY;
+			else if (id==17) return DORNBUSCH;
+			else if (id==41) return CRYSTAL;
+			else if (id==42) return SULFUR;
+			else if (id==43) return IRONORE;
+			else if (id==44) return COAL;
+			else if (id==55) return RAILS;
+			else if (id==72) return TREE;
+			else return UNDEFINED;
+		}
+		
+		private final byte id;
+		private final String name;
+		private final boolean hasSides;
+
+		private CLBlocks(byte id, String name, boolean hasSides) {
+			this.id = id;
+			this.name = name;
+			this.hasSides = hasSides;
+		}
+
+		private String getName(){
+			return name;
+		}
+		
+		public boolean hasSides() {
+			return hasSides;
+		}
+
+		public byte getId() {
+			return id;
+		}
+
+		public Block getInstance() {
+			return Block.getInstance(id);
+		}
+
+	}
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
 		switch (data.getId()) {
@@ -41,45 +106,12 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public String getName(byte id, byte value) {
-		switch (id) {
-			case 11:
-				return "Construction Site";
-			case 12:
-				return "Oven";
-			case 13:
-				return "Torch";
-			case 14:
-				return "Power Station";
-			case 17:
-				return "Dornbusch";
-			case 41:
-				return "Crystal Block";
-			case 42:
-				return "Sulfur Block";
-			case 43:
-				return "Iron Ore Block";
-			case 44:
-				return "Coal Block";
-			case 55:
-				return "rails";
-			case 72:
-				return "tree";
-			default:
-				return "undefined";
-		}
+		return CLBlocks.valueOf(id).getName();
 	}
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
-		if (id==11) return false;
-		if (id==12) return false;
-		if (id==13) return false;
-		if (id==14) return false;
-		if (id==15) return false;
-		if (id==17) return false;
-		if (id==55) return false;
-		if (id==72) return false;
-		return true;
+		return CLBlocks.valueOf(id).hasSides;
 	}
 
 	@Override

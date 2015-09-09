@@ -85,6 +85,15 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		this.resultValue = resultValue;
 	}
 	
+	/**
+	 * The result if you finish the construction. Value is set to 0
+	 * @param result
+	 */
+	public void setResult(byte result) {
+		this.result = result;
+		this.resultValue = 0;
+	}
+	
 	public String getStatusString(){
 		String string = "";
 		for (int i = 0; i < neededItems.length; i++) {
@@ -135,7 +144,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	@Override
 	public void update(float dt) {
 	}
-	
+
 	private class ConstructionSiteWindow extends ActionBox {
 		private final ConstructionSite parent;
 

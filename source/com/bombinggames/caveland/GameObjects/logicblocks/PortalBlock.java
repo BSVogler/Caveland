@@ -32,10 +32,13 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Portal;
+import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -86,8 +89,15 @@ public class PortalBlock extends AbstractBlockLogicExtension implements Interact
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox("Construct a lift", ActionBox.BoxModes.SIMPLE, "You can build a lift in upcoming versions")
-				.register(view, ((Ejira)actor).getPlayerNumber(), actor);
+			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift? You can always enter the caves by jumping into the hole.")
+				.setConfirmAction((int result, AbstractEntity actor1) -> {
+					Coordinate top = getPosition().cpy().addVector(0, 0, 1);
+					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getInstance());
+					ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(top);
+					constructionSiteLogic.setResult(CLBlocks.LIFT.getId());
+					WE.SOUND.play("metallic");
+				})
+				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 	

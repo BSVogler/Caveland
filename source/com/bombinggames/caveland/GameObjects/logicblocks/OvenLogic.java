@@ -39,8 +39,8 @@ import com.bombinggames.caveland.GameObjects.SmokeEmitter;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -99,7 +99,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 			emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
 			
 			//burn ironore
-			if (productionCountDown==0) {
+			if (productionCountDown == 0) {
 				Collectible ironore = container.retrieveCollectibleReference(CollectibleType.Ironore);
 				if (ironore != null) {
 					ironore.dispose();
@@ -115,18 +115,20 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 				emitter.setParticleSpread(new Vector3(3f, 1f, -0.5f));
 			}
 			//clamp
-			if (productionCountDown < 0)
+			if (productionCountDown < 0) {
 				productionCountDown = 0;
+			}
 
 			//if reached zero this frame
-			if (oldCountDown > 0 && productionCountDown==0) {
+			if (oldCountDown > 0 && productionCountDown == 0) {
 				//produce
-				( (Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+				((Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
 			}
 		}
 		//decrease timer
-		if (burntime > 0)
+		if (burntime > 0) {
 			burntime -= dt;
+		}
 		//clamp if reached bottom
 		if (burntime < 0) {
 			burntime = 0;

@@ -5,7 +5,6 @@ import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
@@ -24,9 +23,9 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void update(float dt) {
 		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
-			getPosition().getEntitiesNearby(2, MineCart.class)
+			getPosition().getEntitiesInside(MineCart.class)
 				.forEach(l -> {
-					((AbstractGameObject) l).setPosition(((PortalBlockLogic) holeLogic).getPortal().getTarget());
+					l.setPosition(((PortalBlockLogic) holeLogic).getPortal().getTarget());
 				});
 		}
 	}

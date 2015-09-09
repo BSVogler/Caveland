@@ -358,11 +358,21 @@ public class Ejira extends MovableEntity implements Controllable {
 					}
 				}
 			}
-
-			//todo sort to find nearest object
-			//nearbyInteractable.sort(new Comparator<Interactable>);
 			
+			//remove not interactable objects
+			nearbyInteractable.removeIf((Interactable t) -> !t.interactable());
+
 			if (!nearbyInteractable.isEmpty()) {
+				//sort to find nearest object
+				nearbyInteractable.sort((Interactable o1, Interactable o2) -> {
+					if (o1.getPosition().distanceTo(getPosition()) < o2.getPosition().distanceTo(getPosition()))
+						return -1;
+					else if (o1.getPosition().distanceTo(getPosition()) == o2.getPosition().distanceTo(getPosition()))
+						return 0;
+					else
+						return 1;
+				});
+				
 				//check if a different one
 				nearestInteractable = nearbyInteractable.get(0);
 				showInteractButton(Interactable.RT, nearestInteractable.getPosition());

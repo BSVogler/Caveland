@@ -65,17 +65,25 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	@Override
 	public void update(float dt) {
-		if (portal==null){
-			ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);
-			if (!portals.isEmpty()){
-				portal = (Portal) portals.get(0);
-			} else {
-				portal = (Portal) new Portal();
+		if (getPosition()!=null) {
+			//check if portal is there
+			if (portal==null){
+				ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);
+				if (!portals.isEmpty()){
+					portal = (Portal) portals.get(0);
+				} else {
+					portal = (Portal) new Portal();
+				}
+				if (!portal.isSpawned())
+					portal.spawn(getPosition().toPoint());
 			}
-			if (!portal.isSpawned())
-				portal.spawn(getPosition().toPoint());
+			portal.setPosition(getPosition().toPoint());
+
+			if (!interactable())
+				getPosition().getBlock().setValue((byte) 1);
+			else
+				getPosition().getBlock().setValue((byte) 0);
 		}
-		portal.setPosition(getPosition().toPoint());
 	}
 
 	/**

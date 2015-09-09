@@ -57,7 +57,7 @@ public class EditorToggler {
 			}
 		}
 			
-		if (WE.isInGame() && visible) {
+		if (WE.isInGameplay() && visible) {
 			if (pauseButton == null || resetButton == null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 
@@ -88,7 +88,7 @@ public class EditorToggler {
 							@Override
 							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 								Controller.loadMap(Controller.getMap().getPath(), controller.getSaveSlot());
-								if (WE.isInGame())
+								if (!WE.isInEditor())
 									WE.startEditor(false);
 								return true;
 							}

@@ -372,9 +372,9 @@ public class WE {
 
 	/**
 	 *
-	 * @return true when in gameplay, editor excluded
+	 * @return true when in gameplay (editor counts as gameplay)
 	 */
-	public static boolean isInGame() {
+	public static boolean isInGameplay() {
 		return inGame;
 	}
 

@@ -12,6 +12,10 @@ public class Portal extends AbstractEntity  {
 	
 	private static final long serialVersionUID = 2L;
 	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
+	/**
+	 * indicates whether the portal is open or not
+	 */
+	private transient boolean active = true;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -35,7 +39,7 @@ public class Portal extends AbstractEntity  {
 
 	@Override
 	public void update(float dt) {
-		if (isSpawned()){
+		if (isSpawned() && active){
 			getPosition().toCoord().getEntitiesInside()
 			.forEach( (AbstractEntity e) -> {
 				 if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10 && e != this)
@@ -44,5 +48,22 @@ public class Portal extends AbstractEntity  {
 			);
 		}
 	}
+
+	/**
+	 * Set the portal to "open" or "closed"
+	 * @param b 
+	 */
+	public void setActive(boolean b) {
+		active = b;
+	}
+
+	/**
+	 * indicates whether the portal is open or not
+	 * @return 
+	 */
+	public boolean isActive() {
+		return active;
+	}
+	
 
 }

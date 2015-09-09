@@ -150,7 +150,7 @@ public class Camera implements MapObserver {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 		if (WE.CVARS.getValueB("mapUseChunks")) {
-			updateNeededChunks();
+			checkNeededChunks();
 		}
 	}
 
@@ -292,7 +292,7 @@ public class Camera implements MapObserver {
 					position.add(diff);
 				}
 			}
-
+			
 			//aplly screen shake
 			if (shakeTime > 0) {
 				screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
@@ -358,67 +358,65 @@ public class Camera implements MapObserver {
 	 */
 	public void updateCenter() {
 		//if chunkmap check for chunk movement
-		if (WE.CVARS.getValueB("mapUseChunks")) {
-			int oldX = centerChunkX;
-			int oldY = centerChunkY;
+		int oldX = centerChunkX;
+		int oldY = centerChunkY;
 
-			Map chunkMap = (Map) map;
+		Map chunkMap = (Map) map;
 
-			//check if chunkswitch left
-			if (
-				getVisibleLeftBorder()
-				<
-				chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
-				//&& centerChunkX-1==//calculated xIndex -1
-				) {
-				centerChunkX--;
-			}
+		//check if chunkswitch left
+		if (
+			getVisibleLeftBorder()
+			<
+			chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+			//&& centerChunkX-1==//calculated xIndex -1
+			) {
+			centerChunkX--;
+		}
 
-			if (
-				getVisibleRightBorder()
-				>
-				chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
-				//&& centerChunkX-1==//calculated xIndex -1
-				) {
-				centerChunkX++;
-			}
+		if (
+			getVisibleRightBorder()
+			>
+			chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+			//&& centerChunkX-1==//calculated xIndex -1
+			) {
+			centerChunkX++;
+		}
 
-			//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative baded.
-			/*
-			 if (
-			 getVisibleBackBorder()
-			 <
-			 chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
-			 //&& centerChunkX-1==//calculated xIndex -1
-			 ) {
-			 centerChunkY--;
-			 }
-			 //check in view space
-			 if (
-			 position.y- getHeightInProjSpc()/2
-			 <
-			 map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
-			 -AbstractGameObject.VIEW_DEPTH2*(
-			 chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
-			 )
-			 //&& centerChunkX-1==//calculated xIndex -1
-			 ) {
-			 centerChunkY++;
-			 }*/
-			//his line is needed because the above does not work
-			centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
+		//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative baded.
+		/*
+		 if (
+		 getVisibleBackBorder()
+		 <
+		 chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+		 //&& centerChunkX-1==//calculated xIndex -1
+		 ) {
+		 centerChunkY--;
+		 }
+		 //check in view space
+		 if (
+		 position.y- getHeightInProjSpc()/2
+		 <
+		 map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
+		 -AbstractGameObject.VIEW_DEPTH2*(
+		 chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+		 )
+		 //&& centerChunkX-1==//calculated xIndex -1
+		 ) {
+		 centerChunkY++;
+		 }*/
+		//his line is needed because the above does not work
+		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 
-			updateNeededChunks();
-			if (oldX != centerChunkX || oldY != centerChunkY) {
-				fillCameraContentBlocks();
-			}
+		checkNeededChunks();
+		if (oldX != centerChunkX || oldY != centerChunkY) {
+			fillCameraContentBlocks();
 		}
 	}
 
 	/**
 	 * checks which chunks must be loaded around the center
 	 */
-	private void updateNeededChunks() {
+	private void checkNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || WE.CVARS.getValueB("mapChunkSwitch")) {
 			checkChunk(centerChunkX - 1, centerChunkY - 1);
@@ -1250,7 +1248,7 @@ public class Camera implements MapObserver {
 		//turning on
 		if (!this.active && active) {
 			if (WE.CVARS.getValueB("mapUseChunks")) {
-				updateNeededChunks();
+				checkNeededChunks();
 			}
 			fillCameraContentBlocks();
 		}
@@ -1270,7 +1268,7 @@ public class Camera implements MapObserver {
 
 	@Override
 	public void onMapReload() {
-		
+
 	}
 
 }

@@ -103,6 +103,7 @@ public class PortalBlock extends AbstractBlockLogicExtension implements Interact
 
 	@Override
 	public boolean interactable() {
+		if (getPosition().cpy().addVector(0, 0, 1).getBlock()==null) return true;
 		return getPosition().cpy().addVector(0, 0, 1).getBlock().getId() == 0;
 	}
 }

@@ -88,7 +88,8 @@ public class EditorToggler {
 							@Override
 							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 								Controller.loadMap(Controller.getMap().getPath(), controller.getSaveSlot());
-								WE.startEditor(false);
+								if (WE.isInGame())
+									WE.startEditor(false);
 								return true;
 							}
 						}

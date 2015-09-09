@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
 import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
@@ -32,7 +33,7 @@ public class Bausatz extends Collectible {
 	 * @param id the goal id
 	 */
 	protected void build(Coordinate coord, byte id){
-		if (id == 15 && getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != 16){
+		if (id == CLBlocks.LIFT.getId() && getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != CLBlocks.ENTRY.getId()){
 			return;
 		}
 				
@@ -52,7 +53,7 @@ public class Bausatz extends Collectible {
 		if (index == 0) {
 			return CavelandBlocks.CLBlocks.OVEN.getId();
 		} else if (index == 2) {
-			return CavelandBlocks.CLBlocks.POWERSTATION.getId();
+			return CLBlocks.POWERSTATION.getId();
 		} else {
 			return CavelandBlocks.CLBlocks.LIFT.getId();
 		}

@@ -76,7 +76,9 @@ public class Controller implements GameManager, MapObserver {
 				linked = map.getOberservers();
 			}
 			map = new Map(path, saveslot);
-			map.getOberservers().addAll(linked);
+			if (linked != null) {
+				map.getOberservers().addAll(linked);
+			}
 			map.onReload();
 			
             return true;

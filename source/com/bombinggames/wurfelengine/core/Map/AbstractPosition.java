@@ -83,15 +83,15 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract int getViewSpcY(GameView View);
     
-	  /**
+	/**
      *Get as vector
      * @return copy safe
      */
     public abstract Vector3 getVector();
+	
     /**
-     * Clamps positions over the map at topmost layer.
-     * @return Get the block at the position. If the coordiante is not in memory crash. Faster than "getBlockSafe()"
-     * @see #getBlockSafe() 
+     * Get the block at the position.  Clamps positions over the map at topmost layer.
+     * @return If the coordiante is not in memory will crash.
      */
     public abstract Block getBlock();
     

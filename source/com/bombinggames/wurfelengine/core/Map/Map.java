@@ -565,10 +565,15 @@ public class Map implements Cloneable {
 
 	/**
      *
+	 * @param save
      */
-    public void dispose(){
+    public void dispose(boolean save){
 		for (Chunk chunk : data) {
-			chunk.dispose(getPath());
+			if (save) {
+				chunk.dispose(getPath());
+			} else {
+				chunk.dispose(null);
+			}
 		}
 		disposeEntities();
     }

@@ -174,22 +174,23 @@ public abstract class AbstractPosition implements Serializable {
 	public abstract float distanceToHorizontal(AbstractPosition pos);
 	
 	/**
-	 * get entities in radius
+	 * Get entities in radius.
+	 *
 	 * @param <type> returns only object if type which is the filter
 	 * @param radius in game dimension pixels
 	 * @param type the type you want to filter
 	 * @return every entitie in radius
 	 */
 	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type){
-		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
+	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type) {
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
 
-        for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
-            if (distanceTo(entity.getPosition().toPoint()) < radius){
-                result.add((type) entity);
-            } 
-        }
+		for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
+			if (distanceTo(entity.getPosition()) < radius) {
+				result.add((type) entity);
+			}
+		}
 
-        return result;
+		return result;
 	}
 }

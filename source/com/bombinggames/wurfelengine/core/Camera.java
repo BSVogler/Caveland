@@ -410,7 +410,7 @@ public class Camera implements MapObserver {
 
 			updateNeededChunks();
 			if (oldX != centerChunkX || oldY != centerChunkY) {
-				updateCache();
+				fillCameraContentBlocks();
 			}
 		}
 	}
@@ -582,7 +582,7 @@ public class Camera implements MapObserver {
 	 * @return the depthlist
 	 */
 	private AbstractGameObject[] createDepthList() {
-		//register memory space onyl once then reuse
+		//register memory space only once then reuse
 		if (depthlist == null || WE.CVARS.getValueI("MaxSprites") != depthlist.length) {
 			depthlist = new AbstractGameObject[WE.CVARS.getValueI("MaxSprites")];
 		}
@@ -635,24 +635,21 @@ public class Camera implements MapObserver {
 			}
 		}
 
-		if (objectsToBeRendered < depthlist.length) {
-
-			//add entitys
-			for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-				if (entity.isSpawned()
-					&& !entity.isHidden()
-					&& inViewFrustum(
-						entity.getPosition().getViewSpcX(gameView),
-						entity.getPosition().getViewSpcY(gameView)
-					)
-					&&  (!zRenderinlimitEnabled || entity.getPosition().getZGrid() < zRenderingLimit)
-				) {
-					depthlist[objectsToBeRendered] = entity;
-					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) {
-						break;//fill only up to available size
-					}
-				}
+		//add entitys
+		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+			if (objectsToBeRendered >= depthlist.length) {
+				break;//fill only up to available size
+			}
+			if (entity.isSpawned()
+				&& !entity.isHidden()
+				&& inViewFrustum(
+					entity.getPosition().getViewSpcX(gameView),
+					entity.getPosition().getViewSpcY(gameView)
+				)
+				&&  (!zRenderinlimitEnabled || entity.getPosition().getZGrid() < zRenderingLimit)
+			) {
+				depthlist[objectsToBeRendered] = entity;
+				objectsToBeRendered++;
 			}
 		}
 		//sort the list
@@ -770,16 +767,9 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * updates cached values like clipping
-	 */
-	protected void updateCache() {
-		fillCameraContentBlocks();
-	}
-
-	/**
 	 * fill the view frustum in the camera with renderblocks. Only done when content changes.
 	 */
-	private void fillCameraContentBlocks() {
+	protected void fillCameraContentBlocks() {
 		//fill viewFrustum with RenderBlock data
 		
 		//1. put every block in the view frustum
@@ -1183,7 +1173,7 @@ public class Camera implements MapObserver {
 	@Override
 	public void onMapChange() {
 		if (active) {
-			updateCache();
+			fillCameraContentBlocks();
 		}
 	}
 
@@ -1191,7 +1181,7 @@ public class Camera implements MapObserver {
 	public void onChunkChange(Chunk chunk) {
 		if (active) {
 			if (WE.CVARS.getValueB("mapUseChunks")) {
-				((Map) Controller.getMap()).hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
+				Controller.getMap().hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
 			}
 		}
 	}
@@ -1258,11 +1248,11 @@ public class Camera implements MapObserver {
 	 */
 	public void setActive(boolean active) {
 		//turning on
-		if (this.active == false && active == true) {
+		if (!this.active && active) {
 			if (WE.CVARS.getValueB("mapUseChunks")) {
 				updateNeededChunks();
 			}
-			updateCache();
+			fillCameraContentBlocks();
 		}
 
 		this.active = active;
@@ -1280,6 +1270,7 @@ public class Camera implements MapObserver {
 
 	@Override
 	public void onMapReload() {
+		
 	}
 
 }

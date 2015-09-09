@@ -74,4 +74,9 @@ public class ExitPortal extends AbstractEntity implements Interactable  {
 		spawner = true;
 	}
 
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+
 }

@@ -136,4 +136,9 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 			emitter.setActive(false);
 		}
 	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
 }

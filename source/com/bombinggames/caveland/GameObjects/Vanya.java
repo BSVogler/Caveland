@@ -85,6 +85,11 @@ public class Vanya extends MovableEntity implements Interactable {
 		return super.clone();
 	}
 
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+
 	private class BlümchenKacke extends MovableEntity {
 		private static final long serialVersionUID = 1L;
 

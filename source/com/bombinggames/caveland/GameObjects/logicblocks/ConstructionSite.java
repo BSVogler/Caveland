@@ -32,6 +32,7 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
@@ -94,6 +95,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		this.resultValue = 0;
 	}
 	
+	/**
+	 * A string shows what is there and what is needed for construction.
+	 * @return 
+	 */
 	public String getStatusString(){
 		String string = "";
 		for (int i = 0; i < neededItems.length; i++) {
@@ -195,4 +200,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			return num;
 		}
 	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+	
 }

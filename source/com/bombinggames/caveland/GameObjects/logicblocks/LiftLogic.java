@@ -38,4 +38,10 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 		if (hole != null && (hole instanceof PortalBlock))
 			actor.setPosition(((PortalBlock) hole).getPortal().getTarget().cpy());
 	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+	
 }

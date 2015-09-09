@@ -112,4 +112,10 @@ public interface Interactable {
 	 * @return 
 	 */
 	public abstract AbstractPosition getPosition();
+	
+	/**
+	 * is the interaction active or deactivated?
+	 * @return 
+	 */
+	public abstract boolean interactable();
 }

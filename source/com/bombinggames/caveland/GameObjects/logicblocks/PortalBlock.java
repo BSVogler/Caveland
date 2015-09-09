@@ -100,5 +100,9 @@ public class PortalBlock extends AbstractBlockLogicExtension implements Interact
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
-	
+
+	@Override
+	public boolean interactable() {
+		return getPosition().cpy().addVector(0, 0, 1).getBlock().getId() == 0;
+	}
 }

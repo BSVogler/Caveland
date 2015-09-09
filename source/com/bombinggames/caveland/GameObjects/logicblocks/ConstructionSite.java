@@ -149,7 +149,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		private final ConstructionSite parent;
 
 		ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
-			super("Build id: "+parent.result , ActionBox.BoxModes.SELECTION, null);
+			super("Build id: "+CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
 			ArrayList<String> list = new ArrayList<>(parent.container.getContent().size());

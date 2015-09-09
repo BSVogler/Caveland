@@ -7,12 +7,12 @@
  *
  * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
  *   visible in an intro screen or main menu.
- * * Redistributions of source code must retain the above copyright notice, 
+ * * Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice, 
- *   this list of conditions and the following disclaimer in the documentation 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of Benedikt Vogler nor the names of its contributors 
+ * * Neither the name of Benedikt Vogler nor the names of its contributors
  *   may be used to endorse or promote products derived from this software without specific
  *   prior written permission.
  *
@@ -62,7 +62,7 @@ public class Chunk {
 	private static int blocksX = 10;
     private static int blocksY = 40;//blocksY must be even number
     private static int blocksZ = 10;
-	
+
 	/**
 	 * save file stuff
 	 */
@@ -70,12 +70,12 @@ public class Chunk {
 	private final static char SIGN_COMMAND = '~';//126 OR 0x7e
 	private final static char SIGN_EMTPYLAYER = 'e';//only valid after a command sign
 	private final static char SIGN_ENDBLOCKS = 'b';//only valid after a command sign
-	
+
 	/**
 	 * the map in which the chunks are used
 	 */
 	private final Map map;
-	
+
 	/**
 	 * chunk coordinate
 	 */
@@ -94,7 +94,7 @@ public class Chunk {
 	 */
 	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
-  
+
     /**
      * Creates a Chunk filled with empty cells (likely air).
 	 * @param map
@@ -105,25 +105,25 @@ public class Chunk {
         this.coordX = coordX;
 		this.coordY = coordY;
 		this.map = map;
-		
+
 		//set chunk dimensions
 		blocksX = WE.CVARS.getChildSystem().getValueI("chunkBlocksX");
 		blocksY = WE.CVARS.getChildSystem().getValueI("chunkBlocksY");
 		blocksZ = WE.CVARS.getChildSystem().getValueI("chunkBlocksZ");
-		
+
 		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
 		data = new Block[blocksX][blocksY][blocksZ];
-        
+
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
                 for (int z=0; z < blocksZ; z++)
                     data[x][y][z] = null;
-		
+
         resetClipping();
-						
+
 		modified = true;
     }
-    
+
     /**
     *Creates a chunk by trying to load and if this fails it generates a new one.
 	 * @param map
@@ -140,7 +140,7 @@ public class Chunk {
 		} else fill(generator);
 		increaseCameraHandleCounter();
     }
-    
+
     /**
     *Creates a chunk by generating a new one.
 	 * @param map
@@ -152,13 +152,13 @@ public class Chunk {
         this(map, coordX, coordY);
         fill(generator);
     }
-	
+
 	/**
 	 * Updates the chunk. should be called once per frame.
-	 * 
+	 *
 	 * @param dt
 	 */
-	public void update(float dt){	
+	public void update(float dt){
 		processModification();
 		//reset light to zero
 		for (int x = 0; x < data.length; x++) {
@@ -166,7 +166,7 @@ public class Chunk {
 				for (int z = 0; z < data[x][y].length; z++) {
 					if (data[x][y][z] != null) {
 						data[x][y][z].setLightlevel(1.0f);
-						
+
 						if (
 							z < Chunk.getBlocksZ()-2
 							&& (
@@ -183,7 +183,7 @@ public class Chunk {
 								data[x][y][z+1] == null
 								|| data[x][y][z+1].isTransparent()
 							)
-							&& ( 
+							&& (
 								data[x][y][z+2] == null
 								|| data[x][y][z+2].isTransparent()
 							)
@@ -192,12 +192,12 @@ public class Chunk {
 						) {
 							data[x][y][z].setLightlevel(0.9f, Side.TOP);
 						}
-						
+
 					}
 				}
 			}
 		}
-		
+
 		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
 			logicBlock.update(dt);
 		}
@@ -207,8 +207,8 @@ public class Chunk {
 			}
 		);
 	}
-	
-	/** 
+
+	/**
 	 * checks if the chunk got modified and if that is the case calls the modification methods
 	 */
 	public void processModification(){
@@ -221,10 +221,10 @@ public class Chunk {
 			}
 		}
 	}
-    
+
     /**
      * Fills the chunk's block using a generator.
-     * @param generator 
+     * @param generator
      */
     public void fill(final Generator generator){
 		int left = blocksX*coordX;
@@ -249,14 +249,14 @@ public class Chunk {
 				}
 		modified = true;
     }
-	
+
 	/**
 	 * copies  something
 	 * @param path
 	 * @param saveSlot
 	 * @param coordX
 	 * @param coordY
-	 * @return 
+	 * @return
 	 */
 	public boolean restoreFromRoot(final File path, int saveSlot, int coordX, int coordY){
 		FileHandle chunkInRoot = Gdx.files.absolute(path+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
@@ -269,12 +269,12 @@ public class Chunk {
 		}
 		return true;
 	}
-    
+
 	/**
-	 * 
+	 *
 	 * @param fis
 	 * @return -1 if eof, if sucessuf read then {@link #SIGN_ENDBLOCKS}
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private byte loadBlocks(FileInputStream fis) throws IOException{
 		int z = 0;
@@ -359,15 +359,15 @@ public class Chunk {
 		} while (bChar != -1);
 		return bChar;
 	}
-	
-	
+
+
 	private void loadEntities(FileInputStream fis, File path){
 		//ends with a sign for logic or entities or eof
 		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
 			byte bChar = ois.readByte();
 			if (bChar == SIGN_COMMAND)
 				bChar = ois.readByte();
-			
+
 			if (bChar==SIGN_ENTITIES){
 				if (WE.CVARS.getValueB("loadEntities")) {
 					try {
@@ -402,7 +402,7 @@ public class Chunk {
 			Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
 		}
 	}
-		
+
     /**
      * Tries to load a chunk from disk.
      */
@@ -416,11 +416,11 @@ public class Chunk {
 			//Reading map files test
 			try {
 				FileInputStream fis = new FileInputStream(savepath.file());
-			
+
 				byte bChar = loadBlocks(fis);
 				if (bChar == SIGN_ENDBLOCKS)
 					System.out.println("loaded block sucessfull");
-				
+
 				if (fis.available() > 0) {//not eof
 					loadEntities(fis, path);
 				}
@@ -436,26 +436,26 @@ public class Chunk {
 			if (restoreFromRoot(path, saveSlot, coordX, coordY))
 				load(path, saveSlot, coordX, coordY);
 		}
-		
+
         return false;
     }
-	
-	
+
+
     /**
      * Save this chunk on storage.
      * @param path the map name on storage
 	 * @param saveSlot
 
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
     public boolean save(File path, int saveSlot) throws IOException {
         if (path == null) return false;
         Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
         File savepath = new File(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
-        
+
         savepath.createNewFile();
-		
+
 		FileOutputStream fos = new FileOutputStream(savepath);
 		for (byte z = 0; z < blocksZ; z++) {
 			//check if layer is empty
@@ -483,11 +483,11 @@ public class Chunk {
 		}
 		fos.write(new byte[]{SIGN_COMMAND, SIGN_ENDBLOCKS});
 		fos.flush();
-		
+
 		ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
-		
+
 		if (entities.size() > 0){
-			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {	
+			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {
 				//save entities
 				if (entities.size() > 0) {
 					fileOut.write(new byte[]{SIGN_COMMAND, SIGN_ENTITIES, (byte) entities.size()});
@@ -510,7 +510,7 @@ public class Chunk {
     }
         /**
      * The amount of blocks in X direction
-     * @return 
+     * @return
      */
     public static int getBlocksX() {
         return blocksX;
@@ -518,7 +518,7 @@ public class Chunk {
 
     /**
      * The amount of blocks in Y direction
-     * @return 
+     * @return
      */
     public static int getBlocksY() {
         return blocksY;
@@ -526,16 +526,16 @@ public class Chunk {
 
    /**
      * The amount of blocks in Z direction
-     * @return 
+     * @return
      */
     public static int getBlocksZ() {
         return blocksZ;
     }
-    
+
 
     /**
      * Returns the data of the chunk
-     * @return 
+     * @return
      */
     public Block[][][] getData() {
         return data;
@@ -548,7 +548,7 @@ public class Chunk {
     public static int getViewWidth(){
         return blocksX*Block.VIEW_WIDTH;
     }
-    
+
     /**
      *Not scaled.
      * @return
@@ -556,7 +556,7 @@ public class Chunk {
     public static int getViewDepth() {
         return blocksY*Block.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
     }
-    
+
     /**
      *x axis
      * @return
@@ -564,7 +564,7 @@ public class Chunk {
     public static int getGameWidth(){
         return blocksX*Block.GAME_DIAGLENGTH;
     }
-    
+
     /**
      *y axis
      * @return
@@ -572,7 +572,7 @@ public class Chunk {
     public static int getGameDepth() {
         return blocksY*Block.GAME_DIAGLENGTH2;
     }
-    
+
         /**
      * The height of the map. z axis
      * @return in game size
@@ -580,8 +580,8 @@ public class Chunk {
     public static int getGameHeight(){
         return blocksZ*Block.GAME_EDGELENGTH;
     }
-	
-	
+
+
 	/**
 	 * Check if the chunk has the coordinate inside. Only checks x and y.<br>
 	 * O(1)
@@ -599,7 +599,7 @@ public class Chunk {
 				&& y <  top + blocksY
 		);
 	}
-	
+
 		/**
 	 * Check if the coordinate has the coordinate inside.
 	 * @param point the coordinate to be checked
@@ -616,10 +616,10 @@ public class Chunk {
 				&& y < top + getGameDepth()
 		);
 	}
-	
+
 	/**
 	 * print the chunk to console
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public String toString() {
@@ -638,7 +638,7 @@ public class Chunk {
 		}
 		return strg;
 	}
-	
+
 	/**
 	 * Returns an iterator which iterates over the data in this chunk.
 	 * @param startingZ
@@ -668,7 +668,7 @@ public class Chunk {
 	public int getChunkY() {
 		return coordY;
 	}
-	
+
 	/**
 	 *
 	 * @return not copy safe
@@ -678,7 +678,7 @@ public class Chunk {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param z coordinate
@@ -689,13 +689,13 @@ public class Chunk {
 		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];
 	}
-	
+
 	/**
 	 * Get the block at the index position
 	 * @param x index pos
 	 * @param y index pos
 	 * @param z index pos
-	 * @return 
+	 * @return
 	 */
 	public Block getBlockViaIndex(int x, int y, int z) {
 		return data[x][y][z];
@@ -712,7 +712,7 @@ public class Chunk {
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
-		
+
 		int xIndex = block.getPosition().getX()-topleft.getX();
 		int yIndex = block.getPosition().getY()-topleft.getY();
 		int z = block.getPosition().getZ();
@@ -721,11 +721,11 @@ public class Chunk {
 			modified = true;
 		}
 	}
-	
+
 	/**
 	 * Almost lowest level method to set a block in the map. If the block has logic a new logicinstance will be created.
 	 * @param coord The position where you insert the block. Must be inside the bounds of the chunk.
-	 * @param block 
+	 * @param block
 	 */
 	public void setBlock(Coordinate coord, Block block) {
 		//get corresponding logic and update
@@ -735,7 +735,7 @@ public class Chunk {
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
-		
+
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();
@@ -744,14 +744,14 @@ public class Chunk {
 			modified = true;
 		}
 	}
-	
+
 	protected void addLogic(AbstractBlockLogicExtension block) {
 		logicBlocks.add(block);
 	}
-		
+
 	/**
 	 * Get the logic to a logicblock.
-	 * @param coord 
+	 * @param coord
 	 * @return can return null
 	 */
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
@@ -766,14 +766,14 @@ public class Chunk {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Set that no camera is accessing this chunk.
 	 */
 	public void resetCameraAccesCounter(){
 		cameraAccessCounter=0;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -788,7 +788,7 @@ public class Chunk {
 	boolean shouldBeRemoved() {
 		return cameraAccessCounter <= 0;
 	}
-	
+
 	/**
 	 * disposes the chunk
 	 * @param path if null, does not save the file
@@ -802,7 +802,7 @@ public class Chunk {
 				Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		
+
 		//remove entities on this chunk from map
 		ArrayList<AbstractEntity> entities = map.getEntitysOnChunk(coordX, coordY);
 		for (AbstractEntity ent : entities) {

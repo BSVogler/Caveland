@@ -22,22 +22,22 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class MineCart extends MovableEntity implements Interactable {
-	private static final long serialVersionUID = 1L;
-	private static final float MAXSPEED = 5;
+	private static final long serialVersionUID = 2L;
+	private static final float MAXSPEED = 6;
 	/**
 	 * the height of the bottom plate
 	 */
 	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/3;
 
-	private MovableEntity passenger;
-	private ArrayList<MovableEntity> content = new ArrayList<>(5);
-	private float rollingCycle;
-	private transient long isPlayingSound;
-	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
 	/**
 	 * empirical factor to match the front side with the rear
 	 */
 	private final transient static float frontOffset = 63;
+	private MovableEntity passenger;
+	private ArrayList<MovableEntity> content = new ArrayList<>(5);
+	private transient float rollingCycle;
+	private transient long isPlayingSound;
+	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
 	
 	/**
 	 *
@@ -61,8 +61,8 @@ public class MineCart extends MovableEntity implements Interactable {
 	public void update(float dt) {
 		super.update(dt);
 		
-		if (isSpawned() && getPosition().isInMemoryAreaHorizontal()) {
-			Point pos = getPosition();
+		Point pos = getPosition();
+		if (isSpawned() && pos.isInMemoryAreaHorizontal()) {
 			Block block = pos.getBlock();
 
 			//on tracks?
@@ -141,27 +141,6 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 			}
 			
-			//copy position to fron
-			front.setPosition(getPosition().cpy().addVector(0, frontOffset, 0));
-
-			//animation
-			//moving down left or up right
-			if (
-				(getOrientation().y > 0
-				&&
-				getOrientation().y > getOrientation().x)
-				||
-				(getOrientation().y < 0
-				&&
-				getOrientation().y < getOrientation().x)
-			) {
-				setValue((byte) 0);
-				front.setValue((byte) 1);
-			} else {
-				setValue((byte) 3);
-				front.setValue((byte) 4);
-			}
-
 			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite, distance*m/s
 			rollingCycle %= GAME_EDGELENGTH/4; //cycle each 0,25m
 			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
@@ -222,6 +201,29 @@ public class MineCart extends MovableEntity implements Interactable {
 						ent.addToHor(getSpeed());
 					}
 				}
+			}
+		}
+		
+		if (isSpawned()){
+			//copy position to front
+			front.setPosition(pos.cpy().addVector(0, frontOffset, 0));
+
+			//animation
+			//moving down left or up right
+			if (
+				(getOrientation().y > 0
+				&&
+				getOrientation().y > getOrientation().x)
+				||
+				(getOrientation().y < 0
+				&&
+				getOrientation().y < getOrientation().x)
+			) {
+				setValue((byte) 0);
+				front.setValue((byte) 1);
+			} else {
+				setValue((byte) 3);
+				front.setValue((byte) 4);
 			}
 		}
 	}

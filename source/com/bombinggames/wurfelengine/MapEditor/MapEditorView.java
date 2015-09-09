@@ -117,24 +117,24 @@ public class MapEditorView extends GameView {
         TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
         
          //add load button
-        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
-        loadbutton.setX(Gdx.graphics.getWidth()-80);
-        loadbutton.setY(Gdx.graphics.getHeight()-40);
-        loadbutton.addListener(new LoadButton(this,controller));
-        getStage().addActor(loadbutton);
+//        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
+//        loadbutton.setX(Gdx.graphics.getWidth()-80);
+//        loadbutton.setY(Gdx.graphics.getHeight()-40);
+//        loadbutton.addListener(new LoadButton(this,controller));
+//        getStage().addActor(loadbutton);
         
-         //add save button
+        //add save button
         final Image savebutton = new Image(spritesheet.findRegion("save_button"));
-        savebutton.setX(Gdx.graphics.getWidth()  - 120);
-        savebutton.setY(Gdx.graphics.getHeight() - 40);
-        savebutton.addListener(new ClickListener(){
+		savebutton.setX(Gdx.graphics.getWidth() - 150);
+		savebutton.setY(Gdx.graphics.getHeight() - 50);
+		savebutton.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
 			}
 		});
-        getStage().addActor(savebutton);
+		getStage().addActor(savebutton);
         
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());

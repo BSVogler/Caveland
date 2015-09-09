@@ -5,9 +5,9 @@ import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import java.util.ArrayList;
 
 /**
  *
@@ -22,21 +22,21 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 	@Override
 	public void update(float dt) {
-		ArrayList<MineCart> nearbyLoren = getPosition().getEntitiesNearby(2, MineCart.class);
-		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
-		if (hole != null && (hole instanceof PortalBlockLogic))
-			nearbyLoren.forEach(
-				(l) -> {
-					l.setPosition(((PortalBlockLogic) hole).getPortal().getTarget());
-				}
-			);
+		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().addVector(0, 0, -1).getLogic();
+		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
+			getPosition().getEntitiesNearby(2, MineCart.class)
+				.forEach(l -> {
+					((AbstractGameObject) l).setPosition(((PortalBlockLogic) holeLogic).getPortal().getTarget());
+				});
+		}
 	}
 
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
-		if (hole != null && (hole instanceof PortalBlockLogic))
+		if (hole != null && hole instanceof PortalBlockLogic) {
 			actor.setPosition(((PortalBlockLogic) hole).getPortal().getTarget().cpy());
+		}
 	}
 
 	@Override

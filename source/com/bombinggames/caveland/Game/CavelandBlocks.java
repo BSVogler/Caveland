@@ -21,6 +21,9 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class CavelandBlocks implements CustomBlocks {
 
+	/**
+	 *
+	 */
 	public enum CLBlocks {
 		CONSTRUCTIONSITE((byte) 11, "Construction Site", false),
 		OVEN((byte) 12, "Oven", false),
@@ -69,7 +72,8 @@ public class CavelandBlocks implements CustomBlocks {
 			this.hasSides = hasSides;
 		}
 
-		private String getName(){
+		@Override
+		public String toString(){
 			return name;
 		}
 		
@@ -106,7 +110,7 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public String getName(byte id, byte value) {
-		return CLBlocks.valueOf(id).getName();
+		return CLBlocks.valueOf(id).toString();
 	}
 
 	@Override

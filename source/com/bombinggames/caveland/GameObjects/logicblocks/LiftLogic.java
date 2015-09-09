@@ -24,10 +24,10 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void update(float dt) {
 		ArrayList<MineCart> nearbyLoren = getPosition().getEntitiesNearby(2, MineCart.class);
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
-		if (hole != null && (hole instanceof PortalBlock))
+		if (hole != null && (hole instanceof PortalBlockLogic))
 			nearbyLoren.forEach(
 				(l) -> {
-					l.setPosition(((PortalBlock) hole).getPortal().getTarget());
+					l.setPosition(((PortalBlockLogic) hole).getPortal().getTarget());
 				}
 			);
 	}
@@ -35,8 +35,8 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
-		if (hole != null && (hole instanceof PortalBlock))
-			actor.setPosition(((PortalBlock) hole).getPortal().getTarget().cpy());
+		if (hole != null && (hole instanceof PortalBlockLogic))
+			actor.setPosition(((PortalBlockLogic) hole).getPortal().getTarget().cpy());
 	}
 
 	@Override

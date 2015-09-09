@@ -49,7 +49,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class PortalBlock extends AbstractBlockLogicExtension implements Interactable {
+public class PortalBlockLogic extends AbstractBlockLogicExtension implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
 	
@@ -58,7 +58,7 @@ public class PortalBlock extends AbstractBlockLogicExtension implements Interact
 	 * @param block
 	 * @param coord
 	 */
-	public PortalBlock(Block block, Coordinate coord){
+	public PortalBlockLogic(Block block, Coordinate coord){
 		super(block, coord);
 	}
 	

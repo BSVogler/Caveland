@@ -7,7 +7,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.Machine;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlock;
+import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
@@ -208,7 +208,7 @@ public class CavelandBlocks implements CustomBlocks {
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
 		if (block.getId() == 16) {
-			return new PortalBlock(block, coord);
+			return new PortalBlockLogic(block, coord);
 		}
 		if (block.getId() == 11) {
 			return new ConstructionSite(block, coord);

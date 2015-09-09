@@ -584,7 +584,7 @@ public class Point extends AbstractPosition {
 	 * @return every entitie in radius
 	 */
 	@SuppressWarnings("unchecked")
-	public <type extends AbstractEntity> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type){
+	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type){
 		ArrayList<type> result = new ArrayList<>(5);//defautl size 5
 		AbstractEntity[] entityList = Controller.getMap().getEntitys();
 

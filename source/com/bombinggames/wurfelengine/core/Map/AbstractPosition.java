@@ -182,7 +182,7 @@ public abstract class AbstractPosition implements Serializable {
 	 * @return every entitie in radius
 	 */
 	@SuppressWarnings("unchecked")
-	public <type extends AbstractEntity> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type) {
+	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
 
 		for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {

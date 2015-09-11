@@ -53,7 +53,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		super.spawn(point);
 		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
-		//addChild(front);
+		front.setName("MineCart Front");
 		return this;
 	}
 

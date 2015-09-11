@@ -42,12 +42,6 @@ public class CustomGameController extends Controller {
 		RenderBlock.setDestructionSound("blockDestroy");
 
 		mapSetup();
-		//grass test
-//		for (int i = 0; i < 500; i++) {
-//			new SimpleEntity(44).spawn(
-//				new Point((float) (Math.random()*Map.getGameWidth()), (float) (Math.random()*Map.getGameDepth()), 1, true)
-//			);
-//		}
 	}
 	
 	/**

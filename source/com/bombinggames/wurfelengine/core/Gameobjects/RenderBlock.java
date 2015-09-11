@@ -615,6 +615,7 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public void setValue(byte value) {
+		super.setValue(value);
 		blockData.setValue(value);
 	}
 

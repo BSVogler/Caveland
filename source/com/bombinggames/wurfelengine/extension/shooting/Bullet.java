@@ -57,8 +57,8 @@ public class Bullet extends AbstractEntity {
     private int impactSprite;
     
     /**
-	 * You can set a different sprite via {@link #setGraphicsId(byte)}. It uses the engine default sprite.
-     * @see #setGraphicsId(byte) 
+	 * You can set a different sprite via {@link #setSpriteId(byte)}. It uses the engine default sprite.
+     * @see #setSpriteId(byte) 
      */
     public Bullet(){
         super((byte) 12);//default graphics id is 12

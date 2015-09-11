@@ -201,19 +201,20 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private boolean hidden; 
     private float rotation;
 	private float scaling;
-	private byte graphicsID;
+	private byte spriteId;
+	private byte spriteValue;
 	
 	/**
 	 * default is RGBA 0x80808080.
 	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
-	
+
     /**
      * Creates an object.
      * @param id the id of the object which is used for rendering
      */
     protected AbstractGameObject(byte id) {
-		this.graphicsID = id;
+		this.spriteId = id;
 		if (id == 0)
 			setHidden(true);
     }
@@ -327,8 +328,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @param color color which gets multiplied with the tint. No change ( multiply with 1) is RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
-		if (getId() != 0){
-			AtlasRegion texture = getSprite(getCategory(), graphicsID, getValue());
+		if (spriteId != 0){
+			AtlasRegion texture = getSprite(getCategory(), spriteId, spriteValue);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth/2 - texture.offsetX,
@@ -392,9 +393,16 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @return 
 	 */
 	public byte getSpriteId() {
-		return graphicsID;
+		return spriteId;
 	}
-
+	
+	/**
+	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
+	 * @return 
+	 */
+	public byte getSpriteValue() {
+		return spriteValue;
+	}
 
 
     /**
@@ -457,8 +465,21 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * The id of the sprite. Default is the same as the id but in some cases some objects share their sprites.
 	 * @param id 
 	 */
-	public void setGraphicsId(byte id) {
-		graphicsID = id;
+	public void setSpriteId(byte id) {
+		spriteId = id;
+	}
+	
+	/**
+	 * The id of the sprite. Default is the same as the id but in some cases some objects share their sprites.
+	 * @param value 
+	 */
+	public void setSpriteValue(byte value) {
+		spriteValue = value;
+	}
+
+	@Override
+	public void setValue(byte value) {
+		spriteValue = value;
 	}
 	
 	/**
@@ -482,6 +503,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getAtlasRegion(){
-		return getSprite(getCategory(), graphicsID, getValue());
+		return getSprite(getCategory(), spriteId, getValue());
 	}
 }

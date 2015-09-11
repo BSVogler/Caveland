@@ -460,6 +460,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 */
 	@Override
 	public void setValue(byte value) {
+		super.setValue(value);
 		this.value = value;
 	}
 	

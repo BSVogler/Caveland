@@ -10,12 +10,13 @@ public class EntityBlock extends AbstractEntity {
 
 	public EntityBlock(byte id) {
 		super((byte) 1);//-1 and 0 are reserverd, so I don't know a good alternative
-		setGraphicsId(id);
+		setSpriteId(id);
 	}
 	
 	public EntityBlock(byte id, byte value) {
 		super((byte) 1, value);//-1 and 0 are reserverd, so I don't know a good alternative
-		setGraphicsId(id);
+		setSpriteId(id);
+		setSpriteValue(value);
 	}
 
 	@Override

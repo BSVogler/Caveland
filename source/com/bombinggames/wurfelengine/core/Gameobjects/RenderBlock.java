@@ -77,35 +77,39 @@ public class RenderBlock extends AbstractGameObject {
 		staticShade = shade;
 	}
 	
-	    /**
-     *  Returns a sprite sprite of a specific side of the block
-     * @param id the id of the block
-     * @param value the value of teh block
-     * @param side Which side?
-     * @return an sprite of the side
-     */
-    public static AtlasRegion getBlockSprite(final byte id, final byte value, final Side side) {
-        if (getSpritesheet() == null) throw new NullPointerException("No spritesheet found.");
-        
-        if (blocksprites[id][value][side.getCode()] == null){ //load if not already loaded
-            AtlasRegion sprite = getSpritesheet().findRegion('b'+Byte.toString(id)+"-"+value+"-"+side.getCode());
-            if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
-                
-                Gdx.app.debug("debug", 'b'+Byte.toString(id)+"-"+value +"-"+ side.getCode() +" not found");
-                
-                sprite = getSpritesheet().findRegion("b0-0-"+side.getCode());
-                
-                if (sprite == null) {//load generic error sprite if category sprite failed
-                    sprite = getSpritesheet().findRegion("error");
-                    if (sprite == null) throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
-                }
-            }
-            blocksprites[id][value][side.getCode()] = sprite;
-            return sprite;
-        } else {
-            return blocksprites[id][value][side.getCode()];
-        }
-    }
+	/**
+	 * Returns a sprite sprite of a specific side of the block
+	 *
+	 * @param id the id of the block
+	 * @param value the value of teh block
+	 * @param side Which side?
+	 * @return an sprite of the side
+	 */
+	public static AtlasRegion getBlockSprite(final byte id, final byte value, final Side side) {
+		if (getSpritesheet() == null) {
+			throw new NullPointerException("No spritesheet found.");
+		}
+
+		if (blocksprites[id][value][side.getCode()] == null) { //load if not already loaded
+			AtlasRegion sprite = getSpritesheet().findRegion('b' + Byte.toString(id) + "-" + value + "-" + side.getCode());
+			if (sprite == null) { //if there is no sprite show the default "sprite not found sprite" for this category
+				Gdx.app.debug("debug", 'b' + Byte.toString(id) + "-" + value + "-" + side.getCode() + " not found");
+
+				sprite = getSpritesheet().findRegion("b0-0-" + side.getCode());
+
+				if (sprite == null) {//load generic error sprite if category sprite failed
+					sprite = getSpritesheet().findRegion("error");
+					if (sprite == null) {
+						throw new NullPointerException("Sprite and category error not found and even the generic error sprite could not be found. Something with the sprites is fucked up.");
+					}
+				}
+			}
+			blocksprites[id][value][side.getCode()] = sprite;
+			return sprite;
+		} else {
+			return blocksprites[id][value][side.getCode()];
+		}
+	}
 	
 	/**
 	 * checks if a sprite is defined. if not the error sprite will be rendered

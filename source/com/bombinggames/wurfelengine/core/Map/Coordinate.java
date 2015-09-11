@@ -509,6 +509,22 @@ public class Coordinate extends AbstractPosition {
 		}
 		return false;
 	}
+	
+	/**
+	 * The chunk coordinate.
+	 * @return 
+	 */
+	public int getChunkX(){
+		return Math.floorDiv(x, Chunk.getBlocksX());
+	}
+	
+	/**
+	 * The chunk coordinate.
+	 * @return 
+	 */
+	public int getChunkY(){
+		return Math.floorDiv(y, Chunk.getBlocksY());
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -56,7 +56,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	private float productionCountDown;
 	private float burntime;
 	private final CollectibleContainer container = new CollectibleContainer((byte) 0);
-	private final SimpleEntity fire = new SimpleEntity((byte) 17);
+	private final transient SimpleEntity fire = new SimpleEntity((byte) 17);
 
 	/**
 	 * 

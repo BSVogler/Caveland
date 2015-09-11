@@ -1015,6 +1015,7 @@ public class Ejira extends MovableEntity implements Controllable {
 		if (interactButton == null) {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)
 			);
+			interactButton.setName("Interact Button");
 			interactButton.setCategory('i');
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);

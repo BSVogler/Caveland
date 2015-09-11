@@ -203,9 +203,8 @@ public class Chunk {
 		}
 		//check if block at position corespodends to saved, garbage collection
 		logicBlocks.removeIf((AbstractBlockLogicExtension lb) -> {
-				return !lb.isValid();
-			}
-		);
+			return !lb.isValid();
+		});
 	}
 
 	/**

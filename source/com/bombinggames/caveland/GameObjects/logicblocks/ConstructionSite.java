@@ -54,9 +54,9 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	
 	private static final long serialVersionUID = 1L;
 	private CollectibleContainer container;
-	private final CollectibleType[] neededItems;
-	private final int[] neededAmount;
-	private byte result;
+	private CollectibleType[] neededItems;
+	private int[] neededAmount;
+	private byte result = -1;
 	private byte resultValue;
 
 	/**
@@ -67,13 +67,6 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	 */
 	public ConstructionSite(Block block, Coordinate coord) {
 		super(block, coord);
-		if (result == 11) {
-			neededAmount = new int[]{2, 1};
-			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood};
-		} else {
-			neededAmount = new int[]{2, 1};
-			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
-		}
 	}
 
 	/**
@@ -83,8 +76,21 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	 * @param resultValue
 	 */
 	public void setResult(byte result, byte resultValue) {
-		this.result = result;
+		setResult(result);
 		this.resultValue = resultValue;
+	}
+
+	private void restoreResultFromValue() {
+		//set value for saving
+		if (getPosition().getBlock().getValue() == 0) {
+			setResult(CavelandBlocks.CLBlocks.OVEN.getId());
+		} else if (getPosition().getBlock().getValue() == 0) {
+			setResult(CavelandBlocks.CLBlocks.POWERSTATION.getId());
+		} else if (result == CavelandBlocks.CLBlocks.LIFT.getId()) {
+			setResult(CavelandBlocks.CLBlocks.LIFT.getId());
+		} else {
+			setResult(CavelandBlocks.CLBlocks.POWERSTATION.getId());
+		}
 	}
 	
 	/**
@@ -95,6 +101,21 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	public void setResult(byte result) {
 		this.result = result;
 		this.resultValue = 0;
+		if (CavelandBlocks.CLBlocks.OVEN.getId() == result) {
+			neededAmount = new int[]{2, 1};
+			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood};
+		} else {
+			neededAmount = new int[]{2, 1};
+			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
+		}
+		//set value for saving
+		if (result == CavelandBlocks.CLBlocks.OVEN.getId()) {
+			getPosition().getBlock().setValue((byte) 0);
+		} else if (result == CavelandBlocks.CLBlocks.POWERSTATION.getId()) {
+			getPosition().getBlock().setValue((byte) 1);
+		} else if (result == CavelandBlocks.CLBlocks.LIFT.getId()) {
+			getPosition().getBlock().setValue((byte) 2);
+		}
 	}
 
 	/**
@@ -118,15 +139,17 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 	}
 	
-	public boolean canAddFrontItem(AbstractEntity actor){
-		if (!(actor instanceof Ejira))
+	public boolean canAddFrontItem(AbstractEntity actor) {
+		if (!(actor instanceof Ejira)) {
 			return false;
+		}
 		Collectible frontItem = ((Ejira) actor).getInventory().getFrontCollectible();
 		boolean found = false;
 		if (frontItem != null) {
 			for (CollectibleType type : neededItems) {
-				if (frontItem.getType() == type)
+				if (frontItem.getType() == type) {
 					found = true;
+				}
 			}
 		}
 		return found;
@@ -134,9 +157,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	
 	/**
 	 * transforms the construction site into the wanted building
+	 *
 	 * @return true if success
 	 */
-	public boolean build(){
+	public boolean build() {
 		if (!canBuild()) {
 			return false;
 		}
@@ -149,19 +173,25 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	
 	/**
 	 * if the block can be transformed
-	 * @return 
+	 *
+	 * @return
 	 */
-	public boolean canBuild(){
+	public boolean canBuild() {
 		//check ingredients
 		for (int i = 0; i < neededItems.length; i++) {
-			if (container.count(neededItems[i]) < neededAmount[i])
+			if (container.count(neededItems[i]) < neededAmount[i]) {
 				return false;
+			}
 		}
 		return true;
 	}
-
+	
 	@Override
 	public void update(float dt) {
+		if (result==-1) {
+			restoreResultFromValue();
+		}
+		
 		if (isValid()) {
 			//find existing container
 			ArrayList<AbstractEntity> list = getPosition().getEntitiesInside(CollectibleContainer.class);
@@ -177,25 +207,30 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	}
 
 	private class ConstructionSiteWindow extends ActionBox {
+
 		private final ConstructionSite parent;
 
 		ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
-			super("Build id: "+CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
+			super("Build id: " + CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
 			ArrayList<String> list = new ArrayList<>(parent.container.getContent().size());
 			if (actor instanceof Ejira) {
-				if (canAddFrontItem(actor))
-					list.add("Add: " + ((Ejira)actor).getInventory().getFrontCollectible().getName());
-				else
+				if (canAddFrontItem(actor)) {
+					list.add("Add: " + ((Ejira) actor).getInventory().getFrontCollectible().getName());
+				} else {
 					list.add("Add: You have nothing to add");
-			} else
+				}
+			} else {
 				list.add("Add");
-			
-			if (parent.container.getContent().size() > 0)
-				list.add("Take: " + parent.container.getContent().get(parent.container.getContent().size()-1).getName());
-			else list.add("Empty");
-			list.add("Build: "+ parent.getStatusString());
+			}
+
+			if (parent.container.getContent().size() > 0) {
+				list.add("Take: " + parent.container.getContent().get(parent.container.getContent().size() - 1).getName());
+			} else {
+				list.add("Empty");
+			}
+			list.add("Build: " + parent.getStatusString());
 			addSelectionNames(list);
 		}
 

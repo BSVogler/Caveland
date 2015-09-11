@@ -33,6 +33,7 @@ public class Bausatz extends Collectible {
 	 * @param id the goal id
 	 */
 	protected void build(Coordinate coord, byte id){
+		//don't allow lift on non-hole
 		if (id == CLBlocks.LIFT.getId() && getPosition().toCoord().addVector(0, 0, -1).getBlock().getId() != CLBlocks.ENTRY.getId()){
 			return;
 		}

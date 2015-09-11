@@ -690,7 +690,7 @@ public class Ejira extends MovableEntity implements Controllable {
 			}
 			playAnimation('j');
 			if (isInAirJump) {
-				jump(4.7f, true);
+				jump(5.2f, true);//air jump a little bit higher
 				WE.SOUND.play("jetpack");
 //				for (int i = 0; i < 80; i++) {
 //					Dust dust = (Dust) new Dust(

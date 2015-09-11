@@ -65,7 +65,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	@Override
 	public void update(float dt) {
-		if (getPosition()!=null) {
+		if (getPosition()!=null && isValid()) {
 			//check if portal is there
 			if (portal==null){
 				ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);

@@ -53,7 +53,7 @@ import java.util.ArrayList;
 public class ConstructionSite extends AbstractBlockLogicExtension implements Interactable  {
 	
 	private static final long serialVersionUID = 1L;
-	private final CollectibleContainer container = new CollectibleContainer((byte) 0);
+	private CollectibleContainer container;
 	private final CollectibleType[] neededItems;
 	private final int[] neededAmount;
 	private byte result;
@@ -74,7 +74,6 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			neededAmount = new int[]{2, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
 		}
-		container.spawn(coord.toPoint());
 	}
 
 	/**
@@ -138,20 +137,43 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	 * @return true if success
 	 */
 	public boolean build(){
+		if (!canBuild()) {
+			return false;
+		}
+
+		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
+		container.dispose();
+		WE.SOUND.play("construct");
+		return true;
+	}
+	
+	/**
+	 * if the block can be transformed
+	 * @return 
+	 */
+	public boolean canBuild(){
 		//check ingredients
 		for (int i = 0; i < neededItems.length; i++) {
 			if (container.count(neededItems[i]) < neededAmount[i])
 				return false;
 		}
-
-		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
-		WE.SOUND.play("construct");
-		container.dispose();
 		return true;
 	}
 
 	@Override
 	public void update(float dt) {
+		if (isValid()) {
+			//find existing container
+			ArrayList<AbstractEntity> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+			if (!list.isEmpty()) {
+				container = (CollectibleContainer) list.get(0);
+			}
+
+			//respawn container if needed
+			if (container == null || container.shouldBeDisposed()) {
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
+			}
+		}
 	}
 
 	private class ConstructionSiteWindow extends ActionBox {

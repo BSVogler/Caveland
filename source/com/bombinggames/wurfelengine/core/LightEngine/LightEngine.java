@@ -548,65 +548,117 @@ public class LightEngine implements MapObserver {
 	 */
 	private void calcAO(Chunk chunk) {
 		//iterate over every block in chunk
-		DataIterator<Block> iterator = chunk.getIterator(0, Chunk.getBlocksZ()-1);
+		DataIterator<Block> iterator = chunk.getIterator(0, Chunk.getBlocksZ() - 1);
 		while (iterator.hasNext()) {
 			Block next = iterator.next();
 			//skip air and blocks without sides
-			if (next != null && next.hasSides()){
+			if (next != null && next.hasSides()) {
 				//analyze top side
 				Coordinate coord = chunk.getTopLeftCoordinate().cpy().addVector(
 					new int[]{
 						iterator.getCurrentIndex()[0],
 						iterator.getCurrentIndex()[1],
-						iterator.getCurrentIndex()[2]+1
+						iterator.getCurrentIndex()[2] + 1
 					}
 				);
-				
+
 				int aoFlags = 0;
 				//first check 0,2,4,6 then check 1,3,5,7
-				for (int side = 0; side < 9; side+=2) {//first round even sides
+				for (int side = 0; side < 9; side += 2) {//first round even sides
 					//second round odd sides
-					if (side == 8)
-						side=1;
+					if (side == 8) {
+						side = 1;
+					}
 					Block neighbor = coord.cpy().goToNeighbour(side).getBlock();
-					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()){
-						aoFlags |= 1 << (side+8);
+					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+						aoFlags |= 1 << (side + 8);
 						//don't double draw the sides in between
-						if (side%2==1) {
-							aoFlags &= ~(1 << (((side+1)%8)+8));//set next to false
-							aoFlags &= ~(1 << (((side+7)%8)+8));//Set previous to false
+						if (side % 2 == 1) {
+							aoFlags &= ~(1 << (((side + 1) % 8) + 8));//set next to false
+							aoFlags &= ~(1 << (((side + 7) % 8) + 8));//Set previous to false
 						}
 					} else {
-						aoFlags &= ~(1 << (side+8));
+						aoFlags &= ~(1 << (side + 8));
 					}
 				}
-				
+
 				//right side, side 2
 				//check right half, which is equivalent to top right at pos 1
-				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());
-				Block neighbor = coord.cpy().addVector(1, 0, 0).getBlock();
-				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
-					aoFlags |= 1 << 17;//third byte position 1
-				
-				//check bottom side, which is equivalent ot top right at pos 3
-				neighbor = coord.cpy().addVector(0, 0, -1).goToNeighbour(3).getBlock();
-				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
-					aoFlags |= 1 << 19;//third byte position 3
-				
-				next.setAoFlags(aoFlags);
+				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());//get current coordinate
 				
 				//left side, side 0
+
+				//right corner
+				Block neighbor = coord.addVector(0, 2, -1).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 3;//first byte position 3
+				}
+				coord.addVector(0, -2, 1);//revert
+				
+				//check bottom left
+				neighbor = coord.addVector(-1, 0, -1).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 5;//first byte position 5
+				}
+				coord.addVector(1, 0, 1);
+				
 				//check left half, which is equivalent to top right at pos 7
-				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());
-				neighbor = coord.cpy().addVector(-1, 0, 0).getBlock();
-				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
-					aoFlags |= 1 << 7;//first byte position 1
+				neighbor = coord.addVector(-1, 0, 0).getBlock();//go to left
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 6;//first byte position 6
+					aoFlags &= ~(1 << 5);//set next to false
+					aoFlags &= ~(1 << 7);//Set previous to false
+				}
+				coord.addVector(1, 0, 0);//revert
 				
 				//check bottom side, which is equivalent ot top right at pos 5
-				neighbor = coord.cpy().addVector(0, 0, -1).goToNeighbour(5).getBlock();
-				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides())
-					aoFlags |= 1 << 5;//first byte position 3
+				neighbor = coord.addVector(0, 0, -1).goToNeighbour(5).getBlock();//revert changes and go to neighbor
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 4;//first byte position 4
+					aoFlags &= ~(1 << 5);//set next to false
+					aoFlags &= ~(1 << 3);//Set previous to false
+				}
+				coord.goToNeighbour(1).addVector(0, 0, 1);//revert
 				
+				//right side, side 2=======
+				
+				//check bottom left
+				neighbor = coord.addVector(1, 0, -1).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 19;//third byte position 3
+				}
+				coord.addVector(-1, 0, 1);
+				
+				//check left corner
+				neighbor = coord.addVector(0, 2, -1).getBlock();//revert changes and go to neighbor
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 21;//third byte position 5
+				}
+				coord.addVector(0, -2, 1);
+				
+				//right
+				neighbor = coord.addVector(1, 0, 0).getBlock();
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 18;//third byte position 2
+					aoFlags &= ~(1 << 17);//set next to false
+					aoFlags &= ~(1 << 19);//Set previous to false
+				}
+				coord.addVector(-1, 0, 0);
+				
+				//check bottom side, which is equivalent to top right at pos 3
+				neighbor = coord.addVector(0, 0, -1).goToNeighbour(3).getBlock();//revert changes and go to neighbor
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 20;//third byte position 4
+					aoFlags &= ~(1 << 21);//set next to false
+					aoFlags &= ~(1 << 19);//Set previous to false
+				}
+				coord.goToNeighbour(7).addVector(0, 0, 1);
+
+				neighbor = coord.addVector(0, 2, 0).getBlock();//revert changes and go to neighbor
+				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
+					aoFlags |= 1 << 2;//first byte position 2
+					aoFlags |= 1 << 22;//third byte position 6
+				}
 				next.setAoFlags(aoFlags);
 			}
 		}

@@ -426,13 +426,14 @@ public class Map implements Cloneable {
 	/**
 	 * get the chunk where the coordinates are on
 	 * @param coord
-	 * @return
+	 * @return can return null if not loaded
 	 */
 	public Chunk getChunk(Coordinate coord){
+		//checks every chunk in memory
 		for (Chunk chunk : data) {
 			int left = chunk.getTopLeftCoordinate().getX();
 			int top  = chunk.getTopLeftCoordinate().getY();
-			//identify chunk
+			//check if coordinates are inside the chunk
 			if (
 				   left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
@@ -800,6 +801,8 @@ public class Map implements Cloneable {
 			AbstractEntity entity = entityList.get(i);
 			if (entity.isInMemoryArea()) {//only update entities in memory
 				entity.update(dt);
+			} else {
+				entity.requestChunk();
 			}
 		}
 

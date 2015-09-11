@@ -480,4 +480,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		if (health < 0) health = 0;
 		this.health = health;
 	}
+
+	/**
+	 * loads the chunk at the position
+	 */
+	public void requestChunk() {
+		if (isSpawned()) {
+			Chunk chunk = position.toCoord().getChunk();
+			if (chunk == null) {
+				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
+			}
+		}
+	}
 }

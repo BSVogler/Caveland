@@ -406,9 +406,9 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
+	 * Copy safe.
 	 * O(const)
 	 * @return the coordiante's origin is the center
-	 * @see #refreshCachedPoint()
 	 */
 	@Override
 	public Point toPoint() {

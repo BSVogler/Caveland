@@ -328,11 +328,12 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	/**
 	 * true if on chunk which is in memory
 	 * @return 
+	 * @see Coord#isInMemoryAreaHorizontal() 
 	 */
 	public boolean isInMemoryArea() {
 		if (position==null)
 			return false;
-		return position.isInMemoryAreaHorizontal();
+		return position.toCoord().isInMemoryAreaHorizontal();
 	}
 	
 	    /**

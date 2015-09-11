@@ -31,12 +31,11 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.ArrayList;
@@ -279,14 +278,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
-		if (WE.CVARS.getValueB("mapUseChunks")){
-			if (((Map) Controller.getMap()).getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)))) {
-				return true;
-			}
-		} else {
-			//to-do add method for completemap
-		}
-		return false;
+		return Controller.getMap().getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)));
 	}
 
 	/**
@@ -299,14 +291,10 @@ public class Coordinate extends AbstractPosition {
 	public boolean isInMemoryArea() {
 		boolean found = false;
 		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
-			if (WE.CVARS.getValueB("mapUseChunks")){//to-do add method for completemap
-				for (Chunk chunk : ((Map) Controller.getMap()).getData()) {
-					if (chunk.hasCoord(this)) {
-						found = true;
-					}
+			for (Chunk chunk : Controller.getMap().getData()) {
+				if (chunk.hasCoord(this)) {
+					found = true;
 				}
-			} else {
-			
 			}
 		}
 		return found;
@@ -359,12 +347,16 @@ public class Coordinate extends AbstractPosition {
 			}
 		}
 		if (-x + y >= Block.GAME_DIAGLENGTH2) {
-			if (result == 3) {
-				result = 4;
-			} else if (result == 7) {
-				result = 6;
-			} else {
-				result = 5;
+			switch (result) {
+				case 3:
+					result = 4;
+					break;
+				case 7:
+					result = 6;
+					break;
+				default:
+					result = 5;
+					break;
 			}
 		}
 		return result;

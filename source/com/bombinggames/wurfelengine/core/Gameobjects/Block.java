@@ -173,15 +173,19 @@ public class Block implements HasID, Serializable {
 	}
 
 	/**
-	 * Creates a new logic instance
+	 * Creates a new logic instance. This can happen before the chunk is filled
+	 * at this position.
+	 *
 	 * @param coord
-	 * @return 
+	 * @return
 	 */
-	public AbstractBlockLogicExtension getLogicInstance(Coordinate coord){
-		if (customBlocks==null) return null;
+	public AbstractBlockLogicExtension getLogicInstance(Coordinate coord) {
+		if (customBlocks == null) {
+			return null;
+		}
 		return customBlocks.newLogicInstance(this, coord);
 	}
-	
+
 	private byte id;
 	private byte value;
 	private byte health = 100;

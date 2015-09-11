@@ -13,7 +13,7 @@ public abstract class AbstractBlockLogicExtension {
 	 */
 	private final Coordinate coord;
 	/**
-	 * logic points to which block?
+	 * Logic points to which block? Should be used only for validity check and acces via coordinate.
 	 */
 	private final Block block;
 

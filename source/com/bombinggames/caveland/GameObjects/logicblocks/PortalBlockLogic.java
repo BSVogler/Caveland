@@ -72,7 +72,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 				if (!portals.isEmpty()){
 					portal = (Portal) portals.get(0);
 				} else {
-					portal = (Portal) new Portal();
+					portal = new Portal();
 				}
 				if (!portal.isSpawned())
 					portal.spawn(getPosition().toPoint());

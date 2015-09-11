@@ -42,6 +42,7 @@ public class SimpleEntity extends AbstractEntity {
      */
     public SimpleEntity(byte id) {
         super(id);
+		setName("Simple Entity");
     }
 	
 	 /**

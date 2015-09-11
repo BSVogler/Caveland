@@ -1,11 +1,11 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.Torch;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.Machine;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -81,7 +81,7 @@ public class CavelandBlocks implements CustomBlocks {
 			return hasSides;
 		}
 
-		public byte getId() {
+		final public byte getId() {
 			return id;
 		}
 
@@ -92,19 +92,14 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
-		switch (data.getId()) {
-			case 13:
-				return new Torch(data);
-			case 60:
-				return new Machine(data);
-			case 72:
-				return new CustomTree(data);
-//		case 72:
-//			block = new AnimatedBlock(id, new int[]{1000,1000},true, true);//animation lighting
-//			block.setObstacle(true);
-//		break;
-			default:
-				return new RenderBlock(data);
+		if (data.getId() == CLBlocks.TORCH.getId()) {
+			return new Torch(data);
+		} else if (data.getId() == CLBlocks.TREE.getId()) {
+			return new CustomTree(data);
+		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.getId()) {
+			return new ConstructionSiteRender(data);
+		}else {
+			return new RenderBlock(data);
 		}
 	}
 

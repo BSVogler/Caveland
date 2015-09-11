@@ -673,7 +673,7 @@ public class Ejira extends MovableEntity implements Controllable {
 	@Override
 	public void jump() {
 		//check if an arijump can be performed
-		if (isSpawned() && !isInAirJump || canJumpFromGround()) {
+		if (isSpawned() && (!isInAirJump || canJumpFromGround())) {
 			if (!canJumpFromGround()) {
 				//do an airjump
 				isInAirJump = true;

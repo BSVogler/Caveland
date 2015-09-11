@@ -61,25 +61,27 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 
 	/**
 	 * the resulting block
+	 *
 	 * @param block the block where this logic is performed
 	 * @param coord
 	 */
 	public ConstructionSite(Block block, Coordinate coord) {
 		super(block, coord);
-		if (result==11) {
-			neededAmount = new int[]{2,1};
-			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood };
+		if (result == 11) {
+			neededAmount = new int[]{2, 1};
+			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood};
 		} else {
-			neededAmount = new int[]{2,1};
-			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood };
+			neededAmount = new int[]{2, 1};
+			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
 		}
 		container.spawn(coord.toPoint());
 	}
 
 	/**
 	 * The result if you finish the construction.
+	 *
 	 * @param result
-	 * @param resultValue 
+	 * @param resultValue
 	 */
 	public void setResult(byte result, byte resultValue) {
 		this.result = result;
@@ -88,21 +90,23 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	
 	/**
 	 * The result if you finish the construction. Value is set to 0
+	 *
 	 * @param result
 	 */
 	public void setResult(byte result) {
 		this.result = result;
 		this.resultValue = 0;
 	}
-	
+
 	/**
 	 * A string shows what is there and what is needed for construction.
-	 * @return 
+	 *
+	 * @return
 	 */
-	public String getStatusString(){
+	public String getStatusString() {
 		String string = "";
 		for (int i = 0; i < neededItems.length; i++) {
-			string += container.count(neededItems[i])+"/"+ neededAmount[i] +" "+neededItems[i] + ", ";
+			string += container.count(neededItems[i]) + "/" + neededAmount[i] + " " + neededItems[i] + ", ";
 		}
 		return string;
 	}

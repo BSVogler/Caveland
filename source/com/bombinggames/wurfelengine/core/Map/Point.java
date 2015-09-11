@@ -115,9 +115,9 @@ public class Point extends AbstractPosition {
     public Coordinate toCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-            (int) Math.floor(getX() / (float) Block.GAME_DIAGLENGTH),
-            (int) Math.floor(getY() / (float) Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
-			(int) Math.floor(z/Block.GAME_EDGELENGTH)
+			Math.floorDiv((int) getX(), Block.GAME_DIAGLENGTH),
+            Math.floorDiv((int) getY(), Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
+			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
 		);
 //		//clamp at top border
 //		if (coords.getZ() >= Chunk.getBlocksZ())

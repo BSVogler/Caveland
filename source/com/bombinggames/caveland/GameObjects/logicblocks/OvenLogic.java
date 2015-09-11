@@ -44,6 +44,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  * The manager of the logic of the oven block.
@@ -55,7 +56,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
 	private float burntime;
-	private final CollectibleContainer container = new CollectibleContainer((byte) 0);
+	private CollectibleContainer container;
 	private final transient SimpleEntity fire = new SimpleEntity((byte) 17);
 
 	/**
@@ -93,6 +94,19 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	
 	@Override
 	public void update(float dt) {
+		if (isValid()) {
+			//find existing container
+			ArrayList<AbstractEntity> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+			if (!list.isEmpty()) {
+				container = (CollectibleContainer) list.get(0);
+			}
+
+			//respawn container if needed
+			if (container == null || container.shouldBeDisposed()) {
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
+			}
+		}
+		
 		if (burntime > 0) {//while the oven is burning
 			emitter.setActive(true);
 			fire.setHidden(false);

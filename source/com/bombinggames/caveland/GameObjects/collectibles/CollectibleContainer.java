@@ -80,9 +80,8 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * only allows collectibles to be added.
 	 *
-	 * @param collectible if not an collectible nothing happens
+	 * @param collectible 
 	 */
 	public void addCollectible(Collectible collectible) {
 		collectible.setHidden(true);

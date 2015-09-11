@@ -232,7 +232,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	public abstract int getDimensionZ();
 	
 	  /**
-     * Return the coordinates of the SelfAware object.
+     * Return the coordinates of the object.
      * @return Reference to the position object which points to the location in the game world.
      */
     public abstract AbstractPosition getPosition();

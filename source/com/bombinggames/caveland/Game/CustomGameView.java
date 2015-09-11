@@ -159,9 +159,10 @@ public class CustomGameView extends GameView{
     }
 
 	/**
-	 * 
+	 * Shortcut method.
 	 * @param id 0 is first player, 1 is second
 	 * @return 
+	 * @see CustomGameController#getPlayer(int) 
 	 */
 	public Ejira getPlayer(int id){
 		return ((CustomGameController) getController()).getPlayer(id);

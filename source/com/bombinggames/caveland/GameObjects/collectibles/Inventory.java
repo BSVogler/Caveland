@@ -115,7 +115,7 @@ public class Inventory extends CollectibleContainer {
 	
 	/**
 	 * Add item at the back.
-	 * @param col
+	 * @param col the item you add
 	 * @return false if inventory is full. True if sucessfull.
 	 */
 	public final boolean add(Collectible col) {

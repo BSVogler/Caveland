@@ -1,5 +1,6 @@
 package com.bombinggames.caveland;
 
+import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.Portal;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
@@ -27,6 +28,9 @@ public class PortalTargetCommand implements ConsoleCommand {
 		for (AbstractEntity ent : selected) {
 			if (ent instanceof Portal){
 				((Portal)ent).setTarget(new Coordinate(x, y, z));
+				return true;
+			} else if (ent instanceof ExitPortal){
+				((ExitPortal)ent).setTarget(new Coordinate(x, y, z));
 				return true;
 			}
 		}

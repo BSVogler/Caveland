@@ -71,26 +71,27 @@ public class PlacableGUI extends WidgetGroup {
  */
 	public PlacableGUI(Stage stage, Selection selection, boolean left) {
 		this.stage = stage;
-		
-		image = new Image(new BlockDrawable(getId(),getValue(),-0.4f));
-		image.setPosition(getX()+50, getY()+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+
+		image = new Image(new BlockDrawable(getId(), getValue(), -0.4f));
+		image.setPosition(getX() + 50, getY() + 60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
 		addActor(image);
-		slider = new Slider(-1, Block.VALUESNUM-1, 1, false, WE.getEngineView().getSkin());
+		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
-		
-		label = new Label(Integer.toString(getId()) + " - "+ Integer.toString(getValue()), WE.getEngineView().getSkin());
+
+		label = new Label(Integer.toString(getId()) + " - " + Integer.toString(getValue()), WE.getEngineView().getSkin());
 		addActor(label);
-		
+
 		blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
 		blockPosition.setPosition(60, 30);
-		
-		if (left)
-			setPosition(200, stage.getHeight()-300);
-		else
-			setPosition(stage.getWidth()-200, stage.getHeight()-300);
-				
+
+		if (left) {
+			setPosition(200, stage.getHeight() - 300);
+		} else {
+			setPosition(stage.getWidth() - 200, stage.getHeight() - 300);
+		}
+
 		addActor(blockPosition);
 	}
 

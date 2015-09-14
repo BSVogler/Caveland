@@ -159,7 +159,6 @@ public class Map implements Cloneable {
 	 * observer pattern
 	 */
 	private final ArrayList<MapObserver> observers = new ArrayList<>(2);//camera + light engine=2 minimum
-	private float gameSpeed;
 	private final Block groundBlock = Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
 	private final File directory;
@@ -690,15 +689,6 @@ public class Map implements Cloneable {
 		return activeSaveSlot;
 	}
 
-		/**
-	 * Set the speed of the world.
-	 *
-	 * @param gameSpeed
-	 */
-	public void setGameSpeed(float gameSpeed) {
-		this.gameSpeed = gameSpeed;
-	}
-
 	/**
 	 * Set the generator used for generating maps
 	 *
@@ -777,20 +767,13 @@ public class Map implements Cloneable {
 		this.modified = true;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
-	public float getGameSpeed() {
-		return gameSpeed;
-	}
 
 		/**
 	 *Updates mostly the entities.
 	 * @param dt
 	 */
 	public void update(float dt) {
-		dt *= gameSpeed;//aplly game speed
+		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
 
 	//update every block on the map
 		for (Chunk chunk : data) {

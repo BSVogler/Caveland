@@ -40,10 +40,10 @@ import com.bombinggames.wurfelengine.core.GameView;
  * @author Benedikt Vogler
  */
 public class GameViewWithCamera extends GameView {
-    
-    @Override
-    public void init(Controller controller) {
-        super.init(controller);
-        addCamera(new Camera(this));
-    }
+
+	@Override
+	public void init(Controller controller, GameView oldView) {
+		super.init(controller, oldView);
+		 addCamera(new Camera(this));
+	}
 }

@@ -23,7 +23,7 @@ public class PortalTargetCommand implements ConsoleCommand {
 		if (!parameters.hasMoreTokens()) return false;
 		int z = Integer.parseInt(parameters.nextToken());
 
-		ArrayList<AbstractEntity> selected = gameplay.getEditorController().getSelectedEntities();
+		ArrayList<AbstractEntity> selected = gameplay.getController().getSelectedEntities();
 		for (AbstractEntity ent : selected) {
 			if (ent instanceof Portal){
 				((Portal)ent).setTarget(new Coordinate(x, y, z));

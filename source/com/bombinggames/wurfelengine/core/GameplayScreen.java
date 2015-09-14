@@ -31,7 +31,6 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
-import com.bombinggames.wurfelengine.MapEditor.MapEditorController;
 import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
 import com.bombinggames.wurfelengine.WE;
 import static com.bombinggames.wurfelengine.core.Controller.getMap;
@@ -48,7 +47,6 @@ public class GameplayScreen extends WEScreen {
     
     private GameView view = null;
     private Controller controller = null;
-    private MapEditorController editorController;
     private MapEditorView editorView;
 	private LoadingScreen loadingScreen;
     
@@ -131,7 +129,7 @@ public class GameplayScreen extends WEScreen {
         WE.getEngineView().resetInputProcessors();
         GameView.classInit();
         this.controller.init();
-        this.view.init(controller);
+        this.view.init(controller, null);
         controller.enter();
         view.enter();
 		
@@ -159,20 +157,6 @@ public class GameplayScreen extends WEScreen {
 		view.dispose();
 		WE.SOUND.disposeMusic();
         Controller.staticDispose();
-    }
-
-    /**
-     * lazy init
-     * @return 
-     */
-    public MapEditorController getEditorController() {
-        if (editorController==null){
-            editorController = new MapEditorController(
-                view,
-                controller
-            );
-        }
-        return editorController;
     }
 
    /**

@@ -32,12 +32,16 @@ package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -137,6 +141,8 @@ public class Controller implements GameManager, MapObserver {
     private boolean initalized= false;
 	private int saveSlot;
 	private String mapName = "default";
+	protected ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
+	protected final Selection selectionEntity = new Selection();
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called before calling init().
@@ -234,6 +240,11 @@ public class Controller implements GameManager, MapObserver {
 		} else {
 			devtools = null;
 		}
+		
+		if (!selectionEntity.isSpawned())
+			selectionEntity.spawn(
+			new Point(0, 0, getMap().getBlocksZ()-1)
+		);
     }
 	
     /**
@@ -267,6 +278,7 @@ public class Controller implements GameManager, MapObserver {
     
 	@Override
     public void exit(){
+		Gdx.app.debug("MEController", "exited");
 	}
 
 	@Override
@@ -284,5 +296,38 @@ public class Controller implements GameManager, MapObserver {
 	@Override
 	public void onMapReload() {
 	}
+
+	/**
+	 * filter map editor entities
+	 * @return selected entities but map editor entities
+	 */
+	public ArrayList<AbstractEntity> getSelectedEntities() {
+		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
+		for (AbstractEntity ent : selectedEntities) {
+			if (ent.isSpawned() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") && !ent.equals(selectionEntity)) {
+				selection.add(ent);
+			}
+		}
+		return selection;
+	}
+
+	/**
+	 *Get the entity laying under the cursor.
+	 * @return
+	 */
+	public Selection getSelectionEntity() {
+		return selectionEntity;
+	}
+
+//    /**
+//     * Leave editor
+//     * @param replay true when everything should be reloaded, else just a switch to last status
+//     */
+//    public void switchToGame(boolean replay){
+//		if (replay)
+//			WE.switchSetupWithInit(gameplayController, gameplayView);
+//		else
+//			WE.switchView(gameplayController, gameplayView);
+//    }
 	
 }

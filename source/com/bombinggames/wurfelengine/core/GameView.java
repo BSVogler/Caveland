@@ -82,6 +82,9 @@ public class GameView extends View implements GameManager {
         
     private boolean initalized;
 	
+	/**
+	 * backup of cvar for keeping the time steady when changed in another view
+	 */
 	private float gameSpeed = 1f;
 	
 		/**
@@ -104,39 +107,77 @@ public class GameView extends View implements GameManager {
         RenderBlock.loadSheet();
     }
     
-    /**
-     *Loades some files and set up everything. This should be done after creating and linking the view.
-     * @param controller The data sources used for the view. Can be null but should not.
-     */
-    public void init(final Controller controller){
-        super.init();
-        Gdx.app.debug("GameView", "Initializing");
-        
-        this.controller = controller;
-        
-        //clear old stuff
-        cameras.clear();
-        
-        //set up renderer
-        libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	/**
+	 * Loades some files and set up everything. This should be done after
+	 * creating and linking the view. After this has been inactive use {@link #onEnter() }
+	 *
+	 * @param controller The data sources used for the view. Can be null but
+	 * should not.
+	 * @param oldView The view used before. Can be null.
+	 * @see #onEnter() 
+	 */
+	public void init(final Controller controller, final GameView oldView) {
+		super.init();
+		Gdx.app.debug("GameView", "Initializing");
 
-        shRenderer = new ShapeRenderer();
-        
-        //set up stage
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());//spawn at fullscreen
-        
-        initalized = true;
-		
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
+		this.controller = controller;
+
+		//clear old stuff
+		cameras.clear();
+
+		//set up renderer
+		libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		shRenderer = new ShapeRenderer();
+
+		//set up stage
+		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());//spawn at fullscreen
+
 		spriteBatch.setShader(null);//set default shader
-    }
-    
+
+		initalized = true;
+	}
+
+	/**
+	 * Override to specify what should happen when the mangager becomes active.
+	 */
+	@Override
+	public void onEnter() {
+		//no code here so missing super call has code executed in enter()
+	}
+
+	@Override
+	public final void enter() {
+		Gdx.app.debug("GameView", "Entering");
+		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
+
+		//enable cameras
+		for (Camera camera : cameras) {
+			camera.setActive(true);
+		}
+
+		if (WE.SOUND != null) {
+			WE.SOUND.setView(this);
+		}
+
+		if ((boolean) WE.CVARS.get("DevMode").getValue()) {
+			WE.getEngineView().setCursor(0);
+		}
+
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		//restore gameSpeed
+		WE.CVARS.get("timespeed").setValue(gameSpeed);
+		onEnter();
+	}
+
     /**
      *Updates every camera and everything else which must be updated.
      * @param dt time since last update in ms.
      */
     public void update(final float dt){
+		gameSpeed = WE.CVARS.getValueF("timespeed");
+		
         AbstractGameObject.resetDrawCalls();
         
         stage.act(dt);
@@ -462,34 +503,6 @@ public class GameView extends View implements GameManager {
     }
 
  
-   /**
-     * Override to specify what should happen when the mangager becomes active. Called when the 
-     */
-    @Override
-    public void onEnter(){
-		//no code here
-    }
-    
-    @Override
-    public final void enter() {
-        WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
-        
-		//enable cameras
-		for (Camera camera : cameras) {
-			camera.setActive(true);
-		}
-		
-		if (WE.SOUND != null)
-			WE.SOUND.setView(this);
-		
-		if ((boolean) WE.CVARS.get("DevMode").getValue())
-			WE.getEngineView().setCursor(0);
-				
-		Controller.getMap().setGameSpeed(gameSpeed);
-		
-        onEnter();
-    }
-	
 	@Override
 	public void exit(){
 		//disable cameras

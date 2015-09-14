@@ -59,7 +59,8 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class MapEditorView extends GameView {
-    private MapEditorController controller;
+    private Controller controller;
+	private GameView gameplayView;
     /**
      * the camera rendering the sceen
      */
@@ -88,13 +89,14 @@ public class MapEditorView extends GameView {
 	private int selectDownY;
 
     @Override
-    public void init(Controller controller) {
-        super.init(controller);
+    public void init(final Controller controller, final GameView oldView) {
+        super.init(controller, oldView);
         Gdx.app.debug("MEView", "Initializing");
-        this.controller = (MapEditorController) controller;     
-        
+        this.controller = controller;
+        this.gameplayView = oldView;
+		
 		camera = new Camera(
-			this.controller.getGameplayView().getCameras().get(0).getCenter(),//keep position
+			oldView.getCameras().get(0).getCenter(),//keep position
 			0,
 			0,
 			Gdx.graphics.getWidth(),
@@ -145,13 +147,50 @@ public class MapEditorView extends GameView {
 
 	@Override
     public void onEnter() {
-		camera.setCenter(this.controller.getGameplayView().getCameras().get(0).getCenter().cpy());//always keep the camera position
+		camera.setCenter(gameplayView.getCameras().get(0).getCenter().cpy());//always keep the camera position
 		camera.move(0, -camera.getWidthInViewSpc()/2);
         WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();
-		Controller.getMap().setGameSpeed(0);
+		WE.CVARS.get("timespeed").setValue(0f);//stop the game time
     }
+	
+	/**
+	 * Select every entity in this area.
+	 * @param x1 view space
+	 * @param y1 view space
+	 * @param x2 view space
+	 * @param y2 view space
+	 * @return the selection. unfiltered
+	 */
+	public ArrayList<AbstractEntity> select(int x1, int y1, int x2, int y2) {
+		//1 values are the smaller ones, make sure that this is the case
+		if (x2 < x1) {
+			int tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+		}
+		if (y2 < y1) {
+			int tmp = y1;
+			y1 = y2;
+			y2 = tmp;
+		}
+		getController().getSelectedEntities().clear();
+		for (AbstractEntity ent : getMap().getEntitys()) {
+			if ( //right sprite borde
+			//left spr. border
+			//bottom spr. border
+			ent.getPosition() != null && ent.getPosition().getViewSpcX(this) + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde
+			 && ent.getPosition().getViewSpcX(this) - ent.getAtlasRegion().getRegionWidth() / 2 <= x2 //left spr. border
+			 && ent.getPosition().getViewSpcY(this) - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
+			 && ent.getPosition().getViewSpcY(this) + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
+			) {
+				getController().getSelectedEntities().add(ent);
+			}
+		}
+		return getController().getSelectedEntities();
+	}
+	
     /**
      *
      * @param speed
@@ -237,7 +276,7 @@ public class MapEditorView extends GameView {
      * Manages the key inpts when in mapeditor view.
      */
     private class MapEditorInputListener implements InputProcessor {
-        private final MapEditorController controller;
+        private final Controller controller;
         private final MapEditorView view;
 		/**
 		 * the last button which went down
@@ -252,7 +291,7 @@ public class MapEditorView extends GameView {
 		private int lastX;
 		private int lastY;
 
-        MapEditorInputListener(MapEditorController controller, MapEditorView view) {
+        MapEditorInputListener(Controller controller, MapEditorView view) {
             this.controller = controller;
             this.view = view;
             selection = controller.getSelectionEntity();
@@ -264,10 +303,10 @@ public class MapEditorView extends GameView {
             //manage camera speed
             if (keycode == Keys.SHIFT_LEFT)
                 view.setCameraSpeed(1);
-			
+
 			if (keycode == Keys.G)
-				controller.switchToGame(false);
-        
+				WE.switchView(gameplayView, false);
+
 			//manage camera movement
 			if (keycode == Input.Keys.W)
 				view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
@@ -368,11 +407,11 @@ public class MapEditorView extends GameView {
 						Controller.getMap().setBlock(block);
 						break;
 					case SELECT:
-						if (WE.getEngineView().getCursor()!=2) {//not dragging
+						if (WE.getEngineView().getCursor() != 2) {//not dragging
 							selecting = true;
 							selectDownX = (int) screenXtoView(screenX, camera);
 							selectDownY = (int) screenYtoView(screenY, camera);
-							controller.select( selectDownX, selectDownY, selectDownX, selectDownY );
+							select(selectDownX, selectDownY, selectDownX, selectDownY);
 						}
 						break;
 					case ERASE:
@@ -442,7 +481,7 @@ public class MapEditorView extends GameView {
 					ent.getPosition().addVector(screenX - lastX, (screenY - lastY) * 2, 0);
 				}
 			} else if (selecting) {//currently selecting
-				controller.select(
+				select(
 					selectDownX,
 					selectDownY,
 					(int) screenXtoView(screenX, camera),
@@ -572,11 +611,11 @@ public class MapEditorView extends GameView {
     }
     
     private class LoadButton extends ClickListener{
-        private final MapEditorController controller;
+        private final Controller controller;
         private final MapEditorView view;
         
         private LoadButton(GameView view,Controller controller) {
-            this.controller = (MapEditorController) controller;
+            this.controller = controller;
             this.view = (MapEditorView) view;
         }
         

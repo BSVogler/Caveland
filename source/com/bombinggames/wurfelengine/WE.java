@@ -246,7 +246,6 @@ public class WE {
 			Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
 
 			getEngineView().getEditorToggler().setGameplayManagers(
-				controller,
 				view
 			);
 
@@ -278,18 +277,19 @@ public class WE {
 		inGame = true;
 		inEditor = false;
 		getEngineView().getEditorToggler().setGameplayManagers(
-			controller,
 			view
 		);
 		engineView.resetInputProcessors();
 		gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
 		gameplayScreen.setController(controller);
-		gameplayScreen.setView(view);
+
 		//initialize
 		Controller.getMap().disposeEntities();
 		controller.init();
-		view.init(controller);
+		view.init(controller, gameplayScreen.getView());
+		
+		gameplayScreen.setView(view);
 		//enter
 		controller.enter();
 		view.enter();
@@ -312,14 +312,13 @@ public class WE {
 	 * @param view the new view
 	 * @param editor true if this is the editor setup
 	 */
-	private static void switchSetup(final Controller controller, final GameView view, boolean editor) {
+	private static void switchSetup(final Controller controller, final GameView view, final boolean editor) {
 		Gdx.app.debug("Wurfel Engine", "Switching setup using Controller: " + controller.toString());
 		Gdx.app.debug("Wurfel Engine", "and View: " + view.toString());
 		inGame = true;
 		inEditor = editor;
 		if (!inEditor) {
 			getEngineView().getEditorToggler().setGameplayManagers(
-				controller,
 				view
 			);
 		}
@@ -327,17 +326,44 @@ public class WE {
 		gameplayScreen.getController().exit();
 		gameplayScreen.getView().exit();
 		gameplayScreen.setController(controller);
-		gameplayScreen.setView(view);
+
 		//init if not initialized
 		if (!controller.isInitalized()) {
 			controller.init();
 		}
 		if (!view.isInitalized()) {
-			view.init(controller);
+			view.init(controller, gameplayScreen.getView());
 		}
+		
+		gameplayScreen.setView(view);
 		//enter
 		view.enter();
 		controller.enter();
+	}
+	
+	/**
+	 * 
+	 * @param view
+	 * @param editor true if this is the editor setup
+	 */
+	public static void switchView(final GameView view, boolean editor){
+		Gdx.app.debug("Wurfel Engine", "View switch: " + view.toString());
+		inEditor = editor;
+		if (!inEditor) {
+			getEngineView().getEditorToggler().setGameplayManagers(
+				view
+			);
+		}
+		engineView.resetInputProcessors();
+		gameplayScreen.getView().exit();
+
+		//init if not initialized
+		if (!view.isInitalized()) {
+			view.init(gameplayScreen.getController(), gameplayScreen.getView());
+		}
+		gameplayScreen.setView(view);
+		//enter
+		view.enter();
 	}
 
 	/**
@@ -347,7 +373,7 @@ public class WE {
 	 * editor?
 	 */
 	public static void startEditor(boolean reverseMap) {
-		switchSetup(gameplayScreen.getEditorController(), gameplayScreen.getEditorView(), true);
+		switchView(gameplayScreen.getEditorView(), true);
 	}
 
 	/**
@@ -630,7 +656,7 @@ public class WE {
 				mainMenu = new BasicMainMenu(menuItems);
 			}
 			engineView = new EngineView();
-			engineView.init();
+			engineView.init(null, null);
 
 			console = new Console(
 				engineView.getSkin(),

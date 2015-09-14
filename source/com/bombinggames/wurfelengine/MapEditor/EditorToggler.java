@@ -20,34 +20,32 @@ public class EditorToggler {
 	private Image playButton;
 	private final float offsetX = 50;
 	private final float offsetY = 50;
-	private Controller controller;
-	private GameView view;
+	private GameView gameView;
 	private boolean visible = true;
 
 	/**
-	 * @param controller the controller used for play-mode
-	 * @param view the view used for play-mode
+	 * Set the gameView which are used for the current game.
+	 * @param view the gameView used for play-mode
 	 */
-	public void setGameplayManagers(Controller controller, GameView view) {
-		this.controller = controller;
-		this.view = view;
+	public void setGameplayManagers(GameView view) {
+		this.gameView = view;
 	}
 
 	/**
 	 * Adds the buttons to the stage if missing
 	 *
-	 * @param view The view which renders the buttons.
+	 * @param view The gameView which renders the buttons.
 	 * @param dt
 	 */
 	public void update(GameView view, float dt) {
 		if (WE.isInEditor() && visible) {
-			if (playButton == null && controller != null && this.view != null) {
+			if (playButton == null && this.gameView != null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 				//add play button
 				playButton = new Image(spritesheet.findRegion("play_button"));
 				playButton.setX(Gdx.graphics.getWidth() - offsetX);
 				playButton.setY(Gdx.graphics.getHeight() - offsetY);
-				playButton.addListener(new PlayButton(controller, this.view, false));
+				playButton.addListener(new PlayButton(this.gameView, false));
 				view.getStage().addActor(playButton);
 			}
 		} else {
@@ -87,7 +85,7 @@ public class EditorToggler {
 						new ClickListener() {
 							@Override
 							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								Controller.loadMap(Controller.getMap().getPath(), controller.getSaveSlot());
+								Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
 								if (!WE.isInEditor())
 									WE.startEditor(false);
 								return true;
@@ -154,9 +152,8 @@ public class EditorToggler {
 
 	private static class PlayButton extends ClickListener {
 
-		private final Controller controller;
 		private final boolean replay;
-		private final GameView gameview;
+		private final GameView gameView;
 
 		/**
 		 *
@@ -164,15 +161,14 @@ public class EditorToggler {
 		 * @param gameview
 		 * @param replay ignored at the moment
 		 */
-		private PlayButton(Controller controller, GameView gameview, boolean replay) {
-			this.controller = controller;
-			this.gameview = gameview;
+		private PlayButton(GameView gameview, boolean replay) {
+			this.gameView = gameview;
 			this.replay = replay;
 		}
 
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			WE.switchSetupWithInit(controller, gameview);
+			WE.switchView(gameView, false);
 			return true;
 		}
 	}

@@ -65,7 +65,7 @@ public abstract class View {
 	/**
 	 * initializes the view.
 	 */
-    public void init(){
+    protected final void init(){
 		loadShaders();
     }
     

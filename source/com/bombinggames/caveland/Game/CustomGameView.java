@@ -59,8 +59,8 @@ public class CustomGameView extends GameView{
 	private WidgetGroup modalGroup;
 	
     @Override
-    public void init(Controller controller) {
-        super.init(controller);
+    public void init(Controller controller, GameView oldView) {
+        super.init(controller, oldView);
         Gdx.app.debug("CustomGameView", "Initializing");
 		
 		if (!WE.CVARS.getValueB("ignorePlayer"))

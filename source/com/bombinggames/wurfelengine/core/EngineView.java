@@ -59,10 +59,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private int cursorId;
 	private OrthographicCamera camera;
     private EditorToggler editorToggler;
-	
+
 	@Override
-	public void init() {
-		super.init(null);
+	public void init(Controller controller, GameView oldView) {
+		super.init(controller, oldView);
 		Gdx.app.debug("EngineView","Initializing...");
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font

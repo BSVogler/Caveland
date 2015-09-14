@@ -139,7 +139,7 @@ public class GameView extends View implements GameManager {
 	}
 
 	/**
-	 * Override to specify what should happen when the mangager becomes active.
+	 * Override to specify what should happen when the mangager becomes active. You can ignore the super call.
 	 */
 	@Override
 	public void onEnter() {

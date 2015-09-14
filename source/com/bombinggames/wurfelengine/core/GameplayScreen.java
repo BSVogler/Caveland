@@ -70,7 +70,7 @@ public class GameplayScreen extends WEScreen {
              
 
     /**
-     *
+     * Get the current active view.
      * @return
      */
     public GameView getView() {
@@ -86,7 +86,7 @@ public class GameplayScreen extends WEScreen {
     }
 
     /**
-     *
+     * Set the currently used active view.
      * @param view
      */
     public void setView(final GameView view) {

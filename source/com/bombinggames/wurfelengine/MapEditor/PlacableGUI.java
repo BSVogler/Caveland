@@ -63,12 +63,12 @@ public class PlacableGUI extends WidgetGroup {
 	/** parent stage*/
 	private final Stage stage;
 
-/**
- * 
- * @param stage parent stage
- * @param selection the selection-Entity where the color comes from
- * @param left left mouse button tool?
- */
+	/**
+	 *
+	 * @param stage parent stage
+	 * @param selection the selection-Entity where the color comes from
+	 * @param left left mouse button tool?
+	 */
 	public PlacableGUI(Stage stage, Selection selection, boolean left) {
 		this.stage = stage;
 

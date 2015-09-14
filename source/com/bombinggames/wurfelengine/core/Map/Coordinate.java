@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -463,6 +464,16 @@ public class Coordinate extends AbstractPosition {
 					)
 			)
 			+ z * Block.VIEW_HEIGHT;
+	}
+	
+	@Override
+	public int getProjectionSpaceX(GameView view, Camera camera) {
+		return (int) (getViewSpcX(view)-camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
+	}
+	
+	@Override
+	public int getProjectionSpaceY(GameView view, Camera camera) {
+		return (int) (getViewSpcY(view)-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
 	}
 
 	@Override

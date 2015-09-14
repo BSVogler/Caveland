@@ -226,6 +226,17 @@ public class Point extends AbstractPosition {
             + (int) (getZ() * Block.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
 			);
     }
+
+	@Override
+	public int getProjectionSpaceX(GameView view, Camera camera) {
+		return (int) (getViewSpcX(view) - camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
+	}
+	
+	@Override
+	public int getProjectionSpaceY(GameView view, Camera camera) {
+		return (int) (getViewSpcY(view)-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
+	}
+	
     
     @Override
     public boolean isInMemoryAreaHorizontal() {

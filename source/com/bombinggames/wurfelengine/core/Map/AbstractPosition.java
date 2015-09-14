@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -83,6 +84,22 @@ public abstract class AbstractPosition implements Serializable {
      */
     public abstract int getViewSpcY(GameView View);
     
+	/**
+	 * maybe I mean screen space
+	 * @param View
+	 * @param camera
+	 * @return 
+	 */
+	public abstract int getProjectionSpaceX(GameView View, Camera camera);
+	
+	/**
+	 * maybe I mean screen space
+	 * @param View
+	 * @param camera
+	 * @return 
+	 */
+	public abstract int getProjectionSpaceY(GameView View, Camera camera);
+	
 	/**
      *Get as vector
      * @return copy safe

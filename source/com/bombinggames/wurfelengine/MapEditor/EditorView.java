@@ -224,26 +224,22 @@ public class EditorView extends GameView {
 			ShapeRenderer shr = getShapeRenderer();
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
-			shr.translate(
-				-camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2,
-				-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2,
-				0
-			);
+			
 			//outlines for selected entities
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
 				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
 				shr.rect(
-					selectedEntity.getPosition().getViewSpcX(this) - aR.getRegionWidth() / 2,
-					selectedEntity.getPosition().getViewSpcY(this) - aR.getRegionWidth() / 2,
+					selectedEntity.getPosition().getProjectionSpaceX(this, camera) - aR.getRegionWidth() / 2,
+					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
 					aR.getRegionWidth(),
 					aR.getRegionHeight()
 				);
+				this.drawString(selectedEntity.getName(),
+					selectedEntity.getPosition().getProjectionSpaceX(this, camera) + aR.getRegionWidth() / 2,
+					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
+					new Color(1, 1, 1, 1)
+				);
 			}
-			shr.translate(
-				camera.getViewSpaceX() - camera.getWidthInProjSpc() / 2,
-				camera.getViewSpaceY() - camera.getHeightInProjSpc() / 2,
-				0
-			);
 
 			//selection outline
 			if (selecting) {

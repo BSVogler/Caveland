@@ -34,6 +34,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -163,7 +164,7 @@ public class EditorView extends GameView {
 	 * @param y2 view space
 	 * @return the selection. unfiltered
 	 */
-	public ArrayList<AbstractEntity> select(int x1, int y1, int x2, int y2) {
+	public void select(int x1, int y1, int x2, int y2) {
 		//1 values are the smaller ones, make sure that this is the case
 		if (x2 < x1) {
 			int tmp = x1;
@@ -175,20 +176,18 @@ public class EditorView extends GameView {
 			y1 = y2;
 			y2 = tmp;
 		}
-		getController().getSelectedEntities().clear();
+		getController().clearSelection();
 		for (AbstractEntity ent : getMap().getEntitys()) {
-			if ( //right sprite borde
-			//left spr. border
-			//bottom spr. border
-			ent.getPosition() != null && ent.getPosition().getViewSpcX(this) + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde
-			 && ent.getPosition().getViewSpcX(this) - ent.getAtlasRegion().getRegionWidth() / 2 <= x2 //left spr. border
-			 && ent.getPosition().getViewSpcY(this) - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
-			 && ent.getPosition().getViewSpcY(this) + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
+			if (
+				ent.isSpawned()
+				 && ent.getPosition().getViewSpcX(this) + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde
+				 && ent.getPosition().getViewSpcX(this) - ent.getAtlasRegion().getRegionWidth() / 2 <= x2 //left spr. border
+				 && ent.getPosition().getViewSpcY(this) - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
+				 && ent.getPosition().getViewSpcY(this) + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
 			) {
-				getController().getSelectedEntities().add(ent);
+				getController().addToSelection(ent);
 			}
 		}
-		return getController().getSelectedEntities();
 	}
 	
     /**
@@ -430,23 +429,23 @@ public class EditorView extends GameView {
             return false;
         }
 
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            buttondown = -1;
-            
-            selection.update(view, screenX, screenY);
+		@Override
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			buttondown = -1;
+
+			selection.update(view, screenX, screenY);
 			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().toCoord();
-			
+
 			Tool toggledTool;
 
-			if (button == Buttons.RIGHT){
+			if (button == Buttons.RIGHT) {
 				toggledTool = toolSelection.getRightTool();
 			} else {
 				toggledTool = toolSelection.getLeftTool();
 			}
-			
-			switch (toggledTool){
+
+			switch (toggledTool) {
 				case DRAW:
 					break;
 				case REPLACE:
@@ -457,7 +456,7 @@ public class EditorView extends GameView {
 				case ERASE:
 					break;
 				case BUCKET:
-					if (bucketDown!=null) {
+					if (bucketDown != null) {
 						bucket(bucketDown, coords);
 						bucketDown = null;
 					}
@@ -465,8 +464,8 @@ public class EditorView extends GameView {
 				case SPAWN:
 					break;
 			}
-			
-            return true;
+
+			return true;
         }
 
         @Override

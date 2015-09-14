@@ -310,6 +310,15 @@ public class Controller implements GameManager, MapObserver {
 		}
 		return selection;
 	}
+	
+	public void clearSelection() {
+		selectedEntities.clear();
+	}
+	
+	public void addToSelection(AbstractEntity ent) {
+		selectedEntities.add(ent);
+	}
+
 
 	/**
 	 *Get the entity laying under the cursor.

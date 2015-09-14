@@ -575,11 +575,8 @@ public class EditorView extends GameView {
 
         @Override
         public boolean scrolled(int amount) {
-			if (!leftSelector.isVisible() && !rightSelector.isVisible()) {
-				camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
-				return true;
-			}
-            return false;
+			camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
+			return true;
         }
 
 		private void bucket(Coordinate from, Coordinate to) {

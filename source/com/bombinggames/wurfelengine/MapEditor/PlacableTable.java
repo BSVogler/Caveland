@@ -47,7 +47,7 @@ import java.util.Map;
 public class PlacableTable extends Table {
 	private final PlacableGUI placableGUI;
 	
-	private PlaceMode mode = PlaceMode.Blocks;
+	private boolean placeBlocks = true;
 	
 	/**
      * 
@@ -80,7 +80,7 @@ public class PlacableTable extends Table {
 		
         if (!hasChildren()){
 			int foundItems = 0;
-			if (mode == PlaceMode.Blocks) {//add blocks
+			if (placeBlocks) {//add blocks
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 					//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
 					Block block = Block.getInstance(i);
@@ -138,8 +138,8 @@ public class PlacableTable extends Table {
 	 *
 	 */
 	protected void showBlocks() {
-		mode = PlaceMode.Blocks;
-		placableGUI.setMode(mode);
+		placeBlocks = true;
+		placableGUI.setMode(placeBlocks);
 //		if (table !=null)
 		clearChildren();
 		show();
@@ -149,8 +149,8 @@ public class PlacableTable extends Table {
 	 *
 	 */
 	protected void showEntities() {
-		mode = PlaceMode.Entities;
-		placableGUI.setMode(mode);
+		placeBlocks = false;
+		placableGUI.setMode(placeBlocks);
 		if (placableGUI.getEntity()==null)//no init value for entity
 			placableGUI.setEntity(AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()

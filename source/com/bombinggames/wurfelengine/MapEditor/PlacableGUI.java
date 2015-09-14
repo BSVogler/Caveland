@@ -34,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -57,7 +58,7 @@ public class PlacableGUI extends WidgetGroup {
 	private String name;
 	private final Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
-	private PlaceMode mode = PlaceMode.Blocks;
+	private boolean placeBlocks = true;
 	private final Slider slider;
 	/** parent stage*/
 	private final Stage stage;
@@ -157,7 +158,7 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setValue(byte value) {
 		if (block != null) {
-			if (mode == PlaceMode.Blocks) {
+			if (placeBlocks) {
 				this.block = Block.getInstance(block.getId(), value);
 				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
 				image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
@@ -218,16 +219,16 @@ public class PlacableGUI extends WidgetGroup {
 	 *
 	 * @param mode
 	 */
-	public void setMode(PlaceMode mode) {
-		this.mode = mode;
+	public void setMode(boolean mode) {
+		this.placeBlocks = mode;
 	}
 	
 	/**
 	 *
 	 * @return
 	 */
-	public PlaceMode getMode() {
-		return mode;
+	public boolean getMode() {
+		return placeBlocks;
 	}
 
 	/**
@@ -257,7 +258,7 @@ public class PlacableGUI extends WidgetGroup {
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {
-		private PlacableGUI parent;
+		private final PlacableGUI parent;
 
 		ChangeListenerImpl(PlacableGUI parent) {
 			this.parent = parent;
@@ -265,8 +266,8 @@ public class PlacableGUI extends WidgetGroup {
 
 		@Override
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			if (((Slider)actor).getValue() > -1)
-				parent.setValue((byte) ((Slider)actor).getValue());
+			if (((ProgressBar)actor).getValue() > -1)
+				parent.setValue((byte) ((ProgressBar)actor).getValue());
 		}
 	}
 }

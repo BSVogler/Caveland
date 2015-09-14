@@ -170,20 +170,23 @@ public class Inventory extends CollectibleContainer {
 	@Override
 	public void render(GameView view, Camera camera) {
 		super.render(view, camera);
-		int inventoryPadding = 100;
-		float left = (view.getStage().getWidth() - 400) / view.getEqualizationScale();
-		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
-
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
-		float leftbgSprite = (view.getStage().getWidth() - 400 - bgSprite.getWidth()/2) / view.getEqualizationScale();
+		
+		float inventoryPadding = camera.getWidthInScreenSpc()*0.08f;
+		float left = (camera.getScreenPosX()+camera.getWidthInScreenSpc()*0.75f)/ view.getEqualizationScale() + bgSprite.getWidth()/2;
+		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
+
+
+		float leftbgSprite = (camera.getScreenPosX()+camera.getWidthInScreenSpc()*0.75f)/ view.getEqualizationScale();
+		// / view.getEqualizationScale()
 		bgSprite.setPosition(leftbgSprite, y);
 		bgSprite.draw(view.getSpriteBatch());
-		bgSprite.setX(leftbgSprite + inventoryPadding / view.getEqualizationScale());
+		bgSprite.setX(leftbgSprite + 80);
 		bgSprite.setScale(0.5f);
 		bgSprite.setY(bgSprite.getY()-20);
 		bgSprite.draw(view.getSpriteBatch());
-		bgSprite.setX(leftbgSprite + 2 * inventoryPadding / view.getEqualizationScale());
+		bgSprite.setX(leftbgSprite + 140);
 		bgSprite.draw(view.getSpriteBatch());
 
 		for (int i = 0; i < size(); i++) {

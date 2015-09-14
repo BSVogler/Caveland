@@ -73,7 +73,7 @@ public class PlacableGUI extends WidgetGroup {
 		this.stage = stage;
 
 		image = new Image(new BlockDrawable(getId(), getValue(), -0.4f));
-		image.setPosition(getX() + 50, getY() + 60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+		image.setPosition(50, 60);
 		addActor(image);
 		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);

@@ -34,7 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.bombinggames.wurfelengine.MapEditor.MapEditorView;
+import com.bombinggames.wurfelengine.MapEditor.EditorView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.text.NumberFormat;
 
@@ -104,7 +104,7 @@ public class DevTools {
     
     /**
      *Renders the diagramm. The batches should be closed before calling this method.
-     * @param view if from class {@link MapEditorView} removes or shows the buttons
+     * @param view if from class {@link EditorView} removes or shows the buttons
      */
     public void render(final GameView view){
         if (visible){

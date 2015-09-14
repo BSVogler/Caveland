@@ -48,7 +48,7 @@ public class Navigation {
      *
      * @param view
      */
-    protected void render(MapEditorView view){
+    protected void render(EditorView view){
             //draw layer navigation  on right side
             ShapeRenderer sh = WE.getEngineView().getShapeRenderer();
             Gdx.gl.glEnable(GL20.GL_BLEND);

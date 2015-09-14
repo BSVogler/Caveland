@@ -58,7 +58,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class MapEditorView extends GameView {
+public class EditorView extends GameView {
     private Controller controller;
 	private GameView gameplayView;
     /**
@@ -149,7 +149,7 @@ public class MapEditorView extends GameView {
     public void onEnter() {
 		camera.setCenter(gameplayView.getCameras().get(0).getCenter().cpy());//always keep the camera position
 		camera.move(0, -camera.getWidthInViewSpc()/2);
-        WE.getEngineView().addInputProcessor(new MapEditorInputListener(this.controller, this));
+        WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();
 		WE.CVARS.get("timespeed").setValue(0f);//stop the game time
@@ -275,9 +275,9 @@ public class MapEditorView extends GameView {
     /**
      * Manages the key inpts when in mapeditor view.
      */
-    private class MapEditorInputListener implements InputProcessor {
+    private class EditorInputListener implements InputProcessor {
         private final Controller controller;
-        private final MapEditorView view;
+        private final EditorView view;
 		/**
 		 * the last button which went down
 		 */
@@ -291,7 +291,7 @@ public class MapEditorView extends GameView {
 		private int lastX;
 		private int lastY;
 
-        MapEditorInputListener(Controller controller, MapEditorView view) {
+        EditorInputListener(Controller controller, EditorView view) {
             this.controller = controller;
             this.view = view;
             selection = controller.getSelectionEntity();
@@ -612,11 +612,11 @@ public class MapEditorView extends GameView {
     
     private class LoadButton extends ClickListener{
         private final Controller controller;
-        private final MapEditorView view;
+        private final EditorView view;
         
         private LoadButton(GameView view,Controller controller) {
             this.controller = controller;
-            this.view = (MapEditorView) view;
+            this.view = (EditorView) view;
         }
         
         @Override

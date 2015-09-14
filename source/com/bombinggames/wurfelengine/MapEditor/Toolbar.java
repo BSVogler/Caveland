@@ -36,10 +36,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.GameView;
 
 /**
  * A toolbar for the editor.
@@ -120,22 +120,27 @@ public class Toolbar extends Window {
 
 	private int leftPos;
 	private int bottomPos;
+	private final GameView view;
 
 	private final Image[] items = new Image[Tool.values().length];
 	private final PlacableTable left;
 	private final PlacableTable right;
+	
 	/**
 	 * creates a new toolbar
 	 *
-	 * @param stage
+	 * @param view
 	 * @param sprites
 	 * @param left
 	 * @param right
 	 */
-	public Toolbar(Stage stage, TextureAtlas sprites, PlacableTable left, PlacableTable right) {
+	public Toolbar(GameView view, TextureAtlas sprites, PlacableTable left, PlacableTable right) {
 		super("Tools", WE.getEngineView().getSkin());
-		leftPos = (int) (stage.getWidth() / 2 - items.length * 50 / 2);
-		bottomPos = (int) (stage.getHeight() - 100);
+		
+		this.view = view;
+		
+		leftPos = (int) (view.getStage().getWidth() / 2 - items.length * 50 / 2);
+		bottomPos = (int) (view.getStage().getHeight() - 100);
 
 		setPosition(leftPos, bottomPos);
 		setWidth(Tool.values().length * 25);
@@ -153,20 +158,20 @@ public class Toolbar extends Window {
 
 		//initialize selection
 		if (selectionLeft.selectFromBlocks) { //show entities on left
-			left.showBlocks();
+			left.showBlocks(view);
 		} else {//show blocks on left
 			if (selectionLeft.selectFromEntities) {
-				left.showEntities();
+				left.showEntities(view);
 			} else {
 				left.hide(true);
 			}
 		}
 
 		if (selectionRight.selectFromBlocks) { //show entities on left
-			right.showBlocks();
+			right.showBlocks(view);
 		} else { //show blocks on left
 			if (selectionRight.selectFromEntities) {
-				right.showEntities();
+				right.showEntities(view);
 			} else {
 				right.hide(true);
 			}
@@ -219,20 +224,20 @@ public class Toolbar extends Window {
 		selectionLeft = tool;
 		if (left) {
 			if (tool.selectFromBlocks) { //show entities on left
-				this.left.showBlocks();
+				this.left.showBlocks(view);
 			} else {//show blocks on left
 				if (tool.selectFromEntities) {
-					this.left.showEntities();
+					this.left.showEntities(view);
 				} else {
 					this.left.hide(true);
 				}
 			}
 		} else {
 			if (tool.selectFromBlocks) { //show entities on left
-				right.showBlocks();
+				right.showBlocks(view);
 			} else { //show blocks on left
 				if (tool.selectFromEntities) {
-					right.showEntities();
+					right.showEntities(view);
 				} else {
 					right.hide(true);
 				}

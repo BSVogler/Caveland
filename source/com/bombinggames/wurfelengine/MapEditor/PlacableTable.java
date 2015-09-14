@@ -34,6 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -71,19 +72,20 @@ public class PlacableTable extends Table {
 
 	/**
 	 *
+	 * @param view
 	 */
-	public void show() {
+	public void show(GameView view) {
 		if (!isVisible()) {
 			placableGUI.setVisible(true);
-			//placableGUI.moveToCenter(getWidth());//moving to center not needed with new reduced table
 			setVisible(true);
 		}
+		
+		//setScale(5f);
 
 		if (!hasChildren()) {
 			int foundItems = 0;
 			if (placeBlocks) {//add blocks
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
-					//table.add(new Label(Block.getInstance(i).getName()+" (" +i + ")" , WE.getEngineView().getSkin()));
 					Block block = Block.getInstance(i);
 					if (block == null || RenderBlock.isSpriteDefined(block) || !block.getName().equals("undefined")) {
 						SelectionItem button = new SelectionItem(
@@ -98,7 +100,8 @@ public class PlacableTable extends Table {
 						}
 					}
 				}
-			} else {//add every registered entity class
+			} else {
+				//add every registered entity class
 				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
 					: AbstractEntity.getRegisteredEntities().entrySet()) {
 					SelectionItem button = new SelectionItem(
@@ -139,29 +142,27 @@ public class PlacableTable extends Table {
 	/**
 	 *
 	 */
-	protected void showBlocks() {
+	protected void showBlocks(GameView view) {
 		placeBlocks = true;
 		placableGUI.setMode(placeBlocks);
-//		if (table !=null)
 		clearChildren();
-		show();
+		show(view);
 	}
 
 	/**
 	 *
 	 */
-	protected void showEntities() {
+	protected void showEntities(GameView view) {
 		placeBlocks = false;
 		placableGUI.setMode(placeBlocks);
-		if (placableGUI.getEntity() == null)//no init value for entity
-		{
+		if (placableGUI.getEntity() == null) {//no init value for entity
 			placableGUI.setEntity(AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
 		}
 
 		clearChildren();
-		show();
+		show(view);
 	}
 
 	public PlacableGUI getPlacableGUI() {
@@ -207,5 +208,4 @@ public class PlacableTable extends Table {
 			}
 		}
 	}
-
 }

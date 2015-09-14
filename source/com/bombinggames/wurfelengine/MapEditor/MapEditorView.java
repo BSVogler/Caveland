@@ -141,7 +141,7 @@ public class MapEditorView extends GameView {
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 		
-		toolSelection = new Toolbar(getStage(), spritesheet, leftSelector, rightSelector);
+		toolSelection = new Toolbar(this, spritesheet, leftSelector, rightSelector);
 		getStage().addActor(toolSelection);
     }
 

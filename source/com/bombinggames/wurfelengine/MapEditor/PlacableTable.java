@@ -28,7 +28,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.MapEditor;
 
 import com.badlogic.gdx.Gdx;
@@ -42,43 +41,45 @@ import java.util.Map;
 
 /**
  * A table containing all blocks where you can choose your block.
+ *
  * @author Benedikt Vogler
  */
 public class PlacableTable extends Table {
+
 	private final PlacableGUI placableGUI;
-	
+
 	private boolean placeBlocks = true;
-	
+
 	/**
-     * 
-     * @param colorGUI the linked preview of the selection
+	 *
+	 * @param colorGUI the linked preview of the selection
 	 * @param left
-     */
-    public PlacableTable(PlacableGUI colorGUI, boolean left) {
-        this.placableGUI = colorGUI;
-        
+	 */
+	public PlacableTable(PlacableGUI colorGUI, boolean left) {
+		this.placableGUI = colorGUI;
+
 		setWidth(400);
-		setHeight(Gdx.graphics.getHeight()-100);
+		setHeight(Gdx.graphics.getHeight() - 100);
 		setY(10);
-		
+
 		if (left) {
 			setX(0);
 		} else {
 			setX(1480);
 		}
-    }
+	}
 
-    /**
-     *
-     */
-    public void show(){
+	/**
+	 *
+	 */
+	public void show() {
 		if (!isVisible()) {
 			placableGUI.setVisible(true);
 			//placableGUI.moveToCenter(getWidth());//moving to center not needed with new reduced table
 			setVisible(true);
 		}
-		
-        if (!hasChildren()){
+
+		if (!hasChildren()) {
 			int foundItems = 0;
 			if (placeBlocks) {//add blocks
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
@@ -92,15 +93,14 @@ public class PlacableTable extends Table {
 						);
 						add(button);
 						foundItems++;
-						if (foundItems % 4 == 0)
+						if (foundItems % 4 == 0) {
 							row();//make new row
+						}
 					}
 				}
 			} else {//add every registered entity class
-				for (
-					Map.Entry<String, Class<? extends AbstractEntity>> entry
-					: AbstractEntity.getRegisteredEntities().entrySet()
-				) {
+				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
+					: AbstractEntity.getRegisteredEntities().entrySet()) {
 					SelectionItem button = new SelectionItem(
 						this,
 						new EntityDrawable(entry.getValue()),
@@ -109,31 +109,33 @@ public class PlacableTable extends Table {
 					add(button);
 
 					foundItems++;
-					if (foundItems % 4 == 0)
+					if (foundItems % 4 == 0) {
 						row();//make new row
+					}
 				}
 			}
 		}
-    }
-    
-    /**
-     *
+	}
+
+	/**
+	 *
 	 * @param includingSelection including the colro selection gui
-     */
-    public void hide(boolean includingSelection){
-        if (hasChildren()){
-            clear();
-        }
-		
-		if (isVisible()){
-			placableGUI.moveToBorder(placableGUI.getWidth()+100);
+	 */
+	public void hide(boolean includingSelection) {
+		if (hasChildren()) {
+			clear();
+		}
+
+		if (isVisible()) {
+			placableGUI.moveToBorder(placableGUI.getWidth() + 100);
 			setVisible(false);
 		}
-		
-		if (includingSelection)
+
+		if (includingSelection) {
 			placableGUI.hide();
-    }
-	
+		}
+	}
+
 	/**
 	 *
 	 */
@@ -151,11 +153,13 @@ public class PlacableTable extends Table {
 	protected void showEntities() {
 		placeBlocks = false;
 		placableGUI.setMode(placeBlocks);
-		if (placableGUI.getEntity()==null)//no init value for entity
+		if (placableGUI.getEntity() == null)//no init value for entity
+		{
 			placableGUI.setEntity(AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
-	
+		}
+
 		clearChildren();
 		show();
 	}
@@ -163,42 +167,45 @@ public class PlacableTable extends Table {
 	public PlacableGUI getPlacableGUI() {
 		return placableGUI;
 	}
-	
+
 	/**
 	 * detects a click on an entity in the list
 	 */
 	private class EntityListener extends ClickListener {
-        private final Class<? extends AbstractEntity> entclass;
+
+		private final Class<? extends AbstractEntity> entclass;
 		private final String name;
-        
-		EntityListener(String name, Class<? extends AbstractEntity> entclass){
-            this.entclass = entclass;
+
+		EntityListener(String name, Class<? extends AbstractEntity> entclass) {
+			this.entclass = entclass;
 			this.name = name;
-        }
-                
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            placableGUI.setEntity(name, entclass);
-        }
-     }
-	
+		}
+
+		@Override
+		public void clicked(InputEvent event, float x, float y) {
+			placableGUI.setEntity(name, entclass);
+		}
+	}
+
 	/**
 	 * detects a click on the RenderBlock in the list
 	 */
-    private class BlockListener extends ClickListener {
-        private final byte id;
-		
-		BlockListener(byte id){
-            this.id = id;
-        }
-                
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-			if (id==0)
+	private class BlockListener extends ClickListener {
+
+		private final byte id;
+
+		BlockListener(byte id) {
+			this.id = id;
+		}
+
+		@Override
+		public void clicked(InputEvent event, float x, float y) {
+			if (id == 0) {
 				placableGUI.setBlock(null);
-			else
+			} else {
 				placableGUI.setBlock(Block.getInstance(id));
-        }
-     }
-    
+			}
+		}
+	}
+
 }

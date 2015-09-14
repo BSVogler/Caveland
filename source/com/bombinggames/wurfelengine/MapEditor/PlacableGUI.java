@@ -98,19 +98,19 @@ public class PlacableGUI extends WidgetGroup {
 	@Override
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
-		image.setPosition(x+50, y+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+		image.setPosition(x+50, y+60);
 	}
 
 	@Override
 	public void setX(float x) {
 		super.setX(x);
-		image.setPosition(x+50, getY()+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+		image.setPosition(x+50, 60);
 	}
 
 	@Override
 	public void setY(float y) {
 		super.setY(y);
-		image.setPosition(getX()+50, y+60);//I don't know why but parent position get's rignored during rendering so this has to be absolute
+		image.setPosition(50, y+60);
 	}
 	
 	/**

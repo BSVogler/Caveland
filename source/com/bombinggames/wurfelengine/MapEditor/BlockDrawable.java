@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
  * @author Benedikt Vogler
  */
 public class BlockDrawable extends TextureRegionDrawable {
-    private RenderBlock block;
+    private final RenderBlock block;
 	/**
 	 * a factor relative to original size. 0 is default
 	 */

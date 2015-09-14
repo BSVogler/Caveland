@@ -23,6 +23,7 @@ public class Portal extends AbstractEntity  {
 	public Portal() {
 		super((byte) 0);
 		setIndestructible(true);
+		setName("Portal");
 	}
 	
 	/**

@@ -23,6 +23,7 @@ public class ExitPortal extends AbstractEntity implements Interactable  {
 	 */
 	public ExitPortal() {
 		super((byte) 15, (byte) 1);
+		setName("Exit Portal");
 	}
 	
 	/**

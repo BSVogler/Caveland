@@ -277,7 +277,7 @@ public class Block implements HasID, Serializable {
 			return null;
 		}
 		
-		if (id == 4) {
+		if (id == 4) {//invisible wall
 			RenderBlock a = new RenderBlock(this);
 			a.setHidden(true);
 			return a;
@@ -287,7 +287,7 @@ public class Block implements HasID, Serializable {
 			return new Sea(id);
 		}
 
-		if (id > 9 && customBlocks != null) {
+		if (customBlocks != null) {
 			return customBlocks.toRenderBlock(this);
 		}
 

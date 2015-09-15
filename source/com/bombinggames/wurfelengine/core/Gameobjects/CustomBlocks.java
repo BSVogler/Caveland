@@ -28,6 +28,11 @@ public interface CustomBlocks {
 	 */
 	public String getName(byte id, byte value);
 	
+	/**
+	 * 
+	 * @param data there are id's &lt; 10 which are fitlered before
+	 * @return 
+	 */
 	public RenderBlock toRenderBlock(Block data);
 	
 	/**

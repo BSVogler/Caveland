@@ -144,7 +144,6 @@ public class Enemy extends MovableEntity{
 
 					setMovement(d);// update the movement vector
 
-					mana = ((int) (mana + dt));
 				}
 				
 				//attack
@@ -152,6 +151,8 @@ public class Enemy extends MovableEntity{
 					performAttack();
 				}
             }
+			
+			mana = ((int) (mana + dt));
 			
 			
 			//find nearby target if there is none

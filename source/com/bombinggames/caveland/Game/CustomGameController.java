@@ -12,7 +12,6 @@ import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,8 +89,8 @@ public class CustomGameController extends Controller {
 		spawnPlayers();
 		
 		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")) {
-			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-20, -40, Chunk.getBlocksZ() - 1).toPoint());
-			introSpaceship.enableCrash(new Coordinate(0, 0, 8));
+			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
+			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
 			introSpaceship.setPassenger(player1);
 		}
 	}

@@ -88,7 +88,7 @@ public class Spaceship extends MovableEntity {
 			dir.z = 0;
 			setMovement(dir.nor().scl(11));//always fly to startCrash point
 		}
-		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < Block.GAME_EDGELENGTH*10) {
+		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < Block.GAME_EDGELENGTH*25) {
 			startCrash();
 		}
 

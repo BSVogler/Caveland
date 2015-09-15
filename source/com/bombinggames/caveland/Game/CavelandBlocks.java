@@ -92,17 +92,17 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
-		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
 			RenderBlock a = new RenderBlock(data);
 			if (data.getValue() > 0){
 				a.setSpriteId((byte) 3);
 			}
 			return a;
-		} else if (data.getId() == CLBlocks.TORCH.getId()) {
+		} else if (data.getId() == CLBlocks.TORCH.id) {
 			return new Torch(data);
-		} else if (data.getId() == CLBlocks.TREE.getId()) {
+		} else if (data.getId() == CLBlocks.TREE.id) {
 			return new CustomTree(data);
-		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.getId()) {
+		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSiteRender(data);
 		}else {
 			return new RenderBlock(data);
@@ -116,7 +116,7 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
-		if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.getId() && value > 0) {
+		if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id && value > 0) {
 			return true;
 		}
 		return CLBlocks.valueOf(id).hasSides;

@@ -219,7 +219,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			};
 
 			//if movement allowed => move
-			if (coliding && horizontalColission(getPosition().cpy().addVector(dMove)) ) {                
+			if (coliding && collidesHorizontal(getPosition().cpy().addVector(dMove)) ) {                
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
@@ -437,7 +437,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param pos the new position
      * @return 
      */
-    private boolean horizontalColission(Point pos){
+    private boolean collidesHorizontal(Point pos){
         boolean colission = false;
     
         //check for movement in y
@@ -687,7 +687,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                 getPosition().setZ(getPosition().getZ()-1);//move one down for check
                 
 				Block block = getPosition().getBlock();
-                boolean colission =  (block != null && block.isObstacle()) || horizontalColission(getPosition());
+                boolean colission =  (block != null && block.isObstacle()) || collidesHorizontal(getPosition());
                 getPosition().setZ(getPosition().getZ()+1);//reverse
                 
                 //if standing on ground on own or neighbour block then true

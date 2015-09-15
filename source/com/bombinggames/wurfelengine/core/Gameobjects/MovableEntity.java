@@ -345,29 +345,33 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 						if (cycleAnimation){
 							setValue((byte) (getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
 						} else {//bounce
-							if (stepMode) {//some strange step order
-								if (spritesPerDir==2){
-									if (walkingCycle >500)
-										setValue((byte) (getValue()+8));
-								} else if (spritesPerDir==3){
-									if (walkingCycle >750)
-										setValue((byte) (getValue()+16));
-									else
-										if (walkingCycle >250 && walkingCycle <500)
+							if (stepMode) { //some strange step order
+								switch (spritesPerDir) {
+									case 2:
+										if (walkingCycle >500)
 											setValue((byte) (getValue()+8));
-								} else if (spritesPerDir==4){
-									if (walkingCycle >=166 && walkingCycle <333)
-										setValue((byte) (getValue()+8));
-									else {
-										if ((walkingCycle >=500 && walkingCycle <666)
-											||
-											(walkingCycle >=833 && walkingCycle <1000)
-										){
+										break;
+									case 3:
+										if (walkingCycle >750)
 											setValue((byte) (getValue()+16));
-										} else if (walkingCycle >=666 && walkingCycle < 833) {
-											setValue((byte) (getValue()+24));
-										}
-									}
+										else
+											if (walkingCycle >250 && walkingCycle <500)
+												setValue((byte) (getValue()+8));
+										break;
+									case 4:
+										if (walkingCycle >=166 && walkingCycle <333)
+											setValue((byte) (getValue()+8));
+										else {
+											if ((walkingCycle >=500 && walkingCycle <666)
+												||
+												(walkingCycle >=833 && walkingCycle <1000)
+												){
+												setValue((byte) (getValue()+16));
+											} else if (walkingCycle >=666 && walkingCycle < 833) {
+												setValue((byte) (getValue()+24));
+											}
+										}	break;
+									default:
 								}
 							} else {
 								//regular bounce
@@ -433,9 +437,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	
     /**
-     * check for horizontal colission
+     * check for horizontal colission (x and y)
 	 * @param pos the new position
-     * @return 
+     * @return true if colliding horizontal
      */
     private boolean collidesHorizontal(Point pos){
         boolean colission = false;

@@ -241,7 +241,7 @@ public class Block implements HasID, Serializable {
 	public void setHealth(Coordinate coord, byte health) {
 		this.health = health;
 		if (customBlocks != null) {
-			customBlocks.setHealth(coord, health, id, value);
+			customBlocks.onSetHealth(coord, health, id, value);
 		}
 		if (health <= 0) {
 			//make an invalid air instance (should be null)

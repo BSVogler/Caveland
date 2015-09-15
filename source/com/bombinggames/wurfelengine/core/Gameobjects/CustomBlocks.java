@@ -52,7 +52,7 @@ public interface CustomBlocks {
 	 * @param id 
 	 * @param value 
 	 */
-	public void setHealth(Coordinate coord, byte health, byte id, byte value);
+	public void onSetHealth(Coordinate coord, byte health, byte id, byte value);
 
 	/**
 	 * 

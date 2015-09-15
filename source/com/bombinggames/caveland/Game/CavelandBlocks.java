@@ -146,7 +146,7 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 
 	@Override
-	public void setHealth(Coordinate coord, byte health, byte id, byte value) {
+	public void onSetHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0) {
 			switch (id) {
 				case 3:

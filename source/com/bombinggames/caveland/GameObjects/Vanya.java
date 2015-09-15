@@ -85,23 +85,20 @@ public class Vanya extends MovableEntity implements Interactable {
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira){
-			//show display textnew Explosion(1,500,view.getCameras().get(0)).spawn(getPosition());
 			chatCounter++;
 			if (currentChat!=null)
 				currentChat.remove();
 			String text = "";
 			switch(chatCounter) {
 				case 1:
-					text = "Oh hello! Are you alright? I saw an spaceship crashing and I don't know you so I assume you are new here. \n"
-						+ "Welcome to Caveland! I will be your guide.\n";
+					text = "Oh hello! Are you alright? I saw your spaceship crashing. But you look good. \n"
+						+ "Welcome to Caveland! I'm Vanya. I will be your guide.\n";
 					break;
-				case 2:	
-					text = " I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+				case 2:
+					text = "I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
 					break;
-				case 3:	
-					text = "You should definetely check the map editor by pressing 'G'.";
-					break;
-				case 4:	
+				case 3:
+					text = "I will explain you later. First let's go. It's dangerous here. (Follow me. [Next Update])";
 					chatCounter = 0;
 					break;
 			}

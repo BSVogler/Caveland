@@ -75,7 +75,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private boolean coliding;
 	/**
-	 * affected by gractiy
+	 * affected by gravity
 	 */
 	private boolean floating;
 	
@@ -219,7 +219,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			};
 
 			//if movement allowed => move
-			if (coliding && collidesHorizontal(getPosition().cpy().addVector(dMove)) ) {                
+			if (coliding && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius) ) {                
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
@@ -227,17 +227,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			/*VERTICAL MOVEMENT*/
 			float oldHeight = getPosition().getZ();
-			if (!floating && !isOnGround())
+			//apply gravity
+			if (!floating && !isOnGround()) {
 				addMovement(
-					new Vector3(0, 0, -WE.CVARS.getValueF("gravity")*t) //in m/s
+					new Vector3(0, 0, -WE.CVARS.getValueF("gravity") * t) //in m/s
 				);
+			}
 
 			//add movement
 			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
-			
+
 			//save orientation
 			updateOrientation();
-			
+
 			//movement has applied maybe outside memory area 
 			if (getPosition().isInMemoryAreaHorizontal()) {
 				//check new height for colission            
@@ -248,18 +250,21 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					onLand();
 					if (!isSpawned()) return;//object may be destroyed during colission
 
-					if (landingSound != null && !floating)
+					if (landingSound != null && !floating) {
 						WE.SOUND.play(landingSound, getPosition());//play landing sound
-
+					}
 					movement.z = 0;
 
 					//set on top of block
-					getPosition().setZ((int)(oldHeight/GAME_EDGELENGTH)*GAME_EDGELENGTH);
+					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
 				}
 
 				Block block = getPosition().getBlock();
-				if (!inliquid && block != null && block.isLiquid())//if enterin water
-					if (waterSound!=null) WE.SOUND.play(waterSound);
+				//if entering water
+				if (!inliquid && block != null && block.isLiquid())
+					if (waterSound != null) {
+						WE.SOUND.play(waterSound);
+					}
 
 				if (block != null)
 					inliquid = block.isLiquid();//save if in water
@@ -268,10 +273,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				if (!walkingPaused) {
 					if(walkOnTheSpot > 0) {
 						walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
-					} else { 
+					} else {
 						//walking cycle
 						if (floating || isOnGround()) {
-							walkingCycle += dt*getSpeed()*WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
+							walkingCycle += dt * getSpeed() * WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
 						}
 					}
 
@@ -308,7 +313,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 
 					/* update sprite*/
-					if (spritesPerDir>0) {
+					if (spritesPerDir > 0) {
 						if (orientation.x < -Math.sin(Math.PI/3)){
 							setValue((byte) 1);//west
 						} else {
@@ -436,36 +441,42 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     
 	
 	
-    /**
-     * check for horizontal colission (x and y)
+	/**
+	 * check for horizontal colission (x and y)
+	 *
 	 * @param pos the new position
-     * @return true if colliding horizontal
-     */
-    private boolean collidesHorizontal(Point pos){
-        boolean colission = false;
-    
+	 * @param colissionRadius
+	 * @return true if colliding horizontal
+	 */
+	public boolean collidesHorizontal(final Point pos, final float colissionRadius) {
+		boolean colission = false;
+
         //check for movement in y
-        //top corner
-		Block block = pos.cpy().addVector(0, - colissionRadius, 0).getBlock();
-        if (block!=null && block.isObstacle())
-            colission = true;
-        //bottom corner
+		//top corner
+		Block block = pos.cpy().addVector(0, -colissionRadius, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			colission = true;
+		}
+		//bottom corner
 		block = pos.cpy().addVector(0, colissionRadius, 0).getBlock();
-        if (block!=null && block.isObstacle())
-            colission = true;
-        
+		if (block != null && block.isObstacle()) {
+			colission = true;
+		}
+
         //check X
-        //left
+		//left
 		block = pos.cpy().addVector(-colissionRadius, 0, 0).getBlock();
-        if (block!=null && block.isObstacle())
-            colission = true;
-        //bottom corner
+		if (block != null && block.isObstacle()) {
+			colission = true;
+		}
+		//bottom corner
 		block = pos.cpy().addVector(colissionRadius, 0, 0).getBlock();
-        if (block!=null && block.isObstacle())
-            colission = true;
-        
-        return colission;
-    }
+		if (block != null && block.isObstacle()) {
+			colission = true;
+		}
+
+		return colission;
+	}
     
     /**
      * Sets the sound to be played when falling.
@@ -685,18 +696,23 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      */
     @Override
     public boolean isOnGround() {
-		if (getPosition()==null) return false;
-        if (getPosition().getZ()> 0){
-			if (getPosition().getZ() > Controller.getMap().getGameHeight()) return false;
-                getPosition().setZ(getPosition().getZ()-1);//move one down for check
-                
-				Block block = getPosition().getBlock();
-                boolean colission =  (block != null && block.isObstacle()) || collidesHorizontal(getPosition());
-                getPosition().setZ(getPosition().getZ()+1);//reverse
-                
-                //if standing on ground on own or neighbour block then true
-                return (super.isOnGround() || colission);
-        } return true;
+		if (getPosition() == null) {
+			return false;
+		}
+		if (getPosition().getZ() > 0) {
+			if (getPosition().getZ() > Controller.getMap().getGameHeight()) {
+				return false;
+			}
+			getPosition().setZ(getPosition().getZ() - 1);//move one down for check
+
+			Block block = getPosition().getBlock();
+			boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(getPosition(), colissionRadius);
+			getPosition().setZ(getPosition().getZ() + 1);//reverse
+
+			//if standing on ground on own or neighbour block then true
+			return (super.isOnGround() || colission);
+		}
+		return true;
     }
 
     /**

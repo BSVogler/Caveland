@@ -597,7 +597,9 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public boolean hasSides() {
-		if (blockData==null) return false;
+		if (blockData == null) {
+			return false;
+		}
 		return blockData.hasSides();
 	}
 

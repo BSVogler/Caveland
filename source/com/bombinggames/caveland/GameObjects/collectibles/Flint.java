@@ -7,7 +7,8 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
  *
  * @author Benedikt Vogler
  */
-public class Flint extends Collectible{
+public class Flint extends Collectible {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -18,7 +19,7 @@ public class Flint extends Collectible{
 		setFriction(2000);
 		setName("Flint");
 	}
-	
+
 	/**
 	 *
 	 * @param flint
@@ -27,14 +28,12 @@ public class Flint extends Collectible{
 		super(flint);
 		setFriction(2000);
 	}
-	
-	
 
 	@Override
-	public void onCollide(){
+	public void onCollide() {
 		new Explosion(
 			1,
-			(byte)50,
+			(byte) 50,
 			WE.getGameplay().getView().getCameras().get(0)
 		).spawn(getPosition());
 		dispose();

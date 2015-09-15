@@ -2,11 +2,11 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.CLMovableEntity;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
  *
  * @author Benedikt Vogler
  */
-public class Collectible extends MovableEntity implements Serializable {
+public class Collectible extends CLMovableEntity implements Serializable {
 	private static final long serialVersionUID = 2L;
 
 

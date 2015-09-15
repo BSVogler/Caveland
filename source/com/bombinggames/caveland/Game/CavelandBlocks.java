@@ -31,7 +31,7 @@ public class CavelandBlocks implements CustomBlocks {
 		POWERSTATION((byte) 14, "Power Station", false),
 		LIFT((byte) 15, "Lift", false),
 		ENTRY((byte) 16, "Cave Entry", true),
-		DORNBUSCH((byte) 17, "Dornbusch", false),
+		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
 		CRYSTAL((byte) 41, "Crystal Block", true),
 		SULFUR((byte) 42, "Sulfur Block", true),
 		IRONORE((byte) 43, "Iron Ore Block", true),
@@ -52,7 +52,7 @@ public class CavelandBlocks implements CustomBlocks {
 			else if (id==14) return POWERSTATION;
 			else if (id==15) return LIFT;
 			else if (id==16) return ENTRY;
-			else if (id==17) return DORNBUSCH;
+			else if (id==17) return INDESTRUCTIBLEOBSTACLE;
 			else if (id==41) return CRYSTAL;
 			else if (id==42) return SULFUR;
 			else if (id==43) return IRONORE;
@@ -92,7 +92,13 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
-		if (data.getId() == CLBlocks.TORCH.getId()) {
+		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			RenderBlock a = new RenderBlock(data);
+			if (data.getValue() > 0){
+				a.setSpriteId((byte) 3);
+			}
+			return a;
+		} else if (data.getId() == CLBlocks.TORCH.getId()) {
 			return new Torch(data);
 		} else if (data.getId() == CLBlocks.TREE.getId()) {
 			return new CustomTree(data);
@@ -110,6 +116,9 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
+		if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.getId() && value > 0) {
+			return true;
+		}
 		return CLBlocks.valueOf(id).hasSides;
 	}
 

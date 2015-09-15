@@ -78,9 +78,7 @@ public class ChunkGenerator implements Generator {
 			//walls
 			if (insideout==0) {//build a wall
 				if (z<=4)
-					return 3;
-				else 
-					return 4;//invisible wall
+					return 17;
 			}
 			
 			if (insideout==-1)//build air for outside
@@ -113,7 +111,6 @@ public class ChunkGenerator implements Generator {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return can be null
 	 */
 	@Override
 	public void spawnEntities(int x, int y, int z){

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Spaceship;
+import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
@@ -28,6 +29,7 @@ public class CustomGameController extends Controller {
 	private Ejira player2;
 	private HashMap<String, ArrayList<AbstractEntity>> caves;
 	private Spaceship introSpaceship;
+	private Vanya tutorialVanya;
 
 	@Override
 	public void init() {
@@ -100,6 +102,14 @@ public class CustomGameController extends Controller {
 		super.update(dt);
 		
 		spawnPlayers();
+		
+		if (tutorialVanya == null){
+			tutorialVanya = (Vanya) new Vanya().spawn(new Coordinate(-3, 8, 6).toPoint());
+		}
+		
+		if (introSpaceship != null && introSpaceship.isCrashed()){
+			tutorialVanya.goTo(introSpaceship.getPosition().toCoord().addVector(-1, 3, 0));
+		}
 	}
 
 	/**

@@ -87,16 +87,22 @@ public class PlacableTable extends Table {
 			if (placeBlocks) {//add blocks
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 					Block block = Block.getInstance(i);
-					if (block == null || RenderBlock.isSpriteDefined(block) || !block.getName().equals("undefined")) {
-						SelectionItem button = new SelectionItem(
-							this,
-							new BlockDrawable(i),
-							new BlockListener(i)
-						);
-						add(button);
-						foundItems++;
-						if (foundItems % 4 == 0) {
-							row();//make new row
+					if (block != null) {
+						RenderBlock rBlock = block.toRenderBlock();
+						if (rBlock == null //add air
+							|| RenderBlock.isSpriteDefined(rBlock) //add defined blocks
+							|| !block.getName().equals("undefined")
+						) {
+							SelectionItem button = new SelectionItem(
+								this,
+								new BlockDrawable(i),
+								new BlockListener(i)
+							);
+							add(button);
+							foundItems++;
+							if (foundItems % 4 == 0) {
+								row();//make new row
+							}
 						}
 					}
 				}

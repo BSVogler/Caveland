@@ -116,14 +116,14 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param block
 	 * @return 
 	 */
-	public static boolean isSpriteDefined(final Block block){
+	public static boolean isSpriteDefined(final RenderBlock block){
 		if (block == null) return false;
 		if (getSpritesheet() == null) return false;
 		AtlasRegion sprite;
 		if (block.hasSides())
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getId())+"-"+block.getValue()+"-0");
+			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue()+"-0");
 		else
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getId())+"-"+block.getValue());
+			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue());
 		return 	sprite != null;
 	}
 
@@ -490,7 +490,7 @@ public class RenderBlock extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered. If null color gets ignored
      */
     public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color){
-        Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getValue(), side));
+        Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getSpriteValue(), side));
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
             sprite.setOrigin(0, 0);

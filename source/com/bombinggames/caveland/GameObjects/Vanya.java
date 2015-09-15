@@ -1,12 +1,16 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 /**
  *Tutorial owl.
@@ -16,6 +20,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
 	private transient ActionBox currentChat;
+	private Coordinate movementGoal;
 
 	/**
 	 *
@@ -39,8 +44,35 @@ public class Vanya extends MovableEntity implements Interactable {
 		//if (beforeUpdate>0 && getMovement().z<0)
 			//new BlümchenKacke().spawn(getPosition().cpy());
 		
-		if (dt>0) {//update only if time is running
-			if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) jump();
+		if (dt > 0) {//update only if time is running
+			if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
+				jump();
+			}
+		}
+		
+		//go to movement goal
+		if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH/4){
+			//movement logic
+			Vector3 d = new Vector3();
+
+			d.x = movementGoal.toPoint().getX() - getPosition().getX();
+			d.y = movementGoal.toPoint().getY() - getPosition().getY();
+			d.nor();//direction only
+			d.scl(1.3f);
+			d.z = getMovement().z;
+
+			setMovement(d);// update the movement vector
+		} else {
+			movementGoal = null;
+		}
+		
+		//look at player
+		if (movementGoal == null){
+			ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
+			if (!ejiraList.isEmpty()) {
+				Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());
+				setOrientation(new Vector2(vec3.x, vec3.y).nor());
+			}
 		}
 	}
 
@@ -114,5 +146,12 @@ public class Vanya extends MovableEntity implements Interactable {
 		setWalkingStepMode(false);
     }
 	
+	/**
+	 * 
+	 * @param coord 
+	 */
+	public void goTo(Coordinate coord){
+		movementGoal = coord;
+	}
 }
 

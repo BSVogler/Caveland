@@ -63,8 +63,8 @@ public class Spaceship extends MovableEntity {
 	}
 
 	/**
-	 *
-	 * @return
+	 * 
+	 * @return true if destroyed
 	 */
 	public boolean isCrashed() {
 		return crashed;

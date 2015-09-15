@@ -497,7 +497,7 @@ public class Point extends AbstractPosition {
 	/**
 	 * 
 	 * @param point
-	 * @return the distance from this point to the other point in game coordinates
+	 * @return the distance from this point to the other point in game world coordinates
 	 */
 	@Override
 	public float distanceTo(AbstractPosition point) {

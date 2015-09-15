@@ -513,7 +513,7 @@ public class Coordinate extends AbstractPosition {
 		Block block = getBlock();
 		if (block != null) {
 			block.setHealth(this, (byte) (block.getHealth() - amount));
-			if (block.getHealth() <= 0) {
+			if (block.getHealth() <= 0 && !block.isIndestructible()) {
 				setBlock((Block) null);
 			}
 			return true;

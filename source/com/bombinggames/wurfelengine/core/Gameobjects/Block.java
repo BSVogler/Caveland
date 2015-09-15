@@ -243,7 +243,7 @@ public class Block implements HasID, Serializable {
 		if (customBlocks != null) {
 			customBlocks.onSetHealth(coord, health, id, value);
 		}
-		if (health <= 0) {
+		if (health <= 0 && !isIndestructible()) {
 			//make an invalid air instance (should be null)
 			this.id = 0;
 			this.value = 0;
@@ -337,6 +337,14 @@ public class Block implements HasID, Serializable {
 		}
 		if (id == 9) {
 			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isIndestructible() {
+		if (customBlocks != null) {
+			return customBlocks.isIndestructible(id, value);
 		}
 		return false;
 	}
@@ -652,4 +660,5 @@ public class Block implements HasID, Serializable {
 	public void setUnclipped() {
 		clipping = (byte) 0;
 	}
+
 }

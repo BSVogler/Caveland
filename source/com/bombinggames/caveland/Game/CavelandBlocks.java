@@ -155,6 +155,12 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 
 	@Override
+	public boolean isIndestructible(byte id, byte value) {
+		return id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id;
+	}
+
+	
+	@Override
 	public void onSetHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0) {
 			switch (id) {

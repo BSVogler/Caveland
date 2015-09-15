@@ -81,5 +81,11 @@ public interface HasID {
 	 * @return the name for this block.
 	 */
 	public abstract String getName();
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public abstract boolean isIndestructible();
     
 }

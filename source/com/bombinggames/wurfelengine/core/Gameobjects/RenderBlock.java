@@ -594,6 +594,11 @@ public class RenderBlock extends AbstractGameObject {
 	public boolean isTransparent() {
 		return blockData.isTransparent();
 	}
+	
+	@Override
+	public boolean isIndestructible() {
+		return blockData.isIndestructible();
+	}
 
 	@Override
 	public boolean hasSides() {

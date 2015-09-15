@@ -93,6 +93,7 @@ public class CustomGameController extends Controller {
 		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")) {
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
 			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
+			introSpaceship.setIndestructible(true);
 			introSpaceship.setPassenger(player1);
 		}
 	}

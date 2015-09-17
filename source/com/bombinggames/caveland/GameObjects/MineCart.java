@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MineCart extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private static final float MAXSPEED = 6;
-	private static final float BOOSTERSPEED = 12;
+	private static final float BOOSTERSPEED = 15;
 	/**
 	 * the height of the bottom plate
 	 */
@@ -154,7 +154,7 @@ public class MineCart extends MovableEntity implements Interactable {
 					|| block.getValue() == 8 && getMovementHor().x < 0
 					|| block.getValue() == 9 && getMovementHor().y > 0
 				) {
-					setMovement(new Vector3(getMovementHor(), 4.8f).nor().scl(getMovementHor().len()));
+					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.8f));
 				}
 			} else {//offroad
 				setFriction(0.005f);

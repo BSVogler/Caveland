@@ -72,6 +72,7 @@ public class MineCart extends MovableEntity implements Interactable {
 
 				switch (block.getValue()) {
 					case 0://straight left bottom to top right
+					case 6:
 						setOrientation(new Vector2(
 								getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
 								getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1
@@ -86,6 +87,7 @@ public class MineCart extends MovableEntity implements Interactable {
 						);
 						break;
 					case 1:
+					case 7:
 						setOrientation(
 							new Vector2(
 								getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
@@ -129,10 +131,19 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 
 				//start moving?
-				if (getSpeedHor()> 0) {
+				if (getSpeedHor() > 0) {
 					setSpeedHorizontal(MAXSPEED);//start moving
 					if( isPlayingSound == 0)
 						isPlayingSound = WE.SOUND.loop("wagon", getPosition());
+				}
+				//jump on ramp
+				if (
+					   block.getValue() == 6 && getMovementHor().x > 0
+					|| block.getValue() == 7 && getMovementHor().y < 0
+					|| block.getValue() == 8 && getMovementHor().x < 0
+					|| block.getValue() == 9 && getMovementHor().y > 0
+				) {
+					setMovement(new Vector3(getMovementHor(), 4.8f).nor().scl(getMovementHor().len()));
 				}
 			} else {//offroad
 				setFriction(0.005f);
@@ -211,6 +222,7 @@ public class MineCart extends MovableEntity implements Interactable {
 
 			//animation
 			//moving down left or up right
+			setHidden(false);
 			if (
 				(getOrientation().y > 0
 				&&
@@ -220,11 +232,31 @@ public class MineCart extends MovableEntity implements Interactable {
 				&&
 				getOrientation().y < getOrientation().x)
 			) {
-				setValue((byte) 0);
-				front.setValue((byte) 1);
+				if (getMovement().z > 0.1f){
+					if (getOrientation().y < 0) {
+						setValue((byte) 6);//coming from bottom left and moving up to right
+						front.setValue((byte) 7);
+					} else {
+						setHidden(true);
+						front.setValue((byte) 9);
+					}
+				} else {
+					setValue((byte) 0);
+					front.setValue((byte) 1);
+				}
 			} else {
-				setValue((byte) 3);
-				front.setValue((byte) 4);
+				if (getMovement().z > 0.1f){
+					if (getOrientation().y < 0) {
+						setValue((byte) 13);//coming from bottom left and moving up to right
+						front.setValue((byte) 14);
+					} else {
+						setHidden(true);
+						front.setValue((byte) 11);
+					}
+				} else {
+					setValue((byte) 3);
+					front.setValue((byte) 4);
+				}
 			}
 		}
 	}

@@ -200,7 +200,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
     
    /**
-     * Updates the character.
+     * Updates the character. Applies gravitation.	
      * @param dt time since last update in ms
      */
     @Override

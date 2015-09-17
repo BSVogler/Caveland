@@ -63,7 +63,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private float friction = 0;
       
 	/**
-	 * Direction of movement.
+	 * Direction and speed of movement.
 	 */
 	private Vector3 movement;
 	/**
@@ -555,7 +555,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	/**
 	 * Sets speed and direction combined in one vector.
-	 * @param movement containing direction and speed (length).
+	 * @param movement containing direction and speed (length) in m/s.
 	 */
 	public void setMovement(Vector2 movement){
 		this.movement = new Vector3(movement, this.movement.z);
@@ -626,7 +626,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * get the gorizontalspeed of the object in m/s.
+	 * get the horizontal speed of the object in m/s.
 	 * @return 
 	 */
 	public float getSpeedHor() {

@@ -33,6 +33,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.WE;
@@ -62,7 +63,7 @@ public class RailsConstructionKit extends Collectible {
 				.setConfirmAction(
 					(int result, AbstractEntity actor1) -> {
 						//spawn rails
-						actor1.getPosition().toCoord().setBlock(Block.getInstance((byte) 55, (byte) result));
+						actor1.getPosition().toCoord().setBlock(Block.getInstance(CavelandBlocks.CLBlocks.RAILS.getId(), (byte) result));
 						WE.SOUND.play("metallic");
 						if (preview != null) {
 							preview.dispose();
@@ -75,7 +76,7 @@ public class RailsConstructionKit extends Collectible {
 					(int result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
-							preview = (EntityBlock) new EntityBlock((byte) 55,(byte) result)
+							preview = (EntityBlock) new EntityBlock(CavelandBlocks.CLBlocks.RAILS.getId(),(byte) result)
 								.spawn(actor1.getPosition().toCoord().toPoint());
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else preview.setValue((byte) result);

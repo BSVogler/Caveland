@@ -2,6 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -66,7 +67,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			Block block = pos.getBlock();
 
 			//on tracks?
-			if (block!=null && block.getId() == 55) {
+			if (block!=null && block.getId() == CavelandBlocks.CLBlocks.RAILS.getId()) {
 				setFriction(0.001f);
 
 				switch (block.getValue()) {

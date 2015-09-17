@@ -12,6 +12,7 @@ import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -105,7 +106,12 @@ public class CustomGameController extends Controller {
 		spawnPlayers();
 		
 		if (tutorialVanya == null){
-			tutorialVanya = (Vanya) new Vanya().spawn(new Coordinate(-3, 8, 6).toPoint());
+			ArrayList<Vanya> foundVanya = getPlayer(0).getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class);
+			if (foundVanya.isEmpty())
+				tutorialVanya = (Vanya) new Vanya().spawn(new Coordinate(-3, 8, 6).toPoint());
+			else {
+				tutorialVanya = foundVanya.get(0);
+			}
 		}
 		
 		if (introSpaceship != null && introSpaceship.isCrashed()){

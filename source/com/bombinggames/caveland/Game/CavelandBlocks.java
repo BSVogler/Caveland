@@ -37,6 +37,7 @@ public class CavelandBlocks implements CustomBlocks {
 		IRONORE((byte) 43, "Iron Ore Block", true),
 		COAL((byte) 44, "Coal Block", true),
 		RAILS((byte) 55, "rails", false),
+		RAILSBOOSTER((byte) 56, "boos	ter rails", false),
 		TREE((byte) 72, "tree", false),
 		UNDEFINED((byte) -1, "undefined", true);
 		
@@ -58,6 +59,7 @@ public class CavelandBlocks implements CustomBlocks {
 			else if (id==43) return IRONORE;
 			else if (id==44) return COAL;
 			else if (id==55) return RAILS;
+			else if (id==56) return RAILSBOOSTER;
 			else if (id==72) return TREE;
 			else return UNDEFINED;
 		}
@@ -66,6 +68,12 @@ public class CavelandBlocks implements CustomBlocks {
 		private final String name;
 		private final boolean hasSides;
 
+		/**
+		 * 
+		 * @param id
+		 * @param name
+		 * @param hasSides 
+		 */
 		private CLBlocks(byte id, String name, boolean hasSides) {
 			this.id = id;
 			this.name = name;

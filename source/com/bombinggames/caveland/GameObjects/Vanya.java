@@ -71,7 +71,7 @@ public class Vanya extends MovableEntity implements Interactable {
 		}
 		
 		//look at player
-		if (movementGoal == null){
+		if (movementGoal == null && isSpawned()){
 			ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
 			if (!ejiraList.isEmpty()) {
 				Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());

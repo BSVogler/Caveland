@@ -326,110 +326,106 @@ public class Point extends AbstractPosition {
     
     /**
      * Trace a ray through the map until ray hits non air block.<br>
-     * Slow as hell. Avoid use.
-     * @param direction direction of the ray
+     * High precision intersection missing.
+     * @param dir dir of the ray
      * @param maxDistance the distane after which it should stop. (in game pixels?)
      * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>
      * @param hitFullOpaque if true only intersects with blocks which are not transparent =full opaque
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
-	 * @deprecated slow as hell because of wrong implementation.
      */
-		public Intersection raycast(Vector3 direction, float maxDistance, Camera camera, boolean hitFullOpaque) {
-      /*  Call the callback with (x,y,z,value,normal) of all blocks along the line
- segment from point 'origin' in vector direction 'direction' of length
- 'maxDistance'. 'maxDistance' may be infinite.
-
- 'normal' is the normal vector of the normal of that block that was entered.
- It should not be used after the callback returns.
- 
- If the callback returns a true value, the traversal will be stopped.
-     */
-        // From "A Fast Voxel Traversal Algorithm for Ray Tracing"
-        // by John Amanatides and Andrew Woo, 1987
-        // <http://www.cse.yorku.ca/~amana/research/grid.pdf>
-        // <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.3443>
-        // Extensions to the described algorithm:
-        //   • Imposed a distance limit.
-        //   • The normal passed through to reach the current cube is provided to
-        //     the callback.
-
-        // The foundation of this algorithm is a parameterized representation of
-        // the provided ray,
-        //                    origin + t * direction,
-        // except that t is not actually stored; rather, at any given point in the
-        // traversal, we keep track of the *greater* t values which we would have
-        // if we took a step sufficient to cross a cube boundary along that axis
-        // (i.e. change the integer part of the coordinate) in the variables
-        // tMaxX, tMaxY, and tMaxZ.
-
-        // Cube containing origin point.
-        float curX = (float) Math.floor(x);
-        float curY = (float) Math.floor(y);
-        float curZ = (float) Math.floor(z);
-        // Break out direction vector.
-        float dx = direction.x;
-        float dy = direction.y;
-        float dz = direction.z;
-        // Direction to increment x,y,z when stepping.
-        float stepX = Math.signum(dx);
-        float stepY = Math.signum(dy);
-        float stepZ = Math.signum(dz);
+		public Intersection raycast(final Vector3 dir, float maxDistance, final Camera camera, final boolean hitFullOpaque) {
+		/*  Call the callback with (x,y,z,value,normal) of all blocks along the line
+		segment from point 'origin' in vector dir 'dir' of length
+		'maxDistance'. 'maxDistance' may be infinite.
+		'normal' is the normal vector of the normal of that block that was entered.
+		It should not be used after the callback returns.
+		If the callback returns a true value, the traversal will be stopped.
+		 */
+		// From "A Fast Voxel Traversal Algorithm for Ray Tracing"
+		// by John Amanatides and Andrew Woo, 1987
+		// <http://www.cse.yorku.ca/~amana/research/grid.pdf>
+		// <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.3443>
+		// Extensions to the described algorithm:
+		//   • Imposed a distance limit.
+		//   • The normal passed through to reach the current cube is provided to
+		//     the callback.
+		// The foundation of this algorithm is a parameterized representation of
+		// the provided ray,
+		//                    origin + t * dir,
+		// except that t is not actually stored; rather, at any given point in the
+		// traversal, we keep track of the *greater* t values which we would have
+		// if we took a step sufficient to cross a cube boundary along that axis
+		// (i.e. change the integer part of the coordinate) in the variables
+		// tMaxX, tMaxY, and tMaxZ.
+		// Cube containing origin point.
+		
+		// Avoids an infinite loop.
+        if (dir.isZero()) {
+			throw new Error("Raycast in zero direction!");
+		}
+		
+		Coordinate isectC = toCoord();
+        int curX = isectC.getX();
+        int curY = isectC.getY();
+        int curZ = isectC.getZ();
+		
+		// Direction to increment x,y,z when stepping.
+		float stepX = Math.signum(dir.x);
+		float stepY = Math.signum(dir.y);
+		float stepZ = Math.signum(dir.z);
         // See description above. The initial values depend on the fractional
-        // part of the origin.
-        float tMaxX = intbound(x, dx);
-        float tMaxY = intbound(y, dy);
-        float tMaxZ = intbound(z, dz);
+		// part of the origin.
+		float tMaxX = intbound(x, dir.x);
+		float tMaxY = intbound(y, dir.y);
+		float tMaxZ = intbound(z, dir.z);
         // The change in t when taking a step (always positive).
-        float tDeltaX = stepX/dx;
-        float tDeltaY = stepY/dy;
-        float tDeltaZ = stepZ/dz;
-        // Buffer for reporting faces to the callback.
-        Vector3 normal = new Vector3();
+        float tDeltaX = stepX / dir.x;
+		float tDeltaY = stepY / dir.y;
+		float tDeltaZ = stepZ / dir.z;
 
-        // Avoids an infinite loop.
-        if (dx == 0 && dy == 0 && dz == 0)
-          throw new Error("Raycast in zero direction!");
-
-        // Rescale from units of 1 cube-edge to units of 'direction' so we can
+        // Rescale from units of 1 cube-edge to units of 'dir' so we can
         // compare with 't'.
-        maxDistance /= Math.sqrt(dx*dx+dy*dy+dz*dz);
-
-        while (/* ray has not gone past bounds of world */
-               stepZ > 0 ? curZ < Chunk.getGameHeight() : curZ >= 0) {
-
-				/** Point of intersection */
-                Point isectP = new Point(curX, curY, curZ);
-                if (!isectP.isInMemoryAreaHorizontal()) break;//check if outside of map
-				Block block = isectP.getBlock();
-                //intersect?
-                if ((
-					camera==null
-					||
+        maxDistance /= dir.len();
+		
+		// Buffer for reporting faces to the callback.
+        Vector3 normal = new Vector3();
+		
+		/* ray has not gone past bounds of world */
+		while (
+			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
+			&& isectC.isInMemoryAreaHorizontal()
+		) {//can enter and be vertically outside
+			
+			isectC = new Coordinate(curX, curY, curZ);
+			Block block = isectC.getBlock();
+			//intersect?
+			if ((
+				camera == null
+				||
+				(
 					(
-						(
-							curZ < camera.getZRenderingLimit()*Block.GAME_EDGELENGTH
-							&& !camera.isClipped(isectP.toCoord())
-						)
+						curZ < camera.getZRenderingLimit()
+						&& !camera.isClipped(isectC.toCoord())
 					)
-				   )
-					&& block != null
-                    && (!hitFullOpaque || (hitFullOpaque && !block.isTransparent()))
-                    
-				){
-                    //correct normal, should also be possible by comparing the point with the coordiante position and than the x value
-                    if (
-                        (Block.GAME_DIAGLENGTH+((isectP.getX() -(isectP.toCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
-                        % Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
-                        <
-                        Block.GAME_DIAGLENGTH2
-                    ) {
-						normal.y = 0;
-                        normal.x = -1;
-                    }
-					return new Intersection(isectP, normal, this.distanceTo(isectP));
+				)
+			   )
+				&& block != null
+				&& (!hitFullOpaque || (hitFullOpaque && !block.isTransparent()))
+
+			){
+				//correct normal, should also be possible by comparing the point with the coordiante position and than the x value
+				if (
+					(Block.GAME_DIAGLENGTH+((isectC.getX() -(isectC.toCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
+					% Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
+					<
+					Block.GAME_DIAGLENGTH2
+				) {
+					normal.y = 0;
+					normal.x = -1;
 				}
-            //}
+				return new Intersection(isectC.toPoint(), normal, this.distanceTo(isectC.toPoint()));
+			}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the
              X axis, and similarly for Y and Z. Therefore, choosing the least tMax

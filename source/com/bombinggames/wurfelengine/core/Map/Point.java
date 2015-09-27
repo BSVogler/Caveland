@@ -47,8 +47,17 @@ import java.util.ArrayList;
  */
 public class Point extends AbstractPosition {
 	private static final long serialVersionUID = 2L;
+	/**
+	 * in continous game space
+	 */
     private float x;
+	/**
+	 * in continous game space
+	 */
     private float y;
+	/**
+	 * in continous game space
+	 */
 	private float z;
 
     /**

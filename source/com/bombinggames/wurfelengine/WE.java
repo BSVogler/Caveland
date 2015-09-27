@@ -34,6 +34,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -167,6 +168,8 @@ public class WE {
 		if (iconPath != null) {
 			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
 		}
+		
+		//load saved resolution
 		int width = CVARS.getValueI("resolutionx");
 		if (width > 0) {
 			config.width = width;
@@ -205,6 +208,22 @@ public class WE {
 				}
 			}
 		}
+		
+		//find dpm with biggest width
+		Graphics.DisplayMode[] dpms = LwjglApplicationConfiguration.getDisplayModes();
+		Graphics.DisplayMode maxDPM = dpms[0];
+		for (Graphics.DisplayMode dpm : dpms) {
+			if (dpm.width > maxDPM.width) {
+				maxDPM = dpm;
+			}
+		}
+		
+		//limit resolution to maximum
+		if (config.width > maxDPM.width)
+			config.width = maxDPM.width;
+		
+		if (config.height > maxDPM.height)
+			config.height = maxDPM.height;
 
 		config.title = title + " " + config.width + "x" + config.height;
 

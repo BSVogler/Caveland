@@ -245,7 +245,7 @@ public class Point extends AbstractPosition {
 	
 	@Override
     public boolean isInMemoryArea() {
-		if (getZ() < 0 && getZ() > Chunk.getBlocksZ()){
+		if (z < 0 || z > Chunk.getGameWidth()){
 			return false;
 		} else {
 			return getBlock() != null;

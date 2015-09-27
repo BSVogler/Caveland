@@ -166,6 +166,7 @@ public class CVarSystem {
 	 * @since v1.4.2
 	 */
 	public void load(){
+		System.out.println("Loading saved CVars…");
 		reading = true;
 		FileHandle sourceFile = new FileHandle(fileSystemPath);
 		if (sourceFile.exists() && !sourceFile.isDirectory()) {

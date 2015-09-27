@@ -150,7 +150,6 @@ public class WE {
 	 */
 	public static void launch(final String title, final String[] args) {
 		//load cvars
-		System.out.println("Loading saved CVars…");
 		CVARS.load();
 
 		// set the name of the application menu item on mac
@@ -209,10 +208,6 @@ public class WE {
 
 		config.title = title + " " + config.width + "x" + config.height;
 
-        //LIBGDX: no equivalent found in libGDX yet
-		//setUpdateOnlyWhenVisible(true);        
-		//setMaximumLogicUpdateInterval(200);//delta can not be bigger than 200ms ^= 5 FPS
-		//setMinimumLogicUpdateInterval(1);//delta can not be smaller than 1 ^= 1000FPS  
 		//register entitys
 		AbstractEntity.registerEngineEntities();
 

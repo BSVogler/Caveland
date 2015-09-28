@@ -11,12 +11,10 @@ import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The <i>CustomGameController</i> is for the game code. Put engine code into
@@ -28,7 +26,6 @@ public class CustomGameController extends Controller {
 
 	private Ejira player1;
 	private Ejira player2;
-	private HashMap<String, ArrayList<AbstractEntity>> caves;
 	private Spaceship introSpaceship;
 	private Vanya tutorialVanya;
 

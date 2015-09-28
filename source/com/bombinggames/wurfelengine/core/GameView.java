@@ -325,7 +325,7 @@ public class GameView extends View implements GameManager {
      * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -&gt; game. First does screen-&gt;view and then via raytracing view-&gt;game.
      * @param x the x position on the screen from left
      * @param y the y position on the screen from top
-     * @return the position on the map.
+     * @return the position on the map. can return null if no camera available
      */
     public Intersection screenToGame(final int x, final int y){
 		if (cameras.size() > 0) {
@@ -340,7 +340,7 @@ public class GameView extends View implements GameManager {
 				cameras.get(0),//assume editor is in first camera
 				false
 			);
-		} else return new Intersection(null, Vector3.Zero, 0);
+		} else return null;
     }
 	
 	/**

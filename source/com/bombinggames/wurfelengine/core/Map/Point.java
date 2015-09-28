@@ -38,6 +38,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import java.util.ArrayList;
 
 /**
@@ -91,6 +92,7 @@ public class Point extends AbstractPosition {
 		this.y = point.y;
 		this.z = point.z;
     }
+	
 
     /**
      *Returns copy of itself.
@@ -398,9 +400,6 @@ public class Point extends AbstractPosition {
         // compare with 't'.
         maxDistance /= dir.len();
 		
-		// Buffer for reporting faces to the callback.
-        Vector3 normal = new Vector3();
-		
 		/* ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
@@ -424,17 +423,8 @@ public class Point extends AbstractPosition {
 				&& (!hitFullOpaque || (hitFullOpaque && !block.isTransparent()))
 
 			){
-				//correct normal, should also be possible by comparing the point with the coordiante position and than the x value
-				if (
-					(Block.GAME_DIAGLENGTH+((isectC.getX() -(isectC.toCoord().getY() % 2 == 0? Block.GAME_DIAGLENGTH2 : 0))
-					% Block.GAME_DIAGLENGTH)) % Block.GAME_DIAGLENGTH
-					<
-					Block.GAME_DIAGLENGTH2
-				) {
-					normal.y = 0;
-					normal.x = -1;
-				}
-				return new Intersection(isectC.toPoint(), normal, this.distanceTo(isectC.toPoint()));
+				//found intersection point
+				return Intersection.intersect(isectC, this, dir);
 			}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the
@@ -449,43 +439,31 @@ public class Point extends AbstractPosition {
                     // Adjust tMaxX to the next X-oriented boundary crossing.
                     tMaxX += tDeltaX;
                     // Record the normal vector of the cube normal we entered.
-                    normal.x = -stepX;
-                    normal.y = 0;
-                    normal.z = 0;
                 } else {
                     if (tMaxZ > maxDistance) break;
                     curZ += stepZ;
                     tMaxZ += tDeltaZ;
-                    normal.x = 0;
-                    normal.y = 0;
-                    normal.z = -stepZ;
                 }
             } else {
                 if (tMaxY < tMaxZ) {
                     if (tMaxY > maxDistance) break;
                     curY += stepY;
                     tMaxY += tDeltaY;
-                    normal.x = 0;
-                    normal.y = -stepY;
-                    normal.z = 0;
                 } else {
                   // Identical to the second case, repeated for simplicity in
                   // the conditionals.
                   if (tMaxZ > maxDistance) break;
                   curZ += stepZ;
                   tMaxZ += tDeltaZ;
-                  normal.x = 0;
-                  normal.y = 0;
-                  normal.z = -stepZ;
                 }
             }
         }
         //ground hit, must be 0,0,1
         if (curZ <= 0){
             Point intersectpoint = new Point(curX, curY, 0);
-            return new Intersection(intersectpoint, normal, this.distanceTo(intersectpoint));
+            return new Intersection(intersectpoint, Side.TOP, this.distanceTo(intersectpoint));
         } else
-            return new Intersection();
+            return null;
     }
 
     /**

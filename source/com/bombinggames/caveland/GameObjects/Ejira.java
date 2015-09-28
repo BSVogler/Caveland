@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
+import static com.bombinggames.caveland.GameObjects.Torch.BRIGHTNESS;
+import static com.bombinggames.caveland.GameObjects.Torch.RADIUS;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -33,6 +35,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
@@ -412,6 +415,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 			}
+			lightNearbyBlocks();
 		}
 	}
 
@@ -1040,6 +1044,53 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 */
 	public int getPlayerNumber() {
 		return playerNumber;
+	}
+	
+	public void lightNearbyBlocks(){
+		if (getPosition()!=null) {
+			Point lightPos = getPosition().cpy().addVector(0,0,Block.GAME_EDGELENGTH*0.5f);
+			float flicker = (float) Math.random();
+			//light blocks under the torch
+			for (int z = -RADIUS; z < RADIUS; z++) {
+				for (int x = -RADIUS*4; x < RADIUS*4; x++) {
+					for (int y = -RADIUS*2; y < RADIUS*2; y++) {
+						Vector3 dir = new Vector3(x, y, z).nor();
+						if (dir.len2() > 0){
+							Intersection inters = lightPos.raycast(
+								dir,
+								RADIUS*Block.GAME_EDGELENGTH*2,
+								null,
+								true
+							);
+							if (inters != null && inters.getPoint() != null) {
+								Block block = inters.getPoint().getBlock();
+								if (block != null) {
+									float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/Block.GAME_EDGELENGTH+1;
+									float l = (1 +BRIGHTNESS) / (pow*pow);
+									l *= dir.scl(-1f).dot(inters.getNormal().toVector());
+									
+									block.addLightlevel(
+										l*(0.15f+flicker*0.03f),
+										inters.getNormal(),
+										0
+									);
+									block.addLightlevel(
+										l*(0.15f+flicker*0.005f),
+										inters.getNormal(),
+										1
+									);
+									block.addLightlevel(
+										l*(0.15f+flicker*0.005f),
+										inters.getNormal(),
+										2
+									);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 }

@@ -49,7 +49,12 @@ public enum Side {
     /**
      *
      */
-    RIGHT(2);
+    RIGHT(2),
+	
+	BACKLEFT(3),
+	
+	BACKRIGHT(4),
+	BOTTOM(5);
     private int code;
 
     private Side(int c) {
@@ -70,11 +75,39 @@ public enum Side {
      * @return
      */
     public static Side normalToSide(Vector3 normal){
-        if (normal.z>0)
+        if (normal.z > 0) {
             return TOP;
-        else if (normal.x<0)
-            return LEFT;
-        else return RIGHT;
-    }
-    
+		} else {
+			if (normal.x < 0) {
+				if (normal.y > 0) {
+					return LEFT;
+				} else {
+					return BACKLEFT;
+				}
+			} else {
+				if (normal.y > 0) {
+					return RIGHT;
+				} else {
+					return BACKRIGHT;
+				}
+			}
+		}
+	}
+
+	public Vector3 toVector() {
+		switch (this) {
+			case TOP:
+				return new Vector3(0, 0, 1);
+			case RIGHT:
+				return new Vector3(1, 1, 0);
+			case LEFT:
+				return new Vector3(-1, 1, 0);
+			case BACKLEFT:
+				return new Vector3(-1, -1, 0);
+			case BACKRIGHT:
+				return new Vector3(1, -1, 0);
+			default:
+				return new Vector3(0, 0, -1);
+		}
+	}
 }

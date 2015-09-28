@@ -157,7 +157,7 @@ public class Selection extends AbstractEntity {
                 
 		if (intersect!= null && intersect.getPoint() != null){
 		   setPosition( intersect.getPoint());
-		   setNormal( Side.normalToSide( intersect.getNormal() ) );
+		   setNormal(intersect.getNormal());
 		}
     }
 }

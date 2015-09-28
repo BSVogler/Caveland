@@ -31,10 +31,11 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
@@ -62,18 +63,43 @@ public class Torch extends RenderBlock {
 	
 	public void lightNearbyBlocks(){
 		if (getPosition()!=null) {
-			Point lightPos = getPosition().toPoint().addVector(0,0,30);
+			Point lightPos = getPosition().toPoint().addVector(0,0,Block.GAME_EDGELENGTH*0.4f);
 			float flicker = (float) Math.random();
 			//light blocks under the torch
-			for (int x = -RADIUS; x < RADIUS; x++) {
-				for (int y = -RADIUS*2; y < RADIUS*2; y++) {
-					Block block = getPosition().cpy().addVector(x, y, -1).getBlock();
-					if (block!=null) {
-						float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/(float) Block.GAME_EDGELENGTH+1;
-							float l  = (1 +BRIGHTNESS) / (pow*pow);
-						block.addLightlevel(l*(0.15f+flicker*0.03f), Side.TOP,0);
-						block.addLightlevel(l*(0.15f+flicker*0.005f), Side.TOP,1);
-						block.addLightlevel(l*(0.15f+flicker*0.005f), Side.TOP,2);
+			for (int z = -RADIUS; z < RADIUS; z++) {
+				for (int x = -RADIUS; x < RADIUS; x++) {
+					for (int y = -RADIUS; y < RADIUS; y++) {
+						if (new Vector3(x, y, z).len2() > 0){
+							Intersection inters = lightPos.raycast(
+								new Vector3(x, y, z).nor(),
+								RADIUS*Block.GAME_EDGELENGTH,
+								null,
+								true
+							);
+							if (inters != null && inters.getPoint() != null) {
+								Block block = inters.getPoint().getBlock();
+								if (block != null) {
+									float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/(float) Block.GAME_EDGELENGTH+1;
+									float l  = (1 +BRIGHTNESS) / (pow*pow);
+									
+									block.addLightlevel(
+										l*(0.15f+flicker*0.03f),
+										inters.getNormal(),
+										0
+									);
+									block.addLightlevel(
+										l*(0.15f+flicker*0.005f),
+										inters.getNormal(),
+										1
+									);
+									block.addLightlevel(
+										l*(0.15f+flicker*0.005f),
+										inters.getNormal(),
+										2
+									);
+								}
+							}
+						}
 					}
 				}
 			}

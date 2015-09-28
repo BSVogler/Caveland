@@ -92,7 +92,9 @@ public class CustomGameController extends Controller {
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
 			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
 			introSpaceship.setIndestructible(true);
-			introSpaceship.setPassenger(player1);
+			introSpaceship.addContent(player1);
+			if (player2 != null)
+				introSpaceship.addContent(player2);
 		}
 	}
 	

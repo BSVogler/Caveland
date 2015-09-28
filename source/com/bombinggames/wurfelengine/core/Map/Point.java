@@ -71,6 +71,16 @@ public class Point extends AbstractPosition {
 		this.y = posY;
         this.z = height;
     }
+	
+	/**
+	 * 
+	 * @param vec 
+	 */
+	public Point(Vector3 vec){
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
+	}
     
     /**
      * Copy-constructor. This constructor copies the values.
@@ -100,10 +110,10 @@ public class Point extends AbstractPosition {
     }
 	
 	/**
-     * Get the z in block grid coordinates of the coordinate. Faster then calculate the coordiante first.
+     * Get the z in block grid coordinates of the coordinate. Faster the transofmring to coordinate first.
      * @return in grid coordinates.
      */
-    public float getZGrid() {
+    public int getZGrid() {
         return (int) (z/Block.GAME_EDGELENGTH);
     }
 

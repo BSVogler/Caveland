@@ -36,6 +36,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
@@ -56,7 +57,8 @@ public class SmokeEmitter extends AbstractEntity {
 	private Vector3 startingVector = new Vector3(0, 0, 0);
 	private Vector3 spread = new Vector3(0, 0, 0);
 	private float TTL = 1000;//default 1 second
-	private float brightness;
+	private PointLightSource lightsource;
+	private Particle prototype = new Particle();
 
 	/**
 	 *active by default
@@ -72,10 +74,26 @@ public class SmokeEmitter extends AbstractEntity {
 	}
 
 	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		if (prototype.getType()==ParticleType.FIRE) {
+			if (lightsource == null)
+				lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+			lightsource.setPosition(point.cpy());
+		}
+		return this;
+	}
+	
+	
+
+	@Override
 	public void update(float dt) {
 		super.update(dt);
 		
 		if (active) {
+			if (lightsource != null && prototype.getType()==ParticleType.FIRE) {
+				lightsource.enable();
+			}
 			setColor(new Color(1, 0, 0, 1));
 			timer+=dt;
 			if (timer >= timeEachSpawn){
@@ -83,7 +101,6 @@ public class SmokeEmitter extends AbstractEntity {
 				Particle particle = new Particle((byte) 22, TTL);
 				particle.setType(ParticleType.FIRE);
 				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
-				particle.setBrightness(brightness);
 				particle.addMovement(
 					startingVector.add(
 						(float) (Math.random()-0.5f)*2*spread.x,
@@ -150,6 +167,7 @@ public class SmokeEmitter extends AbstractEntity {
 	 * @param brightness 
 	 */
 	public void setParticleBrightness(float brightness){
-		this.brightness = brightness;
+		if(lightsource!=null)
+			lightsource.setBrightness(brightness);
 	}
 }

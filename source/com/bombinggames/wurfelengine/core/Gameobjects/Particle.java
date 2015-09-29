@@ -1,7 +1,6 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
@@ -14,7 +13,6 @@ public class Particle extends MovableEntity {
 	private float timeTillDeath;
 	private Color startingColor;
 	private ParticleType type;
-	private float brightness = 0f;
 
 	public Particle() {
 		this((byte) 22, 2000f);
@@ -94,32 +92,6 @@ public class Particle extends MovableEntity {
 			getColor().r = startingColor.r*((timeTillDeath*2)/maxtime);
 			getColor().g = startingColor.g*((timeTillDeath)/maxtime);
 			getColor().b = startingColor.b*((timeTillDeath)/maxtime);
-		}
-		
-		if (getPosition()!=null && type==ParticleType.FIRE) {
-			//licht
-			Point pos = getPosition().toPoint();
-			float flicker = (float) Math.random();
-			for (int x = -3; x < 3; x++) {
-				for (int y = -6; y < 6; y++) {
-					for (int z = -3; z < 3; z++) {
-						Block blockToLight = getPosition().toCoord().addVector(x, y, z).getBlock(); 
-						if (blockToLight != null) {
-							float pow = pos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/(float) Block.GAME_EDGELENGTH+1;
-							float l  = (1 +brightness) / (pow*pow);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.TOP, 0);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.000005f), Side.TOP, 1);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.000005f), Side.TOP, 2);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.RIGHT, 0);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.RIGHT, 1);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.RIGHT, 2);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.03f), Side.LEFT, 0);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.LEFT, 1);
-							blockToLight.addLightlevel(l*(0.15f+flicker*0.005f), Side.LEFT, 2);
-						}
-					}
-				}
-			}
 		}
 	}
 

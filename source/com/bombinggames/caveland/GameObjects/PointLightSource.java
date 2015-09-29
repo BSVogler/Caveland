@@ -21,8 +21,8 @@ public class PointLightSource extends AbstractEntity {
 	private final float floatradius;
 	private final float[][][][] lightcache;
 	private final Color color;
-	private final int brightness;
-	private boolean enabled;
+	private float brightness;
+	private boolean enabled = true;
 
 	/**
 	 *
@@ -31,7 +31,7 @@ public class PointLightSource extends AbstractEntity {
 	 * performance if smaller
 	 * @param brightness
 	 */
-	public PointLightSource(Color color, float maxRadius, int brightness) {
+	public PointLightSource(Color color, float maxRadius, float brightness) {
 		super((byte) 0);
 		setName("LightSource");
 		this.floatradius = maxRadius;
@@ -151,4 +151,8 @@ public class PointLightSource extends AbstractEntity {
 		enabled = false;
 	}
 
+	public void setBrightness(float brightness) {
+		this.brightness = brightness;
+	}
+	
 }

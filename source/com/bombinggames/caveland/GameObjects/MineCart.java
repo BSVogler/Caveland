@@ -59,13 +59,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
 		
-		lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
-		lightsource.setSaveToDisk(false);
-		lightsource.spawn(point.cpy());
-		SuperGlue lConn = new SuperGlue(this, lightsource);
-		lConn.setSaveToDisk(false);
-		lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
-		lConn.spawn(point.cpy());
+		
 		return this;
 	}
 
@@ -74,8 +68,20 @@ public class MineCart extends MovableEntity implements Interactable {
 		super.update(dt);
 		
 		Point pos = getPosition();
+		
+				
 		if (isSpawned() && pos.isInMemoryAreaHorizontal()) {
 			Block block = pos.getBlock();
+			
+			if (lightsource==null){
+				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
+				lightsource.setSaveToDisk(false);
+				lightsource.spawn(getPosition().cpy());
+				SuperGlue lConn = new SuperGlue(this, lightsource);
+				lConn.setSaveToDisk(false);
+				lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
+				lConn.spawn(pos.cpy());
+			}
 
 			//on tracks?
 			if (block != null && (

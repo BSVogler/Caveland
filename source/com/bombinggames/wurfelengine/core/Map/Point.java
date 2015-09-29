@@ -340,7 +340,7 @@ public class Point extends AbstractPosition {
      * Trace a ray through the map until ray hits non air block.<br>
      * High precision intersection missing.
      * @param dir dir of the ray
-     * @param maxDistance the distane after which it should stop. (in game pixels?)
+     * @param maxDistance the distane after which it should stop. (in game meters)
      * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>
      * @param hitFullOpaque if true only intersects with blocks which are not transparent =full opaque
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
@@ -424,7 +424,9 @@ public class Point extends AbstractPosition {
 
 			){
 				//found intersection point
-				return Intersection.intersect(isectC, this, dir);
+				if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)
+					return Intersection.intersect(isectC, this, dir);
+				else return null;
 			}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the
@@ -458,10 +460,13 @@ public class Point extends AbstractPosition {
                 }
             }
         }
-        //ground hit, must be 0,0,1
+        //ground hit, must be 0,0,0
         if (curZ <= 0){
             Point intersectpoint = new Point(curX, curY, 0);
-            return new Intersection(intersectpoint, Side.TOP, this.distanceTo(intersectpoint));
+			float distance = this.distanceTo(intersectpoint);
+			if (distance <= Block.GAME_EDGELENGTH*maxDistance)
+				return new Intersection(intersectpoint, Side.TOP, distance);
+			else return null;
         } else
             return null;
     }

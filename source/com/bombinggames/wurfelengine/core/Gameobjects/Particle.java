@@ -30,12 +30,11 @@ public class Particle extends MovableEntity {
 	 * @param maxtime TTL in ms
 	 */
 	public Particle(byte id, float maxtime) {
-		super(id, 0);
+		super(id, 0, false);
 		this.maxtime = maxtime;
-		timeTillDeath=maxtime;
+		timeTillDeath = maxtime;
 		setSaveToDisk(false);
 		setScaling(-1);
-		disableShadow();
 		setFloating(true);
 		setName("Particle");
 		type = ParticleType.REGULAR;

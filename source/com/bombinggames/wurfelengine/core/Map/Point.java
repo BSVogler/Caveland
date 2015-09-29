@@ -412,12 +412,12 @@ public class Point extends AbstractPosition {
 				(
 					(
 						curZ < camera.getZRenderingLimit()
-						&& !camera.isClipped(isectC.toCoord())
+						&& !camera.isClipped(isectC)
 					)
 				)
 			   )
 				&& block != null
-				&& (!hitFullOpaque || (hitFullOpaque && !block.isTransparent()))
+				&& !(hitFullOpaque && block.isTransparent())
 
 			){
 				//found intersection point

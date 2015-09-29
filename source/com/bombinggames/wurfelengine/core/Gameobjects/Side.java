@@ -32,6 +32,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
@@ -108,6 +109,30 @@ public enum Side {
 				return new Vector3(1, -1, 0);
 			default:
 				return new Vector3(0, 0, -1);
+		}
+	}
+	
+	public static Side calculateNormal(Point point){
+		Point coordPoint = point.toCoord().toPoint();
+		if (point.getZ() <= coordPoint.getZ()) {
+			return Side.BOTTOM;
+		} else if (point.getZ() >= coordPoint.getZ() + Block.GAME_EDGELENGTH - 2f) {//point is at top with a 2 error margin
+			return Side.TOP;
+		} else {
+			Side normal;
+			if (point.getX() > coordPoint.getX()) {
+				normal = Side.RIGHT;
+			} else {
+				normal = Side.LEFT;
+			}
+			if (point.getY() < coordPoint.getY()) {
+				if (normal == Side.RIGHT) {
+					normal = Side.BACKRIGHT;
+				} else {
+					normal = Side.BACKLEFT;
+				}
+			}
+			return normal;
 		}
 	}
 }

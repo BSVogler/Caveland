@@ -88,28 +88,6 @@ public class Intersection {
 		return distance;
 	}
 
-	private void calculateNormal(){
-		Point coordPoint = point.toCoord().toPoint();
-		if (point.getZ() <= coordPoint.getZ()) {
-			normal = Side.BOTTOM;//below
-		} else if (point.getZ() >= coordPoint.getZ() + Block.GAME_EDGELENGTH - 2f) {//point is at top
-			normal = Side.TOP;
-		} else {
-			if (point.getX() > coordPoint.getX()) {
-				normal = Side.RIGHT;
-			} else {
-				normal = Side.LEFT;
-			}
-			if (point.getY() < coordPoint.getY()) {
-				if (normal == Side.RIGHT) {
-					normal = Side.BACKRIGHT;
-				} else {
-					normal = Side.BACKLEFT;
-				}
-			}
-		}
-	}
-
 	/**
 	 * performs a line-box intersection
 	 * @param target target coordinate
@@ -170,7 +148,7 @@ public class Intersection {
 			intersPoint.addVector(0, 0, -1f);
 
 		inter.point = intersPoint;
-		inter.calculateNormal();
+		inter.normal = Side.calculateNormal(inter.point);
 		inter.distance = Math.abs(t);
 		return inter;
 	}

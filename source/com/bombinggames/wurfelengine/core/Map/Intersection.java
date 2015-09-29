@@ -150,6 +150,11 @@ public class Intersection {
 		inter.point = intersPoint;
 		inter.normal = Side.calculateNormal(inter.point);
 		inter.distance = Math.abs(t);
+//		Particle dust = (Particle) new Particle(
+//			(byte) 22,
+//			200f
+//		).spawn(inter.point.cpy());
+//		dust.setMovement(inter.normal.toVector().scl(3f));
 		return inter;
 	}
 }

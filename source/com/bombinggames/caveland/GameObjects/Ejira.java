@@ -1050,11 +1050,13 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		if (getPosition()!=null) {
 			Point lightPos = getPosition().cpy().addVector(0,0,Block.GAME_EDGELENGTH*0.5f);
 			float flicker = (float) Math.random();
+			float noiseX = (float) Math.random()*2-1;
+			float noiseY = (float) Math.random()*2-1;
 			//light blocks under the torch
 			for (int z = -RADIUS; z < RADIUS; z++) {
 				for (int x = -RADIUS*4; x < RADIUS*4; x++) {
 					for (int y = -RADIUS*2; y < RADIUS*2; y++) {
-						Vector3 dir = new Vector3(x, y, z).nor();
+						Vector3 dir = new Vector3(x+noiseX, y+noiseY, z+flicker*2-1).nor();
 						if (dir.len2() > 0){
 							Intersection inters = lightPos.raycast(
 								dir,

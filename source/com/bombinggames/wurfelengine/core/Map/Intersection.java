@@ -94,7 +94,7 @@ public class Intersection {
 	 * @param target target coordinate
 	 * @param p starting point
 	 * @param dir direction of ray
-	 * @return
+	 * @return null if not hitting
 	 */
 	public static Intersection intersect(final Coordinate target, final Point p, final Vector3 dir) {
 		final Vector3 back = target.toPoint().getVector().add(0, -Block.GAME_DIAGLENGTH2, 0);

@@ -95,6 +95,10 @@ public enum Side {
 		}
 	}
 
+	/**
+	 * 
+	 * @return 
+	 */
 	public Vector3 toVector() {
 		switch (this) {
 			case TOP:
@@ -112,6 +116,11 @@ public enum Side {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param point
+	 * @return 
+	 */
 	public static Side calculateNormal(Point point){
 		Point coordPoint = point.toCoord().toPoint();
 		if (point.getZ() <= coordPoint.getZ()) {

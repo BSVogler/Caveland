@@ -58,7 +58,7 @@ public class SmokeEmitter extends AbstractEntity {
 	private Vector3 spread = new Vector3(0, 0, 0);
 	private float TTL = 1000;//default 1 second
 	private PointLightSource lightsource;
-	private Particle prototype = new Particle();
+	private Particle prototype = new Particle((byte) 22);
 
 	/**
 	 *active by default
@@ -98,9 +98,9 @@ public class SmokeEmitter extends AbstractEntity {
 			timer+=dt;
 			if (timer >= timeEachSpawn){
 				timer %= timeEachSpawn;
-				Particle particle = new Particle((byte) 22, TTL);
-				particle.setType(ParticleType.FIRE);
-				particle.setColor(new Color(1, 0.5f, 0.1f, 1));
+				Particle particle = new Particle(prototype.getSpriteId(), TTL);
+				particle.setType(prototype.getType());
+				particle.setColor(prototype.getColor());
 				particle.addMovement(
 					startingVector.add(
 						(float) (Math.random()-0.5f)*2*spread.x,

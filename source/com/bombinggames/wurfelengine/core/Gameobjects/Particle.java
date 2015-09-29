@@ -74,6 +74,11 @@ public class Particle extends MovableEntity {
 	public void update(float dt) {
 		super.update(dt);
 		timeTillDeath-=dt;
+		
+		if (timeTillDeath <= 0) {
+			dispose();
+			return;
+		}
 //		//spread on floor
 //		if (direction.z <0 && isOnGround()){
 //			direction.x *= 2;
@@ -121,8 +126,6 @@ public class Particle extends MovableEntity {
 				}
 			}
 		}
-		
-		if (timeTillDeath <= 0) dispose();
 	}
 
 	@Override

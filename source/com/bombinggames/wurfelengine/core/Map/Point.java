@@ -376,6 +376,7 @@ public class Point extends AbstractPosition {
         if (dir.isZero()) {
 			throw new Error("Raycast in zero direction!");
 		}
+		dir.nor();
 		
 		Coordinate isectC = toCoord();
         int curX = isectC.getX();
@@ -396,10 +397,6 @@ public class Point extends AbstractPosition {
 		float tDeltaY = stepY / dir.y;
 		float tDeltaZ = stepZ / dir.z;
 
-        // Rescale from units of 1 cube-edge to units of 'dir' so we can
-        // compare with 't'.
-        maxDistance /= dir.len();
-		
 		/* ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)

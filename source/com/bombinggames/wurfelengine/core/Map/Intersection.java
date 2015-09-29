@@ -90,49 +90,48 @@ public class Intersection {
 
 	/**
 	 * performs a line-box intersection
+	 *
 	 * @param target target coordinate
 	 * @param p starting point
 	 * @param dir direction of ray
-	 * @return 
+	 * @return
 	 */
 	public static Intersection intersect(final Coordinate target, final Point p, final Vector3 dir) {
-		Intersection inter = new Intersection();
-    
 		final Vector3 back = target.toPoint().getVector().add(0, -Block.GAME_DIAGLENGTH2, 0);
 		final Vector3 front = target.toPoint().getVector().add(0, Block.GAME_DIAGLENGTH2, Block.GAME_EDGELENGTH);
-		
-		//calculate smallest hit t's, there are min and max because the ray enters and leaves
-		
+
+		Intersection inter = new Intersection();
+
 		float a = Float.NEGATIVE_INFINITY;
 		float b = Float.NEGATIVE_INFINITY;
-		if (dir.x != 0){
-			a = ( back.x - p.getX() ) / dir.x;
-			b = ( front.x - p.getX() ) / dir.x;
+		if (dir.x != 0) {
+			a = (back.x - p.getX()) / dir.x;
+			b = (front.x - p.getX()) / dir.x;
 		}
 
 		float tmin = Math.min(a, b);
 		float tmax = Math.max(a, b);
-		
+
 		a = Float.NEGATIVE_INFINITY;
 		b = Float.NEGATIVE_INFINITY;
-		if (dir.y != 0){
+		if (dir.y != 0) {
 			a = (back.y - p.getY()) / dir.y;
 			b = (front.y - p.getY()) / dir.y;
 		}
-		
+
 		tmin = Math.max(tmin, Math.min(a, b));
 		tmax = Math.min(tmax, Math.max(a, b));
-		
+
 		//z
 		a = Float.NEGATIVE_INFINITY;
 		b = Float.NEGATIVE_INFINITY;
-		if (dir.z != 0){
+		if (dir.z != 0) {
 			a = (back.z - p.getZ()) / dir.z;
 			b = (front.z - p.getZ()) / dir.z;
 		}
 		tmin = Math.max(tmin, Math.min(a, b));
 		tmax = Math.min(tmax, Math.max(a, b));
-		
+
 		//find t
 		float t = tmin;
 		if (t < 0) {
@@ -144,8 +143,9 @@ public class Intersection {
 
 		final Point intersPoint = new Point(dir.cpy().scl(t).add(p.getVector()));
 		//lower a bit to prevent that is at next grid level
-		if (intersPoint.getZ() >= target.toPoint().getZ()+Block.GAME_EDGELENGTH )
+		if (intersPoint.getZ() >= target.toPoint().getZ() + Block.GAME_EDGELENGTH) {
 			intersPoint.addVector(0, 0, -1f);
+		}
 
 		inter.point = intersPoint;
 		inter.normal = Side.calculateNormal(inter.point);

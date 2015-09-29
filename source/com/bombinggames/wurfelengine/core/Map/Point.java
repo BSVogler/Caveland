@@ -384,9 +384,9 @@ public class Point extends AbstractPosition {
         int curZ = isectC.getZ();
 		
 		// Direction to increment x,y,z when stepping.
-		float stepX = Math.signum(dir.x);
-		float stepY = Math.signum(dir.y);
-		float stepZ = Math.signum(dir.z);
+		int stepX = (int) Math.signum(dir.x);
+		int stepY = (int) Math.signum(dir.y);
+		int stepZ = (int) Math.signum(dir.z);
         // See description above. The initial values depend on the fractional
 		// part of the origin.
 		float tMaxX = intbound(x, dir.x);
@@ -402,7 +402,7 @@ public class Point extends AbstractPosition {
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
 			&& isectC.isInMemoryAreaHorizontal()
 		) {//can enter and be vertically outside
-			
+
 			isectC = new Coordinate(curX, curY, curZ);
 			Block block = isectC.getBlock();
 			//intersect?
@@ -437,7 +437,6 @@ public class Point extends AbstractPosition {
                     curX += stepX;
                     // Adjust tMaxX to the next X-oriented boundary crossing.
                     tMaxX += tDeltaX;
-                    // Record the normal vector of the cube normal we entered.
                 } else {
                     if (tMaxZ > maxDistance) break;
                     curZ += stepZ;

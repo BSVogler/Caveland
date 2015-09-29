@@ -228,9 +228,10 @@ public class RenderBlock extends AbstractGameObject {
     }
 	
 	/**
-	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call.
+	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call. A regular renderblock is not spawned expect explicitely called.
 	 * @param coord the position on the map
 	 * @return itself
+	 * @see #setPosition(com.bombinggames.wurfelengine.core.Map.AbstractPosition) 
 	 */
 	public RenderBlock spawn(Coordinate coord){
 		setPosition(coord);

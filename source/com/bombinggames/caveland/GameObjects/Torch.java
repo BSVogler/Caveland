@@ -31,12 +31,10 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Intersection;
-import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
@@ -44,72 +42,26 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  */
 public class Torch extends RenderBlock {
 	private static final long serialVersionUID = 1L;
-	public final static int RADIUS = 3;
 	public final static float POINTRADIUS = 3*Block.GAME_EDGELENGTH;
-	public final static float BRIGHTNESS = 8f;
+	private PointLightSource lightsource;
 
 	
 	public Torch(Block data){
 		super(data);
-		lightNearbyBlocks();
 	}
 
 	@Override
-	public RenderBlock spawn(Coordinate coord) {
-		RenderBlock a = super.spawn(coord);
-		lightNearbyBlocks();
-		return a; 
-	}
-	
-	public void lightNearbyBlocks(){
-		if (getPosition()!=null) {
-			Point lightPos = getPosition().toPoint().addVector(0,0,Block.GAME_EDGELENGTH*0.4f);
-			float flicker = (float) Math.random();
-			//light blocks under the torch
-			for (int z = -RADIUS; z < RADIUS; z++) {
-				for (int x = -RADIUS; x < RADIUS; x++) {
-					for (int y = -RADIUS; y < RADIUS; y++) {
-						if (new Vector3(x, y, z).len2() > 0){
-							Intersection inters = lightPos.raycast(
-								new Vector3(x, y, z).nor(),
-								RADIUS*Block.GAME_EDGELENGTH,
-								null,
-								true
-							);
-							if (inters != null && inters.getPoint() != null) {
-								Block block = inters.getPoint().getBlock();
-								if (block != null) {
-									float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/(float) Block.GAME_EDGELENGTH+1;
-									float l  = (1 +BRIGHTNESS) / (pow*pow);
-									
-									block.addLightlevel(
-										l*(0.15f+flicker*0.03f),
-										inters.getNormal(),
-										0
-									);
-									block.addLightlevel(
-										l*(0.15f+flicker*0.005f),
-										inters.getNormal(),
-										1
-									);
-									block.addLightlevel(
-										l*(0.15f+flicker*0.005f),
-										inters.getNormal(),
-										2
-									);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+	public void setPosition(Coordinate coord) {
+		super.setPosition(coord);
+		if (lightsource == null)
+			lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+		lightsource.setPosition(coord.cpy());
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		lightNearbyBlocks();
+		if (lightsource != null)
+			lightsource.update(dt);
 	}
-	
 }

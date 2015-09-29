@@ -59,7 +59,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
 		
-		lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f);
+		lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(point.cpy());
 		SuperGlue lConn = new SuperGlue(this, lightsource);
@@ -81,6 +81,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			if (block != null && (
 				block.getId() == CavelandBlocks.CLBlocks.RAILS.getId() || block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
 			) {
+				lightsource.enable();
 				setFriction(0.001f);
 
 				switch (block.getValue()) {
@@ -167,6 +168,7 @@ public class MineCart extends MovableEntity implements Interactable {
 					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.8f));
 				}
 			} else {//offroad
+				lightsource.disable();
 				setFriction(0.005f);
 				if (isPlayingSound!=0) {
 					WE.SOUND.stop("wagon", isPlayingSound);

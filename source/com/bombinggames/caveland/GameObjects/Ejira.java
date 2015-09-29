@@ -11,8 +11,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
-import static com.bombinggames.caveland.GameObjects.Torch.BRIGHTNESS;
-import static com.bombinggames.caveland.GameObjects.Torch.RADIUS;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -35,7 +33,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
@@ -153,6 +150,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	
 	private transient final SmokeEmitter emitter;
 	private transient final SmokeEmitter emitter2;
+	private PointLightSource lightsource;
 	
 	/**
 	 * creates a new Ejira
@@ -192,17 +190,25 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		super.spawn(point);
 		inventory = (Inventory) new Inventory(this).spawn();
 		
-		emitter.spawn(point);
+		emitter.spawn(point.cpy());
 		SuperGlue connection1 = new SuperGlue(this, emitter);
 		connection1.setSaveToDisk(false);
 		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
-		connection1.spawn(point);
+		connection1.spawn(point.cpy());
 		
-		emitter2.spawn(point);
+		emitter2.spawn(point.cpy());
 		SuperGlue conection2 = new SuperGlue(this, emitter2);
 		conection2.setSaveToDisk(false);
 		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
-		conection2.spawn(point);
+		conection2.spawn(point.cpy());
+		
+		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 5);
+		lightsource.setSaveToDisk(false);
+		lightsource.spawn(point.cpy());
+		SuperGlue lConn = new SuperGlue(this, lightsource);
+		lConn.setSaveToDisk(false);
+		lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
+		lConn.spawn(point.cpy());
 		return this;
 	}
 	
@@ -415,7 +421,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 			}
-			lightNearbyBlocks();
 		}
 	}
 
@@ -1046,53 +1051,4 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		return playerNumber;
 	}
 	
-	public void lightNearbyBlocks(){
-		if (getPosition()!=null) {
-			Point lightPos = getPosition().cpy().addVector(0,0,Block.GAME_EDGELENGTH*0.5f);
-			float flicker = (float) Math.random();
-			float noiseX = (float) Math.random()*2-1;
-			float noiseY = (float) Math.random()*2-1;
-			//light blocks under the torch
-			for (int z = -RADIUS; z < RADIUS; z++) {
-				for (int x = -RADIUS*4; x < RADIUS*4; x++) {
-					for (int y = -RADIUS*2; y < RADIUS*2; y++) {
-						Vector3 dir = new Vector3(x+noiseX, y+noiseY, z+flicker*2-1).nor();
-						if (dir.len2() > 0){
-							Intersection inters = lightPos.raycast(
-								dir,
-								RADIUS*Block.GAME_EDGELENGTH*2,
-								null,
-								true
-							);
-							if (inters != null && inters.getPoint() != null) {
-								Block block = inters.getPoint().getBlock();
-								if (block != null) {
-									float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint())/Block.GAME_EDGELENGTH+1;
-									float l = (1 +BRIGHTNESS) / (pow*pow);
-									l *= dir.scl(-1f).dot(inters.getNormal().toVector());
-									
-									block.addLightlevel(
-										l*(0.15f+flicker*0.03f),
-										inters.getNormal(),
-										0
-									);
-									block.addLightlevel(
-										l*(0.15f+flicker*0.005f),
-										inters.getNormal(),
-										1
-									);
-									block.addLightlevel(
-										l*(0.15f+flicker*0.005f),
-										inters.getNormal(),
-										2
-									);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
 }

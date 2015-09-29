@@ -1,0 +1,154 @@
+package com.bombinggames.caveland.GameObjects;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.Side;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Intersection;
+import com.bombinggames.wurfelengine.core.Map.Point;
+
+/**
+ *
+ * @author Benedikt Vogler
+ */
+public class PointLightSource extends AbstractEntity {
+
+	private static final long serialVersionUID = 1L;
+
+	private final int radius;
+	private final float floatradius;
+	private final float[][][][] lightcache;
+	private final Color color;
+	private final int brightness;
+	private boolean enabled;
+
+	/**
+	 *
+	 * @param color
+	 * @param maxRadius cut at distance of this amount of meters. boosts
+	 * performance if smaller
+	 * @param brightness
+	 */
+	public PointLightSource(Color color, float maxRadius, int brightness) {
+		super((byte) 0);
+		setName("LightSource");
+		this.floatradius = maxRadius;
+		this.radius = (int) Math.ceil(maxRadius);
+		this.brightness = brightness;
+		this.color = color;
+		this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
+	}
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		lightNearbyBlocks(0);
+		return this;
+	}
+
+	public void lightNearbyBlocks(float delta) {
+		if (getPosition() != null) {
+			Point lightPos = getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH * 0.5f);
+			float flicker = (float) Math.random();
+			float noiseX = (float) Math.random() * 2 - 1;
+			float noiseY = (float) Math.random() * 2 - 1;
+			//light blocks under the torch
+			for (int z = -radius; z < radius; z++) {
+				for (int x = -radius; x < radius; x++) {
+					for (int y = -radius * 2; y < radius * 2; y++) {
+
+						//slowly decrease
+						if (lightcache[x + radius][y + radius * 2][z + radius][0] > 0) {
+							lightcache[x + radius][y + radius * 2][z + radius][0] -= delta * 0.0001f;
+							if (lightcache[x + radius][y + radius * 2][z + radius][0] < 0) {
+								lightcache[x + radius][y + radius * 2][z + radius][0] = 0;
+							}
+						}
+						if (lightcache[x + radius][y + radius * 2][z + radius][1] > 0) {
+							lightcache[x + radius][y + radius * 2][z + radius][1] -= delta * 0.0001f;
+							if (lightcache[x + radius][y + radius * 2][z + radius][1] < 0) {
+								lightcache[x + radius][y + radius * 2][z + radius][1] = 0;
+							}
+						}
+						if (lightcache[x + radius][y + radius * 2][z + radius][2] > 0) {
+							lightcache[x + radius][y + radius * 2][z + radius][2] -= delta * 0.0001f;
+							if (lightcache[x + radius][y + radius * 2][z + radius][2] < 0) {
+								lightcache[x + radius][y + radius * 2][z + radius][2] = 0;
+							}
+						}
+
+						//send rays
+						Vector3 dir = new Vector3(x + noiseX, y + noiseY, z + flicker * 2 - 1).nor();
+						if (dir.len2() > 0) {//filter some rays
+							Intersection inters = lightPos.raycast(
+								dir,
+								floatradius * 2,
+								null,
+								true
+							);
+//							Particle dust = (Particle) new Particle(
+//								(byte) 22,
+//								200f
+//							).spawn(lightPos.cpy());
+//							dust.setMovement(dir.cpy().scl(9f));
+							if (inters != null && inters.getPoint() != null) {
+								float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint()) / Block.GAME_EDGELENGTH + 1;
+								float l = (1 + brightness) / (pow * pow);
+								l *= dir.scl(-1f).dot(inters.getNormal().toVector());//lambert
+
+								int code = inters.getNormal().getCode();
+								if (code < 3) {
+									float newbright = l * (0.15f + flicker * 0.005f);
+									if (newbright > lightcache[x + radius][y + radius * 2][z + radius][code]) {
+										lightcache[x + radius][y + radius * 2][z + radius][code] = newbright;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (enabled) {
+			lightNearbyBlocks(dt);
+
+			//apply cache
+			Coordinate center = getPosition().toCoord();
+			for (int x = -radius; x < radius; x++) {
+				for (int y = -radius * 2; y < radius * 2; y++) {
+					for (int z = -radius; z < radius; z++) {
+						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
+						Block block = center.cpy().addVector(x, y, z).getBlock();
+						if (block != null) {
+							block.addLightlevel(blocklight[0] * color.r, Side.LEFT, 0);
+							block.addLightlevel(blocklight[0] * color.g, Side.LEFT, 1);
+							block.addLightlevel(blocklight[0] * color.b, Side.LEFT, 2);
+							block.addLightlevel(blocklight[1] * color.r, Side.TOP, 0);
+							block.addLightlevel(blocklight[1] * color.g, Side.TOP, 1);
+							block.addLightlevel(blocklight[1] * color.b, Side.TOP, 2);
+							block.addLightlevel(blocklight[2] * color.r, Side.RIGHT, 0);
+							block.addLightlevel(blocklight[2] * color.g, Side.RIGHT, 1);
+							block.addLightlevel(blocklight[2] * color.b, Side.RIGHT, 2);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void enable() {
+		enabled = true;
+	}
+
+	public void disable() {
+		enabled = false;
+	}
+
+}

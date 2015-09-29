@@ -44,6 +44,10 @@ public class Particle extends MovableEntity {
 		this.type = type;
 	}
 
+	public ParticleType getType() {
+		return type;
+	}
+	
 	@Override
 	public void setColor(Color color) {
 		super.setColor(color);
@@ -59,14 +63,6 @@ public class Particle extends MovableEntity {
 		//clamp
 		if (timeTillDeath > maxtime)
 			timeTillDeath=maxtime;
-	}
-	
-	/**
-	 * if the particle emits light youcan set the brightness
-	 * @param brightness
-	 */
-	public void setBrightness(float brightness){
-		this.brightness = brightness;
 	}
 	
 	@Override

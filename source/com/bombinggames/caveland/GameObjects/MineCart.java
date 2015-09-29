@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
@@ -40,6 +41,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private transient float rollingCycle;
 	private transient long isPlayingSound;
 	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
+	private PointLightSource lightsource;
 	
 	/**
 	 *
@@ -56,6 +58,14 @@ public class MineCart extends MovableEntity implements Interactable {
 		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
+		
+		lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f);
+		lightsource.setSaveToDisk(false);
+		lightsource.spawn(point.cpy());
+		SuperGlue lConn = new SuperGlue(this, lightsource);
+		lConn.setSaveToDisk(false);
+		lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
+		lConn.spawn(point.cpy());
 		return this;
 	}
 

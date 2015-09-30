@@ -79,7 +79,7 @@ public class Spaceship extends MovableEntity {
 	public void update(float dt) {
 		super.update(dt);
 		
-		if (!crashed){
+		if (!crashed && content != null){
 			content.forEach(c -> {c.setPosition(getPosition().cpy());});
 		}
 		

@@ -41,12 +41,13 @@ public class Vanya extends MovableEntity implements Interactable {
 		super.update(dt);
 		
 		//destroy nearby vanyas
-		getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class).forEach(( Object t) -> {
-			((AbstractEntity)t).dispose();
-		});
-		//höchster Punkt erreicht
-		//if (beforeUpdate>0 && getMovement().z<0)
-			//new BlümchenKacke().spawn(getPosition().cpy());
+		if (isSpawned()) {
+			getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class).forEach(( Object t) -> {
+				if (!t.equals(this)) {
+					((AbstractEntity) t).dispose();
+				}
+			});
+		}
 		
 		if (dt > 0) {//update only if time is running
 			if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) {

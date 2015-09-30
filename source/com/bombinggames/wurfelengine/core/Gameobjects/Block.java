@@ -108,7 +108,7 @@ public class Block implements HasID, Serializable {
 
 	/**
 	 * Some magic number which is the factor by what the Z axis is distorted
-	 * because of the angle pf projection.
+	 * because of the angle of projection.
 	 */
 	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT / (float) GAME_EDGELENGTH;
 

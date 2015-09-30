@@ -22,7 +22,7 @@ public class Spaceship extends MovableEntity {
 	 * true after first explosion
 	 */
 	private transient boolean crashing = false;
-	private transient boolean crashed = true;
+	private boolean crashed = false;
 	private transient Coordinate crashCoordinates;//crash if near
 	private final transient ArrayList<AbstractEntity> content = new ArrayList<>(2);
 

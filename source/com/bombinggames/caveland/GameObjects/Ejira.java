@@ -435,7 +435,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		if (!WE.CVARS.getValueB("ignorePlayer")) {
+		if (!WE.CVARS.getValueB("ignorePlayer") && textureNormal != null) {
 			view.getSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1

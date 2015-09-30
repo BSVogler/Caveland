@@ -104,13 +104,13 @@ public enum Side {
 			case TOP:
 				return new Vector3(0, 0, 1);
 			case RIGHT:
-				return new Vector3(1, 1, 0);
+				return new Vector3(1, 1, 0).nor();
 			case LEFT:
-				return new Vector3(-1, 1, 0);
+				return new Vector3(-1, 1, 0).nor();
 			case BACKLEFT:
-				return new Vector3(-1, -1, 0);
+				return new Vector3(-1, -1, 0).nor();
 			case BACKRIGHT:
-				return new Vector3(1, -1, 0);
+				return new Vector3(1, -1, 0).nor();
 			default:
 				return new Vector3(0, 0, -1);
 		}

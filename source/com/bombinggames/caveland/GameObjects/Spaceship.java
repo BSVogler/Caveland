@@ -101,7 +101,7 @@ public class Spaceship extends MovableEntity {
 				c.setIndestructible(false);
 			});
 
-			SmokeEmitter fireEmitter = (SmokeEmitter) new SmokeEmitter().spawn(getPosition().cpy());
+			ParticleEmitter fireEmitter = (ParticleEmitter) new ParticleEmitter().spawn(getPosition().cpy());
 			fireEmitter.setActive(true);
 			fireEmitter.setParticleStartMovement(new Vector3(0, 0, 3));
 			fireEmitter.setHidden(true);

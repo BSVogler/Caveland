@@ -148,8 +148,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 */
 	private transient byte attackDamage;
 	
-	private transient final SmokeEmitter emitter;
-	private transient final SmokeEmitter emitter2;
+	private transient final ParticleEmitter emitter;
+	private transient final ParticleEmitter emitter2;
 	private PointLightSource lightsource;
 	
 	/**
@@ -166,7 +166,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(Block.GAME_EDGELENGTH);
 		
-		emitter = new SmokeEmitter();
+		emitter = new ParticleEmitter();
 		emitter.setParticleDelay(10);
 		emitter.setParticleTTL(800);
 		emitter.setParticleBrightness(0.1f);
@@ -174,7 +174,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		emitter.setHidden(true);
 		emitter.setSaveToDisk(false);
 		
-		emitter2 = new SmokeEmitter();
+		emitter2 = new ParticleEmitter();
 		emitter2.setParticleDelay(10);
 		emitter2.setParticleTTL(800);
 		emitter2.setParticleBrightness(0.1f);

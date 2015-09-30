@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  *
  * @author Benedikt Vogler
  */
-public class SmokeEmitter extends AbstractEntity {
+public class ParticleEmitter extends AbstractEntity {
 	private static final long serialVersionUID = 2L;
 	private boolean active = false;
 	/**
@@ -64,7 +64,7 @@ public class SmokeEmitter extends AbstractEntity {
 	 *active by default
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
-	public SmokeEmitter() {
+	public ParticleEmitter() {
 		super((byte) 14);
 		//this.particleClass = Dust.class;
 		disableShadow();
@@ -76,20 +76,19 @@ public class SmokeEmitter extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		if (prototype.getType()==ParticleType.FIRE) {
-			if (lightsource == null)
+		if (prototype.getType() == ParticleType.FIRE) {
+			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+			}
 			lightsource.setPosition(point.cpy());
 		}
 		return this;
 	}
-	
-	
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		
+
 		if (active) {
 			if (lightsource != null && prototype.getType()==ParticleType.FIRE) {
 				lightsource.enable();
@@ -114,10 +113,9 @@ public class SmokeEmitter extends AbstractEntity {
 			setColor(new Color(0.5f, 0.5f, 0.5f, 1));
 		}
 	}
-	
-	
-	public void toggle(){
-		active= !active;
+
+	public void toggle() {
+		active = !active;
 	}
 
 	/**
@@ -127,27 +125,37 @@ public class SmokeEmitter extends AbstractEntity {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
+
 	/**
-	 * 
-	 * @param dir the direction and speed where the particles leave, in m/s without unit
+	 *
+	 * @param prototype
 	 */
-	public void setParticleStartMovement(Vector3 dir){
-		if (dir != null)
-			this.startingVector = dir;
+	public void setPrototype(Particle prototype) {
+		this.prototype = prototype;
 	}
-	
+
 	/**
-	 * 
-	 * @param spread the range in which random noise gets aplied, in m/s without unit
+	 *
+	 * @param dir the direction and speed where the particles leave, in m/s
+	 * without unit
 	 */
-	public void setParticleSpread(Vector3 spread){
+	public void setParticleStartMovement(Vector3 dir) {
+		if (dir != null) {
+			this.startingVector = dir;
+		}
+	}
+
+	/**
+	 *
+	 * @param spread the range in which random noise gets aplied, in m/s without
+	 * unit
+	 */
+	public void setParticleSpread(Vector3 spread) {
 		this.spread = spread;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param timeEachSpawn time in ms
 	 */
 	public void setParticleDelay(float timeEachSpawn) {
@@ -155,19 +163,21 @@ public class SmokeEmitter extends AbstractEntity {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param ttl time in ms
 	 */
 	public void setParticleTTL(int ttl) {
 		this.TTL = ttl;
 	}
-	
+
 	/**
 	 * if it can emit light
-	 * @param brightness 
+	 *
+	 * @param brightness
 	 */
-	public void setParticleBrightness(float brightness){
-		if(lightsource!=null)
+	public void setParticleBrightness(float brightness) {
+		if (lightsource != null) {
 			lightsource.setBrightness(brightness);
+		}
 	}
 }

@@ -35,7 +35,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.SmokeEmitter;
+import com.bombinggames.caveland.GameObjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  */
 public class OvenLogic extends AbstractBlockLogicExtension implements Interactable{
 	private static final long serialVersionUID = 1L;
-	private final SmokeEmitter emitter;
+	private final ParticleEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
 	private float burntime;
@@ -66,7 +66,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	 */
 	public OvenLogic(Block block, Coordinate coord) {
 		super(block, coord);
-		emitter = (SmokeEmitter) new SmokeEmitter().spawn(coord.toPoint());
+		emitter = (ParticleEmitter) new ParticleEmitter().spawn(coord.toPoint());
 		emitter.setHidden(true);
 		emitter.setParticleStartMovement(Vector3.Z.cpy());
 		emitter.setParticleTTL(1000);

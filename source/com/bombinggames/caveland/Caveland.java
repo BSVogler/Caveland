@@ -9,7 +9,7 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.MineCart;
-import com.bombinggames.caveland.GameObjects.SmokeEmitter;
+import com.bombinggames.caveland.GameObjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
@@ -67,7 +67,7 @@ public class Caveland {
 		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
 		
 		//register entities
-		AbstractEntity.registerEntity("Emitter Test", SmokeEmitter.class);
+		AbstractEntity.registerEntity("Emitter Test", ParticleEmitter.class);
 		AbstractEntity.registerEntity("TFlint", TFlint.class);
 		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
 		AbstractEntity.registerEntity("Construction Kit", Bausatz.class);

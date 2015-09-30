@@ -167,6 +167,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		setDimensionZ(Block.GAME_EDGELENGTH);
 		
 		Particle particle = new Particle((byte) 22, 800);
+		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 1f));
 		particle.setType(ParticleType.FIRE);
 		emitter = new ParticleEmitter();
 		emitter.setParticleDelay(10);

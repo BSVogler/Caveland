@@ -98,9 +98,9 @@ public class Particle extends MovableEntity {
 			getColor().a = timeTillDeath / maxtime;
 		}
 		if (type.fadeToBlack()) {
-			getColor().r = startingColor.r * ((timeTillDeath * 2) / maxtime);
-			getColor().g = startingColor.g * ((timeTillDeath) / maxtime);
-			getColor().b = startingColor.b * ((timeTillDeath) / maxtime);
+			getColor().r = startingColor.r * (timeTillDeath / maxtime);
+			getColor().g = startingColor.g * (timeTillDeath / maxtime);
+			getColor().b = startingColor.b * (timeTillDeath / maxtime);
 		}
 	}
 

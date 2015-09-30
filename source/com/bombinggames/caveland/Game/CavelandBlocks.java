@@ -2,7 +2,7 @@ package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
-import com.bombinggames.caveland.GameObjects.Torch;
+import com.bombinggames.caveland.GameObjects.TorchRenderer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
@@ -107,7 +107,7 @@ public class CavelandBlocks implements CustomBlocks {
 			}
 			return a;
 		} else if (data.getId() == CLBlocks.TORCH.id) {
-			return new Torch(data);
+			return new TorchRenderer(data);
 		} else if (data.getId() == CLBlocks.TREE.id) {
 			return new CustomTree(data);
 		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.id) {

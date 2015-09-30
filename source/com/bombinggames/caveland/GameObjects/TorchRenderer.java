@@ -40,13 +40,13 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class Torch extends RenderBlock {
+public class TorchRenderer extends RenderBlock {
 	private static final long serialVersionUID = 1L;
 	public final static float POINTRADIUS = 3*Block.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
 
 	
-	public Torch(Block data){
+	public TorchRenderer(Block data){
 		super(data);
 	}
 

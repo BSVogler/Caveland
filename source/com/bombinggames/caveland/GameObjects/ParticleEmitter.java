@@ -85,9 +85,10 @@ public class ParticleEmitter extends AbstractEntity {
 		super.update(dt);
 
 		if (active) {
-			setColor(new Color(1, 0, 0, 1));
+			setColor(new Color(1, 0, 0, 1));//only important if visible
 			if (lightsource != null && prototype.getType() == ParticleType.FIRE) {
-				lightsource.enable();
+				lightsource.setPosition(getPosition());
+				lightsource.update(dt);
 			}
 
 			timer += dt;
@@ -121,6 +122,7 @@ public class ParticleEmitter extends AbstractEntity {
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
+		checkLightSource();
 	}
 
 	/**
@@ -174,6 +176,7 @@ public class ParticleEmitter extends AbstractEntity {
 	 * @param brightness
 	 */
 	public void setBrightness(float brightness) {
+		checkLightSource();
 		if (lightsource != null) {
 			lightsource.setBrightness(brightness);
 		}
@@ -182,9 +185,10 @@ public class ParticleEmitter extends AbstractEntity {
 	private void checkLightSource() {
 		if (isSpawned() && prototype.getType() == ParticleType.FIRE) {
 			if (lightsource == null) {
-				lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+				lightsource = new PointLightSource(Color.YELLOW, 5, 11);
 			}
 			lightsource.setPosition(getPosition().cpy());
+			lightsource.enable();
 		}
 	}
 

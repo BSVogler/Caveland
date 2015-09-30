@@ -30,6 +30,7 @@ public class Vanya extends MovableEntity implements Interactable {
 		setFloating(false);
 		setName("Vanya");
 		setJumpingSound("vanya_jump");
+		setIndestructible(true);
 		setWalkingSpeedIndependentAnimation(2f);
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);

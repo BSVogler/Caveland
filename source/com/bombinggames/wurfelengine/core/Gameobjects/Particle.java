@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.Color;
  * @author Benedikt Vogler
  */
 public class Particle extends MovableEntity {
+
 	private static final long serialVersionUID = 2L;
-	
+
 	/**
 	 * the TTL at the start
 	 */
@@ -18,18 +19,18 @@ public class Particle extends MovableEntity {
 	 */
 	private float timeTillDeath;
 	private Color startingColor;
-	private ParticleType type;
+	private ParticleType type = ParticleType.REGULAR;
 
 	public Particle() {
 		this((byte) 22, 2000f);
 	}
-	
+
 	public Particle(byte id) {
 		this(id, 2000f);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @param maxtime TTL in ms
 	 */
@@ -41,39 +42,40 @@ public class Particle extends MovableEntity {
 		setScaling(-1);
 		setFloating(true);
 		setName("Particle");
-		type = ParticleType.REGULAR;
 	}
-	
-	public void setType(ParticleType type){
+
+	public void setType(ParticleType type) {
 		this.type = type;
 	}
 
 	public ParticleType getType() {
 		return type;
 	}
-	
+
 	@Override
 	public void setColor(Color color) {
 		super.setColor(color);
-		startingColor =color.cpy();
+		startingColor = color.cpy();
 	}
-	
+
 	/**
 	 * Time to live for each particle.
+	 *
 	 * @param time in ms
 	 */
-	public void setTTL(float time){
+	public void setTTL(float time) {
 		maxtime = time;
 		//clamp
-		if (timeTillDeath > maxtime)
+		if (timeTillDeath > maxtime) {
 			timeTillDeath = maxtime;
+		}
 	}
-	
+
 	@Override
 	public void update(float dt) {
 		super.update(dt);
 		timeTillDeath -= dt;
-		
+
 		if (timeTillDeath <= 0) {
 			dispose();
 			return;
@@ -89,7 +91,7 @@ public class Particle extends MovableEntity {
 //		CoreData block = getPosition().getBlock();
 //		if (block!=null && block.isObstacle())
 //			getPosition().addVector(step.scl(-1));//reverse step
-			
+
 		setRotation(getRotation() - dt / 10f);
 		setScaling(getScaling() + dt / 300f);
 		if (type.fade()) {
@@ -105,5 +107,14 @@ public class Particle extends MovableEntity {
 	@Override
 	public MovableEntity clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	/**
+	 * the amount of time the object lives maximum.
+	 *
+	 * @return
+	 */
+	public float getLivingTime() {
+		return maxtime;
 	}
 }

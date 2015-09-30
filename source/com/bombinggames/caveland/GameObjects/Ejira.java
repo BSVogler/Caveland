@@ -166,23 +166,25 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ(Block.GAME_EDGELENGTH);
 		
+		Particle particle = new Particle((byte) 22, 800);
+		particle.setType(ParticleType.FIRE);
 		emitter = new ParticleEmitter();
 		emitter.setParticleDelay(10);
-		emitter.setParticleTTL(800);
-		emitter.setParticleBrightness(0.1f);
+		emitter.setPrototype(particle);
+		emitter.setBrightness(0.1f);
 		emitter.setActive(false);
 		emitter.setHidden(true);
 		emitter.setSaveToDisk(false);
 		
 		emitter2 = new ParticleEmitter();
 		emitter2.setParticleDelay(10);
-		emitter2.setParticleTTL(800);
-		emitter2.setParticleBrightness(0.1f);
-		emitter2.setHidden(true);
+		emitter2.setPrototype(particle);
+		emitter2.setBrightness(0.1f);
 		emitter2.setActive(false);
+		emitter2.setHidden(true);
 		emitter2.setSaveToDisk(false);
 
-		setSaveToDisk(false);//don't save this and the children
+		setSaveToDisk(false);
 	}
 
 	@Override

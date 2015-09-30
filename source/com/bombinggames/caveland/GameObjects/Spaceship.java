@@ -6,6 +6,8 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ public class Spaceship extends MovableEntity {
 		setScaling(1);
 		setName("Spaceship");
 	}
-	
+
 	/**
 	 * floating ship
 	 * @param coord 
@@ -103,9 +105,11 @@ public class Spaceship extends MovableEntity {
 			});
 
 			ParticleEmitter fireEmitter = (ParticleEmitter) new ParticleEmitter().spawn(getPosition().cpy());
-			fireEmitter.setActive(true);
 			fireEmitter.setParticleStartMovement(new Vector3(0, 0, 3));
 			fireEmitter.setHidden(true);
+			Particle particle = new Particle((byte) 22, 4000);
+			particle.setType(ParticleType.FIRE);
+			fireEmitter.setPrototype(particle);
 			new SuperGlue(this, fireEmitter).spawn(getPosition().cpy());
 			ejectContent();
 			crashed = true;

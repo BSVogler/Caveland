@@ -43,6 +43,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  * @author Benedikt Vogler
  */
 public class ParticleEmitter extends AbstractEntity {
+
 	private static final long serialVersionUID = 2L;
 	private boolean active = false;
 	/**
@@ -56,12 +57,11 @@ public class ParticleEmitter extends AbstractEntity {
 	//private final Class<? extends MovableEntity> particleClass;
 	private Vector3 startingVector = new Vector3(0, 0, 0);
 	private Vector3 spread = new Vector3(0, 0, 0);
-	private float TTL = 1000;//default 1 second
 	private PointLightSource lightsource;
 	private Particle prototype = new Particle((byte) 22);
 
 	/**
-	 *active by default
+	 * active by default
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
 	public ParticleEmitter() {
@@ -76,12 +76,7 @@ public class ParticleEmitter extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		if (prototype.getType() == ParticleType.FIRE) {
-			if (lightsource == null) {
-				lightsource = new PointLightSource(Color.YELLOW, 3, 8);
-			}
-			lightsource.setPosition(point.cpy());
-		}
+		checkLightSource();
 		return this;
 	}
 
@@ -90,21 +85,22 @@ public class ParticleEmitter extends AbstractEntity {
 		super.update(dt);
 
 		if (active) {
-			if (lightsource != null && prototype.getType()==ParticleType.FIRE) {
+			setColor(new Color(1, 0, 0, 1));
+			if (lightsource != null && prototype.getType() == ParticleType.FIRE) {
 				lightsource.enable();
 			}
-			setColor(new Color(1, 0, 0, 1));
-			timer+=dt;
-			if (timer >= timeEachSpawn){
+
+			timer += dt;
+			if (timer >= timeEachSpawn) {
 				timer %= timeEachSpawn;
-				Particle particle = new Particle(prototype.getSpriteId(), TTL);
+				Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
 				particle.setType(prototype.getType());
-				particle.setColor(prototype.getColor());
+				particle.setColor(prototype.getColor().cpy());
 				particle.addMovement(
 					startingVector.add(
-						(float) (Math.random()-0.5f)*2*spread.x,
-						(float) (Math.random()-0.5f)*2*spread.y,
-						(float) (Math.random()-0.5f)*2*spread.z
+						(float) (Math.random() - 0.5f) * 2 * spread.x,
+						(float) (Math.random() - 0.5f) * 2 * spread.y,
+						(float) (Math.random() - 0.5f) * 2 * spread.z
 					)
 				);
 				particle.spawn(getPosition().cpy());
@@ -120,7 +116,8 @@ public class ParticleEmitter extends AbstractEntity {
 
 	/**
 	 * Makes the emitter spawn objects
-	 * @param active 
+	 *
+	 * @param active
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
@@ -132,6 +129,15 @@ public class ParticleEmitter extends AbstractEntity {
 	 */
 	public void setPrototype(Particle prototype) {
 		this.prototype = prototype;
+		checkLightSource();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public Particle getPrototype() {
+		return prototype;
 	}
 
 	/**
@@ -163,21 +169,23 @@ public class ParticleEmitter extends AbstractEntity {
 	}
 
 	/**
-	 *
-	 * @param ttl time in ms
-	 */
-	public void setParticleTTL(int ttl) {
-		this.TTL = ttl;
-	}
-
-	/**
 	 * if it can emit light
 	 *
 	 * @param brightness
 	 */
-	public void setParticleBrightness(float brightness) {
+	public void setBrightness(float brightness) {
 		if (lightsource != null) {
 			lightsource.setBrightness(brightness);
 		}
 	}
+
+	private void checkLightSource() {
+		if (isSpawned() && prototype.getType() == ParticleType.FIRE) {
+			if (lightsource == null) {
+				lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+			}
+			lightsource.setPosition(getPosition().cpy());
+		}
+	}
+
 }

@@ -69,7 +69,6 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		emitter = (ParticleEmitter) new ParticleEmitter().spawn(coord.toPoint());
 		emitter.setHidden(true);
 		emitter.setParticleStartMovement(Vector3.Z.cpy());
-		emitter.setParticleTTL(1000);
 		emitter.setActive(false);
 		fire.setLightlevel(10);
 	}

@@ -9,7 +9,13 @@ import com.badlogic.gdx.graphics.Color;
 public class Particle extends MovableEntity {
 	private static final long serialVersionUID = 2L;
 	
+	/**
+	 * the TTL at the start
+	 */
 	private float maxtime;
+	/**
+	 * if this reaches zero it is destroyed
+	 */
 	private float timeTillDeath;
 	private Color startingColor;
 	private ParticleType type;
@@ -60,13 +66,13 @@ public class Particle extends MovableEntity {
 		maxtime = time;
 		//clamp
 		if (timeTillDeath > maxtime)
-			timeTillDeath=maxtime;
+			timeTillDeath = maxtime;
 	}
 	
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		timeTillDeath-=dt;
+		timeTillDeath -= dt;
 		
 		if (timeTillDeath <= 0) {
 			dispose();
@@ -84,14 +90,15 @@ public class Particle extends MovableEntity {
 //		if (block!=null && block.isObstacle())
 //			getPosition().addVector(step.scl(-1));//reverse step
 			
-		setRotation(getRotation()-dt/10f);
-		setScaling(getScaling()+dt/300f);
-		if (type.fade())
-			getColor().a = timeTillDeath/maxtime;
+		setRotation(getRotation() - dt / 10f);
+		setScaling(getScaling() + dt / 300f);
+		if (type.fade()) {
+			getColor().a = timeTillDeath / maxtime;
+		}
 		if (type.fadeToBlack()) {
-			getColor().r = startingColor.r*((timeTillDeath*2)/maxtime);
-			getColor().g = startingColor.g*((timeTillDeath)/maxtime);
-			getColor().b = startingColor.b*((timeTillDeath)/maxtime);
+			getColor().r = startingColor.r * ((timeTillDeath * 2) / maxtime);
+			getColor().g = startingColor.g * ((timeTillDeath) / maxtime);
+			getColor().b = startingColor.b * ((timeTillDeath) / maxtime);
 		}
 	}
 

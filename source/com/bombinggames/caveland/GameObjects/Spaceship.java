@@ -30,6 +30,7 @@ public class Spaceship extends MovableEntity {
 	public Spaceship() {
 		super((byte) 80, 0);
 		setScaling(1);
+		setName("Spaceship");
 	}
 	
 	/**

@@ -69,7 +69,7 @@ public class ParticleEmitter extends AbstractEntity {
 		//this.particleClass = Dust.class;
 		disableShadow();
 		setIndestructible(true);
-		setName("Smoke Emitter");
+		setName("Particle Emitter");
 		setActive(true);
 	}
 

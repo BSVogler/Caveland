@@ -226,7 +226,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     public abstract char getCategory();
     
 	/**
-	 *
+	 * The height of the object for depth sorting.
 	 * @return
 	 */
 	public abstract int getDimensionZ();
@@ -250,7 +250,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      */
     public int getDepth(GameView view) {
         return (int) (getPosition().getDepth(view)
-            + getDimensionZ()/AbstractPosition.SQRT2
+            + getDimensionZ()*Block.ZAXISSHORTENING*0.3f//empirical factor 0.3 because the system is flawed
         );
     }
 	

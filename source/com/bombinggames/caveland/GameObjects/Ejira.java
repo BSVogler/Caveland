@@ -202,7 +202,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
 		conection2.spawn(point.cpy());
 		
-		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 5);
+		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(point.cpy());
 		SuperGlue lConn = new SuperGlue(this, lightsource);

@@ -94,16 +94,36 @@ public class PointLightSource extends AbstractEntity {
 //							).spawn(lightPos.cpy());
 //							dust.setMovement(dir.cpy().scl(9f));
 							if (inters != null && inters.getPoint() != null) {
-								float pow = lightPos.distanceTo(getPosition().cpy().addVector(x, y, 0).toPoint()) / Block.GAME_EDGELENGTH + 1;
+								float pow = lightPos.distanceTo(getPosition().toCoord().addVector(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
 								float l = (1 + brightness) / (pow * pow);
-								l *= dir.scl(-1f).dot(inters.getNormal().toVector());//lambert
+								Vector3 target = getPosition().toCoord().addVector(x, y, z).toPoint().getVector();
+								//side 0
+								float lambert = lightPos.getVector().sub(
+									target.add(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
+								).nor().dot(Side.LEFT.toVector());
+								
+								float newbright = l *lambert* (0.15f + flicker * 0.005f);
+								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
+									lightcache[x + radius][y + radius * 2][z + radius][0] = newbright;
+								}
+								//side 1
+								lambert = lightPos.getVector().sub(
+									target.add(0, 0, Block.GAME_EDGELENGTH)
+								).nor().dot(Side.TOP.toVector());
 
-								int code = inters.getNormal().getCode();
-								if (code < 3) {
-									float newbright = l * (0.15f + flicker * 0.005f);
-									if (newbright > lightcache[x + radius][y + radius * 2][z + radius][code]) {
-										lightcache[x + radius][y + radius * 2][z + radius][code] = newbright;
-									}
+								newbright = l * lambert * (0.15f + flicker * 0.005f);
+								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
+									lightcache[x + radius][y + radius * 2][z + radius][1] = newbright;
+								}
+
+								//side 2
+								lambert = lightPos.getVector().sub(
+									target.add(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
+								).nor().dot(Side.RIGHT.toVector());
+
+								newbright = l *lambert* (0.15f + flicker * 0.005f);
+								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {
+									lightcache[x + radius][y + radius * 2][z + radius][2] = newbright;
 								}
 							}
 						}

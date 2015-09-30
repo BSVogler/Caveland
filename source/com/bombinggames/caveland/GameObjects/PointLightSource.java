@@ -10,7 +10,7 @@ import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
- *
+ * A light source is an invisible entity which spawns light from one point.
  * @author Benedikt Vogler
  */
 public class PointLightSource extends AbstractEntity {

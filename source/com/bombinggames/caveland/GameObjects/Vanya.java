@@ -47,36 +47,36 @@ public class Vanya extends MovableEntity implements Interactable {
 					((AbstractEntity) t).dispose();
 				}
 			});
-		}
 		
-		if (dt > 0) {//update only if time is running
-			if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
-				jump();
+			if (dt > 0) {//update only if time is running
+				if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
+					jump();
+				}
 			}
-		}
-		
-		//go to movement goal
-		if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH/4){
-			//movement logic
-			Vector3 d = new Vector3();
 
-			d.x = movementGoal.toPoint().getX() - getPosition().getX();
-			d.y = movementGoal.toPoint().getY() - getPosition().getY();
-			d.nor();//direction only
-			d.scl(1.3f);
-			d.z = getMovement().z;
+			//go to movement goal
+			if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH/4){
+				//movement logic
+				Vector3 d = new Vector3();
 
-			setMovement(d);// update the movement vector
-		} else {
-			movementGoal = null;
-		}
-		
-		//look at player
-		if (movementGoal == null && isSpawned()){
-			ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
-			if (!ejiraList.isEmpty()) {
-				Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());
-				setOrientation(new Vector2(vec3.x, vec3.y).nor());
+				d.x = movementGoal.toPoint().getX() - getPosition().getX();
+				d.y = movementGoal.toPoint().getY() - getPosition().getY();
+				d.nor();//direction only
+				d.scl(1.3f);
+				d.z = getMovement().z;
+
+				setMovement(d);// update the movement vector
+			} else {
+				movementGoal = null;
+			}
+
+			//look at player
+			if (movementGoal == null){
+				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
+				if (!ejiraList.isEmpty()) {
+					Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());
+					setOrientation(new Vector2(vec3.x, vec3.y).nor());
+				}
 			}
 		}
 	}

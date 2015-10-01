@@ -1221,6 +1221,10 @@ public class Camera implements MapObserver {
 		if (coords.getZ() >= zRenderingLimit) {
 			return true;
 		}
+		
+		if (coords.getZ() < -1)//filter below lowest level
+			return true;
+		
 
 		//get the index position in the clipping field
 		int indexX = coords.getX() - getCoveredLeftBorder();

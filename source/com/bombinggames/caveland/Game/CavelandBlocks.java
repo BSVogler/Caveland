@@ -142,8 +142,8 @@ public class CavelandBlocks implements CustomBlocks {
 			return true;
 		if (id==72) return true;
 		if (id==46) return true;
-			return false;
-		}
+		return false;
+	}
 
 	@Override
 	public boolean isTransparent(byte id, byte value) {
@@ -153,6 +153,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==17) return true;
 		if (id==11) return true;
 		if (id==55) return true;
+		if (id==56) return true;
 		if (id==72) return true;
 		return false;
 	}

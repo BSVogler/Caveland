@@ -96,7 +96,7 @@ public enum Side {
 	}
 
 	/**
-	 * 
+	 * copy safe
 	 * @return 
 	 */
 	public Vector3 toVector() {

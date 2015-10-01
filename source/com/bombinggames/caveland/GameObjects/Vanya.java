@@ -13,14 +13,18 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
- *Tutorial owl.
+ * Tutorial owl.
+ *
  * @author Benedikt Vogler
  */
 public class Vanya extends MovableEntity implements Interactable {
+
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
 	private transient ActionBox currentChat;
 	private Coordinate movementGoal;
+	private int tutorialStep = 0;
+	private int completedTutorialStep = 0;
 
 	/**
 	 *
@@ -40,24 +44,24 @@ public class Vanya extends MovableEntity implements Interactable {
 	public void update(float dt) {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
-		
+
 		if (isSpawned()) {
 			//destroy nearby vanyas
-			getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class).forEach(( Object t) -> {
+			getPosition().getEntitiesNearby(10 * Block.GAME_EDGELENGTH, Vanya.class).forEach((Object t) -> {
 				if (!t.equals(this)) {
 					((AbstractEntity) t).dispose();
 				}
 			});
-		
+
 			//update only if time is running
 			if (dt > 0) {
-				if (getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
+				if (getPosition().isInMemoryAreaHorizontal() && isOnGround() && !isFloating()) {
 					jump();
 				}
 			}
 
 			//go to movement goal
-			if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH/4){
+			if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH / 4) {
 				//movement logic
 				Vector3 d = new Vector3();
 
@@ -73,22 +77,25 @@ public class Vanya extends MovableEntity implements Interactable {
 			}
 
 			//look at players
-			if (movementGoal == null){
-				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
+			if (movementGoal == null) {
+				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * Block.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
 					Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());
+					setSpeedHorizontal(0);
 					setOrientation(new Vector2(vec3.x, vec3.y).nor());
 				}
 			}
-			
+
 			//check if players steped on next part of the tutorial
-			ArrayList<Ejira> players = getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*10, Ejira.class);
-			for (Ejira player : players) {
-				if (player.getPosition().toCoord().getX() > -3 &&player.getPosition().toCoord().getY() > 9)
-					goTo(new Coordinate(0, 11, 5));
-			}
+//			ArrayList<Ejira> players = getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 10, Ejira.class);
+//			for (Ejira player : players) {
+//				if (player.getPosition().toCoord().getX() > -3 && player.getPosition().toCoord().getY() > 9) {
+//					goTo(new Coordinate(0, 11, 5));
+//				}
+//				tutorialStep = 1;
+//			}
 		}
-		
+
 	}
 
 	@Override
@@ -96,27 +103,57 @@ public class Vanya extends MovableEntity implements Interactable {
 		super.jump(6, true);
 	}
 
-	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		if (actor instanceof Ejira){
-			chatCounter++;
-			if (currentChat!=null)
+		if (actor instanceof Ejira) {
+			if (currentChat != null) {
 				currentChat.remove();
+			}
 			String text = "";
-			switch(chatCounter) {
-				case 1:
+			switch (chatCounter) {
+				case 0:
 					text = "Oh hello! Are you alright? I saw your spaceship crashing. But you look good. \n"
 						+ "Welcome to Caveland! I'm Vanya. I will be your guide.\n";
+					chatCounter++;
+					break;
+				case 1:
+					text = "I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+					chatCounter++;
 					break;
 				case 2:
-					text = "I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+					text = "I will explain you later. First let's go. It's dangerous here. Follow me.";
+					goTo(new Coordinate(-2, 10, 6));
+					chatCounter++;
+					completedTutorialStep = 1;
+					
 					break;
+					
 				case 3:
-					text = "I will explain you later. First let's go. It's dangerous here. (Follow me. [Next Update])";
-					chatCounter = 0;
+					text="";
+					if (completedTutorialStep > 0) {
+						chatCounter++;
+					} else {
+						chatCounter=0;
+					}
+					break;
+					
+				case 4:
+					text = "You can use your jetpack if you press the jump button a second time in air. Press it at the peak of your jump to jump higher.";
+					completedTutorialStep = 2;
+					chatCounter++;
+					break;
+					
+				case 5:
+					if (completedTutorialStep > 2) {
+						chatCounter++;
+					} else {
+						chatCounter = 4;
+					}
+					text="";
+					goTo(new Coordinate(2, 13, 7));
 					break;
 			}
+			//register and open the chat
 			if (!"".equals(text)) {
 				currentChat = new ActionBox(getName(), ActionBox.BoxModes.SIMPLE, text);
 				if (chatCounter > 0) {
@@ -124,7 +161,7 @@ public class Vanya extends MovableEntity implements Interactable {
 						interact(view, actor);
 					});
 				}
-				currentChat.register(view, ((Ejira)actor).getPlayerNumber(), actor);
+				currentChat.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 			}
 		}
 	}
@@ -140,13 +177,13 @@ public class Vanya extends MovableEntity implements Interactable {
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
+		in.defaultReadObject();
 		setFloating(false);
-        setJumpingSound("vanya_jump");
+		setJumpingSound("vanya_jump");
 		setWalkingSpeedIndependentAnimation(2f);
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);
-    }
+	}
 
 	/**
 	 * Is Vanya moving to a coordinate.
@@ -164,5 +201,15 @@ public class Vanya extends MovableEntity implements Interactable {
 	public void goTo(Coordinate coord) {
 		movementGoal = coord;
 	}
-}
+	
+	public void flyTo(Coordinate coord) {
+		setFloating(true);
+		movementGoal = coord;
+	}
 
+	public int getCompletedTutorialStep() {
+		return completedTutorialStep;
+	}
+	
+	
+}

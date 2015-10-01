@@ -452,6 +452,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	@Override
 	public void setLightlevel(float lightlevel) {
 		this.lightlevelR = lightlevel;
+		this.lightlevelG = lightlevel;
+		this.lightlevelB = lightlevel;
 	}
 
 	/**

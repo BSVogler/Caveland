@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class MineCart extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private static final float MAXSPEED = 6;
-	private static final float BOOSTERSPEED = 15;
+	private static final float BOOSTERSPEED = 20;
 	/**
 	 * the height of the bottom plate
 	 */
@@ -125,43 +125,64 @@ public class MineCart extends MovableEntity implements Interactable {
 						break;
 					case 3:
 					case 5:
-						int y;
+						int dirY;
 						if (getMovement().y > 0
 							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)) {//on top and moving down
-							y = 1;
+							dirY = 1;
 						} else {
-							y = -1;
+							dirY = -1;
 						}
 
 						setOrientation(
 							new Vector2(
 								0,
-								y//coming from top right
+								dirY//coming from top right
 							)
+						);
+						int offset = -1;
+						if (block.getValue() == 5) {
+							offset = 1;
+						}
+						pos.setPositionRelativeToCoord(
+							offset * Block.GAME_EDGELENGTH2 / 2,
+							pos.getRelToCoordY(),
+							pos.getRelToCoordZ()
 						);
 						break;
 					case 2:
 					case 4:
 						setOrientation(
 							new Vector2(
-								getMovement().x >= 0 ? 1 : -1,//coming from left
+								getMovement().x > 0 || (getMovement().x==0 && pos.getRelToCoordX()<0)  ? 1 : -1,//coming from left
 								0
 							)
+						);
+						offset=1;
+						if (block.getValue()==4)
+							offset = -1;
+						pos.setPositionRelativeToCoord(
+							pos.getRelToCoordX(),
+							offset*Block.GAME_EDGELENGTH2/2,
+							pos.getRelToCoordZ()
 						);
 						break;
 				}
 
 				//start moving?
-				if (getSpeedHor() > 0 && getSpeedHor() <= MAXSPEED) {
-					setSpeedHorizontal(MAXSPEED);//start moving
-					if (isPlayingSound == 0) {
+				if (getSpeedHor() > 0) {
+					//move
+					if(getSpeedHor() <= MAXSPEED) {
+						setSpeedHorizontal(MAXSPEED);
+					}
+
+					//booster
+					if (block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
+						setSpeedHorizontal(BOOSTERSPEED);
+					}
+					//start sound?
+					if (getSpeedHor() > 0 && isPlayingSound == 0) {
 						isPlayingSound = WE.SOUND.loop("wagon", getPosition());
 					}
-				}
-
-				//booster
-				if (getSpeedHor()>BOOSTERSPEED || getSpeedHor() > 0 && block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
-					setSpeedHorizontal(BOOSTERSPEED);
 				}
 
 				//jump on ramp
@@ -171,8 +192,26 @@ public class MineCart extends MovableEntity implements Interactable {
 					|| block.getValue() == 8 && getMovementHor().x < 0
 					|| block.getValue() == 9 && getMovementHor().y > 0
 				) {
-					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.8f));
+					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.9f));
 				}
+				//roll down?
+				if (block.getValue() == 6 && getMovementHor().x <= 0) {
+					setOrientation(new Vector2(-1, 1));
+					setSpeedHorizontal(MAXSPEED);
+				}
+				if (block.getValue() == 7 && getMovementHor().x >= 0) {
+					setOrientation(new Vector2(1, 1));
+					setSpeedHorizontal(MAXSPEED);
+				}
+				if (block.getValue() == 8 && getMovementHor().x >= 0) {
+					setOrientation(new Vector2(1, -1));
+					setSpeedHorizontal(MAXSPEED);
+				}
+				if (block.getValue() == 9 && getMovementHor().x <= 0) {
+					setOrientation(new Vector2(-1, -1));
+					setSpeedHorizontal(MAXSPEED);
+				}
+				
 			} else {//offroad
 				lightsource.disable();
 				setFriction(0.005f);

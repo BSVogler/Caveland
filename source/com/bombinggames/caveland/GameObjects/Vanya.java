@@ -41,16 +41,17 @@ public class Vanya extends MovableEntity implements Interactable {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
 		
-		//destroy nearby vanyas
 		if (isSpawned()) {
+			//destroy nearby vanyas
 			getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class).forEach(( Object t) -> {
 				if (!t.equals(this)) {
 					((AbstractEntity) t).dispose();
 				}
 			});
 		
-			if (dt > 0) {//update only if time is running
-				if (isSpawned() && getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
+			//update only if time is running
+			if (dt > 0) {
+				if (getPosition().isInMemoryAreaHorizontal() && isOnGround()) {
 					jump();
 				}
 			}
@@ -71,7 +72,7 @@ public class Vanya extends MovableEntity implements Interactable {
 				movementGoal = null;
 			}
 
-			//look at player
+			//look at players
 			if (movementGoal == null){
 				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4*Block.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
@@ -79,7 +80,15 @@ public class Vanya extends MovableEntity implements Interactable {
 					setOrientation(new Vector2(vec3.x, vec3.y).nor());
 				}
 			}
+			
+			//check if players steped on next part of the tutorial
+			ArrayList<Ejira> players = getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH*10, Ejira.class);
+			for (Ejira player : players) {
+				if (player.getPosition().toCoord().getX() > -3 &&player.getPosition().toCoord().getY() > 9)
+					goTo(new Coordinate(0, 11, 5));
+			}
 		}
+		
 	}
 
 	@Override
@@ -130,21 +139,6 @@ public class Vanya extends MovableEntity implements Interactable {
 		return true;
 	}
 
-	private class BlümchenKacke extends MovableEntity {
-		private static final long serialVersionUID = 1L;
-
-		BlümchenKacke() {
-			super((byte) 41, 0);
-			setMovement(new Vector3(0,0,-1));
-			setFloating(false);
-		}
-
-		@Override
-		public MovableEntity clone() throws CloneNotSupportedException {
-			return super.clone();
-		}
-	}
-
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 		setFloating(false);
@@ -153,12 +147,21 @@ public class Vanya extends MovableEntity implements Interactable {
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);
     }
-	
+
 	/**
-	 * 
-	 * @param coord 
+	 * Is Vanya moving to a coordinate.
+	 *
+	 * @return
 	 */
-	public void goTo(Coordinate coord){
+	public boolean isGoing() {
+		return movementGoal != null;
+	}
+
+	/**
+	 *
+	 * @param coord
+	 */
+	public void goTo(Coordinate coord) {
 		movementGoal = coord;
 	}
 }

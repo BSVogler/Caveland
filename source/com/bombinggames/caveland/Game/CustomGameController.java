@@ -113,7 +113,7 @@ public class CustomGameController extends Controller {
 			}
 		}
 		
-		if (introSpaceship != null && introSpaceship.isCrashed()){
+		if (introSpaceship != null && introSpaceship.isCrashed() && !tutorialVanya.isGoing()){
 			tutorialVanya.goTo(introSpaceship.getPosition().toCoord().addVector(-1, 3, 0));
 		}
 	}

@@ -548,7 +548,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Get the movement vector as the product of diretion and speed.
+	 * Get the movement vector as the product of direction and speed.
 	 * @return in m/s. copy safe
 	 */
 	public Vector3 getMovement(){
@@ -556,7 +556,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Get the movement vector.
+	 *Get the movement vector as the product of direction and speed.
 	 * @return in m/s. copy safe
 	 */
 	public Vector2 getMovementHor(){

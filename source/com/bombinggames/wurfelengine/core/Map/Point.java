@@ -338,7 +338,7 @@ public class Point extends AbstractPosition {
     
     /**
      * Trace a ray through the map until ray hits non air block.<br>
-     * High precision intersection missing.
+     * Does not work properly with the staggered map.
      * @param dir dir of the ray
      * @param maxDistance the distane after which it should stop. (in game meters)
      * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>

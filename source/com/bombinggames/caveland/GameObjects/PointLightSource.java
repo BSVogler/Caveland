@@ -48,6 +48,10 @@ public class PointLightSource extends AbstractEntity {
 		return this;
 	}
 
+	/**
+	 * fills the cache
+	 * @param delta 
+	 */
 	public void lightNearbyBlocks(float delta) {
 		if (getPosition() != null) {
 			Point lightPos = getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH * 0.5f);

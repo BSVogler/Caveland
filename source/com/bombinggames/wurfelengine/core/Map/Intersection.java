@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
@@ -89,8 +90,8 @@ public class Intersection {
 	}
 
 	/**
-	 * performs a line-box intersection
-	 *
+	 * performs a line-box intersection.<br> The result are outside the coordiante grid field, so they are forced in it.
+	 * 
 	 * @param target target coordinate
 	 * @param p starting point
 	 * @param dir direction of ray
@@ -141,14 +142,40 @@ public class Intersection {
 			}
 		}
 
-		final Point intersPoint = new Point(dir.cpy().scl(t).add(p.getVector()));
+		//add dir because dir*t end's outside the target
+		Vector3 i_outside3 = p.getVector().add(dir.cpy().scl(t));//regular i calculation
+		Vector2 i_outside2 = new Vector2(i_outside3.x, i_outside3.y);
+		//center as 2d vector
+		Vector2 c = new Vector2(target.toPoint().getVector().x, target.toPoint().getVector().y);
+		Vector2 d = i_outside2.sub(c);
+		Vector2 i_inside2 = new Vector2(d.x, d.y).scl(0.5f);//move from center in direction of intersection point, empiracl factor 0.5 becaue it's bugged
+		
+		Point intersPoint;
+		
 		//lower a bit to prevent that is at next grid level
-		if (intersPoint.getZ() >= target.toPoint().getZ() + Block.GAME_EDGELENGTH) {
-			intersPoint.addVector(0, 0, -1f);
+		if (i_outside3.z >= target.toPoint().getZ() + Block.GAME_EDGELENGTH) {
+			intersPoint = new Point(
+				i_outside3.x,
+				i_outside3.y,
+				i_outside3.z-1
+			);
+		}else {
+			intersPoint = new Point(
+				target.toPoint().getX() + i_inside2.x,
+				target.toPoint().getY() + i_inside2.y,
+				i_outside3.z
+			);
 		}
 
 		inter.point = intersPoint;
 		inter.normal = Side.calculateNormal(inter.point);
+		
+//		Vector3 stepBack = inter.normal.toVector();
+//		stepBack.z = 0;
+//		stepBack.nor();
+//		stepBack.scl(-1);
+//		inter.point.addVector(stepBack);//stay inside block
+
 		inter.distance = Math.abs(t);
 //		Particle dust = (Particle) new Particle(
 //			(byte) 22,
@@ -156,5 +183,13 @@ public class Intersection {
 //		).spawn(inter.point.cpy());
 //		dust.setMovement(inter.normal.toVector().scl(3f));
 		return inter;
+	}
+	
+	/**
+	 * Calcualte the normal based of the position of the point.
+	 * @param p 
+	 */
+	public void calcNormal(Point p){
+		normal = Side.calculateNormal(p);
 	}
 }

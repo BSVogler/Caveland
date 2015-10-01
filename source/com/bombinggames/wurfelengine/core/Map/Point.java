@@ -409,16 +409,10 @@ public class Point extends AbstractPosition {
 			if ((
 				camera == null
 				||
-				(
-					(
-						curZ < camera.getZRenderingLimit()
-						&& !camera.isClipped(isectC)
-					)
-				)
+				(curZ < camera.getZRenderingLimit() && !camera.isClipped(isectC))
 			   )
 				&& block != null
 				&& !(hitFullOpaque && block.isTransparent())
-
 			){
 				//found intersection point
 				if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)
@@ -488,6 +482,43 @@ public class Point extends AbstractPosition {
 		return (value % modulus + modulus) % modulus;
 	}
 
+	/**
+	 * Sends a ray by moving a coordiante though the map. Slow but it works.
+	 * @param dir
+	 * @param maxDistance game space in meters
+	 * @param camera
+	 * @param hitFullOpaque
+	 * @return 
+	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
+	 */
+	public Intersection raycastSimple(final Vector3 dir, float maxDistance, final Camera camera, final boolean hitFullOpaque){
+		Point traverseP = cpy();
+		dir.nor();
+		Coordinate isectC = traverseP.toCoord();
+		while(isectC.isInMemoryAreaHorizontal() && traverseP.getZ() >= 0 && distanceTo(traverseP) < maxDistance*Block.GAME_EDGELENGTH){
+			//move
+			traverseP.addVector(dir);
+
+			isectC = traverseP.toCoord();
+			Block block = isectC.getBlock();
+			if ((
+				camera == null
+				||
+				(isectC.getZ() < camera.getZRenderingLimit() && !camera.isClipped(isectC))
+			   )
+				&& block != null
+				&& !(hitFullOpaque && block.isTransparent())
+			){
+				Intersection interse = new Intersection(traverseP, null, distanceTo(traverseP));
+				interse.calcNormal(traverseP);
+				return interse;
+			}
+		}
+		//hit with ground missing, todo
+		
+		return null;
+	}
+		
 	/**
 	 * 
 	 * @param point

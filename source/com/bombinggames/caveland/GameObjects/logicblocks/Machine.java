@@ -4,9 +4,9 @@ import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.Flint;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Machine extends RenderBlock {
+public class Machine extends AbstractBlockLogicExtension  {
 	private static final long serialVersionUID = 1L;
 	private int sulfurcount;
 	private int coalcount;
@@ -22,10 +22,11 @@ public class Machine extends RenderBlock {
 
 	/**
 	 *
-	 * @param data
+	 * @param block
+	 * @param coord
 	 */
-	public Machine(Block data) {
-		super(data);
+	public Machine(Block block, Coordinate coord) {
+		super(block, coord);
 	}
 
 	@Override

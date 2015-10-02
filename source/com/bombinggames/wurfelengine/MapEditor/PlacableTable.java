@@ -83,9 +83,18 @@ public class PlacableTable extends Table {
 		//setScale(5f);
 
 		if (!hasChildren()) {
-			int foundItems = 0;
+			int foundItems = 1;
 			if (placeBlocks) {//add blocks
-				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
+				//add air
+				add(
+					new SelectionItem(
+						this,
+						new BlockDrawable((byte) 0,(byte) 0, -0.7f),
+						new BlockListener((byte) 0)
+					)
+				);
+				//add rest
+				for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 					Block block = Block.getInstance(i);
 					if (block != null) {
 						RenderBlock rBlock = block.toRenderBlock();
@@ -93,12 +102,13 @@ public class PlacableTable extends Table {
 							|| RenderBlock.isSpriteDefined(rBlock) //add defined blocks
 							|| !block.getName().equals("undefined")
 						) {
-							SelectionItem button = new SelectionItem(
-								this,
-								new BlockDrawable(i),
-								new BlockListener(i)
+							add(
+								new SelectionItem(
+									this,
+									new BlockDrawable(i, (byte) 0, -0.7f),
+									new BlockListener(i)
+								)
 							);
-							add(button);
 							foundItems++;
 							if (foundItems % 4 == 0) {
 								row();//make new row

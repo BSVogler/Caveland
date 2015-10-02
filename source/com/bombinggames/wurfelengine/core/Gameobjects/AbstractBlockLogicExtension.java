@@ -39,11 +39,11 @@ public abstract class AbstractBlockLogicExtension {
 	 * A logicblock is still valid if the pointer shows to a block with the same id as during creation.
 	 * @return 
 	 */
-	public boolean isValid(){
-		if (coord.getBlock() == null)
+	public boolean isValid() {
+		if (coord.getBlock() == null) {
 			return false;
+		}
 		return coord.getBlock().getId() == block.getId();
-	
 	}
 	
 	public abstract void update(float dt);

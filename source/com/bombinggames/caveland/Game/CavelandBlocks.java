@@ -4,10 +4,12 @@ import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.TorchRenderer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
@@ -36,6 +38,7 @@ public class CavelandBlocks implements CustomBlocks {
 		SULFUR((byte) 42, "Sulfur Block", true),
 		IRONORE((byte) 43, "Iron Ore Block", true),
 		COAL((byte) 44, "Coal Block", true),
+		POWERCABLE((byte) 54, "power cable", false),
 		RAILS((byte) 55, "rails", false),
 		RAILSBOOSTER((byte) 56, "boos	ter rails", false),
 		TREE((byte) 72, "tree", false),
@@ -47,21 +50,40 @@ public class CavelandBlocks implements CustomBlocks {
 		 * @return 
 		 */
 		public static CLBlocks valueOf(byte id){
-			if (id==11) return CONSTRUCTIONSITE;
-			else if (id==12) return OVEN;
-			else if (id==13) return TORCH;
-			else if (id==14) return POWERSTATION;
-			else if (id==15) return LIFT;
-			else if (id==16) return ENTRY;
-			else if (id==17) return INDESTRUCTIBLEOBSTACLE;
-			else if (id==41) return CRYSTAL;
-			else if (id==42) return SULFUR;
-			else if (id==43) return IRONORE;
-			else if (id==44) return COAL;
-			else if (id==55) return RAILS;
-			else if (id==56) return RAILSBOOSTER;
-			else if (id==72) return TREE;
-			else return UNDEFINED;
+			switch (id) {
+				case 11:
+					return CONSTRUCTIONSITE;
+				case 12:
+					return OVEN;
+				case 13:
+					return TORCH;
+				case 14:
+					return POWERSTATION;
+				case 15:
+					return LIFT;
+				case 16:
+					return ENTRY;
+				case 17:
+					return INDESTRUCTIBLEOBSTACLE;
+				case 41:
+					return CRYSTAL;
+				case 42:
+					return SULFUR;
+				case 43:
+					return IRONORE;
+				case 44:
+					return COAL;
+				case 54:
+					return POWERCABLE;
+				case 55:
+					return RAILS;
+				case 56:
+					return RAILSBOOSTER;
+				case 72:
+					return TREE;
+				default:
+					return UNDEFINED;
+			}
 		}
 		
 		private final byte id;
@@ -152,6 +174,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==14) return true;
 		if (id==17) return true;
 		if (id==11) return true;
+		if (id==54) return true;
 		if (id==55) return true;
 		if (id==56) return true;
 		if (id==72) return true;
@@ -227,17 +250,23 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
-		if (block.getId() == 16) {
+		if (block.getId() == CLBlocks.ENTRY.id) {
 			return new PortalBlockLogic(block, coord);
 		}
-		if (block.getId() == 11) {
+		if (block.getId() == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSite(block, coord);
 		}
-		if (block.getId() == 12) {
+		if (block.getId() == CLBlocks.OVEN.id) {
 			return new OvenLogic(block, coord);
 		}
-		if (block.getId() == 15) {
+		if (block.getId() == CLBlocks.POWERSTATION.id) {
+			return new PowerStationLogic(block, coord);
+		}
+		if (block.getId() == CLBlocks.LIFT.id) {
 			return new LiftLogic(block, coord);
+		}
+		if (block.getId() == CLBlocks.RAILSBOOSTER.id) {
+			return new BoosterLogic(block, coord);
 		}
 		return null;
 	}

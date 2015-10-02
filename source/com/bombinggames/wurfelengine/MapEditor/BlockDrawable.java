@@ -46,8 +46,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	/**
 	 * a factor relative to original size. 0 is default
 	 */
-    private float size = -0.5f;
-	private float x;
+    private float size = 0;
     
     /**
      *
@@ -75,14 +74,6 @@ public class BlockDrawable extends TextureRegionDrawable {
 			this.block = new RenderBlock(id, value);
 		this.size = size;
 		block.setScaling(size);
-	}
-
-	/**
-	 *
-	 * @param x
-	 */
-	public void setX(float x){
-		this.x = x;
 	}
 
 	@Override

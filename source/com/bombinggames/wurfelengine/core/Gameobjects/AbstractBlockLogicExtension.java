@@ -47,5 +47,10 @@ public abstract class AbstractBlockLogicExtension {
 	}
 	
 	public abstract void update(float dt);
+
+	/**
+	 * called when removed
+	 */
+	public abstract void dispose();
 	
 }

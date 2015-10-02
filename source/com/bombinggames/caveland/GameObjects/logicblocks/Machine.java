@@ -80,4 +80,8 @@ public class Machine extends RenderBlock {
 		}
 		return content;//return everything left
 	}
+
+	@Override
+	public void dispose() {
+	}
 }

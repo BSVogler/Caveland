@@ -154,4 +154,8 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	public boolean interactable() {
 		return true;
 	}
+
+	@Override
+	public void dispose() {
+	}
 }

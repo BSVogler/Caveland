@@ -124,4 +124,8 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 		}
 		return getPosition().cpy().addVector(0, 0, 1).getBlock().getId() == 0;
 	}
+
+	@Override
+	public void dispose() {
+	}
 }

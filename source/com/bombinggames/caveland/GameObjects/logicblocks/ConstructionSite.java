@@ -206,6 +206,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 	}
 
+	@Override
+	public void dispose() {
+	}
+
 	private class ConstructionSiteWindow extends ActionBox {
 
 		private final ConstructionSite parent;

@@ -5,6 +5,7 @@ import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.TorchRenderer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.CableLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
@@ -264,6 +265,9 @@ public class CavelandBlocks implements CustomBlocks {
 		}
 		if (block.getId() == CLBlocks.LIFT.id) {
 			return new LiftLogic(block, coord);
+		}
+		if (block.getId() == CLBlocks.POWERCABLE.id) {
+			return new CableLogic(block, coord);
 		}
 		if (block.getId() == CLBlocks.RAILSBOOSTER.id) {
 			return new BoosterLogic(block, coord);

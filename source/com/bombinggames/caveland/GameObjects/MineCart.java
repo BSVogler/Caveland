@@ -7,6 +7,7 @@ import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -176,8 +177,14 @@ public class MineCart extends MovableEntity implements Interactable {
 					}
 
 					//booster
-					if (block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
-						setSpeedHorizontal(BOOSTERSPEED);
+					if (
+						block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()
+					) {
+						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
+						&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled())
+							setSpeedHorizontal(BOOSTERSPEED);
+						else
+							setSpeedHorizontal(0);
 					}
 					//start sound?
 					if (getSpeedHor() > 0 && isPlayingSound == 0) {

@@ -42,5 +42,9 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public boolean interactable() {
 		return true;
 	}
+
+	@Override
+	public void dispose() {
+	}
 	
 }

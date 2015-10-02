@@ -19,8 +19,8 @@ public abstract class AbstractBlockLogicExtension {
 
 	/**
 	 * Called when spawned.
-	 * @param block
-	 * @param coord 
+	 * @param block the block at the position
+	 * @param coord the position where the logic block is placed
 	 */
 	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
 		this.block = block;

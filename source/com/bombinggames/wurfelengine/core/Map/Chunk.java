@@ -199,7 +199,8 @@ public class Chunk {
 		}
 
 		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
-			logicBlock.update(dt);
+			if (logicBlock.isValid())
+				logicBlock.update(dt);
 		}
 		//check if block at position corespodends to saved, garbage collection
 		logicBlocks.removeIf((AbstractBlockLogicExtension lb) -> {
@@ -707,19 +708,19 @@ public class Chunk {
 	 * @param block no null pointer allowed
 	 */
 	public void setBlock(RenderBlock block) {
-		//get corresponding logic and update
-		if (block.getBlockData() != null) {
-			AbstractBlockLogicExtension logic = block.getBlockData().createLogicInstance(block.getPosition());
-			if (logic != null)
-				logicBlocks.add(logic);
-		}
-
 		int xIndex = block.getPosition().getX()-topleft.getX();
 		int yIndex = block.getPosition().getY()-topleft.getY();
 		int z = block.getPosition().getZ();
 		if (z >= 0){
 			data[xIndex][yIndex][z] = block.toStorageBlock();
 			modified = true;
+		}
+		
+		//get corresponding logic and update
+		if (block.getBlockData() != null) {
+			AbstractBlockLogicExtension logic = block.getBlockData().createLogicInstance(block.getPosition());
+			if (logic != null)
+				logicBlocks.add(logic);
 		}
 	}
 

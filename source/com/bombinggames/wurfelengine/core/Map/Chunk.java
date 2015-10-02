@@ -334,7 +334,7 @@ public class Chunk {
 					} else {
 						data[x][y][z] = Block.getInstance(id, bChar);
 						//if has logicblock then add logicblock
-						AbstractBlockLogicExtension logic = data[x][y][z].getLogicInstance(
+						AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
 							new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
 						);
 						if (logic != null)
@@ -707,7 +707,7 @@ public class Chunk {
 	public void setBlock(RenderBlock block) {
 		//get corresponding logic and update
 		if (block.getBlockData() != null) {
-			AbstractBlockLogicExtension logic = block.getBlockData().getLogicInstance(block.getPosition());
+			AbstractBlockLogicExtension logic = block.getBlockData().createLogicInstance(block.getPosition());
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -730,7 +730,7 @@ public class Chunk {
 		//get corresponding logic and update
 		if (block != null) {
 			//create new instance
-			AbstractBlockLogicExtension logic = block.getLogicInstance(coord);
+			AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
 			if (logic != null)
 				logicBlocks.add(logic);
 		}

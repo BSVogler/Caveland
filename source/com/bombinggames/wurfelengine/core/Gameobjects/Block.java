@@ -179,7 +179,7 @@ public class Block implements HasID, Serializable {
 	 * @param coord
 	 * @return
 	 */
-	public AbstractBlockLogicExtension getLogicInstance(Coordinate coord) {
+	public AbstractBlockLogicExtension createLogicInstance(Coordinate coord) {
 		if (customBlocks == null) {
 			return null;
 		}

@@ -28,7 +28,7 @@ public class PointLightSource extends AbstractEntity {
 	 *
 	 * @param color
 	 * @param maxRadius cut at distance of this amount of meters. boosts
-	 * performance if smaller
+	 * game performance if smaller
 	 * @param brightness
 	 */
 	public PointLightSource(Color color, float maxRadius, float brightness) {
@@ -38,7 +38,10 @@ public class PointLightSource extends AbstractEntity {
 		this.radius = (int) Math.ceil(maxRadius);
 		this.brightness = brightness;
 		this.color = color;
-		this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
+		if (radius==0)
+			this.lightcache = new float[1][1][1][3];
+		else
+			this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
 	}
 
 	@Override

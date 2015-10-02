@@ -50,32 +50,34 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class PortalBlockLogic extends AbstractBlockLogicExtension implements Interactable {
+
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
-	
+
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 *
 	 * @param block
 	 * @param coord
 	 */
-	public PortalBlockLogic(Block block, Coordinate coord){
+	public PortalBlockLogic(Block block, Coordinate coord) {
 		super(block, coord);
 	}
-	
 
 	@Override
 	public void update(float dt) {
-		if (getPosition()!=null && isValid()) {
+		if (getPosition() != null && isValid()) {
 			//check if portal is there
-			if (portal==null){
+			if (portal == null) {
 				ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);
-				if (!portals.isEmpty()){
+				if (!portals.isEmpty()) {
 					portal = (Portal) portals.get(0);
 				} else {
 					portal = new Portal();
 				}
-				if (!portal.isSpawned())
+				if (!portal.isSpawned()) {
 					portal.spawn(getPosition().toPoint());
+				}
 			}
 			portal.setPosition(getPosition().toPoint());
 
@@ -93,7 +95,8 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	/**
 	 * Get the portal inside the block
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Portal getPortal() {
 		return portal;
@@ -116,7 +119,9 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	@Override
 	public boolean interactable() {
-		if (getPosition().cpy().addVector(0, 0, 1).getBlock()==null) return true;
+		if (getPosition().cpy().addVector(0, 0, 1).getBlock() == null) {
+			return true;
+		}
 		return getPosition().cpy().addVector(0, 0, 1).getBlock().getId() == 0;
 	}
 }

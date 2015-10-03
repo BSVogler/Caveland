@@ -356,7 +356,7 @@ public class LightEngine implements MapObserver {
     /**
      *Shows the data of the light engine in diagramms.
      * @param view 
-	 * @param pos 
+	 * @param pos get the light data from this position	
      */
     public void render(GameView view, AbstractPosition pos){
         if (debuging) {

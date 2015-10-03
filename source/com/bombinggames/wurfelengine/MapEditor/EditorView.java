@@ -61,6 +61,9 @@ import java.util.ArrayList;
  */
 public class EditorView extends GameView {
     private Controller controller;
+	/**
+	 * used for copying data from the current game view
+	 */
 	private GameView gameplayView;
     /**
      * the camera rendering the sceen
@@ -93,6 +96,7 @@ public class EditorView extends GameView {
     public void init(final Controller controller, final GameView oldView) {
         super.init(controller, oldView);
         Gdx.app.debug("MEView", "Initializing");
+		
         this.controller = controller;
         this.gameplayView = oldView;
 		
@@ -149,7 +153,7 @@ public class EditorView extends GameView {
 	@Override
     public void onEnter() {
 		camera.setCenter(gameplayView.getCameras().get(0).getCenter().cpy());//always keep the camera position
-		camera.move(0, -camera.getWidthInViewSpc()/2);
+		camera.move(0, -camera.getWidthInViewSpc()/2);//hack because get and setting the center resutls in a different position
         WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();

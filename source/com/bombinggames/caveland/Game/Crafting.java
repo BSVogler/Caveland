@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.bombinggames.caveland.Game.CraftingRecipesList.Recipe;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -11,6 +12,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import java.util.ArrayList;
 
 /**
  *A HUD for crafting via inventory
@@ -18,7 +20,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
  */
 public class Crafting extends ActionBox {
 	private final Inventory inventory;
-	private final CraftingRecipesList recipes = new CraftingRecipesList();
+	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
 
 	/**
 	 * creates a new inventory
@@ -28,57 +30,59 @@ public class Crafting extends ActionBox {
 	public Crafting(CustomGameView view, Ejira player) {
 		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
-		CraftingRecipesList.Recipe recipe = findRecipe();
-		if (recipe!=null) {
-			//A
-			Image a = new Image(
-				new SpriteDrawable(
-					new Sprite(
-						AbstractGameObject.getSprite('e', recipe.ingredients[0].getId(), 0)
+		ArrayList<Recipe> recipes = findMatchingRecipes();
+		if (!recipes.isEmpty()) {
+			for (Recipe recipe : recipes) {
+				//A
+				Image a = new Image(
+					new SpriteDrawable(
+						new Sprite(
+							AbstractGameObject.getSprite('e', recipe.ingredients[0].getId(), 0)
+						)
 					)
-				)
-			);
-			getWindow().addActor(a);
+				);
+				getWindow().addActor(a);
 
 
-			//+
-			Label plus =new Label("+", WE.getEngineView().getSkin());
-			plus.setPosition(100, 0);
-			getWindow().addActor(plus);
+				//+
+				Label plus =new Label("+", WE.getEngineView().getSkin());
+				plus.setPosition(100, 0);
+				getWindow().addActor(plus);
 
-			//B
-			Image b = new Image(
-				new SpriteDrawable(
-					new Sprite(
-						AbstractGameObject.getSprite('e', recipe.ingredients[1].getId(), 0)
+				//B
+				Image b = new Image(
+					new SpriteDrawable(
+						new Sprite(
+							AbstractGameObject.getSprite('e', recipe.ingredients[1].getId(), 0)
+						)
 					)
-				)
-			);
-			b.setPosition(150, 0);
-			getWindow().addActor(b);
+				);
+				b.setPosition(150, 0);
+				getWindow().addActor(b);
 
-//			//+ maybe C
-//			if (ingredients.length>2 && ingredients[0]!=null) {
-//				Label plus2 =new Label("+", WE.getEngineView().getSkin());
-//				plus2.setPosition(300, 0);
-//				addActor(plus2);
-//			}
+				//+ maybe C
+				if (recipe.ingredients.length > 2) {
+					Label plus2 =new Label("+", WE.getEngineView().getSkin());
+					plus2.setPosition(300, 0);
+					addActor(plus2);
+				}
 
-			//=
-			Label equals =new Label("=", WE.getEngineView().getSkin());
-			equals.setPosition(300, 0);
-			getWindow().addActor(equals);
+				//=
+				Label equals = new Label("=", WE.getEngineView().getSkin());
+				equals.setPosition(300, 0);
+				getWindow().addActor(equals);
 
-			//result
-			Image resultImage = new Image(
-				new SpriteDrawable(
-					new Sprite(
-						AbstractGameObject.getSprite('e', recipe.result.getId(), 0)
+				//result
+				Image resultImage = new Image(
+					new SpriteDrawable(
+						new Sprite(
+							AbstractGameObject.getSprite('e', recipe.result.getId(), 0)
+						)
 					)
-				)
-			);
-			resultImage.setPosition(350, 0);
-			getWindow().addActor(resultImage);
+				);
+				resultImage.setPosition(350, 0);
+				getWindow().addActor(resultImage);
+			}
 		} else {
 			getWindow().addActor(new Label("not enough ingredients", WE.getEngineView().getSkin()));
 		}
@@ -88,10 +92,11 @@ public class Crafting extends ActionBox {
 	 * check wheter you can craft with the ingredients
 	 * @return 
 	 */
-	public CraftingRecipesList.Recipe findRecipe(){
+	public ArrayList<CraftingRecipesList.Recipe> findMatchingRecipes(){
+		ArrayList<CraftingRecipesList.Recipe> matchingRecipes = new ArrayList<CraftingRecipesList.Recipe>(2);
 		CollectibleType[] invent = inventory.getContentDef();
 		CraftingRecipesList.Recipe finalRecipe = null;
-		for (CraftingRecipesList.Recipe recipe : recipes.getReceipts()) {
+		for (CraftingRecipesList.Recipe recipe : knownRecipes.getReceipts()) {
 			int ing1 = -1;//not found in receipt
 			if (recipe.ingredients[0]==invent[0])
 				ing1 = 0;
@@ -99,15 +104,16 @@ public class Crafting extends ActionBox {
 				ing1 = 1;
 			if (recipe.ingredients[0]==invent[2])
 				ing1 = 2;
+			
 			int ing2 = -1;//not found in receipt
 			if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1]==invent[0])
 				ing2 = 0;
-			if (ing1 != 1 && recipe.ingredients[1]==invent[1])
+			if (ing1 != 1 && ing1 != 1  && recipe.ingredients[1]==invent[1])
 				ing2 = 1;
-			if (ing1 != 2 && recipe.ingredients[1]==invent[2])
+			if (ing1 != 2 && ing1 != 2  && recipe.ingredients[1]==invent[2])
 				ing2 = 2;
 			
-			if (recipe.ingredients.length>2) {
+			if (recipe.ingredients.length > 2) {
 				int ing3 = -1;//not found in receipt
 				if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2]==invent[0])
 					ing3 = 0;
@@ -117,21 +123,20 @@ public class Crafting extends ActionBox {
 					ing3 = 2;
 
 				if (ing1 != -1 && ing2 != -1 && ing3 != -1)
-					finalRecipe = recipe;
+					matchingRecipes.add(recipe);
 			} else {
 				if (ing1 != -1 && ing2 != -1)
-					finalRecipe = recipe;
+					matchingRecipes.add(recipe);
 			}
 		}
-		return finalRecipe;
+		return matchingRecipes;
 	}
 	
 	/**
 	 * removes the items from inventory
 	 */
-	public void craft(){
-		CraftingRecipesList.Recipe recipe = findRecipe();
-		if (recipe != null){
+	public void craft(Recipe recipe){
+		if (knownRecipes != null){
 			Collectible a = inventory.retrieveCollectible(recipe.ingredients[0]);
 			Collectible b = inventory.retrieveCollectible(recipe.ingredients[1]);
 			boolean thirdingredient = true;
@@ -163,7 +168,10 @@ public class Crafting extends ActionBox {
 
 	@Override
 	public int confirm(AbstractEntity actor) {
-		craft();
-		return super.confirm(actor);
+		int selection = super.confirm(actor);
+		ArrayList<CraftingRecipesList.Recipe> recipes = findMatchingRecipes();
+		if (!recipes.isEmpty())
+			craft(recipes.get(selection));
+		return selection;
 	}
 }

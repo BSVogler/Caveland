@@ -36,6 +36,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -106,6 +107,7 @@ public class GameView extends View implements GameManager {
         //load sprites
         RenderBlock.loadSheet();
     }
+	private boolean useDefaultShader;
     
 	/**
 	 * Loades some files and set up everything. This should be done after
@@ -131,9 +133,15 @@ public class GameView extends View implements GameManager {
 		shRenderer = new ShapeRenderer();
 
 		//set up stage
-		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());//spawn at fullscreen
+		stage = new Stage(
+			new StretchViewport(
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight()
+			),
+			spriteBatch
+		);//spawn at fullscreen
 
-		spriteBatch.setShader(null);//set default shader
+		useDefaultShader();//set default shader
 
 		initalized = true;
 	}
@@ -216,35 +224,35 @@ public class GameView extends View implements GameManager {
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
             drawString("No camera set up", Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, Color.BLACK.cpy());
         } else {
-			spriteBatch.setShader(getShader());
+			setShader(getShader());
             for (Camera camera : cameras) {
                 camera.render(this, camera);
             }
         }
                
         //render HUD and GUI
-		spriteBatch.setShader(null);//use default shader
+		useDefaultShader();
 		spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 		shRenderer.setProjectionMatrix(libGDXcamera.combined);
 
-		//WE.getEngineView().getShapeRenderer().setProjectionMatrix(libGDXcamera.combined);
 		Gdx.gl20.glLineWidth(1);
 
 		//set viewport of hud to cover whole window
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		//end of setup
-		if (controller.getDevTools() != null)
+		if (controller.getDevTools() != null) {
 			controller.getDevTools().render(this);
-			
-		//render light engine based in first camera
-		if (Controller.getLightEngine() != null && !getCameras().isEmpty())
+		}
+
+		//render light engine based on first camera
+		if (Controller.getLightEngine() != null && !getCameras().isEmpty()) {
 			Controller.getLightEngine().render(this, getCameras().get(0).getCenter());
-		
+		}
+
 		//render buttons
 		stage.draw();
-    }
-       
+	}
+
     /**
      * The equalizationScale is a factor which scales the GUI/HUD to have the same relative size with different resolutions.
      * @return the scale factor
@@ -502,6 +510,20 @@ public class GameView extends View implements GameManager {
     public boolean isInitalized() {
         return initalized;
     }
+	
+	public void useDefaultShader(){
+		spriteBatch.setShader(null);
+		useDefaultShader = true;
+	}
+
+	public boolean isUsingDefaultShader() {
+		return useDefaultShader;
+	}
+	
+	public void setShader(ShaderProgram shader){
+		spriteBatch.setShader(shader);
+		useDefaultShader = false;
+	}
 
  
 	@Override

@@ -28,7 +28,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
@@ -40,12 +39,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A view is an object which renders the data. Game space or not does not matter for this class.
+ * A view is an object which renders the data. Game space or not does not matter
+ * for this class.
+ *
  * @author Benedikt Vogler
  */
 public abstract class View {
-    private ShaderProgram shader;
-	
+
+	private ShaderProgram shader;
+
 	/**
 	 *
 	 * @return
@@ -57,56 +59,58 @@ public abstract class View {
 	 * @return
 	 */
 	public abstract ShapeRenderer getShapeRenderer();
-	
+
 	/**
 	 * true if current rendering is debug only
 	 */
 	private boolean inDebug;
-	
+
 	/**
 	 * initializes the view.
 	 */
-    protected final void init() {
+	protected final void init() {
 		try {
 			loadShaders();
 		} catch (Exception ex) {
 			Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
 		}
-    }
-    
+	}
+
 	/**
 	 * Get the loaded shader program of the view.
-	 * @return 
+	 *
+	 * @return
 	 */
-    public ShaderProgram getShader() {
-        return shader;
-    }
+	public ShaderProgram getShader() {
+		return shader;
+	}
 	
-    	/**
+	/**
 	 * enable debug rendering only
-	 * @param debug 
+	 *
+	 * @param debug
 	 */
 	void setDebugRendering(boolean debug) {
 		this.inDebug = debug;
 	}
-	
-		/**
-	 * 
+
+	/**
+	 *
 	 * @return true if current rendering is debug only
 	 */
 	public boolean debugRendering() {
 		return inDebug;
 	}
-	
+
 	/**
 	 * reloads the shaders
 	 */
-	public void loadShaders() throws Exception{
+	public void loadShaders() throws Exception {
 		Gdx.app.debug("Shader", "loading");
 		String vertexShader;
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
-		if (WE.CVARS.getValueB("LEnormalMapRendering")){
+		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
 			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertexNM.vs").readString();
 			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragmentNM.fs").readString();
 		} else {
@@ -115,18 +119,19 @@ public abstract class View {
 		}
 		//Setup shader
 		ShaderProgram.pedantic = false;
-		
+
 		ShaderProgram newshader = new ShaderProgram(vertexShader, fragmentShader);
-		if (newshader.isCompiled())
+		if (newshader.isCompiled()) {
 			shader = newshader;
-		else if (shader==null) {
-			throw new Exception("Could not compile shader: "+newshader.getLog());
+		} else if (shader == null) {
+			throw new Exception("Could not compile shader: " + newshader.getLog());
 		}
-		
+
 		//print any warnings
-		if (shader.getLog().length()!=0)
+		if (shader.getLog().length() != 0) {
 			System.out.println(shader.getLog());
-		
+		}
+
 		//setup default uniforms
 		shader.begin();
 		//our normal map

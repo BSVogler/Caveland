@@ -79,7 +79,7 @@ public class Camera implements MapObserver {
 	private final RenderBlock[][][] cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 
 	/**
-	 * the position of the camera in view space. Y-up. Read only field.
+	 * the position of the camera in viewMat space. Y-up. Read only field.
 	 */
 	private final Vector2 position = new Vector2();
 	/**
@@ -92,11 +92,11 @@ public class Camera implements MapObserver {
 	 */
 	private final Matrix4 projection = new Matrix4();
 	/**
-	 * the view matrix *
+	 * the viewMat matrix *
 	 */
-	private final Matrix4 view = new Matrix4();
+	private final Matrix4 viewMat = new Matrix4();
 	/**
-	 * the combined projection and view matrix
+	 * the combined projection and viewMat matrix
 	 */
 	private final Matrix4 combined = new Matrix4();
 
@@ -310,7 +310,7 @@ public class Camera implements MapObserver {
 			updateCenter();
 
 			//move camera to the focus
-			view.setToLookAt(
+			viewMat.setToLookAt(
 				new Vector3(position, 0),
 				new Vector3(position, -1),
 				up
@@ -328,7 +328,7 @@ public class Camera implements MapObserver {
 
 			//set up projection matrices
 			combined.set(projection);
-			Matrix4.mul(combined.val, view.val);
+			Matrix4.mul(combined.val, viewMat.val);
 
 			if (cameraContent != null) {
 				for (RenderBlock[][] x : cameraContent) {
@@ -346,7 +346,7 @@ public class Camera implements MapObserver {
 			//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
 			//Gdx.gl20.glLoadMatrixf(projection.val, 0);
 			//Gdx.gl20.glMatrixMode(GL20.GL_MODELVIEW);
-			//Gdx.gl20.glLoadMatrixf(view.val, 0);
+			//Gdx.gl20.glLoadMatrixf(viewMat.val, 0);
 			//invProjectionView.set(combined);
 			//Matrix4.inv(invProjectionView.val);
 		}
@@ -392,7 +392,7 @@ public class Camera implements MapObserver {
 		 ) {
 		 centerChunkY--;
 		 }
-		 //check in view space
+		 //check in viewMat space
 		 if (
 		 position.y- getHeightInProjSpc()/2
 		 <
@@ -528,36 +528,7 @@ public class Camera implements MapObserver {
 
 			//outline 3x3 chunks
 			if (WE.CVARS.getValueB("DevDebugRendering")) {
-				view.getShapeRenderer().setColor(Color.RED.cpy());
-				view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-				view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
-					-Chunk.getGameDepth(),//two chunks down
-					map.getGameWidth(),
-					map.getGameDepth() / 2
-				);
-				view.getShapeRenderer().line(-Chunk.getGameWidth(),
-					-Chunk.getGameDepth() / 2,
-					-Chunk.getGameWidth() + map.getGameWidth(),
-					-Chunk.getGameDepth() / 2
-				);
-				view.getShapeRenderer().line(-Chunk.getGameWidth(),
-					0,
-					-Chunk.getGameWidth() + map.getGameWidth(),
-					0
-				);
-				view.getShapeRenderer().line(
-					0,
-					Chunk.getGameDepth() / 2,
-					0,
-					-Chunk.getGameDepth()
-				);
-				view.getShapeRenderer().line(
-					Chunk.getGameWidth(),
-					Chunk.getGameDepth() / 2,
-					Chunk.getGameWidth(),
-					-Chunk.getGameDepth()
-				);
-				view.getShapeRenderer().end();
+				drawDebug(view, camera);
 			}
 			if (damageoverlay > 0.0f) {
 				WE.getEngineView().getSpriteBatch().begin();
@@ -602,7 +573,7 @@ public class Camera implements MapObserver {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				RenderBlock block = iterator.next();
-				//only add if in view plane to-do
+				//only add if in viewMat plane to-do
 				if (block != null) {
 					if (
 						!block.getBlockData().isClipped()
@@ -658,7 +629,7 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * checks if the projected position is inside the view Frustum
+	 * checks if the projected position is inside the viewMat Frustum
 	 *
 	 * @param proX projective space
 	 * @param proY
@@ -765,12 +736,12 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * fill the view frustum in the camera with renderblocks. Only done when content changes.
+	 * fill the viewMat frustum in the camera with renderblocks. Only done when content changes.
 	 */
 	protected void fillCameraContentBlocks() {
 		//fill viewFrustum with RenderBlock data
 		
-		//1. put every block in the view frustum
+		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			map,
 			centerChunkX,
@@ -989,7 +960,7 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * The Camera's center position in the game world. view space. yIndex up
+	 * The Camera's center position in the game world. viewMat space. yIndex up
 	 *
 	 * @return in camera position game space
 	 */
@@ -1030,7 +1001,7 @@ public class Camera implements MapObserver {
 	 * the zoom has been applied. For screen pixels use
 	 * {@link #getWidthInScreenSpc()}.
 	 *
-	 * @return in view pixels
+	 * @return in viewMat pixels
 	 */
 	public final int getWidthInProjSpc() {
 		return (int) (viewSpaceWidth / zoom);
@@ -1208,7 +1179,7 @@ public class Camera implements MapObserver {
 	public void setCenter(Point point){
 		focusEntity = null;
 		position.x = point.getX();
-		position.y = -point.getY()/2;//game to view transformation
+		position.y = -point.getY()/2;//game to viewMat transformation
 	}
 
 	/**
@@ -1273,6 +1244,39 @@ public class Camera implements MapObserver {
 	@Override
 	public void onMapReload() {
 
+	}
+
+	private void drawDebug(GameView view, Camera camera) {
+		view.getShapeRenderer().setColor(Color.RED.cpy());
+		view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+		view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
+			-Chunk.getGameDepth(),//two chunks down
+			map.getGameWidth(),
+			map.getGameDepth() / 2
+		);
+		view.getShapeRenderer().line(-Chunk.getGameWidth(),
+			-Chunk.getGameDepth() / 2,
+			-Chunk.getGameWidth() + map.getGameWidth(),
+			-Chunk.getGameDepth() / 2
+		);
+		view.getShapeRenderer().line(-Chunk.getGameWidth(),
+			0,
+			-Chunk.getGameWidth() + map.getGameWidth(),
+			0
+		);
+		view.getShapeRenderer().line(
+			0,
+			Chunk.getGameDepth() / 2,
+			0,
+			-Chunk.getGameDepth()
+		);
+		view.getShapeRenderer().line(
+			Chunk.getGameWidth(),
+			Chunk.getGameDepth() / 2,
+			Chunk.getGameWidth(),
+			-Chunk.getGameDepth()
+		);
+		view.getShapeRenderer().end();
 	}
 
 }

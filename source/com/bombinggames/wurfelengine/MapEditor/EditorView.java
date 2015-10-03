@@ -261,7 +261,7 @@ public class EditorView extends GameView {
 		super.update(dt);
 
 		if (camera != null) {
-			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "scree"-game time
+			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "screen"-game time
 			camera.move((int) (camermove.x * cameraspeed * rdt), (int) (camermove.y * cameraspeed * rdt));
 		}
 	}

@@ -54,7 +54,7 @@ public class TorchRenderer extends RenderBlock {
 	public void setPosition(Coordinate coord) {
 		super.setPosition(coord);
 		if (lightsource == null)
-			lightsource = new PointLightSource(Color.YELLOW, 3, 8);
+			lightsource = new PointLightSource(Color.YELLOW, 3, 15);
 		lightsource.setPosition(coord.cpy());
 	}
 

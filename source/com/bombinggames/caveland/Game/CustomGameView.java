@@ -175,11 +175,11 @@ public class CustomGameView extends GameView{
 	private void toogleCrafting(int id) {
 		if (focusOnGame(id)) {
 			//open
-			Crafting crafting = new Crafting(this, getPlayer(id));
+			CraftingBox crafting = new CraftingBox(this, getPlayer(id));
 			crafting.register(this, id+1, getPlayer(id));
 		} else {
 			//close
-			if (openDialogue[id] instanceof Crafting) {
+			if (openDialogue[id] instanceof CraftingBox) {
 				openDialogue[id].cancel(getPlayer(id));
 			}
 		}

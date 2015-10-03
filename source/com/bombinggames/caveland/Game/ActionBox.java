@@ -172,7 +172,6 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * unregisters this window
 	 *
-	 * @param view
 	 * @param actor
 	 * @return
 	 */
@@ -193,7 +192,6 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * unregisters this window
 	 *
-	 * @param view
 	 * @param actor
 	 * @return
 	 */
@@ -245,6 +243,7 @@ public class ActionBox extends WidgetGroup {
 
 	/**
 	 * go a selection downwards
+	 * @param actor
 	 */
 	public void down(AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
@@ -261,6 +260,7 @@ public class ActionBox extends WidgetGroup {
 
 	/**
 	 * go a selection upwards
+	 * @param actor
 	 */
 	public void up(AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
@@ -317,7 +317,6 @@ public class ActionBox extends WidgetGroup {
 		/**
 		 *
 		 * @param result
-		 * @param view
 		 * @param actor can be null
 		 */
 		public void cancel(int result, AbstractEntity actor);
@@ -334,7 +333,6 @@ public class ActionBox extends WidgetGroup {
 		/**
 		 *
 		 * @param result the number of the selection
-		 * @param view
 		 * @param actor can be null
 		 */
 		public void confirm(int result, AbstractEntity actor);
@@ -347,7 +345,6 @@ public class ActionBox extends WidgetGroup {
 		/**
 		 *
 		 * @param result
-		 * @param view
 		 * @param actor can be null
 		 */
 		public void select(int result, AbstractEntity actor);

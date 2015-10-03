@@ -18,16 +18,17 @@ import java.util.ArrayList;
  *A HUD for crafting via inventory
  * @author Benedikt Vogler
  */
-public class Crafting extends ActionBox {
+public class CraftingBox extends ActionBox {
 	private final Inventory inventory;
 	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
+	private Image resultImage;
 
 	/**
 	 * creates a new inventory
 	 * @param view
 	 * @param player 
 	 */
-	public Crafting(CustomGameView view, Ejira player) {
+	public CraftingBox(CustomGameView view, Ejira player) {
 		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		ArrayList<Recipe> recipes = findMatchingRecipes();
@@ -71,12 +72,13 @@ public class Crafting extends ActionBox {
 				Label equals = new Label("=", WE.getEngineView().getSkin());
 				equals.setPosition(300, 0);
 				getWindow().addActor(equals);
-
+			}
+			if (!findMatchingRecipes().isEmpty()) {
 				//result
-				Image resultImage = new Image(
+				resultImage = new Image(
 					new SpriteDrawable(
 						new Sprite(
-							AbstractGameObject.getSprite('e', recipe.result.getId(), 0)
+							AbstractGameObject.getSprite('e', findMatchingRecipes().get(0).result.getId(), 0)
 						)
 					)
 				);
@@ -86,16 +88,27 @@ public class Crafting extends ActionBox {
 		} else {
 			getWindow().addActor(new Label("not enough ingredients", WE.getEngineView().getSkin()));
 		}
+		
+		setSelectAction((int result, AbstractEntity actor) -> {
+			if (!findMatchingRecipes().isEmpty())
+				//result
+				resultImage = new Image(
+					new SpriteDrawable(
+						new Sprite(
+							AbstractGameObject.getSprite('e', findMatchingRecipes().get(result).result.getId(), 0)
+						)
+					)
+				);
+		});
 	}
-	
+
 	/**
 	 * check wheter you can craft with the ingredients
 	 * @return 
 	 */
 	public ArrayList<CraftingRecipesList.Recipe> findMatchingRecipes(){
-		ArrayList<CraftingRecipesList.Recipe> matchingRecipes = new ArrayList<CraftingRecipesList.Recipe>(2);
+		ArrayList<CraftingRecipesList.Recipe> matchingRecipes = new ArrayList<>(2);
 		CollectibleType[] invent = inventory.getContentDef();
-		CraftingRecipesList.Recipe finalRecipe = null;
 		for (CraftingRecipesList.Recipe recipe : knownRecipes.getReceipts()) {
 			int ing1 = -1;//not found in receipt
 			if (recipe.ingredients[0]==invent[0])

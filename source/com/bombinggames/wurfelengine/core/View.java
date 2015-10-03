@@ -35,8 +35,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A view is an object which renders the data. Game space or not does not matter for this class.
@@ -65,8 +66,12 @@ public abstract class View {
 	/**
 	 * initializes the view.
 	 */
-    protected final void init(){
-		loadShaders();
+    protected final void init() {
+		try {
+			loadShaders();
+		} catch (Exception ex) {
+			Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
     
 	/**
@@ -96,7 +101,7 @@ public abstract class View {
 	/**
 	 * reloads the shaders
 	 */
-	public void loadShaders(){
+	public void loadShaders() throws Exception{
 		Gdx.app.debug("Shader", "loading");
 		String vertexShader;
 		String fragmentShader;
@@ -114,8 +119,9 @@ public abstract class View {
 		ShaderProgram newshader = new ShaderProgram(vertexShader, fragmentShader);
 		if (newshader.isCompiled())
 			shader = newshader;
-		else if (shader==null)
-			throw new GdxRuntimeException("Could not compile shader: "+newshader.getLog());
+		else if (shader==null) {
+			throw new Exception("Could not compile shader: "+newshader.getLog());
+		}
 		
 		//print any warnings
 		if (shader.getLog().length()!=0)

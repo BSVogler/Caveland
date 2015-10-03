@@ -5,6 +5,7 @@
  */
 package com.bombinggames.wurfelengine.core.console;
 
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import java.util.StringTokenizer;
 
@@ -16,7 +17,11 @@ public class ReloadShadersCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
-		gameplay.getView().loadShaders();
+		try {
+			gameplay.getView().loadShaders();
+		} catch (Exception ex) {
+			WE.getConsole().add(ex.getMessage());
+		}
 		return true;
 	}
 

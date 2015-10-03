@@ -65,6 +65,19 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
+		receipts.add(
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.Iron,
+					CollectibleType.Iron
+				},
+				"Power Cable",
+				CollectibleType.Powercable
+			)
+		);
+		
+		
+		
 		int y = 0;
 		for (Recipe receipt : receipts) {
 			Image actor = receipt.getImage();
@@ -74,13 +87,20 @@ public class CraftingRecipesList extends Table {
 		}
 	}
 
+	/**
+	 * 
+	 * @return 
+	 */
 	public ArrayList<Recipe> getReceipts() {
 		return receipts;
 	}
 	
 	
 	
-	class Recipe {
+	public class Recipe {
+		/**
+		 * a list of the ingredient
+		 */
 		protected final CollectibleType[] ingredients;
 		protected final String name;
 		/**
@@ -103,7 +123,5 @@ public class CraftingRecipesList extends Table {
 				)
 			);
 		}
-		
 	}
-	
 }

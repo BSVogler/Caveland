@@ -60,7 +60,6 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * creates a new chat box and set this as a modal window
 	 *
-	 * @param view
 	 * @param title the title of the box
 	 * @param text the text of the box. can be null
 	 * @param mode
@@ -122,7 +121,7 @@ public class ActionBox extends WidgetGroup {
 	public ActionBox register(final CustomGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
 		if (selectAction != null) {
-			selectAction.select(selection, actor);
+			selectAction.select(false, selection, actor);
 		}
 		return this;
 	}
@@ -250,11 +249,13 @@ public class ActionBox extends WidgetGroup {
 			if (selection < selectionNames.size() - 1) {
 				selection++;
 			}
-			if (selectAction != null) {
-				selectAction.select(selection, actor);
-			}
 			WE.SOUND.play("menuSelect");
 			updateContent();
+		}
+		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
+			if (selectAction != null) {
+				selectAction.select(false, selection, actor);
+			}
 		}
 	}
 
@@ -267,11 +268,13 @@ public class ActionBox extends WidgetGroup {
 			if (selection > 0) {
 				selection--;
 			}
-			if (selectAction != null) {
-				selectAction.select(selection, actor);
-			}
 			WE.SOUND.play("menuSelect");
 			updateContent();
+		}
+		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
+			if (selectAction != null) {
+				selectAction.select(true, selection, actor);
+			}
 		}
 	}
 
@@ -344,10 +347,11 @@ public class ActionBox extends WidgetGroup {
 
 		/**
 		 *
-		 * @param result
+		 * @param up
+		 * @param result if a selection box returns the selection, else is -1
 		 * @param actor can be null
 		 */
-		public void select(int result, AbstractEntity actor);
+		public void select(boolean up, int result, AbstractEntity actor);
 	}
 
 }

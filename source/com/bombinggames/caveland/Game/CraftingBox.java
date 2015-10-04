@@ -22,6 +22,7 @@ public class CraftingBox extends ActionBox {
 	private final Inventory inventory;
 	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
 	private Image resultImage;
+	private int selectionNum = -1;
 
 	/**
 	 * creates a new inventory
@@ -89,16 +90,37 @@ public class CraftingBox extends ActionBox {
 			getWindow().addActor(new Label("not enough ingredients", WE.getEngineView().getSkin()));
 		}
 		
-		setSelectAction((int result, AbstractEntity actor) -> {
-			if (!findMatchingRecipes().isEmpty())
+		setSelectAction((boolean up, int result, AbstractEntity actor) -> {
+			ArrayList<Recipe> recList = findMatchingRecipes();
+			if (!recList.isEmpty()) {
+				
+				if (!up) {
+					selectionNum++;
+				} else {
+					selectionNum--;
+				}
+
+				//clamp
+				if (selectionNum < 0) {
+					selectionNum = recList.size()-1;
+				}
+
+				if (selectionNum >= recList.size()) {
+					selectionNum = 0;
+				}
+
 				//result
+				resultImage.remove();
 				resultImage = new Image(
 					new SpriteDrawable(
 						new Sprite(
-							AbstractGameObject.getSprite('e', findMatchingRecipes().get(result).result.getId(), 0)
+							AbstractGameObject.getSprite('e', recList.get(selectionNum).result.getId(), 0)
 						)
 					)
 				);
+				resultImage.setPosition(350, 0);
+				getWindow().addActor(resultImage);
+			}
 		});
 	}
 
@@ -181,10 +203,10 @@ public class CraftingBox extends ActionBox {
 
 	@Override
 	public int confirm(AbstractEntity actor) {
-		int selection = super.confirm(actor);
+		super.confirm(actor);
 		ArrayList<CraftingRecipesList.Recipe> recipes = findMatchingRecipes();
 		if (!recipes.isEmpty())
-			craft(recipes.get(selection));
-		return selection;
+			craft(recipes.get(selectionNum));
+		return selectionNum;
 	}
 }

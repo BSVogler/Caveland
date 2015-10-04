@@ -73,7 +73,7 @@ public class RailsConstructionKit extends Collectible {
 					}
 				)
 				.setSelectAction(
-					(int result, AbstractEntity actor1) -> {
+					(boolean up, int result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
 							preview = (EntityBlock) new EntityBlock(CavelandBlocks.CLBlocks.RAILS.getId(),(byte) result)

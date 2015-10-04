@@ -83,7 +83,7 @@ public class Bausatz extends Collectible {
 					}
 				)
 				.setSelectAction(
-					(int result, AbstractEntity actor1) -> {
+					(boolean up, int result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
 							preview = (EntityBlock) new EntityBlock(getResult(result),(byte) 0)

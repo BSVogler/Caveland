@@ -192,19 +192,43 @@ public class Inventory extends CollectibleContainer {
 		bgSprite.setX(leftbgSprite + 140);
 		bgSprite.draw(view.getSpriteBatch());
 
-		for (int i = 0; i < size(); i++) {
-			MovableEntity ent = get(i);
-			if (ent != null) {
-				int x = (int) ((int) left + i * inventoryPadding / view.getEqualizationScale());
-				if (i != 0) {
-					ent.setScaling(-0.4f);
-				}
-				ent.render(view, x, y);
-				if (i != 0) {
-					ent.setScaling(0);
-				}
-			}
+		MovableEntity ent = get(0);
+		if (ent != null) {
+			ent.render(view, (int) left, y);
 		}
+		ent = get(1);
+		if (ent != null) {
+			ent.setScaling(-0.4f);
+			ent.render(view, (int) (left + 80), y);
+			ent.setScaling(0);
+		}
+		ent = get(2);
+		if (ent != null) {
+			ent.setScaling(-0.4f);
+			ent.render(view, (int) (left + 140), y);
+			ent.setScaling(0);
+		}
+		
+//		bgSprite.setX(leftbgSprite + 80);
+//		bgSprite.setScale(0.5f);
+//		bgSprite.setY(bgSprite.getY() - 20);
+//		bgSprite.draw(view.getSpriteBatch());
+//		bgSprite.setX(leftbgSprite + 140);
+//		bgSprite.draw(view.getSpriteBatch());
+		
+//		for (int i = 0; i < size(); i++) {
+//			MovableEntity ent = get(i);
+//			if (ent != null) {
+//				int x = (int) ((int) left + i * inventoryPadding / view.getEqualizationScale());
+//				if (i != 0) {
+//					ent.setScaling(-0.4f);
+//				}
+//				ent.render(view, x, y);
+//				if (i != 0) {
+//					ent.setScaling(0);
+//				}
+//			}
+//		}
 	}
 
 	/**

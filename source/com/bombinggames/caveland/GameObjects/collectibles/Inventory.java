@@ -11,8 +11,8 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 
 /**
- * The inventory is a special limited collectible container. It also moves the content
- * at the players position (kinda like in its backpack).
+ * The inventory is a special limited collectible container. It also moves the
+ * content at the players position (kinda like in its backpack).
  *
  * @author Benedikt Vogler
  */
@@ -23,7 +23,8 @@ public class Inventory extends CollectibleContainer {
 
 	/**
 	 *
-	 *an invnetory needs a player where it is attached to
+	 * an invnetory needs a player where it is attached to
+	 *
 	 * @param player
 	 */
 	public Inventory(Ejira player) {
@@ -36,6 +37,7 @@ public class Inventory extends CollectibleContainer {
 
 	/**
 	 * Attaches/glues the inventory to the player
+	 *
 	 * @return
 	 */
 	public AbstractEntity spawn() {
@@ -112,9 +114,10 @@ public class Inventory extends CollectibleContainer {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Add item at the back.
+	 *
 	 * @param col the item you add
 	 * @return false if inventory is full. True if sucessfull.
 	 */
@@ -125,9 +128,10 @@ public class Inventory extends CollectibleContainer {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Add item at the front.
+	 *
 	 * @param col
 	 * @return false if inventory is full. True if sucessfull.
 	 */
@@ -172,19 +176,18 @@ public class Inventory extends CollectibleContainer {
 		super.render(view, camera);
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
-		
-		float inventoryPadding = camera.getWidthInScreenSpc()*0.08f;
-		float left = (camera.getScreenPosX()+camera.getWidthInScreenSpc()*0.75f)/ view.getEqualizationScale() + bgSprite.getWidth()/2;
+
+		float inventoryPadding = camera.getWidthInScreenSpc() * 0.08f;
+		float left = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale() + bgSprite.getWidth() / 2;
 		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
 
-
-		float leftbgSprite = (camera.getScreenPosX()+camera.getWidthInScreenSpc()*0.75f)/ view.getEqualizationScale();
+		float leftbgSprite = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale();
 		// / view.getEqualizationScale()
 		bgSprite.setPosition(leftbgSprite, y);
 		bgSprite.draw(view.getSpriteBatch());
 		bgSprite.setX(leftbgSprite + 80);
 		bgSprite.setScale(0.5f);
-		bgSprite.setY(bgSprite.getY()-20);
+		bgSprite.setY(bgSprite.getY() - 20);
 		bgSprite.draw(view.getSpriteBatch());
 		bgSprite.setX(leftbgSprite + 140);
 		bgSprite.draw(view.getSpriteBatch());
@@ -193,9 +196,13 @@ public class Inventory extends CollectibleContainer {
 			MovableEntity ent = get(i);
 			if (ent != null) {
 				int x = (int) ((int) left + i * inventoryPadding / view.getEqualizationScale());
-				if (i!=0) ent.setScaling(-0.4f);
+				if (i != 0) {
+					ent.setScaling(-0.4f);
+				}
 				ent.render(view, x, y);
-				if (i!=0) ent.setScaling(0);
+				if (i != 0) {
+					ent.setScaling(0);
+				}
 			}
 		}
 	}

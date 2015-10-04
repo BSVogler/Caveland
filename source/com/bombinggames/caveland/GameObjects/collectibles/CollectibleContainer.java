@@ -99,13 +99,13 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @param collectible if not an collectible nothing happens
 	 */
 	public void addCollectibleFront(Collectible collectible) {
-				if (!collectible.isSpawned()) {
+		if (!collectible.isSpawned()) {
 			collectible.spawn(getPosition().cpy());
 		}
 		collectible.setHidden(true);
 		collectible.preventPickup();
 		collectible.setFloating(true);
-		content.add(0,collectible);
+		content.add(0, collectible);
 	}
 
 	/**

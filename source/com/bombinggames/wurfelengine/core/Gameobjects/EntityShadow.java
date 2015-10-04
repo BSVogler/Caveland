@@ -38,58 +38,51 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * @author Benedikt Vogler
  */
 public class EntityShadow extends AbstractEntity {
+
 	private static final long serialVersionUID = 1L;
 	/**
 	 * the parent class. The object where this is the shadow
 	 */
-    private final AbstractEntity character;
+	private final AbstractEntity character;
 
 	/**
 	 *
 	 * @param character
 	 */
 	protected EntityShadow(AbstractEntity character) {
-		super((byte)32);
+		super((byte) 32);
 		this.disableShadow();
 		this.setName("Shadow");
 		this.character = character;
-    }
+	}
 
-    @Override
-    public void update(float dt) {
+	@Override
+	public void update(float dt) {
 		setSaveToDisk(false);
-		if (character==null || character.getPosition()==null || getPosition()==null) {
+		if (character == null || !character.isSpawned() || !isSpawned() || character.isHidden()) {
 			dispose();
 		} else {
-			//inherit isHidden
-			if (character.isHidden())
-				setHidden(true);
-			else setHidden(false);
-			
 			//find height of shadow surface
 			Coordinate newHeight = character.getPosition().toCoord();//start at same height
 			Block block = newHeight.getBlock();
-			while (
-				newHeight.getZ() > 0
-				&& (block == null || block.isTransparent())
-			) {
+			while (newHeight.getZ() > 0
+				&& (block == null || block.isTransparent())) {
 				newHeight.addVector(0, 0, -1);
 				block = newHeight.getBlock();
 			}
 
-			newHeight.addVector(0, 0, 1);
 			setPosition(character.getPosition().cpy());
-			getPosition().setZ(newHeight.toPoint().getZ());
+			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().getZ());
 			setColor(
-				new Color(.5f, .5f, .5f, 1-(character.getPosition().getZ() - getPosition().getZ())/2/Block.GAME_EDGELENGTH)
+				new Color(.5f, .5f, .5f, 1 - (character.getPosition().getZ() - getPosition().getZ()) / 2 / Block.GAME_EDGELENGTH+0.1f)
 			);
 		}
-    }
+	}
 
-    @Override
-    public void render(GameView view, Camera camera) {
-		if (!shouldBeDisposed()){
+	@Override
+	public void render(GameView view, Camera camera) {
+		if (!shouldBeDisposed()) {
 			super.render(view, camera);
 		}
-    }
+	}
 }

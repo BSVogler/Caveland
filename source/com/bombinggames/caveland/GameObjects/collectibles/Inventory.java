@@ -195,7 +195,7 @@ public class Inventory extends CollectibleContainer {
 		if (ent != null) {
 			ent.render(view, (int) left, y);
 			if (ent instanceof Interactable) {
-				Sprite button = new Sprite(AbstractGameObject.getSprite('i', 23, Interactable.XUp));
+				Sprite button = new Sprite(AbstractGameObject.getSprite('i', 23, Interactable.YUp));
 				button.setPosition(left-90, y-30);
 				button.setScale(0.4f);
 				button.draw(view.getSpriteBatch());

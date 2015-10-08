@@ -417,26 +417,26 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")) {//A
-				player.jump();
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")) {//B
+				if (parent.openDialogue[id] != null) {
+					parent.toogleCrafting(id);
+				} else {
+					player.jump();
+				}
 			}
 			
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) { //X
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonA")) { //A
 				if (parent.openDialogue[id] != null)
 					parent.openDialogue[id].confirm(parent.getPlayer(id));
 				else
 					player.attack();
 			}
 			
-			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonB")){//B
-				if (parent.openDialogue[id] !=null)
-					parent.toogleCrafting(id);
-				else {
-					if (id==0)
-						parent.throwDownP1 = 0;
-					else
-						parent.throwDownP2 = 0;
-				}
+			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")){//X
+				if (id==0)
+					parent.throwDownP1 = 0;
+				else
+					parent.throwDownP2 = 0;
 			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
@@ -461,7 +461,7 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonB")){
+			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonX")){
 				if (id==0) {
 					parent.throwDownP1 = -1;
 				} else

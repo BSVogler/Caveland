@@ -322,9 +322,9 @@ public class CVarSystem {
 		register(new IntCVar(5), "controllermacButtonSelect", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(8), "controllermacButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(9), "controllermacButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(11), "controllermacButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(13), "controllermacButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(12), "controllermacButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(13), "controllermacButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(11), "controllermacButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(14), "controllermacButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(1), "controllermacAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
 		register(new IntCVar(2), "controllermacAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);

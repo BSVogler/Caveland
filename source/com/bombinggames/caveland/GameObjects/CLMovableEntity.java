@@ -8,17 +8,26 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
- *
+ * A movable entity with special caveland logic,
  * @author Benedikt Vogler
  */
 public class CLMovableEntity extends MovableEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 * @param id
+	 * @param spritesPerDir The number of animation sprites per walking direction. if 0 then it only uses the value 0
+	 */
 	public CLMovableEntity(byte id, int spritesPerDir) {
 		super(id, spritesPerDir);
 	}
 
+	/**
+	 * 
+	 * @param entity 
+	 */
 	public CLMovableEntity(MovableEntity entity) {
 		super(entity);
 	}

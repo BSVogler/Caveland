@@ -210,6 +210,11 @@ public class Vanya extends MovableEntity implements Interactable {
 	public int getCompletedTutorialStep() {
 		return completedTutorialStep;
 	}
+
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 	
 	
 }

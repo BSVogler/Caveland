@@ -450,5 +450,9 @@ public class MineCart extends MovableEntity implements Interactable {
 	public boolean interactable() {
 		return (passenger==null);
 	}
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 
 }

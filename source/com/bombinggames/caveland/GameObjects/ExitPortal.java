@@ -80,4 +80,8 @@ public class ExitPortal extends AbstractEntity implements Interactable  {
 		return true;
 	}
 
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 }

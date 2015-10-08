@@ -128,4 +128,9 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	@Override
 	public void dispose() {
 	}
+	
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 }

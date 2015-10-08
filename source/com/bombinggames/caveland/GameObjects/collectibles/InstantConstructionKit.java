@@ -36,51 +36,65 @@ import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
 
 /**
- *
+ * Instantly creates an object without spawning a construction site.
  * @author Benedikt Vogler
  */
-public class RailsConstructionKit extends Collectible {
+public class InstantConstructionKit extends Collectible implements Interactable {
 
 	private static final long serialVersionUID = 1L;
 	private transient EntityBlock preview;
+	private final byte resultBlockId;
 	
-	public RailsConstructionKit() {
-		super(CollectibleType.Rails);
-
+	/**
+	 * 
+	 * @param type supports only some types
+	 */
+	public InstantConstructionKit(CollectibleType type) {
+		super(type);
+		if (type == CollectibleType.Rails) {
+			resultBlockId = CavelandBlocks.CLBlocks.RAILS.getId();
+		} else {
+			resultBlockId = CavelandBlocks.CLBlocks.POWERCABLE.getId();
+		}
 	}
 
 	@Override
-	public void action(CustomGameView view, AbstractEntity actor) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox("Choose rails type", ActionBox.BoxModes.SELECTION, null)
+			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")
-				.setConfirmAction(
-					(int result, AbstractEntity actor1) -> {
-						//spawn rails
-						actor1.getPosition().toCoord().setBlock(Block.getInstance(CavelandBlocks.CLBlocks.RAILS.getId(), (byte) result));
-						WE.SOUND.play("metallic");
-						if (preview != null) {
-							preview.dispose();
-							preview = null;
-						}
-						dispose();//dispose tool kit
+				.setConfirmAction((int result, AbstractEntity actor1) -> {
+					//spawn rails
+					actor1.getPosition().toCoord().setBlock(
+						Block.getInstance(
+							resultBlockId,
+							(byte) (getType() == CollectibleType.Rails ? result:result*2)
+						)
+					);
+					WE.SOUND.play("metallic");
+					if (preview != null) {
+						preview.dispose();
+						preview = null;
 					}
+					dispose();//dispose tool kit
+				}
 				)
-				.setSelectAction(
-					(boolean up, int result, AbstractEntity actor1) -> {
-						//spawn rails
-						if (preview == null) {
-							preview = (EntityBlock) new EntityBlock(CavelandBlocks.CLBlocks.RAILS.getId(),(byte) result)
-								.spawn(actor1.getPosition().toCoord().toPoint());
-							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
-						} else preview.setValue((byte) result);
+				.setSelectAction((boolean up, int result, AbstractEntity actor1) -> {
+					//spawn rails
+					if (preview == null) {
+						preview = (EntityBlock) new EntityBlock(resultBlockId)
+							.spawn(actor1.getPosition().toCoord().toPoint());
+						preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 					}
+					preview.setValue((byte) (getType() == CollectibleType.Rails ? result:result*2));
+				}
 				)
 				.setCancelAction(
 					(int result, AbstractEntity actor1) -> {
@@ -89,8 +103,18 @@ public class RailsConstructionKit extends Collectible {
 							preview = null;
 						}
 					}
-				)
-				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+				);
+			box.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
+	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return true;
 	}
 }

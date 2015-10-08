@@ -3,12 +3,12 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 
 /**
  * The inventory is a special limited collectible container. It also moves the
@@ -239,8 +239,8 @@ public class Inventory extends CollectibleContainer {
 	public void action(CustomGameView view, AbstractEntity actor) {
 		//Get the first item and activate it. Then put it back.
 		Collectible item = retrieveFrontItem();
-		if (item != null) {
-			item.action(view, actor);
+		if (item != null && item instanceof Interactable) {
+			((Interactable) item).interact(view, actor);
 			addFront(item);
 		}
 	}

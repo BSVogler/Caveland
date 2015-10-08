@@ -372,7 +372,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 			
 			//remove not interactable objects
-			nearbyInteractable.removeIf((Interactable t) -> !t.interactable());
+			nearbyInteractable.removeIf((Interactable t) -> !t.interactable() || t.interactableOnlyWithPickup());
 
 			//sort to find nearest object
 			if (!nearbyInteractable.isEmpty()) {

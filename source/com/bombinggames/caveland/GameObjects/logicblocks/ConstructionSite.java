@@ -270,5 +270,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	public boolean interactable() {
 		return true;
 	}
+
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 	
 }

@@ -118,4 +118,10 @@ public interface Interactable {
 	 * @return 
 	 */
 	public abstract boolean interactable();
+	
+	/**
+	 * only interactable if you pick it up.
+	 * @return true if only usable when in inventory
+	 */
+	public abstract boolean interactableOnlyWithPickup();
 }

@@ -158,4 +158,9 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	@Override
 	public void dispose() {
 	}
+	
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 }

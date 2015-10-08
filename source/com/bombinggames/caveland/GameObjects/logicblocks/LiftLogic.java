@@ -47,4 +47,8 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void dispose() {
 	}
 	
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
 }

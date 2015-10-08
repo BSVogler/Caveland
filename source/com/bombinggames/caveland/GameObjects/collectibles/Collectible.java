@@ -1,10 +1,8 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.CLMovableEntity;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import java.io.IOException;
@@ -16,8 +14,8 @@ import java.io.Serializable;
  * @author Benedikt Vogler
  */
 public class Collectible extends CLMovableEntity implements Serializable {
-	private static final long serialVersionUID = 2L;
 
+	private static final long serialVersionUID = 2L;
 
 	private boolean preventPickup;
 	private transient CollectibleType def;
@@ -28,8 +26,8 @@ public class Collectible extends CLMovableEntity implements Serializable {
 	private transient float timeParentBlocked = 1500;
 
 	/**
-	 * @see #create(com.bombinggames.caveland.GameObjects.collectibles.CollectibleType)
-	 * @param def
+	 * Creates a new collectible.
+	 * @param def the definition.
 	 */
 	protected Collectible(CollectibleType def) {
 		super(def.getId(), 0);
@@ -43,7 +41,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		for (int i = 0; i < animationsteps.length; i++) {
 			animationsteps[i] = 140;//time in ms for each step
 		}
-		
+
 		setAnimation(
 			new EntityAnimation(
 				animationsteps,
@@ -78,21 +76,21 @@ public class Collectible extends CLMovableEntity implements Serializable {
 			timeParentBlocked -= dt;
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void allowPickup() {
 		preventPickup = false;
 	}
-		
+
 	/**
-	 * 
+	 *
 	 */
 	public void preventPickup() {
 		preventPickup = true;
 	}
-		
+
 	/**
 	 * prevents being picked up (msut be checked with {@link #canBePickedByParent(AbstractGameObject)
 	 * }.
@@ -136,21 +134,11 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		return def;
 	}
 
-	/**
-	 * Defines the action if you use the collectible.
-	 * 
-	 * @param view
-	 * @param actor
-	 */
-	public void action(CustomGameView view, AbstractEntity actor) {
-		
-	}
-
 	@Override
 	public String getName() {
 		return def.name();
 	}
-	
+
 	/**
 	 * overrides deserialisation
 	 *
@@ -164,7 +152,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		def = CollectibleType.fromValue(defString);
 		//based on http://www.vineetmanohar.com/2010/01/3-ways-to-serialize-java-enums/
 	}
-	
+
 	private void writeObject(java.io.ObjectOutputStream oos) throws IOException {
 		// default serialization 
 		oos.defaultWriteObject();

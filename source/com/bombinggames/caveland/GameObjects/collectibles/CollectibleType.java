@@ -32,7 +32,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 /**
- * a enum which lists the types of collectibles
+ * a enum which lists the types of collectibles. Saves information about the sprites and connets the enum with the classes.
  */
 public enum CollectibleType {
 
@@ -49,7 +49,7 @@ public enum CollectibleType {
 	Iron((byte) 55, (byte) 4),
 	Powercable((byte) 57, (byte) 2);
 
-	static CollectibleType fromValue(String value) {
+	public static CollectibleType fromValue(String value) {
 		if (value != null) {
 			for (CollectibleType type : CollectibleType.values()) {
 				if (type.name().equals(value)) {
@@ -72,7 +72,7 @@ public enum CollectibleType {
 		return id;
 	}
 	
-	int getAnimationSteps() {
+	public int getAnimationSteps() {
 		return steps;
 	}
 	
@@ -83,22 +83,27 @@ public enum CollectibleType {
 	 */
 	public Collectible createInstance() {
 		Collectible obj = null;
-		if (null != this) switch (this) {
-			case Explosives:
-				obj = new TFlint();
-				break;
-			case Toolkit:
-				obj = new Bausatz();
-				break;
-			case Torch:
-				obj = new TorchCollectible();
-				break;
-			case Rails:
-				obj = new RailsConstructionKit();
-				break;
-			default:
-				obj = new Collectible(this);
-				break;
+		if (null != this) {
+			switch (this) {
+				case Explosives:
+					obj = new TFlint();
+					break;
+				case Toolkit:
+					obj = new Bausatz();
+					break;
+				case Torch:
+					obj = new TorchCollectible();
+					break;
+				case Rails:
+					obj = new InstantConstructionKit(this);
+					break;
+				case Powercable:
+					obj = new InstantConstructionKit(this);
+					break;
+				default:
+					obj = new Collectible(this);
+					break;
+			}
 		}
 		return obj;
 	}

@@ -7,6 +7,7 @@ import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -19,7 +20,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class Bausatz extends Collectible {
+public class Bausatz extends Collectible implements Interactable {
 	private static final long serialVersionUID = 1L;
 	private transient EntityBlock preview;
 
@@ -61,7 +62,7 @@ public class Bausatz extends Collectible {
 	}
 
 	@Override
-	public void action(CustomGameView view, AbstractEntity actor) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
@@ -97,4 +98,16 @@ public class Bausatz extends Collectible {
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
+
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return true;
+	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+	
+	
 }

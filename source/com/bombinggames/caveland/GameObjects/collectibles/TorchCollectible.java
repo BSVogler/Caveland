@@ -32,6 +32,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 
@@ -39,7 +40,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
  *
  * @author Benedikt Vogler
  */
-public class TorchCollectible extends Collectible {
+public class TorchCollectible extends Collectible implements Interactable {
 	private static final long serialVersionUID = 1L;
 
 	public TorchCollectible() {
@@ -51,7 +52,7 @@ public class TorchCollectible extends Collectible {
 	}
 
 	@Override
-	public void action(CustomGameView view, AbstractEntity actor) {
+	public void interact(CustomGameView view, AbstractEntity actor) {
 		actor.getPosition().toCoord().setBlock(Block.getInstance((byte) 13));
 		dispose();//dispose tool kit
 	}
@@ -59,6 +60,16 @@ public class TorchCollectible extends Collectible {
 	@Override
 	public Collectible clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+	
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return true;
+	}
+
+	@Override
+	public boolean interactable() {
+		return true;
 	}
 	
 }

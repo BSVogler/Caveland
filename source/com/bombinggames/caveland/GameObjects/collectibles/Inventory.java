@@ -177,7 +177,6 @@ public class Inventory extends CollectibleContainer {
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
 
-		float inventoryPadding = camera.getWidthInScreenSpc() * 0.08f;
 		float left = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale() + bgSprite.getWidth() / 2;
 		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
 

@@ -191,9 +191,15 @@ public class Inventory extends CollectibleContainer {
 		bgSprite.setX(leftbgSprite + 140);
 		bgSprite.draw(view.getSpriteBatch());
 
-		MovableEntity ent = get(0);
+		Collectible ent = get(0);
 		if (ent != null) {
 			ent.render(view, (int) left, y);
+			if (ent instanceof Interactable) {
+				Sprite button = new Sprite(AbstractGameObject.getSprite('i', 23, Interactable.XUp));
+				button.setPosition(left-90, y-30);
+				button.setScale(0.4f);
+				button.draw(view.getSpriteBatch());
+			}
 		}
 		ent = get(1);
 		if (ent != null) {

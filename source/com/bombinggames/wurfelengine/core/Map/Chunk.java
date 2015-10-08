@@ -730,20 +730,20 @@ public class Chunk {
 	 * @param block
 	 */
 	public void setBlock(Coordinate coord, Block block) {
-		//get corresponding logic and update
-		if (block != null) {
-			//create new instance
-			AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
-			if (logic != null)
-				logicBlocks.add(logic);
-		}
-
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
 		int z = coord.getZ();
 		if (z >= 0){
 			data[xIndex][yIndex][z] = block;
 			modified = true;
+		}
+		
+		//get corresponding logic and update
+		if (block != null) {
+			//create new instance
+			AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
+			if (logic != null)
+				logicBlocks.add(logic);
 		}
 	}
 

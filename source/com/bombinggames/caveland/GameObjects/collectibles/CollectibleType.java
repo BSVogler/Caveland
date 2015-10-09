@@ -47,7 +47,7 @@ public enum CollectibleType {
 	Toolkit((byte) 53, (byte) 8),
 	Torch((byte) 54, (byte) 2),
 	Iron((byte) 55, (byte) 4),
-	Powercable((byte) 57, (byte) 2);
+	Powercable((byte) 57, (byte) 1);
 
 	public static CollectibleType fromValue(String value) {
 		if (value != null) {
@@ -68,10 +68,18 @@ public enum CollectibleType {
 		this.steps = steps;
 	}
 
+	/**
+	 * get the sprite id of this type
+	 * @return 
+	 */
 	public byte getId() {
 		return id;
 	}
 	
+	/**
+	 * the amount of sprites
+	 * @return 
+	 */
 	public int getAnimationSteps() {
 		return steps;
 	}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -155,6 +156,7 @@ public class Vanya extends MovableEntity implements Interactable {
 			}
 			//register and open the chat
 			if (!"".equals(text)) {
+				WE.SOUND.play("huhu", getPosition());
 				currentChat = new ActionBox(getName(), ActionBox.BoxModes.SIMPLE, text);
 				if (chatCounter > 0) {
 					currentChat.setConfirmAction((int result, AbstractEntity actor1) -> {

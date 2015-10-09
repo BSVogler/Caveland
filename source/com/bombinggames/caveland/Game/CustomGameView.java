@@ -87,6 +87,7 @@ public class CustomGameView extends GameView{
 		WE.SOUND.register("treehit", "com/bombinggames/caveland/sounds/treehit.wav");
 		WE.SOUND.register("metallic", "com/bombinggames/caveland/sounds/metallic.wav");
 		WE.SOUND.register("construct", "com/bombinggames/caveland/sounds/construct.wav");
+		WE.SOUND.register("huhu", "com/bombinggames/caveland/sounds/huhu.wav");
 		
 		if (coop >- 1){//it is a coop game
 			Camera camera0;

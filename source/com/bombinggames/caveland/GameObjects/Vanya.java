@@ -26,6 +26,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	private Coordinate movementGoal;
 	private int tutorialStep = 0;
 	private int completedTutorialStep = 0;
+	private float distanceWaypoint;
 
 	/**
 	 *
@@ -68,9 +69,23 @@ public class Vanya extends MovableEntity implements Interactable {
 
 				d.x = movementGoal.toPoint().getX() - getPosition().getX();
 				d.y = movementGoal.toPoint().getY() - getPosition().getY();
-				d.nor();//direction only
-				d.scl(1.3f);
-				d.z = getMovement().z;
+				
+				if (isFloating()) {
+					if (getPosition().distanceToHorizontal(movementGoal) > distanceWaypoint/2) {
+						//up
+						d.nor();//direction only
+						d.z = 1;
+					} else {
+						//down
+						d.z = movementGoal.toPoint().getZ() - getPosition().getZ();
+					}
+					d.nor();//direction only
+					d.scl(2f);
+				} else {
+					d.nor();//direction only
+					d.scl(1.3f);
+					d.z = getMovement().z;//keep vertical momentum
+				}
 
 				setMovement(d);// update the movement vector
 			} else {
@@ -142,16 +157,22 @@ public class Vanya extends MovableEntity implements Interactable {
 					text = "You can use your jetpack if you press the jump button a second time in air. Press it at the peak of your jump to jump higher.";
 					completedTutorialStep = 2;
 					chatCounter++;
+					flyTo(new Coordinate(2, 13, 7));
 					break;
 					
 				case 5:
-					if (completedTutorialStep > 2) {
+					//if (completedTutorialStep > 2) {
 						chatCounter++;
-					} else {
-						chatCounter = 4;
-					}
+					//} else {
+					//	chatCounter = 4;
+					//}
 					text="";
-					goTo(new Coordinate(2, 13, 7));
+					break;
+					
+				case 6:
+					text="You must go through the caves. Go though that hole there. I will see you at the other side.";
+					flyTo(new Coordinate(17, 24, 4));
+					chatCounter=5;
 					break;
 			}
 			//register and open the chat
@@ -175,7 +196,7 @@ public class Vanya extends MovableEntity implements Interactable {
 
 	@Override
 	public boolean interactable() {
-		return true;
+		return !isMovingToWaypoint();
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -192,7 +213,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	 *
 	 * @return
 	 */
-	public boolean isGoing() {
+	public boolean isMovingToWaypoint() {
 		return movementGoal != null;
 	}
 
@@ -201,12 +222,18 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @param coord
 	 */
 	public void goTo(Coordinate coord) {
-		movementGoal = coord;
+		if (getPosition().distanceToHorizontal(coord) > Block.GAME_EDGELENGTH / 4) {
+			movementGoal = coord;
+			distanceWaypoint = getPosition().distanceToHorizontal(coord);
+		}
 	}
 	
 	public void flyTo(Coordinate coord) {
-		setFloating(true);
-		movementGoal = coord;
+		if (getPosition().distanceToHorizontal(coord) > Block.GAME_EDGELENGTH / 4) {
+			setFloating(true);
+			movementGoal = coord;
+			distanceWaypoint = getPosition().distanceToHorizontal(coord);
+		}
 	}
 
 	public int getCompletedTutorialStep() {

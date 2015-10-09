@@ -169,6 +169,7 @@ public class CraftingBox extends ActionBox {
 	
 	/**
 	 * removes the items from inventory
+	 * @param recipe
 	 */
 	public void craft(Recipe recipe){
 		if (knownRecipes != null){

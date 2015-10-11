@@ -153,10 +153,6 @@ public class CustomGameView extends GameView{
 		}
 		
 		WE.SOUND.setMusic("com/bombinggames/caveland/music/overworld.mp3");
-        
-//        controller.setMinimap(
-//            new Minimap(controller, getCameras().get(0), Gdx.graphics.getWidth() - 400,Gdx.graphics.getHeight()-10)
-//        );
     }
 
 	/**
@@ -188,7 +184,7 @@ public class CustomGameView extends GameView{
 	
 	@Override
     public void onEnter() {
-        WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard
+        WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
 		
 		//is there a controller?
 		if (Controllers.getControllers().size > 0) {
@@ -215,10 +211,12 @@ public class CustomGameView extends GameView{
 	@Override
 	public void exit() {
 		super.exit();
-		if (controllerListenerA !=null)
+		if (controllerListenerA != null) {
 			Controllers.getControllers().get(0).removeListener(controllerListenerA);
-		if (controllerListenerB !=null)
+		}
+		if (controllerListenerB != null) {
 			Controllers.getControllers().get(1).removeListener(controllerListenerB);
+		}
 	}
 	
     @Override

@@ -6,6 +6,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
@@ -24,6 +25,7 @@ public class PointLightSource extends AbstractEntity {
 	private final Color color;
 	private float brightness;
 	private boolean enabled = true;
+	private Coordinate lastCoord;
 
 	/**
 	 *
@@ -44,13 +46,56 @@ public class PointLightSource extends AbstractEntity {
 		else
 			this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
 	}
+	
+	private void clearCache(){
+		for (float[][][] x : lightcache) {
+			for (float[][] y : x) {
+				for (float[] z : y) {
+					z[0]=0;
+					z[1]=0;
+					z[2]=0;
+				}
+			}
+		}
+	}
 
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
+		if (lastCoord==null)
+			lastCoord = point.toCoord();
 		lightNearbyBlocks(0);
 		return this;
 	}
+
+	@Override
+	public void setPosition(Point pos) {
+		super.setPosition(pos);
+		if (lastCoord==null)
+			lastCoord = pos.toCoord();
+		
+		//if moved
+		if (isSpawned() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+			clearCache();
+			lastCoord = pos.toCoord();
+			lightNearbyBlocks(0);
+		}
+	}
+
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		super.setPosition(pos);
+		if (lastCoord==null)
+			lastCoord = pos.toCoord();
+		
+		//if moved
+		if (isSpawned() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+			clearCache();
+			lastCoord = pos.toCoord();
+			lightNearbyBlocks(0);
+		}
+	}
+	
 
 	/**
 	 * fills the cache
@@ -144,6 +189,7 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		
 		if (enabled) {
 			lightNearbyBlocks(dt);
 

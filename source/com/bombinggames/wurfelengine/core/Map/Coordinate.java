@@ -67,10 +67,6 @@ public class Coordinate extends AbstractPosition {
 	 * The z coordinate. Position from ground.
 	 */
 	private int z;
-	/**
-	 * gets calculated every time the coordinate is written to.
-	 */
-	private transient Point cachedPoint;
 
 	/**
 	 * Creates a coordiante refering to the given position on the map.

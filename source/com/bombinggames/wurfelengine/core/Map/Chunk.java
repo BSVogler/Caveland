@@ -687,7 +687,7 @@ public class Chunk {
 	 * @return can be null
 	 */
 	public Block getBlock(int x, int y, int z) {
-		if (z > Chunk.blocksZ) return null;
+		if (z >= Chunk.blocksZ) return null;
 		int xIndex = x-topleft.getX();
 		int yIndex = y-topleft.getY();
 		return data[xIndex][yIndex][z];

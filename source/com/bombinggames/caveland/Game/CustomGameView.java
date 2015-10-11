@@ -189,18 +189,12 @@ public class CustomGameView extends GameView{
 		//is there a controller?
 		if (Controllers.getControllers().size > 0) {
 			//if there is second controller use it for second player
-			int playerId = 0;
-			if (coop > 0) {
-				playerId = 1;
-			}
-			controllerListenerA = new XboxListener(this, getPlayer(playerId), playerId);
+			controllerListenerA = new XboxListener(this, getPlayer(0), 0);
 			Controllers.getControllers().get(0).addListener(controllerListenerA);
-			if (coop > 0) {
-				//check if there is a second controller
-				if (Controllers.getControllers().size > 1) {
-					controllerListenerB = new XboxListener(this, getPlayer(1), 1);
-					Controllers.getControllers().get(1).addListener(controllerListenerB);
-				}
+			//check if there is a second controller
+			if (coop > 0 && Controllers.getControllers().size > 1) {
+				controllerListenerB = new XboxListener(this, getPlayer(1), 1);
+				Controllers.getControllers().get(1).addListener(controllerListenerB);
 			}
 		}
 		//hide cursor
@@ -298,7 +292,7 @@ public class CustomGameView extends GameView{
 		
 		if (controllerListenerB != null) {//second controller used
 			if (controllerListenerB.speed > 0){
-				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.CVARS.getValueF("playerWalkingSpeed")*controllerListenerB.speed)
+				getPlayer(controllerListenerB.player.getPlayerNumber()-1).setSpeedHorizontal((WE.CVARS.getValueF("playerWalkingSpeed")*controllerListenerB.speed)
 				);
 			}
 		}

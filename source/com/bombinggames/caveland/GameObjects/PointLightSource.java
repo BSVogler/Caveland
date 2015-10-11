@@ -2,6 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
@@ -148,11 +149,14 @@ public class PointLightSource extends AbstractEntity {
 
 			//apply cache
 			Coordinate center = getPosition().toCoord();
+			int xCenter = center.getX();
+			int yCenter = center.getY();
+			int zCenter = center.getZ();
 			for (int x = -radius; x < radius; x++) {
 				for (int y = -radius * 2; y < radius * 2; y++) {
 					for (int z = -radius; z < radius; z++) {
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
-						Block block = center.cpy().addVector(x, y, z).getBlock();
+						Block block = Controller.getMap().getBlock(xCenter+x, yCenter+y, zCenter+z);
 						if (block != null) {
 							block.addLightlevel(blocklight[0] * color.r, Side.LEFT, 0);
 							block.addLightlevel(blocklight[0] * color.g, Side.LEFT, 1);

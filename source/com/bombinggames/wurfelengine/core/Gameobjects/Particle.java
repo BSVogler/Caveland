@@ -46,7 +46,8 @@ public class Particle extends MovableEntity {
 		this.maxtime = maxtime;
 		timeTillDeath = maxtime;
 		setSaveToDisk(false);
-		setScaling(-1);
+		if (type.isGrowing())
+			setScaling(-1);
 		setFloating(true);
 		setName("Particle");
 	}
@@ -100,7 +101,9 @@ public class Particle extends MovableEntity {
 //			getPosition().addVector(step.scl(-1));//reverse step
 
 		setRotation(getRotation() - dt / 10f);
-		setScaling(getScaling() + dt / 300f);
+		if (type.isGrowing()){
+			setScaling(getScaling() + dt / 300f);
+		}
 		if (type.fade()) {
 			getColor().a = timeTillDeath / maxtime;
 		}

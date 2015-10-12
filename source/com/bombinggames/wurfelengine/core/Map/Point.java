@@ -651,7 +651,7 @@ public class Point extends AbstractPosition {
 	
 	@Override
 	public String toString() {
-		return "{"+x +", "+ y +", " +z+"}";
+		return "["+x +", "+ y +", " +z+"]";
 	}
 
 	@Override

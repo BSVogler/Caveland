@@ -213,7 +213,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      * Updates the character. Applies gravitation.	
      * @param dt time since last update in ms
      */
-    @Override
+	@Override
     public void update(float dt) {
 		super.update(dt);
         
@@ -574,7 +574,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Sets speed and direction.
-	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
 	 */
 	public void setMovement(Vector3 movement){
 		this.movement = movement;
@@ -583,7 +583,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
 	 */
 	public void addMovement(Vector2 movement){
 		this.movement.add(movement.x, movement.y, 0);
@@ -593,7 +593,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
 	 */
 	public void addMovement(Vector3 movement){
 		this.movement.add(movement);

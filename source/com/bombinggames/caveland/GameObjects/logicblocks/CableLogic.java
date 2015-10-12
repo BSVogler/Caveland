@@ -20,8 +20,8 @@ public class CableLogic extends AbstractBlockLogicExtension {
 	 */
 	public CableLogic(Block block, Coordinate coord) {
 		super(block, coord);
-		if (coord.getBlock().getValue() % 2 == 1)
-			coord.getBlock().setValue((byte) (coord.getBlock().getValue() - 1));
+		if (block.getValue() % 2 == 1)
+			block.setValue((byte) (block.getValue() - 1));
 	}
 
 	@Override

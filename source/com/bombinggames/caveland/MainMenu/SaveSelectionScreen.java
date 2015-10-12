@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -150,7 +151,7 @@ public class SaveSelectionScreen extends WEScreen {
 		
 		//new empty map button
 		TextButton newEmptyMap = new TextButton("New empty map", skin);
-		newEmptyMap.setBounds(stage.getWidth()*0.8f, stage.getHeight()*0.2f,200,100);
+		newEmptyMap.setBounds(stage.getWidth()*0.8f, stage.getHeight()*0.2f,200,50);
 		newEmptyMap.addListener(new ChangeListener() {
 
 			@Override
@@ -159,6 +160,10 @@ public class SaveSelectionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(newEmptyMap);
+		
+		Image newEmptyMapImage = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/grass.jpg")));
+		newEmptyMapImage.setBounds(newEmptyMap.getX(), newEmptyMap.getY()+newEmptyMap.getHeight(), 200, 97);
+		stage.addActor(newEmptyMapImage);
 		
 		//back button
 		TextButton backButton = new TextButton("Back…", skin);

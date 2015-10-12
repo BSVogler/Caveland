@@ -21,10 +21,17 @@ public class Particle extends MovableEntity {
 	private Color startingColor;
 	private ParticleType type = ParticleType.REGULAR;
 
+	/**
+	 * With TTL 2000. 
+	 */
 	public Particle() {
 		this((byte) 22, 2000f);
 	}
 
+	/**
+	 * With TTL 2000
+	 * @param id 
+	 */
 	public Particle(byte id) {
 		this(id, 2000f);
 	}

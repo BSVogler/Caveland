@@ -1,6 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
@@ -16,6 +17,7 @@ public class Portal extends AbstractEntity  {
 	 * indicates whether the portal is open or not
 	 */
 	private transient boolean active = true;
+	private transient AimBand particleBand;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -41,10 +43,15 @@ public class Portal extends AbstractEntity  {
 	@Override
 	public void update(float dt) {
 		if (isSpawned() && active){
-			getPosition().toCoord().getEntitiesInside()
-			.forEach( (AbstractEntity e) -> {
-				 if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10 && e != this)
-					e.setPosition(target.cpy());
+			//move things in the portal
+			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
+				.forEach((AbstractEntity e) -> {
+					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10
+						&& e != this
+						&& ((MovableEntity) e).isColiding()
+					) {
+						e.setPosition(target.cpy());
+					}
 				}
 			);
 		}

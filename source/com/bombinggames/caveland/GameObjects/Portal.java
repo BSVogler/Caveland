@@ -43,6 +43,10 @@ public class Portal extends AbstractEntity  {
 	@Override
 	public void update(float dt) {
 		if (isSpawned() && active){
+			if (particleBand != null){
+				particleBand.update();
+			}
+			
 			//move things in the portal
 			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
 				.forEach((AbstractEntity e) -> {

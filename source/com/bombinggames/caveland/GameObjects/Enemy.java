@@ -39,6 +39,7 @@ public class Enemy extends MovableEntity{
 	 * in m/s
 	 */
 	private float movementSpeed = 2;
+	private AimBand particleBand;
     
 	/**
 	 *
@@ -119,6 +120,10 @@ public class Enemy extends MovableEntity{
 				setValue((byte) (getValue()+48));
 			} else {
 				setValue((byte) (getValue()+56));
+			}
+			
+			if (particleBand != null){
+				particleBand.update();
 			}
 		}
 
@@ -229,6 +234,8 @@ public class Enemy extends MovableEntity{
 	
 	@Override
 	public void onSelectInEditor(){
-		particleBand = new AimBand(this, target);
+		if (target != null) {
+			particleBand = new AimBand(this, target);
+		}
 	}
 }

@@ -27,6 +27,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	private int tutorialStep = 0;
 	private int completedTutorialStep = 0;
 	private float distanceWaypoint;
+	private AimBand particleBand;
 
 	/**
 	 *
@@ -100,6 +101,10 @@ public class Vanya extends MovableEntity implements Interactable {
 					setSpeedHorizontal(0);
 					setOrientation(new Vector2(vec3.x, vec3.y).nor());
 				}
+			}
+			
+			if (particleBand != null){
+				particleBand.update();
 			}
 
 			//check if players steped on next part of the tutorial

@@ -317,6 +317,7 @@ public class Controller implements GameManager, MapObserver {
 	
 	public void addToSelection(AbstractEntity ent) {
 		selectedEntities.add(ent);
+		ent.onSelectInEditor();
 	}
 
 

@@ -495,4 +495,11 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			}
 		}
 	}
+
+	/**
+	 *
+	 */
+	public void onSelectInEditor(){
+	
+	};
 }

@@ -226,4 +226,9 @@ public class Enemy extends MovableEntity{
 			attackInProgess = ATTACKTIME;//1500ms until the attack is done
 		}
 	}
+	
+	@Override
+	public void onSelectInEditor(){
+		particleBand = new AimBand(this, target);
+	}
 }

@@ -73,5 +73,9 @@ public class Portal extends AbstractEntity  {
 		return active;
 	}
 	
-
+	@Override
+	public void onSelectInEditor(){
+		particleBand = new AimBand(this, target);
+	}
+	
 }

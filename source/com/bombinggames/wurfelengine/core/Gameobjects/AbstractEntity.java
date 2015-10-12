@@ -502,4 +502,11 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	public void onSelectInEditor(){
 	
 	};
+	
+	/**
+	 *Called when selection is removed
+	 */
+	public void onUnSelectInEditor(){
+	
+	};
 }

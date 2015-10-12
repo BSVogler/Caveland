@@ -312,6 +312,9 @@ public class Controller implements GameManager, MapObserver {
 	}
 	
 	public void clearSelection() {
+		for (AbstractEntity ent : selectedEntities) {
+			ent.onUnSelectInEditor();
+		}
 		selectedEntities.clear();
 	}
 	

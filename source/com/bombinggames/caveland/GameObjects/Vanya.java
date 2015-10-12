@@ -256,4 +256,9 @@ public class Vanya extends MovableEntity implements Interactable {
 			particleBand = new AimBand(this, movementGoal);
 	}
 	
+	@Override
+	public void onUnSelectInEditor(){
+		if (particleBand != null)
+			particleBand = null;
+	}
 }

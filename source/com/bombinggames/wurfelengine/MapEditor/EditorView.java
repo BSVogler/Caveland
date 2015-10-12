@@ -544,7 +544,7 @@ public class EditorView extends GameView {
 				}
 			}
 			
-			//if entity udner mosue is selected
+			//if entity under mosue is selected
 			if (entityUnderMouse!=null && controller.getSelectedEntities().contains(entityUnderMouse))
 				WE.getEngineView().setCursor(2);
 			else WE.getEngineView().setCursor(0);

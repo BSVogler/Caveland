@@ -177,7 +177,18 @@ public class Vanya extends MovableEntity implements Interactable {
 				case 6:
 					text="You must go through the caves. Go though that hole there. I will see you at the other side.";
 					flyTo(new Coordinate(17, 24, 4));
-					chatCounter=5;
+					chatCounter=7;
+					break;
+					case 7:
+						chatCounter++;
+					text="";
+					break;
+				case 8:
+					text="At the end of the tracks there is a cable missing. You must repair it in order to continue. Collect one sulfur and one coal to craft dynamite.";
+					chatCounter++;
+					break;
+				case 9:
+					text="Once you have the dynamite you can use it to obtain iron ore. Put the iron ore and one coal block in the oven to get iron. With the iron you can craft the cable. It sounds more complicated then it is.";
 					break;
 			}
 			//register and open the chat

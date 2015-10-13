@@ -361,6 +361,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 *
 	 * @return
 	 */
+	@Override
 	public boolean isIndestructible() {
 		return indestructible;
 	}
@@ -389,15 +390,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public void damage(byte value) {
 		if (!indestructible) {
-			if (getHealth() >0){
-				if (damageSounds != null && soundTimeLimit<=0) {
+			if (getHealth() > 0) {
+				if (damageSounds != null && soundTimeLimit <= 0) {
 					//play random sound
-					WE.SOUND.play(damageSounds[(int) (Math.random()*(damageSounds.length-1))], getPosition());
+					WE.SOUND.play(damageSounds[(int) (Math.random() * (damageSounds.length - 1))], getPosition());
 					soundTimeLimit = 100;
 				}
-				setHealth((byte) (getHealth()-value));
-			} else
+				setHealth((byte) (getHealth() - value));
+			} else {
 				setHealth((byte) 0);
+			}
 		}
     }
 	
@@ -475,8 +477,9 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 	
 	/**
-	 * clamps to [0..100]
+	 * clamps to [0..100]. You may prefer damage and heal. Ignores invincibility.
 	 * @param health 
+	 * @see #damage(byte) 
 	 */
 	public void setHealth(float health) {
 		if (health > 100) health=  100;

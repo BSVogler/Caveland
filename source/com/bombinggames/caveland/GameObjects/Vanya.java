@@ -123,6 +123,8 @@ public class Vanya extends MovableEntity implements Interactable {
 				flyTo(new Coordinate(2, 13, 7));
 			if(completedTutorialStep == 3)
 				flyTo(new Coordinate(17, 24, 4));
+			if(completedTutorialStep == 3)
+				flyTo(new Coordinate(25, 20, 7));
 		}
 		
 	}
@@ -134,11 +136,16 @@ public class Vanya extends MovableEntity implements Interactable {
 
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
+		nextChat(view, actor, true);
+	}
+	
+	private void nextChat(CustomGameView view, AbstractEntity actor, boolean confirm){
 		if (actor instanceof Ejira) {
 			if (currentChat != null) {
 				currentChat.remove();
 			}
 			String text = "";
+			boolean choice = false;
 			switch (chatCounter) {
 				case 0:
 					text = "Oh hello! Are you alright? I saw your spaceship crashing. But you look good. \n"
@@ -194,16 +201,38 @@ public class Vanya extends MovableEntity implements Interactable {
 					chatCounter++;
 					break;
 				case 9:
-					text="Once you have the dynamite you can use it to obtain iron ore. Put the iron ore and one coal block in the oven to get iron. With the iron you can craft the cable. It sounds more complicated then it is.";
+					text="Once you have the dynamite you can use it to obtain iron ore. Put the iron ore and one coal block in the oven to get iron. With the iron you can craft a minecart.";
+					chatCounter++;
+					break;
+				case 10:
+					text="Don't destroy the track or else you must find another way to exit.";
+					chatCounter++;
+					break;
+				case 11:
+					text="";
+					chatCounter++;
+					break;
+				case 12:
+					text="Do you want me to wait at the other side?";
+					choice = true;
+					chatCounter++;
+					break;
+				case 13:
+					text = "";
+					if (confirm)
+						completedTutorialStep = 4;
 					break;
 			}
 			//register and open the chat
 			if (!"".equals(text)) {
 				WE.SOUND.play("huhu", getPosition());
-				currentChat = new ActionBox(getName(), ActionBox.BoxModes.SIMPLE, text);
+				currentChat = new ActionBox(getName(), choice ? ActionBox.BoxModes.BOOLEAN : ActionBox.BoxModes.SIMPLE, text);
 				if (chatCounter > 0) {
 					currentChat.setConfirmAction((int result, AbstractEntity actor1) -> {
-						interact(view, actor);
+						nextChat(view, actor, true);
+					});
+					currentChat.setCancelAction((int result, AbstractEntity actor1) -> {
+						nextChat(view, actor, false);
 					});
 				}
 				currentChat.register(view, ((Ejira) actor).getPlayerNumber(), actor);

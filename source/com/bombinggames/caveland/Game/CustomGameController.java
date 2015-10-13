@@ -119,6 +119,18 @@ public class CustomGameController extends Controller {
 		){
 			tutorialVanya.goTo(introSpaceship.getPosition().toCoord().addVector(-1, 3, 0));
 		}
+		
+		if (getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER) {
+			if (tutorialVanya != null) {
+				tutorialVanya.setTutorialStep(3);
+			}
+		}
+		
+		if (player2!=null && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER){
+			if (tutorialVanya != null) {
+				tutorialVanya.setTutorialStep(3);
+			}
+		}
 	}
 
 	/**

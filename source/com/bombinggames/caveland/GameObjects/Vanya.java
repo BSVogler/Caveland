@@ -115,8 +115,15 @@ public class Vanya extends MovableEntity implements Interactable {
 //				}
 //				tutorialStep = 1;
 //			}
-		}
 
+			if(completedTutorialStep == 1)
+				goTo(new Coordinate(-2, 10, 6));
+			if(completedTutorialStep == 2)
+				flyTo(new Coordinate(2, 13, 7));
+			if(completedTutorialStep == 3)
+				flyTo(new Coordinate(17, 24, 4));
+		}
+		
 	}
 
 	@Override
@@ -143,7 +150,6 @@ public class Vanya extends MovableEntity implements Interactable {
 					break;
 				case 2:
 					text = "I will explain you later. First let's go. It's dangerous here. Follow me.";
-					goTo(new Coordinate(-2, 10, 6));
 					chatCounter++;
 					completedTutorialStep = 1;
 					
@@ -162,7 +168,6 @@ public class Vanya extends MovableEntity implements Interactable {
 					text = "You can use your jetpack if you press the jump button a second time in air. Press it at the peak of your jump to jump higher.";
 					completedTutorialStep = 2;
 					chatCounter++;
-					flyTo(new Coordinate(2, 13, 7));
 					break;
 					
 				case 5:
@@ -176,11 +181,11 @@ public class Vanya extends MovableEntity implements Interactable {
 					
 				case 6:
 					text="You must go through the caves. Go though that hole there. I will see you at the other side.";
-					flyTo(new Coordinate(17, 24, 4));
+					completedTutorialStep = 3;
 					chatCounter=7;
 					break;
-					case 7:
-						chatCounter++;
+				case 7:
+					chatCounter++;
 					text="";
 					break;
 				case 8:
@@ -252,6 +257,10 @@ public class Vanya extends MovableEntity implements Interactable {
 		}
 	}
 
+	/**
+	 * the last toturial step which was completed
+	 * @return 
+	 */
 	public int getCompletedTutorialStep() {
 		return completedTutorialStep;
 	}
@@ -272,4 +281,14 @@ public class Vanya extends MovableEntity implements Interactable {
 		if (particleBand != null)
 			particleBand = null;
 	}
+
+	/**
+	 * Can only increase
+	 * @param tutorialStep	 
+	*/
+	public void setTutorialStep(int tutorialStep) {
+		if (tutorialStep > this.tutorialStep)
+			this.tutorialStep = tutorialStep;
+	}
+	
 }

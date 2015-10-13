@@ -46,7 +46,7 @@ public class CustomLightEngine extends LightEngine {
 
 	public CustomLightEngine() {
 		super();
-		customSun = new GlobalLightSource(40, 40, Color.WHITE.cpy(), new Color(0, 0.5f, 0.5f, 1), 90);
+		customSun = new GlobalLightSource(40, 40, new Color(0.1f, 0.3f, 0.3f, 1), new Color(0.1f, 0.4f, 0.4f, 1), 90);
 		customSun.setFixedPosition(true);
 		//invisible moon
 		customMoon = new GlobalLightSource(40+180, 40+180, Color.BLACK.cpy(), Color.BLACK.cpy(), 90);

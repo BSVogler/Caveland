@@ -25,7 +25,6 @@ public class Vanya extends MovableEntity implements Interactable {
 	private transient int chatCounter;
 	private transient ActionBox currentChat;
 	private Coordinate movementGoal;
-	private int tutorialStep = 0;
 	private int completedTutorialStep = 0;
 	private float distanceWaypoint;
 	private AimBand particleBand;
@@ -289,8 +288,8 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @param tutorialStep	 
 	*/
 	public void setTutorialStep(int tutorialStep) {
-		if (tutorialStep > this.tutorialStep)
-			this.tutorialStep = tutorialStep;
+		if (tutorialStep > this.completedTutorialStep)
+			this.completedTutorialStep = tutorialStep;
 	}
 	
 }

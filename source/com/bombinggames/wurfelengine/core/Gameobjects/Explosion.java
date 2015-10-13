@@ -69,12 +69,12 @@ public class Explosion extends AbstractEntity {
 						
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list =
-							Controller.getMap().getEntitysOnCoord(coord,
+							Controller.getMap().getEntitysOnCoord(
+								coord,
 								MovableEntity.class
 							);
 						for (MovableEntity ent : list) {
-							if (!(ent instanceof PlayerWithWeapon))//don't damage player with weapons
-								ent.damage(damage);
+							ent.damage(damage);
 						}
 						
 						Particle dust = (Particle) new Particle(

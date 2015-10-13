@@ -8,6 +8,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -75,7 +76,8 @@ public class Vanya extends MovableEntity implements Interactable {
 					if (getPosition().distanceToHorizontal(movementGoal) > distanceWaypoint/2) {
 						//up
 						d.nor();//direction only
-						d.z = 1;
+						if (getPosition().toCoord().getZ() < Chunk.getBlocksZ()+2)
+							d.z = 1;
 					} else {
 						//down
 						d.z = movementGoal.toPoint().getZ() - getPosition().getZ();

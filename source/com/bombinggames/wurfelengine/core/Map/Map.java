@@ -211,6 +211,31 @@ public class Map implements Cloneable {
     }
 
 	/**
+	 *Updates mostly the entities.
+	 * @param dt
+	 */
+	public void update(float dt) {
+		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
+
+	//update every block on the map
+		for (Chunk chunk : data) {
+			chunk.update(dt);
+		}
+		//update every entity
+		//old style for loop because allows modification during loop
+		for (int i = 0; i < entityList.size(); i++) {
+			AbstractEntity entity = entityList.get(i);
+			if (!entity.isInMemoryArea()) {
+				entity.requestChunk();
+			}
+			entity.update(dt);
+		}
+
+		//remove not spawned objects from list
+		entityList.removeIf((AbstractEntity entity) -> !entity.isSpawned());
+	}
+	
+	/**
 	 * Called after the view update to catch changes caused by the view
 	 * @param dt
 	 */
@@ -767,32 +792,6 @@ public class Map implements Cloneable {
 		this.modified = true;
 	}
 
-
-		/**
-	 *Updates mostly the entities.
-	 * @param dt
-	 */
-	public void update(float dt) {
-		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
-
-	//update every block on the map
-		for (Chunk chunk : data) {
-			chunk.update(dt);
-		}
-		//update every entity
-		for (int i = 0; i < entityList.size(); i++) {//old style for loop because allows modification during loop
-			AbstractEntity entity = entityList.get(i);
-			if (entity.isInMemoryArea()) {//only update entities in memory
-				entity.update(dt);
-			} else {
-				entity.requestChunk();
-			}
-		}
-
-		//remove not spawned objects from list
-		entityList.removeIf((AbstractEntity entity) -> !entity.isSpawned()
-		);
-	}
 
 	/**
 	 * Returns a coordinate pointing to the absolute center of the map. Height

@@ -296,6 +296,16 @@ public class Coordinate extends AbstractPosition {
 		}
 		return found;
 	}
+	
+	/**
+	 * Checks wether the coordinate is in a cube spanning by both coordinates.
+	 * @param x1 lower one
+	 * @param x2 bigger one.
+	 * @return 
+	 */
+	public boolean isInCube(Coordinate x1, Coordinate x2){
+		return x >= x1.getX() && y >= x1.getY() && z >= x1.getZ() && x <= x2.getX() && y <= x2.getY() && z <= x2.getZ();
+	}
 
 	/**
 	 * Returns the field-id where the coordiantes are inside in relation to the

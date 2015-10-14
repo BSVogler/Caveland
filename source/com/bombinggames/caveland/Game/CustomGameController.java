@@ -3,6 +3,7 @@ package com.bombinggames.caveland.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.wurfelengine.WE;
@@ -117,20 +118,37 @@ public class CustomGameController extends Controller {
 			&& introSpaceship.isCrashed()
 			&& tutorialVanya.getCompletedTutorialStep()==0
 		){
-			tutorialVanya.goTo(introSpaceship.getPosition().toCoord().addVector(-1, 3, 0));
+			tutorialVanya.setTutorialStep(1);
 		}
 		
-		if (getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER) {
+		if (getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER
+			||
+			player2 != null && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER) {
 			if (tutorialVanya != null) {
-				tutorialVanya.setTutorialStep(3);
+				tutorialVanya.setTutorialStep(4);
 			}
 		}
 		
-		if (player2!=null && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER){
+		//jumped over cliff
+		if (
+			player1.getPosition().toCoord().isInCube(
+				new Coordinate(28, -4, 3),
+				new Coordinate(30, 7, 5)
+			)
+			||
+			(
+				player2 != null && player2.getPosition().toCoord().isInCube(
+					new Coordinate(28, -4, 3),
+					new Coordinate(30, 7, 5)
+				)
+			)
+			) {
 			if (tutorialVanya != null) {
-				tutorialVanya.setTutorialStep(3);
+				tutorialVanya.setTutorialStep(5);
 			}
+			new Enemy().spawn(new Coordinate(34, 7, 5).toPoint());
 		}
+			
 	}
 
 	/**

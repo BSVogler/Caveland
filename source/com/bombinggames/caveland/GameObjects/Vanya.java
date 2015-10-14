@@ -8,6 +8,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.IOException;
@@ -24,10 +25,11 @@ public class Vanya extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
 	private transient ActionBox currentChat;
-	private Coordinate movementGoal;
-	private int completedTutorialStep = 0;
-	private float distanceWaypoint;
+	private Waypoint nextWaypoint;
+	private int tutorialStep = 0;
+	private int completedTutorialStep =0;
 	private AimBand particleBand;
+	private final ArrayList<Waypoint> waypoints = new ArrayList<>(2);//should be a queque
 
 	/**
 	 *
@@ -64,38 +66,48 @@ public class Vanya extends MovableEntity implements Interactable {
 			}
 
 			//go to movement goal
-			if (movementGoal != null && getPosition().distanceToHorizontal(movementGoal) > Block.GAME_EDGELENGTH / 4) {
-				//movement logic
-				Vector3 d = new Vector3();
+			if (nextWaypoint != null) {
+				setFloating(nextWaypoint.isFly());
+				if (getPosition().distanceToHorizontal(nextWaypoint.getPos()) > Block.GAME_EDGELENGTH / 4) {
+					//movement logic
+					Vector3 d = new Vector3();
 
-				d.x = movementGoal.toPoint().getX() - getPosition().getX();
-				d.y = movementGoal.toPoint().getY() - getPosition().getY();
-				
-				if (isFloating()) {
-					if (getPosition().distanceToHorizontal(movementGoal) > distanceWaypoint/2) {
-						//up
+					d.x = nextWaypoint.getPos().toPoint().getX() - getPosition().getX();
+					d.y = nextWaypoint.getPos().toPoint().getY() - getPosition().getY();
+
+					if (isFloating()) {
+						if (getPosition().distanceToHorizontal(nextWaypoint.getPos()) > nextWaypoint.initialDistance/2) {
+							//up
+							d.nor();//direction only
+							if (getPosition().toCoord().getZ() < Chunk.getBlocksZ()+2)
+								d.z = 1;
+						} else {
+							//down
+							d.z = nextWaypoint.getPos().toPoint().getZ() - getPosition().getZ();
+						}
 						d.nor();//direction only
-						if (getPosition().toCoord().getZ() < Chunk.getBlocksZ()+2)
-							d.z = 1;
+						d.scl(2f);
 					} else {
-						//down
-						d.z = movementGoal.toPoint().getZ() - getPosition().getZ();
+						d.nor();//direction only
+						d.scl(1.3f);
+						d.z = getMovement().z;//keep vertical momentum
 					}
-					d.nor();//direction only
-					d.scl(2f);
-				} else {
-					d.nor();//direction only
-					d.scl(1.3f);
-					d.z = getMovement().z;//keep vertical momentum
-				}
 
-				setMovement(d);// update the movement vector
-			} else {
-				movementGoal = null;
+					setMovement(d);// update the movement vector
+				} else {
+					//reached goal
+					if (waypoints.isEmpty()) {
+						nextWaypoint = null;
+					} else {
+						nextWaypoint = waypoints.get(0);
+						nextWaypoint.setActive(getPosition());
+						waypoints.remove(0);
+					}
+				}
 			}
 
 			//look at players
-			if (movementGoal == null) {
+			if (nextWaypoint == null) {
 				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * Block.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
 					Vector3 vec3 = ejiraList.get(0).getPosition().getVector().sub(getPosition().toPoint().getVector());
@@ -116,15 +128,27 @@ public class Vanya extends MovableEntity implements Interactable {
 //				}
 //				tutorialStep = 1;
 //			}
+			if(tutorialStep >= 1 && completedTutorialStep<1) {
+				goTo(new Coordinate(-2, 1, 6));
+				completedTutorialStep=1;
+			}
 
-			if(completedTutorialStep == 1)
+			if(tutorialStep >= 2 && completedTutorialStep<2) {
 				goTo(new Coordinate(-2, 10, 6));
-			if(completedTutorialStep == 2)
+				completedTutorialStep=2;
+			}
+			if (tutorialStep >= 3 && completedTutorialStep<3) {
 				flyTo(new Coordinate(2, 13, 7));
-			if(completedTutorialStep == 3)
+				completedTutorialStep=3;
+			}
+			if (tutorialStep >= 4 && completedTutorialStep<4) {
 				flyTo(new Coordinate(17, 24, 4));
-			if(completedTutorialStep == 3)
+				completedTutorialStep=4;
+			}
+			if (tutorialStep >= 5 && completedTutorialStep<5) {
 				flyTo(new Coordinate(25, 20, 7));
+				completedTutorialStep=5;
+			}
 		}
 		
 	}
@@ -159,13 +183,13 @@ public class Vanya extends MovableEntity implements Interactable {
 				case 2:
 					text = "I will explain you later. First let's go. It's dangerous here. Follow me.";
 					chatCounter++;
-					completedTutorialStep = 1;
+					tutorialStep = 1;
 					
 					break;
 					
 				case 3:
 					text="";
-					if (completedTutorialStep > 0) {
+					if (tutorialStep > 0) {
 						chatCounter++;
 					} else {
 						chatCounter=0;
@@ -174,12 +198,12 @@ public class Vanya extends MovableEntity implements Interactable {
 					
 				case 4:
 					text = "You can use your jetpack if you press the jump button a second time in air. Press it at the peak of your jump to jump higher.";
-					completedTutorialStep = 2;
+					tutorialStep = 2;
 					chatCounter++;
 					break;
 					
 				case 5:
-					//if (completedTutorialStep > 2) {
+					//if (tutorialStep > 2) {
 						chatCounter++;
 					//} else {
 					//	chatCounter = 4;
@@ -189,7 +213,7 @@ public class Vanya extends MovableEntity implements Interactable {
 					
 				case 6:
 					text="You must go through the caves. Go though that hole there. I will see you at the other side.";
-					completedTutorialStep = 3;
+					tutorialStep = 3;
 					chatCounter=7;
 					break;
 				case 7:
@@ -220,13 +244,17 @@ public class Vanya extends MovableEntity implements Interactable {
 				case 13:
 					text = "";
 					if (confirm)
-						completedTutorialStep = 4;
+						tutorialStep = 4;
 					break;
 			}
 			//register and open the chat
 			if (!"".equals(text)) {
 				WE.SOUND.play("huhu", getPosition());
-				currentChat = new ActionBox(getName(), choice ? ActionBox.BoxModes.BOOLEAN : ActionBox.BoxModes.SIMPLE, text);
+				currentChat = new ActionBox(
+					getName(),
+					choice ? ActionBox.BoxModes.BOOLEAN : ActionBox.BoxModes.SIMPLE,
+					text
+				);
 				if (chatCounter > 0) {
 					currentChat.setConfirmAction((int result, AbstractEntity actor1) -> {
 						nextChat(view, actor, true);
@@ -265,7 +293,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @return
 	 */
 	public boolean isMovingToWaypoint() {
-		return movementGoal != null;
+		return nextWaypoint != null;
 	}
 
 	/**
@@ -273,17 +301,28 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @param coord
 	 */
 	public void goTo(Coordinate coord) {
-		if (getPosition().distanceToHorizontal(coord) > Block.GAME_EDGELENGTH / 4) {
-			movementGoal = coord;
-			distanceWaypoint = getPosition().distanceToHorizontal(coord);
+		if (nextWaypoint== null || nextWaypoint.getPos().distanceTo(coord) > 0) {//don't add twice
+			waypoints.add(new Waypoint(false, coord));
+			if (nextWaypoint == null) {
+				if (!waypoints.isEmpty()) {
+					nextWaypoint = waypoints.get(0);
+					nextWaypoint.setActive(getPosition());
+					waypoints.remove(0);
+				}
+			}
 		}
 	}
 	
 	public void flyTo(Coordinate coord) {
-		if (getPosition().distanceToHorizontal(coord) > Block.GAME_EDGELENGTH / 4) {
-			setFloating(true);
-			movementGoal = coord;
-			distanceWaypoint = getPosition().distanceToHorizontal(coord);
+		if (nextWaypoint== null || nextWaypoint.getPos().distanceTo(coord) > 0) {//don't add twice
+			waypoints.add(new Waypoint(true, coord));
+			if (nextWaypoint == null) {
+				if (!waypoints.isEmpty()) {
+					nextWaypoint = waypoints.get(0);
+					nextWaypoint.setActive(getPosition());
+					waypoints.remove(0);
+				}
+			}
 		}
 	}
 
@@ -292,7 +331,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @return 
 	 */
 	public int getCompletedTutorialStep() {
-		return completedTutorialStep;
+		return tutorialStep;
 	}
 
 	@Override
@@ -302,8 +341,8 @@ public class Vanya extends MovableEntity implements Interactable {
 	
 	@Override
 	public void onSelectInEditor(){
-		if (movementGoal != null)
-			particleBand = new AimBand(this, movementGoal);
+		if (nextWaypoint != null)
+			particleBand = new AimBand(this, nextWaypoint.getPos());
 	}
 	
 	@Override
@@ -317,8 +356,32 @@ public class Vanya extends MovableEntity implements Interactable {
 	 * @param tutorialStep	 
 	*/
 	public void setTutorialStep(int tutorialStep) {
-		if (tutorialStep > this.completedTutorialStep)
-			this.completedTutorialStep = tutorialStep;
+		if (tutorialStep > this.tutorialStep)
+			this.tutorialStep = tutorialStep;
 	}
-	
+
+	private static class Waypoint {
+		boolean fly;
+		AbstractPosition pos;
+		float initialDistance;
+
+		Waypoint(boolean fly, AbstractPosition pos) {
+			this.fly = fly;
+			this.pos = pos;
+		}
+		
+		public void setActive(AbstractPosition pos){
+			initialDistance = pos.distanceToHorizontal(pos);
+		}
+
+		public AbstractPosition getPos() {
+			return pos;
+		}
+
+		public boolean isFly() {
+			return fly;
+		}
+		
+	}
+
 }

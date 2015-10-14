@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *A list which stores the possibles recipes.
@@ -20,7 +23,6 @@ public class CraftingRecipesList extends Table {
 	 * adds teh receipes to a list
 	 */
 	public CraftingRecipesList() {
-		setBackground(WE.getEngineView().getSkin().getDrawable("default-window"));
 		receipts.add(
 			new Recipe(
 				new CollectibleType[]{
@@ -76,15 +78,17 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		
-		
-		int y = 0;
-		for (Recipe receipt : receipts) {
-			Image actor = receipt.getImage();
-			actor.setPosition(0, y);
-			y+=100;
-			addActor(actor);
-		}
+		receipts.add(
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.Iron,
+					CollectibleType.Iron,
+					CollectibleType.Wood
+				},
+				"Minecart",
+				MineCart.class
+			)
+		);
 	}
 
 	/**
@@ -104,24 +108,90 @@ public class CraftingRecipesList extends Table {
 		protected final CollectibleType[] ingredients;
 		protected final String name;
 		/**
-		 * what is the results of the recipe.
+		 * what is the result of the recipe.
 		 */
-		protected final CollectibleType result;
+		private final CollectibleType result;
+		private final Class<? extends AbstractEntity> resultClass;
 
+		/**
+		 * 
+		 * @param ingredients
+		 * @param name
+		 * @param result 
+		 * @see #Recipe(CollectibleType[], String, java.lang.Class) 
+		 */
 		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {
 			this.ingredients = ingredients;
 			this.name = name;
 			this.result = result;
+			this.resultClass = null;
 		}
 		
-		public Image getImage(){
+		/**
+		 * 
+		 * @param ingredients
+		 * @param name
+		 * @param result 
+		 * @see #Recipe(CollectibleType[], String, CollectibleType) 
+		 */
+		public Recipe(CollectibleType[] ingredients, String name, Class<? extends AbstractEntity> result) {
+			this.ingredients = ingredients;
+			this.name = name;
+			this.result = null;
+			this.resultClass = result;
+		}
+		
+		/**
+		 * 
+		 * @return can return null if failed to get image
+		 */
+		public Image getResultImage(){
+			if (resultIsCollectible()) {
+				return new Image(
+					new SpriteDrawable(
+						new Sprite(
+							AbstractGameObject.getSprite('e', result.getId(), 0)
+						)
+					)
+				);
+			} else {
+				try {
+					return new Image(
+						new SpriteDrawable(
+							new Sprite(
+								AbstractGameObject.getSprite('e', resultClass.newInstance().getId(), 0)
+							)
+						)
+					);
+				} catch (InstantiationException | IllegalAccessException ex) {
+					Logger.getLogger(CraftingRecipesList.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+			return null;
+		}
+		
+		public Image getIngredientImage(int slot){
 			return new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', result.getId(), 0)
+						AbstractGameObject.getSprite('e', ingredients[slot].getId(), 0)
 					)
 				)
 			);
 		}
+		
+		public boolean resultIsCollectible(){
+			return this.result != null;
+		}
+
+		public CollectibleType getResultType() {
+			return result;
+		}
+		
+		public Class<? extends AbstractEntity> getResultClass() {
+			return resultClass;
+		}
+		
+		
 	}
 }

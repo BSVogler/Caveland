@@ -395,7 +395,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		if (getHealth()<=0) {
 			WE.SOUND.stop("wagon", isPlayingSound);
 			WE.SOUND.play("robot1destroy", getPosition());
-			((Collectible) CollectibleType.Ironore.createInstance().spawn(getPosition())).sparkle();
+			((Collectible) CollectibleType.Iron.createInstance().spawn(getPosition())).sparkle();
 		}
 	}
 	

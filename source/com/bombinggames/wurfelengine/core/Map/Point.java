@@ -452,7 +452,7 @@ public class Point extends AbstractPosition {
         }
         //ground hit, must be 0,0,0
         if (curZ <= 0){
-            Point intersectpoint = new Point(curX, curY, 0);
+            Point intersectpoint = new Coordinate(curX, curY, 0).toPoint();
 			float distance = this.distanceTo(intersectpoint);
 			if (distance <= Block.GAME_EDGELENGTH*maxDistance)
 				return new Intersection(intersectpoint, Side.TOP, distance);

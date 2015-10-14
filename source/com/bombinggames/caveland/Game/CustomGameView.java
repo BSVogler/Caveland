@@ -320,24 +320,25 @@ public class CustomGameView extends GameView{
 				getPlayer(1).useItem(this);
 			}
 		
-		if (throwDownP1==0){
+		if (throwDownP1 == 0) {
 			getPlayer(0).prepareThrow();
 		}
-		if (throwDownP1>=600){
+		if (throwDownP1 >= 600) {
 			getPlayer(0).dropItem();
-			throwDownP1=-1;
+			throwDownP1 = -1;
 		}
-		
-		if (throwDownP2>=600){
+
+		if (throwDownP2 >= 600) {
 			getPlayer(1).dropItem();
-			throwDownP2=-1;
+			throwDownP2 = -1;
 		}
 		
 		
-		if (coop>-1)
-			if (throwDownP2==0){
+		if (coop > -1) {
+			if (throwDownP2 == 0) {
 				getPlayer(1).prepareThrow();
 			}
+		}
 		
 		if (inventoryDownP1>-1)
 			inventoryDownP1+=dt;

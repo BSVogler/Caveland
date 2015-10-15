@@ -68,7 +68,7 @@ public class Vanya extends MovableEntity implements Interactable {
 			//go to movement goal
 			if (nextWaypoint != null) {
 				setFloating(nextWaypoint.isFly());
-				if (getPosition().distanceToHorizontal(nextWaypoint.getPos()) > Block.GAME_EDGELENGTH / 4) {
+				if (reachedWaypoint()) {
 					//movement logic
 					Vector3 d = new Vector3();
 
@@ -76,11 +76,13 @@ public class Vanya extends MovableEntity implements Interactable {
 					d.y = nextWaypoint.getPos().toPoint().getY() - getPosition().getY();
 
 					if (isFloating()) {
-						if (getPosition().distanceToHorizontal(nextWaypoint.getPos()) > nextWaypoint.initialDistance/2) {
+						if (getPosition().distanceTo(nextWaypoint.getPos()) > nextWaypoint.initialDistance/2) {
 							//up
 							d.nor();//direction only
-							if (getPosition().toCoord().getZ() < Chunk.getBlocksZ()+2)
+							//limit fleight height
+							if (getPosition().toCoord().getZ() < Chunk.getBlocksZ() + 2) {
 								d.z = 1;
+							}
 						} else {
 							//down
 							d.z = nextWaypoint.getPos().toPoint().getZ() - getPosition().getZ();
@@ -151,6 +153,12 @@ public class Vanya extends MovableEntity implements Interactable {
 			}
 		}
 		
+	}
+	
+	private boolean reachedWaypoint(){
+		return getPosition().distanceToHorizontal(nextWaypoint.getPos()) > Block.GAME_EDGELENGTH / 4
+				||
+			(isFloating() && getPosition().distanceTo(nextWaypoint.getPos()) > Block.GAME_EDGELENGTH / 4 );
 	}
 
 	@Override

@@ -65,6 +65,9 @@ public class AimBand {
 		goal = null;
 	}
 	
+	/**
+	 * 
+	 */
 	public void update(){
 		timeTillNext -= Gdx.graphics.getRawDeltaTime();
 		if (timeTillNext < 0) {
@@ -74,10 +77,11 @@ public class AimBand {
 			particle.setUseRawDelta(true);
 			
 			Vector3 endpos;
-			if (target==null)
+			if (target == null) {
 				endpos = this.goal.getVector();
-			else
+			} else {
 				endpos = this.target.getPosition().getVector();
+			}
 			//scale speed that after one second the particle is there
 			Vector3 vectorSG = goal.getVector().sub(endpos);
 			float len = vectorSG.len() / Block.GAME_EDGELENGTH;

@@ -304,7 +304,8 @@ public class Coordinate extends AbstractPosition {
 	 * @return 
 	 */
 	public boolean isInCube(Coordinate x1, Coordinate x2){
-		return x >= x1.getX() && y >= x1.getY() && z >= x1.getZ() && x <= x2.getX() && y <= x2.getY() && z <= x2.getZ();
+		return x >= x1.getX() && y >= x1.getY() && z >= x1.getZ()
+			&& x <= x2.getX() && y <= x2.getY() && z <= x2.getZ();
 	}
 
 	/**

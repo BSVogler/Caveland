@@ -142,7 +142,7 @@ public class CustomGameController extends Controller {
 					new Coordinate(30, 7, 5)
 				)
 			)
-			) {
+		) {
 			if (tutorialVanya != null) {
 				tutorialVanya.setTutorialStep(5);
 			}

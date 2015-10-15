@@ -14,6 +14,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Tutorial owl.
@@ -29,7 +30,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	private int tutorialStep = 0;
 	private int completedTutorialStep =0;
 	private AimBand particleBand;
-	private final ArrayList<Waypoint> waypoints = new ArrayList<>(2);//should be a queque
+	private final ArrayBlockingQueue<Waypoint> waypoints = new ArrayBlockingQueue<>(2);//should be a queque
 
 	/**
 	 *
@@ -76,10 +77,10 @@ public class Vanya extends MovableEntity implements Interactable {
 					d.y = nextWaypoint.getPos().toPoint().getY() - getPosition().getY();
 
 					if (isFloating()) {
-						if (getPosition().distanceTo(nextWaypoint.getPos()) > nextWaypoint.initialDistance/2) {
+						if (getPosition().distanceToHorizontal(nextWaypoint.getPos()) > nextWaypoint.initialDistance/2) {
 							//up
 							d.nor();//direction only
-							//limit fleight height
+							//limit flight height
 							if (getPosition().toCoord().getZ() < Chunk.getBlocksZ() + 2) {
 								d.z = 1;
 							}
@@ -101,9 +102,8 @@ public class Vanya extends MovableEntity implements Interactable {
 					if (waypoints.isEmpty()) {
 						nextWaypoint = null;
 					} else {
-						nextWaypoint = waypoints.get(0);
+						nextWaypoint = waypoints.poll();
 						nextWaypoint.setActive(getPosition());
-						waypoints.remove(0);
 					}
 				}
 			}
@@ -313,9 +313,8 @@ public class Vanya extends MovableEntity implements Interactable {
 			waypoints.add(new Waypoint(false, coord));
 			if (nextWaypoint == null) {
 				if (!waypoints.isEmpty()) {
-					nextWaypoint = waypoints.get(0);
+					nextWaypoint = waypoints.poll();
 					nextWaypoint.setActive(getPosition());
-					waypoints.remove(0);
 				}
 			}
 		}
@@ -326,9 +325,8 @@ public class Vanya extends MovableEntity implements Interactable {
 			waypoints.add(new Waypoint(true, coord));
 			if (nextWaypoint == null) {
 				if (!waypoints.isEmpty()) {
-					nextWaypoint = waypoints.get(0);
+					nextWaypoint = waypoints.poll();
 					nextWaypoint.setActive(getPosition());
-					waypoints.remove(0);
 				}
 			}
 		}
@@ -370,20 +368,20 @@ public class Vanya extends MovableEntity implements Interactable {
 
 	private static class Waypoint {
 		boolean fly;
-		AbstractPosition pos;
+		AbstractPosition goalPos;
 		float initialDistance;
 
 		Waypoint(boolean fly, AbstractPosition pos) {
 			this.fly = fly;
-			this.pos = pos;
+			this.goalPos = pos;
 		}
 		
 		public void setActive(AbstractPosition pos){
-			initialDistance = pos.distanceToHorizontal(pos);
+			initialDistance = goalPos.distanceToHorizontal(pos);
 		}
 
 		public AbstractPosition getPos() {
-			return pos;
+			return goalPos;
 		}
 
 		public boolean isFly() {

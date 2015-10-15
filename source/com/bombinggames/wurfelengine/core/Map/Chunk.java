@@ -156,43 +156,42 @@ public class Chunk {
 	/**
 	 * Updates the chunk. should be called once per frame.
 	 *
-	 * @param dt
+	 * @param dt time since last frame in game time
 	 */
 	public void update(float dt){
 		processModification();
 		//reset light to zero
-		for (int x = 0; x < data.length; x++) {
-			for (int y = 0; y < data[x].length; y++) {
-				for (int z = 0; z < data[x][y].length; z++) {
-					if (data[x][y][z] != null) {
-						data[x][y][z].setLightlevel(1.0f);
+		for (Block[][] x : data) {
+			for (Block[] y : x) {
+				for (int z = 0; z < y.length; z++) {
+					if (y[z] != null) {
+						y[z].setLightlevel(1.0f);
 
 						if (
 							z < Chunk.getBlocksZ()-2
 							&& (
-								data[x][y][z+1] == null
-								|| data[x][y][z+1].isTransparent()
+								y[z+1] == null
+								|| y[z+1].isTransparent()
 							)
-							&& data[x][y][z+2] != null
-							&& !data[x][y][z+2].isTransparent()
+							&& y[z+2] != null
+							&& !y[z+2].isTransparent()
 						) {
-							data[x][y][z].setLightlevel(0.8f, Side.TOP);
+							y[z].setLightlevel(0.8f, Side.TOP);
 						} else if (
 							z < Chunk.getBlocksZ()-3
 							&& (
-								data[x][y][z+1] == null
-								|| data[x][y][z+1].isTransparent()
+								y[z+1] == null
+								|| y[z+1].isTransparent()
 							)
 							&& (
-								data[x][y][z+2] == null
-								|| data[x][y][z+2].isTransparent()
+								y[z+2] == null
+								|| y[z+2].isTransparent()
 							)
-							&& data[x][y][z+3] != null
-							&& !data[x][y][z+3].isTransparent()
+							&& y[z+3] != null
+							&& !y[z+3].isTransparent()
 						) {
-							data[x][y][z].setLightlevel(0.9f, Side.TOP);
+							y[z].setLightlevel(0.9f, Side.TOP);
 						}
-
 					}
 				}
 			}

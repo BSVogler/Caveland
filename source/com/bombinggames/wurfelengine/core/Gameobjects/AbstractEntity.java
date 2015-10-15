@@ -125,13 +125,17 @@ public abstract class AbstractEntity extends AbstractGameObject {
      * @param dt time since last update in game time
      */
     public void update(float dt){
-		if (animation != null) animation.update(dt);
-		
-		 if (getHealth() <= 0 && !indestructible)
-            dispose();
-		 
-		if (soundTimeLimit > 0)
+		if (animation != null) {
+			animation.update(dt);
+		}
+
+		if (getHealth() <= 0 && !indestructible) {
+			dispose();
+		}
+
+		if (soundTimeLimit > 0) {
 			soundTimeLimit -= Gdx.graphics.getRawDeltaTime();
+		}
 	}
 		
     //AbstractGameObject implementation

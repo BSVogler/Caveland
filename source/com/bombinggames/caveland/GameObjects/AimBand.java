@@ -71,6 +71,7 @@ public class AimBand {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
 			particle.setTTL(1500);
+			particle.setUseRawDelta(true);
 			
 			Vector3 endpos;
 			if (target==null)

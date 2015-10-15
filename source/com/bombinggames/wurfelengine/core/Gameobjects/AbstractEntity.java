@@ -99,6 +99,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
 	private char category = 'e';
+	private boolean useRawDelta = false;
     /**
      * Create an abstractEntity.
      * @param id objects with id = -1 will be deleted. 0 are invisible objects
@@ -121,16 +122,16 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
 	/**
      * Updates the logic of the object.
-     * @param dt time since last update
+     * @param dt time since last update in game time
      */
     public void update(float dt){
-		if (animation!=null) animation.update(dt);
+		if (animation != null) animation.update(dt);
 		
-		 if (getHealth()<= 0 && !indestructible)
+		 if (getHealth() <= 0 && !indestructible)
             dispose();
 		 
 		if (soundTimeLimit > 0)
-			soundTimeLimit -= dt;
+			soundTimeLimit -= Gdx.graphics.getRawDeltaTime();
 	}
 		
     //AbstractGameObject implementation
@@ -485,6 +486,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		if (health > 100) health=  100;
 		if (health < 0) health = 0;
 		this.health = health;
+	}
+
+	public void setUseRawDelta(boolean useRawDelta) {
+		this.useRawDelta = useRawDelta;
+	}
+	
+	public boolean useRawDelta(){
+		return useRawDelta;
 	}
 
 	/**

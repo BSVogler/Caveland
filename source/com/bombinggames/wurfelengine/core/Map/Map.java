@@ -223,12 +223,17 @@ public class Map implements Cloneable {
 		}
 		//update every entity
 		//old style for loop because allows modification during loop
+		float rawDelta = Gdx.graphics.getRawDeltaTime();
 		for (int i = 0; i < entityList.size(); i++) {
 			AbstractEntity entity = entityList.get(i);
 			if (!entity.isInMemoryArea()) {
 				entity.requestChunk();
 			}
-			entity.update(dt);
+			if (entity.useRawDelta()) {
+				entity.update(rawDelta);
+			} else {
+				entity.update(dt);
+			}
 		}
 
 		//remove not spawned objects from list

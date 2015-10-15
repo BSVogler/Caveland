@@ -44,11 +44,11 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  * @author Benedikt Vogler
  */
 public class AimBand {
-	private final Point goal;
+	private Point goal;
 	private final AbstractEntity parent;
 	private final float timeEachSpawn = 200;
 	private float timeTillNext;
-	private final MovableEntity target;
+	private MovableEntity target;
 
 	public AimBand(AbstractEntity parent, AbstractPosition goal) {
 		if (goal instanceof Point)
@@ -90,5 +90,24 @@ public class AimBand {
 			particle.spawn(parent.getPosition().cpy());
 		}
 	}
+
+	/**
+	 * 
+	 * @param goal 
+	 */
+	public void setGoal(AbstractPosition goal) {
+		this.goal = goal.toPoint();
+		this.target = null;
+	}
+
+	/**
+	 * 
+	 * @param target 
+	 */
+	public void setTarget(MovableEntity target) {
+		this.target = target;
+		this.goal = null;
+	}
+	
 	
 }

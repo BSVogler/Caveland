@@ -79,7 +79,11 @@ public class Portal extends AbstractEntity  {
 	
 	@Override
 	public void onSelectInEditor(){
-		particleBand = new AimBand(this, target);
+		if (particleBand != null) {
+			particleBand = new AimBand(this, target);
+		} else {
+			particleBand.setGoal(target);
+		}
 	}
 	
 	@Override
@@ -87,5 +91,4 @@ public class Portal extends AbstractEntity  {
 		if (particleBand != null)
 			particleBand = null;
 	}
-	
 }

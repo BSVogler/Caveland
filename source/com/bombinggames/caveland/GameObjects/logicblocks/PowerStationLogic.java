@@ -32,33 +32,33 @@ public class PowerStationLogic extends AbstractBlockLogicExtension {
 		Block neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
 		if (neighBlock != null
 			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 0
+			&& (neighBlock.getValue() == 0 || neighBlock.getValue() == 1)
 		) {
-			((CableLogic) getPosition().cpy().goToNeighbour(1).getLogic()).turnOn();
+			((CableLogic) getPosition().cpy().goToNeighbour(1).getLogic()).turnOn(5);
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(3).getBlock();
 		if (neighBlock != null
 			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 2
+			&& (neighBlock.getValue() == 2 || neighBlock.getValue() == 3)
 		) {
-			((CableLogic) getPosition().cpy().goToNeighbour(3).getLogic()).turnOn();
+			((CableLogic) getPosition().cpy().goToNeighbour(3).getLogic()).turnOn(7);
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(5).getBlock();
 		if (neighBlock != null
 			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 0
+			&& (neighBlock.getValue() == 0 || neighBlock.getValue() == 1)
 		) {
-			((CableLogic) getPosition().cpy().goToNeighbour(5).getLogic()).turnOn();
+			((CableLogic) getPosition().cpy().goToNeighbour(5).getLogic()).turnOn(1);
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(7).getBlock();
 		if (neighBlock != null
 			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 2
+			&& (neighBlock.getValue() == 2 || neighBlock.getValue() == 3)
 		) {
-			((CableLogic) getPosition().cpy().goToNeighbour(7).getLogic()).turnOn();
+			((CableLogic) getPosition().cpy().goToNeighbour(7).getLogic()).turnOn(3);
 		}
 	}
 

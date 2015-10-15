@@ -241,7 +241,7 @@ public class Controller implements GameManager, MapObserver {
 			devtools = null;
 		}
 		
-		if (!selectionEntity.isSpawned())
+		if (!selectionEntity.hasPosition())
 			selectionEntity.spawn(
 			new Point(0, 0, getMap().getBlocksZ()-1)
 		);
@@ -304,7 +304,7 @@ public class Controller implements GameManager, MapObserver {
 	public ArrayList<AbstractEntity> getSelectedEntities() {
 		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
 		for (AbstractEntity ent : selectedEntities) {
-			if (ent.isSpawned() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") && !ent.equals(selectionEntity)) {
+			if (ent.hasPosition() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") && !ent.equals(selectionEntity)) {
 				selection.add(ent);
 			}
 		}

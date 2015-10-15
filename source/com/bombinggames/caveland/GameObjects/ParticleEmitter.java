@@ -183,7 +183,7 @@ public class ParticleEmitter extends AbstractEntity {
 	}
 
 	private void checkLightSource() {
-		if (isSpawned() && prototype.getType() == ParticleType.FIRE) {
+		if (hasPosition() && prototype.getType() == ParticleType.FIRE) {
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.YELLOW, 5, 11);
 			}

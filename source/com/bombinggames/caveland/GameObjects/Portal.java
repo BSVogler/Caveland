@@ -42,7 +42,7 @@ public class Portal extends AbstractEntity  {
 
 	@Override
 	public void update(float dt) {
-		if (isSpawned() && active){
+		if (hasPosition() && active){
 			if (particleBand != null){
 				particleBand.update();
 			}

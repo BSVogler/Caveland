@@ -237,7 +237,7 @@ public class Map implements Cloneable {
 		}
 
 		//remove not spawned objects from list
-		entityList.removeIf((AbstractEntity entity) -> !entity.isSpawned());
+		entityList.removeIf((AbstractEntity entity) -> !entity.hasPosition());
 	}
 	
 	/**
@@ -506,7 +506,7 @@ public class Map implements Cloneable {
         for (AbstractEntity ent : getEntitys()) {
             if (
 					ent.isGettingSaved() //save only entities which are flagged
-				&& ent.isSpawned()
+				&& ent.hasPosition()
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
@@ -535,7 +535,7 @@ public class Map implements Cloneable {
 		//loop over every loaded entity
         for (AbstractEntity ent : getEntitys()) {
             if (
-					ent.isGettingSaved() && ent.isSpawned() //save only entities which are flagged
+					ent.isGettingSaved() && ent.hasPosition() //save only entities which are flagged
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
@@ -862,7 +862,7 @@ public class Map implements Cloneable {
 		ArrayList<type> list = new ArrayList<>(30); //defautl size 30
 		for (AbstractEntity entity : entityList) {
 			//check every entity
-			if (entity.isSpawned() && type.isInstance(entity)) {
+			if (entity.hasPosition() && type.isInstance(entity)) {
 				//if the entity is of the wanted type
 				list.add((type) entity); //add it to list
 			}
@@ -901,7 +901,7 @@ public class Map implements Cloneable {
 		ArrayList<type> list = new ArrayList<>(5);
 
 		for (AbstractEntity ent : entityList) {
-			if (ent.isSpawned()
+			if (ent.hasPosition()
 				&& ent.getPosition().toCoord().getVector().equals(coord.getVector())//on coordinate?
 				&& type.isInstance(ent)//of tipe of filter?
 				) {

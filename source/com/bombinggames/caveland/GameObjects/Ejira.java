@@ -228,7 +228,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	public void update(float dt) {
 		super.update(dt);
 		
-		if (isSpawned()) {
+		if (hasPosition()) {
 			Point pos = getPosition();
 
 			//slow down in air
@@ -599,7 +599,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	}
 	
 	private void attackImpact(){
-		if (isSpawned()) {
+		if (hasPosition()) {
 			timeTillImpact = Float.POSITIVE_INFINITY;
 
 			//from current position go 80px in aiming direction and get nearbyEntities 80px around there
@@ -685,7 +685,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	@Override
 	public void jump() {
 		//check if an arijump can be performed
-		if (isSpawned() && (!isInAirJump || canJumpFromGround())) {
+		if (hasPosition() && (!isInAirJump || canJumpFromGround())) {
 			if (!canJumpFromGround()) {
 				//do an airjump
 				isInAirJump = true;
@@ -867,7 +867,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void dispose() {
-		if (isSpawned()) {
+		if (hasPosition()) {
 			Coordinate coord = getPosition().toCoord();
 			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
 			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());

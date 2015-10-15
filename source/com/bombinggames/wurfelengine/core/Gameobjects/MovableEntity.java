@@ -218,7 +218,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		super.update(dt);
         
         /*Here comes the stuff where the character interacts with the environment*/
-        if (isSpawned() && getPosition().isInMemoryAreaHorizontal()) {
+        if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			float t = dt/1000f; //t = time in s
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
@@ -256,9 +256,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				//land if standing in or under 0-level or there is an obstacle
 				if (movement.z < 0 && isOnGround()){
 					onCollide();
-					if (!isSpawned()) return;//object may be destroyed during colission
+					if (!hasPosition()) return;//object may be destroyed during colission
 					onLand();
-					if (!isSpawned()) return;//object may be destroyed during colission
+					if (!hasPosition()) return;//object may be destroyed during colission
 
 					if (landingSound != null && !floating) {
 						WE.SOUND.play(landingSound, getPosition());//play landing sound

@@ -51,7 +51,7 @@ public class Vanya extends MovableEntity implements Interactable {
 		//float beforeUpdate = getMovement().z;
 		super.update(dt);
 
-		if (isSpawned()) {
+		if (hasPosition()) {
 			//destroy nearby vanyas
 			getPosition().getEntitiesNearby(10 * Block.GAME_EDGELENGTH, Vanya.class).forEach((Object t) -> {
 				if (!t.equals(this)) {

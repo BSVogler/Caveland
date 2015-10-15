@@ -134,9 +134,9 @@ public class Enemy extends MovableEntity{
 			playMovementAnimation();
 		}
 			
-        if (isSpawned() && getPosition().toCoord().isInMemoryAreaHorizontal()) {
+        if (hasPosition() && getPosition().toCoord().isInMemoryAreaHorizontal()) {
             //follow the target
-            if (target != null && target.isSpawned()) {
+            if (target != null && target.hasPosition()) {
 				if (getPosition().distanceTo(target) > Block.GAME_EDGELENGTH*1.5f) {
 					//movement logic
 					Vector3 d = new Vector3();

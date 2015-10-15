@@ -587,7 +587,7 @@ public class Point extends AbstractPosition {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
         for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (entity.isSpawned() && distanceTo(entity.getPosition().toPoint()) < radius){
+            if (entity.hasPosition() && distanceTo(entity.getPosition().toPoint()) < radius){
                 result.add(entity);
             } 
         }
@@ -626,7 +626,7 @@ public class Point extends AbstractPosition {
 
         for (AbstractEntity entity : entityList) {//check every entity
             if (
-				entity.isSpawned()
+				entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
 				&&
 				distanceToHorizontal(entity.getPosition().toPoint()) < radius

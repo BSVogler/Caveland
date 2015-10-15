@@ -67,7 +67,7 @@ public class SuperGlue extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (main.isSpawned()) {
+		if (main.hasPosition()) {
 			smaller.setPosition(main.getPosition().cpy().addVector(offset));
 		}
 		//dispose glue if one component should be disposed.

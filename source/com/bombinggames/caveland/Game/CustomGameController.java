@@ -48,7 +48,7 @@ public class CustomGameController extends Controller {
 	 * verify that players exist
 	 */
 	private void spawnPlayers(){
-		if (!player1.isSpawned()) {
+		if (!player1.hasPosition()) {
 			player1.spawn(
 				new Coordinate(
 					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),
@@ -57,7 +57,7 @@ public class CustomGameController extends Controller {
 				).toPoint()
 			);
 		}
-		if (player2 != null && !player2.isSpawned()) {
+		if (player2 != null && !player2.hasPosition()) {
 			player2.spawn(
 				new Coordinate(
 					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),

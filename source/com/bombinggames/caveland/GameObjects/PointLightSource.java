@@ -75,7 +75,7 @@ public class PointLightSource extends AbstractEntity {
 			lastCoord = pos.toCoord();
 		
 		//if moved
-		if (isSpawned() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+		if (hasPosition() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
 			clearCache();
 			lastCoord = pos.toCoord();
 			lightNearbyBlocks(0);
@@ -89,7 +89,7 @@ public class PointLightSource extends AbstractEntity {
 			lastCoord = pos.toCoord();
 		
 		//if moved
-		if (isSpawned() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+		if (hasPosition() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
 			clearCache();
 			lastCoord = pos.toCoord();
 			lightNearbyBlocks(0);
@@ -190,7 +190,7 @@ public class PointLightSource extends AbstractEntity {
 	public void update(float dt) {
 		super.update(dt);
 		
-		if (enabled) {
+		if (enabled && hasPosition()) {
 			lightNearbyBlocks(dt);
 
 			//apply cache

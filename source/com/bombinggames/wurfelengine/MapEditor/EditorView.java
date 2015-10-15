@@ -183,7 +183,7 @@ public class EditorView extends GameView {
 		getController().clearSelection();
 		for (AbstractEntity ent : getMap().getEntitys()) {
 			if (
-				ent.isSpawned()
+				ent.hasPosition()
 				 && ent.getPosition().getViewSpcX(this) + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde
 				 && ent.getPosition().getViewSpcX(this) - ent.getAtlasRegion().getRegionWidth() / 2 <= x2 //left spr. border
 				 && ent.getPosition().getViewSpcY(this) - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
@@ -531,7 +531,7 @@ public class EditorView extends GameView {
 				//find ent under mouse
 				for (AbstractEntity ent : getMap().getEntitys()) {
 					if (
-						ent.isSpawned()
+						ent.hasPosition()
 						&& ent.getPosition().getViewSpcX(view) + ent.getAtlasRegion().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
 						&& ent.getPosition().getViewSpcX(view) - ent.getAtlasRegion().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
 						&& ent.getPosition().getViewSpcY(view) - ent.getAtlasRegion().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border

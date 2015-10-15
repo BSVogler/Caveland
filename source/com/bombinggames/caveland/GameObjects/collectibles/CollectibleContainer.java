@@ -84,7 +84,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @param collectible 
 	 */
 	public void addCollectible(Collectible collectible) {
-		if (!collectible.isSpawned()) {
+		if (!collectible.hasPosition()) {
 			collectible.spawn(getPosition().cpy());
 		}
 		collectible.setHidden(true);
@@ -99,7 +99,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @param collectible if not an collectible nothing happens
 	 */
 	public void addCollectibleFront(Collectible collectible) {
-		if (!collectible.isSpawned()) {
+		if (!collectible.hasPosition()) {
 			collectible.spawn(getPosition().cpy());
 		}
 		collectible.setHidden(true);

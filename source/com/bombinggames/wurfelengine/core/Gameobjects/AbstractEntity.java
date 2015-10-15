@@ -191,7 +191,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			Controller.getMap().addEntities(this);
 			setPosition(point);
 			dispose = false;
-			if (shadow != null && !shadow.isSpawned())
+			if (shadow != null && !shadow.hasPosition())
 				shadow.spawn(position.cpy());
 		} else {
 			Gdx.app.debug("AbstractEntity", "Already spawned.");
@@ -218,10 +218,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
     
     /**
-     *Is the object active on the map?
+     *Is the object active on the map? If you spawn the object it has a position afterwards
      * @return
      */
-    public boolean isSpawned(){
+    public boolean hasPosition(){
         return position != null;
     }
 
@@ -504,7 +504,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * loads the chunk at the position
 	 */
 	public void requestChunk() {
-		if (isSpawned()) {
+		if (hasPosition()) {
 			Chunk chunk = position.toCoord().getChunk();
 			if (chunk == null) {
 				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());

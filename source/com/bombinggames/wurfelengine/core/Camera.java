@@ -260,7 +260,7 @@ public class Camera implements MapObserver {
 		}
 		WE.getConsole().add("Creating new camera which is focusing an entity: " + focusentity.getName());
 		this.focusEntity = focusentity;
-		if (!focusentity.isSpawned()) {
+		if (!focusentity.hasPosition()) {
 			throw new NullPointerException(focusentity.getName() + " is not spawned yet");
 		}
 		position.x = focusEntity.getPosition().getViewSpcX(gameView);
@@ -276,7 +276,7 @@ public class Camera implements MapObserver {
 	 */
 	public final void update(float dt) {
 		if (active) {
-			if (focusEntity != null && focusEntity.isSpawned()) {
+			if (focusEntity != null && focusEntity.hasPosition()) {
 				//update camera's position according to focusEntity
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(gameView),
@@ -609,7 +609,7 @@ public class Camera implements MapObserver {
 			if (objectsToBeRendered >= depthlist.length) {
 				break;//fill only up to available size
 			}
-			if (entity.isSpawned()
+			if (entity.hasPosition()
 				&& !entity.isHidden()
 				&& inViewFrustum(
 					entity.getPosition().getViewSpcX(gameView),
@@ -1161,7 +1161,7 @@ public class Camera implements MapObserver {
 	 * @return in game space
 	 */
 	public Point getCenter() {
-		if (focusEntity != null && focusEntity.isSpawned()) {
+		if (focusEntity != null && focusEntity.hasPosition()) {
 			return focusEntity.getPosition();
 		} else {
 			return new Point(

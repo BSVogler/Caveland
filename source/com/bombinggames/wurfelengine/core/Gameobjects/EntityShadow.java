@@ -59,7 +59,7 @@ public class EntityShadow extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		setSaveToDisk(false);
-		if (character == null || !character.isSpawned() || !isSpawned() || character.isHidden()) {
+		if (character == null || !character.hasPosition() || !hasPosition() || character.isHidden()) {
 			dispose();
 		} else {
 			//find height of shadow surface

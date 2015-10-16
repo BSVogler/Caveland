@@ -29,6 +29,7 @@ public class CustomGameController extends Controller {
 	private Ejira player2;
 	private Spaceship introSpaceship;
 	private Vanya tutorialVanya;
+	private boolean tutorialEndFight;
 
 	@Override
 	public void init() {
@@ -130,23 +131,35 @@ public class CustomGameController extends Controller {
 		}
 		
 		//jumped over cliff
-		if (
-			player1.getPosition().toCoord().isInCube(
-				new Coordinate(28, -4, 3),
-				new Coordinate(30, 7, 5)
-			)
-			||
+		if (!tutorialEndFight
+			&&
 			(
-				player2 != null && player2.getPosition().toCoord().isInCube(
+				player1.getPosition().toCoord().isInCube(
 					new Coordinate(28, -4, 3),
 					new Coordinate(30, 7, 5)
 				)
+				||
+				(
+					player2 != null && player2.getPosition().toCoord().isInCube(
+						new Coordinate(28, -4, 3),
+						new Coordinate(30, 7, 5)
+					)
+				)
 			)
 		) {
+			tutorialEndFight = true;
 			if (tutorialVanya != null) {
 				tutorialVanya.setTutorialStep(5);
 			}
-			new Enemy().spawn(new Coordinate(34, 7, 5).toPoint());
+			for (int i = 0; i < 5; i++) {
+				new Enemy().spawn(
+					new Coordinate(
+						(int) (34+Math.random()*5),
+						(int) (7+Math.random()*5),
+						5
+				).toPoint());
+			}
+			
 		}
 			
 	}

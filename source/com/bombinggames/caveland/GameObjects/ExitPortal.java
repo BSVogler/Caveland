@@ -4,7 +4,6 @@ import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -12,9 +11,8 @@ import java.util.ArrayList;
  * An entitiy which can be used to exit the caves
  * @author Benedikt Vogler
  */
-public class ExitPortal extends AbstractEntity implements Interactable  {
+public class ExitPortal extends Portal implements Interactable  {
 	private static final long serialVersionUID = 2L;
-	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
 	private boolean spawner;
 	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
 
@@ -22,25 +20,14 @@ public class ExitPortal extends AbstractEntity implements Interactable  {
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
 	 */
 	public ExitPortal() {
-		super((byte) 15, (byte) 1);
+		super((byte) 15);
 		setName("Exit Portal");
-	}
-	
-	/**
-	 * copy safe
-	 * @return 
-	 */
-	public Coordinate getTarget() {
-		return target.cpy();
+		setActive(false);
 	}
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		actor.setPosition(target.cpy());
-	}
-
-	public void setTarget(Coordinate target) {
-		this.target = target;
+		actor.setPosition(getTarget().cpy());
 	}
 
 	@Override

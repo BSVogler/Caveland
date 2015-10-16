@@ -29,6 +29,16 @@ public class Portal extends AbstractEntity  {
 	}
 	
 	/**
+	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 * @param id
+	 */
+	public Portal(byte id) {
+		super(id);
+		setIndestructible(true);
+		setName("Portal");
+	}
+	
+	/**
 	 * copy safe
 	 * @return 
 	 */

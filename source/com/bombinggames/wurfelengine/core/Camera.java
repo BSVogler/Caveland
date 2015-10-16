@@ -536,7 +536,10 @@ public class Camera implements MapObserver {
 				Sprite overlay = new Sprite(texture);
 				overlay.setOrigin(0, 0);
 				//somehow reverse the viewport transformation, needed for split-screen
-				overlay.setSize(getWidthInScreenSpc(), getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc());
+				overlay.setSize(
+					getWidthInScreenSpc(),
+					getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc()
+				);
 				overlay.setColor(1, 0, 0, damageoverlay);
 				overlay.draw(WE.getEngineView().getSpriteBatch());
 				WE.getEngineView().getSpriteBatch().end();

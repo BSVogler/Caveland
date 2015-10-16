@@ -33,6 +33,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
+import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
@@ -74,6 +75,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					portal = (Portal) portals.get(0);
 				} else {
 					portal = new Portal();
+					portal.setTarget(ChunkGenerator.getCaveEntry(0));
 				}
 				if (!portal.hasPosition()) {
 					portal.spawn(getPosition().toPoint());

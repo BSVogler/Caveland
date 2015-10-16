@@ -234,8 +234,10 @@ public class Enemy extends MovableEntity{
 	
 	@Override
 	public void onSelectInEditor(){
-		if (target != null) {
+		if (particleBand == null) {
 			particleBand = new AimBand(this, target);
+		} else {
+			particleBand.setTarget(target);
 		}
 	}
 	

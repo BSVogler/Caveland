@@ -513,7 +513,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	/**
-	 *
+	 *Gets called even when already selected,
 	 */
 	public void onSelectInEditor(){
 	

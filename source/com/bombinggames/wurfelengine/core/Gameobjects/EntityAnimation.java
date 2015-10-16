@@ -28,8 +28,6 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
-import com.badlogic.gdx.Gdx;
-
 /**
  * An animation interface for entitys.
  * @author Benedikt
@@ -40,10 +38,6 @@ public class EntityAnimation implements Animatable {
     private float counter = 0;
     private boolean running;
     private final boolean loop;
-    /**
-     * ignores game time speed.
-     */
-    private boolean updateIgnoringGameTime;
 	private AbstractEntity parent;
     
    /**
@@ -64,25 +58,23 @@ public class EntityAnimation implements Animatable {
      */
     public void update(float dt) {
         if (running && parent != null) {
-            if (updateIgnoringGameTime)
-                counter += Gdx.graphics.getDeltaTime()*1000f;
-            else 
-                counter += dt;
+			counter += dt;
 			int value = parent.getValue();
 			if (value >= animationsduration.length) //stop the animation if value is suddenly too big
 				running=false;
 			else if (counter >= animationsduration[ value ]){
-					parent.setValue((byte) (parent.getValue()+0b1));
-					counter=0;
-					if (parent.getValue() >= animationsduration.length)//if over animation array
-						if (loop)
-							parent.setValue((byte)0);
-						else{//delete
-							parent.setHidden(true);
-							parent.setValue((byte) (parent.getValue()-1));
-							parent.dispose();
-						}
+				parent.setValue((byte) (parent.getValue()+0b1));
+				counter=0;
+				if (parent.getValue() >= animationsduration.length) {//if over animation array
+					if (loop) {
+						parent.setValue((byte) 0);
+					} else {//delete
+						parent.setHidden(true);
+						parent.setValue((byte) (parent.getValue() - 1));
+						parent.dispose();
+					}
 				}
+			}
         }
     }
 
@@ -94,14 +86,6 @@ public class EntityAnimation implements Animatable {
     @Override
     public void stop() {
         running = false;
-    }
-
-    /**
-     * ignores the delta time of the game world. use this if you want to have an animation independent of game speed (e.g. slow motion.)
-     * @param ignore true ignores game time
-     */
-    public void ignoreGameSpeed(boolean ignore) {
-        this.updateIgnoringGameTime = ignore;
     }
 
 	void setParent(AbstractEntity parent) {

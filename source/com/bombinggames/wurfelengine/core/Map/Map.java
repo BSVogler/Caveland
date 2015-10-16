@@ -212,7 +212,7 @@ public class Map implements Cloneable {
 
 	/**
 	 *Updates mostly the entities.
-	 * @param dt
+	 * @param dt time in ms
 	 */
 	public void update(float dt) {
 		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
@@ -223,7 +223,7 @@ public class Map implements Cloneable {
 		}
 		//update every entity
 		//old style for loop because allows modification during loop
-		float rawDelta = Gdx.graphics.getRawDeltaTime();
+		float rawDelta = Gdx.graphics.getRawDeltaTime()*1000f;
 		for (int i = 0; i < entityList.size(); i++) {
 			AbstractEntity entity = entityList.get(i);
 			if (!entity.isInMemoryArea()) {

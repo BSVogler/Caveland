@@ -45,10 +45,10 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  */
 public class AimBand {
 	private Point goal;
+	private MovableEntity target;
 	private final AbstractEntity parent;
 	private final float timeEachSpawn = 200;
 	private float timeTillNext;
-	private MovableEntity target;
 
 	public AimBand(AbstractEntity parent, AbstractPosition goal) {
 		if (goal instanceof Point)
@@ -69,7 +69,7 @@ public class AimBand {
 	 * 
 	 */
 	public void update(){
-		timeTillNext -= Gdx.graphics.getRawDeltaTime();
+		timeTillNext -= Gdx.graphics.getRawDeltaTime()*1000f;
 		if (timeTillNext < 0) {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
@@ -83,7 +83,7 @@ public class AimBand {
 				endpos = this.target.getPosition().getVector();
 			}
 			//scale speed that after one second the particle is there
-			Vector3 vectorSG = goal.getVector().sub(endpos);
+			Vector3 vectorSG = endpos.sub(parent.getPosition().getVector());
 			float len = vectorSG.len() / Block.GAME_EDGELENGTH;
 			particle.setMovement(vectorSG.nor().scl(len));
 			particle.setColiding(false);

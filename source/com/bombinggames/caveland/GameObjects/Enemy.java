@@ -121,10 +121,10 @@ public class Enemy extends MovableEntity{
 			} else {
 				setValue((byte) (getValue()+56));
 			}
-			
-			if (particleBand != null){
-				particleBand.update();
-			}
+		}
+		
+		if (particleBand != null){
+			particleBand.update();
 		}
 
 		//clamp at 0

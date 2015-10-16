@@ -70,18 +70,6 @@ public class Selection extends AbstractEntity {
 		return super.spawn(point);
 	}
 	
-	
-
-    @Override
-    public void update(float delta) {
-//        if (normalSide==Side.LEFT)
-//            normal.setPosition(getPosition().cpy().addVector(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
-//        else if (normalSide==Side.TOP)
-//            normal.setPosition(getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
-//            else if (normalSide==Side.RIGHT)
-//                normal.setPosition(getPosition().cpy().addVector(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0));
-	}
-
 	@Override
 	public void setPosition(AbstractPosition pos) {
 		setPosition(pos.toPoint());

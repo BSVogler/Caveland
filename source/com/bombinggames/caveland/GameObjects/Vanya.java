@@ -14,7 +14,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.LinkedList;
 
 /**
  * Tutorial owl.
@@ -30,7 +30,7 @@ public class Vanya extends MovableEntity implements Interactable {
 	private int tutorialStep = 0;
 	private int completedTutorialStep =0;
 	private AimBand particleBand;
-	private final ArrayBlockingQueue<Waypoint> waypoints = new ArrayBlockingQueue<>(2);//should be a queque
+	private final LinkedList<Waypoint> waypoints = new LinkedList<>();//should be a queque
 
 	/**
 	 *

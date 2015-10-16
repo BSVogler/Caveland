@@ -56,7 +56,7 @@ public class Selection extends AbstractEntity {
         
         normal = new SimpleEntity((byte) 14);
 		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
-        anim.ignoreGameSpeed(true);
+		normal.setUseRawDelta(true);
 		normal.enableShadow();
 		normal.setAnimation(anim);
         normal.setLightlevel(10);

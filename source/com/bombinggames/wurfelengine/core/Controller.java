@@ -311,19 +311,10 @@ public class Controller implements GameManager, MapObserver {
 		return selection;
 	}
 	
-	public void clearSelection() {
-		for (AbstractEntity ent : selectedEntities) {
-			ent.onUnSelectInEditor();
-		}
-		selectedEntities.clear();
+	public void setSelectedEnt(ArrayList<AbstractEntity> newSel) {
+		this.selectedEntities = newSel;
 	}
 	
-	public void addToSelection(AbstractEntity ent) {
-		selectedEntities.add(ent);
-		ent.onSelectInEditor();
-	}
-
-
 	/**
 	 *Get the entity laying under the cursor.
 	 * @return

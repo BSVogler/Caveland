@@ -166,7 +166,6 @@ public class EditorView extends GameView {
 	 * @param y1 view space
 	 * @param x2 view space
 	 * @param y2 view space
-	 * @return the selection. unfiltered
 	 */
 	public void select(int x1, int y1, int x2, int y2) {
 		//1 values are the smaller ones, make sure that this is the case
@@ -180,7 +179,7 @@ public class EditorView extends GameView {
 			y1 = y2;
 			y2 = tmp;
 		}
-		getController().clearSelection();
+		ArrayList<AbstractEntity> newSel = new ArrayList<>(4);
 		for (AbstractEntity ent : getMap().getEntitys()) {
 			if (
 				ent.hasPosition()
@@ -189,9 +188,17 @@ public class EditorView extends GameView {
 				 && ent.getPosition().getViewSpcY(this) - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
 				 && ent.getPosition().getViewSpcY(this) + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
 			) {
-				getController().addToSelection(ent);
+				newSel.add(ent);
+				ent.onSelectInEditor();
 			}
 		}
+		//identify the ones which are deselected
+		ArrayList<AbstractEntity> unselect = getController().getSelectedEntities();
+		unselect.removeAll(newSel);
+		for (AbstractEntity unEnt : unselect) {
+			unEnt.onUnSelectInEditor();
+		}
+		getController().setSelectedEnt(newSel);
 	}
 	
     /**

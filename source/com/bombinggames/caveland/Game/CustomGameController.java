@@ -14,6 +14,7 @@ import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -135,14 +136,14 @@ public class CustomGameController extends Controller {
 			&&
 			(
 				player1.getPosition().toCoord().isInCube(
-					new Coordinate(28, -4, 3),
-					new Coordinate(30, 7, 5)
+					new Coordinate(28, -5, 3),
+					new Coordinate(30, 7, Chunk.getBlocksZ())
 				)
 				||
 				(
 					player2 != null && player2.getPosition().toCoord().isInCube(
-						new Coordinate(28, -4, 3),
-						new Coordinate(30, 7, 5)
+						new Coordinate(28, -5, 3),
+						new Coordinate(30, 7, Chunk.getBlocksZ())
 					)
 				)
 			)
@@ -155,7 +156,7 @@ public class CustomGameController extends Controller {
 				new Enemy().spawn(
 					new Coordinate(
 						(int) (34+Math.random()*5),
-						(int) (7+Math.random()*5),
+						(int) (4+Math.random()*5),
 						5
 				).toPoint());
 			}

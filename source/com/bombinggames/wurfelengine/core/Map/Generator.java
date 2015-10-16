@@ -51,7 +51,6 @@ public interface Generator {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return can be null
 	 */
 	public abstract void spawnEntities(int x, int y, int z);
 	

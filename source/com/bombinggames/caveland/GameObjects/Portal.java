@@ -46,6 +46,10 @@ public class Portal extends AbstractEntity  {
 		return target.cpy();
 	}
 	
+	/**
+	 * Set the coordiante where the portal teleports to.
+	 * @param target 
+	 */
 	public void setTarget(Coordinate target) {
 		this.target = target;
 	}

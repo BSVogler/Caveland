@@ -55,7 +55,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	private Portal portal = null;
 
 	/**
-	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 * teleports to level 1 by default
 	 *
 	 * @param block
 	 * @param coord

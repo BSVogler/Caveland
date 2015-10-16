@@ -173,11 +173,11 @@ public class ChunkGenerator implements Generator {
 	
 	/**
 	 * copy safe
-	 * @param caveNumber
+	 * @param caveNumber start with 0
 	 * @return 
 	 */
 	public static Coordinate getCaveEntry(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+g), GENERATORBORDER+52, 4);
+		return new Coordinate((int) (roomWithPadding*caveNumber+g), GENERATORBORDER+60, 4);
 	}
 	
 	/**

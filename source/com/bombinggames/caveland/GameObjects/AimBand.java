@@ -87,6 +87,7 @@ public class AimBand {
 			//scale speed that after one second the particle is there
 			Vector3 vectorSG = endpos.sub(parent.getPosition().getVector());
 			float len = vectorSG.len() / Block.GAME_EDGELENGTH;
+			if (len>5) len=5;//clamp at 5m/s
 			particle.setMovement(vectorSG.nor().scl(len));
 			particle.setColiding(false);
 			particle.spawn(parent.getPosition().cpy());

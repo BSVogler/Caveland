@@ -35,7 +35,7 @@ import java.io.Serializable;
 
 /**
  * A small block object hich stores only id and value and is only used for
- * storing in memory. Stores only 8 byte.
+ * storing in memory. Stores only 8 bytes.
  *
  * @author Benedikt Vogler
  */

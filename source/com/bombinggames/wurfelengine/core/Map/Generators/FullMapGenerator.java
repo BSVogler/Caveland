@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
 /**
@@ -51,8 +52,8 @@ public class FullMapGenerator implements Generator {
 
 
     @Override
-    public byte generate(int x, int y, int z) {
-        return id;
+    public Block generate(int x, int y, int z) {
+        return Block.getInstance(id);
     }
 
 	@Override

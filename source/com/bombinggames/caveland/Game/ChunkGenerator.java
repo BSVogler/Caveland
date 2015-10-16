@@ -2,6 +2,7 @@ package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -56,54 +57,57 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	@Override
-	public byte generate(int x, int y, int z) {
+	public Block generate(int x, int y, int z) {
 		if (y<CAVESBORDER) {//overworld
 			
 			//floor
-			if (z<3) return 2;
-			if (z==3) return 1;
+			if (z<3) return Block.getInstance((byte)2);
+			if (z==3) return Block.getInstance((byte)1);
 		} else {
 			if (y < GENERATORBORDER)
-				return 0;
+				return null;
 			
 			//underworld
 			int insideout = insideOutside(x, y, z);
 			
 			if (insideout==2)
-				return 11;
+				return Block.getInstance((byte)11);
 			
 			if (insideout==3)
-				return 11;
+				return Block.getInstance((byte)11);
 				
 			//walls
 			if (insideout==0) {//build a wall
 				if (z<=4)
-					return 17;
+					return Block.getInstance(
+						CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId(),
+						(byte) 1
+					);
 			}
 			
 			if (insideout==-1)//build air for outside
-				return 0;	
+				return null;	
 			
 			if (z==3)
 				if ((x*y*2+x+y*3+500) % 8==y % 7)
 					if (x%2==0 && y%2==0){
 						if (y%5==0)
-							return 42;
+							return Block.getInstance(CavelandBlocks.CLBlocks.SULFUR.getId());
 						else
-							return 44;
+							return Block.getInstance(CavelandBlocks.CLBlocks.COAL.getId());
 					} else {
 						if (y%8==0)
-							return 43;
+							return Block.getInstance(CavelandBlocks.CLBlocks.IRONORE.getId());
 						else
-							return 2;
+							return Block.getInstance((byte)2);
 					}
 			
 			//floor
 			if (z<=2)
-				return 2;
+				return Block.getInstance((byte)2);
 			
 		}
-		return 0;
+		return null;
 	}
 	
 	/**

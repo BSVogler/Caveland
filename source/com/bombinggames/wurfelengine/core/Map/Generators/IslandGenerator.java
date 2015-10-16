@@ -31,6 +31,7 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Generator;
 
@@ -54,24 +55,24 @@ public class IslandGenerator implements Generator {
     
 
     @Override
-    public byte generate(int x, int y, int z) {  
-        if (z==0) return 8;
+    public Block generate(int x, int y, int z) {  
+        if (z==0) return Block.getInstance((byte)8);
         
         int height = Chunk.getBlocksZ()-1- Math.abs(mountainY-y)- Math.abs(mountainX-x);
         if (height>0 && z<height){//part of mountain?
             if (height-1 == z && z>2)
-                return 1;//grass on top
+                return Block.getInstance((byte)1);//grass on top
             
             if (z > 2)
-                return 2;
+                return Block.getInstance((byte)2);
             else
-                return 8;//sand
+                return Block.getInstance((byte)8);//sand
         }
 
         //water
-        if (z==1 || z==2) return 9;
+        if (z==1 || z==2) return Block.getInstance((byte)9);
                
-        return 0;
+        return null;
         
         //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(34);
         //if (Math.random() < 0.15f && height < getBlocksZ()-1 && height > 2) data[x][y][height+1] = new Cell(35);

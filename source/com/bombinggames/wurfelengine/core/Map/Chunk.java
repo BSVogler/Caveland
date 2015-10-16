@@ -233,14 +233,12 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					Block block = Block.getInstance(
+					Block block = 
 						generator.generate(
 							left+x,
 							top+y,
 							z
-						),
-						(byte) 0
-					);
+						);
                     data[x][y][z] = block;
 					generator.spawnEntities(
 						left+x,

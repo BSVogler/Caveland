@@ -31,6 +31,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -74,6 +75,7 @@ public class AimBand {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
 			particle.setTTL(1500);
+			particle.setColor(new Color(0.4f, 0.5f, 1, 0.3f));
 			particle.setUseRawDelta(true);
 			
 			Vector3 endpos;

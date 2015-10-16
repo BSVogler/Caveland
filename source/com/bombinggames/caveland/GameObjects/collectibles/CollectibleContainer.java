@@ -45,6 +45,9 @@ public class CollectibleContainer extends AbstractEntity {
 
 	private static final long serialVersionUID = 2L;
 	
+	/**
+	 * links to items
+	 */
 	private final ArrayList<Collectible> content = new ArrayList<>(3);
 	private boolean backpack;
 	/**
@@ -248,10 +251,12 @@ public class CollectibleContainer extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		//put every child at the position if the container
-		for (AbstractEntity item : content) {
-			if (item != null) {
-				item.setPosition(getPosition().cpy());
+		if (hasPosition()) {
+			//put every child at the position if the container
+			for (AbstractEntity item : content) {
+				if (item != null) {
+					item.setPosition(getPosition().cpy());
+				}
 			}
 		}
 		content.removeIf(
@@ -305,7 +310,7 @@ public class CollectibleContainer extends AbstractEntity {
 		if (releaseContentOnDestroy) {
 			//makes the content appear in the world
 			for (int i = 0; i < size(); i++) {
-				CollectibleContainer.this.retrieveCollectible(0);
+				this.retrieveCollectible(0);
 			}
 		}
 		super.disposeFromMap();

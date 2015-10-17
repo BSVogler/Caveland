@@ -105,23 +105,23 @@ public class Selection extends AbstractEntity {
     }
 	
 	/**
-	 * 
-	 * @return the neighbour coordinat where the normal points to
+	 * if at ground does not move up
+	 * @return the neighbour coordinate where the normal points to
 	 */
 	public Coordinate getCoordInNormalDirection(){
 		Coordinate coords = getPosition().toCoord();
-		if (null != normalSide)
+		if (normal.getPosition().getZ() > 0 && normalSide != null) {
 			switch (normalSide) {
-			case LEFT:
-				coords = coords.goToNeighbour(5);
-				break;
-			case TOP:
-				coords.addVector(0, 0, 1);
-				break;
-			case RIGHT:
-				coords = coords.goToNeighbour(3);
-				break;
-			default:
+				case LEFT:
+					coords = coords.goToNeighbour(5);
+					break;
+				case TOP:
+					coords.addVector(0, 0, 1);
+					break;
+				case RIGHT:
+					coords = coords.goToNeighbour(3);
+					break;
+			}
 		}
 		return coords;
 	}

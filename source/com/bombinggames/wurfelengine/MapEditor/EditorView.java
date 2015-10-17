@@ -389,6 +389,7 @@ public class EditorView extends GameView {
 			leftColorGUI.update(selection);
 			Coordinate coords = selection.getPosition().toCoord();
             
+			//pipet
 			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
                 Block block = coords.getBlock();
 				leftColorGUI.setBlock(block);
@@ -403,14 +404,14 @@ public class EditorView extends GameView {
 				
 				switch (toggledTool){
 					case DRAW:
-						RenderBlock block = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
+						RenderBlock blockToPlace = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
 						dragLayer = selection.getCoordInNormalDirection().getZ();
-						Controller.getMap().setBlock(block);
+						Controller.getMap().setBlock(blockToPlace);
 						break;
 					case REPLACE:
-						block = leftColorGUI.getBlock(coords);
+						blockToPlace = leftColorGUI.getBlock(coords);
 						dragLayer = coords.getZ();
-						Controller.getMap().setBlock(block);
+						Controller.getMap().setBlock(blockToPlace);
 						break;
 					case SELECT:
 						if (WE.getEngineView().getCursor() != 2) {//not dragging

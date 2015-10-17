@@ -43,7 +43,11 @@ public class Portal extends AbstractEntity  {
 	 * @return 
 	 */
 	public Coordinate getTarget() {
-		return target.cpy();
+		if (target == null) {
+			return null;
+		} else {
+			return target.cpy();
+		}
 	}
 	
 	/**
@@ -56,7 +60,7 @@ public class Portal extends AbstractEntity  {
 
 	@Override
 	public void update(float dt) {
-		if (hasPosition() && active){
+		if (hasPosition() && active && getTarget() != null){
 			if (particleBand != null){
 				particleBand.update();
 			}
@@ -65,10 +69,10 @@ public class Portal extends AbstractEntity  {
 			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
 				.forEach((AbstractEntity e) -> {
 					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10
-						&& e != this
+						&& e != this //don't teleport itself
 						&& ((MovableEntity) e).isColiding()
 					) {
-						e.setPosition(target.cpy());
+						e.setPosition(getTarget());
 					}
 				}
 			);
@@ -93,10 +97,12 @@ public class Portal extends AbstractEntity  {
 	
 	@Override
 	public void onSelectInEditor(){
-		if (particleBand == null) {
-			particleBand = new AimBand(this, target);
-		} else {
-			particleBand.setGoal(target);
+		if (target != null) {
+			if (particleBand == null) {
+				particleBand = new AimBand(this, target);
+			} else {
+				particleBand.setGoal(target);
+			}
 		}
 	}
 	

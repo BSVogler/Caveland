@@ -81,7 +81,13 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					portal.spawn(getPosition().toPoint());
 				}
 			}
-			portal.setPosition(getPosition().toPoint());
+			
+			if (portal.shouldBeDisposed()){//respawn if needed
+				portal.spawn(getPosition().toPoint());
+			} else {
+				portal.setPosition(getPosition().toPoint());
+			}
+				
 
 			if (!interactable()) {
 				//inactive for falling into it

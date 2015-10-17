@@ -26,11 +26,11 @@ public class Vanya extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
 	private transient ActionBox currentChat;
-	private Waypoint nextWaypoint;
+	private transient Waypoint nextWaypoint;
 	private int tutorialStep = 0;
 	private int completedTutorialStep =0;
-	private AimBand particleBand;
-	private final LinkedList<Waypoint> waypoints = new LinkedList<>();//should be a queque
+	private transient AimBand particleBand;
+	private transient final LinkedList<Waypoint> waypoints = new LinkedList<>();//should be a queque
 
 	/**
 	 *

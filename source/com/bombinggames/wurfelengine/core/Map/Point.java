@@ -443,14 +443,17 @@ public class Point extends AbstractPosition {
             }
         }
         //ground hit, must be 0,0,0
-        if (curZ <= 0){
-            Point intersectpoint = new Coordinate(curX, curY, 0).toPoint();
+        if (curZ <= 0) {
+			Point intersectpoint = new Coordinate(curX, curY, 0).toPoint();
 			float distance = this.distanceTo(intersectpoint);
-			if (distance <= Block.GAME_EDGELENGTH*maxDistance)
+			if (distance <= Block.GAME_EDGELENGTH * maxDistance) {
 				return new Intersection(intersectpoint, Side.TOP, distance);
-			else return null;
-        } else
-            return null;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
     }
 
     /**
@@ -487,7 +490,11 @@ public class Point extends AbstractPosition {
 		Point traverseP = cpy();
 		dir.nor();
 		Coordinate isectC = traverseP.toCoord();
-		while(isectC.isInMemoryAreaHorizontal() && traverseP.getZ() >= 0 && distanceTo(traverseP) < maxDistance*Block.GAME_EDGELENGTH){
+		while (
+			isectC.isInMemoryAreaHorizontal()
+			&& traverseP.getZ() >= 0
+			&& distanceTo(traverseP) < maxDistance*Block.GAME_EDGELENGTH
+		){
 			//move
 			traverseP.addVector(dir);
 
@@ -506,9 +513,18 @@ public class Point extends AbstractPosition {
 				return interse;
 			}
 		}
-		//hit with ground missing, todo
-		
-		return null;
+		//check for groudn hit
+		if (traverseP.getZ() <= 0) {
+			traverseP.setZ(0);//clamp at 0
+			float distance = this.distanceTo(traverseP);
+			if (distance <= Block.GAME_EDGELENGTH * maxDistance) {
+				return new Intersection(traverseP, Side.TOP, distance);
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 		
 	/**

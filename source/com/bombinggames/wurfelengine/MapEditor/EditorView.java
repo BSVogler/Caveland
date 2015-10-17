@@ -424,7 +424,7 @@ public class EditorView extends GameView {
 					case ERASE:
 						if (coords.getZ() >= 0)
 							Controller.getMap().setBlock(coords, null);
-							dragLayer = coords.getZ();
+						dragLayer = coords.getZ();
 						break;
 					case BUCKET:
 						bucketDown = coords;

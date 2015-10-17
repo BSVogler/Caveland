@@ -132,7 +132,7 @@ public class Controller implements GameManager, MapObserver {
         Gdx.app.debug("ControllerClass", "Disposing.");
         AbstractGameObject.staticDispose();
         RenderBlock.staticDispose();
-        map.dispose(true);
+        map.dispose(false);
 		map = null;
         lightEngine = null;
     }

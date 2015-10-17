@@ -181,7 +181,11 @@ public class ChunkGenerator implements Generator {
 	 * @return 
 	 */
 	public static Coordinate getCaveEntry(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+g), GENERATORBORDER+60, 4);
+		return new Coordinate(
+			(int) (roomWithPadding*caveNumber+g),
+			GENERATORBORDER+64,
+			4
+		);
 	}
 	
 	/**
@@ -199,7 +203,11 @@ public class ChunkGenerator implements Generator {
 	 * @return 
 	 */
 	public static Coordinate getCaveCenter(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+p+wallsize+g/2), (int) (GENERATORBORDER+(p+g)/yStrech), 4);
+		return new Coordinate(
+			(int) (roomWithPadding*caveNumber+p+wallsize+g/2),
+			(int) (GENERATORBORDER+(p+g)/yStrech),
+			4
+		);
 	}
 	
 	

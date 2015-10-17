@@ -140,7 +140,7 @@ public class Block implements HasID, Serializable {
 	}
 
 	/**
-	 * Use for creating new objects.
+	 * Use for creating new blocks.
 	 *
 	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
 	 * @return returns null for id==0

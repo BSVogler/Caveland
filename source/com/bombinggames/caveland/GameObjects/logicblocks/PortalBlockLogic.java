@@ -75,19 +75,21 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					portal = (Portal) portals.get(0);
 				} else {
 					portal = new Portal();
-					portal.setTarget(ChunkGenerator.getCaveEntry(0));
-				}
-				if (!portal.hasPosition()) {
-					portal.spawn(getPosition().toPoint());
+					
+					int portalnumber = ChunkGenerator.getCaveNumber(getPosition().getX(), getPosition().getY(), getPosition().getZ());
+					if (portalnumber < 0) {//outside
+						portal.setTarget(ChunkGenerator.getCaveEntry(0));
+					} else {
+						portal.setTarget(ChunkGenerator.getCaveEntry(portalnumber + 1));
+					}
 				}
 			}
 			
-			if (portal.shouldBeDisposed()){//respawn if needed
+			if (portal.shouldBeDisposed() || !portal.hasPosition()){//respawn if needed
 				portal.spawn(getPosition().toPoint());
 			} else {
-				portal.setPosition(getPosition().toPoint());
+				portal.setPosition(getPosition().toPoint());//force at position
 			}
-				
 
 			if (!interactable()) {
 				//inactive for falling into it

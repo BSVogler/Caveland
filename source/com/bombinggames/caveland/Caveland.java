@@ -153,9 +153,6 @@ public class Caveland {
 			"Felix von Dohlen\n" +
 			"Marcel Gohsen\n" +
 			"\n" +
-			"Quality Assurance\n" +
-			"Thomas Vogt\n" +
-			"\n" +
 			"Special Thanks to\n" +
 			"Felix Guenther\n" +
 			"Vanya Gercheva\n" +
@@ -163,10 +160,12 @@ public class Caveland {
 			"Gereon Vogler\n" +
 			"Rene Weiszer\n" +
 			"Bernhard Vogler\n" +
-			"\"Janosch\" Frierich\n" +
+			"Gianluca Pandolfo\n" +
+			"Thomas Vogt\n" +
+			"\"Janosch\" Friedrich\n" +
 			"Pia Lenszen\n" +
 			"reddit.com/r/gamedev\n" +
-			"Bauhaus University Weimar\n\n"
-			+ "Wurfel Engine uses libGDX.\n";
+			"Bauhaus University Weimar\n\n" +
+			"Wurfel Engine uses libGDX.\n";
 	}	
 }

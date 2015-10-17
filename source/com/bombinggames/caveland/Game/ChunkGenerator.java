@@ -1,7 +1,6 @@
 package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.ExitPortal;
-import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Generator;
@@ -39,18 +38,27 @@ public class ChunkGenerator implements Generator {
 	 */
 	public static void main(String[] args) {
 		for (int y = GENERATORBORDER; y < GENERATORBORDER+100; y++) {
-			for (int x = 0; x < 50; x++) {
+			for (int x = 0; x < 100; x++) {
 				int result = insideOutside(x,y,4);
-				if (result ==1)
-					System.out.print(".");
-				else if (result ==0)
-					System.out.print("#");
-				else if (result ==-1)
-					System.out.print("_");
-				else if (result ==2)
-					System.out.print("i");
-				else if (result ==3)
-					System.out.print("o");
+				switch (result) {
+					case 1:
+						System.out.print(". ");
+						break;
+					case 0:
+						System.out.print("# ");
+						break;
+					case -1:
+						System.out.print("_ ");
+						break;
+					case 2:
+						System.out.print("i ");
+						break;
+					case 3:
+						System.out.print("o ");
+						break;
+					default:
+						break;
+				}
 			}
 			System.out.println("");
 		}
@@ -70,11 +78,11 @@ public class ChunkGenerator implements Generator {
 			//underworld
 			int insideout = insideOutside(x, y, z);
 			
-			if (insideout==2)
-				return Block.getInstance((byte)11);
+//			if (insideout==2)
+//				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getId());
 			
-			if (insideout==3)
-				return Block.getInstance((byte)11);
+			if (insideout==2)
+				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getId());
 				
 			//walls
 			if (insideout==0) {//build a wall
@@ -138,40 +146,17 @@ public class ChunkGenerator implements Generator {
 		}
 	}
 	
-		/**
-	 * the the entities which should be spawned at this coordiante
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
-	@Override
-	public void configureLogicBlocks(int x, int y, int z){
-		if (y > GENERATORBORDER) {
-			//apply p
-			float xRoom = (((x) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
-			float yRoom = (((y*yStrech) % roomWithPadding) + roomWithPadding) % roomWithPadding-p;
-
-			//loch im Boden
-			if (xRoom==5 && yRoom==g-p-4 && z == 4){
-				((PortalBlockLogic) new Coordinate(x, y, z).getLogic()).getPortal().setTarget(getCaveExit(getCaveNumber(x, y, z)-1));
-				
-			}
-		} else {
-			if (x==0 && y==0 && z==4) {
-				((PortalBlockLogic) new Coordinate(x, y, z).getLogic()).getPortal().setTarget(getCaveEntry(0).addVector(0, 0, 3));
-			}
-		}
-	}
-	
 	/**
 	 * Get the numbers of the cave. The entry cave is cave number 0.
 	 * 
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return 
+	 * @return -1 if not in any cave
 	 */
 	public static int getCaveNumber(int x, int y, int z){
+		if (y < GENERATORBORDER )
+			return -1;
 		return (int) Math.floor(x / roomWithPadding);
 	}
 	
@@ -194,7 +179,11 @@ public class ChunkGenerator implements Generator {
 	 * @return 
 	 */
 	public static Coordinate getCaveExit(int caveNumber){
-		return new Coordinate((int) (roomWithPadding*caveNumber+10), GENERATORBORDER+62, 4);
+		return new Coordinate(
+			(int) (roomWithPadding*caveNumber+10),
+			GENERATORBORDER+70,
+			4
+		);
 	}
 	
 	/**
@@ -255,9 +244,9 @@ public class ChunkGenerator implements Generator {
 				if (firstCheckInside==false)
 					return 0;//must be in middle if was outside and now inside
 				else {
-					if (xRoom==5 && yRoom==g-5 && z==4)
+					if (xRoom==6 && yRoom==g-8 && z==2)
 						return 2;
-					if (xRoom==g-5 && yRoom==5 && z==4)
+					if (xRoom==g-7 && yRoom==6 && z==4)
 						return 3;
 					return 1;//still inside
 				}

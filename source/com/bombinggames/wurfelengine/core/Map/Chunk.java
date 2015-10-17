@@ -233,13 +233,19 @@ public class Chunk {
         for (int x = 0; x < blocksX; x++)
             for (int y = 0; y < blocksY; y++)
                 for (int z = 0; z < blocksZ; z++){
-					Block block = 
-						generator.generate(
-							left+x,
-							top+y,
-							z
+                    data[x][y][z] = generator.generate(
+						left+x,
+						top+y,
+						z
+					);
+					if (data[x][y][z] != null) {
+						AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
+							new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
 						);
-                    data[x][y][z] = block;
+						if (logic != null)
+							logicBlocks.add(logic);
+					}
+					
 					generator.spawnEntities(
 						left+x,
 						top+y,
@@ -334,11 +340,13 @@ public class Chunk {
 					} else {
 						data[x][y][z] = Block.getInstance(id, bChar);
 						//if has logicblock then add logicblock
-						AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
-							new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
-						);
-						if (logic != null)
-							logicBlocks.add(logic);
+						if (data[x][y][z] != null) {
+							AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
+								new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+							);
+							if (logic != null)
+								logicBlocks.add(logic);
+						}
 						id = -1;
 						x++;
 						if (x == blocksX) {

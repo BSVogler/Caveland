@@ -52,9 +52,4 @@ public class BlockTestGenerator implements Generator{
 	@Override
 	public void spawnEntities(int x, int y, int z) {
 	}
-
-	@Override
-	public void configureLogicBlocks(int x, int y, int z) {
-	}
-    
 }

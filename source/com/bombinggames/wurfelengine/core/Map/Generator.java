@@ -55,12 +55,4 @@ public interface Generator {
 	 * @param z
 	 */
 	public abstract void spawnEntities(int x, int y, int z);
-	
-	/**
-	 * fill the logic
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
-	public abstract void configureLogicBlocks(int x, int y, int z);
 }

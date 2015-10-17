@@ -51,15 +51,7 @@ public class Point extends AbstractPosition {
 	/**
 	 * in continous game space
 	 */
-    private float x;
-	/**
-	 * in continous game space
-	 */
-    private float y;
-	/**
-	 * in continous game space
-	 */
-	private float z;
+    private float x, y, z;
 
     /**
      * Creates a point refering to a position in the game world.

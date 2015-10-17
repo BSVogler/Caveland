@@ -305,51 +305,55 @@ public class GameView extends View implements GameManager {
      * @return the position on the map. deepest layer. If no camera returns map center.
      */
      public Point screenToGameBasic(final int x, final int y){
-		if (cameras.size()>0){
-			//identify clicked camera
-			Camera camera;
-			int i = 0;
-			do {          
-				camera = cameras.get(i);
-				i++;
+		 if (cameras.size() > 0) {
+			 //identify clicked camera
+			 Camera camera;
+			 int i = 0;
+			 do {
+				 camera = cameras.get(i);
+				 i++;
 			} while (
 				i < cameras.size()
-				&& !(x > camera.getScreenPosX()
-				&& x < camera.getScreenPosX()+camera.getWidthInScreenSpc()
-				&& y > camera.getScreenPosY()
+				 && !(x > camera.getScreenPosX()
+				 && x < camera.getScreenPosX() + camera.getWidthInScreenSpc()
+				 && y > camera.getScreenPosY()
 				&& y < camera.getScreenPosY()+camera.getHeightInScreenSpc())
 			);
 
-			//find points
-			return new Point(
-				screenXtoView(x, camera),
-				screenYtoView(y, camera)*-2,
-				0
-			);
-		} else return Controller.getMap().getCenter();
+			 //find points
+			 return new Point(
+				 screenXtoView(x, camera),
+				 screenYtoView(y, camera) * -2,
+				 0
+			 );
+		 } else {
+			 return Controller.getMap().getCenter();
+		 }
     }
      
     /**
-     * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -&gt; game. First does screen-&gt;view and then via raytracing view-&gt;game.
+     * Returns the approximated game position belonging to a point on the screen. Does raytracing to find the intersection. Because information is lost if you do game to screen reverting this can only be done by approximating what happens in view -&gt; game. First does screen -&gt; view and then via raytracing view -&gt; game.
+	 * 
      * @param x the x position on the screen from left
-     * @param y the y position on the screen from top
+     * @param y the y position on the screen from bottom
      * @return the position on the map. can return null if no camera available
      */
     public Intersection screenToGame(final int x, final int y){
 		if (cameras.size() > 0) {
-			Point p = screenToGameBasic(x,y);
+			Point p = screenToGameBasic(x, y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
-			
-			p.addVector(0, deltaZ*Point.SQRT2, deltaZ);//top of map
-			//return new Intersection(p, Vector3.Zero, 0);
+			p.addVector(0, deltaZ * Point.SQRT2, deltaZ);//top of map
+
 			return p.raycastSimple(
-				new Vector3(0,-1, -Block.ZAXISSHORTENING),//viewing direction, can not find correct vector todo. Was -Point.SQRT12
+				new Vector3(0, -1, -Block.ZAXISSHORTENING),//shoot in viewing direction, can not find correct vector todo. Was -Point.SQRT12
 				Float.POSITIVE_INFINITY,
-				cameras.get(0),//assume editor is in first camera
+				cameras.get(0),//assume it is in first camera
 				false
 			);
-		} else return null;
+		} else {
+			return null;
+		}
     }
 	
 	/**

@@ -496,9 +496,8 @@ public class EditorView extends GameView {
 			}
 				
 			//dragging with left and draw tool
-			if ((buttondown==Buttons.LEFT && toolSelection.getLeftTool()== Toolbar.Tool.DRAW)
-				|| (buttondown==Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)
-			) {
+			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.DRAW)
+				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)) {
 				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {

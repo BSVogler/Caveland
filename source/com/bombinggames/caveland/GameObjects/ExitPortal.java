@@ -27,7 +27,9 @@ public class ExitPortal extends Portal implements Interactable  {
 	
 	@Override
 	public void interact(CustomGameView view, AbstractEntity actor) {
-		actor.setPosition(getTarget().cpy());
+		if (getTarget() != null) {
+			actor.setPosition(getTarget());
+		}
 	}
 
 	@Override

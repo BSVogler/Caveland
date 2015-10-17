@@ -308,7 +308,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
     }
 	
     /**
-     * 
+     * false if in update list.
      * @return true if disposing next tick
 	 * @see #dispose() 
      */

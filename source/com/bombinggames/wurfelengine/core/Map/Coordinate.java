@@ -42,11 +42,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import java.util.ArrayList;
 
 /**
- * A coordinate is a reference to a specific cell in the map. The coordinate can
- * transcode between relative and absolute coordinates.<br>
- * Relative coordinates are similar to the map array. Absolute coordinates are
- * indipendent of the current map but to access them you must have the chunk
- * where the coordiantes are pointing to in memory.<br>
+ * A coordinate is a reference to a specific cell in the map.
  * The coordinate uses a continously height value. The Z coordinate value can be
  * calculated.
  *
@@ -56,11 +52,11 @@ public class Coordinate extends AbstractPosition {
 
 	private static final long serialVersionUID = 3L;
 	/**
-	 * The x coordinate. Position from left
+	 * The x coordinate. Position from left to right.
 	 */
 	private int x;
 	/**
-	 * The y coordinate. Position from behind.
+	 * The y coordinate. From back to front .
 	 */
 	private int y;
 	/**

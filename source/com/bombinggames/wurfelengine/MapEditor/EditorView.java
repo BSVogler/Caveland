@@ -312,6 +312,9 @@ public class EditorView extends GameView {
 
 			if (keycode == Keys.G)
 				WE.switchView(gameplayView, false);
+			
+			if (keycode == Keys.ESCAPE)
+				WE.switchView(gameplayView, false);
 
 			//manage camera movement
 			if (keycode == Input.Keys.W)

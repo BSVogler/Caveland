@@ -614,6 +614,10 @@ public class Camera implements MapObserver {
 		}
 
 		//add entitys
+		boolean activatedRenderLimit = false;
+		if (zRenderingLimit < map.getBlocksZ())
+			activatedRenderLimit = true;
+		
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
 			if (objectsToBeRendered >= depthlist.length) {
 				break;//fill only up to available size
@@ -624,7 +628,7 @@ public class Camera implements MapObserver {
 					entity.getPosition().getViewSpcX(gameView),
 					entity.getPosition().getViewSpcY(gameView)
 				)
-				&& entity.getPosition().getZGrid() < zRenderingLimit
+				&& (!activatedRenderLimit || entity.getPosition().getZGrid() < zRenderingLimit)
 			) {
 				depthlist[objectsToBeRendered] = entity;
 				objectsToBeRendered++;

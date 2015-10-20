@@ -161,6 +161,16 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	/**
+	 * Get the numbers of the cave. The entry cave is cave number 0.
+	 * 
+	 * @param coord
+	 * @return -1 if not in any cave
+	 */
+	public static int getCaveNumber(Coordinate coord){
+		return getCaveNumber(coord.getX(), coord.getY(), coord.getZ());
+	}
+	
+	/**
 	 * copy safe
 	 * @param caveNumber start with 0
 	 * @return 

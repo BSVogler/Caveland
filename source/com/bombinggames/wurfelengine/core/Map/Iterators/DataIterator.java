@@ -122,10 +122,10 @@ public class DataIterator<T extends HasID> implements Iterator<T> {
 	 * sets index position borders during iterations. This reduces greatly the
 	 * amount of blocks which are traversed.
 	 *
-	 * @param left
-	 * @param right
-	 * @param back
-	 * @param front
+	 * @param left index positions, no grid coordinates
+	 * @param right index positions, no grid coordinates
+	 * @param back index positions, no grid coordinates
+	 * @param front index positions, no grid coordinates
 	 */
 	public void setBorders(int left, int right, int back, int front) {
 		if (left > 0) {

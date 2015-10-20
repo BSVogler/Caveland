@@ -92,7 +92,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 		return blockIterator.hasNext() || hasNextChunk();
 	}
 
-	int[] getCurrentIndex() {
+	public int[] getCurrentIndex() {
 		return blockIterator.getCurrentIndex();
 	}
 }

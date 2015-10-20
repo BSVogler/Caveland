@@ -71,8 +71,6 @@ public class Camera implements MapObserver {
 	 */
 	private int zRenderingLimit = map.getBlocksZ();
 
-	private boolean zRenderinlimitEnabled = false;
-
 	/**
 	 * has the ground layer in 0, therefore offset in z of one
 	 */
@@ -577,20 +575,19 @@ public class Camera implements MapObserver {
 			while (iterator.hasNext()) {//up to zRenderingLimit	it
 				RenderBlock block = iterator.next();
 				//only add if in viewMat plane to-do
-				if (block != null) {
-					if (
-						!block.getBlockData().isClipped()
-						&& !block.isHidden()
-						&& inViewFrustum(
-							block.getPosition().getViewSpcX(gameView),
-							block.getPosition().getViewSpcY(gameView))
-						&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
-					) {
-						depthlist[objectsToBeRendered] = block;
-						objectsToBeRendered++;
-						if (objectsToBeRendered >= depthlist.length) {
-							break;//fill only up to available size
-						}
+				if (
+					block != null
+					&& !block.getBlockData().isClipped()
+					&& !block.isHidden()
+					&& inViewFrustum(
+						block.getPosition().getViewSpcX(gameView),
+						block.getPosition().getViewSpcY(gameView))
+					&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
+				) {
+					depthlist[objectsToBeRendered] = block;
+					objectsToBeRendered++;
+					if (objectsToBeRendered >= depthlist.length) {
+						break;//fill only up to available size
 					}
 				}
 			}
@@ -848,12 +845,10 @@ public class Camera implements MapObserver {
 		if (limit != zRenderingLimit) {//only if it differs
 
 			zRenderingLimit = limit;
-			zRenderinlimitEnabled = true;
 
 			//clamp
 			if (limit >= map.getBlocksZ()) {
 				zRenderingLimit = map.getBlocksZ();
-				zRenderinlimitEnabled = false;
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}

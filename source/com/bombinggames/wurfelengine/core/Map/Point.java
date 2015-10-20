@@ -670,4 +670,14 @@ public class Point extends AbstractPosition {
 		hash = 97 * hash + Float.floatToIntBits(this.z);
 		return hash;
 	}
+
+	@Override
+	public int getChunkX() {
+		return Math.floorDiv((int) x, Chunk.getGameWidth());
+	}
+
+	@Override
+	public int getChunkY() {
+		return Math.floorDiv((int) y, Chunk.getGameDepth());
+	}
 }

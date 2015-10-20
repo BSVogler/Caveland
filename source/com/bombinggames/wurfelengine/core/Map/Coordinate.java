@@ -524,18 +524,12 @@ public class Coordinate extends AbstractPosition {
 		return false;
 	}
 	
-	/**
-	 * The chunk coordinate.
-	 * @return 
-	 */
+	@Override
 	public int getChunkX(){
 		return Math.floorDiv(x, Chunk.getBlocksX());
 	}
 	
-	/**
-	 * The chunk coordinate.
-	 * @return 
-	 */
+	@Override
 	public int getChunkY(){
 		return Math.floorDiv(y, Chunk.getBlocksY());
 	}

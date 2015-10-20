@@ -218,4 +218,16 @@ public abstract class AbstractPosition implements Serializable {
 	public Chunk getChunk(){
 		return Controller.getMap().getChunk(toCoord());
 	}
+
+	/**
+	 * The chunk coordinate.
+	 * @return
+	 */
+	public abstract int getChunkX();
+
+	/**
+	 * The chunk coordinate.
+	 * @return
+	 */
+	public abstract int getChunkY();
 }

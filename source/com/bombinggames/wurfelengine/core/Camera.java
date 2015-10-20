@@ -539,6 +539,7 @@ public class Camera implements MapObserver {
 				drawDebug(view, camera);
 			}
 			if (damageoverlay > 0.0f) {
+				//WE.getEngineView().getSpriteBatch().setShader(new custom shader);
 				WE.getEngineView().getSpriteBatch().begin();
 				Texture texture = WE.getAsset("com/bombinggames/wurfelengine/core/images/bloodblur.png");
 				Sprite overlay = new Sprite(texture);

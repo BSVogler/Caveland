@@ -562,8 +562,8 @@ public class Camera implements MapObserver {
 		objectsToBeRendered = 0;
 		DataIterator<RenderBlock> iterator = new DataIterator<>(
 			cameraContent,//iterate over camera content
-			0, //from layer0
-			map.getBlocksZ()//one more because of ground layer
+			0, //from layer0 which is aeqeuivalent to -1
+			zRenderingLimit//one more because of ground layer
 		);
 		iterator.setBorders(
 			getVisibleLeftBorder() - getCoveredLeftBorder(),
@@ -574,7 +574,7 @@ public class Camera implements MapObserver {
 
 		if (WE.CVARS.getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
-			while (iterator.hasNext()) {//up to zRenderingLimit	it
+			while (iterator.hasNext()) {
 				RenderBlock block = iterator.next();
 				//only add if in viewMat plane to-do
 				if (
@@ -584,7 +584,6 @@ public class Camera implements MapObserver {
 					&& inViewFrustum(
 						block.getPosition().getViewSpcX(gameView),
 						block.getPosition().getViewSpcY(gameView))
-					&& (!zRenderinlimitEnabled || block.getPosition().getZ() < zRenderingLimit)
 				) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
@@ -594,7 +593,7 @@ public class Camera implements MapObserver {
 				}
 			}
 		} else {
-			while (iterator.hasNext()) {//up to zRenderingLimit
+			while (iterator.hasNext()) {
 				RenderBlock block = iterator.next();
 				if (block != null && !block.isHidden()) {
 					depthlist[objectsToBeRendered] = block;
@@ -617,7 +616,7 @@ public class Camera implements MapObserver {
 					entity.getPosition().getViewSpcX(gameView),
 					entity.getPosition().getViewSpcY(gameView)
 				)
-				&&  (!zRenderinlimitEnabled || entity.getPosition().getZGrid() < zRenderingLimit)
+				&& entity.getPosition().getZGrid() < zRenderingLimit
 			) {
 				depthlist[objectsToBeRendered] = entity;
 				objectsToBeRendered++;
@@ -740,9 +739,7 @@ public class Camera implements MapObserver {
 	/**
 	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
 	 */
-	protected void fillCameraContentBlocks() {
-		//fill viewFrustum with RenderBlock data
-		
+	private void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			map,
@@ -776,10 +773,11 @@ public class Camera implements MapObserver {
 			for (int y = 0; y < cameraContent[x].length; y++) {
 				cameraContent[x][y][0] = new RenderBlock(map.getGroundBlock().getId(), map.getGroundBlock().getValue());
 				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
+				//chek if clipped top
 				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
-					cameraContent[x][y][0].getBlockData().setClippedTop();//always clipped right
+					cameraContent[x][y][0].getBlockData().setClippedTop();
 				}
-				cameraContent[x][y][0].getBlockData().setClippedRight();
+				cameraContent[x][y][0].getBlockData().setClippedRight();//always clipped right
 				cameraContent[x][y][0].setPosition(
 					new Coordinate(
 						getCoveredLeftBorder() + x,

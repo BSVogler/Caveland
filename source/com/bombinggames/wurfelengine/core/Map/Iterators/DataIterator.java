@@ -47,6 +47,9 @@ public class DataIterator<T extends HasID> implements Iterator<T> {
 	private final int[] pos;
 	private final T[][][] data;
 	private int limitZ;
+	/**
+	 * index positions
+	 */
 	private int left, right, back, front;
 
 	/**
@@ -103,6 +106,7 @@ public class DataIterator<T extends HasID> implements Iterator<T> {
 
 	@Override
 	public void remove() {
+		data[pos[0]][pos[1]][pos[2]] = null;
 	}
 
 	/**

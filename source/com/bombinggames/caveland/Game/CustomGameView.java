@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.bombinggames.caveland.Game.igmenu.IGMenu;
@@ -364,6 +365,14 @@ public class CustomGameView extends GameView{
 			if (coop > -1)
 				getPlayer(1).getInventory().render(this,getCameras().get(1));
 		getSpriteBatch().end();
+		
+		if (getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
+			drawString(
+				"Cave Level:"+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
+				50, 50,
+				new Color(1, 1, 1, 1)
+			);
+		}
 	}
 
 	/**

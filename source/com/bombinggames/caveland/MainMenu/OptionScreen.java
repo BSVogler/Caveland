@@ -31,7 +31,7 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
  * @author Benedikt Vogler
  */
 public class OptionScreen extends WEScreen {
-	private Stage stage;
+	private final Stage stage;
 	private final ShapeRenderer shr;
     private final SpriteBatch batch;
     private final BitmapFont font;

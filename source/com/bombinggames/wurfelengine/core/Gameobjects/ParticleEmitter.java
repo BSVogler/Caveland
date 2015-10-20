@@ -29,13 +29,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
+import com.bombinggames.caveland.GameObjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**

@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;

@@ -9,7 +9,7 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.MineCart;
-import com.bombinggames.caveland.GameObjects.ParticleEmitter;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;

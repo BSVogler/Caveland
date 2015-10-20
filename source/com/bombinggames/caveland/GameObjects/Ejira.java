@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

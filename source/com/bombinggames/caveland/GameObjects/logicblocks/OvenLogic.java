@@ -35,7 +35,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.ParticleEmitter;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;

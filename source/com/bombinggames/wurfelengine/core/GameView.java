@@ -400,8 +400,9 @@ public class GameView extends View implements GameManager {
      * @param color
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
-        spriteBatch.setColor(color);
+        spriteBatch.setColor(Color.WHITE.cpy());
         spriteBatch.begin();
+			WE.getEngineView().getFont().setColor(color);
             WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
         spriteBatch.end();
     }

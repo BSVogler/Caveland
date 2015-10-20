@@ -359,7 +359,7 @@ public class Camera implements MapObserver {
 		int oldX = centerChunkX;
 		int oldY = centerChunkY;
 
-		Map chunkMap = (Map) map;
+		Map chunkMap = map;
 
 		//check if chunkswitch left
 		if (

@@ -72,7 +72,7 @@ public class Camera implements MapObserver {
 	private int zRenderingLimit = map.getBlocksZ();
 
 	/**
-	 * A 3d array which has the blocks in it which are possibly rendered. Only the relevant portion of the map is moved to this array.
+	 * A 3d array which has the blocks in it which are possibly rendered. Shoudl be 3x3 chunks. Only the relevant portion of the map is moved to this array.
 	 * Has the ground layer in 0, therefore offset in z of one
 	 * 
 	 */
@@ -382,32 +382,40 @@ public class Camera implements MapObserver {
 			centerChunkX++;
 		}
 
+		int dxMovement = getCenter().getChunkX()-oldX;
+		if (dxMovement > 1){
+			//above move does not work. use absolute position of center
+			centerChunkX = getCenter().getChunkX();
+		}
+		
 		//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative based.
-		/*
-		 if (
-		 getVisibleBackBorder()
-		 <
-		 chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
-		 //&& centerChunkX-1==//calculated xIndex -1
-		 ) {
-		 centerChunkY--;
-		 }
-		 //check in viewMat space
-		 if (
-		 position.y- getHeightInProjSpc()/2
-		 <
-		 map.getBlocksZ()*AbstractGameObject.VIEW_HEIGHT
-		 -AbstractGameObject.VIEW_DEPTH2*(
-		 chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
-		 )
-		 //&& centerChunkX-1==//calculated xIndex -1
-		 ) {
-		 centerChunkY++;
-		 }*/
-		//his line is needed because the above does not work
+		
+//		if (
+//		getVisibleBackBorder()
+//		<
+//		chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+//		//&& centerChunkX-1==//calculated xIndex -1
+//		) {
+//		centerChunkY--;
+//		}
+//		//check in viewMat space
+//		if (
+//		position.y- getHeightInProjSpc()/2
+//		<
+//		map.getBlocksZ()*Block.VIEW_HEIGHT
+//		-Block.VIEW_DEPTH2*(
+//		chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+//		)
+//		//&& centerChunkX-1==//calculated xIndex -1
+//		) {
+//		centerChunkY++;
+//		}
+
+		//this line is needed because the above does not work, calcualtes absolute position
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 
 		checkNeededChunks();
+		//if changed
 		if (oldX != centerChunkX || oldY != centerChunkY) {
 			fillCameraContentBlocks();
 		}

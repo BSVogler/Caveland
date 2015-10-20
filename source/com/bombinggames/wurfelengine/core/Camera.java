@@ -72,7 +72,9 @@ public class Camera implements MapObserver {
 	private int zRenderingLimit = map.getBlocksZ();
 
 	/**
-	 * has the ground layer in 0, therefore offset in z of one
+	 * A 3d array which has the blocks in it which are possibly rendered. Only the relevant portion of the map is moved to this array.
+	 * Has the ground layer in 0, therefore offset in z of one
+	 * 
 	 */
 	private final RenderBlock[][][] cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
 
@@ -380,7 +382,7 @@ public class Camera implements MapObserver {
 			centerChunkX++;
 		}
 
-		//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative baded.
+		//the following commented lines were working once and is still a preferable way to do this algo because it avoid spots wher small movements causes ofen recalcucating of HSD. At the moment is absolute calculated. The commented code is relative based.
 		/*
 		 if (
 		 getVisibleBackBorder()
@@ -736,7 +738,7 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * fill the viewMat frustum in the camera with renderblocks. Only done when content changes.
+	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
 	 */
 	protected void fillCameraContentBlocks() {
 		//fill viewFrustum with RenderBlock data
@@ -857,16 +859,16 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Returns the left border of the visible area.
+	 * Returns the left border of the actual visible area.
 	 *
-	 * @return measured in grid-coordinates
+	 * @return the left (X) border coordinate
 	 */
 	public int getVisibleLeftBorder() {
 		return (int) ((position.x - getWidthInProjSpc() / 2) / Block.VIEW_WIDTH - 1);
 	}
 
 	/**
-	 * Get the leftmost block-coordinate covered by the camera.
+	 * Get the leftmost block-coordinate covered by the camera cache.
 	 *
 	 * @return the left (X) border coordinate
 	 */

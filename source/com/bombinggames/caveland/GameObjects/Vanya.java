@@ -144,7 +144,7 @@ public class Vanya extends MovableEntity implements Interactable {
 				completedTutorialStep=3;
 			}
 			if (tutorialStep >= 4 && completedTutorialStep<4) {
-				flyTo(new Coordinate(17, 24, 4));
+				flyTo(new Coordinate(17, 24, 6));
 				completedTutorialStep=4;
 			}
 			if (tutorialStep >= 5 && completedTutorialStep<5) {

@@ -51,11 +51,16 @@ public class FloatCVar extends CVar {
 
 	@Override
 	public void setValue(Object value) {
-		if (value instanceof String) 
+		if (value instanceof String) {
 			this.value = Float.parseFloat((String) value);
-		else 
+		} else if (value instanceof Double) {
+			this.value = ((Double) value).floatValue();
+		}else {
 			this.value = (float) value;
-		if (flags == CVarFlags.CVAR_ARCHIVE) parent.save();
+		}
+		if (flags == CVarFlags.CVAR_ARCHIVE) {
+			parent.save();
+		}
 	}
 
 	@Override

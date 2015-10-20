@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.ActionBox;
 import static com.bombinggames.caveland.MainMenu.MainMenuScreen.manager;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 
@@ -42,6 +43,7 @@ public class OptionScreen extends WEScreen {
 	private CheckBox limitFPSCB;
 	private Slider musicSlider;
 	private Slider soundSlider;
+	private CheckBox aoCB;
 
 	/**
 	 *
@@ -61,26 +63,24 @@ public class OptionScreen extends WEScreen {
 	
 	private void fillStage() {
 		final SelectBox<String> sbox = new SelectBox<>(WE.getEngineView().getSkin());
-		if (WE.CVARS.getValueB("DevMode")) {
-			//fill with display modes
-			DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
-			//try to find current displaymode
-			Array<String> arstr = new Array<>();
-			int indexCurrentDPM = 0;
-			for (int i = 0; i < dpms.length; i++) {
-				arstr.add(dpms[i].toString().substring(0, dpms[i].toString().indexOf(",")));
-				if (dpms[i].width == Gdx.graphics.getWidth() && dpms[i].height == Gdx.graphics.getHeight()) {
-					indexCurrentDPM = i;
-				}
+		//fill with display modes
+		DisplayMode[] dpms = Gdx.graphics.getDisplayModes();
+		//try to find current displaymode
+		Array<String> arstr = new Array<>();
+		int indexCurrentDPM = 0;
+		for (int i = 0; i < dpms.length; i++) {
+			arstr.add(dpms[i].toString().substring(0, dpms[i].toString().indexOf(',')));
+			if (dpms[i].width == Gdx.graphics.getWidth() && dpms[i].height == Gdx.graphics.getHeight()) {
+				indexCurrentDPM = i;
 			}
-
-			sbox.setItems(arstr);
-			sbox.setSelectedIndex(indexCurrentDPM);
-			sbox.setWidth(150);
-			sbox.setPosition(stage.getWidth()/2-300, 500);
-		
-			stage.addActor(sbox);
 		}
+
+		sbox.setItems(arstr);
+		sbox.setSelectedIndex(indexCurrentDPM);
+		sbox.setWidth(150);
+		sbox.setPosition(stage.getWidth()/2-300, 500);
+
+		stage.addActor(sbox);
 		
 		
 		Label musicLabel = new Label("Music volume", WE.getEngineView().getSkin());
@@ -103,24 +103,30 @@ public class OptionScreen extends WEScreen {
 		Label soundLabel = new Label("Sound volume", WE.getEngineView().getSkin());
 		soundLabel.setPosition(stage.getWidth()/2-300, 370);
 		stage.addActor(soundLabel);
+		
 		soundSlider = new Slider(0, 1, 0.1f, false, WE.getEngineView().getSkin());
 		soundSlider.setPosition(stage.getWidth() / 2 - 300, 350);
 		soundSlider.setValue(1f);
 		stage.addActor(soundSlider);
 
-		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
-		fullscreenCB.setPosition(stage.getWidth() / 2 + 100, 600);
-
-		stage.addActor(fullscreenCB);
-
 		vsyncCB = new CheckBox("V-Sync", WE.getEngineView().getSkin());
-		vsyncCB.setPosition(stage.getWidth() / 2 + 100, 500);
+		vsyncCB.setPosition(stage.getWidth() / 2 + 100, 400);
 		stage.addActor(vsyncCB);
-
+		
+		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
+		fullscreenCB.setPosition(stage.getWidth() / 2 + 100, 450);
+		fullscreenCB.setChecked(WE.isFullscreen());
+		stage.addActor(fullscreenCB);
+		
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
 		limitFPSCB.setChecked(WE.CVARS.getValueI("limitFPS") > 0);
-		limitFPSCB.setPosition(stage.getWidth() / 2 + 100, 400);
+		limitFPSCB.setPosition(stage.getWidth() / 2 + 100, 500);
 		stage.addActor(limitFPSCB);
+		
+		aoCB = new CheckBox("Ambient Occlusion", WE.getEngineView().getSkin());
+		aoCB.setPosition(stage.getWidth() / 2 + 100, 550);
+		aoCB.setChecked(WE.CVARS.getValueF("ambientocclusion")>0);
+		stage.addActor(aoCB);
 
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
 		applyButton.setPosition(stage.getWidth() / 2 - 100, 100);
@@ -129,23 +135,29 @@ public class OptionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
-				if (WE.CVARS.getValueB("DevMode"))  {
-					Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
-					//Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
-					WE.CVARS.get("resolutionx").setValue(dpm.width);
-					WE.CVARS.get("resolutiony").setValue(dpm.height);
-					
-					MainMenuScreen.manager.setActionBox(
-						stage,
-						new ActionBox("Restart", ActionBox.BoxModes.SIMPLE, "You need to restart the game in order to aply the resolution.")
-					);
-				}
+				Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
+				//Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
+				WE.CVARS.get("resolutionx").setValue(dpm.width);
+				WE.CVARS.get("resolutiony").setValue(dpm.height);
+
+				MainMenuScreen.manager.setActionBox(
+					stage,
+					new ActionBox("Restart", ActionBox.BoxModes.SIMPLE, "You need to restart the game in order to aply the resolution.")
+				);
 				
 				//get FPS limit
-				if (limitFPSCB.isChecked())
-					WE.CVARS.get("limitFPS").setValue("60");
-				else WE.CVARS.get("limitFPS").setValue("0");
+				if (limitFPSCB.isChecked()) {
+					WE.CVARS.get("limitFPS").setValue(60);
+				} else {
+					WE.CVARS.get("limitFPS").setValue(0);
+				}
 				WE.getLwjglApplicationConfiguration().foregroundFPS = WE.CVARS.getValueI("limitFPS");
+				
+				if (aoCB.isChecked()) {
+					WE.CVARS.get("ambientocclusion").setValue(0.5f);
+				} else {
+					WE.CVARS.get("ambientocclusion").setValue(0f);
+				}
 				
 				//apply sound changes
 				WE.CVARS.get("music").setValue(musicSlider.getValue());
@@ -165,14 +177,22 @@ public class OptionScreen extends WEScreen {
 		});
 		stage.addActor(cancelButton);
 		
-		TextButton resetButton = new TextButton("Reset Game", WE.getEngineView().getSkin());
+		TextButton resetButton = new TextButton("Reset Game (erases save files)", WE.getEngineView().getSkin());
 		resetButton.setPosition(stage.getWidth()/2+100, 300);
 		resetButton.addListener(new ChangeListener() {
 
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				WorkingDirectory.delete();
-				System.exit(0);//exiting the game writes the cvars
+				ActionBox warning = new ActionBox("Reset Game", ActionBox.BoxModes.SIMPLE, "Warning! You are about to reinstall the game. All save games will be lost. Use right mouse button to cancel. Use left mosue button to confirm that you want to reset the game.");
+				warning.setConfirmAction((int result, AbstractEntity actor1) -> {
+					WorkingDirectory.delete();
+					System.exit(0);//exiting the game writes the cvars
+				});
+				MainMenuScreen.manager.setActionBox(
+					stage,
+					warning
+				);
+				
 			}
 		});
 		stage.addActor(resetButton);

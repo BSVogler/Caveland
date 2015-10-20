@@ -66,7 +66,8 @@ public class Explosion extends AbstractEntity {
 				for (int z = -radius; z < radius; z++) {
 					Coordinate coord = point.cpy().toCoord().addVector(x, y, z);
 					if (x * x + (y / 2) * (y / 2) + z * z <= radius * radius) {//check if in radius
-						coord.damage((byte) (damage * (1 - (x * x + (y / 2) * (y / 2) + z * z) / (radius * radius))));
+						coord.damage((byte) (100 * (1 - (x * x + (y / 2) * (y / 2) + z * z) / (radius * radius))));
+//						coord.damage((byte) (damage * (1 - (x * x + (y / 2) * (y / 2) + z * z) / (radius * radius))));
 
 						//get every entity which is attacked
 						ArrayList<MovableEntity> list

@@ -390,18 +390,18 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	/**
-     * called when gets damage
+     * called when gets damage. Health is between 0 and 100
      * @param value
      */
     public void damage(byte value) {
 		if (!indestructible) {
-			if (getHealth() > 0) {
+			if (health > 0) {
 				if (damageSounds != null && soundTimeLimit <= 0) {
 					//play random sound
 					WE.SOUND.play(damageSounds[(int) (Math.random() * (damageSounds.length - 1))], getPosition());
 					soundTimeLimit = 100;
 				}
-				setHealth((byte) (getHealth() - value));
+				setHealth(health - value);
 			} else {
 				setHealth((byte) 0);
 			}

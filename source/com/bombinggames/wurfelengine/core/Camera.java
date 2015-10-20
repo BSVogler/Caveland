@@ -438,7 +438,7 @@ public class Camera implements MapObserver {
 	 * @param y
 	 */
 	private void checkChunk(int x, int y) {
-		Map chunkMap = (Map) map;
+		Map chunkMap = map;
 		if (chunkMap.getChunk(x, y) == null) {
 			chunkMap.loadChunk(x, y);//load missing chunks
 		} else {

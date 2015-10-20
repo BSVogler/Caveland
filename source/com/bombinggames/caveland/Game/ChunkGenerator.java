@@ -138,7 +138,7 @@ public class ChunkGenerator implements Generator {
 					//exit to surface
 					portal.setTarget(new Coordinate(0, 0, 5));
 				} else {
-					portal.setTarget(getCaveExit(getCaveNumber(x, y, z)+1));
+					portal.setTarget(getCaveDown(getCaveNumber(x, y, z)-1));
 				}
 				//portal.setValue((byte) 1);
 				//portal.enableEnemySpawner();
@@ -175,10 +175,10 @@ public class ChunkGenerator implements Generator {
 	 * @param caveNumber start with 0
 	 * @return 
 	 */
-	public static Coordinate getCaveEntry(int caveNumber){
+	public static Coordinate getCaveUp(int caveNumber){
 		return new Coordinate(
 			(int) (roomWithPadding*caveNumber+g),
-			GENERATORBORDER+64,
+			GENERATORBORDER+66,
 			4
 		);
 	}
@@ -188,10 +188,10 @@ public class ChunkGenerator implements Generator {
 	 * @param caveNumber
 	 * @return 
 	 */
-	public static Coordinate getCaveExit(int caveNumber){
+	public static Coordinate getCaveDown(int caveNumber){
 		return new Coordinate(
-			(int) (roomWithPadding*caveNumber+10),
-			GENERATORBORDER+70,
+			(int) (roomWithPadding*caveNumber+11),
+			GENERATORBORDER+77,
 			4
 		);
 	}

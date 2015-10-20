@@ -79,9 +79,9 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					//move to new cave
 					int portalnumber = ChunkGenerator.getCaveNumber(getPosition());
 					if (portalnumber < 0) {//outside
-						portal.setTarget(ChunkGenerator.getCaveEntry(0));
+						portal.setTarget(ChunkGenerator.getCaveUp(0));
 					} else {
-						portal.setTarget(ChunkGenerator.getCaveEntry(portalnumber + 1));
+						portal.setTarget(ChunkGenerator.getCaveUp(portalnumber + 1));
 					}
 				}
 			}

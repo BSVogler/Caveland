@@ -68,9 +68,9 @@ public class Portal extends AbstractEntity  {
 			//move things in the portal
 			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
 				.forEach((AbstractEntity e) -> {
-					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10
+					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10//must be in the first part of the block
 						&& e != this //don't teleport itself
-						&& ((MovableEntity) e).isColiding()
+						&& ((MovableEntity) e).isColiding()//only teleport things which collide
 					) {
 						e.setPosition(getTarget());
 					}

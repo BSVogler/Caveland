@@ -843,10 +843,16 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		super.step();
 		Particle dust = (Particle) new Particle(
 			(byte) 22,
-			1000f
-		).spawn(getPosition().cpy().addVector((float) (40*Math.random()-20), (float) (40*Math.random()-20), 0));
+			700f
+		).spawn(
+			getPosition().cpy().addVector(
+				(float) (40*Math.random()-20),
+				(float) (40*Math.random()-20),
+				0
+			)
+		);
 		dust.setType(ParticleType.SMOKE);
-		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 1f));
+		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 0.8f));
 		dust.addMovement(
 			new Vector3(
 				-getMovementHor().x*0.1f,

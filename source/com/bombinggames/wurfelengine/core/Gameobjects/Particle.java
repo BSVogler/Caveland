@@ -1,6 +1,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 
 /**
  *
@@ -18,7 +19,8 @@ public class Particle extends MovableEntity {
 	 * if this reaches zero it is destroyed
 	 */
 	private float timeTillDeath;
-	private Color startingColor;
+	private Color startingColor = new Color(1, 1, 1, 0.5f);
+	private float startingAlpha;
 	private ParticleType type = ParticleType.REGULAR;
 
 	/**
@@ -65,6 +67,7 @@ public class Particle extends MovableEntity {
 	public void setColor(Color color) {
 		super.setColor(color);
 		startingColor = color.cpy();
+		startingAlpha = color.a;
 	}
 
 	/**
@@ -102,12 +105,12 @@ public class Particle extends MovableEntity {
 //			getPosition().addVector(step.scl(-1));//reverse step
 
 		setRotation(getRotation() - dt / 10f);
-		if (type.isGrowing()){
+		if (type.isGrowing()) {
 			setScaling(getScaling() + dt / 700f);
 		}
-		getColor().a = 0.5f;
 		if (type.fade()) {
-			getColor().a = timeTillDeath / maxtime;
+			float t = (timeTillDeath) / maxtime;
+			getColor().a = startingAlpha*Interpolation.fade.apply(t);
 		}
 		if (type.fadeToBlack()) {
 			getColor().r = startingColor.r * (timeTillDeath / maxtime);

@@ -278,7 +278,15 @@ public class Controller implements GameManager, MapObserver {
     
 	@Override
     public void exit(){
-		Gdx.app.debug("MEController", "exited");
+		Gdx.app.debug("Controller", "exited");
+	}
+	
+	/**
+	 * saves the map and the complete game state
+	 * @return 
+	 */
+	public boolean save(){
+		return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
 	}
 
 	@Override

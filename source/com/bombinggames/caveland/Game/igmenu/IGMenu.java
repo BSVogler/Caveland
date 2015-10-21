@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.caveland.Game.CustomGameView;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
 
 /**
  * A menu for some basic options to show during gameplay
@@ -93,8 +92,7 @@ public class IGMenu extends WidgetGroup {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				super.touchDown(event, x, y, pointer, button);
-				Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
-				return true;
+				return view.getController().save();
 			}
 		});
 		addActor(save);

@@ -186,4 +186,19 @@ public class CustomGameController extends Controller {
 		player2 = new Ejira(2);
 		player2.setColor(new Color(0.4f, 0.55f, 0.55f, 1));
 	}
+
+	/**
+	 *
+	 * @return 
+	 */
+	@Override
+	public boolean save() {
+		if (player1.hasPosition()) {
+			Coordinate coord = player1.getPosition().toCoord();
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
+			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
+		}
+		return super.save();
+	}
 }

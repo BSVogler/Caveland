@@ -138,7 +138,7 @@ public class EditorView extends GameView {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
+				controller.save();
 			}
 		});
 		getStage().addActor(savebutton);

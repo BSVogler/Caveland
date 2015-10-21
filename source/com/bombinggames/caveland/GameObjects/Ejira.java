@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +28,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Controllable;
 import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
@@ -868,12 +868,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void dispose() {
-		if (hasPosition()) {
-			Coordinate coord = getPosition().toCoord();
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
-		}
 		emitter.dispose();
 		emitter2.dispose();
 		super.dispose();

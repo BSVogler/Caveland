@@ -5,7 +5,6 @@
  */
 package com.bombinggames.wurfelengine.core.console;
 
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import java.util.StringTokenizer;
 
@@ -22,7 +21,7 @@ public class SaveCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
-		return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
+		return gameplay.getController().save();
 	}
 
 	@Override

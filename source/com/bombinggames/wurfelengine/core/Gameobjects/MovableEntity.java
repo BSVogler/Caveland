@@ -452,40 +452,35 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	
 	/**
-	 * check for horizontal colission (x and y)
+	 * check for horizontal colission (x and y)<br/>
+	 * O(1)
 	 *
 	 * @param pos the new position
 	 * @param colissionRadius
 	 * @return true if colliding horizontal
 	 */
 	public boolean collidesHorizontal(final Point pos, final float colissionRadius) {
-		boolean colission = false;
-
         //check for movement in y
 		//top corner
 		Block block = pos.cpy().addVector(0, -colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
-			colission = true;
+			return true;
 		}
 		//bottom corner
 		block = pos.cpy().addVector(0, colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
-			colission = true;
+			return true;
 		}
 
         //check X
 		//left
 		block = pos.cpy().addVector(-colissionRadius, 0, 0).getBlock();
 		if (block != null && block.isObstacle()) {
-			colission = true;
+			return true;
 		}
 		//bottom corner
 		block = pos.cpy().addVector(colissionRadius, 0, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			colission = true;
-		}
-
-		return colission;
+		return block != null && block.isObstacle();
 	}
     
     /**

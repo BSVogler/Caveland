@@ -72,16 +72,27 @@ public class EntityShadow extends AbstractEntity {
 			}
 
 			setPosition(character.getPosition().cpy());
-			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().getZ());
-			setColor(
-				new Color(.5f, .5f, .5f, 1 - (character.getPosition().getZ() - getPosition().getZ()) / 2 / Block.GAME_EDGELENGTH+0.1f)
-			);
+			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().addVector(0, 0, -2).getZ());
 		}
 	}
 
 	@Override
 	public void render(GameView view, Camera camera) {
 		if (!shouldBeDisposed()) {
+			setScaling(0);
+			setColor(
+				new Color(
+					.5f,
+					.5f,
+					.5f,
+					1 - (character.getPosition().getZ() - getPosition().getZ()) / 2 / Block.GAME_EDGELENGTH+0.1f
+				)
+			);
+			super.render(view, camera);
+			setColor(
+				new Color(.5f, .5f, .5f, 0.2f)
+			);
+			setScaling(-0.5f);
 			super.render(view, camera);
 		}
 	}

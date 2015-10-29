@@ -49,9 +49,9 @@ import static com.bombinggames.wurfelengine.core.Controller.getMap;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -110,12 +110,12 @@ public class EditorView extends GameView {
 		);
         addCamera(camera);
         
-		leftColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), true);
+		leftColorGUI = new PlacableGUI(getStage(), this.controller.getCursor(), true);
 		getStage().addActor(leftColorGUI);
         leftSelector = new PlacableTable(leftColorGUI, true);
         getStage().addActor(leftSelector);
 		
-		rightColorGUI = new PlacableGUI(getStage(), this.controller.getSelectionEntity(), false);
+		rightColorGUI = new PlacableGUI(getStage(), this.controller.getCursor(), false);
 		getStage().addActor(rightColorGUI);
         rightSelector = new PlacableTable(rightColorGUI, false);
         getStage().addActor(rightSelector);
@@ -146,7 +146,7 @@ public class EditorView extends GameView {
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 		
-		toolSelection = new Toolbar(this, spritesheet, leftSelector, rightSelector);
+		toolSelection = new Toolbar(this, spritesheet, leftSelector, rightSelector, controller.getCursor());
 		getStage().addActor(toolSelection);
     }
 
@@ -292,7 +292,7 @@ public class EditorView extends GameView {
 		 * the z layer during touch down
 		 */
         private int dragLayer;
-        private final Selection selection;
+        private final Cursor selection;
 		private Coordinate bucketDown;
 		private int lastX;
 		private int lastY;
@@ -300,7 +300,7 @@ public class EditorView extends GameView {
         EditorInputListener(Controller controller, EditorView view) {
             this.controller = controller;
             this.view = view;
-            selection = controller.getSelectionEntity();
+            selection = controller.getCursor();
         }
 
 
@@ -502,7 +502,7 @@ public class EditorView extends GameView {
 			//dragging with left and draw tool
 			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.DRAW)
 				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)) {
-				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
+				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlock(coords) == null) {
@@ -515,7 +515,7 @@ public class EditorView extends GameView {
 			if ((buttondown==Buttons.LEFT && toolSelection.getLeftTool()== Toolbar.Tool.REPLACE)
 				|| (buttondown==Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.REPLACE)
 			) {
-				Coordinate coords = controller.getSelectionEntity().getPosition().toCoord();
+				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlock(coords) != null) {

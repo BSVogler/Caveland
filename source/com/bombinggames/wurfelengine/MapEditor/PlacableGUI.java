@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +69,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param selection the selection-Entity where the color comes from
 	 * @param left left mouse button tool?
 	 */
-	public PlacableGUI(Stage stage, Selection selection, boolean left) {
+	public PlacableGUI(Stage stage, Cursor selection, boolean left) {
 		this.stage = stage;
 
 		image = new Image(new BlockDrawable(getId(), getValue(), -0.4f));
@@ -117,7 +117,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * 
 	 * @param selection the selection entity of the editor
 	 */
-	public void update(Selection selection){
+	public void update(Cursor selection){
 		if (selection.hasPosition())
 			blockPosition.setText(selection.getPosition().toCoord().toString());
 	}

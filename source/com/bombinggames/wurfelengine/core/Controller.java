@@ -36,7 +36,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Selection;
+import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Map;
@@ -142,7 +142,7 @@ public class Controller implements GameManager, MapObserver {
 	private int saveSlot;
 	private String mapName = "default";
 	protected ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
-	protected final Selection selectionEntity = new Selection();
+	protected final Cursor selectionEntity = new Cursor();
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called before calling init().
@@ -327,7 +327,7 @@ public class Controller implements GameManager, MapObserver {
 	 *Get the entity laying under the cursor.
 	 * @return
 	 */
-	public Selection getSelectionEntity() {
+	public Cursor getCursor() {
 		return selectionEntity;
 	}
 

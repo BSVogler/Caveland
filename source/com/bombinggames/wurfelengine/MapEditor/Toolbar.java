@@ -40,6 +40,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 
 /**
  * A toolbar for the editor.
@@ -47,6 +48,8 @@ import com.bombinggames.wurfelengine.core.GameView;
  * @author Benedikt Vogler
  */
 public class Toolbar extends Window {
+
+	private final Cursor cursor;
 
 	/**
 	 * a enum listing the available tools
@@ -56,38 +59,40 @@ public class Toolbar extends Window {
 		/**
 		 * tool to draw blocks
 		 */
-		DRAW(0, "draw_button", true, false),
+		DRAW(0, "draw_button", true, false, true),
 		/**
 		 * tool to cover an area with blocks
 		 */
-		BUCKET(1, "bucket_button", true, false),
+		BUCKET(1, "bucket_button", true, false, false),
 		/**
 		 * "repaints" blocks
 		 */
-		REPLACE(2, "replace_button", true, false),
+		REPLACE(2, "replace_button", true, false, false),
 		/**
 		 * select and move entities
 		 */
-		SELECT(3, "pointer_button", false, false),
+		SELECT(3, "pointer_button", false, false, false),
 		/**
 		 * spawn new entities
 		 */
-		SPAWN(4, "entity_button", false, true),
+		SPAWN(4, "entity_button", false, true, true),
 		/**
 		 * replace blocks with air
 		 */
-		ERASE(5, "eraser_button", false, false);
+		ERASE(5, "eraser_button", false, false, false);
 
-		private int id;
-		private String name;
-		private boolean selectFromBlocks;
-		private boolean selectFromEntities;
+		private final int id;
+		private final String name;
+		private final boolean selectFromBlocks;
+		private final boolean selectFromEntities;
+		private final boolean showNormal;
 
-		private Tool(int id, String name, boolean worksOnBlocks, boolean worksOnEntities) {
+		private Tool(int id, String name, boolean worksOnBlocks, boolean worksOnEntities, boolean showNormal) {
 			this.id = id;
 			this.name = name;
 			this.selectFromBlocks = worksOnBlocks;
 			this.selectFromEntities = worksOnEntities;
+			this.showNormal = showNormal;
 		}
 
 		/**
@@ -118,8 +123,6 @@ public class Toolbar extends Window {
 	private Tool selectionLeft = Tool.DRAW;
 	private Tool selectionRight = Tool.ERASE;
 
-	private int leftPos;
-	private int bottomPos;
 	private final GameView view;
 
 	private final Image[] items = new Image[Tool.values().length];
@@ -133,21 +136,23 @@ public class Toolbar extends Window {
 	 * @param sprites
 	 * @param left
 	 * @param right
+	 * @param cursor
 	 */
-	public Toolbar(GameView view, TextureAtlas sprites, PlacableTable left, PlacableTable right) {
+	public Toolbar(GameView view, TextureAtlas sprites, PlacableTable left, PlacableTable right, Cursor cursor) {
 		super("Tools", WE.getEngineView().getSkin());
 		
 		this.view = view;
 		
-		leftPos = (int) (view.getStage().getWidth() / 2 - items.length * 50 / 2);
-		bottomPos = (int) (view.getStage().getHeight() - 100);
-
-		setPosition(leftPos, bottomPos);
+		setPosition(
+			view.getStage().getWidth() / 2 - items.length * 50 / 2,
+			view.getStage().getHeight() - 100
+		);
 		setWidth(Tool.values().length * 25);
 		setHeight(45);
 		
 		this.leftTable = left;
 		this.rightTable = right;
+		this.cursor = cursor;
 
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
@@ -232,6 +237,7 @@ public class Toolbar extends Window {
 					this.leftTable.hide(true);
 				}
 			}
+			cursor.showNormal(tool.showNormal);
 		} else {
 			if (tool.selectFromBlocks) { //show entities on leftTable
 				rightTable.showBlocks(view);

@@ -41,7 +41,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  *The seletion indicator in the level editor.
  * @author Benedikt Vogler
  */
-public class Selection extends AbstractEntity {
+public class Cursor extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
     private SimpleEntity normal;
     private Side normalSide;
@@ -49,7 +49,7 @@ public class Selection extends AbstractEntity {
     /**
      *
      */
-    public Selection() {
+    public Cursor() {
         super((byte) 13);
 		setSaveToDisk(false);
 		setName("selectionEntity");
@@ -148,4 +148,12 @@ public class Selection extends AbstractEntity {
 			setNormal(intersect.getNormal());
 		}
     }
+
+	/**
+	 * 
+	 * @param show 
+	 */
+	public void showNormal(boolean show) {
+		normal.setHidden(!show);
+	}
 }

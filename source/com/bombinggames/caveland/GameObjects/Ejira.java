@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -542,6 +542,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			item.preventPickup(this, 400);
 			item.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1f));
 			item.setHidden(false);
+		} else {
+			WE.SOUND.play("throwFail");
 		}
 	}
 	

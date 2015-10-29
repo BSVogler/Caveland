@@ -570,7 +570,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	}
 	
 	/**
-	 * does an attack move
+	 * does an attack move and starts the loading of the power attack	
 	 *
 	 * @param damage custom damage
 	 */

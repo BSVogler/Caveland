@@ -775,12 +775,14 @@ public class CustomGameView extends GameView{
     }
 	
 	/**
-	 * is the focus of the player on the game or is it redirected?
+	 * is the focus of the player on the game or is it redirected by some popup?
 	 * @param playerId starts with 0
 	 * @return 
 	 */
 	private boolean focusOnGame(int playerId){
-		return !WE.getConsole().isActive() && openDialogue[playerId] == null && modalGroup == null;
+		return !WE.getConsole().isActive()
+			&& openDialogue[playerId] == null
+			&& modalGroup == null;
 	}
 	
 	/**

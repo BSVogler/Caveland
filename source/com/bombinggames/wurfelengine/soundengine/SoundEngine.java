@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.SoundEngine;
+package com.bombinggames.wurfelengine.soundengine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -61,16 +61,16 @@ public class SoundEngine {
 	 * loads and registers the ig-sounds
 	 */
 	public void loadRegisterIGSounds(){
-		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav", Sound.class);
-		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav", Sound.class);
-		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg", Sound.class);
-		WE.getAssetManager().load("com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/landing.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/splash.wav", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/wind.ogg", Sound.class);
+		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/explosion2.wav", Sound.class);
 		WE.getAssetManager().finishLoading();
 		
-		register("landing", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/landing.wav");
-		register("splash", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/splash.wav");
-		register("wind", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/wind.ogg");
-		register("explosion", "com/bombinggames/wurfelengine/core/SoundEngine/Sounds/explosion2.wav");
+		register("landing", "com/bombinggames/wurfelengine/soundengine/sounds/landing.wav");
+		register("splash", "com/bombinggames/wurfelengine/soundengine/sounds/splash.wav");
+		register("wind", "com/bombinggames/wurfelengine/soundengine/sounds/wind.ogg");
+		register("explosion", "com/bombinggames/wurfelengine/soundengine/sounds/explosion2.wav");
 	}
 	
 	/**

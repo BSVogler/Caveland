@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.SoundEngine;
+package com.bombinggames.wurfelengine.soundengine;
 
 import com.badlogic.gdx.audio.Sound;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;

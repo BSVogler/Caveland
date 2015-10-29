@@ -54,10 +54,10 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
-import com.bombinggames.wurfelengine.core.SoundEngine.SoundEngine;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.console.Console;
+import com.bombinggames.wurfelengine.soundengine.SoundEngine;
 import java.io.File;
 import java.util.ArrayList;
 

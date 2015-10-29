@@ -9,7 +9,6 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.MineCart;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
@@ -26,6 +25,7 @@ import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
@@ -57,7 +57,7 @@ public class Caveland {
 		WE.CVARS.register( new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "godmode", CVar.CVarFlags.CVAR_ARCHIVE);
-		
+		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime", CVar.CVarFlags.CVAR_ARCHIVE);//time in ms for item drop
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
 		

@@ -33,8 +33,7 @@ public class CustomGameView extends GameView{
 	 */
 	private float inventoryDownP1 =-1;
 	private int inventoryDownP2;
-	private float throwDownP1 =-1;
-	private float throwDownP2 =-1;
+	private float[] throwDown =new float[]{-1,-1};
 	private float useDownP1 =-1;
 	private float useDownP2 =-1;
 	/**
@@ -321,22 +320,22 @@ public class CustomGameView extends GameView{
 				getPlayer(1).useItem(this);
 			}
 		
-		if (throwDownP1 == 0) {
+		if (throwDown[0] == 0) {
 			getPlayer(0).prepareThrow();
 		}
-		if (throwDownP1 >= 600) {
+		if (throwDown[0] >= WE.CVARS.getValueF("playerItemDropTime")) {
 			getPlayer(0).dropItem();
-			throwDownP1 = -1;
+			throwDown[0] = -1;
 		}
 
-		if (throwDownP2 >= 600) {
+		if (throwDown[1] >= WE.CVARS.getValueF("playerItemDropTime")) {
 			getPlayer(1).dropItem();
-			throwDownP2 = -1;
+			throwDown[1] = -1;
 		}
 		
 		
 		if (coop > -1) {
-			if (throwDownP2 == 0) {
+			if (throwDown[1] == 0) {
 				getPlayer(1).prepareThrow();
 			}
 		}
@@ -345,10 +344,10 @@ public class CustomGameView extends GameView{
 			inventoryDownP1+=dt;
 		if (inventoryDownP2>-1)
 			inventoryDownP2+=dt;
-		if (throwDownP1 > -1)
-			throwDownP1 += dt;
-		if (throwDownP2 > -1)
-			throwDownP2 += dt;
+		if (throwDown[0] > -1)
+			throwDown[0] += dt;
+		if (throwDown[1] > -1)
+			throwDown[1] += dt;
 		if (useDownP1>-1)
 			useDownP1+=dt;
 		if (useDownP2>-1)
@@ -437,9 +436,9 @@ public class CustomGameView extends GameView{
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonX")){//X
 				if (id==0)
-					parent.throwDownP1 = 0;
+					parent.throwDown[0] = 0;
 				else
-					parent.throwDownP2 = 0;
+					parent.throwDown[1] = 0;
 			}
 			
 			if (buttonCode == WE.CVARS.getValueI("controller"+OS+"ButtonY")) //14=Y
@@ -464,12 +463,15 @@ public class CustomGameView extends GameView{
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonX")){
-				if (id==0) {
-					parent.throwDownP1 = -1;
-				} else
-					parent.throwDownP2 = -1;
-				player.throwItem();
+			if (buttonCode == WE.CVARS.getValueI("controller" + OS + "ButtonX")) {
+				if (id == 0) {
+					parent.throwDown[0] = -1;
+				} else {
+					parent.throwDown[1] = -1;
+				}
+				if (throwDown[player.getPlayerNumber()-1] >= WE.CVARS.getValueF("playerItemDropTime")) {
+					player.throwItem();
+				}
 			}
 			
 			if (buttonCode==WE.CVARS.getValueI("controller"+OS+"ButtonY"))
@@ -576,13 +578,19 @@ public class CustomGameView extends GameView{
 					if (keycode == Input.Keys.C) //Select
 						toogleCrafting(0);
 					
-					if (keycode==Input.Keys.NUM_1)
+					if (keycode == Input.Keys.N)
+						getPlayer(0).attack();
+					
+					if (keycode == Input.Keys.M)
+						throwDown[0] = 0;
+					
+					if (keycode == Input.Keys.NUM_1)
 						getPlayer(0).getInventory().switchItems(true);
 
-					if (keycode==Input.Keys.NUM_2)
+					if (keycode == Input.Keys.NUM_2)
 						getPlayer(0).getInventory().switchItems(false);
 
-					if (keycode==Input.Keys.SPACE)
+					if (keycode == Input.Keys.SPACE)
 						getPlayer(0).jump();
 				}
 			
@@ -649,7 +657,7 @@ public class CustomGameView extends GameView{
 						}
 
 						if (keycode == Input.Keys.M) {
-							throwDownP1 = 0;
+							throwDown[0] = 0;
 						}
 					}
 					
@@ -664,7 +672,7 @@ public class CustomGameView extends GameView{
 						}
 
 						if (keycode == Input.Keys.NUMPAD_2) {
-							throwDownP2=0;
+							throwDown[1]=0;
 						}
 
 						if (keycode == Input.Keys.NUMPAD_3) {
@@ -690,24 +698,29 @@ public class CustomGameView extends GameView{
 
         @Override
         public boolean keyUp(int keycode) {
-			if (coop==0){
-				if (focusOnGame(0)) {
-					if (keycode == Input.Keys.N){
-						getPlayer(0).attackLoadingStopped();
-					}
+			if (focusOnGame(0)) {
+				if (keycode == Input.Keys.N){
+					getPlayer(0).attackLoadingStopped();
+				}
 
-					if (keycode == Input.Keys.M){
+				if (keycode == Input.Keys.M) {
+					if (throwDown[0] >= WE.CVARS.getValueF("playerItemDropTime")) {
 						getPlayer(0).throwItem();
 					}
+					throwDown[1] = -1;
 				}
-				
-				if (focusOnGame(0)) {
+			}
+			if (coop == 0){
+				if (focusOnGame(1)) {
 					if (keycode==Input.Keys.NUMPAD_1){
 						getPlayer(1).attackLoadingStopped();
 					}
 
-					if (keycode==Input.Keys.NUMPAD_2){
-						getPlayer(1).throwItem();
+					if (keycode == Input.Keys.NUMPAD_2) {
+						if (throwDown[1] >= WE.CVARS.getValueF("playerItemDropTime")) {
+							getPlayer(1).throwItem();
+						}
+						throwDown[1] = -1;
 					}
 				}
 			}
@@ -727,7 +740,7 @@ public class CustomGameView extends GameView{
 					getPlayer(0).attack();
 
 				if (button == Buttons.RIGHT) {
-					throwDownP1 = 0;
+					throwDown[0] = 0;
 				}
 			}
             return true;
@@ -746,7 +759,7 @@ public class CustomGameView extends GameView{
 			if (button == Buttons.RIGHT) {
 				if (focusOnGame(0)) {
 					getPlayer(0).throwItem();
-					throwDownP1 = -1;
+					throwDown[0] = -1;
 				}
 				if (openDialogue[0] != null) {
 					openDialogue[0].cancel(getPlayer(0));

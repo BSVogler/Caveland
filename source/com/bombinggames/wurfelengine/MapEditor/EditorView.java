@@ -91,6 +91,10 @@ public class EditorView extends GameView {
 	 * start of selection in view space
 	 */
 	private int selectDownY;
+	/**
+	 * the direction where the entities move
+	 */
+	private int moveEntities;
 
     @Override
     public void init(final Controller controller, final GameView oldView) {
@@ -275,6 +279,13 @@ public class EditorView extends GameView {
 			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "screen"-game time
 			camera.move((int) (camermove.x * cameraspeed * rdt), (int) (camermove.y * cameraspeed * rdt));
 		}
+		
+		//move selected entities up or down
+		if (moveEntities != 0) {
+			controller.getSelectedEntities().forEach(
+				(AbstractEntity e) -> e.getPosition().setZ(e.getPosition().getZ()+moveEntities*5)
+			);
+		}
 	}
 
     
@@ -315,6 +326,14 @@ public class EditorView extends GameView {
 			
 			if (keycode == Keys.ESCAPE)
 				WE.switchView(gameplayView, false);
+			
+			if (keycode == Keys.E) {
+				moveEntities = 1;
+			}
+
+			if (keycode == Keys.Q) {
+				moveEntities = -1;
+			}
 
 			//manage camera movement
 			if (keycode == Input.Keys.W)
@@ -371,11 +390,14 @@ public class EditorView extends GameView {
                 )
                 view.setCameraMoveVector(view.getCameraMoveVector().x, 0);
             
-            if (keycode == Input.Keys.A
-                 || keycode == Input.Keys.D
-                )
-                view.setCameraMoveVector(0, view.getCameraMoveVector().y);
-             
+           if (keycode == Input.Keys.A
+				|| keycode == Input.Keys.D) {
+				view.setCameraMoveVector(0, view.getCameraMoveVector().y);
+			}
+		   
+		   if (keycode == Keys.E || keycode == Keys.Q) {
+				moveEntities = 0;
+			}
             
             return false;
         }

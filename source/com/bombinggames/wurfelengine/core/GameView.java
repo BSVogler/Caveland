@@ -50,18 +50,25 @@ import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.LoadMenu;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The GameView manages everything what should be drawn in an active game in game space.
  * @author Benedikt
  */
-public class GameView extends View implements GameManager {
+public class GameView implements GameManager {
 	/**
 	 * the cameras rendering the scene
 	 */
     private final ArrayList<Camera> cameras = new ArrayList<>(6);//max 6 cameras
     
-    
+	/**
+	 * true if current rendering is debug only
+	 */
+	private boolean inDebug;
+	
+    private ShaderProgram shader;
     private ShapeRenderer shRenderer;
     
     private Controller controller;
@@ -119,8 +126,12 @@ public class GameView extends View implements GameManager {
 	 * @see #onEnter() 
 	 */
 	public void init(final Controller controller, final GameView oldView) {
-		super.init();
 		Gdx.app.debug("GameView", "Initializing");
+		try {
+			loadShaders();
+		} catch (Exception ex) {
+			Logger.getLogger(GameView.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 		this.controller = controller;
 
@@ -144,6 +155,71 @@ public class GameView extends View implements GameManager {
 		useDefaultShader();//set default shader
 
 		initalized = true;
+	}
+	
+	
+	/**
+	 * Get the loaded shader program of the view.
+	 *
+	 * @return
+	 */
+	public ShaderProgram getShader() {
+		return shader;
+	}
+	
+	/**
+	 * enable debug rendering only
+	 *
+	 * @param debug
+	 */
+	void setDebugRendering(boolean debug) {
+		this.inDebug = debug;
+	}
+
+	/**
+	 *
+	 * @return true if current rendering is debug only
+	 */
+	public boolean debugRendering() {
+		return inDebug;
+	}
+
+	/**
+	 * reloads the shaders
+	 * @throws java.lang.Exception
+	 */
+	public void loadShaders() throws Exception {
+		Gdx.app.debug("Shader", "loading");
+		String vertexShader;
+		String fragmentShader;
+		//shaders are very fast to load and the asset loader does not support text files out of the box
+		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertexNM.vs").readString();
+			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragmentNM.fs").readString();
+		} else {
+			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertex.vs").readString();
+			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragment.fs").readString();
+		}
+		//Setup shader
+		ShaderProgram.pedantic = false;
+
+		ShaderProgram newshader = new ShaderProgram(vertexShader, fragmentShader);
+		if (newshader.isCompiled()) {
+			shader = newshader;
+		} else if (shader == null) {
+			throw new Exception("Could not compile shader: " + newshader.getLog());
+		}
+
+		//print any warnings
+		if (shader.getLog().length() != 0) {
+			System.out.println(shader.getLog());
+		}
+
+		//setup default uniforms
+		shader.begin();
+		//our normal map
+		shader.setUniformi("u_normals", 1); //GL_TEXTURE1
+		shader.end();
 	}
 
 	/**
@@ -434,7 +510,6 @@ public class GameView extends View implements GameManager {
      *
      * @return
      */
-    @Override
     public ShapeRenderer getShapeRenderer() {
         return shRenderer;
     }
@@ -502,7 +577,6 @@ public class GameView extends View implements GameManager {
      * Game view dependent spriteBatch
      * @return 
      */
-    @Override
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
     }

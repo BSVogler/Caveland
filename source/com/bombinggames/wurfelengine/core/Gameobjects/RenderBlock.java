@@ -45,7 +45,6 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.View;
 
 /**
  * A RenderBlock is a piece of information and a geometrical object.<br> It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. The class extends the simple data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared so changing this {@link RenderBlock} changes the data in the map.
@@ -467,7 +466,7 @@ public class RenderBlock extends AbstractGameObject {
      * @param yPos rendering position
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Side side){
+    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side){
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
 			color = Controller.getLightEngine().getColor(side);
@@ -490,7 +489,7 @@ public class RenderBlock extends AbstractGameObject {
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered. If null color gets ignored
      */
-    public void renderSide(final View view, final int xPos, final int yPos, final Side side, Color color){
+    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color){
         Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getSpriteValue(), side));
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {

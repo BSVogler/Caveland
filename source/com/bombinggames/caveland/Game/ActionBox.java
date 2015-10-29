@@ -26,8 +26,6 @@ public class ActionBox extends WidgetGroup {
 	 */
 	private final Window window;
 	private final BoxModes mode;
-	private Image confirm;
-	private Image cancel;
 	private ArrayList<String> selectionNames;
 	private int selection;
 	private String text;
@@ -84,18 +82,24 @@ public class ActionBox extends WidgetGroup {
 
 		TextureAtlas.AtlasRegion sprite = AbstractGameObject.getSprite('i', 23, 0);
 		if (sprite != null) {
-			confirm = new Image(new TextureRegionDrawable(sprite));
+			Image confirm = new Image(new TextureRegionDrawable(sprite));
 			confirm.setPosition(window.getWidth() - 50, -40);
 			addActor(confirm);
 		}
+		Label confirmLabel = new Label("Confirm", WE.getEngineView().getSkin());
+		confirmLabel.setPosition(window.getWidth() - 50, -40);
+		addActor(confirmLabel);
 		
-		sprite = AbstractGameObject.getSprite('i', 23, 2);
-		if (sprite != null) {
-			if (mode != BoxModes.SIMPLE) {
-				cancel = new Image(new TextureRegionDrawable(AbstractGameObject.getSprite('i', 23, 2)));
+		if (mode != BoxModes.SIMPLE) {
+			sprite = AbstractGameObject.getSprite('i', 23, 2);
+			if (sprite != null) {
+				Image cancel = new Image(new TextureRegionDrawable(sprite));
 				cancel.setPosition(window.getWidth() - 250, -40);
 				addActor(cancel);
 			}
+			Label cancelLabel = new Label("Cancel", WE.getEngineView().getSkin());
+			cancelLabel.setPosition(window.getWidth() - 250, -40);
+			addActor(cancelLabel);
 		}
 	}
 

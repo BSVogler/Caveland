@@ -1,14 +1,13 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
- * A movable entity with special caveland logic,
+ * A movable entity with special caveland logic.
  * @author Benedikt Vogler
  */
 public class CLMovableEntity extends MovableEntity {
@@ -35,17 +34,33 @@ public class CLMovableEntity extends MovableEntity {
 	@Override
 	public boolean collidesHorizontal(Point pos, float colissionRadius) {
 		//check for total height blocking blocks
-		int x = pos.toCoord().getX();
-		int y = pos.toCoord().getY();
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
-			Block block = Controller.getMap().getBlock(x, y, z);
-			if (
-				block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()//dornbusch
-			) {
+			Point checkpos = pos.cpy();
+			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
+			
+			Block block = checkpos.addVector(0, -colissionRadius, 0).getBlock();
+			if (block != null
+				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				return true;
+			}
+			block = checkpos.addVector(0, 2*colissionRadius, 0).getBlock();
+			if (block != null
+				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				return true;
+			}
+			block = checkpos.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+			if (block != null
+				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				return true;
+			}
+			block = checkpos.addVector(2*colissionRadius, 0, 0).getBlock();
+			if (block != null
+				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
 		}
+		
+		
 		//do regular check
 		return super.collidesHorizontal(pos, colissionRadius);
 	}

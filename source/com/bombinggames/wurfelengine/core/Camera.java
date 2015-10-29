@@ -111,6 +111,9 @@ public class Camera implements MapObserver {
 	 */
 	private int screenPosX, screenPosY;
 
+	/*
+	default is 1, higher is closer
+	*/	
 	private float zoom = 1;
 
 	private AbstractEntity focusEntity;
@@ -803,9 +806,9 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Set the zoom factor and regenerates the sprites.
+	 * Set the zoom factor.
 	 *
-	 * @param zoom
+	 * @param zoom 1 is default
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;

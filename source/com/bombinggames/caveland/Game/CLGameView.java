@@ -89,7 +89,7 @@ public class CLGameView extends GameView{
 		WE.SOUND.register("construct", "com/bombinggames/caveland/sounds/construct.wav");
 		WE.SOUND.register("huhu", "com/bombinggames/caveland/sounds/huhu.wav");
 		
-		if (coop >- 1){//it is a coop game
+		if (coop > -1){//it is a coop game
 			Camera camera0;
 			if (WE.CVARS.getValueB("coopVerticalSplitScreen")) {
 				camera0  = new Camera(
@@ -111,6 +111,7 @@ public class CLGameView extends GameView{
 					this
 				);
 			}
+			camera0.setZoom(WE.CVARS.getValueF("coopZoom"));
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 			
@@ -135,6 +136,7 @@ public class CLGameView extends GameView{
 					this
 				);
 			}
+			camera1.setZoom(WE.CVARS.getValueF("coopZoom"));
 			addCamera(camera1);
 			getPlayer(1).setCamera(camera1);
 		} else {
@@ -162,7 +164,7 @@ public class CLGameView extends GameView{
 	 * @see CustomGameController#getPlayer(int) 
 	 */
 	public Ejira getPlayer(int id){
-		return ((CustomGameController) getController()).getPlayer(id);
+		return ((CLGameController) getController()).getPlayer(id);
 	}
 	
 	/**

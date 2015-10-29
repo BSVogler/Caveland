@@ -1,10 +1,10 @@
 package com.bombinggames.caveland;
 
 import com.badlogic.gdx.audio.Sound;
-import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
@@ -58,6 +58,7 @@ public class Caveland {
 		WE.CVARS.register( new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register( new BooleanCVar(false), "godmode", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime", CVar.CVarFlags.CVAR_ARCHIVE);//time in ms for item drop
+		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom", CVar.CVarFlags.CVAR_ARCHIVE);
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
 		

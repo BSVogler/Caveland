@@ -138,7 +138,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	/**
 	 * true if attack in loadattackMode
 	 */
-	private transient boolean performingLoadAttack = false;
+	private transient boolean performingPowerAttack = false;
 	
 	/**
 	 * timer for delaying impact
@@ -273,8 +273,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 
 			//stop loadAttack if speed it too low
-			if (performingLoadAttack && getSpeedHor() < 0.1){
-				performingLoadAttack=false;
+			if (performingPowerAttack && getSpeedHor() < 0.1){
+				performingPowerAttack=false;
 			}
 
 			//detect button hold
@@ -467,7 +467,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				sprite.draw(view.getSpriteBatch());
 
 				//overlay
-				if (loadAttack > LOAD_THRESHOLD || performingLoadAttack) {//loading or perfomring loadattack
+				if (loadAttack > LOAD_THRESHOLD || performingPowerAttack) {//loading or perfomring loadattack
 					AtlasRegion overlayTexture;
 					if (action=='i'){
 						overlayTexture = getSprite('o', spriteNum);
@@ -576,7 +576,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 */
 	public void attack(byte damage) {
 		if (timeTillImpact == Float.POSITIVE_INFINITY) {
-			performingLoadAttack = false;
+			performingPowerAttack = false;
 			if (action == 'l') {
 				playAnimation('i');
 			} else {
@@ -768,7 +768,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				addToHor(40f);
 			}
 			attack((byte)100);
-			performingLoadAttack=true;
+			performingPowerAttack = true;
 			usedLoadAttackInAir = true;
 		}
 
@@ -827,7 +827,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			setHorMovement(dir);
 		}
 		 
-		if (loadAttack != Float.NEGATIVE_INFINITY || performingLoadAttack) {
+		if (loadAttack != Float.NEGATIVE_INFINITY || performingPowerAttack) {
 			setMovement(movementBefore);
 		} else {
 			if (up || down || left || right){
@@ -891,7 +891,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			prepareThrow = false;
 		}
 		if (c == 'w') {
-			performingLoadAttack=false;
+			performingPowerAttack  = false;
 		}
 		updateSprite(false);
 	}

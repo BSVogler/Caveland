@@ -34,7 +34,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
@@ -66,7 +66,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")

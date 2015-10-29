@@ -32,7 +32,7 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
@@ -74,7 +74,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	}
 	
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira){
 			//lege objekte aus Inventar  hier rein
 			Collectible frontItem = ((Ejira) actor).getInventory().retrieveFrontItem();

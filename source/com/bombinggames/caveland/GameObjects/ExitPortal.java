@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -26,7 +26,7 @@ public class ExitPortal extends Portal implements Interactable  {
 	}
 	
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (getTarget() != null) {
 			actor.setPosition(getTarget());
 		}

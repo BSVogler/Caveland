@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.bombinggames.caveland.Game.CustomGameController;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameController;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.WEScreen;
@@ -184,10 +184,10 @@ public class SaveSelectionScreen extends WEScreen {
 	 * @param newMap if a new map should be generated or the default used
 	 */
 	public void startGame(boolean newslot, boolean newMap){
-		CustomGameView view = new CustomGameView();
+		CLGameView view = new CLGameView();
 		view.enableCoop(coop);
 		
-		CustomGameController controller = new CustomGameController();
+		CLGameController controller = new CLGameController();
 		if (newMap) {
 			controller.setMapName(Integer.toString(Math.abs(ZonedDateTime.now().hashCode())));
 		} else {

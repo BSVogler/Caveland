@@ -3,7 +3,7 @@ package com.bombinggames.caveland.GameObjects;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -167,11 +167,11 @@ public class Vanya extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		nextChat(view, actor, true);
 	}
 	
-	private void nextChat(CustomGameView view, AbstractEntity actor, boolean confirm){
+	private void nextChat(CLGameView view, AbstractEntity actor, boolean confirm){
 		if (actor instanceof Ejira) {
 			if (currentChat != null) {
 				currentChat.remove();

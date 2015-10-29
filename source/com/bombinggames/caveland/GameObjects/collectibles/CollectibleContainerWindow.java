@@ -32,7 +32,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import java.util.ArrayList;
 public class CollectibleContainerWindow extends ActionBox {
 	private final CollectibleContainer parent;
 
-	CollectibleContainerWindow(CustomGameView view, CollectibleContainer parent) {
+	CollectibleContainerWindow(CLGameView view, CollectibleContainer parent) {
 		super("Choose construction", ActionBox.BoxModes.SELECTION, null);
 		this.parent = parent;
 		//make list of options

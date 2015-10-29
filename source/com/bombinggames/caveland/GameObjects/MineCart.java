@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
@@ -412,7 +412,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof MovableEntity){
 			if (passenger==null){
 				setPassanger((MovableEntity) actor);

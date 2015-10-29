@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -55,7 +55,7 @@ public class TFlint extends Collectible implements Interactable {
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		WE.SOUND.play("hiss", getPosition());
 		setValue((byte) 8);//ignite sprite
 		lit = true;

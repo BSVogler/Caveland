@@ -34,7 +34,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Portal;
@@ -114,7 +114,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift? You can always enter the caves by jumping into the hole.")
 				.setConfirmAction((int result, AbstractEntity actor1) -> {

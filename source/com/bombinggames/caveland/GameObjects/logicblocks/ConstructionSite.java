@@ -33,7 +33,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
@@ -132,7 +132,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	}
 	
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ConstructionSiteWindow selectionWindow = new ConstructionSiteWindow(view, actor, this);
 			selectionWindow.register(view, ((Ejira) actor).getPlayerNumber(), actor);
@@ -214,7 +214,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 
 		private final ConstructionSite parent;
 
-		ConstructionSiteWindow(CustomGameView view, AbstractEntity actor, ConstructionSite parent) {
+		ConstructionSiteWindow(CLGameView view, AbstractEntity actor, ConstructionSite parent) {
 			super("Build id: " + CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options

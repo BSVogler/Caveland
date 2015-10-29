@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.SuperGlue;
@@ -242,7 +242,7 @@ public class Inventory extends CollectibleContainer {
 	 * @param view
 	 * @param actor
 	 */
-	public void action(CustomGameView view, AbstractEntity actor) {
+	public void action(CLGameView view, AbstractEntity actor) {
 		//Get the first item and activate it. Then put it back.
 		Collectible item = retrieveFrontItem();
 		if (item != null && item instanceof Interactable) {

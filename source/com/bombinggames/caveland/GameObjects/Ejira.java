@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -510,7 +510,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 *interacts with the nearest thign if there is one
 	 * @param view
 	 */
-	public void interactWithNearestThing(CustomGameView view) {
+	public void interactWithNearestThing(CLGameView view) {
 		if (nearestInteractable != null)
 			nearestInteractable.interact(view, this);
 	}
@@ -558,7 +558,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		}
 	}
 	
-	public void useItem(CustomGameView view){
+	public void useItem(CLGameView view){
 		inventory.action(view, this);
 	}
 

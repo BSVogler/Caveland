@@ -27,7 +27,7 @@ public class CraftingBox extends ActionBox {
 	 * @param view
 	 * @param player 
 	 */
-	public CraftingBox(CustomGameView view, Ejira player) {
+	public CraftingBox(CLGameView view, Ejira player) {
 		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		

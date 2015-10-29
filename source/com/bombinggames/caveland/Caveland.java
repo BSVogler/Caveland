@@ -3,8 +3,8 @@ package com.bombinggames.caveland;
 import com.badlogic.gdx.audio.Sound;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.Game.CustomGameController;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameController;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
@@ -85,11 +85,10 @@ public class Caveland {
             for (int i = 0; i < args.length; i++) {
                 switch (args[i]) {
                     case "-quickstart":
-						WE.addPostLaunchCommands(
-							() -> {
-							CustomGameController controller = new CustomGameController();
+						WE.addPostLaunchCommands(() -> {
+							CLGameController controller = new CLGameController();
 							controller.useSaveSlot(0);
-							WE.initAndStartGame(controller, new CustomGameView(), new CustomLoading());
+							WE.initAndStartGame(controller, new CLGameView(), new CustomLoading());
 							}
 						);
                         break;

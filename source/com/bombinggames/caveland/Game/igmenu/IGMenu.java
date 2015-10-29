@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 
 /**
@@ -25,7 +25,7 @@ public class IGMenu extends WidgetGroup {
 	private final HoverListener editorWiggle;
 	private final HoverListener continueWiggle;
 
-	public IGMenu(CustomGameView view) {
+	public IGMenu(CLGameView view) {
 		background.setPosition(0, 0);
 		addActor(background);
 		

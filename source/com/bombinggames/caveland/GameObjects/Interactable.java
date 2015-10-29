@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 
 /**
@@ -105,7 +105,7 @@ public interface Interactable {
 	 * @param view the view by which the interaction is caused and feedback is
 	 * send to
 	 */
-	public abstract void interact(CustomGameView view, com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity actor);
+	public abstract void interact(CLGameView view, com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity actor);
 	
 	/**
 	 * 

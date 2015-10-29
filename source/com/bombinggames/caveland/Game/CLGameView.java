@@ -27,7 +27,7 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
  *
  * @author Benedikt
  */
-public class CustomGameView extends GameView{
+public class CLGameView extends GameView{
 	/**
 	 * -1 = not down, 0=just pressed down, >0 time down
 	 */
@@ -392,7 +392,7 @@ public class CustomGameView extends GameView{
 		 * starting at 0
 		 */
 		private final int id;
-		private final CustomGameView parent;
+		private final CLGameView parent;
 		private float oldRTvalue = -1;
 		private final String OS;
 
@@ -402,7 +402,7 @@ public class CustomGameView extends GameView{
 		 * @param controllable
 		 * @param id  starting with 0
 		 */
-		XboxListener(CustomGameView parent, Ejira controllable, int id) {
+		XboxListener(CLGameView parent, Ejira controllable, int id) {
 			this.player = controllable;
 			this.id = id;
 			this.parent = parent;
@@ -555,9 +555,9 @@ public class CustomGameView extends GameView{
 	}
     
     private class MouseKeyboardListener implements InputProcessor {
-		private final CustomGameView parent;
+		private final CLGameView parent;
 
-		MouseKeyboardListener(CustomGameView parent) {
+		MouseKeyboardListener(CLGameView parent) {
 			this.parent = parent;
 		}
 

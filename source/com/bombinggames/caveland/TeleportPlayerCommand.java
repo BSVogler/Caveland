@@ -1,6 +1,6 @@
 package com.bombinggames.caveland;
 
-import com.bombinggames.caveland.Game.CustomGameController;
+import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.console.ConsoleCommand;
@@ -23,7 +23,7 @@ public class TeleportPlayerCommand implements ConsoleCommand {
 		int z = Integer.parseInt(parameters.nextToken());
 		if (parameters.hasMoreTokens())
 			id = Integer.parseInt(parameters.nextToken());
-		((CustomGameController) gameplay.getController()).getPlayer(id).setPosition(new Coordinate(x, y, z));
+		((CLGameController) gameplay.getController()).getPlayer(id).setPosition(new Coordinate(x, y, z));
 		return true;
 	}
 

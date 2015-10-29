@@ -19,12 +19,12 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
- * The <i>CustomGameController</i> is for the game code. Put engine code into
+ * The <i>CLGameController</i> is for the game code. Put engine code into
  * <i>Controller</i>.
  *
  * @author Benedikt
  */
-public class CustomGameController extends Controller {
+public class CLGameController extends Controller {
 
 	private Ejira player1;
 	private Ejira player2;

@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.bombinggames.caveland.Game.CustomGameView;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -31,7 +31,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	}
 
 	@Override
-	public void interact(CustomGameView view, AbstractEntity actor) {
+	public void interact(CLGameView view, AbstractEntity actor) {
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (hole != null && hole instanceof PortalBlockLogic) {
 			actor.setPosition(((PortalBlockLogic) hole).getPortal().getTarget().cpy());

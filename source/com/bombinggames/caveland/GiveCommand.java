@@ -1,6 +1,6 @@
 package com.bombinggames.caveland;
 
-import com.bombinggames.caveland.Game.CustomGameController;
+import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
@@ -16,7 +16,7 @@ public class GiveCommand implements ConsoleCommand {
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
 		try {
-			((CustomGameController) gameplay.getController()).getPlayer(0).getInventory().add(
+			((CLGameController) gameplay.getController()).getPlayer(0).getInventory().add(
 				CollectibleType.valueOf(parameters.nextToken()).createInstance()
 			);
 		} catch (IllegalArgumentException | java.lang.NullPointerException | java.lang.ClassCastException ex) {

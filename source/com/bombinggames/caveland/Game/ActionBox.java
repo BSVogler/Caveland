@@ -118,7 +118,7 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor the entitiy which is connected to the dialogue. can be null
 	 * @return
 	 */
-	public ActionBox register(final CustomGameView view, final int playerId, AbstractEntity actor) {
+	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
 		if (selectAction != null) {
 			selectAction.select(false, selection, actor);

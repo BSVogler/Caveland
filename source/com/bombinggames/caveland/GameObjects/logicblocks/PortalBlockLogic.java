@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
- *
+ * Entry to the caves
  * @author Benedikt Vogler
  */
 public class PortalBlockLogic extends AbstractBlockLogicExtension implements Interactable {
@@ -138,6 +138,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	@Override
 	public void dispose() {
+		portal.dispose();
 	}
 	
 	@Override

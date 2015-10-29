@@ -87,7 +87,7 @@ public class PlacableTable extends Table {
 			if (placeBlocks) {//add blocks
 				//add air
 				add(
-					new SelectionItem(
+					new PlacableItem(
 						this,
 						new BlockDrawable((byte) 0,(byte) 0, -0.7f),
 						new BlockListener((byte) 0)
@@ -103,7 +103,7 @@ public class PlacableTable extends Table {
 							|| !block.getName().equals("undefined")
 						) {
 							add(
-								new SelectionItem(
+								new PlacableItem(
 									this,
 									new BlockDrawable(i, (byte) 0, -0.7f),
 									new BlockListener(i)
@@ -120,7 +120,7 @@ public class PlacableTable extends Table {
 				//add every registered entity class
 				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
 					: AbstractEntity.getRegisteredEntities().entrySet()) {
-					SelectionItem button = new SelectionItem(
+					PlacableItem button = new PlacableItem(
 						this,
 						new EntityDrawable(entry.getValue()),
 						new EntityListener(entry.getKey(), entry.getValue())
@@ -157,6 +157,7 @@ public class PlacableTable extends Table {
 
 	/**
 	 *
+	 * @param view
 	 */
 	protected void showBlocks(GameView view) {
 		placeBlocks = true;
@@ -167,6 +168,7 @@ public class PlacableTable extends Table {
 
 	/**
 	 *
+	 * @param view
 	 */
 	protected void showEntities(GameView view) {
 		placeBlocks = false;

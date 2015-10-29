@@ -123,8 +123,8 @@ public class Toolbar extends Window {
 	private final GameView view;
 
 	private final Image[] items = new Image[Tool.values().length];
-	private final PlacableTable left;
-	private final PlacableTable right;
+	private final PlacableTable leftTable;
+	private final PlacableTable rightTable;
 	
 	/**
 	 * creates a new toolbar
@@ -146,8 +146,8 @@ public class Toolbar extends Window {
 		setWidth(Tool.values().length * 25);
 		setHeight(45);
 		
-		this.left = left;
-		this.right = right;
+		this.leftTable = left;
+		this.rightTable = right;
 
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
@@ -157,9 +157,9 @@ public class Toolbar extends Window {
 		}
 
 		//initialize selection
-		if (selectionLeft.selectFromBlocks) { //show entities on left
+		if (selectionLeft.selectFromBlocks) { //show entities on leftTable
 			left.showBlocks(view);
-		} else {//show blocks on left
+		} else {//show blocks on leftTable
 			if (selectionLeft.selectFromEntities) {
 				left.showEntities(view);
 			} else {
@@ -167,9 +167,9 @@ public class Toolbar extends Window {
 			}
 		}
 
-		if (selectionRight.selectFromBlocks) { //show entities on left
+		if (selectionRight.selectFromBlocks) { //show entities on leftTable
 			right.showBlocks(view);
-		} else { //show blocks on left
+		} else { //show blocks on leftTable
 			if (selectionRight.selectFromEntities) {
 				right.showEntities(view);
 			} else {
@@ -186,10 +186,10 @@ public class Toolbar extends Window {
 	public void render(ShapeRenderer shR) {
 		shR.translate(getX(), getY(), 0);
 		shR.begin(ShapeRenderer.ShapeType.Line);
-		//draw left	
+		//draw leftTable	
 		shR.setColor(Color.GREEN);
 		shR.rect(items[selectionLeft.id].getX() - 1, items[selectionLeft.id].getY() - 1, 22, 22);
-		//draw right
+		//draw rightTable
 		shR.setColor(Color.BLUE);
 		shR.rect(items[selectionRight.id].getX() - 2, items[selectionLeft.id].getY() - 2, 24, 24);
 
@@ -198,7 +198,7 @@ public class Toolbar extends Window {
 	}
 
 	/**
-	 * index of left mouse button.
+	 * index of leftTable mouse button.
 	 *
 	 * @return
 	 */
@@ -207,7 +207,7 @@ public class Toolbar extends Window {
 	}
 
 	/**
-	 * index of right mouse button.
+	 * index of rightTable mouse button.
 	 *
 	 * @return
 	 */
@@ -223,23 +223,23 @@ public class Toolbar extends Window {
 	public void selectTool(boolean left, Tool tool){
 		selectionLeft = tool;
 		if (left) {
-			if (tool.selectFromBlocks) { //show entities on left
-				this.left.showBlocks(view);
-			} else {//show blocks on left
+			if (tool.selectFromBlocks) { //show entities on leftTable
+				this.leftTable.showBlocks(view);
+			} else {//show blocks on leftTable
 				if (tool.selectFromEntities) {
-					this.left.showEntities(view);
+					this.leftTable.showEntities(view);
 				} else {
-					this.left.hide(true);
+					this.leftTable.hide(true);
 				}
 			}
 		} else {
-			if (tool.selectFromBlocks) { //show entities on left
-				right.showBlocks(view);
-			} else { //show blocks on left
+			if (tool.selectFromBlocks) { //show entities on leftTable
+				rightTable.showBlocks(view);
+			} else { //show blocks on leftTable
 				if (tool.selectFromEntities) {
-					right.showEntities(view);
+					rightTable.showEntities(view);
 				} else {
-					right.hide(true);
+					rightTable.hide(true);
 				}
 			}
 		}

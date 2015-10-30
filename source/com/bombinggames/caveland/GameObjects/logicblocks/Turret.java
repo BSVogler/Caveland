@@ -60,7 +60,7 @@ public class Turret extends AbstractBlockLogicExtension {
 		}
 
 		if (target != null && target.hasPosition() && getPosition().distanceTo(target) < Block.GAME_DIAGLENGTH * 4) {
-			gun.setAim(target.getPosition().getVector().sub(getPosition().getVector()).nor());
+			gun.setAim(target.getPosition().getVector().sub(getPosition().toPoint().getVector()).nor());
 			gun.shoot();
 		}
 		

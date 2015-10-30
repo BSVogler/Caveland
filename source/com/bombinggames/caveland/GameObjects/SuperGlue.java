@@ -60,6 +60,10 @@ public class SuperGlue extends AbstractEntity {
 			setSaveToDisk(false);
 	}
 
+	/**
+	 * Adds the offset to the smaller one.
+	 * @param offset 
+	 */
 	public void setOffset(Vector3 offset) {
 		this.offset = offset;
 	}

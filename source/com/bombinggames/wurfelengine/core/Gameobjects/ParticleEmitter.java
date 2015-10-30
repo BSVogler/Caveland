@@ -152,7 +152,7 @@ public class ParticleEmitter extends AbstractEntity {
 	}
 
 	/**
-	 *
+	 * Spread is applied in both directions.
 	 * @param spread the range in which random noise gets aplied, in m/s without
 	 * unit
 	 */

@@ -30,14 +30,17 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
@@ -58,6 +61,8 @@ public class Bullet extends AbstractEntity {
 	private int maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
 	private int impactSprite;
+	private Coordinate ignoreCoord;
+	private int ignoreId;
 
 	/**
 	 * You can set a different sprite via {@link #setSpriteId(byte)}. It uses
@@ -66,13 +71,16 @@ public class Bullet extends AbstractEntity {
 	 * @see #setSpriteId(byte)
 	 */
 	public Bullet() {
-		super((byte) 22);//default graphics id is 12
+		super((byte) 22);
 		setName("Bullet");
+		setSaveToDisk(false);
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		if (!hasPosition()) return;
+		
 		//dir.z=-delta/(float)maxDistance;//fall down
 		Vector3 dMov = dir.cpy().scl(dt * speed);
 		//dMov.z /= 1.414213562f;//mixed screen and game space together?
@@ -83,23 +91,45 @@ public class Bullet extends AbstractEntity {
 		distance += dMov.len();
 		if (distance > maxDistance) {
 			dispose();
+			return;
 		}
 
 		//block hit -> spawn effect
-		if (getPosition().getBlock() != null && getPosition().getBlock().isObstacle()) {
+		if (
+			hasPosition()
+			&& getPosition().getBlock() != null
+			&& getPosition().getBlock().isObstacle()
+			&& (ignoreCoord == null
+				||
+				!ignoreCoord.equals(getPosition().toCoord())
+				)
+			) {
 			if (impactSprite != 0) {
-				new SimpleEntity((byte) 31).spawn(getPosition().cpy()).setAnimation(new EntityAnimation(new int[]{1000}, true, false));
+				Particle impactPart = new Particle();
+				impactPart.setTTL(200);
+				impactPart.setColor(new Color(0.4f, 0.3f, 0.2f, 1));
+				impactPart.setType(ParticleType.SMOKE);
+				impactPart.spawn(getPosition().cpy());
 			}
 			dispose();
 		}
 
+		if (!hasPosition()) return;
         //check character hit
 		//get every character on this coordinate
-		ArrayList<AbstractEntity> entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord());
+		ArrayList<MovableEntity> entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord(), MovableEntity.class);
 		entitylist.remove(parent);//remove self from list to prevent self shooting
+		//remove
+		entitylist.removeIf(
+			(MovableEntity item) -> item.getPosition().toCoord().equals(ignoreCoord)
+		);
 		if (!entitylist.isEmpty()) {
 			entitylist.get(0).damage(damage);//damage only the first unit on the list
-			new SimpleEntity((byte) 16).spawn(getPosition().cpy());//spawn blood
+			Particle blood = new Particle();
+			blood.setColor(new Color(1,0,0,1));
+			blood.setTTL(400);
+			blood.setType(ParticleType.REGULAR);//blood
+			blood.spawn(getPosition().cpy());
 			dispose();
 		}
 	}
@@ -182,6 +212,18 @@ public class Bullet extends AbstractEntity {
 	 */
 	public int getDistance() {
 		return distance;
+	}
+
+	/**
+	 * 
+	 * @param coord 
+	 */
+	public void ignoreCoord(Coordinate coord) {
+		ignoreCoord = coord;
+	}
+
+	void ignoreBlock(int ignoreId) {
+		this.ignoreId = ignoreId;
 	}
 
 }

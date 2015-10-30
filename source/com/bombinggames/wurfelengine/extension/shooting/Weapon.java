@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -75,6 +76,7 @@ public class Weapon extends AbstractEntity {
     private AbstractEntity laserdot;
 
 	private Vector3 aimDir = new Vector3(0, 0, 0);
+	private int ignoreId;
 
     /**
      *
@@ -95,7 +97,7 @@ public class Weapon extends AbstractEntity {
                 distance = 0;
                 bps = 10;
                 spread = 0.5f;
-                damage = (byte) 1000;
+                damage = (byte) 5;
                 bulletSprite = -1;
                 impactSprite=15;
                 
@@ -111,7 +113,7 @@ public class Weapon extends AbstractEntity {
                 distance = 10;
                 bps = 1;
                 spread = 0.1f;
-                damage = (byte) 800;
+                damage = (byte) 5;
                 bulletSprite = 0;
                 impactSprite=19;
                 
@@ -129,7 +131,7 @@ public class Weapon extends AbstractEntity {
                 bps = 10;
                 spread = 0.4f;
                 bulletSprite = -1;
-                damage = (byte) 500;
+                damage = (byte) 100;
                 impactSprite=15;
                 
                 //fire = WEMain.getAsset("com/bombinggames/WeaponOfChoice/Sounds/punch.wav");
@@ -160,7 +162,7 @@ public class Weapon extends AbstractEntity {
                 distance = 10;
                 bps = 1;
                 spread = 0f;
-                damage = (byte) 400;
+                damage = (byte) 50;
                 bulletSprite = 0;
                 impactSprite=19;
                 
@@ -236,6 +238,8 @@ public class Weapon extends AbstractEntity {
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
 		laserdot = new SimpleEntity((byte) 22).spawn(point.cpy());
+		laserdot.setColor(new Color(1, 0, 0, 1));
+		laserdot.setScaling(-0.8f);
 		laserdot.setName("Laser dot");
 		return this;
 	}
@@ -267,27 +271,15 @@ public class Weapon extends AbstractEntity {
                 reload();
         }
         if (hasPosition() && !aimDir.isZero()) {
-			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*14, null, false);
-			if (raycast != null)
+			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*14, null, true);
+			laserdot.setHidden(raycast == null);
+			if (raycast != null) {
 				laserdot.setPosition(raycast.getPoint());
-	//        if (laser!=null && laser.shouldBeDisposed())
-	//            laser=null;
-	//        if (laser==null) {
-	//            laser = new Bullet(12, parent.getPosition().cpy());
-	//            laser.setValue(0);
-	//            laser.setHidden(true);
-	//
-	//            laser.setDirection(parent.getAiming());
-	//            laser.setSpeed(7);
-	//            laser.setMaxDistance(3000);
-	//            laser.setParent(parent);
-	//            laser.setDamage(0);
-	//            laser.setExplosive(0);
-	//            laser.setImpactSprite(20);
-	//            laser.spawn();
-	//        }
+			} else {
+				laserdot.setPosition(getPosition().cpy());
+			}
 		}
-    }
+	}
 	
 	/**
 	 * 
@@ -321,6 +313,7 @@ public class Weapon extends AbstractEntity {
 
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
                 bullet = new Bullet();
+				bullet.setParent(this);
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue((byte) 0);
@@ -329,20 +322,31 @@ public class Weapon extends AbstractEntity {
                     bullet.setValue(bulletSprite);
                 }
 
-                Vector3 aiming = aimDir;
+                Vector3 aiming = aimDir.cpy();
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
                 bullet.setDirection(aiming);
                 bullet.setSpeed(2f);
+				bullet.setScaling(-0.8f);
                 bullet.setMaxDistance(distance*100+100);
                 bullet.setParent(parent);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
-                bullet.spawn(getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)); 
+				bullet.ignoreBlock(ignoreId);
+				bullet.ignoreCoord(getPosition().toCoord());
+                bullet.spawn(getPosition().toPoint()); 
             }
         }
     }
+	
+	/**
+	 * 
+	 * @param id 
+	 */
+	public void ignoreBlock(int id){
+		this.ignoreId = id;
+	}
     
     /**
      *reloads the weapon
@@ -412,6 +416,7 @@ public class Weapon extends AbstractEntity {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		laserdot.dispose();
 	}
 

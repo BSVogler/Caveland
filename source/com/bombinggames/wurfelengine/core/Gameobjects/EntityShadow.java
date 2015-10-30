@@ -89,11 +89,14 @@ public class EntityShadow extends AbstractEntity {
 				)
 			);
 			super.render(view, camera);
-			setColor(
-				new Color(.5f, .5f, .5f, 0.2f)
-			);
-			setScaling(-0.5f);
-			super.render(view, camera);
+			//always visible smaller shadow
+			if (getColor().a < 0.9f) {//render only if small shadow would be visible
+				setColor(
+					new Color(.5f, .5f, .5f, 0.2f)
+				);
+				setScaling(-0.5f);
+				super.render(view, camera);
+			}
 		}
 	}
 }

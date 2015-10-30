@@ -368,7 +368,8 @@ public class CLGameView extends GameView{
 				getPlayer(1).getInventory().render(this,getCameras().get(1));
 		getSpriteBatch().end();
 		
-		if (getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
+		
+		if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
 			drawString(
 				"Cave Level:"+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
 				50, 50,

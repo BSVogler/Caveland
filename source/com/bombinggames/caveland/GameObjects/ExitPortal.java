@@ -45,13 +45,12 @@ public class ExitPortal extends Portal implements Interactable {
 					Coordinate coord = getPosition().toCoord();
 					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
 					Enemy e = (Enemy) new Enemy().spawn(
-						ChunkGenerator.getCaveCenter(cavenumber).toPoint().addVector(
-							(float) ((Math.random() * 4 - 2) * Block.GAME_EDGELENGTH),
-							(float) ((Math.random() * 4 - 2) * Block.GAME_EDGELENGTH),
-							0
-						)
+						ChunkGenerator.getCaveCenter(cavenumber).addVector(
+							(int) (Math.random() * 4 - 2),
+							(int) (Math.random() * 4 - 2),
+							2
+						).toPoint()
 					);
-					e.getPosition().setZ(5*Block.GAME_EDGELENGTH);
 					spawnedList.add(e);
 				}
 			}

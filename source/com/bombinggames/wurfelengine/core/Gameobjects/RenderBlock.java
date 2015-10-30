@@ -374,7 +374,7 @@ public class RenderBlock extends AbstractGameObject {
 		if (ambientOcclusion > 0) {
 			int aoFlags = getBlockData().getAOFlags();
 			if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition().cpy();
+				Coordinate aopos = getPosition();
 				if ((aoFlags & (1 << 2)) != 0) {//if right
 					renderAO(view, camera, aopos, (byte) 11);
 				}
@@ -420,7 +420,7 @@ public class RenderBlock extends AbstractGameObject {
 			}
 
 			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition().cpy();
+				Coordinate aopos = getPosition();
 				if ((aoFlags & (1 << 18)) != 0) {//if right
 					renderAO(view, camera, aopos, (byte) 7);
 				}
@@ -495,7 +495,7 @@ public class RenderBlock extends AbstractGameObject {
             sprite.scale(getScaling());
         }
 		
-		if (color!=null) {
+		if (color != null) {
 			color.r *= blockData.getLightlevelR(side);
 			if (color.r>1) color.r=1;
 			color.g *= blockData.getLightlevelG(side);

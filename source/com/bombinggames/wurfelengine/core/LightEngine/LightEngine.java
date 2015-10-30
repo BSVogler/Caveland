@@ -307,6 +307,11 @@ public class LightEngine implements MapObserver {
             return Color.BLACK.cpy();
     }
 	 
+	/**
+	 * copy safe
+	 * @param normal
+	 * @return 
+	 */
 	public Color getColor(Side normal){
 		return getSpec(normal).add(getDiff(normal));
 	}

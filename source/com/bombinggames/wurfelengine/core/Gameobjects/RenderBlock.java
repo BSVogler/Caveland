@@ -66,6 +66,9 @@ public class RenderBlock extends AbstractGameObject {
     private static final Color[][] colorlist = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
+	/**
+	 * the brightness of the ao
+	 */
 	private static float ambientOcclusion;
 
 	/**
@@ -340,16 +343,17 @@ public class RenderBlock extends AbstractGameObject {
 		Color color;
 		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
-			float factor = (float) (Math.exp( 0.025f*(camera.getVisibleFrontBorderHigh()-coords.toCoord().getY()-18.0) )-1 );
+			float factor = (float) (Math.exp(0.025f * (camera.getVisibleFrontBorderHigh() - coords.toCoord().getY() - 18.0)) - 1);
 			//float factor = (float) (Math.exp( 0.0005f*(coords.getDepth(view)-500) )-1 );
-			color = new Color(0.5f+0.3f*factor, 0.5f+0.4f*factor, 0.5f+1f*factor, 1);
-		} else
+			color = new Color(0.5f + 0.3f * factor, 0.5f + 0.4f * factor, 0.5f + 1f * factor, 1);
+		} else {
 			color = Color.GRAY.cpy();
-		
+		}
+
 		//if vertex shaded then use different shading for each side
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
-			color = Controller.getLightEngine().getColor(side).mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f);
-        }
+			color = Controller.getLightEngine().getColor(side).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
+		}
 		
         renderSide(
 			view,
@@ -367,78 +371,72 @@ public class RenderBlock extends AbstractGameObject {
 				: color//pass color if not shading static
         );
 		//render ambient occlusion
-		if (ambientOcclusion>0) {
+		if (ambientOcclusion > 0) {
 			int aoFlags = getBlockData().getAOFlags();
-			if (side==Side.LEFT && ((byte) (aoFlags)) != 0){//only if top side and there is ambient occlusion
+			if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
 				Coordinate aopos = getPosition().cpy();
-				if ((aoFlags & (1 << 2)) != 0){//if right
+				if ((aoFlags & (1 << 2)) != 0) {//if right
 					renderAO(view, camera, aopos, (byte) 11);
 				}
-				if ((aoFlags & (1 << 4)) != 0){//if bottom
+				if ((aoFlags & (1 << 4)) != 0) {//if bottom
 					renderAO(view, camera, aopos, (byte) 10);
 				} else {
-					if ((aoFlags & (1 << 3)) != 0){//if bottom right
+					if ((aoFlags & (1 << 3)) != 0) {//if bottom right
 						renderAO(view, camera, aopos, (byte) 13);
 					}
-					if ((aoFlags & (1 << 5)) != 0){//if bottom left
+					if ((aoFlags & (1 << 5)) != 0) {//if bottom left
 						renderAO(view, camera, aopos, (byte) 16);
 					}
 				}
-				if ((aoFlags & (1 << 6)) != 0){//if left
+				if ((aoFlags & (1 << 6)) != 0) {//if left
 					renderAO(view, camera, aopos, (byte) 9);
 				}
 			}
 
-			if (side==Side.TOP && ((byte) (aoFlags>>8)) != 0){//only if top side and there is ambient occlusion
+			if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
 				Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
-				if ((aoFlags & (1 << 9)) != 0){//if back right
+				if ((aoFlags & (1 << 9)) != 0) {//if back right
 					renderAO(view, camera, aopos, (byte) 0);
 				}
-				
-				if ((aoFlags & (1 << 11)) != 0){//if front right
+
+				if ((aoFlags & (1 << 11)) != 0) {//if front right
 					renderAO(view, camera, aopos, (byte) 4);
-				} else {
-					if ((aoFlags & (1 << 10)) != 0){//if right
-						renderAO(view, camera, aopos, (byte) 3);
-					}
+				} else if ((aoFlags & (1 << 10)) != 0) {//if right
+					renderAO(view, camera, aopos, (byte) 3);
 				}
 				
 				//12 is never visible
 				
-				if ((aoFlags & (1 << 13)) != 0){//if front left
+				if ((aoFlags & (1 << 13)) != 0) {//if front left
 					renderAO(view, camera, aopos, (byte) 5);
-				} else {
-					if ((aoFlags & (1 << 14)) != 0){//if left
-						renderAO(view, camera, aopos, (byte) 6);
-					}
+				} else if ((aoFlags & (1 << 14)) != 0) {//if left
+					renderAO(view, camera, aopos, (byte) 6);
 				}
-				if ((aoFlags & (1 << 15)) != 0){//if back left
+				if ((aoFlags & (1 << 15)) != 0) {//if back left
 					renderAO(view, camera, aopos, (byte) 1);
-				} else {
-					if ((aoFlags & 1 << 8) != 0){//if back
-						renderAO(view, camera, aopos, (byte) 2);
-					}
+				} else if ((aoFlags & 1 << 8) != 0) {//if back
+					renderAO(view, camera, aopos, (byte) 2);
 				}
 			}
 
-			if (side==Side.RIGHT && ((byte) (aoFlags>>16)) != 0){//only if top side and there is ambient occlusion
+			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
 				Coordinate aopos = getPosition().cpy();
-				if ((aoFlags & (1 << 18)) != 0){//if right
+				if ((aoFlags & (1 << 18)) != 0) {//if right
 					renderAO(view, camera, aopos, (byte) 7);
 				}
-				
-				if ((aoFlags & (1 << 20)) != 0){//if bottom
+
+				if ((aoFlags & (1 << 20)) != 0) {//if bottom
 					renderAO(view, camera, aopos, (byte) 8);
 				} else {
-					if ((aoFlags & (1 << 19)) != 0){//if bottom right
+					if ((aoFlags & (1 << 19)) != 0) {//if bottom right
 						renderAO(view, camera, aopos, (byte) 15);
 					}
-					if ((aoFlags & (1 << 21)) != 0){//if bottom left
+					if ((aoFlags & (1 << 21)) != 0) {//if bottom left
 						renderAO(view, camera, aopos, (byte) 14);
 					}
 				}
-				
-				if ((aoFlags & (1 << 22)) != 0){//if left
+
+				if ((aoFlags & (1 << 22)) != 0) {//if left
 					renderAO(view, camera, aopos, (byte) 12);
 				}
 			}

@@ -650,8 +650,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * Turns an object in a different direction. Keeps the momentum.
 	 * @param orientation the new orientation
 	 */
-	public void setOrientation(Vector2 orientation){
-		this.orientation = orientation.nor();
+	public void setOrientation(final Vector2 orientation){
+		this.orientation = orientation.cpy().nor();
 		this.movement = new Vector3(orientation.cpy().scl(getSpeedHor()), this.movement.z);
 	}
 	

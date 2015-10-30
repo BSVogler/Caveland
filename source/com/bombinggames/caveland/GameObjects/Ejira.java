@@ -133,7 +133,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	private transient boolean bunnyHopForced;
 	private transient boolean usedLoadAttackInAir;
 	private transient SimpleEntity interactButton = null;
-	private transient Coordinate nearestInteractableBlock = null;
 	private transient int spriteNumOverlay;
 	/**
 	 * true if attack in loadattackMode
@@ -246,7 +245,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 
 			//if in cave force in it
-			if (( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER )){
+			if ( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER ){
 				if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
 					pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
 			}
@@ -273,8 +272,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 
 			//stop loadAttack if speed it too low
-			if (performingPowerAttack && getSpeedHor() < 0.1){
-				performingPowerAttack=false;
+			if (performingPowerAttack && getSpeedHor() < 0.1) {
+				performingPowerAttack = false;
 			}
 
 			//detect button hold
@@ -551,6 +550,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 * drop an item by laying it down
 	 */
 	public void dropItem(){
+		prepareThrow = false;
 		Collectible item = inventory.retrieveFrontItem();
 		if (item != null) {//throw is performed if there is an item to throw
 			item.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 0.1f));
@@ -798,43 +798,34 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void walk(boolean up, boolean down, boolean left, boolean right, float walkingspeed, float dt) {
+		
+		//update the direction vector
+		Vector2 dir = new Vector2(left ? -1 : (right ? 1 : 0f), up ? -1 : (down ? 1 : 0f));
+		dir.nor();
+		if (dir.len2()>0)
+			setOrientation(dir);
+		
 		//if loading attack keep movement
-		Vector2 movementBefore = getMovementHor();
-		if (up || down || left || right){
+		if (loadAttack == Float.NEGATIVE_INFINITY && !performingPowerAttack && !prepareThrow) {
+			if (up || down || left || right) {
 
-			//update the direction vector
-			Vector2 dir = new Vector2(0f,0f);
-
-			if (up)    dir.y += -1;
-			if (down)  dir.y += 1;
-			if (left)  dir.x += -1;
-			if (right) dir.x += 1;
-			dir.nor().scl(walkingspeed);
-
-			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
-			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
-//			float accelaration =30;//in m/s^2
-//			dir.scl(accelaration*dt/1000f);//in m/s
-
-			//check if will reach max velocity
-//			Vector3 res = getMovement().add(dir.cpy());
-//			res.z=0;
-//			if (res.len() > walkingspeed){
-//				//scale that it will not exceed the walkingspeed
-//				dir.nor().scl((walkingspeed-res.len()));
-//			}
-//			addMovement(dir);
-
-			//repalce horizontal movement if walking
-			setHorMovement(dir);
-		}
-		 
-		if (loadAttack != Float.NEGATIVE_INFINITY || performingPowerAttack) {
-			setMovement(movementBefore);
-		} else {
-			if (up || down || left || right){
-				if (isOnGround() && getSpeedHor() > 0 && !playAnimation)
+				//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
+				//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
+				//			float accelaration =30;//in m/s^2
+				//			dir.scl(accelaration*dt/1000f);//in m/s
+				//check if will reach max velocity
+				//			Vector3 res = getMovement().add(dir.cpy());
+				//			res.z=0;
+				//			if (res.len() > walkingspeed){
+				//				//scale that it will not exceed the walkingspeed
+				//				dir.nor().scl((walkingspeed-res.len()));
+				//			}
+				//			addMovement(dir);
+				//repalce horizontal movement if walking
+				setHorMovement(dir.scl(walkingspeed));
+				if (isOnGround() && getSpeedHor() > 0 && !playAnimation) {
 					playAnimation('w');
+				}
 			}
 		}
 	}

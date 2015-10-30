@@ -487,6 +487,12 @@ public class Point extends AbstractPosition {
 	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
 	 */
 	public Intersection raycastSimple(final Vector3 dir, float maxDistance, final Camera camera, final boolean hitFullOpaque){
+		if (dir == null) {
+			throw new NullPointerException("Direction of raycasting not defined");
+		}
+		if (dir.isZero()) {
+			throw new Error("Raycast in zero direction!");
+		}
 		Point traverseP = cpy();
 		dir.nor();
 		Coordinate isectC = traverseP.toCoord();

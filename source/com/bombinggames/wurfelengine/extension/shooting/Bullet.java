@@ -37,7 +37,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import java.util.ArrayList;
 
@@ -55,7 +54,6 @@ public class Bullet extends AbstractEntity {
 	private float speed;
 	private byte damage;
 	private int distance = 0;//distance traveled
-	private MovableEntity parent;//no self shooting
 	private AbstractGameObject parent;//no self shooting
 	private int maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
@@ -68,7 +66,8 @@ public class Bullet extends AbstractEntity {
 	 * @see #setSpriteId(byte)
 	 */
 	public Bullet() {
-		super((byte) 12);//default graphics id is 12
+		super((byte) 22);//default graphics id is 12
+		setName("Bullet");
 	}
 
 	@Override
@@ -96,8 +95,7 @@ public class Bullet extends AbstractEntity {
 
         //check character hit
 		//get every character on this coordinate
-		ArrayList<MovableEntity> entitylist;
-		entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord(), MovableEntity.class);
+		ArrayList<AbstractEntity> entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord());
 		entitylist.remove(parent);//remove self from list to prevent self shooting
 		if (!entitylist.isEmpty()) {
 			entitylist.get(0).damage(damage);//damage only the first unit on the list
@@ -126,7 +124,6 @@ public class Bullet extends AbstractEntity {
 	 *
 	 * @param parent
 	 */
-	public void setParent(MovableEntity parent) {
 	public void setParent(AbstractGameObject parent) {
 		this.parent = parent;
 	}

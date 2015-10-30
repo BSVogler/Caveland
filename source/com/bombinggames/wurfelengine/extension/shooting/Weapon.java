@@ -30,35 +30,31 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
-import com.badlogic.gdx.backends.lwjgl.audio.Wav.Sound;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Weapon {
-    private static TextureAtlas spritesheetBig;
-    private static final int scaling = 2;
+public class Weapon extends AbstractEntity {
+	private static final long serialVersionUID = 1L;
     
-    private final byte id;
-    private final String name;
+    private final byte weaponid;
 
-    private MovableEntity parent;//the parent holding the weapon
+    private AbstractGameObject parent;//the parent holding the weapon
     
     //sound
-    private Sound fire;
-    private Sound reload;
+    private String fire;
+    private String reload;
     
     //stats
     private final int delayBetweenShots;
@@ -78,37 +74,21 @@ public class Weapon {
     private int explode;
     private AbstractEntity laserdot;
 
-    
-    /**
-     *does nothing at the moment
-     */
-    public static void init(){
-        if (spritesheetBig == null) {
-//            spritesheetBig = WEMain.getAsset("com/bombinggames/WeaponOfChoice/SpritesBig.txt");
-//            for (TextureAtlas.AtlasRegion region : spritesheetBig.getRegions()) {
-//                    region.flip(false, true);
-//            }
-//            for (Texture tex : spritesheetBig.getTextures()) {
-//                tex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-//            }
-        }
-    }
+	private Vector3 aimDir = new Vector3(0, 0, 0);
 
     /**
      *
-     * @param id
-     * @param parent
+     * @param weaponid
+     * @param parent the object which holds the weapon
      */
-    public Weapon(byte id, MovableEntity parent) {
-        this.id = id;
-        this.parent = parent;
-        if (parent != null) {
-            laserdot = new SimpleEntity((byte) 20).spawn(parent.getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH));
-        }
+    public Weapon(byte weaponid,  AbstractGameObject parent) {
+		super((byte) 18);
+		this.parent = parent;
         
-        switch (id){
+		this.weaponid = weaponid;
+        switch (weaponid){
             case 0:
-                name="katana";
+                setName("Katana");
                 delayBetweenShots = 900;
                 relodingTime =0;
                 shots = 1;
@@ -124,7 +104,7 @@ public class Weapon {
             break;
                 
             case 1:
-                name="pistol";
+                setName("Pistol");
                 delayBetweenShots = 400;
                 relodingTime =1000;
                 shots = 7;
@@ -141,7 +121,7 @@ public class Weapon {
             break;
                 
             case 2:
-                name="fist";
+                setName("Fist");
                 delayBetweenShots = 500;
                 relodingTime =0;
                 shots = 1;
@@ -157,7 +137,7 @@ public class Weapon {
             break;
                 
             case 3:
-                name="shotgun";
+                setName("Shotgun");
                 delayBetweenShots = 600;
                 relodingTime =1300;
                 shots = 2;
@@ -173,7 +153,7 @@ public class Weapon {
             break;    
 
             case 4:
-                name="machine gun";
+                setName("Machine Gun");
                 delayBetweenShots = 20;
                 relodingTime =1300;
                 shots = 1000;
@@ -189,7 +169,7 @@ public class Weapon {
             break;
                                  
             case 5:
-                name="poop";
+				setName("Poop");
                 delayBetweenShots = 900;
                 relodingTime =500;
                 shots = 1;
@@ -206,7 +186,7 @@ public class Weapon {
             break;
                 
             case 6:
-                name="rocket launcher";
+				setName("Rocket Launcher");
                 delayBetweenShots = 0;
                 relodingTime =1500;
                 shots = 1;
@@ -223,7 +203,7 @@ public class Weapon {
             break;
                 
             case 7:
-                name="fire launcher";
+				setName("FireLauncher");
                 delayBetweenShots = 40;
                 relodingTime =1700;
                 shots = 50;
@@ -238,7 +218,7 @@ public class Weapon {
                 //reload = WEMain.getAsset("com/bombinggames/WeaponOfChoice/Sounds/reload.wav"); 
             break; 
                 default:
-                    name="pistol";
+					setName("Pistol");
                     delayBetweenShots = 400;
                     relodingTime =1000;
                     shots = 7;
@@ -251,51 +231,30 @@ public class Weapon {
         }
         shotsLoaded = shots; //fully loaded
     }
-    
-    /**
-     * Renders a big version of the image
-     * @param view
-     * @param x
-     * @param y 
-     */
-    public void renderBig(GameView view, int x, int y){
-        Sprite sprite = new Sprite(spritesheetBig.findRegion(Integer.toString(id)));
-        sprite.setX(x);
-        sprite.setY(y);
-        sprite.scale(scaling);
-        sprite.draw(WE.getEngineView().getSpriteBatch());
-    
-    }
 
-    /**
-     *
-     * @return
-     */
-    public static TextureAtlas getSpritesheetBig() {
-        return spritesheetBig;
-    }
-
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		laserdot = new SimpleEntity((byte) 22).spawn(point.cpy());
+		laserdot.setName("Laser dot");
+		return this;
+	}
+    
     /**
      *
      * @return the weapon's id
      */
-    public int getId() {
-        return id;
+    public int getWeaponId() {
+        return weaponid;
     }
 
-    /**
-     *
-     * @return
-     */
-    public static int getScaling() {
-        return scaling;
-    }
-    
     /**
      * Manages the weapon
      * @param dt t in ms
      */
+	@Override
     public void update(float dt){
+		super.update(dt);
         if (bulletDelay > 0)
             bulletDelay-=dt;
         if (reloading >= 0) {
@@ -307,46 +266,55 @@ public class Weapon {
             if (bulletDelay <= 0 && shotsLoaded <= 0)//autoreload
                 reload();
         }
-        
-        Point raycast = parent.getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH).raycastSimple(parent.getAiming(), 5000, null, false).getPoint();
-        if (raycast!=null)
-            laserdot.setPosition(raycast);
-//        if (laser!=null && laser.shouldBeDisposed())
-//            laser=null;
-//        if (laser==null) {
-//            laser = new Bullet(12, parent.getPosition().cpy());
-//            laser.setValue(0);
-//            laser.setHidden(true);
-//
-//            laser.setDirection(parent.getAiming());
-//            laser.setSpeed(7);
-//            laser.setMaxDistance(3000);
-//            laser.setParent(parent);
-//            laser.setDamage(0);
-//            laser.setExplosive(0);
-//            laser.setImpactSprite(20);
-//            laser.spawn();
-//        }
+        if (hasPosition() && !aimDir.isZero()) {
+			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*14, null, false);
+			if (raycast != null)
+				laserdot.setPosition(raycast.getPoint());
+	//        if (laser!=null && laser.shouldBeDisposed())
+	//            laser=null;
+	//        if (laser==null) {
+	//            laser = new Bullet(12, parent.getPosition().cpy());
+	//            laser.setValue(0);
+	//            laser.setHidden(true);
+	//
+	//            laser.setDirection(parent.getAiming());
+	//            laser.setSpeed(7);
+	//            laser.setMaxDistance(3000);
+	//            laser.setParent(parent);
+	//            laser.setDamage(0);
+	//            laser.setExplosive(0);
+	//            laser.setImpactSprite(20);
+	//            laser.spawn();
+	//        }
+		}
     }
+	
+	/**
+	 * 
+	 * @param dir 
+	 */
+	public void setAim(Vector3 dir){
+		this.aimDir = dir;
+	}
     
     /**
      *shoots the weapon
      */
     public void shoot(){
-        if (shotsLoaded>0 && bulletDelay <= 0 && reloading <= 0){
-            if (fire != null) fire.play();
+       if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0) {
+			if (fire != null) {
+				WE.SOUND.play(fire, getPosition());
+			}
 
-            bulletDelay = delayBetweenShots;
-            shotsLoaded--;
+			bulletDelay = delayBetweenShots;
+			shotsLoaded--;
 
-            //muzzle flash
-            if (bulletSprite <0)
-                new SimpleEntity((byte) 60).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
-				);
-            else
-                new SimpleEntity((byte) 61).spawn(parent.getPosition()).setAnimation(new EntityAnimation(new int[]{300}, true, false)
-				);
-
+			//muzzle flash
+			Particle flash = new Particle();
+			flash.setTTL(300);
+			flash.setType(ParticleType.FIRE);
+			flash.spawn(getPosition().toPoint());
+		
             //shot bullets
             for (int i = 0; i < bps; i++) {
                 Bullet bullet;
@@ -361,7 +329,7 @@ public class Weapon {
                     bullet.setValue(bulletSprite);
                 }
 
-                Vector3 aiming = parent.getAiming();
+                Vector3 aiming = aimDir;
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
                 bullet.setDirection(aiming);
@@ -371,7 +339,7 @@ public class Weapon {
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
-                bullet.spawn(parent.getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH)); 
+                bullet.spawn(getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)); 
             }
         }
     }
@@ -381,7 +349,8 @@ public class Weapon {
      */
     public void reload(){
         reloading =relodingTime;
-        if (reload != null) reload.play();
+        if (reload != null)
+			WE.SOUND.play("reload", getPosition());
     }
 
     /**
@@ -404,31 +373,15 @@ public class Weapon {
      *
      * @return
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
-     * @return
-     */
     public int getReloadingTime() {
         return reloading;
     }
 
     /**
      *
-     * @param spritesheetBig
-     */
-    public static void setSpritesheetBig(TextureAtlas spritesheetBig) {
-        Weapon.spritesheetBig = spritesheetBig;
-    }
-
-    /**
-     *
      * @param fire
      */
-    public void setFire(Sound fire) {
+    public void setFire(String fire) {
         this.fire = fire;
     }
 
@@ -436,7 +389,7 @@ public class Weapon {
      *
      * @param reload
      */
-    public void setReload(Sound reload) {
+    public void setReload(String reload) {
         this.reload = reload;
     }
     
@@ -456,4 +409,10 @@ public class Weapon {
     public Point getImpactPoint() {
         return laserdot.getPosition().cpy();
     }
+
+	@Override
+	public void dispose() {
+		laserdot.dispose();
+	}
+
 }

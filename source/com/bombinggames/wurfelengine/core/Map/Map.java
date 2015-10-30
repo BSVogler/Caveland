@@ -159,7 +159,6 @@ public class Map implements Cloneable {
 	 * observer pattern
 	 */
 	private final ArrayList<MapObserver> observers = new ArrayList<>(2);//camera + light engine=2 minimum
-	private final Block groundBlock = Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
@@ -419,7 +418,7 @@ public class Map implements Cloneable {
 	 */
     public Block getBlock(final Coordinate coord){
 		if (coord.getZ() < 0)
-			return getGroundBlock();
+			return getNewGroundBlockInstance();
 		Chunk chunk = getChunk(coord);
 		if (chunk==null)
 			return null;
@@ -740,11 +739,11 @@ public class Map implements Cloneable {
 
 
 	/**
-	 *
+	 * Creates a new instance of the groundblock.
 	 * @return
 	 */
-	public Block getGroundBlock() {
-		return groundBlock;
+	public Block getNewGroundBlockInstance() {
+		return Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	}
 
 	/**

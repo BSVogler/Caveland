@@ -787,7 +787,7 @@ public class Camera implements MapObserver {
 		//2. add ground layer
 		for (int x = 0; x < cameraContent.length; x++) {
 			for (int y = 0; y < cameraContent[x].length; y++) {
-				cameraContent[x][y][0] = new RenderBlock(map.getGroundBlock().getId(), map.getGroundBlock().getValue());
+				cameraContent[x][y][0] = new RenderBlock(map.getNewGroundBlockInstance());
 				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
 				//chek if clipped top
 				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {

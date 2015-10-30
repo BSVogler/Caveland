@@ -690,7 +690,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 
 	/**
-	 *
+	 * Get the pointer to the data.
 	 * @return
 	 */
 	public Block getBlockData() {

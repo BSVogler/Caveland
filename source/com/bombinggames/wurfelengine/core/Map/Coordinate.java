@@ -235,7 +235,7 @@ public class Coordinate extends AbstractPosition {
 	@Override
 	public Block getBlock() {
 		if (z < 0) {
-			return Controller.getMap().getGroundBlock();
+			return Controller.getMap().getNewGroundBlockInstance();
 		} else if (z >= Chunk.getBlocksZ()){
 			return null;
 		} else {

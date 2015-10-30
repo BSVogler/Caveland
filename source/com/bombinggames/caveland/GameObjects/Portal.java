@@ -6,13 +6,14 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
- *Teleports every object in this cell.
+ * Teleports every object in this cell.
+ *
  * @author Benedikt Vogler
  */
-public class Portal extends AbstractEntity  {
-	
+public class Portal extends AbstractEntity {
+
 	private static final long serialVersionUID = 2L;
-	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ()-1);
+	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ() - 1);
 	/**
 	 * indicates whether the portal is open or not
 	 */
@@ -27,9 +28,10 @@ public class Portal extends AbstractEntity  {
 		setIndestructible(true);
 		setName("Portal");
 	}
-	
+
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 *
 	 * @param id
 	 */
 	public Portal(byte id) {
@@ -37,10 +39,11 @@ public class Portal extends AbstractEntity  {
 		setIndestructible(true);
 		setName("Portal");
 	}
-	
+
 	/**
 	 * copy safe
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Coordinate getTarget() {
 		if (target == null) {
@@ -49,10 +52,11 @@ public class Portal extends AbstractEntity  {
 			return target.cpy();
 		}
 	}
-	
+
 	/**
 	 * Set the coordiante where the portal teleports to.
-	 * @param target 
+	 *
+	 * @param target
 	 */
 	public void setTarget(Coordinate target) {
 		this.target = target;
@@ -60,28 +64,29 @@ public class Portal extends AbstractEntity  {
 
 	@Override
 	public void update(float dt) {
-		if (hasPosition() && active && getTarget() != null){
-			if (particleBand != null){
+		if (hasPosition() && active && getTarget() != null) {
+			if (particleBand != null) {
 				particleBand.update();
 			}
-			
+
 			//move things in the portal
 			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
 				.forEach((AbstractEntity e) -> {
 					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10//must be in the first part of the block
 						&& e != this //don't teleport itself
 						&& ((MovableEntity) e).isColiding()//only teleport things which collide
-					) {
+						) {
 						e.setPosition(getTarget());
 					}
 				}
-			);
+				);
 		}
 	}
 
 	/**
 	 * Set the portal to "open" or "closed"
-	 * @param b 
+	 *
+	 * @param b
 	 */
 	public void setActive(boolean b) {
 		active = b;
@@ -89,14 +94,15 @@ public class Portal extends AbstractEntity  {
 
 	/**
 	 * indicates whether the portal is open or not
-	 * @return 
+	 *
+	 * @return
 	 */
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	@Override
-	public void onSelectInEditor(){
+	public void onSelectInEditor() {
 		if (target != null) {
 			if (particleBand == null) {
 				particleBand = new AimBand(this, target);
@@ -105,10 +111,11 @@ public class Portal extends AbstractEntity  {
 			}
 		}
 	}
-	
+
 	@Override
-	public void onUnSelectInEditor(){
-		if (particleBand != null)
+	public void onUnSelectInEditor() {
+		if (particleBand != null) {
 			particleBand = null;
+		}
 	}
 }

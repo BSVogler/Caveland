@@ -71,7 +71,7 @@ public class AimBand {
 	 */
 	public void update(){
 		timeTillNext -= Gdx.graphics.getRawDeltaTime()*1000f;
-		if (timeTillNext < 0) {
+		if (timeTillNext < 0 && (target != null || goal != null)) {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
 			particle.setTTL(1500);

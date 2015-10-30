@@ -32,7 +32,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 /**
- *
+ *Defines behaviour features like fading and glowing.
  * @author Benedikt Vogler
  */
 public enum ParticleType {

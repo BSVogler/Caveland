@@ -205,9 +205,9 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	private byte spriteValue =-1;
 	
 	/**
-	 * default is RGBA 0x80808080.
+	 * default is RGBA 0x808080FF.
 	 */
-	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1); 
+	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f); 
 
     /**
      * Creates an object.
@@ -261,51 +261,30 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         drawCalls++;
     }
         
-    /**
-     * Draws an object in the color of the light engine and with the lightlevel. Only draws if not hidden.
-     * @param view the view using this render method
-     * @param camera The camera rendering the scene
-     */
-    public void render(GameView view, Camera camera) {
-        render(
-            view,
-            camera,
-            null
-        );
-    }
     
     /**
      * Draws an object if it is not hidden and not clipped.
      * @param view the view using this render method
      * @param camera The camera rendering the scene
-     * @param color custom blending color
      */
-    public void render(GameView view, Camera camera, Color color) {
-        if (!hidden) {  
+    public void render(GameView view, Camera camera) {
+        if (!hidden) {
+			Color fogcolor = null;
 			if (WE.CVARS.getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons
-				float factor = (float) (Math.exp( 0.025f*(camera.getVisibleFrontBorderHigh()-getPosition().toCoord().getY()-18.0) )-1 );
-				if (color == null) {
-					color = new Color(0.5f, 0.5f, 0.5f, 1).add(
-						0.3f*factor,
-						0.4f*factor,
-						1f*factor,
-						0f
-					);
-				} else {
-					color.add(
-						0.3f*factor,
-						0.4f*factor,
-						1f*factor,
-						0f
-					);
-				}
+				float factor = (float) (Math.exp(0.025f * (camera.getVisibleFrontBorderHigh() - getPosition().toCoord().getY() - 18.0)) - 1);
+				fogcolor = new Color(
+					0.5f+0.3f*factor,
+					0.5f+0.4f*factor,
+					0.5f+0.1f*factor,
+					0.5f
+				);
 			}
             render(
                 view,
                 getPosition().getViewSpcX(view),
                 getPosition().getViewSpcY(view),
-				color
+				fogcolor
             );
         }
     }
@@ -325,14 +304,14 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @param view
      * @param xPos rendering position, center of sprite in projection space (?)
      * @param yPos rendering position, center of sprite in projection space (?)
-	 * @param color color which gets multiplied with the tint. No change ( multiply with 1) is RGBA 0x80808080.
+	 * @param color color which gets multiplied with the tint. No change ( = multiply with 1) is when passed RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
 		if (spriteId != 0){
 			AtlasRegion texture = getSprite(getCategory(), spriteId, getSpriteValue());
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
-				texture.originalWidth/2 - texture.offsetX,
+				texture.originalWidth / 2 - texture.offsetX,
 				VIEW_HEIGHT2 - texture.offsetY
 			);
 			sprite.rotate(rotation);
@@ -347,9 +326,16 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 			
 			//hack for transient field tint
 			if (tint == null)
-				tint = new Color(0.5f, 0.5f, 0.5f, 1); 
+				tint = new Color(0.5f, 0.5f, 0.5f, 1f); 
 			if (color != null) {
-				sprite.setColor(tint.cpy().mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f));
+				sprite.setColor(
+					tint.cpy().mul(
+						color.r + 0.5f,
+						color.g + 0.5f,
+						color.b + 0.5f,
+						color.a + 0.5f
+					)
+				);
 			} else {
 				sprite.setColor(tint);
 			}

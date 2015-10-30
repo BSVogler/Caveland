@@ -285,7 +285,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 			if (WE.CVARS.getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons
 				float factor = (float) (Math.exp( 0.025f*(camera.getVisibleFrontBorderHigh()-getPosition().toCoord().getY()-18.0) )-1 );
-				if (color ==null) {
+				if (color == null) {
 					color = new Color(0.5f, 0.5f, 0.5f, 1).add(
 						0.3f*factor,
 						0.4f*factor,
@@ -338,17 +338,21 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 			sprite.rotate(rotation);
 			sprite.scale(scaling);
 
-			sprite.setPosition(xPos+texture.offsetX-texture.originalWidth/2,
+			sprite.setPosition(
+				xPos+texture.offsetX-texture.originalWidth/2,
 				yPos//center
 					-VIEW_HEIGHT2
 					+texture.offsetY
 			);
 			
 			//hack for transient field tint
-			if (tint == null) tint = new Color(0.5f, 0.5f, 0.5f, 1); 
-			if (color!=null)
-				sprite.setColor(tint.cpy().mul(color.r+0.5f, color.g+0.5f, color.b+0.5f, color.a+0.5f));
-			else sprite.setColor(tint);
+			if (tint == null)
+				tint = new Color(0.5f, 0.5f, 0.5f, 1); 
+			if (color != null) {
+				sprite.setColor(tint.cpy().mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f));
+			} else {
+				sprite.setColor(tint);
+			}
         
 			if (view.debugRendering()){
 				ShapeRenderer sh = view.getShapeRenderer();

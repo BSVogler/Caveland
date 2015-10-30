@@ -370,6 +370,19 @@ public class RenderBlock extends AbstractGameObject {
 					)
 				: color//pass color if not shading static
         );
+		
+		if (getBlockData().getHealth() <= 50) {
+			//render damage
+			if (side == Side.LEFT) {
+				renderDO(view, camera, getPosition().toPoint().addVector(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
+			}else if (side == Side.TOP) {
+				renderDO(view, camera, getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
+			}else if (side == Side.RIGHT) {
+				renderDO(view, camera, getPosition().toPoint().addVector(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
+			}
+		}
+				
+		
 		//render ambient occlusion
 		if (ambientOcclusion > 0) {
 			int aoFlags = getBlockData().getAOFlags();
@@ -456,6 +469,22 @@ public class RenderBlock extends AbstractGameObject {
 		ao.setColor(new Color(0.5f, 0.5f, 0.5f, ambientOcclusion));
 		ao.render(view, camera);
 	}
+	
+	/**
+	 * helper function
+	 * @param view
+	 * @param camera
+	 * @param aopos
+	 * @param value 
+	 */
+	private void renderDO(final GameView view, final Camera camera, final AbstractPosition aopos, final byte value){
+		SimpleEntity destruct = new SimpleEntity((byte) 3,value);
+		destruct.setPosition(aopos);
+		destruct.setColor(new Color(0.5f, 0.5f, 0.5f, 0.7f));
+		destruct.render(view, camera);
+	}
+	
+	
 	
     /**
      * Ignores lightlevel.

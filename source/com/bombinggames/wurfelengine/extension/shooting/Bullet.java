@@ -34,6 +34,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -49,12 +50,13 @@ import java.util.ArrayList;
 public class Bullet extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
-	private static String explosionsound = "explosion2";
+	private static final String explosionsound = "explosion2";
 	private Vector3 dir = new Vector3();//movement
 	private float speed;
 	private byte damage;
 	private int distance = 0;//distance traveled
 	private MovableEntity parent;//no self shooting
+	private AbstractGameObject parent;//no self shooting
 	private int maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
 	private int impactSprite;
@@ -125,6 +127,7 @@ public class Bullet extends AbstractEntity {
 	 * @param parent
 	 */
 	public void setParent(MovableEntity parent) {
+	public void setParent(AbstractGameObject parent) {
 		this.parent = parent;
 	}
 

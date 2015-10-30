@@ -82,7 +82,7 @@ public class ParticleEmitter extends AbstractEntity {
 	public void update(float dt) {
 		super.update(dt);
 
-		if (active) {
+		if (active && hasPosition()) {
 			setColor(new Color(1, 0, 0, 1));//only important if visible
 			if (lightsource != null && prototype.getType() == ParticleType.FIRE) {
 				lightsource.setPosition(getPosition());

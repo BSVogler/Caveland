@@ -482,7 +482,7 @@ public class Point extends AbstractPosition {
 	 * @param dir
 	 * @param maxDistance game space in meters
 	 * @param camera
-	 * @param hitFullOpaque
+	 * @param hitFullOpaque if true only intersects with blocks which are full opaque (not transparent)
 	 * @return 
 	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
 	 */

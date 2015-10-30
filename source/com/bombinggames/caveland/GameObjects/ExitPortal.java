@@ -17,6 +17,7 @@ public class ExitPortal extends Portal implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private boolean spawner;
 	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
+	private boolean live;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -37,25 +38,29 @@ public class ExitPortal extends Portal implements Interactable {
 	@Override
 	public void update(float dt) {
 		if (spawner) {
-			if (!getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 6, Ejira.class).isEmpty()) {//if a player is nearby
-				if (spawnedList.size() < 3) {
+			//if a player is not nearby
+			if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 9, Ejira.class).isEmpty()) {
+				//spawn enemies
+				while (spawnedList.size() < 3) {				
 					Coordinate coord = getPosition().toCoord();
 					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
 					Enemy e = (Enemy) new Enemy().spawn(
 						ChunkGenerator.getCaveCenter(cavenumber).toPoint().addVector(
 							(float) ((Math.random() * 4 - 2) * Block.GAME_EDGELENGTH),
 							(float) ((Math.random() * 4 - 2) * Block.GAME_EDGELENGTH),
-							8
+							0
 						)
 					);
+					e.getPosition().setZ(5*Block.GAME_EDGELENGTH);
 					spawnedList.add(e);
 				}
-				//remove killed enemys
-				for (int i = 0; i < spawnedList.size(); i++) {
-					Enemy e = spawnedList.get(i);
-					if (e.shouldBeDisposed()) {
-						spawnedList.remove(e);
-					}
+			}
+			
+			//remove killed enemys
+			for (int i = 0; i < spawnedList.size(); i++) {
+				Enemy e = spawnedList.get(i);
+				if (e.shouldBeDisposed()) {
+					spawnedList.remove(e);
 				}
 			}
 		}

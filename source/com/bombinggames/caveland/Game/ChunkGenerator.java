@@ -134,6 +134,7 @@ public class ChunkGenerator implements Generator {
 			//loch in der Decke
 			if (xRoom==g-5 && yRoom==p+2 && z == 4) {
 				ExitPortal portal = (ExitPortal) new ExitPortal().spawn(new Coordinate(x, y, z).toPoint());
+				portal.enableEnemySpawner();
 				if (getCaveNumber(x, y, z)==0) {
 					//exit to surface
 					portal.setTarget(new Coordinate(0, 0, 5));
@@ -204,7 +205,7 @@ public class ChunkGenerator implements Generator {
 	public static Coordinate getCaveCenter(int caveNumber){
 		return new Coordinate(
 			(int) (roomWithPadding*caveNumber+p+wallsize+g/2),
-			(int) (GENERATORBORDER+(p+g)/yStrech),
+			(int) (GENERATORBORDER+20+(p+g)/yStrech),
 			4
 		);
 	}

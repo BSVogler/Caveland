@@ -35,7 +35,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
@@ -57,7 +56,7 @@ public class Bullet extends AbstractEntity {
 	private float speed;
 	private byte damage;
 	private int distance = 0;//distance traveled
-	private AbstractGameObject parent;//no self shooting
+	private Weapon gun;//no self shooting
 	private int maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
 	private int impactSprite;
@@ -103,7 +102,8 @@ public class Bullet extends AbstractEntity {
 				||
 				!ignoreCoord.equals(getPosition().toCoord())
 				)
-			) {
+			&& ignoreId != getPosition().getBlock().getId()
+		) {
 			if (impactSprite != 0) {
 				Particle impactPart = new Particle();
 				impactPart.setTTL(200);
@@ -112,16 +112,15 @@ public class Bullet extends AbstractEntity {
 				impactPart.spawn(getPosition().cpy());
 			}
 			dispose();
+			return;
 		}
-
-		if (!hasPosition()) return;
+		
         //check character hit
-		//get every character on this coordinate
 		ArrayList<MovableEntity> entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord(), MovableEntity.class);
-		entitylist.remove(parent);//remove self from list to prevent self shooting
+		entitylist.remove(gun);//remove self from list to prevent self shooting
 		//remove
 		entitylist.removeIf(
-			(MovableEntity item) -> item.getPosition().toCoord().equals(ignoreCoord)
+			(MovableEntity item) -> !item.isObstacle() || item.getPosition().toCoord().equals(ignoreCoord)
 		);
 		if (!entitylist.isEmpty()) {
 			entitylist.get(0).damage(damage);//damage only the first unit on the list
@@ -131,6 +130,7 @@ public class Bullet extends AbstractEntity {
 			blood.setType(ParticleType.REGULAR);//blood
 			blood.spawn(getPosition().cpy());
 			dispose();
+			return;
 		}
 	}
 
@@ -151,11 +151,11 @@ public class Bullet extends AbstractEntity {
 	}
 
 	/**
-	 *
-	 * @param parent
+	 * Set the firing gun so it does not hit itself
+	 * @param weapon
 	 */
-	public void setParent(AbstractGameObject parent) {
-		this.parent = parent;
+	public void setGun(Weapon weapon) {
+		this.gun = weapon;
 	}
 
 	/**

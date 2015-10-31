@@ -67,6 +67,7 @@ public class CLGameView extends GameView{
 			Ejira.loadSheet();
 		
 		//register Sounds
+		WE.SOUND.register("turret", "com/bombinggames/caveland/sounds/turret.ogg");
 		WE.SOUND.register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
 		WE.SOUND.register("step", "com/bombinggames/caveland/sounds/step.wav");
 		WE.SOUND.register("urfJump", "com/bombinggames/caveland/sounds/urf_jump.wav");

@@ -19,6 +19,7 @@ public class CustomLoading extends LoadingScreen {
 			manager.load("com/bombinggames/caveland/playerSheet.txt", TextureAtlas.class);
 			manager.load("com/bombinggames/caveland/playerSheetNormal.png", Texture.class);
 		}
+		manager.load("com/bombinggames/caveland/sounds/turret.ogg", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/jetpack.wav", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/step.wav", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/collect.wav", Sound.class);

@@ -39,7 +39,7 @@ public class Enemy extends MovableEntity{
 	 * in m/s
 	 */
 	private float movementSpeed = 2;
-	private AimBand particleBand;
+	private transient AimBand particleBand;
     
 	/**
 	 *

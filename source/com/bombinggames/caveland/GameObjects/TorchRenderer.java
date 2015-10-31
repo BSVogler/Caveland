@@ -31,6 +31,7 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;

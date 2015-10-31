@@ -33,7 +33,6 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.GameObjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**

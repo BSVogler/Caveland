@@ -70,9 +70,9 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 		if (getPosition() != null && isValid()) {
 			//check if portal is there
 			if (portal == null) {
-				ArrayList<AbstractEntity> portals = getPosition().getEntitiesInside(Portal.class);
+				ArrayList<Portal> portals = getPosition().getEntitiesInside(Portal.class);
 				if (!portals.isEmpty()) {
-					portal = (Portal) portals.get(0);
+					portal = portals.get(0);
 				} else {
 					portal = new Portal();
 					

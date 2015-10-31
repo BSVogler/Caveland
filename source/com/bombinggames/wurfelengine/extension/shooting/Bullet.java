@@ -106,7 +106,7 @@ public class Bullet extends AbstractEntity {
 		) {
 			if (impactSprite != 0) {
 				Particle impactPart = new Particle();
-				impactPart.setTTL(200);
+				impactPart.setTTL(400);
 				impactPart.setColor(new Color(0.4f, 0.3f, 0.2f, 1));
 				impactPart.setType(ParticleType.SMOKE);
 				impactPart.spawn(getPosition().cpy());

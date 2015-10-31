@@ -44,17 +44,28 @@ import java.util.ArrayList;
  */
 public class Turret extends AbstractBlockLogicExtension {
 	private Enemy target;
-	private final Weapon gun;
+	private Weapon gun;
 	
 	public Turret(Block block, Coordinate coord) {
 		super(block, coord);
-		gun = (Weapon) new Weapon((byte) 4, null).spawn(coord.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH*1.2f));
-		gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
-		gun.setFireSound("turret", true);
 	}
 	
 	@Override
 	public void update(float dt) {
+		///fill gun field
+		if (gun==null) {
+			//restore if possible
+			ArrayList<Weapon> guns = getPosition().getEntitiesInside(Weapon.class);
+			if (!guns.isEmpty()) {
+				gun = guns.get(0);
+			} else {
+				gun = (Weapon) new Weapon((byte) 4, null).spawn(getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH*1.2f));
+				gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
+				gun.setFireSound("turret", true);
+			}
+		}
+		
+		//locate target
 		if (target == null || !target.hasPosition()) {
 			ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
 			if (!nearby.isEmpty()) {

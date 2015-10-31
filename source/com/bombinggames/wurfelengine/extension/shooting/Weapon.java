@@ -54,11 +54,14 @@ public class Weapon extends AbstractEntity {
     private AbstractGameObject parent;//the parent holding the weapon
     
     //sound
-    private String fire;
+    private String fireSound;
     private String reload;
     
     //stats
-    private final int delayBetweenShots;
+	/**
+	 * time in ms before new shot
+	 */
+    private final float delayBetweenShots;
     private final int shots;
     private final int relodingTime;
     private final int distance;
@@ -70,13 +73,19 @@ public class Weapon extends AbstractEntity {
     
     private int shotsLoaded;
     private int reloading;
-    /** The current time delayBetweenShots between shots*/
+    /** The current time between shots. If reaches zero another bullet is spawned*/
     private float bulletDelay;
     private int explode;
     private AbstractEntity laserdot;
 
 	private Vector3 aimDir = new Vector3(0, 0, 0);
 	private int ignoreId;
+	/**
+	 * true if just fired and weapon is still moving from the shot
+	 */
+	private boolean firing;
+	private boolean fireSoundBust;
+	private boolean bustSoundReady;
 
     /**
      *
@@ -239,7 +248,7 @@ public class Weapon extends AbstractEntity {
 		super.spawn(point);
 		laserdot = new SimpleEntity((byte) 22).spawn(point.cpy());
 		laserdot.setColor(new Color(1, 0, 0, 1));
-		laserdot.setScaling(-0.8f);
+		laserdot.setScaling(-0.85f);
 		laserdot.setName("Laser dot");
 		return this;
 	}
@@ -259,18 +268,35 @@ public class Weapon extends AbstractEntity {
 	@Override
     public void update(float dt){
 		super.update(dt);
-        if (bulletDelay > 0)
-            bulletDelay-=dt;
-        if (reloading >= 0) {
-            reloading-=dt;
-            if (reloading<=0)//finished reloading
-                shotsLoaded = shots;
-        } else {
-            //if not shooting or loading
-            if (bulletDelay <= 0 && shotsLoaded <= 0)//autoreload
-                reload();
-        }
-        if (hasPosition() && !aimDir.isZero()) {
+        if (bulletDelay > 0) {
+			bulletDelay -= dt;
+		}
+		
+		if (bulletDelay <= 0){
+			firing = false;
+		}
+		
+		//move back
+		if (hasPosition() && firing) {
+			if (bulletDelay > bulletDelay/2){
+				this.getPosition().addVector(aimDir.cpy().scl(-0.4f*dt));
+			} else {
+				this.getPosition().addVector(aimDir.cpy().scl(0.4f*dt));
+			}
+		}
+		
+       if (reloading >= 0) {
+			reloading -= dt;
+			if (reloading <= 0) {//finished reloading
+				shotsLoaded = shots;
+			}
+		} else { //if not shooting or loading
+			if (bulletDelay <= 0 && shotsLoaded <= 0) {//autoreload
+				reload();
+			}
+		}
+	   
+		if (hasPosition() && !aimDir.isZero()) {
 			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*14, null, true);
 			laserdot.setHidden(raycast == null);
 			if (raycast != null) {
@@ -279,6 +305,7 @@ public class Weapon extends AbstractEntity {
 				laserdot.setPosition(getPosition().cpy());
 			}
 		}
+		
 	}
 	
 	/**
@@ -294,12 +321,18 @@ public class Weapon extends AbstractEntity {
      */
     public void shoot(){
        if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0) {
-			if (fire != null) {
-				WE.SOUND.play(fire, getPosition());
+			if (fireSound != null) {
+				if (bustSoundReady) {
+					WE.SOUND.play(fireSound, getPosition());
+				}
+				if (fireSoundBust) {
+					bustSoundReady = false;
+				}
 			}
-
-			bulletDelay = delayBetweenShots;
+			
+			bulletDelay += delayBetweenShots;
 			shotsLoaded--;
+			firing = true;
 
 			//muzzle flash
 			Particle flash = new Particle();
@@ -352,9 +385,11 @@ public class Weapon extends AbstractEntity {
      *reloads the weapon
      */
     public void reload(){
-        reloading =relodingTime;
-        if (reload != null)
+		bustSoundReady = true;
+        reloading = relodingTime;
+        if (reload != null) {
 			WE.SOUND.play("reload", getPosition());
+		}
     }
 
     /**
@@ -384,9 +419,11 @@ public class Weapon extends AbstractEntity {
     /**
      *
      * @param fire
+	 * @param bustSound true if one sound per bust
      */
-    public void setFire(String fire) {
-        this.fire = fire;
+    public void setFireSound(String fire, boolean bustSound) {
+        this.fireSound = fire;
+		this.fireSoundBust = bustSound;
     }
 
     /**

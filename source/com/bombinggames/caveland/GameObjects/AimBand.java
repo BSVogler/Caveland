@@ -35,18 +35,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
- * A band which points to a point or movable entitiy
+ * A band which points to a point or entity
  * @author Benedikt Vogler
  */
 public class AimBand {
 	private Point goal;
-	private MovableEntity target;
+	private AbstractEntity target;
 	private final AbstractEntity parent;
 	private final float timeEachSpawn = 200;
 	private float timeTillNext;
@@ -60,7 +59,7 @@ public class AimBand {
 		this.target = null;
 	}
 
-	AimBand(Enemy parent, MovableEntity target) {
+	public AimBand(AbstractEntity parent, AbstractEntity target) {
 		this.target = target;
 		this.parent = parent;
 		goal = null;
@@ -107,7 +106,7 @@ public class AimBand {
 	 * 
 	 * @param target 
 	 */
-	public void setTarget(MovableEntity target) {
+	public void setTarget(AbstractEntity target) {
 		this.target = target;
 		this.goal = null;
 	}

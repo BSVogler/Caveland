@@ -156,9 +156,9 @@ public class Weapon extends AbstractEntity {
 
             case 4:
                 setName("Machine Gun");
-                delayBetweenShots = 20;
+                delayBetweenShots = 75;
                 relodingTime =1300;
-                shots = 1000;
+                shots = 14;
                 distance = 10;
                 bps = 1;
                 spread = 0f;
@@ -290,7 +290,7 @@ public class Weapon extends AbstractEntity {
 	}
     
     /**
-     *shoots the weapon
+     *shoots the weapon. like holding the trigger down
      */
     public void shoot(){
        if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0) {

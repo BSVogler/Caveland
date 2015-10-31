@@ -50,11 +50,12 @@ public class Turret extends AbstractBlockLogicExtension {
 		super(block, coord);
 		gun = (Weapon) new Weapon((byte) 4, null).spawn(coord.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH*1.2f));
 		gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
+		gun.setFireSound("turret");
 	}
 	
 	@Override
 	public void update(float dt) {
-		if (target == null) {
+		if (target == null || !target.hasPosition()) {
 			ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
 			if (!nearby.isEmpty()) {
 				target = nearby.get(0);

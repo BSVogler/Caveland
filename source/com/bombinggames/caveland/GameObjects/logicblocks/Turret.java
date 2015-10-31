@@ -30,6 +30,7 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -48,6 +49,7 @@ public class Turret extends AbstractBlockLogicExtension {
 	public Turret(Block block, Coordinate coord) {
 		super(block, coord);
 		gun = (Weapon) new Weapon((byte) 4, null).spawn(coord.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH*1.2f));
+		gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
 	}
 	
 	@Override

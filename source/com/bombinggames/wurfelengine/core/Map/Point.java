@@ -686,4 +686,19 @@ public class Point extends AbstractPosition {
 	public int getChunkY() {
 		return Math.floorDiv((int) y, Chunk.getGameDepth());
 	}
+	
+	
+	/**
+	 * 
+	 * @param target
+	 * @param t
+	 * @return 
+	 */
+	public Point lerp(Point target, float t){
+		Point tp = new Point(this.getVector().lerp(target.getVector(), t));
+		this.x = tp.x;
+		this.y = tp.y;
+		this.z = tp.z;
+		return this;
+	}
 }

@@ -39,6 +39,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
@@ -86,6 +87,7 @@ public class Weapon extends AbstractEntity {
 	private boolean firing;
 	private boolean fireSoundBust;
 	private boolean bustSoundReady;
+	private Point fixedPos;
 
     /**
      *
@@ -250,7 +252,20 @@ public class Weapon extends AbstractEntity {
 		laserdot.setColor(new Color(1, 0, 0, 1));
 		laserdot.setScaling(-0.85f);
 		laserdot.setName("Laser dot");
+		fixedPos = point.cpy();
 		return this;
+	}
+
+	@Override
+	public void setPosition(AbstractPosition pos) {
+		fixedPos = pos.toPoint().cpy();
+		super.setPosition(pos);
+	}
+
+	@Override
+	public void setPosition(Point pos) {
+		fixedPos = pos.cpy();
+		super.setPosition(pos);
 	}
     
     /**
@@ -277,13 +292,23 @@ public class Weapon extends AbstractEntity {
 		}
 		
 		//move back
-		if (hasPosition() && firing) {
-			if (bulletDelay > bulletDelay/2){
-				this.getPosition().addVector(aimDir.cpy().scl(-0.4f*dt));
+		if (hasPosition()) {
+			if ( firing){
+				float t;
+				if (bulletDelay > delayBetweenShots/2){
+					t = (bulletDelay-(delayBetweenShots/2f))/(delayBetweenShots/2f);
+				} else {
+					t = bulletDelay/(delayBetweenShots/2f);
+				}
+				this.getPosition().lerp(
+						fixedPos.cpy().addVector(aimDir.cpy().scl(-Block.GAME_EDGELENGTH2)),//half a meter back
+						t
+				);
 			} else {
-				this.getPosition().addVector(aimDir.cpy().scl(0.4f*dt));
+				this.setPosition(fixedPos);
 			}
 		}
+		
 		
        if (reloading >= 0) {
 			reloading -= dt;
@@ -313,7 +338,7 @@ public class Weapon extends AbstractEntity {
 	 * @param dir 
 	 */
 	public void setAim(Vector3 dir){
-		this.aimDir = dir;
+		this.aimDir = dir.nor();
 	}
     
     /**
@@ -336,7 +361,8 @@ public class Weapon extends AbstractEntity {
 
 			//muzzle flash
 			Particle flash = new Particle();
-			flash.setTTL(300);
+			flash.setTTL(400);
+			flash.setColor(Color.YELLOW.cpy());
 			flash.setType(ParticleType.FIRE);
 			flash.spawn(getPosition().toPoint());
 		
@@ -359,7 +385,7 @@ public class Weapon extends AbstractEntity {
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
                 bullet.setDirection(aiming);
-                bullet.setSpeed(2f);
+                bullet.setSpeed(4f);
 				bullet.setScaling(-0.8f);
                 bullet.setMaxDistance(distance*100+100);
                 bullet.setParent(parent);

@@ -30,6 +30,7 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -37,6 +38,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -66,16 +68,30 @@ public class Turret extends AbstractBlockLogicExtension {
 		}
 		
 		//locate target
-		if (target == null || !target.hasPosition()) {
-			ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
-			if (!nearby.isEmpty()) {
-				target = nearby.get(0);
+		Vector3 vecToTarget = null;
+		target = null;
+		ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
+		if (!nearby.isEmpty()) {
+			Iterator<Enemy> it = nearby.iterator();
+			while (target == null && it.hasNext()) {
+				target = it.next();
+				vecToTarget = target.getPosition().getVector().sub(getPosition().toPoint().getVector()).nor();
+//				//check if can see target
+//				Intersection raycast = getPosition().toPoint().raycastSimple(vecToTarget, Block.GAME_EDGELENGTH * 20, null, true);
+//				if (raycast != null && target.getPosition().distanceTo(raycast.getPoint()) > Block.GAME_EDGELENGTH2) {
+//					//can not see
+//					target = null;
+//				}
 			}
-		}
 
-		if (target != null && target.hasPosition() && getPosition().distanceTo(target) < Block.GAME_DIAGLENGTH * 4) {
-			gun.setAim(target.getPosition().getVector().sub(getPosition().toPoint().getVector()).nor());
-			gun.shoot();
+			if (
+				target != null
+				&& target.hasPosition()
+				&& getPosition().distanceTo(target) < Block.GAME_DIAGLENGTH * 4
+			) {
+				gun.setAim(vecToTarget);
+				gun.shoot();
+			}
 		}
 		
 	}

@@ -52,8 +52,10 @@ public class Bullet extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 	private static final String explosionsound = "explosion2";
-	private Vector3 dir = new Vector3();//movement
-	private float speed;
+	/**
+	 * direction and speed of the bullet
+	 */
+	private Vector3 movement = new Vector3();//movement
 	private byte damage;
 	private int distance = 0;//distance traveled
 	private Weapon gun;//no self shooting
@@ -80,8 +82,9 @@ public class Bullet extends AbstractEntity {
 		super.update(dt);
 		if (!hasPosition()) return;
 		
-		//dir.z=-delta/(float)maxDistance;//fall down
-		Vector3 dMov = dir.cpy().scl(dt * speed);
+		//apply gravity
+		movement.add(new Vector3(0, 0, -WE.CVARS.getValueF("gravity") * dt*0.001f));
+		Vector3 dMov = movement.cpy().scl(dt);
 		//dMov.z /= 1.414213562f;//mixed screen and game space together?
 		getPosition().addVector(dMov);
 		setRotation(getRotation() + dt);
@@ -139,7 +142,8 @@ public class Bullet extends AbstractEntity {
 	 * @param dir
 	 */
 	public void setDirection(Vector3 dir) {
-		this.dir = dir;
+		float speed = movement.len();
+		this.movement = dir.scl(speed);
 	}
 
 	/**
@@ -147,7 +151,7 @@ public class Bullet extends AbstractEntity {
 	 * @param speed
 	 */
 	public void setSpeed(float speed) {
-		this.speed = speed;
+		this.movement.nor().scl(speed);
 	}
 
 	/**
@@ -224,6 +228,10 @@ public class Bullet extends AbstractEntity {
 
 	void ignoreBlock(int ignoreId) {
 		this.ignoreId = ignoreId;
+	}
+
+	void setMovement(Vector3 mov) {
+		this.movement = mov;
 	}
 
 }

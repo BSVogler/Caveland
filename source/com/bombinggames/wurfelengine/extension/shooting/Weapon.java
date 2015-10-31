@@ -172,9 +172,9 @@ public class Weapon extends AbstractEntity {
                 delayBetweenShots = 75;
                 relodingTime =1300;
                 shots = 14;
-                distance = 10;
+                distance = 40;
                 bps = 1;
-                spread = 0f;
+                spread = 0.005f;
                 damage = (byte) 50;
                 bulletSprite = 0;
                 impactSprite=19;
@@ -328,7 +328,7 @@ public class Weapon extends AbstractEntity {
 		}
 	   
 		if (hasPosition() && !aimDir.isZero()) {
-			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*14, null, true);
+			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*20, null, true);
 			laserdot.setHidden(raycast == null);
 			if (raycast != null) {
 				laserdot.setPosition(raycast.getPoint());
@@ -374,11 +374,10 @@ public class Weapon extends AbstractEntity {
 		
             //shot bullets
             for (int i = 0; i < bps; i++) {
-                Bullet bullet;
 
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
-                bullet = new Bullet();
-				bullet.setParent(this);
+				Bullet bullet = new Bullet();
+				bullet.setGun(this);
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setValue((byte) 0);
@@ -390,8 +389,7 @@ public class Weapon extends AbstractEntity {
                 Vector3 aiming = aimDir.cpy();
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
-                bullet.setDirection(aiming);
-                bullet.setSpeed(4f);
+				bullet.setMovement(aiming.scl(7f));
 				bullet.setScaling(-0.8f);
                 bullet.setMaxDistance(distance*100+100);
                 bullet.setGun(this);
@@ -399,7 +397,7 @@ public class Weapon extends AbstractEntity {
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
 				bullet.ignoreBlock(ignoreId);
-				bullet.ignoreCoord(getPosition().toCoord());
+				//bullet.ignoreCoord(getPosition().toCoord());
                 bullet.spawn(getPosition().toPoint()); 
             }
         }

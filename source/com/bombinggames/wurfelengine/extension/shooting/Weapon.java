@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.extension.shooting;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.GameObjects.AimBand;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -88,6 +89,7 @@ public class Weapon extends AbstractEntity {
 	private boolean fireSoundBust;
 	private boolean bustSoundReady;
 	private Point fixedPos;
+	private transient AimBand particleBand;
 
     /**
      *
@@ -291,6 +293,10 @@ public class Weapon extends AbstractEntity {
 			firing = false;
 		}
 		
+		if (particleBand != null){
+			particleBand.update();
+		}
+		
 		//move back
 		if (hasPosition()) {
 			if ( firing){
@@ -301,8 +307,8 @@ public class Weapon extends AbstractEntity {
 					t = bulletDelay/(delayBetweenShots/2f);
 				}
 				this.getPosition().lerp(
-						fixedPos.cpy().addVector(aimDir.cpy().scl(-Block.GAME_EDGELENGTH2)),//half a meter back
-						t
+					fixedPos.cpy().addVector(aimDir.cpy().scl(-Block.GAME_EDGELENGTH2)),
+					t
 				);
 			} else {
 				this.setPosition(fixedPos);
@@ -388,7 +394,7 @@ public class Weapon extends AbstractEntity {
                 bullet.setSpeed(4f);
 				bullet.setScaling(-0.8f);
                 bullet.setMaxDistance(distance*100+100);
-                bullet.setParent(parent);
+                bullet.setGun(this);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);
@@ -481,6 +487,22 @@ public class Weapon extends AbstractEntity {
 	public void dispose() {
 		super.dispose();
 		laserdot.dispose();
+	}
+	
+		
+	@Override
+	public void onSelectInEditor(){
+		if (particleBand == null) {
+			particleBand = new AimBand(this, laserdot);
+		} else {
+			particleBand.setTarget(laserdot);
+		}
+	}
+	
+	@Override
+	public void onUnSelectInEditor(){
+		if (particleBand != null)
+			particleBand = null;
 	}
 
 }

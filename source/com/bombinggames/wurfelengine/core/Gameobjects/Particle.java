@@ -53,6 +53,7 @@ public class Particle extends MovableEntity {
 		else setScaling(-0.7f);
 		setFloating(true);
 		setName("Particle");
+		setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
 	}
 
 	public void setType(ParticleType type) {

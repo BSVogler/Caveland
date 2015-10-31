@@ -151,10 +151,10 @@ public abstract class AbstractEntity extends AbstractGameObject {
 
 	/**
 	 * keeps the reference
-	 * @param position 
+	 * @param pos 
 	 */
-	public void setPosition(Point position) {
-		this.position = position;
+	public void setPosition(Point pos) {
+		this.position = pos;
 	}
 	
     /**

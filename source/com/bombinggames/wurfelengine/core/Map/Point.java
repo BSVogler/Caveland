@@ -557,14 +557,14 @@ public class Point extends AbstractPosition {
 	 * @return the distance from this point to the other point in game coordinates
 	 */
 	public float distanceTo(Point point) {
-		float dX = x-point.x;
-		float dY = y-point.y;
-		float dZ = z-point.z;
-		return (float) Math.sqrt(dX*dX+dY*dY+dZ*dZ);
+		float dX = x - point.x;
+		float dY = y - point.y;
+		float dZ = z - point.z;
+		return (float) Math.sqrt(dX * dX + dY * dY + dZ * dZ);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param object
 	 * @return the distance from this point to the other object
 	 */
@@ -572,7 +572,7 @@ public class Point extends AbstractPosition {
 	public float distanceTo(AbstractGameObject object) {
 		return distanceTo(object.getPosition().toPoint());
 	}
-	
+
 	@Override
 	public float distanceToHorizontal(AbstractPosition pos) {
 		return distanceToHorizontal(pos.toPoint());
@@ -581,59 +581,63 @@ public class Point extends AbstractPosition {
 	/**
 	 * checks only x and y.
 	 * @param point
-	 * @return the distance from this point to the other point only regarding horizontal components.
+	 * @return the distance from this point to the other point only regarding
+	 * horizontal components.
 	 */
 	public float distanceToHorizontal(Point point) {
-		float dX = x-point.x;
-		float dY = y-point.y;
-		return (float) Math.sqrt(dX*dX+dY*dY);
+		float dX = x - point.x;
+		float dY = y - point.y;
+		return (float) Math.sqrt(dX * dX + dY * dY);
 	}
-	
+
 	/**
-	 *  checks only x and y.
+	 * checks only x and y.
+	 *
 	 * @param object
-	 * @return the distance from this point to the other point only regarding horizontal components.
+	 * @return the distance from this point to the other point only regarding
+	 * horizontal components.
 	 */
 	@Override
 	public float distanceToHorizontal(AbstractGameObject object) {
 		return distanceToHorizontal(object.getPosition().toPoint());
 	}
-	
-	
+
+
 	/**
 	 * get entities in radius
 	 * @param radius in game dimension pixels
 	 * @return every entitie in radius
 	 */
-	public ArrayList<AbstractEntity> getEntitiesNearby(float radius){
+	public ArrayList<AbstractEntity> getEntitiesNearby(float radius) {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
-        for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (entity.hasPosition() && distanceTo(entity.getPosition().toPoint()) < radius){
-                result.add(entity);
-            } 
-        }
+		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+			if (entity.hasPosition() && distanceTo(entity.getPosition().toPoint()) < radius) {
+				result.add(entity);
+			}
+		}
 
-        return result;
+		return result;
 	}
 	
-		/**
+	/**
 	 * get entities in radius (horizontal only)
+	 *
 	 * @param radius in game dimension pixels
 	 * @return every entitie in radius
 	 */
-	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius){
+	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
-        for (AbstractEntity entity : Controller.getMap().getEntitys()) {
-            if (distanceToHorizontal(entity.getPosition().toPoint()) < radius){
-                result.add(entity);
-            } 
-        }
+		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+			if (distanceToHorizontal(entity.getPosition().toPoint()) < radius) {
+				result.add(entity);
+			}
+		}
 
-        return result;
+		return result;
 	}
-	
+
 	/**
 	 * get entities in horizontal radius (like a pipe)
 	 * @param <type>
@@ -642,7 +646,7 @@ public class Point extends AbstractPosition {
 	 * @return every entitie in radius
 	 */
 	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type){
+	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
 		AbstractEntity[] entityList = Controller.getMap().getEntitys();
 
@@ -672,7 +676,7 @@ public class Point extends AbstractPosition {
 	
 	@Override
 	public String toString() {
-		return "["+x +", "+ y +", " +z+"]";
+		return "[" + x + ", " + y + ", " + z + "]";
 	}
 
 	@Override
@@ -699,9 +703,9 @@ public class Point extends AbstractPosition {
 	 * 
 	 * @param target
 	 * @param t
-	 * @return 
+	 * @return
 	 */
-	public Point lerp(Point target, float t){
+	public Point lerp(Point target, float t) {
 		Point tp = new Point(this.getVector().lerp(target.getVector(), t));
 		this.x = tp.x;
 		this.y = tp.y;

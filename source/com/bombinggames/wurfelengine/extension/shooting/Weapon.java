@@ -78,7 +78,7 @@ public class Weapon extends AbstractEntity {
     /** The current time between shots. If reaches zero another bullet is spawned*/
     private float bulletDelay;
     private int explode;
-    private AbstractEntity laserdot;
+    private transient AbstractEntity laserdot;
 
 	private Vector3 aimDir = new Vector3(0, 0, 0);
 	private int ignoreId;

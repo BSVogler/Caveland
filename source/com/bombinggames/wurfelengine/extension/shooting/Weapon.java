@@ -348,7 +348,7 @@ public class Weapon extends AbstractEntity {
 	 * 
 	 * @param dir 
 	 */
-	public void setAim(Vector3 dir){
+	public void setAimDir(Vector3 dir){
 		this.aimDir = dir.nor();
 	}
     

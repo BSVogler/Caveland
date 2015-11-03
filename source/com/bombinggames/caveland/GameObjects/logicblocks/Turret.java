@@ -48,7 +48,7 @@ import java.util.Iterator;
 public class Turret extends AbstractBlockLogicExtension {
 	private Enemy target;
 	private Weapon gun;
-	public final float MAXDISTANCE = 20 * Block.GAME_EDGELENGTH;
+	public final float MAXDISTANCE = 20;
 	
 	public Turret(Block block, Coordinate coord) {
 		super(block, coord);
@@ -101,7 +101,7 @@ public class Turret extends AbstractBlockLogicExtension {
 			if (
 				target != null
 				&& target.hasPosition()
-				&& getPosition().distanceTo(target) <= MAXDISTANCE
+				&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
 			) {
 				gun.setAimDir(vecToTarget);
 				gun.shoot();

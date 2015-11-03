@@ -327,6 +327,11 @@ public class Weapon extends AbstractEntity {
 			}
 		}
 	   
+		updateLaserDot();
+		
+	}
+	
+	private void updateLaserDot(){
 		if (hasPosition() && !aimDir.isZero()) {
 			Intersection raycast = getPosition().raycastSimple(
 				aimDir,
@@ -341,7 +346,6 @@ public class Weapon extends AbstractEntity {
 				laserdot.setPosition(getPosition().cpy());
 			}
 		}
-		
 	}
 	
 	/**
@@ -350,6 +354,7 @@ public class Weapon extends AbstractEntity {
 	 */
 	public void setAimDir(Vector3 dir){
 		this.aimDir = dir.nor();
+		updateLaserDot();
 	}
     
     /**

@@ -48,6 +48,7 @@ import java.util.Iterator;
 public class Turret extends AbstractBlockLogicExtension {
 	private Enemy target;
 	private Weapon gun;
+	public final float MAXDISTANCE = 20 * Block.GAME_EDGELENGTH;
 	
 	public Turret(Block block, Coordinate coord) {
 		super(block, coord);
@@ -80,17 +81,17 @@ public class Turret extends AbstractBlockLogicExtension {
 			Iterator<Enemy> it = nearby.iterator();
 			while (target == null && it.hasNext()) {
 				target = it.next();
-				vecToTarget = target.getPosition().getVector().sub(getPosition().toPoint().getVector()).nor();
+				vecToTarget = target.getPosition().getVector().sub(gun.getPosition().getVector()).nor();
 				//check if can see target
-				Intersection raycast = getPosition().toPoint().raycastSimple(
+				Intersection raycast = gun.getPosition().raycastSimple(
 					vecToTarget,
-					Block.GAME_EDGELENGTH * 20,
+					MAXDISTANCE,
 					null,
-					(Block t) -> t.isObstacle() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+					(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
 				);
 				if (
 					raycast != null
-					&& target.getPosition().distanceTo(raycast.getPoint()) > Block.GAME_EDGELENGTH2
+					&& gun.getPosition().distanceTo(raycast.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
 				) {
 					//can not see
 					target = null;
@@ -100,7 +101,7 @@ public class Turret extends AbstractBlockLogicExtension {
 			if (
 				target != null
 				&& target.hasPosition()
-				&& getPosition().distanceTo(target) < Block.GAME_DIAGLENGTH * 4
+				&& getPosition().distanceTo(target) <= MAXDISTANCE
 			) {
 				gun.setAimDir(vecToTarget);
 				gun.shoot();

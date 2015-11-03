@@ -68,10 +68,10 @@ public class Turret extends AbstractBlockLogicExtension {
 		}
 		
 		//locate target
-		Vector3 vecToTarget = null;
 		target = null;
 		ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
 		if (!nearby.isEmpty()) {
+			Vector3 vecToTarget = null;
 			Iterator<Enemy> it = nearby.iterator();
 			while (target == null && it.hasNext()) {
 				target = it.next();

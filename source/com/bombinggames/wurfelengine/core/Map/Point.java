@@ -712,4 +712,24 @@ public class Point extends AbstractPosition {
 		this.z = tp.z;
 		return this;
 	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @param maxdistance game space in meters
+	 * @return 
+	 */
+	public boolean canSee(Point p, float maxdistance) {
+		Vector3 vecToTarget = getVector().sub(p.getVector()).nor();
+		//check if can see target
+		Intersection raycast = p.raycastSimple(
+			vecToTarget,
+			maxdistance,
+			null,
+			(Block t) -> !t.isTransparent()
+		);
+		return !(raycast != null
+			&& distanceTo(raycast.getPoint()) < distanceTo(p)//check if point is before
+);
+	}
 }

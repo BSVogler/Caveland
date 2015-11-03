@@ -40,6 +40,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 /**
  *A point is a single position in the game world not bound to the grid. Use this for entities.
@@ -482,17 +483,24 @@ public class Point extends AbstractPosition {
 	 * @param dir
 	 * @param maxDistance game space in meters
 	 * @param camera
-	 * @param hitFullOpaque if true only intersects with blocks which are full opaque (not transparent)
+	 * @param hitCondition can be null
 	 * @return 
 	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
 	 */
-	public Intersection raycastSimple(final Vector3 dir, float maxDistance, final Camera camera, final boolean hitFullOpaque){
+	public Intersection raycastSimple(
+		final Vector3 dir,
+		float maxDistance,
+		final Camera camera,
+		final Predicate<Block> hitCondition
+	){
 		if (dir == null) {
 			throw new NullPointerException("Direction of raycasting not defined");
 		}
+		
 		if (dir.isZero()) {
 			throw new Error("Raycast in zero direction!");
 		}
+		
 		Point traverseP = cpy();
 		dir.nor();
 		Coordinate isectC = traverseP.toCoord();
@@ -512,14 +520,14 @@ public class Point extends AbstractPosition {
 				(isectC.getZ() < camera.getZRenderingLimit() && !camera.isClipped(isectC))
 			   )
 				&& block != null
-				&& !(hitFullOpaque && block.isTransparent())
+				&& (hitCondition == null || hitCondition.test(block))
 			){
 				Intersection interse = new Intersection(traverseP, null, distanceTo(traverseP));
 				interse.calcNormal(traverseP);
 				return interse;
 			}
 		}
-		//check for groudn hit
+		//check for ground hit
 		if (traverseP.getZ() <= 0) {
 			traverseP.setZ(0);//clamp at 0
 			float distance = this.distanceTo(traverseP);

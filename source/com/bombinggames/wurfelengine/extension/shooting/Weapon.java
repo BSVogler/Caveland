@@ -328,7 +328,12 @@ public class Weapon extends AbstractEntity {
 		}
 	   
 		if (hasPosition() && !aimDir.isZero()) {
-			Intersection raycast = getPosition().raycastSimple(aimDir, Block.GAME_EDGELENGTH*20, null, true);
+			Intersection raycast = getPosition().raycastSimple(
+				aimDir,
+				Block.GAME_EDGELENGTH*20,
+				null,
+				(Block t) -> !t.isTransparent() && t.getId() != ignoreId
+			);
 			laserdot.setHidden(raycast == null);
 			if (raycast != null) {
 				laserdot.setPosition(raycast.getPoint());

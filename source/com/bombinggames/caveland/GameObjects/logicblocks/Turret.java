@@ -36,6 +36,7 @@ import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -76,17 +77,24 @@ public class Turret extends AbstractBlockLogicExtension {
 			while (target == null && it.hasNext()) {
 				target = it.next();
 				vecToTarget = target.getPosition().getVector().sub(getPosition().toPoint().getVector()).nor();
-//				//check if can see target
-//				Intersection raycast = getPosition().toPoint().raycastSimple(vecToTarget, Block.GAME_EDGELENGTH * 20, null, true);
-//				if (raycast != null && target.getPosition().distanceTo(raycast.getPoint()) > Block.GAME_EDGELENGTH2) {
-//					//can not see
-//					target = null;
-//				}
+				//check if can see target
+				Intersection raycast = getPosition().toPoint().raycastSimple(
+					vecToTarget,
+					Block.GAME_EDGELENGTH * 20,
+					null,
+					(Block t) -> t.isObstacle() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+				);
+				if (
+					raycast != null
+					&& target.getPosition().distanceTo(raycast.getPoint()) > Block.GAME_EDGELENGTH2
+				) {
+					//can not see
+					target = null;
+				}
 			}
 
 			if (
-				target != null
-				&& target.hasPosition()
+				target.hasPosition()
 				&& getPosition().distanceTo(target) < Block.GAME_DIAGLENGTH * 4
 			) {
 				gun.setAim(vecToTarget);

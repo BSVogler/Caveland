@@ -78,7 +78,9 @@ public class EntityShadow extends AbstractEntity {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		if (!shouldBeDisposed()) {
+		if (character == null || !character.hasPosition() || !hasPosition() || character.isHidden()) {
+			dispose();
+		} else {
 			setScaling(0);
 			setColor(
 				new Color(

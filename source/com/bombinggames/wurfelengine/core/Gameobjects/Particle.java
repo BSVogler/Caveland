@@ -125,6 +125,10 @@ public class Particle extends MovableEntity {
 		return super.clone();
 	}
 
+	
+	public float getPercentageOfLife(){
+		return timeTillDeath / maxtime;
+	}
 	/**
 	 * the amount of time the object lives maximum.
 	 *

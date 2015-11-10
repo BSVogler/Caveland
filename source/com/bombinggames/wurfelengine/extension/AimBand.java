@@ -32,12 +32,11 @@ package com.bombinggames.wurfelengine.extension;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import java.util.ArrayList;
 
 /**
  * A band which points to a point or entity
@@ -49,6 +48,7 @@ public class AimBand {
 	private final AbstractEntity parent;
 	private final float timeEachSpawn = 200;
 	private float timeTillNext;
+	private final ArrayList<Particle> list = new ArrayList<>(10);
 
 	public AimBand(AbstractEntity parent, AbstractPosition goal) {
 		if (goal instanceof Point)
@@ -76,23 +76,35 @@ public class AimBand {
 			particle.setTTL(1500);
 			particle.setColor(new Color(0.4f, 0.5f, 1, 0.3f));
 			particle.setUseRawDelta(true);
-			
-			Vector3 endpos;
-			if (target == null) {
-				endpos = this.goal.getVector();
-			} else {
-				endpos = this.target.getPosition().getVector();
-			}
-			//scale speed that after one second the particle is there
-			Vector3 vectorSG = endpos.sub(parent.getPosition().getVector());
-			float len = vectorSG.len() / Block.GAME_EDGELENGTH;
-			if (len>5) len=5;//clamp at 5m/s
-			particle.setMovement(vectorSG.nor().scl(len));
 			particle.setColiding(false);
 			particle.spawn(parent.getPosition().cpy());
+			list.add(particle);
+		}
+		
+		if (getAim() != null) {
+			//move particles
+			for (Particle p : list) {
+				p.setPosition(parent.getPosition().cpy().lerp(getAim(), 1-p.getPercentageOfLife()));
+			}
+
+			list.removeIf(p -> p.shouldBeDisposed());
+		} else {
+			list.forEach(p -> p.dispose());
+			list.clear();
 		}
 	}
 
+	/**
+	 * position at the end of the band
+	 * @return 
+	 */
+	private Point getAim(){
+		if (goal == null) {
+			return target.getPosition();
+		} else {
+			return goal;
+		}
+	}
 	/**
 	 * 
 	 * @param goal 
@@ -110,6 +122,5 @@ public class AimBand {
 		this.target = target;
 		this.goal = null;
 	}
-	
 	
 }

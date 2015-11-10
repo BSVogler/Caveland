@@ -700,7 +700,7 @@ public class Point extends AbstractPosition {
 	
 	
 	/**
-	 * 
+	 * Overwrites the data.
 	 * @param target
 	 * @param t
 	 * @return

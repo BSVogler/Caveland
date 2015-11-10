@@ -480,8 +480,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 						overlayTexture.originalWidth/2 - overlayTexture.offsetX,
 						VIEW_HEIGHT2 - overlayTexture.offsetY
 					);
-					overlaySprite.scale(1f);
-					overlaySprite.setColor(getColor());
+					overlaySprite.scale(1f);//saved at half size, so must scale by 2 to fit
+					overlaySprite.setColor(new Color(0.8f, 0.8f, 0.8f, 1f));//a bit brigher then default
 
 					overlaySprite.setPosition(
 						getPosition().getViewSpcX(view) + overlayTexture.offsetX - overlayTexture.originalWidth / 2,

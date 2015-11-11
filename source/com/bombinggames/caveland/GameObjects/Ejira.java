@@ -301,8 +301,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 
 
-			//get loren
-			ArrayList<MineCart> nearbyLoren = pos.toPoint().getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
+			//get nearby mine cart
+			ArrayList<MineCart> nearbyLoren = pos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
 
 			if (!nearbyLoren.isEmpty()) {
 				MineCart lore = nearbyLoren.get(0);

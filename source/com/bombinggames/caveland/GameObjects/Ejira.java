@@ -824,7 +824,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				//			addMovement(dir);
 				//repalce horizontal movement if walking
 				setHorMovement(dir.scl(walkingspeed));
-				if (isOnGround() && getSpeedHor() > 0 && !playAnimation) {
+				if (isOnGround() && getSpeedHor() > 0.1f && !playAnimation) {
 					playAnimation('w');
 				}
 			}
@@ -862,7 +862,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		if (landingSound != null) {
 			WE.SOUND.play(landingSound, getPosition());//play landing sound
 		}
-		playAnimation('w');
 		step();
 	}
 
@@ -982,10 +981,17 @@ public class Ejira extends CLMovableEntity implements Controllable {
 					playAnimation = false;//pause
 				}
 
-				if (action == 'j' && animationStep > 3) { //todo temporary fix to avoid landing animation
+				if (action == 'j' && !isOnGround() && animationStep > 3) { //todo temporary fix to avoid landing animation
 					animationStep = 3;
 					playAnimation = false;
 				}
+				if (action == 'j' && isOnGround()){
+					playAnimation = true;
+				}
+				if (action == 'j' && animationStep > 6){
+					playAnimation = false;
+				}
+				
 			}
 		}
 		if (overlay){

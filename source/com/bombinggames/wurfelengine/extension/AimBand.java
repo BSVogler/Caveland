@@ -79,21 +79,21 @@ public class AimBand {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
 			particle.setTTL(1500);
-			particle.setColor(new Color(0.4f, 0.5f, 1, 0.3f));
+			particle.setColor(new Color(0.4f, 0.5f, 1f, 0.3f));
 			particle.setUseRawDelta(true);
 			particle.setColiding(false);
 			particle.spawn(parent.getPosition().cpy());
 			list.add(particle);
 		}
-		
+					
+		//remove old particles from list
+		list.removeIf(p -> p.shouldBeDisposed());
+			
 		if (getAim() != null) {
 			//move particles
 			for (Particle p : list) {
 				p.getPosition().setValues(parent.getPosition()).lerp(getAim(), 1 - p.getPercentageOfLife());
 			}
-			
-			//remove old particles from list
-			list.removeIf(p -> p.shouldBeDisposed());
 		} else {
 			list.forEach(p -> p.dispose());
 			list.clear();
@@ -133,6 +133,7 @@ public class AimBand {
 		for (Particle particle : list) {
 			particle.disposeFromMap();
 		}
+		list.clear();
 	}
 	
 }

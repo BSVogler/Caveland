@@ -37,6 +37,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The Ejira has two particle emitter attached via glue. Itself is not saved but it's position. The content of the backpack is dropped on disposing and saved separately.
@@ -305,10 +306,16 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			ArrayList<MineCart> nearbyLoren = pos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
 
 			if (!nearbyLoren.isEmpty()) {
-				MineCart lore = nearbyLoren.get(0);
-				if (lore.getPassenger() == null) {//if contact with lore and it has no passenger
-					if (pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)) {//enter chu chu
+				Iterator<MineCart> it = nearbyLoren.iterator();
+				while (it.hasNext()) {
+					MineCart lore = it.next();
+					//if contact with lore and it has no passenger
+					if (lore.getPassenger() == null
+						&& pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)
+					) {
+						//enter chu chu
 						lore.setPassanger(this);
+						break;
 					}
 				}
 			}
@@ -323,7 +330,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				}
 			}
 			
-
 			//collect collectibles
 			ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);
 			boolean playCollectSound = false;

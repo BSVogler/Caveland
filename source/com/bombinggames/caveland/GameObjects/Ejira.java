@@ -313,10 +313,16 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				}
 			}
 
-			//loren anstupsen
-			if (nearbyLoren.size() > 0 && nearbyLoren.get(0).getSpeedHor() < 0.1) {//anstupsen
-				nearbyLoren.get(0).addMovement(new Vector2(getOrientation().scl(getMovementHor().len() + 5f)));
+			//loren anstupsen, push
+			for (MineCart mineCart : nearbyLoren) {
+				if (mineCart.getSpeedHor() < 0.1
+					&& mineCart.getPassenger() != this
+				) {
+					//in movement direction plus a little push
+					mineCart.addMovement(getOrientation().scl(getMovementHor().len() + 5f));
+				}
 			}
+			
 
 			//collect collectibles
 			ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);

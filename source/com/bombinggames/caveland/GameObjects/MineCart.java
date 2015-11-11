@@ -271,7 +271,7 @@ public class MineCart extends MovableEntity implements Interactable {
 //			hit objects in front
 			if (getSpeed() > 0) {
 				ArrayList<MovableEntity> entitiesInFront;
-				entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(40, MovableEntity.class);
+				entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
 				for (MovableEntity ent : entitiesInFront) {
 					if (this != ent) {//don't collide with itself
 						ent.setMovement(

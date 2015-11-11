@@ -407,7 +407,7 @@ public class RenderBlock extends AbstractGameObject {
 			}
 
 			if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition().cpy().addVector(0, 0, 1);
+				Coordinate aopos = getPosition().addVector(0, 0, 1);//move one up
 				if ((aoFlags & (1 << 9)) != 0) {//if back right
 					renderAO(view, camera, aopos, (byte) 0);
 				}
@@ -430,6 +430,7 @@ public class RenderBlock extends AbstractGameObject {
 				} else if ((aoFlags & 1 << 8) != 0) {//if back
 					renderAO(view, camera, aopos, (byte) 2);
 				}
+				aopos.addVector(0, 0, -1); //move down again
 			}
 
 			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
@@ -460,7 +461,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * helper function
 	 * @param view
 	 * @param camera
-	 * @param aopos
+	 * @param aopos does not alter the field
 	 * @param value 
 	 */
 	private void renderAO(final GameView view, final Camera camera, final AbstractPosition aopos, final byte value){

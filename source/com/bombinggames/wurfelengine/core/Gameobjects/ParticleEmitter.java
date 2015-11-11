@@ -152,6 +152,7 @@ public class ParticleEmitter extends AbstractEntity {
 
 	/**
 	 * Spread is applied in both directions.
+	 *
 	 * @param spread the range in which random noise gets aplied, in m/s without
 	 * unit
 	 */
@@ -179,12 +180,17 @@ public class ParticleEmitter extends AbstractEntity {
 		}
 	}
 
+	/**
+	 * checks if the config for the light source is okay
+	 */
 	private void checkLightSource() {
 		if (hasPosition() && prototype.getType() == ParticleType.FIRE) {
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.YELLOW, 5, 11);
+				lightsource.setPosition(getPosition().cpy());
+			} else {
+				lightsource.getPosition().setValues(getPosition());
 			}
-			lightsource.getPosition().setValues(getPosition());
 			lightsource.enable();
 		}
 	}

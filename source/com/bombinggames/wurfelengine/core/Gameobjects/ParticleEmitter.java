@@ -94,6 +94,7 @@ public class ParticleEmitter extends AbstractEntity {
 				Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
 				particle.setType(prototype.getType());
 				particle.setColor(prototype.getColor().cpy());
+				particle.setRotation((float) (Math.random()*360f));
 				particle.addMovement(
 					startingVector.add(
 						(float) (Math.random() - 0.5f) * 2 * spread.x,

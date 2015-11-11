@@ -69,6 +69,11 @@ public class AimBand {
 	 * 
 	 */
 	public void update(){
+		if (parent.getPosition() == null) {
+			dispose();
+			return;
+		}
+		
 		timeTillNext -= Gdx.graphics.getRawDeltaTime()*1000f;
 		if (timeTillNext < 0 && (target != null || goal != null)) {
 			timeTillNext += timeEachSpawn;
@@ -86,7 +91,8 @@ public class AimBand {
 			for (Particle p : list) {
 				p.getPosition().setValues(parent.getPosition()).lerp(getAim(), 1 - p.getPercentageOfLife());
 			}
-
+			
+			//remove old particles from list
 			list.removeIf(p -> p.shouldBeDisposed());
 		} else {
 			list.forEach(p -> p.dispose());

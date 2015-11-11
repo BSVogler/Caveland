@@ -343,7 +343,7 @@ public class Weapon extends AbstractEntity {
 			if (raycast != null) {
 				laserdot.setPosition(raycast.getPoint());
 			} else {
-				laserdot.setPosition(getPosition().cpy());
+				laserdot.getPosition().setValues(getPosition());
 			}
 		}
 	}

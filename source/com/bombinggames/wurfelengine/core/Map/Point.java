@@ -732,4 +732,16 @@ public class Point extends AbstractPosition {
 			&& distanceTo(raycast.getPoint()) < distanceTo(p)//check if point is before
 );
 	}
+
+	/**
+	 * overwrites the coordinates with values from another point. Faster then creating a new object-
+	 * @param point is not modified
+	 * @return itself for chaining
+	 */
+	public Point setValues(final Point point) {
+		this.x = point.x;
+		this.y = point.y;
+		this.z = point.z;
+		return this;
+	}
 }

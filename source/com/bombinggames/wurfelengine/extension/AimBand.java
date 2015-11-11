@@ -84,7 +84,7 @@ public class AimBand {
 		if (getAim() != null) {
 			//move particles
 			for (Particle p : list) {
-				p.setPosition(parent.getPosition().cpy().lerp(getAim(), 1-p.getPercentageOfLife()));
+				p.getPosition().setValues(parent.getPosition()).lerp(getAim(), 1 - p.getPercentageOfLife());
 			}
 
 			list.removeIf(p -> p.shouldBeDisposed());

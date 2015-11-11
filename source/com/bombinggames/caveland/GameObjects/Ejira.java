@@ -540,7 +540,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 			item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
 			item.preventPickup(this, 400);
-			item.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 1f));
+			item.getPosition().setValues(getPosition()).addVector(0, 0, GAME_EDGELENGTH * 1f);
 			item.setHidden(false);
 		} else {
 			WE.SOUND.play("throwFail");

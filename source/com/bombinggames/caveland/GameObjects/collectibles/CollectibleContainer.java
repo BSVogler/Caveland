@@ -255,7 +255,7 @@ public class CollectibleContainer extends AbstractEntity {
 			//put every child at the position if the container
 			for (AbstractEntity item : content) {
 				if (item != null) {
-					item.setPosition(getPosition().cpy());
+					item.getPosition().setValues(getPosition());
 				}
 			}
 		}

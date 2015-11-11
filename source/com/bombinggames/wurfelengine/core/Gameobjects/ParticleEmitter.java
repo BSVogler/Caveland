@@ -184,7 +184,7 @@ public class ParticleEmitter extends AbstractEntity {
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.YELLOW, 5, 11);
 			}
-			lightsource.setPosition(getPosition().cpy());
+			lightsource.getPosition().setValues(getPosition());
 			lightsource.enable();
 		}
 	}

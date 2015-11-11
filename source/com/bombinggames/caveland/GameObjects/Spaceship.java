@@ -48,7 +48,7 @@ public class Spaceship extends MovableEntity {
 
 	public void addContent(AbstractEntity ent) {
 		content.add(ent);
-		ent.setPosition(getPosition().cpy());
+		ent.getPosition().setValues(getPosition());
 		ent.setHidden(true);
 	}
 
@@ -81,7 +81,7 @@ public class Spaceship extends MovableEntity {
 		super.update(dt);
 		
 		if (!crashed && content != null){
-			content.forEach(c -> {c.setPosition(getPosition().cpy());});
+			content.forEach(c -> {c.getPosition().setValues(getPosition());});
 		}
 		
 		if (!crashed && !crashing && crashCoordinates != null) {

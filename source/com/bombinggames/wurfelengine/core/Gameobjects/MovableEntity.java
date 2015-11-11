@@ -452,7 +452,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	
 	/**
-	 * check for horizontal colission (x and y)<br/>
+	 * check for horizontal colission (x and y)<br>
 	 * O(1)
 	 *
 	 * @param pos the new position

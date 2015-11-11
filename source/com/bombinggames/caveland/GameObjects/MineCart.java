@@ -38,13 +38,14 @@ public class MineCart extends MovableEntity implements Interactable {
 	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/3;
 
 	/**
-	 * empirical factor to match the front side with the rear
+	 * empirical factor to match the back side with the rear
 	 */
 	private final transient static float frontOffset = 63;
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private transient float rollingCycle;
 	private transient long isPlayingSound;
+	private transient SimpleEntity back = new SimpleEntity((byte) 42,(byte) 0);
 	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
 	private PointLightSource lightsource;
 	
@@ -60,11 +61,13 @@ public class MineCart extends MovableEntity implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
+		back = (SimpleEntity) back.spawn(point.cpy());
+		back.setSaveToDisk(false);
+		back.setName("MineCart Back");
+		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
-		
-		
+		setHidden(true);
 		return this;
 	}
 
@@ -74,11 +77,10 @@ public class MineCart extends MovableEntity implements Interactable {
 		
 		Point pos = getPosition();
 		
-				
 		if (hasPosition() && pos.isInMemoryAreaHorizontal()) {
 			Block block = pos.getBlock();
 			
-			if (lightsource==null){
+			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
 				lightsource.setSaveToDisk(false);
 				lightsource.spawn(getPosition().cpy());
@@ -88,12 +90,12 @@ public class MineCart extends MovableEntity implements Interactable {
 
 			//on tracks?
 			if (block != null && (
-				block.getId() == CavelandBlocks.CLBlocks.RAILS.getId() || block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
+				block.getSpriteId() == CavelandBlocks.CLBlocks.RAILS.getId() || block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
 			) {
 				lightsource.enable();
 				setFriction(0.001f);
 
-				switch (block.getValue()) {
+				switch (block.getSpriteValue()) {
 					case 0://straight left bottom to top right
 					case 6:
 						setOrientation(
@@ -130,7 +132,8 @@ public class MineCart extends MovableEntity implements Interactable {
 					case 5:
 						int dirY;
 						if (getMovement().y > 0
-							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)) {//on top and moving down
+							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)
+						) {//on top and moving down
 							dirY = 1;
 						} else {
 							dirY = -1;
@@ -143,7 +146,7 @@ public class MineCart extends MovableEntity implements Interactable {
 							)
 						);
 						int offset = -1;
-						if (block.getValue() == 5) {
+						if (block.getSpriteValue() == 5) {
 							offset = 1;
 						}
 						pos.setPositionRelativeToCoord(
@@ -156,16 +159,17 @@ public class MineCart extends MovableEntity implements Interactable {
 					case 4:
 						setOrientation(
 							new Vector2(
-								getMovement().x > 0 || (getMovement().x==0 && pos.getRelToCoordX()<0)  ? 1 : -1,//coming from left
+								getMovement().x > 0 || (getMovement().x == 0 && pos.getRelToCoordX() < 0) ? 1 : -1,//coming from left
 								0
 							)
 						);
-						offset=1;
-						if (block.getValue()==4)
+						offset = 1;
+						if (block.getSpriteValue() == 4) {
 							offset = -1;
+						}
 						pos.setPositionRelativeToCoord(
 							pos.getRelToCoordX(),
-							offset*Block.GAME_EDGELENGTH2/2,
+							offset * Block.GAME_EDGELENGTH2 / 2,
 							pos.getRelToCoordZ()
 						);
 						break;
@@ -180,7 +184,7 @@ public class MineCart extends MovableEntity implements Interactable {
 
 					//booster
 					if (
-						block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()
+						block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()
 					) {
 						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
 							&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled()) {
@@ -197,31 +201,30 @@ public class MineCart extends MovableEntity implements Interactable {
 
 				//jump on ramp
 				if (
-					   block.getValue() == 6 && getMovementHor().x > 0
-					|| block.getValue() == 7 && getMovementHor().y < 0
-					|| block.getValue() == 8 && getMovementHor().x < 0
-					|| block.getValue() == 9 && getMovementHor().y > 0
+					   block.getSpriteValue() == 6 && getMovementHor().x > 0
+					|| block.getSpriteValue() == 7 && getMovementHor().y < 0
+					|| block.getSpriteValue() == 8 && getMovementHor().x < 0
+					|| block.getSpriteValue() == 9 && getMovementHor().y > 0
 				) {
 					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.9f));
 				}
 				//roll down?
-				if (block.getValue() == 6 && getMovementHor().x <= 0) {
+				if (block.getSpriteValue() == 6 && getMovementHor().x <= 0) {
 					setOrientation(new Vector2(-1, 1));
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getValue() == 7 && getMovementHor().x >= 0) {
+				if (block.getSpriteValue() == 7 && getMovementHor().x >= 0) {
 					setOrientation(new Vector2(1, 1));
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getValue() == 8 && getMovementHor().x >= 0) {
+				if (block.getSpriteValue() == 8 && getMovementHor().x >= 0) {
 					setOrientation(new Vector2(1, -1));
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getValue() == 9 && getMovementHor().x <= 0) {
+				if (block.getSpriteValue() == 9 && getMovementHor().x <= 0) {
 					setOrientation(new Vector2(-1, -1));
 					setSpeedHorizontal(MAXSPEED);
 				}
-				
 			} else {//offroad
 				lightsource.disable();
 				setFriction(0.005f);
@@ -236,12 +239,12 @@ public class MineCart extends MovableEntity implements Interactable {
 			if (passenger != null) {
 				//give same speed as minecart
 				passenger.setMovement(getMovementHor());
-				
+
 				//while standing at ground in mine cart force into it
-				if (passenger.getPosition().getZ() <= pos.getZ()+BOTTOMHEIGHT) {
+				if (passenger.getPosition().getZ() <= pos.getZ() + BOTTOMHEIGHT) {
 					passenger.setFloating(true);
 					passenger.getPosition().setValues(pos);
-					passenger.getPosition().setZ(pos.getZ()+BOTTOMHEIGHT);//a little bit higher then the minecart
+					passenger.getPosition().setZ(pos.getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
 					if (passenger instanceof Ejira) {
 						((Ejira) passenger).idle();
 						((Ejira) passenger).forceBunnyHop();
@@ -249,7 +252,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				} else {
 					passenger.setFloating(false);
 				}
-				
+
 				//check if passenger exited the cart
 				if (
 					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
@@ -268,30 +271,15 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 			}
 
-//			hit objects in front
-			if (getSpeed() > 0) {
-				ArrayList<MovableEntity> entitiesInFront;
-				entitiesInFront = pos.cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
-				for (MovableEntity ent : entitiesInFront) {
-					if (this != ent) {//don't collide with itself
-						ent.setMovement(
-							new Vector3(
-								(float) (getMovement().x + Math.random() * 0.5f - 0.25f),
-								(float) (getMovement().y + Math.random() * 0.5f - 0.25f),
-								(float) Math.random()
-							)
-						);
-						ent.addToHor(getSpeed());
-					}
-				}
-			}
+			//hit objects in front
+			checkCollisionInFront();
 		
-//			copy position to front
+			//copy position to back
+			back.getPosition().setValues(pos).addVector(0, 0, 0);
 			front.getPosition().setValues(pos).addVector(0, frontOffset, 0);
 
-//			animation
-//			moving down left or up right
-			setHidden(false);
+			//animation
+			//moving down left or up right
 			if (
 				(getOrientation().y > 0
 				&&
@@ -301,37 +289,39 @@ public class MineCart extends MovableEntity implements Interactable {
 				&&
 				getOrientation().y < getOrientation().x)
 			) {
-				if (getMovement().z > 0.1f){
+				if (getMovement().z > 0.1f) {
 					if (getOrientation().y < 0) {
-						setValue((byte) 6);//coming from bottom left and moving up to right
-						front.setValue((byte) 7);
+						back.setHidden(false);
+						back.setSpriteValue((byte) 6);//coming from bottom left and moving up to right
+						front.setSpriteValue((byte) 7);
 					} else {
-						setHidden(true);
-						front.setValue((byte) 9);
+						back.setHidden(true);
+						front.setSpriteValue((byte) 9);
 					}
 				} else {
-					setValue((byte) 0);
-					front.setValue((byte) 1);
+					back.setHidden(false);
+					back.setSpriteValue((byte) 0);
+					front.setSpriteValue((byte) 1);
+				}
+			} else if (getMovement().z > 0.1f) {
+				if (getOrientation().y < 0) {
+					back.setHidden(false);
+					back.setSpriteValue((byte) 13);//coming from bottom left and moving up to right
+					front.setSpriteValue((byte) 14);
+				} else {
+					back.setHidden(true);
+					front.setSpriteValue((byte) 11);
 				}
 			} else {
-				if (getMovement().z > 0.1f){
-					if (getOrientation().y < 0) {
-						setValue((byte) 13);//coming from bottom left and moving up to right
-						front.setValue((byte) 14);
-					} else {
-						setHidden(true);
-						front.setValue((byte) 11);
-					}
-				} else {
-					setValue((byte) 3);
-					front.setValue((byte) 4);
-				}
+				back.setHidden(false);
+				back.setSpriteValue((byte) 3);
+				front.setSpriteValue((byte) 4);
 			}
 
-			rollingCycle += getMovementHor().len()*GAME_EDGELENGTH*dt/1000f;//save change in distance in this sprite, distance*m/s
-			rollingCycle %= GAME_EDGELENGTH/4; //cycle each 0,25m
-			if (rollingCycle >= GAME_EDGELENGTH/8) {//new sprite half of the circle length
-				front.setValue((byte) (front.getValue()+1)); //next step in animation
+			rollingCycle += getMovementHor().len() * GAME_EDGELENGTH * dt / 1000f;//save change in distance in this sprite, distance*m/s
+			rollingCycle %= GAME_EDGELENGTH / 4; //cycle each 0.25m
+			if (rollingCycle >= GAME_EDGELENGTH / 8) {//new sprite half of the circle length
+				front.setSpriteValue((byte) (front.getSpriteValue() + 1)); //next step in animation
 			}
 		}
 	}
@@ -438,9 +428,9 @@ public class MineCart extends MovableEntity implements Interactable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
-		front = new SimpleEntity((byte) 42,(byte) 1);
-		front.spawn(getPosition().cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the front is located in front
-		front.setSaveToDisk(false);
+		back = new SimpleEntity((byte) 42,(byte) 1);
+		back.spawn(getPosition().cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
+		back.setSaveToDisk(false);
 	}
 
 	@Override
@@ -455,6 +445,25 @@ public class MineCart extends MovableEntity implements Interactable {
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;
+	}
+
+	private void checkCollisionInFront() {
+		if (getSpeed() > 0) {
+			ArrayList<MovableEntity> entitiesInFront;
+			entitiesInFront = getPosition().cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
+			for (MovableEntity ent : entitiesInFront) {
+				if (this != ent) {//don't collide with itself
+					ent.setMovement(
+						new Vector3(
+							(float) (getMovement().x + Math.random() * 0.5f - 0.25f),
+							(float) (getMovement().y + Math.random() * 0.5f - 0.25f),
+							(float) Math.random()
+						)
+					);
+					ent.addToHor(getSpeed());
+				}
+			}
+		}
 	}
 
 }

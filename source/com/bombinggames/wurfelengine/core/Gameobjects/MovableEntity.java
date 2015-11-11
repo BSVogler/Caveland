@@ -654,7 +654,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void setOrientation(final Vector2 orientation) {
 		this.orientation = orientation.cpy().nor();
-		this.movement = new Vector3(orientation.cpy().scl(getSpeedHor()), this.movement.z);
+		float speedhor = getSpeedHor();
+		this.movement.x = this.orientation.x*speedhor;
+		this.movement.y = this.orientation.y*speedhor;
 	}
 
 	/**

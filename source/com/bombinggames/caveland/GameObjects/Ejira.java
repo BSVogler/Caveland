@@ -195,24 +195,12 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		inventory = (Inventory) new Inventory(this).spawn();
 		
 		emitter.spawn(point.cpy());
-		SuperGlue connection1 = new SuperGlue(this, emitter);
-		connection1.setSaveToDisk(false);
-		connection1.setOffset(new Vector3(-20, 0, Block.GAME_EDGELENGTH2));
-		connection1.spawn(point.cpy());
 		
 		emitter2.spawn(point.cpy());
-		SuperGlue conection2 = new SuperGlue(this, emitter2);
-		conection2.setSaveToDisk(false);
-		conection2.setOffset(new Vector3(20, 0, Block.GAME_EDGELENGTH2));
-		conection2.spawn(point.cpy());
 		
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(point.cpy());
-		SuperGlue lConn = new SuperGlue(this, lightsource);
-		lConn.setSaveToDisk(false);
-		lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
-		lConn.spawn(point.cpy());
 		return this;
 	}
 	
@@ -412,6 +400,9 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	//				playAnimation('w');
 	//		}
 
+			lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
+			emitter.getPosition().setValues(getPosition()).addVector(-20, 0, Block.GAME_EDGELENGTH2);
+			emitter2.getPosition().setValues(getPosition()).addVector(20, 0, Block.GAME_EDGELENGTH2);
 			if (isOnGround()) {
 				isInAirJump = false;
 			}

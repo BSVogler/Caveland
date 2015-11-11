@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -8,6 +7,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class Spaceship extends MovableEntity {
 			Particle particle = new Particle((byte) 22, 4000);
 			particle.setType(ParticleType.FIRE);
 			fireEmitter.setPrototype(particle);
-			new SuperGlue(this, fireEmitter).spawn(getPosition().cpy());
+			fireEmitter.getPosition().setValues(getPosition()).addVector(0, 0, 0);
 			ejectContent();
 			crashed = true;
 			//save that already crashed

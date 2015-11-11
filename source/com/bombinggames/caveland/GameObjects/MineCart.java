@@ -82,11 +82,9 @@ public class MineCart extends MovableEntity implements Interactable {
 				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
 				lightsource.setSaveToDisk(false);
 				lightsource.spawn(getPosition().cpy());
-				SuperGlue lConn = new SuperGlue(this, lightsource);
-				lConn.setSaveToDisk(false);
-				lConn.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH2));
-				lConn.spawn(pos.cpy());
 			}
+			
+			lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
 
 			//on tracks?
 			if (block != null && (
@@ -290,7 +288,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			}
 		
 //			copy position to front
-			front.setPosition(pos.cpy().addVector(0, frontOffset, 0));
+			front.getPosition().setValues(pos).addVector(0, frontOffset, 0);
 
 //			animation
 //			moving down left or up right

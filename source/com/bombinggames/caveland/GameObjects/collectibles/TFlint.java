@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -55,8 +54,6 @@ public class TFlint extends Collectible implements Interactable {
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
 		sparksGenerator.spawn(point);
-		SuperGlue sg = (SuperGlue) new SuperGlue(this, sparksGenerator).spawn(point);
-		sg.setOffset(new Vector3(0, 0, Block.GAME_EDGELENGTH*0.8f));
 		return this;
 	}
 	
@@ -67,6 +64,7 @@ public class TFlint extends Collectible implements Interactable {
 		super.update(dt);
 		
 		if (!shouldBeDisposed()) {
+			sparksGenerator.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH*0.8f);
 			sparksGenerator.setActive(lit);
 			if (lit) {
 				timer-=dt;

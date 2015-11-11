@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.SuperGlue;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -42,8 +41,13 @@ public class Inventory extends CollectibleContainer {
 	 */
 	public AbstractEntity spawn() {
 		super.spawn(player.getPosition());
-		new SuperGlue(player, this).spawn(player.getPosition());//glue the inventory container at the player
 		return this;
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		this.getPosition().setValues(player.getPosition());
 	}
 
 	/**

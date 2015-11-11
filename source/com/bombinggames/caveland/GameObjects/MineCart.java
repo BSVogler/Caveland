@@ -240,6 +240,10 @@ public class MineCart extends MovableEntity implements Interactable {
 			checkCollisionInFront();
 		
 			//copy position to back
+			if (back.shouldBeDisposed() || front.shouldBeDisposed()) {
+				dispose();
+				return;
+			}
 			back.getPosition().setValues(pos);
 			front.getPosition().setValues(pos).addVector(0, frontOffset, 0);
 

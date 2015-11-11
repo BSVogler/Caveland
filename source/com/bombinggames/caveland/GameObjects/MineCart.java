@@ -1,11 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
@@ -16,6 +15,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
@@ -27,6 +27,9 @@ import java.util.ArrayList;
  */
 public class MineCart extends MovableEntity implements Interactable {
 	private static final long serialVersionUID = 2L;
+	/**
+	 * in m/s
+	 */
 	private static final float MAXSPEED = 6;
 	private static final float BOOSTERSPEED = 20;
 	/**
@@ -182,10 +185,11 @@ public class MineCart extends MovableEntity implements Interactable {
 						block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()
 					) {
 						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
-						&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled())
+							&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled()) {
 							setSpeedHorizontal(BOOSTERSPEED);
-						else
+						} else {
 							setSpeedHorizontal(0);
+						}
 					}
 					//start sound?
 					if (getSpeedHor() > 0 && isPlayingSound == 0) {
@@ -223,7 +227,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			} else {//offroad
 				lightsource.disable();
 				setFriction(0.005f);
-				if (isPlayingSound!=0) {
+				if (isPlayingSound != 0) {
 					WE.SOUND.stop("wagon", isPlayingSound);
 					isPlayingSound = 0;
 				}

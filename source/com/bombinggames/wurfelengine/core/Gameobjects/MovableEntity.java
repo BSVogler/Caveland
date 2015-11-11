@@ -617,7 +617,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Set the speed and only take x and y into account.
-	 * @param speed
+	 * @param speed in m/s
 	 */
 	public void setSpeedHorizontal(float speed) {
 		setHorMovement(getOrientation().scl(speed));
@@ -625,7 +625,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Set the speed. Uses x, y and z.
-	 * @param speed
+	 * @param speed in m/s
 	 */
 	public void setSpeedIncludingZ(float speed) {
 		movement = getMovement().nor().scl(speed);

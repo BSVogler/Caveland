@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
- * Entry to the caves
+ * Entry to the caves. Spawns a portal inside the block.
  * @author Benedikt Vogler
  */
 public class PortalBlockLogic extends AbstractBlockLogicExtension implements Interactable {
@@ -76,7 +76,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 				} else {
 					portal = new Portal();
 					
-					//move to new cave
+					//set target to new cave
 					int portalnumber = ChunkGenerator.getCaveNumber(getPosition());
 					if (portalnumber < 0) {//outside
 						portal.setTarget(ChunkGenerator.getCaveUp(0));

@@ -1,10 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.extension.AimBand;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.extension.AimBand;
 
 /**
  * Teleports every object in this cell.
@@ -116,6 +116,7 @@ public class Portal extends AbstractEntity {
 	@Override
 	public void onUnSelectInEditor() {
 		if (particleBand != null) {
+			particleBand.dispose();
 			particleBand = null;
 		}
 	}

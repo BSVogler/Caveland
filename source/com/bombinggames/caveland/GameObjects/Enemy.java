@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.extension.AimBand;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
@@ -11,6 +10,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 
 /**
@@ -244,7 +244,9 @@ public class Enemy extends MovableEntity{
 	
 	@Override
 	public void onUnSelectInEditor(){
-		if (particleBand != null)
+		if (particleBand != null) {
+			particleBand.dispose();
 			particleBand = null;
+		}
 	}
 }

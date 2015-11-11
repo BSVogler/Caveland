@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.extension.AimBand;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
@@ -12,6 +11,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -354,8 +354,10 @@ public class Vanya extends MovableEntity implements Interactable {
 	
 	@Override
 	public void onUnSelectInEditor(){
-		if (particleBand != null)
+		if (particleBand != null) {
+			particleBand.dispose();
 			particleBand = null;
+		}
 	}
 
 	/**

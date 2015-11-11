@@ -509,8 +509,10 @@ public class Weapon extends AbstractEntity {
 	
 	@Override
 	public void onUnSelectInEditor(){
-		if (particleBand != null)
+		if (particleBand != null) {
+			particleBand.dispose();
 			particleBand = null;
+		}
 	}
 
 }

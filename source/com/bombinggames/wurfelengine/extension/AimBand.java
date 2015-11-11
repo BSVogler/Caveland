@@ -122,5 +122,11 @@ public class AimBand {
 		this.target = target;
 		this.goal = null;
 	}
+
+	public void dispose() {
+		for (Particle particle : list) {
+			particle.disposeFromMap();
+		}
+	}
 	
 }

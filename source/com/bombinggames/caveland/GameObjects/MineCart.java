@@ -90,19 +90,19 @@ public class MineCart extends MovableEntity implements Interactable {
 
 			//on tracks?
 			if (block != null && (
-				block.getSpriteId() == CavelandBlocks.CLBlocks.RAILS.getId() || block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
+				block.getId()== CavelandBlocks.CLBlocks.RAILS.getId() || block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
 			) {
 				lightsource.enable();
 				setFriction(0.001f);
 
-				switch (block.getSpriteValue()) {
+				switch (block.getValue()) {
 					case 0://straight left bottom to top right
 					case 6:
 						setOrientation(
 							new Vector2(
 								getMovement().y >= 0 && getMovement().x <= 0 ? -1 : 1,
 								getMovement().y >= 0 && getMovement().x <= 0 ? 1 : -1
-							)
+							).nor()
 						);
 						//move on y=-x
 						float x = pos.getRelToCoordX();
@@ -118,7 +118,7 @@ public class MineCart extends MovableEntity implements Interactable {
 							new Vector2(
 								getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1,
 								getMovement().y >= 0 && getMovement().x >= 0 ? 1 : -1
-							)
+							).nor()
 						);
 						//move on y=-x
 						x = pos.getRelToCoordX();
@@ -143,7 +143,7 @@ public class MineCart extends MovableEntity implements Interactable {
 							new Vector2(
 								0,
 								dirY//coming from top right
-							)
+							).nor()
 						);
 						int offset = -1;
 						if (block.getSpriteValue() == 5) {
@@ -161,7 +161,7 @@ public class MineCart extends MovableEntity implements Interactable {
 							new Vector2(
 								getMovement().x > 0 || (getMovement().x == 0 && pos.getRelToCoordX() < 0) ? 1 : -1,//coming from left
 								0
-							)
+							).nor()
 						);
 						offset = 1;
 						if (block.getSpriteValue() == 4) {
@@ -183,9 +183,7 @@ public class MineCart extends MovableEntity implements Interactable {
 					}
 
 					//booster
-					if (
-						block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()
-					) {
+					if (block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
 						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
 							&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled()) {
 							setSpeedHorizontal(BOOSTERSPEED);
@@ -210,19 +208,19 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 				//roll down?
 				if (block.getSpriteValue() == 6 && getMovementHor().x <= 0) {
-					setOrientation(new Vector2(-1, 1));
+					setOrientation(new Vector2(-1, 1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
 				if (block.getSpriteValue() == 7 && getMovementHor().x >= 0) {
-					setOrientation(new Vector2(1, 1));
+					setOrientation(new Vector2(1, 1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
 				if (block.getSpriteValue() == 8 && getMovementHor().x >= 0) {
-					setOrientation(new Vector2(1, -1));
+					setOrientation(new Vector2(1, -1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
 				if (block.getSpriteValue() == 9 && getMovementHor().x <= 0) {
-					setOrientation(new Vector2(-1, -1));
+					setOrientation(new Vector2(-1, -1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
 			} else {//offroad

@@ -234,48 +234,13 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 			}
 			
-			//logic
-//			if transporting object
-			if (passenger != null) {
-				//give same speed as minecart
-				passenger.setMovement(getMovementHor());
-
-				//while standing at ground in mine cart force into it
-				if (passenger.getPosition().getZ() <= pos.getZ() + BOTTOMHEIGHT) {
-					passenger.setFloating(true);
-					passenger.getPosition().setValues(pos);
-					passenger.getPosition().setZ(pos.getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
-					if (passenger instanceof Ejira) {
-						((Ejira) passenger).idle();
-						((Ejira) passenger).forceBunnyHop();
-					}
-				} else {
-					passenger.setFloating(false);
-				}
-
-				//check if passenger exited the cart
-				if (
-					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
-					|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
-				) {
-					passengerLeave();
-				}
-			} else {
-				//add objects
-				ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
-				for (Collectible ent : ents) {
-					if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
-						if (add(ent))
-							ent.dispose();
-					}
-				}
-			}
+			updatePassenger(pos);
 
 			//hit objects in front
 			checkCollisionInFront();
 		
 			//copy position to back
-			back.getPosition().setValues(pos).addVector(0, 0, 0);
+			back.getPosition().setValues(pos);
 			front.getPosition().setValues(pos).addVector(0, frontOffset, 0);
 
 			//animation
@@ -464,6 +429,43 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 			}
 		}
+	}
+
+	private void updatePassenger(Point pos) {
+		if (passenger != null) {
+				//give same speed as minecart
+				passenger.setMovement(getMovementHor());
+
+				//while standing at ground in mine cart force into it
+				if (passenger.getPosition().getZ() <= pos.getZ() + BOTTOMHEIGHT) {
+					passenger.setFloating(true);
+					passenger.getPosition().setValues(pos);
+					passenger.getPosition().setZ(pos.getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
+					if (passenger instanceof Ejira) {
+						((Ejira) passenger).idle();
+						((Ejira) passenger).forceBunnyHop();
+					}
+				} else {
+					passenger.setFloating(false);
+				}
+
+				//check if passenger exited the cart
+				if (
+					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
+					|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
+				) {
+					passengerLeave();
+				}
+			} else {
+				//add objects
+				ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
+				for (Collectible ent : ents) {
+					if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
+						if (add(ent))
+							ent.dispose();
+					}
+				}
+			}
 	}
 
 }

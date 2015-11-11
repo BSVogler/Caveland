@@ -179,7 +179,7 @@ public class Inventory extends CollectibleContainer {
 	public void render(GameView view, Camera camera) {
 		super.render(view, camera);
 		//draw background for highlit sprite
-		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', 10, 0));
+		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 10, (byte) 0));
 
 		float left = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale() + bgSprite.getWidth() / 2;
 		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
@@ -199,7 +199,7 @@ public class Inventory extends CollectibleContainer {
 		if (ent != null) {
 			ent.render(view, (int) left, y);
 			if (ent instanceof Interactable) {
-				Sprite button = new Sprite(AbstractGameObject.getSprite('i', 23, Interactable.YUp));
+				Sprite button = new Sprite(AbstractGameObject.getSprite('i', (byte) 23, Interactable.YUp));
 				button.setPosition(left-90, y-30);
 				button.setScale(0.4f);
 				button.draw(view.getSpriteBatch());

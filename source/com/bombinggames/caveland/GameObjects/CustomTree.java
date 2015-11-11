@@ -11,7 +11,6 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public class CustomTree extends RenderBlock {
 	private static final long serialVersionUID = 1L;
-	private Coordinate pos;
 	/**
 	 * The treetop is used to identify the treetop. It is invisible but it is an obstacle.
 	 */
@@ -29,10 +28,10 @@ public class CustomTree extends RenderBlock {
 	 * @param data
 	 */
 	public CustomTree(Block data) {
-		super(data.getId());
-		setValue(data.getValue());
+		super(data.getSpriteId());
+		setSpriteValue(data.getSpriteValue());
 		
-		if (getValue()==TREETOPVALUE)
+		if (getSpriteValue()==TREETOPVALUE)
 			setHidden(true);
 	}
 
@@ -41,7 +40,7 @@ public class CustomTree extends RenderBlock {
 //		super.update(dt);
 //		//check and grow treetop
 //		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
-//		if (getValue() != TREETOPVALUE && top.getBlock().getId() != getId())//if root block grow treetop
+//		if (getSpriteValue() != TREETOPVALUE && top.getBlock().getSpriteId() != getSpriteId())//if root block grow treetop
 //			new RenderBlock((byte) 72, TREETOPVALUE).spawn(top);
 //	}
 
@@ -52,7 +51,7 @@ public class CustomTree extends RenderBlock {
 	public void onDestroy() {	
 		//destroy other half
 		Coordinate otherHalf;
-		if (getValue() == TREETOPVALUE){
+		if (getSpriteValue() == TREETOPVALUE){
 			otherHalf = getPosition().cpy().addVector(0, 0, -1);
 		} else {
 			otherHalf = getPosition().cpy().addVector(0, 0, 1);
@@ -60,7 +59,7 @@ public class CustomTree extends RenderBlock {
 		
 		super.onDestroy();
 		
-		if (otherHalf.getBlock().getId()==getId() && otherHalf.getBlock().getValue() != -1)
+		if (otherHalf.getBlock().getSpriteId()==getSpriteId() && otherHalf.getBlock().getSpriteValue() != -1)
 			otherHalf.destroy();
 			
 		CollectibleType.Wood.createInstance().spawn(getPosition().toPoint());			

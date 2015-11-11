@@ -75,36 +75,36 @@ public class AnimatedBlock extends RenderBlock implements Animatable{
     public void update(float dt) {
         if (running) {
             counter += dt;
-            if (counter >= animationsduration[getValue()]){
-                counter %= animationsduration[getValue()];//stay in circle
+            if (counter >= animationsduration[getSpriteValue()]){
+                counter %= animationsduration[getSpriteValue()];//stay in circle
 				if (runningForth)
-					setValue((byte) (getValue()+1));
+					setSpriteValue((byte) (getSpriteValue()+1));
 				else
-					setValue((byte) (getValue()-1));
+					setSpriteValue((byte) (getSpriteValue()-1));
 				
-                if (getValue() >= animationsduration.length) {//if over animation array
+                if (getSpriteValue() >= animationsduration.length) {//if over animation array
                     if (loop) {
 						if (bob && runningForth) {
 							runningForth=false;//go back
-							setValue((byte) (animationsduration.length-2));//reverse step and go in different direction
+							setSpriteValue((byte) (animationsduration.length-2));//reverse step and go in different direction
 						} else
-							setValue((byte) 0);
+							setSpriteValue((byte) 0);
 					} else {
 						//stop animation
                         running = false;
-                        setValue((byte) (animationsduration.length-1));
+                        setSpriteValue((byte) (animationsduration.length-1));
                     }
-				} else if (getValue() < 0) {
+				} else if (getSpriteValue() < 0) {
 					if (loop) {
 						if (bob && !runningForth) {
 							runningForth=true;//go forth
-							setValue((byte) 1);
+							setSpriteValue((byte) 1);
 						} else
-							setValue((byte) (animationsduration.length-1));
+							setSpriteValue((byte) (animationsduration.length-1));
 					} else {
 						//stop animation
 						running = false;
-						setValue((byte) 0);
+						setSpriteValue((byte) 0);
 					}
 				}
             }

@@ -41,8 +41,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -127,7 +127,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public byte getId() {
-		return block.getId();
+		return block.getSpriteId();
 	}
 		
 	/**
@@ -135,7 +135,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public byte getValue() {
-		return block.getValue();
+		return block.getSpriteValue();
 	}	
 	
 	/**
@@ -196,7 +196,7 @@ public class PlacableGUI extends WidgetGroup {
 		try {
 			AbstractEntity ent = entityClass.newInstance();
 			if (slider.getValue()>-1)
-				ent.setValue((byte) slider.getValue());
+				ent.setSpriteValue((byte) slider.getValue());
 			return ent;
 		} catch (InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(PlacableGUI.class.getName()).log(Level.SEVERE, null, ex);

@@ -47,7 +47,8 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
- * A RenderBlock is a piece of information and a geometrical object.<br> It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. The class extends the simple data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared so changing this {@link RenderBlock} changes the data in the map.
+ * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. The class extends (wrapws) the simple data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared so changing this {@link RenderBlock} changes the data in the map.<br>
+ * The internal block can have different id then used for rendering. The rendering sprite id's are set in the cosntructor or later manual.
  * @see Block
  * @author Benedikt Vogler
  */
@@ -201,7 +202,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param value 
 	 */
 	public RenderBlock(byte id, byte value){
-		super(id);
+		super(id, value);
 		blockData = Block.getInstance(id, value);
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
@@ -212,7 +213,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param data 
 	 */
 	public RenderBlock(Block data){
-		super(data.getId());
+		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
 		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
 		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
@@ -518,7 +519,11 @@ public class RenderBlock extends AbstractGameObject {
      * @param color a tint in which the sprite gets rendered. If null color gets ignored
      */
     public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color){
-        Sprite sprite = new Sprite(getBlockSprite(getSpriteId(), getSpriteValue(), side));
+		byte id = getSpriteId();
+		if (id <= 0) return;
+		byte value = getSpriteValue();
+		if (value < 0) return;
+        Sprite sprite = new Sprite(getBlockSprite(id, value, side));
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
             sprite.setOrigin(0, 0);
@@ -576,11 +581,10 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * Overwrite to define what should happen (view only) if the block is getting destroyed? Sets the value to -1. So be carefull when to call super.onDestroy().
+	 * Overwrite to define what should happen (view only) if the block is getting destroyed?
 	 * @since v1.4
 	 */
 	public void onDestroy() {
-		blockData.setValue((byte) -1);
 		if (destructionSound != null) WE.SOUND.play(destructionSound);
 	}
 
@@ -607,7 +611,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @return 
 	 */
 	public Block toStorageBlock(){
-		return Block.getInstance(getId(), getValue());
+		return Block.getInstance(getSpriteId(), getSpriteValue());
 	}
 	
 	/**
@@ -634,18 +638,6 @@ public class RenderBlock extends AbstractGameObject {
 			return false;
 		}
 		return blockData.hasSides();
-	}
-
-	@Override
-	public byte getId() {
-		if (blockData==null) return 0;
-		return blockData.getId();
-	}
-
-	@Override
-	public byte getValue() {
-		if (blockData==null) return 0;
-		return blockData.getValue();
 	}
 
 	@Override
@@ -678,9 +670,9 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	@Override
-	public void setValue(byte value) {
-		super.setValue(value);
-		blockData.setValue(value);
+	public void setSpriteValue(byte value) {
+		super.setSpriteValue(value);
+		blockData.setSpriteValue(value);
 	}
 
 	@Override

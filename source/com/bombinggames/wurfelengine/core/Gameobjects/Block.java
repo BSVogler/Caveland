@@ -217,18 +217,43 @@ public class Block implements HasID, Serializable {
 		this.id = id;
 		this.value = value;
 	}
-	@Override
+
+	/**
+	 * 
+	 * @return 
+	 */
 	public byte getId() {
+		return id;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public byte getValue(){
+		return value;
+	}
+	
+	/**
+	 * 
+	 * @param value 
+	 */
+	public void setValue(byte value) {
+		this.value = value;
+	}
+	
+	@Override
+	public byte getSpriteId() {
 		return id;
 	}
 
 	@Override
-	public byte getValue() {
+	public byte getSpriteValue() {
 		return value;
 	}
 
 	@Override
-	public void setValue(byte value) {
+	public void setSpriteValue(byte value) {
 		this.value = value;
 	}
 

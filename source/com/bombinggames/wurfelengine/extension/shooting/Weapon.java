@@ -390,10 +390,10 @@ public class Weapon extends AbstractEntity {
 				bullet.setGun(this);
 
                 if (bulletSprite < 0){//if melee hide it
-                    bullet.setValue((byte) 0);
+                    bullet.setSpriteValue((byte) 0);
                     bullet.setHidden(true);
                 } else{
-                    bullet.setValue(bulletSprite);
+                    bullet.setSpriteValue(bulletSprite);
                 }
 
                 Vector3 aiming = aimDir.cpy();

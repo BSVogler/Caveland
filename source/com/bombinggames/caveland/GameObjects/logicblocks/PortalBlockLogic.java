@@ -97,11 +97,11 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 			if (!interactable()) {
 				//inactive for falling into it
-				getPosition().getBlock().setValue((byte) 1);
+				getPosition().getBlock().setSpriteValue((byte) 1);
 				portal.setActive(false);
 			} else {
 				//active for falling into it
-				getPosition().getBlock().setValue((byte) 0);
+				getPosition().getBlock().setSpriteValue((byte) 0);
 				portal.setActive(true);
 			}
 		}
@@ -136,7 +136,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 		if (getPosition().cpy().addVector(0, 0, 1).getBlock() == null) {
 			return true;
 		}
-		return getPosition().cpy().addVector(0, 0, 1).getBlock().getId() == 0;
+		return getPosition().cpy().addVector(0, 0, 1).getBlock().getSpriteId() == 0;
 	}
 
 	@Override

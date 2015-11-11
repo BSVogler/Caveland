@@ -79,7 +79,7 @@ public class ChunkGenerator implements Generator {
 			int insideout = insideOutside(x, y, z);
 			
 //			if (insideout==2)
-//				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getId());
+//				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getSpriteId());
 			
 			if (insideout==2)
 				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getId());
@@ -141,7 +141,7 @@ public class ChunkGenerator implements Generator {
 				} else {
 					portal.setTarget(getCaveDown(getCaveNumber(x, y, z)-1));
 				}
-				//portal.setValue((byte) 1);
+				//portal.setSpriteValue((byte) 1);
 				//portal.enableEnemySpawner();
 			}
 		}

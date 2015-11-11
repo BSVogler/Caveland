@@ -80,7 +80,7 @@ public class ActionBox extends WidgetGroup {
 			window.addActor(textArea);
 		}
 
-		TextureAtlas.AtlasRegion sprite = AbstractGameObject.getSprite('i', 23, 0);
+		TextureAtlas.AtlasRegion sprite = AbstractGameObject.getSprite('i', (byte) 23, (byte) 0);
 		if (sprite != null) {
 			Image confirm = new Image(new TextureRegionDrawable(sprite));
 			confirm.setPosition(window.getWidth() - 50, -40);
@@ -91,7 +91,7 @@ public class ActionBox extends WidgetGroup {
 		addActor(confirmLabel);
 		
 		if (mode != BoxModes.SIMPLE) {
-			sprite = AbstractGameObject.getSprite('i', 23, 2);
+			sprite = AbstractGameObject.getSprite('i', (byte) 23,(byte) 2);
 			if (sprite != null) {
 				Image cancel = new Image(new TextureRegionDrawable(sprite));
 				cancel.setPosition(window.getWidth() - 250, -40);

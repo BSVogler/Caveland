@@ -8,21 +8,21 @@ public interface HasID {
 	
 	/**
      * returns the id of a object
-     * @return getId
+     * @return 
      */
-	public byte getId();
+	public byte getSpriteId();
 	
 	/**
      * Get the value. It is like a sub-id and can identify the status.
      * @return in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
      */
-	public byte getValue();
+	public byte getSpriteValue();
 	
 	/**
      * Set the value.
      * @param value in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
      */
-	public void setValue(byte value);
+	public void setSpriteValue(byte value);
 
 	/**
 	 * How bright is the object?

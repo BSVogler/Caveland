@@ -31,8 +31,8 @@ public class PowerStationLogic extends AbstractBlockLogicExtension {
 		//power surrounding cables
 		Block neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
 		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& (neighBlock.getValue() == 0 || neighBlock.getValue() == 1)
+			&& neighBlock.getSpriteId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& (neighBlock.getSpriteValue() == 0 || neighBlock.getSpriteValue() == 1)
 		) {
 			((CableLogic) getPosition().cpy().goToNeighbour(1).getLogic()).turnOn(5);
 		}

@@ -67,9 +67,9 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 * @param value block value
 	 * @param size relative size
 	 */
-	BlockDrawable(byte id, byte value, float size) {
+	public BlockDrawable(byte id, byte value, float size) {
 		if (id >= Block.OBJECTTYPESNUM)
-			this.block = new RenderBlock((byte) 0);
+			this.block = new RenderBlock((byte) 0);//invalid id.
         else
 			this.block = new RenderBlock(id, value);
 		this.size = size;
@@ -78,7 +78,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 
 	@Override
 	public void draw(Batch batch, float x, float y, float width, float height) {
-		if (block != null && block.getId() != 0) {
+		if (block != null && block.getSpriteId() != 0) {
 		batch.end();//end current batch
 		//then use gameplay batch
 		boolean wasDefault = false;

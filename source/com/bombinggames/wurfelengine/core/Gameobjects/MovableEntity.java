@@ -144,7 +144,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	* @param entity 
 	*/
 	public MovableEntity(MovableEntity entity) {
-		super(entity.getId());
+		super(entity.getSpriteId());
 		this.spritesPerDir = entity.spritesPerDir;
 		movement = entity.movement;
 		orientation = new Vector2(1, 0);
@@ -325,65 +325,65 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					/* update sprite*/
 					if (spritesPerDir > 0) {
 						if (orientation.x < -Math.sin(Math.PI/3)){
-							setValue((byte) 1);//west
+							setSpriteValue((byte) 1);//west
 						} else {
 							if (orientation.x < - 0.5){
 								//y
 								if (orientation.y<0){
-									setValue((byte) 2);//north-west
+									setSpriteValue((byte) 2);//north-west
 								} else {
-									setValue((byte) 0);//south-east
+									setSpriteValue((byte) 0);//south-east
 								}
 							} else {
 								if (orientation.x <  0.5){
 									//y
 									if (orientation.y<0){
-										setValue((byte) 3);//north
+										setSpriteValue((byte) 3);//north
 									}else{
-										setValue((byte) 7);//south
+										setSpriteValue((byte) 7);//south
 									}
 								}else {
 									if (orientation.x < Math.sin(Math.PI/3)) {
 										//y
 										if (orientation.y < 0){
-											setValue((byte) 4);//north-east
+											setSpriteValue((byte) 4);//north-east
 										} else{
-											setValue((byte) 6);//sout-east
+											setSpriteValue((byte) 6);//sout-east
 										}
 									} else{
-										setValue((byte)5);//east
+										setSpriteValue((byte)5);//east
 									}
 								}
 							}
 						}
 
 						if (cycleAnimation){
-							setValue((byte) (getValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
+							setSpriteValue((byte) (getSpriteValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
 						} else {//bounce
 							if (stepMode) { //some strange step order
 								switch (spritesPerDir) {
 									case 2:
 										if (walkingCycle >500)
-											setValue((byte) (getValue()+8));
+											setSpriteValue((byte) (getSpriteValue()+8));
 										break;
 									case 3:
 										if (walkingCycle >750)
-											setValue((byte) (getValue()+16));
+											setSpriteValue((byte) (getSpriteValue()+16));
 										else
 											if (walkingCycle >250 && walkingCycle <500)
-												setValue((byte) (getValue()+8));
+												setSpriteValue((byte) (getSpriteValue()+8));
 										break;
 									case 4:
 										if (walkingCycle >=166 && walkingCycle <333)
-											setValue((byte) (getValue()+8));
+											setSpriteValue((byte) (getSpriteValue()+8));
 										else {
 											if ((walkingCycle >=500 && walkingCycle <666)
 												||
 												(walkingCycle >=833 && walkingCycle <1000)
 												){
-												setValue((byte) (getValue()+16));
+												setSpriteValue((byte) (getSpriteValue()+16));
 											} else if (walkingCycle >=666 && walkingCycle < 833) {
-												setValue((byte) (getValue()+24));
+												setSpriteValue((byte) (getSpriteValue()+24));
 											}
 										}	break;
 									default:
@@ -391,9 +391,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 							} else {
 								//regular bounce
 								if (walkingCycle < 500) {//forth
-									setValue((byte) (getValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+									setSpriteValue((byte) (getSpriteValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
 								} else {//back
-									setValue((byte) (getValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+									setSpriteValue((byte) (getSpriteValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
 
 								}
 							}

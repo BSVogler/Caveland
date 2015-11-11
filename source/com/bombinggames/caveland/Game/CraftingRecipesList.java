@@ -150,7 +150,7 @@ public class CraftingRecipesList extends Table {
 				return new Image(
 					new SpriteDrawable(
 						new Sprite(
-							AbstractGameObject.getSprite('e', result.getId(), 0)
+							AbstractGameObject.getSprite('e', result.getId(),(byte)  0)
 						)
 					)
 				);
@@ -159,7 +159,7 @@ public class CraftingRecipesList extends Table {
 					return new Image(
 						new SpriteDrawable(
 							new Sprite(
-								AbstractGameObject.getSprite('e', resultClass.newInstance().getId(), 0)
+								AbstractGameObject.getSprite('e', resultClass.newInstance().getSpriteId(), (byte) 0)
 							)
 						)
 					);
@@ -174,7 +174,7 @@ public class CraftingRecipesList extends Table {
 			return new Image(
 				new SpriteDrawable(
 					new Sprite(
-						AbstractGameObject.getSprite('e', ingredients[slot].getId(), 0)
+						AbstractGameObject.getSprite('e', ingredients[slot].getId(), (byte) 0)
 					)
 				)
 			);

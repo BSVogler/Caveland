@@ -84,43 +84,43 @@ public class Enemy extends MovableEntity{
 			movementSpeed = 0;
 			Vector2 orientation = getOrientation();
 			if (orientation.x < -Math.sin(Math.PI/3)){
-				setValue((byte) 1);//west
+				setSpriteValue((byte) 1);//west
 			} else {
 				if (orientation.x < - 0.5){
 					//y
 					if (orientation.y<0){
-						setValue((byte) 2);//north-west
+						setSpriteValue((byte) 2);//north-west
 					} else {
-						setValue((byte) 0);//south-east
+						setSpriteValue((byte) 0);//south-east
 					}
 				} else {
 					if (orientation.x <  0.5){
 						//y
 						if (orientation.y<0){
-							setValue((byte) 3);//north
+							setSpriteValue((byte) 3);//north
 						}else{
-							setValue((byte) 7);//south
+							setSpriteValue((byte) 7);//south
 						}
 					}else {
 						if (orientation.x < Math.sin(Math.PI/3)) {
 							//y
 							if (orientation.y < 0){
-								setValue((byte) 4);//north-east
+								setSpriteValue((byte) 4);//north-east
 							} else{
-								setValue((byte) 6);//sout-east
+								setSpriteValue((byte) 6);//sout-east
 							}
 						} else{
-							setValue((byte)5);//east
+							setSpriteValue((byte)5);//east
 						}
 					}
 				}
 			}
 			if (attackInProgess > ATTACKTIME*2/3f) {
-				setValue((byte) (getValue()+40));
+				setSpriteValue((byte) (getSpriteValue()+40));
 			} else if (attackInProgess > ATTACKTIME/3f){
-				setValue((byte) (getValue()+48));
+				setSpriteValue((byte) (getSpriteValue()+48));
 			} else {
-				setValue((byte) (getValue()+56));
+				setSpriteValue((byte) (getSpriteValue()+56));
 			}
 		}
 		

@@ -167,8 +167,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @param value the value of the object
      * @return 
      */
-    public static AtlasRegion getSprite(final char category, final int id, final int value) {
-        if (spritesheet == null) return null;
+    public static AtlasRegion getSprite(final char category, final byte id, final byte value) {
+        if (spritesheet == null || id <= 0 || value < 0  ) return null;
         if (sprites[category][id][value] == null){ //load if not already loaded
             AtlasRegion sprite = spritesheet.findRegion(category+Integer.toString(id)+"-"+value);
             if (sprite == null){ //if there is no sprite show the default "sprite not found sprite" for this category
@@ -202,7 +202,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private float rotation;
 	private float scaling;
 	private byte spriteId;
-	private byte spriteValue =-1;
+	private byte spriteValue = 0;
 	
 	/**
 	 * default is RGBA 0x808080FF.
@@ -217,6 +217,19 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 		this.spriteId = id;
 		if (id == 0)
 			setHidden(true);
+		this.spriteValue = 0;
+    }
+	
+	 /**
+     * Creates an object.
+     * @param id the id of the object which is used for rendering
+	 * @param value
+     */
+    protected AbstractGameObject(byte id, byte value) {
+		this.spriteId = id;
+		if (id == 0)
+			setHidden(true);
+		this.spriteValue = value;
     }
 	
     /**
@@ -307,8 +320,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @param color color which gets multiplied with the tint. No change ( = multiply with 1) is when passed RGBA 0x80808080.
      */
     public void render(GameView view, int xPos, int yPos, Color color) {
-		if (spriteId != 0){
-			AtlasRegion texture = getSprite(getCategory(), spriteId, getSpriteValue());
+		if (spriteId > 0 && spriteValue >= 0){
+			AtlasRegion texture = getSprite(getCategory(), spriteId, spriteValue);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth / 2 - texture.offsetX,
@@ -382,6 +395,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
 	 * @return 
 	 */
+	@Override
 	public byte getSpriteId() {
 		return spriteId;
 	}
@@ -390,14 +404,10 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * the id of the sprite. should be the same as id but in some cases some objects share their sprites.
 	 * @return if spritevalue is not custom set uses value.
 	 */
+	@Override
 	public byte getSpriteValue() {
-		if (spriteValue == -1) {
-			return getValue();
-		} else {
-			return spriteValue;
-		}
+		return spriteValue;
 	}
-
 
     /**
      * Returns the name of the object
@@ -467,13 +477,11 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * The id of the sprite. Default is the same as the id but in some cases some objects share their sprites.
 	 * @param value 
 	 */
-	public void setSpriteValue(byte value) {
-		spriteValue = value;
-	}
-
 	@Override
-	public void setValue(byte value) {
-		spriteValue = value;
+	public void setSpriteValue(byte value) {
+		if (value < Block.VALUESNUM) {
+			spriteValue = value;
+		}
 	}
 	
 	/**
@@ -497,6 +505,6 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getAtlasRegion(){
-		return getSprite(getCategory(), spriteId, getValue());
+		return getSprite(getCategory(), spriteId, spriteValue);
 	}
 }

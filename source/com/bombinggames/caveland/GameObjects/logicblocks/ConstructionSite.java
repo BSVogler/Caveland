@@ -32,8 +32,8 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;

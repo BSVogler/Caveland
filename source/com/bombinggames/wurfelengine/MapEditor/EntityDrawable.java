@@ -51,9 +51,9 @@ public class EntityDrawable extends TextureRegionDrawable {
 	public EntityDrawable(Class<? extends AbstractEntity> type) {
 		try {
 			instance = type.newInstance();
-			if (instance.getId()>0) {
+			if (instance.getSpriteId() > 0) {
 				//if bigger then default sprite size
-				int spiteHeight = AbstractGameObject.getSprite('e', instance.getId(), instance.getValue()).packedHeight;
+				int spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
 				int regularHeight = Block.VIEW_HEIGHT+Block.VIEW_DEPTH;
 				if (
 					spiteHeight

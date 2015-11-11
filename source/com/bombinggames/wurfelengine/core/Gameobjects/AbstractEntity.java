@@ -74,8 +74,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		return entityMap;
 	}
 	
-	private byte id = 0;
-	private byte value = 0;
 	private float lightlevelG;
 	private float lightlevelR;
 	private float lightlevelB;
@@ -106,7 +104,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public AbstractEntity(byte id){
         super(id);
-		this.id = id;
     }
 	
 	 /**
@@ -115,9 +112,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @param value
      */
     public AbstractEntity(byte id, byte value){
-        super(id);
-		this.id = id;
-		this.value = value;
+        super(id, value);
     }
 
 	/**
@@ -432,16 +427,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 	
 	@Override
-    public byte getId() {
-        return id;
-    }
-	
-	@Override
-    public byte getValue() {
-        return value;
-    }
-	
-	@Override
 	public float getLightlevelR() {
 		return lightlevelR;
 	}
@@ -463,16 +448,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		this.lightlevelB = lightlevel;
 	}
 
-	/**
-	 * Set the value of the object.
-	 * @param value
-	 */
-	@Override
-	public void setValue(byte value) {
-		super.setValue(value);
-		this.value = value;
-	}
-	
 	/**
      *
      * @return from maximum 100

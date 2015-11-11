@@ -93,7 +93,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 							.spawn(actor1.getPosition().toCoord().toPoint());
 						preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 					}
-					preview.setValue((byte) (getType() == CollectibleType.Rails ? result:result*2));
+					preview.setSpriteValue((byte) (getType() == CollectibleType.Rails ? result:result*2));
 				}
 				)
 				.setCancelAction(

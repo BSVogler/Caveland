@@ -51,8 +51,7 @@ public class SimpleEntity extends AbstractEntity {
 	 * @param value
      */
     public SimpleEntity(byte id, byte value) {
-        super(id);
-		setValue(value);
+        super(id, value);
     }
 
     @Override

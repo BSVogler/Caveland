@@ -34,7 +34,7 @@ public class DestructionParticle extends MovableEntity {
 		timeofExistance+=dt;
 		modMoved += getSpeed()*dt/1000f;
 		if (modMoved  > rotateEachNMeters) {//if over step size then rotate
-			setValue((byte) (int) (Math.random()*3));
+			setSpriteValue((byte) (int) (Math.random()*3));
 			modMoved = modMoved % rotateEachNMeters;
 		}
 		

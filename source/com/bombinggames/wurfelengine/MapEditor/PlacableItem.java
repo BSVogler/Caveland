@@ -20,7 +20,7 @@ public class PlacableItem extends Stack {
 	 */
 	public PlacableItem(PlacableTable parent, TextureRegionDrawable drawable, ClickListener result) {
 		//background
-		Image bgIcon = new Image(AbstractGameObject.getSprite('i', 10, 0));
+		Image bgIcon = new Image(AbstractGameObject.getSprite('i', (byte) 10,(byte)  0));
 		
 		addActor(bgIcon);
 		bgIcon.addListener(result);

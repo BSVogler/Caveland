@@ -88,7 +88,7 @@ public class TFlint extends Collectible implements Interactable {
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		WE.SOUND.play("hiss", getPosition());
-		setValue((byte) 8);//ignite sprite
+		setSpriteValue((byte) 8);//ignite sprite
 		lit = true;
 		timer = TIMETILLEXPLOSION;
 	}

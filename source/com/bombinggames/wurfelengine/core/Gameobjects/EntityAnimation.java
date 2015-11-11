@@ -59,18 +59,21 @@ public class EntityAnimation implements Animatable {
     public void update(float dt) {
         if (running && parent != null) {
 			counter += dt;
-			int value = parent.getValue();
-			if (value >= animationsduration.length) //stop the animation if value is suddenly too big
-				running=false;
-			else if (counter >= animationsduration[ value ]){
-				parent.setValue((byte) (parent.getValue()+0b1));
-				counter=0;
-				if (parent.getValue() >= animationsduration.length) {//if over animation array
+			int value = parent.getSpriteValue();
+			if (value < 0) {
+				parent.dispose();
+				running = false;
+				return;
+			}
+			if (value >= animationsduration.length) { //stop the animation if value is suddenly too big
+				running = false;
+			} else if (counter >= animationsduration[value]) {
+				parent.setSpriteValue((byte) (parent.getSpriteValue() + 0b1));
+				counter = 0;
+				if (parent.getSpriteValue() >= animationsduration.length) {//if over animation array
 					if (loop) {
-						parent.setValue((byte) 0);
+						parent.setSpriteValue((byte) 0);
 					} else {//delete
-						parent.setHidden(true);
-						parent.setValue((byte) (parent.getValue() - 1));
 						parent.dispose();
 					}
 				}

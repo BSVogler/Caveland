@@ -42,7 +42,7 @@ public class Sea extends AnimatedBlock {
     public Sea(final byte id) {
         super(id,new int[]{400,400,400,400}, true, true);
 		setBounce(true);
-		setValue((byte) (Math.random()*4));
+		setSpriteValue((byte) (Math.random()*4));
     }
 
 }

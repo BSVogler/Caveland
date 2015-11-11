@@ -3,9 +3,9 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
+import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
-import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
@@ -91,7 +91,7 @@ public class Bausatz extends Collectible implements Interactable {
 								.spawn(actor1.getPosition().toCoord().toPoint());
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else {
-							preview.setValue((byte) result);
+							preview.setSpriteValue((byte) result);
 						}
 					}
 				)

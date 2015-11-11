@@ -1,22 +1,28 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 /**
- * An entity which can render as a block without sides.
+ * An entity which is rendered as a block without sides.
  * @author Benedikt Vogler
  */
 public class EntityBlock extends AbstractEntity {
 	
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 * @param id 
+	 */
 	public EntityBlock(byte id) {
-		super((byte) 1);//-1 and 0 are reserverd, so I don't know a good alternative
-		setSpriteId(id);
+		super(id);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param value 
+	 */
 	public EntityBlock(byte id, byte value) {
-		super((byte) 1, value);//-1 and 0 are reserverd, so I don't know a good alternative
-		setSpriteId(id);
-		setSpriteValue(value);
+		super(id, value);//-1 and 0 are reserverd, so I don't know a good alternative
 	}
 
 	@Override

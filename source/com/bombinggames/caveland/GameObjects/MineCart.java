@@ -239,10 +239,9 @@ public class MineCart extends MovableEntity implements Interactable {
 				
 				//while standing at ground in mine cart force into it
 				if (passenger.getPosition().getZ() <= pos.getZ()+BOTTOMHEIGHT) {
-					Point tmp = pos.cpy();
-					tmp.setZ( pos.getZ()+BOTTOMHEIGHT );//a little bit higher then the minecart
-					passenger.setPosition(tmp);
 					passenger.setFloating(true);
+					passenger.getPosition().setValues(pos);
+					passenger.getPosition().setZ(pos.getZ()+BOTTOMHEIGHT);//a little bit higher then the minecart
 					if (passenger instanceof Ejira) {
 						((Ejira) passenger).idle();
 						((Ejira) passenger).forceBunnyHop();

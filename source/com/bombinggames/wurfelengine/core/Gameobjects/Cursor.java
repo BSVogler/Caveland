@@ -43,7 +43,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  */
 public class Cursor extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-    private SimpleEntity normal;
+    private final SimpleEntity normal;
     private Side normalSide;
     
     /**

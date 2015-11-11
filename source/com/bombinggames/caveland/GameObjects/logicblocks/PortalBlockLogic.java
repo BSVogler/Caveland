@@ -91,6 +91,9 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 			} else {
 				portal.setPosition(getPosition().toPoint());//force at position
 			}
+			
+			//(re)configure
+			portal.setVerifyExit(true);
 
 			if (!interactable()) {
 				//inactive for falling into it

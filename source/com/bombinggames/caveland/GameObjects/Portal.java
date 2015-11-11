@@ -5,6 +5,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.extension.AimBand;
+import java.util.ArrayList;
 
 /**
  * Teleports every object in this cell.
@@ -20,9 +21,14 @@ public class Portal extends AbstractEntity {
 	 */
 	private transient boolean active = true;
 	private transient AimBand particleBand;
+	/**
+	 * if true checks if at the target there is an exit pointing to this entry
+	 */
+	private boolean verifyExit;
 
 	/**
-	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
+	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default<br>
+	 * Invisible by default.
 	 */
 	public Portal() {
 		super((byte) 0);
@@ -76,8 +82,24 @@ public class Portal extends AbstractEntity {
 					if (e.getPosition().getZ() <= getPosition().toPoint().getZ() + 10//must be in the first part of the block
 						&& e != this //don't teleport itself
 						&& ((MovableEntity) e).isColiding()//only teleport things which collide
-						) {
-						e.setPosition(getTarget());
+					) {
+						e.setPosition(target);
+						
+						if (verifyExit) {
+							ArrayList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
+							ExitPortal exitPortal;
+							if (exitPortalList.isEmpty()) {
+								//spawn new exitportal if missing
+								exitPortal = (ExitPortal) new ExitPortal().spawn(target.toPoint());
+							} else {
+								exitPortal = exitPortalList.get(0);
+							}
+							//check target of exitportal
+							Coordinate exitTarget = getPosition().toCoord().addVector(0, 1, 1);
+							if (!exitPortal.getTarget().equals(exitTarget)) {
+								exitPortal.setTarget(exitTarget);
+							}
+						}
 					}
 				}
 				);
@@ -120,4 +142,13 @@ public class Portal extends AbstractEntity {
 			particleBand = null;
 		}
 	}
+
+	/**
+	 * if true checks that at the target is an exitPortal
+	 * @param verifyExit 
+	 */
+	public void setVerifyExit(boolean verifyExit) {
+		this.verifyExit = verifyExit;
+	}
+	
 }

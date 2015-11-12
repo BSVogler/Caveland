@@ -240,7 +240,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     
 	/**
 	 * The height of the object for depth sorting.
-	 * @return
+	 * @return game space
 	 */
 	public abstract int getDimensionZ();
 	

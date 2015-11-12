@@ -271,14 +271,14 @@ public abstract class AbstractEntity extends AbstractGameObject {
     
      /**
      * Set the height of the object.
-     * @param dimensionZ
+     * @param dimensionZ game space
      */
     public void setDimensionZ(int dimensionZ) {
         this.dimensionZ = dimensionZ;
     }
     /**
      * 
-     * @return
+     * @return game space
      */
 	@Override
     public int getDimensionZ() {

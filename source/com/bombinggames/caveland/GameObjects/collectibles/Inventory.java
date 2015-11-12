@@ -47,7 +47,8 @@ public class Inventory extends CollectibleContainer {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		this.getPosition().setValues(player.getPosition());
+		if (hasPosition() && player.hasPosition())
+			this.getPosition().setValues(player.getPosition());
 	}
 
 	/**

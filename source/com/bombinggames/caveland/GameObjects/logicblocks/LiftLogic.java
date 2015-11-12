@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
@@ -7,6 +8,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtensio
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,10 +25,21 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void update(float dt) {
 		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
-			getPosition().getEntitiesInside(MineCart.class)
-				.forEach(l -> {
-					l.setPosition(((PortalBlockLogic) holeLogic).getPortal().getTarget());
+			ArrayList<MineCart> mineCarts = getPosition().getEntitiesInside(MineCart.class);
+			if (!mineCarts.isEmpty()) {
+				Coordinate ground = ((PortalBlockLogic) holeLogic).getPortal().getTarget();
+				//find ground
+				while (!ground.getBlock().isObstacle()) {					
+					ground.addVector(0, 0, -1);
+				}
+				ground.addVector(0, 0, 1);
+			
+				//teleport minecarts to the ground
+				mineCarts.forEach(cart -> {
+					cart.setPosition(ground);
+					cart.setMovement(new Vector2(-1, 1));//little bit of movement
 				});
+			}
 		}
 	}
 

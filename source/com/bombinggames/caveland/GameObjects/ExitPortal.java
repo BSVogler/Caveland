@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
@@ -41,35 +42,35 @@ public class ExitPortal extends Portal implements Interactable {
 
 	@Override
 	public void update(float dt) {
-		if (spawner) {
-			//if a player is not nearby
-			if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 9, Ejira.class).isEmpty()) {
-				//spawn enemies
-				while (spawnedList.size() < 3) {
-					Coordinate coord = getPosition().toCoord();
-					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
-					Enemy e = (Enemy) new Enemy().spawn(
-						ChunkGenerator.getCaveCenter(cavenumber).addVector(
-							(int) (Math.random() * 4 - 2),
-							(int) (Math.random() * 4 - 2),
-							2
-						).toPoint()
-					);
-					spawnedList.add(e);
-				}
-			}
-
-			//remove killed enemys
-			for (int i = 0; i < spawnedList.size(); i++) {
-				Enemy e = spawnedList.get(i);
-				if (e.shouldBeDisposed()) {
-					spawnedList.remove(e);
-				}
-			}
-		}
-
-		//spawn lift only if a lft is built
 		if (hasPosition()) {
+			if (spawner) {
+				//if a player is not nearby
+				if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 9, Ejira.class).isEmpty()) {
+					//spawn enemies
+					while (spawnedList.size() < 3) {
+						Coordinate coord = getPosition().toCoord();
+						int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
+						Enemy e = (Enemy) new Enemy().spawn(
+							ChunkGenerator.getCaveCenter(cavenumber).addVector(
+								(int) (Math.random() * 4 - 2),
+								(int) (Math.random() * 4 - 2),
+								2
+							).toPoint()
+						);
+						spawnedList.add(e);
+					}
+				}
+
+				//remove killed enemys
+				for (int i = 0; i < spawnedList.size(); i++) {
+					Enemy e = spawnedList.get(i);
+					if (e.shouldBeDisposed()) {
+						spawnedList.remove(e);
+					}
+				}
+			}
+
+			//spawn lift only if a lft is built
 			if (getLift() == null){
 				if (fahrstuhlkorb != null){
 					fahrstuhlkorb.disposeFromMap();
@@ -85,6 +86,7 @@ public class ExitPortal extends Portal implements Interactable {
 					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
 					for (MovableEntity ent : entsOnLiftUp) {
 						teleport(ent);
+						ent.setMovement(new Vector2(-1, 1));
 					}
 				}
 			}

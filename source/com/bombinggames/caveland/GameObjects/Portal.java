@@ -118,8 +118,14 @@ public class Portal extends AbstractEntity {
 		} else {
 			exitPortal = exitPortalList.get(0);
 		}
+		
 		//check target of exitportal
-		Coordinate exitTarget = getPosition().toCoord().addVector(0, 1, 1);
+		//target is left from portal
+		int x = 0;
+		if (getPosition().toCoord().getX() % 2 == 0) {
+			x = -1;
+		}
+		Coordinate exitTarget = getPosition().toCoord().addVector(x, 1, 1);
 		if (!exitPortal.getTarget().equals(exitTarget)) {
 			exitPortal.setTarget(exitTarget);
 		}

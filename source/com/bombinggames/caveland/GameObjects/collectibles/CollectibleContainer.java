@@ -312,6 +312,10 @@ public class CollectibleContainer extends AbstractEntity {
 			for (int i = 0; i < size(); i++) {
 				this.retrieveCollectible(0);
 			}
+		} else {
+			for (Collectible col : content) {
+				col.dispose();
+			}
 		}
 		super.disposeFromMap();
 	}

@@ -216,10 +216,11 @@ public class Map implements Cloneable {
 	public void update(float dt) {
 		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
 
-	//update every block on the map
-		for (Chunk chunk : data) {
-			chunk.update(dt);
+		//oldschool loop to allow new chunks during update
+		for (int i = 0; i < data.size(); i++) {
+			data.get(i).update(dt);
 		}
+		
 		//update every entity
 		//old style for loop because allows modification during loop
 		float rawDelta = Gdx.graphics.getRawDeltaTime()*1000f;

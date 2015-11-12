@@ -43,7 +43,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	public void interact(CLGameView view, AbstractEntity actor) {
 		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (hole != null && hole instanceof PortalBlockLogic) {
-			actor.setPosition(((PortalBlockLogic) hole).getPortal().getTarget().cpy());
+			((PortalBlockLogic) hole).getPortal().teleport(actor);
 		}
 	}
 

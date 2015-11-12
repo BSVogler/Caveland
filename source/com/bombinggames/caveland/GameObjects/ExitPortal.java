@@ -130,7 +130,7 @@ public class ExitPortal extends Portal implements Interactable {
 			return null;
 		}
 
-		AbstractBlockLogicExtension logic = getTarget().addVector(0, -1, -1).getLogic();
+		AbstractBlockLogicExtension logic = getTarget().addVector(0, -1, 0).getLogic();
 		if (logic instanceof LiftLogic) {
 			return (LiftLogic) logic;
 		} else {

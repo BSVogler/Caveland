@@ -95,7 +95,7 @@ public class Portal extends AbstractEntity {
 	public void teleport(AbstractEntity e){
 		if (verifyExit) {
 			ExitPortal eportal = getExitPortal();
-			if (getPosition().toCoord().getLogic() instanceof LiftLogic) {
+			if (getPosition().toCoord().addVector(0, 0, 1).getLogic() instanceof LiftLogic) {
 				//teleport in front of lift
 				e.setPosition(eportal.getGround().addVector(0, 1, 0));
 			} else {

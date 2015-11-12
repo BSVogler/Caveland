@@ -161,7 +161,8 @@ public class Chunk {
 	 */
 	public void update(float dt){
 		processModification();
-		//reset light to zero
+		//reset light to normal level
+		int maxZ = Chunk.getBlocksZ();
 		for (Block[][] x : data) {
 			for (Block[] y : x) {
 				for (int z = 0; z < y.length; z++) {
@@ -169,29 +170,28 @@ public class Chunk {
 						y[z].setLightlevel(1.0f);
 
 						if (
-							z < Chunk.getBlocksZ()-2
+							z < maxZ-2
 							&& (
 								y[z+1] == null
 								|| y[z+1].isTransparent()
 							)
-							&& y[z+2] != null
-							&& !y[z+2].isTransparent()
-						) {
-							y[z].setLightlevel(0.8f, Side.TOP);
-						} else if (
-							z < Chunk.getBlocksZ()-3
-							&& (
-								y[z+1] == null
-								|| y[z+1].isTransparent()
-							)
-							&& (
-								y[z+2] == null
-								|| y[z+2].isTransparent()
-							)
-							&& y[z+3] != null
-							&& !y[z+3].isTransparent()
-						) {
-							y[z].setLightlevel(0.9f, Side.TOP);
+						){
+							//two block above is a block casting shadows
+							if (y[z+2] != null
+								&& !y[z+2].isTransparent()
+								) {
+									y[z].setLightlevel(0.8f, Side.TOP);
+								} else if (
+									z < maxZ-3
+									&& (
+										y[z+2] == null
+										|| y[z+2].isTransparent()
+									)
+									&& y[z+3] != null
+									&& !y[z+3].isTransparent()
+								) {
+									y[z].setLightlevel(0.9f, Side.TOP);
+								}
 						}
 					}
 				}
@@ -218,6 +218,8 @@ public class Chunk {
 	public void processModification(){
 		if (modified){
 			modified = false;
+			
+			
 			Controller.getMap().setModified();
 			//notify observers that a chunk changed
 			for (MapObserver observer : Controller.getMap().getOberservers()){

@@ -35,7 +35,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Camera;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -839,8 +838,8 @@ public class Map implements Cloneable {
 	 *
 	 * @return every item on the map
 	 */
-	public AbstractEntity[] getEntitys() {
-		return entityList.toArray(new AbstractEntity[]{});//it is a bit stupid to create a new array which will not be used but wihtout you get Object[] which can not be casted to Interactable[].
+	public ArrayList<AbstractEntity> getEntitys() {
+		return entityList;
 	}
 
 	/**
@@ -855,9 +854,7 @@ public class Map implements Cloneable {
 	 *Disposes every entity on the map and clears the list.
 	 */
 	public void disposeEntities(){
-		for (int i = 0; i < Controller.getMap().getEntitys().length; i++) {
-			entityList.get(i).dispose();
-		}
+		entityList.forEach((AbstractEntity e) -> e.dispose());
 		entityList.clear();
 	}
 

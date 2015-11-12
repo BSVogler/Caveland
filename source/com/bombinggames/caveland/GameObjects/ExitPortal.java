@@ -16,7 +16,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 	private static final long serialVersionUID = 2L;
 	private boolean spawner;
-	private ArrayList<Enemy> spawnedList = new ArrayList<>(3);
+	private final ArrayList<Enemy> spawnedList = new ArrayList<>(3);
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default

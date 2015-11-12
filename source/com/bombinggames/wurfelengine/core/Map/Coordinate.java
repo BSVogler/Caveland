@@ -428,7 +428,8 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Get every entity on a coord. Loads the chunk if not in memory.
+	 * Get every entity on a coord.<br >
+	 * Loads the chunk if not in memory. Should be used with care with generated content because new chunks can also trigger this recursively.
 	 *
 	 * @return a list with the entitys
 	 */
@@ -440,7 +441,8 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Get every entity on this coord of the wanted type. Loads the chunk if not in memory.
+	 * Get every entity on this coord of the wanted type.<br>
+	 * Loads the chunk if not in memory. Should be used with care with generated content because new chunks can also trigger this recursively.
 	 *
 	 * @param <type> the class you want to filter.
 	 * @param type the class you want to filter.

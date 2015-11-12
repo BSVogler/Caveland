@@ -633,8 +633,11 @@ public class Map implements Cloneable {
 
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
 		Chunk chunk = getChunk(coord);
-		if (chunk==null) return null;
-		else return chunk.getLogic(coord);
+		if (chunk == null) {
+			return null;
+		} else {
+			return chunk.getLogic(coord);
+		}
 	}
 
 	/**

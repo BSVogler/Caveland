@@ -577,7 +577,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	@Override
 	public int getDimensionZ() {
-		return 1;
+		return Block.GAME_EDGELENGTH;
 	}
 
 	/**

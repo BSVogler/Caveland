@@ -594,8 +594,8 @@ public class Camera implements MapObserver {
 					&& !block.getBlockData().isClipped()
 					&& !block.isHidden()
 					&& inViewFrustum(
-						block.getPosition().getViewSpcX(gameView),
-						block.getPosition().getViewSpcY(gameView))
+							block.getPosition().getViewSpcX(),
+							block.getPosition().getViewSpcY())
 				) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
@@ -629,8 +629,8 @@ public class Camera implements MapObserver {
 			if (entity.hasPosition()
 				&& !entity.isHidden()
 				&& inViewFrustum(
-					entity.getPosition().getViewSpcX(gameView),
-					entity.getPosition().getViewSpcY(gameView)
+					entity.getPosition().getViewSpcX(),
+					entity.getPosition().getViewSpcY()
 				)
 				&& (!activatedRenderLimit || entity.getPosition().getZGrid() < zRenderingLimit)
 			) {

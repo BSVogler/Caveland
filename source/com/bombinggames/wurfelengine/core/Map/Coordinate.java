@@ -456,25 +456,25 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public int getViewSpcX(GameView view) {
+	public int getViewSpcX() {
 		return x * Block.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
 			+ (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
-	public int getViewSpcY(GameView view) {
+	public int getViewSpcY() {
 		return -y * Block.VIEW_DEPTH2 + z * Block.VIEW_HEIGHT;
 	}
 	
 	@Override
 	public int getProjectionSpaceX(GameView view, Camera camera) {
-		return (int) (getViewSpcX(view)-camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
+		return (int) (getViewSpcX()-camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
 	}
 	
 	@Override
 	public int getProjectionSpaceY(GameView view, Camera camera) {
-		return (int) (getViewSpcY(view)-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
+		return (int) (getViewSpcY()-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
 	}
 
 	@Override

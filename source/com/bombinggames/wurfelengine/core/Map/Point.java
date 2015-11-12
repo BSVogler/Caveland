@@ -219,12 +219,12 @@ public class Point extends AbstractPosition {
     }
 
     @Override
-    public int getViewSpcX(GameView view) {
+    public int getViewSpcX() {
         return (int) (getX()); //just the position as integer
     }
 
     @Override
-    public int getViewSpcY(GameView view) {
+    public int getViewSpcY() {
         return (int)( 
 			-getY() / 2
             + (int) (getZ() * Block.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
@@ -233,12 +233,12 @@ public class Point extends AbstractPosition {
 
 	@Override
 	public int getProjectionSpaceX(GameView view, Camera camera) {
-		return (int) (getViewSpcX(view) - camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
+		return (int) (getViewSpcX() - camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
 	}
 	
 	@Override
 	public int getProjectionSpaceY(GameView view, Camera camera) {
-		return (int) (getViewSpcY(view)-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
+		return (int) (getViewSpcY()-camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
 	}
 	
     

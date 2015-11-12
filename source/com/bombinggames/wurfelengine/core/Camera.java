@@ -183,8 +183,8 @@ public class Camera implements MapObserver {
 		updateViewSpaceSize();
 
 		Point center = map.getCenter();
-		position.x = center.getViewSpcX(gameView);
-		position.y = center.getViewSpcY(gameView);
+		position.x = center.getViewSpcX();
+		position.y = center.getViewSpcY();
 		initFocus();
 	}
 
@@ -200,8 +200,8 @@ public class Camera implements MapObserver {
 		updateViewSpaceSize();
 
 		Point center = map.getCenter();
-		position.x = center.getViewSpcX(gameView);
-		position.y = center.getViewSpcY(gameView);
+		position.x = center.getViewSpcX();
+		position.y = center.getViewSpcY();
 		fullWindow = true;
 		initFocus();
 	}
@@ -230,8 +230,8 @@ public class Camera implements MapObserver {
 		screenPosY = y;
 		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
-		position.x = center.getViewSpcX(gameView);
-		position.y = center.getViewSpcY(gameView);
+		position.x = center.getViewSpcX();
+		position.y = center.getViewSpcY();
 		initFocus();
 	}
 
@@ -266,8 +266,8 @@ public class Camera implements MapObserver {
 		if (!focusentity.hasPosition()) {
 			throw new NullPointerException(focusentity.getName() + " is not spawned yet");
 		}
-		position.x = focusEntity.getPosition().getViewSpcX(gameView);
-		position.y = (int) (focusEntity.getPosition().getViewSpcY(gameView)
+		position.x = focusEntity.getPosition().getViewSpcX();
+		position.y = (int) (focusEntity.getPosition().getViewSpcY()
 			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
 		initFocus();
 	}
@@ -282,8 +282,8 @@ public class Camera implements MapObserver {
 			if (focusEntity != null && focusEntity.hasPosition()) {
 				//update camera's position according to focusEntity
 				Vector2 newPos = new Vector2(
-					focusEntity.getPosition().getViewSpcX(gameView),
-					(int) (focusEntity.getPosition().getViewSpcY(gameView)
+					focusEntity.getPosition().getViewSpcX(),
+					(int) (focusEntity.getPosition().getViewSpcY()
 					+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2)
 				);
 
@@ -971,7 +971,7 @@ public class Camera implements MapObserver {
 	 * @return game in pixels
 	 */
 	public float getViewSpaceX() {
-		return getCenter().getViewSpcX(gameView);
+		return getCenter().getViewSpcX();
 	}
 
 	/**
@@ -980,7 +980,7 @@ public class Camera implements MapObserver {
 	 * @return in camera position game space
 	 */
 	public float getViewSpaceY() {
-		return getCenter().getViewSpcY(gameView);
+		return getCenter().getViewSpcY();
 	}
 
 	/**

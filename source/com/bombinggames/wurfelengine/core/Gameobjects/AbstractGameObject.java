@@ -292,8 +292,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 			}
             render(
                 view,
-                getPosition().getViewSpcX(view),
-                getPosition().getViewSpcY(view),
+                getPosition().getViewSpcX(),
+                getPosition().getViewSpcY(),
 				fogcolor
             );
         }

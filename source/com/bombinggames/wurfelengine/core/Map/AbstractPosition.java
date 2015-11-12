@@ -72,17 +72,15 @@ public abstract class AbstractPosition implements Serializable {
 	
      /**
      * Calculate position in view space.
-	 * @param View
      * @return Returns the center of the projected (screen) x-position where the object is rendered without regarding the camera. It also adds the cell offset.
      */
-    public abstract int getViewSpcX(GameView View);
+    public abstract int getViewSpcX();
     
     /**
      * Calculate position in view space.
-	 * @param View
      * @return Returns the center of the projected (view space) y-position where the object is rendered without regarding the camera.
      */
-    public abstract int getViewSpcY(GameView View);
+    public abstract int getViewSpcY();
     
 	/**
 	 * maybe I mean screen space

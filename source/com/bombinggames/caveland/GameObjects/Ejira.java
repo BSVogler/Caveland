@@ -461,8 +461,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				sprite.setColor(getColor());
 
 				sprite.setPosition(
-					getPosition().getViewSpcX(view) + texture.offsetX - texture.originalWidth / 2,
-					getPosition().getViewSpcY(view)//center
+					getPosition().getViewSpcX() + texture.offsetX - texture.originalWidth / 2,
+					getPosition().getViewSpcY()//center
 					- VIEW_HEIGHT2
 					+ texture.offsetY
 					- 50 //only this player sprite has an offset because it has overize
@@ -487,8 +487,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 					overlaySprite.setColor(new Color(0.8f, 0.8f, 0.8f, 1f));//a bit brigher then default
 
 					overlaySprite.setPosition(
-						getPosition().getViewSpcX(view) + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
-						getPosition().getViewSpcY(view)//center
+						getPosition().getViewSpcX() + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
+						getPosition().getViewSpcY()//center
 						- VIEW_HEIGHT2
 						+ overlayTexture.offsetY
 						+100 //offset for overlay

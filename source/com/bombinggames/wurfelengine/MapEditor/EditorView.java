@@ -185,9 +185,7 @@ public class EditorView extends GameView {
 		}
 		ArrayList<AbstractEntity> newSel = new ArrayList<>(4);
 		for (AbstractEntity ent : getMap().getEntitys()) {
-			if (
-				ent.hasPosition()
-			) {
+			if (ent.hasPosition()) {
 				TextureAtlas.AtlasRegion aR = ent.getAtlasRegion();
 				if (aR != null
 					&& ent.getPosition().getViewSpcX(this) + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde

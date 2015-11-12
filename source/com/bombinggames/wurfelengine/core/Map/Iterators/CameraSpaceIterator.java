@@ -53,6 +53,11 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 */
 	private int chunkBorderY;
 	
+	private void updateChunkBorders() {
+		chunkBorderX = (current.getChunkX() - centerChunkX + 1) * Chunk.getBlocksX();
+		chunkBorderY = (current.getChunkY() - centerChunkY + 1) * Chunk.getBlocksY();
+	}
+	
 	/**
 	 * Starts at z=-1. 
 	 * @param map
@@ -107,21 +112,13 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 
 	/**
 	 * get the indices position inside the chunk/data matrix
-	 * @return 
+	 * @return copy safe
 	 */
-	public int[] getCurrentIndex(){
+	public int[] getCurrentIndex() {
 		int[] inChunk = blockIterator.getCurrentIndex();
-		return new int[]{inChunk[0]+chunkBorderX, inChunk[1]+chunkBorderY, inChunk[2]};
+		return new int[]{inChunk[0] + chunkBorderX, inChunk[1] + chunkBorderY, inChunk[2]};
 	}
 	
-	/**
-	 * 
-	 * @return the chunk which the chunk iterator currently points to
-	 */
-	public Chunk getCurrentChunk(){
-		return current;
-	}
-
 	@Override
 	public boolean hasNextChunk() {
 		return current.getChunkX() < centerChunkX+1//has next x
@@ -133,9 +130,5 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		return blockIterator.hasNext() || hasNextChunk();
 	}
 
-	private void updateChunkBorders() {
-		chunkBorderX = (current.getChunkX()-centerChunkX+1)*Chunk.getBlocksX();
-		chunkBorderY = (current.getChunkY()-centerChunkY+1)*Chunk.getBlocksY();
-	}
 
 }

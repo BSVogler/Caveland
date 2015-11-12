@@ -153,12 +153,12 @@ public class Map implements Cloneable {
 		/**
 	 * every entity on the map is stored in this field
 	 */
-	private final ArrayList<AbstractEntity> entityList = new ArrayList<>(20);
+	private final ArrayList<AbstractEntity> entityList = new ArrayList<>(40);
 	private boolean modified = true;
 	/**
 	 * observer pattern
 	 */
-	private final ArrayList<MapObserver> observers = new ArrayList<>(2);//camera + light engine=2 minimum
+	private final ArrayList<MapObserver> observers = new ArrayList<>(3);//camera + light engine=2 minimum
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;

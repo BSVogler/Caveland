@@ -34,18 +34,17 @@ public abstract class AbstractBlockLogicExtension {
 	public Coordinate getPosition() {
 		return coord;
 	}
-	
+
 	/**
-	 * A logicblock is still valid if the pointer shows to a block with the same id as during creation.
-	 * @return 
+	 * A logicblock is still valid if the pointer shows to a block with the same
+	 * id as during creation.
+	 *
+	 * @return false if should be deleted
 	 */
 	public boolean isValid() {
-		if (coord.getBlock() == null) {
-			return false;
-		}
-		return coord.getBlock().getId() == block.getId();
+		return coord.getBlock() != null && coord.getBlock().getId() == block.getId();
 	}
-	
+
 	public abstract void update(float dt);
 
 	/**

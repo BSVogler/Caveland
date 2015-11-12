@@ -204,7 +204,9 @@ public class Chunk {
 		//check if block at position corespodends to saved, garbage collection
 		logicBlocks.removeIf((AbstractBlockLogicExtension lb) -> {
 			boolean remove = !lb.isValid();
-			if (remove) lb.dispose();
+			if (remove) {
+				lb.dispose();
+			}
 			return remove;
 		});
 	}

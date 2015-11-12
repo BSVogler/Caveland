@@ -162,7 +162,10 @@ public class Map implements Cloneable {
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
-
+	/**
+	 * to prevent recursion where the loading process loads new chunks
+	 */
+	private boolean blockLoading = false;
 
     /** Stores the data of the map. */
     private ArrayList<Chunk> data;
@@ -266,11 +269,17 @@ public class Map implements Cloneable {
 	 * @param chunkY
 	 */
 	public void loadChunk(int chunkX, int chunkY){
-		//TODO if already there.
-		data.add(
-			new Chunk(this, getPath(), chunkX, chunkY, getGenerator())
-		);
-		setModified();
+		//TODO check if already there.
+		
+		//load only if not already in the process of loading
+		if (!blockLoading){
+			blockLoading = true;
+			data.add(
+				new Chunk(this, getPath(), chunkX, chunkY, getGenerator())
+			);
+			setModified();
+			blockLoading = false;
+		}
 	}
 
 	/**

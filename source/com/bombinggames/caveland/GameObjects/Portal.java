@@ -25,6 +25,7 @@ public class Portal extends AbstractEntity {
 	 * if true checks if at the target there is an exit pointing to this entry
 	 */
 	private boolean verifyExit;
+	private transient ExitPortal exitPortal;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default<br>
@@ -83,27 +84,41 @@ public class Portal extends AbstractEntity {
 						&& e != this //don't teleport itself
 						&& ((MovableEntity) e).isColiding()//only teleport things which collide
 					) {
-						e.setPosition(target);
-						
-						if (verifyExit) {
-							ArrayList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
-							ExitPortal exitPortal;
-							if (exitPortalList.isEmpty()) {
-								//spawn new exitportal if missing
-								exitPortal = (ExitPortal) new ExitPortal().spawn(target.toPoint());
-							} else {
-								exitPortal = exitPortalList.get(0);
-							}
-							//check target of exitportal
-							Coordinate exitTarget = getPosition().toCoord().addVector(0, 1, 1);
-							if (!exitPortal.getTarget().equals(exitTarget)) {
-								exitPortal.setTarget(exitTarget);
-							}
-						}
+						teleport(e);
 					}
 				}
 				);
 		}
+	}
+	
+	public void teleport(AbstractEntity e){
+		if (verifyExit) {
+			ExitPortal eportal = getExitPortal();
+			//teleport in front of lift
+			e.setPosition(eportal.getGround().addVector(0, 1, 0));
+		} else {
+			e.setPosition(target);
+		}
+	}
+
+	/**
+	 * Verifies and repairs if needed so that at the target there is an exitPortal pointing back to this portal.
+	 * @return 
+	 */	
+	public ExitPortal getExitPortal(){
+		ArrayList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
+		if (exitPortalList.isEmpty()) {
+			//spawn new exitportal if missing
+			exitPortal = (ExitPortal) new ExitPortal().spawn(target.toPoint());
+		} else {
+			exitPortal = exitPortalList.get(0);
+		}
+		//check target of exitportal
+		Coordinate exitTarget = getPosition().toCoord().addVector(0, 1, 1);
+		if (!exitPortal.getTarget().equals(exitTarget)) {
+			exitPortal.setTarget(exitTarget);
+		}
+		return exitPortal;
 	}
 
 	/**
@@ -149,6 +164,14 @@ public class Portal extends AbstractEntity {
 	 */
 	public void setVerifyExit(boolean verifyExit) {
 		this.verifyExit = verifyExit;
+	}
+	
+	/**
+	 * if at the target there is an exit portal returns it.
+	 * @return 
+	 */
+	public ExitPortal getCorrespondingExitPortal(){
+		return exitPortal;
 	}
 	
 }

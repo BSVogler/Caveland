@@ -2,8 +2,12 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.ChunkGenerator;
+import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -17,6 +21,7 @@ public class ExitPortal extends Portal implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private boolean spawner;
 	private final ArrayList<Enemy> spawnedList = new ArrayList<>(3);
+	private transient SimpleEntity fahrstuhlkorb;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -62,6 +67,35 @@ public class ExitPortal extends Portal implements Interactable {
 				}
 			}
 		}
+		
+		//spawn lift only if a lft is built
+		if (hasPosition() && getLift() != null) {
+			if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
+				fahrstuhlkorb = new SimpleEntity((byte) 22);
+				fahrstuhlkorb.setName("Lift Basket");
+				fahrstuhlkorb.spawn(getGround().toPoint());
+			} else {
+				//teleport non-moving objects on the liftUp
+				ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
+				entsOnLiftUp.removeIf(ent -> ent.getMovement().len() > 0.1);
+				for (MovableEntity ent : entsOnLiftUp) {
+					teleport(ent);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @return copy safe
+	 */
+	public Coordinate getGround(){
+		Coordinate ground = getPosition().toCoord();
+		//find ground
+		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {					
+			ground.addVector(0, 0, -1);
+		}
+		return ground.addVector(0, 0, 1);
 	}
 
 	/**
@@ -79,5 +113,22 @@ public class ExitPortal extends Portal implements Interactable {
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @return can be null
+	 */
+	public LiftLogic getLift(){
+		if (getTarget() == null) {
+			return null;
+		}
+
+		AbstractBlockLogicExtension logic = getTarget().addVector(0, -1, -1).getLogic();
+		if (logic instanceof LiftLogic) {
+			return (LiftLogic) logic;
+		} else {
+			return null;
+		}
 	}
 }

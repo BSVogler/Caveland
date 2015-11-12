@@ -27,13 +27,9 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
 			ArrayList<MineCart> mineCarts = getPosition().getEntitiesInside(MineCart.class);
 			if (!mineCarts.isEmpty()) {
-				Coordinate ground = ((PortalBlockLogic) holeLogic).getPortal().getTarget();
-				//find ground
-				while (!ground.getBlock().isObstacle()) {					
-					ground.addVector(0, 0, -1);
-				}
-				ground.addVector(0, 0, 1);
-			
+				//make sure that there is an exitPortal
+				Coordinate ground = ((PortalBlockLogic) holeLogic).getPortal().getExitPortal().getGround();
+
 				//teleport minecarts to the ground
 				mineCarts.forEach(cart -> {
 					cart.setPosition(ground);

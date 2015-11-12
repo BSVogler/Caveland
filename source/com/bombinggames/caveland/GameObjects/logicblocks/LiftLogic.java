@@ -33,6 +33,9 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 				//teleport minecarts to the ground
 				mineCarts.forEach(cart -> {
 					cart.setPosition(ground.addVector(0, 1, 0));
+					if (cart.getPassenger() != null){
+						cart.centerPassenger(true);
+					}
 					cart.setMovement(new Vector2(-1, 1));//little bit of movement
 				});
 			}

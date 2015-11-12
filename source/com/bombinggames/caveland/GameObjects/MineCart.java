@@ -303,11 +303,8 @@ public class MineCart extends MovableEntity implements Interactable {
 //			passenger.getMovement().z = 0;//fall into chuchu
 //		}
 		
-		
-		//set passenger in the center the mine cart
-		Point tmp = passenger.getPosition().cpy();
-		tmp.setZ(passenger.getPosition().getZ());//kepp z
-		passenger.setPosition(tmp);
+		centerPassenger(false);
+
 	}
 
 	/**
@@ -316,6 +313,21 @@ public class MineCart extends MovableEntity implements Interactable {
 	 */
 	public MovableEntity getPassenger() {
 		return passenger;
+	}
+	
+	/**
+	 * set passenger in the center the mine cart
+	 * @param forceHeight
+	 */
+	public void centerPassenger(boolean forceHeight){
+		if (forceHeight) {
+			passenger.getPosition().setValues(getPosition());
+			passenger.getPosition().setZ(getPosition().getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
+		} else {
+			float oldHeight = passenger.getPosition().getZ();
+			passenger.getPosition().setValues(getPosition());
+			passenger.getPosition().setZ(oldHeight);
+		}
 	}
 
 	/**
@@ -373,7 +385,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof MovableEntity){
-			if (passenger==null){
+			if (passenger == null) {
 				setPassanger((MovableEntity) actor);
 			} else {
 				passengerLeave();
@@ -383,7 +395,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	
 	void passengerLeave(){
 		passenger.setFloating(false);
-		passenger=null;
+		passenger = null;
 	}
 	
 	/**
@@ -435,39 +447,39 @@ public class MineCart extends MovableEntity implements Interactable {
 
 	private void updatePassenger(Point pos) {
 		if (passenger != null) {
-				//give same speed as minecart
-				passenger.setMovement(getMovementHor());
+			//give same speed as minecart
+			passenger.setMovement(getMovementHor());
 
-				//while standing at ground in mine cart force into it
-				if (passenger.getPosition().getZ() <= pos.getZ() + BOTTOMHEIGHT) {
-					passenger.setFloating(true);
-					passenger.getPosition().setValues(pos);
-					passenger.getPosition().setZ(pos.getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
-					if (passenger instanceof Ejira) {
-						((Ejira) passenger).idle();
-						((Ejira) passenger).forceBunnyHop();
-					}
-				} else {
-					passenger.setFloating(false);
-				}
-
-				//check if passenger exited the cart
-				if (
-					passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
-					|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
-				) {
-					passengerLeave();
+			//while standing at ground in mine cart force into it
+			if (passenger.getPosition().getZ() <= pos.getZ() + BOTTOMHEIGHT) {
+				passenger.setFloating(true);
+				centerPassenger(true);
+				if (passenger instanceof Ejira) {
+					((Ejira) passenger).idle();
+					((Ejira) passenger).forceBunnyHop();
 				}
 			} else {
-				//add objects
-				ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
-				for (Collectible ent : ents) {
-					if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos)<80 && ent.getMovement().z <0){
-						if (add(ent))
-							ent.dispose();
+				passenger.setFloating(false);
+			}
+
+			//check if passenger exited the cart
+			if (
+				passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
+				|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
+			) {
+				passengerLeave();
+			}
+		} else {
+			//add objects
+			ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
+			for (Collectible ent : ents) {
+				if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos) < 80 && ent.getMovement().z < 0) {
+					if (add(ent)) {
+						ent.dispose();
 					}
 				}
 			}
+		}
 	}
 
 }

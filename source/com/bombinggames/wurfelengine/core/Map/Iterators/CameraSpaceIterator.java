@@ -40,8 +40,8 @@ import java.util.NoSuchElementException;
  * @author Benedikt Vogler
  */
 public class CameraSpaceIterator extends AbstractMapIterator {
-	private int centerChunkX;
-	private int centerChunkY;
+	private final int centerChunkX;
+	private final int centerChunkY;
 	private Chunk current;
 	
 	/**

@@ -186,6 +186,9 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			setPosition(point);
 			dispose = false;
 			Controller.getMap().addEntities(this);
+			if (!this.isInMemoryArea()) {
+				this.requestChunk();
+			}
 			if (shadow != null && !shadow.hasPosition())
 				shadow.spawn(position.cpy());
 		} else {
@@ -332,7 +335,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	 * @see Coord#isInMemoryAreaHorizontal() 
 	 */
 	public boolean isInMemoryArea() {
-		if (position==null)
+		if (position == null)
 			return false;
 		return position.toCoord().isInMemoryAreaHorizontal();
 	}

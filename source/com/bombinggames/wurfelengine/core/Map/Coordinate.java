@@ -282,15 +282,14 @@ public class Coordinate extends AbstractPosition {
 	 */
 	@Override
 	public boolean isInMemoryArea() {
-		boolean found = false;
 		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
 			for (Chunk chunk : Controller.getMap().getData()) {
 				if (chunk.hasCoord(this)) {
-					found = true;
+					return true;
 				}
 			}
 		}
-		return found;
+		return false;
 	}
 	
 	/**

@@ -140,12 +140,13 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	}
 
 	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
+	
+	@Override
 	public void dispose() {
 		portal.dispose();
 	}
 	
-	@Override
-	public boolean interactableOnlyWithPickup() {
-		return false;
-	}
 }

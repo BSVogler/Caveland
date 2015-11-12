@@ -45,7 +45,7 @@ public class ExitPortal extends Portal implements Interactable {
 			//if a player is not nearby
 			if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 9, Ejira.class).isEmpty()) {
 				//spawn enemies
-				while (spawnedList.size() < 3) {				
+				while (spawnedList.size() < 3) {
 					Coordinate coord = getPosition().toCoord();
 					int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
 					Enemy e = (Enemy) new Enemy().spawn(
@@ -58,7 +58,7 @@ public class ExitPortal extends Portal implements Interactable {
 					spawnedList.add(e);
 				}
 			}
-			
+
 			//remove killed enemys
 			for (int i = 0; i < spawnedList.size(); i++) {
 				Enemy e = spawnedList.get(i);
@@ -67,32 +67,38 @@ public class ExitPortal extends Portal implements Interactable {
 				}
 			}
 		}
-		
+
 		//spawn lift only if a lft is built
-		if (hasPosition() && getLift() != null) {
-			if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
-				fahrstuhlkorb = new SimpleEntity((byte) 22);
-				fahrstuhlkorb.setName("Lift Basket");
-				fahrstuhlkorb.spawn(getGround().toPoint());
+		if (hasPosition()) {
+			if (getLift() == null){
+				if (fahrstuhlkorb != null){
+					fahrstuhlkorb.disposeFromMap();
+				}
 			} else {
-				//teleport non-moving objects on the liftUp
-				ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
-				entsOnLiftUp.removeIf(ent -> ent.getMovement().len() > 0.1);
-				for (MovableEntity ent : entsOnLiftUp) {
-					teleport(ent);
+				if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
+					fahrstuhlkorb = new SimpleEntity((byte) 22);
+					fahrstuhlkorb.setName("Lift Basket");
+					fahrstuhlkorb.spawn(getGround().toPoint());
+				} else {
+					//teleport non-moving objects on the liftUp
+					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
+					entsOnLiftUp.removeIf(ent -> ent.getMovement().len() > 0.1);
+					for (MovableEntity ent : entsOnLiftUp) {
+						teleport(ent);
+					}
 				}
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return copy safe
 	 */
 	public Coordinate getGround(){
 		Coordinate ground = getPosition().toCoord();
 		//find ground
-		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {					
+		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {
 			ground.addVector(0, 0, -1);
 		}
 		return ground.addVector(0, 0, 1);
@@ -114,9 +120,9 @@ public class ExitPortal extends Portal implements Interactable {
 	public boolean interactableOnlyWithPickup() {
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return can be null
 	 */
 	public LiftLogic getLift(){

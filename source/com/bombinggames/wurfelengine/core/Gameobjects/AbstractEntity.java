@@ -293,7 +293,6 @@ public abstract class AbstractEntity extends AbstractGameObject {
     
    /**
      * Deletes the object from the map and every other container. The opposite to spawn() but removes it completely; makes it dissapear completely.<br>
-	 * Disposes all the children.
 	 * @see #shouldBeDisposed() 
 	 * @see #disposeFromMap() 
      */
@@ -482,6 +481,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		if (hasPosition()) {
 			Chunk chunk = position.toCoord().getChunk();
 			if (chunk == null) {
+				WE.getConsole().add("entity "+getName()+" requested chunk"+position.toCoord().getChunkX()+","+position.toCoord().getChunkY());
 				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
 			}
 		}

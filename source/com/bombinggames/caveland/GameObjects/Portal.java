@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
@@ -94,8 +95,12 @@ public class Portal extends AbstractEntity {
 	public void teleport(AbstractEntity e){
 		if (verifyExit) {
 			ExitPortal eportal = getExitPortal();
-			//teleport in front of lift
-			e.setPosition(eportal.getGround().addVector(0, 1, 0));
+			if (getPosition().toCoord().getLogic() instanceof LiftLogic) {
+				//teleport in front of lift
+				e.setPosition(eportal.getGround().addVector(0, 1, 0));
+			} else {
+				e.setPosition(target);
+			}
 		} else {
 			e.setPosition(target);
 		}

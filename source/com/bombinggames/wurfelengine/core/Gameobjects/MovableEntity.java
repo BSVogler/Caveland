@@ -564,7 +564,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param movement containing direction and speed (length) in m/s.
 	 */
 	public void setMovement(Vector2 movement){
-		this.movement = new Vector3(movement, this.movement.z);
+		this.movement.x = movement.x;
+		this.movement.y = movement.y;
 		updateOrientation();
 	}
 	
@@ -582,7 +583,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
 	 */
 	public void addMovement(Vector2 movement){
-		this.movement.add(movement.x, movement.y, 0);
+		this.movement.x += movement.x;
+		this.movement.y += movement.y;
 		updateOrientation();
 	}
 	
@@ -598,21 +600,25 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	/**
 	 * Adds speed to horizontal moving directio.
-	 * @param speed speed in m/s without the unit so no "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
+	 *
+	 * @param speed speed in m/s without the unit so no
+	 * "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
-	public void addToHor(float speed){
-		addMovement(orientation.cpy().scl(speed));//add in move direction
+	public void addToHor(float speed) {
+		this.movement.x += orientation.x * speed;
+		this.movement.y += orientation.y * speed;
+		updateOrientation();
 	}
-	
+
 	/**
 	 * Set the horizontal movement and keeps z
-	 * @param movement 
+	 *
+	 * @param movement
 	 */
-	public void setHorMovement(Vector2 movement){
-		Vector3 tmp = getMovement();
-		tmp.x = movement.x;
-		tmp.y = movement.y;
-		setMovement(tmp);
+	public void setHorMovement(Vector2 movement) {
+		this.movement.x = movement.x;
+		this.movement.y = movement.y;
+		updateOrientation();
 	}
 	
 	/**
@@ -620,31 +626,35 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param speed in m/s
 	 */
 	public void setSpeedHorizontal(float speed) {
-		setHorMovement(getOrientation().scl(speed));
+		this.movement.x = orientation.x * speed;
+		this.movement.y = orientation.y * speed;
 	}
 	
 	/**
 	 * Set the speed. Uses x, y and z.
+	 *
 	 * @param speed in m/s
 	 */
 	public void setSpeedIncludingZ(float speed) {
-		movement = getMovement().nor().scl(speed);
+		movement = movement.nor().scl(speed);
 	}
-	
+
 	/**
 	 * get the horizontal speed of the object in m/s.
-	 * @return 
+	 *
+	 * @return
 	 */
 	public float getSpeedHor() {
-		return (float)Math.sqrt(movement.x * movement.x + movement.y * movement.y);
+		return (float) Math.sqrt(movement.x * movement.x + movement.y * movement.y);
 	}
-	
+
 	/**
 	 * get the speed of the object in m/s.
-	 * @return 
+	 *
+	 * @return
 	 */
 	public float getSpeed() {
-		return movement.len();
+		return (float) Math.sqrt(movement.x * movement.x + movement.y * movement.y + movement.z * movement.z);
 	}
 
 	/**

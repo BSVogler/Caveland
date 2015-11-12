@@ -23,6 +23,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 	@Override
 	public void update(float dt) {
+		//teleport minecarts
 		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().addVector(0, 0, -1).getLogic();
 		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
 			ArrayList<MineCart> mineCarts = getPosition().getEntitiesInside(MineCart.class);

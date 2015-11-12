@@ -258,13 +258,10 @@ public abstract class AbstractGameObject implements Serializable, HasID {
 
 	/**
      * Returns the depth of the object. Nearer objects have a bigger depth.
-	 * @param view
      * @return distance from zero level
      */
-    public int getDepth(GameView view) {
-        return (int) (getPosition().getDepth(view)
-            + getDimensionZ()*Block.ZAXISSHORTENING*0.3f//empirical factor 0.3 because the system is flawed
-        );
+    public float getDepth() {
+        return getPosition().getDepth() + getDimensionZ()*Block.ZAXISSHORTENING*0.3f;//empirical factor 0.3 because the system is flawed
     }
 	
     /**

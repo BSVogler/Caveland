@@ -180,10 +180,10 @@ public class Console {
      * @param message
      */
     public void add(final String message) {
-        messages.add(new Line(message, "System", 100));
-		log.setText(log.getText()+message);
+		messages.add(new Line(message, "System", 100));
+		log.setText(log.getText() + message);
 		log.setCursorPosition(log.getText().length());
-        Gdx.app.debug("System",message);
+		Gdx.app.debug("System", message);
     }
     
     /**
@@ -224,7 +224,8 @@ public class Console {
         }
         keyConsoleDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"));
 		
-		if (!keySuggestionDown
+		if (
+			!keySuggestionDown
 			&& Gdx.input.isKeyPressed( WE.CVARS.getValueI("KeySuggestion") )
 			&& isActive()
 		) {
@@ -233,14 +234,15 @@ public class Console {
         keySuggestionDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeySuggestion"));
 		
 
-        //decrease importance every 30ms
-        if (timelastupdate >= 30) {
-             timelastupdate = 0;
-            for (Line m : messages) {
-                if (m.getImportance() > 0)
-                    m.setImportance(m.getImportance()-1);
-            }
-        }
+		//decrease importance every 30ms
+		if (timelastupdate >= 30) {
+			timelastupdate = 0;
+			for (Line m : messages) {
+				if (m.getImportance() > 0) {
+					m.setImportance(m.getImportance() - 1);
+				}
+			}
+		}
 		
 		if (!textinput.getText().startsWith(path+" $ "))
 			setText(path+" $ ");
@@ -250,84 +252,88 @@ public class Console {
      * Tell the msg system if it should listen for input.
      * @param active If deactivating the input will be saved.
      */
-    private void setActive(Modes mode, final boolean active) {
-        this.mode = mode;
-        if (mode == Modes.Chat) {
-            if (!active && !textinput.getText().isEmpty()) {//message entered and closing?
-                enter();
-            } else {
-                if (active && !textinput.isVisible()){//window should be opened?
-                    clearCommandLine();//clear if openend
-                }
-            }
+   private void setActive(Modes mode, final boolean active) {
+		this.mode = mode;
+		if (mode == Modes.Chat) {
+			if (!active && !textinput.getText().isEmpty()) {//message entered and closing?
+				enter();
+			} else if (active && !textinput.isVisible()) {//window should be opened?
+				clearCommandLine();//clear if openend
+			}
         }
         
-        if (active && !textinput.isVisible()){//window should be opened?
-            inputprocessor = new StageInputProcessor(this);
-            WE.getEngineView().getStage().addListener(inputprocessor);
-            WE.getEngineView().getStage().setKeyboardFocus(textinput);
-			
-        }else {
-            WE.getEngineView().getStage().removeListener(inputprocessor);
-            WE.getEngineView().getStage().setKeyboardFocus(null);
-        }
-        textinput.setVisible(active);
+		if (active && !textinput.isVisible()) {//window should be opened?
+			inputprocessor = new StageInputProcessor(this);
+			WE.getEngineView().getStage().addListener(inputprocessor);
+			WE.getEngineView().getStage().setKeyboardFocus(textinput);
+
+		} else {
+			WE.getEngineView().getStage().removeListener(inputprocessor);
+			WE.getEngineView().getStage().setKeyboardFocus(null);
+		}
+		textinput.setVisible(active);
 		log.setVisible(active);
     }
     
-    /**
-     *when a message is entered
-     */
-    public void enter(){
+	/**
+	 * when a message is entered
+	 */
+	public void enter() {
 		//add line break if last line ended with line break
 		String lineBreak;
-		if (!log.newLineAtEnd())
+		if (!log.newLineAtEnd()) {
 			lineBreak = "\n";
-		else
-			lineBreak="";
-        add(lineBreak + textinput.getText()+"\n", "Console");//add message to message list
-        //if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
-        if (mode==Modes.Console && !textinput.getText().isEmpty() && !executeCommand(
-			textinput.getText().substring(textinput.getText().indexOf("$ ")+2)
-		))    
-            add("Failed executing command.\n", "System");    
-        clearCommandLine();
-    }
+		} else {
+			lineBreak = "";
+		}
+		add(lineBreak + textinput.getText() + "\n", "Console");//add message to message list
+		//if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
+		if (mode == Modes.Console && !textinput.getText().isEmpty() && !executeCommand(
+			textinput.getText().substring(textinput.getText().indexOf("$ ") + 2)
+		)) {
+			add("Failed executing command.\n", "System");
+		}
+		clearCommandLine();
+	}
 	
-	public void clearCommandLine(){
-		textinput.setText(path+" $ ");
-		textinput.setCursorPosition((path+" $ ").length());
+	public void clearCommandLine() {
+		textinput.setText(path + " $ ");
+		textinput.setCursorPosition((path + " $ ").length());
+	}
+ 
+	/**
+	 * Is the window open?
+	 *
+	 * @return
+	 */
+	public boolean isActive() {
+		return textinput.isVisible();
+	}
+
+	/**
+	 * Returns the last Message
+	 *
+	 * @return if there spawn no last message it returns an empty string
+	 */
+	public String getLastMessage() {
+		String tmp = messages.lastElement().message;
+		return tmp != null ? tmp : "";
 	}
     
-    /**
-     * Is the window open?
-     * @return
-     */
-    public boolean isActive() {
-        return textinput.isVisible();
-    }
-    
-    /**
-     * Returns the last Message
-     * @return  if there spawn no last message it returns an empty string
-     */
-    public String getLastMessage(){
-        String tmp = messages.lastElement().message;
-        return tmp!=null ? tmp : "";
-    }
-    
-    /**
-     * Returns the last Message
-     * @param sender filter by the sender, e.g. if you want the last message of a specific player
-     * @return if there spawn no last message it returns an empty string
-     */
-    public String getLastMessage(final String sender){
-        int i = messages.size()-1;
-        while (i>=0 && !messages.get(i).sender.equals(sender)) {
-            i--;
-        }
-        return i>=0 ? messages.get(i).message.substring(0, messages.get(i).message.length()-1) : "";
-    }
+ /**
+	 * Returns the last Message
+	 *
+	 * @param sender filter by the sender, e.g. if you want the last message of
+	 * a specific player
+	 * @return if there spawn no last message it returns an empty string
+	 */
+	public String getLastMessage(final String sender) {
+		int i = messages.size() - 1;
+		while (i >= 0 && !messages.get(i).sender.equals(sender)) {
+			i--;
+		}
+		return i >= 0 ? messages.get(i).message.substring(0, messages.get(i).message.length() - 1) : "";
+	}
     
     /**
      *Set the text in the box.

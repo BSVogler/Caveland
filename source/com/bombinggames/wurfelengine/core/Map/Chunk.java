@@ -135,8 +135,9 @@ public class Chunk {
     public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
 		if (WE.CVARS.getValueB("shouldLoadMap")){
-			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY))
+			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY)) {
 				fill(generator);
+			}
 		} else fill(generator);
 		increaseCameraHandleCounter();
     }

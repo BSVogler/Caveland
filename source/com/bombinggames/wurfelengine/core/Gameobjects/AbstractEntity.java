@@ -183,9 +183,9 @@ public abstract class AbstractEntity extends AbstractGameObject {
      */
     public AbstractEntity spawn(Point point){
 		if (position == null) {
-			Controller.getMap().addEntities(this);
 			setPosition(point);
 			dispose = false;
+			Controller.getMap().addEntities(this);
 			if (shadow != null && !shadow.hasPosition())
 				shadow.spawn(position.cpy());
 		} else {
@@ -481,7 +481,7 @@ public abstract class AbstractEntity extends AbstractGameObject {
 		if (hasPosition()) {
 			Chunk chunk = position.toCoord().getChunk();
 			if (chunk == null) {
-				WE.getConsole().add("entity "+getName()+" requested chunk"+position.toCoord().getChunkX()+","+position.toCoord().getChunkY());
+				WE.getConsole().add("entity "+ getName() +" requested chunk "+position.toCoord().getChunkX()+","+position.toCoord().getChunkY());
 				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
 			}
 		}

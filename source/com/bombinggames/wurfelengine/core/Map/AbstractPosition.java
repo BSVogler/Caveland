@@ -140,11 +140,26 @@ public abstract class AbstractPosition implements Serializable {
     
         /**
      * Returns the depth of the object. The depth is an int value wich is needed for producing the list of the renderorder. The higher the value the later it will be drawn.
+	 * @param view
      * @return the depth in game size
      */
-	public float getDepth(){
-		Point pos = toPoint();
-		return pos.getY() + pos.getZ() * SQRT12;
+	public int getDepth(GameView view){
+        return (int) (
+			(
+				view.getOrientation()==0
+				?
+					 toPoint().getY()//Y
+				:
+					(
+						view.getOrientation()==2
+						?
+							Controller.getMap().getGameDepth()-toPoint().getY()//Y
+						:
+							0
+					)
+			)            
+            + toPoint().getZ()*SQRT12//Z
+        );
     }
 
 	/**

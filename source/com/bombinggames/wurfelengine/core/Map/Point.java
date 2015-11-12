@@ -226,7 +226,17 @@ public class Point extends AbstractPosition {
     @Override
     public int getViewSpcY(GameView view) {
         return (int)( 
-			-getY() / 2
+			getY() / 2*
+			(
+				view.getOrientation()==0
+				? -1
+				: (
+					view.getOrientation()==2
+					? 1
+					: 0
+				  )
+			)
+			
             + (int) (getZ() * Block.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
 			);
     }

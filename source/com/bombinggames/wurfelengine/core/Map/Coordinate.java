@@ -464,7 +464,16 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public int getViewSpcY(GameView view) {
-		return -y * Block.VIEW_DEPTH2 + z * Block.VIEW_HEIGHT;
+		return y * Block.VIEW_DEPTH2 *
+			(
+				view.getOrientation() == 0
+					? -1
+					: (view.getOrientation() == 2
+						? 1
+						: 0
+					)
+			)
+			+ z * Block.VIEW_HEIGHT;
 	}
 	
 	@Override

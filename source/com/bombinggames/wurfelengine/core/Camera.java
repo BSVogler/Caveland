@@ -321,8 +321,8 @@ public class Camera implements MapObserver {
 
 			//orthographic camera, libgdx stuff
 			projection.setToOrtho(
-				-getWidthInProjSpc() / 2,
-				getWidthInProjSpc() / 2,
+				(gameView.getOrientation() == 2 ? -1 : 1) * -getWidthInProjSpc() / 2,
+				(gameView.getOrientation() == 2 ? -1 : 1) * getWidthInProjSpc() / 2,
 				-getHeightInProjSpc() / 2,
 				getHeightInProjSpc() / 2,
 				0,
@@ -682,13 +682,13 @@ public class Camera implements MapObserver {
 	private ArrayList<AbstractGameObject> sortDepthListQuick(ArrayList<AbstractGameObject> depthsort, int low, int high) {
 		int left = low;
 		int right = high;
-		float middle = depthsort.get((low + high) / 2).getDepth();
+		int middle = depthsort.get((low + high) / 2).getDepth(gameView);
 
 		while (left <= right) {
-			while (depthsort.get(left).getDepth() < middle) {
+			while (depthsort.get(left).getDepth(gameView) < middle) {
 				left++;
 			}
-			while (depthsort.get(right).getDepth() > middle) {
+			while (depthsort.get(right).getDepth(gameView) > middle) {
 				right--;
 			}
 
@@ -710,13 +710,12 @@ public class Camera implements MapObserver {
 	 * @since v1.5.3
 	 */
 	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort) {
-		Arrays.parallelSort(
-			depthsort,
+		Arrays.parallelSort(depthsort,
 			0,
 			objectsToBeRendered,
 			(AbstractGameObject o1, AbstractGameObject o2) -> {
-				float a = o1.getDepth();
-				float b = o2.getDepth();
+				int a = o1.getDepth(gameView);
+				int b = o2.getDepth(gameView);
 				if (a < b) {
 					return -1;
 				} else if (a == b) {
@@ -744,7 +743,7 @@ public class Camera implements MapObserver {
 		for (i = 1; i < depthsort.size(); i++) {
 			newValue = depthsort.get(i);
 			j = i;
-			while (j > 0 && depthsort.get(j - 1).getDepth() > newValue.getDepth()) {
+			while (j > 0 && depthsort.get(j - 1).getDepth(gameView) > newValue.getDepth(gameView)) {
 				depthsort.set(j, depthsort.get(j - 1));
 				j--;
 			}

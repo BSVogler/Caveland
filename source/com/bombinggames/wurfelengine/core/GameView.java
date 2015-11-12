@@ -339,6 +339,15 @@ public class GameView implements GameManager {
 		else return 1;
     }
 
+	/**
+	 * Get the current orientation.
+	 * @return 0 front, 1 from right, 2 from behind, 3 from left, 4 - undefined
+	 * @since v1.3.12
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
    /**
      * Reverts the perspective and transforms it into a coordiante which can be used in the game logic. Should be verified if returning correct results.
      * @param screenX the x position on the screen

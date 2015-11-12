@@ -250,10 +250,6 @@ public class Weapon extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		laserdot = new SimpleEntity((byte) 22).spawn(point.cpy());
-		laserdot.setColor(new Color(1, 0, 0, 1));
-		laserdot.setScaling(-0.85f);
-		laserdot.setName("Laser dot");
 		fixedPos = point.cpy();
 		return this;
 	}
@@ -333,6 +329,14 @@ public class Weapon extends AbstractEntity {
 	
 	private void updateLaserDot(){
 		if (hasPosition() && !aimDir.isZero()) {
+			
+			if (laserdot == null){
+				laserdot = new SimpleEntity((byte) 22).spawn(getPosition().cpy());
+				laserdot.setColor(new Color(1, 0, 0, 1));
+				laserdot.setScaling(-0.85f);
+				laserdot.setName("Laser dot");
+			}
+			
 			Intersection raycast = getPosition().raycastSimple(
 				aimDir,
 				Block.GAME_EDGELENGTH*20,
@@ -340,7 +344,7 @@ public class Weapon extends AbstractEntity {
 				(Block t) -> !t.isTransparent() && t.getId() != ignoreId
 			);
 			laserdot.setHidden(raycast == null);
-			if (raycast != null) {
+			if (raycast != null && raycast.getPoint() != null) {
 				laserdot.setPosition(raycast.getPoint());
 			} else {
 				laserdot.getPosition().setValues(getPosition());

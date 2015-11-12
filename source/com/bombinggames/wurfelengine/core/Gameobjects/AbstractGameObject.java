@@ -43,6 +43,7 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
 
 /**
@@ -261,7 +262,8 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * @return distance from zero level
      */
     public float getDepth() {
-        return getPosition().getDepth() + getDimensionZ()*Block.ZAXISSHORTENING*0.3f;//empirical factor 0.3 because the system is flawed
+		Point pos = getPosition().toPoint();
+		return pos.getY() + (pos.getZ() + getDimensionZ()) * Block.ZAXISSHORTENING;//or Point.SQRT12?
     }
 	
     /**

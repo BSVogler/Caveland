@@ -166,7 +166,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
-		setDimensionZ(Block.GAME_EDGELENGTH);
+		setDimensionZ((int) (Block.GAME_EDGELENGTH*1.4f));
 		
 		Particle particle = new Particle((byte) 22, 800);
 		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 1f));

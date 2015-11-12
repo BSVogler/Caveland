@@ -428,22 +428,28 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Get every entity on a coord.
+	 * Get every entity on a coord. Loads the chunk if not in memory.
 	 *
 	 * @return a list with the entitys
 	 */
 	public ArrayList<AbstractEntity> getEntitiesInside() {
+		if (!isInMemoryAreaHorizontal()) {
+			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
+		}
 		return Controller.getMap().getEntitysOnCoord(this);
 	}
 
 	/**
-	 * Get every entity on this coord of the wanted type
+	 * Get every entity on this coord of the wanted type. Loads the chunk if not in memory.
 	 *
 	 * @param <type> the class you want to filter.
 	 * @param type the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
 	public <type extends AbstractEntity> ArrayList<type> getEntitiesInside(final Class<? extends AbstractEntity> type) {
+		if (!isInMemoryAreaHorizontal()) {
+			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
+		}
 		return Controller.getMap().getEntitysOnCoord(this, type);
 	}
 

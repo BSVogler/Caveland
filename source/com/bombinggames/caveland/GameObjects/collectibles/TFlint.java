@@ -53,7 +53,7 @@ public class TFlint extends Collectible implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		sparksGenerator.spawn(point);
+		sparksGenerator.spawn(point.cpy().addVector(0, 0, Block.GAME_EDGELENGTH*0.8f));
 		return this;
 	}
 	
@@ -64,9 +64,9 @@ public class TFlint extends Collectible implements Interactable {
 		super.update(dt);
 		
 		if (!shouldBeDisposed()) {
-			sparksGenerator.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH*0.8f);
 			sparksGenerator.setActive(lit);
 			if (lit) {
+				sparksGenerator.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH*0.8f);
 				timer-=dt;
 			}
 			if (timer <= 0) {

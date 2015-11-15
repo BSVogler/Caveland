@@ -34,9 +34,9 @@ import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Map;
@@ -306,21 +306,24 @@ public class Controller implements GameManager, MapObserver {
 	}
 
 	/**
-	 * filter map editor entities
 	 * @return selected entities but map editor entities
 	 */
 	public ArrayList<AbstractEntity> getSelectedEntities() {
-		ArrayList<AbstractEntity> selection = new ArrayList<>(selectedEntities.size());
-		for (AbstractEntity ent : selectedEntities) {
-			if (ent.hasPosition() && !(ent instanceof EntityShadow) && !ent.getName().equals("normal") && !ent.equals(selectionEntity)) {
-				selection.add(ent);
-			}
-		}
-		return selection;
+		return selectedEntities;
 	}
 	
+	/**
+	 * filter map editor entities
+	 * @param newSel 
+	 */
 	public void setSelectedEnt(ArrayList<AbstractEntity> newSel) {
 		this.selectedEntities = newSel;
+		selectedEntities.remove(selectionEntity);
+		selectedEntities.removeIf(ent ->
+			ent.getName().equals("normal")
+			|| ent instanceof EntityShadow
+			|| !ent.hasPosition()
+		);
 	}
 	
 	/**

@@ -47,34 +47,40 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *A controller manages the map and the game data.
+ * A controller manages the map and the game data.
+ *
  * @author Benedikt Vogler
  */
 public class Controller implements GameManager, MapObserver {
-    private static LightEngine lightEngine;
-    private static Map map;
+
+	private static LightEngine lightEngine;
+	private static Map map;
 
 	/**
 	 * update every static update method
-	 * @param dt 
+	 *
+	 * @param dt
 	 */
-	public static void staticUpdate(float dt){
-		if (lightEngine != null) lightEngine.update(dt);
+	public static void staticUpdate(float dt) {
+		if (lightEngine != null) {
+			lightEngine.update(dt);
+		}
 		map.update(dt);
 		map.modificationCheck();
 	}
 
-    /**
-     * Tries loading a map.
+	/**
+	 * Tries loading a map.
+	 *
 	 * @param path
 	 * @param saveslot this saveslot will become the active
-     * @return returns true if the map could be loaded and false if it failed
-     */
-    public static boolean loadMap(File path, int saveslot) {
+	 * @return returns true if the map could be loaded and false if it failed
+	 */
+	public static boolean loadMap(File path, int saveslot) {
 		if (map != null) {
 			map.dispose(false);
 		}
-        try {
+		try {
 			ArrayList<MapObserver> linked = null;
 			if (map != null) {//if loading another map, save linked objects
 				linked = map.getOberservers();
@@ -84,123 +90,145 @@ public class Controller implements GameManager, MapObserver {
 				map.getOberservers().addAll(linked);
 			}
 			map.onReload();
-			
-            return true;
-        } catch (IOException ex) {
-            WE.getConsole().add(ex.getMessage(), "Warning");
-            return false;
-        }
-    }
-    
-    /**
-     * Returns the currently loaded map.
-     * @return the map
-     */
-    public static Map getMap() {
-        if (map == null)
-            throw new NullPointerException("There is no map yet.");
-        else return map;
-    }
 
-    /**
-     *
-     * @param map
-     */
-    public static void setMap(Map map) {
-        Gdx.app.debug("Controller", "Map was replaced.");
-        Controller.map = map;
-        map.setModified();
-    }
-    
-    /**
-     * The light engine doing the lighting.
-     * @return can return null
-     */
-    public static LightEngine getLightEngine() {
-        return lightEngine;
-    }
-	
-	public static void setLightEngine(LightEngine le){
+			return true;
+		} catch (IOException ex) {
+			WE.getConsole().add(ex.getMessage(), "Warning");
+			return false;
+		}
+	}
+
+	/**
+	 * Returns the currently loaded map.
+	 *
+	 * @return the map
+	 */
+	public static Map getMap() {
+		if (map == null) {
+			throw new NullPointerException("There is no map yet.");
+		} else {
+			return map;
+		}
+	}
+
+	/**
+	 *
+	 * @param map
+	 */
+	public static void setMap(Map map) {
+		Gdx.app.debug("Controller", "Map was replaced.");
+		Controller.map = map;
+		map.setModified();
+	}
+
+	/**
+	 * The light engine doing the lighting.
+	 *
+	 * @return can return null
+	 */
+	public static LightEngine getLightEngine() {
+		return lightEngine;
+	}
+
+	public static void setLightEngine(LightEngine le) {
 		lightEngine = le;
 		getMap().getOberservers().add(lightEngine);
 	}
-	
+
 	/**
-     *Disposes static stuff.
-     */
-    public static void staticDispose(){
-        Gdx.app.debug("ControllerClass", "Disposing.");
-        AbstractGameObject.staticDispose();
-        RenderBlock.staticDispose();
-        map.dispose(false);
+	 * Disposes static stuff.
+	 */
+	public static void staticDispose() {
+		Gdx.app.debug("ControllerClass", "Disposing.");
+		AbstractGameObject.staticDispose();
+		RenderBlock.staticDispose();
+		map.dispose(false);
 		map = null;
-        lightEngine = null;
-    }
-	
-    private DevTools devtools;
-    private boolean initalized= false;
+		lightEngine = null;
+	}
+
+	private DevTools devtools;
+	private boolean initalized = false;
 	private int saveSlot;
 	private String mapName = "default";
 	protected ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 	protected final Cursor selectionEntity = new Cursor();
 
 	/**
-	 * uses a specific save slot for loading and saving the map. Can be called before calling init().
-	 * @param slot 
+	 * uses a specific save slot for loading and saving the map. Can be called
+	 * before calling init().
+	 *
+	 * @param slot
 	 */
-	public void useSaveSlot(int slot){
+	public void useSaveSlot(int slot) {
 		this.saveSlot = slot;
-		if (map!=null) map.useSaveSlot(slot);
+		if (map != null) {
+			map.useSaveSlot(slot);
+		}
 	}
-	
+
 	/**
-	 * Set the map name which is loaded then. Should be called before the {@link #init()}
-	 * @param mapName 
+	 * Set the map name which is loaded then. Should be called before the
+	 * {@link #init()}
+	 *
+	 * @param mapName
 	 */
-	public void setMapName(String mapName){
+	public void setMapName(String mapName) {
 		this.mapName = mapName;
 	}
 
 	/**
 	 * get the savee slot used for loading and saving the map.
-	 * @return 
+	 *
+	 * @return
 	 */
 	public int getSaveSlot() {
-		if (map!=null)
+		if (map != null) {
 			return map.getCurrentSaveSlot();
-		else return saveSlot;
+		} else {
+			return saveSlot;
+		}
 	}
-	
+
 	/**
 	 * Uses a new save slot as the save slot
+	 *
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		saveSlot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder()+"/"+mapName+"/"));
-		if (map != null) map.useSaveSlot(saveSlot);
+		saveSlot = Map.newSaveSlot(new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/"));
+		if (map != null) {
+			map.useSaveSlot(saveSlot);
+		}
 		return saveSlot;
 	}
-	
-    /**
-     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
-     */
-    public void init(){
-        init(saveSlot, mapName);
-    }
-    
-    /**
-     * This method works like a constructor. Everything is loaded here. You must set your custom map generator, if you want one, before calling this method.
+
+	/**
+	 * This method works like a constructor. Everything is loaded here. You must
+	 * set your custom map generator, if you want one, before calling this
+	 * method.
+	 */
+	public void init() {
+		init(saveSlot, mapName);
+	}
+
+	/**
+	 * This method works like a constructor. Everything is loaded here. You must
+	 * set your custom map generator, if you want one, before calling this
+	 * method.
+	 *
 	 * @param saveslot
 	 * @param mapName the value of mapName
-     */
-    public void init(int saveslot, String mapName){
-        Gdx.app.log("Controller", "Initializing");
+	 */
+	public void init(int saveslot, String mapName) {
+		Gdx.app.log("Controller", "Initializing");
 
-		if (devtools == null && WE.CVARS.getValueB("DevMode"))
-            devtools = new DevTools( 10, 50 );
-        if (map == null){
-            if (!loadMap(new File(WorkingDirectory.getMapsFolder()+"/"+mapName), saveslot)) {
-                Gdx.app.error("Controller", "Map "+ mapName +"could not be loaded.");
+		if (devtools == null && WE.CVARS.getValueB("DevMode")) {
+			devtools = new DevTools(10, 50);
+		}
+		if (map == null) {
+			if (!loadMap(new File(WorkingDirectory.getMapsFolder() + "/" + mapName), saveslot)) {
+				Gdx.app.error("Controller", "Map " + mapName + "could not be loaded.");
 //                try {
 //                    Map.createMapFile("default");
 //                    loadMap(new File(WorkingDirectory.getMapsFolder()+"/default"), saveslot);
@@ -208,84 +236,84 @@ public class Controller implements GameManager, MapObserver {
 //                    Gdx.app.error("Controller", "Map could not be loaded or created. Wurfel Engine needs access to storage in order to run.");
 				WE.showMainMenu();
 				return;
-                   // Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
-               // }
-            }
+				// Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
+				// }
+			}
 			//add controller to observers
-			if (!map.getOberservers().contains(this)){
+			if (!map.getOberservers().contains(this)) {
 				map.getOberservers().add(this);
 			}
-        }
-		
+		}
+
 		//create default light engine
-        if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null){
-            lightEngine = new LightEngine(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+		if (WE.CVARS.getValueB("enableLightEngine") && Controller.lightEngine == null) {
+			lightEngine = new LightEngine(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 			getMap().getOberservers().add(lightEngine);
-        }
-		
-        initalized = true;    
-    }
-	
-        
-     /**
-     * Main method which is called every refresh.
-     * @param dt time since last call
-     */
-    public void update(float dt) {
+		}
+
+		initalized = true;
+	}
+
+	/**
+	 * Main method which is called every refresh.
+	 *
+	 * @param dt time since last call
+	 */
+	public void update(float dt) {
 		if (WE.CVARS.getValueB("DevMode")) {
-			if (devtools == null ) {
+			if (devtools == null) {
 				devtools = new DevTools(10, 50);
 			}
-			devtools.update(Gdx.graphics.getRawDeltaTime()*1000f);
+			devtools.update(Gdx.graphics.getRawDeltaTime() * 1000f);
 		} else {
 			devtools = null;
 		}
-		
-		if (!selectionEntity.hasPosition())
+
+		if (!selectionEntity.hasPosition()) {
 			selectionEntity.spawn(
-			new Point(0, 0, getMap().getBlocksZ()-1)
-		);
-    }
-	
-    /**
-     *
-     * @return
-     */
-    public DevTools getDevTools() {
-        return devtools;
-    }
-	
-    /**
-     *
-     * @return
-     */
-    @Override
-    public boolean isInitalized() {
-        return initalized;
-    }  
-    
-    
-    @Override
-    public void onEnter(){
-		WE.CVARS.get("timespeed").setValue(1f);
-    }
-    
-    @Override
-    public final void enter() {
-        onEnter();
-    }
-    
-    
+				new Point(0, 0, getMap().getBlocksZ() - 1)
+			);
+		}
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public DevTools getDevTools() {
+		return devtools;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
 	@Override
-    public void exit(){
+	public boolean isInitalized() {
+		return initalized;
+	}
+
+	@Override
+	public void onEnter() {
+		WE.CVARS.get("timespeed").setValue(1f);
+	}
+
+	@Override
+	public final void enter() {
+		onEnter();
+	}
+
+	@Override
+	public void exit() {
 		Gdx.app.debug("Controller", "exited");
 	}
-	
+
 	/**
 	 * saves the map and the complete game state
-	 * @return 
+	 *
+	 * @return
 	 */
-	public boolean save(){
+	public boolean save() {
 		return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
 	}
 
@@ -311,38 +339,28 @@ public class Controller implements GameManager, MapObserver {
 	public ArrayList<AbstractEntity> getSelectedEntities() {
 		return selectedEntities;
 	}
-	
+
 	/**
 	 * filter map editor entities
-	 * @param newSel 
+	 *
+	 * @param newSel
 	 */
 	public void setSelectedEnt(ArrayList<AbstractEntity> newSel) {
 		this.selectedEntities = newSel;
 		selectedEntities.remove(selectionEntity);
-		selectedEntities.removeIf(ent ->
-			ent.getName().equals("normal")
+		selectedEntities.removeIf(ent
+			-> ent.getName().equals("normal")
 			|| ent instanceof EntityShadow
 			|| !ent.hasPosition()
 		);
 	}
-	
+
 	/**
-	 *Get the entity laying under the cursor.
+	 * Get the entity laying under the cursor.
+	 *
 	 * @return
 	 */
 	public Cursor getCursor() {
 		return selectionEntity;
 	}
-
-//    /**
-//     * Leave editor
-//     * @param replay true when everything should be reloaded, else just a switch to last status
-//     */
-//    public void switchToGame(boolean replay){
-//		if (replay)
-//			WE.switchSetupWithInit(gameplayController, gameplayView);
-//		else
-//			WE.switchView(gameplayController, gameplayView);
-//    }
-	
 }

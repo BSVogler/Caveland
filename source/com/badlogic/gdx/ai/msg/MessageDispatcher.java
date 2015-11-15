@@ -30,16 +30,17 @@ public class MessageDispatcher {
 	private static final String LOG_TAG = MessageDispatcher.class.getSimpleName();
 
 	private static final Pool<Telegram> pool = new Pool<Telegram>(16) {
+		@Override
 		protected Telegram newObject () {
 			return new Telegram();
 		}
 	};
 
-	private PriorityQueue<Telegram> queue;
+	private final PriorityQueue<Telegram> queue;
 
-	private IntMap<Array<Telegraph>> msgListeners;
+	private final IntMap<Array<Telegraph>> msgListeners;
 
-	private IntMap<Array<TelegramProvider>> msgProviders;
+	private final IntMap<Array<TelegramProvider>> msgProviders;
 
 	private float currentTime;
 
@@ -47,22 +48,25 @@ public class MessageDispatcher {
 
 	/** Creates a {@code MessageDispatcher} */
 	public MessageDispatcher () {
-		this.queue = new PriorityQueue<Telegram>();
-		this.msgListeners = new IntMap<Array<Telegraph>>();
-		this.msgProviders = new IntMap<Array<TelegramProvider>>();
+		this.queue = new PriorityQueue<>();
+		this.msgListeners = new IntMap<>();
+		this.msgProviders = new IntMap<>();
 	}
 
-	/** Returns the current time. */
+	/** Returns the current time.
+	 * @return  */
 	public float getCurrentTime () {
 		return currentTime;
 	}
 
-	/** Returns true if debug mode is on; false otherwise. */
+	/** Returns true if debug mode is on; false otherwise.
+	 * @return  */
 	public boolean isDebugEnabled () {
 		return debugEnabled;
 	}
 
-	/** Sets debug mode on/off. */
+	/** Sets debug mode on/off.
+	 * @param debugEnabled */
 	public void setDebugEnabled (boolean debugEnabled) {
 		this.debugEnabled = debugEnabled;
 	}
@@ -75,7 +79,7 @@ public class MessageDispatcher {
 		Array<Telegraph> listeners = msgListeners.get(msg);
 		if (listeners == null) {
 			// Associate an empty unordered array with the message code
-			listeners = new Array<Telegraph>(false, 16);
+			listeners = new Array<>(false, 16);
 			msgListeners.put(msg, listeners);
 		}
 		listeners.add(listener);
@@ -111,7 +115,7 @@ public class MessageDispatcher {
 		Array<TelegramProvider> providers = msgProviders.get(msg);
 		if (providers == null) {
 			// Associate an empty unordered array with the message code
-			providers = new Array<TelegramProvider>(false, 16);
+			providers = new Array<>(false, 16);
 			msgProviders.put(msg, providers);
 		}
 		providers.add(provider);

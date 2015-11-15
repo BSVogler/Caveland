@@ -152,7 +152,7 @@ public class Controller implements GameManager, MapObserver {
 	private int saveSlot;
 	private String mapName = "default";
 	protected ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
-	protected final Cursor selectionEntity = new Cursor();
+	protected final Cursor cursor = new Cursor();
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called
@@ -269,8 +269,8 @@ public class Controller implements GameManager, MapObserver {
 			devtools = null;
 		}
 
-		if (!selectionEntity.hasPosition()) {
-			selectionEntity.spawn(
+		if (!cursor.hasPosition()) {
+			cursor.spawn(
 				new Point(0, 0, getMap().getBlocksZ() - 1)
 			);
 		}
@@ -347,7 +347,7 @@ public class Controller implements GameManager, MapObserver {
 	 */
 	public void setSelectedEnt(ArrayList<AbstractEntity> newSel) {
 		this.selectedEntities = newSel;
-		selectedEntities.remove(selectionEntity);
+		selectedEntities.remove(cursor);
 		selectedEntities.removeIf(ent
 			-> ent.getName().equals("normal")
 			|| ent instanceof EntityShadow
@@ -361,6 +361,6 @@ public class Controller implements GameManager, MapObserver {
 	 * @return
 	 */
 	public Cursor getCursor() {
-		return selectionEntity;
+		return cursor;
 	}
 }

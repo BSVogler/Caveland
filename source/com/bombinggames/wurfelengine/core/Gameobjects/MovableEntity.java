@@ -28,11 +28,13 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -137,6 +139,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		coliding = true;
 		floating = false;
 		friction = WE.CVARS.getValueF("friction");
+		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
+		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
 		if (shadow) enableShadow();
    }
    
@@ -150,9 +154,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		movement = entity.movement;
 		orientation = new Vector2(1, 0);
 		friction = entity.friction;
-        
 		coliding = entity.coliding;
 		floating = entity.floating;
+		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
+		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
 		enableShadow();
 	}
 	

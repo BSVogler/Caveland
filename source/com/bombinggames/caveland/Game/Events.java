@@ -40,7 +40,8 @@ public enum Events {
 	collided(12),
 	steppedOn(13),
 	selectInEditor(14),
-	deselectInEditor(15);
+	deselectInEditor(15),
+	destroyed(16);
 	
 	private final int id;
 

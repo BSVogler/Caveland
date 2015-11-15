@@ -30,7 +30,9 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -502,6 +504,8 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void destroy() {
 		setBlock((Block) null);
+		//broadcast event that this block got destroyed
+		MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 	}
 		
 	/**
@@ -515,6 +519,8 @@ public class Coordinate extends AbstractPosition {
 		if (block != null) {
 			block.setHealth(this, (byte) (block.getHealth() - amount));
 			if (block.getHealth() <= 0 && !block.isIndestructible()) {
+				//broadcast event that this block got destroyed
+				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 				setBlock((Block) null);
 			}
 			return true;
@@ -523,11 +529,13 @@ public class Coordinate extends AbstractPosition {
 	}
 	
 	@Override
+	@SuppressWarnings("SuspiciousNameCombination")
 	public int getChunkX(){
 		return Math.floorDiv(x, Chunk.getBlocksX());
 	}
 	
 	@Override
+	@SuppressWarnings("SuspiciousNameCombination")
 	public int getChunkY(){
 		return Math.floorDiv(y, Chunk.getBlocksY());
 	}

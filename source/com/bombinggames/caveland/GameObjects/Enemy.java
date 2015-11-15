@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
@@ -56,7 +55,6 @@ public class Enemy extends MovableEntity implements Telegraph {
 		setWalkingSpeedIndependentAnimation(1f);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
-		MessageManager.getInstance().addListener(this, 11);//damage message
     }
 
 	@Override

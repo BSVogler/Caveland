@@ -28,6 +28,7 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -802,5 +803,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void playMovementAnimation(){
 		walkingPaused = false;
+	}
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

@@ -34,6 +34,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -41,6 +44,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -59,7 +63,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class EditorView extends GameView {
+public class EditorView extends GameView implements Telegraph {
     private Controller controller;
 	/**
 	 * used for copying data from the current game view
@@ -194,7 +198,11 @@ public class EditorView extends GameView {
 					&& ent.getPosition().getViewSpcY() + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
 				){
 					newSel.add(ent);
-					ent.onSelectInEditor();
+					MessageManager.getInstance().dispatchMessage(
+						this,
+						ent,
+						Events.selectInEditor.getId()
+					);
 				}
 			}
 		}
@@ -202,8 +210,13 @@ public class EditorView extends GameView {
 		ArrayList<AbstractEntity> unselect = getController().getSelectedEntities();
 		unselect.removeAll(newSel);
 		for (AbstractEntity unEnt : unselect) {
-			unEnt.onUnSelectInEditor();
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				unEnt,
+				Events.deselectInEditor.getId()
+			);
 		}
+		
 		getController().setSelectedEnt(newSel);
 	}
 	
@@ -288,6 +301,11 @@ public class EditorView extends GameView {
 				(AbstractEntity e) -> e.getPosition().setZ(e.getPosition().getZ()+moveEntities*5)
 			);
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 
     

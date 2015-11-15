@@ -208,23 +208,6 @@ public class Enemy extends MovableEntity implements Telegraph {
 	}
 	
 	@Override
-	public void onSelectInEditor(){
-		if (particleBand == null) {
-			particleBand = new AimBand(this, target);
-		} else {
-			particleBand.setTarget(target);
-		}
-	}
-	
-	@Override
-	public void onUnSelectInEditor(){
-		if (particleBand != null) {
-			particleBand.dispose();
-			particleBand = null;
-		}
-	}
-
-	@Override
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.damaged.getId()) {
 			byte damage = ((Byte) msg.extraInfo);
@@ -237,6 +220,17 @@ public class Enemy extends MovableEntity implements Telegraph {
 				WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
 				if (getHealth() <= 0 && KILLSOUND != null)
 					WE.SOUND.play(KILLSOUND);
+			}
+		} else if (msg.message == Events.deselectInEditor.getId()){
+			if (particleBand != null) {
+				particleBand.dispose();
+				particleBand = null;
+			}
+		} else if (msg.message == Events.selectInEditor.getId()){
+			if (particleBand == null) {
+				particleBand = new AimBand(this, target);
+			} else {
+				particleBand.setTarget(target);
 			}
 		}
 		return true;

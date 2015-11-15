@@ -28,6 +28,8 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+
 
 /**
  *A simple basic entity. You can use it for simple images like an effect.
@@ -59,5 +61,10 @@ public class SimpleEntity extends AbstractEntity {
     public void update(float dt) {
 		super.update(dt);
     }
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
+	}
 
 }

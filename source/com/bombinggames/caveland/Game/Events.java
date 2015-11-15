@@ -38,7 +38,9 @@ public enum Events {
 	
 	damaged(11),
 	collided(12),
-	steppedOn(13);
+	steppedOn(13),
+	selectInEditor(14),
+	deselectInEditor(15);
 	
 	private final int id;
 

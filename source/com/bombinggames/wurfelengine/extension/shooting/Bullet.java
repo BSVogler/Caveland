@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
@@ -232,6 +233,11 @@ public class Bullet extends AbstractEntity {
 
 	void setMovement(Vector3 mov) {
 		this.movement = mov;
+	}
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 
 }

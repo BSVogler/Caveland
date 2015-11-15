@@ -28,6 +28,7 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -100,5 +101,10 @@ public class EntityShadow extends AbstractEntity {
 				super.render(view, camera);
 			}
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

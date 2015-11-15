@@ -1,5 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -13,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Portal extends AbstractEntity {
+public class Portal extends AbstractEntity implements Telegraph {
 
 	private static final long serialVersionUID = 2L;
 	private Coordinate target = new Coordinate(0, 0, Chunk.getBlocksZ() - 1);
@@ -150,25 +153,6 @@ public class Portal extends AbstractEntity {
 		return active;
 	}
 
-	@Override
-	public void onSelectInEditor() {
-		if (target != null) {
-			if (particleBand == null) {
-				particleBand = new AimBand(this, target);
-			} else {
-				particleBand.setGoal(target);
-			}
-		}
-	}
-
-	@Override
-	public void onUnSelectInEditor() {
-		if (particleBand != null) {
-			particleBand.dispose();
-			particleBand = null;
-		}
-	}
-
 	/**
 	 * if true checks that at the target is an exitPortal
 	 * @param verifyExit 
@@ -183,6 +167,23 @@ public class Portal extends AbstractEntity {
 	 */
 	public ExitPortal getCorrespondingExitPortal(){
 		return exitPortal;
+	}
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		 if (msg.message == Events.deselectInEditor.getId()){
+			if (particleBand != null) {
+				particleBand.dispose();
+				particleBand = null;
+			}
+		} else if (msg.message == Events.selectInEditor.getId()){
+			if (particleBand == null) {
+				particleBand = new AimBand(this, target);
+			} else {
+				particleBand.setTarget(target);
+			}
+		}
+		return true;
 	}
 	
 }

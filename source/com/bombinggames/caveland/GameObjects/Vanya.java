@@ -1,9 +1,12 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -22,7 +25,7 @@ import java.util.LinkedList;
  *
  * @author Benedikt Vogler
  */
-public class Vanya extends MovableEntity implements Interactable {
+public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 	private static final long serialVersionUID = 3L;
 	private transient int chatCounter;
@@ -346,20 +349,6 @@ public class Vanya extends MovableEntity implements Interactable {
 		return false;
 	}
 	
-	@Override
-	public void onSelectInEditor(){
-		if (nextWaypoint != null && particleBand==null)
-			particleBand = new AimBand(this, nextWaypoint.getPos());
-	}
-	
-	@Override
-	public void onUnSelectInEditor(){
-		if (particleBand != null) {
-			particleBand.dispose();
-			particleBand = null;
-		}
-	}
-
 	/**
 	 * Can only increase
 	 * @param tutorialStep	 
@@ -383,14 +372,36 @@ public class Vanya extends MovableEntity implements Interactable {
 			initialDistance = goalPos.distanceToHorizontal(pos);
 		}
 
+		/**
+		 * 
+		 * @return 
+		 */
 		public AbstractPosition getPos() {
 			return goalPos;
 		}
 
+		/**
+		 * fly to the next waypoint
+		 * @return 
+		 */
 		public boolean isFly() {
 			return fly;
 		}
 		
 	}
 
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		 if (msg.message == Events.deselectInEditor.getId()){
+			if (particleBand != null) {
+				particleBand.dispose();
+				particleBand = null;
+			}
+		} else if (msg.message == Events.selectInEditor.getId()){
+			 if (nextWaypoint != null && particleBand == null) {
+				 particleBand = new AimBand(this, nextWaypoint.getPos());
+			 }
+		}
+		return true;
+	}
 }

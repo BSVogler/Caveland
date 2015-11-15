@@ -1,5 +1,6 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -231,6 +232,11 @@ public class PointLightSource extends AbstractEntity {
 
 	public void setBrightness(float brightness) {
 		this.brightness = brightness;
+	}
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 	
 }

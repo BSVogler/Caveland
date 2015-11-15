@@ -29,6 +29,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
@@ -44,7 +45,7 @@ import java.io.ObjectInputStream;
  *
  * @author Benedikt
  */
-public abstract class AbstractEntity extends AbstractGameObject {
+public abstract class AbstractEntity extends AbstractGameObject implements Telegraph {
 
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
@@ -489,18 +490,4 @@ public abstract class AbstractEntity extends AbstractGameObject {
 			}
 		}
 	}
-
-	/**
-	 *Gets called even when already selected,
-	 */
-	public void onSelectInEditor(){
-	
-	};
-	
-	/**
-	 *Called when selection is removed
-	 */
-	public void onUnSelectInEditor(){
-	
-	};
 }

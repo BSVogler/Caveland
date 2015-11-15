@@ -31,6 +31,7 @@
 
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -155,5 +156,10 @@ public class Cursor extends AbstractEntity {
 	 */
 	public void showNormal(boolean show) {
 		normal.setHidden(!show);
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

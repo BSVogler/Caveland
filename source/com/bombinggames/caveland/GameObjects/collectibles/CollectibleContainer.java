@@ -31,6 +31,7 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -322,5 +323,10 @@ public class CollectibleContainer extends AbstractEntity {
 
 	public ArrayList<Collectible> getContent() {
 		return content;
+	}
+	
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

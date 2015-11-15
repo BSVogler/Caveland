@@ -1,5 +1,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+
 /**
  * An entity which is rendered as a block without sides.
  * @author Benedikt Vogler
@@ -28,5 +30,10 @@ public class EntityBlock extends AbstractEntity {
 	@Override
 	public char getCategory() {
 		return 'b';
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

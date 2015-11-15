@@ -112,11 +112,12 @@ public class AimBand {
 			return goal;
 		}
 	}
+	
 	/**
 	 * 
 	 * @param goal 
 	 */
-	public void setGoal(AbstractPosition goal) {
+	public void setTarget(AbstractPosition goal) {
 		this.goal = goal.toPoint();
 		this.target = null;
 	}
@@ -130,6 +131,9 @@ public class AimBand {
 		this.goal = null;
 	}
 
+	/**
+	 * 
+	 */
 	public void dispose() {
 		for (Particle particle : list) {
 			particle.disposeFromMap();

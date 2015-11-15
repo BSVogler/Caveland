@@ -30,8 +30,11 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -48,7 +51,7 @@ import com.bombinggames.wurfelengine.extension.AimBand;
  *
  * @author Benedikt Vogler
  */
-public class Weapon extends AbstractEntity {
+public class Weapon extends AbstractEntity implements Telegraph {
 	private static final long serialVersionUID = 1L;
     
     private final byte weaponid;
@@ -503,20 +506,19 @@ public class Weapon extends AbstractEntity {
 	
 		
 	@Override
-	public void onSelectInEditor(){
-		if (particleBand == null) {
-			particleBand = new AimBand(this, laserdot);
-		} else {
-			particleBand.setTarget(laserdot);
+	public boolean handleMessage(Telegram msg) {
+		 if (msg.message == Events.deselectInEditor.getId()){
+			if (particleBand != null) {
+				particleBand.dispose();
+				particleBand = null;
+			}
+		} else if (msg.message == Events.selectInEditor.getId()){
+			if (particleBand == null) {
+				particleBand = new AimBand(this, laserdot);
+			} else {
+				particleBand.setTarget(laserdot);
+			}
 		}
+		return true;
 	}
-	
-	@Override
-	public void onUnSelectInEditor(){
-		if (particleBand != null) {
-			particleBand.dispose();
-			particleBand = null;
-		}
-	}
-
 }

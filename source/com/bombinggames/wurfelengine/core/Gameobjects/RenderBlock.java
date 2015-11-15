@@ -47,8 +47,8 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
- * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras. The class extends (wrapws) the simple data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared so changing this {@link RenderBlock} changes the data in the map.<br>
- * The internal block can have different id then used for rendering. The rendering sprite id's are set in the cosntructor or later manual.
+ * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras nor should use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
+ * The internal block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @see Block
  * @author Benedikt Vogler
  */

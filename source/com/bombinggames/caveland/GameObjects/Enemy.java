@@ -1,7 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.Events;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
  *An enemy which can follow a character.
  * @author Benedikt Vogler
  */
-public class Enemy extends MovableEntity implements Telegraph {
+public class Enemy extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * the time for the attack animation
@@ -207,6 +206,7 @@ public class Enemy extends MovableEntity implements Telegraph {
 	
 	@Override
 	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
 		if (msg.message == Events.damaged.getId()) {
 			byte damage = ((Byte) msg.extraInfo);
 			damage(damage);

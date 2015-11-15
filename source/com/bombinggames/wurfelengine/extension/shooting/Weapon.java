@@ -338,6 +338,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 				laserdot.setColor(new Color(1, 0, 0, 1));
 				laserdot.setScaling(-0.85f);
 				laserdot.setName("Laser dot");
+				laserdot.disableShadow();
 			}
 			
 			Intersection raycast = getPosition().raycastSimple(

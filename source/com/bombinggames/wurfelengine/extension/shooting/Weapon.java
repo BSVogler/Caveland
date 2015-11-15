@@ -501,7 +501,8 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	@Override
 	public void dispose() {
 		super.dispose();
-		laserdot.dispose();
+		if (laserdot != null)
+			laserdot.dispose();
 	}
 	
 		

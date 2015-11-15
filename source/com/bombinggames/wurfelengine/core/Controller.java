@@ -337,6 +337,7 @@ public class Controller implements GameManager, MapObserver {
 	 * @return selected entities but map editor entities
 	 */
 	public ArrayList<AbstractEntity> getSelectedEntities() {
+		selectedEntities.removeIf(ent -> !ent.hasPosition());
 		return selectedEntities;
 	}
 

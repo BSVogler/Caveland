@@ -62,7 +62,7 @@ public class RenderBlock extends AbstractGameObject{
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] colorlist = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
+    private static final Color[][] COLORLIST = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
 	/**
@@ -136,8 +136,8 @@ public class RenderBlock extends AbstractGameObject{
      * @return copy of a color representing the block
      */
     public static Color getRepresentingColor(final byte id, final byte value){
-        if (colorlist[id][value] == null){ //if not in list, add it to the list
-            colorlist[id][value] = new Color();
+        if (COLORLIST[id][value] == null){ //if not in list, add it to the list
+            COLORLIST[id][value] = new Color();
             int colorInt;
             
             if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
@@ -151,9 +151,9 @@ public class RenderBlock extends AbstractGameObject{
                 colorInt = getPixmap().getPixel(
                     texture.getRegionX()+VIEW_DEPTH2, texture.getRegionY()+VIEW_DEPTH2);
             }
-            Color.rgba8888ToColor(colorlist[id][value], colorInt);
-            return colorlist[id][value].cpy(); 
-        } else return colorlist[id][value].cpy(); //return value when in list
+            Color.rgba8888ToColor(COLORLIST[id][value], colorInt);
+            return COLORLIST[id][value].cpy(); 
+        } else return COLORLIST[id][value].cpy(); //return value when in list
     }
 	
 	/**

@@ -12,6 +12,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.Turret;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
@@ -220,6 +221,19 @@ public class CavelandBlocks implements CustomBlocks {
 					CollectibleType.Coal.createInstance().spawn(coord.toPoint());
 					break;
 				case 72:
+					//destroy other half
+					Coordinate otherHalf;
+					if (value == CustomTree.TREETOPVALUE) {
+						otherHalf = coord.cpy().addVector(0, 0, -1);
+					} else {
+						otherHalf = coord.cpy().addVector(0, 0, 1);
+					}
+
+					if (otherHalf.getBlock() != null && otherHalf.getBlock().getId() == id) {
+						otherHalf.destroy();
+					}
+
+					WE.SOUND.play("blockDestroy");//to-do should be a wood chop down sound
 					CollectibleType.Wood.createInstance().spawn(coord.toPoint());
 					break;
 				default:

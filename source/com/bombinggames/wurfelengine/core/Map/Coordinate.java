@@ -504,7 +504,7 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void destroy() {
 		Block block = getBlock();
-		if (block != null) {
+		if (block != null && block.getHealth() > 0) {
 			block.setHealth(this, (byte) 0);
 			setBlock((Block) null);
 			//broadcast event that this block got destroyed

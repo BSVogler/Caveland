@@ -54,7 +54,7 @@ public interface CustomBlocks {
 	public boolean isIndestructible(byte id, byte value);
 	
 	/**
-	 * define what should happen if you alter the health. If =0 automatically get's destroyed on exiting this method.
+	 * define what should happen if you alter the health. If =0 automatically get's destroyed after exiting this method.
 	 * @param coord
 	 * @param health the new health
 	 * @param id 

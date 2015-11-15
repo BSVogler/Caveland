@@ -328,10 +328,7 @@ public class Block implements HasID, Serializable {
 			return false;
 		}
 		
-		if (id == 0) {
-			return false;
-		}
-		return true;
+		return id != 0;
 	}
 
 	@Override
@@ -360,10 +357,7 @@ public class Block implements HasID, Serializable {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isLiquid(id, value);
 		}
-		if (id == 9) {
-			return true;
-		}
-		return false;
+		return id == 9;
 	}
 	
 	@Override
@@ -404,9 +398,8 @@ public class Block implements HasID, Serializable {
 			return ((colorLeft >> 20) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
 			return ((colorTop >> 20) & 0x3FF) / 511f;
-		} else {
-			return ((colorRight >> 20) & 0x3FF) / 511f;
 		}
+		return ((colorRight >> 20) & 0x3FF) / 511f;
 	}
 
 	/**
@@ -419,9 +412,8 @@ public class Block implements HasID, Serializable {
 			return ((colorLeft >> 10) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
 			return ((colorTop >> 10) & 0x3FF) / 511f;
-		} else {
-			return ((colorRight >> 10) & 0x3FF) / 511f;
 		}
+		return ((colorRight >> 10) & 0x3FF) / 511f;
 	}
 
 	/**
@@ -434,9 +426,8 @@ public class Block implements HasID, Serializable {
 			return (colorLeft & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
 			return (colorTop & 0x3FF) / 511f;
-		} else {
-			return (colorRight & 0x3FF) / 511f;
 		}
+		return (colorRight & 0x3FF) / 511f;
 	}
 
 	/**

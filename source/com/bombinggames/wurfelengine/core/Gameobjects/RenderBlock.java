@@ -52,7 +52,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * @see Block
  * @author Benedikt Vogler
  */
-public class RenderBlock extends AbstractGameObject {
+public class RenderBlock extends AbstractGameObject{
     private static final long serialVersionUID = 1L;
 	/**
 	 * {id}{value}{side}
@@ -587,11 +587,13 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * Overwrite to define what should happen (view only) if the block is getting destroyed?
+	 * Plays a sound if destroyed
 	 * @since v1.4
 	 */
-	public void onDestroy() {
-		if (destructionSound != null) WE.SOUND.play(destructionSound);
+	public void playDestroySound() {
+		if (destructionSound != null) {
+			WE.SOUND.play(destructionSound);
+		}
 	}
 
 	@Override

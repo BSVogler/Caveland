@@ -814,4 +814,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	public boolean handleMessage(Telegram msg) {
 		return true;
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		MessageManager.getInstance().removeListener(this, Events.deselectInEditor.getId());
+		MessageManager.getInstance().removeListener(this, Events.selectInEditor.getId());
+	}
+	
+	
 }

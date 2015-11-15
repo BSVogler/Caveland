@@ -59,8 +59,6 @@ public class RenderBlock extends AbstractGameObject{
 	 */
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];
 	
-	private static String destructionSound;
-        
     /**
      * a list where a representing color of the block is stored
      */
@@ -157,14 +155,6 @@ public class RenderBlock extends AbstractGameObject{
             return colorlist[id][value].cpy(); 
         } else return colorlist[id][value].cpy(); //return value when in list
     }
-	
-	/**
-	 * set the sound to be played if a block gets destroyed.
-	 * @param destructionSound 
-	 */
-	public static void setDestructionSound(String destructionSound) {
-		RenderBlock.destructionSound = destructionSound;
-	}
 	
 	/**
      *
@@ -586,16 +576,6 @@ public class RenderBlock extends AbstractGameObject{
 		return Block.GAME_EDGELENGTH;
 	}
 
-	/**
-	 * Plays a sound if destroyed
-	 * @since v1.4
-	 */
-	public void playDestroySound() {
-		if (destructionSound != null) {
-			WE.SOUND.play(destructionSound);
-		}
-	}
-
 	@Override
 	public Coordinate getPosition() {
 		return coord;
@@ -689,7 +669,6 @@ public class RenderBlock extends AbstractGameObject{
 		return blockData.isLiquid();
 	}
 	
-
 	/**
 	 * Get the pointer to the data.
 	 * @return

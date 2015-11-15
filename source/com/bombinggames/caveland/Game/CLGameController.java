@@ -13,7 +13,6 @@ import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class CLGameController extends Controller {
 		setLightEngine(new CustomLightEngine());
 		
 		player1 = new Ejira(1);
-		RenderBlock.setDestructionSound("blockDestroy");
+		//RenderBlock.setDestructionSound("blockDestroy");
 
 		mapSetup();
 	}

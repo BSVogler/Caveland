@@ -106,6 +106,7 @@ public class AimBand {
 	 */
 	private Point getAim(){
 		if (goal == null) {
+			if (target==null) return null;
 			return target.getPosition();
 		} else {
 			return goal;

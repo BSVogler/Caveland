@@ -1,7 +1,11 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -17,7 +21,7 @@ import java.util.ArrayList;
  *An enemy which can follow a character.
  * @author Benedikt Vogler
  */
-public class Enemy extends MovableEntity{
+public class Enemy extends MovableEntity implements Telegraph {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * the time for the attack animation
@@ -25,7 +29,6 @@ public class Enemy extends MovableEntity{
 	public static final float ATTACKTIME = 600;
 	private static final String KILLSOUND = "robot1destroy";
 	private static final String MOVEMENTSOUND = "robot1Wobble";
-	private static int killcounter = 0;
 	
     private transient MovableEntity target;
     private int runningagainstwallCounter = 0;
@@ -42,13 +45,6 @@ public class Enemy extends MovableEntity{
 	private float movementSpeed = 2;
 	private transient AimBand particleBand;
     
-	/**
-	 *
-	 */
-	public void init(){
-       killcounter=0; 
-    }
-    
     /**
      * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
      */
@@ -60,6 +56,7 @@ public class Enemy extends MovableEntity{
 		setWalkingSpeedIndependentAnimation(1f);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
+		MessageManager.getInstance().addListener(this, 11);//damage message
     }
 
 	@Override
@@ -179,7 +176,7 @@ public class Enemy extends MovableEntity{
             //jump after some time
             if (runningagainstwallCounter > 500) {
                 jump();
-                mana =0;
+                mana = 0;
                 runningagainstwallCounter=0;
             }
         }
@@ -191,29 +188,6 @@ public class Enemy extends MovableEntity{
      */
     public void setTarget(MovableEntity target) {
         this.target = target;
-    }
-
-	@Override
-	public void damage(byte value) {
-		super.damage(value);
-		if (getHealth() <= 0){
-			new DestructionParticle((byte) 34).spawn(getPosition().toPoint());
-			new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
-			new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
-			
-			WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
-			if (getHealth() <= 0 && KILLSOUND != null)
-				WE.SOUND.play(KILLSOUND);
-			killcounter++;
-		}
-	}
-	
-	/**
-	 *
-	 * @return
-	 */
-	public static int getKillcounter() {
-        return killcounter;
     }
 
 	@Override
@@ -248,5 +222,23 @@ public class Enemy extends MovableEntity{
 			particleBand.dispose();
 			particleBand = null;
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		if (msg.message == Events.damaged.getId()) {
+			byte damage = ((Byte) msg.extraInfo);
+			damage(damage);
+			if (getHealth() <= 0){
+				new DestructionParticle((byte) 34).spawn(getPosition().toPoint());
+				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
+				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
+
+				WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
+				if (getHealth() <= 0 && KILLSOUND != null)
+					WE.SOUND.play(KILLSOUND);
+			}
+		}
+		return true;
 	}
 }

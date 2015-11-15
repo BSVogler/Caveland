@@ -1,6 +1,10 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -12,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Explosion extends AbstractEntity {
+public class Explosion extends AbstractEntity implements Telegraph {
 
 	private static final long serialVersionUID = 1L;
 	private static String explosionsound;
@@ -75,9 +79,18 @@ public class Explosion extends AbstractEntity {
 								coord,
 								MovableEntity.class
 							);
+
 						for (MovableEntity ent : list) {
-							ent.damage(damage);
+							if (ent instanceof Telegraph) {
+								MessageManager.getInstance().dispatchMessage(
+									this,
+									(Telegraph) ent,
+									Events.damaged.getId(),
+									new Byte(damage)
+								);
+							}
 						}
+						
 
 						Particle dust = (Particle) new Particle(
 							(byte) 22,
@@ -101,5 +114,10 @@ public class Explosion extends AbstractEntity {
 		}
 		dispose();
 		return this;
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return true;
 	}
 }

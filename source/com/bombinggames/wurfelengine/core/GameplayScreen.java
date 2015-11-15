@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.bombinggames.wurfelengine.MapEditor.EditorView;
 import com.bombinggames.wurfelengine.WE;
 import static com.bombinggames.wurfelengine.core.Controller.getMap;
@@ -103,10 +104,11 @@ public class GameplayScreen extends WEScreen {
     
     
     @Override
-    public void renderImpl(float dt) {
+    public void renderImpl(final float delta) {
 		//aply game world speed
-        dt *= WE.CVARS.getValueF("timespeed");
+        float dt = delta*WE.CVARS.getValueF("timespeed");
 		//update data
+		MessageManager.getInstance().update(delta);
         controller.update(dt);
 		Controller.staticUpdate(dt);
         view.update(dt);

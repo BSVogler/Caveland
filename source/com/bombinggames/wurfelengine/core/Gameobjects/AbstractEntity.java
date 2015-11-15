@@ -387,8 +387,8 @@ public abstract class AbstractEntity extends AbstractGameObject {
 	}
 
 	/**
-     * called when gets damage. Health is between 0 and 100
-     * @param value
+     * called when gets damage. Health is between 0 and 100. Plays a sound.
+     * @param value between 0 and 100
      */
     public void damage(byte value) {
 		if (!indestructible) {

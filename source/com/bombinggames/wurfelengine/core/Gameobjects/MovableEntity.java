@@ -139,8 +139,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		coliding = true;
 		floating = false;
 		friction = WE.CVARS.getValueF("friction");
-		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
-		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
 		if (shadow) enableShadow();
    }
    
@@ -156,10 +154,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		friction = entity.friction;
 		coliding = entity.coliding;
 		floating = entity.floating;
-		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
-		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
+		
 		enableShadow();
 	}
+
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
+		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
+		return this;
+	}
+	
+	
 	
 	/**
 	 * <b>Bounce</b> back and forth (1,2,3,2,1,2 etc.) or <b>cycle</b> (1,2,3,1,2,3 etc.)

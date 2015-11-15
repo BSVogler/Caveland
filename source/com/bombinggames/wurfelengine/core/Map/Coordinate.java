@@ -503,9 +503,13 @@ public class Coordinate extends AbstractPosition {
 	 * destroys the block at the current position, replacing by air.
 	 */
 	public void destroy() {
-		setBlock((Block) null);
-		//broadcast event that this block got destroyed
-		MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
+		Block block = getBlock();
+		if (block != null) {
+			block.setHealth(this, (byte) 0);
+			setBlock((Block) null);
+			//broadcast event that this block got destroyed
+			MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
+		}
 	}
 		
 	/**

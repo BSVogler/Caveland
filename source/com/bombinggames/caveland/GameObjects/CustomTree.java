@@ -4,7 +4,6 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.Game.Events;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
@@ -26,7 +25,6 @@ public class CustomTree extends RenderBlock implements Telegraph {
 	 */
 	public CustomTree(){
 		this(Block.getInstance((byte)72, (byte) (Math.random()*8)));
-		MessageManager.getInstance().addListener(this, Events.destroyed.getId());
 	}
 	
 	/**
@@ -39,17 +37,9 @@ public class CustomTree extends RenderBlock implements Telegraph {
 		
 		if (getSpriteValue() == TREETOPVALUE)
 			setHidden(true);
+		
+		MessageManager.getInstance().addListener(this, Events.destroyed.getId());
 	}
-
-//	@Override
-//	public void update(float dt) {
-//		super.update(dt);
-//		//check and grow treetop
-//		Coordinate top = getPosition().cpy().addVector(0, 0, 1);
-//		if (getSpriteValue() != TREETOPVALUE && top.getBlock().getSpriteId() != getSpriteId())//if root block grow treetop
-//			new RenderBlock((byte) 72, TREETOPVALUE).spawn(top);
-//	}
-
 	
 	@Override
 	public boolean handleMessage(Telegram msg) {
@@ -66,8 +56,6 @@ public class CustomTree extends RenderBlock implements Telegraph {
 
 			if (otherHalf.getBlock().getSpriteId()==getSpriteId() && otherHalf.getBlock().getSpriteValue() != -1)
 				otherHalf.destroy();
-
-			CollectibleType.Wood.createInstance().spawn(getPosition().toPoint());
 		}
 		return true;
 	}

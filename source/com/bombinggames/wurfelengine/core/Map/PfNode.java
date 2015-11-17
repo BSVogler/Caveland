@@ -28,75 +28,63 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.wurfelengine.core.Map;
 
-import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
-import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.PfNode;
-import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.extension.AimBand;
-import java.util.ArrayList;
+import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class PathfindingTest extends SimpleEntity {
+public class PfNode extends Coordinate implements IndexedNode<PfNode> {
 
 	private static final long serialVersionUID = 1L;
+
+	private final int index;
+
+	public PfNode(Coordinate coord, int index) {
+		super(coord);
+		this.index = calculateIndex();
+	}
+
+	public PfNode(Coordinate coord) {
+		super(coord);
+		this.index = calculateIndex();
+	}
+
+	public int calculateIndex() {
+		Coordinate tl = getChunk().getTopLeftCoordinate();
+		return getX() - tl.getX() + (getY() - tl.getY()) * Chunk.getBlocksX();
+	}
+
 	
-	private SimpleEntity end;
-	private ArrayList<AimBand> aimBandList = new ArrayList<>(10);
-	private AimBand directAimBand = new AimBand(this, end);
-	
-	public PathfindingTest() {
-		super((byte) 22);
-		setName("Start pathfinding test");
+	@Override
+	public int getIndex() {
+		return index;
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
-		return super.spawn(point);
+	public Array<Connection<PfNode>> getConnections() {
+		Array<Connection<PfNode>> a = new Array<>(4);
+		PfNode neigh = new PfNode(cpy().addVector(-1, 0, 0));
+		if (neigh.getBlock() != null && !neigh.getBlock().isObstacle())
+			a.add(new CoordConnection(this, neigh));
+		
+		neigh = new PfNode(cpy().addVector(1, 0, 0));
+		if (neigh.getBlock() != null && !neigh.getBlock().isObstacle())
+			a.add(new CoordConnection(this, neigh));
+		
+		neigh = new PfNode(cpy().addVector(0, 2, 0));
+		if (neigh.getBlock() != null && !neigh.getBlock().isObstacle())
+			a.add(new CoordConnection(this, neigh));
+		
+		neigh = new PfNode(cpy().addVector(0, -2, 0));
+		if (neigh.getBlock() != null && !neigh.getBlock().isObstacle())
+			a.add(new CoordConnection(this, neigh));
+
+		return a;
 	}
 
-	@Override
-	public void update(float dt) {
-		super.update(dt);
-		if (hasPosition()) {
-			if (end == null) {
-				end = new SimpleEntity((byte) 22);
-				end.setName("End Pathfinding test");
-			}
-			if (!end.hasPosition()){
-				end.spawn(getPosition().toCoord().addVector(0, 1, 0).toPoint());
-				directAimBand.setTarget(end);
-			}
-			
-			directAimBand.update();
-			
-			//end.getPosition().setValues(getPosition()).ad
-			
-			//transform to aimbands
-			Coordinate last = getPosition().toCoord();
-			aimBandList.forEach(aimBand -> aimBand.dispose());
-			aimBandList.clear();
-			
-			DefaultGraphPath<PfNode> path = Controller.getMap().findPath(
-				getPosition().toCoord(), end.getPosition().toCoord()
-			);
-			for (PfNode coord : path) {
-				aimBandList.add(new AimBand(last, coord));
-			}
-			for (AimBand aimBand : aimBandList) {
-				aimBand.update();
-			}
-		}
-	}
-	
-	
-	
-	
 }

@@ -31,7 +31,13 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.Heuristic;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -55,11 +61,7 @@ import java.util.logging.Logger;
  *
  * @author Benedikt Vogler
  */
-public class Map implements Cloneable {
-
-	private static int blocksX;
-	private static int blocksY;
-	private static int blocksZ;
+public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	private static Generator defaultGenerator = new AirGenerator();
 	public final static Integer MAPVERSION = 4;
@@ -202,10 +204,6 @@ public class Map implements Cloneable {
 
         Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveSlot +" should be loaded");
 
-        //save chunk size, which are now loaded
-        blocksX = Chunk.getBlocksX()*3;
-        blocksY = Chunk.getBlocksY()*3;
-        blocksZ =  Chunk.getBlocksZ();
         data = new ArrayList<>(9);
 
 		//printCoords();
@@ -353,7 +351,7 @@ public class Map implements Cloneable {
 				}
 
 				//check top
-				if (z < getBlocksZ()-1) {
+				if (z < Chunk.getBlocksZ()-1) {
 					neighbour = getIndex(chunk, x, y+2, z+1);
 					if (
 						(
@@ -586,7 +584,7 @@ public class Map implements Cloneable {
 	 * prints the map to console
 	 */
 	public void print() {
-		MemoryMapIterator iter = getIterator(0, blocksZ-1);
+		MemoryMapIterator iter = getIterator(0, Chunk.getBlocksZ()-1);
 		while (iter.hasNext()){
 			//if (!iter.hasNextY() && !iter.hasNextX())
 			//	System.out.print("\n\n");
@@ -615,30 +613,6 @@ public class Map implements Cloneable {
 		}
 		disposeEntities();
     }
-
-	/**
-	 * Returns the amount of Blocks inside the map in x-direction.
-	 * @return
-	 */
-	public int getBlocksX() {
-		return blocksX;
-	}
-
-	/**
-	 * Returns the amount of Blocks inside the map in y-direction.
-	 * @return
-	 */
-	public int getBlocksY() {
-		return blocksY;
-	}
-
-	/**
-	 * Returns the amount of Blocks inside the map in z-direction.
-	 * @return
-	 */
-	public int getBlocksZ() {
-		return blocksZ;
-	}
 
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
 		Chunk chunk = getChunk(coord);
@@ -816,7 +790,7 @@ public class Map implements Cloneable {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(getBlocksZ() * Block.GAME_EDGELENGTH / 2);
+		return getCenter(Chunk.getBlocksZ()* Block.GAME_EDGELENGTH / 2);
 	}
 
 	/**
@@ -926,33 +900,6 @@ public class Map implements Cloneable {
 	}
 
 	/**
-	 * The width of the map with three chunks in use
-	 *
-	 * @return amount of bluck multiplied by the size in game space.
-	 */
-	public int getGameWidth() {
-		return getBlocksX() * Block.GAME_DIAGLENGTH;
-	}
-
-	/**
-	 * The depth of the map in game size
-	 *
-	 * @return
-	 */
-	public int getGameDepth() {
-		return getBlocksY() * Block.GAME_DIAGLENGTH2;
-	}
-
-	/**
-	 * Game size
-	 *
-	 * @return
-	 */
-	public int getGameHeight() {
-		return getBlocksZ() * Block.GAME_EDGELENGTH;
-	}
-
-	/**
 	 * True if some block has changed in loaded chunks.
 	 *
 	 * @return returns the modified flag
@@ -964,5 +911,51 @@ public class Map implements Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	@Override
+	public Array<Connection<PfNode>> getConnections(PfNode fromNode) {
+		return fromNode.getConnections();
+		
+	}
+	
+	public DefaultGraphPath<PfNode> findPath(Coordinate start, Coordinate goal) {
+		IndexedAStarPathFinder<PfNode> pathFinder;
+		pathFinder = new IndexedAStarPathFinder<>(this, true);
+		
+		DefaultGraphPath<PfNode> path = new DefaultGraphPath<>();
+		path.clear();
+		Heuristic<PfNode> heuristic = new ManhattanDistanceHeuristic();
+		
+		boolean found = pathFinder.searchNodePath(
+			new PfNode(start),
+			new PfNode(goal),
+			heuristic,
+			path
+		);
+		
+		
+		return path;
+	}
+
+	@Override
+	public int getNodeCount() {
+		return Chunk.getBlocksX()*Chunk.getBlocksY();
+	}
+
+	private static class ManhattanDistanceHeuristic implements Heuristic<PfNode> {
+
+		@Override
+		public float estimate(PfNode node, PfNode endNode) {
+			 return Math.abs(endNode.getX() - node.getX()) + Math.abs(endNode.getY() - node.getY());
+		}
+	}
+	
+	private static class EuklideanDistanceHeuristic implements Heuristic<PfNode >{
+
+		@Override
+		public float estimate(PfNode node, PfNode endNode) {
+			 return node.distanceTo(endNode);
+		}
 	}
 }

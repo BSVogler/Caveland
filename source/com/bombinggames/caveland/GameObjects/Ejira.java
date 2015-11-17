@@ -51,8 +51,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	public static final float LOADATTACKTIME = 1000;
 	private static final long serialVersionUID = 2L;
 
+	private transient static final AtlasRegion[][] SPRITES = new AtlasRegion['z'][65];
 	private transient static TextureAtlas spritesheet;
-	private static final transient AtlasRegion[][] sprites = new AtlasRegion['z'][65];
 	private transient static Texture textureDiff;
 	private transient static Texture textureNormal;
 		
@@ -80,17 +80,17 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		if (spritesheet == null) {
 			return null;
 		}
-		if (sprites[category][value] == null) { //load if not already loaded
+		if (SPRITES[category][value] == null) { //load if not already loaded
 
 			AtlasRegion sprite = spritesheet.findRegion("diff/"+category + "/" + Integer.toString(value));
 			if (sprite == null) { //if there is no sprite show the default "sprite not found sprite" for this category
 				Gdx.app.debug("Player animation", category + Integer.toString(value) + " not found");
 				return null;
 			}
-			sprites[category][value] = sprite;
+			SPRITES[category][value] = sprite;
 			return sprite;
 		} else {
-			return sprites[category][value];
+			return SPRITES[category][value];
 		}
 	}
 	

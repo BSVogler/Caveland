@@ -9,6 +9,7 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.Enemy;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.MineCart;
+import com.bombinggames.caveland.GameObjects.PathfindingTest;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.caveland.GameObjects.collectibles.Bausatz;
@@ -77,6 +78,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
 		AbstractEntity.registerEntity("Bird", Bird.class);
+		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
 		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);
 		
 		Map.setDefaultGenerator(new ChunkGenerator());

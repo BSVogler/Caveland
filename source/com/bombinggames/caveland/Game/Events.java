@@ -41,7 +41,8 @@ public enum Events {
 	steppedOn(13),
 	selectInEditor(14),
 	deselectInEditor(15),
-	destroyed(16);
+	destroyed(16),
+	landed(17);
 	
 	private final int id;
 

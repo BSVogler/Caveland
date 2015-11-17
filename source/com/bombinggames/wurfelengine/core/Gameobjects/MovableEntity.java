@@ -270,7 +270,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				if (movement.z < 0 && isOnGround()){
 					onCollide();
 					if (!hasPosition()) return;//object may be destroyed during colission
-					onLand();
+					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 					if (!hasPosition()) return;//object may be destroyed during colission
 
 					if (landingSound != null && !floating) {
@@ -776,12 +776,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * called when in contact with floor or wall. Should be overriden.
 	 */
 	public void onCollide() {
-	}
-	
-	/**
-	 * called when objects lands
-	 */
-	public void onLand() {
 	}
 	
 	@Override

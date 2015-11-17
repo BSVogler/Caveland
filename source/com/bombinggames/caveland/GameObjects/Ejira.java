@@ -1,6 +1,8 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
@@ -202,6 +205,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(point.cpy());
+		
+		MessageManager.getInstance().addListener(this, Events.landed.getId());
 		return this;
 	}
 	
@@ -699,8 +704,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			} else {
 				if (!isOnGround()) {//must perform a bunnyhop b/c not on ground
 					onCollide();
-					onLand();
-					step();
+					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 				}
 				//cancel z movement
 				Vector3 resetZ = getMovement().cpy();
@@ -857,15 +861,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				Block.GAME_EDGELENGTH / 500f
 			)
 		);
-	}
-
-	@Override
-	public void onLand() {
-		String landingSound = getLandingSound();
-		if (landingSound != null) {
-			WE.SOUND.play(landingSound, getPosition());//play landing sound
-		}
-		step();
 	}
 
 	@Override
@@ -1056,6 +1051,20 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 */
 	public int getPlayerNumber() {
 		return playerNumber;
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
+		if (msg.message == Events.landed.getId() && msg.sender == this) {
+			String landingSound = getLandingSound();
+			if (landingSound != null) {
+				WE.SOUND.play(landingSound, getPosition());//play landing sound
+			}
+			step();
+		}
+		
+		return true;
 	}
 	
 }

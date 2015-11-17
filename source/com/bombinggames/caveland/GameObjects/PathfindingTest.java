@@ -35,6 +35,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.PathfindingNode;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
@@ -47,12 +48,13 @@ public class PathfindingTest extends SimpleEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	SimpleEntity end;
-	ArrayList<AimBand> aimBandList = new ArrayList<>(10);
+	private SimpleEntity end;
+	private ArrayList<AimBand> aimBandList = new ArrayList<>(10);
+	private AimBand directAimBand = new AimBand(this, end);
 	
 	public PathfindingTest() {
 		super((byte) 22);
-		setName("pathfinding test");
+		setName("Start pathfinding test");
 	}
 
 	@Override
@@ -66,18 +68,30 @@ public class PathfindingTest extends SimpleEntity {
 		if (hasPosition()) {
 			if (end == null) {
 				end = new SimpleEntity((byte) 22);
-				if (!end.hasPosition()){
-					end.spawn(getPosition().cpy());
-				}
+				end.setName("End Pathfinding test");
 			}
-			DefaultGraphPath<Coordinate> path = Controller.getMap().findPath(getPosition().toCoord(), end.getPosition().toCoord());
+			if (!end.hasPosition()){
+				end.spawn(getPosition().toCoord().addVector(0, 1, 0).toPoint());
+				directAimBand.setTarget(end);
+			}
+			
+			directAimBand.update();
+			
+			//end.getPosition().setValues(getPosition()).ad
 			
 			//transform to aimbands
 			Coordinate last = getPosition().toCoord();
 			aimBandList.forEach(aimBand -> aimBand.dispose());
 			aimBandList.clear();
-			for (Coordinate coord : path) {
-				aimBandList.add(new AimBand(last, coord));
+			
+			DefaultGraphPath<PathfindingNode> path = Controller.getMap().findPath(
+				getPosition().toCoord(), end.getPosition().toCoord()
+			);
+			for (PathfindingNode coord : path) {
+				aimBandList.add(new AimBand(last, coord.coord));
+			}
+			for (AimBand aimBand : aimBandList) {
+				aimBand.update();
 			}
 		}
 	}

@@ -138,10 +138,11 @@ public class GameplayScreen extends WEScreen {
 		controller.enter();
 		view.enter();
 
+		if (loadingScreen != null) {
 			loadingScreen.dispose();
-			loadingScreen=null;
 		}
-    }
+		loadingScreen = null;
+	}
 
 	@Override
 	public void hide() {

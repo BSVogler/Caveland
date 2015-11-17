@@ -36,7 +36,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 
 /**
  *A bar which schows the current fitlering level.
@@ -59,9 +59,9 @@ public class Navigation {
 
             int rightborder = Gdx.graphics.getWidth();
             int topBorder = Gdx.graphics.getHeight();
-            int steps = topBorder/(Controller.getMap().getBlocksZ()+1);
+            int steps = topBorder/(Chunk.getBlocksZ()+1);
 
-            for (int i = 1; i < Controller.getMap().getBlocksZ()+1; i++) {
+            for (int i = 1; i < Chunk.getBlocksZ()+1; i++) {
                 if (view.getCameras().get(0).getZRenderingLimit() == i )
                     sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0,0.1f));
                 else 

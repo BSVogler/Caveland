@@ -116,20 +116,20 @@ public class Minimap implements MapObserver {
 	 * @param view
      */
     public void buildTexture(GameView view){
-        mapdata = new Color[map.getBlocksX()][map.getBlocksY()];
-        for (int x = 0; x < map.getBlocksX(); x++) {
-            for (int y = 0; y < map.getBlocksY(); y++) {
+        mapdata = new Color[Chunk.getBlocksX()][Chunk.getBlocksY()];
+        for (int x = 0; x < Chunk.getBlocksX(); x++) {
+            for (int y = 0; y < Chunk.getBlocksY(); y++) {
                 mapdata[x][y] = new Color();
             }
         }
         
         maximumZ = 0;
-        int[][] topTileZ = new int[map.getBlocksX()][map.getBlocksY()];
+        int[][] topTileZ = new int[Chunk.getBlocksX()][Chunk.getBlocksY()];
         
         //fing top tile
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
-                int z = map.getBlocksZ() -1;//start at top
+                int z = Chunk.getBlocksZ() -1;//start at top
                 while ( z>-1 && Controller.getMap().getBlock(x, y, z).getSpriteId() ==0 ) {
                     z--;//find topmost block in row
                 }
@@ -176,8 +176,8 @@ public class Minimap implements MapObserver {
 		sh.translate(0, mapdata[0].length*scaleY, 0);//start from top, 10px offset to left to prevent clipping
 			//render the map
 			sh.begin(ShapeType.Filled);
-				for (int x = 0; x < map.getBlocksX(); x++) {
-					for (int y = 0; y < map.getBlocksY(); y++) {
+				for (int x = 0; x < Chunk.getBlocksX(); x++) {
+					for (int y = 0; y < Chunk.getBlocksY(); y++) {
 						sh.setColor(mapdata[x][y]);//get color
 						float rectX = (x + (y%2 == 1 ? 0.5f : 0) ) * scaleX;
 						float rectY = - (y+1)*scaleY;

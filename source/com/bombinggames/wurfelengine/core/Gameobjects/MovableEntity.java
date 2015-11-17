@@ -36,10 +36,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
@@ -712,7 +712,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			return false;
 		}
 		if (getPosition().getZ() > 0) {
-			if (getPosition().getZ() > Controller.getMap().getGameHeight()) {
+			if (getPosition().getZ() > Chunk.getGameHeight()) {
 				return false;
 			}
 			getPosition().setZ(getPosition().getZ() - 1);//move one down for check

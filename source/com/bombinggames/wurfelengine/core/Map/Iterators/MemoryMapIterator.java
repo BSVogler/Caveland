@@ -54,7 +54,7 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 */
 	public MemoryMapIterator(Map map, int startingZ) {
 		super(map);
-		setTopLimitZ(map.getBlocksZ()-1);
+		setTopLimitZ(Chunk.getBlocksZ()-1);
 		setStartingZ(startingZ);
 		
 		ArrayList<Chunk> mapdata = map.getData();

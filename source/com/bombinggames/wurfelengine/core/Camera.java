@@ -69,14 +69,14 @@ public class Camera implements MapObserver {
 	/**
 	 * top limit
 	 */
-	private int zRenderingLimit = map.getBlocksZ();
+	private int zRenderingLimit = Chunk.getBlocksZ();
 
 	/**
 	 * A 3d array which has the blocks in it which are possibly rendered. Shoudl be 3x3 chunks. Only the relevant portion of the map is moved to this array.
 	 * Has the ground layer in 0, therefore offset in z of one
 	 * 
 	 */
-	private final RenderBlock[][][] cameraContent = new RenderBlock[map.getBlocksX()][map.getBlocksY()][map.getBlocksZ() + 1];//z +1  because of ground layer
+	private final RenderBlock[][][] cameraContent = new RenderBlock[Chunk.getBlocksX()*3][Chunk.getBlocksY()*3][Chunk.getBlocksZ() + 1];//z +1  because of ground layer
 
 	/**
 	 * the position of the camera in viewMat space. Y-up. Read only field.
@@ -172,7 +172,7 @@ public class Camera implements MapObserver {
 	 */
 	public Camera(final int x, final int y, final int width, final int height, GameView view) {
 		map = Controller.getMap();
-		zRenderingLimit = map.getBlocksZ();
+		zRenderingLimit = Chunk.getBlocksZ();
 
 		gameView = view;
 		screenWidth = width;
@@ -619,7 +619,7 @@ public class Camera implements MapObserver {
 
 		//add entitys
 		boolean activatedRenderLimit = false;
-		if (zRenderingLimit < map.getBlocksZ())
+		if (zRenderingLimit < Chunk.getBlocksZ())
 			activatedRenderLimit = true;
 		
 		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
@@ -763,7 +763,7 @@ public class Camera implements MapObserver {
 			centerChunkX,
 			centerChunkY,
 			0,
-			map.getBlocksZ() - 1
+			Chunk.getBlocksZ() - 1
 		);
 
 		while (csIter.hasNext()) {
@@ -864,8 +864,8 @@ public class Camera implements MapObserver {
 			zRenderingLimit = limit;
 
 			//clamp
-			if (limit >= map.getBlocksZ()) {
-				zRenderingLimit = map.getBlocksZ();
+			if (limit >= Chunk.getBlocksZ()) {
+				zRenderingLimit = Chunk.getBlocksZ();
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
@@ -1266,17 +1266,17 @@ public class Camera implements MapObserver {
 		view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
 		view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
 			-Chunk.getGameDepth(),//two chunks down
-			map.getGameWidth(),
-			map.getGameDepth() / 2
+			Chunk.getGameWidth()*3,
+			Chunk.getGameDepth()*3 / 2
 		);
 		view.getShapeRenderer().line(-Chunk.getGameWidth(),
 			-Chunk.getGameDepth() / 2,
-			-Chunk.getGameWidth() + map.getGameWidth(),
+			-Chunk.getGameWidth() + Chunk.getGameWidth()*3,
 			-Chunk.getGameDepth() / 2
 		);
 		view.getShapeRenderer().line(-Chunk.getGameWidth(),
 			0,
-			-Chunk.getGameWidth() + map.getGameWidth(),
+			-Chunk.getGameWidth() + Chunk.getGameWidth()*3,
 			0
 		);
 		view.getShapeRenderer().line(

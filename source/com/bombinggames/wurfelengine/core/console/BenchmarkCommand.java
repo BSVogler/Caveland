@@ -8,6 +8,7 @@ package com.bombinggames.wurfelengine.core.console;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.BenchmarkBall;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import java.util.StringTokenizer;
 
 /**
@@ -24,7 +25,7 @@ public class BenchmarkCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer par1, GameplayScreen gameplay) {
-		new BenchmarkBall().spawn(Controller.getMap().getCenter(Controller.getMap().getGameHeight()));
+		new BenchmarkBall().spawn(Controller.getMap().getCenter(Chunk.getGameHeight()));
             //add("Spawned a benchmark ball.", "System");
         return true;
 	}

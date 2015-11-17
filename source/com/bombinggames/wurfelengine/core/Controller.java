@@ -271,7 +271,7 @@ public class Controller implements GameManager, MapObserver {
 
 		if (!cursor.hasPosition()) {
 			cursor.spawn(
-				new Point(0, 0, getMap().getBlocksZ() - 1)
+				new Point(0, 0, Chunk.getBlocksZ() - 1)
 			);
 		}
 	}

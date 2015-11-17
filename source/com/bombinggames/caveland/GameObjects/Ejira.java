@@ -718,21 +718,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			if (isInAirJump) {
 				jump(5.2f, true);//air jump a little bit higher
 				WE.SOUND.play("jetpack");
-//				for (int i = 0; i < 80; i++) {
-//					Dust dust = (Dust) new Dust(
-//						1000f,
-//						new Color(1, 1, 0, 1)
-//					).spawn(
-//						getPosition().cpy().addVector(0, 0, AbstractGameObject.GAME_EDGELENGTH2 + (float) Math.random() * AbstractGameObject.GAME_EDGELENGTH)
-//					);
-//					dust.addMovement(
-//						new Vector3(
-//							(float) (Math.random()-0.5f)*2f,
-//							(float) (Math.random()-0.5f)*2f,
-//							-5f
-//						)
-//					);
-//				}
 			} else {
 				jump(4.7f, true);
 			}

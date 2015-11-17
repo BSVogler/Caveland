@@ -571,11 +571,7 @@ public class Coordinate extends AbstractPosition {
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		hash = 37 * hash + this.x;
-		hash = 17 * hash + this.y;
-		hash = 13 * hash + this.z;
-		return hash;
+		return 13*(425+ 37*x) + 13*y + 2953*z;
 	}
 
 	@Override

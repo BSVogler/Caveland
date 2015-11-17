@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -198,26 +199,37 @@ public class Enemy extends MovableEntity {
 			new SimpleEntity((byte) 33).spawn(target.getPosition().cpy()).setAnimation(
 				new EntityAnimation(new int[]{300}, true, false)
 			);
-			target.damage((byte)1);
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				target,
+				Events.damage.getId(),
+				1
+			);
 			pauseMovementAnimation();
 			attackInProgess = ATTACKTIME;//1500ms until the attack is done
 		}
+	}
+
+	@Override
+	public void disposeFromMap() {
+		super.disposeFromMap();
+		WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
 	}
 	
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		super.handleMessage(msg);
-		if (msg.message == Events.damaged.getId()) {
+		if (msg.message == Events.damage.getId()) {
 			byte damage = ((Byte) msg.extraInfo);
-			damage(damage);
+			takeDamage(damage);
 			if (getHealth() <= 0){
 				new DestructionParticle((byte) 34).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 
-				WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
-				if (getHealth() <= 0 && KILLSOUND != null)
+				if (getHealth() <= 0 && KILLSOUND != null) {
 					WE.SOUND.play(KILLSOUND);
+				}
 			}
 		} else if (msg.message == Events.deselectInEditor.getId()){
 			if (particleBand != null) {

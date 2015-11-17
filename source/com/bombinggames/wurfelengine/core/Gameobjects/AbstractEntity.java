@@ -391,7 +391,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
      * called when gets damage. Health is between 0 and 100. Plays a sound.
      * @param value between 0 and 100
      */
-    public void damage(byte value) {
+    public void takeDamage(byte value) {
 		if (!indestructible) {
 			if (health > 0) {
 				if (damageSounds != null && soundTimeLimit <= 0) {
@@ -462,7 +462,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	/**
 	 * clamps to [0..100]. You may prefer damage and heal. Ignores invincibility.
 	 * @param health 
-	 * @see #damage(byte) 
+	 * @see #takeDamage(byte) 
 	 */
 	public void setHealth(float health) {
 		if (health > 100) health=  100;

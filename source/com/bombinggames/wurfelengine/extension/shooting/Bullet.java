@@ -127,14 +127,13 @@ public class Bullet extends AbstractEntity {
 			(MovableEntity item) -> !item.isObstacle() || item.getPosition().toCoord().equals(ignoreCoord)
 		);
 		if (!entitylist.isEmpty()) {
-			entitylist.get(0).damage(damage);//damage only the first unit on the list
+			entitylist.get(0).takeDamage(damage);//damage only the first unit on the list
 			Particle blood = new Particle();
 			blood.setColor(new Color(1,0,0,1));
 			blood.setTTL(400);
 			blood.setType(ParticleType.REGULAR);//blood
 			blood.spawn(getPosition().cpy());
 			dispose();
-			return;
 		}
 	}
 

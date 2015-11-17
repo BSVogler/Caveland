@@ -36,7 +36,7 @@ package com.bombinggames.caveland.Game;
  */
 public enum Events {
 	
-	damaged(11),
+	damage(11),
 	collided(12),
 	steppedOn(13),
 	selectInEditor(14),

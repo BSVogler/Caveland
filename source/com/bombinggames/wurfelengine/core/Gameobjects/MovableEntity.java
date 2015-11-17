@@ -89,7 +89,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private transient String runningSound;
 	private transient boolean runningSoundPlaying;
 	private transient String jumpingSound;
-	private transient String landingSound = "landing";
 
 	/**
 	 * currently in a liquid?
@@ -161,8 +160,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		MessageManager.getInstance().addListener(this, Events.selectInEditor.getId());
-		MessageManager.getInstance().addListener(this, Events.deselectInEditor.getId());
+		MessageManager.getInstance().addListener(this, Events.landed.getId());
 		return this;
 	}
 	
@@ -270,11 +268,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				if (movement.z < 0 && isOnGround()){
 					onCollide();
 					if (!hasPosition()) return;//object may be destroyed during colission
-					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
-					if (!hasPosition()) return;//object may be destroyed during colission
-
-					if (landingSound != null && !floating) {
-						WE.SOUND.play(landingSound, getPosition());//play landing sound
+					if (!floating) {
+						MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
+						if (!hasPosition()) return;//object may be destroyed during colission
 					}
 					movement.z = 0;
 
@@ -523,23 +519,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         this.jumpingSound = jumpingSound;
     }
     
-        /**
-     * Set sound played when the character lands on the feet.
-     *
-     * @param landingSound new value of landingSound
-     */
-    public void setLandingSound(String landingSound) {
-        this.landingSound = landingSound;
-    }
-
-	/**
-	 * The sound string when landing
-	 * @return 
-	 */
-	public String getLandingSound() {
-		return landingSound;
-	}
-	
 	/**
 	 *
 	 * @param sound
@@ -813,7 +792,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	
 	@Override
 	public boolean handleMessage(Telegram msg) {
-		return true;
+		if (msg.message == Events.landed.getId() && msg.sender == this) {
+			WE.SOUND.play("landing", getPosition());//play landing sound
+			step();
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
-import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -206,7 +205,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(point.cpy());
 		
-		MessageManager.getInstance().addListener(this, Events.landed.getId());
 		return this;
 	}
 	
@@ -620,7 +618,12 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			//check hit
 			for (AbstractEntity entity : nearbyEntities) {
 				if ( entity != this && !entity.isHidden()) {
-					entity.damage(attackDamage);
+					MessageManager.getInstance().dispatchMessage(
+						this,
+						entity,
+						Events.damage.getId(),
+						attackDamage
+					);
 					getCamera().shake(20, 50);
 				
 					if (entity instanceof MovableEntity) {
@@ -670,9 +673,9 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	}
 
 	@Override
-	public void damage(byte value) {
+	public void takeDamage(byte value) {
 		if (!WE.CVARS.getValueB("godmode")) {
-			super.damage(value);
+			super.takeDamage(value);
 			WE.SOUND.play("urfHurt");
 			if (getCamera() != null) {
 				getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
@@ -1052,19 +1055,4 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	public int getPlayerNumber() {
 		return playerNumber;
 	}
-
-	@Override
-	public boolean handleMessage(Telegram msg) {
-		super.handleMessage(msg);
-		if (msg.message == Events.landed.getId() && msg.sender == this) {
-			String landingSound = getLandingSound();
-			if (landingSound != null) {
-				WE.SOUND.play(landingSound, getPosition());//play landing sound
-			}
-			step();
-		}
-		
-		return true;
-	}
-	
 }

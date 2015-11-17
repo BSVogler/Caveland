@@ -361,8 +361,8 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public void damage(byte value) {
-		super.damage(value);
+	public void takeDamage(byte value) {
+		super.takeDamage(value);
 		if (getHealth()<=0) {
 			WE.SOUND.stop("wagon", isPlayingSound);
 			WE.SOUND.play("robot1destroy", getPosition());

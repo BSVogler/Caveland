@@ -84,7 +84,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 							MessageManager.getInstance().dispatchMessage(
 								this,
 								(Telegraph) ent,
-								Events.damaged.getId(),
+								Events.damage.getId(),
 								damage
 							);
 						}

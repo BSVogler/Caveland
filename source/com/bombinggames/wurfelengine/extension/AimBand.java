@@ -47,7 +47,7 @@ public class AimBand {
 	private AbstractEntity target;
 	private Point start;
 	private final AbstractEntity parent;
-	private final float timeEachSpawn = 200;
+	private final float timeEachSpawn = 100;
 	private float timeTillNext;
 	private final ArrayList<Particle> list = new ArrayList<>(10);
 

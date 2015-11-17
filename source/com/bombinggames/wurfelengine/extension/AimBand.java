@@ -45,16 +45,18 @@ import java.util.ArrayList;
 public class AimBand {
 	private Point goal;
 	private AbstractEntity target;
+	private Point start;
 	private final AbstractEntity parent;
 	private final float timeEachSpawn = 200;
 	private float timeTillNext;
 	private final ArrayList<Particle> list = new ArrayList<>(10);
 
 	public AimBand(AbstractEntity parent, AbstractPosition goal) {
-		if (goal instanceof Point)
+		if (goal instanceof Point) {
 			this.goal = (Point) goal;
-		else
+		} else {
 			this.goal = goal.toPoint();
+		}
 		this.parent = parent;
 		this.target = null;
 	}
@@ -63,6 +65,22 @@ public class AimBand {
 		this.target = target;
 		this.parent = parent;
 		goal = null;
+	}
+
+	public AimBand(AbstractPosition start, AbstractPosition end) {
+		if (start instanceof Point) {
+			this.start = (Point) start;
+		} else {
+			this.start = start.toPoint();
+		}
+
+		if (end instanceof Point) {
+			this.goal = (Point) end;
+		} else {
+			this.goal = end.toPoint();
+		}
+		
+		this.parent = null;
 	}
 	
 	/**
@@ -82,17 +100,17 @@ public class AimBand {
 			particle.setColor(new Color(0.4f, 0.5f, 1f, 0.3f));
 			particle.setUseRawDelta(true);
 			particle.setColiding(false);
-			particle.spawn(parent.getPosition().cpy());
+			particle.spawn(getStart().cpy());
 			list.add(particle);
 		}
 					
 		//remove old particles from list
 		list.removeIf(p -> p.shouldBeDisposed());
 			
-		if (getAim() != null) {
+		if (getEnd() != null) {
 			//move particles
 			for (Particle p : list) {
-				p.getPosition().setValues(parent.getPosition()).lerp(getAim(), 1 - p.getPercentageOfLife());
+				p.getPosition().setValues(getStart()).lerp(getEnd(), 1 - p.getPercentageOfLife());
 			}
 		} else {
 			list.forEach(p -> p.dispose());
@@ -104,12 +122,22 @@ public class AimBand {
 	 * position at the end of the band
 	 * @return 
 	 */
-	private Point getAim(){
+	private Point getEnd(){
 		if (goal == null) {
-			if (target==null) return null;
+			if (target == null) {
+				return null;
+			}
 			return target.getPosition();
 		} else {
 			return goal;
+		}
+	}
+	
+	private Point getStart(){
+		if (parent==null) {
+			return start;
+		} else {
+			return parent.getPosition();
 		}
 	}
 	

@@ -87,7 +87,7 @@ public class AimBand {
 	 * 
 	 */
 	public void update(){
-		if (parent.getPosition() == null) {
+		if (getStart() == null || getEnd() == null) {
 			dispose();
 			return;
 		}

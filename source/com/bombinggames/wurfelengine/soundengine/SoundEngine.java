@@ -41,7 +41,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Manages the sounds in the game world.
@@ -189,35 +188,38 @@ public class SoundEngine {
 
 	/**
 	 * Stops all instances of this soundIterator.
+	 *
 	 * @param identifier name of soundIterator
 	 */
 	public void stop(String identifier) {
 		Sound result = sounds.get(identifier);
-		//remove from playing loops list
-		for (Iterator<SoundInstance> soundIterator = playingLoops.iterator(); soundIterator.hasNext();) {
-			if (soundIterator.next().sound.equals(result))
-				soundIterator.remove();
-		}
-		if (result != null)
+		if (result != null) {
 			result.stop();
+		}
+		//remove from playing loops list
+		playingLoops.removeIf(s -> s.sound.equals(result));
 	}
-	
+
 	/**
 	 * Stops a specifiy instance of the soundIterator.
+	 *
 	 * @param identifier name of soundIterator
-	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
+	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String)
+	 * }.
 	 * @see com.badlogic.gdx.audio.Sound#stop()
 	 */
 	public void stop(String identifier, long instance) {
 		Sound result = sounds.get(identifier);
-		//remove from playing loops list if with this instance id
-		for (Iterator<SoundInstance> soundIterator = playingLoops.iterator(); soundIterator.hasNext();) {
-			SoundInstance instanceSound = soundIterator.next();
-			if (instanceSound.sound.equals(result) && instanceSound.id ==instance)
-				soundIterator.remove();
-		}
-		if (result != null)
+		if (result != null) {
 			result.stop(instance);
+		}
+		//remove from playing loops list if with this instance id
+		playingLoops.removeIf(s -> s.sound.equals(result) && s.id == instance);
+	}
+	
+	public void stopEverySound() {
+		playingLoops.clear();
+		sounds.values().forEach(s -> s.stop());
 	}
 
 	/**
@@ -247,13 +249,11 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * disposes the sounds
+	 * disposes the sounds. if you dispose the sounds they do not play if you reload a game. so stop them instead
 	 */
 	public void dispose(){
 		for (Sound s : sounds.values()) {
-			//if you dispose the sounds they do not play if you reload a game. so stop them instead
-			s.stop();
-			//s.dispose();
+			s.dispose();
 		}
 	}
 	

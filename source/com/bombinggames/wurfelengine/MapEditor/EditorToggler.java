@@ -10,6 +10,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 
 /**
  * Shows buttons to enter and leave the editor.
+ *
  * @author Benedikt Vogler
  */
 public class EditorToggler {
@@ -24,6 +25,7 @@ public class EditorToggler {
 
 	/**
 	 * Set the gameView which are used for the current game.
+	 *
 	 * @param view the gameView used for play-mode
 	 */
 	public void setGameplayManagers(GameView view) {
@@ -47,13 +49,11 @@ public class EditorToggler {
 				playButton.addListener(new PlayButton(this.gameView, false));
 				view.getStage().addActor(playButton);
 			}
-		} else {
-			if (playButton != null) {
-				playButton.remove();
-				playButton = null;
-			}
+		} else if (playButton != null) {
+			playButton.remove();
+			playButton = null;
 		}
-			
+
 		if (WE.isInGameplay() && visible) {
 			if (pauseButton == null || resetButton == null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
@@ -65,12 +65,12 @@ public class EditorToggler {
 					pauseButton.setY(Gdx.graphics.getHeight() - offsetY);
 					pauseButton.addListener(
 						new ClickListener() {
-							@Override
-							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								WE.startEditor(false);
-								return true;
-							}
+						@Override
+						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+							WE.startEditor(false);
+							return true;
 						}
+					}
 					);
 				}
 				view.getStage().addActor(pauseButton);
@@ -93,18 +93,17 @@ public class EditorToggler {
 //					);
 //				}
 //				view.getStage().addActor(resetButton);
-				
 				//stop button
 				//if (WE.editorHasMapCopy()) {
-	//				resetButton.addListener(
-	//							new ClickListener() {
-	//								@Override
-	//								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-	//									WE.startEditor(true);
-	//									return true;
-	//								}
-	//							}
-	//						);
+				//				resetButton.addListener(
+				//							new ClickListener() {
+				//								@Override
+				//								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				//									WE.startEditor(true);
+				//									return true;
+				//								}
+				//							}
+				//						);
 				//}
 			}
 		} else {

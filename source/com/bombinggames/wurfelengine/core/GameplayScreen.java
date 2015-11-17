@@ -38,139 +38,142 @@ import static com.bombinggames.wurfelengine.core.Controller.getMap;
 import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 
 /**
- * The GameplayScreen State. This is state where the Wurfel Engine magic happens.
+ * The GameplayScreen State. This is state where the Wurfel Engine magic
+ * happens.
+ *
  * @author Benedikt
  */
-public class GameplayScreen extends WEScreen { 
-  /**
-     * Contains the Message System
-     */
-    
-    private GameView view = null;
-    private Controller controller = null;
-    private EditorView editorView;
+public class GameplayScreen extends WEScreen {
+
+	/**
+	 * Contains the Message System
+	 */
+
+	private GameView view = null;
+	private Controller controller = null;
+	private EditorView editorView;
 	private LoadingScreen loadingScreen;
-    
-    /**
-     * Create the gameplay state. This shows the loading screen.
-     * @param controller The controller of this screen.
-     * @param view The user view of this screen.
+
+	/**
+	 * Create the gameplay state. This shows the loading screen.
+	 *
+	 * @param controller The controller of this screen.
+	 * @param view The user view of this screen.
 	 * @param loadingScreen
-     */
-    public GameplayScreen(final Controller controller, final GameView view, LoadingScreen loadingScreen) {
-        Gdx.app.log("GameplayScreen", "Initializing");
+	 */
+	public GameplayScreen(final Controller controller, final GameView view, LoadingScreen loadingScreen) {
+		Gdx.app.log("GameplayScreen", "Initializing");
 
-        Gdx.input.setInputProcessor(null);
-        this.loadingScreen = loadingScreen;
-        WE.setScreen(loadingScreen);
-        
-        
-        this.controller = controller;
-        this.view = view;
-    }
-             
+		Gdx.input.setInputProcessor(null);
+		this.loadingScreen = loadingScreen;
+		WE.setScreen(loadingScreen);
 
-    /**
-     * Get the current active view.
-     * @return
-     */
-    public GameView getView() {
-        return view;
-    }
+		this.controller = controller;
+		this.view = view;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public Controller getController() {
-        return controller;
-    }
+	/**
+	 * Get the current active view.
+	 *
+	 * @return
+	 */
+	public GameView getView() {
+		return view;
+	}
 
-    /**
-     * Set the currently used active view.
-     * @param view
-     */
-    public void setView(final GameView view) {
-        this.view = view;
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public Controller getController() {
+		return controller;
+	}
 
-    /**
-     *
-     * @param controller
-     */
-    public void setController(final Controller controller) {
-        this.controller = controller;
-    }
-    
-    
-    @Override
-    public void renderImpl(final float delta) {
+	/**
+	 * Set the currently used active view.
+	 *
+	 * @param view
+	 */
+	public void setView(final GameView view) {
+		this.view = view;
+	}
+
+	/**
+	 *
+	 * @param controller
+	 */
+	public void setController(final Controller controller) {
+		this.controller = controller;
+	}
+
+	@Override
+	public void renderImpl(final float delta) {
 		//aply game world speed
-        float dt = delta*WE.CVARS.getValueF("timespeed");
+		float dt = delta * WE.CVARS.getValueF("timespeed");
 		//update data
 		MessageManager.getInstance().update(delta);
-        controller.update(dt);
+		controller.update(dt);
 		Controller.staticUpdate(dt);
-        view.update(dt);
+		view.update(dt);
 		getMap().postUpdate(dt);//hack to prevent 1-frame lag by too late write access via view update
 		//render data
-        view.render();
-        WE.getEngineView().getStage().draw();
-    }
+		view.render();
+		WE.getEngineView().getStage().draw();
+	}
 
-    @Override
-    public void resize(final int width, final int height) {
-        Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
-        view.resize(width, height);
-        Gdx.gl.glViewport(0, 0, width,height);
-        //WE.getEngineView().getStage().setViewport(width, height);
-    }
+	@Override
+	public void resize(final int width, final int height) {
+		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x" + Gdx.graphics.getHeight());
+		view.resize(width, height);
+		Gdx.gl.glViewport(0, 0, width, height);
+		//WE.getEngineView().getStage().setViewport(width, height);
+	}
 
-    @Override
-    public void show() {
-        WE.getEngineView().resetInputProcessors();
-        GameView.classInit();
-        this.controller.init();
-        this.view.init(controller, null);
-        controller.enter();
-        view.enter();
-		
-		if (loadingScreen!=null && !(boolean) WE.CVARS.get("preventUnloading").getValue()) {
+	@Override
+	public void show() {
+		WE.getEngineView().resetInputProcessors();
+		GameView.classInit();
+		this.controller.init();
+		this.view.init(controller, null);
+		controller.enter();
+		view.enter();
+
 			loadingScreen.dispose();
 			loadingScreen=null;
 		}
     }
 
-    @Override
-    public void hide() {
-    }
+	@Override
+	public void hide() {
+	}
 
-    @Override
-    public void pause() {
-    }
+	@Override
+	public void pause() {
+	}
 
-    @Override
-    public void resume() {
-    }
+	@Override
+	public void resume() {
+	}
 
-    @Override
-    public void dispose() {
+	@Override
+	public void dispose() {
 		controller.dispose();
 		view.dispose();
 		WE.SOUND.stopEverySound();
 		WE.SOUND.disposeMusic();
-        Controller.staticDispose();
-    }
+		Controller.staticDispose();
+	}
 
-   /**
-    * lazy init
-    * @return 
-    */
-    public EditorView getEditorView() {
-         if (editorView==null){
-            editorView = new EditorView();
-        }
-        return editorView;
-    }
+	/**
+	 * lazy init
+	 *
+	 * @return
+	 */
+	public EditorView getEditorView() {
+		if (editorView == null) {
+			editorView = new EditorView();
+		}
+		return editorView;
+	}
 
 }

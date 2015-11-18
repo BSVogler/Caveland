@@ -415,9 +415,14 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	//				playAnimation('w');
 	//		}
 
-			lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
-			emitter.getPosition().setValues(getPosition()).addVector(-20, 0, Block.GAME_EDGELENGTH2);
-			emitter2.getPosition().setValues(getPosition()).addVector(20, 0, Block.GAME_EDGELENGTH2);
+			//update attached objects position
+			if (lightsource.hasPosition())
+				lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
+			if (emitter.hasPosition())
+				emitter.getPosition().setValues(getPosition()).addVector(-20, 0, Block.GAME_EDGELENGTH2);
+			if (emitter2.hasPosition())
+				emitter2.getPosition().setValues(getPosition()).addVector(20, 0, Block.GAME_EDGELENGTH2);
+			
 			if (isOnGround()) {
 				isInAirJump = false;
 			}
@@ -987,16 +992,18 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		}
 	}
 	
-	private int getAnimationStep(int steps, boolean overlay){
+	private int getAnimationStep(int steps, boolean overlay) {
 		if (overlay) {
-			if (loadAttack-LOAD_THRESHOLD >= LOADATTACKTIME)
+			if (loadAttack - LOAD_THRESHOLD >= LOADATTACKTIME) {
 				return 7;
-			else
-				return (int) ((loadAttack-LOAD_THRESHOLD) / (LOADATTACKTIME / steps));//six sprites for each animation	
-		} else
+			} else {
+				return (int) ((loadAttack - LOAD_THRESHOLD) / (LOADATTACKTIME / steps));//six sprites for each animation	
+			}
+		} else {
 			return (int) (animationCycle / (1000 / (float) steps));//animation sprites with 8 steps
+		}
 	}
-	
+
 	/**
 	 * goes in idle position
 	 */
@@ -1035,7 +1042,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	/**
 	 * starts with 1
-	 * @return 
+	 *
+	 * @return
 	 */
 	public int getPlayerNumber() {
 		return playerNumber;

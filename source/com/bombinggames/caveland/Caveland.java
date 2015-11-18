@@ -77,6 +77,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
 		AbstractEntity.registerEntity("Vanya", Vanya.class);
 		AbstractEntity.registerEntity("Enemy", Enemy.class);
+		AbstractEntity.registerEntity("Spider Robot", SpiderRobot.class);
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
 		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);

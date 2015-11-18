@@ -20,7 +20,6 @@ import com.bombinggames.caveland.MainMenu.CustomLoading;
 import com.bombinggames.caveland.MainMenu.MainMenuScreen;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
-import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.FloatCVar;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
@@ -50,18 +49,18 @@ public class Caveland {
 	public static void main(String[] args) {
 		WorkingDirectory.setApplicationName("Caveland");
 		//game cvars
-		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new BooleanCVar(false), "godmode", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime", CVar.CVarFlags.CVAR_ARCHIVE);//time in ms for item drop
-		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(50), "worldSpinAngle");
+		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap");
+		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine");
+		WE.CVARS.register(new BooleanCVar(true), "enableFog");
+		WE.CVARS.register(new BooleanCVar(false), "enableAutoShade");
+		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering");
+		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen");
+		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact");
+		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer");
+		WE.CVARS.register(new BooleanCVar(false), "godmode");
+		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
+		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom");
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
 

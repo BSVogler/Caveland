@@ -259,21 +259,39 @@ public class CVarSystem {
 	}
 	
 	/**
-	 * Registering should only be done by the game or the engine in init phase. Also saves as defaultValue.
-	 * if already registered updates the default and current value.
+	 * Registering should only be done by the game or the engine in init phase.
+	 * Also saves as defaultValue. if already registered updates the default and
+	 * current value.
+	 *
 	 * @param cvar
 	 * @param name
 	 * @param flag
 	 * @since v1.4.2
 	 */
-	public void register(CVar cvar, String name, CVar.CVarFlags flag){
+	public void register(CVar cvar, String name, CVar.CVarFlags flag) {
 		cvar.register(name, flag, this);
 		//if already registered new value is set
-		if (cvars.containsKey(cvar.name))
+		if (cvars.containsKey(cvar.name)) {
 			get(cvar.name).setDefaultValue(cvar.getValue());
-		else
+		} else {
 			cvars.put(cvar.name.toLowerCase(), cvar);
+		}
 	}
+
+	/**
+	 * Registering should only be done by the game or the engine in init phase.
+	 * Also saves as defaultValue. if already registered updates the default and
+	 * current value.
+	 *
+	 * @param cvar
+	 * @param name
+	 * @since v1.4.2
+	 */
+	public void register(CVar cvar, String name) {
+		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
+	}
+
+	
 	
 	/*
 	 * initializes engine cvars

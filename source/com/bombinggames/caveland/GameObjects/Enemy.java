@@ -54,8 +54,8 @@ public class Enemy extends MovableEntity {
 		super((byte) 45, 5);
 		setName("Evil Robot");
 		setObstacle(true);
-		setFloating(false);
-		setWalkingSpeedIndependentAnimation(1f);
+		setFloating(true);
+		setContinuousWalkingAnimation(1f);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
 	}

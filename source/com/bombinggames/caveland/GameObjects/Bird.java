@@ -48,7 +48,7 @@ public class Bird extends MovableEntity {
 		setFloating(true);
 		setName("Bird");
 		setJumpingSound("vanya_jump");
-		setWalkingSpeedIndependentAnimation(2.5f);
+		setContinuousWalkingAnimation(2.5f);
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);
 	}

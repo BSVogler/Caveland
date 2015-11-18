@@ -45,7 +45,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 		setName("Vanya");
 		setJumpingSound("vanya_jump");
 		setIndestructible(true);
-		setWalkingSpeedIndependentAnimation(2f);
+		setContinuousWalkingAnimation(2f);
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);
 	}
@@ -294,7 +294,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 		in.defaultReadObject();
 		setFloating(false);
 		setJumpingSound("vanya_jump");
-		setWalkingSpeedIndependentAnimation(2f);
+		setContinuousWalkingAnimation(2f);
 		setWalkingAnimationCycling(false);
 		setWalkingStepMode(false);
 	}

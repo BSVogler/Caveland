@@ -17,6 +17,7 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
@@ -253,6 +254,21 @@ public class CLGameView extends GameView{
 //							next.getBlockData().setUnclipped();
 					}
 				}
+			}
+		}
+		
+		if (WE.CVARS.getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
+			//todo should compare in view space
+			if (getCameras().get(0).getCenter().distanceTo(getCameras().get(1).getCenter()) < Block.GAME_EDGELENGTH*5){
+				getCameras().get(0).setFullWindow(true);
+				getCameras().get(1).setActive(false);
+			} else {
+				getCameras().get(1).setActive(true);
+				getCameras().get(0).setScreenSize(
+					Gdx.graphics.getWidth()/2,
+					Gdx.graphics.getHeight()
+				);
+				getCameras().get(0).setInternalRenderResolution( WE.CVARS.getValueI("renderResolutionWidth")/2);
 			}
 		}
 		

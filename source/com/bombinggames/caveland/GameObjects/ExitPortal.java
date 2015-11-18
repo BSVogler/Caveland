@@ -76,7 +76,7 @@ public class ExitPortal extends Portal implements Interactable {
 				}
 			}
 
-			//spawn lift only if a lft is built
+			//spawn lift only if a lift is built
 			if (getLift() == null){
 				if (fahrstuhlkorb != null){
 					fahrstuhlkorb.disposeFromMap();

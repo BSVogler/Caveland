@@ -309,16 +309,10 @@ public class CLGameView extends GameView{
 		
 		if (useDownP1==0){
 			getPlayer(0).interactWithNearestThing(this);
-			//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
-			//if (loren.size()>0)
-			//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 		}
 		if (coop>-1)
 			if (useDownP2==0){
 				getPlayer(1).interactWithNearestThing(this);
-				//ArrayList<Lore> loren = getPlayer(0).getPosition().getEntitiesNearby(200, Lore.class);
-				//if (loren.size()>0)
-				//	getPlayer(0).getInventory().addAll(loren.get(0).getContent());
 			}
 		
 		if (inventoryDownP1==0){

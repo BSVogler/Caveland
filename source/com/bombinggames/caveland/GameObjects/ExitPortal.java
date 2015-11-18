@@ -23,6 +23,7 @@ public class ExitPortal extends Portal implements Interactable {
 	private boolean spawner;
 	private final ArrayList<Robot> spawnedList = new ArrayList<>(3);
 	private transient SimpleEntity fahrstuhlkorb;
+	private float spawnCooldown;
 
 	/**
 	 * teleports to 0 0 Chunk.getBlocksZ()-1 by default
@@ -44,28 +45,33 @@ public class ExitPortal extends Portal implements Interactable {
 	public void update(float dt) {
 		if (hasPosition()) {
 			if (spawner) {
+				//remove killed enemys
+				spawnedList.removeIf(r -> r.shouldBeDisposed());
+				if (spawnCooldown > 0)
+					spawnCooldown -= dt;
+				
 				//if a player is not nearby
-				if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 9, Ejira.class).isEmpty()) {
+				if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 13, Ejira.class).isEmpty() && spawnCooldown <= 0) {
+					spawnCooldown += 5000;//only spawn every 5 seconds
+					
 					//spawn enemies
 					while (spawnedList.size() < 3) {
 						Coordinate coord = getPosition().toCoord();
 						int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
-						Robot e = (Robot) new Robot().spawn(
+						Robot robot;
+						if (Math.random() > 0.5f) {
+							robot = new SpiderRobot();
+						} else {
+							robot = new Robot();
+						}
+						robot.spawn(
 							ChunkGenerator.getCaveCenter(cavenumber).addVector(
 								(int) (Math.random() * 4 - 2),
 								(int) (Math.random() * 4 - 2),
 								2
 							).toPoint()
 						);
-						spawnedList.add(e);
-					}
-				}
-
-				//remove killed enemys
-				for (int i = 0; i < spawnedList.size(); i++) {
-					Robot e = spawnedList.get(i);
-					if (e.shouldBeDisposed()) {
-						spawnedList.remove(e);
+						spawnedList.add(robot);
 					}
 				}
 			}

@@ -395,8 +395,7 @@ public class Chunk {
 								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
 								//objectIn.close();
 							} catch (ClassNotFoundException | InvalidClassException ex) {
-								Gdx.app.error("Chunk", "An entity could not be loaded");
-								Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
+								Gdx.app.error("Chunk", "An entity could not be loaded: "+ex.getMessage());
 							}
 						}
 					} catch (IOException ex) {

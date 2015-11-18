@@ -86,19 +86,18 @@ public class Caveland {
 		Map.setDefaultGenerator(new ChunkGenerator());
 		
 		if (args.length > 0){
-            //look if contains launch parameters
-            for (int i = 0; i < args.length; i++) {
-                switch (args[i]) {
-                    case "-quickstart":
+			//look if contains launch parameters
+			for (String arg : args) {
+				switch (arg) {
+					case "-quickstart":
 						WE.addPostLaunchCommands(() -> {
 							CLGameController controller = new CLGameController();
 							controller.useSaveSlot(0);
 							WE.initAndStartGame(controller, new CLGameView(), new CustomLoading());
-							}
-						);
-                        break;
-                }
-            }
+						});
+						break;
+				}
+			}
         }
 		
 		WE.addPostLaunchCommands(() -> {

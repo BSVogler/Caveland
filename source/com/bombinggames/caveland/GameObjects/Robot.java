@@ -21,15 +21,15 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Enemy extends MovableEntity {
+public class Robot extends MovableEntity {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	/**
 	 * the time for the attack animation
 	 */
 	public static final float ATTACKTIME = 600;
 	private static final String KILLSOUND = "robot1destroy";
-	private static final String MOVEMENTSOUND = "robot1Wobble";
+	private static final String RUNNINGSOUND = "robot1Wobble";
 
 	private transient MovableEntity target;
 	private int runningagainstwallCounter = 0;
@@ -44,25 +44,28 @@ public class Enemy extends MovableEntity {
 	 * in m/s
 	 */
 	private float movementSpeed = 2;
-	private transient AimBand particleBand;
+	/**
+	 * what kind of robot
+	 */
 	private int type = 0;
+	private transient AimBand particleBand;
 
 	/**
 	 * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
 	 */
-	public Enemy() {
+	public Robot() {
 		super((byte) 45, 5);
+		setType(0);
 		setName("Evil Robot");
 		setObstacle(true);
-		setFloating(true);
-		setContinuousWalkingAnimation(1f);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
 	}
 
 	@Override
 	public AbstractEntity spawn(final Point point) {
-		movementSoundPlaying = WE.SOUND.loop(MOVEMENTSOUND, point);
+		if (type==1)
+			movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);
 		return super.spawn(point);
 	}
 
@@ -211,7 +214,7 @@ public class Enemy extends MovableEntity {
 	@Override
 	public void disposeFromMap() {
 		super.disposeFromMap();
-		WE.SOUND.stop(MOVEMENTSOUND, movementSoundPlaying);
+		WE.SOUND.stop(RUNNINGSOUND, movementSoundPlaying);
 	}
 
 	@Override
@@ -249,9 +252,11 @@ public class Enemy extends MovableEntity {
 		if (type == 1) {
 			setSpriteId((byte) 58);
 			setFloating(false);
+			setContinuousWalkingAnimation(0);
 		} else {
 			setSpriteId((byte) 45);
 			setFloating(true);
+			setContinuousWalkingAnimation(1f);
 		}
 	}
 

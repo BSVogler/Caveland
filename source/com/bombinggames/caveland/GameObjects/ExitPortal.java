@@ -21,7 +21,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 	private static final long serialVersionUID = 2L;
 	private boolean spawner;
-	private final ArrayList<Enemy> spawnedList = new ArrayList<>(3);
+	private final ArrayList<Robot> spawnedList = new ArrayList<>(3);
 	private transient SimpleEntity fahrstuhlkorb;
 
 	/**
@@ -50,7 +50,7 @@ public class ExitPortal extends Portal implements Interactable {
 					while (spawnedList.size() < 3) {
 						Coordinate coord = getPosition().toCoord();
 						int cavenumber = ChunkGenerator.getCaveNumber(coord.getX(), coord.getY(), 4);
-						Enemy e = (Enemy) new Enemy().spawn(
+						Robot e = (Robot) new Robot().spawn(
 							ChunkGenerator.getCaveCenter(cavenumber).addVector(
 								(int) (Math.random() * 4 - 2),
 								(int) (Math.random() * 4 - 2),
@@ -63,7 +63,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 				//remove killed enemys
 				for (int i = 0; i < spawnedList.size(); i++) {
-					Enemy e = spawnedList.get(i);
+					Robot e = spawnedList.get(i);
 					if (e.shouldBeDisposed()) {
 						spawnedList.remove(e);
 					}

@@ -3,7 +3,7 @@ package com.bombinggames.caveland.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.GameObjects.Ejira;
-import com.bombinggames.caveland.GameObjects.Enemy;
+import com.bombinggames.caveland.GameObjects.Robot;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.wurfelengine.WE;
@@ -152,7 +152,7 @@ public class CLGameController extends Controller {
 				tutorialVanya.setTutorialStep(5);
 			}
 			for (int i = 0; i < 5; i++) {
-				new Enemy().spawn(
+				new Robot().spawn(
 					new Coordinate(
 						(int) (34+Math.random()*5),
 						(int) (4+Math.random()*5),

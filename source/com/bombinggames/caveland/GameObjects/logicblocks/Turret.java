@@ -32,7 +32,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.Enemy;
+import com.bombinggames.caveland.GameObjects.Robot;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -46,7 +46,7 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public class Turret extends AbstractBlockLogicExtension {
-	private Enemy target;
+	private Robot target;
 	private Weapon gun;
 	public final float MAXDISTANCE = 20;
 	
@@ -75,10 +75,10 @@ public class Turret extends AbstractBlockLogicExtension {
 		
 		//locate target
 		target = null;
-		ArrayList<Enemy> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Enemy.class);
+		ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Robot.class);
 		if (!nearby.isEmpty()) {
 			Vector3 vecToTarget = null;
-			Iterator<Enemy> it = nearby.iterator();
+			Iterator<Robot> it = nearby.iterator();
 			while (target == null && it.hasNext()) {
 				target = it.next();
 				vecToTarget = target.getPosition().getVector().sub(gun.getPosition().getVector()).nor();

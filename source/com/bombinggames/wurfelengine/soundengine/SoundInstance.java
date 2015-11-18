@@ -34,7 +34,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 
 /**
- *
+ * An object which saves a playing sound.
  * @author Benedikt Vogler
  */
 class SoundInstance {

@@ -124,7 +124,7 @@ public class WE {
 	}
 
 	/**
-	 * Add command which will be executed after the engine launched.
+	 * Add commands which will be executed after the engine launched.
 	 *
 	 * @param command
 	 */

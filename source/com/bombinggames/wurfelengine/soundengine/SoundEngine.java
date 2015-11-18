@@ -73,10 +73,10 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * Registers a soundIterator. The soundIterator must be loaded via asset manager.
- You can not register a soundIterator twice.
-	 * @param identifier name of soundIterator
-	 * @param path path of the soundIterator
+	 * Registers a sound. The sound must be loaded via asset manager.
+ You can not register a sound twice.
+	 * @param identifier name of sound
+	 * @param path path of the sound
 	 */
 	public void register(String identifier, String path){
 		if (!sounds.containsKey(identifier)){
@@ -86,7 +86,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 */
 	public void play(String identifier){
 		Sound result = sounds.get(identifier);
@@ -95,9 +95,9 @@ public class SoundEngine {
 	}
 	
 	/***
-	 * Plays soundIterator with decreasing volume depending on distance.
-	 * @param identifier name of soundIterator
-	 * @param pos the position of the soundIterator in the world. if it is null then play at center
+	 * Plays sound with decreasing volume depending on distance.
+	 * @param identifier name of sound
+	 * @param pos the position of the sound in the world. if it is null then play at center
 	 */
 	public void play(String identifier, AbstractPosition pos){
 		Sound result = sounds.get(identifier);
@@ -107,14 +107,14 @@ public class SoundEngine {
 				volume = getVolume(pos);
 			else
 				volume *= WE.CVARS.getValueF("sound");
-			if (volume >= 0.1) //only play soundIterator louder>10%
+			if (volume >= 0.1) //only play sound louder>10%
 				result.play(volume);
 		}
 	}
 	
 	/***
 	 * 
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 * @param volume
 	 * @return 
 	 */
@@ -127,7 +127,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 * @param volume 
 	 * @param pitch
 	 * @return 
@@ -141,7 +141,7 @@ public class SoundEngine {
 	
 	/***
 	 * 
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 * @param volume the volume in the range [0,1]
 	 * @param pitch the pitch multiplier, 1 == default, &gt;1 == faster, &lt;1 == slower, the value has to be between 0.5 and 2.0
 	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
@@ -155,8 +155,8 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * playingLoops a soundIterator.
-	 * @param identifier name of soundIterator
+	 * playing Loops a sound.
+	 * @param identifier name of sound
 	 * @return the instance id
 	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
 	 */
@@ -168,9 +168,9 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * playingLoops a soundIterator. Sound decay not working.
-	 * @param identifier name of soundIterator
-	 * @param pos the position of the soundIterator in the game world. Should be a reference to the position of the object and no copy so that it updates itself.
+	 * Starts playing a loop. If already playing will start another instance
+	 * @param identifier name of sound
+	 * @param pos the position of the sound in the game world. Should be a reference to the position of the object and no copy so that it updates itself.
 	 * @return the instance id
 	 * @see com.badlogic.​gdx.​audio.​Sound#loop()
 	 */
@@ -187,9 +187,9 @@ public class SoundEngine {
 	
 
 	/**
-	 * Stops all instances of this soundIterator.
+	 * Stops all instances of this sound.
 	 *
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 */
 	public void stop(String identifier) {
 		Sound result = sounds.get(identifier);
@@ -201,9 +201,9 @@ public class SoundEngine {
 	}
 
 	/**
-	 * Stops a specifiy instance of the soundIterator.
+	 * Stops a specifiy instance of the sound.
 	 *
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String)
 	 * }.
 	 * @see com.badlogic.gdx.audio.Sound#stop()
@@ -224,7 +224,7 @@ public class SoundEngine {
 
 	/**
 	 * Set the volume of a playing instance.
-	 * @param identifier name of soundIterator
+	 * @param identifier name of sound
 	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
 	 * @param volume 
 	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume()
@@ -258,7 +258,7 @@ public class SoundEngine {
 	}
 	
 	/**
-	 * calculates the volume of a soundIterator based on the positon in the game world. Compares to cameras.
+	 * calculates the volume of a sound based on the positon in the game world. Compares to cameras.
 	 * @param pos position in the world.
 	 * @return multiplied with the settings for the volume
 	 */

@@ -32,7 +32,7 @@
 package com.bombinggames.wurfelengine;
 
 /**
- *
+ * An object which can execute code.
  * @author Benedikt Vogler
  */
 @FunctionalInterface

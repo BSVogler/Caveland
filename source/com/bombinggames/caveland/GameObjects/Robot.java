@@ -64,7 +64,7 @@ public class Robot extends MovableEntity {
 
 	@Override
 	public AbstractEntity spawn(final Point point) {
-		if (type==1)
+		if (type==0)
 			movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);
 		return super.spawn(point);
 	}
@@ -129,7 +129,7 @@ public class Robot extends MovableEntity {
 			playMovementAnimation();
 		}
 
-		if (hasPosition() && getPosition().toCoord().isInMemoryAreaHorizontal()) {
+		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			//follow the target
 			if (target != null && target.hasPosition()) {
 				if (getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 1.5f) {
@@ -138,9 +138,14 @@ public class Robot extends MovableEntity {
 
 					d.x = target.getPosition().getX() - getPosition().getX();
 					d.y = target.getPosition().getY() - getPosition().getY();
+					if (isFloating()) {
+						d.z = target.getPosition().getZ() - getPosition().getZ();
+					}
 					d.nor();//direction only
 					d.scl(movementSpeed);//speed at 2 m/s
-					d.z = getMovement().z;
+					if (!isFloating()) {
+						d.z = getMovement().z;
+					}
 
 					setMovement(d);// update the movement vector
 
@@ -163,19 +168,20 @@ public class Robot extends MovableEntity {
 			}
 
 			//if standing on same position as in last update
-			if (getPosition().equals(lastPos) && getSpeed() > 0)//not standing still
-			{
-				runningagainstwallCounter += dt;
-			} else {
-				runningagainstwallCounter = 0;
-				lastPos = getPosition().cpy();
-			}
+			if (!isFloating()) {
+				if (getPosition().equals(lastPos) && getSpeed() > 0) {//not standing still
+					runningagainstwallCounter += dt;
+				} else {
+					runningagainstwallCounter = 0;
+					lastPos = getPosition().cpy();
+				}
 
-			//jump after some time
-			if (runningagainstwallCounter > 500) {
-				jump();
-				mana = 0;
-				runningagainstwallCounter = 0;
+				//jump after some time
+				if (runningagainstwallCounter > 500) {
+					jump();
+					mana = 0;
+					runningagainstwallCounter = 0;
+				}
 			}
 		}
 	}

@@ -34,41 +34,42 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
- * 
+ *
  * @author Benedikt Vogler
  */
 public class Caveland {
+
 	/**
 	 * version string of the game Caveland
 	 */
 	public static final String VERSION = "Alpha 6";
-	
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
 		WorkingDirectory.setApplicationName("Caveland");
 		//game cvars
-		WE.CVARS.register( new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
-		WE.CVARS.register( new BooleanCVar(false), "godmode", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new IntCVar(50), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer", CVar.CVarFlags.CVAR_ARCHIVE);
+		WE.CVARS.register(new BooleanCVar(false), "godmode", CVar.CVarFlags.CVAR_ARCHIVE);
 		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime", CVar.CVarFlags.CVAR_ARCHIVE);//time in ms for item drop
 		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom", CVar.CVarFlags.CVAR_ARCHIVE);
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
-		
+
 		//configure
-        WE.setMainMenu(new MainMenuScreen());
+		WE.setMainMenu(new MainMenuScreen());
 		Block.setCustomBlockFactory(new CavelandBlocks());
 		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
-		
+
 		//register entities
 		AbstractEntity.registerEntity("Emitter Test", ParticleEmitter.class);
 		AbstractEntity.registerEntity("TFlint", TFlint.class);
@@ -82,10 +83,10 @@ public class Caveland {
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
 		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);
-		
+
 		Map.setDefaultGenerator(new ChunkGenerator());
-		
-		if (args.length > 0){
+
+		if (args.length > 0) {
 			//look if contains launch parameters
 			for (String arg : args) {
 				switch (arg) {
@@ -98,13 +99,13 @@ public class Caveland {
 						break;
 				}
 			}
-        }
-		
+		}
+
 		WE.addPostLaunchCommands(() -> {
 			WE.getConsole().addCommand(new GiveCommand());
 			WE.getConsole().addCommand(new PortalTargetCommand());
 			WE.getConsole().addCommand(new TeleportPlayerCommand());
-			
+
 			//load the needed assets
 			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
 			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
@@ -115,60 +116,59 @@ public class Caveland {
 			WE.SOUND.register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
 			WE.SOUND.register("menuConfirm", "com/bombinggames/caveland/MainMenu/bong.wav");
 		});
-		
-        WE.launch("Caveland " + VERSION, args);
-		
+
+		WE.launch("Caveland " + VERSION, args);
+
 		//unpack map
-		if (!new File(WorkingDirectory.getMapsFolder()+"/default").exists()){
+		if (!new File(WorkingDirectory.getMapsFolder() + "/default").exists()) {
 			InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
 			WorkingDirectory.unpackMap(
 				"default",
 				in
 			);
-		} else {
-			//checck if old format is already there. delete it. also delete if there is 
-			if (new File(WorkingDirectory.getMapsFolder()+"/default/map.wem").exists()) {
-				WorkingDirectory.deleteDirectory(new File(WorkingDirectory.getMapsFolder()+"/default/"));
-				InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
-				WorkingDirectory.unpackMap(
-					"default",
-					in
-				);
-			}
+		} else //checck if old format is already there. delete it. also delete if there is 
+		if (new File(WorkingDirectory.getMapsFolder() + "/default/map.wem").exists()) {
+			WorkingDirectory.deleteDirectory(new File(WorkingDirectory.getMapsFolder() + "/default/"));
+			InputStream in = Caveland.class.getClassLoader().getResourceAsStream("com/bombinggames/caveland/defaultmap.zip");
+			WorkingDirectory.unpackMap(
+				"default",
+				in
+			);
 		}
-    }
+	}
 
 	/**
 	 * Credtis of caveland.
-	 * @return 
+	 *
+	 * @return
 	 */
-	public static String getCredits(){
-		return "Caveland\n" +
-			"\n" +
-			"a game by\n" +
-			"Benedikt S. Vogler\n" +
-			"\n" +
-			"Art\n" +
-			"Frederic Brueckner\n" +
-			"\n" +
-			"Music & Sound\n" +
-			"\"SteinImBrett\":\n" +
-			"Felix von Dohlen\n" +
-			"Marcel Gohsen\n" +
-			"\n" +
-			"Special Thanks to\n" +
-			"Felix Guenther\n" +
-			"Vanya Gercheva\n" +
-			"Ulrike Vogler\n" +
-			"Gereon Vogler\n" +
-			"Rene Weiszer\n" +
-			"Bernhard Vogler\n" +
-			"Gianluca Pandolfo\n" +
-			"Thomas Vogt\n" +
-			"\"Janosch\" Friedrich\n" +
-			"Pia Lenszen\n" +
-			"reddit.com/r/gamedev\n" +
-			"Bauhaus University Weimar\n\n" +
-			"Wurfel Engine uses libGDX.\n";
-	}	
+	public static String getCredits() {
+		return "Caveland\n"
+			+ "\n"
+			+ "a game by\n"
+			+ "Benedikt S. Vogler\n"
+			+ "\n"
+			+ "Art\n"
+			+ "Frederic Brueckner\n"
+			+ "\n"
+			+ "Music & Sound\n"
+			+ "\"SteinImBrett\":\n"
+			+ "Felix von Dohlen\n"
+			+ "Marcel Gohsen\n"
+			+ "\n"
+			+ "Special Thanks to\n"
+			+ "Felix Guenther\n"
+			+ "Vanya Gercheva\n"
+			+ "Ulrike Vogler\n"
+			+ "Gereon Vogler\n"
+			+ "Rene Weiszer\n"
+			+ "Bernhard Vogler\n"
+			+ "Gianluca Pandolfo\n"
+			+ "Thomas Vogt\n"
+			+ "\"Janosch\" Friedrich\n"
+			+ "Pia Lenszen\n"
+			+ "reddit.com/r/gamedev\n"
+			+ "Bauhaus University Weimar\n\n"
+			+ "Wurfel Engine uses libGDX.\n";
+	}
 }

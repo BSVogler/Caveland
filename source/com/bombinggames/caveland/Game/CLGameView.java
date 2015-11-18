@@ -223,20 +223,26 @@ public class CLGameView extends GameView{
 		//get input and do actions
 		Input input = Gdx.input;
 
-		if (openDialogue[0]!=null && openDialogue[0].closed()) openDialogue[0]=null;
-		if (openDialogue[1]!=null && openDialogue[1].closed()) openDialogue[1]=null;
+		//remove dialogue from list
+		if (openDialogue[0] != null && openDialogue[0].closed()) {
+			openDialogue[0] = null;
+		}
+		if (openDialogue[1] != null && openDialogue[1].closed()) {
+			openDialogue[1] = null;
+		}
 		
 		//manual clipping in caves for black areas
 		for (Camera camera : getCameras()) {
 			RenderBlock[][][] cc = camera.getCameraContent();
-			//if bottom is a cave
+			//check if the chunk is a cave
 			if (cc[cc.length - 1][cc[0].length - 1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER) {
-				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 0, Chunk.getBlocksZ());
+				//iterate over cameracontent
+				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 0, Chunk.getBlocksZ());//take offset into account
 				while (iterator.hasNext()) {
 					RenderBlock next = iterator.next();
 					if (next != null) {
 						//clip floor
-						if (iterator.getCurrentIndex()[2] == 0) {
+						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
 							next.getBlockData().setClippedTop();
 						}
 						////h

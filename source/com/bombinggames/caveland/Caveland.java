@@ -62,6 +62,7 @@ public class Caveland {
 		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
 		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom");
 		WE.CVARS.register(new BooleanCVar(false), "experimentalCameraJoin");
+		
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());
 

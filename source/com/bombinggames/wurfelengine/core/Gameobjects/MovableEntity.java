@@ -76,7 +76,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * indicates whether this objects does collide with the blocks
 	 */
-	private boolean colider;
+	private boolean colider = true;
 	/**
 	 * affected by gravity
 	 */
@@ -93,7 +93,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * currently in a liquid?
 	 */
-	private boolean inliquid;
+	private boolean inLiquid;
        
 	/**
 	 * somehow coutns when the new animation step must be displayed. Value: [0, 1000]
@@ -135,7 +135,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
         orientation = new Vector2(1, 0);
-		colider = true;
 		floating = false;
 		friction = WE.CVARS.getValueF("friction");
 		if (shadow) enableShadow();
@@ -163,19 +162,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		MessageManager.getInstance().addListener(this, Events.landed.getId());
 		return this;
 	}
-	
-	
-	
+
 	/**
-	 * <b>Bounce</b> back and forth (1,2,3,2,1,2 etc.) or <b>cycle</b> (1,2,3,1,2,3 etc.)
+	 * <b>Bounce</b> back and forth (1,2,3,2,1,2 etc.) or <b>cycle</b>
+	 * (1,2,3,1,2,3 etc.)
+	 *
 	 * @param cycle true if <b>cycle</b>, false if <b>bounce</b>
 	 */
-	public void setWalkingAnimationCycling(boolean cycle){
+	public void setWalkingAnimationCycling(boolean cycle) {
 		cycleAnimation = cycle;
 	}
 	
 	/**
 	 * Enable this to have a walking cycle even if not moving
+	 *
 	 * @param walkOnTheSpot the speed of the animation: ~1. To disable pass 0.
 	 */
 	public void setContinuousWalkingAnimation(float walkOnTheSpot) {
@@ -183,64 +183,73 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 * Set step mode or disable step mode. if no step mode plays animation back and forth. If step mode then some strange pattern which looks god for walking animations.
-	 * @param stepmode  stepmode = true, 
+	 * Set step mode or disable step mode. if no step mode plays animation back
+	 * and forth. If step mode then some strange pattern which looks god for
+	 * walking animations.
+	 *
+	 * @param stepmode stepmode = true,
 	 */
 	public void setWalkingStepMode(boolean stepmode) {
 		this.stepMode = stepmode;
 	}
 	
 	
-   /**
-     * This method should define what happens when the object  jumps. It should call super.jump(int velo)
-     * @see #jump(float, boolean)
-     */
-    public void jump(){
+ /**
+	 * This method should define what happens when the object jumps. It should
+	 * call super.jump(int velo)
+	 *
+	 * @see #jump(float, boolean)
+	 */
+	public void jump() {
 		//jump(0);
-	};
+	}
    
 	/**
-     * Jump with a specific speed
-     * @param velo the velocity in m/s
+	 * Jump with a specific speed
+	 *
+	 * @param velo the velocity in m/s
 	 * @param playSound
-     */
-    public void jump(float velo, boolean playSound) {
+	 */
+	public void jump(float velo, boolean playSound) {
 		final Vector2 horMov = getMovementHor();
 		setMovement(new Vector3(horMov.x, horMov.y, velo));
-		if (playSound && jumpingSound != null)
+		if (playSound && jumpingSound != null) {
 			WE.SOUND.play(jumpingSound, getPosition());
-    }
-	
-    /**
-     * Defines the direction of the gun - if no gun available - the direction of the head.
-     * @return  If not overwriten returning orientation. copy save
-     */
-   public Vector3 getAiming(){
-	   return new Vector3(getOrientation(),0);
-   };
+		}
+	}
 
-    
+	/**
+	 * Defines the direction of the gun - if no gun available - the direction of
+	 * the head.
+	 *
+	 * @return If not overwriten returning orientation. copy save
+	 */
+	public Vector3 getAiming() {
+		return new Vector3(getOrientation(), 0);
+	}
+
    /**
-     * Updates the character. Applies gravitation.	
-     * @param dt time since last update in ms
-     */
+	 * Updates the character. Applies gravitation.
+	 *
+	 * @param dt time since last update in ms
+	 */
 	@Override
-    public void update(float dt) {
+	public void update(float dt) {
 		super.update(dt);
-        
-        /*Here comes the stuff where the character interacts with the environment*/
-        if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
-			float t = dt*0.001f; //t = time in s
+
+		/*Here comes the stuff where the character interacts with the environment*/
+		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
+			float t = dt * 0.001f; //t = time in s
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
 			float[] dMove = new float[]{
-				t * movement.x*GAME_EDGELENGTH,
-				t * movement.y*GAME_EDGELENGTH,
+				t * movement.x * GAME_EDGELENGTH,
+				t * movement.y * GAME_EDGELENGTH,
 				0
 			};
 
 			//if movement allowed => move
-			if (colider && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius) ) {                
+			if (colider && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius)) {
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
@@ -256,7 +265,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			}
 
 			//add movement
-			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH*t));
+			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH * t));
 
 			//save orientation
 			updateOrientation();
@@ -265,12 +274,16 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (getPosition().isInMemoryAreaHorizontal()) {
 				//check new height for colission            
 				//land if standing in or under 0-level or there is an obstacle
-				if (movement.z < 0 && isOnGround()){
+				if (movement.z < 0 && isOnGround()) {
 					onCollide();
-					if (!hasPosition()) return;//object may be destroyed during colission
+					if (!hasPosition()) {
+						return;//object may be destroyed during colission
+					}
 					if (!floating) {
 						MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
-						if (!hasPosition()) return;//object may be destroyed during colission
+						if (!hasPosition()) {
+							return;//object may be destroyed during colission
+						}
 					}
 					movement.z = 0;
 
@@ -280,23 +293,24 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 				Block block = getPosition().getBlock();
 				//if entering water
-				if (!inliquid && block != null && block.isLiquid())
+				if (!inLiquid && block != null && block.isLiquid()) {
 					if (waterSound != null) {
 						WE.SOUND.play(waterSound);
 					}
+				}
 
-				if (block != null)
-					inliquid = block.isLiquid();//save if in water
-				else inliquid=false;
+				if (block != null) {
+					inLiquid = block.isLiquid();//save if in water
+				} else {
+					inLiquid = false;
+				}
 
 				if (!walkingPaused) {
+					//walking cycle
 					if(walkOnTheSpot > 0) {
 						walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
-					} else {
-						//walking cycle
-						if (floating || isOnGround()) {
-							walkingCycle += dt * getSpeed() * WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
-						}
+					} else if (floating || isOnGround()) {
+						walkingCycle += dt * getSpeed() * WE.CVARS.getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
 					}
 
 					if (walkingCycle >= 1000) {
@@ -307,14 +321,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					//make a step
 					if (floating || isOnGround()) {
 						//play sound twice a cicle
-						if (walkingCycle<250){
-							if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+						if (walkingCycle < 250) {
+							if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
 								step();
 							}
-						} else if (walkingCycle < 500){
-							stepSoundPlayedInCiclePhase=false;
-						} else if (walkingCycle > 500){
-							if (stepSound1Grass!=null && ! stepSoundPlayedInCiclePhase && isOnGround()) {
+						} else if (walkingCycle < 500) {
+							stepSoundPlayedInCiclePhase = false;
+						} else if (walkingCycle > 500) {
+							if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
 								step();
 							}
 						}
@@ -710,21 +724,22 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
     public boolean isOnGround() {
 		if (getPosition() == null) {
 			return false;
-		}
-		if (getPosition().getZ() > 0) {
-			if (getPosition().getZ() > Chunk.getGameHeight()) {
-				return false;
+		} else {
+			if (getPosition().getZ() > 0) {
+				if (getPosition().getZ() > Chunk.getGameHeight()) {
+					return false;
+				}
+				getPosition().setZ(getPosition().getZ() - 1);//move one down for check
+
+				Block block = getPosition().getBlock();
+				boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(getPosition(), colissionRadius);
+				getPosition().setZ(getPosition().getZ() + 1);//reverse
+
+				//if standing on ground on own or neighbour block then true
+				return (super.isOnGround() || colission);
 			}
-			getPosition().setZ(getPosition().getZ() - 1);//move one down for check
-
-			Block block = getPosition().getBlock();
-			boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(getPosition(), colissionRadius);
-			getPosition().setZ(getPosition().getZ() + 1);//reverse
-
-			//if standing on ground on own or neighbour block then true
-			return (super.isOnGround() || colission);
+			return true;
 		}
-		return true;
     }
 
     /**
@@ -732,7 +747,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
      * @return 
      */
     public boolean isInLiquid() {
-        return inliquid;
+        return inLiquid;
     }
 
 	/**

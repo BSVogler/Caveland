@@ -240,17 +240,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			float t = dt * 0.001f; //t = time in s
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
-			float[] dMove = new float[]{
+			Vector3 dMove = new Vector3(
 				t * movement.x * GAME_EDGELENGTH,
 				t * movement.y * GAME_EDGELENGTH,
 				0
-			};
+			);
 
-			//if movement allowed => move
-			if (colider && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius)) {
+			Point newPos = getPosition().cpy().addVector(dMove);
+			//check if movement to new position is okay
+			if (colider && collidesHorizontal(newPos, colissionRadius)) {
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
+			} else {
+				;
 			}
 
 			/*VERTICAL MOVEMENT*/
@@ -261,18 +264,34 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					new Vector3(0, 0, -WE.CVARS.getValueF("gravity") * t) //in m/s
 				);
 			}
-
-			//add movement
-			getPosition().addVector(getMovement().scl(GAME_EDGELENGTH * t));
+			
+			newPos = getPosition().cpy().addVector(getMovement().scl(GAME_EDGELENGTH * t));
+			
+			if (movement.z > 0){
+				if (isOnCeil(newPos)) {
+					movement.z = 0;
+				}
+				newPos = getPosition().cpy().addVector(getMovement().scl(GAME_EDGELENGTH * t));
+			}
+			
+			//apply movement
+			getPosition().setValues(newPos);
 
 			//save orientation
 			updateOrientation();
 
-			//movement has applied maybe outside memory area 
+			//movement has applied, now maybe outside memory area 
 			if (getPosition().isInMemoryAreaHorizontal()) {
 				//check new height for colission            
 				//land if standing in or under 0-level or there is an obstacle
 				if (movement.z < 0 && isOnGround()) {
+					
+					//stop movement
+					movement.z = 0;
+
+					//set on ground level of blockl
+					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
+					//send event
 					onCollide();
 					if (!hasPosition()) {
 						return;//object may be destroyed during colission
@@ -283,12 +302,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 							return;//object may be destroyed during colission
 						}
 					}
-					movement.z = 0;
-
-					//set on top of block
-					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
 				}
-
+				
 				Block block = getPosition().getBlock();
 				//if entering water
 				if (!inLiquid && block != null && block.isLiquid()) {
@@ -500,9 +515,65 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
+		//right corner
+		block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+		
+		//chek in the middle if bigger then a block
+		if (getDimensionZ() > Block.GAME_EDGELENGTH){
+			//back corner back
+			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
+			if (block != null && block.isObstacle()) {
+				return true;
+			}
+			//front corner
+			block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+			if (block != null && block.isObstacle()) {
+				return true;
+			}
+
+			//check X
+			//left
+			block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+			if (block != null && block.isObstacle()) {
+				return true;
+			}
+			//bottom corner
+			block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+			if (block != null && block.isObstacle()) {
+				return true;
+			}
+			
+			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
+		} else {
+			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()).getBlock();
+		}
+		
+		//back corner top
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+		//front corner
+		block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+
+        //check X
+		//left
+		block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
 		//bottom corner
 		block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
-		return block != null && block.isObstacle();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+		
+		return false;
 	}
     
     /**
@@ -740,6 +811,58 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			}
 		}
     }
+	
+	/**
+	 * 
+	 * @param pos
+	 * @return 
+	 */
+	public boolean isOnCeil(Point pos){
+		if (pos == null) {
+			return false;
+		} else {
+			if (pos.getZ() > 0) {
+				if (pos.getZ() > Chunk.getGameHeight()) {
+					return false;
+				}
+				Point checkPoint = pos.cpy();
+				checkPoint.setZ(checkPoint.getZ() + getDimensionZ());// top
+
+				//center check
+				Block block = checkPoint.getBlock();
+				if (block != null && block.isObstacle()) {
+					return true;
+				}
+				
+				block = checkPoint.addVector(0, -colissionRadius, 0).getBlock();
+				//back corner top
+				if (block != null && block.isObstacle()) {
+					return true;
+				}
+				//front corner
+				block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+				if (block != null && block.isObstacle()) {
+					return true;
+				}
+
+				//check X
+				//left
+				block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+				if (block != null && block.isObstacle()) {
+					return true;
+				}
+				//bottom corner
+				block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+				if (block != null && block.isObstacle()) {
+					return true;
+				}
+
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
 
     /**
      * Is the character standing in a liquid?

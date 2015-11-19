@@ -35,7 +35,6 @@ import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -158,23 +157,27 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
      * @return true when on the ground. False if in air or not in memory.
      */
     public boolean isOnGround(){
-        if (getPosition().getZ() <= 0) return true; //if entity is under the map
-        
-        if (getPosition().getZ() < Chunk.getGameHeight()){
-            //check if one pixel deeper is on ground.
-            int z = (int) ((getPosition().getZ()-1)/GAME_EDGELENGTH);
-            if (z > Chunk.getBlocksZ()-1) z = Chunk.getBlocksZ()-1;
+		Point pos = getPosition();
+		if (pos == null) {
+			return false;
+		} else {
+			if (pos.getZ() <= 0) {
+				return true; //if entity is under the map
+			}
+			if (pos.getZ() < Chunk.getGameHeight()) {
+				//check if one pixel deeper is on ground.
 
-			Block block = new Coordinate(
-				position.toCoord().getX(),
-				position.toCoord().getY(),
-				z
-			).getBlock();
-			if (block == null)
-				return false;
-			return block.isObstacle();
-        } else
-            return false;//return false if over map
+				pos.setZ(pos.getZ() - 1);//move one up for check
+
+				Block block = pos.getBlock();
+				boolean colission = (block != null && block.isObstacle());
+				pos.setZ(pos.getZ() + 1);//reverse
+
+				return colission;
+			} else {
+				return false;//return false if over map
+			}
+		}
     }
     
     /**

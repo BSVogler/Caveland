@@ -717,28 +717,29 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
     /**
-     * Checks if standing on blocks.
+     * Checks if standing on blocks. overrides the method by checking with a radius.
      * @return 
      */
     @Override
     public boolean isOnGround() {
-		if (getPosition() == null) {
+		Point pos = getPosition();
+		if (pos == null) {
 			return false;
 		} else {
-			if (getPosition().getZ() > 0) {
-				if (getPosition().getZ() > Chunk.getGameHeight()) {
+			if (pos.getZ() > 0) {
+				if (pos.getZ() > Chunk.getGameHeight()) {
 					return false;
 				}
-				getPosition().setZ(getPosition().getZ() - 1);//move one down for check
+				pos.setZ(pos.getZ() - 1);//move one down for check
 
-				Block block = getPosition().getBlock();
-				boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(getPosition(), colissionRadius);
-				getPosition().setZ(getPosition().getZ() + 1);//reverse
+				Block block = pos.getBlock();
+				boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(pos, colissionRadius);
+				pos.setZ(pos.getZ() + 1);//reverse
 
-				//if standing on ground on own or neighbour block then true
-				return (super.isOnGround() || colission);
+				return colission;
+			} else {
+				return true;
 			}
-			return true;
 		}
     }
 

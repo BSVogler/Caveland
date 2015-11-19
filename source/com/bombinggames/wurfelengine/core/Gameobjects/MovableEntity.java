@@ -76,7 +76,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * indicates whether this objects does collide with the blocks
 	 */
-	private boolean coliding;
+	private boolean colider;
 	/**
 	 * affected by gravity
 	 */
@@ -135,7 +135,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
         orientation = new Vector2(1, 0);
-		coliding = true;
+		colider = true;
 		floating = false;
 		friction = WE.CVARS.getValueF("friction");
 		if (shadow) enableShadow();
@@ -151,7 +151,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		movement = entity.movement;
 		orientation = new Vector2(1, 0);
 		friction = entity.friction;
-		coliding = entity.coliding;
+		colider = entity.colider;
 		floating = entity.floating;
 		
 		enableShadow();
@@ -240,7 +240,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			};
 
 			//if movement allowed => move
-			if (coliding && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius) ) {                
+			if (colider && collidesHorizontal(getPosition().cpy().addVector(dMove), colissionRadius) ) {                
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
@@ -675,7 +675,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @return
 	 */
 	public boolean isColiding() {
-		return coliding;
+		return colider;
 	}
 
 	/**
@@ -683,7 +683,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param coliding true if collides with environment
 	 */
 	public void setColiding(boolean coliding) {
-		this.coliding = coliding;
+		this.colider = coliding;
 	}
        
 	/**

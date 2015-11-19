@@ -72,7 +72,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * saves the viewing direction even if the player is not moving. Should never be len()==0
 	 */
-	private Vector2 orientation;
+	private Vector2 orientation = new Vector2(1, 0);
 	/**
 	 * indicates whether this objects does collide with the blocks
 	 */
@@ -134,7 +134,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         super(id);
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
-        orientation = new Vector2(1, 0);
 		floating = false;
 		friction = WE.CVARS.getValueF("friction");
 		if (shadow) enableShadow();
@@ -148,7 +147,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		super(entity.getSpriteId());
 		this.spritesPerDir = entity.spritesPerDir;
 		movement = entity.movement;
-		orientation = new Vector2(1, 0);
 		friction = entity.friction;
 		colider = entity.colider;
 		floating = entity.floating;

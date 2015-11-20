@@ -288,7 +288,7 @@ public class CVarSystem {
 	 * @since v1.4.2
 	 */
 	public void register(CVar cvar, String name) {
-		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
+		register(cvar, name);
 	}
 
 	
@@ -298,97 +298,97 @@ public class CVarSystem {
 	 */
 	private void initEngineCVars(){
 		System.out.println("Init Engine CVars…");
-		register(new FloatCVar(9.81f), "gravity", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(-40), "worldSpinAngle", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "loadPixmap", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.00078125f), "LEazimutSpeed", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "LEnormalMapRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(1920), "renderResolutionWidth", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "enableLightEngine", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "enableFog", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.3f), "fogR", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.4f), "fogG", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(1.0f), "fogB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(2f), "fogOffset", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.17f), "fogFactor", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "enableAutoShade", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "enableScalePrototype", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "enableHSD", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "mapChunkSwitch", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "mapUseChunks", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "DevMode", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "DevDebugRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "editorVisible", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(2), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "preventUnloading", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "shouldLoadMap", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "clearBeforeRendering", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(Input.Keys.F1), "KeyConsole", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(Input.Keys.TAB), "KeySuggestion", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(1.0f), "music", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(1.0f), "sound", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(60), "limitFPS", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(true), "loadEntities", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new BooleanCVar(false), "enableMinimap", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(1.0f), "walkingAnimationSpeedCorrection", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(4.0f), "playerWalkingSpeed", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new FloatCVar(9.81f), "gravity");
+		register(new IntCVar(-40), "worldSpinAngle");
+		register(new BooleanCVar(false), "loadPixmap");
+		register(new FloatCVar(0.00078125f), "LEazimutSpeed");
+		register(new BooleanCVar(false), "LEnormalMapRendering");
+		register(new IntCVar(1920), "renderResolutionWidth");
+		register(new BooleanCVar(true), "enableLightEngine");
+		register(new BooleanCVar(true), "enableFog");
+		register(new FloatCVar(0.3f), "fogR");
+		register(new FloatCVar(0.4f), "fogG");
+		register(new FloatCVar(1.0f), "fogB");
+		register(new FloatCVar(2f), "fogOffset");
+		register(new FloatCVar(0.17f), "fogFactor");
+		register(new BooleanCVar(false), "enableAutoShade");
+		register(new BooleanCVar(false), "enableScalePrototype");
+		register(new BooleanCVar(true), "enableHSD");
+		register(new BooleanCVar(true), "mapChunkSwitch");
+		register(new BooleanCVar(true), "mapUseChunks");
+		register(new BooleanCVar(false), "DevMode");
+		register(new BooleanCVar(false), "DevDebugRendering");
+		register(new BooleanCVar(false), "editorVisible");
+		register(new IntCVar(2), "groundBlockID");
+		register(new BooleanCVar(true), "preventUnloading");
+		register(new BooleanCVar(true), "shouldLoadMap");
+		register(new BooleanCVar(true), "clearBeforeRendering");
+		register(new IntCVar(Input.Keys.F1), "KeyConsole");
+		register(new IntCVar(Input.Keys.TAB), "KeySuggestion");
+		register(new FloatCVar(1.0f), "music");
+		register(new FloatCVar(1.0f), "sound");
+		register(new IntCVar(60), "limitFPS");
+		register(new BooleanCVar(true), "loadEntities");
+		register(new BooleanCVar(false), "enableMinimap");
+		register(new FloatCVar(1.0f), "walkingAnimationSpeedCorrection");
+		register(new FloatCVar(4.0f), "playerWalkingSpeed");
 		register(new FloatCVar(1f), "timeSpeed", CVar.CVarFlags.CVAR_VOLATILE);
-		register(new FloatCVar(0.001f), "friction", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.03f), "playerfriction", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(6000), "soundDecay", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(4), "controllermacButtonStart", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(5), "controllermacButtonSelect", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(8), "controllermacButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(9), "controllermacButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(13), "controllermacButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(12), "controllermacButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(11), "controllermacButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(14), "controllermacButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(1), "controllermacAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(2), "controllermacAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllermacAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllermacAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(0), "controllerwindowsButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(1), "controllerwindowsButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(2), "controllerwindowsButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllerwindowsButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(4), "controllerwindowsButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(5), "controllerwindowsButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(6), "controllerwindowsButtonSelect", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(7), "controllerwindowsButtonStart", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(0), "controllerwindowsAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(1), "controllerwindowsAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllerwindowsAxisLT", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(4), "controllerwindowsAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(4), "controllerlinuxButtonStart", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(5), "controllerlinuxButtonSelect", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(8), "controllerlinuxButtonLB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(9), "controllerlinuxButtonRB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(11), "controllerlinuxButtonX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(12), "controllerlinuxButtonB", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(13), "controllerlinuxButtonA", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(14), "controllerlinuxButtonY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(1), "controllerlinuxAxisRT", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(2), "controllerlinuxAxisLX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3), "controllerlinuxAxisLY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(0), "resolutionX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(0), "resolutionY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(3500), "MaxSprites", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(90), "CameraLeapRadius", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(0.5f), "ambientOcclusion", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new FloatCVar(200), "MaxDelta", CVar.CVarFlags.CVAR_ARCHIVE);//skip delta if under 5 FPS to prevent glitches
+		register(new FloatCVar(0.001f), "friction");
+		register(new FloatCVar(0.03f), "playerfriction");
+		register(new IntCVar(6000), "soundDecay");
+		register(new IntCVar(4), "controllermacButtonStart");
+		register(new IntCVar(5), "controllermacButtonSelect");
+		register(new IntCVar(8), "controllermacButtonLB");
+		register(new IntCVar(9), "controllermacButtonRB");
+		register(new IntCVar(13), "controllermacButtonX");
+		register(new IntCVar(12), "controllermacButtonB");
+		register(new IntCVar(11), "controllermacButtonA");
+		register(new IntCVar(14), "controllermacButtonY");
+		register(new IntCVar(1), "controllermacAxisRT");
+		register(new IntCVar(2), "controllermacAxisLX");
+		register(new IntCVar(3), "controllermacAxisLY");
+		register(new IntCVar(3), "controllermacAxisLY");
+		register(new IntCVar(0), "controllerwindowsButtonA");
+		register(new IntCVar(1), "controllerwindowsButtonB");
+		register(new IntCVar(2), "controllerwindowsButtonX");
+		register(new IntCVar(3), "controllerwindowsButtonY");
+		register(new IntCVar(4), "controllerwindowsButtonLB");
+		register(new IntCVar(5), "controllerwindowsButtonRB");
+		register(new IntCVar(6), "controllerwindowsButtonSelect");
+		register(new IntCVar(7), "controllerwindowsButtonStart");
+		register(new IntCVar(0), "controllerwindowsAxisLY");
+		register(new IntCVar(1), "controllerwindowsAxisLX");
+		register(new IntCVar(3), "controllerwindowsAxisLT");
+		register(new IntCVar(4), "controllerwindowsAxisRT");
+		register(new IntCVar(4), "controllerlinuxButtonStart");
+		register(new IntCVar(5), "controllerlinuxButtonSelect");
+		register(new IntCVar(8), "controllerlinuxButtonLB");
+		register(new IntCVar(9), "controllerlinuxButtonRB");
+		register(new IntCVar(11), "controllerlinuxButtonX");
+		register(new IntCVar(12), "controllerlinuxButtonB");
+		register(new IntCVar(13), "controllerlinuxButtonA");
+		register(new IntCVar(14), "controllerlinuxButtonY");
+		register(new IntCVar(1), "controllerlinuxAxisRT");
+		register(new IntCVar(2), "controllerlinuxAxisLX");
+		register(new IntCVar(3), "controllerlinuxAxisLY");
+		register(new IntCVar(3), "controllerlinuxAxisLY");
+		register(new IntCVar(0), "resolutionX");
+		register(new IntCVar(0), "resolutionY");
+		register(new IntCVar(3500), "MaxSprites");
+		register(new IntCVar(90), "CameraLeapRadius");
+		register(new FloatCVar(0.5f), "ambientOcclusion");
+		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
 	}
 	
 	private void initMapCVars(){
 		//engine cvar registration
 		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
-		register(new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(10), "chunkBlocksX", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(40), "chunkBlocksY", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new IntCVar(10), "chunkBlocksZ", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new StringCVar(""), "mapname", CVar.CVarFlags.CVAR_ARCHIVE);
-		register(new StringCVar(""), "description", CVar.CVarFlags.CVAR_ARCHIVE);
+		register(new IntCVar(1), "groundBlockID");
+		register(new IntCVar(10), "chunkBlocksX");
+		register(new IntCVar(40), "chunkBlocksY");
+		register(new IntCVar(10), "chunkBlocksZ");
+		register(new StringCVar(""), "mapname");
+		register(new StringCVar(""), "description");
 		
 		//custom registration of cvars
 		if (customMapCVarsRegistration != null) {

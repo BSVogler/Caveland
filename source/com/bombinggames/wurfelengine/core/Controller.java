@@ -151,8 +151,8 @@ public class Controller implements GameManager, MapObserver {
 	private boolean initalized = false;
 	private int saveSlot;
 	private String mapName = "default";
-	protected ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
-	protected final Cursor cursor = new Cursor();
+	private final Cursor cursor = new Cursor();
+	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called

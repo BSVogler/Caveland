@@ -599,9 +599,11 @@ public class EditorView extends GameView implements Telegraph {
 			}
 			
 			//if entity under mosue is selected
-			if (entityUnderMouse!=null && controller.getSelectedEntities().contains(entityUnderMouse))
+			if (entityUnderMouse != null && controller.getSelectedEntities().contains(entityUnderMouse)) {
 				WE.getEngineView().setCursor(2);
-			else WE.getEngineView().setCursor(0);
+			} else {
+				WE.getEngineView().setCursor(0);
+			}
 
 					
 			//show selection list if mouse is at position and if tool supports selection		
@@ -626,27 +628,27 @@ public class EditorView extends GameView implements Telegraph {
             return false;
         }
 
-        @Override
-        public boolean scrolled(int amount) {
-			camera.setZRenderingLimit(camera.getZRenderingLimit()-amount);
+		@Override
+		public boolean scrolled(int amount) {
+			camera.setZRenderingLimit(camera.getZRenderingLimit() - amount);
 			return true;
-        }
+		}
 
 		private void bucket(Coordinate from, Coordinate to) {
 			int left = from.getX();
 			int right = to.getX();
-			if (to.getX()<left) {
+			if (to.getX() < left) {
 				left = to.getX();
 				right = from.getX();
 			}
-			
+
 			int top = from.getY();
 			int bottom = to.getY();
-			if (to.getY()<top) {
+			if (to.getY() < top) {
 				top = to.getY();
 				bottom = from.getY();
 			}
-			
+
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
@@ -654,25 +656,26 @@ public class EditorView extends GameView implements Telegraph {
 							new Coordinate(x, y, from.getZ())
 						)
 					);
-				}	
+				}
 			}
 		}
 
-    }
-    
-    private class LoadButton extends ClickListener{
-        private final Controller controller;
-        private final EditorView view;
-        
-        private LoadButton(GameView view,Controller controller) {
-            this.controller = controller;
-            this.view = (EditorView) view;
-        }
-        
-        @Override
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            getLoadMenu().setOpen(view, true);
-            return true;
-        }
-    }
+	}
+
+	private class LoadButton extends ClickListener {
+
+		private final Controller controller;
+		private final EditorView view;
+
+		private LoadButton(GameView view, Controller controller) {
+			this.controller = controller;
+			this.view = (EditorView) view;
+		}
+
+		@Override
+		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			getLoadMenu().setOpen(view, true);
+			return true;
+		}
+	}
 }

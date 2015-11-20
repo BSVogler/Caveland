@@ -288,7 +288,7 @@ public class CVarSystem {
 	 * @since v1.4.2
 	 */
 	public void register(CVar cvar, String name) {
-		register(cvar, name);
+		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
 	}
 
 	

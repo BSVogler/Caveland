@@ -41,15 +41,15 @@ public abstract class CVar {
 	 */
 	public static enum CVarFlags {
 		/**
-		 * does save changes to file
+		 * If changed is saved.
 		*/
 		CVAR_ARCHIVE, 
 		/**
-		 * never saved to file
+		 * never saved to file.
 		 */
 		 CVAR_VOLATILE,
 		 /**
-		 * gets in all cases saved
+		 * Gets in all cases saved.
 		 */
 		 CVAR_ALWAYSSAVE
 	}

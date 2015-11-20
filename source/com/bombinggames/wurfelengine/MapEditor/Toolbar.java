@@ -38,9 +38,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.bombinggames.wurfelengine.Command;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  * A toolbar for the editor.
@@ -117,6 +123,97 @@ public class Toolbar extends Window {
 		 */
 		public boolean selectFromEntities() {
 			return selectFromEntities;
+		}
+		
+		public Command getCommand(GameView view, Cursor selection, PlacableGUI placableGUI){
+			if (null != this) switch (this) {
+				case DRAW:
+					return new Command() {
+						private Coordinate coord;
+						private Block previous;
+						private Block block;
+						
+						public void init(){
+							
+						}
+						
+						@Override
+						public void execute() {
+							if (coord==null) {
+								coord = selection.getCoordInNormalDirection();
+								block = placableGUI.getBlock();
+								previous = coord.getBlock();
+							}
+							Controller.getMap().setBlock(coord, block);
+						}
+						
+						@Override
+						public void undo() {
+							Controller.getMap().setBlock(coord, previous);
+						}
+					};
+				case REPLACE:
+					return new Command() {
+						private Coordinate coord;
+						private Block previous;
+						private Block block;
+						
+						@Override
+						public void execute() {
+							if (coord==null) {
+								coord = selection.getPosition().toCoord();
+								block = placableGUI.getBlock();
+								previous = coord.getBlock();
+							}
+							Controller.getMap().setBlock(coord, block);
+						}
+						
+						@Override
+						public void undo() {
+							Controller.getMap().setBlock(coord, previous);
+						}
+					};
+				case SPAWN:
+					return new Command() {
+						private AbstractEntity ent = null;
+						private Point point;
+						
+						@Override
+						public void execute() {
+							if (point == null) {
+								point = selection.getNormal().getPosition();
+								ent = placableGUI.getEntity();
+							}
+							ent = placableGUI.getEntity();
+							ent.spawn(point.cpy());
+						}
+						
+						@Override
+						public void undo() {
+							ent.dispose();
+						}
+					}; 
+					
+			}
+			//erase
+			return new Command() {
+				private Block previous;
+				private Coordinate coord;
+				
+				@Override
+				public void execute() {
+					if (coord==null) {
+						coord = selection.getPosition().toCoord();
+						previous = coord.getBlock();
+					}
+					Controller.getMap().setBlock(coord, null);
+				}
+
+				@Override
+				public void undo() {
+					Controller.getMap().setBlock(coord, previous);
+				}
+			};
 		}
 	}
 

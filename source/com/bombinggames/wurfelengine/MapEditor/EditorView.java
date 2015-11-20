@@ -55,7 +55,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -351,8 +350,16 @@ public class EditorView extends GameView implements Telegraph {
 				moveEntities = 1;
 			}
 
-			if (keycode == Keys.Q) {
+			if (keycode == Input.Keys.Q) {
 				moveEntities = -1;
+			}
+			
+			if (keycode == Input.Keys.Z) {
+				controller.undoCommand();
+			}
+			
+			if (keycode == Keys.U) {
+				controller.redoCommand();
 			}
 
 			//manage camera movement
@@ -449,14 +456,13 @@ public class EditorView extends GameView implements Telegraph {
 				
 				switch (toggledTool){
 					case DRAW:
-						RenderBlock blockToPlace = leftColorGUI.getBlock(selection.getCoordInNormalDirection());
 						dragLayer = selection.getCoordInNormalDirection().getZ();
-						Controller.getMap().setBlock(blockToPlace);
+						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
 						break;
 					case REPLACE:
-						blockToPlace = leftColorGUI.getBlock(coords);
+					case ERASE:
 						dragLayer = coords.getZ();
-						Controller.getMap().setBlock(blockToPlace);
+						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
 						break;
 					case SELECT:
 						if (WE.getEngineView().getCursor() != 2) {//not dragging
@@ -466,16 +472,11 @@ public class EditorView extends GameView implements Telegraph {
 							select(selectDownX, selectDownY, selectDownX, selectDownY);
 						}
 						break;
-					case ERASE:
-						if (coords.getZ() >= 0)
-							Controller.getMap().setBlock(coords, null);
-						dragLayer = coords.getZ();
-						break;
 					case BUCKET:
 						bucketDown = coords;
 						break;
 					case SPAWN:
-						leftColorGUI.getEntity().spawn(selection.getNormal().getPosition().cpy());
+						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
 						break;
 				}
 			}
@@ -548,8 +549,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlock(coords) == null) {
-						RenderBlock block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setBlock(block);
+						Controller.getMap().setBlock(coords, leftColorGUI.getBlock());
 					}
 				}
 			}
@@ -561,8 +561,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlock(coords) != null) {
-						RenderBlock block = leftColorGUI.getBlock(coords);
-						Controller.getMap().setBlock(block);
+						Controller.getMap().setBlock(coords, leftColorGUI.getBlock());
 					}
 				}
 			}
@@ -652,9 +651,8 @@ public class EditorView extends GameView implements Telegraph {
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
-						leftColorGUI.getBlock(
-							new Coordinate(x, y, from.getZ())
-						)
+						new Coordinate(x, y, from.getZ()),
+						leftColorGUI.getBlock()
 					);
 				}
 			}

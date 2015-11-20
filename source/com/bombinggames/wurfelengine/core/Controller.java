@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
+import com.bombinggames.wurfelengine.Command;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -153,7 +154,43 @@ public class Controller implements GameManager, MapObserver {
 	private String mapName = "default";
 	private final Cursor cursor = new Cursor();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
+	private final Command[] commandHistory = new Command[WE.CVARS.getValueI("historySize")];
+	private int lastCommandPos = -1;
 
+
+	public void executeCommand(Command cmd){
+		//shift commands back if full
+		if (lastCommandPos >= commandHistory.length-1) {
+			for (int i = 0; i < commandHistory.length-1; i++) {
+				commandHistory[i]=commandHistory[i+1];
+			}
+		} else {
+			lastCommandPos++;
+		}
+		
+		commandHistory[lastCommandPos] = cmd;
+		
+		commandHistory[lastCommandPos].execute();
+		//empty in front
+		for (int i = lastCommandPos+1; i < commandHistory.length; i++) {
+			commandHistory[i]=null;
+		}
+	}
+	
+	public void undoCommand(){
+		if (lastCommandPos >= 0 && lastCommandPos < commandHistory.length-1){
+			commandHistory[lastCommandPos].undo();
+			lastCommandPos--;
+		}
+	}
+	
+	public void redoCommand(){
+		if (lastCommandPos >= -1 && lastCommandPos < commandHistory.length-1 && commandHistory[lastCommandPos+1] != null){
+			lastCommandPos++;
+			commandHistory[lastCommandPos].execute();
+		}
+	}
+	
 	/**
 	 * uses a specific save slot for loading and saving the map. Can be called
 	 * before calling init().

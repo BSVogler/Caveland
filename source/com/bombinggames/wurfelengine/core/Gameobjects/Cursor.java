@@ -107,7 +107,7 @@ public class Cursor extends AbstractEntity {
 	
 	/**
 	 * if at ground does not move up
-	 * @return the neighbour coordinate where the normal points to
+	 * @return the neighbour coordinate where the normal points to. cpy safe
 	 */
 	public Coordinate getCoordInNormalDirection(){
 		Coordinate coords = getPosition().toCoord();

@@ -42,8 +42,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -173,18 +171,14 @@ public class PlacableGUI extends WidgetGroup {
 	
 	/**
 	 * Get a new instance of a selected block.
-	 * @param coord the position of the block instance
-	 * @return a new RenderBlock instance of the selected id and value.
+	 * @return a new Block instance of the selected id and value.
 	 */
-	public RenderBlock getBlock(Coordinate coord){
-		RenderBlock rblock;
+	public Block getBlock(){
 		if (block == null) {
-			rblock = new RenderBlock((byte) 0, (byte) 0);
+			return null;
 		} else {
-			rblock = new RenderBlock(block.getId(), block.getValue());
+			return Block.getInstance(block.getId(), block.getValue());
 		}
-		rblock.setPosition(coord);
-		return rblock;
 	}
 	
 	/**

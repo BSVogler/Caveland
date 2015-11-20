@@ -96,7 +96,7 @@ public class WE {
 	private static LwjglApplication application;
 	private static boolean skipintro = false;
 	private static String iconPath = null;
-	private static final ArrayList<Command> commandsAfterLaunch = new ArrayList<>(0);
+	private static final ArrayList<LaunchCommand> commandsAfterLaunch = new ArrayList<>(0);
 	/**
 	 * default is that every manager state is game.
 	 */
@@ -128,7 +128,7 @@ public class WE {
 	 *
 	 * @param command
 	 */
-	public static void addPostLaunchCommands(Command command) {
+	public static void addPostLaunchCommands(LaunchCommand command) {
 		commandsAfterLaunch.add(command);
 	}
 

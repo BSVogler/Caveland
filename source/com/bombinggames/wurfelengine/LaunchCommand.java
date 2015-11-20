@@ -36,7 +36,7 @@ package com.bombinggames.wurfelengine;
  * @author Benedikt Vogler
  */
 @FunctionalInterface
-public interface Command {
+public interface LaunchCommand {
 	
 	public void perform();
 	

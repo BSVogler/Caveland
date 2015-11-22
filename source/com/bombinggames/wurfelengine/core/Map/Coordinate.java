@@ -581,4 +581,12 @@ public class Coordinate extends AbstractPosition {
 	public String toString() {
 		return "{" + x + ", " + y + ", " + z + "}";
 	}
+
+	/**
+	 * 
+	 * @param value 
+	 */
+	public void setValue(byte value) {
+		Controller.getMap().setValue(this,value);
+	}
 }

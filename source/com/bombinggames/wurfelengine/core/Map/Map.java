@@ -457,6 +457,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void setBlock(Coordinate coord, Block block) {
 		getChunk(coord).setBlock(coord, block);
 	}
+	
+	/**
+	 * 
+	 * @param coord
+	 * @param value 
+	 */
+	public void setValue(Coordinate coord, byte value) {
+		getChunk(coord).setValue(coord, value);
+	}
 
 	/**
 	 * get the chunk where the coordinates are on

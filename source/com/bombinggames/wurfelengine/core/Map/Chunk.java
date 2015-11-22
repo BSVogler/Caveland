@@ -756,6 +756,18 @@ public class Chunk {
 				logicBlocks.add(logic);
 		}
 	}
+	
+	public void setValue(Coordinate coord, byte value) {
+		int xIndex = coord.getX()-topleft.getX();
+		int yIndex = coord.getY()-topleft.getY();
+		int z = coord.getZ();
+		if (z >= 0){
+			if (data[xIndex][yIndex][z].getValue() != value) {
+				data[xIndex][yIndex][z].setValue(value);
+				modified = true;
+			}
+		}
+	}
 
 	protected void addLogic(AbstractBlockLogicExtension block) {
 		logicBlocks.add(block);

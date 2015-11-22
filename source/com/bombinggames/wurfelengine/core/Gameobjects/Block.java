@@ -235,7 +235,7 @@ public class Block implements HasID, Serializable {
 	}
 	
 	/**
-	 * 
+	 * This method should not be used to change the value of a block because the map get's not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
 	 * @param value 
 	 */
 	public void setValue(byte value) {

@@ -110,11 +110,11 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 		//set value for saving
 		if (result == CavelandBlocks.CLBlocks.OVEN.getId()) {
-			getPosition().getBlock().setValue((byte) 0);
+			getPosition().setValue((byte) 0);
 		} else if (result == CavelandBlocks.CLBlocks.POWERSTATION.getId()) {
-			getPosition().getBlock().setValue((byte) 1);
+			getPosition().setValue((byte) 1);
 		} else if (result == CavelandBlocks.CLBlocks.LIFT.getId()) {
-			getPosition().getBlock().setValue((byte) 2);
+			getPosition().setValue((byte) 2);
 		}
 	}
 

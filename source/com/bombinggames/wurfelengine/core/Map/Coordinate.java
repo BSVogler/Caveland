@@ -369,11 +369,14 @@ public class Coordinate extends AbstractPosition {
 
 	/**
 	 * Goes to the the neighbour with the specific side.<br>
-	 * 7 \ 0 / 1<br>
-	 * -------<br>
-	 * 6 | 8 | 2<br>
-	 * -------<br>
-	 * 5 / 4 \ 3<br>
+	 * &nbsp;&nbsp;\&nbsp;0/<br>
+	 * 7&nbsp;&nbsp;\/1<br>
+	 * \&nbsp;&nbsp;/\&nbsp;&nbsp;/<br>
+	 * 6\/8&nbsp;\/2<br>
+	 * &nbsp;/\&nbsp;&nbsp;/\<br>
+	 * /&nbsp;&nbsp;\/&nbsp;3\<br>
+	 * &nbsp;&nbsp;5/\<br>
+	 * &nbsp;&nbsp;/&nbsp;4\<br>
 	 * <br>
 	 * Runtime: O(const)
 	 *

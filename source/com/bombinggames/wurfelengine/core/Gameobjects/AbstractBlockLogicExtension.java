@@ -3,7 +3,8 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
- * Manages the game logic for a block. The instances are not saved in the map save file. Points to a coordinate in the map. If the content of the coordinate changes it will be removed via {@link  com.bombinggames.wurfelengine.core.Map.Map}. Check if is about to be removed via {@link #isValid() }.<br> If you want to save information in the save file you have to use and spawn an {@link AbstractEntity}.
+ * Manages the game logic for a block. The instances are not saved in the map save file therfore every data saved in the fields are lost after quitting.<br>
+ * Points to a {@link Coordinate} in the map. If the content of the coordinate changes it will be removed via {@link  com.bombinggames.wurfelengine.core.Map.Map}. Check if is about to be removed via {@link #isValid() }.<br> If you want to save information in the save file you have to use and spawn an {@link AbstractEntity}.
  * @author Benedikt Vogler
  */
 public abstract class AbstractBlockLogicExtension {

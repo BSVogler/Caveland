@@ -43,7 +43,8 @@ public abstract class AbstractBlockLogicExtension {
 	 * @return false if should be deleted
 	 */
 	public boolean isValid() {
-		return coord.getBlock() != null && coord.getBlock().getId() == block.getId();
+		Block blockatCoord = coord.getBlock();
+		return blockatCoord != null && blockatCoord.getId() == block.getId();
 	}
 
 	public abstract void update(float dt);

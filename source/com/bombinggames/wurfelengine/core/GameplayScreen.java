@@ -53,6 +53,7 @@ public class GameplayScreen extends WEScreen {
 	private Controller controller = null;
 	private EditorView editorView;
 	private LoadingScreen loadingScreen;
+	private long frameNum;
 
 	/**
 	 * Create the gameplay state. This shows the loading screen.
@@ -108,6 +109,8 @@ public class GameplayScreen extends WEScreen {
 
 	@Override
 	public void renderImpl(final float delta) {
+		frameNum++;
+		
 		//aply game world speed
 		float dt = delta * WE.CVARS.getValueF("timespeed");
 		//update data
@@ -156,6 +159,16 @@ public class GameplayScreen extends WEScreen {
 	public void resume() {
 	}
 
+	
+	/**
+	 * the number of the current frame
+	 * @return 
+	 */
+	public long getFrameNum(){
+		return frameNum;
+	}
+	
+	
 	@Override
 	public void dispose() {
 		controller.dispose();

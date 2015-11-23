@@ -43,12 +43,7 @@ public class CableBlock extends AbstractPowerBlock{
 	
 	public CableBlock(Block block, Coordinate coord) {
 		super(block, coord);
-		if ((block.getValue()==0 || block.getValue()==1)) {
-			type = 0;
-		}
-		if ((block.getValue()==2 || block.getValue()==3)) {
-			type = 1;
-		}
+		type = block.getValue()/2;
 	}
 	
 	@Override
@@ -73,6 +68,14 @@ public class CableBlock extends AbstractPowerBlock{
 		if (type==0 && (id==1 ||id==5))
 			return true;
 		if (type==1 && (id==3 ||id==7))
+			return true;
+		if (type==2 && (id==3 ||id==5))
+			return true;
+		if (type==3 && (id==5 ||id==7))
+			return true;
+		if (type==4 && (id==1 ||id==7))
+			return true;
+		if (type==5 && (id==1 ||id==3))
 			return true;
 		return false;
 	}

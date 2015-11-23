@@ -46,4 +46,9 @@ public class PowerStationLogic extends AbstractPowerBlock {
 		super.dispose();
 	}
 
+	@Override
+	public boolean outgoingConnection(int id) {
+		return true;
+	}
+
 }

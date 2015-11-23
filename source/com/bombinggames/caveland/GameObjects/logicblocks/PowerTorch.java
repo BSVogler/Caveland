@@ -73,6 +73,13 @@ public class PowerTorch extends AbstractPowerBlock {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		lightsource.dispose();
+	}
+
+	
+	@Override
+	public boolean outgoingConnection(int id) {
+		return true;
 	}
 }

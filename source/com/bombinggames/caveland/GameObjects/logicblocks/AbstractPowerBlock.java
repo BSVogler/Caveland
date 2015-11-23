@@ -58,7 +58,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 		AbstractPowerBlock d = null;
 
 		//system has changed so propagate changes
-		AbstractPowerBlock powerBlock = getPowerNode(1);
+		AbstractPowerBlock powerBlock = getConnectedNodes(1);
 		if (powerBlock != null) {
 			if (powerBlock.hasPowerPropagate()) {
 				power = true;
@@ -67,7 +67,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 			}
 		}
 
-		powerBlock = getPowerNode(3);
+		powerBlock = getConnectedNodes(3);
 		if (powerBlock != null) {
 			if (powerBlock.hasPowerPropagate()) {
 				power = true;
@@ -76,7 +76,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 			}
 		}
 
-		powerBlock = getPowerNode(5);
+		powerBlock = getConnectedNodes(5);
 		if (powerBlock != null) {
 			if (powerBlock.hasPowerPropagate()) {
 				power = true;
@@ -85,7 +85,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 			}
 		}
 
-		powerBlock = getPowerNode(7);
+		powerBlock = getConnectedNodes(7);
 		if (powerBlock != null) {
 			if (powerBlock.hasPowerPropagate()) {
 				power = true;
@@ -128,28 +128,28 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 
 	public void pushPower() {
 		power = true;
-		AbstractPowerBlock powerBlock = getPowerNode(1);
+		AbstractPowerBlock powerBlock = getConnectedNodes(1);
 		if (powerBlock != null) {
 			if (!powerBlock.hasPower()) {
 				powerBlock.pushPower();
 			}
 		}
 
-		powerBlock = getPowerNode(3);
+		powerBlock = getConnectedNodes(3);
 		if (powerBlock != null) {
 			if (!powerBlock.hasPower()) {
 				powerBlock.pushPower();
 			}
 		}
 
-		powerBlock = getPowerNode(5);
+		powerBlock = getConnectedNodes(5);
 		if (powerBlock != null) {
 			if (!powerBlock.hasPower()) {
 				powerBlock.pushPower();
 			}
 		}
 
-		powerBlock = getPowerNode(7);
+		powerBlock = getConnectedNodes(7);
 		if (powerBlock != null) {
 			if (!powerBlock.hasPower()) {
 				powerBlock.pushPower();
@@ -158,19 +158,30 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	}
 
 	/**
-	 *
-	 * @param id
+	 * Returns conncted nodes to this block
+	 * @param id neighbor id
 	 * @return
+	 * @see Coordinate#goToNeighbour(int) 
 	 */
-	public AbstractPowerBlock getPowerNode(int id) {
+	public AbstractPowerBlock getConnectedNodes(int id) {
 		AbstractBlockLogicExtension logic = getPosition().cpy().goToNeighbour(id).getLogic();
-		if (logic instanceof AbstractPowerBlock) {
+		if (logic instanceof AbstractPowerBlock &&
+			outgoingConnection(id) &&
+			((AbstractPowerBlock) logic).outgoingConnection((id+4)%8)//opposite side
+		){
 			return (AbstractPowerBlock) logic;
 		} else {
 			return null;
 		}
 	}
-
+	
+	/**
+	 * Has this block an cable connection to a neighbor?
+	 * @param id the neighbor id
+	 * @return true if has conncetion
+	 */
+	public abstract boolean outgoingConnection(int id);
+	
 	@Override
 	public void dispose() {
 		power = false;

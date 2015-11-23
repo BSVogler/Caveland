@@ -29,7 +29,7 @@ public abstract class AbstractBlockLogicExtension {
 			throw new NullPointerException();
 		this.coord = coord;
 	}
-
+	
 	/**
 	 * This method be named "getPosition" so that this method can implement the interface {@link com.bombinggames.caveland.GameObjects.Interactable}
 	 * @return not copy safe. never null

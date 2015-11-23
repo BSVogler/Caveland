@@ -14,7 +14,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class BoosterLogic extends AbstractBlockLogicExtension {
 
 	private boolean power = false;
-	private PointLightSource light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12);
+	private final PointLightSource light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12);
 
 	/**
 	 *

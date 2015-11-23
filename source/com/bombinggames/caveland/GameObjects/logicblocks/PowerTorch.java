@@ -29,40 +29,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class TorchRenderer extends RenderBlock {
+public class PowerTorch extends AbstractBlockLogicExtension {
 	private static final long serialVersionUID = 1L;
 	public final static float POINTRADIUS = 3*Block.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
 
-	
-	public TorchRenderer(Block data){
-		super(data);
+	public PowerTorch(Block block, Coordinate coord) {
+		super(block, coord);
 	}
 
-	@Override
-	public void setPosition(Coordinate coord) {
-		super.setPosition(coord);
-		if (lightsource == null)
-			lightsource = new PointLightSource(Color.YELLOW, 3, 15);
-		lightsource.setPosition(coord.cpy());
-	}
 
 	@Override
 	public void update(float dt) {
-		super.update(dt);
-		if (lightsource != null)
+		if (lightsource == null) {
+			lightsource = new PointLightSource(Color.YELLOW, 3, 15);
+		}
+
+		if (lightsource != null
+			&& lightsource.getPosition() == null
+			&& getPosition() != null
+		) {
+			lightsource.setPosition(getPosition().cpy());
+		}
+		if (lightsource != null) {
+			AbstractBlockLogicExtension neigh = getPosition().cpy().goToNeighbour(1).getLogic();
+			if (neigh instanceof AbstractPowerBlock
+				&& ((AbstractPowerBlock) neigh).hasPower()) {
+				lightsource.enable();
+			} else {
+				lightsource.disable();
+			}
+			
 			lightsource.update(dt);
+		}
+	}
+
+	@Override
+	public void dispose() {
+		lightsource.dispose();
 	}
 }

@@ -36,7 +36,7 @@ public class PowerStationLogic extends AbstractPowerBlock {
 	}
 
 	@Override
-	protected boolean hasPower() {
+	public boolean hasPower() {
 		return isValid();
 	}
 	

@@ -48,7 +48,7 @@ public class CableBlock extends AbstractPowerBlock{
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		Block lblock =getPosition().getBlock();
+		Block lblock = getPosition().getBlock();
 		getPosition().setValue(
 			(byte) (lblock.getValue() - (lblock.getValue() % 2)
 			+ (hasPower() ? 1 : 0))

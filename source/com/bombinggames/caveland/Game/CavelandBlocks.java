@@ -2,7 +2,6 @@ package com.bombinggames.caveland.Game;
 
 import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
-import com.bombinggames.caveland.GameObjects.TorchRenderer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
@@ -11,6 +10,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.GameObjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -134,8 +134,6 @@ public class CavelandBlocks implements CustomBlocks {
 				a.setSpriteId((byte) 3);
 			}
 			return a;
-		} else if (data.getId() == CLBlocks.TORCH.id) {
-			return new TorchRenderer(data);
 		} else if (data.getId() == CLBlocks.TREE.id) {
 			return new CustomTree(data);
 		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.id) {
@@ -295,6 +293,9 @@ public class CavelandBlocks implements CustomBlocks {
 		}
 		if (block.getId() == CLBlocks.TURRET.id) {
 			return new Turret(block, coord);
+		}
+		if (block.getId() == CLBlocks.TORCH.id) {
+			return new PowerTorch(block, coord);
 		}
 		return null;
 	}

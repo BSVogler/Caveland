@@ -368,7 +368,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	/**
-	 * Goes to the the neighbour with the specific side.<br>
+	 * Goes to the the neighbour with the specific side. Modifies the coordinate.<br>
 	 * &nbsp;&nbsp;\&nbsp;0/<br>
 	 * 7&nbsp;&nbsp;\/1<br>
 	 * \&nbsp;&nbsp;/\&nbsp;&nbsp;/<br>
@@ -383,31 +383,35 @@ public class Coordinate extends AbstractPosition {
 	 * @param neighbourSide the side number of the given coordinates
 	 * @return itself for chaining
 	 */
-	public Coordinate goToNeighbour(final int neighbourSide) {
+	public final Coordinate goToNeighbour(final int neighbourSide) {
 		switch (neighbourSide) {
 			case 0:
-				addVector(0, -2, 0);
+				y -= 2;
 				break;
 			case 1:
-				addVector(getY() % 2 != 0 ? 1 : 0, -1, 0);
+				x += getY() % 2 == 0 ? 1 : 0;
+				y--;
 				break;
 			case 2:
-				addVector(1, 0, 0);
+				x++;
 				break;
 			case 3:
-				addVector(getY() % 2 != 0 ? 1 : 0, 1, 0);
+				x += getY() % 2 == 0 ? 1 : 0;
+				y++;
 				break;
 			case 4:
-				addVector(0, 2, 0);
+				y += 2;
 				break;
 			case 5:
-				addVector(getY() % 2 == 0 ? -1 : 0, 1, 0);
+				x += getY() % 2 == 0 ? -1 : 0;
+				y++;
 				break;
 			case 6:
-				addVector(-1, 0, 0);
+				x--;
 				break;
 			case 7:
-				addVector(getY() % 2 == 0 ? -1 : 0, -1, 0);
+				x += getY() % 2 == 0 ? -1 : 0;
+				y--;
 				break;
 		}
 		return this;

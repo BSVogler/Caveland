@@ -32,7 +32,6 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -41,39 +40,35 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class PowerTorch extends AbstractBlockLogicExtension {
+public class PowerTorch extends AbstractPowerBlock {
+
 	private static final long serialVersionUID = 1L;
-	public final static float POINTRADIUS = 3*Block.GAME_EDGELENGTH;
+	public final static float POINTRADIUS = 3 * Block.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
 
 	public PowerTorch(Block block, Coordinate coord) {
 		super(block, coord);
 	}
 
-
 	@Override
 	public void update(float dt) {
+		super.update(dt);
+		
 		if (lightsource == null) {
 			lightsource = new PointLightSource(Color.YELLOW, 3, 15);
 		}
 
-		if (lightsource != null
-			&& lightsource.getPosition() == null
-			&& getPosition() != null
-		) {
+		if (lightsource.getPosition() == null) {
 			lightsource.setPosition(getPosition().cpy());
 		}
-		if (lightsource != null) {
-			AbstractBlockLogicExtension neigh = getPosition().cpy().goToNeighbour(1).getLogic();
-			if (neigh instanceof AbstractPowerBlock
-				&& ((AbstractPowerBlock) neigh).hasPower()) {
-				lightsource.enable();
-			} else {
-				lightsource.disable();
-			}
-			
-			lightsource.update(dt);
+		
+		if (hasPower()) {
+			lightsource.enable();
+		} else {
+			lightsource.disable();
 		}
+
+		lightsource.update(dt);
 	}
 
 	@Override

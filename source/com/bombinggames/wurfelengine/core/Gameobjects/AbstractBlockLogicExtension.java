@@ -25,12 +25,14 @@ public abstract class AbstractBlockLogicExtension {
 	 */
 	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
 		this.id = block.getId();
+		if (coord == null)
+			throw new NullPointerException();
 		this.coord = coord;
 	}
 
 	/**
 	 * This method be named "getPosition" so that this method can implement the interface {@link com.bombinggames.caveland.GameObjects.Interactable}
-	 * @return not copy safe
+	 * @return not copy safe. never null
 	 */
 	public Coordinate getPosition() {
 		return coord;

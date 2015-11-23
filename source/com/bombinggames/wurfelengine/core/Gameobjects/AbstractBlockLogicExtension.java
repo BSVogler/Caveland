@@ -8,15 +8,15 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * @author Benedikt Vogler
  */
 public abstract class AbstractBlockLogicExtension {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	/**
-	 * pointer
+	 * pointer to the according coordinate
 	 */
 	private final Coordinate coord;
 	/**
-	 * Logic points to which block? Should be used only for validity check and acces via coordinate.
+	 * Is only used for validity check.
 	 */
-	private final Block block;
+	private final byte id;
 
 	/**
 	 * Called when spawned. Should not access the map because during map creating this method is called and the map still empty.
@@ -24,7 +24,7 @@ public abstract class AbstractBlockLogicExtension {
 	 * @param coord the position where the logic block is placed
 	 */
 	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
-		this.block = block;
+		this.id = block.getId();
 		this.coord = coord;
 	}
 
@@ -44,7 +44,7 @@ public abstract class AbstractBlockLogicExtension {
 	 */
 	public boolean isValid() {
 		Block blockatCoord = coord.getBlock();
-		return blockatCoord != null && blockatCoord.getId() == block.getId();
+		return blockatCoord != null && blockatCoord.getId() == id;
 	}
 
 	public abstract void update(float dt);

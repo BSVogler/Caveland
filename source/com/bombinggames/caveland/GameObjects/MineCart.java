@@ -83,12 +83,13 @@ public class MineCart extends MovableEntity implements Interactable {
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
 				lightsource.setSaveToDisk(false);
-				lightsource.spawn(getPosition().cpy());
+				lightsource.setPosition(getPosition().cpy());
 			}
 			
 			lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
+			lightsource.update(dt);
 
-			//on tracks?
+			//on rails?
 			if (block != null && (
 				block.getId()== CavelandBlocks.CLBlocks.RAILS.getId() || block.getId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId())
 			) {
@@ -128,11 +129,14 @@ public class MineCart extends MovableEntity implements Interactable {
 							pos.getRelToCoordZ()
 						);
 						break;
+						//curve
 					case 3:
 					case 5:
 						int dirY;
-						if (getMovement().y > 0
-							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)
+						if (
+							getMovement().y > 0//moving down
+							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0
+						)
 						) {//on top and moving down
 							dirY = 1;
 						} else {
@@ -145,14 +149,22 @@ public class MineCart extends MovableEntity implements Interactable {
 								dirY//coming from top right
 							).nor()
 						);
+						
+				//the thing moved now put it back on the track
+//				float percentageOfCurve = 0;
+//				getPosition().y
+				//percentageOfCurve += getMovementHor().len()*Block.GAME_EDGELENGTH/(Math.PI*Block.GAME_EDGELENGTH2);//divide by quaarter of circle outline
+				//left or right side offset
 						int offset = -1;
 						if (block.getSpriteValue() == 5) {
 							offset = 1;
 						}
+						Vector3 circularVec = getPosition().getVector().sub(//0P
+							getPosition().toCoord().toPoint().getVector().add(offset*Block.GAME_DIAGLENGTH2, 0, 0)//0C
+						).nor().scl(Block.GAME_EDGELENGTH2);//movement is on radius of half of the block
+						
 						pos.setPositionRelativeToCoord(
-							offset * Block.GAME_EDGELENGTH2 / 2,
-							pos.getRelToCoordY(),
-							pos.getRelToCoordZ()
+							circularVec.add(offset*Block.GAME_DIAGLENGTH2, 0, 0)
 						);
 						break;
 					case 2:
@@ -163,14 +175,17 @@ public class MineCart extends MovableEntity implements Interactable {
 								0
 							).nor()
 						);
+						
 						offset = 1;
 						if (block.getSpriteValue() == 4) {
 							offset = -1;
 						}
+						circularVec = getPosition().getVector().sub(//0P
+							getPosition().toCoord().toPoint().getVector().add(0, offset*Block.GAME_DIAGLENGTH2, 0)//0C
+						).nor().scl(Block.GAME_EDGELENGTH2);//movement is on radius of half of the block
+						
 						pos.setPositionRelativeToCoord(
-							pos.getRelToCoordX(),
-							offset * Block.GAME_EDGELENGTH2 / 2,
-							pos.getRelToCoordZ()
+							circularVec.add(0, offset*Block.GAME_DIAGLENGTH2, 0)
 						);
 						break;
 				}
@@ -444,7 +459,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			}
 		}
 	}
-
+	
 	private void updatePassenger(Point pos) {
 		if (passenger != null) {
 			//give same speed as minecart

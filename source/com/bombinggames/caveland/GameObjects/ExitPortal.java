@@ -86,7 +86,8 @@ public class ExitPortal extends Portal implements Interactable {
 					fahrstuhlkorb = new SimpleEntity((byte) 22);
 					fahrstuhlkorb.setName("Lift Basket");
 					fahrstuhlkorb.spawn(getGround().toPoint());
-					getGround().addVector(0, 1, 0).destroy();
+					if (getGround().addVector(0, 1, 0).getBlock().isObstacle())
+						getGround().addVector(0, 1, 0).destroy();
 				} else {
 					//teleport non-moving objects on the liftUp
 					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);

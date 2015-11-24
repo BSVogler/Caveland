@@ -308,15 +308,28 @@ public class Point extends AbstractPosition {
 	
 	/**
 	 * Relative to the current coordiante field set the offset.
+	 *
 	 * @param x offset from origin
-	 * @param y offset from origin 
-	 * @param z offset from origin 
+	 * @param y offset from origin
+	 * @param z offset from origin
 	 */
 	public void setPositionRelativeToCoord(float x, float y, float z) {
-		Point origin = toCoord().toPoint(); 
-		this.x = origin.x +x;
-		this.y = origin.y +y;
-		this.z = origin.z +z;
+		Point origin = toCoord().toPoint();
+		this.x = origin.x + x;
+		this.y = origin.y + y;
+		this.z = origin.z + z;
+	}
+
+	/**
+	 * Relative to the current coordiante field set the offset.
+	 *
+	 * @param shift offset from origin
+	 */
+	public void setPositionRelativeToCoord(Vector3 shift) {
+		Point origin = toCoord().toPoint();
+		this.x = origin.x + shift.x;
+		this.y = origin.y + shift.y;
+		this.z = origin.z + shift.z;
 	}
     
     /**

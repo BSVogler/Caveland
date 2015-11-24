@@ -493,13 +493,10 @@ public class Console {
 				//set cvar
 				String value = st.nextToken();
 				cvar.setValue(value);
-				add("Set cvar \""+ first + "\" to "+value+"\n", "System");
-				return true;
-			} else {
-				//read cvar
-				add("cvar "+ first +" has value "+cvar.toString()+"\n", "System");
-				return true;
 			}
+			//read cvar
+			add("cvar "+ first +" has value "+cvar.toString()+"\n", "System");
+			return true;
 		}
 		add(command +": command not found\n", "System");
 		return false;

@@ -30,6 +30,8 @@
  */
 package com.bombinggames.wurfelengine.core.CVar;
 
+import com.bombinggames.wurfelengine.WE;
+
 /**
  *
  * @author Benedikt Vogler
@@ -51,12 +53,16 @@ public class FloatCVar extends CVar {
 
 	@Override
 	public void setValue(Object value) {
-		if (value instanceof String) {
-			this.value = Float.parseFloat((String) value);
-		} else if (value instanceof Double) {
-			this.value = ((Double) value).floatValue();
-		}else {
-			this.value = (float) value;
+		try {
+			if (value instanceof String) {
+				this.value = Float.parseFloat((String) value);
+			} else if (value instanceof Double) {
+				this.value = ((Double) value).floatValue();
+			}else {
+				this.value = (float) value;
+			}
+		} catch (NumberFormatException e) {
+			WE.getConsole().add("Error setting \""+ getName() + "\" to "+value+"\n", "System");
 		}
 		if (flags == CVarFlags.CVAR_ARCHIVE) {
 			parent.save();

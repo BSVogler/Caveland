@@ -70,7 +70,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
 					CavelandBlocks.CLBlocks.OVEN.name(),
-					"Robot Factory",
+					CavelandBlocks.CLBlocks.ROBOTFACTORY.name(),
 					CavelandBlocks.CLBlocks.POWERSTATION.name(),
 					CavelandBlocks.CLBlocks.LIFT.name()
 				)

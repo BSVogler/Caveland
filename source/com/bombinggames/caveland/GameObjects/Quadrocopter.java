@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
 public class Quadrocopter extends MovableEntity {
 
 	private static final long serialVersionUID = 1L;
-	private String RUNNINGSOUND = "droneLoop";
+	private final String RUNNINGSOUND = "droneLoop";
 	private long movementSoundPlaying;
 	
 	public Quadrocopter() {
@@ -57,7 +57,12 @@ public class Quadrocopter extends MovableEntity {
 		return this;
 		
 	}
-	
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		WE.SOUND.stop(RUNNINGSOUND, movementSoundPlaying);
+	}
 	
 	
 	

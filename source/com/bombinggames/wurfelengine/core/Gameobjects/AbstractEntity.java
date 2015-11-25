@@ -410,7 +410,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     }
 	
 	/**
-	 * heals the entity
+	 * heals the entity. to-do: should be replaced with messages/events
 	 * @param value 
 	 */
 	public void heal(byte value) {
@@ -463,7 +463,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	}
 	
 	/**
-	 * clamps to [0..100]. You may prefer damage and heal. Ignores invincibility.
+	 * clamps to [0..100]. You may prefer damage and {@link #heal(byte) }. Ignores invincibility.
 	 * @param health 
 	 * @see #takeDamage(byte) 
 	 */

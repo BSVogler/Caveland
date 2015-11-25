@@ -203,7 +203,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
 		lightsource.setSaveToDisk(false);
-		lightsource.spawn(point.cpy());
+		lightsource.spawn(point.cpy().addVector(0, 0, Block.GAME_EDGELENGTH2));
 		
 		return this;
 	}

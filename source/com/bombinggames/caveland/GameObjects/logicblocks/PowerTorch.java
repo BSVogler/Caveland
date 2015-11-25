@@ -59,7 +59,7 @@ public class PowerTorch extends AbstractPowerBlock {
 		}
 
 		if (lightsource.getPosition() == null) {
-			lightsource.setPosition(getPosition().cpy());
+			lightsource.setPosition(getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH2));
 		}
 		
 		if (hasPower()) {

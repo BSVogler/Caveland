@@ -23,7 +23,7 @@ public class PointLightSource extends AbstractEntity {
 	private final transient Color color;
 	private float brightness;
 	private boolean enabled = true;
-	private Coordinate lastCoord;
+	private Point lastPos;
 
 	/**
 	 *
@@ -60,37 +60,32 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		if (lastCoord==null)
-			lastCoord = point.toCoord();
-		lightNearbyBlocks(0);
+		//lastPos = point;
+		//lightNearbyBlocks(0);
 		return this;
 	}
 
 	@Override
 	public void setPosition(Point pos) {
 		super.setPosition(pos);
-		if (lastCoord==null)
-			lastCoord = pos.toCoord();
+		//lastPos = pos;
 		
 		//if moved
-		if (hasPosition() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
 			clearCache();
-			lastCoord = pos.toCoord();
-			lightNearbyBlocks(0);
+			//lightNearbyBlocks(0);
 		}
 	}
 
 	@Override
 	public void setPosition(AbstractPosition pos) {
 		super.setPosition(pos);
-		if (lastCoord==null)
-			lastCoord = pos.toCoord();
+		//lastPos = pos.toPoint();
 		
 		//if moved
-		if (hasPosition() && !getPosition().toCoord().getVector().sub(lastCoord.getVector()).isZero()){
+		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
 			clearCache();
-			lastCoord = pos.toCoord();
-			lightNearbyBlocks(0);
+			//lightNearbyBlocks(0);
 		}
 	}
 	
@@ -102,6 +97,8 @@ public class PointLightSource extends AbstractEntity {
 	public void lightNearbyBlocks(float delta) {
 		if (hasPosition()) {
 			Point lightPos = getPosition();
+			lastPos = lightPos;
+			
 			float rand = (float) Math.random();
 			float noiseX = rand * 2 - 1;
 			float noiseY = (float) Math.random() * 2 - 1;
@@ -149,21 +146,23 @@ public class PointLightSource extends AbstractEntity {
 								float pow = lightPos.distanceTo(getPosition().toCoord().addVector(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
 								float l = (1 + brightness) / (pow * pow);
 								Vector3 target = getPosition().toCoord().addVector(x, y, z).toPoint().getVector();
+								
 								//side 0
 								float lambert = lightPos.getVector().sub(
 									target.add(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
 								).nor().dot(Side.LEFT.toVector());
 								
-								float newbright = l *lambert* (0.15f + flicker * 0.005f);
+								float newbright = l *lambert* (0.15f + rand * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
 									lightcache[x + radius][y + radius * 2][z + radius][0] = newbright;
 								}
+								
 								//side 1
 								lambert = lightPos.getVector().sub(
 									target.add(0, 0, Block.GAME_EDGELENGTH)
 								).nor().dot(Side.TOP.toVector());
 
-								newbright = l * lambert * (0.15f + flicker * 0.005f);
+								newbright = l * lambert * (0.15f + rand * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
 									lightcache[x + radius][y + radius * 2][z + radius][1] = newbright;
 								}
@@ -173,7 +172,7 @@ public class PointLightSource extends AbstractEntity {
 									target.add(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
 								).nor().dot(Side.RIGHT.toVector());
 
-								newbright = l *lambert* (0.15f + flicker * 0.005f);
+								newbright = l *lambert* (0.15f + rand * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {
 									lightcache[x + radius][y + radius * 2][z + radius][2] = newbright;
 								}
@@ -190,7 +189,9 @@ public class PointLightSource extends AbstractEntity {
 		super.update(dt);
 		
 		if (enabled && hasPosition()) {
-			lightNearbyBlocks(dt);
+			if (lastPos==null || !lastPos.equals(getPosition())) {
+				lightNearbyBlocks(dt);
+			}
 
 			//apply cache
 			Coordinate center = getPosition().toCoord();

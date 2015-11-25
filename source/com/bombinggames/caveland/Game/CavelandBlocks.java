@@ -11,6 +11,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
+import com.bombinggames.caveland.GameObjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.GameObjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
@@ -42,6 +43,7 @@ public class CavelandBlocks implements CustomBlocks {
 		IRONORE((byte) 43, "Iron Ore Block", true),
 		COAL((byte) 44, "Coal Block", true),
 		TURRET((byte) 52, "Turret", false),
+		ROBOTFACTORY((byte) 53, "robot factory", false),
 		POWERCABLE((byte) 54, "power cable", false),
 		RAILS((byte) 55, "rails", false),
 		RAILSBOOSTER((byte) 56, "boos	ter rails", false),
@@ -79,6 +81,8 @@ public class CavelandBlocks implements CustomBlocks {
 					return COAL;
 				case 52:
 					return TURRET;
+				case 53:
+					return ROBOTFACTORY;	
 				case 54:
 					return POWERCABLE;
 				case 55:
@@ -181,6 +185,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==17) return true;
 		if (id==11) return true;
 		if (id==52) return true;
+		if (id==53) return true;
 		if (id==54) return true;
 		if (id==55) return true;
 		if (id==56) return true;
@@ -284,6 +289,9 @@ public class CavelandBlocks implements CustomBlocks {
 		}
 		if (block.getId() == CLBlocks.LIFT.id) {
 			return new LiftLogic(block, coord);
+		}
+		if (block.getId() == CLBlocks.ROBOTFACTORY.id) {
+			return new RobotFactory(block, coord);
 		}
 		if (block.getId() == CLBlocks.POWERCABLE.id) {
 			return new CableBlock(block, coord);

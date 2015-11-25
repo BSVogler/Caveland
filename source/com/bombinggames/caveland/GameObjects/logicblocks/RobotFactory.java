@@ -48,13 +48,19 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  * @author Benedikt Vogler
  */
 public class RobotFactory extends AbstractBlockLogicExtension implements Interactable  {
-
+	private Robot linkedRobot;
+	
 	public RobotFactory(Block block, Coordinate coord) {
 		super(block, coord);
 	}
 
 	@Override
 	public void update(float dt) {
+		if (linkedRobot == null || linkedRobot.shouldBeDisposed()){
+			getPosition().setValue((byte) 1);
+		} else {
+			getPosition().setValue((byte) 0);
+		}
 	}
 
 	@Override
@@ -68,22 +74,23 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 			new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
 				.addSelectionNames("Fighter Robot","Robot", "Drone")
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
-					Robot robot = null;
-					switch (result) {
-						case 0:
-							robot = (Robot) new Robot().spawn(getPosition().toPoint());
-							break;
-						case 1:
-							robot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
-							break;
-						case 2:
-							robot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
-							break;
-						default:
-							break;
+					if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
+						switch (result) {
+							case 0:
+								linkedRobot = (Robot) new Robot().spawn(getPosition().toPoint());
+								break;
+							case 1:
+								linkedRobot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
+								break;
+							case 2:
+								linkedRobot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
+								break;
+							default:
+								break;
+						}
+						linkedRobot.setTeamId(1);
+						WE.SOUND.play("construct");
 					}
-					robot.setTeamId(1);
-					WE.SOUND.play("construct");
 				})
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
@@ -91,7 +98,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 
 	@Override
 	public boolean interactable() {
-		return true;
+		return linkedRobot == null || linkedRobot.shouldBeDisposed();
 	}
 
 	@Override

@@ -30,8 +30,11 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.Quadrocopter;
@@ -71,34 +74,47 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	@SuppressWarnings("null")
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
-				.addSelectionNames("Fighter Robot","Robot", "Drone")
-				.setConfirmAction((int result, AbstractEntity actor1) -> {
-					if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
-						switch (result) {
-							case 0:
-								linkedRobot = (Robot) new Robot().spawn(getPosition().toPoint());
-								break;
-							case 1:
-								linkedRobot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
-								break;
-							case 2:
-								linkedRobot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
-								break;
-							default:
-								break;
+			ActionBox ab;
+				if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
+					ab = new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
+					.addSelectionNames("Fighter Robot","Robot", "Drone")
+					.setConfirmAction((int result, AbstractEntity actor1) -> {
+						if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
+							switch (result) {
+								case 0:
+									linkedRobot = (Robot) new Robot().spawn(getPosition().toPoint());
+									break;
+								case 1:
+									linkedRobot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
+									break;
+								case 2:
+									linkedRobot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
+									break;
+								default:
+									break;
+							}
+							linkedRobot.setTeamId(1);
+							WE.SOUND.play("construct");
 						}
-						linkedRobot.setTeamId(1);
-						WE.SOUND.play("construct");
-					}
-				})
-				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+					});
+				} else {
+				ab = new ActionBox("Robot in use", ActionBox.BoxModes.BOOLEAN, "The robot is already in use. Destroy it?")
+					.setConfirmAction((int result, AbstractEntity actor1) -> {
+						MessageManager.getInstance().dispatchMessage(
+							(Telegraph) this,
+							linkedRobot,
+							Events.damage.getId(),
+							0
+						);
+					});
+				}
+				ab.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 
 	@Override
 	public boolean interactable() {
-		return linkedRobot == null || linkedRobot.shouldBeDisposed();
+		return true;
 	}
 
 	@Override

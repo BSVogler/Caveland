@@ -81,39 +81,49 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	}
 
 	private void restoreResultFromValue() {
+		byte value = getPosition().getBlock().getValue();
 		//set value for saving
-		if (getPosition().getBlock().getValue() == 0) {
-			setResult(CavelandBlocks.CLBlocks.OVEN.getId());
-		} else if (getPosition().getBlock().getValue() == 0) {
-			setResult(CavelandBlocks.CLBlocks.POWERSTATION.getId());
-		} else if (result == CavelandBlocks.CLBlocks.LIFT.getId()) {
-			setResult(CavelandBlocks.CLBlocks.LIFT.getId());
-		} else {
-			setResult(CavelandBlocks.CLBlocks.POWERSTATION.getId());
+		switch (value) {
+			case 0:
+				setResult(CavelandBlocks.CLBlocks.OVEN.getId());
+				break;
+			case 1:
+				setResult(CavelandBlocks.CLBlocks.POWERSTATION.getId());
+				break;
+			case 2:
+				setResult(CavelandBlocks.CLBlocks.LIFT.getId());
+				break;
+			default:
+				setResult(CavelandBlocks.CLBlocks.ROBOTFACTORY.getId());
+				break;
 		}
 	}
 	
 	/**
 	 * The result if you finish the construction. Value is set to 0
 	 *
-	 * @param result
+	 * @param resultId
 	 */
-	public void setResult(byte result) {
-		this.result = result;
+	public void setResult(byte resultId) {
+		this.result = resultId;
 		this.resultValue = 0;
-		if (CavelandBlocks.CLBlocks.OVEN.getId() == result) {
+		if (resultId == CavelandBlocks.CLBlocks.OVEN.getId()) {
 			neededAmount = new int[]{2, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood};
+		} else if (resultId == CavelandBlocks.CLBlocks.ROBOTFACTORY.getId()){
+			neededAmount = new int[]{2, 1,1};
+			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Powercable, CollectibleType.Stone};
 		} else {
 			neededAmount = new int[]{2, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
 		}
+		
 		//set value for saving
-		if (result == CavelandBlocks.CLBlocks.OVEN.getId()) {
+		if (resultId == CavelandBlocks.CLBlocks.OVEN.getId()) {
 			getPosition().setValue((byte) 0);
-		} else if (result == CavelandBlocks.CLBlocks.POWERSTATION.getId()) {
+		} else if (resultId == CavelandBlocks.CLBlocks.POWERSTATION.getId()) {
 			getPosition().setValue((byte) 1);
-		} else if (result == CavelandBlocks.CLBlocks.LIFT.getId()) {
+		} else if (resultId == CavelandBlocks.CLBlocks.LIFT.getId()) {
 			getPosition().setValue((byte) 2);
 		}
 	}

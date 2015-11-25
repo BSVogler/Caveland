@@ -49,14 +49,16 @@ public class Robot extends MovableEntity {
 	 */
 	private int type = 0;
 	private transient AimBand particleBand;
+	private int teamId;
 
-	/**
-	 * Zombie constructor. Use AbstractEntitiy.getInstance to create an zombie.
-	 */
 	public Robot() {
-		super((byte) 45, 5);
+		this((byte) 45, 5);
+	}
+
+	public Robot(byte id, int steps) {
+		super(id, steps);
 		setType(0);
-		setName("Evil Robot");
+		setTeamId(0);
 		setObstacle(true);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
@@ -64,8 +66,9 @@ public class Robot extends MovableEntity {
 
 	@Override
 	public AbstractEntity spawn(final Point point) {
-		if (type==0)
+		if (type == 0) {
 			movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);
+		}
 		return super.spawn(point);
 	}
 
@@ -79,6 +82,7 @@ public class Robot extends MovableEntity {
 		//update as usual
 		super.update(dt);
 
+		//set attack sprite
 		if (attackInProgess > 0) {
 			attackInProgess -= dt;
 			movementSpeed = 0;
@@ -118,17 +122,13 @@ public class Robot extends MovableEntity {
 			}
 		}
 
-		if (particleBand != null) {
-			particleBand.update();
-		}
-
 		//clamp at 0
 		if (attackInProgess < 0) {
 			attackInProgess = 0;
 			movementSpeed = 2;
 			playMovementAnimation();
 		}
-
+		
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			//follow the target
 			if (target != null && target.hasPosition()) {
@@ -160,14 +160,14 @@ public class Robot extends MovableEntity {
 			mana = ((int) (mana + dt));
 
 			//find nearby target if there is none
-			if (target == null) {
+			if (target == null && teamId == 0) {
 				ArrayList<Ejira> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Ejira.class);
 				if (!nearby.isEmpty()) {
 					target = nearby.get(0);
 				}
 			}
 
-			//if standing on same position as in last update
+			//Movement AI: if standing on same position as in last update
 			if (!isFloating()) {
 				if (getPosition().equals(lastPos) && getSpeed() > 0) {//not standing still
 					runningagainstwallCounter += dt;
@@ -183,6 +183,24 @@ public class Robot extends MovableEntity {
 					runningagainstwallCounter = 0;
 				}
 			}
+		}
+		
+		if (particleBand != null) {
+			particleBand.update();
+		}
+	}
+
+	/**
+	 * attacks every other team id.
+	 *
+	 * @param id 0 is for enemy CP.
+	 */
+	public void setTeamId(int id) {
+		this.teamId = id;
+		if (teamId == 0) {
+			setName("Evil Robot");
+		} else {
+			setName("Friendly Robot");
 		}
 	}
 
@@ -259,8 +277,7 @@ public class Robot extends MovableEntity {
 			setSpriteId((byte) 58);
 			setFloating(false);
 			setContinuousWalkingAnimation(0);
-		} else {
-			setSpriteId((byte) 45);
+		} else if (type==0) {
 			setFloating(true);
 			setContinuousWalkingAnimation(1f);
 		}

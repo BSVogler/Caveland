@@ -62,24 +62,27 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	}
 
 	@Override
+	@SuppressWarnings("null")
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
 				.addSelectionNames("Fighter Robot","Robot", "Drone")
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
+					Robot robot = null;
 					switch (result) {
 						case 0:
-							new Robot().spawn(getPosition().toPoint());
+							robot = (Robot) new Robot().spawn(getPosition().toPoint());
 							break;
 						case 1:
-							new SpiderRobot().spawn(getPosition().toPoint());
+							robot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
 							break;
 						case 2:
-							new Quadrocopter().spawn(getPosition().toPoint());
+							robot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
 							break;
 						default:
 							break;
 					}
+					robot.setTeamId(1);
 					WE.SOUND.play("construct");
 				})
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);

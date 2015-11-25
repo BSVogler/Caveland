@@ -32,14 +32,13 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class Quadrocopter extends MovableEntity {
+public class Quadrocopter extends Robot {
 
 	private static final long serialVersionUID = 1L;
 	private final String RUNNINGSOUND = "droneLoop";
@@ -47,6 +46,7 @@ public class Quadrocopter extends MovableEntity {
 	
 	public Quadrocopter() {
 		super((byte) 59,0);
+		setType(2);
 		setFloating(true);
 	}
 

@@ -12,18 +12,19 @@ import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 
 /**
- * An enemy which can follow a character.
+ * A robot which can be evil or friendly.
  *
  * @author Benedikt Vogler
  */
 public class Robot extends MovableEntity {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	/**
 	 * the time for the attack animation
 	 */
@@ -50,6 +51,7 @@ public class Robot extends MovableEntity {
 	private int type = 0;
 	private transient AimBand particleBand;
 	private int teamId;
+	private Coordinate home;
 
 	public Robot() {
 		this((byte) 45, 5);
@@ -281,6 +283,10 @@ public class Robot extends MovableEntity {
 			setFloating(true);
 			setContinuousWalkingAnimation(1f);
 		}
+	}
+
+	public void setHome(Coordinate position) {
+		home = position;
 	}
 
 }

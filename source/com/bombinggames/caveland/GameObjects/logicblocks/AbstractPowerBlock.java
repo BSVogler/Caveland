@@ -119,7 +119,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	}
 
 	/**
-	 * returns if the blokc has power but only reads this.
+	 * returns if has power but only reads this.
 	 * @return 
 	 */
 	public boolean hasPower() {

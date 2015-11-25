@@ -20,11 +20,11 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class Bausatz extends Collectible implements Interactable {
+public class ConstructionKit extends Collectible implements Interactable {
 	private static final long serialVersionUID = 1L;
 	private transient EntityBlock preview;
 
-	public Bausatz() {
+	public ConstructionKit() {
 		super(CollectibleType.Toolkit);
 	}
 	

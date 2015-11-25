@@ -97,7 +97,7 @@ public enum CollectibleType {
 					obj = new TFlint();
 					break;
 				case Toolkit:
-					obj = new Bausatz();
+					obj = new ConstructionKit();
 					break;
 				case Torch:
 					obj = new TorchCollectible();

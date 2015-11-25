@@ -34,7 +34,9 @@ import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.caveland.GameObjects.Quadrocopter;
 import com.bombinggames.caveland.GameObjects.Robot;
+import com.bombinggames.caveland.GameObjects.SpiderRobot;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -63,9 +65,21 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
-				.addSelectionNames("Robot", "Drone")
+				.addSelectionNames("Fighter Robot","Robot", "Drone")
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
-					new Robot().spawn(getPosition().toPoint());
+					switch (result) {
+						case 0:
+							new Robot().spawn(getPosition().toPoint());
+							break;
+						case 1:
+							new SpiderRobot().spawn(getPosition().toPoint());
+							break;
+						case 2:
+							new Quadrocopter().spawn(getPosition().toPoint());
+							break;
+						default:
+							break;
+					}
 					WE.SOUND.play("construct");
 				})
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor);

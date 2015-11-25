@@ -20,7 +20,7 @@ public class PointLightSource extends AbstractEntity {
 	private final int radius;
 	private final float floatradius;
 	private final float[][][][] lightcache;
-	private final Color color;
+	private final transient Color color;
 	private float brightness;
 	private boolean enabled = true;
 	private Coordinate lastCoord;

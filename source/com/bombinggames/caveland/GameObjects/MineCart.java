@@ -47,7 +47,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private transient long isPlayingSound;
 	private transient SimpleEntity back = new SimpleEntity((byte) 42,(byte) 0);
 	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
-	private PointLightSource lightsource;
+	private transient PointLightSource lightsource;
 	
 	/**
 	 *

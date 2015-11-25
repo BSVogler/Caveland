@@ -96,15 +96,16 @@ public class PointLightSource extends AbstractEntity {
 	
 
 	/**
-	 * fills the cache
+	 * fills the cache by sending rays starting at the position
 	 * @param delta 
 	 */
 	public void lightNearbyBlocks(float delta) {
-		if (getPosition() != null) {
-			Point lightPos = getPosition().cpy().addVector(0, 0, Block.GAME_EDGELENGTH * 0.5f);
-			float flicker = (float) Math.random();
-			float noiseX = (float) Math.random() * 2 - 1;
+		if (hasPosition()) {
+			Point lightPos = getPosition();
+			float rand = (float) Math.random();
+			float noiseX = rand * 2 - 1;
 			float noiseY = (float) Math.random() * 2 - 1;
+			
 			//light blocks under the torch
 			for (int z = -radius; z < radius; z++) {
 				for (int x = -radius; x < radius; x++) {
@@ -131,7 +132,7 @@ public class PointLightSource extends AbstractEntity {
 						}
 
 						//send rays
-						Vector3 dir = new Vector3(x + noiseX, y + noiseY, z + flicker * 2 - 1).nor();
+						Vector3 dir = new Vector3(x + noiseX, y + noiseY, z + rand * 2 - 1).nor();
 						if (dir.len2() > 0) {//filter some rays
 							Intersection inters = lightPos.raycast(
 								dir,

@@ -276,7 +276,7 @@ b53-0
   orig: 200, 223
   offset: 0, 0
   index: -1
-b53-2
+b53-1
   rotate: false
   xy: 923, 772
   size: 200, 102

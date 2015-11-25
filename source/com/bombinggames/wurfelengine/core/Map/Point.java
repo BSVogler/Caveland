@@ -397,7 +397,7 @@ public class Point extends AbstractPosition {
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
 			&& isectC.isInMemoryAreaHorizontal()
-		) {//can enter and be vertically outside
+		) {
 
 			isectC = new Coordinate(curX, curY, curZ);
 			Block block = isectC.getBlock();

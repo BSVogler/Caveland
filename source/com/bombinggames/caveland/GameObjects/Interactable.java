@@ -114,13 +114,13 @@ public interface Interactable {
 	public abstract AbstractPosition getPosition();
 	
 	/**
-	 * is the interaction active or deactivated?
-	 * @return 
+	 * Is the interaction active or deactivated?
+	 * @return true if it interactable
 	 */
 	public abstract boolean interactable();
 	
 	/**
-	 * only interactable if you pick it up.
+	 * Is it only interactable if you pick it up?
 	 * @return true if only usable when in inventory
 	 */
 	public abstract boolean interactableOnlyWithPickup();

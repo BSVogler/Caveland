@@ -33,8 +33,8 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
@@ -116,5 +116,10 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return true;
+	}
+
+	@Override
+	public Collectible clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 }

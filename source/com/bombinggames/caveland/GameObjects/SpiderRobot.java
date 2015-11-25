@@ -48,8 +48,8 @@ public class SpiderRobot extends Robot{
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (getMovementHor().len2() > 0) {
-			if (walkingSound != 0) {
+		if (getMovementHor().len2() > 0 && isOnGround()) {
+			if (walkingSound == 0l) {
 				walkingSound = WE.SOUND.loop("robot2walk", getPosition());
 			}
 		} else {

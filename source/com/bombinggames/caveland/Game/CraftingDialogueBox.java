@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *A HUD for crafting via inventory
  * @author Benedikt Vogler
  */
-public class CraftingBox extends ActionBox {
+public class CraftingDialogueBox extends ActionBox {
 	private final Inventory inventory;
 	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
 	private int selectionNum = -1;
@@ -27,7 +27,7 @@ public class CraftingBox extends ActionBox {
 	 * @param view
 	 * @param player 
 	 */
-	public CraftingBox(CLGameView view, Ejira player) {
+	public CraftingDialogueBox(CLGameView view, Ejira player) {
 		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		
@@ -161,12 +161,12 @@ public class CraftingBox extends ActionBox {
 			if (a != null && b != null && (thirdingredient || c != null)) {//can be crafted
 				//create new object at same position of inventory
 				if (recipe.resultIsCollectible()) {
-					recipe.getResultType().createInstance().spawn(inventory.getPosition());
+					recipe.getResultType().createInstance().spawn(inventory.getPosition().cpy());
 				} else {
 					try {
-						recipe.getResultClass().newInstance().spawn(inventory.getPosition());
+						recipe.getResultClass().newInstance().spawn(inventory.getPosition().cpy());
 					} catch (InstantiationException | IllegalAccessException ex) {
-						Logger.getLogger(CraftingBox.class.getName()).log(Level.SEVERE, null, ex);
+						Logger.getLogger(CraftingDialogueBox.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
 				//delete them
@@ -177,7 +177,7 @@ public class CraftingBox extends ActionBox {
 				if (c != null) {
 					c.dispose();
 				}
-				WE.SOUND.play("metallic");
+				WE.SOUND.play("craft");
 				clear();//empty the crafting menu
 			}
 			//crafting failed: items still there, so put them back

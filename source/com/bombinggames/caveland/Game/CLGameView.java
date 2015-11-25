@@ -93,6 +93,7 @@ public class CLGameView extends GameView{
 		WE.SOUND.register("throwFail", "com/bombinggames/caveland/sounds/throwFail.wav");
 		WE.SOUND.register("droneLoop", "com/bombinggames/caveland/sounds/droneLoop.mp3");
 		WE.SOUND.register("robot2walk", "com/bombinggames/caveland/sounds/robot2walk.mp3");
+		WE.SOUND.register("craft", "com/bombinggames/caveland/sounds/craft.wav");
 		
 		if (coop > -1){//it is a coop game
 			Camera camera0;
@@ -179,11 +180,11 @@ public class CLGameView extends GameView{
 	private void toogleCrafting(int id) {
 		if (focusOnGame(id)) {
 			//open
-			CraftingBox crafting = new CraftingBox(this, getPlayer(id));
+			CraftingDialogueBox crafting = new CraftingDialogueBox(this, getPlayer(id));
 			crafting.register(this, id+1, getPlayer(id));
 		} else {
 			//close
-			if (openDialogue[id] instanceof CraftingBox) {
+			if (openDialogue[id] instanceof CraftingDialogueBox) {
 				openDialogue[id].cancel(getPlayer(id));
 			}
 		}

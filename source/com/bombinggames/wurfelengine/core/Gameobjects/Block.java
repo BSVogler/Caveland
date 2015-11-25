@@ -235,8 +235,9 @@ public class Block implements HasID, Serializable {
 	}
 	
 	/**
-	 * This method should not be used to change the value of a block because the map get's not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
+	 * This method should not be used to change the value of a block because the map gets not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
 	 * @param value 
+	 * @see Coordinate#setValue(byte) 
 	 */
 	public void setValue(byte value) {
 		this.value = value;
@@ -247,11 +248,16 @@ public class Block implements HasID, Serializable {
 		return id;
 	}
 
+
 	@Override
 	public byte getSpriteValue() {
 		return value;
 	}
-
+	
+	/**
+	 * This method should not be used to change the value of a block because the map gets not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
+	 * @see Coordinate#setValue(byte) 
+	 */
 	@Override
 	public void setSpriteValue(byte value) {
 		this.value = value;

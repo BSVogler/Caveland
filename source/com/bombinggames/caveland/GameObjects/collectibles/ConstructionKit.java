@@ -52,12 +52,15 @@ public class ConstructionKit extends Collectible implements Interactable {
 	}
 	
 	byte getResult(int index){
-		if (index == 0) {
-			return CavelandBlocks.CLBlocks.OVEN.getId();
-		} else if (index == 2) {
-			return CLBlocks.POWERSTATION.getId();
-		} else {
-			return CavelandBlocks.CLBlocks.LIFT.getId();
+		switch (index) {
+			case 0:
+				return CavelandBlocks.CLBlocks.OVEN.getId();
+			case  1:
+				return CavelandBlocks.CLBlocks.ROBOTFACTORY.getId();
+			case 2:
+				return CLBlocks.POWERSTATION.getId();
+			default:
+				return CavelandBlocks.CLBlocks.LIFT.getId();
 		}
 	}
 
@@ -67,7 +70,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
 					CavelandBlocks.CLBlocks.OVEN.name(),
-					"Robot Factory (not implemented yet)",
+					"Robot Factory",
 					CavelandBlocks.CLBlocks.POWERSTATION.name(),
 					CavelandBlocks.CLBlocks.LIFT.name()
 				)

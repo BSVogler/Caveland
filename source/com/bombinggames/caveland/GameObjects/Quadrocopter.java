@@ -46,7 +46,7 @@ public class Quadrocopter extends MovableEntity {
 	private long movementSoundPlaying;
 	
 	public Quadrocopter() {
-		super((byte) 60);
+		super((byte) 59,0);
 		setFloating(true);
 	}
 

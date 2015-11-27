@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 
 /**
@@ -67,7 +68,7 @@ public class EditorToggler {
 						new ClickListener() {
 						@Override
 						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-							WE.startEditor(false);
+							WE.startEditor();
 							return true;
 						}
 					}
@@ -75,24 +76,24 @@ public class EditorToggler {
 				}
 				view.getStage().addActor(pauseButton);
 
-//				if (resetButton == null) {
-//					//add reverse editor button
-//					resetButton = new Image(spritesheet.findRegion("reset_button"));
-//					resetButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
-//					resetButton.setY(Gdx.graphics.getHeight() - offsetY);
-//					resetButton.addListener(
-//						new ClickListener() {
-//							@Override
-//							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//								Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
-//								if (!WE.isInEditor())
-//									WE.startEditor(false);
-//								return true;
-//							}
-//						}
-//					);
-//				}
-//				view.getStage().addActor(resetButton);
+				if (resetButton == null) {
+					//add reverse editor button
+					resetButton = new Image(spritesheet.findRegion("reset_button"));
+					resetButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
+					resetButton.setY(Gdx.graphics.getHeight() - offsetY);
+					resetButton.addListener(
+						new ClickListener() {
+							@Override
+							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+								Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
+								if (!WE.isInEditor())
+									WE.startEditor();
+								return true;
+							}
+						}
+					);
+				}
+				view.getStage().addActor(resetButton);
 				//stop button
 				//if (WE.editorHasMapCopy()) {
 				//				resetButton.addListener(

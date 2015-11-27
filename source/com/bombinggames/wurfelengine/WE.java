@@ -383,10 +383,8 @@ public class WE {
 	/**
 	 * Switch into the map editor. If the editor is already running it will restart it.
 	 *
-	 * @param reverseMap reverse to the map at the point where you exited the
-	 * editor?
 	 */
-	public static void startEditor(boolean reverseMap) {
+	public static void startEditor() {
 		switchView(gameplayScreen.getEditorView(), true);
 	}
 

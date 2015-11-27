@@ -640,7 +640,7 @@ public class CLGameView extends GameView{
 
 				//editor
 				if (keycode == Input.Keys.G){
-					 WE.startEditor(false);
+					 WE.startEditor();
 				}
 				
 

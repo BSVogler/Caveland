@@ -159,14 +159,14 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * observer pattern
 	 */
-	private final ArrayList<MapObserver> observers = new ArrayList<>(3);//camera + light engine=2 minimum
+	private ArrayList<MapObserver> observers = new ArrayList<>(3);//camera + light engine=2 minimum
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
 	/**
 	 * to prevent recursion where the loading process loads new chunks
 	 */
-	private boolean blockLoading = false;
+	private boolean isLoading = false;
 
     /** Stores the data of the map. */
     private ArrayList<Chunk> data;
@@ -264,19 +264,21 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * loads a chunk from disk
 	 * @param chunkX
 	 * @param chunkY
+	 * @return the laoded chunk
 	 */
-	public void loadChunk(int chunkX, int chunkY){
+	public Chunk loadChunk(int chunkX, int chunkY){
 		//TODO check if already there.
 		
 		//load only if not already in the process of loading
-		if (!blockLoading){
-			blockLoading = true;
-			data.add(
-				new Chunk(this, getPath(), chunkX, chunkY, getGenerator())
-			);
+		if (!isLoading){
+			isLoading = true;
+			Chunk chunk = new Chunk(this, getPath(), chunkX, chunkY, getGenerator());
+			data.add(chunk);
 			setModified();
-			blockLoading = false;
+			isLoading = false;
+			return chunk;
 		}
+		return null;
 	}
 
 	/**
@@ -747,6 +749,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public ArrayList<MapObserver> getOberservers() {
 		return observers;
+	}
+	
+	public void setObservers(ArrayList<MapObserver> linked) {
+		observers = linked;
 	}
 
 	/**

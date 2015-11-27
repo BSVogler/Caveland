@@ -78,17 +78,16 @@ public class Controller implements GameManager, MapObserver {
 	 * @return returns true if the map could be loaded and false if it failed
 	 */
 	public static boolean loadMap(File path, int saveslot) {
+		ArrayList<MapObserver> linked = null;
 		if (map != null) {
 			map.dispose(false);
+			//if loading another map, save linked objects
+			linked = map.getOberservers();
 		}
 		try {
-			ArrayList<MapObserver> linked = null;
-			if (map != null) {//if loading another map, save linked objects
-				linked = map.getOberservers();
-			}
 			map = new Map(path, saveslot);
 			if (linked != null) {
-				map.getOberservers().addAll(linked);
+				map.setObservers(linked);
 			}
 			map.onReload();
 

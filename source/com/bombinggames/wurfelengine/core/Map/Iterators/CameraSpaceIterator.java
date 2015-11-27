@@ -74,6 +74,9 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		centerChunkY = centerCoordY;
 		//bring starting position to top left
 		current = map.getChunk(centerChunkX-1, centerChunkY-1);
+		if (current == null) {
+			current = map.loadChunk(centerChunkX-1, centerChunkY-1);
+		}
 		blockIterator = current.getIterator(startingZ, topLevel);
 		updateChunkBorders();
 	}

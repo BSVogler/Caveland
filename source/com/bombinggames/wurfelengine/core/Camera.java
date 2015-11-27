@@ -63,10 +63,6 @@ import java.util.Arrays;
 public class Camera implements MapObserver {
 
 	/**
-	 * the map which is covered by the camera
-	 */
-	private Map map = Controller.getMap();
-	/**
 	 * top limit
 	 */
 	private int zRenderingLimit = Chunk.getBlocksZ();
@@ -171,7 +167,6 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final int x, final int y, final int width, final int height, GameView view) {
-		map = Controller.getMap();
 		zRenderingLimit = Chunk.getBlocksZ();
 
 		gameView = view;
@@ -182,7 +177,7 @@ public class Camera implements MapObserver {
 		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 
-		Point center = map.getCenter();
+		Point center = Controller.getMap().getCenter();
 		position.x = center.getViewSpcX();
 		position.y = center.getViewSpcY();
 		initFocus();
@@ -199,7 +194,7 @@ public class Camera implements MapObserver {
 		screenHeight = Gdx.graphics.getHeight();
 		updateViewSpaceSize();
 
-		Point center = map.getCenter();
+		Point center = Controller.getMap().getCenter();
 		position.x = center.getViewSpcX();
 		position.y = center.getViewSpcY();
 		fullWindow = true;
@@ -357,20 +352,21 @@ public class Camera implements MapObserver {
 
 	/**
 	 * Check if center has to be moved and if chunks must be loaded or unloaded
-	 * performs according actions.
+	 * performs according actions.<br>
+	 * 
 	 */
 	public void updateCenter() {
 		//if chunkmap check for chunk movement
 		int oldX = centerChunkX;
 		int oldY = centerChunkY;
 
-		Map chunkMap = map;
+		Map map = Controller.getMap();
 
 		//check if chunkswitch left
 		if (
 			getVisibleLeftBorder()
 			<
-			chunkMap.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+			map.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
 			//&& centerChunkX-1==//calculated xIndex -1
 			) {
 			centerChunkX--;
@@ -379,7 +375,7 @@ public class Camera implements MapObserver {
 		if (
 			getVisibleRightBorder()
 			>
-			chunkMap.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+			map.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
 			//&& centerChunkX-1==//calculated xIndex -1
 			) {
 			centerChunkX++;
@@ -449,7 +445,7 @@ public class Camera implements MapObserver {
 	 * @param y
 	 */
 	private void checkChunk(int x, int y) {
-		Map chunkMap = map;
+		Map chunkMap = Controller.getMap();
 		if (chunkMap.getChunk(x, y) == null) {
 			chunkMap.loadChunk(x, y);//load missing chunks
 		} else {
@@ -759,7 +755,7 @@ public class Camera implements MapObserver {
 	private void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
-			map,
+			Controller.getMap(),
 			centerChunkX,
 			centerChunkY,
 			0,
@@ -788,7 +784,7 @@ public class Camera implements MapObserver {
 		//2. add ground layer
 		for (int x = 0; x < cameraContent.length; x++) {
 			for (int y = 0; y < cameraContent[x].length; y++) {
-				cameraContent[x][y][0] = new RenderBlock(map.getNewGroundBlockInstance());
+				cameraContent[x][y][0] = new RenderBlock(Controller.getMap().getNewGroundBlockInstance());
 				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
 				//chek if clipped top
 				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
@@ -1261,7 +1257,7 @@ public class Camera implements MapObserver {
 
 	@Override
 	public void onMapReload() {
-
+		checkNeededChunks();
 	}
 
 	private void drawDebug(GameView view, Camera camera) {

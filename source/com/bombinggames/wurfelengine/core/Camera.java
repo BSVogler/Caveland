@@ -304,9 +304,6 @@ public class Camera implements MapObserver {
 			position.x += screenshake.x;
 			position.y += screenshake.y;
 
-			//recalculate the center position
-			updateCenter();
-
 			//move camera to the focus
 			viewMat.setToLookAt(
 				new Vector3(position, 0),
@@ -327,6 +324,10 @@ public class Camera implements MapObserver {
 			//set up projection matrices
 			combined.set(projection);
 			Matrix4.mul(combined.val, viewMat.val);
+			
+			//recalculate the center position
+			updateCenter();
+
 
 			if (cameraContent != null) {
 				for (RenderBlock[][] x : cameraContent) {

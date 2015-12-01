@@ -230,7 +230,7 @@ public class Robot extends MovableEntity {
 				this,
 				target,
 				Events.damage.getId(),
-				1
+				(byte) 1
 			);
 			pauseMovementAnimation();
 			attackInProgess = ATTACKTIME;//1500ms until the attack is done

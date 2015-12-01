@@ -2,6 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -1048,4 +1049,22 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	public int getPlayerNumber() {
 		return playerNumber;
 	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
+		if (msg.message == Events.damage.getId()) {
+			byte damage = ((Byte) msg.extraInfo);
+			if (!WE.CVARS.getValueB("godmode"))
+				takeDamage(damage);
+			if (getHealth() <= 0) {
+				//die
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 }

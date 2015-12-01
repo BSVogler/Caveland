@@ -75,7 +75,7 @@ public class Camera implements MapObserver {
 	private final RenderBlock[][][] cameraContent = new RenderBlock[Chunk.getBlocksX()*3][Chunk.getBlocksY()*3][Chunk.getBlocksZ() + 1];//z +1  because of ground layer
 
 	/**
-	 * the position of the camera in viewMat space. Y-up. Read only field.
+	 * the position of the camera in view space. Y-up. Read only field.
 	 */
 	private final Vector2 position = new Vector2();
 	/**

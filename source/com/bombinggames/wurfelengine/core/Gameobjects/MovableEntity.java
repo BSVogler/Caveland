@@ -252,8 +252,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				//stop
 				setHorMovement(new Vector2());
 				onCollide();
-			} else {
-				;
 			}
 
 			/*VERTICAL MOVEMENT*/

@@ -227,8 +227,8 @@ public class Point extends AbstractPosition {
     public int getViewSpcY() {
         return (int)( 
 			-getY() / 2
-            + (int) (getZ() * Block.ZAXISSHORTENING) //take z-axis shortening into account, witgh old block format SQRT12 worked btu now it's 8/9?
-			);
+            + (int) (getZ() * Block.ZAXISSHORTENING)
+		);
     }
 
 	@Override
@@ -708,8 +708,8 @@ public class Point extends AbstractPosition {
 	 * @param t
 	 * @return
 	 */
-	public Point lerp(Point target, float t) {
-		Point tp = new Point(this.getVector().lerp(target.getVector(), t));
+	public Point lerp(final Point target, float t) {
+		Vector3 tp = this.getVector().lerp(target.getVector(), t);
 		this.x = tp.x;
 		this.y = tp.y;
 		this.z = tp.z;

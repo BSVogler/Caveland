@@ -170,15 +170,7 @@ public class Inventory extends CollectibleContainer {
 			(tmp[2] == null ? null : tmp[2].getType()),};
 	}
 
-	/**
-	 * Renders the inventory in the HUD.
-	 *
-	 * @param view
-	 * @param camera
-	 */
-	@Override
-	public void render(GameView view, Camera camera) {
-		super.render(view, camera);
+	public void drawHUD(GameView view, Camera camera){
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 10, (byte) 0));
 

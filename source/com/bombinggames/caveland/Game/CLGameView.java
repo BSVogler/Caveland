@@ -389,9 +389,9 @@ public class CLGameView extends GameView{
 		//Draw HUD
 		setShader(getShader());
 		getSpriteBatch().begin();
-			getPlayer(0).getInventory().render(this, getCameras().get(0));
+			getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
 			if (coop > -1)
-				getPlayer(1).getInventory().render(this,getCameras().get(1));
+				getPlayer(1).getInventory().drawHUD(this,getCameras().get(1));
 		getSpriteBatch().end();
 		
 		

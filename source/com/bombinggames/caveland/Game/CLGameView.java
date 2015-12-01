@@ -390,8 +390,21 @@ public class CLGameView extends GameView{
 		setShader(getShader());
 		getSpriteBatch().begin();
 			getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
-			if (coop > -1)
+			if (coop > -1) {
 				getPlayer(1).getInventory().drawHUD(this,getCameras().get(1));
+			}
+		getSpriteBatch().end();
+		
+		useDefaultShader();
+		getSpriteBatch().begin();
+		if (coop > -1) {
+			PlayerCompass pC = new PlayerCompass();
+			pC.drawHUD(getPlayer(1), this, getCameras().get(0));
+			PlayerCompass pC2 = new PlayerCompass();
+			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
+		}
+		
+		
 		getSpriteBatch().end();
 		
 		

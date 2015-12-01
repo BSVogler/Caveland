@@ -160,7 +160,6 @@ public class EditorView extends GameView implements Telegraph {
 	@Override
     public void onEnter() {
 		camera.setCenter(gameplayView.getCameras().get(0).getCenter().cpy());//always keep the camera position
-		camera.move(0, -camera.getWidthInViewSpc()/2);//hack because get and setting the center resutls in a different position
         WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();

@@ -44,7 +44,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
@@ -1194,8 +1193,8 @@ public class Camera implements MapObserver {
 	 */
 	public void setCenter(Point point){
 		focusEntity = null;
-		position.x = point.getX();
-		position.y = -point.getY()/2;//game to viewMat transformation
+		position.x = point.getViewSpcX();
+		position.y = point.getViewSpcY();//game to view space transformation
 	}
 
 	public void setFocusEntity(AbstractEntity focusEntity) {

@@ -283,7 +283,7 @@ public class CLGameView extends GameView{
 					input.isKeyPressed(Input.Keys.S),
 					input.isKeyPressed(Input.Keys.A),
 					input.isKeyPressed(Input.Keys.D),
-					WE.CVARS.getValueF("playerWalkingSpeed")*(input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+					WE.CVARS.getValueF("playerWalkingSpeed")*(WE.CVARS.getValueB("devmode") && input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
 					dt
 				);
 			} else {

@@ -262,10 +262,15 @@ public class CLGameView extends GameView{
 		
 		if (WE.CVARS.getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
 			//todo should compare in view space
-			if (getCameras().get(0).getCenter().distanceTo(getCameras().get(1).getCenter()) < Block.GAME_EDGELENGTH*5){
-				getCameras().get(0).setFullWindow(true);
+			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < Block.GAME_EDGELENGTH*5){
+				if (!getCameras().get(0).isFullWindow())
+					getCameras().get(0).setFullWindow(true);
+				getCameras().get(0).setCenter(getPlayer(0).getPosition().cpy().lerp(getPlayer(1).getPosition(), 0.5f));
+				getCameras().get(0).setInternalRenderResolution( WE.CVARS.getValueI("renderResolutionWidth"));
 				getCameras().get(1).setActive(false);
-			} else {
+			} else if (getCameras().get(0).isFullWindow()) {
+				getCameras().get(0).setFocusEntity(getPlayer(0));
+				getCameras().get(1).setFocusEntity(getPlayer(1));
 				getCameras().get(1).setActive(true);
 				getCameras().get(0).setScreenSize(
 					Gdx.graphics.getWidth()/2,

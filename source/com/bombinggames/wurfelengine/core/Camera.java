@@ -1111,7 +1111,7 @@ public class Camera implements MapObserver {
 	 * @param height
 	 */
 	public void setScreenSize(int width, int height) {
-		if (width < Gdx.graphics.getWidth() || height < Gdx.graphics.getWidth()) {
+		if (width < Gdx.graphics.getWidth() || height < Gdx.graphics.getHeight()) {
 			fullWindow = false;
 		}
 		this.screenWidth = width;

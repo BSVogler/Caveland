@@ -612,13 +612,6 @@ b9-3-2
   orig: 100, 173
   offset: 0, 0
   index: -1
-e11-1
-  rotate: false
-  xy: 620, 2616
-  size: 103, 104
-  orig: 200, 223
-  offset: 49, 57
-  index: -1
 e13-0
   rotate: false
   xy: 195, 2972
@@ -2461,6 +2454,13 @@ i10-0
   offset: 59, 70
   index: -1
 i11-0
+  rotate: false
+  xy: 620, 2616
+  size: 103, 104
+  orig: 200, 223
+  offset: 49, 57
+  index: -1
+i11-1
   rotate: false
   xy: 1249, 233
   size: 103, 104

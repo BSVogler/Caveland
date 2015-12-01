@@ -50,7 +50,6 @@ public class PlayerCompass {
 	 * @param camera overlay for this camera
 	 */
 	public void drawHUD(MovableEntity player, GameView view, Camera camera){
-		Sprite fgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 0));
 		Vector2 cent = new Vector2(
 			camera.getScreenPosX() + camera.getWidthInScreenSpc() / 2f,//center
 			camera.getScreenPosY() + camera.getHeightInScreenSpc() / 2f//center
@@ -62,6 +61,11 @@ public class PlayerCompass {
 		Vector2 vecTo = to.cpy().sub(cent);
 		if (vecTo.len2() > 200000) {
 			cent.add(vecTo.nor().scl(camera.getWidthInScreenSpc()/2*0.9f));//300px in direction of player
+			Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 1));
+			bgSprite.setScale(player.getHealth()/100f);
+			bgSprite.setPosition(cent.x, cent.y);
+			bgSprite.draw(view.getSpriteBatch());
+			Sprite fgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 0));
 			fgSprite.setPosition(cent.x, cent.y);
 			fgSprite.draw(view.getSpriteBatch());
 		}

@@ -1196,6 +1196,17 @@ public class Camera implements MapObserver {
 		position.y = -point.getY()/2;//game to viewMat transformation
 	}
 
+	public void setFocusEntity(AbstractEntity focusEntity) {
+		if (this.focusEntity != focusEntity) {
+			this.focusEntity = focusEntity;
+			position.set(
+				focusEntity.getPosition().getViewSpcX(),
+				(int) (focusEntity.getPosition().getViewSpcY()
+					+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2)//have middle of object in center
+			);
+		}
+	}
+	
 	/**
 	 * get if a coordinate is clipped
 	 *

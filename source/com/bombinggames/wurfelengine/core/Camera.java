@@ -263,7 +263,7 @@ public class Camera implements MapObserver {
 		}
 		position.x = focusEntity.getPosition().getViewSpcX();
 		position.y = (int) (focusEntity.getPosition().getViewSpcY()
-			+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2);
+						+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2);//have middle of object in center
 		initFocus();
 	}
 
@@ -279,9 +279,10 @@ public class Camera implements MapObserver {
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(),
 					(int) (focusEntity.getPosition().getViewSpcY()
-					+ focusEntity.getDimensionZ() * AbstractPosition.SQRT12 / 2)
+						+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2)//have middle of object in center
 				);
 
+				//only follow if outside leap radius
 				if (position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius")) {
 					Vector2 diff = position.cpy().sub(newPos);
 					diff.nor().scl(WE.CVARS.getValueI("CameraLeapRadius"));

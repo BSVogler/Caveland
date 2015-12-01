@@ -590,6 +590,10 @@ public class GameView implements GameManager {
 		return useDefaultShader;
 	}
 	
+	/**
+	 * 
+	 * @param shader 
+	 */
 	public void setShader(ShaderProgram shader){
 		spriteBatch.setShader(shader);
 		useDefaultShader = false;

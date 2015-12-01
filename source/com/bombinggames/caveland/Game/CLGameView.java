@@ -386,6 +386,7 @@ public class CLGameView extends GameView{
 	@Override
 	public void render() {
 		super.render();
+		//Draw HUD
 		setShader(getShader());
 		getSpriteBatch().begin();
 			getPlayer(0).getInventory().render(this, getCameras().get(0));
@@ -396,7 +397,7 @@ public class CLGameView extends GameView{
 		
 		if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
 			drawString(
-				"Cave Level:"+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
+				"Cave Level: "+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
 				50, 50,
 				new Color(1, 1, 1, 1)
 			);

@@ -1081,8 +1081,8 @@ public class Camera implements MapObserver {
 	 */
 	public void setFullWindow(boolean fullWindow) {
 		this.fullWindow = fullWindow;
-		this.screenHeight = Gdx.graphics.getHeight();
 		this.screenWidth = Gdx.graphics.getWidth();
+		this.screenHeight = Gdx.graphics.getHeight();
 		this.screenPosX = 0;
 		this.screenPosY = 0;
 		updateViewSpaceSize();

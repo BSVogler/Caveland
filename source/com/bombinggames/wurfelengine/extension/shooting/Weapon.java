@@ -42,7 +42,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
@@ -256,19 +255,20 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		fixedPos = point.cpy();
 		return this;
 	}
-
-	@Override
-	public void setPosition(AbstractPosition pos) {
-		fixedPos = pos.toPoint().cpy();
-		super.setPosition(pos);
+	
+	
+	/**
+	 * The point where the weapon returns after shooting.
+	 * @param fixedPos 
+	 */
+	public void setFixedPos(Point fixedPos) {
+		this.fixedPos = fixedPos;
 	}
 
-	@Override
-	public void setPosition(Point pos) {
-		fixedPos = pos.cpy();
-		super.setPosition(pos);
+	public Point getFixedPos() {
+		return fixedPos;
 	}
-    
+	
     /**
      *
      * @return the weapon's id
@@ -298,7 +298,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		
 		//move back
 		if (hasPosition()) {
-			if ( firing){
+			if (firing){
 				float t;
 				if (bulletDelay > delayBetweenShots/2){
 					t = (bulletDelay-(delayBetweenShots/2f))/(delayBetweenShots/2f);
@@ -310,7 +310,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 					t
 				);
 			} else {
-				this.setPosition(fixedPos);
+				this.setPosition(fixedPos.cpy());
 			}
 		}
 		
@@ -389,6 +389,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 			flash.setColor(Color.YELLOW.cpy());
 			flash.setType(ParticleType.FIRE);
 			flash.spawn(getPosition().toPoint());
+			flash.setMovement(aimDir.cpy().scl(4f));
 		
             //shot bullets
             for (int i = 0; i < bps; i++) {
@@ -523,4 +524,10 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		}
 		return true;
 	}
+
+	public void setLaserHidden(boolean hidden) {
+		if (laserdot!=null)
+			laserdot.setHidden(hidden);
+	}
+	
 }

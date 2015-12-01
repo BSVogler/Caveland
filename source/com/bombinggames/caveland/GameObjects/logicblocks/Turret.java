@@ -33,7 +33,6 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Robot;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
@@ -45,9 +44,10 @@ import java.util.Iterator;
  *
  * @author Benedikt Vogler
  */
-public class Turret extends AbstractBlockLogicExtension {
+public class Turret extends AbstractPowerBlock {
 	private Robot target;
 	private Weapon gun;
+	private float online;
 	public final float MAXDISTANCE = 20;
 	
 	public Turret(Block block, Coordinate coord) {
@@ -56,6 +56,8 @@ public class Turret extends AbstractBlockLogicExtension {
 	
 	@Override
 	public void update(float dt) {
+		super.update(dt);
+		
 		///fill gun field
 		if (gun == null) {
 			//restore if possible
@@ -63,56 +65,93 @@ public class Turret extends AbstractBlockLogicExtension {
 			if (!guns.isEmpty()) {
 				gun = guns.get(0);
 			} else {
-				gun = (Weapon) new Weapon((byte) 4, null).spawn(getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH*1.2f));
+				gun = (Weapon) new Weapon((byte) 4, null).spawn(getPosition().toPoint());
 				gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
 				gun.setFireSound("turret", true);
+				gun.setSaveToDisk(false);
 			}
+		}
+		
+		if (hasPower()) {
+			if (online < 1) {
+				online += dt * 0.005;
+			}
+		} else {
+			if (online > 0) {
+				online -= dt * 0.005;
+			}
+		}
+		
+		//clamp
+		if (online < 0) {
+			online = 0;
+		}
+		if (online > 1) {
+			online = 1;
 		}
 		
 		if (!gun.hasPosition()) {
 			gun.spawn(getPosition().toPoint());
 		}
 		
-		//locate target
-		target = null;
-		ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Robot.class);
-		if (!nearby.isEmpty()) {
-			Vector3 vecToTarget = null;
-			Iterator<Robot> it = nearby.iterator();
-			while (target == null && it.hasNext()) {
-				target = it.next();
-				vecToTarget = target.getPosition().getVector().sub(gun.getPosition().getVector()).nor();
-				//check if can see target
-				Intersection raycast = gun.getPosition().raycastSimple(
-					vecToTarget,
-					MAXDISTANCE,
-					null,
-					(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
-				);
+		gun.getFixedPos().setZ(
+			getPosition().toPoint().getZ()+Block.GAME_EDGELENGTH*0.8f+online*Block.GAME_EDGELENGTH*0.6f
+		);
+		
+		
+		if (online >=1) {
+			gun.setLaserHidden(false);
+			
+			//locate target
+			target = null;
+			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Robot.class);
+			if (!nearby.isEmpty()) {
+				Vector3 vecToTarget = null;
+				Iterator<Robot> it = nearby.iterator();
+				while (target == null && it.hasNext()) {
+					target = it.next();
+					vecToTarget = target.getPosition().getVector().sub(gun.getFixedPos().getVector()).nor();
+					//check if can see target
+					Intersection raycast = gun.getFixedPos().raycastSimple(
+						vecToTarget,
+						MAXDISTANCE,
+						null,
+						(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+					);
+
+					if (
+						raycast != null &&
+						gun.getFixedPos().distanceTo(raycast.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
+					) {
+						//can not see
+						target = null;
+					}
+				}
+
 				if (
-					raycast != null
-					&& gun.getPosition().distanceTo(raycast.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
+					target != null
+					&& target.hasPosition()
+					&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
 				) {
-					//can not see
-					target = null;
+					gun.setAimDir(vecToTarget);
+					gun.shoot();
 				}
 			}
-
-			if (
-				target != null
-				&& target.hasPosition()
-				&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
-			) {
-				gun.setAimDir(vecToTarget);
-				gun.shoot();
-			}
+		} else {
+			gun.setLaserHidden(true);
 		}
 		
 	}
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		gun.dispose();
+	}
+
+	@Override
+	public boolean outgoingConnection(int id) {
+		return true;
 	}
 	
 }

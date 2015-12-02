@@ -463,7 +463,7 @@ public class Chunk {
     public boolean save(File path, int saveSlot) throws IOException {
         if (path == null) return false;
         Gdx.app.log("Chunk","Saving "+coordX + ","+ coordY +".");
-        File savepath = new File(path+"/save"+saveSlot+"/chunk"+coordX+","+coordY+"."+CHUNKFILESUFFIX);
+		File savepath = new File(path + "/save" + saveSlot + "/chunk" + coordX + "," + coordY + "." + CHUNKFILESUFFIX);
 
         savepath.createNewFile();
 

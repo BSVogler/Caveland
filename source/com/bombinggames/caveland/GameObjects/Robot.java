@@ -254,7 +254,7 @@ public class Robot extends MovableEntity {
 				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 
-				if (getHealth() <= 0 && KILLSOUND != null) {
+				if (KILLSOUND != null) {
 					WE.SOUND.play(KILLSOUND);
 				}
 			}

@@ -46,13 +46,14 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtensio
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class RobotFactory extends AbstractBlockLogicExtension implements Interactable, Telegraph  {
-	private Robot linkedRobot;
+	private RobotFactoryLinker linkToRobot;
 	
 	public RobotFactory(Block block, Coordinate coord) {
 		super(block, coord);
@@ -60,10 +61,19 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 
 	@Override
 	public void update(float dt) {
-		if (linkedRobot == null || linkedRobot.shouldBeDisposed()){
-			getPosition().setValue((byte) 1);
+		if (linkToRobot == null) {
+			ArrayList<RobotFactoryLinker> links = getPosition().getEntitiesInside(RobotFactoryLinker.class);
+			if (!links.isEmpty()) {
+				linkToRobot = links.get(0);
+			} else {
+				linkToRobot = new RobotFactoryLinker();
+			}
+		}
+		
+		if (linkToRobot.shouldBeDisposed() || !linkToRobot.hasPosition()){//respawn if needed
+			linkToRobot.spawn(getPosition().toPoint());
 		} else {
-			getPosition().setValue((byte) 0);
+			linkToRobot.setPosition(getPosition().toPoint());//force at position
 		}
 	}
 
@@ -76,41 +86,45 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ActionBox ab;
-				if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
-					ab = new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
-					.addSelectionNames("Fighter Robot","Robot", "Drone")
-					.setConfirmAction((int result, AbstractEntity actor1) -> {
-						if (linkedRobot == null || linkedRobot.shouldBeDisposed()) {
-							switch (result) {
-								case 0:
-									linkedRobot = (Robot) new Robot().spawn(getPosition().toPoint());
-									break;
-								case 1:
-									linkedRobot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
-									break;
-								case 2:
-									linkedRobot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
-									break;
-								default:
-									break;
-							}
-							linkedRobot.setTeamId(1);
-							linkedRobot.setHome(getPosition().toPoint());
-							WE.SOUND.play("construct");
+			if (linkToRobot.getRobot() == null || linkToRobot.getRobot().shouldBeDisposed()) {
+				ab = new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
+				.addSelectionNames("Fighter Robot","Robot", "Drone")
+				.setConfirmAction((int result, AbstractEntity actor1) -> {
+					if (linkToRobot.getRobot() == null ||
+						linkToRobot.getRobot().shouldBeDisposed()
+					) {
+						Robot robot = null;
+						switch (result) {
+							case 0:
+								robot = (Robot) new Robot().spawn(getPosition().toPoint());
+								break;
+							case 1:
+								robot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
+								break;
+							case 2:
+								robot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());
+								break;
+							default:
+								break;
 						}
-					});
-				} else {
+						robot.setTeamId(1);
+						robot.setHome(getPosition().toPoint());
+						linkToRobot.setRobot(robot);
+						WE.SOUND.play("construct");
+					}
+				});
+			} else {
 				ab = new ActionBox("Robot in use", ActionBox.BoxModes.BOOLEAN, "The robot is already in use. Destroy it?")
 					.setConfirmAction((int result, AbstractEntity actor1) -> {
 						MessageManager.getInstance().dispatchMessage(
 							(Telegraph) this,
-							linkedRobot,
+							linkToRobot.getRobot(),
 							Events.damage.getId(),
 							(byte) 100
 						);
 					});
-				}
-				ab.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+			}
+			ab.register(view, ((Ejira) actor).getPlayerNumber(), actor);
 		}
 	}
 

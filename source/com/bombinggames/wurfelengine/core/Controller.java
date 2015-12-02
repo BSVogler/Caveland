@@ -350,7 +350,7 @@ public class Controller implements GameManager, MapObserver {
 	 * @return
 	 */
 	public boolean save() {
-		return Controller.getMap().save(Controller.getMap().getCurrentSaveSlot());
+		return Controller.getMap().save();
 	}
 
 	@Override

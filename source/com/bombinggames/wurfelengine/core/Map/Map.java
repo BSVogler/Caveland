@@ -578,18 +578,25 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
     public boolean save(int saveSlot) {
 		for (Chunk chunk : data) {
 			try {
-                chunk.save(
-                    getPath(),
+				chunk.save(
+					getPath(),
 					saveSlot
-                );
-            } catch (IOException ex) {
-                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
+				);
+			} catch (IOException ex) {
+				Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+				return false;
+			}
 		}
-        return true;
+		return true;
     }
-
+	
+	/**
+	 * save every chunk using the current active save slot
+	 * @return 
+	 */
+	public boolean save(){
+		return save(activeSaveSlot);
+	}
 
 	/**
 	 * prints the map to console

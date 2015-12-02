@@ -31,6 +31,7 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
@@ -50,7 +51,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  *
  * @author Benedikt Vogler
  */
-public class RobotFactory extends AbstractBlockLogicExtension implements Interactable  {
+public class RobotFactory extends AbstractBlockLogicExtension implements Interactable, Telegraph  {
 	private Robot linkedRobot;
 	
 	public RobotFactory(Block block, Coordinate coord) {
@@ -105,7 +106,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 							(Telegraph) this,
 							linkedRobot,
 							Events.damage.getId(),
-							0
+							(byte) 100
 						);
 					});
 				}
@@ -120,6 +121,11 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 
 	@Override
 	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
 		return false;
 	}
 	

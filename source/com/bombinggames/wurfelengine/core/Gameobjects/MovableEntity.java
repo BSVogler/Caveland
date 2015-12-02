@@ -156,9 +156,20 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	@Override
 	public AbstractEntity spawn(Point point) {
+		if (!hasPosition())
+			MessageManager.getInstance().addListener(this, Events.landed.getId());
 		super.spawn(point);
-		MessageManager.getInstance().addListener(this, Events.landed.getId());
 		return this;
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		MessageManager.getInstance().removeListener(this,
+			Events.deselectInEditor.getId(),
+			Events.selectInEditor.getId(),
+			Events.landed.getId()
+		);
 	}
 
 	/**
@@ -935,13 +946,4 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		
 		return false;
 	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		MessageManager.getInstance().removeListener(this, Events.deselectInEditor.getId());
-		MessageManager.getInstance().removeListener(this, Events.selectInEditor.getId());
-	}
-	
-	
 }

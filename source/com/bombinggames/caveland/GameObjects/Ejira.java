@@ -199,7 +199,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		inventory = (Inventory) new Inventory(this).spawn();
 		
 		emitter.spawn(point.cpy());
-		
 		emitter2.spawn(point.cpy());
 		
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
@@ -207,6 +206,14 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		lightsource.spawn(point.cpy().addVector(0, 0, Block.GAME_EDGELENGTH2));
 		
 		return this;
+	}
+	
+	@Override
+	public void dispose() {
+		emitter.dispose();
+		emitter2.dispose();
+		lightsource.dispose();
+		super.dispose();
 	}
 	
 	/**
@@ -855,13 +862,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				Block.GAME_EDGELENGTH / 500f
 			)
 		);
-	}
-
-	@Override
-	public void dispose() {
-		emitter.dispose();
-		emitter2.dispose();
-		super.dispose();
 	}
 
 	/**

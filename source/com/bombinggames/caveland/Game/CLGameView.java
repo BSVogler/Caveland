@@ -404,7 +404,6 @@ public class CLGameView extends GameView{
 			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
 		}
 		
-		
 		getSpriteBatch().end();
 		
 		

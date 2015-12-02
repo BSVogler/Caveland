@@ -681,7 +681,7 @@ public class CLGameView extends GameView{
                 } 
 
                 if (keycode == Input.Keys.ESCAPE) {
-                    if (modalGroup==null) {
+					if (modalGroup == null) {
 						setModal(new IGMenu(this.parent));
 						pauseTime();
 					} else {

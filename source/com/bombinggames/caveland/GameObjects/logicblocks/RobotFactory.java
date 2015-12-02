@@ -95,7 +95,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 									break;
 							}
 							linkedRobot.setTeamId(1);
-							linkedRobot.setHome(getPosition());
+							linkedRobot.setHome(getPosition().toPoint());
 							WE.SOUND.play("construct");
 						}
 					});

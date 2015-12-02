@@ -7,9 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -112,20 +114,59 @@ public class ActionBox extends WidgetGroup {
 	public float getHeight() {
 		return window.getHeight();
 	}
+
 	
 	/**
 	 * registeres the window as a modal box so that the input gets redirected to
 	 * it.
 	 *
-	 * @param view
-	 * @param playerId starting with 1
+	 * @param view for displaying the window
+	 * @param playerId starting with 1. Needed for position.
 	 * @param actor the entitiy which is connected to the dialogue. can be null
-	 * @return
+	 * @return itself
+	 * @see #register(CLGameView, int, AbstractEntity, Coordinate) 
 	 */
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
 		if (selectAction != null) {
 			selectAction.select(false, selection, actor);
+		}
+		return this;
+	}
+	/**
+	 * registeres the window as a modal box so that the input gets redirected to
+	 * it.
+	 *
+	 * @param view for displaying the window
+	 * @param playerId starting with 1. Needed for position.
+	 * @param actor the entitiy which is connected to the dialogue. can be null
+	 * @param actedObject the object which gets acted on. can be null
+	 * @return itself
+	 * @see #register(CLGameView, int, AbstractEntity, Coordinate) 
+	 */
+	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor, AbstractEntity actedObject) {
+		register(view, playerId, actor);
+		if (actedObject!=null && actor instanceof Ejira) {
+			((Ejira) actor).startInteraction(actedObject);
+		}
+		return this;
+	}
+	
+	/**
+	 * registeres the window as a modal box so that the input gets redirected to
+	 * it.
+	 *
+	 * @param view for displaying the window
+	 * @param playerId starting with 1. Needed for position.
+	 * @param actor the entitiy which is connected to the dialogue. can be null
+	 * @param coord the coordinates where the interaction is aimed at
+	 * @return itself
+	 * @see #register(CLGameView, int, Gameobjects.AbstractEntity, AbstractEntity) 
+	 */
+	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor, Coordinate coord) {
+		register(view, playerId, actor);
+		if (coord != null && actor instanceof Ejira) {
+			((Ejira) actor).startInteraction(coord);
 		}
 		return this;
 	}
@@ -189,6 +230,9 @@ public class ActionBox extends WidgetGroup {
 		if (confirmAction != null) {
 			confirmAction.confirm(selectionNum, actor);
 		}
+		if (actor instanceof Ejira){
+			((Ejira) actor).endInteraction();
+		}
 		return selectionNum;
 	}
 
@@ -208,6 +252,9 @@ public class ActionBox extends WidgetGroup {
 		WE.SOUND.play("menuAbort");
 		if (cancelAction != null) {
 			cancelAction.cancel(selectionNum, actor);
+		}
+		if (actor instanceof Ejira){
+			((Ejira) actor).endInteraction();
 		}
 		return selectionNum;
 	}

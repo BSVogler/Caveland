@@ -275,7 +275,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 						nextChat(view, actor, false);
 					});
 				}
-				currentChat.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+				currentChat.register(view, ((Ejira) actor).getPlayerNumber(), actor, this);
 			}
 		}
 	}

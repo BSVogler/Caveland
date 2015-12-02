@@ -39,6 +39,7 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -156,6 +157,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	private transient final ParticleEmitter emitter;
 	private transient final ParticleEmitter emitter2;
 	private PointLightSource lightsource;
+	private transient AimBand interactionAimband;
 	
 	/**
 	 * creates a new Ejira
@@ -444,6 +446,10 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 			}
+			
+			if (interactionAimband != null) {
+				interactionAimband.update();
+			}
 		}
 	}
 
@@ -451,8 +457,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
 	}
-	
-	
 
 	@Override
 	public void render(GameView view, Camera camera) {
@@ -526,12 +530,40 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	}
 
 	/**
-	 *interacts with the nearest thign if there is one
+	 * interacts with the nearest thign if there is one
+	 *
 	 * @param view
 	 */
 	public void interactWithNearestThing(CLGameView view) {
-		if (nearestInteractable != null)
+		if (nearestInteractable != null) {
 			nearestInteractable.interact(view, this);
+		}
+	}
+
+	/**
+	 * creates an aimband
+	 * @param ent 
+	 */
+	public void startInteraction(AbstractEntity ent) {
+		interactionAimband = new AimBand(this, ent);
+	}
+
+	/**
+	 * creates an aimband
+	 * @param coord 
+	 */
+	public void startInteraction(Coordinate coord) {
+		interactionAimband = new AimBand(this, coord);
+	}
+
+	/**
+	 * removed the aimband
+	 */
+	public void endInteraction() {
+		if (interactionAimband != null) {
+			interactionAimband.dispose();
+		}
+		interactionAimband = null;
 	}
 
 	/**

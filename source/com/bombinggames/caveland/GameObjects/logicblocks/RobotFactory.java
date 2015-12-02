@@ -124,7 +124,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 						);
 					});
 			}
-			ab.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+			ab.register(view, ((Ejira) actor).getPlayerNumber(), actor, getPosition());
 		}
 	}
 

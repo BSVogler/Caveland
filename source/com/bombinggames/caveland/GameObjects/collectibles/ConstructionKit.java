@@ -98,7 +98,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 						}
 					}
 				)
-				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+				.register(view, ((Ejira) actor).getPlayerNumber(), actor, this);
 		}
 	}
 

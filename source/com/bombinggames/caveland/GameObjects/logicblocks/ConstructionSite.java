@@ -145,7 +145,12 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ConstructionSiteWindow selectionWindow = new ConstructionSiteWindow(view, actor, this);
-			selectionWindow.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+			selectionWindow.register(
+				view,
+				((Ejira) actor).getPlayerNumber(),
+				actor,
+				getPosition()
+			);
 		}
 	}
 	

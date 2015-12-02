@@ -39,7 +39,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
 /**
- * A band which points to a point or entity
+ * A band which points to a point or entity. It most only be updated to work. It should eb disposed if not used any more.
  * @author Benedikt Vogler
  */
 public class AimBand {

@@ -127,7 +127,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					constructionSiteLogic.setResult(CLBlocks.LIFT.getId());
 					WE.SOUND.play("metallic");
 				})
-				.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+				.register(view, ((Ejira) actor).getPlayerNumber(), actor, getPosition());
 		}
 	}
 

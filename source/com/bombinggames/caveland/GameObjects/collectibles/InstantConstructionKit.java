@@ -104,7 +104,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 						}
 					}
 				);
-			box.register(view, ((Ejira) actor).getPlayerNumber(), actor);
+			box.register(view, ((Ejira) actor).getPlayerNumber(), actor, this);
 		}
 	}
 

@@ -14,8 +14,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -52,7 +50,6 @@ public class Robot extends MovableEntity implements Telegraph{
 	private int type = 0;
 	private transient AimBand particleBand;
 	private int teamId;
-	private Point home;
 
 	public Robot() {
 		this((byte) 45, 5);
@@ -284,19 +281,4 @@ public class Robot extends MovableEntity implements Telegraph{
 			setContinuousWalkingAnimation(1f);
 		}
 	}
-
-	public void setHome(Point position) {
-		home = position;
-	}
-	
-	private void writeObject(ObjectOutputStream oos) throws IOException {
-		//save at home position
-		Point tmp = getPosition();
-		if (home != null) {
-			setPosition(home);
-		}
-		oos.defaultWriteObject();
-		setPosition(tmp);
-	}
-
 }

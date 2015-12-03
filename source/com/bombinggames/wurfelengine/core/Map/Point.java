@@ -654,31 +654,6 @@ public class Point extends AbstractPosition {
 	}
 	
 	@Override
-	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		Point other = (Point)obj;
-		if (x != other.x) return false;
-		if (y != other.y) return false;
-		return z == other.z;
-	}
-	
-	@Override
-	public String toString() {
-		return "[" + x + ", " + y + ", " + z + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 97 * hash + Float.floatToIntBits(this.x);
-		hash = 97 * hash + Float.floatToIntBits(this.y);
-		hash = 97 * hash + Float.floatToIntBits(this.z);
-		return hash;
-	}
-
-	@Override
 	public int getChunkX() {
 		return Math.floorDiv((int) x, Chunk.getGameWidth());
 	}
@@ -695,11 +670,9 @@ public class Point extends AbstractPosition {
 	 * @param t
 	 * @return
 	 */
-	public Point lerp(final Point target, float t) {
-		Vector3 tp = cpy().lerp(target, t);
-		this.x = tp.x;
-		this.y = tp.y;
-		this.z = tp.z;
+	@Override
+	public Point lerp(final Vector3 target, float t) {
+		super.lerp(target, t);
 		return this;
 	}
 	

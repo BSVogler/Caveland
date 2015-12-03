@@ -2,8 +2,8 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Robot extends MovableEntity {
+public class Robot extends MovableEntity implements Telegraph{
 
 	private static final long serialVersionUID = 3L;
 	/**
@@ -136,22 +136,21 @@ public class Robot extends MovableEntity {
 			//follow the target
 			if (target != null && target.hasPosition()) {
 				if (getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 1.5f) {
-					//movement logic
-					Vector3 d = new Vector3();
-
-					d.x = target.getPosition().getX() - getPosition().getX();
-					d.y = target.getPosition().getY() - getPosition().getY();
-					if (isFloating()) {
-						d.z = target.getPosition().getZ() - getPosition().getZ();
-					}
-					d.nor();//direction only
-					d.scl(movementSpeed);//speed at 2 m/s
-					if (!isFloating()) {
-						d.z = getMovement().z;
-					}
-
-					setMovement(d);// update the movement vector
-
+					MessageManager.getInstance().dispatchMessage(
+						0,
+						this,
+						this,
+						Events.moveTo.getId(),
+						target.getPosition()
+					);
+					setSpeedHorizontal(movementSpeed);
+				} else {
+					MessageManager.getInstance().dispatchMessage(
+						0,
+						this,
+						this,
+						Events.standStill.getId()
+					);
 				}
 
 				//attack

@@ -42,7 +42,9 @@ public enum Events {
 	selectInEditor(14),
 	deselectInEditor(15),
 	destroyed(16),
-	landed(17);
+	landed(17),
+	moveTo(18),
+	standStill(19);
 	
 	private final int id;
 

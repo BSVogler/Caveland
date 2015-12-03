@@ -49,10 +49,6 @@ import java.util.function.Predicate;
  */
 public class Point extends AbstractPosition {
 	private static final long serialVersionUID = 2L;
-	/**
-	 * in continous game space
-	 */
-    private float x, y, z;
 
     /**
      * Creates a point refering to a position in the game world.
@@ -129,8 +125,8 @@ public class Point extends AbstractPosition {
     public Coordinate toCoord() {
         //find out where the position is (basic)
         Coordinate coords = new Coordinate(
-			Math.floorDiv((int) getX(), Block.GAME_DIAGLENGTH),
-            Math.floorDiv((int) getY(), Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
+			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
+            Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
 			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
 		);
 //		//clamp at top border
@@ -161,15 +157,6 @@ public class Point extends AbstractPosition {
         return y;
     }
 	
-	  /**
-     *Get as array triple
-     * @return
-     */
-	@Override
-    public Vector3 getVector(){
-        return new Vector3(x, y, z);
-    }
-    
 	/**
 	 * 
 	 * @return  the offset to the coordiantes center.
@@ -709,7 +696,7 @@ public class Point extends AbstractPosition {
 	 * @return
 	 */
 	public Point lerp(final Point target, float t) {
-		Vector3 tp = this.getVector().lerp(target.getVector(), t);
+		Vector3 tp = cpy().lerp(target, t);
 		this.x = tp.x;
 		this.y = tp.y;
 		this.z = tp.z;
@@ -723,7 +710,7 @@ public class Point extends AbstractPosition {
 	 * @return 
 	 */
 	public boolean canSee(Point p, float maxdistance) {
-		Vector3 vecToTarget = getVector().sub(p.getVector()).nor();
+		Vector3 vecToTarget = cpy().sub(p).nor();
 		//check if can see target
 		Intersection raycast = p.raycastSimple(
 			vecToTarget,

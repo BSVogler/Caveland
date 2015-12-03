@@ -97,7 +97,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 						dust.setColor(new Color(0.5f, 0.45f, 0.4f, 1f));
 						dust.setType(ParticleType.FIRE);
 						dust.addMovement(
-							coord.toPoint().getVector().sub(point.getVector()).nor().scl(4f)
+							coord.toPoint().sub(point).nor().scl(4f)
 						);//move from center to outside
 					}
 				}

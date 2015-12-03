@@ -146,10 +146,10 @@ public class PointLightSource extends AbstractEntity {
 							if (inters != null && inters.getPoint() != null) {
 								float pow = lightPos.distanceTo(getPosition().toCoord().addVector(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
 								float l = (1 + brightness) / (pow * pow);
-								Vector3 target = getPosition().toCoord().addVector(x, y, z).toPoint().getVector();
+								Vector3 target = getPosition().toCoord().addVector(x, y, z).toPoint().cpy();
 								
 								//side 0
-								float lambert = lightPos.getVector().sub(
+								float lambert = lightPos.cpy().sub(
 									target.add(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
 								).nor().dot(Side.LEFT.toVector());
 								
@@ -159,7 +159,7 @@ public class PointLightSource extends AbstractEntity {
 								}
 								
 								//side 1
-								lambert = lightPos.getVector().sub(
+								lambert = lightPos.cpy().sub(
 									target.add(0, 0, Block.GAME_EDGELENGTH)
 								).nor().dot(Side.TOP.toVector());
 
@@ -169,7 +169,7 @@ public class PointLightSource extends AbstractEntity {
 								}
 
 								//side 2
-								lambert = lightPos.getVector().sub(
+								lambert = lightPos.cpy().sub(
 									target.add(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
 								).nor().dot(Side.RIGHT.toVector());
 

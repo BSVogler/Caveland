@@ -110,7 +110,7 @@ public class Turret extends AbstractPowerBlock {
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {
 					target = it.next();
-					vecToTarget = target.getPosition().getVector().sub(gun.getFixedPos().getVector()).nor();
+					vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
 					//check if can see target
 					Intersection raycast = gun.getFixedPos().raycastSimple(
 						vecToTarget,

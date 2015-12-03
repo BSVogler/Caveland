@@ -159,8 +159,8 @@ public class MineCart extends MovableEntity implements Interactable {
 						if (block.getSpriteValue() == 5) {
 							offset = 1;
 						}
-						Vector3 circularVec = getPosition().getVector().sub(//0P
-							getPosition().toCoord().toPoint().getVector().add(offset*Block.GAME_DIAGLENGTH2, 0, 0)//0C
+						Vector3 circularVec = getPosition().cpy().sub(//0P
+							getPosition().toCoord().toPoint().add(offset*Block.GAME_DIAGLENGTH2, 0, 0)//0C
 						).nor().scl(Block.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
 						pos.setPositionRelativeToCoord(
@@ -180,8 +180,8 @@ public class MineCart extends MovableEntity implements Interactable {
 						if (block.getSpriteValue() == 4) {
 							offset = -1;
 						}
-						circularVec = getPosition().getVector().sub(//0P
-							getPosition().toCoord().toPoint().getVector().add(0, offset*Block.GAME_DIAGLENGTH2, 0)//0C
+						circularVec = getPosition().cpy().sub(//0P
+							getPosition().toCoord().toPoint().add(0, offset*Block.GAME_DIAGLENGTH2, 0)//0C
 						).nor().scl(Block.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
 						pos.setPositionRelativeToCoord(

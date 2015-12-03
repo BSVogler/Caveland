@@ -98,8 +98,8 @@ public class Intersection {
 	 * @return null if not hitting
 	 */
 	public static Intersection intersect(final Coordinate target, final Point p, final Vector3 dir) {
-		final Vector3 back = target.toPoint().getVector().add(0, -Block.GAME_DIAGLENGTH2, 0);
-		final Vector3 front = target.toPoint().getVector().add(0, Block.GAME_DIAGLENGTH2, Block.GAME_EDGELENGTH);
+		final Vector3 back = target.toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
+		final Vector3 front = target.toPoint().add(0, Block.GAME_DIAGLENGTH2, Block.GAME_EDGELENGTH);
 
 		Intersection inter = new Intersection();
 
@@ -143,10 +143,10 @@ public class Intersection {
 		}
 
 		//add dir because dir*t end's outside the target
-		Vector3 i_outside3 = p.getVector().add(dir.cpy().scl(t));//regular i calculation
+		Vector3 i_outside3 = p.cpy().add(dir.cpy().scl(t));//regular i calculation
 		Vector2 i_outside2 = new Vector2(i_outside3.x, i_outside3.y);
 		//center as 2d vector
-		Vector2 c = new Vector2(target.toPoint().getVector().x, target.toPoint().getVector().y);
+		Vector2 c = new Vector2(target.toPoint().x, target.toPoint().y);
 		Vector2 d = i_outside2.sub(c);
 		Vector2 i_inside2 = new Vector2(d.x, d.y).scl(0.5f);//move from center in direction of intersection point, empiracl factor 0.5 becaue it's bugged
 		

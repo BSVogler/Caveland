@@ -911,7 +911,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.hasPosition()
-				&& ent.getPosition().toCoord().getVector().equals(coord.getVector())//on coordinate?
+				&& ent.getPosition().toCoord().equals(coord)//on coordinate?
 				&& type.isInstance(ent)//of tipe of filter?
 				) {
 				list.add((type) ent);//add it to list

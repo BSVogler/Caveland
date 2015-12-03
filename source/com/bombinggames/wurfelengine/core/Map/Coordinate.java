@@ -133,11 +133,6 @@ public class Coordinate extends AbstractPosition {
 		}
 	}
 
-	@Override
-	public Vector3 getVector() {
-		return new Vector3(x, y, z);
-	}
-
 	/**
 	 * Set the coordiantes X component.
 	 *

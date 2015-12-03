@@ -44,7 +44,7 @@ import java.util.ArrayList;
  *A
  * @author Benedikt Vogler
  */
-public abstract class AbstractPosition implements Serializable {
+public abstract class AbstractPosition extends Vector3 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     /**
@@ -98,12 +98,6 @@ public abstract class AbstractPosition implements Serializable {
 	 */
 	public abstract int getProjectionSpaceY(GameView View, Camera camera);
 	
-	/**
-     *Get as vector
-     * @return copy safe
-     */
-    public abstract Vector3 getVector();
-	
     /**
      * Get the block at the position.  Clamps positions over the map at topmost layer.
      * @return If the coordiante is not in memory will crash.
@@ -114,6 +108,7 @@ public abstract class AbstractPosition implements Serializable {
      *
      * @return a copy of the object.
      */
+	@Override
     public abstract AbstractPosition cpy(); 
     
     /**

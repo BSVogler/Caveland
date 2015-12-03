@@ -9,6 +9,7 @@ import com.bombinggames.caveland.GameObjects.Bird;
 import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.PathfindingTest;
+import com.bombinggames.caveland.GameObjects.Quadrocopter;
 import com.bombinggames.caveland.GameObjects.Robot;
 import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.SpiderRobot;
@@ -84,6 +85,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Bird", Bird.class);
 		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
 		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);
+		AbstractEntity.registerEntity("Quadrocopter", Quadrocopter.class);
 
 		Map.setDefaultGenerator(new ChunkGenerator());
 

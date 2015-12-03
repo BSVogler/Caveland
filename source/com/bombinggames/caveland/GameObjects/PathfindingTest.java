@@ -49,8 +49,8 @@ public class PathfindingTest extends SimpleEntity {
 	private static final long serialVersionUID = 1L;
 	
 	private SimpleEntity end;
-	private ArrayList<AimBand> aimBandList = new ArrayList<>(10);
-	private AimBand directAimBand = new AimBand(this, end);
+	private final ArrayList<AimBand> aimBandList = new ArrayList<>(10);
+	private final AimBand directAimBand = new AimBand(this, end);
 	
 	public PathfindingTest() {
 		super((byte) 22);

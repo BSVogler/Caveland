@@ -65,7 +65,7 @@ public class IndexedAStarPathFinder<N extends IndexedNode<N>> implements PathFin
 	public IndexedAStarPathFinder (IndexedGraph<N> graph, boolean calculateMetrics) {
 		this.graph = graph;
 		this.nodeRecords = (NodeRecord<N>[])new NodeRecord[graph.getNodeCount()];
-		this.openList = new BinaryHeap<NodeRecord<N>>();
+		this.openList = new BinaryHeap<>();
 		if (calculateMetrics) this.metrics = new Metrics();
 	}
 
@@ -201,30 +201,34 @@ public class IndexedAStarPathFinder<N extends IndexedNode<N>> implements PathFin
 
 			float nodeHeuristic;
 			NodeRecord<N> nodeRecord = getNodeRecord(node);
-			if (nodeRecord.category == CLOSED) { // The node is closed
+			switch (nodeRecord.category) {
+				case CLOSED:
+					// The node is closed
+					
+					// If we didn't find a shorter route, skip
+					if (nodeRecord.costSoFar <= nodeCost) continue;
+					// We can use the node's old cost values to calculate its heuristic
+					// without calling the possibly expensive heuristic function
+					nodeHeuristic = nodeRecord.getEstimatedTotalCost() - nodeRecord.costSoFar;
+					break;
+				case OPEN:
+					// The node is open
+					
+					// If our route is no better, then skip
+					if (nodeRecord.costSoFar <= nodeCost) continue;
+					// Remove it from the open list (it will be re-added with the new cost)
+					openList.remove(nodeRecord);
+					// We can use the node's old cost values to calculate its heuristic
+					// without calling the possibly expensive heuristic function
+					nodeHeuristic = nodeRecord.getEstimatedTotalCost() - nodeRecord.costSoFar;
+					break;
+				default:
+					// the node is unvisited
 
-				// If we didn't find a shorter route, skip
-				if (nodeRecord.costSoFar <= nodeCost) continue;
-
-				// We can use the node's old cost values to calculate its heuristic
-				// without calling the possibly expensive heuristic function
-				nodeHeuristic = nodeRecord.getEstimatedTotalCost() - nodeRecord.costSoFar;
-			} else if (nodeRecord.category == OPEN) { // The node is open
-
-				// If our route is no better, then skip
-				if (nodeRecord.costSoFar <= nodeCost) continue;
-
-				// Remove it from the open list (it will be re-added with the new cost)
-				openList.remove(nodeRecord);
-
-				// We can use the node's old cost values to calculate its heuristic
-				// without calling the possibly expensive heuristic function
-				nodeHeuristic = nodeRecord.getEstimatedTotalCost() - nodeRecord.costSoFar;
-			} else { // the node is unvisited
-
-				// We'll need to calculate the heuristic value using the function,
-				// since we don't have a node record with a previously calculated value
-				nodeHeuristic = heuristic.estimate(node, endNode);
+					// We'll need to calculate the heuristic value using the function,
+					// since we don't have a node record with a previously calculated value
+					nodeHeuristic = heuristic.estimate(node, endNode);
+					break;
 			}
 
 			// Update node record's cost and connection

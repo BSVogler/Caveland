@@ -34,6 +34,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -53,41 +54,60 @@ public class IdleAI implements Telegraph {
 		this.body = body;
 	}
 	
-	void update(float dt) {
-		if (home == null) {
-			home = body.getPosition();
-		}
-		
-		timeTillMove -= dt;
-		
-		if (timeTillMove < 0) {
-			timeTillMove = 1500;
-			
-			if (body.getPosition().distanceTo(home) > Block.GAME_EDGELENGTH * 4) //if too far away
-			{
-				MessageManager.getInstance().dispatchMessage(
-					0,
-					this,
-					body,
-					Events.moveTo.getId(),
-					home
+	public void update(float dt) {
+		if (body.hasPosition()) {
+			if (home == null) {
+				home = body.getPosition().cpy();
+			}
+
+			if (timeTillMove > 0)
+				timeTillMove -= dt;
+
+			if (timeTillMove <= 0 && body.getMovementGoal() == null) {
+				body.setSpeedHorizontal(2);
+				timeTillMove = 1500;
+
+				Point target;
+				//only 100 trials
+				int i=0;
+				//find target in radius
+				do {	
+					i++;
+					if (body.isFloating())
+						target = home.cpy().add(
+							new Vector3(
+								(float) (Math.random() - 0.5f),
+								(float) (Math.random() - 0.5f),
+								(float) (Math.random() - 0.5f)
+							).nor().scl(Block.GAME_EDGELENGTH * 2)
+						);
+					else {
+						target = home.cpy().add(
+							new Vector2(
+								(float) (Math.random() - 0.5f),
+								(float) (Math.random() - 0.5f)
+							).nor().scl(Block.GAME_EDGELENGTH * 2)
+						);
+					}
+				} while (
+					i < 100
+					&& (
+					(target.getBlock() != null
+					&& target.getBlock().isObstacle())
+					|| body.getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 3)
 				);
-			} else {
-				MessageManager.getInstance().dispatchMessage(
-					0,
-					this,
-					body,
-					Events.moveTo.getId(),
-					home.cpy().add(
-						new Vector2(
-							(float) (Math.random() - 0.5f),
-							(float) (Math.random() - 0.5f)
-						).nor().scl(Block.GAME_EDGELENGTH * 2)
-					)
-				);
+				
+				if (i < 100){
+					MessageManager.getInstance().dispatchMessage(
+						0,
+						this,
+						body,
+						Events.moveTo.getId(),
+						target
+					);
+				}
 			}
 		}
-		
 	}
 	
 	@Override

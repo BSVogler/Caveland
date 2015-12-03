@@ -272,6 +272,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 						movementSpeed = getSpeedHor();
 					}
 					d.nor();//direction only
+					if (movementSpeed<2)
+						movementSpeed=2;
 					d.scl(movementSpeed);
 					if (!isFloating()) {
 						d.z = getMovement().z;
@@ -964,6 +966,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void playMovementAnimation(){
 		walkingPaused = false;
+	}
+
+	public Point getMovementGoal() {
+		return movementGoal;
 	}
 	
 	@Override

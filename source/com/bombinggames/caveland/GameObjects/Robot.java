@@ -50,6 +50,8 @@ public class Robot extends MovableEntity implements Telegraph{
 	private int type = 0;
 	private transient AimBand particleBand;
 	private int teamId;
+	
+	private IdleAI idleaAI;
 
 	public Robot() {
 		this((byte) 45, 5);
@@ -62,6 +64,7 @@ public class Robot extends MovableEntity implements Telegraph{
 		setObstacle(true);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
+		idleaAI = new IdleAI(this);
 	}
 
 	@Override
@@ -82,6 +85,10 @@ public class Robot extends MovableEntity implements Telegraph{
 		//update as usual
 		super.update(dt);
 
+		
+		if (idleaAI != null)
+			idleaAI.update(dt);
+		
 		//set attack sprite
 		if (attackInProgess > 0) {
 			attackInProgess -= dt;

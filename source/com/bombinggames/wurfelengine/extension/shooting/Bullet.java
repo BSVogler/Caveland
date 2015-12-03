@@ -87,7 +87,7 @@ public class Bullet extends AbstractEntity {
 		movement.add(new Vector3(0, 0, -WE.CVARS.getValueF("gravity") * dt*0.001f));
 		Vector3 dMov = movement.cpy().scl(dt);
 		//dMov.z /= 1.414213562f;//mixed screen and game space together?
-		getPosition().addVector(dMov);
+		getPosition().add(dMov);
 		setRotation(getRotation() + dt);
 
 		//only spawn specific distance then destroy self

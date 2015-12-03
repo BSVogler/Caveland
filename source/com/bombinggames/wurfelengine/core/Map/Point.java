@@ -248,7 +248,7 @@ public class Point extends AbstractPosition {
      * @param vector all values in game world values
      * @return
      */
-    public Point addVector(float[] vector) {
+    public Point add(float[] vector) {
         this.x += vector[0];
         this.y += vector[1];
 		this.z += vector[2];
@@ -260,7 +260,7 @@ public class Point extends AbstractPosition {
      * @param vector all values in game world values
      * @return
      */
-    public Point addVector(Vector2 vector) {
+    public Point add(Vector2 vector) {
         this.x += vector.x;
         this.y += vector.y;
         return this;
@@ -272,7 +272,7 @@ public class Point extends AbstractPosition {
      * @return
      */
     @Override
-    public Point addVector(Vector3 vector) {
+    public Point add(Vector3 vector) {
         this.x += vector.x;
         this.y += vector.y;
 		this.z += vector.z;
@@ -286,7 +286,8 @@ public class Point extends AbstractPosition {
      * @param z height to add
      * @return
      */
-    public Point addVector(float x, float y, float z) {
+	@Override
+    public Point add(float x, float y, float z) {
         this.x += x;
         this.y += y;
         this.z += z;
@@ -500,7 +501,7 @@ public class Point extends AbstractPosition {
 			&& distanceTo(traverseP) < maxDistance*Block.GAME_EDGELENGTH
 		){
 			//move
-			traverseP.addVector(dir);
+			traverseP.add(dir);
 
 			isectC = traverseP.toCoord();
 			Block block = isectC.getBlock();

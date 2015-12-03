@@ -111,7 +111,7 @@ public class Spaceship extends MovableEntity {
 			Particle particle = new Particle((byte) 22, 4000);
 			particle.setType(ParticleType.FIRE);
 			fireEmitter.setPrototype(particle);
-			fireEmitter.getPosition().setValues(getPosition()).addVector(0, 0, 0);
+			fireEmitter.getPosition().setValues(getPosition()).add(0, 0, 0);
 			ejectContent();
 			crashed = true;
 			//save that already crashed

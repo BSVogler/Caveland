@@ -1127,7 +1127,7 @@ public class Camera implements MapObserver {
 	 */
 	public void move(int x, int y) {
 		if (focusEntity != null) {
-			focusEntity.getPosition().addVector(x, y, 0);
+			focusEntity.getPosition().add(x, y, 0);
 		} else {
 			position.x += x;
 			position.y -= y/2;

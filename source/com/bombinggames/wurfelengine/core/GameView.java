@@ -410,7 +410,7 @@ public class GameView implements GameManager {
 			Point p = screenToGameBasic(x, y);
 			//find point at top of map
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
-			p.addVector(0, deltaZ * Point.SQRT2, deltaZ);//top of map
+			p.add(0, deltaZ * Point.SQRT2, deltaZ);//top of map
 
 			return p.raycastSimple(
 				new Vector3(0, -1, -Block.ZAXISSHORTENING),//shoot in viewing direction, can not find correct vector: todo. Was -Point.SQRT12

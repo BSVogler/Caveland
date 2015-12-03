@@ -289,7 +289,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				0
 			);
 
-			Point newPos = getPosition().cpy().addVector(dMove);
+			Point newPos = getPosition().cpy().add(dMove);
 			//check if movement to new position is okay
 			if (colider && collidesHorizontal(newPos, colissionRadius)) {
 				//stop
@@ -306,13 +306,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				);
 			}
 			
-			newPos = getPosition().cpy().addVector(getMovement().scl(GAME_EDGELENGTH * t));
+			newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			
 			if (movement.z > 0){
 				if (isOnCeil(newPos)) {
 					movement.z = 0;
 				}
-				newPos = getPosition().cpy().addVector(getMovement().scl(GAME_EDGELENGTH * t));
+				newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			}
 			
 			//apply movement
@@ -538,24 +538,24 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		Point checkPoint = pos.cpy(); 
 		//check for movement in y
 		//top corner
-		Block block = checkPoint.addVector(0, -colissionRadius, 0).getBlock();
+		Block block = checkPoint.add(0, -colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 		//bottom corner
-		block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+		block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 
         //check X
 		//left
-		block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+		block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 		//right corner
-		block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+		block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
@@ -563,31 +563,31 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		//chek in the middle if bigger then a block
 		if (getDimensionZ() > Block.GAME_EDGELENGTH){
 			//back corner back
-			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
+			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
 			if (block != null && block.isObstacle()) {
 				return true;
 			}
 			//front corner
-			block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+			block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
 			if (block != null && block.isObstacle()) {
 				return true;
 			}
 
 			//check X
 			//left
-			block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+			block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
 			if (block != null && block.isObstacle()) {
 				return true;
 			}
 			//bottom corner
-			block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+			block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
 			if (block != null && block.isObstacle()) {
 				return true;
 			}
 			
-			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
+			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
 		} else {
-			block = checkPoint.addVector(-colissionRadius, -colissionRadius, getDimensionZ()).getBlock();
+			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()).getBlock();
 		}
 		
 		//back corner top
@@ -595,19 +595,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			return true;
 		}
 		//front corner
-		block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+		block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 
         //check X
 		//left
-		block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+		block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 		//bottom corner
-		block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+		block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
@@ -873,25 +873,25 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					return true;
 				}
 				
-				block = checkPoint.addVector(0, -colissionRadius, 0).getBlock();
+				block = checkPoint.add(0, -colissionRadius, 0).getBlock();
 				//back corner top
 				if (block != null && block.isObstacle()) {
 					return true;
 				}
 				//front corner
-				block = checkPoint.addVector(0, 2*colissionRadius, 0).getBlock();
+				block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
 				if (block != null && block.isObstacle()) {
 					return true;
 				}
 
 				//check X
 				//left
-				block = checkPoint.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+				block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
 				if (block != null && block.isObstacle()) {
 					return true;
 				}
 				//bottom corner
-				block = checkPoint.addVector(2*colissionRadius, 0, 0).getBlock();
+				block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
 				if (block != null && block.isObstacle()) {
 					return true;
 				}

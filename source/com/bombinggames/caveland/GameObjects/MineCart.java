@@ -64,7 +64,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		back = (SimpleEntity) back.spawn(point.cpy());
 		back.setSaveToDisk(false);
 		back.setName("MineCart Back");
-		front = (SimpleEntity) front.spawn(point.cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
+		front = (SimpleEntity) front.spawn(point.cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
 		setHidden(true);
@@ -86,7 +86,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				lightsource.setPosition(getPosition().cpy());
 			}
 			
-			lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
+			lightsource.getPosition().setValues(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
 			lightsource.update(dt);
 
 			//on rails?
@@ -258,7 +258,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				return;
 			}
 			back.getPosition().setValues(pos);
-			front.getPosition().setValues(pos).addVector(0, frontOffset, 0);
+			front.getPosition().setValues(pos).add(0, frontOffset, 0);
 
 			//animation
 			//moving down left or up right
@@ -423,7 +423,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
 		back = new SimpleEntity((byte) 42,(byte) 1);
-		back.spawn(getPosition().cpy().addVector(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
+		back.spawn(getPosition().cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
 		back.setSaveToDisk(false);
 	}
 
@@ -444,7 +444,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private void checkCollisionInFront() {
 		if (getSpeed() > 0) {
 			ArrayList<MovableEntity> entitiesInFront;
-			entitiesInFront = getPosition().cpy().addVector(getOrientation().scl(80)).getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
+			entitiesInFront = getPosition().cpy().add(getOrientation().scl(80)).getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
 			for (MovableEntity ent : entitiesInFront) {
 				if (this != ent) {//don't collide with itself
 					ent.setMovement(

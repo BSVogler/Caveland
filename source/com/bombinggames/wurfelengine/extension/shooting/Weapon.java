@@ -306,7 +306,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 					t = bulletDelay/(delayBetweenShots/2f);
 				}
 				this.getPosition().lerp(
-					fixedPos.cpy().addVector(aimDir.cpy().scl(-Block.GAME_EDGELENGTH2)),
+					fixedPos.cpy().add(aimDir.cpy().scl(-Block.GAME_EDGELENGTH2)),
 					t
 				);
 			} else {

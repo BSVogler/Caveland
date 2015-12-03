@@ -73,7 +73,7 @@ public class EntityShadow extends AbstractEntity {
 			}
 
 			setPosition(character.getPosition().cpy());
-			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().addVector(0, 0, -2).getZ());
+			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().add(0, 0, -2).getZ());
 		}
 	}
 

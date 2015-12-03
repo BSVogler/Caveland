@@ -124,13 +124,6 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
     public abstract boolean isInMemoryArea();
 	
 	
-    /**
-     *
-     * @param vector
-     * @return returns itself
-     */
-    public abstract AbstractPosition addVector(Vector3 vector);
-    
 	/**
 	 *
 	 * @param object

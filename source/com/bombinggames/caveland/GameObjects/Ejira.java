@@ -205,7 +205,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
 		lightsource.setSaveToDisk(false);
-		lightsource.spawn(point.cpy().addVector(0, 0, Block.GAME_EDGELENGTH2));
+		lightsource.spawn(point.cpy().add(0, 0, Block.GAME_EDGELENGTH2));
 		
 		return this;
 	}
@@ -427,11 +427,11 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 			//update attached objects position
 			if (lightsource.hasPosition())
-				lightsource.getPosition().setValues(getPosition()).addVector(0, 0, Block.GAME_EDGELENGTH2);
+				lightsource.getPosition().setValues(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
 			if (emitter.hasPosition())
-				emitter.getPosition().setValues(getPosition()).addVector(-20, 0, Block.GAME_EDGELENGTH2);
+				emitter.getPosition().setValues(getPosition()).add(-20, 0, Block.GAME_EDGELENGTH2);
 			if (emitter2.hasPosition())
-				emitter2.getPosition().setValues(getPosition()).addVector(20, 0, Block.GAME_EDGELENGTH2);
+				emitter2.getPosition().setValues(getPosition()).add(20, 0, Block.GAME_EDGELENGTH2);
 			
 			if (isOnGround()) {
 				isInAirJump = false;
@@ -591,7 +591,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 			item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
 			item.preventPickup(this, 400);
-			item.getPosition().setValues(getPosition()).addVector(0, 0, GAME_EDGELENGTH * 1f);
+			item.getPosition().setValues(getPosition()).add(0, 0, GAME_EDGELENGTH * 1f);
 			item.setHidden(false);
 		} else {
 			WE.SOUND.play("throwFail");
@@ -605,7 +605,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		prepareThrow = false;
 		Collectible item = inventory.retrieveFrontItem();
 		if (item != null) {//throw is performed if there is an item to throw
-			item.setPosition(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH * 0.1f));
+			item.setPosition(getPosition().cpy().add(0, 0, GAME_EDGELENGTH * 0.1f));
 			item.setMovement(Vector3.Zero.cpy());//throw with 3 m/s+current movement
 			item.setHidden(false);
 			item.preventPickup(this, 800);
@@ -658,8 +658,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			timeTillImpact = Float.POSITIVE_INFINITY;
 
 			//from current position go 80px in aiming direction and get nearbyEntities 80px around there
-			ArrayList<AbstractEntity> nearbyEntities = getPosition().cpy().addVector(getAiming().scl(160)).getEntitiesNearby(120);
-			nearbyEntities.addAll(getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add nearbyEntities under player, what if duplicate?
+			ArrayList<AbstractEntity> nearbyEntities = getPosition().cpy().add(getAiming().scl(160)).getEntitiesNearby(120);
+			nearbyEntities.addAll(getPosition().cpy().add(0, 0, GAME_EDGELENGTH2).getEntitiesNearby(39));//add nearbyEntities under player, what if duplicate?
 			//check hit
 			for (AbstractEntity entity : nearbyEntities) {
 				if ( entity != this && !entity.isHidden()) {
@@ -685,7 +685,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 
 			//damage blocks
-			Coordinate aimCoord = getPosition().cpy().addVector(0, 0, GAME_EDGELENGTH2).addVector(getAiming().scl(80)).toCoord();
+			Coordinate aimCoord = getPosition().cpy().add(0, 0, GAME_EDGELENGTH2).add(getAiming().scl(80)).toCoord();
 			//check if the player can damage the blocks
 			if (aimCoord.getBlock() != null && !aimCoord.getBlock().isLiquid()) {
 				getCamera().shake(20, 50);
@@ -704,7 +704,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 					//indestructible by hand
 					WE.SOUND.play("impact");//todo different sound
 					//spawn particle
-					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().addVector(0, 0, 30));
+					Particle dirt = (Particle) new Particle((byte)22).spawn(aimCoord.toPoint().add(0, 0, 30));
 					dirt.setTTL(400);
 					dirt.addMovement(new Vector3(
 						(float) (Math.random()-0.5f)*10.0f,
@@ -879,7 +879,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			(byte) 22,
 			700f
 		).spawn(
-			getPosition().cpy().addVector(
+			getPosition().cpy().add(
 				(float) (40*Math.random()-20),
 				(float) (40*Math.random()-20),
 				0
@@ -1052,14 +1052,14 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 */
 	public void showInteractButton(byte buttonID, AbstractPosition pos) {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH)
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().add(0, 0, Block.GAME_EDGELENGTH)
 			);
 			interactButton.setName("Interact Button");
 			interactButton.setCategory('i');
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {
-			interactButton.setPosition(pos.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH));
+			interactButton.setPosition(pos.toPoint().add(0, 0, Block.GAME_EDGELENGTH));
 		}
 	}
 

@@ -26,7 +26,7 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 		super(block, coord);
 		light.setSaveToDisk(false);
 		light.disable();
-		light.spawn(coord.toPoint().addVector(0, 0, Block.GAME_EDGELENGTH2*0.5f));
+		light.spawn(coord.toPoint().add(0, 0, Block.GAME_EDGELENGTH2*0.5f));
 	}
 
 	@Override

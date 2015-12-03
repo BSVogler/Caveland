@@ -193,7 +193,7 @@ public class Coordinate extends AbstractPosition {
 	 * @param vector integer coordinates stored as float
 	 * @return the new coordinates which resulted of the addition
 	 */
-	public Coordinate addVector(int[] vector) {
+	public Coordinate add(int[] vector) {
 		this.x += vector[0];
 		this.y += vector[1];
 		this.z += vector[2];
@@ -206,7 +206,7 @@ public class Coordinate extends AbstractPosition {
 	 * @return
 	 */
 	@Override
-	public Coordinate addVector(Vector3 vector) {
+	public Coordinate add(Vector3 vector) {
 		this.x += vector.x;
 		this.y += vector.y;
 		this.z += vector.z;

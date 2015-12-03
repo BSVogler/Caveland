@@ -366,13 +366,13 @@ public class RenderBlock extends AbstractGameObject{
 			if (null != side) //render damage
 			switch (side) {
 				case LEFT:
-					renderDO(view, camera, getPosition().toPoint().addVector(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
+					renderDO(view, camera, getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
 					break;
 				case TOP:
-					renderDO(view, camera, getPosition().toPoint().addVector(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
+					renderDO(view, camera, getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
 					break;
 				case RIGHT:
-					renderDO(view, camera, getPosition().toPoint().addVector(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
+					renderDO(view, camera, getPosition().toPoint().add(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
 					break;
 				default:
 					break;

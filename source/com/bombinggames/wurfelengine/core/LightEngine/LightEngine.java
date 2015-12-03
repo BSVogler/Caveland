@@ -559,7 +559,7 @@ public class LightEngine implements MapObserver {
 			//skip air and blocks without sides
 			if (next != null && next.hasSides()) {
 				//analyze top side
-				Coordinate coord = chunk.getTopLeftCoordinate().cpy().addVector(
+				Coordinate coord = chunk.getTopLeftCoordinate().cpy().add(
 					new int[]{
 						iterator.getCurrentIndex()[0],
 						iterator.getCurrentIndex()[1],
@@ -589,7 +589,7 @@ public class LightEngine implements MapObserver {
 
 				//right side, side 2
 				//check right half, which is equivalent to top right at pos 1
-				coord = chunk.getTopLeftCoordinate().cpy().addVector(iterator.getCurrentIndex());//get current coordinate
+				coord = chunk.getTopLeftCoordinate().cpy().add(iterator.getCurrentIndex());//get current coordinate
 				
 				//left side, side 0
 

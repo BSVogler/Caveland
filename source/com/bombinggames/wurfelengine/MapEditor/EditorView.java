@@ -530,7 +530,7 @@ public class EditorView extends GameView implements Telegraph {
 			if (WE.getEngineView().getCursor() == 2) {
 				ArrayList<AbstractEntity> selectedEnts = controller.getSelectedEntities();
 				for (AbstractEntity ent : selectedEnts) {
-					ent.getPosition().addVector(screenX - lastX, (screenY - lastY) * 2, 0);
+					ent.getPosition().add(screenX - lastX, (screenY - lastY) * 2, 0);
 				}
 			} else if (selecting) {//currently selecting
 				select(

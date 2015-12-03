@@ -38,22 +38,22 @@ public class CLMovableEntity extends MovableEntity {
 			Point checkpos = pos.cpy();
 			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
 			
-			Block block = checkpos.addVector(0, -colissionRadius, 0).getBlock();
+			Block block = checkpos.add(0, -colissionRadius, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
-			block = checkpos.addVector(0, 2*colissionRadius, 0).getBlock();
+			block = checkpos.add(0, 2*colissionRadius, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
-			block = checkpos.addVector(-colissionRadius, -colissionRadius, 0).getBlock();
+			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
-			block = checkpos.addVector(2*colissionRadius, 0, 0).getBlock();
+			block = checkpos.add(2*colissionRadius, 0, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;

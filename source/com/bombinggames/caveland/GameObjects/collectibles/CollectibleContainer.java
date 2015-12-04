@@ -252,17 +252,17 @@ public class CollectibleContainer extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		content.removeIf(
+			(AbstractEntity item) -> item.shouldBeDisposed()
+		);
 		if (hasPosition()) {
 			//put every child at the position if the container
 			for (AbstractEntity item : content) {
 				if (item != null) {
-					item.getPosition().setValues(getPosition());
+					item.setPosition(getPosition());
 				}
 			}
 		}
-		content.removeIf(
-			(AbstractEntity item) -> item.shouldBeDisposed()
-		);
 	}
 
 	/**

@@ -55,8 +55,11 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -529,6 +532,14 @@ public class EditorView extends GameView implements Telegraph {
 			//dragging selection?
 			if (WE.getEngineView().getCursor() == 2) {
 				ArrayList<AbstractEntity> selectedEnts = controller.getSelectedEntities();
+				//remvoe duplicate position
+				Map<AbstractPosition, AbstractEntity> map = new LinkedHashMap<>(selectedEnts.size());
+				for (AbstractEntity ays : selectedEnts) {
+					map.put(ays.getPosition(), ays);
+				}
+				selectedEnts.clear();
+				selectedEnts.addAll(map.values());
+				
 				for (AbstractEntity ent : selectedEnts) {
 					ent.getPosition().add(screenX - lastX, (screenY - lastY) * 2, 0);
 				}

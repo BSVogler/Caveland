@@ -75,7 +75,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 					actor1.getPosition().toCoord().setBlock(
 						Block.getInstance(
 							resultBlockId,
-							(byte) (getType() == CollectibleType.Rails ? result:result*2)
+							(byte) (getType() == CollectibleType.Powercable ? 2*result:result)
 						)
 					);
 					WE.SOUND.play("metallic");

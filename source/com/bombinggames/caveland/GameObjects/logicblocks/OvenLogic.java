@@ -35,22 +35,24 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
 /**
  * The manager of the logic of the oven block.
+ *
  * @author Benedikt Vogler
  */
-public class OvenLogic extends AbstractBlockLogicExtension implements Interactable{
+public class OvenLogic extends AbstractBlockLogicExtension implements Interactable {
+
 	private static final long serialVersionUID = 1L;
 	private final ParticleEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;
@@ -60,9 +62,9 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	private final transient SimpleEntity fire = new SimpleEntity((byte) 17);
 
 	/**
-	 * 
+	 *
 	 * @param block
-	 * @param coord 
+	 * @param coord
 	 */
 	public OvenLogic(Block block, Coordinate coord) {
 		super(block, coord);
@@ -72,25 +74,38 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		emitter.setActive(false);
 		fire.setLightlevel(10);
 	}
-	
+
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		if (actor instanceof Ejira){
+		if (actor instanceof Ejira) {
 			//lege objekte aus Inventar  hier rein
-			Collectible frontItem = ((Ejira) actor).getInventory().retrieveFrontItem();
-			if (frontItem != null && (frontItem.getType()==CollectibleType.Coal || frontItem.getType()==CollectibleType.Ironore))
+			Collectible frontItem = ((Ejira) actor).getInventory().retrieveFrontItemReference();
+			if (frontItem != null) {
 				addCollectible(frontItem);
+			}
 		}
 	}
 
 	public void addCollectible(Collectible collectible) {
-		if (collectible.getType() == CollectibleType.Coal) {
-			burntime += 20000;//20s
-		} else {
-			container.addCollectible(collectible);
+		if (null != collectible.getType()) {
+			switch (collectible.getType()) {
+				case Coal:
+					burntime += 20000;//20s
+					container.addCollectible(collectible);
+					break;
+				case Wood:
+					burntime += 5000;//20s
+					container.addCollectible(collectible);
+					break;
+				case Ironore:
+					container.addCollectible(collectible);
+					break;
+				default:
+					break;
+			}
 		}
 	}
-	
+
 	@Override
 	public void update(float dt) {
 		if (isValid()) {
@@ -105,12 +120,12 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
 			}
 		}
-		
+
 		if (burntime > 0) {//while the oven is burning
 			emitter.setActive(true);
 			fire.setHidden(false);
 			emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
-			
+
 			//burn ironore
 			if (productionCountDown == 0) {
 				Collectible ironore = container.retrieveCollectibleReference(CollectibleType.Ironore);
@@ -119,7 +134,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 					productionCountDown = PRODUCTIONTIME;
 				}
 			}
-			
+
 			//check if production timer reaches zero
 			float oldCountDown = productionCountDown;
 			//decrease timer
@@ -158,7 +173,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	@Override
 	public void dispose() {
 	}
-	
+
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;

@@ -94,6 +94,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setHidden(true);
 		collectible.preventPickup();
 		collectible.setFloating(true);
+		collectible.setPosition(getPosition().cpy());
 		content.add(collectible);
 	}
 	
@@ -109,6 +110,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setHidden(true);
 		collectible.preventPickup();
 		collectible.setFloating(true);
+		collectible.setPosition(getPosition().cpy());
 		content.add(0, collectible);
 	}
 

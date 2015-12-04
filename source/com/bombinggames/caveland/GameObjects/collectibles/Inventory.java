@@ -110,12 +110,12 @@ public class Inventory extends CollectibleContainer {
 	 * @return Only reference. Can return null.
 	 */
 	public Collectible getFrontCollectible() {
-		if (get(2) != null) {
-			return get(2);
+		if (get(0) != null) {
+			return get(0);
 		} else if (get(1) != null) {
 			return get(1);
-		} else if (get(0) != null) {
-			return get(0);
+		} else if (get(2) != null) {
+			return get(2);
 		}
 		return null;
 	}

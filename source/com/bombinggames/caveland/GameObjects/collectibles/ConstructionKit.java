@@ -69,10 +69,10 @@ public class ConstructionKit extends Collectible implements Interactable {
 		if (actor instanceof Ejira) {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
 				.addSelectionNames(
-					CavelandBlocks.CLBlocks.OVEN.name(),
-					CavelandBlocks.CLBlocks.ROBOTFACTORY.name(),
-					CavelandBlocks.CLBlocks.POWERSTATION.name(),
-					CavelandBlocks.CLBlocks.LIFT.name()
+					CavelandBlocks.CLBlocks.OVEN.toString(),
+					CavelandBlocks.CLBlocks.ROBOTFACTORY.toString(),
+					CavelandBlocks.CLBlocks.POWERSTATION.toString(),
+					CavelandBlocks.CLBlocks.LIFT.toString()
 				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site
@@ -92,9 +92,11 @@ public class ConstructionKit extends Collectible implements Interactable {
 						if (preview == null) {
 							preview = (EntityBlock) new EntityBlock(getResult(result),(byte) 0)
 								.spawn(actor1.getPosition().toCoord().toPoint());
+							preview.setName("preview");
+							preview.setSaveToDisk(false);
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else {
-							preview.setSpriteValue((byte) result);
+							preview.setSpriteId(getResult(result));
 						}
 					}
 				)

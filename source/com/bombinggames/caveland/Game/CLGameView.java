@@ -34,9 +34,9 @@ public class CLGameView extends GameView{
 	 */
 	private float inventoryDownP1 =-1;
 	private int inventoryDownP2;
-	private float[] throwDown =new float[]{-1,-1};
-	private float useDownP1 =-1;
-	private float useDownP2 =-1;
+	private final float[] throwDown =new float[]{-1,-1};
+	private float interactDownP1 =-1;
+	private float interactDownP2 =-1;
 	/**
 	 * -1 disable, 0 keyboard only, 1 one or two controller
 	 */
@@ -331,11 +331,11 @@ public class CLGameView extends GameView{
 			}
 		}
 		
-		if (useDownP1==0){
+		if (interactDownP1==0){
 			getPlayer(0).interactWithNearestThing(this);
 		}
 		if (coop>-1)
-			if (useDownP2==0){
+			if (interactDownP2==0){
 				getPlayer(1).interactWithNearestThing(this);
 			}
 		
@@ -351,6 +351,10 @@ public class CLGameView extends GameView{
 		if (throwDown[0] == 0) {
 			getPlayer(0).prepareThrow();
 		}
+		if (coop > -1 && throwDown[1] == 0) {
+			getPlayer(1).prepareThrow();
+		}
+		
 		if (throwDown[0] >= WE.CVARS.getValueF("playerItemDropTime")) {
 			getPlayer(0).dropItem();
 			throwDown[0] = -1;
@@ -362,11 +366,6 @@ public class CLGameView extends GameView{
 		}
 		
 		
-		if (coop > -1) {
-			if (throwDown[1] == 0) {
-				getPlayer(1).prepareThrow();
-			}
-		}
 		
 		if (inventoryDownP1>-1)
 			inventoryDownP1+=dt;
@@ -376,10 +375,10 @@ public class CLGameView extends GameView{
 			throwDown[0] += dt;
 		if (throwDown[1] > -1)
 			throwDown[1] += dt;
-		if (useDownP1>-1)
-			useDownP1+=dt;
-		if (useDownP2>-1)
-			useDownP2+=dt;
+		if (interactDownP1>-1)
+			interactDownP1+=dt;
+		if (interactDownP2>-1)
+			interactDownP2+=dt;
 
 	}
 
@@ -534,16 +533,16 @@ public class CLGameView extends GameView{
 				//button down
 				if (oldRTvalue < -0.75f && value>-0.75f) {
 					if (id==0)
-						parent.useDownP1 = 0;
+						parent.interactDownP1 = 0;
 					else
-						parent.useDownP2 = 0;
+						parent.interactDownP2 = 0;
 				}
 				//button up
 				if (oldRTvalue > 0.75f && value<-0.75f) {
 					if (id==0)
-						parent.useDownP1 = -1;
+						parent.interactDownP1 = -1;
 					else
-						parent.useDownP2 = -1;
+						parent.interactDownP2 = -1;
 				}
 				oldRTvalue=value;
 			} else {
@@ -608,34 +607,44 @@ public class CLGameView extends GameView{
 			if (!WE.getConsole().isActive()) {
 				if (focusOnGame(0)) {
 					//use inventory
-					if (keycode == Input.Keys.E){
+					if (keycode == Input.Keys.E) {
 						inventoryDownP1 = 0;//register on down
 					}
 
 					//interact
-					if (keycode == Input.Keys.F){
-						 useDownP1 = 0;//register on down
+					if (keycode == Input.Keys.F) {
+						interactDownP1 = 0;//register on down
 					}
 
-					if (keycode == Input.Keys.C) //Select
+					if (keycode == Input.Keys.C) {
 						toogleCrafting(0);
-					
-					if (keycode == Input.Keys.N)
+					}
+
+					if (keycode == Input.Keys.N) {
 						getPlayer(0).attack();
-					
-					if (keycode == Input.Keys.M)
+					}
+
+					if (keycode == Input.Keys.M) {
 						throwDown[0] = 0;
-					
-					if (keycode == Input.Keys.NUM_1)
+					}
+
+					if (keycode == Input.Keys.NUM_1) {
 						getPlayer(0).getInventory().switchItems(true);
+					}
 
-					if (keycode == Input.Keys.NUM_2)
+					if (keycode == Input.Keys.NUM_2) {
 						getPlayer(0).getInventory().switchItems(false);
+					}
 
-					if (keycode == Input.Keys.SPACE)
+					if (keycode == Input.Keys.SPACE) {
 						getPlayer(0).jump();
+					}
+
+					if (keycode == Input.Keys.N) {
+						getPlayer(0).attack();
+					}
 				}
-			
+
 				if (openDialogue[0] != null) {
 					if (keycode == Input.Keys.W) {
 						openDialogue[0].up(getPlayer(0));
@@ -656,53 +665,9 @@ public class CLGameView extends GameView{
 					}
 				}
 
-				//editor
-				if (keycode == Input.Keys.G){
-					 WE.startEditor();
-				}
-				
-
-				//pause
-				//time is set 0 but the game keeps running
-				  if (keycode == Input.Keys.P) {
-					WE.CVARS.get("gamespeed").setValue(0);
-				 } 
-
-                //reset zoom
-                if (keycode == Input.Keys.Z) {
-                     getCameras().get(0).setZoom(1);
-                     WE.getConsole().add("Zoom reset");
-				}  
-				 
-
-                //show/hide light engine
-                if (keycode == Input.Keys.L) {
-                    if (getLightEngine() != null) getLightEngine().setDebug(!getLightEngine().isInDebug());
-                } 
-
-                if (keycode == Input.Keys.ESCAPE) {
-					if (modalGroup == null) {
-						setModal(new IGMenu(this.parent));
-						pauseTime();
-					} else {
-						setModal(null);
-						continueTime();
-					}
-				}
-				 
 				//coop controlls
-				if (coop==0){
-					//p1
-					if (focusOnGame(0)) {
-						if (keycode == Input.Keys.N) {
-							getPlayer(0).attack();
-						}
+				if (coop == 0) {
 
-						if (keycode == Input.Keys.M) {
-							throwDown[0] = 0;
-						}
-					}
-					
 					//p2
 					if (focusOnGame(1)) {
 						if (keycode == Input.Keys.NUMPAD_0) {
@@ -714,81 +679,129 @@ public class CLGameView extends GameView{
 						}
 
 						if (keycode == Input.Keys.NUMPAD_2) {
-							throwDown[1]=0;
+							throwDown[1] = 0;
 						}
 
 						if (keycode == Input.Keys.NUMPAD_3) {
 							inventoryDownP2 = 0;//register on down
 						}
 
-						if (keycode==Input.Keys.NUMPAD_4)
-							getPlayer(1).getInventory().switchItems(true);
-
-						if (keycode==Input.Keys.NUMPAD_5){
-							getPlayer(1).getInventory().switchItems(false);
+						if (keycode == Input.Keys.NUMPAD_4) {
+							inventoryDownP2 = 0;
 						}
 
-						if (keycode==Input.Keys.NUMPAD_6){
-							useDownP2 =0;
+						if (keycode == Input.Keys.NUMPAD_5) {
+							interactDownP2 = 0;//context
+						}
+
+						if (keycode == Input.Keys.NUMPAD_6) {
+							toogleCrafting(1);//craft
+						}
+
+						if (keycode == Input.Keys.NUMPAD_7) {
+							getPlayer(1).getInventory().switchItems(true);
+						}
+
+						if (keycode == Input.Keys.NUMPAD_8) {
+							getPlayer(1).getInventory().switchItems(false);
 						}
 					}
 				}
-            }
-            
-            return true;            
-        }
+
+				//editor
+				if (keycode == Input.Keys.G) {
+					WE.startEditor();
+				}
+
+				//reset zoom
+				if (keycode == Input.Keys.Z) {
+					getCameras().get(0).setZoom(1);
+					WE.getConsole().add("Zoom reset");
+				}
+
+				//show/hide light engine
+				if (keycode == Input.Keys.L) {
+					if (getLightEngine() != null) {
+						getLightEngine().setDebug(!getLightEngine().isInDebug());
+					}
+				}
+
+				if (keycode == Input.Keys.ESCAPE) {
+					if (modalGroup == null) {
+						setModal(new IGMenu(this.parent));
+						pauseTime();
+					} else {
+						setModal(null);
+						continueTime();
+					}
+				}
+			}
+
+			return true;
+		}
 
         @Override
         public boolean keyUp(int keycode) {
-			if (focusOnGame(0)) {
-				if (keycode == Input.Keys.N){
+			if (keycode == Input.Keys.N) {
+				if (focusOnGame(0)) {
 					getPlayer(0).attackLoadingStopped();
 				}
-
-				if (keycode == Input.Keys.M) {
-					if (throwDown[0] >= WE.CVARS.getValueF("playerItemDropTime")) {
-						getPlayer(0).throwItem();
-					}
-					throwDown[1] = -1;
+				if (openDialogue[0] != null) {
+					openDialogue[0].confirm(getPlayer(0));
 				}
 			}
-			if (coop == 0){
-				if (focusOnGame(1)) {
-					if (keycode==Input.Keys.NUMPAD_1){
+			if (keycode == Input.Keys.M) {
+				if (focusOnGame(0)) {
+					getPlayer(0).throwItem();
+					throwDown[0] = -1;
+				}
+				if (openDialogue[0] != null) {
+					openDialogue[0].cancel(getPlayer(0));
+				}
+			}
+			if (coop == 0) {
+				if (keycode == Input.Keys.NUMPAD_1) {
+					if (focusOnGame(1)) {
 						getPlayer(1).attackLoadingStopped();
 					}
-
-					if (keycode == Input.Keys.NUMPAD_2) {
-						if (throwDown[1] >= WE.CVARS.getValueF("playerItemDropTime")) {
-							getPlayer(1).throwItem();
-						}
+					if (openDialogue[1] != null) {
+						openDialogue[1].confirm(getPlayer(1));
+					}
+				}
+				if (keycode == Input.Keys.NUMPAD_2) {
+					if (focusOnGame(1)) {
+						getPlayer(1).throwItem();
 						throwDown[1] = -1;
+					}
+					if (openDialogue[1] != null) {
+						openDialogue[1].cancel(getPlayer(1));
 					}
 				}
 			}
-			
-            return false;
-        }
+
+			return false;
+		}
 
         @Override
         public boolean keyTyped(char character) {
             return false;
         }
 
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			if (focusOnGame(0)) {
-				if (button == Buttons.LEFT)
+				if (button == Buttons.LEFT) {
 					getPlayer(0).attack();
+				}
 
 				if (button == Buttons.RIGHT) {
 					throwDown[0] = 0;
 				}
 			}
-            return true;
-        }
+			return true;
+		}
 
-        @Override
+		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			if (button == Buttons.LEFT) {
 				if (openDialogue[0] != null) {

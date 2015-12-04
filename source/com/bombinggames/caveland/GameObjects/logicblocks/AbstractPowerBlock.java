@@ -1,6 +1,7 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -164,11 +165,18 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	 * @see Coordinate#goToNeighbour(int) 
 	 */
 	public AbstractPowerBlock getConnectedNodes(int id) {
-		AbstractBlockLogicExtension logic = getPosition().cpy().goToNeighbour(id).getLogic();
-		if (logic instanceof AbstractPowerBlock &&
-			outgoingConnection(id) &&
-			((AbstractPowerBlock) logic).outgoingConnection((id+4)%8)//opposite side
-		){
+		Coordinate neigh = getPosition().cpy().goToNeighbour(id);
+		//load chunk if out of bounds
+		if (!neigh.isInMemoryAreaHorizontal()) {
+			Controller.getMap().loadChunk(neigh);
+		}
+
+		//return connected block
+		AbstractBlockLogicExtension logic = neigh.getLogic();
+		if (outgoingConnection(id)
+			&& logic instanceof AbstractPowerBlock
+			&& ((AbstractPowerBlock) logic).outgoingConnection((id + 4) % 8)//opposite side
+			) {
 			return (AbstractPowerBlock) logic;
 		} else {
 			return null;

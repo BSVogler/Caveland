@@ -264,7 +264,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * loads a chunk from disk
 	 * @param chunkX
 	 * @param chunkY
-	 * @return the laoded chunk
+	 * @return the loaded chunk. can return null
 	 */
 	public Chunk loadChunk(int chunkX, int chunkY){
 		//TODO check if already there.
@@ -279,6 +279,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			return chunk;
 		}
 		return null;
+	}
+	
+	/**
+	 * Loads a chunk from disk.
+	 * @param coord
+	 * @return the loaded chunk. can return null
+	 */
+	public Chunk loadChunk(Coordinate coord){
+		return loadChunk(coord.getChunkX(), coord.getChunkY());
 	}
 
 	/**

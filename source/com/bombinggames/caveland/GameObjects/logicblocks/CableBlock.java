@@ -56,6 +56,7 @@ public class CableBlock extends AbstractPowerBlock{
 			initalized = true;
 		}
 		
+		//turn on or off depending if hat power
 		Block lblock = getPosition().getBlock();
 		getPosition().setValue(
 			(byte) (lblock.getValue() - (lblock.getValue() % 2)

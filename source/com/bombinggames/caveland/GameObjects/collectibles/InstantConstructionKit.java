@@ -32,6 +32,8 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
@@ -41,9 +43,12 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  * Instantly creates an object without spawning a construction site.
+ *
  * @author Benedikt Vogler
  */
 public class InstantConstructionKit extends Collectible implements Interactable {
@@ -51,9 +56,10 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	private static final long serialVersionUID = 1L;
 	private transient EntityBlock preview;
 	private final byte resultBlockId;
-	
+	private int amountLeft = 3;
+
 	/**
-	 * 
+	 *
 	 * @param type supports only some types
 	 */
 	public InstantConstructionKit(CollectibleType type) {
@@ -71,11 +77,12 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null)
 				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
+					amountLeft--;
 					//spawn rails
 					actor1.getPosition().toCoord().setBlock(
 						Block.getInstance(
 							resultBlockId,
-							(byte) (getType() == CollectibleType.Powercable ? 2*result:result)
+							(byte) (getType() == CollectibleType.Powercable ? 2 * result : result)
 						)
 					);
 					WE.SOUND.play("metallic");
@@ -83,7 +90,55 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 						preview.dispose();
 						preview = null;
 					}
-					dispose();//dispose tool kit
+
+					if (actor instanceof MovableEntity) {
+						Point beforeMove = actor1.getPosition().cpy();
+						Point nextCell = actor1.getPosition().toCoord().toPoint();
+						Vector2 orient = ((MovableEntity) actor1).getOrientation();
+						if ((result == 0 || result == 8)  && (orient.x >= 0 && orient.y <= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
+						} else if ((result == 0 || result == 6) && (orient.x <= 0 && orient.y >= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
+						} else if ((result == 1 || result == 9)  && (orient.x <= 0 && orient.y <= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
+						} else if ((result == 1 || result == 7) && (orient.x >= 0 && orient.y >= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
+						} else if (result == 2 && orient.x >= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
+						} else if (result == 2 && orient.x <= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
+						} else if (result == 3 && orient.y <= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
+						} else if (result == 3 && orient.y >= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
+						} else if (result == 4 && orient.x <= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
+						}else if (result == 4 && orient.x >= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
+						}else if (result == 5 && orient.y <= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
+						}else if (result == 5 && orient.y >= 0) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
+						} else if (result == 6 && (orient.x >= 0 && orient.y <= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(1).addVector(0, 0, 1).toPoint();
+						} else if (result == 7 && (orient.x <= 0 && orient.y <= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(7).addVector(0, 0, 1).toPoint();
+						} else if (result == 8 && (orient.x <= 0 && orient.y >= 0)) {
+							nextCell = actor1.getPosition().toCoord().goToNeighbour(5).addVector(0, 0, 1).toPoint();
+						}
+						
+						actor.getPosition().setValues(nextCell);
+						//update orientation
+						Vector3 newOr = actor1.getPosition().cpy().sub(beforeMove).nor();
+						((MovableEntity) actor1).setOrientation(
+							new Vector2(newOr.x, newOr.y)
+						);
+						
+					}
+
+					if (amountLeft <= 0) {
+						dispose();//dispose tool kit
+					}
 				}
 				)
 				.setSelectAction((boolean up, int result, AbstractEntity actor1) -> {
@@ -93,7 +148,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 							.spawn(actor1.getPosition().toCoord().toPoint());
 						preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 					}
-					preview.setSpriteValue((byte) (getType() == CollectibleType.Rails ? result:result*2));
+					preview.setSpriteValue((byte) (getType() == CollectibleType.Rails ? result : result * 2));
 				}
 				)
 				.setCancelAction(
@@ -110,7 +165,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 
 	@Override
 	public boolean interactable() {
-		return true;
+		return getPosition().getBlock()==null;
 	}
 
 	@Override

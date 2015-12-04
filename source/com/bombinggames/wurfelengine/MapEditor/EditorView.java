@@ -328,6 +328,8 @@ public class EditorView extends GameView implements Telegraph {
 		private Coordinate bucketDown;
 		private int lastX;
 		private int lastY;
+		private boolean symDown;
+		private boolean shiftDown;
 
         EditorInputListener(Controller controller, EditorView view) {
             this.controller = controller;
@@ -355,15 +357,15 @@ public class EditorView extends GameView implements Telegraph {
 			if (keycode == Input.Keys.Q) {
 				moveEntities = -1;
 			}
-			
-			if (keycode == Input.Keys.Z) {
-				controller.undoCommand();
-			}
-			
-			if (keycode == Keys.U) {
-				controller.redoCommand();
+		
+			if (keycode == Input.Keys.SYM) {
+				symDown = true;
 			}
 
+			if (keycode == Input.Keys.SHIFT_LEFT) {
+				shiftDown = true;
+			}
+			
 			//manage camera movement
 			if (keycode == Input.Keys.W)
 				view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
@@ -374,10 +376,9 @@ public class EditorView extends GameView implements Telegraph {
 			if (keycode == Input.Keys.D)
 				view.setCameraMoveVector(1, view.getCameraMoveVector().y);
 
-			if (keycode==Input.Keys.FORWARD_DEL) {
+			if (keycode == Input.Keys.FORWARD_DEL || keycode == Input.Keys.DEL) {
 				for (AbstractEntity ent : controller.getSelectedEntities()) {
 					ent.dispose();
-
 				}
 			}
 			
@@ -411,8 +412,10 @@ public class EditorView extends GameView implements Telegraph {
 
         @Override
         public boolean keyUp(int keycode) {
-            if (keycode == Keys.SHIFT_LEFT)
+            if (keycode == Keys.SHIFT_LEFT) {
                 view.setCameraSpeed(0.5f);
+				shiftDown = false;
+			}
             
             if (keycode == Input.Keys.W
                  || keycode == Input.Keys.S
@@ -427,12 +430,24 @@ public class EditorView extends GameView implements Telegraph {
 		   if (keycode == Keys.E || keycode == Keys.Q) {
 				moveEntities = 0;
 			}
+		   
+		   if (keycode == Input.Keys.SYM)
+				symDown = false;
             
             return false;
         }
 
         @Override
         public boolean keyTyped(char character) {
+			if (symDown && character == 'z' && !shiftDown) {
+				controller.undoCommand();
+				return true;
+			}
+			
+			if (symDown && (character == 'Z' || shiftDown && character == 'z')) {
+				controller.redoCommand();
+				return true;
+			}
             return false;
         }
 

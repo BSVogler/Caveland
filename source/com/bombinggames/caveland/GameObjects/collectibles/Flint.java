@@ -1,5 +1,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 
@@ -30,17 +32,25 @@ public class Flint extends Collectible {
 	}
 
 	@Override
-	public void onCollide() {
-		new Explosion(
-			1,
-			(byte) 50,
-			WE.getGameplay().getView().getCameras().get(0)
-		).spawn(getPosition());
-		dispose();
-	}
-
-	@Override
 	public Collectible clone() throws CloneNotSupportedException {
 		return new Flint(this);
 	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
+		
+		if (msg.sender == this || msg.message == Events.collided.getId()){
+			new Explosion(
+				1,
+				(byte) 50,
+				WE.getGameplay().getView().getCameras().get(0)
+			).spawn(getPosition());
+			dispose();
+		}
+		
+		return false;
+	}
+	
+	
 }

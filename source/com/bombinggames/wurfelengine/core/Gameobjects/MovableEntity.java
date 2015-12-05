@@ -296,7 +296,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			if (colider && collidesHorizontal(newPos, colissionRadius)) {
 				//stop
 				setHorMovement(new Vector2());
-				onCollide();
+				MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
 			}
 
 			/*VERTICAL MOVEMENT*/
@@ -335,10 +335,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					//set on ground level of blockl
 					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
 					//send event
-					onCollide();
+					MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+					
 					if (!hasPosition()) {
 						return;//object may be destroyed during colission
 					}
+					
 					if (!floating) {
 						MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 						if (!hasPosition()) {
@@ -927,12 +929,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void setFriction(float friction) {
 		this.friction = friction;
-	}
-	
-	/**
-	 * called when in contact with floor or wall. Should be overriden.
-	 */
-	public void onCollide() {
 	}
 	
 	@Override

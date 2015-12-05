@@ -38,20 +38,27 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
  * @author Benedikt Vogler
  */
 class SoundInstance {
-	private final SoundEngine parent;
-	protected AbstractPosition pos;
-	protected Sound sound;
-	protected long id;
+	private final SoundEngine engine;
+	private final AbstractPosition pos;
+	protected final Sound sound;
+	protected final long id;
 
-	protected SoundInstance(SoundEngine parent, Sound sound, long id, AbstractPosition pos) {
+	protected SoundInstance(SoundEngine engine, Sound sound, long id, AbstractPosition pos) {
 		this.id = id;
 		this.sound = sound;
 		this.pos = pos;
-		this.parent = parent;
+		this.engine = engine;
 	}
 
 	protected void update(){
-		sound.setVolume(id, parent.getVolume(pos));
+		float pan =0;
+		if (engine.getView().getCameras().size() > 0) {
+			pan = pos.getViewSpcX() - engine.getView().getCameras().get(0).getViewSpaceX();
+			pan /= 500;//arbitrary chosen
+			if (pan > 1) pan = 1;
+			if (pan < -1) pan = -1;
+		}
+		sound.setPan(id, pan, engine.getVolume(pos));
 	}
 
 	

@@ -119,13 +119,20 @@ public class SoundEngine {
 	public void play(String identifier, AbstractPosition pos, float volume) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
+			float pan = 0;
 			if (pos != null) {
 				volume = volume * getVolume(pos);
+				if (view.getCameras().size() > 0) {
+					pan = pos.getViewSpcX() - view.getCameras().get(0).getViewSpaceX();
+					pan /= 500;//arbitrary chosen
+					if (pan > 1) pan = 1;
+					if (pan < -1) pan = -1;
+				}
 			} else {
 				volume *= WE.CVARS.getValueF("sound");
 			}
 			if (volume >= 0.1) { //only play sound louder>10%
-				result.play(volume);
+				result.play(volume, 1, pan);
 			}
 		}
 	}
@@ -304,7 +311,7 @@ public class SoundEngine {
 			//calculate minimal distance to camera
 			float minDistance = Float.POSITIVE_INFINITY;
 			for (Camera camera : view.getCameras()) {
-				float distance = pos.toPoint().distanceTo(camera.getCenter());
+				float distance = pos.toPoint().distanceToHorizontal(camera.getCenter());
 				if (distance < minDistance) {
 					minDistance = distance;
 				}
@@ -397,5 +404,9 @@ public class SoundEngine {
 		if (music != null) {
 			music.pause();
 		}
+	}
+
+	public GameView getView() {
+		return view;
 	}
 }

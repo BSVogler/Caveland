@@ -87,7 +87,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 						CavelandBlocks.CLBlocks.LIFT.toString()
 					)
 				)
-				.setConfirmAction((int result, AbstractEntity actor1) -> {
+				.setConfirmAction((byte result, AbstractEntity actor1) -> {
 						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site
 					}
 				)
@@ -100,7 +100,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 					}
 				)
 				.setSelectAction(
-					(boolean up, int result, AbstractEntity actor1) -> {
+					(boolean up, byte result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
 							preview = (EntityBlock) new EntityBlock(getResult(result),(byte) 0)

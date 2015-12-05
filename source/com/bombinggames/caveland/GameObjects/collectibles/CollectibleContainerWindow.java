@@ -49,11 +49,11 @@ public class CollectibleContainerWindow extends ActionBox {
 		this.parent = parent;
 		//make list of options
 		ArrayList<SelectionOption> list = new ArrayList<>(parent.getContent().size());
-		list.add(new SelectionOption(0, "Add"));
+		list.add(new SelectionOption((byte) 0, "Add"));
 		if (parent.getContent().size() > 0) {
-			list.add(new SelectionOption(1, "Take: " + parent.getContent().get(parent.getContent().size() - 1).getName()));
+			list.add(new SelectionOption((byte) 1, "Take: " + parent.getContent().get(parent.getContent().size() - 1).getName()));
 		} else {
-			list.add(new SelectionOption(1, "Empty"));
+			list.add(new SelectionOption((byte) 1, "Empty"));
 		}
 		addSelection(list);
 	}

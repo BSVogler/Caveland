@@ -29,7 +29,10 @@ public class ActionBox extends WidgetGroup {
 	private final Window window;
 	private final BoxModes mode;
 	private ArrayList<SelectionOption> selections;
-	private int selection;
+	/**
+	 * the number of the selected item
+	 */
+	private byte selection;
 	private String text;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
@@ -127,7 +130,11 @@ public class ActionBox extends WidgetGroup {
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
 		if (selectAction != null) {
-			selectAction.select(false, selection, actor);
+			if (selections.isEmpty()) {
+				selectAction.select(false,(byte) 0, actor);
+			} else {
+				selectAction.select(false, selections.get(selection).id, actor);
+			}
 		}
 		return this;
 	}
@@ -228,7 +235,7 @@ public class ActionBox extends WidgetGroup {
 		WE.SOUND.play("menuConfirm");
 		closed = true;
 		if (confirmAction != null) {
-			confirmAction.confirm(selectionNum, actor);
+			confirmAction.confirm(selections.get(selectionNum).id, actor);
 		}
 		if (actor instanceof Ejira) {
 			((Ejira) actor).endInteraction();
@@ -306,7 +313,7 @@ public class ActionBox extends WidgetGroup {
 		}
 		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
 			if (selectAction != null) {
-				selectAction.select(false, selection, actor);
+				selectAction.select(false, selections.get(selection).id, actor);
 			}
 		}
 	}
@@ -326,7 +333,7 @@ public class ActionBox extends WidgetGroup {
 		}
 		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
 			if (selectAction != null) {
-				selectAction.select(true, selection, actor);
+				selectAction.select(true, selections.get(selection).id, actor);
 			}
 		}
 	}
@@ -396,10 +403,10 @@ public class ActionBox extends WidgetGroup {
 
 		/**
 		 *
-		 * @param result the number of the selection
+		 * @param result the id of the selection
 		 * @param actor can be null
 		 */
-		public void confirm(int result, AbstractEntity actor);
+		public void confirm(byte result, AbstractEntity actor);
 
 	}
 
@@ -412,15 +419,15 @@ public class ActionBox extends WidgetGroup {
 		 * @param result if a selection box returns the selection, else is -1
 		 * @param actor can be null
 		 */
-		public void select(boolean up, int result, AbstractEntity actor);
+		public void select(boolean up, byte result, AbstractEntity actor);
 	}
 
 	public static class SelectionOption {
 
-		private int id;
+		private byte id;
 		private String name;
 
-		public SelectionOption(int id, String name) {
+		public SelectionOption(byte id, String name) {
 			this.id = id;
 			this.name = name;
 		}

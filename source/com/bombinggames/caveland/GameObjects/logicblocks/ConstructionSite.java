@@ -236,20 +236,20 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			ArrayList<SelectionOption> list = new ArrayList<>(parent.container.getContent().size());
 			if (actor instanceof Ejira) {
 				if (canAddFrontItem(actor)) {
-					list.add(new SelectionOption(0,"Add: " + ((Ejira) actor).getInventory().getFrontCollectible().getName()));
+					list.add(new SelectionOption((byte) 0, "Add: " + ((Ejira) actor).getInventory().getFrontCollectible().getName()));
 				} else {
-					list.add(new SelectionOption(0,"Add: You have nothing to add"));
+					list.add(new SelectionOption((byte) 0, "Add: You have nothing to add"));
 				}
 			} else {
-				list.add(new SelectionOption(0,"Add"));
+				list.add(new SelectionOption((byte) 0, "Add"));
 			}
 
 			if (parent.container.getContent().size() > 0) {
-				list.add(new SelectionOption(1,"Take: " + parent.container.getContent().get(parent.container.getContent().size() - 1).getName()));
+				list.add(new SelectionOption((byte) 1, "Take: " + parent.container.getContent().get(parent.container.getContent().size() - 1).getName()));
 			} else {
-				list.add(new SelectionOption(1,"Take: Empty"));
+				list.add(new SelectionOption((byte) 1, "Take: Empty"));
 			}
-			list.add(new SelectionOption(2,"Build: " + parent.getStatusString()));
+			list.add(new SelectionOption((byte) 2, "Build: " + parent.getStatusString()));
 			addSelection(list);
 		}
 

@@ -33,7 +33,7 @@ public class CraftingDialogueBox extends ActionBox {
 		
 		fillWindowContent();
 		
-		setSelectAction((boolean up, int result, AbstractEntity actor) -> {
+		setSelectAction((boolean up, byte result, AbstractEntity actor) -> {
 			ArrayList<Recipe> recList = findMatchingRecipes();
 			if (!recList.isEmpty()) {
 				

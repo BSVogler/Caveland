@@ -255,6 +255,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			float t = dt * 0.001f; //t = time in s
 			
+			//move to movement goal
 			if (movementGoal != null) {
 				if (getPosition().dst2(movementGoal) < 20) {
 					movementGoal = null;
@@ -310,10 +311,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			
 			newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			
-			if (movement.z > 0){
-				if (isOnCeil(newPos)) {
-					movement.z = 0;
-				}
+			if (movement.z > 0 && isOnCeil(newPos)) {
+				movement.z = 0;
 				newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			}
 			
@@ -395,91 +394,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					//slow walking down
 					if (isOnGround()) {
 						//stop at a threshold
-						if (getMovementHor().len() > 0.1f)
-							setHorMovement(getMovementHor().scl(1f/(dt*friction+1f)));//with this formula this fraction is always <1
-						else {
+						if (getMovementHor().len() > 0.1f) {
+							setHorMovement(getMovementHor().scl(1f / (dt * friction + 1f)));//with this formula this fraction is always <1
+						} else {
 							setHorMovement(new Vector2());
 						}
 					}
 
 
-					/* update sprite*/
-					if (spritesPerDir > 0) {
-						if (orientation.x < -Math.sin(Math.PI/3)){
-							setSpriteValue((byte) 1);//west
-						} else {
-							if (orientation.x < - 0.5){
-								//y
-								if (orientation.y<0){
-									setSpriteValue((byte) 2);//north-west
-								} else {
-									setSpriteValue((byte) 0);//south-east
-								}
-							} else {
-								if (orientation.x <  0.5){
-									//y
-									if (orientation.y<0){
-										setSpriteValue((byte) 3);//north
-									}else{
-										setSpriteValue((byte) 7);//south
-									}
-								}else {
-									if (orientation.x < Math.sin(Math.PI/3)) {
-										//y
-										if (orientation.y < 0){
-											setSpriteValue((byte) 4);//north-east
-										} else{
-											setSpriteValue((byte) 6);//sout-east
-										}
-									} else{
-										setSpriteValue((byte)5);//east
-									}
-								}
-							}
-						}
-
-						if (cycleAnimation){
-							setSpriteValue((byte) (getSpriteValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
-						} else {//bounce
-							if (stepMode) { //some strange step order
-								switch (spritesPerDir) {
-									case 2:
-										if (walkingCycle >500)
-											setSpriteValue((byte) (getSpriteValue()+8));
-										break;
-									case 3:
-										if (walkingCycle >750)
-											setSpriteValue((byte) (getSpriteValue()+16));
-										else
-											if (walkingCycle >250 && walkingCycle <500)
-												setSpriteValue((byte) (getSpriteValue()+8));
-										break;
-									case 4:
-										if (walkingCycle >=166 && walkingCycle <333)
-											setSpriteValue((byte) (getSpriteValue()+8));
-										else {
-											if ((walkingCycle >=500 && walkingCycle <666)
-												||
-												(walkingCycle >=833 && walkingCycle <1000)
-												){
-												setSpriteValue((byte) (getSpriteValue()+16));
-											} else if (walkingCycle >=666 && walkingCycle < 833) {
-												setSpriteValue((byte) (getSpriteValue()+24));
-											}
-										}	break;
-									default:
-								}
-							} else {
-								//regular bounce
-								if (walkingCycle < 500) {//forth
-									setSpriteValue((byte) (getSpriteValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
-								} else {//back
-									setSpriteValue((byte) (getSpriteValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
-
-								}
-							}
-						}
-					}
+					updateSprite();
 				}
 			}
 
@@ -511,6 +434,85 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
             }
         }
     }
+	
+	public void updateSprite(){
+		if (spritesPerDir > 0) {
+			if (orientation.x < -Math.sin(Math.PI/3)){
+				setSpriteValue((byte) 1);//west
+			} else {
+				if (orientation.x < - 0.5){
+					//y
+					if (orientation.y<0){
+						setSpriteValue((byte) 2);//north-west
+					} else {
+						setSpriteValue((byte) 0);//south-east
+					}
+				} else {
+					if (orientation.x <  0.5){
+						//y
+						if (orientation.y<0){
+							setSpriteValue((byte) 3);//north
+						}else{
+							setSpriteValue((byte) 7);//south
+						}
+					}else {
+						if (orientation.x < Math.sin(Math.PI/3)) {
+							//y
+							if (orientation.y < 0){
+								setSpriteValue((byte) 4);//north-east
+							} else{
+								setSpriteValue((byte) 6);//sout-east
+							}
+						} else{
+							setSpriteValue((byte)5);//east
+						}
+					}
+				}
+			}
+
+			if (cycleAnimation){
+				setSpriteValue((byte) (getSpriteValue()+(int) (walkingCycle/(1000/ (float) spritesPerDir))*8));
+			} else {//bounce
+				if (stepMode) { //some strange step order
+					switch (spritesPerDir) {
+						case 2:
+							if (walkingCycle >500)
+								setSpriteValue((byte) (getSpriteValue()+8));
+							break;
+						case 3:
+							if (walkingCycle >750)
+								setSpriteValue((byte) (getSpriteValue()+16));
+							else
+								if (walkingCycle >250 && walkingCycle <500)
+									setSpriteValue((byte) (getSpriteValue()+8));
+							break;
+						case 4:
+							if (walkingCycle >=166 && walkingCycle <333)
+								setSpriteValue((byte) (getSpriteValue()+8));
+							else {
+								if ((walkingCycle >=500 && walkingCycle <666)
+									||
+									(walkingCycle >=833 && walkingCycle <1000)
+									){
+									setSpriteValue((byte) (getSpriteValue()+16));
+								} else if (walkingCycle >=666 && walkingCycle < 833) {
+									setSpriteValue((byte) (getSpriteValue()+24));
+								}
+							}	break;
+						default:
+					}
+				} else {
+					//regular bounce
+					if (walkingCycle < 500) {//forth
+						setSpriteValue((byte) (getSpriteValue() + (int) ((walkingCycle+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+					} else {//back
+						setSpriteValue((byte) (getSpriteValue() + (int) (spritesPerDir-(walkingCycle-500+500/(float) (spritesPerDir+spritesPerDir/2))*spritesPerDir / 1000f)*8));
+
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void render(GameView view, int xPos, int yPos) {

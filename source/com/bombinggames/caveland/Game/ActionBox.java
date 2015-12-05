@@ -28,7 +28,7 @@ public class ActionBox extends WidgetGroup {
 	 */
 	private final Window window;
 	private final BoxModes mode;
-	private ArrayList<String> selectionNames;
+	private ArrayList<SelectionOption> selectionNames;
 	private int selection;
 	private String text;
 	private ActionBoxConfirmAction confirmAction;
@@ -265,7 +265,7 @@ public class ActionBox extends WidgetGroup {
 	 * @param options
 	 * @return itself for chaining
 	 */
-	public ActionBox addSelectionNames(String... options) {
+	public ActionBox addSelection(SelectionOption... options) {
 		if (mode == BoxModes.SELECTION) {
 			if (selectionNames == null) {
 				selectionNames = new ArrayList<>(options.length);
@@ -281,7 +281,7 @@ public class ActionBox extends WidgetGroup {
 	 *
 	 * @param options
 	 */
-	public void addSelectionNames(Collection<String> options) {
+	public void addSelection(Collection<SelectionOption> options) {
 		if (mode == BoxModes.SELECTION) {
 			if (selectionNames == null) {
 				selectionNames = new ArrayList<>(options.size());
@@ -342,14 +342,14 @@ public class ActionBox extends WidgetGroup {
 			max = 4;
 		}
 		for (int i = 0; i < max; i++) {
-			String entry = selectionNames.get(i);
+			String entry = selectionNames.get(i).name;
 			if (selection == i) {
 				window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 			} else {
 				window.add(new Label(entry, WE.getEngineView().getSkin()));
 			}
 			if (selectionNames.size() > 4 && i+4 < selectionNames.size()) {
-				entry = selectionNames.get(i + 4);
+				entry = selectionNames.get(i + 4).name;
 				if (selection == i + 4) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
@@ -357,7 +357,7 @@ public class ActionBox extends WidgetGroup {
 				}
 			}
 			if (selectionNames.size() > 8 && i+8 < selectionNames.size()) {
-				entry = selectionNames.get(i + 8);
+				entry = selectionNames.get(i + 8).name;
 				if (selection == i + 8) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
@@ -411,6 +411,18 @@ public class ActionBox extends WidgetGroup {
 		 * @param actor can be null
 		 */
 		public void select(boolean up, int result, AbstractEntity actor);
+	}
+	
+	public static class SelectionOption{
+		private int id;
+		private String name;
+
+		public SelectionOption(int id, String name) {
+			this.id = id;
+			this.name = name;
+		}
+		
+		
 	}
 
 }

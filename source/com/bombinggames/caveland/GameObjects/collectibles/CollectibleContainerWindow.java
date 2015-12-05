@@ -48,12 +48,14 @@ public class CollectibleContainerWindow extends ActionBox {
 		super("Choose construction", ActionBox.BoxModes.SELECTION, null);
 		this.parent = parent;
 		//make list of options
-		ArrayList<String> list = new ArrayList<>(parent.getContent().size());
-		list.add("Add");
-		if (parent.getContent().size() > 0)
-			list.add("Take: " + parent.getContent().get(parent.getContent().size()-1).getName());
-		else list.add("Empty");
-		addSelectionNames(list);
+		ArrayList<SelectionOption> list = new ArrayList<>(parent.getContent().size());
+		list.add(new SelectionOption(0, "Add"));
+		if (parent.getContent().size() > 0) {
+			list.add(new SelectionOption(1, "Take: " + parent.getContent().get(parent.getContent().size() - 1).getName()));
+		} else {
+			list.add(new SelectionOption(1, "Empty"));
+		}
+		addSelection(list);
 	}
 
 	@Override

@@ -88,7 +88,11 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 			ActionBox ab;
 			if (linkToRobot.getRobot() == null || linkToRobot.getRobot().shouldBeDisposed()) {
 				ab = new ActionBox("What do you want to build?", ActionBox.BoxModes.SELECTION, "Drones can only be build at the surface.")
-				.addSelectionNames("Fighter Robot","Robot", "Drone")
+				.addSelection(
+					new ActionBox.SelectionOption(0, "Fighter Robot"),
+					new ActionBox.SelectionOption(1, "Robot"),
+					new ActionBox.SelectionOption(2, "Drone")
+				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 					if (linkToRobot.getRobot() == null ||
 						linkToRobot.getRobot().shouldBeDisposed()

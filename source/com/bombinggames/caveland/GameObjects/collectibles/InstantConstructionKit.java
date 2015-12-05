@@ -75,7 +75,18 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null)
-				.addSelectionNames("Straight SW-NE", "Straight NW-SE", "Curved", "Curved", "Curved", "Curved", "up", "up", "up", "up")
+				.addSelection(
+					new ActionBox.SelectionOption(0,"Straight SW-NE"),
+					new ActionBox.SelectionOption(1,"Straight NW-SE"),
+					new ActionBox.SelectionOption(2,"Curved"),
+					new ActionBox.SelectionOption(3,"Curved"),
+					new ActionBox.SelectionOption(4,"Curved"),
+					new ActionBox.SelectionOption(5,"Curved"),
+					new ActionBox.SelectionOption(6,"up"),
+					new ActionBox.SelectionOption(7,"up"),
+					new ActionBox.SelectionOption(8,"up"),
+					new ActionBox.SelectionOption(9,"up")
+				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 					amountLeft--;
 					//spawn rails

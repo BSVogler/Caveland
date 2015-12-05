@@ -3,6 +3,7 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.BoxModes;
+import com.bombinggames.caveland.Game.ActionBox.SelectionOption;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
@@ -68,11 +69,23 @@ public class ConstructionKit extends Collectible implements Interactable {
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("Choose construction", BoxModes.SELECTION, null)
-				.addSelectionNames(
-					CavelandBlocks.CLBlocks.OVEN.toString(),
-					CavelandBlocks.CLBlocks.ROBOTFACTORY.toString(),
-					CavelandBlocks.CLBlocks.POWERSTATION.toString(),
-					CavelandBlocks.CLBlocks.LIFT.toString()
+				.addSelection(
+					new SelectionOption(
+						CavelandBlocks.CLBlocks.OVEN.getId(),
+						CavelandBlocks.CLBlocks.OVEN.toString()
+					),
+					new SelectionOption(
+						CavelandBlocks.CLBlocks.ROBOTFACTORY.getId(),
+						CavelandBlocks.CLBlocks.ROBOTFACTORY.toString()
+					),
+					new SelectionOption(
+						CavelandBlocks.CLBlocks.POWERSTATION.getId(),
+						CavelandBlocks.CLBlocks.POWERSTATION.toString()
+					),
+					new SelectionOption(
+						CavelandBlocks.CLBlocks.LIFT.getId(),
+						CavelandBlocks.CLBlocks.LIFT.toString()
+					)
 				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site

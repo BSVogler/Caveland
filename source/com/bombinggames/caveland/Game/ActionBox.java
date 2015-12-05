@@ -28,14 +28,13 @@ public class ActionBox extends WidgetGroup {
 	 */
 	private final Window window;
 	private final BoxModes mode;
-	private ArrayList<SelectionOption> selectionNames;
+	private ArrayList<SelectionOption> selections;
 	private int selection;
 	private String text;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
 	private ActionBoxSelectAction selectAction;
 	private boolean closed = false;
-
 
 	public static enum BoxModes {
 
@@ -91,9 +90,9 @@ public class ActionBox extends WidgetGroup {
 		Label confirmLabel = new Label("Confirm", WE.getEngineView().getSkin());
 		confirmLabel.setPosition(window.getWidth() - 50, -40);
 		addActor(confirmLabel);
-		
+
 		if (mode != BoxModes.SIMPLE) {
-			sprite = AbstractGameObject.getSprite('i', (byte) 23,(byte) 2);
+			sprite = AbstractGameObject.getSprite('i', (byte) 23, (byte) 2);
 			if (sprite != null) {
 				Image cancel = new Image(new TextureRegionDrawable(sprite));
 				cancel.setPosition(window.getWidth() - 250, -40);
@@ -109,13 +108,12 @@ public class ActionBox extends WidgetGroup {
 	public float getWidth() {
 		return window.getWidth();
 	}
-	
+
 	@Override
 	public float getHeight() {
 		return window.getHeight();
 	}
 
-	
 	/**
 	 * registeres the window as a modal box so that the input gets redirected to
 	 * it.
@@ -124,7 +122,7 @@ public class ActionBox extends WidgetGroup {
 	 * @param playerId starting with 1. Needed for position.
 	 * @param actor the entitiy which is connected to the dialogue. can be null
 	 * @return itself
-	 * @see #register(CLGameView, int, AbstractEntity, Coordinate) 
+	 * @see #register(CLGameView, int, AbstractEntity, Coordinate)
 	 */
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
@@ -133,6 +131,7 @@ public class ActionBox extends WidgetGroup {
 		}
 		return this;
 	}
+
 	/**
 	 * registeres the window as a modal box so that the input gets redirected to
 	 * it.
@@ -142,16 +141,16 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor the entitiy which is connected to the dialogue. can be null
 	 * @param actedObject the object which gets acted on. can be null
 	 * @return itself
-	 * @see #register(CLGameView, int, AbstractEntity, Coordinate) 
+	 * @see #register(CLGameView, int, AbstractEntity, Coordinate)
 	 */
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor, AbstractEntity actedObject) {
 		register(view, playerId, actor);
-		if (actedObject!=null && actor instanceof Ejira) {
+		if (actedObject != null && actor instanceof Ejira) {
 			((Ejira) actor).startInteraction(actedObject);
 		}
 		return this;
 	}
-	
+
 	/**
 	 * registeres the window as a modal box so that the input gets redirected to
 	 * it.
@@ -161,7 +160,8 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor the entitiy which is connected to the dialogue. can be null
 	 * @param coord the coordinates where the interaction is aimed at
 	 * @return itself
-	 * @see #register(CLGameView, int, Gameobjects.AbstractEntity, AbstractEntity) 
+	 * @see #register(CLGameView, int, Gameobjects.AbstractEntity,
+	 * AbstractEntity)
 	 */
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor, Coordinate coord) {
 		register(view, playerId, actor);
@@ -230,7 +230,7 @@ public class ActionBox extends WidgetGroup {
 		if (confirmAction != null) {
 			confirmAction.confirm(selectionNum, actor);
 		}
-		if (actor instanceof Ejira){
+		if (actor instanceof Ejira) {
 			((Ejira) actor).endInteraction();
 		}
 		return selectionNum;
@@ -253,7 +253,7 @@ public class ActionBox extends WidgetGroup {
 		if (cancelAction != null) {
 			cancelAction.cancel(selectionNum, actor);
 		}
-		if (actor instanceof Ejira){
+		if (actor instanceof Ejira) {
 			((Ejira) actor).endInteraction();
 		}
 		return selectionNum;
@@ -267,10 +267,10 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public ActionBox addSelection(SelectionOption... options) {
 		if (mode == BoxModes.SELECTION) {
-			if (selectionNames == null) {
-				selectionNames = new ArrayList<>(options.length);
+			if (selections == null) {
+				selections = new ArrayList<>(options.length);
 			}
-			selectionNames.addAll(Arrays.asList(options));
+			selections.addAll(Arrays.asList(options));
 			updateContent();
 		}
 		return this;
@@ -283,21 +283,22 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public void addSelection(Collection<SelectionOption> options) {
 		if (mode == BoxModes.SELECTION) {
-			if (selectionNames == null) {
-				selectionNames = new ArrayList<>(options.size());
+			if (selections == null) {
+				selections = new ArrayList<>(options.size());
 			}
-			selectionNames.addAll(options);
+			selections.addAll(options);
 			updateContent();
 		}
 	}
 
 	/**
 	 * go a selection downwards
+	 *
 	 * @param actor
 	 */
 	public void down(AbstractEntity actor) {
 		if (mode == BoxModes.SELECTION) {
-			if (selection < selectionNames.size() - 1) {
+			if (selection < selections.size() - 1) {
 				selection++;
 			}
 			WE.SOUND.play("menuSelect");
@@ -312,6 +313,7 @@ public class ActionBox extends WidgetGroup {
 
 	/**
 	 * go a selection upwards
+	 *
 	 * @param actor
 	 */
 	public void up(AbstractEntity actor) {
@@ -337,27 +339,27 @@ public class ActionBox extends WidgetGroup {
 		window.add(text);
 		window.row();
 		//adds every selection
-		int max = selectionNames.size();
+		int max = selections.size();
 		if (max > 4) {
 			max = 4;
 		}
 		for (int i = 0; i < max; i++) {
-			String entry = selectionNames.get(i).name;
+			String entry = selections.get(i).name;
 			if (selection == i) {
 				window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 			} else {
 				window.add(new Label(entry, WE.getEngineView().getSkin()));
 			}
-			if (selectionNames.size() > 4 && i+4 < selectionNames.size()) {
-				entry = selectionNames.get(i + 4).name;
+			if (selections.size() > 4 && i + 4 < selections.size()) {
+				entry = selections.get(i + 4).name;
 				if (selection == i + 4) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
 					window.add(new Label(entry, WE.getEngineView().getSkin()));
 				}
 			}
-			if (selectionNames.size() > 8 && i+8 < selectionNames.size()) {
-				entry = selectionNames.get(i + 8).name;
+			if (selections.size() > 8 && i + 8 < selections.size()) {
+				entry = selections.get(i + 8).name;
 				if (selection == i + 8) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
@@ -372,7 +374,7 @@ public class ActionBox extends WidgetGroup {
 	boolean closed() {
 		return closed;
 	}
-	
+
 	@FunctionalInterface
 	public interface ActionBoxCancelAction {
 
@@ -412,8 +414,9 @@ public class ActionBox extends WidgetGroup {
 		 */
 		public void select(boolean up, int result, AbstractEntity actor);
 	}
-	
-	public static class SelectionOption{
+
+	public static class SelectionOption {
+
 		private int id;
 		private String name;
 
@@ -421,8 +424,7 @@ public class ActionBox extends WidgetGroup {
 			this.id = id;
 			this.name = name;
 		}
-		
-		
+
 	}
 
 }

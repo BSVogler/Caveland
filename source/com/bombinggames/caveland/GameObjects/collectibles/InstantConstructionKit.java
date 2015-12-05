@@ -76,16 +76,16 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 		if (actor instanceof Ejira) {
 			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null)
 				.addSelection(
-					new ActionBox.SelectionOption(0,"Straight SW-NE"),
-					new ActionBox.SelectionOption(1,"Straight NW-SE"),
-					new ActionBox.SelectionOption(2,"Curved"),
-					new ActionBox.SelectionOption(3,"Curved"),
-					new ActionBox.SelectionOption(4,"Curved"),
-					new ActionBox.SelectionOption(5,"Curved"),
-					new ActionBox.SelectionOption(6,"up"),
-					new ActionBox.SelectionOption(7,"up"),
-					new ActionBox.SelectionOption(8,"up"),
-					new ActionBox.SelectionOption(9,"up")
+					new ActionBox.SelectionOption(0, "Straight SW-NE"),
+					new ActionBox.SelectionOption(1, "Straight NW-SE"),
+					new ActionBox.SelectionOption(2, "Curved"),
+					new ActionBox.SelectionOption(3, "Curved"),
+					new ActionBox.SelectionOption(4, "Curved"),
+					new ActionBox.SelectionOption(5, "Curved"),
+					new ActionBox.SelectionOption(6, "up"),
+					new ActionBox.SelectionOption(7, "up"),
+					new ActionBox.SelectionOption(8, "up"),
+					new ActionBox.SelectionOption(9, "up")
 				)
 				.setConfirmAction((int result, AbstractEntity actor1) -> {
 					amountLeft--;

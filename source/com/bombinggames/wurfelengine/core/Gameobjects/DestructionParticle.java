@@ -25,6 +25,7 @@ public class DestructionParticle extends MovableEntity {
 		disableShadow();
 		addMovement(new Vector3((float) Math.random()-0.5f, (float) Math.random()-0.5f,(float) Math.random()*5f));
 		setRotation((float) Math.random()*360);
+		setMass(1.5f);
 	}
 
 

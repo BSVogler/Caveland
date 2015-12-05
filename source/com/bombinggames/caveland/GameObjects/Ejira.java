@@ -168,10 +168,11 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		playerNumber = number;
 		setName("Ejira");
 		setStepSound1Grass("step");
-		//setRunningSound( (Sound) WE.getAsset("com/bombinggames/caveland/sounds/victorcenusa_running.ogg"));
 		setJumpingSound("urfJump");
 		setFriction((float) WE.CVARS.get("playerfriction").getValue());
 		setDimensionZ((int) (Block.GAME_EDGELENGTH*1.4f));
+		setObstacle(true);
+		setMass(60f);
 		
 		Particle particle = new Particle((byte) 22, 800);
 		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 1f));
@@ -316,25 +317,25 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 
 			//get nearby mine cart
-			ArrayList<MineCart> nearbyLoren = pos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
+			ArrayList<MineCart> nearbyMc = pos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
 
-			if (!nearbyLoren.isEmpty()) {
-				Iterator<MineCart> it = nearbyLoren.iterator();
+			if (!nearbyMc.isEmpty()) {
+				Iterator<MineCart> it = nearbyMc.iterator();
 				while (it.hasNext()) {
-					MineCart lore = it.next();
+					MineCart minecart = it.next();
 					//if contact with lore and it has no passenger
-					if (lore.getPassenger() == null
-						&& pos.getZ() > (lore.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)
+					if (minecart.getPassenger() == null
+						&& pos.getZ() > (minecart.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)
 					) {
 						//enter chu chu
-						lore.setPassanger(this);
+						minecart.setPassanger(this);
 						break;
 					}
 				}
 			}
 
 			//loren anstupsen, push
-			for (MineCart mineCart : nearbyLoren) {
+			for (MineCart mineCart : nearbyMc) {
 				if (mineCart.getSpeedHor() < 0.1
 					&& mineCart.getPassenger() != this
 				) {

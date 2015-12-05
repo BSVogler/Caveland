@@ -41,6 +41,7 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENG
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import java.util.ArrayList;
 
 /**
  *A clas used mainly for characters or object which can walk around. To control the character you should use a {@link Controllable} or modify the movemnet via {@link #setMovement(com.badlogic.gdx.math.Vector3) }.
@@ -316,6 +317,21 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			}
 			
+			//check collision with other entities
+			if (colider){
+				ArrayList<MovableEntity> nearbyEnts = newPos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
+				nearbyEnts.remove(this);
+				for (MovableEntity ent : nearbyEnts) {
+					//if (this.collidesWith(ent))
+					if (ent.isObstacle() && getMass() > 0.5f) {
+						//in movement direction plus a little push
+						ent.addMovement(getOrientation().scl(getMovementHor().len()/2f));
+						MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+						newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t/2f));
+					}
+				}
+			}
+			
 			//apply movement
 			getPosition().setValues(newPos);
 
@@ -350,9 +366,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				
 				Block block = getPosition().getBlock();
 				//if entering water
-				if (!inLiquid && block != null && block.isLiquid()) {
+				if (!inLiquid && block != null && block.isLiquid() && getMass()>1f) {
 					if (waterSound != null) {
-						WE.SOUND.play(waterSound);
+						WE.SOUND.play(waterSound,getPosition());
 					}
 				}
 

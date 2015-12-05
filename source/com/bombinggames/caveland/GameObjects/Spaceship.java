@@ -34,6 +34,7 @@ public class Spaceship extends MovableEntity {
 		super((byte) 80, 0);
 		setScaling(1);
 		setName("Spaceship");
+		setMass(1000);
 	}
 
 	/**

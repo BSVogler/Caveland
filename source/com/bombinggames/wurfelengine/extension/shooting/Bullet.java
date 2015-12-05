@@ -75,6 +75,7 @@ public class Bullet extends AbstractEntity {
 	public Bullet() {
 		super((byte) 22);
 		setName("Bullet");
+		setMass(0.002f);
 		setSaveToDisk(false);
 	}
 

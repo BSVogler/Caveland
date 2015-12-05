@@ -98,6 +98,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	private transient String[] damageSounds;
 	private char category = 'e';
 	private boolean useRawDelta = false;
+	private float mass = 0.4f;
     /**
      * Create an abstractEntity.
      * @param id objects with id = -1 will be deleted. 0 are invisible objects
@@ -356,8 +357,23 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public boolean isObstacle() {
 		return obstacle;
 	}
-	
 
+	/**
+	 * 
+	 * @return in kg
+	 */
+	public float getMass() {
+		return mass;
+	}
+
+	/**
+	 * 
+	 * @param mass in kg
+	 */
+	public void setMass(float mass) {
+		this.mass = mass;
+	}
+	
 	@Override
 	public boolean isTransparent() {
 		return true;

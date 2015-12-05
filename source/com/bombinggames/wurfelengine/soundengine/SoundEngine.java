@@ -44,9 +44,11 @@ import java.util.HashMap;
 
 /**
  * Manages the sounds in the game world.
+ *
  * @author Benedikt Vogler
  */
 public class SoundEngine {
+
 	private final HashMap<String, Sound> sounds = new HashMap<>(10);
 	private final ArrayList<SoundInstance> playingLoops = new ArrayList<>(4);
 	private GameView view;
@@ -59,118 +61,140 @@ public class SoundEngine {
 	/**
 	 * loads and registers the ig-sounds
 	 */
-	public void loadRegisterIGSounds(){
+	public void loadRegisterIGSounds() {
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/landing.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/splash.wav", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/wind.ogg", Sound.class);
 		WE.getAssetManager().load("com/bombinggames/wurfelengine/soundengine/sounds/explosion2.wav", Sound.class);
 		WE.getAssetManager().finishLoading();
-		
+
 		register("landing", "com/bombinggames/wurfelengine/soundengine/sounds/landing.wav");
 		register("splash", "com/bombinggames/wurfelengine/soundengine/sounds/splash.wav");
 		register("wind", "com/bombinggames/wurfelengine/soundengine/sounds/wind.ogg");
 		register("explosion", "com/bombinggames/wurfelengine/soundengine/sounds/explosion2.wav");
 	}
-	
+
 	/**
-	 * Registers a sound. The sound must be loaded via asset manager.
- You can not register a sound twice.
+	 * Registers a sound. The sound must be loaded via asset manager. You can
+	 * not register a sound twice.
+	 *
 	 * @param identifier name of sound
 	 * @param path path of the sound
 	 */
-	public void register(String identifier, String path){
-		if (!sounds.containsKey(identifier)){
+	public void register(String identifier, String path) {
+		if (!sounds.containsKey(identifier)) {
 			sounds.put(identifier, (Sound) WE.getAsset(path));
 		}
 	}
-	
-	/***
-	 * 
+
+	/**
+	 * *
+	 *
 	 * @param identifier name of sound
 	 */
-	public void play(String identifier){
+	public void play(String identifier) {
 		Sound result = sounds.get(identifier);
-		if (result!=null)
+		if (result != null) {
 			result.play(WE.CVARS.getValueF("sound"));
-	}
-	
-	/***
-	 * Plays sound with decreasing volume depending on distance.
-	 * @param identifier name of sound
-	 * @param pos the position of the sound in the world. if it is null then play at center
-	 */
-	public void play(String identifier, AbstractPosition pos){
-		Sound result = sounds.get(identifier);
-		if (result != null){
-			float volume =1;
-			if (pos!=null)
-				volume = getVolume(pos);
-			else
-				volume *= WE.CVARS.getValueF("sound");
-			if (volume >= 0.1) //only play sound louder>10%
-				result.play(volume);
 		}
 	}
-	
-	/***
-	 * 
+
+	/**
+	 * *
+	 * Plays sound with decreasing volume depending on distance.
+	 *
+	 * @param identifier name of sound
+	 * @param pos the position of the sound in the world. if it is null then
+	 * play at center
+	 */
+	public void play(String identifier, AbstractPosition pos) {
+		Sound result = sounds.get(identifier);
+		if (result != null) {
+			float volume = 1;
+			if (pos != null) {
+				volume = getVolume(pos);
+			} else {
+				volume *= WE.CVARS.getValueF("sound");
+			}
+			if (volume >= 0.1) //only play sound louder>10%
+			{
+				result.play(volume);
+			}
+		}
+	}
+
+	/**
+	 * *
+	 *
 	 * @param identifier name of sound
 	 * @param volume
-	 * @return 
+	 * @return
 	 */
-	public long play(String identifier, float volume){
+	public long play(String identifier, float volume) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
-			return result.play(volume*WE.CVARS.getValueF("sound"));
+		if (result != null) {
+			return result.play(volume * WE.CVARS.getValueF("sound"));
+		}
 		return 0;
 	}
-	
-	/***
-	 * 
+
+	/**
+	 * *
+	 *
 	 * @param identifier name of sound
-	 * @param volume 
+	 * @param volume
 	 * @param pitch
-	 * @return 
+	 * @return
 	 */
-	public long play(String identifier, float volume, float pitch){
+	public long play(String identifier, float volume, float pitch) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
-			return result.play(volume*WE.CVARS.getValueF("sound"), pitch, 0);
+		if (result != null) {
+			return result.play(volume * WE.CVARS.getValueF("sound"), pitch, 0);
+		}
 		return 0;
 	}
-	
-	/***
-	 * 
+
+	/**
+	 * *
+	 *
 	 * @param identifier name of sound
 	 * @param volume the volume in the range [0,1]
-	 * @param pitch the pitch multiplier, 1 == default, &gt;1 == faster, &lt;1 == slower, the value has to be between 0.5 and 2.0
-	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is center position.
-	 * @return 
+	 * @param pitch the pitch multiplier, 1 == default, &gt;1 == faster, &lt;1
+	 * == slower, the value has to be between 0.5 and 2.0
+	 * @param pan panning in the range -1 (full left) to 1 (full right). 0 is
+	 * center position.
+	 * @return
 	 */
-	public long play(String identifier, float volume, float pitch, float pan){
+	public long play(String identifier, float volume, float pitch, float pan) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
-			return result.play(volume*WE.CVARS.getValueF("sound"), pitch, pan);
+		if (result != null) {
+			return result.play(volume * WE.CVARS.getValueF("sound"), pitch, pan);
+		}
 		return 0;
 	}
-	
+
 	/**
 	 * playing Loops a sound.
+	 *
 	 * @param identifier name of sound
 	 * @return the instance id
 	 * @see com.​badlogic.​gdx.​audio.​Sound#loop
 	 */
 	public long loop(String identifier) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
+		if (result != null) {
 			return result.loop(WE.CVARS.getValueF("sound"));
+		}
 		return 0;
 	}
-	
+
 	/**
 	 * Starts playing a loop. If already playing will start another instance
+	 *
 	 * @param identifier name of sound
-	 * @param pos the position of the sound in the game world. Should be a reference to the position of the object and no copy so that it updates itself.
+	 * @param pos the position of the sound in the game world. Should be a
+	 * reference to the position of the object and no copy so that it updates
+	 * itself.
 	 * @return the instance id
 	 * @see com.badlogic.​gdx.​audio.​Sound#loop()
 	 */
@@ -183,8 +207,6 @@ public class SoundEngine {
 		}
 		return 0;
 	}
-	
-	
 
 	/**
 	 * Stops all instances of this sound.
@@ -216,7 +238,7 @@ public class SoundEngine {
 		//remove from playing loops list if with this instance id
 		playingLoops.removeIf(s -> s.sound.equals(result) && s.id == instance);
 	}
-	
+
 	public void stopEverySound() {
 		playingLoops.clear();
 		sounds.values().forEach(s -> s.stop());
@@ -224,71 +246,81 @@ public class SoundEngine {
 
 	/**
 	 * Set the volume of a playing instance.
+	 *
 	 * @param identifier name of sound
-	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String) }.
-	 * @param volume 
+	 * @param instance the instance returned by {@link #play(String) } or {@link #loop(String)
+	 * }.
+	 * @param volume
 	 * @see com.​badlogic.​gdx.​audio.​Sound#setVolume()
 	 */
 	public void setVolume(String identifier, long instance, float volume) {
 		Sound result = sounds.get(identifier);
-		if (result != null)
+		if (result != null) {
 			result.setVolume(instance, volume);
+		}
 	}
-	
+
 	/**
 	 *
 	 * @param dt
 	 */
-	public void update(float dt){
+	public void update(float dt) {
 		float loudness = WE.CVARS.getValueF("music");
-		if (loudness != getMusicLoudness())
+		if (loudness != getMusicLoudness()) {
 			setMusicLoudness(loudness);
+		}
 		for (SoundInstance sound : playingLoops) {
 			sound.update();
 		}
 	}
-	
+
 	/**
-	 * disposes the sounds. if you dispose the sounds they do not play if you reload a game. so stop them instead
+	 * disposes the sounds. if you dispose the sounds they do not play if you
+	 * reload a game. so stop them instead
 	 */
-	public void dispose(){
+	public void dispose() {
 		for (Sound s : sounds.values()) {
 			s.dispose();
 		}
 	}
-	
+
 	/**
-	 * calculates the volume of a sound based on the positon in the game world. Compares to cameras.
+	 * calculates the volume of a sound based on the positon in the game world.
+	 * Compares to cameras.
+	 *
 	 * @param pos position in the world.
 	 * @return multiplied with the settings for the volume
 	 */
-	protected float getVolume(AbstractPosition pos){
+	protected float getVolume(AbstractPosition pos) {
 		float volume = 1;
 		if (view != null) {
 			//calculate minimal distance to camera
 			float minDistance = Float.POSITIVE_INFINITY;
 			for (Camera camera : view.getCameras()) {
 				float distance = pos.toPoint().distanceTo(camera.getCenter());
-				if (distance < minDistance)
+				if (distance < minDistance) {
 					minDistance = distance;
+				}
 			}
 
 			int decay = WE.CVARS.getValueI("soundDecay");
-			volume = decay*Block.GAME_EDGELENGTH / (minDistance*minDistance + decay*Block.GAME_EDGELENGTH);//loose energy radial
-			if (volume > 1)
+			volume = decay * Block.GAME_EDGELENGTH / (minDistance * minDistance + decay * Block.GAME_EDGELENGTH);//loose energy radial
+			if (volume > 1) {
 				volume = 1;
+			}
 		}
-		return volume*WE.CVARS.getValueF("sound");
+		return volume * WE.CVARS.getValueF("sound");
 	}
 
 	/**
 	 * Set the gameplay view to calcualte sound based on the gameplay.
+	 *
 	 * @param view
 	 */
 	public void setView(GameView view) {
 		this.view = view;
 	}
-	
+
 	/**
 	 *
 	 * @return
@@ -299,42 +331,49 @@ public class SoundEngine {
 
 	/**
 	 * Sets the volume and plays or pauses the music.
-	 * @param loudness The volume must be given in the range [0,1] with 0 being silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it andc and &gt; 0 starts it
+	 *
+	 * @param loudness The volume must be given in the range [0,1] with 0 being
+	 * silent and 1 being the maximum volume. musicLoudness &lt; 0 pauses it
+	 * andc and &gt; 0 starts it
 	 */
 	private void setMusicLoudness(float loudness) {
 		this.musicLoudness = loudness;
-		if (music != null){
+		if (music != null) {
 			music.setVolume(musicLoudness);
-			if (musicLoudness==0) music.pause();
-			else if (!music.isPlaying()) music.play();
-		}
-	}
-	
-	/**
-	 * Loads new music and plays them if a loudness is set.
-	 * @param path 
-	 */
-	public void setMusic(String path){
-		if (Gdx.files.internal(path).exists()){
-			this.music= Gdx.audio.newMusic(Gdx.files.internal(path));
-			music.setVolume(musicLoudness);
-			music.setLooping(true);
-			if (musicLoudness>0)
+			if (music.isPlaying() && musicLoudness == 0) {
+				music.pause();
+			} else if (!music.isPlaying() && musicLoudness > 0) {
 				try {
 					music.play();
-				} catch (GdxRuntimeException ex){
-					System.err.println("Failed playing music: " + path);
+				} catch (GdxRuntimeException ex) {
+					System.err.println("Failed playing music.");
 				}
+			}
 		}
 	}
-	
+
+	/**
+	 * Loads new music and plays them if a loudness is set.
+	 *
+	 * @param path
+	 */
+	public void setMusic(String path) {
+		if (Gdx.files.internal(path).exists()) {
+			this.music = Gdx.audio.newMusic(Gdx.files.internal(path));
+			music.setLooping(true);
+			setMusicLoudness(WE.CVARS.getValueF("music"));
+		}
+	}
+
 	/**
 	 * Check if music is playing
+	 *
 	 * @return true if music is playing
 	 */
-	public boolean isMusicPlaying(){
-		if (music==null)
+	public boolean isMusicPlaying() {
+		if (music == null) {
 			return false;
+		}
 		return music.isPlaying();
 	}
 
@@ -342,10 +381,14 @@ public class SoundEngine {
 	 *
 	 */
 	public void disposeMusic() {
-		if (music!=null) music.dispose();
+		if (music != null) {
+			music.dispose();
+		}
 	}
 
 	public void pauseMusic() {
-		if (music != null) music.pause();
+		if (music != null) {
+			music.pause();
+		}
 	}
 }

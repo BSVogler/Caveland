@@ -262,7 +262,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		WE.getEngineView().addInputProcessor(manager);
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
-		if (!WE.SOUND.isMusicPlaying())
+		if (!WE.SOUND.isMusicPlaying() && WE.CVARS.getValueF("music") > 0)
 			WE.SOUND.setMusic(Gdx.files.internal("com/bombinggames/caveland/music/title.mp3").path());
 		WE.SOUND.play("menuAbort");
 	}

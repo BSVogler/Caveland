@@ -1173,7 +1173,7 @@ public class Camera implements MapObserver {
 	/**
 	 * Returns the focuspoint
 	 *
-	 * @return in game space
+	 * @return in game space, copy safe
 	 */
 	public Point getCenter() {
 		return new Point(

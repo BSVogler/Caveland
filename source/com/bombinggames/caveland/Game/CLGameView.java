@@ -865,11 +865,20 @@ public class CLGameView extends GameView{
 		this.openDialogue[playerNumber - 1] = actionBox;
 		if (actionBox != null) {
 			if (coop == -1) {
-				actionBox.setPosition(getStage().getWidth() / 2 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
+				actionBox.setPosition(
+					getStage().getWidth() / 2 - actionBox.getWindow().getWidth() / 2,
+					getStage().getHeight() / 5
+				);
 			} else if (playerNumber == 1) {
-				actionBox.setPosition(getStage().getWidth() / 4 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
+				actionBox.setPosition(
+					getStage().getWidth() / 4 - actionBox.getWindow().getWidth() / 2,
+					getStage().getHeight()/5
+				);
 			} else {
-				actionBox.setPosition(getStage().getWidth() * 3 / 4 - actionBox.getWindow().getWidth() / 2, getStage().getHeight() / 2);
+				actionBox.setPosition(
+					getStage().getWidth() * 3 / 4 - actionBox.getWindow().getWidth() / 2,
+					getStage().getHeight() / 5
+				);
 			}
 			getStage().addActor(actionBox);
 		}

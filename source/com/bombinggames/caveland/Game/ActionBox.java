@@ -348,9 +348,17 @@ public class ActionBox extends WidgetGroup {
 			} else {
 				window.add(new Label(entry, WE.getEngineView().getSkin()));
 			}
-			if (selectionNames.size() > 4) {
+			if (selectionNames.size() > 4 && i+4 < selectionNames.size()) {
 				entry = selectionNames.get(i + 4);
 				if (selection == i + 4) {
+					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
+				} else {
+					window.add(new Label(entry, WE.getEngineView().getSkin()));
+				}
+			}
+			if (selectionNames.size() > 8 && i+8 < selectionNames.size()) {
+				entry = selectionNames.get(i + 8);
+				if (selection == i + 8) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
 					window.add(new Label(entry, WE.getEngineView().getSkin()));

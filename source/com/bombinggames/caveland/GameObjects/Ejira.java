@@ -751,7 +751,6 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				isInAirJump = true;
 			} else {
 				if (!isOnGround()) {//must perform a bunnyhop b/c not on ground
-					onCollide();
 					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 				}
 				//cancel z movement

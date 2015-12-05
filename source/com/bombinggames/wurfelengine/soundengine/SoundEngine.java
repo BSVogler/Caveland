@@ -88,19 +88,15 @@ public class SoundEngine {
 	}
 
 	/**
-	 * *
 	 *
 	 * @param identifier name of sound
 	 */
 	public void play(String identifier) {
-		Sound result = sounds.get(identifier);
-		if (result != null) {
-			result.play(WE.CVARS.getValueF("sound"));
-		}
+		play(identifier, 1f);
 	}
 
 	/**
-	 * *
+	 *
 	 * Plays sound with decreasing volume depending on distance.
 	 *
 	 * @param identifier name of sound
@@ -108,16 +104,27 @@ public class SoundEngine {
 	 * play at center
 	 */
 	public void play(String identifier, AbstractPosition pos) {
+		play(identifier, pos, 1f);
+	}
+
+	/**
+	 *
+	 * Plays sound with decreasing volume depending on distance.
+	 *
+	 * @param identifier name of sound
+	 * @param pos the position of the sound in the world. if it is null then
+	 * play at center
+	 * @param volume default is 1
+	 */
+	public void play(String identifier, AbstractPosition pos, float volume) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			float volume = 1;
 			if (pos != null) {
-				volume = getVolume(pos);
+				volume = volume * getVolume(pos);
 			} else {
 				volume *= WE.CVARS.getValueF("sound");
 			}
-			if (volume >= 0.1) //only play sound louder>10%
-			{
+			if (volume >= 0.1) { //only play sound louder>10%
 				result.play(volume);
 			}
 		}
@@ -127,7 +134,7 @@ public class SoundEngine {
 	 * *
 	 *
 	 * @param identifier name of sound
-	 * @param volume
+	 * @param volume default is 1
 	 * @return
 	 */
 	public long play(String identifier, float volume) {
@@ -137,13 +144,13 @@ public class SoundEngine {
 		}
 		return 0;
 	}
-
+	
 	/**
 	 * *
 	 *
 	 * @param identifier name of sound
 	 * @param volume
-	 * @param pitch
+	 * @param pitch the pitch multiplier, 1 == default, >1 == faster, 1 == slower, the value has to be between 0.5 and 2.0
 	 * @return
 	 */
 	public long play(String identifier, float volume, float pitch) {

@@ -87,12 +87,12 @@ public class ConstructionKit extends Collectible implements Interactable {
 						CavelandBlocks.CLBlocks.LIFT.toString()
 					)
 				)
-				.setConfirmAction((byte result, AbstractEntity actor1) -> {
-						build(actor1.getPosition().toCoord(), getResult(result));//spawn construction site
+				.setConfirmAction((SelectionOption result, AbstractEntity actor1) -> {
+						build(actor1.getPosition().toCoord(), getResult(result.id));//spawn construction site
 					}
 				)
 				.setCancelAction(
-					(int result, AbstractEntity actor1) -> {
+					(SelectionOption result, AbstractEntity actor1) -> {
 						if (preview != null) {
 							preview.dispose();
 							preview = null;
@@ -100,16 +100,16 @@ public class ConstructionKit extends Collectible implements Interactable {
 					}
 				)
 				.setSelectAction(
-					(boolean up, byte result, AbstractEntity actor1) -> {
+					(boolean up, SelectionOption result, AbstractEntity actor1) -> {
 						//spawn rails
 						if (preview == null) {
-							preview = (EntityBlock) new EntityBlock(getResult(result),(byte) 0)
+							preview = (EntityBlock) new EntityBlock(getResult(result.id),(byte) 0)
 								.spawn(actor1.getPosition().toCoord().toPoint());
 							preview.setName("preview");
 							preview.setSaveToDisk(false);
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else {
-							preview.setSpriteId(getResult(result));
+							preview.setSpriteId(getResult(result.id));
 						}
 					}
 				)

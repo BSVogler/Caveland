@@ -93,12 +93,12 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 					new ActionBox.SelectionOption((byte) 1, "Robot"),
 					new ActionBox.SelectionOption((byte) 2, "Drone")
 				)
-				.setConfirmAction((byte result, AbstractEntity actor1) -> {
+				.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 					if (linkToRobot.getRobot() == null ||
 						linkToRobot.getRobot().shouldBeDisposed()
 					) {
 						Robot robot = null;
-						switch (result) {
+						switch (result.id) {
 							case 0:
 								robot = (Robot) new Robot().spawn(getPosition().toPoint());
 								break;
@@ -118,7 +118,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 				});
 			} else {
 				ab = new ActionBox("Robot in use", ActionBox.BoxModes.BOOLEAN, "The robot is already in use. Destroy it?")
-					.setConfirmAction((byte result, AbstractEntity actor1) -> {
+					.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 						MessageManager.getInstance().dispatchMessage(
 							(Telegraph) this,
 							linkToRobot.getRobot(),

@@ -120,7 +120,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift? You can always enter the caves by jumping into the hole.")
-				.setConfirmAction((byte result, AbstractEntity actor1) -> {
+				.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 					Coordinate top = getPosition().cpy().addVector(0, 0, 1);
 					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getInstance());
 					ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(top);

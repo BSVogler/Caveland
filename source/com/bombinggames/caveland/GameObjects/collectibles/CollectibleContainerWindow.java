@@ -59,22 +59,22 @@ public class CollectibleContainerWindow extends ActionBox {
 	}
 
 	@Override
-	public int confirm(AbstractEntity actor) {
-		int num = super.confirm(actor);
+	public SelectionOption confirm(AbstractEntity actor) {
+		SelectionOption selection = super.confirm(actor);
 		if (actor instanceof Ejira) {
 			Ejira player = (Ejira) actor;
 			//add item?
-			if (num == 0) {
+			if (selection.id == 0) {
 				Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 				if (frontItem != null) {
 					parent.addCollectible(frontItem);
 				}
-			} else if (num==1){
+			} else if (selection.id==1){
 				//fetch item
-				parent.retrieveCollectible(num - 1);
+				parent.retrieveCollectible(selection.id - 1);
 			}
 		}
-		return num;
+		return selection;
 	}
 	
 }

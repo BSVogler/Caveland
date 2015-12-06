@@ -184,7 +184,7 @@ public class OptionScreen extends WEScreen {
 			@Override
 			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 				ActionBox warning = new ActionBox("Reset Game", ActionBox.BoxModes.SIMPLE, "Warning! You are about to reinstall the game. All save games will be lost. Use right mouse button to cancel. Use left mosue button to confirm that you want to reset the game.");
-				warning.setConfirmAction((byte result, AbstractEntity actor1) -> {
+				warning.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 					WorkingDirectory.delete();
 					System.exit(0);//exiting the game writes the cvars
 				});

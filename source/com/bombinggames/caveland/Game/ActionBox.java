@@ -32,7 +32,7 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * the number of the selected item
 	 */
-	private byte selection;
+	private byte selectionNum;
 	private String text;
 	private ActionBoxConfirmAction confirmAction;
 	private ActionBoxCancelAction cancelAction;
@@ -105,6 +105,10 @@ public class ActionBox extends WidgetGroup {
 			cancelLabel.setPosition(window.getWidth() - 250, -40);
 			addActor(cancelLabel);
 		}
+		
+		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
+			selections = new ArrayList<>(8);
+		}
 	}
 
 	@Override
@@ -129,11 +133,11 @@ public class ActionBox extends WidgetGroup {
 	 */
 	public ActionBox register(final CLGameView view, final int playerId, AbstractEntity actor) {
 		view.setModalDialogue(this, playerId);
-		if (selectAction != null) {
+		if (mode == BoxModes.SELECTION && selectAction != null) {
 			if (selections.isEmpty()) {
-				selectAction.select(false,(byte) 0, actor);
+				selectAction.select(false, null, actor);
 			} else {
-				selectAction.select(false, selections.get(selection).id, actor);
+				selectAction.select(false, selections.get(selectionNum), actor);
 			}
 		}
 		return this;
@@ -226,21 +230,20 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor
 	 * @return
 	 */
-	public int confirm(AbstractEntity actor) {
-		int selectionNum = 0;
-		if (mode == BoxModes.SELECTION) {
-			selectionNum = selection;
-		}
+	public SelectionOption confirm(AbstractEntity actor) {
+			SelectionOption result = null;
+		if (selections != null && !selections.isEmpty())
+			result = selections.get(selectionNum);
 		remove();
 		WE.SOUND.play("menuConfirm");
 		closed = true;
 		if (confirmAction != null) {
-			confirmAction.confirm(selections.get(selectionNum).id, actor);
+			confirmAction.confirm(result, actor);
 		}
 		if (actor instanceof Ejira) {
 			((Ejira) actor).endInteraction();
 		}
-		return selectionNum;
+		return result;
 	}
 
 	/**
@@ -249,21 +252,20 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor
 	 * @return
 	 */
-	public int cancel(AbstractEntity actor) {
-		int selectionNum = 0;
-		if (mode == BoxModes.SELECTION) {
-			selectionNum = selection;
-		}
+	public SelectionOption cancel(AbstractEntity actor) {
+		SelectionOption result = null;
+		if (selections != null && !selections.isEmpty())
+			result = selections.get(selectionNum);
 		remove();
 		closed = true;
 		WE.SOUND.play("menuAbort");
 		if (cancelAction != null) {
-			cancelAction.cancel(selectionNum, actor);
+			cancelAction.cancel(result, actor);
 		}
 		if (actor instanceof Ejira) {
 			((Ejira) actor).endInteraction();
 		}
-		return selectionNum;
+		return result;
 	}
 
 	/**
@@ -273,13 +275,11 @@ public class ActionBox extends WidgetGroup {
 	 * @return itself for chaining
 	 */
 	public ActionBox addSelection(SelectionOption... options) {
-		if (mode == BoxModes.SELECTION) {
-			if (selections == null) {
-				selections = new ArrayList<>(options.length);
-			}
-			selections.addAll(Arrays.asList(options));
-			updateContent();
+		if (selections == null) {
+			selections = new ArrayList<>(options.length);
 		}
+		selections.addAll(Arrays.asList(options));
+		updateContent();
 		return this;
 	}
 
@@ -298,22 +298,30 @@ public class ActionBox extends WidgetGroup {
 		}
 	}
 
+	
+	public SelectionOption getSelected() {
+		if (selections == null || selections.isEmpty()) {
+			return null;
+		}
+		return selections.get(selectionNum);
+	}
+	
 	/**
 	 * go a selection downwards
 	 *
 	 * @param actor
 	 */
 	public void down(AbstractEntity actor) {
-		if (mode == BoxModes.SELECTION) {
-			if (selection < selections.size() - 1) {
-				selection++;
+		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
+			if (selectionNum < selections.size() - 1) {
+				selectionNum++;
 			}
 			WE.SOUND.play("menuSelect");
 			updateContent();
 		}
 		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
 			if (selectAction != null) {
-				selectAction.select(false, selections.get(selection).id, actor);
+				selectAction.select(false, selections.get(selectionNum), actor);
 			}
 		}
 	}
@@ -324,16 +332,16 @@ public class ActionBox extends WidgetGroup {
 	 * @param actor
 	 */
 	public void up(AbstractEntity actor) {
-		if (mode == BoxModes.SELECTION) {
-			if (selection > 0) {
-				selection--;
+		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
+			if (selectionNum > 0) {
+				selectionNum--;
 			}
 			WE.SOUND.play("menuSelect");
 			updateContent();
 		}
 		if (mode == BoxModes.SELECTION || mode == BoxModes.CUSTOM) {
 			if (selectAction != null) {
-				selectAction.select(true, selections.get(selection).id, actor);
+				selectAction.select(true, selections.get(selectionNum), actor);
 			}
 		}
 	}
@@ -352,14 +360,14 @@ public class ActionBox extends WidgetGroup {
 		}
 		for (int i = 0; i < max; i++) {
 			String entry = selections.get(i).name;
-			if (selection == i) {
+			if (selectionNum == i) {
 				window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 			} else {
 				window.add(new Label(entry, WE.getEngineView().getSkin()));
 			}
 			if (selections.size() > 4 && i + 4 < selections.size()) {
 				entry = selections.get(i + 4).name;
-				if (selection == i + 4) {
+				if (selectionNum == i + 4) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
 					window.add(new Label(entry, WE.getEngineView().getSkin()));
@@ -367,7 +375,7 @@ public class ActionBox extends WidgetGroup {
 			}
 			if (selections.size() > 8 && i + 8 < selections.size()) {
 				entry = selections.get(i + 8).name;
-				if (selection == i + 8) {
+				if (selectionNum == i + 8) {
 					window.add(new Label("[" + entry + "]", WE.getEngineView().getSkin()));
 				} else {
 					window.add(new Label(entry, WE.getEngineView().getSkin()));
@@ -390,7 +398,7 @@ public class ActionBox extends WidgetGroup {
 		 * @param result
 		 * @param actor can be null
 		 */
-		public void cancel(int result, AbstractEntity actor);
+		public void cancel(SelectionOption result, AbstractEntity actor);
 	}
 
 	/**
@@ -406,7 +414,7 @@ public class ActionBox extends WidgetGroup {
 		 * @param result the id of the selection
 		 * @param actor can be null
 		 */
-		public void confirm(byte result, AbstractEntity actor);
+		public void confirm(SelectionOption result, AbstractEntity actor);
 
 	}
 
@@ -416,16 +424,16 @@ public class ActionBox extends WidgetGroup {
 		/**
 		 *
 		 * @param up
-		 * @param result if a selection box returns the selection, else is -1
+		 * @param result
 		 * @param actor can be null
 		 */
-		public void select(boolean up, byte result, AbstractEntity actor);
+		public void select(boolean up, SelectionOption result, AbstractEntity actor);
 	}
 
 	public static class SelectionOption {
 
-		private byte id;
-		private String name;
+		public final byte id;
+		public String name;
 
 		public SelectionOption(byte id, String name) {
 			this.id = id;

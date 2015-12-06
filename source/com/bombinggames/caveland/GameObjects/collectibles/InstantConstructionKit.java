@@ -35,6 +35,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.Game.ActionBox.SelectionOption;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Ejira;
@@ -57,7 +58,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	private transient EntityBlock preview;
 	private final byte resultBlockId;
 	private int amountLeft = 3;
-	private byte lastChoice;
+	private byte lastDir;
 
 	/**
 	 *
@@ -72,51 +73,79 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 		}
 	}
 	
-	public void setOrder(byte lastChoice, ActionBox ab, boolean up){
-		if (up) {
-			switch (lastChoice){
-				case 0: case 5:case 6:
-					ab.addSelection(
-						new ActionBox.SelectionOption((byte) 0, "Straight SW-NE"),
-						new ActionBox.SelectionOption((byte) 2, "Curved SW-SE"),
-						new ActionBox.SelectionOption((byte) 3, "Curved SW-NW"),
-						new ActionBox.SelectionOption((byte) 6, "up SW-NE"),
-						new ActionBox.SelectionOption((byte) 1, "Straight NW-SE"),
-						new ActionBox.SelectionOption((byte) 4, "Curved NW-NE"),
-						new ActionBox.SelectionOption((byte) 5, "Curved SE-NE"),
-						new ActionBox.SelectionOption((byte) 7, "up SE-NW"),
-						new ActionBox.SelectionOption((byte) 8, "up NE-SW"),
-						new ActionBox.SelectionOption((byte) 9, "up NW-SE")
-					);
-					break;
-				case 1: case 3: case 7: 
-					ab.addSelection(
-						new ActionBox.SelectionOption((byte) 1, "Straight NW-SE"),
-						new ActionBox.SelectionOption((byte) 2, "Curved SW-SE"),
-						new ActionBox.SelectionOption((byte) 5, "Curved SE-NE"),
-						new ActionBox.SelectionOption((byte) 7, "up SE-NW"),
-						new ActionBox.SelectionOption((byte) 0, "Straight SW-NE"),
-						new ActionBox.SelectionOption((byte) 3, "Curved SW-NW"),
-						new ActionBox.SelectionOption((byte) 6, "up SW-NE"),
-						new ActionBox.SelectionOption((byte) 4, "Curved NW-NE"),
-						new ActionBox.SelectionOption((byte) 8, "up NE-SW"),
-						new ActionBox.SelectionOption((byte) 9, "up NW-SE")
-					);
-					break;
-				default:
-					ab.addSelection(
-						new ActionBox.SelectionOption((byte) 0, "Straight SW-NE"),
-						new ActionBox.SelectionOption((byte) 1, "Straight NW-SE"),
-						new ActionBox.SelectionOption((byte) 2, "Curved SW-SE"),
-						new ActionBox.SelectionOption((byte) 3, "Curved SW-NW"),
-						new ActionBox.SelectionOption((byte) 4, "Curved NW-NE"),
-						new ActionBox.SelectionOption((byte) 5, "Curved SE-NE"),
-						new ActionBox.SelectionOption((byte) 6, "up SW-NE"),
-						new ActionBox.SelectionOption((byte) 7, "up SE-NW"),
-						new ActionBox.SelectionOption((byte) 8, "up NE-SW"),
-						new ActionBox.SelectionOption((byte) 9, "up NW-SE")
-					);
-			}
+	/**
+	 * 
+	 * @param ab the action box with the choices
+	 * @param toSide the last direction used
+	 */
+	public void setOrder(ActionBox ab, int toSide){
+		byte m = (byte) (resultBlockId == CavelandBlocks.CLBlocks.POWERCABLE.getId() ?2:1);
+		switch (toSide) {
+			case 1:
+				ab.addSelection(
+					new ActionBox.SelectionOption((byte) (m*0), "Straight SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*2), "Curved SW-SE"),
+					new ActionBox.SelectionOption((byte) (m*3), "Curved SW-NW"),
+					new ActionBox.SelectionOption((byte) (m*6), "up SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*1), "Straight NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*4), "Curved NW-NE"),
+					new ActionBox.SelectionOption((byte) (m*5), "Curved SE-NE"),
+					new ActionBox.SelectionOption((byte) (m*7), "up SE-NW"),
+					new ActionBox.SelectionOption((byte) (m*8), "up NE-SW"),
+					new ActionBox.SelectionOption((byte) (m*9), "up NW-SE")
+				);	break;
+			case 5:
+				ab.addSelection(
+					new ActionBox.SelectionOption((byte) (m*0), "Straight SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*4), "Curved NW-NE"),
+					new ActionBox.SelectionOption((byte) (m*5), "Curved SE-NE"),
+					new ActionBox.SelectionOption((byte) (m*8), "up NE-SW"),
+					new ActionBox.SelectionOption((byte) (m*6), "up SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*1), "Straight NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*3), "Curved SW-NW"),
+					new ActionBox.SelectionOption((byte) (m*2), "Curved SW-SE"),
+					new ActionBox.SelectionOption((byte) (m*7), "up SE-NW"),
+					new ActionBox.SelectionOption((byte) (m*9), "up NW-SE")
+				);	break;
+			case 7:
+				ab.addSelection(
+					new ActionBox.SelectionOption((byte) (m*1), "Straight NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*2), "Curved SW-SE"),
+					new ActionBox.SelectionOption((byte) (m*5), "Curved SE-NE"),
+					new ActionBox.SelectionOption((byte) (m*7), "up SE-NW"),
+					new ActionBox.SelectionOption((byte) (m*0), "Straight SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*3), "Curved SW-NW"),
+					new ActionBox.SelectionOption((byte) (m*6), "up SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*4), "Curved NW-NE"),
+					new ActionBox.SelectionOption((byte) (m*8), "up NE-SW"),
+					new ActionBox.SelectionOption((byte) (m*9), "up NW-SE")
+				);	break;
+			case 3:
+				ab.addSelection(
+					new ActionBox.SelectionOption((byte) (m*1), "Straight NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*3), "Curved SW-NW"),
+					new ActionBox.SelectionOption((byte) (m*4), "Curved NW-NE"),
+					new ActionBox.SelectionOption((byte) (m*9), "up NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*7), "up SE-NW"),
+					new ActionBox.SelectionOption((byte) (m*0), "Straight SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*5), "Curved SE-NE"),
+					new ActionBox.SelectionOption((byte) (m*8), "up NE-SW"),
+					new ActionBox.SelectionOption((byte) (m*6), "up SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*2), "Curved SW-SE")
+				);	break;
+			default:
+				ab.addSelection(
+					new ActionBox.SelectionOption((byte) (m*0), "Straight SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*1), "Straight NW-SE"),
+					new ActionBox.SelectionOption((byte) (m*2), "Curved SW-SE"),
+					new ActionBox.SelectionOption((byte) (m*3), "Curved SW-NW"),
+					new ActionBox.SelectionOption((byte) (m*4), "Curved NW-NE"),
+					new ActionBox.SelectionOption((byte) (m*5), "Curved SE-NE"),
+					new ActionBox.SelectionOption((byte) (m*6), "up SW-NE"),
+					new ActionBox.SelectionOption((byte) (m*7), "up SE-NW"),
+					new ActionBox.SelectionOption((byte) (m*8), "up NE-SW"),
+					new ActionBox.SelectionOption((byte) (m*9), "up NW-SE")
+				);	break;
 		}
 	}
 	
@@ -124,56 +153,75 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			ActionBox box = new ActionBox("Choose direction", ActionBox.BoxModes.SELECTION, null);
-			setOrder(lastChoice, box, true);
-			box.setConfirmAction((byte result, AbstractEntity actor1) -> {
-				lastChoice = result;
+			setOrder(box, lastDir);
+			box.setConfirmAction((SelectionOption result, AbstractEntity actor1) -> {
 				amountLeft--;
 				//spawn rails
 				actor1.getPosition().toCoord().setBlock(
-					Block.getInstance(resultBlockId, result)
+					Block.getInstance(resultBlockId, result.id)
 				);
 				WE.SOUND.play("metallic");
 				if (preview != null) {
 					preview.dispose();
 					preview = null;
 				}
+				
+				byte resultNum = 0;
+				if (resultBlockId == CavelandBlocks.CLBlocks.POWERCABLE.getId()) {
+					resultNum = (byte) (result.id / 2);
+				} else {
+					resultNum = result.id;
+				}
 
 				if (actor instanceof MovableEntity) {
 					Point beforeMove = actor1.getPosition().cpy();
-					Point nextCell = actor1.getPosition().toCoord().toPoint();
+					Point nextCell;
+					boolean up = false;
 					Vector2 orient = ((MovableEntity) actor1).getOrientation();
-					if ((result == 0 || result == 8)  && (orient.x >= 0 && orient.y <= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
-					} else if ((result == 0 || result == 6) && (orient.x <= 0 && orient.y >= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
-					} else if ((result == 1 || result == 9)  && (orient.x <= 0 && orient.y <= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
-					} else if ((result == 1 || result == 7) && (orient.x >= 0 && orient.y >= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
-					} else if (result == 2 && orient.x >= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
-					} else if (result == 2 && orient.x <= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
-					} else if (result == 3 && orient.y <= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
-					} else if (result == 3 && orient.y >= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(5).toPoint();
-					} else if (result == 4 && orient.x <= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(7).toPoint();
-					}else if (result == 4 && orient.x >= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
-					}else if (result == 5 && orient.y <= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(1).toPoint();
-					}else if (result == 5 && orient.y >= 0) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(3).toPoint();
-					} else if (result == 6 && (orient.x >= 0 && orient.y <= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(1).addVector(0, 0, 1).toPoint();
-					} else if (result == 7 && (orient.x <= 0 && orient.y <= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(7).addVector(0, 0, 1).toPoint();
-					} else if (result == 8 && (orient.x <= 0 && orient.y >= 0)) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(5).addVector(0, 0, 1).toPoint();
+					if ((resultNum == 0 || resultNum == 8) && (orient.x >= 0 && orient.y <= 0)) {
+						lastDir = 1;
+					} else if ((resultNum == 0 || resultNum == 6) && (orient.x <= 0 && orient.y >= 0)) {
+						lastDir = 5;
+					} else if ((resultNum == 1 || resultNum == 9) && (orient.x <= 0 && orient.y <= 0)) {
+						lastDir = 7;
+					} else if ((resultNum == 1 || resultNum == 7) && (orient.x >= 0 && orient.y >= 0)) {
+						lastDir = 3;
+					} else if (resultNum == 2 && orient.x >= 0) {
+						lastDir = 3;
+					} else if (resultNum == 2 && orient.x <= 0) {
+						lastDir = 5;
+					} else if (resultNum == 3 && orient.y <= 0) {
+						lastDir = 7;
+					} else if (resultNum == 3 && orient.y >= 0) {
+						lastDir = 5;
+					} else if (resultNum == 4 && orient.x <= 0) {
+						lastDir = 7;
+					} else if (resultNum == 4 && orient.x >= 0) {
+						lastDir = 1;
+					} else if (resultNum == 5 && orient.y <= 0) {
+						lastDir = 1;
+					} else if (resultNum == 5 && orient.y >= 0) {
+						lastDir = 3;
+					} else if (resultNum == 6 && (orient.x >= 0 && orient.y <= 0)) {
+						lastDir = 1;
+						up = true;
+					} else if (resultNum == 7 && (orient.x <= 0 && orient.y <= 0)) {
+						lastDir = 7;
+						up = true;
+					} else if (resultNum == 8 && (orient.x <= 0 && orient.y >= 0)) {
+						lastDir = 5;
+						up = true;
+					} else if (resultNum == 9 && (orient.x >= 0 && orient.y >= 0)) {
+						lastDir = 3;
+						up = true;
 					}
-
+					
+					if (up) {
+						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).addVector(0, 0, 1).toPoint();
+					} else {
+						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).toPoint();
+					}
+					
 					actor.getPosition().setValues(nextCell);
 					//update orientation
 					Vector3 newOr = actor1.getPosition().cpy().sub(beforeMove).nor();
@@ -186,19 +234,18 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 				if (amountLeft <= 0) {
 					dispose();//dispose tool kit
 				}
-			}
-			)
-			.setSelectAction((boolean up, byte result, AbstractEntity actor1) -> {
+			})
+			.setSelectAction((boolean up, SelectionOption result, AbstractEntity actor1) -> {
 				//spawn rails
 				if (preview == null) {
 					preview = (EntityBlock) new EntityBlock(resultBlockId)
 						.spawn(actor1.getPosition().toCoord().toPoint());
 					preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 				}
-				preview.setSpriteValue((byte) (getType() == CollectibleType.Rails ? result : result * 2));
+				preview.setSpriteValue(result.id);
 			})
 			.setCancelAction(
-				(int result, AbstractEntity actor1) -> {
+				(SelectionOption result, AbstractEntity actor1) -> {
 					if (preview != null) {
 						preview.dispose();
 						preview = null;

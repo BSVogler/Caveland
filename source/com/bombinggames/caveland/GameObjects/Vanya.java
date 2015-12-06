@@ -268,10 +268,10 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 					text
 				);
 				if (chatCounter > 0) {
-					currentChat.setConfirmAction((byte result, AbstractEntity actor1) -> {
+					currentChat.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 						nextChat(view, actor, true);
 					});
-					currentChat.setCancelAction((int result, AbstractEntity actor1) -> {
+					currentChat.setCancelAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 						nextChat(view, actor, false);
 					});
 				}

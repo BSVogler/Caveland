@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 public class CraftingDialogueBox extends ActionBox {
 	private final Inventory inventory;
 	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
-	private int selectionNum = -1;
 
 	/**
 	 * creates a new inventory
@@ -33,25 +32,10 @@ public class CraftingDialogueBox extends ActionBox {
 		
 		fillWindowContent();
 		
-		setSelectAction((boolean up, byte result, AbstractEntity actor) -> {
+		setSelectAction((boolean up, ActionBox.SelectionOption result, AbstractEntity actor) -> {
 			ArrayList<Recipe> recList = findMatchingRecipes();
 			if (!recList.isEmpty()) {
 				
-				if (!up) {
-					selectionNum++;
-				} else {
-					selectionNum--;
-				}
-
-				//clamp
-				if (selectionNum < 0) {
-					selectionNum = recList.size()-1;
-				}
-
-				if (selectionNum >= recList.size()) {
-					selectionNum = 0;
-				}
-
 				fillWindowContent();
 			}
 		});
@@ -59,9 +43,14 @@ public class CraftingDialogueBox extends ActionBox {
 	
 	private void fillWindowContent(){
 		ArrayList<Recipe> recipes = findMatchingRecipes();
+		
 		if (!recipes.isEmpty()) {
+			for (byte i = 0; i < recipes.size(); i++) {
+				addSelection(new SelectionOption(i, recipes.get(i).getResultType().toString()));
+			}
+			
 			getWindow().clearChildren();
-			Recipe recipe = recipes.get(selectionNum<0?0:selectionNum);
+			Recipe recipe = recipes.get(getSelected().id);
 			//A
 			Image imgA = recipe.getIngredientImage(0);
 			getWindow().addActor(imgA);
@@ -94,7 +83,7 @@ public class CraftingDialogueBox extends ActionBox {
 			equals.setPosition(420, 0);
 			
 			//result
-			Image resultImage = findMatchingRecipes().get(selectionNum<0?0:selectionNum).getResultImage();
+			Image resultImage = findMatchingRecipes().get(getSelected().id).getResultImage();
 			resultImage.setPosition(450, 0);
 			getWindow().addActor(resultImage);
 		} else {
@@ -191,12 +180,12 @@ public class CraftingDialogueBox extends ActionBox {
 	}
 
 	@Override
-	public int confirm(AbstractEntity actor) {
-		super.confirm(actor);
+	public SelectionOption confirm(AbstractEntity actor) {
+		SelectionOption result = super.confirm(actor);
 		ArrayList<CraftingRecipesList.Recipe> recipes = findMatchingRecipes();
 		if (!recipes.isEmpty()) {
-			craft(recipes.get(selectionNum));
+			craft(recipes.get(getSelected().id));
 		}
-		return selectionNum;
+		return result;
 	}
 }

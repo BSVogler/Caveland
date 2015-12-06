@@ -254,12 +254,12 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 
 		@Override
-		public int confirm(AbstractEntity actor) {
-			int num = super.confirm(actor);
+		public SelectionOption confirm(AbstractEntity actor) {
+			SelectionOption num = super.confirm(actor);
 			if (actor instanceof Ejira) {
 				Ejira player = (Ejira) actor;
 				//add item?
-				switch (num) {
+				switch (num.id) {
 					case 0:
 						if (canAddFrontItem(actor)) {
 							Collectible frontItem = player.getInventory().retrieveFrontItemReference();
@@ -269,7 +269,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 						}	break;
 					case 1:
 						//fetch item
-						parent.container.retrieveCollectible(num - 1);
+						parent.container.retrieveCollectible(num.id - 1);
 						break;
 					case 2:
 						build();

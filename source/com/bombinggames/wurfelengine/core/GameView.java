@@ -412,7 +412,7 @@ public class GameView implements GameManager {
 			float deltaZ = Chunk.getGameHeight() - Block.GAME_EDGELENGTH - p.getZ();
 			p.add(0, deltaZ * Point.SQRT2, deltaZ);//top of map
 
-			return p.raycastSimple(
+			return p.rayMarching(
 				new Vector3(0, -1, -Block.ZAXISSHORTENING),//shoot in viewing direction, can not find correct vector: todo. Was -Point.SQRT12
 				Float.POSITIVE_INFINITY,
 				cameras.get(0),//assume it is in first camera

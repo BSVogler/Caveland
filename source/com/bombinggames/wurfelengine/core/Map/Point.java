@@ -478,7 +478,7 @@ public class Point extends AbstractPosition {
 	 * @return 
 	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
 	 */
-	public Intersection raycastSimple(
+	public Intersection rayMarching(
 		final Vector3 dir,
 		float maxDistance,
 		final Camera camera,
@@ -686,14 +686,14 @@ public class Point extends AbstractPosition {
 	public boolean canSee(Point p, float maxdistance) {
 		Vector3 vecToTarget = cpy().sub(p).nor();
 		//check if can see target
-		Intersection raycast = p.raycastSimple(
+		Intersection intersect = p.rayMarching(
 			vecToTarget,
 			maxdistance,
 			null,
 			(Block t) -> !t.isTransparent()
 		);
-		return !(raycast != null
-			&& distanceTo(raycast.getPoint()) < distanceTo(p)//check if point is before
+		return !(intersect != null
+			&& distanceTo(intersect.getPoint()) < distanceTo(p)//check if point is before
 );
 	}
 

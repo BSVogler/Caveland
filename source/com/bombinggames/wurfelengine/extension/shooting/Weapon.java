@@ -341,7 +341,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 				laserdot.disableShadow();
 			}
 			
-			Intersection raycast = getPosition().raycastSimple(
+			Intersection raycast = getPosition().rayMarching(
 				aimDir,
 				Block.GAME_EDGELENGTH*20,
 				null,

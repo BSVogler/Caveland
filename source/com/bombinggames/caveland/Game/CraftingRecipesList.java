@@ -106,7 +106,6 @@ public class CraftingRecipesList extends Table {
 		 * a list of the ingredient
 		 */
 		protected final CollectibleType[] ingredients;
-		protected final String name;
 		/**
 		 * what is the result of the recipe.
 		 */
@@ -122,7 +121,6 @@ public class CraftingRecipesList extends Table {
 		 */
 		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {
 			this.ingredients = ingredients;
-			this.name = name;
 			this.result = result;
 			this.resultClass = null;
 		}
@@ -136,7 +134,6 @@ public class CraftingRecipesList extends Table {
 		 */
 		public Recipe(CollectibleType[] ingredients, String name, Class<? extends AbstractEntity> result) {
 			this.ingredients = ingredients;
-			this.name = name;
 			this.result = null;
 			this.resultClass = result;
 		}

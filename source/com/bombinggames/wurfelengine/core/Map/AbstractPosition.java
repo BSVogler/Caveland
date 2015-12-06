@@ -163,8 +163,8 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
 	@SuppressWarnings("unchecked")
 	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
-
-		for (AbstractEntity entity : Controller.getMap().getEntitys(type)) {
+		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
+		for (AbstractEntity entity : entities) {
 			if (distanceTo(entity.getPosition()) < radius) {
 				result.add((type) entity);
 			}

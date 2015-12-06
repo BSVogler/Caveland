@@ -871,21 +871,19 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * Find every instance of a special class. E.g. find every
 	 * <i>AbstractCharacter</i>. They must be spawned to appear in the results.
 	 *
-	 * @param <type>
-	 * @param type
+	 * @param <type> the class you want to filter.
+	 * @param filter the class you want to filter.
 	 * @return a list with the entitys
 	 */
 	@SuppressWarnings(value = {"unchecked"})
-	public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> type) {
-		ArrayList<type> list = new ArrayList<>(30); //defautl size 30
+	public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> filter) {
+		ArrayList<type> result = new ArrayList<>(30); //defautl size 30
 		for (AbstractEntity entity : entityList) {
-			//check every entity
-			if (entity.hasPosition() && type.isInstance(entity)) {
-				//if the entity is of the wanted type
-				list.add((type) entity); //add it to list
+			if (entity.hasPosition() && filter.isInstance(entity)) {
+				result.add((type) entity);
 			}
 		}
-		return list;
+		return result;
 	}
 
 	/**
@@ -895,15 +893,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return a list with the entitys
 	 */
 	public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
-		ArrayList<AbstractEntity> list = new ArrayList<>(5);//default size 5
+		ArrayList<AbstractEntity> result = new ArrayList<>(5);//default size 5
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.getPosition() != null && ent.getPosition().toCoord().equals(coord)) {
-				list.add(ent);//add it to list
+				result.add(ent);
 			}
 		}
 
-		return list;
+		return result;
 	}
 
 	/**
@@ -911,23 +909,23 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 *
 	 * @param <type> the class you want to filter.
 	 * @param coord the coord where you want to get every entity from
-	 * @param type the class you want to filter.
+	 * @param filter the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
 	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> type) {
-		ArrayList<type> list = new ArrayList<>(5);
+	public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> filter) {
+		ArrayList<type> result = new ArrayList<>(5);
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.hasPosition()
 				&& ent.getPosition().toCoord().equals(coord)//on coordinate?
-				&& type.isInstance(ent)//of tipe of filter?
-				) {
-				list.add((type) ent);//add it to list
+				&& filter.isInstance(ent)//of tipe of filter?
+			) {
+				result.add((type) ent);//add it to list
 			}
 		}
 
-		return list;
+		return result;
 	}
 
 	/**

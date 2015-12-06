@@ -317,7 +317,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 
 			//get nearby mine cart
-			ArrayList<MineCart> nearbyMc = pos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MineCart.class);
+			ArrayList<MineCart> nearbyMc = getCollidingEntities(MineCart.class);
 
 			if (!nearbyMc.isEmpty()) {
 				Iterator<MineCart> it = nearbyMc.iterator();
@@ -336,9 +336,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 			//loren anstupsen, push
 			for (MineCart mineCart : nearbyMc) {
-				if (mineCart.getSpeedHor() < 0.1
-					&& mineCart.getPassenger() != this
-				) {
+				if (mineCart.getPassenger() != this) {
 					//in movement direction plus a little push
 					mineCart.addMovement(getOrientation().scl(getMovementHor().len() + 5f));
 				}

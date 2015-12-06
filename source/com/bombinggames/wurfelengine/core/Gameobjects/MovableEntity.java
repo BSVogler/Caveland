@@ -36,6 +36,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.Events;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
@@ -77,7 +78,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * indicates whether this objects does collide with the blocks
 	 */
-	private boolean colider = true;
+	private boolean collider = true;
 	/**
 	 * affected by gravity
 	 */
@@ -154,7 +155,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		this.spritesPerDir = entity.spritesPerDir;
 		movement = entity.movement;
 		friction = entity.friction;
-		colider = entity.colider;
+		collider = entity.collider;
 		floating = entity.floating;
 		
 		enableShadow();
@@ -295,7 +296,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			Point newPos = getPosition().cpy().add(dMove);
 			//check if movement to new position is okay
-			if (colider && collidesHorizontal(newPos, colissionRadius)) {
+			if (collider && collidesHorizontal(newPos, colissionRadius)) {
 				//stop
 				setHorMovement(new Vector2());
 				MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
@@ -318,9 +319,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			}
 			
 			//check collision with other entities
-			if (colider){
-				ArrayList<MovableEntity> nearbyEnts = newPos.getEntitiesNearby(Block.GAME_EDGELENGTH2, MovableEntity.class);
-				nearbyEnts.remove(this);
+			if (collider){
+				ArrayList<MovableEntity> nearbyEnts = getCollidingEntities();
 				for (MovableEntity ent : nearbyEnts) {
 					//if (this.collidesWith(ent))
 					if (ent.isObstacle() && getMass() > 0.5f) {
@@ -819,7 +819,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @return
 	 */
 	public boolean isColiding() {
-		return colider;
+		return collider;
 	}
 
 	/**
@@ -827,7 +827,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param coliding true if collides with environment
 	 */
 	public void setColiding(boolean coliding) {
-		this.colider = coliding;
+		this.collider = coliding;
 	}
        
 	/**
@@ -984,6 +984,53 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	public Point getMovementGoal() {
 		return movementGoal;
+	}
+	
+	/**
+	 * circular collision check
+	 * @param ent
+	 * @return 
+	 */
+	public boolean collidesWith(MovableEntity ent) {
+		if (!collider || !ent.collider || ent == this) {
+			return false;
+		}
+		return getPosition().distanceTo(ent) < colissionRadius + ent.colissionRadius;
+	}
+
+	/***
+	 * get every entitiy which is colliding
+	 * @return 
+	 */
+	public ArrayList<MovableEntity> getCollidingEntities(){
+		ArrayList<MovableEntity> result = new ArrayList<>(5);//default size 5
+		ArrayList<MovableEntity> ents = Controller.getMap().getEntitys(MovableEntity.class);
+		for (MovableEntity entity : ents) {
+			if (collidesWith(entity)) {
+				result.add(entity);
+			}
+		}
+
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param <type>
+	 * @param filter
+	 * @return 
+	 */
+	public <type extends MovableEntity> ArrayList<type> getCollidingEntities(final Class<type> filter){
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
+
+		ArrayList<type> ents = Controller.getMap().getEntitys(filter);
+		for (type entity : ents) {
+			if (collidesWith(entity)) {
+				result.add(entity);
+			}
+		}
+
+		return result;
 	}
 	
 	@Override

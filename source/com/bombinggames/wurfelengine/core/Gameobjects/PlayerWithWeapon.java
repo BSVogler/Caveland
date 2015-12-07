@@ -31,76 +31,88 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 
-
 /**
- *The WeaponPlayer is a character who can walk and shoot.
+ * The WeaponPlayer is a character who can walk and shoot.
+ *
  * @author Benedikt
  */
 public class PlayerWithWeapon extends MovableEntity {
-	private static final long serialVersionUID = 1L;
-	
-    private transient Camera camera;
-    private Weapon weapon;
 
-    /**
-     * Creates a player. The parameters are for the lower half of the player.
+	private static final long serialVersionUID = 1L;
+
+	private transient Camera camera;
+	private Weapon weapon;
+
+	/**
+	 * Creates a player. The parameters are for the lower half of the player.
+	 *
 	 * @param spritesPerDir
 	 * @param height
-     */
-    public PlayerWithWeapon(int spritesPerDir, int height) {
-        super((byte) 30, spritesPerDir);
-        Gdx.app.debug("Player", "Creating player");
-        
-        setObstacle(true);
-        setDimensionZ(height);
-    }   
+	 */
+	public PlayerWithWeapon(int spritesPerDir, int height) {
+		super((byte) 30, spritesPerDir);
+		Gdx.app.debug("Player", "Creating player");
 
-    /**
-     * Jumps the player with a sound
-     */
-    @Override
-    public void jump() {
-        jump(5, true);
-    }
-    
+		setObstacle(true);
+		setDimensionZ(height);
+	}
 
-    /**
-     * Getting aim relative to middle of view by reading mouse position. If no camera is configured dircetion of head.
-     * @return 
-     */
-    @Override
-    public Vector3 getAiming(){
-        Vector3 aim;
-        if (camera != null){
-            aim = new Vector3(
-                Gdx.input.getX()- camera.getWidthInScreenSpc()/2,
-                2*(Gdx.input.getY()- camera.getHeightInScreenSpc()/2),
-                0
-            );
-        }else{
-            aim = new Vector3(getOrientation(),0);
-        }
-        return aim.nor();
-    }
+	@Override
+	public AbstractEntity spawn(Point point) {
+		super.spawn(point);
+		weapon.spawn(point.cpy());
+		return this;
+	}
 
-    @Override
-    public void update(float dt) {
-        super.update(dt);
-        if (weapon != null) weapon.update(dt);
-    }
-    
-    
-    
+	/**
+	 * Jumps the player with a sound
+	 */
+	@Override
+	public void jump() {
+		jump(5, true);
+	}
 
-    /**
-     *Set the camera which is renderin the player to calculate the aiming. If camera is null 
-     * @param camera 
-     */
-    public void setCamera(Camera camera) {
-        this.camera = camera;
-    }
+	/**
+	 * Getting aim relative to middle of view by reading mouse position. If no
+	 * camera is configured dircetion of head.
+	 *
+	 * @return
+	 */
+	@Override
+	public Vector3 getAiming() {
+		Vector3 aim;
+		if (camera != null) {
+			aim = new Vector3(
+				Gdx.input.getX() - camera.getWidthInScreenSpc() / 2,
+				2 * (Gdx.input.getY() - camera.getHeightInScreenSpc() / 2),
+				0
+			);
+		} else {
+			aim = new Vector3(getOrientation(), 0);
+		}
+		return aim.nor();
+	}
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		if (weapon != null) {
+			weapon.update(dt);
+		}
+	}
+
+	/**
+	 * Set the camera which is renderin the player to calculate the aiming. If
+	 * camera is null
+	 *
+	 * @param camera
+	 */
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
 
 	/**
 	 *
@@ -109,24 +121,23 @@ public class PlayerWithWeapon extends MovableEntity {
 	public Camera getCamera() {
 		return camera;
 	}
-	
-	
 
-    /**
-     *
-     * @return
-     */
-    public Weapon getWeapon() {
-        return weapon;
-    }
-    
-        /**
-     * Gives the player a weapon.
-     * @param id 
-     */
-    public void equipWeapon(byte id){
-        weapon = new Weapon(id, this);
-        weapon.reload();
-    }
-    
+	/**
+	 *
+	 * @return
+	 */
+	public Weapon getWeapon() {
+		return weapon;
+	}
+
+	/**
+	 * Gives the player a weapon.
+	 *
+	 * @param weapon
+	 */
+	public void equipWeapon(Weapon weapon) {
+		this.weapon = weapon;
+		weapon.reload();
+	}
+
 }

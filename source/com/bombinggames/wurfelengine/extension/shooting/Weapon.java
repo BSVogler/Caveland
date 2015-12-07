@@ -369,7 +369,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
      *shoots the weapon. like holding the trigger down
      */
     public void shoot(){
-       if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0) {
+       if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0 && hasPosition()) {
 			if (fireSound != null) {
 				if (bustSoundReady) {
 					WE.SOUND.play(fireSound, getPosition());

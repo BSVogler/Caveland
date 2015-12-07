@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/bombinggames/WurfelEngine/Core/images/Spritesheet.png</filename>
+        <filename>../../../source/com/bombinggames/wurfelengine/core/images/Spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -76,7 +76,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -147,7 +147,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/bombinggames/WurfelEngine/Core/images/Spritesheet.txt</filename>
+                <filename>../../../source/com/bombinggames/wurfelengine/core/images/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

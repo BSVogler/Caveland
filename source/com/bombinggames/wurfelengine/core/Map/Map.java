@@ -619,10 +619,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			//	System.out.print("\n");
 
 			Block block = iter.next();
-			if (block.getId()==0)
+			if (block == null) {
 				System.out.print("  ");
-			else
+			} else {
 				System.out.print(block.getId() + " ");
+			}
 		}
 	}
 

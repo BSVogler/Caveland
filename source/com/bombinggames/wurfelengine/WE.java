@@ -150,35 +150,10 @@ public class WE {
 	 * @see #setMainMenu(com.bombinggames.wurfelengine.Core.MainMenuInterface)
 	 */
 	public static void launch(final String title, final String[] args) {
-		//load cvars
-		CVARS.load();
-
-		// set the name of the application menu item on mac
-		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
-		}
-
 		config.resizable = false;
 		config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
 		config.fullscreen = true;
 		config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-		config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
-		config.backgroundFPS = 60;//60 FPS in background
-		//config.addIcon("com/BombingGames/caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best made via native packaging
-		if (iconPath != null) {
-			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
-		}
-		
-		//load saved resolution
-		int width = CVARS.getValueI("resolutionx");
-		if (width > 0) {
-			config.width = width;
-		}
-
-		int height = CVARS.getValueI("resolutiony");
-		if (height > 0) {
-			config.height = CVARS.getValueI("resolutiony");
-		}
 		
 		//arguments
 		if (args.length > 0) {
@@ -207,8 +182,41 @@ public class WE {
 					case "-skipintro":
 						skipintro = true;
 						break;
+					case "-v":
+						System.out.println(WE.VERSION);
+						System.exit(0);
+						return;
+					default:
+						System.out.println("Unknown launch parameter "+args[i]);
 				}
 			}
+		}
+		
+		cvars = CVarSystem.getInstanceEngineSystem(new File(workingDirectory + "/engine.wecvars"));
+		//load cvars
+		cvars.load();
+
+		// set the name of the application menu item on mac
+		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
+		}
+
+		config.foregroundFPS = cvars.getValueI("limitFPS");//don't lock FPS
+		config.backgroundFPS = 60;//60 FPS in background
+		//config.addIcon("com/BombingGames/caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best made via native packaging
+		if (iconPath != null) {
+			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
+		}
+		
+		//load saved resolution
+		int width = cvars.getValueI("resolutionx");
+		if (width > 0 && config.width == 0) {
+			config.width = width;
+		}
+
+		int height = cvars.getValueI("resolutiony");
+		if (height > 0 && config.height == 0) {
+			config.height = cvars.getValueI("resolutiony");
 		}
 		
 		//find dpm with biggest width

@@ -182,8 +182,8 @@ public class RenderBlock extends AbstractGameObject{
     public RenderBlock(byte id){
         super(id);
 		blockData = Block.getInstance(id);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
+		fogEnabled = WE.getCvars().getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.getCvars().getValueF("ambientOcclusion");
     }
 	
 	/**
@@ -194,8 +194,8 @@ public class RenderBlock extends AbstractGameObject{
 	public RenderBlock(byte id, byte value){
 		super(id, value);
 		blockData = Block.getInstance(id, value);
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
+		fogEnabled = WE.getCvars().getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.getCvars().getValueF("ambientOcclusion");
 	}
 	
 	/**
@@ -205,8 +205,8 @@ public class RenderBlock extends AbstractGameObject{
 	public RenderBlock(Block data){
 		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
-		fogEnabled = WE.CVARS.getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.CVARS.getValueF("ambientOcclusion");
+		fogEnabled = WE.getCvars().getValueB("enableFog");//refresh cache
+		ambientOcclusion = WE.getCvars().getValueF("ambientOcclusion");
 	}
 	
 	

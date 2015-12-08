@@ -81,7 +81,7 @@ public class WE {
 	/**
 	 * The CVar system used by the engine.
 	 */
-	public static final CVarSystem CVARS = CVarSystem.getInstanceEngineSystem(new File(workingDirectory + "/engine.wecvars"));
+	private static CVarSystem cvars;
 	/**
      *The sound engine managing the sfx.
      */
@@ -197,10 +197,12 @@ public class WE {
 					case "-w":
 						//set the width
 						config.width = Integer.parseInt(args[i + 1]);
+						i++;
 						break;
 					case "-h":
 						//set the height
 						config.height = Integer.parseInt(args[i + 1]);
+						i++;
 						break;
 					case "-skipintro":
 						skipintro = true;
@@ -353,6 +355,10 @@ public class WE {
 		//enter
 		view.enter();
 		controller.enter();
+	}
+
+	public static CVarSystem getCvars() {
+		return cvars;
 	}
 	
 	/**
@@ -556,7 +562,7 @@ public class WE {
 	 * @return
 	 */
 	public static CVarSystem getLoadedCVarSystemMap() {
-		return CVARS.getChildSystem();
+		return cvars.getChildSystem();
 	}
 
 	/**
@@ -564,8 +570,8 @@ public class WE {
 	 * @return
 	 */
 	public static CVarSystem getLoadedCVarSystemSave() {
-		if (CVARS.getChildSystem() != null) {
-			return CVARS.getChildSystem().getChildSystem();
+		if (cvars.getChildSystem() != null) {
+			return cvars.getChildSystem().getChildSystem();
 		}
 		return null;
 	}
@@ -691,7 +697,7 @@ public class WE {
 		@Override
 		public void dispose() {
 			super.dispose();
-			CVARS.dispose();
+			cvars.dispose();
 			SOUND.dispose();
 		}
 

@@ -116,7 +116,7 @@ public class Spaceship extends MovableEntity {
 			ejectContent();
 			crashed = true;
 			//save that already crashed
-			WE.CVARS.getChildSystem().getChildSystem().get("IntroCutsceneCompleted").setValue(true);
+			WE.getCvars().getChildSystem().getChildSystem().get("IntroCutsceneCompleted").setValue(true);
 		}
 	}
 

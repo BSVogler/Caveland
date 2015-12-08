@@ -50,19 +50,19 @@ public class Caveland {
 	public static void main(String[] args) {
 		WorkingDirectory.setApplicationName("Caveland");
 		//game cvars
-		WE.CVARS.register(new IntCVar(50), "worldSpinAngle");
-		WE.CVARS.register(new BooleanCVar(true), "shouldLoadMap");
-		WE.CVARS.register(new BooleanCVar(true), "enableLightEngine");
-		WE.CVARS.register(new BooleanCVar(true), "enableFog");
-		WE.CVARS.register(new BooleanCVar(false), "enableAutoShade");
-		WE.CVARS.register(new BooleanCVar(true), "LEnormalMapRendering");
-		WE.CVARS.register(new BooleanCVar(true), "coopVerticalSplitScreen");
-		WE.CVARS.register(new FloatCVar(150), "PlayerTimeTillImpact");
-		WE.CVARS.register(new BooleanCVar(false), "ignorePlayer");
-		WE.CVARS.register(new BooleanCVar(false), "godmode");
-		WE.CVARS.register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
-		WE.CVARS.register(new FloatCVar(0.85f), "coopZoom");
-		WE.CVARS.register(new BooleanCVar(false), "experimentalCameraJoin");
+		WE.getCvars().register(new IntCVar(50), "worldSpinAngle");
+		WE.getCvars().register(new BooleanCVar(true), "shouldLoadMap");
+		WE.getCvars().register(new BooleanCVar(true), "enableLightEngine");
+		WE.getCvars().register(new BooleanCVar(true), "enableFog");
+		WE.getCvars().register(new BooleanCVar(false), "enableAutoShade");
+		WE.getCvars().register(new BooleanCVar(true), "LEnormalMapRendering");
+		WE.getCvars().register(new BooleanCVar(true), "coopVerticalSplitScreen");
+		WE.getCvars().register(new FloatCVar(150), "PlayerTimeTillImpact");
+		WE.getCvars().register(new BooleanCVar(false), "ignorePlayer");
+		WE.getCvars().register(new BooleanCVar(false), "godmode");
+		WE.getCvars().register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
+		WE.getCvars().register(new FloatCVar(0.85f), "coopZoom");
+		WE.getCvars().register(new BooleanCVar(false), "experimentalCameraJoin");
 		
 		//register map cvars
 		CVarSystem.setCustomMapCVarRegistration(new CavelandMapCVars());

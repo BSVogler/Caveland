@@ -88,13 +88,13 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(musicLabel);
 		musicSlider = new Slider(0, 1, 0.1f, false, WE.getEngineView().getSkin());
 		musicSlider.setPosition(stage.getWidth()/2-300, 400);
-		musicSlider.setValue(WE.CVARS.getValueF("music"));
+		musicSlider.setValue(WE.getCvars().getValueF("music"));
 		musicSlider.addListener(
 			new ChangeListener() {
 
 				@Override
 				public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-					WE.CVARS.get("music").setValue(musicSlider.getValue());
+					WE.getCvars().get("music").setValue(musicSlider.getValue());
 				}
 			}
 		);
@@ -119,13 +119,13 @@ public class OptionScreen extends WEScreen {
 		stage.addActor(fullscreenCB);
 		
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
-		limitFPSCB.setChecked(WE.CVARS.getValueI("limitFPS") > 0);
+		limitFPSCB.setChecked(WE.getCvars().getValueI("limitFPS") > 0);
 		limitFPSCB.setPosition(stage.getWidth() / 2 + 100, 500);
 		stage.addActor(limitFPSCB);
 		
 		aoCB = new CheckBox("Ambient Occlusion", WE.getEngineView().getSkin());
 		aoCB.setPosition(stage.getWidth() / 2 + 100, 550);
-		aoCB.setChecked(WE.CVARS.getValueF("ambientocclusion")>0);
+		aoCB.setChecked(WE.getCvars().getValueF("ambientocclusion")>0);
 		stage.addActor(aoCB);
 
 		applyButton = new TextButton("Apply", WE.getEngineView().getSkin());
@@ -137,8 +137,8 @@ public class OptionScreen extends WEScreen {
 				Gdx.graphics.setVSync(vsyncCB.isChecked());
 				Graphics.DisplayMode dpm = Gdx.graphics.getDisplayModes()[sbox.getSelectedIndex()];
 				//Gdx.graphics.setDisplayMode(dpm.width, dpm.height, fullscreenCB.isChecked());
-				WE.CVARS.get("resolutionx").setValue(dpm.width);
-				WE.CVARS.get("resolutiony").setValue(dpm.height);
+				WE.getCvars().get("resolutionx").setValue(dpm.width);
+				WE.getCvars().get("resolutiony").setValue(dpm.height);
 
 				MainMenuScreen.manager.setActionBox(
 					stage,
@@ -147,21 +147,21 @@ public class OptionScreen extends WEScreen {
 				
 				//get FPS limit
 				if (limitFPSCB.isChecked()) {
-					WE.CVARS.get("limitFPS").setValue(60);
+					WE.getCvars().get("limitFPS").setValue(60);
 				} else {
-					WE.CVARS.get("limitFPS").setValue(0);
+					WE.getCvars().get("limitFPS").setValue(0);
 				}
-				WE.getLwjglApplicationConfiguration().foregroundFPS = WE.CVARS.getValueI("limitFPS");
+				WE.getLwjglApplicationConfiguration().foregroundFPS = WE.getCvars().getValueI("limitFPS");
 				
 				if (aoCB.isChecked()) {
-					WE.CVARS.get("ambientocclusion").setValue(0.5f);
+					WE.getCvars().get("ambientocclusion").setValue(0.5f);
 				} else {
-					WE.CVARS.get("ambientocclusion").setValue(0f);
+					WE.getCvars().get("ambientocclusion").setValue(0f);
 				}
 				
 				//apply sound changes
-				WE.CVARS.get("music").setValue(musicSlider.getValue());
-				WE.CVARS.get("sound").setValue(soundSlider.getValue());
+				WE.getCvars().get("music").setValue(musicSlider.getValue());
+				WE.getCvars().get("sound").setValue(soundSlider.getValue());
 			}
 		});
 		stage.addActor(applyButton);
@@ -213,7 +213,7 @@ public class OptionScreen extends WEScreen {
 				
         batch.begin();
 			font.draw(batch, "FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 20);
-			if (WE.CVARS.getValueB("DevMode"))
+			if (WE.getCvars().getValueB("DevMode"))
 				font.draw(batch, Gdx.input.getX()+ ","+Gdx.input.getY(), Gdx.input.getX(), Gdx.input.getY());
         batch.end();
 	}

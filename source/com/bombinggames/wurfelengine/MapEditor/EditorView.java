@@ -166,7 +166,7 @@ public class EditorView extends GameView implements Telegraph {
         WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();
-		WE.CVARS.get("timespeed").setValue(0f);//stop the game time
+		WE.getCvars().get("timespeed").setValue(0f);//stop the game time
     }
 	
 	/**

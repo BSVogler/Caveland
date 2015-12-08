@@ -107,9 +107,9 @@ public class Chunk {
 		this.map = map;
 
 		//set chunk dimensions
-		blocksX = WE.CVARS.getChildSystem().getValueI("chunkBlocksX");
-		blocksY = WE.CVARS.getChildSystem().getValueI("chunkBlocksY");
-		blocksZ = WE.CVARS.getChildSystem().getValueI("chunkBlocksZ");
+		blocksX = WE.getCvars().getChildSystem().getValueI("chunkBlocksX");
+		blocksY = WE.getCvars().getChildSystem().getValueI("chunkBlocksY");
+		blocksZ = WE.getCvars().getChildSystem().getValueI("chunkBlocksZ");
 
 		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
 		data = new Block[blocksX][blocksY][blocksZ];
@@ -134,7 +134,7 @@ public class Chunk {
     */
     public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
-		if (WE.CVARS.getValueB("shouldLoadMap")){
+		if (WE.getCvars().getValueB("shouldLoadMap")){
 			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY)) {
 				fill(generator);
 			}
@@ -381,7 +381,7 @@ public class Chunk {
 				bChar = ois.readByte();
 
 			if (bChar==SIGN_ENTITIES){
-				if (WE.CVARS.getValueB("loadEntities")) {
+				if (WE.getCvars().getValueB("loadEntities")) {
 					try {
 						//loading entities
 						byte length = ois.readByte(); //amount of entities

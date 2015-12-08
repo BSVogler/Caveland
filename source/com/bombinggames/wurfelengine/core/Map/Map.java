@@ -193,7 +193,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		this.generator = generator;
 		CVarSystem cvars = CVarSystem.getInstanceMapSystem(new File(directory + "/meta.wecvar"));
 
-		WE.CVARS.setChildSystem(cvars);
+		WE.getCvars().setChildSystem(cvars);
 
 		cvars.load();
 
@@ -214,7 +214,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt time in ms
 	 */
 	public void update(float dt) {
-		dt *= WE.CVARS.getValueF("timespeed");//aplly game speed
+		dt *= WE.getCvars().getValueF("timespeed");//aplly game speed
 
 		//oldschool loop to allow new chunks during update
 		for (int i = 0; i < data.size(); i++) {
@@ -245,7 +245,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt
 	 */
 	public void postUpdate(float dt) {
-		if (WE.CVARS.getValueB("mapChunkSwitch")) {
+		if (WE.getCvars().getValueB("mapChunkSwitch")) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				data.get(i).resetCameraAccesCounter();
@@ -667,7 +667,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		WE.CVARS.getChildSystem().setChildSystem(
+		WE.getCvars().getChildSystem().setChildSystem(
 			CVarSystem.getInstanceSaveSystem(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
@@ -682,7 +682,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public int newSaveSlot() {
 		activeSaveSlot = getSavesCount();
 		createSaveSlot(activeSaveSlot);
-		WE.CVARS.getChildSystem().setChildSystem(
+		WE.getCvars().getChildSystem().setChildSystem(
 			CVarSystem.getInstanceSaveSystem(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
@@ -757,7 +757,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Block getNewGroundBlockInstance() {
-		return Block.getInstance((byte) WE.CVARS.getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
+		return Block.getInstance((byte) WE.getCvars().getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	}
 
 	/**

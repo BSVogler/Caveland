@@ -147,7 +147,7 @@ public class Camera implements MapObserver {
 	private void initFocus() {
 		centerChunkX = (int) Math.floor(position.x / Chunk.getViewWidth());
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
-		if (WE.CVARS.getValueB("mapUseChunks")) {
+		if (WE.getCvars().getValueB("mapUseChunks")) {
 			checkNeededChunks();
 		}
 	}
@@ -173,7 +173,7 @@ public class Camera implements MapObserver {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
-		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
+		renderResWidth = WE.getCvars().getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 
 		Point center = Controller.getMap().getCenter();
@@ -222,7 +222,7 @@ public class Camera implements MapObserver {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
-		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
+		renderResWidth = WE.getCvars().getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 		position.x = center.getViewSpcX();
 		position.y = center.getViewSpcY();
@@ -250,7 +250,7 @@ public class Camera implements MapObserver {
 		screenHeight = height;
 		screenPosX = x;
 		screenPosY = y;
-		renderResWidth = WE.CVARS.getValueI("renderResolutionWidth");
+		renderResWidth = WE.getCvars().getValueI("renderResolutionWidth");
 		updateViewSpaceSize();
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
@@ -282,9 +282,9 @@ public class Camera implements MapObserver {
 				);
 
 				//only follow if outside leap radius
-				if (position.dst(newPos) > WE.CVARS.getValueI("CameraLeapRadius")) {
+				if (position.dst(newPos) > WE.getCvars().getValueI("CameraLeapRadius")) {
 					Vector2 diff = position.cpy().sub(newPos);
-					diff.nor().scl(WE.CVARS.getValueI("CameraLeapRadius"));
+					diff.nor().scl(WE.getCvars().getValueI("CameraLeapRadius"));
 					position.x = newPos.x;
 					position.y = newPos.y;
 					position.add(diff);
@@ -426,7 +426,7 @@ public class Camera implements MapObserver {
 	 */
 	private void checkNeededChunks() {
 		//check every chunk
-		if (centerChunkX == 0 && centerChunkY == 0 || WE.CVARS.getValueB("mapChunkSwitch")) {
+		if (centerChunkX == 0 && centerChunkY == 0 || WE.getCvars().getValueB("mapChunkSwitch")) {
 			checkChunk(centerChunkX - 1, centerChunkY - 1);
 			checkChunk(centerChunkX, centerChunkY - 1);
 			checkChunk(centerChunkX + 1, centerChunkY - 1);
@@ -482,7 +482,7 @@ public class Camera implements MapObserver {
 			view.setDebugRendering(false);
 			view.getSpriteBatch().begin();
 			//send a Vector4f to GLSL
-			if (WE.CVARS.getValueB("enablelightengine")) {
+			if (WE.getCvars().getValueB("enablelightengine")) {
 				view.getShader().setUniformf(
 					"sunNormal",
 					Controller.getLightEngine().getSun(getCenter()).getNormal()
@@ -506,7 +506,7 @@ public class Camera implements MapObserver {
 			}
 
 			//bind normal map to texture unit 1
-			if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+			if (WE.getCvars().getValueB("LEnormalMapRendering")) {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 
@@ -515,7 +515,7 @@ public class Camera implements MapObserver {
 			AbstractGameObject.getTextureDiffuse().bind(0);
 
 			//settings for this frame
-			RenderBlock.setStaticShade(WE.CVARS.getValueB("enableAutoShade"));
+			RenderBlock.setStaticShade(WE.getCvars().getValueB("enableAutoShade"));
 
 			//render vom bottom to top
 			for (int i = 0; i < objectsToBeRendered; i++) {
@@ -524,7 +524,7 @@ public class Camera implements MapObserver {
 			view.getSpriteBatch().end();
 
 			//if debugging render outline again
-			if (WE.CVARS.getValueB("DevDebugRendering")) {
+			if (WE.getCvars().getValueB("DevDebugRendering")) {
 				view.setDebugRendering(true);
 				view.getSpriteBatch().begin();
 				//render vom bottom to top
@@ -535,7 +535,7 @@ public class Camera implements MapObserver {
 			}
 
 			//outline 3x3 chunks
-			if (WE.CVARS.getValueB("DevDebugRendering")) {
+			if (WE.getCvars().getValueB("DevDebugRendering")) {
 				drawDebug(view, camera);
 			}
 			if (damageoverlay > 0.0f) {
@@ -564,8 +564,8 @@ public class Camera implements MapObserver {
 	 */
 	private AbstractGameObject[] createDepthList() {
 		//register memory space only once then reuse
-		if (depthlist == null || WE.CVARS.getValueI("MaxSprites") != depthlist.length) {
-			depthlist = new AbstractGameObject[WE.CVARS.getValueI("MaxSprites")];
+		if (depthlist == null || WE.getCvars().getValueI("MaxSprites") != depthlist.length) {
+			depthlist = new AbstractGameObject[WE.getCvars().getValueI("MaxSprites")];
 		}
 
 		objectsToBeRendered = 0;
@@ -581,7 +581,7 @@ public class Camera implements MapObserver {
 			getVisibleFrontBorderHigh() - getCoveredBackBorder()
 		);
 
-		if (WE.CVARS.getValueB("enableHSD")) {
+		if (WE.getCvars().getValueB("enableHSD")) {
 			//add hidden surfeace depth buffer
 			while (iterator.hasNext()) {
 				RenderBlock block = iterator.next();
@@ -1164,7 +1164,7 @@ public class Camera implements MapObserver {
 	@Override
 	public void onChunkChange(Chunk chunk) {
 		if (active) {
-			if (WE.CVARS.getValueB("mapUseChunks")) {
+			if (WE.getCvars().getValueB("mapUseChunks")) {
 				Controller.getMap().hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
 			}
 		}
@@ -1244,7 +1244,7 @@ public class Camera implements MapObserver {
 	public void setActive(boolean active) {
 		//turning on
 		if (!this.active && active) {
-			if (WE.CVARS.getValueB("mapUseChunks")) {
+			if (WE.getCvars().getValueB("mapUseChunks")) {
 				checkNeededChunks();
 			}
 			fillCameraContentBlocks();

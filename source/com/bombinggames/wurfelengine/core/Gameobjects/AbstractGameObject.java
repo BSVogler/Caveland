@@ -147,11 +147,11 @@ public abstract class AbstractGameObject implements Serializable, HasID {
             spritesheet = WE.getAsset(spritesheetPath+".txt");
         }
 		textureDiff = spritesheet.getTextures().first();
-        if (WE.CVARS.getValueB("LEnormalMapRendering"))
+        if (WE.getCvars().getValueB("LEnormalMapRendering"))
 			textureNormal = WE.getAsset(spritesheetPath+"Normal.png");
 		
         //load again for pixmap, allows access to image color data;
-        if (WE.CVARS.getValueB("loadPixmap")) {
+        if (WE.getCvars().getValueB("loadPixmap")) {
 			if (pixmap == null) {
 				//pixmap = WurfelEngine.getInstance().manager.get("com/bombinggames/Game/Blockimages/Spritesheet.png", Pixmap.class);
 				pixmap = new Pixmap(
@@ -282,7 +282,7 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     public void render(GameView view, Camera camera) {
         if (!hidden) {
 			Color fogcolor = null;
-			if (WE.CVARS.getValueB("enableFog")) {
+			if (WE.getCvars().getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons
 				float factor = (float) (Math.exp(0.025f * (camera.getVisibleFrontBorderHigh() - getPosition().toCoord().getY() - 18.0)) - 1);
 				fogcolor = new Color(

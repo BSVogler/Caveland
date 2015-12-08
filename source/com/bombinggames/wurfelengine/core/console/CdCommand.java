@@ -51,8 +51,8 @@ public class CdCommand implements ConsoleCommand {
 								else 
 									mapName = path;
 								//make sure it gets loaded
-								if (WE.CVARS.getChildSystem()==null) {
-									WE.CVARS.setChildSystem(
+								if (WE.getCvars().getChildSystem()==null) {
+									WE.getCvars().setChildSystem(
 										CVarSystem.getInstanceMapSystem(
 											new File(
 												WorkingDirectory.getMapsFolder()+"/"+mapName+"/meta.wecvar"

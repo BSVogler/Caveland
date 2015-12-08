@@ -219,19 +219,19 @@ public class Console {
        timelastupdate += dt;
        
         //open close console/chat box. Update is called when the console is not active. The StageInputProcessor oly when it is ipen
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"))) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeyConsole"))) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeyConsole"));
+        keyConsoleDown = Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeyConsole"));
 		
 		if (
 			!keySuggestionDown
-			&& Gdx.input.isKeyPressed( WE.CVARS.getValueI("KeySuggestion") )
+			&& Gdx.input.isKeyPressed( WE.getCvars().getValueI("KeySuggestion") )
 			&& isActive()
 		) {
             autoComplete();
         }
-        keySuggestionDown = Gdx.input.isKeyPressed(WE.CVARS.getValueI("KeySuggestion"));
+        keySuggestionDown = Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeySuggestion"));
 		
 
 		//decrease importance every 30ms
@@ -371,7 +371,7 @@ public class Console {
 	
 				//suggest cvar
 				if ("".equals(path)) {
-					suggestions.addAll(WE.CVARS.getSuggestions(commandTillCursor));
+					suggestions.addAll(WE.getCvars().getSuggestions(commandTillCursor));
 				} else {
 					if (path.contains(":"))
 						suggestions = WE.getLoadedCVarSystemSave().getSuggestions(commandTillCursor);
@@ -480,12 +480,12 @@ public class Console {
 		//if not a command try setting a cvar
 		CVar cvar;
 		if ("".equals(path)) {
-			cvar = WE.CVARS.get(first);
+			cvar = WE.getCvars().get(first);
 		} else {
 			if (!path.contains(":"))
-				cvar = WE.CVARS.getChildSystem().get(first);
+				cvar = WE.getCvars().getChildSystem().get(first);
 			else 
-				cvar = WE.CVARS.getChildSystem().getChildSystem().get(first);
+				cvar = WE.getCvars().getChildSystem().getChildSystem().get(first);
 		}
 		
 		if (cvar != null) {//if registered

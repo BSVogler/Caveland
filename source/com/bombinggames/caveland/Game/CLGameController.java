@@ -52,18 +52,18 @@ public class CLGameController extends Controller {
 		if (!player1.hasPosition()) {
 			player1.spawn(
 				new Coordinate(
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveY"),
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveZ")
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveY"),
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveZ")
 				).toPoint()
 			);
 		}
 		if (player2 != null && !player2.hasPosition()) {
 			player2.spawn(
 				new Coordinate(
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveY"),
-					WE.CVARS.getChildSystem().getChildSystem().getValueI("PlayerLastSaveZ")
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveX"),
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveY"),
+					WE.getCvars().getChildSystem().getChildSystem().getValueI("PlayerLastSaveZ")
 				).toPoint()
 			);
 		}
@@ -81,7 +81,7 @@ public class CLGameController extends Controller {
 	 */
 	private void mapSetup() {
 		// register save cvars
-		CVarSystem saveCvars = WE.CVARS.getChildSystem().getChildSystem();
+		CVarSystem saveCvars = WE.getCvars().getChildSystem().getChildSystem();
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
@@ -90,7 +90,7 @@ public class CLGameController extends Controller {
 		
 		spawnPlayers();
 		
-		if (!WE.CVARS.getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")) {
+		if (!WE.getCvars().getChildSystem().getChildSystem().getValueB("IntroCutsceneCompleted")) {
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
 			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
 			introSpaceship.setIndestructible(true);
@@ -194,9 +194,9 @@ public class CLGameController extends Controller {
 	public boolean save() {
 		if (player1.hasPosition()) {
 			Coordinate coord = player1.getPosition().toCoord();
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
-			WE.CVARS.getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
+			WE.getCvars().getChildSystem().getChildSystem().get("PlayerLastSaveX").setValue(coord.getX());
+			WE.getCvars().getChildSystem().getChildSystem().get("PlayerLastSaveY").setValue(coord.getY());
+			WE.getCvars().getChildSystem().getChildSystem().get("PlayerLastSaveZ").setValue(coord.getZ());
 		}
 		return super.save();
 	}

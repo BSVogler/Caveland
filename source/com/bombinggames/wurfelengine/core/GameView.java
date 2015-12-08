@@ -193,7 +193,7 @@ public class GameView implements GameManager {
 		String vertexShader;
 		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
-		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+		if (WE.getCvars().getValueB("LEnormalMapRendering")) {
 			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertexNM.vs").readString();
 			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragmentNM.fs").readString();
 		} else {
@@ -244,14 +244,14 @@ public class GameView implements GameManager {
 			WE.SOUND.setView(this);
 		}
 
-		if ((boolean) WE.CVARS.get("DevMode").getValue()) {
+		if ((boolean) WE.getCvars().get("DevMode").getValue()) {
 			WE.getEngineView().setCursor(0);
 		}
 
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		//restore gameSpeed
-		WE.CVARS.get("timespeed").setValue(gameSpeed);
+		WE.getCvars().get("timespeed").setValue(gameSpeed);
 		onEnter();
 	}
 
@@ -260,7 +260,7 @@ public class GameView implements GameManager {
      * @param dt time since last update in ms.
      */
     public void update(final float dt){
-		gameSpeed = WE.CVARS.getValueF("timespeed");
+		gameSpeed = WE.getCvars().getValueF("timespeed");
 		
         AbstractGameObject.resetDrawCalls();
         
@@ -289,7 +289,7 @@ public class GameView implements GameManager {
         //Gdx.gl10.glViewport(0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
         //clear screen if wished
-        if ((boolean) WE.CVARS.get("clearBeforeRendering").getValue()){
+        if ((boolean) WE.getCvars().get("clearBeforeRendering").getValue()){
             Gdx.gl20.glClearColor(0, 0, 0, 1);
             Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
@@ -335,7 +335,7 @@ public class GameView implements GameManager {
      */
     public float getEqualizationScale() {
 		if (initalized)
-			return libGDXcamera.viewportWidth / (int) WE.CVARS.get("renderResolutionWidth").getValue();
+			return libGDXcamera.viewportWidth / (int) WE.getCvars().get("renderResolutionWidth").getValue();
 		else return 1;
     }
 

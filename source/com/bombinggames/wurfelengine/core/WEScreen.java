@@ -43,7 +43,7 @@ public abstract class WEScreen implements Screen {
 	@SuppressWarnings("AssignmentToMethodParameter")
 	public final void render(float delta){
 		delta *= 1000;//to ms
-		if (delta >= WE.CVARS.getValueF("MaxDelta")) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
+		if (delta >= WE.getCvars().getValueF("MaxDelta")) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
 		renderImpl(delta);
 		WE.updateAndRender(delta);
 	}

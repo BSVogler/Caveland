@@ -68,7 +68,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			spritesheet = WE.getAsset("com/bombinggames/caveland/playerSheet.txt");
 		}
 		textureDiff = spritesheet.getTextures().first();
-		if (WE.CVARS.getValueB("LEnormalMapRendering")) {
+		if (WE.getCvars().getValueB("LEnormalMapRendering")) {
 			textureNormal = WE.getAsset("com/bombinggames/caveland/playerSheetNormal.png");
 		}
 	}
@@ -169,7 +169,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		setName("Ejira");
 		setStepSound1Grass("step");
 		setJumpingSound("urfJump");
-		setFriction((float) WE.CVARS.get("playerfriction").getValue());
+		setFriction((float) WE.getCvars().get("playerfriction").getValue());
 		setDimensionZ((int) (Block.GAME_EDGELENGTH*1.4f));
 		setObstacle(true);
 		setMass(60f);
@@ -244,7 +244,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				}
 			} else {
 				if (usedLoadAttackInAir)
-					setFriction((float) WE.CVARS.get("playerfriction").getValue());
+					setFriction((float) WE.getCvars().get("playerfriction").getValue());
 				usedLoadAttackInAir = false;
 			}
 
@@ -259,7 +259,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				//some redundant code from movable to have a custom animation
 				if (playAnimation) {
 					if (action == 'w') {
-						animationCycle += dt * getSpeed() * (float) WE.CVARS.get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
+						animationCycle += dt * getSpeed() * (float) WE.getCvars().get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
 					} else {
 						animationCycle += dt * 5;
 					}
@@ -459,11 +459,11 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		if (!WE.CVARS.getValueB("ignorePlayer") && textureNormal != null) {
+		if (!WE.getCvars().getValueB("ignorePlayer") && textureNormal != null) {
 			view.getSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
+			if ((boolean) WE.getCvars().get("LEnormalMapRendering").getValue()) {
 				textureNormal.bind(1);
 			}
 
@@ -517,7 +517,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			view.getSpriteBatch().end();
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.CVARS.get("LEnormalMapRendering").getValue()) {
+			if ((boolean) WE.getCvars().get("LEnormalMapRendering").getValue()) {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 
@@ -642,7 +642,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				addToHor(13f);//add 13 m/s in move direction
 
 			//start timer
-			timeTillImpact = WE.CVARS.getValueF("PlayerTimeTillImpact");
+			timeTillImpact = WE.getCvars().getValueF("PlayerTimeTillImpact");
 			attackDamage = damage;
 
 			if (!usedLoadAttackInAir){
@@ -718,7 +718,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void takeDamage(byte value) {
-		if (!WE.CVARS.getValueB("godmode")) {
+		if (!WE.getCvars().getValueB("godmode")) {
 			super.takeDamage(value);
 			WE.SOUND.play("urfHurt");
 			if (getCamera() != null) {
@@ -803,7 +803,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			playAnimation('i');
 			WE.SOUND.play("release");
 			if (!isOnGround()) {
-				setFriction((float) WE.CVARS.get("playerfriction").getValue()/3f);
+				setFriction((float) WE.getCvars().get("playerfriction").getValue()/3f);
 				addMovement(new Vector3(getOrientation().cpy().scl(30),-2f));
 			} else {
 				addToHor(40f);
@@ -1085,7 +1085,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		super.handleMessage(msg);
 		if (msg.message == Events.damage.getId()) {
 			byte damage = ((Byte) msg.extraInfo);
-			if (!WE.CVARS.getValueB("godmode"))
+			if (!WE.getCvars().getValueB("godmode"))
 				takeDamage(damage);
 			if (getHealth() <= 0) {
 				//die

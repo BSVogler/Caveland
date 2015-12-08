@@ -2,7 +2,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.bombinggames.caveland.Game.Events;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;

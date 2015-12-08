@@ -44,7 +44,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.caveland.Game.Events;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;

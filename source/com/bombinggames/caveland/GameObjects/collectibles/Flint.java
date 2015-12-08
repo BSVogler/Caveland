@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.bombinggames.caveland.Game.Events;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 

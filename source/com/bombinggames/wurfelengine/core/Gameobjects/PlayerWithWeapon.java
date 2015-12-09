@@ -102,6 +102,7 @@ public class PlayerWithWeapon extends MovableEntity {
 	public void update(float dt) {
 		super.update(dt);
 		if (weapon != null) {
+			weapon.getPosition().setValues(getPosition());
 			weapon.update(dt);
 		}
 	}

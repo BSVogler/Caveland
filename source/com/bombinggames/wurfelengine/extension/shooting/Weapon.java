@@ -34,8 +34,8 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -90,7 +90,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	private boolean firing;
 	private boolean fireSoundBust;
 	private boolean bustSoundReady;
-	private Point fixedPos;
+	private Point fixedPos = null;
 	private transient AimBand particleBand;
 
     /**
@@ -249,14 +249,6 @@ public class Weapon extends AbstractEntity implements Telegraph {
         shotsLoaded = shots; //fully loaded
     }
 
-	@Override
-	public AbstractEntity spawn(Point point) {
-		super.spawn(point);
-		fixedPos = point.cpy();
-		return this;
-	}
-	
-	
 	/**
 	 * The point where the weapon returns after shooting.
 	 * @param fixedPos 
@@ -297,7 +289,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		}
 		
 		//move back
-		if (hasPosition()) {
+		if (hasPosition() && fixedPos != null) {
 			if (firing){
 				float t;
 				if (bulletDelay > delayBetweenShots/2){

@@ -199,6 +199,7 @@
         <array>
             <filename>entities</filename>
             <filename>blocks</filename>
+            <filename>interface</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

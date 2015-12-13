@@ -90,7 +90,7 @@ public class Spaceship extends MovableEntity {
 		}
 		
 		if (!crashed && !crashing && crashCoordinates != null) {
-			Vector3 dir = crashCoordinates.cpy().sub(getPosition());
+			Vector3 dir = crashCoordinates.toPoint().sub(getPosition());//vector from ship to crashsite
 			dir.z = 0;
 			setMovement(dir.nor().scl(11));//always fly to startCrash point
 		}

@@ -130,13 +130,15 @@ public class Chunk {
     }
 
     /**
-    *Creates a chunk by trying to load and if this fails it generates a new one.
+    * Creates a chunk by trying to load and if this fails it generates a new
+	 * one.
+	 *
 	 * @param map
-    * @param coordX the chunk coordinate
-    * @param coordY the chunk coordinate
-     * @param path filename
-     * @param generator
-    */
+	 * @param coordX the chunk coordinate
+	 * @param coordY the chunk coordinate
+	 * @param path filename
+	 * @param generator
+	 */
     public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator){
         this(map, coordX,coordY);
 		if (WE.getCvars().getValueB("shouldLoadMap")){
@@ -148,15 +150,16 @@ public class Chunk {
     }
 
     /**
-    *Creates a chunk by generating a new one.
+    * Creates a chunk by generating a new one.
+	 *
 	 * @param map
-    * @param coordX the chunk coordinate
-    * @param coordY the chunk coordinate
-    * @param generator
-    */
-    public Chunk(final Map map, final int coordX, final int coordY, final Generator generator){
-        this(map, coordX, coordY);
-        fill(generator);
+	 * @param coordX the chunk coordinate
+	 * @param coordY the chunk coordinate
+	 * @param generator
+	 */
+	public Chunk(final Map map, final int coordX, final int coordY, final Generator generator) {
+		this(map, coordX, coordY);
+		fill(generator);
     }
 
 	/**
@@ -164,7 +167,7 @@ public class Chunk {
 	 *
 	 * @param dt time since last frame in game time
 	 */
-	public void update(float dt){
+	public void update(float dt) {
 		processModification();
 		//reset light to normal level
 		int maxZ = Chunk.getBlocksZ();
@@ -218,16 +221,16 @@ public class Chunk {
 	}
 
 	/**
-	 * checks if the chunk got modified and if that is the case calls the modification methods
+	 * checks if the chunk got modified and if that is the case calls the
+	 * modification methods
 	 */
-	public void processModification(){
-		if (modified){
+	public void processModification() {
+		if (modified) {
 			modified = false;
-			
-			
+
 			Controller.getMap().setModified();
 			//notify observers that a chunk changed
-			for (MapObserver observer : Controller.getMap().getOberservers()){
+			for (MapObserver observer : Controller.getMap().getOberservers()) {
 				observer.onChunkChange(this);
 			}
 		}
@@ -832,7 +835,7 @@ public class Chunk {
 	 * disposes the chunk
 	 * @param path if null, does not save the file
 	 */
-	public void dispose(File path){
+	public void dispose(File path) {
 		//try saving
 		if (path != null) {
 			try {

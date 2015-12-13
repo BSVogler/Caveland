@@ -324,6 +324,10 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 		}
 	}
 	
+	/**
+	 *
+	 * @param coord
+	 */
 	public void flyTo(Coordinate coord) {
 		if (nextWaypoint== null || nextWaypoint.getPos().distanceTo(coord) > 0) {//don't add twice
 			waypoints.add(new Waypoint(true, coord));

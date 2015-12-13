@@ -489,10 +489,18 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		this.health = health;
 	}
 
+	/**
+	 *
+	 * @param useRawDelta
+	 */
 	public void setUseRawDelta(boolean useRawDelta) {
 		this.useRawDelta = useRawDelta;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean useRawDelta(){
 		return useRawDelta;
 	}

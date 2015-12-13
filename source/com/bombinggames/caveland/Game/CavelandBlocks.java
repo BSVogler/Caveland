@@ -31,23 +31,95 @@ public class CavelandBlocks implements CustomBlocks {
 	 *
 	 */
 	public enum CLBlocks {
+
+		/**
+		 *
+		 */
 		CONSTRUCTIONSITE((byte) 11, "Construction Site", false),
+
+		/**
+		 *
+		 */
 		OVEN((byte) 12, "Oven", false),
+
+		/**
+		 *
+		 */
 		TORCH((byte) 13, "Torch", false),
+
+		/**
+		 *
+		 */
 		POWERSTATION((byte) 14, "Power Station", false),
+
+		/**
+		 *
+		 */
 		LIFT((byte) 15, "Lift", false),
+
+		/**
+		 *
+		 */
 		ENTRY((byte) 16, "Cave Entry", true),
+
+		/**
+		 *
+		 */
 		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
+
+		/**
+		 *
+		 */
 		CRYSTAL((byte) 41, "Crystal Block", true),
+
+		/**
+		 *
+		 */
 		SULFUR((byte) 42, "Sulfur Block", true),
+
+		/**
+		 *
+		 */
 		IRONORE((byte) 43, "Iron Ore Block", true),
+
+		/**
+		 *
+		 */
 		COAL((byte) 44, "Coal Block", true),
+
+		/**
+		 *
+		 */
 		TURRET((byte) 52, "Turret", false),
+
+		/**
+		 *
+		 */
 		ROBOTFACTORY((byte) 53, "robot factory", false),
+
+		/**
+		 *
+		 */
 		POWERCABLE((byte) 54, "power cable", false),
+
+		/**
+		 *
+		 */
 		RAILS((byte) 55, "rails", false),
+
+		/**
+		 *
+		 */
 		RAILSBOOSTER((byte) 56, "boos	ter rails", false),
+
+		/**
+		 *
+		 */
 		TREE((byte) 72, "tree", false),
+
+		/**
+		 *
+		 */
 		UNDEFINED((byte) -1, "undefined", true);
 		
 		/**
@@ -117,14 +189,26 @@ public class CavelandBlocks implements CustomBlocks {
 			return name;
 		}
 		
+		/**
+		 *
+		 * @return
+		 */
 		public boolean hasSides() {
 			return hasSides;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		final public byte getId() {
 			return id;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public Block getInstance() {
 			return Block.getInstance(id);
 		}
@@ -160,6 +244,12 @@ public class CavelandBlocks implements CustomBlocks {
 		return CLBlocks.valueOf(id).hasSides;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	@Override
 	public boolean isObstacle(byte id, byte value) {
 		if (id==12) return true;
@@ -176,6 +266,12 @@ public class CavelandBlocks implements CustomBlocks {
 		return false;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	@Override
 	public boolean isTransparent(byte id, byte value) {
 		if (id==12) return true;

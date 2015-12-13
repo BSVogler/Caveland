@@ -44,6 +44,9 @@ public class Quadrocopter extends Robot {
 	private final String RUNNINGSOUND = "droneLoop";
 	private long movementSoundPlaying;
 	
+	/**
+	 *
+	 */
 	public Quadrocopter() {
 		super((byte) 59,0);
 		setType(2);

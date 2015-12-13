@@ -47,6 +47,10 @@ public class Spaceship extends MovableEntity {
 		setFloating(true);
 	}
 
+	/**
+	 *
+	 * @param ent
+	 */
 	public void addContent(AbstractEntity ent) {
 		content.add(ent);
 		ent.getPosition().setValues(getPosition());

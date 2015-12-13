@@ -23,5 +23,9 @@ public interface ConsoleCommand {
 	 */
 	public abstract String getCommandName();
 	
+	/**
+	 *
+	 * @return
+	 */
 	public abstract String getManual();
 }

@@ -257,6 +257,10 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		this.fixedPos = fixedPos;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Point getFixedPos() {
 		return fixedPos;
 	}
@@ -517,6 +521,10 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		return true;
 	}
 
+	/**
+	 *
+	 * @param hidden
+	 */
 	public void setLaserHidden(boolean hidden) {
 		if (laserdot!=null)
 			laserdot.setHidden(hidden);

@@ -365,6 +365,10 @@ public class WE {
 		controller.enter();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static CVarSystem getCvars() {
 		return cvars;
 	}

@@ -55,10 +55,19 @@ import java.util.ArrayList;
 public class RobotFactory extends AbstractBlockLogicExtension implements Interactable, Telegraph  {
 	private RobotFactoryLinker linkToRobot;
 	
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public RobotFactory(Block block, Coordinate coord) {
 		super(block, coord);
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (linkToRobot == null) {

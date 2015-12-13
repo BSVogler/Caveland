@@ -37,5 +37,10 @@ import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
  * @author Benedikt Vogler
  */
 public interface CustomMapCVarRegistration {
+
+	/**
+	 *
+	 * @param styem
+	 */
 	public void register(CVarSystem styem);
 }

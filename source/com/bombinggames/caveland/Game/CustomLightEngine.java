@@ -44,6 +44,9 @@ public class CustomLightEngine extends LightEngine {
 	private final GlobalLightSource customSun;
 	private final GlobalLightSource customMoon;
 
+	/**
+	 *
+	 */
 	public CustomLightEngine() {
 		super();
 		customSun = new GlobalLightSource(40, 40, new Color(0.1f, 0.3f, 0.3f, 1), new Color(0.1f, 0.4f, 0.4f, 1), 90);

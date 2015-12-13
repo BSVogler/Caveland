@@ -38,17 +38,28 @@ public class BooleanCVar extends CVar {
 	private boolean value;
 	private Boolean defaultValue;
 	
-
+	/**
+	 *
+	 * @param value
+	 */
 	public BooleanCVar(boolean value) {
 		this.value = value;
 		this.defaultValue = value;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Boolean getValue() {
 		return value;
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	@Override
 	public void setValue(Object value) {
 		if (value instanceof String) 
@@ -66,11 +77,19 @@ public class BooleanCVar extends CVar {
 			return "0";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Boolean getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 *
+	 * @param defaultValue
+	 */
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (Boolean) defaultValue;
 	}

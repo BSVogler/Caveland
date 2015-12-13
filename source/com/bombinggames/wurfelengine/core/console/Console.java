@@ -71,6 +71,10 @@ public class Console {
 	 */
 	private String path = "";
 
+	/**
+	 *
+	 * @return
+	 */
 	public String getPath() {
 		return path;
 	}
@@ -296,6 +300,9 @@ public class Console {
 		clearCommandLine();
 	}
 	
+	/**
+	 *
+	 */
 	public void clearCommandLine() {
 		textinput.setText(path + " $ ");
 		textinput.setCursorPosition((path + " $ ").length());
@@ -397,6 +404,10 @@ public class Console {
 		registeredCommands.add(command);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	protected ArrayList<ConsoleCommand> getRegisteredCommands(){
 		return registeredCommands;
 	}

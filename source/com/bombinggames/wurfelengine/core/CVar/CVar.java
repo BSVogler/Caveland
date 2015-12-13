@@ -54,15 +54,49 @@ public abstract class CVar {
 		 CVAR_ALWAYSSAVE
 	}
 	
+	/**
+	 *
+	 */
 	protected CVarSystem parent;
+
+	/**
+	 *
+	 */
 	protected CVarFlags flags;
+
+	/**
+	 *
+	 */
 	protected String name;
 	
+	/**
+	 *
+	 * @return
+	 */
 	public abstract Object getValue();
+
+	/**
+	 *
+	 * @param value
+	 */
 	public abstract void setValue(Object value);
+
+	/**
+	 *
+	 * @return
+	 */
 	public abstract Object getDefaultValue();
+
+	/**
+	 *
+	 * @param value
+	 */
 	protected abstract void setDefaultValue(Object value);
 	
+	/**
+	 *
+	 * @return
+	 */
 	public String getName(){
 		return name;
 	}

@@ -33,6 +33,10 @@ public class FillWithAirCommand implements ConsoleCommand {
 		return "fillwithair";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "fills chunk <x> <y> with air ";

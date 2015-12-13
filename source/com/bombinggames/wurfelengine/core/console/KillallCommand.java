@@ -26,6 +26,10 @@ public class KillallCommand implements ConsoleCommand {
 		return "killall";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "disposes every entitiy on the map";

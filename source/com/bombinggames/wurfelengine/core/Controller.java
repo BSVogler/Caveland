@@ -130,6 +130,10 @@ public class Controller implements GameManager, MapObserver {
 		return lightEngine;
 	}
 
+	/**
+	 *
+	 * @param le
+	 */
 	public static void setLightEngine(LightEngine le) {
 		lightEngine = le;
 		getMap().getOberservers().add(lightEngine);
@@ -156,7 +160,10 @@ public class Controller implements GameManager, MapObserver {
 	private final Command[] commandHistory = new Command[WE.getCvars().getValueI("historySize")];
 	private int lastCommandPos = -1;
 
-
+	/**
+	 *
+	 * @param cmd
+	 */
 	public void executeCommand(Command cmd){
 		//shift commands back if full
 		if (lastCommandPos >= commandHistory.length-1) {
@@ -176,6 +183,9 @@ public class Controller implements GameManager, MapObserver {
 		}
 	}
 	
+	/**
+	 *
+	 */
 	public void undoCommand(){
 		if (lastCommandPos >= 0 && lastCommandPos < commandHistory.length-1){
 			commandHistory[lastCommandPos].undo();
@@ -183,6 +193,9 @@ public class Controller implements GameManager, MapObserver {
 		}
 	}
 	
+	/**
+	 *
+	 */
 	public void redoCommand(){
 		if (lastCommandPos >= -1 && lastCommandPos < commandHistory.length-1 && commandHistory[lastCommandPos+1] != null){
 			lastCommandPos++;

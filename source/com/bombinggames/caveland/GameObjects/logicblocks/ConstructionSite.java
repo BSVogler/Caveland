@@ -154,6 +154,11 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 	}
 	
+	/**
+	 *
+	 * @param actor
+	 * @return
+	 */
 	public boolean canAddFrontItem(AbstractEntity actor) {
 		if (!(actor instanceof Ejira)) {
 			return false;
@@ -201,6 +206,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		return true;
 	}
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (result==-1) {

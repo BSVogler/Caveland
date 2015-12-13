@@ -44,7 +44,9 @@ public class RobotFactoryLinker extends AbstractEntity{
 	private static final long serialVersionUID = 1L;
 	private Robot linkedRobot;
 	
-	
+	/**
+	 *
+	 */
 	public RobotFactoryLinker() {
 		super((byte) 19);
 		setName("Robot Factory Light Indicator");
@@ -70,6 +72,10 @@ public class RobotFactoryLinker extends AbstractEntity{
 		return false;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Robot getRobot() {
 		return linkedRobot;
 	}

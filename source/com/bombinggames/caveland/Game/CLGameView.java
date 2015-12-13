@@ -902,10 +902,16 @@ public class CLGameView extends GameView{
 		}
 	}
 	
+	/**
+	 *
+	 */
 	public void pauseTime(){
 		WE.getCvars().get("timespeed").setValue(0f);
 	}
 	
+	/**
+	 *
+	 */
 	public void continueTime(){
 		WE.getCvars().get("timespeed").setValue(1f);
 	}

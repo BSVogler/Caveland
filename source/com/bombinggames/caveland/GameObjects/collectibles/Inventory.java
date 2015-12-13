@@ -170,6 +170,11 @@ public class Inventory extends CollectibleContainer {
 			(tmp[2] == null ? null : tmp[2].getType()),};
 	}
 
+	/**
+	 *
+	 * @param view
+	 * @param camera
+	 */
 	public void drawHUD(GameView view, Camera camera){
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 10, (byte) 0));

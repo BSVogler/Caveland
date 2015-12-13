@@ -221,18 +221,32 @@ public class PointLightSource extends AbstractEntity {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public void enable() {
 		enabled = true;
 	}
 
+	/**
+	 *
+	 */
 	public void disable() {
 		enabled = false;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+	/**
+	 *
+	 * @param brightness
+	 */
 	public void setBrightness(float brightness) {
 		this.brightness = brightness;
 	}

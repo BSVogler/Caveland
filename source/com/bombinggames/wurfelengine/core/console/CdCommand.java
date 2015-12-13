@@ -82,6 +82,10 @@ public class CdCommand implements ConsoleCommand {
 			return true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "change the directory";

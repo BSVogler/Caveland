@@ -26,6 +26,10 @@ public class PrintmapCommand implements ConsoleCommand {
 		return "printmap";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "prints the map in the java console";

@@ -46,10 +46,18 @@ import com.bombinggames.wurfelengine.WE;
  */
 public class MenuItem extends Image {
 
+	/**
+	 *
+	 * @param texture
+	 */
 	public MenuItem(Texture texture) {
 		super(texture);
 	}
 
+	/**
+	 *
+	 * @param action
+	 */
 	@Override
 	public void addAction(Action action) {
 		super.addAction(action);

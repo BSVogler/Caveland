@@ -451,6 +451,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         }
     }
 	
+	/**
+	 *
+	 */
 	public void updateSprite(){
 		if (spritesPerDir > 0) {
 			if (orientation.x < -Math.sin(Math.PI/3)){
@@ -982,6 +985,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		walkingPaused = false;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Point getMovementGoal() {
 		return movementGoal;
 	}

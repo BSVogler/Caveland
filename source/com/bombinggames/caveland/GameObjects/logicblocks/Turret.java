@@ -48,8 +48,17 @@ public class Turret extends AbstractPowerBlock {
 	private Robot target;
 	private Weapon gun;
 	private float online;
+
+	/**
+	 *
+	 */
 	public final float MAXDISTANCE = 20;
 	
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public Turret(Block block, Coordinate coord) {
 		super(block, coord);
 	}

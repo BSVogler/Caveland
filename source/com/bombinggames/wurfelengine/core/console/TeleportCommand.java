@@ -37,6 +37,10 @@ public class TeleportCommand implements ConsoleCommand {
 		return "tp";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "set the focus of the camera.\nParameters: [x game world][y game world]";

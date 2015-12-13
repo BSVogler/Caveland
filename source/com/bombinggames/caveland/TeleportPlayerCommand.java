@@ -32,6 +32,10 @@ public class TeleportPlayerCommand implements ConsoleCommand {
 		return "tpplayer";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "teleports the player: <x> <y> <z> <id>";

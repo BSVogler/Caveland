@@ -36,14 +36,49 @@ package com.bombinggames.wurfelengine.core;
  */
 public enum Events {
 	
+	/**
+	 *
+	 */
 	damage(11),
+
+	/**
+	 *
+	 */
 	collided(12),
+
+	/**
+	 *
+	 */
 	steppedOn(13),
+
+	/**
+	 *
+	 */
 	selectInEditor(14),
+
+	/**
+	 *
+	 */
 	deselectInEditor(15),
+
+	/**
+	 *
+	 */
 	destroyed(16),
+
+	/**
+	 *
+	 */
 	landed(17),
+
+	/**
+	 *
+	 */
 	moveTo(18),
+
+	/**
+	 *
+	 */
 	standStill(19);
 	
 	private final int id;
@@ -52,6 +87,10 @@ public enum Events {
 		id = messageId;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}

@@ -52,6 +52,9 @@ public class PathfindingTest extends SimpleEntity {
 	private final ArrayList<AimBand> aimBandList = new ArrayList<>(10);
 	private final AimBand directAimBand = new AimBand(this, end);
 	
+	/**
+	 *
+	 */
 	public PathfindingTest() {
 		super((byte) 22);
 		setName("Start pathfinding test");

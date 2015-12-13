@@ -125,6 +125,13 @@ public class Toolbar extends Window {
 			return selectFromEntities;
 		}
 		
+		/**
+		 *
+		 * @param view
+		 * @param selection
+		 * @param placableGUI
+		 * @return
+		 */
 		public Command getCommand(GameView view, Cursor selection, PlacableGUI placableGUI){
 			if (null != this) switch (this) {
 				case DRAW:

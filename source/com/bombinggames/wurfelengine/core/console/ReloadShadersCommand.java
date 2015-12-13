@@ -30,6 +30,10 @@ public class ReloadShadersCommand implements ConsoleCommand {
 		return "reloadshaders";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "reloads the shaders";

@@ -53,10 +53,18 @@ public class Robot extends MovableEntity implements Telegraph{
 	
 	private final IdleAI idleaAI = new IdleAI(this);
 
+	/**
+	 *
+	 */
 	public Robot() {
 		this((byte) 45, 5);
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param steps
+	 */
 	public Robot(byte id, int steps) {
 		super(id, steps);
 		setType(0);
@@ -278,6 +286,10 @@ public class Robot extends MovableEntity implements Telegraph{
 		return true;
 	}
 
+	/**
+	 *
+	 * @param type
+	 */
 	public void setType(int type) {
 		this.type = type;
 		if (type == 1) {

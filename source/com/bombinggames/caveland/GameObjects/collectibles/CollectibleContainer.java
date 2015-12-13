@@ -323,6 +323,10 @@ public class CollectibleContainer extends AbstractEntity {
 		super.disposeFromMap();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public ArrayList<Collectible> getContent() {
 		return content;
 	}

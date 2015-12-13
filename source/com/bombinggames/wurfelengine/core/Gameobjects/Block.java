@@ -135,6 +135,10 @@ public class Block implements HasID, Serializable {
 		Block.customBlocks = customBlockFactory;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static CustomBlocks getFactory() {
 		return customBlocks;
 	}
@@ -667,18 +671,30 @@ public class Block implements HasID, Serializable {
 		return clipping == 0b111;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedLeft() {
 		clipping |= 1;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedTop() {
 		clipping |= 1 << 1;
 	}
 
+	/**
+	 *
+	 */
 	public void setClippedRight() {
 		clipping |= 1 << 2;
 	}
 
+	/**
+	 *
+	 */
 	public void setUnclipped() {
 		clipping = (byte) 0;
 	}

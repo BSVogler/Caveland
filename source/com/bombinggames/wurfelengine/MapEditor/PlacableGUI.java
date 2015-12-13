@@ -99,12 +99,20 @@ public class PlacableGUI extends WidgetGroup {
 		image.setPosition(x+50, y+60);
 	}
 
+	/**
+	 *
+	 * @param x
+	 */
 	@Override
 	public void setX(float x) {
 		super.setX(x);
 		image.setPosition(x+50, 60);
 	}
 
+	/**
+	 *
+	 * @param y
+	 */
 	@Override
 	public void setY(float y) {
 		super.setY(y);

@@ -41,6 +41,11 @@ public class CoordConnection implements Connection<PfNode>	{
 	private final PfNode from;
 	private final PfNode to;
 
+	/**
+	 *
+	 * @param from
+	 * @param to
+	 */
 	public CoordConnection(PfNode from, PfNode to) {
 		this.from = from;
 		this.to = to;

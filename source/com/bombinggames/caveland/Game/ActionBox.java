@@ -39,6 +39,9 @@ public class ActionBox extends WidgetGroup {
 	private ActionBoxSelectAction selectAction;
 	private boolean closed = false;
 
+	/**
+	 *
+	 */
 	public static enum BoxModes {
 
 		/**
@@ -111,11 +114,19 @@ public class ActionBox extends WidgetGroup {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getWidth() {
 		return window.getWidth();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getHeight() {
 		return window.getHeight();
@@ -182,10 +193,18 @@ public class ActionBox extends WidgetGroup {
 		return this;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Window getWindow() {
 		return window;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public BoxModes getMode() {
 		return mode;
 	}
@@ -298,7 +317,10 @@ public class ActionBox extends WidgetGroup {
 		}
 	}
 
-	
+	/**
+	 *
+	 * @return
+	 */
 	public SelectionOption getSelected() {
 		if (selections == null || selections.isEmpty()) {
 			return null;
@@ -390,6 +412,9 @@ public class ActionBox extends WidgetGroup {
 		return closed;
 	}
 
+	/**
+	 *
+	 */
 	@FunctionalInterface
 	public interface ActionBoxCancelAction {
 
@@ -418,6 +443,9 @@ public class ActionBox extends WidgetGroup {
 
 	}
 
+	/**
+	 *
+	 */
 	@FunctionalInterface
 	public interface ActionBoxSelectAction {
 
@@ -430,11 +458,26 @@ public class ActionBox extends WidgetGroup {
 		public void select(boolean up, SelectionOption result, AbstractEntity actor);
 	}
 
+	/**
+	 *
+	 */
 	public static class SelectionOption {
 
+		/**
+		 *
+		 */
 		public final byte id;
+
+		/**
+		 *
+		 */
 		public String name;
 
+		/**
+		 *
+		 * @param id
+		 * @param name
+		 */
 		public SelectionOption(byte id, String name) {
 			this.id = id;
 			this.name = name;

@@ -95,6 +95,10 @@ public class Portal extends AbstractEntity implements Telegraph {
 		}
 	}
 	
+	/**
+	 *
+	 * @param e
+	 */
 	public void teleport(AbstractEntity e){
 		if (verifyExit) {
 			ExitPortal eportal = getExitPortal();

@@ -41,6 +41,11 @@ public class CableBlock extends AbstractPowerBlock{
 	private boolean initalized = false;
 	private int type = 0;
 	
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public CableBlock(Block block, Coordinate coord) {
 		super(block, coord);
 		type = block.getValue()/2;

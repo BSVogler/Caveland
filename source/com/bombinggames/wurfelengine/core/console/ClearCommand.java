@@ -26,6 +26,10 @@ public class ClearCommand implements ConsoleCommand {
 		return "clear";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "clear the content of the console";

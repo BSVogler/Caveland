@@ -112,8 +112,40 @@ public class WorkingDirectory {
 		return OS.UNKNOWN;
     }
 
-    public static enum OS {
-		LINUX, SOLARIS, WINDOWS, MAC, ANDROID, UNKNOWN;
+	/**
+	 *
+	 */
+	public static enum OS {
+
+		/**
+		 *
+		 */
+		LINUX,
+
+		/**
+		 *
+		 */
+		SOLARIS,
+
+		/**
+		 *
+		 */
+		WINDOWS,
+
+		/**
+		 *
+		 */
+		MAC,
+
+		/**
+		 *
+		 */
+		ANDROID,
+
+		/**
+		 *
+		 */
+		UNKNOWN;
     }
     
     /**

@@ -13,6 +13,11 @@ import com.bombinggames.wurfelengine.WE;
 public class ModalDialogueManager implements InputProcessor  {
 	private ActionBox actionBox;
 
+	/**
+	 *
+	 * @param stage
+	 * @param actionBox
+	 */
 	public void setActionBox(Stage stage, ActionBox actionBox) {
 		this.actionBox = actionBox;
 		actionBox.setPosition(

@@ -27,6 +27,10 @@ public class LECommand implements ConsoleCommand {
 		return "le";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "toggles the light engine";

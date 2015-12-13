@@ -86,6 +86,10 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		}
 	}
 
+	/**
+	 *
+	 * @param collectible
+	 */
 	public void addCollectible(Collectible collectible) {
 		if (null != collectible.getType()) {
 			switch (collectible.getType()) {
@@ -106,6 +110,10 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		}
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (isValid()) {

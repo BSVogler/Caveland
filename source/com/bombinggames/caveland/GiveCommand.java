@@ -31,6 +31,10 @@ public class GiveCommand implements ConsoleCommand {
 		return "give";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "gives you a collectible\nParameters: [name of collectible]";

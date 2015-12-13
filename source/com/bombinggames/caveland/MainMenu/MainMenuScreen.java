@@ -21,6 +21,10 @@ import com.bombinggames.wurfelengine.core.AbstractMainMenu;
  * @author Benedikt Vogler
  */
 public class MainMenuScreen extends AbstractMainMenu {
+
+	/**
+	 *
+	 */
 	public static final ModalDialogueManager manager = new ModalDialogueManager();
 	
 	/**

@@ -42,6 +42,10 @@ public class PortalTargetCommand implements ConsoleCommand {
 		return "portaltarget";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "Sets the target of the portal.\nParameters: [x][y][z]";

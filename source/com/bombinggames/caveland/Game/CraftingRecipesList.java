@@ -99,8 +99,9 @@ public class CraftingRecipesList extends Table {
 		return receipts;
 	}
 	
-	
-	
+	/**
+	 *
+	 */
 	public class Recipe {
 		/**
 		 * a list of the ingredient
@@ -167,6 +168,11 @@ public class CraftingRecipesList extends Table {
 			return null;
 		}
 		
+		/**
+		 *
+		 * @param slot
+		 * @return
+		 */
 		public Image getIngredientImage(int slot){
 			return new Image(
 				new SpriteDrawable(
@@ -177,14 +183,26 @@ public class CraftingRecipesList extends Table {
 			);
 		}
 		
+		/**
+		 *
+		 * @return
+		 */
 		public boolean resultIsCollectible(){
 			return this.result != null;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public CollectibleType getResultType() {
 			return result;
 		}
 		
+		/**
+		 *
+		 * @return
+		 */
 		public Class<? extends AbstractEntity> getResultClass() {
 			return resultClass;
 		}

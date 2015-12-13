@@ -64,6 +64,10 @@ import java.util.logging.Logger;
 public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	private static Generator defaultGenerator = new AirGenerator();
+
+	/**
+	 *
+	 */
 	public final static Integer MAPVERSION = 4;
 
 	/**
@@ -642,6 +646,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		disposeEntities();
     }
 
+	/**
+	 *
+	 * @param coord
+	 * @return
+	 */
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
 		Chunk chunk = getChunk(coord);
 		if (chunk == null) {
@@ -701,6 +710,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		return path.exists();
 	}
 
+	/**
+	 *
+	 * @param slot
+	 */
 	public void createSaveSlot(int slot) {
 		createSaveSlot(directory, slot);
 	}
@@ -724,10 +737,18 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Generator getGenerator() {
 		return generator;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getCurrentSaveSlot() {
 		return activeSaveSlot;
 	}
@@ -768,6 +789,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		return observers;
 	}
 	
+	/**
+	 *
+	 * @param linked
+	 */
 	public void setObservers(ArrayList<MapObserver> linked) {
 		observers = linked;
 	}
@@ -949,6 +974,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		
 	}
 	
+	/**
+	 *
+	 * @param start
+	 * @param goal
+	 * @return
+	 */
 	public DefaultGraphPath<PfNode> findPath(Coordinate start, Coordinate goal) {
 		IndexedAStarPathFinder<PfNode> pathFinder;
 		pathFinder = new IndexedAStarPathFinder<>(this, true);

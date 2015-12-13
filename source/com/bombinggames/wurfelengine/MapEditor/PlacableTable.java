@@ -183,6 +183,10 @@ public class PlacableTable extends Table {
 		show(view);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public PlacableGUI getPlacableGUI() {
 		return placableGUI;
 	}

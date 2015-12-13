@@ -38,22 +38,38 @@ public class StringCVar extends CVar{
 	private String value;
 	private String defaultValue;
 
+	/**
+	 *
+	 * @param value
+	 */
 	public StringCVar(String value) {
 		this.value = value;
 		this.defaultValue = value;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
 		if (flags == CVarFlags.CVAR_ARCHIVE) parent.save();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getName() {
 		return name;
@@ -64,11 +80,19 @@ public class StringCVar extends CVar{
 		return value;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 *
+	 * @param defaultValue
+	 */
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (String) defaultValue;
 	}

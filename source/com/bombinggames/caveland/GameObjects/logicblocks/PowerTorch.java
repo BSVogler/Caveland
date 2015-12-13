@@ -43,9 +43,18 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class PowerTorch extends AbstractPowerBlock {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 *
+	 */
 	public final static float POINTRADIUS = 3 * Block.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
 
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public PowerTorch(Block block, Coordinate coord) {
 		super(block, coord);
 	}

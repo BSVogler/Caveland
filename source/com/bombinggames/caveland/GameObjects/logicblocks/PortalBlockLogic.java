@@ -65,6 +65,10 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 		super(block, coord);
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (getPosition() != null && isValid()) {

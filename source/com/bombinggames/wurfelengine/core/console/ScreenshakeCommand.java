@@ -43,6 +43,10 @@ public class ScreenshakeCommand implements ConsoleCommand {
 		return "screenshake";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "Shakes the screen. works only if in the game. Parameters: [cameraID] [amplitude] [time]";

@@ -52,9 +52,19 @@ public enum Side {
      */
     RIGHT(2),
 	
+	/**
+	 *
+	 */
 	BACKLEFT(3),
 	
+	/**
+	 *
+	 */
 	BACKRIGHT(4),
+
+	/**
+	 *
+	 */
 	BOTTOM(5);
     private int code;
 

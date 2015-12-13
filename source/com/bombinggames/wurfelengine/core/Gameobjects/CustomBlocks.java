@@ -8,8 +8,20 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
  */
 public interface CustomBlocks {
 	
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	public boolean isObstacle(byte id, byte value);
 
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	public boolean isTransparent(byte id, byte value);
 	
     /**

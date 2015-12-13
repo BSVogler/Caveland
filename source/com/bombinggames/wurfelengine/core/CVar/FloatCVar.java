@@ -40,17 +40,28 @@ public class FloatCVar extends CVar {
 	private float value;
 	private float defaultValue;
 
+	/**
+	 *
+	 * @param value
+	 */
 	public FloatCVar(float value) {
 		this.value = value;
 		defaultValue =value;
 	}
 	
-	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Float getValue() {
 		return value;
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	@Override
 	public void setValue(Object value) {
 		try {
@@ -74,11 +85,19 @@ public class FloatCVar extends CVar {
 		return Float.toString(value);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Float getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 *
+	 * @param defaultValue
+	 */
 	@Override
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (float) defaultValue;

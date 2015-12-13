@@ -85,12 +85,22 @@ public class CVarSystem {
 		this.fileSystemPath = path;
 	}
 	
+	/**
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static  CVarSystem getInstanceEngineSystem(File path){
 		CVarSystem tmp = new CVarSystem(path);
 		tmp.initEngineCVars();
 		return tmp;
 	}
 	
+	/**
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static CVarSystem getInstanceMapSystem(File path){
 		CVarSystem tmp = new CVarSystem(path);
 		tmp.initMapCVars();
@@ -108,6 +118,10 @@ public class CVarSystem {
 		return tmp;
 	}
 	
+	/**
+	 *
+	 * @param child
+	 */
 	public void setChildSystem(CVarSystem child){
 		childSystem=child;
 	}
@@ -129,6 +143,11 @@ public class CVarSystem {
 		return cvars.get(cvar.toLowerCase());
 	}
 	
+	/**
+	 *
+	 * @param cvar
+	 * @return
+	 */
 	public boolean getValueB(String cvar){
 		try {
 			return (boolean) cvars.get(cvar.toLowerCase()).getValue();
@@ -137,6 +156,11 @@ public class CVarSystem {
 		}
 	}
 	
+	/**
+	 *
+	 * @param cvar
+	 * @return
+	 */
 	public int getValueI(String cvar){
 		try {
 			return (int) cvars.get(cvar.toLowerCase()).getValue();
@@ -145,6 +169,11 @@ public class CVarSystem {
 		}
 	}
 	
+	/**
+	 *
+	 * @param cvar
+	 * @return
+	 */
 	public float getValueF(String cvar){
 		try {
 			return (float) cvars.get(cvar.toLowerCase()).getValue();
@@ -153,6 +182,11 @@ public class CVarSystem {
 		}
 	}
 	
+	/**
+	 *
+	 * @param cvar
+	 * @return
+	 */
 	public String getValueS(String cvar){
 		try {
 			return (String) cvars.get(cvar.toLowerCase()).getValue();
@@ -401,6 +435,10 @@ public class CVarSystem {
 		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public String showAll(){
 		return cvars.toString();
 	}

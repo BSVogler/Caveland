@@ -17,10 +17,19 @@ import java.util.ArrayList;
 public class LiftLogic extends AbstractBlockLogicExtension implements Interactable {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public LiftLogic(Block block, Coordinate coord) {
 		super(block, coord);
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		//teleport minecarts

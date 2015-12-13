@@ -26,6 +26,10 @@ public class EditorCommand implements ConsoleCommand {
 		return true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "loads the editor";

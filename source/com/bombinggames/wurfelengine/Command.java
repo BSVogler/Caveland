@@ -35,6 +35,14 @@ package com.bombinggames.wurfelengine;
  * @author Benedikt Vogler
  */
 public interface Command {
+
+	/**
+	 *
+	 */
 	public abstract void execute();
+
+	/**
+	 *
+	 */
 	public abstract void undo();
 }

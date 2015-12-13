@@ -39,6 +39,10 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  */
 public abstract class AbstractMapIterator implements Iterator<Block>{
+
+	/**
+	 *
+	 */
 	protected final Map map;
 	/**
 	 * Always points to a block. Iterates over a chunk.
@@ -47,6 +51,10 @@ public abstract class AbstractMapIterator implements Iterator<Block>{
 	private int topLimitZ;
 	private int startingZ = 0;
 
+	/**
+	 *
+	 * @param map
+	 */
 	public AbstractMapIterator(Map map) {
 		this.map = map;
 	}	

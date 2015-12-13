@@ -611,6 +611,10 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		}
 	}
 	
+	/**
+	 *
+	 * @param view
+	 */
 	public void useItem(CLGameView view){
 		inventory.action(view, this);
 	}

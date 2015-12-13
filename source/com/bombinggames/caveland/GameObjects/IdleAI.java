@@ -50,10 +50,18 @@ public class IdleAI implements Telegraph {
 	private Point home;
 	private float timeTillMove;
 
+	/**
+	 *
+	 * @param body
+	 */
 	public IdleAI(MovableEntity body) {
 		this.body = body;
 	}
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt) {
 		if (body.hasPosition()) {
 			if (home == null) {

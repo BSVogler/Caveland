@@ -26,6 +26,10 @@ public class ExitCommand implements ConsoleCommand {
 		return false;//hey, your getting a response-> it failed
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "exits the game";

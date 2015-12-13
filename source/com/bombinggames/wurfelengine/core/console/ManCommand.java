@@ -41,6 +41,10 @@ public class ManCommand implements ConsoleCommand {
 		return "man";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "outputs the manual entry for this command";

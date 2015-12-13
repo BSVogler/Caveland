@@ -25,6 +25,10 @@ public class IGMenu extends WidgetGroup {
 	private final HoverListener editorWiggle;
 	private final HoverListener continueWiggle;
 
+	/**
+	 *
+	 * @param view
+	 */
 	public IGMenu(CLGameView view) {
 		background.setPosition(0, 0);
 		addActor(background);
@@ -118,11 +122,19 @@ public class IGMenu extends WidgetGroup {
 		addActor(exit);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getWidth() {
 		return background.getWidth();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getHeight() {
 		return background.getHeight();

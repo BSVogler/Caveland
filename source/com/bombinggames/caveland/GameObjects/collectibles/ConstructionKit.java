@@ -25,6 +25,9 @@ public class ConstructionKit extends Collectible implements Interactable {
 	private static final long serialVersionUID = 1L;
 	private transient EntityBlock preview;
 
+	/**
+	 *
+	 */
 	public ConstructionKit() {
 		super(CollectibleType.Toolkit);
 	}

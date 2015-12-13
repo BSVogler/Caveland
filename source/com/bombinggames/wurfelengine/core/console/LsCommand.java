@@ -26,6 +26,10 @@ public class LsCommand implements ConsoleCommand {
 		return true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "shows the content of the directory.";

@@ -38,6 +38,9 @@ package com.bombinggames.wurfelengine;
 @FunctionalInterface
 public interface LaunchCommand {
 	
+	/**
+	 *
+	 */
 	public void perform();
 	
 }

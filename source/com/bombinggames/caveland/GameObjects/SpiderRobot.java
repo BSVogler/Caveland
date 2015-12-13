@@ -41,6 +41,9 @@ public class SpiderRobot extends Robot{
 	private static final long serialVersionUID = 1L;
 	private long walkingSound;
 
+	/**
+	 *
+	 */
 	public SpiderRobot() {
 		setType(1);
 	}

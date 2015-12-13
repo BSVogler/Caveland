@@ -581,11 +581,18 @@ public class GameView implements GameManager {
         return initalized;
     }
 	
+	/**
+	 *
+	 */
 	public void useDefaultShader(){
 		spriteBatch.setShader(null);
 		useDefaultShader = true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isUsingDefaultShader() {
 		return useDefaultShader;
 	}

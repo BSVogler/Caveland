@@ -49,6 +49,10 @@ public abstract class AbstractBlockLogicExtension {
 		return blockatCoord != null && blockatCoord.getId() == id;
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	public abstract void update(float dt);
 
 	/**

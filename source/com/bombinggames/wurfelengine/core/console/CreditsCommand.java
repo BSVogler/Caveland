@@ -26,6 +26,10 @@ public class CreditsCommand implements ConsoleCommand{
 		return true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "outputs the credits in the console";

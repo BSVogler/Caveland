@@ -11,6 +11,10 @@ import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
  */
 public class CavelandMapCVars implements CustomMapCVarRegistration{
 
+	/**
+	 *
+	 * @param system
+	 */
 	@Override
 	public void register(CVarSystem system) {
 		system.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);

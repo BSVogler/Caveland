@@ -29,6 +29,10 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 		light.spawn(coord.toPoint().add(0, 0, Block.GAME_EDGELENGTH2*0.5f));
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		//power surrounding cables
@@ -72,6 +76,10 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isEnabled() {
 		return power;
 	}

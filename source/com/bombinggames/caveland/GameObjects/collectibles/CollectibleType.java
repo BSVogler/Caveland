@@ -36,19 +36,71 @@ package com.bombinggames.caveland.GameObjects.collectibles;
  */
 public enum CollectibleType {
 
+	/**
+	 *
+	 */
 	Rails((byte) 16, (byte) 2),
+
+	/**
+	 *
+	 */
 	Wood((byte) 46, (byte) 5),
+
+	/**
+	 *
+	 */
 	Explosives((byte) 47, (byte) 8),
+
+	/**
+	 *
+	 */
 	Ironore((byte) 48, (byte) 5),
+
+	/**
+	 *
+	 */
 	Coal((byte) 49, (byte) 5),
+
+	/**
+	 *
+	 */
 	Cristall((byte) 50, (byte) 5),
+
+	/**
+	 *
+	 */
 	Sulfur((byte) 51, (byte) 5),
+
+	/**
+	 *
+	 */
 	Stone((byte) 52, (byte) 5),
+
+	/**
+	 *
+	 */
 	Toolkit((byte) 53, (byte) 8),
+
+	/**
+	 *
+	 */
 	Torch((byte) 54, (byte) 2),
+
+	/**
+	 *
+	 */
 	Iron((byte) 55, (byte) 4),
+
+	/**
+	 *
+	 */
 	Powercable((byte) 57, (byte) 1);
 
+	/**
+	 *
+	 * @param value
+	 * @return
+	 */
 	public static CollectibleType fromValue(String value) {
 		if (value != null) {
 			for (CollectibleType type : CollectibleType.values()) {

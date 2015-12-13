@@ -10,6 +10,10 @@ import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 public class ConstructionSiteRender extends RenderBlock {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 *
+	 * @param data
+	 */
 	public ConstructionSiteRender(Block data) {
 		super(data);
 		setSpriteValue((byte) 0);

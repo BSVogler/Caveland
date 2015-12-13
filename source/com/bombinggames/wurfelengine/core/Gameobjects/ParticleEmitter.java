@@ -110,6 +110,9 @@ public class ParticleEmitter extends AbstractEntity {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public void toggle() {
 		active = !active;
 	}

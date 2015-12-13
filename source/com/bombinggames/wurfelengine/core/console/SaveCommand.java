@@ -24,6 +24,10 @@ public class SaveCommand implements ConsoleCommand {
 		return gameplay.getController().save();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "saves the currently loaded map in the currenty active save slot";

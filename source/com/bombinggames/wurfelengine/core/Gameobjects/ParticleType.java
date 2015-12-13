@@ -36,7 +36,21 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
  * @author Benedikt Vogler
  */
 public enum ParticleType {
-	FIRE(true, true, true), SMOKE(true, false, true), REGULAR(false, false, false);
+
+	/**
+	 *
+	 */
+	FIRE(true, true, true),
+
+	/**
+	 *
+	 */
+	SMOKE(true, false, true),
+
+	/**
+	 *
+	 */
+	REGULAR(false, false, false);
 	//		private static Collectible.CollectibleType fromValue(String value) {
 	//			if (value != null) {
 	//				for (Collectible.CollectibleType type : values()) {
@@ -56,14 +70,26 @@ public enum ParticleType {
 		this.grow = grow;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean fade() {
 		return fade;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean fadeToBlack() {
 		return fadeToBlack;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isGrowing() {
 		return grow;
 	}

@@ -48,6 +48,10 @@ public class EntityDrawable extends TextureRegionDrawable {
 	private float scaling = 0;
 	private float size = -0.5f;
 
+	/**
+	 *
+	 * @param type
+	 */
 	public EntityDrawable(Class<? extends AbstractEntity> type) {
 		try {
 			instance = type.newInstance();

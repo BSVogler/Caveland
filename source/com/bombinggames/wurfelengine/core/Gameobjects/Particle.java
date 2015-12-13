@@ -57,10 +57,18 @@ public class Particle extends MovableEntity {
 		setMass(0.0005f);
 	}
 
+	/**
+	 *
+	 * @param type
+	 */
 	public void setType(ParticleType type) {
 		this.type = type;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public ParticleType getType() {
 		return type;
 	}
@@ -126,7 +134,10 @@ public class Particle extends MovableEntity {
 		return super.clone();
 	}
 
-	
+	/**
+	 *
+	 * @return
+	 */
 	public float getPercentageOfLife(){
 		return timeTillDeath / maxtime;
 	}

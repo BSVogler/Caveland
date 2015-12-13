@@ -43,10 +43,17 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 public class TorchCollectible extends Collectible implements Interactable {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 *
+	 */
 	public TorchCollectible() {
 		super(CollectibleType.Torch);
 	}
 	
+	/**
+	 *
+	 * @param def
+	 */
 	public TorchCollectible(CollectibleType def) {
 		super(def);
 	}

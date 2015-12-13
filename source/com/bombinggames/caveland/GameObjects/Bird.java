@@ -43,6 +43,9 @@ public class Bird extends MovableEntity {
 	private static final long serialVersionUID = 1L;
 	private float timeSinceLastDirChange = 0;
 
+	/**
+	 *
+	 */
 	public Bird() {
 		super((byte) 40, 3);//use vanya at the moment
 		setFloating(true);

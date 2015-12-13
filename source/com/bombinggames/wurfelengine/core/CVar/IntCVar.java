@@ -38,17 +38,28 @@ public class IntCVar extends CVar {
 	private int value;
 	private Integer defaultValue;
 
+	/**
+	 *
+	 * @param value
+	 */
 	public IntCVar(int value) {
 		this.value = value;
 		this.defaultValue = value;
 	}
 	
-	
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Integer getValue() {
 		return value;
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	@Override
 	public void setValue(Object value) {
 		if (value instanceof String) 
@@ -64,11 +75,19 @@ public class IntCVar extends CVar {
 		return Integer.toString(value);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public Integer getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 *
+	 * @param defaultValue
+	 */
 	@Override
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = (Integer) defaultValue;

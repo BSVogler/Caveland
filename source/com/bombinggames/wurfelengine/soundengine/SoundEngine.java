@@ -253,6 +253,9 @@ public class SoundEngine {
 		playingLoops.removeIf(s -> s.sound.equals(result) && s.id == instance);
 	}
 
+	/**
+	 *
+	 */
 	public void stopEverySound() {
 		playingLoops.clear();
 		sounds.values().forEach(s -> s.stop());
@@ -400,12 +403,19 @@ public class SoundEngine {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public void pauseMusic() {
 		if (music != null) {
 			music.pause();
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public GameView getView() {
 		return view;
 	}

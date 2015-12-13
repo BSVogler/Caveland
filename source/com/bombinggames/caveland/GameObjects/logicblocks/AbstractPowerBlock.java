@@ -127,6 +127,9 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 		return power;
 	}
 
+	/**
+	 *
+	 */
 	public void pushPower() {
 		power = true;
 		AbstractPowerBlock powerBlock = getConnectedNodes(1);

@@ -51,6 +51,11 @@ public class AimBand {
 	private float timeTillNext;
 	private final ArrayList<Particle> list = new ArrayList<>(10);
 
+	/**
+	 *
+	 * @param parent
+	 * @param goal
+	 */
 	public AimBand(AbstractEntity parent, AbstractPosition goal) {
 		if (goal instanceof Point) {
 			this.goal = (Point) goal;
@@ -61,12 +66,22 @@ public class AimBand {
 		this.target = null;
 	}
 
+	/**
+	 *
+	 * @param parent
+	 * @param target
+	 */
 	public AimBand(AbstractEntity parent, AbstractEntity target) {
 		this.target = target;
 		this.parent = parent;
 		goal = null;
 	}
 
+	/**
+	 *
+	 * @param start
+	 * @param end
+	 */
 	public AimBand(AbstractPosition start, AbstractPosition end) {
 		if (start instanceof Point) {
 			this.start = (Point) start;

@@ -35,6 +35,10 @@ public class LoadMapCommand implements ConsoleCommand {
 		return "loadmap";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "tries to load a map at a new save slot";

@@ -30,6 +30,10 @@ public class BenchmarkCommand implements ConsoleCommand {
         return true;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "spawns a benchmark ball";

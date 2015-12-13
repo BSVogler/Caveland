@@ -23,9 +23,14 @@ public abstract class HoverListener extends ClickListener {
 		hover =false;
 	}
 	
+	/**
+	 *
+	 */
 	public abstract void hover();
 	
-	
+	/**
+	 *
+	 */
 	public void update(){
 		if (hover) hover();
 	

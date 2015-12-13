@@ -185,6 +185,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
 		return cursorId;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public EditorToggler getEditorToggler() {
 		return editorToggler;
 	}

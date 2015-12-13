@@ -26,6 +26,10 @@ public class FullscreenCommand implements ConsoleCommand {
 		return "fullscreen";
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public String getManual() {
 		return "toggles the fullscreen";

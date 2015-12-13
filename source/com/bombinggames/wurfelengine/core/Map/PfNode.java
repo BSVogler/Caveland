@@ -44,16 +44,29 @@ public class PfNode extends Coordinate implements IndexedNode<PfNode> {
 
 	private final int index;
 
+	/**
+	 *
+	 * @param coord
+	 * @param index
+	 */
 	public PfNode(Coordinate coord, int index) {
 		super(coord);
 		this.index = calculateIndex();
 	}
 
+	/**
+	 *
+	 * @param coord
+	 */
 	public PfNode(Coordinate coord) {
 		super(coord);
 		this.index = calculateIndex();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int calculateIndex() {
 		Coordinate tl = getChunk().getTopLeftCoordinate();
 		return getX() - tl.getX() + (getY() - tl.getY()) * Chunk.getBlocksX();

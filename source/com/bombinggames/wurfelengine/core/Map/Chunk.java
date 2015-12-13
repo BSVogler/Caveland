@@ -757,6 +757,11 @@ public class Chunk {
 		}
 	}
 	
+	/**
+	 *
+	 * @param coord
+	 * @param value
+	 */
 	public void setValue(Coordinate coord, byte value) {
 		int xIndex = coord.getX()-topleft.getX();
 		int yIndex = coord.getY()-topleft.getY();
@@ -769,6 +774,10 @@ public class Chunk {
 		}
 	}
 
+	/**
+	 *
+	 * @param block
+	 */
 	protected void addLogic(AbstractBlockLogicExtension block) {
 		logicBlocks.add(block);
 	}
@@ -834,6 +843,9 @@ public class Chunk {
 		}
 	}
 
+	/**
+	 *
+	 */
 	protected void resetClipping() {
 		for (int x=0; x < blocksX; x++)
 			for (int y=0; y < blocksY; y++) {

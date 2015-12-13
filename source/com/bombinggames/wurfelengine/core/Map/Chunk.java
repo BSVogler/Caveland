@@ -119,12 +119,15 @@ public class Chunk {
 		data = new Block[blocksX][blocksY][blocksZ];
 		dirtyFlag = new boolean[blocksX][blocksY][blocksZ];
 
-        for (int x=0; x < blocksX; x++)
-            for (int y=0; y < blocksY; y++)
-                for (int z=0; z < blocksZ; z++)
-                    data[x][y][z] = null;
-
-        resetClipping();
+       for (int x = 0; x < blocksX; x++) {
+			for (int y = 0; y < blocksY; y++) {
+				for (int z = 0; z < blocksZ; z++) {
+					data[x][y][z] = null;
+				}
+			}
+		}
+		
+		resetClipping();
 
 		modified = true;
     }

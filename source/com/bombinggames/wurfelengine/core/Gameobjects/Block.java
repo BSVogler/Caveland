@@ -521,12 +521,16 @@ public class Block implements HasID, Serializable {
 			l = 1023;
 		}
 		
-		if (side == Side.LEFT) {
-			colorLeft |= (l << colorBitshift);
-		} else if (side == Side.TOP) {
-			colorTop |= (l << colorBitshift);
-		} else {
-			colorRight |= (l << colorBitshift);
+		switch (side) {
+			case LEFT:
+				colorLeft |= (l << colorBitshift);
+				break;
+			case TOP:
+				colorTop |= (l << colorBitshift);
+				break;
+			default:
+				colorRight |= (l << colorBitshift);
+				break;
 		}
 	}
 	
@@ -552,21 +556,28 @@ public class Block implements HasID, Serializable {
 			l = 1023;
 		}
 		
-		if (side == Side.LEFT) {
-			int newl = (int) (((colorLeft >> colorBitshift) & 0x3FF) / 511f+l);
-			if (newl > 1023)
-				newl = 1023;
-			colorLeft |= (newl << colorBitshift);
-		} else if (side == Side.TOP) {
-			int newl = (int) (((colorTop >> colorBitshift) & 0x3FF) / 511f+l);
-			if (newl > 1023)
-				newl = 1023;
-			colorTop  |= (newl << colorBitshift);
-		} else {
-			int newl = (int) (((colorRight >> colorBitshift) & 0x3FF) / 511f+l);
-			if (newl > 1023)
-				newl = 1023;
-			colorRight |= (newl << colorBitshift);
+		switch (side) {
+			case LEFT:{
+				int newl = (int) (((colorLeft >> colorBitshift) & 0x3FF) / 511f+l);
+				if (newl > 1023)
+					newl = 1023;
+				colorLeft |= (newl << colorBitshift);
+					break;
+				}
+			case TOP:{
+				int newl = (int) (((colorTop >> colorBitshift) & 0x3FF) / 511f+l);
+				if (newl > 1023)
+					newl = 1023;
+				colorTop  |= (newl << colorBitshift);
+					break;
+				}
+			default:{
+				int newl = (int) (((colorRight >> colorBitshift) & 0x3FF) / 511f+l);
+				if (newl > 1023)
+					newl = 1023;
+				colorRight |= (newl << colorBitshift);
+					break;
+				}
 		}
 	}
 

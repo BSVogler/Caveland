@@ -87,13 +87,17 @@ public class Chunk {
 	/**
 	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
 	 */
-	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(2);
+	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;
 	/**
 	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
 	 */
 	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
+	/**
+	 * a list of coordiants marked as dirty
+	 */
+	private final boolean dirtyFlag[][][];
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -113,6 +117,7 @@ public class Chunk {
 
 		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
 		data = new Block[blocksX][blocksY][blocksZ];
+		dirtyFlag = new boolean[blocksX][blocksY][blocksZ];
 
         for (int x=0; x < blocksX; x++)
             for (int y=0; y < blocksY; y++)
@@ -803,19 +808,20 @@ public class Chunk {
 	/**
 	 * Set that no camera is accessing this chunk.
 	 */
-	public void resetCameraAccesCounter(){
-		cameraAccessCounter=0;
+	public void resetCameraAccesCounter() {
+		cameraAccessCounter = 0;
 	}
 
 	/**
 	 *
 	 */
-	public final void increaseCameraHandleCounter(){
+	public final void increaseCameraHandleCounter() {
 		cameraAccessCounter++;
 	}
 
 	/**
 	 * Can this can be removed from memory?
+	 *
 	 * @return true if no camera is rendering this chunk
 	 */
 	boolean shouldBeRemoved() {
@@ -847,12 +853,16 @@ public class Chunk {
 	 *
 	 */
 	protected void resetClipping() {
-		for (int x=0; x < blocksX; x++)
-			for (int y=0; y < blocksY; y++) {
-				for (int z=0; z < blocksZ; z++)
-					if (data[x][y][z]!=null)
+		for (int x = 0; x < blocksX; x++) {
+			for (int y = 0; y < blocksY; y++) {
+				for (int z = 0; z < blocksZ; z++) {
+					if (data[x][y][z] != null) {
 						data[x][y][z].setUnclipped();
+					}
+				}
 			}
+		}
+	}
 	}
 
 }

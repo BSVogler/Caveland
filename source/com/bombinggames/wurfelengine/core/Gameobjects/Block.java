@@ -477,12 +477,16 @@ public class Block implements HasID, Serializable {
 			l = 1023;
 		}
 
-		if (side == Side.LEFT) {
-			colorLeft = (l << 20) + (l << 10) + l;//RGB;
-		} else if (side == Side.TOP) {
-			colorTop = (l << 20) + (l << 10) + l;//RGB;
-		} else {
-			colorRight = (l << 20) + (l << 10) + l;//RGB
+		switch (side) {
+			case LEFT:
+				colorLeft = (l << 20) + (l << 10) + l;//RGB;
+				break;
+			case TOP:
+				colorTop = (l << 20) + (l << 10) + l;//RGB;
+				break;
+			default:
+				colorRight = (l << 20) + (l << 10) + l;//RGB
+				break;
 		}
 	}
 	

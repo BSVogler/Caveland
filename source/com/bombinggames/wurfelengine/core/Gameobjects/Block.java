@@ -462,6 +462,15 @@ public class Block implements HasID, Serializable {
 			this.colorRight = colorLeft;
 		}
 	}
+	
+	/**
+	 * sets the light to 1
+	 */
+	public void resetLight(){
+		colorLeft = 537395712;//512 base 10 for each color channel
+		this.colorTop = colorLeft;
+		this.colorRight = colorLeft;
+	}
 
 	/**
 	 *

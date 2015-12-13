@@ -167,7 +167,7 @@ public class Chunk {
 			for (Block[] y : x) {
 				for (int z = 0; z < y.length; z++) {
 					if (y[z] != null) {
-						y[z].setLightlevel(1.0f);
+						y[z].resetLight();
 
 						if (
 							z < maxZ-2

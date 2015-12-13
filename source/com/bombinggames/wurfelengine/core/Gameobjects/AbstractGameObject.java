@@ -42,9 +42,9 @@ import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  *An AbstractGameObject is something wich can be found in the game world.
@@ -249,13 +249,13 @@ public abstract class AbstractGameObject implements Serializable, HasID {
      * Return the coordinates of the object.
      * @return Reference to the position object which points to the location in the game world.
      */
-    public abstract AbstractPosition getPosition();
+    public abstract Position getPosition();
     
     /**
      * Set the coordinates without safety check. May use different object pointing to the same position.
      * @param pos the coordinates you want to set
      */
-    public abstract void setPosition(AbstractPosition pos);
+    public abstract void setPosition(Position pos);
 
 	/**
      * Returns the depth of the object. Nearer objects have a bigger depth.

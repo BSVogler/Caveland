@@ -32,15 +32,16 @@ package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import java.util.ArrayList;
 
 /**
@@ -50,7 +51,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Coordinate extends AbstractPosition {
+public class Coordinate implements Position {
 
 	private static final long serialVersionUID = 3L;
 	/**
@@ -115,6 +116,22 @@ public class Coordinate extends AbstractPosition {
 	public int getZ() {
 		return z;
 	}
+
+	public Coordinate set(int[] values) {
+		x = values[0];
+		y = values[1];
+		z = values[2];
+		return this;
+	}
+	
+	public Coordinate set(int x, int y, int z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		return this;
+	}
+	
+	
 
 	/**
 	 * Checks if the calculated value is inside the map dimensions and if not
@@ -205,7 +222,6 @@ public class Coordinate extends AbstractPosition {
 	 * @param vector
 	 * @return
 	 */
-	@Override
 	public Coordinate add(Vector3 vector) {
 		this.x += vector.x;
 		this.y += vector.y;
@@ -487,7 +503,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public float distanceTo(AbstractPosition point) {
+	public float distanceTo(Position point) {
 		return toPoint().distanceTo(point);
 	}
 
@@ -497,7 +513,7 @@ public class Coordinate extends AbstractPosition {
 	}
 
 	@Override
-	public float distanceToHorizontal(AbstractPosition point) {
+	public float distanceToHorizontal(Position point) {
 		return toPoint().distanceToHorizontal(point);
 	}
 	
@@ -587,5 +603,34 @@ public class Coordinate extends AbstractPosition {
 	 */
 	public void setValue(byte value) {
 		Controller.getMap().setValue(this,value);
+	}
+
+	/**
+	 * 
+	 * @param lightlevel
+	 * @param side
+	 * @param channel 
+	 */
+	public void addLightlevel(float lightlevel, Side side, int channel) {
+		getChunk().setLightFlag(this.cpy());
+		getBlock().addLightlevel(lightlevel, side, channel);
+	}
+
+	@Override
+	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
+		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
+		for (AbstractEntity entity : entities) {
+			if (distanceTo(entity.getPosition()) < radius) {
+				result.add((type) entity);
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public Chunk getChunk() {
+		return Controller.getMap().getChunk(this);
 	}
 }

@@ -38,9 +38,9 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * Manages the sounds in the game world.
@@ -103,7 +103,7 @@ public class SoundEngine {
 	 * @param pos the position of the sound in the world. if it is null then
 	 * play at center
 	 */
-	public void play(String identifier, AbstractPosition pos) {
+	public void play(String identifier, Position pos) {
 		play(identifier, pos, 1f);
 	}
 
@@ -116,7 +116,7 @@ public class SoundEngine {
 	 * play at center
 	 * @param volume default is 1
 	 */
-	public void play(String identifier, AbstractPosition pos, float volume) {
+	public void play(String identifier, Position pos, float volume) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
 			float pan = 0;
@@ -212,7 +212,7 @@ public class SoundEngine {
 	 * @return the instance id
 	 * @see com.badlogic.​gdx.​audio.​Sound#loop()
 	 */
-	public long loop(String identifier, AbstractPosition pos) {
+	public long loop(String identifier, Position pos) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
 			long id = result.loop(WE.getCvars().getValueF("sound"));
@@ -308,7 +308,7 @@ public class SoundEngine {
 	 * @param pos position in the world.
 	 * @return multiplied with the settings for the volume
 	 */
-	protected float getVolume(AbstractPosition pos) {
+	protected float getVolume(Position pos) {
 		float volume = 1;
 		if (view != null) {
 			//calculate minimal distance to camera

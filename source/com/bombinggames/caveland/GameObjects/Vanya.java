@@ -11,7 +11,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.extension.AimBand;
@@ -19,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * Tutorial owl.
@@ -364,15 +364,15 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 	private static class Waypoint {
 		boolean fly;
-		AbstractPosition goalPos;
+		Position goalPos;
 		float initialDistance;
 
-		Waypoint(boolean fly, AbstractPosition pos) {
+		Waypoint(boolean fly, Position pos) {
 			this.fly = fly;
 			this.goalPos = pos;
 		}
 		
-		public void setActive(AbstractPosition pos){
+		public void setActive(Position pos){
 			initialDistance = goalPos.distanceToHorizontal(pos);
 		}
 
@@ -380,7 +380,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 		 * 
 		 * @return 
 		 */
-		public AbstractPosition getPos() {
+		public Position getPos() {
 			return goalPos;
 		}
 

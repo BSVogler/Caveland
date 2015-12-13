@@ -1,7 +1,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  *
@@ -111,7 +111,7 @@ public interface Interactable {
 	 * 
 	 * @return 
 	 */
-	public abstract AbstractPosition getPosition();
+	public abstract Position getPosition();
 	
 	/**
 	 * Is the interaction active or deactivated?

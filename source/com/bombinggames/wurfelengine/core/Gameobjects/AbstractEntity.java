@@ -33,11 +33,11 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * An entity is a game object which has the key feature that is has a position.
@@ -141,7 +141,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     }
 
     @Override
-    public void setPosition(AbstractPosition pos) {
+    public void setPosition(Position pos) {
         this.position = pos.toPoint();
     }
 

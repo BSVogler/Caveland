@@ -97,7 +97,7 @@ public class Chunk {
 	/**
 	 * a list of coordiants marked as dirty
 	 */
-	private final boolean dirtyFlag[][][];
+	private final ArrayList<Coordinate> dirtyFlag = new ArrayList<>(10);
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -117,7 +117,6 @@ public class Chunk {
 
 		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
 		data = new Block[blocksX][blocksY][blocksZ];
-		dirtyFlag = new boolean[blocksX][blocksY][blocksZ];
 
        for (int x = 0; x < blocksX; x++) {
 			for (int y = 0; y < blocksY; y++) {
@@ -172,46 +171,14 @@ public class Chunk {
 	 */
 	public void update(float dt) {
 		processModification();
-		//reset light to normal level
-		int maxZ = Chunk.getBlocksZ();
-		for (Block[][] x : data) {
-			for (Block[] y : x) {
-				for (int z = 0; z < y.length; z++) {
-					if (y[z] != null) {
-						y[z].resetLight();
 
-						if (
-							z < maxZ-2
-							&& (
-								y[z+1] == null
-								|| y[z+1].isTransparent()
-							)
-						){
-							//two block above is a block casting shadows
-							if (y[z+2] != null
-								&& !y[z+2].isTransparent()
-							) {
-								y[z].setLightlevel(0.8f, Side.TOP);
-							} else if (
-								z < maxZ-3
-								&& (
-									y[z+2] == null
-									|| y[z+2].isTransparent()
-								)
-								&& y[z+3] != null
-								&& !y[z+3].isTransparent()
-							) {
-								y[z].setLightlevel(0.9f, Side.TOP);
-							}
-						}
-					}
-				}
-			}
-		}
+		resetShading();
 
+		//update logicblocks
 		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
-			if (logicBlock.isValid())
+			if (logicBlock.isValid()) {
 				logicBlock.update(dt);
+			}
 		}
 		//check if block at position corespodends to saved, garbage collection
 		logicBlocks.removeIf((AbstractBlockLogicExtension lb) -> {
@@ -869,6 +836,57 @@ public class Chunk {
 			}
 		}
 	}
+
+	/**
+	 * marks this coordinage as "dirty".
+	 * @param coord	 
+	 */
+	public void setLightFlag(Coordinate coord) {
+		dirtyFlag.add(coord);
+	}
+
+	/**
+	 * reset light to normal level
+	 */
+	private void resetShading() {
+		int maxZ = Chunk.getBlocksZ();
+		for (Coordinate coord : dirtyFlag) {
+			int x = coord.getX()-topleft.getX();
+			int y = coord.getY()-topleft.getY();
+			int z = coord.getZ();
+			if (z < Chunk.blocksZ && z>0) {
+				Block block = getBlockViaIndex(x, y, z);
+				if (block != null) {
+					data[x][y][z].setLightlevel(1);
+
+					if (
+						z < maxZ-2
+						&& (
+							data[x][y][z+1] == null
+							|| data[x][y][z+1].isTransparent()
+						)
+					){
+						//two block above is a block casting shadows
+						if (data[x][y][z+2] != null
+							&& !data[x][y][z+2].isTransparent()
+						) {
+							data[x][y][z].setLightlevel(0.8f, Side.TOP);
+						} else if (
+							z < maxZ-3
+							&& (
+								data[x][y][z+2] == null
+								|| data[x][y][z+2].isTransparent()
+							)
+							&& data[x][y][z+3] != null
+							&& !data[x][y][z+3].isTransparent()
+						) {
+							data[x][y][z].setLightlevel(0.9f, Side.TOP);
+						}
+					}
+				}
+			}
+		}
+		dirtyFlag.clear();
 	}
 
 }

@@ -31,7 +31,7 @@
 package com.bombinggames.wurfelengine.soundengine;
 
 import com.badlogic.gdx.audio.Sound;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * An object which saves a playing sound.
@@ -39,11 +39,11 @@ import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
  */
 class SoundInstance {
 	private final SoundEngine engine;
-	private final AbstractPosition pos;
+	private final Position pos;
 	protected final Sound sound;
 	protected final long id;
 
-	protected SoundInstance(SoundEngine engine, Sound sound, long id, AbstractPosition pos) {
+	protected SoundInstance(SoundEngine engine, Sound sound, long id, Position pos) {
 		this.id = id;
 		this.sound = sound;
 		this.pos = pos;

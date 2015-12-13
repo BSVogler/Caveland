@@ -34,9 +34,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * A band which points to a point or entity. It most only be updated to work. It should eb disposed if not used any more.
@@ -56,7 +56,7 @@ public class AimBand {
 	 * @param parent
 	 * @param goal
 	 */
-	public AimBand(AbstractEntity parent, AbstractPosition goal) {
+	public AimBand(AbstractEntity parent, Position goal) {
 		if (goal instanceof Point) {
 			this.goal = (Point) goal;
 		} else {
@@ -82,7 +82,7 @@ public class AimBand {
 	 * @param start
 	 * @param end
 	 */
-	public AimBand(AbstractPosition start, AbstractPosition end) {
+	public AimBand(Position start, Position end) {
 		if (start instanceof Point) {
 			this.start = (Point) start;
 		} else {
@@ -160,7 +160,7 @@ public class AimBand {
 	 * 
 	 * @param goal 
 	 */
-	public void setTarget(AbstractPosition goal) {
+	public void setTarget(Position goal) {
 		this.goal = goal.toPoint();
 		this.target = null;
 	}

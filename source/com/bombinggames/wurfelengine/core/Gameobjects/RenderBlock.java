@@ -43,8 +43,8 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH4;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras nor should use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
@@ -327,7 +327,7 @@ public class RenderBlock extends AbstractGameObject{
     public void renderSide(
 		final GameView view,
 		final Camera camera,
-		final AbstractPosition coords,
+		final Position coords,
 		final Side side,
 		final boolean staticShade
 	){
@@ -461,7 +461,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param aopos does not alter the field
 	 * @param value 
 	 */
-	private void renderAO(final GameView view, final Camera camera, final AbstractPosition aopos, final byte value){
+	private void renderAO(final GameView view, final Camera camera, final Position aopos, final byte value){
 		SimpleEntity ao = new SimpleEntity((byte) 2, value);
 		ao.setPosition(aopos);
 		ao.setColor(new Color(0.5f, 0.5f, 0.5f, ambientOcclusion));
@@ -475,7 +475,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param aopos
 	 * @param value 
 	 */
-	private void renderDO(final GameView view, final Camera camera, final AbstractPosition aopos, final byte value){
+	private void renderDO(final GameView view, final Camera camera, final Position aopos, final byte value){
 		SimpleEntity destruct = new SimpleEntity((byte) 3,value);
 		destruct.setPosition(aopos);
 		destruct.setColor(new Color(0.5f, 0.5f, 0.5f, 0.7f));
@@ -582,7 +582,7 @@ public class RenderBlock extends AbstractGameObject{
 	}
 
 	@Override
-	public void setPosition(AbstractPosition pos) {
+	public void setPosition(Position pos) {
 		coord = pos.toCoord();
 	}
 	

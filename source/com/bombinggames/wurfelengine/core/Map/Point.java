@@ -47,7 +47,7 @@ import java.util.function.Predicate;
  * @author Benedikt Vogler
  * @since WE1.1
  */
-public class Point extends AbstractPosition {
+public class Point extends Vector3 implements Position {
 	private static final long serialVersionUID = 2L;
 
     /**
@@ -538,7 +538,7 @@ public class Point extends AbstractPosition {
 	 * @return the distance from this point to the other point in game world coordinates
 	 */
 	@Override
-	public float distanceTo(AbstractPosition point) {
+	public float distanceTo(Position point) {
 		return distanceTo(point.toPoint());
 	}
 	
@@ -565,7 +565,7 @@ public class Point extends AbstractPosition {
 	}
 
 	@Override
-	public float distanceToHorizontal(AbstractPosition pos) {
+	public float distanceToHorizontal(Position pos) {
 		return distanceToHorizontal(pos.toPoint());
 	}
 	
@@ -707,5 +707,23 @@ public class Point extends AbstractPosition {
 		this.y = point.y;
 		this.z = point.z;
 		return this;
+	}
+
+	@Override
+	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
+		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
+		for (AbstractEntity entity : entities) {
+			if (distanceTo(entity.getPosition()) < radius) {
+				result.add((type) entity);
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public Chunk getChunk() {
+		return Controller.getMap().getChunk(toCoord());
 	}
 }

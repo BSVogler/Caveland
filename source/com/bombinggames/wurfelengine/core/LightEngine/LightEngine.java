@@ -36,11 +36,11 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 
 /**
@@ -229,7 +229,7 @@ public class LightEngine implements MapObserver {
 	 * @param pos relative to this position
 	 * @return
 	 */
-	public GlobalLightSource getSun(AbstractPosition pos) {
+	public GlobalLightSource getSun(Position pos) {
 		return sun;
 	}
 
@@ -238,7 +238,7 @@ public class LightEngine implements MapObserver {
 	 * @param pos
 	 * @return
 	 */
-	public GlobalLightSource getMoon(AbstractPosition pos) {
+	public GlobalLightSource getMoon(Position pos) {
 		return moon;
 	}
 	
@@ -322,7 +322,7 @@ public class LightEngine implements MapObserver {
 	 * @param pos
      * @return a color with a tone
      */
-    public Color getAmbient(AbstractPosition pos){
+    public Color getAmbient(Position pos){
 		Color amb = sun.getAmbient();
 		if (moon!= null)
 			amb.add(moon.getAmbient());
@@ -363,7 +363,7 @@ public class LightEngine implements MapObserver {
      * @param view 
 	 * @param pos get the light data from this position	
      */
-    public void render(GameView view, AbstractPosition pos){
+    public void render(GameView view, Position pos){
         if (debuging) {
             
             //g.setLineWidth(2);
@@ -522,7 +522,7 @@ public class LightEngine implements MapObserver {
      *
 	 * @param pos
      */
-    public void setToNoon(AbstractPosition pos){
+    public void setToNoon(Position pos){
         sun.setAzimuth(90);
 		if (moon != null) 
 			moon.setAzimuth(270);
@@ -532,7 +532,7 @@ public class LightEngine implements MapObserver {
      *
 	 * @param pos
      */
-    public void setToNight(AbstractPosition pos){
+    public void setToNight(Position pos){
         sun.setAzimuth(270);
         moon.setAzimuth(90);
     }

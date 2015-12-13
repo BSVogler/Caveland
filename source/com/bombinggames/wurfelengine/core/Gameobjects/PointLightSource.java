@@ -3,11 +3,10 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * A light source is an invisible entity which spawns light from one point.
@@ -79,7 +78,7 @@ public class PointLightSource extends AbstractEntity {
 	}
 
 	@Override
-	public void setPosition(AbstractPosition pos) {
+	public void setPosition(Position pos) {
 		super.setPosition(pos);
 		//lastPos = pos.toPoint();
 		
@@ -195,25 +194,26 @@ public class PointLightSource extends AbstractEntity {
 			}
 
 			//apply cache
-			Coordinate center = getPosition().toCoord();
-			int xCenter = center.getX();
-			int yCenter = center.getY();
-			int zCenter = center.getZ();
+			Coordinate tmp = getPosition().toCoord();
+			int xCenter = tmp.getX();
+			int yCenter = tmp.getY();
+			int zCenter = tmp.getZ();
 			for (int x = -radius; x < radius; x++) {
 				for (int y = -radius * 2; y < radius * 2; y++) {
 					for (int z = -radius; z < radius; z++) {
+						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
-						Block block = Controller.getMap().getBlock(xCenter+x, yCenter+y, zCenter+z);
-						if (block != null) {
-							block.addLightlevel(blocklight[0] * color.r, Side.LEFT, 0);
-							block.addLightlevel(blocklight[0] * color.g, Side.LEFT, 1);
-							block.addLightlevel(blocklight[0] * color.b, Side.LEFT, 2);
-							block.addLightlevel(blocklight[1] * color.r, Side.TOP, 0);
-							block.addLightlevel(blocklight[1] * color.g, Side.TOP, 1);
-							block.addLightlevel(blocklight[1] * color.b, Side.TOP, 2);
-							block.addLightlevel(blocklight[2] * color.r, Side.RIGHT, 0);
-							block.addLightlevel(blocklight[2] * color.g, Side.RIGHT, 1);
-							block.addLightlevel(blocklight[2] * color.b, Side.RIGHT, 2);
+						tmp.set(xCenter+x,yCenter+y,zCenter+z);
+						if (tmp.getBlock() != null) {
+							tmp.addLightlevel(blocklight[0] * color.r, Side.LEFT, 0);
+							tmp.addLightlevel(blocklight[0] * color.g, Side.LEFT, 1);
+							tmp.addLightlevel(blocklight[0] * color.b, Side.LEFT, 2);
+							tmp.addLightlevel(blocklight[1] * color.r, Side.TOP, 0);
+							tmp.addLightlevel(blocklight[1] * color.g, Side.TOP, 1);
+							tmp.addLightlevel(blocklight[1] * color.b, Side.TOP, 2);
+							tmp.addLightlevel(blocklight[2] * color.r, Side.RIGHT, 0);
+							tmp.addLightlevel(blocklight[2] * color.g, Side.RIGHT, 1);
+							tmp.addLightlevel(blocklight[2] * color.b, Side.RIGHT, 2);
 						}
 					}
 				}

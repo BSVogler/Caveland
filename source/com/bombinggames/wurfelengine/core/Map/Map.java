@@ -484,10 +484,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * get the chunk where the coordinates are on
-	 * @param coord
+	 * @param coord not altered
 	 * @return can return null if not loaded
 	 */
-	public Chunk getChunk(Coordinate coord){
+	public Chunk getChunk(final Coordinate coord){
 		//checks every chunk in memory
 		for (Chunk chunk : data) {
 			int left = chunk.getTopLeftCoordinate().getX();

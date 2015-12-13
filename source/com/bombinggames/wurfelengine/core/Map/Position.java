@@ -30,9 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
-import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Camera;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
@@ -44,8 +42,7 @@ import java.util.ArrayList;
  *A
  * @author Benedikt Vogler
  */
-public abstract class AbstractPosition extends Vector3 implements Serializable {
-	private static final long serialVersionUID = 1L;
+public interface Position extends Serializable {
 
     /**
      *square root of two
@@ -108,8 +105,7 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
      *
      * @return a copy of the object.
      */
-	@Override
-    public abstract AbstractPosition cpy(); 
+    public abstract Position cpy(); 
     
     /**
      * Checks if the position is on the chunks currently in memory. Horizontal checks only. So the position can be udner or over the map.
@@ -136,7 +132,7 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
 	 * @param pos
 	 * @return the distance from this pos to the other pos in game coordinates
 	 */
-	public abstract float distanceTo(AbstractPosition pos);
+	public abstract float distanceTo(Position pos);
 
 	/**
 	 *  checks only x and y.
@@ -150,7 +146,7 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
 	 * @param pos
 	 * @return the distance from this pos to the other pos only regarding horizontal components.
 	 */
-	public abstract float distanceToHorizontal(AbstractPosition pos);
+	public abstract float distanceToHorizontal(Position pos);
 	
 	/**
 	 * Get entities in radius.
@@ -160,26 +156,13 @@ public abstract class AbstractPosition extends Vector3 implements Serializable {
 	 * @param type the type you want to filter
 	 * @return every entitie in radius
 	 */
-	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
-		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
-		for (AbstractEntity entity : entities) {
-			if (distanceTo(entity.getPosition()) < radius) {
-				result.add((type) entity);
-			}
-		}
-
-		return result;
-	}
+	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type);
 	
 	/**
 	 * 
 	 * @return 
 	 */
-	public Chunk getChunk(){
-		return Controller.getMap().getChunk(toCoord());
-	}
+	public Chunk getChunk();
 
 	/**
 	 * The chunk coordinate.

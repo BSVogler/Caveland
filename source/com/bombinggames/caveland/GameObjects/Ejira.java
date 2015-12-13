@@ -35,13 +35,13 @@ import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * The Ejira has two particle emitter attached via glue. Itself is not saved but it's position. The content of the backpack is dropped on disposing and saved separately.
@@ -1052,7 +1052,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 * @param buttonID
 	 * @param pos abot this position the button will appear
 	 */
-	public void showInteractButton(byte buttonID, AbstractPosition pos) {
+	public void showInteractButton(byte buttonID, Position pos) {
 		if (interactButton == null) {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().add(0, 0, Block.GAME_EDGELENGTH)
 			);

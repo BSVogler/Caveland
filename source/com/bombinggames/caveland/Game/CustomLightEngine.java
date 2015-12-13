@@ -34,7 +34,7 @@ package com.bombinggames.caveland.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.LightEngine.GlobalLightSource;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
-import com.bombinggames.wurfelengine.core.Map.AbstractPosition;
+import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  *
@@ -67,7 +67,7 @@ public class CustomLightEngine extends LightEngine {
 	
 	
 	@Override
-	public GlobalLightSource getSun(AbstractPosition pos) {
+	public GlobalLightSource getSun(Position pos) {
 		//in caves uses another light source
 		if (pos.toCoord().getY()>ChunkGenerator.CAVESBORDER)
 			return customSun;
@@ -75,7 +75,7 @@ public class CustomLightEngine extends LightEngine {
 	}
 	
 	@Override
-	public GlobalLightSource getMoon(AbstractPosition pos) {
+	public GlobalLightSource getMoon(Position pos) {
 		//in caves use another light source
 		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER)
 			return customMoon;
@@ -83,7 +83,7 @@ public class CustomLightEngine extends LightEngine {
 	}
 
 	@Override
-	public Color getAmbient(AbstractPosition pos) {
+	public Color getAmbient(Position pos) {
 		//in caves use anotehr lgiht source
 		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER)
 			return customSun.getAmbient();

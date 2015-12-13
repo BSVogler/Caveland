@@ -1193,6 +1193,10 @@ public class Camera implements MapObserver {
 		position.y = point.getViewSpcY();//game to view space transformation
 	}
 
+	/**
+	 *
+	 * @param focusEntity
+	 */
 	public void setFocusEntity(AbstractEntity focusEntity) {
 		if (this.focusEntity != focusEntity) {
 			this.focusEntity = focusEntity;

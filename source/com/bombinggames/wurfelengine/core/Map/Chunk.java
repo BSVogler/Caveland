@@ -179,19 +179,19 @@ public class Chunk {
 							//two block above is a block casting shadows
 							if (y[z+2] != null
 								&& !y[z+2].isTransparent()
-								) {
-									y[z].setLightlevel(0.8f, Side.TOP);
-								} else if (
-									z < maxZ-3
-									&& (
-										y[z+2] == null
-										|| y[z+2].isTransparent()
-									)
-									&& y[z+3] != null
-									&& !y[z+3].isTransparent()
-								) {
-									y[z].setLightlevel(0.9f, Side.TOP);
-								}
+							) {
+								y[z].setLightlevel(0.8f, Side.TOP);
+							} else if (
+								z < maxZ-3
+								&& (
+									y[z+2] == null
+									|| y[z+2].isTransparent()
+								)
+								&& y[z+3] != null
+								&& !y[z+3].isTransparent()
+							) {
+								y[z].setLightlevel(0.9f, Side.TOP);
+							}
 						}
 					}
 				}

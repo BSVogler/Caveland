@@ -453,6 +453,7 @@ public class Block implements HasID, Serializable {
 			this.colorRight = colorLeft;
 		} else {
 			int l = (int) (lightlevel * 512);
+			//clamp
 			if (l > 1023) {
 				l = 1023;
 			}

@@ -53,10 +53,11 @@ public class CdCommand implements ConsoleCommand {
 								//make sure it gets loaded
 								if (WE.getCvars().getChildSystem()==null) {
 									WE.getCvars().setChildSystem(
-										CVarSystem.getInstanceMapSystem(
+										new CVarSystem(
 											new File(
 												WorkingDirectory.getMapsFolder()+"/"+mapName+"/meta.wecvar"
-											)
+											),
+											1
 										)
 									);
 									WE.getLoadedCVarSystemMap().load();
@@ -65,10 +66,11 @@ public class CdCommand implements ConsoleCommand {
 								//access save
 								if (path.contains(":")) {
 									WE.getLoadedCVarSystemMap().setChildSystem(
-										CVarSystem.getInstanceSaveSystem(
+										new CVarSystem(
 											new File(
 												WorkingDirectory.getMapsFolder()+"/"+mapName+"/save"+path.substring(path.indexOf(':')+1)+"/meta.wecvar"
-											)
+											),
+											2
 										)
 									);
 									WE.getLoadedCVarSystemSave().load();

@@ -76,12 +76,15 @@ public class WE {
 	 * The version of the Engine
 	 */
 	public static final String VERSION = "1.6.6";
-	private static final File workingDirectory = WorkingDirectory.getWorkingDirectory();
+	/**
+	 * the working directory where the config and files are saved
+	 */
+	private static final File WORKDIR = WorkingDirectory.getWorkingDirectory();
 
 	/**
 	 * The CVar system used by the engine.
 	 */
-	private static CVarSystem cvars;
+	private final static CVarSystem CVARS = new CVarSystem(new File(WORKDIR + "/engine.wecvars"),0);
 	/**
      *The sound engine managing the sfx.
      */
@@ -192,16 +195,15 @@ public class WE {
 			}
 		}
 		
-		cvars = CVarSystem.getInstanceEngineSystem(new File(workingDirectory + "/engine.wecvars"));
 		//load cvars
-		cvars.load();
+		CVARS.load();
 
 		// set the name of the application menu item on mac
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
 		}
 
-		config.foregroundFPS = cvars.getValueI("limitFPS");//don't lock FPS
+		config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
 		config.backgroundFPS = 60;//60 FPS in background
 		//config.addIcon("com/BombingGames/caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best made via native packaging
 		if (iconPath != null) {
@@ -209,14 +211,14 @@ public class WE {
 		}
 		
 		//load saved resolution
-		int width = cvars.getValueI("resolutionx");
+		int width = CVARS.getValueI("resolutionx");
 		if (width > 0 && config.width == 0) {
 			config.width = width;
 		}
 
-		int height = cvars.getValueI("resolutiony");
+		int height = CVARS.getValueI("resolutiony");
 		if (height > 0 && config.height == 0) {
-			config.height = cvars.getValueI("resolutiony");
+			config.height = CVARS.getValueI("resolutiony");
 		}
 		
 		//find dpm with biggest width
@@ -370,7 +372,7 @@ public class WE {
 	 * @return
 	 */
 	public static CVarSystem getCvars() {
-		return cvars;
+		return CVARS;
 	}
 	
 	/**
@@ -471,7 +473,7 @@ public class WE {
 	 * @return a folder
 	 */
 	public static File getWorkingDirectory() {
-		return workingDirectory;
+		return WORKDIR;
 	}
 
 	/**
@@ -574,7 +576,7 @@ public class WE {
 	 * @return
 	 */
 	public static CVarSystem getLoadedCVarSystemMap() {
-		return cvars.getChildSystem();
+		return CVARS.getChildSystem();
 	}
 
 	/**
@@ -582,8 +584,8 @@ public class WE {
 	 * @return
 	 */
 	public static CVarSystem getLoadedCVarSystemSave() {
-		if (cvars.getChildSystem() != null) {
-			return cvars.getChildSystem().getChildSystem();
+		if (CVARS.getChildSystem() != null) {
+			return CVARS.getChildSystem().getChildSystem();
 		}
 		return null;
 	}
@@ -709,7 +711,7 @@ public class WE {
 		@Override
 		public void dispose() {
 			super.dispose();
-			cvars.dispose();
+			CVARS.dispose();
 			SOUND.dispose();
 		}
 

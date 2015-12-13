@@ -195,7 +195,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
     public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
 		this.generator = generator;
-		CVarSystem cvars = CVarSystem.getInstanceMapSystem(new File(directory + "/meta.wecvar"));
+		CVarSystem cvars = new CVarSystem(new File(directory + "/meta.wecvar"),1);
 
 		WE.getCvars().setChildSystem(cvars);
 
@@ -677,8 +677,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
 		WE.getCvars().getChildSystem().setChildSystem(
-			CVarSystem.getInstanceSaveSystem(
-				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
+			new CVarSystem(
+				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"),
+				2
 			)
 		);
 	}
@@ -689,13 +690,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return the new save slot number
 	 */
 	public int newSaveSlot() {
-		activeSaveSlot = getSavesCount();
+		useSaveSlot(getSavesCount());
 		createSaveSlot(activeSaveSlot);
-		WE.getCvars().getChildSystem().setChildSystem(
-			CVarSystem.getInstanceSaveSystem(
-				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
-			)
-		);
 		return activeSaveSlot;
 	}
 

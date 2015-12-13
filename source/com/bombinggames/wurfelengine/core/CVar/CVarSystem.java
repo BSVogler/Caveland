@@ -48,12 +48,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *Each cvar system manages one file. Cvars get registered first and then overwritten by the local file. If a cvar is in the file but not registered it gets ignored.
+ * Each cvar system manages one file. Cvars get registered first and then
+ * overwritten by the local file. If a cvar is in the file but not registered it
+ * gets ignored.
+ *
  * @author Benedikt Vogler
  */
 public class CVarSystem {
+
 	private static CustomMapCVarRegistration customMapCVarsRegistration;
-	
+
 	/**
 	 * Set a custom registration of cvars before they are loaded.
 	 *
@@ -62,8 +66,7 @@ public class CVarSystem {
 	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
 		customMapCVarsRegistration = mapcvars;
 	}
-	
-	
+
 	/**
 	 * true if currently reading. Prevents saving
 	 */
@@ -72,134 +75,121 @@ public class CVarSystem {
 	 * path of the cvar file
 	 */
 	private final File fileSystemPath;
-	/**list of all CVars**/
+	/**
+	 * list of all CVars*
+	 */
 	private final HashMap<String, CVar> cvars = new HashMap<>(50);
-	
+
 	private CVarSystem childSystem;//first level has map, second level has save
 
 	/**
 	 * you have to manually call {@link #load} to load from path.
+	 *
 	 * @param path path to the .cvar file
+	 * @param type 0 engine, 1 map, 2 save
 	 */
-	private CVarSystem(File path) {
+	public CVarSystem(File path, int type) {
 		this.fileSystemPath = path;
+		switch (type) {
+			case 0:
+				initEngineCVars();
+				break;
+			case 1:
+				initMapCVars();
+				break;
+			case 2:
+				initSaveCVars();
+				break;
+			default:
+				throw new Error("unknown type:"+type);
+		}
 	}
-	
-	/**
-	 *
-	 * @param path
-	 * @return
-	 */
-	public static  CVarSystem getInstanceEngineSystem(File path){
-		CVarSystem tmp = new CVarSystem(path);
-		tmp.initEngineCVars();
-		return tmp;
-	}
-	
-	/**
-	 *
-	 * @param path
-	 * @return
-	 */
-	public static CVarSystem getInstanceMapSystem(File path){
-		CVarSystem tmp = new CVarSystem(path);
-		tmp.initMapCVars();
-		return tmp;
-	}
-	
-	/**
-	 * creates a new cvar system
-	 * @param path
-	 * @return 
-	 */
-	public static  CVarSystem getInstanceSaveSystem(File path){
-		CVarSystem tmp = new CVarSystem(path);
-		tmp.initSaveCVars();
-		return tmp;
-	}
-	
+
 	/**
 	 *
 	 * @param child
 	 */
-	public void setChildSystem(CVarSystem child){
-		childSystem=child;
+	public void setChildSystem(CVarSystem child) {
+		childSystem = child;
 	}
 
 	/**
 	 * at the second level is the map cvars. third level is saves
-	 * @return 
+	 *
+	 * @return
 	 */
 	public CVarSystem getChildSystem() {
 		return childSystem;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param cvar can include a path
-	 * @return 
+	 * @return
 	 */
-	public CVar get(String cvar){
+	public CVar get(String cvar) {
 		return cvars.get(cvar.toLowerCase());
 	}
-	
+
 	/**
 	 *
 	 * @param cvar
 	 * @return
 	 */
-	public boolean getValueB(String cvar){
+	public boolean getValueB(String cvar) {
 		try {
 			return (boolean) cvars.get(cvar.toLowerCase()).getValue();
-		} catch(NullPointerException ex){
-			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
+		} catch (NullPointerException ex) {
+			throw new NullPointerException("Cvar \"" + cvar + "\" not defined.");
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param cvar
 	 * @return
 	 */
-	public int getValueI(String cvar){
+	public int getValueI(String cvar) {
 		try {
 			return (int) cvars.get(cvar.toLowerCase()).getValue();
-		} catch(NullPointerException ex){
-			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
+		} catch (NullPointerException ex) {
+			throw new NullPointerException("Cvar \"" + cvar + "\" not defined.");
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param cvar
 	 * @return
 	 */
-	public float getValueF(String cvar){
+	public float getValueF(String cvar) {
 		try {
 			return (float) cvars.get(cvar.toLowerCase()).getValue();
-		} catch(NullPointerException ex){
-			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
+		} catch (NullPointerException ex) {
+			throw new NullPointerException("Cvar \"" + cvar + "\" not defined.");
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param cvar
 	 * @return
 	 */
-	public String getValueS(String cvar){
+	public String getValueS(String cvar) {
 		try {
 			return (String) cvars.get(cvar.toLowerCase()).getValue();
-		} catch(NullPointerException ex){
-			throw new NullPointerException("Cvar \""+cvar+"\" not defined.");
+		} catch (NullPointerException ex) {
+			throw new NullPointerException("Cvar \"" + cvar + "\" not defined.");
 		}
 	}
-	
+
 	/**
-	 * load CVars from file and overwrite engine cvars. You must register the cvars first.
+	 * load CVars from file and overwrite engine cvars. You must register the
+	 * cvars first.
+	 *
 	 * @since v1.4.2
 	 */
-	public void load(){
+	public void load() {
 		System.out.println("Loading saved CVars…");
 		reading = true;
 		FileHandle sourceFile = new FileHandle(fileSystemPath);
@@ -207,13 +197,13 @@ public class CVarSystem {
 			try {
 				BufferedReader reader = sourceFile.reader(300);
 				String line = reader.readLine();
-				while (line!=null) {
+				while (line != null) {
 					StringTokenizer tokenizer = new StringTokenizer(line, " ");
 					String name = tokenizer.nextToken();
 					String data = tokenizer.nextToken();
-					if (get(name)!=null){//only overwrite if already registered
+					if (get(name) != null) {//only overwrite if already registered
 						get(name).setValue(data);
-						System.out.println("Set CVar "+name+": "+data);
+						System.out.println("Set CVar " + name + ": " + data);
 					}
 					line = reader.readLine();
 				}
@@ -224,29 +214,30 @@ public class CVarSystem {
 				Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else {
-			System.out.println("Custom CVar file "+fileSystemPath+" not found. Creating new one at the same place.");
+			System.out.println("Custom CVar file " + fileSystemPath + " not found. Creating new one at the same place.");
 			try {
 				fileSystemPath.createNewFile();
 			} catch (IOException ex) {
-				System.out.println("Could not create file at "+fileSystemPath+".");
+				System.out.println("Could not create file at " + fileSystemPath + ".");
 			}
 		}
 		reading = false;
-	
+
 	}
-	
-		/**
+
+	/**
 	 * saves the cvars with the flag to file
+	 *
 	 * @since v1.4.2
 	 */
-	public void dispose(){
+	public void dispose() {
 		save();
 	}
-	
+
 	/**
 	 * saves CVars to file
 	 */
-	public void save(){
+	public void save() {
 		if (!reading) {
 			Writer writer = Gdx.files.absolute(fileSystemPath.getAbsolutePath()).writer(false);
 
@@ -257,12 +248,11 @@ public class CVarSystem {
 				CVar cvar = pairs.getValue();
 				try {
 					//if should be saved and different then default: save
-					if (
-						cvar.flags == CVar.CVarFlags.CVAR_ARCHIVE
+					if (cvar.flags == CVar.CVarFlags.CVAR_ARCHIVE
 						&& !cvar.getDefaultValue().equals(cvar.getValue())
-						|| cvar.flags == CVar.CVarFlags.CVAR_ALWAYSSAVE
-					)
-						writer.write(pairs.getKey() + " "+cvar.toString()+"\n");
+						|| cvar.flags == CVar.CVarFlags.CVAR_ALWAYSSAVE) {
+						writer.write(pairs.getKey() + " " + cvar.toString() + "\n");
+					}
 
 				} catch (IOException ex) {
 					Logger.getLogger(CVar.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,23 +265,25 @@ public class CVarSystem {
 			}
 		}
 	}
-	
+
 	/**
 	 * Good use is auto-complete suggestions.
+	 *
 	 * @param prefix some chars with which the cvar begins.
 	 * @return A list containing every cvar starting with the prefix
 	 */
-	public ArrayList<String> getSuggestions(String prefix){
+	public ArrayList<String> getSuggestions(String prefix) {
 		ArrayList<String> resultList = new ArrayList<>(5);
 		Iterator<java.util.Map.Entry<String, CVar>> it = cvars.entrySet().iterator();
 		while (it.hasNext()) {
 			java.util.Map.Entry<String, CVar> cvarEntry = it.next();
-			if (cvarEntry.getKey().startsWith(prefix.toLowerCase()))
+			if (cvarEntry.getKey().startsWith(prefix.toLowerCase())) {
 				resultList.add(cvarEntry.getKey());
+			}
 		}
 		return resultList;
 	}
-	
+
 	/**
 	 * Registering should only be done by the game or the engine in init phase.
 	 * Also saves as defaultValue. if already registered updates the default and
@@ -325,12 +317,10 @@ public class CVarSystem {
 		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
 	}
 
-	
-	
 	/*
 	 * initializes engine cvars
 	 */
-	private void initEngineCVars(){
+	public CVarSystem initEngineCVars() {
 		System.out.println("Init Engine CVars…");
 		register(new FloatCVar(9.81f), "gravity");
 		register(new IntCVar(-40), "worldSpinAngle");
@@ -413,9 +403,11 @@ public class CVarSystem {
 		register(new FloatCVar(0.5f), "ambientOcclusion");
 		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
 		register(new IntCVar(20), "historySize");
+		
+		return this;
 	}
-	
-	private void initMapCVars(){
+
+	public CVarSystem initMapCVars() {
 		//engine cvar registration
 		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
 		register(new IntCVar(1), "groundBlockID");
@@ -424,22 +416,26 @@ public class CVarSystem {
 		register(new IntCVar(10), "chunkBlocksZ");
 		register(new StringCVar(""), "mapname");
 		register(new StringCVar(""), "description");
-		
+
 		//custom registration of cvars
 		if (customMapCVarsRegistration != null) {
 			customMapCVarsRegistration.register(this);
 		}
+		
+		return this;
 	}
-	
-	private void initSaveCVars(){
+
+	public CVarSystem initSaveCVars() {
 		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		
+		return this;
 	}
-	
+
 	/**
 	 *
 	 * @return
 	 */
-	public String showAll(){
+	public String showAll() {
 		return cvars.toString();
 	}
 }

@@ -1044,7 +1044,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * O(n) n:amount of entities
+	 * O(n) n:amount of entities.
+	 * ignores if is obstacle.
 	 * @param <type>
 	 * @param filter
 	 * @return 

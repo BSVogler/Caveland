@@ -32,7 +32,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 
 
 /**
- *A simple basic entity. You can use it for simple images like an effect.
+ *A simple static basic entity. You can use it for simple images like an effect.
  * @author  Benedikt Vogler
  */
 public class SimpleEntity extends AbstractEntity {

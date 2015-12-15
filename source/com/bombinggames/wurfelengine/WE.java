@@ -68,14 +68,14 @@ import java.util.ArrayList;
  * versions).
  *
  * @author Benedikt S. Vogler
- * @version 1.6.6
+ * @version 1.6.7
  */
 public class WE {
 
 	/**
 	 * The version of the Engine
 	 */
-	public static final String VERSION = "1.6.6";
+	public static final String VERSION = "1.6.7";
 	/**
 	 * the working directory where the config and files are saved
 	 */

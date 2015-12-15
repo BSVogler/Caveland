@@ -680,6 +680,7 @@ public class Point extends Vector3 implements Position {
 	}
 	
 	@Override
+	@SuppressWarnings("SuspiciousNameCombination")
 	public int getChunkX() {
 		return Math.floorDiv((int) x, Chunk.getGameWidth());
 	}

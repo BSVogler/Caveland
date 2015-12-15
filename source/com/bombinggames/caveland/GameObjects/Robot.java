@@ -219,6 +219,10 @@ public class Robot extends MovableEntity implements Telegraph{
 		}
 	}
 
+	public int getTeamId() {
+		return teamId;
+	}
+	
 	/**
 	 * Set the target which the zombie follows.
 	 *

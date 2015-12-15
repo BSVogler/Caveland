@@ -53,6 +53,7 @@ public class Turret extends AbstractPowerBlock {
 	 *
 	 */
 	public final float MAXDISTANCE = 20;
+	private int teamId = 1;
 	
 	/**
 	 *
@@ -103,6 +104,10 @@ public class Turret extends AbstractPowerBlock {
 			gun.spawn(getPosition().toPoint());
 		}
 		
+		if (gun.getFixedPos()==null){
+			gun.setFixedPos(getPosition().toPoint());
+		}
+		
 		gun.getFixedPos().setZ(
 			getPosition().toPoint().getZ()+Block.GAME_EDGELENGTH*0.8f+online*Block.GAME_EDGELENGTH*0.6f
 		);
@@ -119,32 +124,39 @@ public class Turret extends AbstractPowerBlock {
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {
 					target = it.next();
-					vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
-					//check if can see target
-					Intersection intersect = gun.getFixedPos().rayMarching(
-						vecToTarget,
-						MAXDISTANCE,
-						null,
-						(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
-					);
+					if (target.getTeamId() != getTeamId()) {
+						vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
+						//check if can see target
+						Intersection intersect = gun.getFixedPos().rayMarching(
+							vecToTarget,
+							MAXDISTANCE,
+							null,
+							(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+						);
 
-					if (
-						intersect != null &&
-						gun.getFixedPos().distanceTo(intersect.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
-					) {
-						//can not see
-						target = null;
+						if (
+							intersect != null &&
+							gun.getFixedPos().distanceTo(intersect.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
+						) {
+							//can not see
+							target = null;
+						} else {
+							//can see target
+							if (
+								target != null
+								&& target.hasPosition()
+								&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
+							) {
+								//aim a bit higher
+								vecToTarget = target.getPosition().cpy().add(0, 0, Block.GAME_EDGELENGTH2).sub(gun.getFixedPos()).nor();
+								gun.setAimDir(vecToTarget);
+								gun.shoot();
+							}
+						}
 					}
 				}
 
-				if (
-					target != null
-					&& target.hasPosition()
-					&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
-				) {
-					gun.setAimDir(vecToTarget);
-					gun.shoot();
-				}
+				
 			}
 		} else {
 			gun.setLaserHidden(true);
@@ -161,6 +173,10 @@ public class Turret extends AbstractPowerBlock {
 	@Override
 	public boolean outgoingConnection(int id) {
 		return true;
+	}
+
+	private int getTeamId() {
+		return teamId;
 	}
 	
 }

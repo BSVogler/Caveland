@@ -455,12 +455,13 @@ public class GameView implements GameManager {
 			spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 			spriteBatch.begin();
 		}
-			WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
+		WE.getEngineView().getFont().setColor(Color.WHITE.cpy());
+		WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
         if (openbatch) spriteBatch.end();
     }
     
     /**
-     *Draw a string in a color. Starts a new spriteBatch.
+     *Draw a string in a color. Using open batch.
      * @param msg
      * @param xPos screen space
      * @param yPos screen space
@@ -468,14 +469,12 @@ public class GameView implements GameManager {
      */
     public void drawString(final String msg, final int xPos, final int yPos, final Color color) {
         spriteBatch.setColor(Color.WHITE.cpy());
-        spriteBatch.begin();
-			WE.getEngineView().getFont().setColor(color);
-            WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
-        spriteBatch.end();
+		WE.getEngineView().getFont().setColor(color);
+		WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
     }
     
     /**
-     *Draw multi-lines with this method
+     *Draw multi-lines with this method using an open batch.
      * @param text
      * @param xPos space from left
      * @param yPos space from top
@@ -484,9 +483,7 @@ public class GameView implements GameManager {
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
         WE.getEngineView().getFont().setColor(Color.BLACK);
         //WE.getEngineView().getFont().setScale(1.01f);
-        spriteBatch.begin();
         WE.getEngineView().getFont().draw(spriteBatch, text, xPos, yPos);
-        spriteBatch.end();
         
 //        WE.getEngineView().getFont().setColor(Color.WHITE);
 //        WE.getEngineView().getFont().setScale(1f);

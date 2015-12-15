@@ -436,8 +436,10 @@ public class LightEngine implements MapObserver {
 				}
             shR.end();
 
+			view.getSpriteBatch().begin();
             int y = Gdx.graphics.getHeight()-150;
-            view.drawText("Lat: "+sun.getHeight()+"\n"
+            view.drawText(
+				"Lat: "+sun.getHeight()+"\n"
 				+"Long: "+sun.getAzimuth()+"\n"
 				+"PowerSun: "+sun.getPower()*100+"%\n"
 				+"Normal:"+sun.getNormal(),
@@ -514,6 +516,7 @@ public class LightEngine implements MapObserver {
                 shR.rect(0, y, I_diff2*size, 8);
             
             shR.end();
+			view.getSpriteBatch().end();
             Gdx.gl20.glLineWidth(1);
         }
     }

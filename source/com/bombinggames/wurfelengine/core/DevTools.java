@@ -198,14 +198,11 @@ public class DevTools {
                     yPos-maxHeight+avg*3000
                 );
                 String deltaT = Float.toString(avg*1000);
-                if (deltaT.length()>4)
-                    view.drawString("d: "+deltaT.substring(0, 5), xPos, (int) (yPos-maxHeight+avg*3000),new Color(0, 0.3f, 0.8f, 0.7f));
-                else
-                    view.drawString("d: "+deltaT, xPos, (int) (yPos-maxHeight+avg*3000),new Color(0, 0.3f, 0.8f, 0.7f));
+				view.getSpriteBatch().begin();
+				view.drawString("d: " + deltaT.substring(0, 5), xPos, (int) (yPos - maxHeight + avg * 3000), new Color(0, 0.3f, 0.8f, 0.7f));
+				view.getSpriteBatch().end();
             }
-            
            
-
             shr.end(); 
             
             view.drawString(memoryText.toString(), xPos, yPos, true);

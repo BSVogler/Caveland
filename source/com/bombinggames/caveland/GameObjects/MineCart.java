@@ -40,7 +40,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	/**
 	 * empirical factor to match the back side with the rear
 	 */
-	private final transient static float frontOffset = 63;
+	private final transient static float FRONTOFFSET = 63;
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private transient float rollingCycle;
@@ -50,11 +50,11 @@ public class MineCart extends MovableEntity implements Interactable {
 	private transient PointLightSource lightsource;
 	
 	/**
-	 *
+	 * Has a front and back plate while the main part ist invisible.
 	 */
 	public MineCart() {
 		super((byte) 42, 0);
-		setName("MineCart");
+		setName("Minecart");
 		setOrientation(new Vector2(1, 1));
 		setObstacle(true);
 	}
@@ -73,6 +73,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
+	@SuppressWarnings("SuspiciousNameCombination")
 	public void update(float dt) {
 		super.update(dt);
 		
@@ -259,7 +260,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				return;
 			}
 			back.getPosition().setValues(pos);
-			front.getPosition().setValues(pos).add(0, frontOffset, 0);
+			front.getPosition().setValues(pos).add(0, FRONTOFFSET, 0);
 
 			//animation
 			//moving down left or up right

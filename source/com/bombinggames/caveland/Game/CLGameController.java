@@ -8,7 +8,6 @@ import com.bombinggames.caveland.GameObjects.Spaceship;
 import com.bombinggames.caveland.GameObjects.Vanya;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
-import com.bombinggames.wurfelengine.core.CVar.CVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -82,10 +81,11 @@ public class CLGameController extends Controller {
 	private void mapSetup() {
 		// register save cvars
 		CVarSystem saveCvars = WE.getCvars().getChildSystem().getChildSystem();
-		saveCvars.register(new IntCVar(0), "PlayerLastSaveX", CVar.CVarFlags.CVAR_ARCHIVE);
-		saveCvars.register(new IntCVar(0), "PlayerLastSaveY", CVar.CVarFlags.CVAR_ARCHIVE);
-		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ", CVar.CVarFlags.CVAR_ARCHIVE);
-		saveCvars.register(new BooleanCVar(false), "IntroCutsceneCompleted", CVar.CVarFlags.CVAR_ARCHIVE);
+		saveCvars.register(new IntCVar(0), "PlayerLastSaveX");
+		saveCvars.register(new IntCVar(0), "PlayerLastSaveY");
+		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ");
+		saveCvars.register(new BooleanCVar(false), "IntroCutsceneCompleted");
+		saveCvars.register(new IntCVar(0), "money");
 		saveCvars.load();
 		
 		spawnPlayers();

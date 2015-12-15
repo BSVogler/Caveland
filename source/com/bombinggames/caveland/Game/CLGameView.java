@@ -396,6 +396,7 @@ public class CLGameView extends GameView{
 		getSpriteBatch().end();
 		
 		useDefaultShader();
+		//getSpriteBatch().setColor(Color.WHITE.cpy());
 		getSpriteBatch().begin();
 		if (coop > -1) {
 			PlayerCompass pC = new PlayerCompass();
@@ -403,6 +404,12 @@ public class CLGameView extends GameView{
 			PlayerCompass pC2 = new PlayerCompass();
 			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
 		}
+		drawString(
+			"Money: "+WE.getCvars().getChildSystem().getChildSystem().getValueI("money"),
+			Gdx.graphics.getWidth()/2-50,
+			Gdx.graphics.getHeight()-100,
+			Color.WHITE.cpy()
+		);
 		
 		getSpriteBatch().end();
 		

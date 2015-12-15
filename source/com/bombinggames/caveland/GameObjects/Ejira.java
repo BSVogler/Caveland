@@ -352,6 +352,9 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			if (!money.isEmpty()) {
 				WE.SOUND.play("collectMoney");
 			}
+			
+			//increase money
+			WE.getCvars().getChildSystem().getChildSystem().get("money").setValue(WE.getCvars().getChildSystem().getChildSystem().getValueI("money")+money.size());
 
 			//auto heal
 			if (timeSinceDamage > 4000) {

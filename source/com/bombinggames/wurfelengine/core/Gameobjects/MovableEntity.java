@@ -994,7 +994,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * circular collision check
+	 * spherical collision check
 	 * @param ent
 	 * @return 
 	 */
@@ -1002,7 +1002,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (!collider || !ent.collider || ent == this) {
 			return false;
 		}
-		return getPosition().distanceTo(ent) < colissionRadius + ent.colissionRadius;
+		return getPosition().distanceToSquared(ent) < (colissionRadius + ent.colissionRadius)*(colissionRadius + ent.colissionRadius);
 	}
 
 	/***
@@ -1022,7 +1022,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * 
+	 * O(n) n:amount of entities
 	 * @param <type>
 	 * @param filter
 	 * @return 

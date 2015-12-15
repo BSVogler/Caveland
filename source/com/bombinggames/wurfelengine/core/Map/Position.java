@@ -119,13 +119,20 @@ public interface Position extends Serializable {
      */
     public abstract boolean isInMemoryArea();
 	
-	
 	/**
 	 *
 	 * @param object
 	 * @return the distance from this point to the other object
 	 */
 	public abstract float distanceTo(AbstractGameObject object);
+	
+	/**
+	 * Faster but result is squared.
+	 * @param object
+	 * @return the distance from this point to the other object squared
+	 * @see #distanceTo(AbstractGameObject) 
+	 */
+	public abstract float distanceToSquared(AbstractGameObject object);
 
 	/**
 	 *
@@ -133,6 +140,14 @@ public interface Position extends Serializable {
 	 * @return the distance from this pos to the other pos in game coordinates
 	 */
 	public abstract float distanceTo(Position pos);
+	
+	/**
+	 * Faster but result is squared.
+	 * @param object
+	 * @return the distance from this point to the other object squared
+	 * @see #distanceTo(Position) 
+	 */
+	public abstract float distanceToSquared(Position pos);
 
 	/**
 	 *  checks only x and y.

@@ -534,12 +534,12 @@ public class Point extends Vector3 implements Position {
 		
 	/**
 	 * 
-	 * @param point
+	 * @param pos
 	 * @return the distance from this point to the other point in game world coordinates
 	 */
 	@Override
-	public float distanceTo(Position point) {
-		return distanceTo(point.toPoint());
+	public float distanceTo(Position pos) {
+		return distanceTo(pos.toPoint());
 	}
 	
 	/**
@@ -565,10 +565,46 @@ public class Point extends Vector3 implements Position {
 	}
 
 	@Override
+	public float distanceToSquared(AbstractGameObject object) {
+		return distanceToSquared(object.getPosition().toPoint());
+	}
+	
+
+	@Override
+	public float distanceToSquared(Position pos) {
+		return distanceToSquared(pos.toPoint());
+	}
+	
+	/**
+	 * 
+	 * @param point
+	 * @return the distance from this point to the other point in game coordinates squared
+	 */
+	public float distanceToSquared(Point point) {
+		float dX = x - point.x;
+		float dY = y - point.y;
+		float dZ = z - point.z;
+		return dX * dX + dY * dY + dZ * dZ;
+	}
+	
+	/**
+	 * checks only x and y.
+	 *
+	 * @param object
+	 * @return the distance from this point to the other point only regarding
+	 * horizontal components.
+	 */
+	@Override
+	public float distanceToHorizontal(AbstractGameObject object) {
+		return distanceToHorizontal(object.getPosition().toPoint());
+	}
+	
+	
+	@Override
 	public float distanceToHorizontal(Position pos) {
 		return distanceToHorizontal(pos.toPoint());
 	}
-	
+
 	/**
 	 * checks only x and y.
 	 * @param point
@@ -581,17 +617,6 @@ public class Point extends Vector3 implements Position {
 		return (float) Math.sqrt(dX * dX + dY * dY);
 	}
 
-	/**
-	 * checks only x and y.
-	 *
-	 * @param object
-	 * @return the distance from this point to the other point only regarding
-	 * horizontal components.
-	 */
-	@Override
-	public float distanceToHorizontal(AbstractGameObject object) {
-		return distanceToHorizontal(object.getPosition().toPoint());
-	}
 
 
 	/**

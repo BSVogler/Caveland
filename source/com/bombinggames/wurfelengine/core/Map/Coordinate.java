@@ -508,6 +508,16 @@ public class Coordinate implements Position {
 	}
 
 	@Override
+	public float distanceToSquared(AbstractGameObject object) {
+		return toPoint().distanceToSquared(object);
+	}
+
+	@Override
+	public float distanceToSquared(Position pos) {
+		return toPoint().distanceToSquared(pos);
+	}
+
+	@Override
 	public float distanceToHorizontal(AbstractGameObject object) {
 		return toPoint().distanceToHorizontal(object);
 	}
@@ -617,6 +627,7 @@ public class Coordinate implements Position {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
 		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);

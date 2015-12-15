@@ -32,12 +32,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
+import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.Map.Position;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 /**
  * An entity is a game object which has the key feature that is has a position.
@@ -48,6 +50,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
+	public final int colissionRadius = GAME_DIAGLENGTH2/2;
 
 	/**
 	 * Registers engine entities in a map.
@@ -516,5 +519,52 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
 			}
 		}
+	}
+	
+	/***
+	 * get every entity which is colliding
+	 * @return 
+	 */
+	public ArrayList<AbstractEntity> getCollidingEntities(){
+		ArrayList<AbstractEntity> ents = Controller.getMap().getEntitys();
+		ArrayList<AbstractEntity> result = new ArrayList<>(5);//default size 5
+		for (AbstractEntity entity : ents) {
+			if (collidesWith(entity)) {
+				result.add(entity);
+			}
+		}
+
+		return result;
+	}
+	
+	/**
+	 * O(n) n:amount of entities.
+	 * ignores if is obstacle.
+	 * @param <type>
+	 * @param filter
+	 * @return 
+	 */
+	public <type extends AbstractEntity> ArrayList<type> getCollidingEntities(final Class<type> filter){
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
+
+		ArrayList<type> ents = Controller.getMap().getEntitys(filter);
+		for (type entity : ents) {
+			if (collidesWith(entity)) {
+				result.add(entity);
+			}
+		}
+
+		return result;
+	}
+	
+		/**
+	 * spherical collision check
+	 * @param ent
+	 * @return 
+	 */
+	public boolean collidesWith(AbstractEntity ent) {
+		if (!ent.hasPosition())
+			return false;
+		return getPosition().distanceToSquared(ent) < (colissionRadius + ent.colissionRadius)*(colissionRadius + ent.colissionRadius);
 	}
 }

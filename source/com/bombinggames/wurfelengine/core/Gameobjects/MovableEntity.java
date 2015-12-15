@@ -35,10 +35,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
@@ -61,7 +59,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         MovableEntity.waterSound = waterSound;
     }
 	
-	private final int colissionRadius = GAME_DIAGLENGTH2/2;
 	private final int spritesPerDir;
       
    /** Set value how fast the character brakes or slides. The higher the value, the more "slide". Can cause problems with running sound. Value &gt;1. If =0 friciton is disabled**/
@@ -163,8 +160,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	@Override
 	public AbstractEntity spawn(Point point) {
-		if (!hasPosition())
-			MessageManager.getInstance().addListener(this, Events.landed.getId());
+//		if (!hasPosition())
+//			MessageManager.getInstance().addListener(this, Events.landed.getId());
 		super.spawn(point);
 		return this;
 	}
@@ -257,34 +254,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			float t = dt * 0.001f; //t = time in s
 			
-			//move to movement goal
-			if (movementGoal != null) {
-				if (getPosition().dst2(movementGoal) < 20) {
-					movementGoal = null;
-				} else {
-					//movement logic
-					Vector3 d = new Vector3();
-
-					d.x = movementGoal.getX() - getPosition().getX();
-					d.y = movementGoal.getY() - getPosition().getY();
-					float movementSpeed;
-					if (isFloating()) {
-						d.z = movementGoal.getZ() - getPosition().getZ();
-						movementSpeed = getSpeed();
-					} else {
-						movementSpeed = getSpeedHor();
-					}
-					d.nor();//direction only
-					if (movementSpeed<2)
-						movementSpeed=2;
-					d.scl(movementSpeed);
-					if (!isFloating()) {
-						d.z = getMovement().z;
-					}
-
-					setMovement(d);// update the movement vector
-				}
-			}
+			moveToMovementGoal();
 			
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
@@ -313,51 +283,13 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			
 			newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			
-			if (movement.z > 0 && isOnCeil(newPos)) {
+			if (collider && movement.z > 0 && isOnCeil(newPos)) {
 				movement.z = 0;
 				newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
 			}
 			
 			//check collision with other entities
-			if (collider){
-				ArrayList<MovableEntity> nearbyEnts = getCollidingEntities();
-				for (MovableEntity ent : nearbyEnts) {
-					//if (this.collidesWith(ent))
-					if (ent.isObstacle() && getMass() > 0.5f) {
-						
-						Vector3 colVec3 = getPosition().sub(ent.getPosition());
-						Vector2 colVec2 = new Vector2(colVec3.x, colVec3.y);
-						float d = colVec2.len();
-						
-						// minimum translation distance to push balls apart after intersecting
-						Vector2 mtd = colVec2.scl(((colissionRadius + ent.colissionRadius) - d) / d);
-
-						// impact speed
-						float vn = getMovementHor().sub(ent.getMovementHor()).dot(mtd.nor());
-
-						// sphere intersecting but moving away from each other already
-						if (vn <= 0.0f) {
-							// resolve intersection --
-							// inverse mass quantities
-							float im1 = 1 / getMass();
-							float im2 = 1 / ent.getMass();
-							// collision impulse
-							Vector2 impulse = mtd.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
-
-							//hack to prevent ultra fast speed
-							if (impulse.len2() > 26){
-								impulse.nor().scl(5);
-							}
-							
-							// change in momentum
-							addMovement(impulse.scl(im1));
-							ent.addMovement(impulse.scl(-im2));
-
-							MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
-						}
-					}
-				}
-			}
+			checkEntColl();
 			
 			//apply movement
 			getPosition().setValues(newPos);
@@ -372,15 +304,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				if (movement.z < 0 && isOnGround()) {
 					
 					//stop movement
-					movement.z = 0;
+					if (collider)
+						movement.z = 0;
 
 					//set on ground level of blockl
-					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
 					//send event
 					MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
-					
 					if (!hasPosition()) {
-						return;//object may be destroyed during colission
+						return;//object may be destroyed during colission event
 					}
 					
 					if (!floating) {
@@ -389,6 +320,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 							return;//object may be destroyed during colission
 						}
 					}
+					if (collider)
+						getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
 				}
 				
 				Block block = getPosition().getBlock();
@@ -478,6 +411,36 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         }
     }
 	
+	
+	private void moveToMovementGoal(){
+		if (movementGoal != null) {
+			if (getPosition().dst2(movementGoal) < 20) {
+				movementGoal = null;
+			} else {
+				//movement logic
+				Vector3 d = new Vector3();
+
+				d.x = movementGoal.getX() - getPosition().getX();
+				d.y = movementGoal.getY() - getPosition().getY();
+				float movementSpeed;
+				if (isFloating()) {
+					d.z = movementGoal.getZ() - getPosition().getZ();
+					movementSpeed = getSpeed();
+				} else {
+					movementSpeed = getSpeedHor();
+				}
+				d.nor();//direction only
+				if (movementSpeed<2)
+					movementSpeed=2;
+				d.scl(movementSpeed);
+				if (!isFloating()) {
+					d.z = getMovement().z;
+				}
+
+				setMovement(d);// update the movement vector
+			}
+		}
+	}
 	/**
 	 *
 	 */
@@ -1020,54 +983,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		return movementGoal;
 	}
 	
-	/**
-	 * spherical collision check
-	 * @param ent
-	 * @return 
-	 */
-	public boolean collidesWith(MovableEntity ent) {
-		if (!collider || !ent.collider || ent == this) {
-			return false;
-		}
-		return getPosition().distanceToSquared(ent) < (colissionRadius + ent.colissionRadius)*(colissionRadius + ent.colissionRadius);
-	}
-
-	/***
-	 * get every entitiy which is colliding
-	 * @return 
-	 */
-	public ArrayList<MovableEntity> getCollidingEntities(){
-		ArrayList<MovableEntity> result = new ArrayList<>(5);//default size 5
-		ArrayList<MovableEntity> ents = Controller.getMap().getEntitys(MovableEntity.class);
-		for (MovableEntity entity : ents) {
-			if (collidesWith(entity)) {
-				result.add(entity);
-			}
-		}
-
-		return result;
-	}
-	
-	/**
-	 * O(n) n:amount of entities.
-	 * ignores if is obstacle.
-	 * @param <type>
-	 * @param filter
-	 * @return 
-	 */
-	public <type extends MovableEntity> ArrayList<type> getCollidingEntities(final Class<type> filter){
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
-
-		ArrayList<type> ents = Controller.getMap().getEntitys(filter);
-		for (type entity : ents) {
-			if (collidesWith(entity)) {
-				result.add(entity);
-			}
-		}
-
-		return result;
-	}
-	
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.landed.getId() && msg.sender == this) {
@@ -1088,5 +1003,45 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		}
 		
 		return false;
+	}
+
+	private void checkEntColl() {
+		ArrayList<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);
+		for (MovableEntity ent : nearbyEnts) {
+			//if (this.collidesWith(ent))
+			if (ent.isObstacle() && getMass() > 0.5f) {
+
+				Vector3 colVec3 = getPosition().sub(ent.getPosition());
+				Vector2 colVec2 = new Vector2(colVec3.x, colVec3.y);
+				float d = colVec2.len();
+
+				// minimum translation distance to push balls apart after intersecting
+				Vector2 mtd = colVec2.scl(((colissionRadius + ent.colissionRadius) - d) / d);
+
+				// impact speed
+				float vn = getMovementHor().sub(ent.getMovementHor()).dot(mtd.nor());
+
+				// sphere intersecting but moving away from each other already
+				if (vn <= 0.0f) {
+					// resolve intersection --
+					// inverse mass quantities
+					float im1 = 1 / getMass();
+					float im2 = 1 / ent.getMass();
+					// collision impulse
+					Vector2 impulse = mtd.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
+
+					//hack to prevent ultra fast speed
+					if (impulse.len2() > 26){
+						impulse.nor().scl(5);
+					}
+
+					// change in momentum
+					addMovement(impulse.scl(im1));
+					ent.addMovement(impulse.scl(-im2));
+
+					MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+				}
+			}
+		}
 	}
 }

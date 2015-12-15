@@ -670,7 +670,7 @@ public class Point extends Vector3 implements Position {
             if (
 				entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
-				&& distanceToHorizontal(entity.getPosition().toPoint()) < radius
+				&& distanceToHorizontal(entity.getPosition().toPoint()) < radius//TODO should use squared values for improved speed
 			) {
                 result.add((type) entity);//add it to list
             }

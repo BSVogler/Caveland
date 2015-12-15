@@ -13,12 +13,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -38,10 +38,10 @@ import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.Position;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * The Ejira has two particle emitter attached via glue. Itself is not saved but it's position. The content of the backpack is dropped on disposing and saved separately.
@@ -333,17 +333,9 @@ public class Ejira extends CLMovableEntity implements Controllable {
 					}
 				}
 			}
-
-			//loren anstupsen, push
-			for (MineCart mineCart : nearbyMc) {
-				if (mineCart.getPassenger() != this) {
-					//in movement direction plus a little push
-					mineCart.addMovement(getOrientation().scl(getMovementHor().len() + 5f));
-				}
-			}
 			
 			//collect collectibles
-			ArrayList<Collectible> collectibles = pos.toCoord().getEntitiesInside(Collectible.class);
+			ArrayList<Collectible> collectibles = getCollidingEntities(Collectible.class);
 			boolean playCollectSound = false;
 			for (Collectible collectible : collectibles) {
 				if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {

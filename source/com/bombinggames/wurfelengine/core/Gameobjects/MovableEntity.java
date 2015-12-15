@@ -324,10 +324,32 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				for (MovableEntity ent : nearbyEnts) {
 					//if (this.collidesWith(ent))
 					if (ent.isObstacle() && getMass() > 0.5f) {
-						//in movement direction plus a little push
-						ent.addMovement(getOrientation().scl(getMovementHor().len()/2f));
-						MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
-						newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t/2f));
+						
+						Vector3 colVec3 = getPosition().sub(ent.getPosition());
+						Vector2 colVec2 = new Vector2(colVec3.x, colVec3.y);
+						float d = colVec2.len();
+						
+						// minimum translation distance to push balls apart after intersecting
+						Vector2 mtd = colVec2.scl(((colissionRadius + ent.colissionRadius) - d) / d);
+
+						// impact speed
+						float vn = getMovementHor().sub(ent.getMovementHor()).dot(mtd.nor());
+
+						// sphere intersecting but moving away from each other already
+						if (vn <= 0.0f) {
+							// resolve intersection --
+							// inverse mass quantities
+							float im1 = 1 / getMass();
+							float im2 = 1 / ent.getMass();
+							// collision impulse
+							Vector2 impulse = mtd.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
+
+							// change in momentum
+							addMovement(impulse.scl(im1));
+							ent.addMovement(impulse.scl(-im2));
+
+							MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+						}
 					}
 				}
 			}

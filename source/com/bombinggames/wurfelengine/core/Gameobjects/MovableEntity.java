@@ -344,6 +344,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 							// collision impulse
 							Vector2 impulse = mtd.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
 
+							//hack to prevent ultra fast speed
+							if (impulse.len2() > 26){
+								impulse.nor().scl(5);
+							}
+							
 							// change in momentum
 							addMovement(impulse.scl(im1));
 							ent.addMovement(impulse.scl(-im2));

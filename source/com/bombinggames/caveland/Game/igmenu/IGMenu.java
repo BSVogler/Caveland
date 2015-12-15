@@ -68,8 +68,8 @@ public class IGMenu extends WidgetGroup {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				super.touchDown(event, x, y, pointer, button);
-				haken.setVisible(!WE.getCvars().getValueB("editorVisible"));
-				WE.getCvars().get("editorVisible").setValue(haken.isVisible());
+				haken.setVisible(!WE.getCVars().getValueB("editorVisible"));
+				WE.getCVars().get("editorVisible").setValue(haken.isVisible());
 				return true;
 			}
 		});
@@ -77,7 +77,7 @@ public class IGMenu extends WidgetGroup {
 		editor.setOriginX(editor.getWidth()/2f);
 		addActor(editor);
 		
-		haken.setVisible(WE.getCvars().getValueB("editorVisible"));
+		haken.setVisible(WE.getCVars().getValueB("editorVisible"));
 		haken.setPosition(150, 280);
 		addActor(haken);
 		

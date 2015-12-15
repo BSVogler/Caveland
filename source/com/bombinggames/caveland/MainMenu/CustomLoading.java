@@ -15,7 +15,7 @@ public class CustomLoading extends LoadingScreen {
 
 	@Override
 	public void customLoading(AssetManager manager) {
-		if (!WE.getCvars().getValueB("ignorePlayer")) {
+		if (!WE.getCVars().getValueB("ignorePlayer")) {
 			manager.load("com/bombinggames/caveland/playerSheet.txt", TextureAtlas.class);
 			manager.load("com/bombinggames/caveland/playerSheetNormal.png", Texture.class);
 		}

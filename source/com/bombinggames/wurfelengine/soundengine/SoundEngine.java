@@ -129,7 +129,7 @@ public class SoundEngine {
 					if (pan < -1) pan = -1;
 				}
 			} else {
-				volume *= WE.getCvars().getValueF("sound");
+				volume *= WE.getCVars().getValueF("sound");
 			}
 			if (volume >= 0.1) { //only play sound louder>10%
 				result.play(volume, 1, pan);
@@ -147,7 +147,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			return result.play(volume * WE.getCvars().getValueF("sound"));
+			return result.play(volume * WE.getCVars().getValueF("sound"));
 		}
 		return 0;
 	}
@@ -163,7 +163,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume, float pitch) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			return result.play(volume * WE.getCvars().getValueF("sound"), pitch, 0);
+			return result.play(volume * WE.getCVars().getValueF("sound"), pitch, 0);
 		}
 		return 0;
 	}
@@ -182,7 +182,7 @@ public class SoundEngine {
 	public long play(String identifier, float volume, float pitch, float pan) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			return result.play(volume * WE.getCvars().getValueF("sound"), pitch, pan);
+			return result.play(volume * WE.getCVars().getValueF("sound"), pitch, pan);
 		}
 		return 0;
 	}
@@ -197,7 +197,7 @@ public class SoundEngine {
 	public long loop(String identifier) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			return result.loop(WE.getCvars().getValueF("sound"));
+			return result.loop(WE.getCVars().getValueF("sound"));
 		}
 		return 0;
 	}
@@ -215,7 +215,7 @@ public class SoundEngine {
 	public long loop(String identifier, Position pos) {
 		Sound result = sounds.get(identifier);
 		if (result != null) {
-			long id = result.loop(WE.getCvars().getValueF("sound"));
+			long id = result.loop(WE.getCVars().getValueF("sound"));
 			playingLoops.add(new SoundInstance(this, result, id, pos));
 			return id;
 		}
@@ -282,7 +282,7 @@ public class SoundEngine {
 	 * @param dt
 	 */
 	public void update(float dt) {
-		float loudness = WE.getCvars().getValueF("music");
+		float loudness = WE.getCVars().getValueF("music");
 		if (loudness != getMusicLoudness()) {
 			setMusicLoudness(loudness);
 		}
@@ -320,13 +320,13 @@ public class SoundEngine {
 				}
 			}
 
-			int decay = WE.getCvars().getValueI("soundDecay");
+			int decay = WE.getCVars().getValueI("soundDecay");
 			volume = decay * Block.GAME_EDGELENGTH / (minDistance * minDistance + decay * Block.GAME_EDGELENGTH);//loose energy radial
 			if (volume > 1) {
 				volume = 1;
 			}
 		}
-		return volume * WE.getCvars().getValueF("sound");
+		return volume * WE.getCVars().getValueF("sound");
 	}
 
 	/**
@@ -378,7 +378,7 @@ public class SoundEngine {
 		if (Gdx.files.internal(path).exists()) {
 			this.music = Gdx.audio.newMusic(Gdx.files.internal(path));
 			music.setLooping(true);
-			setMusicLoudness(WE.getCvars().getValueF("music"));
+			setMusicLoudness(WE.getCVars().getValueF("music"));
 		}
 	}
 

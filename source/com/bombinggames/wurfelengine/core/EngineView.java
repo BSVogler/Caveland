@@ -89,7 +89,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		editorToggler.setVisible(WE.getCvars().getValueB("editorVisible"));
+		editorToggler.setVisible(WE.getCVars().getValueB("editorVisible"));
 		editorToggler.update(this, dt);
 	}
 	

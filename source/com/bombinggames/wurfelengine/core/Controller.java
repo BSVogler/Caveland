@@ -157,7 +157,7 @@ public class Controller implements GameManager, MapObserver {
 	private String mapName = "default";
 	private final Cursor cursor = new Cursor();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
-	private final Command[] commandHistory = new Command[WE.getCvars().getValueI("historySize")];
+	private final Command[] commandHistory = new Command[WE.getCVars().getValueI("historySize")];
 	private int lastCommandPos = -1;
 
 	/**
@@ -272,7 +272,7 @@ public class Controller implements GameManager, MapObserver {
 	public void init(int saveslot, String mapName) {
 		Gdx.app.log("Controller", "Initializing");
 
-		if (devtools == null && WE.getCvars().getValueB("DevMode")) {
+		if (devtools == null && WE.getCVars().getValueB("DevMode")) {
 			devtools = new DevTools(10, 50);
 		}
 		if (map == null) {
@@ -295,7 +295,7 @@ public class Controller implements GameManager, MapObserver {
 		}
 
 		//create default light engine
-		if (WE.getCvars().getValueB("enableLightEngine") && Controller.lightEngine == null) {
+		if (WE.getCVars().getValueB("enableLightEngine") && Controller.lightEngine == null) {
 			lightEngine = new LightEngine(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 			getMap().getOberservers().add(lightEngine);
 		}
@@ -309,7 +309,7 @@ public class Controller implements GameManager, MapObserver {
 	 * @param dt time since last call
 	 */
 	public void update(float dt) {
-		if (WE.getCvars().getValueB("DevMode")) {
+		if (WE.getCVars().getValueB("DevMode")) {
 			if (devtools == null) {
 				devtools = new DevTools(10, 50);
 			}
@@ -344,7 +344,7 @@ public class Controller implements GameManager, MapObserver {
 
 	@Override
 	public void onEnter() {
-		WE.getCvars().get("timespeed").setValue(1f);
+		WE.getCVars().get("timespeed").setValue(1f);
 	}
 
 	@Override

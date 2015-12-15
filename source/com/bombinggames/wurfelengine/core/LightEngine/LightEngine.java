@@ -89,21 +89,21 @@ public class LightEngine implements MapObserver {
      */
     public LightEngine() {
         sun = new GlobalLightSource(
-			-WE.getCvars().getValueI("worldSpinAngle"),
+			-WE.getCVars().getValueI("worldSpinAngle"),
 			0,
 			new Color(1, 1, 1, 1),
 			new Color(0.5f, 0.5f, 0.4f, 1),
 			60
 		);
 		moon = new GlobalLightSource(
-			180-WE.getCvars().getValueI("worldSpinAngle"),
+			180-WE.getCVars().getValueI("worldSpinAngle"),
 			0,
 			new Color(0.4f,0.8f,0.8f,1),
 			new Color(0, 0, 0.1f, 1),
 			45
 		);
 		
-		pixelBasedShading = WE.getCvars().getValueB("LEnormalMapRendering");
+		pixelBasedShading = WE.getCVars().getValueB("LEnormalMapRendering");
     }
 
     /**
@@ -387,11 +387,11 @@ public class LightEngine implements MapObserver {
                 shR.setColor(Color.ORANGE);
                 if ((sun.getMaxAngle()/90f-0.5f) != 0) {
                     shR.translate(posX, posY, 0);
-                    shR.rotate(0, 0, 1, -WE.getCvars().getValueI("worldSpinAngle"));
+                    shR.rotate(0, 0, 1, -WE.getCVars().getValueI("worldSpinAngle"));
                     shR.scale(1f, (sun.getMaxAngle()/90f-0.5f), 1f);
                     shR.circle(0, 0, size);
                     shR.scale(1f, (1/(sun.getMaxAngle()/90f-0.5f)), 1f);
-                    shR.rotate(0, 0, 1, +WE.getCvars().getValueI("worldSpinAngle"));
+                    shR.rotate(0, 0, 1, +WE.getCVars().getValueI("worldSpinAngle"));
                     shR.translate(-posX, -posY, 0);
                 } else {
                     shR.line(posX-size, posY, posX+size, posY);

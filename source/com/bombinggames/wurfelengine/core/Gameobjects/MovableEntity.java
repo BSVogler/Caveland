@@ -139,7 +139,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         this.spritesPerDir = spritesPerDir;
 		movement = new Vector3(0,0,0);
 		floating = false;
-		friction = WE.getCvars().getValueF("friction");
+		friction = WE.getCVars().getValueF("friction");
 		if (shadow) enableShadow();
    }
    
@@ -277,7 +277,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//apply gravity
 			if (!floating && !isOnGround()) {
 				addMovement(
-					new Vector3(0, 0, -WE.getCvars().getValueF("gravity") * t) //in m/s
+					new Vector3(0, 0, -WE.getCVars().getValueF("gravity") * t) //in m/s
 				);
 			}
 			
@@ -343,7 +343,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 					if(walkOnTheSpot > 0) {
 						walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
 					} else if (floating || isOnGround()) {
-						walkingCycle += dt * getSpeed() * WE.getCvars().getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
+						walkingCycle += dt * getSpeed() * WE.getCVars().getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
 					}
 
 					if (walkingCycle >= 1000) {

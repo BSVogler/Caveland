@@ -54,7 +54,7 @@ public class LoadingScreen extends WEScreen {
         // Add everything to be loaded, for instance:
         //WurfelEngine.getInstance().manager.load("com/bombinggames/Game/Blockimages/Spritesheet.png", Pixmap.class);
         manager.load(AbstractGameObject.getSpritesheetPath()+".txt", TextureAtlas.class);
-		if (WE.getCvars().getValueB("LEnormalMapRendering")) {
+		if (WE.getCVars().getValueB("LEnormalMapRendering")) {
 			if (!Gdx.files.internal(AbstractGameObject.getSpritesheetPath()+"Normal.png").exists()){
 				Gdx.app.error("Loading", "No Normal Map Texture Found. Must be located at spritesheet path and end with the suffix \"Normal.png\". You can disable the normal map rendering to prevent a crash.");
 			} else {
@@ -191,7 +191,7 @@ public class LoadingScreen extends WEScreen {
     public void dispose() {
 		Gdx.app.debug("LoadingScreen", "disposing");
         // Dispose the loading assets as we no longer need them
-		if (!(boolean) WE.getCvars().get("preventUnloading").getValue()) {
+		if (!(boolean) WE.getCVars().get("preventUnloading").getValue()) {
 			stage.dispose();
 			WE.getAssetManager().unload("com/bombinggames/wurfelengine/core/Loading/loading.txt");//causes programm to stop and show a white screen!
 		}

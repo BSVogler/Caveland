@@ -68,7 +68,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			spritesheet = WE.getAsset("com/bombinggames/caveland/playerSheet.txt");
 		}
 		textureDiff = spritesheet.getTextures().first();
-		if (WE.getCvars().getValueB("LEnormalMapRendering")) {
+		if (WE.getCVars().getValueB("LEnormalMapRendering")) {
 			textureNormal = WE.getAsset("com/bombinggames/caveland/playerSheetNormal.png");
 		}
 	}
@@ -173,7 +173,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		setName("Ejira");
 		setStepSound1Grass("step");
 		setJumpingSound("urfJump");
-		setFriction((float) WE.getCvars().get("playerfriction").getValue());
+		setFriction((float) WE.getCVars().get("playerfriction").getValue());
 		setDimensionZ((int) (Block.GAME_EDGELENGTH*1.4f));
 		setObstacle(true);
 		setMass(60f);
@@ -248,7 +248,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				}
 			} else {
 				if (usedLoadAttackInAir)
-					setFriction((float) WE.getCvars().get("playerfriction").getValue());
+					setFriction((float) WE.getCVars().get("playerfriction").getValue());
 				usedLoadAttackInAir = false;
 			}
 
@@ -263,7 +263,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				//some redundant code from movable to have a custom animation
 				if (playAnimation) {
 					if (action == 'w') {
-						animationCycle += dt * getSpeed() * (float) WE.getCvars().get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
+						animationCycle += dt * getSpeed() * (float) WE.getCVars().get("walkingAnimationSpeedCorrection").getValue();//multiply by factor to make the animation fit the movement speed
 					} else {
 						animationCycle += dt * 5;
 					}
@@ -358,7 +358,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			}
 			
 			//increase money
-			WE.getCvars().getChildSystem().getChildSystem().get("money").setValue(WE.getCvars().getChildSystem().getChildSystem().getValueI("money")+money.size());
+			WE.getCVarsSave().get("money").setValue(WE.getCVarsSave().getValueI("money")+money.size());
 
 			//auto heal
 			if (timeSinceDamage > 4000) {
@@ -486,11 +486,11 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		if (!WE.getCvars().getValueB("ignorePlayer") && textureNormal != null) {
+		if (!WE.getCVars().getValueB("ignorePlayer") && textureNormal != null) {
 			view.getSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.getCvars().get("LEnormalMapRendering").getValue()) {
+			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
 				textureNormal.bind(1);
 			}
 
@@ -544,7 +544,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			view.getSpriteBatch().end();
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.getCvars().get("LEnormalMapRendering").getValue()) {
+			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 
@@ -678,7 +678,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				addToHor(13f);//add 13 m/s in move direction
 
 			//start timer
-			timeTillImpact = WE.getCvars().getValueF("PlayerTimeTillImpact");
+			timeTillImpact = WE.getCVars().getValueF("PlayerTimeTillImpact");
 			attackDamage = damage;
 
 			if (!usedLoadAttackInAir){
@@ -754,7 +754,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 
 	@Override
 	public void takeDamage(byte value) {
-		if (!WE.getCvars().getValueB("godmode")) {
+		if (!WE.getCVars().getValueB("godmode")) {
 			super.takeDamage(value);
 			WE.SOUND.play("urfHurt");
 			if (getCamera() != null) {
@@ -839,7 +839,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			playAnimation('i');
 			WE.SOUND.play("release");
 			if (!isOnGround()) {
-				setFriction((float) WE.getCvars().get("playerfriction").getValue()/3f);
+				setFriction((float) WE.getCVars().get("playerfriction").getValue()/3f);
 				addMovement(new Vector3(getOrientation().cpy().scl(30),-2f));
 			} else {
 				addToHor(40f);
@@ -1131,7 +1131,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		super.handleMessage(msg);
 		if (msg.message == Events.damage.getId()) {
 			byte damage = ((Byte) msg.extraInfo);
-			if (!WE.getCvars().getValueB("godmode"))
+			if (!WE.getCVars().getValueB("godmode"))
 				takeDamage(damage);
 			if (getHealth() <= 0) {
 				//die

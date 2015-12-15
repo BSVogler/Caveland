@@ -30,7 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
-import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
 
 /**
  * An interface to register custom cvars for the map cvar system. They msut be registered before being updated by loading from file.
@@ -42,5 +42,5 @@ public interface CustomMapCVarRegistration {
 	 *
 	 * @param styem
 	 */
-	public void register(CVarSystem styem);
+	public void register(CVarSystemMap styem);
 }

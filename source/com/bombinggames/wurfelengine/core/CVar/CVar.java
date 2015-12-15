@@ -57,7 +57,7 @@ public abstract class CVar {
 	/**
 	 *
 	 */
-	protected CVarSystem parent;
+	protected AbstractCVarSystem parent;
 
 	/**
 	 *
@@ -116,7 +116,7 @@ public abstract class CVar {
 	 * @param parent
 	 * @since v1.4.2
 	 */
-	protected void register(String name, CVarFlags flag, CVarSystem parent){
+	protected void register(String name, CVarFlags flag, AbstractCVarSystem parent){
 		this.name = name;
 		this.flags = flag;
 		this.parent = parent;

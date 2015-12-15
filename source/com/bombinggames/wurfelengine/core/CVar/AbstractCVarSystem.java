@@ -31,10 +31,7 @@
 package com.bombinggames.wurfelengine.core.CVar;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
-import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
-import com.bombinggames.wurfelengine.core.Map.Map;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,18 +51,7 @@ import java.util.logging.Logger;
  *
  * @author Benedikt Vogler
  */
-public class CVarSystem {
-
-	private static CustomMapCVarRegistration customMapCVarsRegistration;
-
-	/**
-	 * Set a custom registration of cvars before they are loaded.
-	 *
-	 * @param mapcvars
-	 */
-	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration mapcvars) {
-		customMapCVarsRegistration = mapcvars;
-	}
+public abstract class AbstractCVarSystem {
 
 	/**
 	 * true if currently reading. Prevents saving
@@ -80,46 +66,13 @@ public class CVarSystem {
 	 */
 	private final HashMap<String, CVar> cvars = new HashMap<>(50);
 
-	private CVarSystem childSystem;//first level has map, second level has save
-
 	/**
 	 * you have to manually call {@link #load} to load from path.
 	 *
 	 * @param path path to the .cvar file
-	 * @param type 0 engine, 1 map, 2 save
 	 */
-	public CVarSystem(File path, int type) {
+	public AbstractCVarSystem(File path) {
 		this.fileSystemPath = path;
-		switch (type) {
-			case 0:
-				initEngineCVars();
-				break;
-			case 1:
-				initMapCVars();
-				break;
-			case 2:
-				initSaveCVars();
-				break;
-			default:
-				throw new Error("unknown type:"+type);
-		}
-	}
-
-	/**
-	 *
-	 * @param child
-	 */
-	public void setChildSystem(CVarSystem child) {
-		childSystem = child;
-	}
-
-	/**
-	 * at the second level is the map cvars. third level is saves
-	 *
-	 * @return
-	 */
-	public CVarSystem getChildSystem() {
-		return childSystem;
 	}
 
 	/**
@@ -315,120 +268,6 @@ public class CVarSystem {
 	 */
 	public void register(CVar cvar, String name) {
 		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
-	}
-
-	/*
-	 * initializes engine cvars
-	 */
-	public CVarSystem initEngineCVars() {
-		System.out.println("Init Engine CVars…");
-		register(new FloatCVar(9.81f), "gravity");
-		register(new IntCVar(-40), "worldSpinAngle");
-		register(new BooleanCVar(false), "loadPixmap");
-		register(new FloatCVar(0.00078125f), "LEazimutSpeed");
-		register(new BooleanCVar(false), "LEnormalMapRendering");
-		register(new IntCVar(1920), "renderResolutionWidth");
-		register(new BooleanCVar(true), "enableLightEngine");
-		register(new BooleanCVar(true), "enableFog");
-		register(new FloatCVar(0.3f), "fogR");
-		register(new FloatCVar(0.4f), "fogG");
-		register(new FloatCVar(1.0f), "fogB");
-		register(new FloatCVar(2f), "fogOffset");
-		register(new FloatCVar(0.17f), "fogFactor");
-		register(new BooleanCVar(false), "enableAutoShade");
-		register(new BooleanCVar(false), "enableScalePrototype");
-		register(new BooleanCVar(true), "enableHSD");
-		register(new BooleanCVar(true), "mapChunkSwitch");
-		register(new BooleanCVar(true), "mapUseChunks");
-		register(new BooleanCVar(false), "DevMode");
-		register(new BooleanCVar(false), "DevDebugRendering");
-		register(new BooleanCVar(false), "editorVisible");
-		register(new IntCVar(2), "groundBlockID");
-		register(new BooleanCVar(true), "preventUnloading");
-		register(new BooleanCVar(true), "shouldLoadMap");
-		register(new BooleanCVar(true), "clearBeforeRendering");
-		register(new IntCVar(Input.Keys.F1), "KeyConsole");
-		register(new IntCVar(Input.Keys.TAB), "KeySuggestion");
-		register(new FloatCVar(1.0f), "music");
-		register(new FloatCVar(1.0f), "sound");
-		register(new IntCVar(60), "limitFPS");
-		register(new BooleanCVar(true), "loadEntities");
-		register(new BooleanCVar(false), "enableMinimap");
-		register(new FloatCVar(1.0f), "walkingAnimationSpeedCorrection");
-		register(new FloatCVar(4.0f), "playerWalkingSpeed");
-		register(new FloatCVar(1f), "timeSpeed", CVar.CVarFlags.CVAR_VOLATILE);
-		register(new FloatCVar(0.001f), "friction");
-		register(new FloatCVar(0.03f), "playerfriction");
-		register(new IntCVar(6000), "soundDecay");
-		register(new IntCVar(4), "controllermacButtonStart");
-		register(new IntCVar(5), "controllermacButtonSelect");
-		register(new IntCVar(8), "controllermacButtonLB");
-		register(new IntCVar(9), "controllermacButtonRB");
-		register(new IntCVar(13), "controllermacButtonX");
-		register(new IntCVar(12), "controllermacButtonB");
-		register(new IntCVar(11), "controllermacButtonA");
-		register(new IntCVar(14), "controllermacButtonY");
-		register(new IntCVar(1), "controllermacAxisRT");
-		register(new IntCVar(2), "controllermacAxisLX");
-		register(new IntCVar(3), "controllermacAxisLY");
-		register(new IntCVar(3), "controllermacAxisLY");
-		register(new IntCVar(0), "controllerwindowsButtonA");
-		register(new IntCVar(1), "controllerwindowsButtonB");
-		register(new IntCVar(2), "controllerwindowsButtonX");
-		register(new IntCVar(3), "controllerwindowsButtonY");
-		register(new IntCVar(4), "controllerwindowsButtonLB");
-		register(new IntCVar(5), "controllerwindowsButtonRB");
-		register(new IntCVar(6), "controllerwindowsButtonSelect");
-		register(new IntCVar(7), "controllerwindowsButtonStart");
-		register(new IntCVar(0), "controllerwindowsAxisLY");
-		register(new IntCVar(1), "controllerwindowsAxisLX");
-		register(new IntCVar(3), "controllerwindowsAxisLT");
-		register(new IntCVar(4), "controllerwindowsAxisRT");
-		register(new IntCVar(4), "controllerlinuxButtonStart");
-		register(new IntCVar(5), "controllerlinuxButtonSelect");
-		register(new IntCVar(8), "controllerlinuxButtonLB");
-		register(new IntCVar(9), "controllerlinuxButtonRB");
-		register(new IntCVar(11), "controllerlinuxButtonX");
-		register(new IntCVar(12), "controllerlinuxButtonB");
-		register(new IntCVar(13), "controllerlinuxButtonA");
-		register(new IntCVar(14), "controllerlinuxButtonY");
-		register(new IntCVar(1), "controllerlinuxAxisRT");
-		register(new IntCVar(2), "controllerlinuxAxisLX");
-		register(new IntCVar(3), "controllerlinuxAxisLY");
-		register(new IntCVar(3), "controllerlinuxAxisLY");
-		register(new IntCVar(0), "resolutionX");
-		register(new IntCVar(0), "resolutionY");
-		register(new IntCVar(3500), "MaxSprites");
-		register(new IntCVar(90), "CameraLeapRadius");
-		register(new FloatCVar(0.5f), "ambientOcclusion");
-		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
-		register(new IntCVar(20), "historySize");
-		
-		return this;
-	}
-
-	public CVarSystem initMapCVars() {
-		//engine cvar registration
-		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
-		register(new IntCVar(1), "groundBlockID");
-		register(new IntCVar(10), "chunkBlocksX");
-		register(new IntCVar(40), "chunkBlocksY");
-		register(new IntCVar(10), "chunkBlocksZ");
-		register(new StringCVar(""), "mapname");
-		register(new StringCVar(""), "description");
-
-		//custom registration of cvars
-		if (customMapCVarsRegistration != null) {
-			customMapCVarsRegistration.register(this);
-		}
-		
-		return this;
-	}
-
-	public CVarSystem initSaveCVars() {
-		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
-		
-		return this;
 	}
 
 	/**

@@ -60,7 +60,7 @@ public class PlayerWithWeapon extends MovableEntity {
 		Gdx.app.debug("Player", "Creating player");
 
 		setObstacle(true);
-		setFriction((float) WE.getCvars().get("playerfriction").getValue());
+		setFriction((float) WE.getCVars().get("playerfriction").getValue());
 		setDimensionZ(height);
 	}
 

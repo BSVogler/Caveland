@@ -109,7 +109,7 @@ public class GlobalLightSource {
      * @return
      */
     public float getAzimuthSpeed() {
-        return WE.getCvars().getValueF("LEAzimutSpeed");
+        return WE.getCVars().getValueF("LEAzimutSpeed");
     }
 
     /**
@@ -165,7 +165,7 @@ public class GlobalLightSource {
 		if (!fixedPosition)
 			if (getAzimuthSpeed() != 0) {
 				azimuth += getAzimuthSpeed() * dt;
-				height = (float) (amplitude * Math.sin((azimuth + WE.getCvars().getValueI("worldSpinAngle")) * Math.PI / 180));
+				height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
 			}
             
         //brightness calculation

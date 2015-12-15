@@ -39,7 +39,8 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -195,9 +196,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
     public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
 		this.generator = generator;
-		CVarSystem cvars = new CVarSystem(new File(directory + "/meta.wecvar"),1);
+		CVarSystemMap cvars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
 
-		WE.getCvars().setChildSystem(cvars);
+		WE.getCVars().setMapCVars(cvars);
 
 		cvars.load();
 
@@ -218,7 +219,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt time in ms
 	 */
 	public void update(float dt) {
-		dt *= WE.getCvars().getValueF("timespeed");//aplly game speed
+		dt *= WE.getCVars().getValueF("timespeed");//aplly game speed
 
 		//oldschool loop to allow new chunks during update
 		for (int i = 0; i < data.size(); i++) {
@@ -249,7 +250,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt
 	 */
 	public void postUpdate(float dt) {
-		if (WE.getCvars().getValueB("mapChunkSwitch")) {
+		if (WE.getCVars().getValueB("mapChunkSwitch")) {
 			//some custom garbage collection, removes chunks
 			for (int i = 0; i < data.size(); i++) {
 				data.get(i).resetCameraAccesCounter();
@@ -676,10 +677,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		WE.getCvars().getChildSystem().setChildSystem(
-			new CVarSystem(
-				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar"),
-				2
+		WE.getCVars().getMapCVars().setSaveCVars(
+			new CVarSystemSave(
+				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
 	}
@@ -774,7 +774,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Block getNewGroundBlockInstance() {
-		return Block.getInstance((byte) WE.getCvars().getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
+		return Block.getInstance((byte) WE.getCVars().getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	}
 
 	/**

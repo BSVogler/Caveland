@@ -35,7 +35,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		setFloating(false);
 		enableShadow();
 		//setSpeed(0.2f);
-		setFriction(WE.getCvars().getValueF("friction"));
+		setFriction(WE.getCVars().getValueF("friction"));
 		setIndestructible(true);
 		int[] animationsteps = new int[def.getAnimationSteps()];
 		for (int i = 0; i < animationsteps.length; i++) {

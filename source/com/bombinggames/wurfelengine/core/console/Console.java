@@ -223,19 +223,19 @@ public class Console {
        timelastupdate += dt;
        
         //open close console/chat box. Update is called when the console is not active. The StageInputProcessor oly when it is ipen
-        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeyConsole"))) {
+        if (!keyConsoleDown && Gdx.input.isKeyPressed(WE.getCVars().getValueI("KeyConsole"))) {
             setActive(Modes.Console, !textinput.isVisible());//toggle
         }
-        keyConsoleDown = Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeyConsole"));
+        keyConsoleDown = Gdx.input.isKeyPressed(WE.getCVars().getValueI("KeyConsole"));
 		
 		if (
 			!keySuggestionDown
-			&& Gdx.input.isKeyPressed( WE.getCvars().getValueI("KeySuggestion") )
+			&& Gdx.input.isKeyPressed( WE.getCVars().getValueI("KeySuggestion") )
 			&& isActive()
 		) {
             autoComplete();
         }
-        keySuggestionDown = Gdx.input.isKeyPressed(WE.getCvars().getValueI("KeySuggestion"));
+        keySuggestionDown = Gdx.input.isKeyPressed(WE.getCVars().getValueI("KeySuggestion"));
 		
 
 		//decrease importance every 30ms
@@ -378,12 +378,12 @@ public class Console {
 	
 				//suggest cvar
 				if ("".equals(path)) {
-					suggestions.addAll(WE.getCvars().getSuggestions(commandTillCursor));
+					suggestions.addAll(WE.getCVars().getSuggestions(commandTillCursor));
 				} else {
 					if (path.contains(":"))
-						suggestions = WE.getLoadedCVarSystemSave().getSuggestions(commandTillCursor);
+						suggestions = WE.getCVarsSave().getSuggestions(commandTillCursor);
 					else
-						suggestions = WE.getLoadedCVarSystemMap().getSuggestions(commandTillCursor);
+						suggestions = WE.getCVarsMap().getSuggestions(commandTillCursor);
 				}
 			}
 		}
@@ -491,12 +491,12 @@ public class Console {
 		//if not a command try setting a cvar
 		CVar cvar;
 		if ("".equals(path)) {
-			cvar = WE.getCvars().get(first);
+			cvar = WE.getCVars().get(first);
 		} else {
 			if (!path.contains(":"))
-				cvar = WE.getCvars().getChildSystem().get(first);
+				cvar = WE.getCVarsMap().get(first);
 			else 
-				cvar = WE.getCvars().getChildSystem().getChildSystem().get(first);
+				cvar = WE.getCVarsSave().get(first);
 		}
 		
 		if (cvar != null) {//if registered

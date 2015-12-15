@@ -47,7 +47,9 @@ import com.badlogic.gdx.math.Interpolation;
 import com.bombinggames.wurfelengine.core.AbstractMainMenu;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMenuItem;
-import com.bombinggames.wurfelengine.core.CVar.CVarSystem;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemRoot;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.EngineView;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -63,9 +65,8 @@ import java.util.ArrayList;
 
 /**
  * The main class of the engine. To create a new engine use
- * {@link WE#launch(String, String[])} The Wurfel Engine
- * needs Java &gt;= v1.8 and the API libGDX v1.6.2 (may work with older
- * versions).
+ * {@link WE#launch(String, String[])} The Wurfel Engine needs Java &gt;= v1.8
+ * and the API libGDX v1.6.2 (may work with older versions).
  *
  * @author Benedikt S. Vogler
  * @version 1.6.7
@@ -84,10 +85,10 @@ public class WE {
 	/**
 	 * The CVar system used by the engine.
 	 */
-	private final static CVarSystem CVARS = new CVarSystem(new File(WORKDIR + "/engine.wecvars"),0);
+	private final static CVarSystemRoot CVARS = new CVarSystemRoot(new File(WORKDIR + "/engine.wecvars"));
 	/**
-     *The sound engine managing the sfx.
-     */
+	 * The sound engine managing the sfx.
+	 */
 	public static final SoundEngine SOUND = new SoundEngine();
 	private static final WEGame game = new WEGame();
 	private static GameplayScreen gameplayScreen;
@@ -136,8 +137,8 @@ public class WE {
 	}
 
 	/**
-	 * 
-	 * @param internalPath 
+	 *
+	 * @param internalPath
 	 */
 	public static void addIcon(String internalPath) {
 		iconPath = internalPath;
@@ -157,7 +158,7 @@ public class WE {
 		config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
 		config.fullscreen = true;
 		config.vSyncEnabled = false;//if set to true the FPS is locked to 60
-		
+
 		//arguments
 		if (args.length > 0) {
 			//look if contains launch parameters
@@ -190,11 +191,11 @@ public class WE {
 						System.exit(0);
 						return;
 					default:
-						System.out.println("Unknown launch parameter "+args[i]);
+						System.out.println("Unknown launch parameter " + args[i]);
 				}
 			}
 		}
-		
+
 		//load cvars
 		CVARS.load();
 
@@ -209,7 +210,7 @@ public class WE {
 		if (iconPath != null) {
 			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
 		}
-		
+
 		//load saved resolution
 		int width = CVARS.getValueI("resolutionx");
 		if (width > 0 && config.width == 0) {
@@ -220,7 +221,7 @@ public class WE {
 		if (height > 0 && config.height == 0) {
 			config.height = CVARS.getValueI("resolutiony");
 		}
-		
+
 		//find dpm with biggest width
 		Graphics.DisplayMode[] dpms = LwjglApplicationConfiguration.getDisplayModes();
 		Graphics.DisplayMode maxDPM = dpms[0];
@@ -229,13 +230,15 @@ public class WE {
 				maxDPM = dpm;
 			}
 		}
-		
+
 		//limit resolution to maximum
-		if (config.width > maxDPM.width)
+		if (config.width > maxDPM.width) {
 			config.width = maxDPM.width;
-		
-		if (config.height > maxDPM.height)
+		}
+
+		if (config.height > maxDPM.height) {
 			config.height = maxDPM.height;
+		}
 
 		config.title = title + " " + config.width + "x" + config.height;
 
@@ -314,7 +317,7 @@ public class WE {
 		Controller.getMap().disposeEntities();
 		controller.init();
 		view.init(controller, gameplayScreen.getView());
-		
+
 		gameplayScreen.setView(view);
 		//enter
 		controller.enter();
@@ -360,7 +363,7 @@ public class WE {
 		if (!view.isInitalized()) {
 			view.init(controller, gameplayScreen.getView());
 		}
-		
+
 		gameplayScreen.setView(view);
 		//enter
 		view.enter();
@@ -369,18 +372,10 @@ public class WE {
 
 	/**
 	 *
-	 * @return
-	 */
-	public static CVarSystem getCvars() {
-		return CVARS;
-	}
-	
-	/**
-	 * 
 	 * @param view
 	 * @param editor true if this is the editor setup
 	 */
-	public static void switchView(final GameView view, boolean editor){
+	public static void switchView(final GameView view, boolean editor) {
 		Gdx.app.debug("Wurfel Engine", "View switch: " + view.toString());
 		inEditor = editor;
 		if (!inEditor) {
@@ -401,7 +396,8 @@ public class WE {
 	}
 
 	/**
-	 * Switch into the map editor. If the editor is already running it will restart it.
+	 * Switch into the map editor. If the editor is already running it will
+	 * restart it.
 	 *
 	 */
 	public static void startEditor() {
@@ -557,7 +553,7 @@ public class WE {
 		console.update(dt);
 		engineView.update(dt);
 		SOUND.update(dt);
-		
+
 		engineView.getStage().act(dt);
 		engineView.getStage().draw();
 	}
@@ -570,22 +566,30 @@ public class WE {
 	public static GameplayScreen getGameplay() {
 		return gameplayScreen;
 	}
-
+	
 	/**
 	 *
 	 * @return
 	 */
-	public static CVarSystem getLoadedCVarSystemMap() {
-		return CVARS.getChildSystem();
+	public static CVarSystemRoot getCVars() {
+		return CVARS;
 	}
 
 	/**
 	 *
 	 * @return
 	 */
-	public static CVarSystem getLoadedCVarSystemSave() {
-		if (CVARS.getChildSystem() != null) {
-			return CVARS.getChildSystem().getChildSystem();
+	public static CVarSystemMap getCVarsMap() {
+		return CVARS.getMapCVars();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public static CVarSystemSave getCVarsSave() {
+		if (CVARS.getSaveCVars() != null) {
+			return CVARS.getSaveCVars();
 		}
 		return null;
 	}

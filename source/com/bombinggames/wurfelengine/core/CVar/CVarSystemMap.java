@@ -1,12 +1,12 @@
 /*
+ * If this software is used for a game the official „Wurfel Engine“ logo or its name must be visible in an intro screen or main menu.
+ *
  * Copyright 2015 Benedikt Vogler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
- *   visible in an intro screen or main menu.
  * * Redistributions of source code must retain the above copyright notice, 
  *   this list of conditions and the following disclaimer.
  * * Redistributions in binary form must reproduce the above copyright notice, 
@@ -28,32 +28,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core;
+package com.bombinggames.wurfelengine.core.CVar;
 
-import com.badlogic.gdx.Screen;
-import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Map.CustomMapCVarRegistration;
+import com.bombinggames.wurfelengine.core.Map.Map;
+import java.io.File;
 
 /**
- *A WEScreen is a {@link Screen} which supports Wurfel Engine features liek the {@link Console}.
+ *
  * @author Benedikt Vogler
  */
-public abstract class WEScreen implements Screen {
+public class CVarSystemMap extends AbstractCVarSystem {
+	
+	private static CustomMapCVarRegistration customRegistration;
 
-	@Override
-	@SuppressWarnings("AssignmentToMethodParameter")
-	public final void render(float delta){
-		delta *= 1000;//to ms
-		if (delta >= WE.getCVars().getValueF("MaxDelta")) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
-		renderImpl(delta);
-		WE.updateAndRender(delta);
+	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration customMapRegistration) {
+		customRegistration = customMapRegistration;
 	}
-	
-	/**
-	 * Main method which get's called every frame. Should be split up in data managment and data displaying.
-	 * @param dt time in ms 
-	 */
-	public abstract void renderImpl(float dt);
 
+	private CVarSystemSave saveSystem;
 	
+	
+	public CVarSystemMap(File path) {
+		super(path);
+		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(1), "groundBlockID");
+		register(new IntCVar(10), "chunkBlocksX");
+		register(new IntCVar(40), "chunkBlocksY");
+		register(new IntCVar(10), "chunkBlocksZ");
+		register(new StringCVar(""), "mapname");
+		register(new StringCVar(""), "description");
+		
+		if (customRegistration != null) {
+			customRegistration.register(this);
+		}
+	}
+
+	public CVarSystemSave getSaveCVars() {
+		return saveSystem;
+	}
+
+	public void setSaveCVars(CVarSystemSave saveSystem) {
+		this.saveSystem = saveSystem;
+	}
 	
 }

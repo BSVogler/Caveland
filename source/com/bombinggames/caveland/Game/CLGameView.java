@@ -65,7 +65,7 @@ public class CLGameView extends GameView{
         super.init(controller, oldView);
         Gdx.app.debug("CustomGameView", "Initializing");
 		
-		if (!WE.getCvars().getValueB("ignorePlayer"))
+		if (!WE.getCVars().getValueB("ignorePlayer"))
 			Ejira.loadSheet();
 		
 		//register Sounds
@@ -99,7 +99,7 @@ public class CLGameView extends GameView{
 		
 		if (coop > -1){//it is a coop game
 			Camera camera0;
-			if (WE.getCvars().getValueB("coopVerticalSplitScreen")) {
+			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
 				camera0  = new Camera(
 					getPlayer(0),
 					0, //left
@@ -108,7 +108,7 @@ public class CLGameView extends GameView{
 					Gdx.graphics.getHeight(),//height
 					this
 				);
-				camera0.setInternalRenderResolution( WE.getCvars().getValueI("renderResolutionWidth")/2);
+				camera0.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
 			} else {
 				camera0  = new Camera(
 					getPlayer(0),
@@ -119,12 +119,12 @@ public class CLGameView extends GameView{
 					this
 				);
 			}
-			camera0.setZoom(WE.getCvars().getValueF("coopZoom"));
+			camera0.setZoom(WE.getCVars().getValueF("coopZoom"));
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 			
 			Camera camera1;
-			if (WE.getCvars().getValueB("coopVerticalSplitScreen")) {
+			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
 				camera1 = new Camera(
 					getPlayer(1),
 					Gdx.graphics.getWidth()/2,
@@ -133,7 +133,7 @@ public class CLGameView extends GameView{
 					Gdx.graphics.getHeight(),
 					this
 				);
-				camera1.setInternalRenderResolution( WE.getCvars().getValueI("renderResolutionWidth")/2);
+				camera1.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
 			} else {
 				camera1 = new Camera(
 					getPlayer(1),
@@ -144,7 +144,7 @@ public class CLGameView extends GameView{
 					this
 				);
 			}
-			camera1.setZoom(WE.getCvars().getValueF("coopZoom"));
+			camera1.setZoom(WE.getCVars().getValueF("coopZoom"));
 			addCamera(camera1);
 			getPlayer(1).setCamera(camera1);
 		} else {
@@ -262,13 +262,13 @@ public class CLGameView extends GameView{
 			}
 		}
 		
-		if (WE.getCvars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
+		if (WE.getCVars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
 			//todo should compare in view space
 			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < Block.GAME_EDGELENGTH*5){
 				if (!getCameras().get(0).isFullWindow())
 					getCameras().get(0).setFullWindow(true);
 				getCameras().get(0).setCenter((Point) getPlayer(0).getPosition().cpy().lerp(getPlayer(1).getPosition(), 0.5f));
-				getCameras().get(0).setInternalRenderResolution( WE.getCvars().getValueI("renderResolutionWidth"));
+				getCameras().get(0).setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth"));
 				getCameras().get(1).setActive(false);
 			} else if (getCameras().get(0).isFullWindow()) {
 				getCameras().get(0).setFocusEntity(getPlayer(0));
@@ -278,7 +278,7 @@ public class CLGameView extends GameView{
 					Gdx.graphics.getWidth()/2,
 					Gdx.graphics.getHeight()
 				);
-				getCameras().get(0).setInternalRenderResolution( WE.getCvars().getValueI("renderResolutionWidth")/2);
+				getCameras().get(0).setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
 			}
 		}
 		
@@ -290,7 +290,7 @@ public class CLGameView extends GameView{
 					input.isKeyPressed(Input.Keys.S),
 					input.isKeyPressed(Input.Keys.A),
 					input.isKeyPressed(Input.Keys.D),
-					WE.getCvars().getValueF("playerWalkingSpeed")*(WE.getCvars().getValueB("devmode") && input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+					WE.getCVars().getValueF("playerWalkingSpeed")*(WE.getCVars().getValueB("devmode") && input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
 					dt
 				);
 			} else {
@@ -313,7 +313,7 @@ public class CLGameView extends GameView{
 					input.isKeyPressed(Input.Keys.DOWN),
 					input.isKeyPressed(Input.Keys.LEFT),
 					input.isKeyPressed(Input.Keys.RIGHT),
-					WE.getCvars().getValueF("playerWalkingSpeed"),
+					WE.getCVars().getValueF("playerWalkingSpeed"),
 					dt
 				);
 			}
@@ -321,14 +321,14 @@ public class CLGameView extends GameView{
 
 		if (controllerListenerA != null) {//first controller used
 			if (controllerListenerA.speed > 0){
-				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCvars().getValueF("playerWalkingSpeed")*controllerListenerA.speed)
+				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed")*controllerListenerA.speed)
 				);
 			}
 		}
 		
 		if (controllerListenerB != null) {//second controller used
 			if (controllerListenerB.speed > 0){
-				getPlayer(controllerListenerB.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCvars().getValueF("playerWalkingSpeed")*controllerListenerB.speed)
+				getPlayer(controllerListenerB.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed")*controllerListenerB.speed)
 				);
 			}
 		}
@@ -357,12 +357,12 @@ public class CLGameView extends GameView{
 			getPlayer(1).prepareThrow();
 		}
 		
-		if (throwDown[0] >= WE.getCvars().getValueF("playerItemDropTime")) {
+		if (throwDown[0] >= WE.getCVars().getValueF("playerItemDropTime")) {
 			getPlayer(0).dropItem();
 			throwDown[0] = -1;
 		}
 
-		if (throwDown[1] >= WE.getCvars().getValueF("playerItemDropTime")) {
+		if (throwDown[1] >= WE.getCVars().getValueF("playerItemDropTime")) {
 			getPlayer(1).dropItem();
 			throwDown[1] = -1;
 		}
@@ -406,7 +406,7 @@ public class CLGameView extends GameView{
 			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
 		}
 		drawString(
-			"Money: "+WE.getCvars().getChildSystem().getChildSystem().getValueI("money"),
+			"Money: "+WE.getCVarsSave().getValueI("money"),
 			Gdx.graphics.getWidth()/2-50,
 			Gdx.graphics.getHeight()-100,
 			Color.WHITE.cpy()
@@ -469,7 +469,7 @@ public class CLGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonB")) {//B
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonB")) {//B
 				if (parent.openDialogue[id] != null) {
 					parent.toogleCrafting(id);
 				} else {
@@ -477,60 +477,60 @@ public class CLGameView extends GameView{
 				}
 			}
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonA")) { //A
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonA")) { //A
 				if (parent.openDialogue[id] != null)
 					parent.openDialogue[id].confirm(parent.getPlayer(id));
 				else
 					player.attack();
 			}
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonX")){//X
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonX")){//X
 				if (id==0)
 					parent.throwDown[0] = 0;
 				else
 					parent.throwDown[1] = 0;
 			}
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonY")) //14=Y
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonY")) //14=Y
 				if (id==0)
 					parent.inventoryDownP1 = 0;
 				else
 					parent.inventoryDownP2 = 0;
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonLB"))//LB
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonLB"))//LB
 				player.getInventory().switchItems(true);
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonRB"))//RB
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonRB"))//RB
 				player.getInventory().switchItems(false);
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonSelect")) //Select
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonSelect")) //Select
 				parent.toogleCrafting(id);
 			
-			if (buttonCode == WE.getCvars().getValueI("controller"+OS+"ButtonStart"))
+			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonStart"))
                 WE.showMainMenu();
 			return false;
 		}
 
 		@Override
 		public boolean buttonUp(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.getCvars().getValueI("controller" + OS + "ButtonX")) {
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonX")) {
 				if (id == 0) {
 					parent.throwDown[0] = -1;
 				} else {
 					parent.throwDown[1] = -1;
 				}
-				if (throwDown[player.getPlayerNumber()-1] >= WE.getCvars().getValueF("playerItemDropTime")) {
+				if (throwDown[player.getPlayerNumber()-1] >= WE.getCVars().getValueF("playerItemDropTime")) {
 					player.throwItem();
 				}
 			}
 			
-			if (buttonCode==WE.getCvars().getValueI("controller"+OS+"ButtonY"))
+			if (buttonCode==WE.getCVars().getValueI("controller"+OS+"ButtonY"))
 				if (id==0)
 					parent.inventoryDownP1 = -1;
 				else
 					parent.inventoryDownP2 = -1;
 			
-			if (buttonCode==WE.getCvars().getValueI("controller"+OS+"ButtonA"))
+			if (buttonCode==WE.getCVars().getValueI("controller"+OS+"ButtonA"))
 				player.attackLoadingStopped();
 			
 			return true;
@@ -538,7 +538,7 @@ public class CLGameView extends GameView{
 
 		@Override
 		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
-			if (axisCode == WE.getCvars().getValueI("controller"+OS+"AxisRT")) {//RT
+			if (axisCode == WE.getCVars().getValueI("controller"+OS+"AxisRT")) {//RT
 				//button down
 				if (oldRTvalue < -0.75f && value>-0.75f) {
 					if (id==0)
@@ -556,8 +556,8 @@ public class CLGameView extends GameView{
 				oldRTvalue=value;
 			} else {
 			
-				float xDeflec = controller.getAxis(WE.getCvars().getValueI("controller"+OS+"AxisLX"));
-				float yDeflec = controller.getAxis(WE.getCvars().getValueI("controller"+OS+"AxisLY"));
+				float xDeflec = controller.getAxis(WE.getCVars().getValueI("controller"+OS+"AxisLX"));
+				float yDeflec = controller.getAxis(WE.getCVars().getValueI("controller"+OS+"AxisLY"));
 				speed = (float) Math.sqrt(
 					 xDeflec*xDeflec
 					+yDeflec*yDeflec
@@ -576,7 +576,7 @@ public class CLGameView extends GameView{
 				}
 
 				player.setSpeedHorizontal(
-					(WE.getCvars().getValueF("playerWalkingSpeed")*speed)
+					(WE.getCVars().getValueF("playerWalkingSpeed")*speed)
 				);
 			
 			}
@@ -915,13 +915,13 @@ public class CLGameView extends GameView{
 	 *
 	 */
 	public void pauseTime(){
-		WE.getCvars().get("timespeed").setValue(0f);
+		WE.getCVars().get("timespeed").setValue(0f);
 	}
 	
 	/**
 	 *
 	 */
 	public void continueTime(){
-		WE.getCvars().get("timespeed").setValue(1f);
+		WE.getCVars().get("timespeed").setValue(1f);
 	}
 }

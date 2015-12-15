@@ -35,9 +35,9 @@ import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.Position;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * An entity is a game object which has the key feature that is has a position.

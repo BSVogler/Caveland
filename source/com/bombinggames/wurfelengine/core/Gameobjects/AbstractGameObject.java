@@ -43,8 +43,8 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import java.io.Serializable;
 import com.bombinggames.wurfelengine.core.Map.Position;
+import java.io.Serializable;
 
 /**
  *An AbstractGameObject is something wich can be found in the game world.

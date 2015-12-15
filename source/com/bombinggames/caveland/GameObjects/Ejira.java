@@ -158,6 +158,10 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	private transient final ParticleEmitter emitter2;
 	private PointLightSource lightsource;
 	private transient AimBand interactionAimband;
+	/**
+	 * Orientation of the sprite. Does not turn isntantly like the orientation.
+	 */
+	private final Vector2 spriteOrientation = new Vector2(1, 0);
 	
 	/**
 	 * creates a new Ejira
@@ -451,9 +455,30 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			if (interactionAimband != null) {
 				interactionAimband.update();
 			}
+			
+			float turnSpeed = getSpeedHor()*dt*0.002f;
+			slerp(spriteOrientation,getOrientation(),turnSpeed);
 		}
 	}
 
+	private Vector2 slerp(Vector2 start, Vector2 end, float percent) {
+		// Dot product - the cosine of the angle between 2 vectors.
+		float dot = start.dot(end);
+		if (dot < -1) {
+			dot = -1;
+		}
+		if (dot > 1) {
+			dot = 1;
+		}
+		// Acos(dot) returns the angle between start and end,
+		// And multiplying that by percent returns the angle between
+		// start and the final result.
+		float theta = (float) (Math.acos(dot) * percent);
+		Vector2 relVec = end.sub(start.cpy().scl(dot));
+		relVec.nor();
+		// The final result.
+		return ((start.scl((float) Math.cos(theta)).add((relVec.scl((float) Math.sin(theta))))));
+	}
 	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
@@ -597,6 +622,11 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		} else {
 			WE.SOUND.play("throwFail");
 		}
+	}
+
+	@Override
+	public Vector3 getAiming() {
+		return new Vector3(spriteOrientation, 0);
 	}
 	
 	/**
@@ -850,27 +880,37 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		if (dir.len2()>0)
 			setOrientation(dir);
 		
+		boolean standingStill = false;
+		if (getSpeedHor() < 0.1f)
+			standingStill = true;
+		
 		//if loading attack keep movement
-		if (loadAttack == Float.NEGATIVE_INFINITY && !performingPowerAttack && !prepareThrow) {
-			if (up || down || left || right) {
+		if (up || down || left || right) {
+			if (loadAttack == Float.NEGATIVE_INFINITY && !performingPowerAttack && !prepareThrow) {
+			//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
+			//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
+			//			float accelaration =30;//in m/s^2
+			//			dir.scl(accelaration*dt/1000f);//in m/s
+			//check if will reach max velocity
+			//			Vector3 res = getMovement().add(dir.cpy());
+			//			res.z=0;
+			//			if (res.len() > walkingspeed){
+			//				//scale that it will not exceed the walkingspeed
+			//				dir.nor().scl((walkingspeed-res.len()));
+			//			}
+			//			addMovement(dir);
+			//repalce horizontal movement if walking
 
-				//set speed to 0 if at max allowed speed for accelaration and moving in movement direction
-				//in order to find out, add movement dir and current movement dir together and if len(vector) > len(currentdir)*sqrt(2) then added speed=0
-				//			float accelaration =30;//in m/s^2
-				//			dir.scl(accelaration*dt/1000f);//in m/s
-				//check if will reach max velocity
-				//			Vector3 res = getMovement().add(dir.cpy());
-				//			res.z=0;
-				//			if (res.len() > walkingspeed){
-				//				//scale that it will not exceed the walkingspeed
-				//				dir.nor().scl((walkingspeed-res.len()));
-				//			}
-				//			addMovement(dir);
-				//repalce horizontal movement if walking
 				setHorMovement(dir.scl(walkingspeed));
 				if (isOnGround() && getSpeedHor() > 0.1f && !playAnimation) {
 					playAnimation('w');
 				}
+			}
+			if (standingStill) {
+				float turnSpeed = dt*0.008f;
+				if (spriteOrientation.cpy().sub(getOrientation()).len() < 1.5f)
+					turnSpeed *= 4;
+				slerp(spriteOrientation, getOrientation(), turnSpeed);
 			}
 		}
 	}
@@ -936,28 +976,28 @@ public class Ejira extends CLMovableEntity implements Controllable {
 		
 		//detect direction
 		int animationStart;
-		if (getOrientation().x < -Math.sin(Math.PI / 3)) {
+		if (spriteOrientation.x < -Math.sin(Math.PI / 3)) {
 			animationStart = 6;//west
 		} else {
-			if (getOrientation().x < -0.5) {
+			if (spriteOrientation.x < -0.5) {
 				//y
-				if (getOrientation().y < 0) {
+				if (spriteOrientation.y < 0) {
 					animationStart = 5;//north-west
 				} else {
 					animationStart = 7;//south-east
 				}
 			} else {
-				if (getOrientation().x < 0.5) {
+				if (spriteOrientation.x < 0.5) {
 					//y
-					if (getOrientation().y < 0) {
+					if (spriteOrientation.y < 0) {
 						animationStart = 4;//north
 					} else {
 						animationStart = 0;//south
 					}
 				} else {
-					if (getOrientation().x < Math.sin(Math.PI / 3)) {
+					if (spriteOrientation.x < Math.sin(Math.PI / 3)) {
 						//y
-						if (getOrientation().y < 0) {
+						if (spriteOrientation.y < 0) {
 							animationStart = 3;//north-east
 						} else {
 							animationStart = 1;//sout-east

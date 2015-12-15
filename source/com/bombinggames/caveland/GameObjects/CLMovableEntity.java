@@ -23,6 +23,10 @@ public class CLMovableEntity extends MovableEntity {
 		super(id, spritesPerDir);
 	}
 
+	public CLMovableEntity(byte id, int spritesPerDir, boolean shadow) {
+		super(id, spritesPerDir, shadow);
+	}
+
 	/**
 	 * 
 	 * @param entity 

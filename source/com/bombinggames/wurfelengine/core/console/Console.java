@@ -430,8 +430,7 @@ public class Console {
 			if (tokenizer.hasMoreTokens() && (tokenizer.nextToken().length()!=1 || path.contains(":"))){
 				return false;
 			}
-			if (tokenizer.countTokens()>2) return false;
-			return true;
+			return tokenizer.countTokens() <= 2;
 		}
 	}
 	

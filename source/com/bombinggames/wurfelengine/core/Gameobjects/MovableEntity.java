@@ -192,7 +192,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * Enable this to have a walking cycle even if not moving
 	 *
-	 * @param walkOnTheSpot the speed of the animation: ~1. To disable pass 0.
+	 * @param walkOnTheSpot the speed of the animation. Faktor without unit ~1. To disable pass 0.
 	 */
 	public void setContinuousWalkingAnimation(float walkOnTheSpot) {
 		this.walkOnTheSpot = walkOnTheSpot;

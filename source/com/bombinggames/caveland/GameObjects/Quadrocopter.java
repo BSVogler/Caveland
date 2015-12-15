@@ -48,9 +48,10 @@ public class Quadrocopter extends Robot {
 	 *
 	 */
 	public Quadrocopter() {
-		super((byte) 59,0);
+		super((byte) 59,1);
 		setType(2);
 		setFloating(true);
+		setContinuousWalkingAnimation(3);
 	}
 
 	@Override

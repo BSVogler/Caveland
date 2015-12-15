@@ -107,7 +107,12 @@ public class Bullet extends MovableEntity {
 			item -> !item.isObstacle() || item.getPosition().toCoord().equals(ignoreCoord)
 		);
 		if (!entitylist.isEmpty()) {
-			entitylist.get(0).takeDamage(damage);//damage only the first unit on the list
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				entitylist.get(0),//damage only the first unit on the list
+				Events.damage.getId(),
+				damage
+			);
 			Particle blood = new Particle();
 			blood.setColor(new Color(1,0,0,1));
 			blood.setTTL(400);

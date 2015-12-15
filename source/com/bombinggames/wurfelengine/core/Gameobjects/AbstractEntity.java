@@ -411,6 +411,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	/**
      * called when gets damage. Health is between 0 and 100. Plays a sound.
+	 * Should not be called from outside. Use event instead.
      * @param value between 0 and 100
      */
     public void takeDamage(byte value) {

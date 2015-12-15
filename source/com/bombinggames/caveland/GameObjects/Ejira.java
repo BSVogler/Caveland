@@ -350,7 +350,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			money.forEach(m -> m.dispose());
 			
 			if (!money.isEmpty()) {
-				WE.SOUND.play("collectMoney");
+				WE.SOUND.play("moneyPickup");
 			}
 			
 			//increase money

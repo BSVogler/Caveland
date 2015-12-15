@@ -95,6 +95,7 @@ public class CLGameView extends GameView{
 		WE.SOUND.register("droneLoop", "com/bombinggames/caveland/sounds/droneLoop.mp3");
 		WE.SOUND.register("robot2walk", "com/bombinggames/caveland/sounds/robot2walk.mp3");
 		WE.SOUND.register("craft", "com/bombinggames/caveland/sounds/craft.wav");
+		WE.SOUND.register("moneyPickup", "com/bombinggames/caveland/sounds/moneyPickup.wav");
 		
 		if (coop > -1){//it is a coop game
 			Camera camera0;

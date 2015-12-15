@@ -56,6 +56,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		super((byte) 42, 0);
 		setName("MineCart");
 		setOrientation(new Vector2(1, 1));
+		setObstacle(true);
 	}
 
 	@Override

@@ -334,14 +334,31 @@ public class Console {
 	 *
 	 * @param sender filter by the sender, e.g. if you want the last message of
 	 * a specific player
+	 * @param skip how many items you want to skip
 	 * @return if there spawn no last message it returns an empty string
 	 */
-	public String getLastMessage(final String sender) {
-		int i = messages.size() - 1;
-		while (i >= 0 && !messages.get(i).sender.equals(sender)) {
-			i--;
+	public String getLastMessage(final String sender, int skip) {
+		//filter
+		ArrayList<Line> filt = new ArrayList<>(10);
+		for (Line message : messages) {
+			if (message.sender.equals(sender)) {
+				filt.add(message);
+			}
 		}
-		return i >= 0 ? messages.get(i).message.substring(0, messages.get(i).message.length() - 1) : "";
+		if (filt.isEmpty()) {
+			return "";
+		}
+
+		if (skip >= filt.size()) {
+			skip = filt.size() - 1;
+		}
+
+		if (skip < 0) {
+			skip = 0;
+		}
+
+		String line = filt.get(filt.size() - 1 - skip).message;
+		return line.substring(0, line.length() - 1);
 	}
     
     /**
@@ -519,6 +536,7 @@ public class Console {
     private class StageInputProcessor extends InputListener {
         private final Console parentRef;
 		private boolean lastKeyWasTab;
+		private int posInLastCommands = -1;
 
         private StageInputProcessor(Console parent) {
             this.parentRef = parent;
@@ -533,13 +551,31 @@ public class Console {
         @Override
         public boolean keyDown(InputEvent event, int keycode){
             if (keycode == Keys.UP){
-                parentRef.setText(parentRef.getLastMessage("Console"));
+				//filter
+				ArrayList<Line> filt = new ArrayList<>(10);
+				for (Line message : messages) {
+					if (message.sender.equals("Console")) {
+						filt.add(message);
+					}
+				}
+				if (posInLastCommands < filt.size()-1) {
+					posInLastCommands++;
+				}
+                parentRef.setText(parentRef.getLastMessage("Console",posInLastCommands));
             }
 			if (keycode == Keys.DOWN){
-                parentRef.setText(path+" $ ");
+				if (posInLastCommands > -1) {
+					posInLastCommands--;
+				}
+				if (posInLastCommands == -1) {
+					parentRef.setText(path + " $ ");
+				} else {
+					parentRef.setText(parentRef.getLastMessage("Console", posInLastCommands));
+				}
             }
 			
             if (keycode == Keys.ENTER){
+				posInLastCommands = -1;
                 parentRef.enter();
             }
 			

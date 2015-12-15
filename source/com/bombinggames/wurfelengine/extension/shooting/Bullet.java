@@ -30,11 +30,11 @@
  */
 package com.bombinggames.wurfelengine.extension.shooting;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -49,17 +49,15 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Bullet extends AbstractEntity {
+public class Bullet extends MovableEntity {
 
 	private static final long serialVersionUID = 1L;
 	private static final String explosionsound = "explosion2";
 	/**
 	 * direction and speed of the bullet
 	 */
-	private Vector3 movement = new Vector3();//movement
 	private byte damage;
 	private int distance = 0;//distance traveled
-	private Weapon gun;//no self shooting
 	private int maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
 	private int impactSprite;
@@ -73,10 +71,13 @@ public class Bullet extends AbstractEntity {
 	 * @see #setSpriteId(byte)
 	 */
 	public Bullet() {
-		super((byte) 22);
+		super((byte) 22,0,false);
 		setName("Bullet");
 		setMass(0.002f);
 		setSaveToDisk(false);
+		setFriction(0);
+		setColiding(false);
+		MessageManager.getInstance().addListener(this, Events.collided.getId());
 	}
 
 	@Override
@@ -85,47 +86,25 @@ public class Bullet extends AbstractEntity {
 		if (!hasPosition()) return;
 		
 		//apply gravity
-		movement.add(new Vector3(0, 0, -WE.getCvars().getValueF("gravity") * dt*0.001f));
-		Vector3 dMov = movement.cpy().scl(dt);
+		//addMovement(new Vector3(0, 0, -WE.getCvars().getValueF("gravity") * dt*0.001f));
+		//Vector3 dMov = movement.cpy().scl(dt);
 		//dMov.z /= 1.414213562f;//mixed screen and game space together?
-		getPosition().add(dMov);
+		//getPosition().add(dMov);
 		setRotation(getRotation() + dt);
 
 		//only spawn specific distance then destroy self
-		distance += dMov.len();
+		distance += getSpeed();
 		if (distance > maxDistance) {
 			dispose();
 			return;
 		}
 
-		//block hit -> spawn effect
-		if (
-			hasPosition()
-			&& getPosition().getBlock() != null
-			&& getPosition().getBlock().isObstacle()
-			&& (ignoreCoord == null
-				||
-				!ignoreCoord.equals(getPosition().toCoord())
-				)
-			&& ignoreId != getPosition().getBlock().getId()
-		) {
-			if (impactSprite != 0) {
-				Particle impactPart = new Particle();
-				impactPart.setTTL(400);
-				impactPart.setColor(new Color(0.4f, 0.3f, 0.2f, 1));
-				impactPart.setType(ParticleType.SMOKE);
-				impactPart.spawn(getPosition().cpy());
-			}
-			dispose();
-			return;
-		}
-		
         //check character hit
-		ArrayList<MovableEntity> entitylist = Controller.getMap().getEntitysOnCoord(getPosition().toCoord(), MovableEntity.class);
-		entitylist.remove(gun);//remove self from list to prevent self shooting
+		ArrayList<AbstractEntity> entitylist = getCollidingEntities();
+		//entitylist.remove(gun);//remove self from list to prevent self shooting
 		//remove
 		entitylist.removeIf(
-			(MovableEntity item) -> !item.isObstacle() || item.getPosition().toCoord().equals(ignoreCoord)
+			item -> !item.isObstacle() || item.getPosition().toCoord().equals(ignoreCoord)
 		);
 		if (!entitylist.isEmpty()) {
 			entitylist.get(0).takeDamage(damage);//damage only the first unit on the list
@@ -136,31 +115,6 @@ public class Bullet extends AbstractEntity {
 			blood.spawn(getPosition().cpy());
 			dispose();
 		}
-	}
-
-	/**
-	 *
-	 * @param dir
-	 */
-	public void setDirection(Vector3 dir) {
-		float speed = movement.len();
-		this.movement = dir.scl(speed);
-	}
-
-	/**
-	 *
-	 * @param speed
-	 */
-	public void setSpeed(float speed) {
-		this.movement.nor().scl(speed);
-	}
-
-	/**
-	 * Set the firing gun so it does not hit itself
-	 * @param weapon
-	 */
-	public void setGun(Weapon weapon) {
-		this.gun = weapon;
 	}
 
 	/**
@@ -231,13 +185,41 @@ public class Bullet extends AbstractEntity {
 		this.ignoreId = ignoreId;
 	}
 
-	void setMovement(Vector3 mov) {
-		this.movement = mov;
-	}
-	
 	@Override
 	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
+		
+		if ( msg.sender == this
+			&&
+			msg.message == Events.collided.getId()
+			) {
+			//block hit -> spawn effect
+			if (
+				hasPosition()
+				&& getPosition().getBlock() != null
+				&& getPosition().getBlock().isObstacle()
+				&& (ignoreCoord == null
+					||
+					!ignoreCoord.equals(getPosition().toCoord())
+					)
+				&& ignoreId != getPosition().getBlock().getId()
+			) {
+				if (impactSprite != 0) {
+					Particle impactPart = new Particle();
+					impactPart.setTTL(400);
+					impactPart.setColor(new Color(0.4f, 0.3f, 0.2f, 1));
+					impactPart.setType(ParticleType.SMOKE);
+					impactPart.spawn(getPosition().cpy());
+				}
+				dispose();
+			}
+		}
 		return true;
+	}
+
+	@Override
+	public MovableEntity clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

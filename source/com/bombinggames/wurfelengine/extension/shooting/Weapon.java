@@ -392,7 +392,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 
                 //pos.setHeight(pos.getHeight()+AbstractGameObject.GAME_EDGELENGTH);
 				Bullet bullet = new Bullet();
-				bullet.setGun(this);
+				//bullet.setGun(this);
 
                 if (bulletSprite < 0){//if melee hide it
                     bullet.setSpriteValue((byte) 0);
@@ -404,10 +404,9 @@ public class Weapon extends AbstractEntity implements Telegraph {
                 Vector3 aiming = aimDir.cpy();
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
-				bullet.setMovement(aiming.scl(7f));
+				bullet.setMovement(aiming.scl(40f));
 				bullet.setScaling(-0.8f);
                 bullet.setMaxDistance(distance*100+100);
-                bullet.setGun(this);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);

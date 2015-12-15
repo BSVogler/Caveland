@@ -121,7 +121,7 @@ public class Turret extends AbstractPowerBlock {
 					target = it.next();
 					vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
 					//check if can see target
-					Intersection raycast = gun.getFixedPos().rayMarching(
+					Intersection intersect = gun.getFixedPos().rayMarching(
 						vecToTarget,
 						MAXDISTANCE,
 						null,
@@ -129,8 +129,8 @@ public class Turret extends AbstractPowerBlock {
 					);
 
 					if (
-						raycast != null &&
-						gun.getFixedPos().distanceTo(raycast.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
+						intersect != null &&
+						gun.getFixedPos().distanceTo(intersect.getPoint()) < gun.getPosition().distanceTo(target.getPosition())//check if point is before
 					) {
 						//can not see
 						target = null;

@@ -39,6 +39,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVar;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
+import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
@@ -465,10 +467,12 @@ public class Console {
 		return result;
 	}
 	
-	private String getMapNameFromPath(){
-		if (path.indexOf(':')>0)
+	private String getMapNameFromPath() {
+		if (path.indexOf(':') > 0) {
 			return path.substring(0, path.indexOf(':'));
-		else return path;
+		} else {
+			return path;
+		}
 	}
 	
     /**
@@ -561,4 +565,39 @@ public class Console {
             return true;
         }
     }
+
+	/**
+	 * 
+	 * @param path 
+	 */
+	public void setPath(String path) {
+		if (checkPath(path)) {
+			if ("/".equals(path)) {
+				this.path = "";
+			} else {
+				this.path = path;
+			}
+			//check that map cvars are loaded
+			String mapName = getMapNameFromPath();
+			if (mapName.length() > 0) { //load map cvar
+				if (WE.getCVarsMap() == null) {
+					WE.getCVars().setMapCVars(new CVarSystemMap(
+						new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/meta.wecvar")
+					));
+					WE.getCVarsMap().load();
+				}
+
+				//access save
+				if (path.contains(":")) {
+					WE.getCVarsMap().setSaveCVars(new CVarSystemSave(
+						new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/save" + path.substring(path.indexOf(':') + 1) + "/meta.wecvar")
+					));
+					WE.getCVarsSave().load();
+				}
+			}
+		}  else {
+			WE.getConsole().add("not a valid path");
+		}
+	}
+	
 }

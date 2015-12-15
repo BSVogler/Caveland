@@ -690,19 +690,6 @@ public class Point extends Vector3 implements Position {
 		return Math.floorDiv((int) y, Chunk.getGameDepth());
 	}
 	
-	
-	/**
-	 * Overwrites the data.
-	 * @param target
-	 * @param t
-	 * @return
-	 */
-	@Override
-	public Point lerp(final Vector3 target, float t) {
-		super.lerp(target, t);
-		return this;
-	}
-	
 	/**
 	 * 
 	 * @param p

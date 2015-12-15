@@ -259,7 +259,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 
 	/**
 	 *
-	 * @return
+	 * @return can be null
 	 */
 	public Point getFixedPos() {
 		return fixedPos;

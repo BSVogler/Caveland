@@ -21,6 +21,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 
 
@@ -265,7 +266,7 @@ public class CLGameView extends GameView{
 			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < Block.GAME_EDGELENGTH*5){
 				if (!getCameras().get(0).isFullWindow())
 					getCameras().get(0).setFullWindow(true);
-				getCameras().get(0).setCenter(getPlayer(0).getPosition().cpy().lerp(getPlayer(1).getPosition(), 0.5f));
+				getCameras().get(0).setCenter((Point) getPlayer(0).getPosition().cpy().lerp(getPlayer(1).getPosition(), 0.5f));
 				getCameras().get(0).setInternalRenderResolution( WE.getCvars().getValueI("renderResolutionWidth"));
 				getCameras().get(1).setActive(false);
 			} else if (getCameras().get(0).isFullWindow()) {

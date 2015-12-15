@@ -345,6 +345,13 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			if (playCollectSound) {
 				WE.SOUND.play("collect");
 			}
+			
+			ArrayList<Money> money = getCollidingEntities(Money.class);
+			money.forEach(m -> m.dispose());
+			
+			if (!money.isEmpty()) {
+				WE.SOUND.play("collectMoney");
+			}
 
 			//auto heal
 			if (timeSinceDamage > 4000) {

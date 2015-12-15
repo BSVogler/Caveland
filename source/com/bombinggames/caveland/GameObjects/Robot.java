@@ -4,8 +4,8 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
@@ -267,6 +267,9 @@ public class Robot extends MovableEntity implements Telegraph{
 				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 
+				if (teamId==0)
+					new Money().spawn(getPosition().toPoint());
+				
 				if (KILLSOUND != null) {
 					WE.SOUND.play(KILLSOUND);
 				}

@@ -677,11 +677,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		WE.getCVars().getMapCVars().setSaveCVars(
+		WE.getCVarsMap().setSaveCVars(
 			new CVarSystemSave(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
+		WE.getCVarsMap().get("currentSaveSlot").setValue(slot);
 	}
 
 	/**

@@ -58,6 +58,7 @@ public class CVarSystemMap extends AbstractCVarSystem {
 		register(new IntCVar(10), "chunkBlocksZ");
 		register(new StringCVar(""), "mapname");
 		register(new StringCVar(""), "description");
+		register(new IntCVar(-1), "currentSaveSlot", CVar.CVarFlags.CVAR_VOLATILE);
 		
 		if (customRegistration != null) {
 			customRegistration.register(this);

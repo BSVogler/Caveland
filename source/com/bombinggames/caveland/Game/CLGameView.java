@@ -412,16 +412,15 @@ public class CLGameView extends GameView{
 			Color.WHITE.cpy()
 		);
 		
-		getSpriteBatch().end();
-		
-		
 		if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
 			drawString(
 				"Cave Level: "+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
-				50, 50,
-				new Color(1, 1, 1, 1)
+				50,
+				50,
+				Color.WHITE.cpy()
 			);
 		}
+		getSpriteBatch().end();
 	}
 
 	/**

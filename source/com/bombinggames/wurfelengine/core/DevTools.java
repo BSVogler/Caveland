@@ -36,6 +36,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.MapEditor.EditorView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
@@ -197,7 +198,7 @@ public class DevTools {
                     xPos+width*data.length,
                     yPos-maxHeight+avg*3000
                 );
-                String deltaT = Float.toString(avg*1000);
+                String deltaT = new DecimalFormat("#.##").format(avg*1000);
 				view.getSpriteBatch().begin();
 				view.drawString("d: " + deltaT.substring(0, 5), xPos, (int) (yPos - maxHeight + avg * 3000), new Color(0, 0.3f, 0.8f, 0.7f));
 				view.getSpriteBatch().end();

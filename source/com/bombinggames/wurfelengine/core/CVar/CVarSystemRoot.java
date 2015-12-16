@@ -129,6 +129,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new IntCVar(90), "CameraLeapRadius");
 		register(new FloatCVar(0.5f), "ambientOcclusion");
 		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
+		register(new StringCVar(""), "lastConsoleCommand");
 		register(new IntCVar(20), "historySize");
 	}
 

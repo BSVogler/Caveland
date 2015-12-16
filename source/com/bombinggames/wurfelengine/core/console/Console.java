@@ -60,6 +60,9 @@ public class Console {
     private final Stack<Line> messages; 
     private boolean keyConsoleDown;
     private StageInputProcessor inputprocessor;
+	/**
+	 * the mode of the console
+	 */
     private Modes mode;
 	private final TextArea log;
 	private final ArrayList<ConsoleCommand> registeredCommands = new ArrayList<>(10);
@@ -251,7 +254,7 @@ public class Console {
 		}
 		
 		if (!textinput.getText().startsWith(path+" $ "))
-			setText(path+" $ ");
+			setText(path+" $ "+ textinput.getText());
     }
     
     /**
@@ -293,13 +296,14 @@ public class Console {
 			lineBreak = "";
 		}
 		add(lineBreak + textinput.getText() + "\n", "Console");//add message to message list
-		//if (textinput.getText().startsWith("/") && !executeCommand(textinput.getText().substring(1)))//if it is a command try esecuting it
-		if (mode == Modes.Console && !textinput.getText().isEmpty() && !executeCommand(
-			textinput.getText().substring(textinput.getText().indexOf("$ ") + 2)
-		)) {
-			add("Failed executing command.\n", "System");
+		if (!textinput.getText().isEmpty()) {
+			String command = textinput.getText().substring(textinput.getText().indexOf("$ ") + 2);
+			WE.getCVars().get("lastConsoleCommand").setValue(command);
+			if (!executeCommand(command)) {
+				add("Failed executing command.\n", "System");
+			}
+			clearCommandLine();
 		}
-		clearCommandLine();
 	}
 	
 	/**
@@ -357,8 +361,8 @@ public class Console {
 			skip = 0;
 		}
 
-		String line = filt.get(filt.size() - 1 - skip).message;
-		return line.substring(0, line.length() - 1);
+		String line = filt.get(filt.size() - 1 - skip).message;//apply filter
+		return line.substring(textinput.getText().indexOf("$ ") + 2, line.length() - 1);
 	}
     
     /**
@@ -557,11 +561,15 @@ public class Console {
 					if (message.sender.equals("Console")) {
 						filt.add(message);
 					}
-				}
-				if (posInLastCommands < filt.size()-1) {
+				}	
+				if (posInLastCommands < filt.size()) {
 					posInLastCommands++;
 				}
-                parentRef.setText(parentRef.getLastMessage("Console",posInLastCommands));
+				if (posInLastCommands >= filt.size()){
+					parentRef.setText(WE.getCVars().getValueS("lastConsoleCommand"));
+				} else {
+					parentRef.setText(parentRef.getLastMessage("Console",posInLastCommands));
+				}
             }
 			if (keycode == Keys.DOWN){
 				if (posInLastCommands > -1) {

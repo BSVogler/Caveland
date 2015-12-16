@@ -122,5 +122,4 @@ public class IdleAI implements Telegraph {
 	public boolean handleMessage(Telegram msg) {
 		return false;
 	}
-	
 }

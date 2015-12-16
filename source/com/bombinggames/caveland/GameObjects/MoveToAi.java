@@ -30,13 +30,9 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
@@ -45,82 +41,69 @@ import java.io.Serializable;
  *
  * @author Benedikt Vogler
  */
-public class IdleAI implements Telegraph, Serializable {
+public class MoveToAi implements Telegraph, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private final MovableEntity body;
-	private Point home;
-	private float timeTillMove;
-
 	/**
-	 *
-	 * @param body
+	 * where does it move to?
 	 */
-	public IdleAI(MovableEntity body) {
+	private Point movementGoal;
+	private final MovableEntity body;
+	private int runningagainstwallCounter = 0;
+	/**
+	 * used for detecting that is runnning against a wall
+	 */
+	private transient Point lastPos;
+
+	public MoveToAi(MovableEntity body, Point goal) {
 		this.body = body;
 	}
 	
-	/**
-	 *
-	 * @param dt
-	 */
-	public void update(float dt) {
-		if (body.hasPosition()) {
-			if (home == null) {
-				home = body.getPosition().cpy();
+	public void update(float dt){
+		if (movementGoal != null) {
+			if (body.getPosition().dst2(movementGoal) < 20) {
+				movementGoal = null;
+			} else {
+				//movement logic
+				Vector3 d = new Vector3();
+
+				d.x = movementGoal.getX() - body.getPosition().getX();
+				d.y = movementGoal.getY() - body.getPosition().getY();
+				float movementSpeed;
+				if (body.isFloating()) {
+					d.z = movementGoal.getZ() - body.getPosition().getZ();
+					movementSpeed = body.getSpeed();
+				} else {
+					movementSpeed = body.getSpeedHor();
+				}
+				d.nor();//direction only
+				if (movementSpeed<2)
+					movementSpeed=2;
+				d.scl(movementSpeed);
+				if (!body.isFloating()) {
+					d.z = body.getMovement().z;
+				}
+
+				body.setMovement(d);// update the movement vector
 			}
+			//Movement AI: if standing on same position as in last update
+			if (!body.isFloating()) {
+				if (body.getPosition().equals(lastPos) && body.getSpeed() > 0) {//not standing still
+					runningagainstwallCounter += dt;
+				} else {
+					runningagainstwallCounter = 0;
+					lastPos = body.getPosition().cpy();
+				}
 
-			if (timeTillMove > 0)
-				timeTillMove -= dt;
-
-			if (timeTillMove <= 0 && body.getMovementGoal() == null) {
-				body.setSpeedHorizontal(2);
-				timeTillMove = 1500;
-
-				Point target;
-				//only 100 trials
-				int i=0;
-				//find target in radius
-				do {	
-					i++;
-					if (body.isFloating())
-						target = home.cpy().add(
-							new Vector3(
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f)
-							).nor().scl(Block.GAME_EDGELENGTH * 2)
-						);
-					else {
-						target = home.cpy().add(
-							new Vector2(
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f)
-							).nor().scl(Block.GAME_EDGELENGTH * 2)
-						);
-					}
-				} while (
-					i < 100
-					&& (
-					(target.getBlock() != null
-					&& target.getBlock().isObstacle())
-					|| body.getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 3)
-				);
-				
-				if (i < 100){
-					MessageManager.getInstance().dispatchMessage(
-						0,
-						this,
-						body,
-						Events.moveTo.getId(),
-						target
-					);
+				//jump after some time
+				if (runningagainstwallCounter > 500) {
+					body.jump();
+					runningagainstwallCounter = 0;
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return false;

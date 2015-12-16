@@ -34,6 +34,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.GameObjects.MoveToAi;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -106,10 +107,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private boolean stepMode = true;
 	private boolean walkingPaused = false;
 	
-	/**
-	 * where does it move to?
-	 */
-	private transient Point movementGoal;
+	private transient MoveToAi moveToAi;
 
 	/**
 	 * Simple MovableEntity with no animation.
@@ -254,7 +252,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			float t = dt * 0.001f; //t = time in s
 			
-			moveToMovementGoal();
+			if (moveToAi != null) {
+				moveToAi.update(dt);
+			}
 			
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
@@ -411,36 +411,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
         }
     }
 	
-	
-	private void moveToMovementGoal(){
-		if (movementGoal != null) {
-			if (getPosition().dst2(movementGoal) < 20) {
-				movementGoal = null;
-			} else {
-				//movement logic
-				Vector3 d = new Vector3();
-
-				d.x = movementGoal.getX() - getPosition().getX();
-				d.y = movementGoal.getY() - getPosition().getY();
-				float movementSpeed;
-				if (isFloating()) {
-					d.z = movementGoal.getZ() - getPosition().getZ();
-					movementSpeed = getSpeed();
-				} else {
-					movementSpeed = getSpeedHor();
-				}
-				d.nor();//direction only
-				if (movementSpeed<2)
-					movementSpeed=2;
-				d.scl(movementSpeed);
-				if (!isFloating()) {
-					d.z = getMovement().z;
-				}
-
-				setMovement(d);// update the movement vector
-			}
-		}
-	}
 	/**
 	 *
 	 */
@@ -979,8 +949,8 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 *
 	 * @return
 	 */
-	public Point getMovementGoal() {
-		return movementGoal;
+	public MoveToAi getMovementGoal() {
+		return moveToAi;
 	}
 	
 	@Override
@@ -992,12 +962,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		}
 		
 		if (msg.message == Events.moveTo.getId() && msg.receiver == this) {
-			movementGoal = (Point) msg.extraInfo;
+			moveToAi = new MoveToAi(this, (Point) msg.extraInfo);
 			return true;
 		}
 		
 		if (msg.message == Events.standStill.getId() && msg.receiver == this) {
-			movementGoal = null;
+			moveToAi = null;
 			setSpeedHorizontal(0);
 			return true;
 		}

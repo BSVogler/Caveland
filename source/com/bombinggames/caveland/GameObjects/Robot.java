@@ -33,22 +33,17 @@ public class Robot extends MovableEntity implements Telegraph{
 
 	private transient MovableEntity target;
 	private transient AimBand particleBand;
+	private transient long movementSoundPlaying;
 	/**
-	 * used for detecting that is runnning against a wall
+	 * in m/s
 	 */
-	private transient Point lastPos;
+	private transient float movementSpeed = 2;
 	
-	private int runningagainstwallCounter = 0;
-	private long movementSoundPlaying;
 	private float energy = 1000;
 	/**
 	 * countdown while the attack ins in progress. Used for animation.
 	 */
 	private float attackInProgess = 0;
-	/**
-	 * in m/s
-	 */
-	private float movementSpeed = 2;
 	/**
 	 * what kind of robot
 	 */
@@ -99,8 +94,9 @@ public class Robot extends MovableEntity implements Telegraph{
 		super.update(dt);
 
 		
-		if (idleaAI != null)
+		if (idleaAI != null) {
 			idleaAI.update(dt);
+		}
 		
 		//set attack sprite
 		if (attackInProgess > 0) {
@@ -140,11 +136,8 @@ public class Robot extends MovableEntity implements Telegraph{
 			} else {
 				setSpriteValue((byte) (getSpriteValue() + 56));
 			}
-		}
-
-		//clamp at 0
-		if (attackInProgess < 0) {
-			attackInProgess = 0;
+		} else {
+			attackInProgess = 0;//clamp
 			movementSpeed = 2;
 			playMovementAnimation();
 		}
@@ -154,7 +147,6 @@ public class Robot extends MovableEntity implements Telegraph{
 			if (target != null && target.hasPosition()) {
 				if (getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 1.5f) {
 					MessageManager.getInstance().dispatchMessage(
-						0,
 						this,
 						this,
 						Events.moveTo.getId(),
@@ -163,7 +155,6 @@ public class Robot extends MovableEntity implements Telegraph{
 					setSpeedHorizontal(movementSpeed);
 				} else {
 					MessageManager.getInstance().dispatchMessage(
-						0,
 						this,
 						this,
 						Events.standStill.getId()
@@ -185,28 +176,17 @@ public class Robot extends MovableEntity implements Telegraph{
 					target = nearby.get(0);
 				}
 			}
-
-			//Movement AI: if standing on same position as in last update
-			if (!isFloating()) {
-				if (getPosition().equals(lastPos) && getSpeed() > 0) {//not standing still
-					runningagainstwallCounter += dt;
-				} else {
-					runningagainstwallCounter = 0;
-					lastPos = getPosition().cpy();
-				}
-
-				//jump after some time
-				if (runningagainstwallCounter > 500) {
-					jump();
-					energy = 0;
-					runningagainstwallCounter = 0;
-				}
-			}
 		}
 		
 		if (particleBand != null) {
 			particleBand.update();
 		}
+	}
+
+	@Override
+	public void jump(float velo, boolean playSound) {
+		super.jump(velo, playSound);
+		energy = 0;
 	}
 
 	/**

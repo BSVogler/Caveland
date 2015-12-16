@@ -444,7 +444,7 @@ public class GameView implements GameManager {
 	}
     
 	/**
-     *Draw a string using the last active color.
+     *Draw a string using the color white.
      * @param msg
      * @param xPos screen space
      * @param yPos screen space

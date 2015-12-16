@@ -37,29 +37,28 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Controller.getMap;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Position;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  *
@@ -265,10 +264,11 @@ public class EditorView extends GameView implements Telegraph {
 					aR.getRegionWidth(),
 					aR.getRegionHeight()
 				);
-				this.drawString(selectedEntity.getName(),
+				drawString(
+					selectedEntity.getName(),
 					selectedEntity.getPosition().getProjectionSpaceX(this, camera) + aR.getRegionWidth() / 2,
 					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
-					new Color(1, 1, 1, 1)
+					true
 				);
 			}
 

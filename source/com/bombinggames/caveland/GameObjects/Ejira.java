@@ -109,7 +109,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	/**
 	 * true if last jump was airjump.
 	 */
-	private transient boolean isInAirJump = false;
+	private transient float jetPackTime = 0;
 
 	private transient Camera camera;
 
@@ -162,6 +162,7 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	 * Orientation of the sprite. Does not turn isntantly like the orientation.
 	 */
 	private final Vector2 spriteOrientation = new Vector2(1, 0);
+	private boolean jetpackOn;
 	
 	/**
 	 * creates a new Ejira
@@ -438,18 +439,31 @@ public class Ejira extends CLMovableEntity implements Controllable {
 			if (emitter2.hasPosition())
 				emitter2.getPosition().setValues(getPosition()).add(20, 0, Block.GAME_EDGELENGTH2);
 			
-			if (isOnGround()) {
-				isInAirJump = false;
+			if (jetpackOn){
+				jetPackTime -= dt;
+			} else if (isOnGround()) {
+				jetPackTime = WE.getCVars().getValueF("jetpackMaxTime");
+			}
+			
+			if (jetPackTime < 0 || isOnGround()){
+				extinguishJetpack();
 			}
 
 			//update emitter
-			if (isInAirJump) {
-				emitter.setActive(getMovement().z>2f);
+			if (jetpackOn) {
+				//limit speed to prevent mega jumps
+				if (getMovement().z < WE.getCVars().getValueF("jetpackMaxSpeed")) {
+					addMovement(new Vector3(0, 0, dt * WE.getCVars().getValueF("jetpackPower")));
+				}
+				emitter.setActive(true);
+				emitter2.setActive(true);
 				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 				emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
-				emitter2.setActive(getMovement().z>2f);
 				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
 				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
+			} else {
+				emitter.setActive(false);
+				emitter2.setActive(false);
 			}
 			
 			if (interactionAimband != null) {
@@ -780,11 +794,8 @@ public class Ejira extends CLMovableEntity implements Controllable {
 	@Override
 	public void jump() {
 		//check if an arijump can be performed
-		if (hasPosition() && (!isInAirJump || canJumpFromGround())) {
-			if (!canJumpFromGround()) {
-				//do an airjump
-				isInAirJump = true;
-			} else {
+		if (hasPosition()) {
+			if (canJumpFromGround()) {
 				if (!isOnGround()) {//must perform a bunnyhop b/c not on ground
 					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 				}
@@ -792,15 +803,25 @@ public class Ejira extends CLMovableEntity implements Controllable {
 				Vector3 resetZ = getMovement().cpy();
 				resetZ.z = 0;
 				setMovement(resetZ);
-			}
-			playAnimation('j');
-			if (isInAirJump) {
-				jump(5.2f, true);//air jump a little bit higher
-				WE.SOUND.play("jetpack");
-			} else {
+				playAnimation('j');
 				jump(4.7f, true);
+			} else {
+				fireJetpack();
 			}
 		}
+	}
+	
+	public void fireJetpack(){
+		if (jetPackTime>0) {
+			if (!jetpackOn){
+				WE.SOUND.play("jetpack");
+			}
+			jetpackOn = true;
+		}
+	}
+	
+	public void extinguishJetpack(){
+		jetpackOn = false;
 	}
 
 	/**

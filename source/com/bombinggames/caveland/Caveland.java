@@ -63,6 +63,9 @@ public class Caveland {
 		WE.getCVars().register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
 		WE.getCVars().register(new FloatCVar(0.85f), "coopZoom");
 		WE.getCVars().register(new BooleanCVar(false), "experimentalCameraJoin");
+		WE.getCVars().register(new FloatCVar(400f), "jetpackMaxTime");
+		WE.getCVars().register(new FloatCVar(0.03f), "jetpackPower");
+		WE.getCVars().register(new FloatCVar(5f), "jetpackMaxSpeed");
 		
 		//register map cvars
 		CVarSystemMap.setCustomMapCVarRegistration(new CavelandMapCVars());

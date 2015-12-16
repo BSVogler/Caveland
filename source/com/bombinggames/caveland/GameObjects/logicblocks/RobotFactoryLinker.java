@@ -36,7 +36,8 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 
 /**
- *
+ * Saves a link to a robot. Used for saving. Displayed as a LED.
+ * Loads the chunk where the robot is.
  * @author Benedikt Vogler
  */
 public class RobotFactoryLinker extends AbstractEntity{

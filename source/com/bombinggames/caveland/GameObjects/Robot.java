@@ -32,10 +32,15 @@ public class Robot extends MovableEntity implements Telegraph{
 	private static final String RUNNINGSOUND = "robot1Wobble";
 
 	private transient MovableEntity target;
+	private transient AimBand particleBand;
+	/**
+	 * used for detecting that is runnning against a wall
+	 */
+	private transient Point lastPos;
+	
 	private int runningagainstwallCounter = 0;
-	private Point lastPos;
 	private long movementSoundPlaying;
-	private float mana = 1000;
+	private float energy = 1000;
 	/**
 	 * countdown while the attack ins in progress. Used for animation.
 	 */
@@ -48,7 +53,6 @@ public class Robot extends MovableEntity implements Telegraph{
 	 * what kind of robot
 	 */
 	private int type = 0;
-	private transient AimBand particleBand;
 	private int teamId;
 	
 	private final IdleAI idleaAI = new IdleAI(this);
@@ -172,7 +176,7 @@ public class Robot extends MovableEntity implements Telegraph{
 				}
 			}
 
-			mana = ((int) (mana + dt));
+			energy = ((int) (energy + dt));
 
 			//find nearby target if there is none
 			if (target == null && teamId == 0) {
@@ -194,7 +198,7 @@ public class Robot extends MovableEntity implements Telegraph{
 				//jump after some time
 				if (runningagainstwallCounter > 500) {
 					jump();
-					mana = 0;
+					energy = 0;
 					runningagainstwallCounter = 0;
 				}
 			}
@@ -238,8 +242,8 @@ public class Robot extends MovableEntity implements Telegraph{
 	}
 
 	private void performAttack() {
-		if (mana >= 1000 && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH * 2f) {
-			mana = 0;//reset
+		if (energy >= 1000 && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH * 2f) {
+			energy = 0;//reset
 			new SimpleEntity((byte) 33).spawn(target.getPosition().cpy()).setAnimation(
 				new EntityAnimation(new int[]{300}, true, false)
 			);

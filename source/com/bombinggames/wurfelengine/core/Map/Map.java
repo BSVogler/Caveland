@@ -195,12 +195,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
      */
     public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
+		WE.getCVars().get("loadedMap").setValue(name);
 		this.generator = generator;
-		CVarSystemMap cvars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
+		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
 
-		WE.getCVars().setMapCVars(cvars);
-
-		cvars.load();
+		WE.getCVars().setMapCVars(mapCVars);
+		mapCVars.load();
 
 		if (!hasSaveSlot(saveSlot)) {
 			createSaveSlot(saveSlot);

@@ -30,11 +30,11 @@
  */
 package com.bombinggames.wurfelengine.core.BasicMainMenu;
 
-import com.bombinggames.wurfelengine.WE;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,6 +42,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bombinggames.wurfelengine.WE;
 
 
 /**
@@ -122,8 +123,12 @@ public class MenuView {
      *
      */
     protected void show() {
-        Pixmap cursor = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/wecursor.png"));
-        Gdx.input.setCursorImage(cursor, 0, 0);
+		Cursor cursor = Gdx.graphics.newCursor(
+			new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/wecursor.png")),
+			0,
+			0
+		);
+		 Gdx.graphics.setCursor(cursor);
         
         WE.getEngineView().addInputProcessor(new InputListener(controller));
     }

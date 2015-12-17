@@ -35,6 +35,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -51,11 +52,11 @@ import com.bombinggames.wurfelengine.WE;
 public class EngineView extends GameView {//is GameView so it can render in game space
     private BitmapFont font;
     private Skin skin;
-    private Pixmap cursor;
+    private Cursor cursor;
+	private Cursor cursorDrag;
+	private Cursor cursorPointer;
     private InputMultiplexer inpMulPlex;
     private Array<InputProcessor> inactiveInpProcssrs;
-	private Pixmap cursorDrag;
-	private Pixmap cursorPointer;
 	private int cursorId;
 	private OrthographicCamera camera;
     private EditorToggler editorToggler;
@@ -160,20 +161,30 @@ public class EngineView extends GameView {//is GameView so it can render in game
      */
     public void setCursor(int id) {
 		cursorId = id;
-		if (id==0) {
-			if (cursor == null)
-				cursor = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor.png"));
-			Gdx.input.setCursorImage(cursor, 8, 8);
-		} else if (id==1) {
-			if (cursorPointer==null)
-				cursorPointer = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/wecursor.png"));
-			Gdx.input.setCursorImage(cursorPointer, 0, 0);
-		} else if (id==2) {
-			if (cursorPointer==null)
-				cursorDrag = new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor_drag.png"));
-			Gdx.input.setCursorImage(cursorDrag, 0, 0);
-		} else {
-			Gdx.input.setCursorImage(cursor, 0, 0);
+		switch (id) {
+			case 1:
+				if (cursorPointer == null) {
+					cursorPointer = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/wecursor.png")), 0, 0);
+				}
+				Gdx.graphics.setCursor(cursorPointer);
+				break;
+			case 2:
+				if (cursorDrag == null) {
+					cursorDrag = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor_drag.png")), 0, 0);
+				}
+				Gdx.graphics.setCursor(cursorDrag);
+				break;
+			case 0:
+			default:
+				if (cursor == null) {
+					cursor = Gdx.graphics.newCursor(
+						new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/cursor.png")),
+						8,
+						8
+					);
+				}
+				Gdx.graphics.setCursor(cursor);
+				break;
 		}
     }
 

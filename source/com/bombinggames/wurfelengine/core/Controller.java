@@ -161,7 +161,7 @@ public class Controller implements GameManager, MapObserver {
 	private int lastCommandPos = -1;
 
 	/**
-	 *
+	 * Executes the command and saves it for possible undo/redo.
 	 * @param cmd
 	 */
 	public void executeCommand(Command cmd){

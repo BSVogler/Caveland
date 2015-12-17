@@ -127,8 +127,8 @@ public class Cursor extends AbstractEntity {
 		return coords;
 	}
 	
-	    /**
-     *
+	/**
+     * The normal object. Position 
      * @return
      */
     public SimpleEntity getNormal() {

@@ -324,7 +324,7 @@ public class EditorView extends GameView implements Telegraph {
 		 * the z layer during touch down
 		 */
         private int dragLayer;
-        private final Cursor selection;
+        private final Cursor cursor;
 		private Coordinate bucketDown;
 		private int lastX;
 		private int lastY;
@@ -334,7 +334,7 @@ public class EditorView extends GameView implements Telegraph {
         EditorInputListener(Controller controller, EditorView view) {
             this.controller = controller;
             this.view = view;
-            selection = controller.getCursor();
+            cursor = controller.getCursor();
         }
 
 
@@ -454,9 +454,9 @@ public class EditorView extends GameView implements Telegraph {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			buttondown = button;
-			selection.update(view, screenX, screenY);
-			leftColorGUI.update(selection);
-			Coordinate coords = selection.getPosition().toCoord();
+			cursor.update(view, screenX, screenY);
+			leftColorGUI.update(cursor);
+			Coordinate coords = cursor.getPosition().toCoord();
             
 			//pipet
 			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
@@ -473,13 +473,13 @@ public class EditorView extends GameView implements Telegraph {
 				
 				switch (toolUsed){
 					case DRAW:
-						dragLayer = selection.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI));
+						dragLayer = cursor.getCoordInNormalDirection().getZ();
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI));
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -493,7 +493,7 @@ public class EditorView extends GameView implements Telegraph {
 						}
 						break;
 					case SPAWN:
-						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI)
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI)
 						);
 						break;
 				}
@@ -505,9 +505,9 @@ public class EditorView extends GameView implements Telegraph {
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 			buttondown = -1;
 
-			selection.update(view, screenX, screenY);
-			leftColorGUI.update(selection);
-			Coordinate coords = selection.getPosition().toCoord();
+			cursor.update(view, screenX, screenY);
+			leftColorGUI.update(cursor);
+			Coordinate coords = cursor.getPosition().toCoord();
 
 			Tool toggledTool;
 
@@ -542,8 +542,8 @@ public class EditorView extends GameView implements Telegraph {
 
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
-			selection.update(view, screenX, screenY);
-			leftColorGUI.update(selection);
+			cursor.update(view, screenX, screenY);
+			leftColorGUI.update(cursor);
 
 			//dragging selection?
 			if (WE.getEngineView().getCursor() == 2) {
@@ -599,9 +599,9 @@ public class EditorView extends GameView implements Telegraph {
 
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
-            selection.update(view, screenX, screenY);
-            leftColorGUI.update(selection);
-			rightColorGUI.update(selection);
+            cursor.update(view, screenX, screenY);
+            leftColorGUI.update(cursor);
+			rightColorGUI.update(cursor);
 			
 			AbstractEntity entityUnderMouse = null;
 			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting){

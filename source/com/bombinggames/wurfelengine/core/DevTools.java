@@ -200,7 +200,7 @@ public class DevTools {
                 );
                 String deltaT = new DecimalFormat("#.##").format(avg*1000);
 				view.getSpriteBatch().begin();
-				view.drawString("d: " + deltaT.substring(0, 5), xPos, (int) (yPos - maxHeight + avg * 3000), new Color(0, 0.3f, 0.8f, 0.7f));
+				view.drawString("d: " + deltaT, xPos, (int) (yPos - maxHeight + avg * 3000), new Color(0, 0.3f, 0.8f, 0.7f));
 				view.getSpriteBatch().end();
             }
            

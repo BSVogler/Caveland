@@ -166,38 +166,38 @@ public class Controller implements GameManager, MapObserver {
 	 */
 	public void executeCommand(Command cmd){
 		//shift commands back if full
-		if (lastCommandPos >= commandHistory.length-1) {
-			for (int i = 0; i < commandHistory.length-1; i++) {
-				commandHistory[i]=commandHistory[i+1];
+		if (lastCommandPos >= commandHistory.length - 1) {
+			for (int i = 0; i < commandHistory.length - 1; i++) {
+				commandHistory[i] = commandHistory[i + 1];
 			}
 		} else {
 			lastCommandPos++;
 		}
-		
+
 		commandHistory[lastCommandPos] = cmd;
-		
+
 		commandHistory[lastCommandPos].execute();
 		//empty in front
-		for (int i = lastCommandPos+1; i < commandHistory.length; i++) {
-			commandHistory[i]=null;
+		for (int i = lastCommandPos + 1; i < commandHistory.length; i++) {
+			commandHistory[i] = null;
 		}
 	}
 	
 	/**
 	 *
 	 */
-	public void undoCommand(){
-		if (lastCommandPos >= 0 && lastCommandPos < commandHistory.length-1){
+	public void undoCommand() {
+		if (lastCommandPos >= 0 && lastCommandPos < commandHistory.length - 1) {
 			commandHistory[lastCommandPos].undo();
 			lastCommandPos--;
 		}
 	}
-	
+
 	/**
 	 *
 	 */
-	public void redoCommand(){
-		if (lastCommandPos >= -1 && lastCommandPos < commandHistory.length-1 && commandHistory[lastCommandPos+1] != null){
+	public void redoCommand() {
+		if (lastCommandPos >= -1 && lastCommandPos < commandHistory.length - 1 && commandHistory[lastCommandPos + 1] != null) {
 			lastCommandPos++;
 			commandHistory[lastCommandPos].execute();
 		}

@@ -498,7 +498,7 @@ public class Point extends Vector3 implements Position {
 		while (
 			isectC.isInMemoryAreaHorizontal()
 			&& traverseP.getZ() >= 0
-			&& distanceTo(traverseP) < maxDistance*Block.GAME_EDGELENGTH
+			&& distanceToSquared(traverseP) < maxDistance*Block.GAME_EDGELENGTH*maxDistance*Block.GAME_EDGELENGTH
 		){
 			//move
 			traverseP.add(dir);

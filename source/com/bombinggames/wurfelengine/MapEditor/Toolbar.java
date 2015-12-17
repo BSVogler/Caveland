@@ -126,14 +126,14 @@ public class Toolbar extends Window {
 		}
 		
 		/**
-		 *
+		 * Get the action when the tool is used in a command object.
 		 * @param view
 		 * @param selection
 		 * @param placableGUI
 		 * @return
 		 */
 		public Command getCommand(GameView view, Cursor selection, PlacableGUI placableGUI){
-			if (null != this) switch (this) {
+			switch (this) {
 				case DRAW:
 					return new Command() {
 						private Coordinate coord;
@@ -199,28 +199,29 @@ public class Toolbar extends Window {
 						public void undo() {
 							ent.dispose();
 						}
-					}; 
-					
-			}
-			//erase
-			return new Command() {
-				private Block previous;
-				private Coordinate coord;
-				
-				@Override
-				public void execute() {
-					if (coord==null) {
-						coord = selection.getPosition().toCoord();
-						previous = coord.getBlock();
-					}
-					Controller.getMap().setBlock(coord, null);
-				}
+					};
+				case ERASE:
+				default:
+					//erase
+					return new Command() {
+						private Block previous;
+						private Coordinate coord;
 
-				@Override
-				public void undo() {
-					Controller.getMap().setBlock(coord, previous);
-				}
-			};
+						@Override
+						public void execute() {
+							if (coord==null) {
+								coord = selection.getPosition().toCoord();
+								previous = coord.getBlock();
+							}
+							Controller.getMap().setBlock(coord, null);
+						}
+
+						@Override
+						public void undo() {
+							Controller.getMap().setBlock(coord, previous);
+						}
+					};
+			}
 		}
 	}
 

@@ -463,23 +463,26 @@ public class EditorView extends GameView implements Telegraph {
                 Block block = coords.getBlock();
 				leftColorGUI.setBlock(block);
             } else {
-				Tool toggledTool;
+				Tool toolUsed;
 				
 				if (button == Buttons.RIGHT){
-					toggledTool = toolSelection.getRightTool();
+					toolUsed = toolSelection.getRightTool();
 				} else {
-					toggledTool = toolSelection.getLeftTool();
+					toolUsed = toolSelection.getLeftTool();
 				}
 				
-				switch (toggledTool){
+				switch (toolUsed){
 					case DRAW:
 						dragLayer = selection.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI));
+						break;
+					case BUCKET:
+						bucketDown = coords;
 						break;
 					case SELECT:
 						if (WE.getEngineView().getCursor() != 2) {//not dragging
@@ -489,11 +492,9 @@ public class EditorView extends GameView implements Telegraph {
 							select(selectDownX, selectDownY, selectDownX, selectDownY);
 						}
 						break;
-					case BUCKET:
-						bucketDown = coords;
-						break;
 					case SPAWN:
-						getController().executeCommand(toggledTool.getCommand(gameplayView, selection, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, selection, leftColorGUI)
+						);
 						break;
 				}
 			}

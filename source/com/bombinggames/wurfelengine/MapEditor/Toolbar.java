@@ -128,11 +128,11 @@ public class Toolbar extends Window {
 		/**
 		 * Get the action when the tool is used in a command object.
 		 * @param view
-		 * @param selection
+		 * @param cursor
 		 * @param placableGUI
 		 * @return
 		 */
-		public Command getCommand(GameView view, Cursor selection, PlacableGUI placableGUI){
+		public Command getCommand(GameView view, Cursor cursor, PlacableGUI placableGUI){
 			switch (this) {
 				case DRAW:
 					return new Command() {
@@ -147,7 +147,7 @@ public class Toolbar extends Window {
 						@Override
 						public void execute() {
 							if (coord==null) {
-								coord = selection.getCoordInNormalDirection();
+								coord = cursor.getCoordInNormalDirection();
 								block = placableGUI.getBlock();
 								previous = coord.getBlock();
 							}
@@ -168,7 +168,7 @@ public class Toolbar extends Window {
 						@Override
 						public void execute() {
 							if (coord==null) {
-								coord = selection.getPosition().toCoord();
+								coord = cursor.getPosition().toCoord();
 								block = placableGUI.getBlock();
 								previous = coord.getBlock();
 							}
@@ -188,7 +188,7 @@ public class Toolbar extends Window {
 						@Override
 						public void execute() {
 							if (point == null) {
-								point = selection.getNormal().getPosition();
+								point = cursor.getNormal().getPosition();
 								ent = placableGUI.getEntity();
 							}
 							ent = placableGUI.getEntity();
@@ -210,7 +210,7 @@ public class Toolbar extends Window {
 						@Override
 						public void execute() {
 							if (coord==null) {
-								coord = selection.getPosition().toCoord();
+								coord = cursor.getPosition().toCoord();
 								previous = coord.getBlock();
 							}
 							Controller.getMap().setBlock(coord, null);

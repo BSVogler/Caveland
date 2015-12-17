@@ -80,7 +80,11 @@ public class Cursor extends AbstractEntity {
     public void setPosition(Point pos) {
         super.setPosition( pos.toCoord());
         setHidden(getPosition().getZ() < 0);//hide if is under map
-        normal.setPosition(pos);
+		Point isectP = pos.toPoint();
+		if (normalSide == Side.TOP) {
+			isectP.setZ((isectP.getZGrid() + 1) * Block.GAME_EDGELENGTH);
+		}
+        normal.setPosition(isectP);
     }
         
     /**

@@ -6,19 +6,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.Map.Position;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * Tutorial owl.
@@ -34,7 +34,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 	private int tutorialStep = 0;
 	private int completedTutorialStep =0;
 	private transient AimBand particleBand;
-	private transient final LinkedList<Waypoint> waypoints = new LinkedList<>();//should be a queque
+	private transient LinkedList<Waypoint> waypoints = new LinkedList<>();//should be a queque
 
 	/**
 	 *
@@ -70,6 +70,10 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 				}
 			}
 
+			if (waypoints == null) {
+				waypoints = new LinkedList<>();
+			}
+			
 			//go to movement goal
 			if (nextWaypoint != null) {
 				setFloating(nextWaypoint.isFly());

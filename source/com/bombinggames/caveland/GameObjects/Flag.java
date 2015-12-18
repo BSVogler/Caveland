@@ -36,6 +36,7 @@ import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 
 /**
  *
@@ -52,11 +53,14 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 	public Flag() {
 		super((byte) 21);
 		setAnimation(new EntityAnimation(new int[]{300, 300}, true, true));
+		getAnimation().setOffset((float) (Math.random()*600f));
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		if (!hasPosition()) return;
+
 		switch (getTeamId()) {
 			case 1:
 				setColor(HasTeam.COLORENEMY.cpy());
@@ -68,6 +72,14 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 				setColor(Color.WHITE.cpy());
 				break;
 		}
+		Coordinate respawn = new Coordinate(
+			WE.getCVarsSave().getValueI("respawnX"),
+			WE.getCVarsSave().getValueI("respawnY"),
+			WE.getCVarsSave().getValueI("respawnZ")+1
+		);
+		if (respawn.equals(getPosition().toCoord())){
+			setColor(HasTeam.COLORTEAM.cpy().sub(0.1f, 0.1f, 0.1f, 0f));
+		}
 	}
 
 	@Override
@@ -78,9 +90,7 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof HasTeam) {
-			if (getTeamId() == ((HasTeam) actor).getTeamId()) {
-				teamId = 0;
-			} else {
+			if (getTeamId() != ((HasTeam) actor).getTeamId()) {
 				teamId = ((HasTeam) actor).getTeamId();
 			}
 			if (teamId == ((HasTeam) actor).getTeamId()) {

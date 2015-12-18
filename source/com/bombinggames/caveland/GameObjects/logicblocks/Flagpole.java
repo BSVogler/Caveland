@@ -58,6 +58,7 @@ public class Flagpole extends AbstractBlockLogicExtension {
 
 	@Override
 	public void dispose() {
+		flag.dispose();
 	}
 	
 }

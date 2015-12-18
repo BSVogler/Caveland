@@ -1155,7 +1155,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			if (!WE.getCVars().getValueB("godmode"))
 				takeDamage(damage);
 			if (getHealth() <= 0) {
-				//die
+				die();
 			}
 			return true;
 		}
@@ -1167,6 +1167,18 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	public int getTeamId() {
 		return 2;
 	}
-	
+
+	private void die() {
+		//respawn
+		heal((byte) 100);
+		Coordinate respawn = new Coordinate(
+			WE.getCVarsSave().getValueI("respawnX"),
+			WE.getCVarsSave().getValueI("respawnY"),
+			WE.getCVarsSave().getValueI("respawnZ")
+		);
+		respawn.addVector(0, 1, 0);
+		
+		setPosition(respawn);
+	}
 	
 }

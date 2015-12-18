@@ -94,6 +94,14 @@ public class EntityAnimation implements Animatable {
 	void setParent(AbstractEntity parent) {
 		this.parent = parent;
 	}
+
+	/**
+	 * set an offset in time.
+	 * @param time in ms
+	 */
+	public void setOffset(float time) {
+		counter = time;
+	}
     
     
 }

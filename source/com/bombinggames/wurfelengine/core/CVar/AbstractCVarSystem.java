@@ -152,11 +152,15 @@ public abstract class AbstractCVarSystem {
 				String line = reader.readLine();
 				while (line != null) {
 					StringTokenizer tokenizer = new StringTokenizer(line, " ");
-					String name = tokenizer.nextToken();
-					String data = tokenizer.nextToken();
-					if (get(name) != null) {//only overwrite if already registered
-						get(name).setValue(data);
-						System.out.println("Set CVar " + name + ": " + data);
+					if (tokenizer.hasMoreTokens()) {
+						String name = tokenizer.nextToken();
+						if (tokenizer.hasMoreTokens()) {
+							String data = tokenizer.nextToken();
+							if (get(name) != null) {//only overwrite if already registered
+								get(name).setValue(data);
+								System.out.println("Set CVar " + name + ": " + data);
+							}
+						}
 					}
 					line = reader.readLine();
 				}

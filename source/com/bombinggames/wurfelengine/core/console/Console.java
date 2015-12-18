@@ -503,6 +503,7 @@ public class Console {
     public boolean executeCommand(String command){
         if (command.length() <= 0) return false;
         StringTokenizer st = new StringTokenizer(command, " ");
+		if (!st.hasMoreTokens()) return false;
 		String first = st.nextToken().toLowerCase();
 		
 		//first check if it a command

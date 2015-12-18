@@ -1,4 +1,5 @@
 /*
+ * If this software is used for a game the official „Wurfel Engine“ logo or its name must be visible in an intro screen or main menu.
  *
  * Copyright 2015 Benedikt Vogler.
  * All rights reserved.
@@ -6,8 +7,6 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
- *   visible in an intro screen or main menu.
  * * Redistributions of source code must retain the above copyright notice, 
  *   this list of conditions and the following disclaimer.
  * * Redistributions in binary form must reproduce the above copyright notice, 
@@ -31,50 +30,79 @@
  */
 package com.bombinggames.caveland.MainMenu;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.bombinggames.wurfelengine.WE;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class MenuItem extends Image {
+public class MenuInputListener implements InputProcessor {
+	
+	private final MainMenuScreen parent;
 
-	/**
-	 *
-	 * @param texture
-	 */
-	public MenuItem(Texture texture) {
-		super(texture);
+	public MenuInputListener(final MainMenuScreen menuInputListener) {
+		this.parent = menuInputListener;
 	}
 
-	/**
-	 *
-	 * @param action
-	 */
 	@Override
-	public void addAction(Action action) {
-		super.addAction(action);
-		addListener(new ChangeListener() {
-
-			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-				action.act(0);
+	public boolean keyDown(int keycode) {
+		if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S) {
+			parent.select(parent.getSelection()+1);
+			WE.SOUND.play("menuSelect");
+			if (parent.getSelection() >= parent.getButtonAmount()) {
+				parent.select(0);
 			}
-		});
-		addListener(new ClickListener() {
-
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				action.act(0);
-				WE.SOUND.play("menuConfirm");
+		}
+		if (keycode == Input.Keys.UP || keycode == Input.Keys.W) {
+			WE.SOUND.play("menuSelect");
+			parent.select(parent.getSelection()-1);
+			if (parent.getSelection() < 0) {
+				parent.select(parent.getButtonAmount() - 1);
 			}
-		});
+			
+		}
+		if (keycode == Input.Keys.ENTER || Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			parent.enterSelection();
+		}
+		return true;
 	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		return true;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		return true;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		return true;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return true;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return true;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return true;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return true;
+	}
+	
 }

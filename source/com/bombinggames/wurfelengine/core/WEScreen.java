@@ -31,14 +31,19 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.WE;
+import java.util.ArrayList;
 
 /**
  *A WEScreen is a {@link Screen} which supports Wurfel Engine features liek the {@link Console}.
  * @author Benedikt Vogler
  */
 public abstract class WEScreen implements Screen {
-
+	ArrayList<Actor> buttons = new ArrayList<>(5);
+	private int selection;
+	
 	@Override
 	@SuppressWarnings("AssignmentToMethodParameter")
 	public final void render(float delta){
@@ -54,6 +59,24 @@ public abstract class WEScreen implements Screen {
 	 */
 	public abstract void renderImpl(float dt);
 
+	public void addButton(Actor button){
+		buttons.add(button);
+	};
 	
+	public void select(int i){
+		selection = i;
+	}
+	
+	public void enterSelection(){
+		buttons.get(selection).fire(new ChangeListener.ChangeEvent());
+	}
+
+	public int getSelection() {
+		return selection;
+	}
+	
+	public int getButtonAmount(){
+		return buttons.size();
+	}
 	
 }

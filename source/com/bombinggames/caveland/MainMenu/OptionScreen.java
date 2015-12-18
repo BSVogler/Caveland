@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.ActionBox;
-import static com.bombinggames.caveland.MainMenu.MainMenuScreen.manager;
+import static com.bombinggames.caveland.MainMenu.MainMenuScreen.MANAGER;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.WEScreen;
@@ -140,7 +140,7 @@ public class OptionScreen extends WEScreen {
 				WE.getCVars().get("resolutionx").setValue(dpm.width);
 				WE.getCVars().get("resolutiony").setValue(dpm.height);
 
-				MainMenuScreen.manager.setActionBox(
+				MainMenuScreen.MANAGER.setActionBox(
 					stage,
 					new ActionBox("Restart", ActionBox.BoxModes.SIMPLE, "You need to restart the game in order to aply the resolution.")
 				);
@@ -165,6 +165,7 @@ public class OptionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(applyButton);
+		addButton(applyButton);
 		
 		cancelButton = new TextButton("Back to Menu", WE.getEngineView().getSkin());
 		cancelButton.setPosition(stage.getWidth() / 2 + 100, 100);
@@ -176,6 +177,7 @@ public class OptionScreen extends WEScreen {
 			}
 		});
 		stage.addActor(cancelButton);
+		addButton(cancelButton);
 		
 		TextButton resetButton = new TextButton("Reset Game (erases save files)", WE.getEngineView().getSkin());
 		resetButton.setPosition(stage.getWidth()/2+100, 300);
@@ -188,7 +190,7 @@ public class OptionScreen extends WEScreen {
 					WorkingDirectory.delete();
 					System.exit(0);//exiting the game writes the cvars
 				});
-				MainMenuScreen.manager.setActionBox(
+				MainMenuScreen.MANAGER.setActionBox(
 					stage,
 					warning
 				);
@@ -232,7 +234,7 @@ public class OptionScreen extends WEScreen {
 
 	@Override
 	public void show() {
-		WE.getEngineView().addInputProcessor(manager);
+		WE.getEngineView().addInputProcessor(MANAGER);
 		WE.getEngineView().addInputProcessor(stage);
 		WE.getEngineView().addInputProcessor(new InputListener());
 	}

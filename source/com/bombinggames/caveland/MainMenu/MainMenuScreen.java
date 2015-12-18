@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Caveland;
 import com.bombinggames.wurfelengine.WE;
@@ -33,13 +32,13 @@ public class MainMenuScreen extends AbstractMainMenu {
 	private final MenuItem[] menuItems = new MenuItem[5];
 	private Stage stage;
 	private Image lettering;
-	private Image alphaTag; 
-    private Texture background;
-    private SpriteBatch batch;
-    private BitmapFont font;
-    private float alpha =0;
-	private int selectionIndex =0;
-	
+	private Image alphaTag;
+	private Texture background;
+	private SpriteBatch batch;
+	private BitmapFont font;
+	private float alpha = 0;
+	private int selectionIndex = 0;
+
 	private float backgroundPosY;
 	private boolean fadeout;
 	private Action fadeOutAction;
@@ -72,7 +71,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			stage.getWidth()/2-button1Player.getWidth()/2-200,
 			stage.getHeight()*0.2f
 		);
-		stage.addActor(button1Player);
+		
 		menuItems[0] = button1Player;
 		button1Player.addAction(
 			new Action() {
@@ -100,12 +99,12 @@ public class MainMenuScreen extends AbstractMainMenu {
 			stage.getHeight()*0.25f
 		);
 		stage.addActor(twoPlayer);
+		
 		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2playersButton.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
 			stage.getHeight()*0.2f
 		);
-		stage.addActor(button2Player);
 		menuItems[1] = button2Player;
 		button2Player.addAction(
 			new Action() {
@@ -130,29 +129,29 @@ public class MainMenuScreen extends AbstractMainMenu {
 		int i=2;
 		final int top = (int) (stage.getHeight()*0.05f);
 		
-		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
 		menuItems[i].addAction(
 			new Action() {
-				@Override
-				public boolean act(float delta) {
-					fadeOut(
-						new Action() {
+			@Override
+			public boolean act(float delta) {
+				fadeOut(
+					new Action() {
 
-							@Override
-							public boolean act(float delta) {
-								WE.setScreen(new OptionScreen(batch));
-								return true;
-							}
-						}
-					);
-					return true;
+					@Override
+					public boolean act(float delta) {
+						WE.setScreen(new OptionScreen(batch));
+						return true;
+					}
 				}
+				);
+				return true;
 			}
+		}
 		);
-		menuItems[i].setPosition(stage.getWidth()/2-400, top);
-		
+		menuItems[i].setPosition(stage.getWidth() / 2 - 400, top);
+
 		i++;
-		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_credits.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_credits.png")));
 		menuItems[i].addAction(new Action() {
 			@Override
 			public boolean act(float delta) {
@@ -160,10 +159,10 @@ public class MainMenuScreen extends AbstractMainMenu {
 				return true;
 			}
 		});
-			menuItems[i].setPosition(stage.getWidth()/2-menuItems[i].getWidth()/2, top);
-		
+		menuItems[i].setPosition(stage.getWidth() / 2 - menuItems[i].getWidth() / 2, top);
+
 		i++;
-		menuItems[i]= new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_exit.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_exit.png")));
 		menuItems[i].addAction(new Action() {
 			@Override
 			public boolean act(float delta) {
@@ -171,16 +170,17 @@ public class MainMenuScreen extends AbstractMainMenu {
 				return true;
 			}
 		});
-		menuItems[i].setPosition(stage.getWidth()/2+150, top);
-		
+		menuItems[i].setPosition(stage.getWidth() / 2 + 150, top);
+
 		for (Image menuItem : menuItems) {
 			stage.addActor(menuItem);
+			addButton(menuItem);
 		}
-		
-        background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/background.jpg"));
+
+		background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/background.jpg"));
 		backgroundPosY = -Gdx.graphics.getHeight();
-		
-        font = new BitmapFont();
+
+		font = new BitmapFont();
 	}
 
 	@Override
@@ -241,18 +241,18 @@ public class MainMenuScreen extends AbstractMainMenu {
 		
 		//render
 		 //clear & set background to black
-        Gdx.gl20.glClearColor( 0.36f, 0.76f, 0.98f, 1f );
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl20.glClearColor(0.36f, 0.76f, 0.98f, 1f);
+		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //Background        
-        batch.begin();
+		batch.begin();
 			batch.draw(background, 0, backgroundPosY, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			// render the lettering
+		  // render the lettering
 			lettering.setColor(1, 1, 1, alpha);
 
-			font.draw(batch, Caveland.VERSION+", FPS:"+ Gdx.graphics.getFramesPerSecond(), 20, 30);
-        batch.end();
-		
+		  font.draw(batch, Caveland.VERSION + ", FPS:" + Gdx.graphics.getFramesPerSecond(), 20, 30);
+		batch.end();
+
 		stage.draw();
 	}
 
@@ -265,7 +265,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 	public void show() {
 		WE.getEngineView().addInputProcessor(MANAGER);
 		WE.getEngineView().addInputProcessor(stage);
-		WE.getEngineView().addInputProcessor(new InputListener());
+		WE.getEngineView().addInputProcessor(new MenuInputListener(this));
 		if (!WE.SOUND.isMusicPlaying() && WE.getCVars().getValueF("music") > 0)
 			WE.SOUND.setMusic(Gdx.files.internal("com/bombinggames/caveland/music/title.mp3").path());
 		WE.SOUND.play("menuAbort");
@@ -296,65 +296,5 @@ public class MainMenuScreen extends AbstractMainMenu {
 		fadeOutAction = action;
 	}
 	
-	private class InputListener implements InputProcessor {
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if (keycode == Keys.DOWN || keycode == Keys.S){
-                selectionIndex++;
-				WE.SOUND.play("menuSelect");
-				if (selectionIndex>=menuItems.length)
-					selectionIndex=0;
-			}
-			
-            if (keycode == Keys.UP || keycode == Keys.W){
-				selectionIndex--;
-				WE.SOUND.play("menuSelect");
-				if (selectionIndex<0)
-					selectionIndex=menuItems.length-1;
-			}
-			
-            if (keycode == Keys.ENTER || Gdx.input.isKeyPressed(Keys.SPACE))
-                menuItems[selectionIndex].fire(new ChangeEvent());
-			
-            return true;
-			
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return true;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return true;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return true;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return true;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return true;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return true;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return true;
-        }
-    }
 	
 }

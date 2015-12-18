@@ -57,6 +57,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
+import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
  *
@@ -84,6 +85,7 @@ public class SideSprite extends TextureRegion {
 	 */
 	public SideSprite() {
 		setColor(1, 1, 1, 1);
+		this.side = Side.TOP;
 	}
 
 	/**
@@ -126,12 +128,12 @@ public class SideSprite extends TextureRegion {
 		if (texture == null) {
 			throw new IllegalArgumentException("texture cannot be null.");
 		}
+		this.side = Side.TOP;
 		setTexture(texture);
 		setRegion(srcX, srcY, srcWidth, srcHeight);
 		setColor(1, 1, 1, 1);
 		setSize(Math.abs(srcWidth), Math.abs(srcHeight));
 		setOrigin(width / 2, height / 2);
-		this.side = Side.TOP;
 	}
 
 	// Note the region is copied.
@@ -151,11 +153,11 @@ public class SideSprite extends TextureRegion {
 	}
 	
 	public SideSprite(TextureRegion region, Side side) {
+		this.side = side;
 		setRegion(region);
 		setColor(1, 1, 1, 1);
 		setSize(region.getRegionWidth(), region.getRegionHeight());
 		setOrigin(width / 2, height / 2);
-		this.side = side;
 	}
 
 	/**
@@ -171,11 +173,11 @@ public class SideSprite extends TextureRegion {
 	 * flip the sprite when drawn.
 	 */
 	public SideSprite(TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+		this.side = Side.TOP;
 		setRegion(region, srcX, srcY, srcWidth, srcHeight);
 		setColor(1, 1, 1, 1);
 		setSize(Math.abs(srcWidth), Math.abs(srcHeight));
 		setOrigin(width / 2, height / 2);
-		this.side = Side.TOP;
 	}
 
 	/**
@@ -437,7 +439,6 @@ public class SideSprite extends TextureRegion {
 	public void setColor(float r, float g, float b, float a) {
 		int intBits = ((int) (255 * a) << 24) | ((int) (255 * b) << 16) | ((int) (255 * g) << 8) | ((int) (255 * r));
 		float color = NumberUtils.intToFloatColor(intBits);
-		float[] vertices = this.vertices;
 		vertices[C1] = color;
 		vertices[C2] = color;
 		vertices[C3] = color;
@@ -449,7 +450,6 @@ public class SideSprite extends TextureRegion {
 	 * @see Color#toFloatBits()
 	 */
 	public void setColor(float color) {
-		float[] vertices = this.vertices;
 		vertices[C1] = color;
 		vertices[C2] = color;
 		vertices[C3] = color;
@@ -599,29 +599,46 @@ public class SideSprite extends TextureRegion {
 		if (dirty) {
 			dirty = false;
 
-			float localX = -originX;//bottom left
-			float localY = -originY;
+			float localX1 = -originX;//bottom left
+			float localY1 = -originY;
+			
+			float localX2 = -originX;//top left
+			float localY2 = -originY + (side == Side.RIGHT ? height * Point.SQRT12 : height);
+			
 			float localX3 = -originX + width; //top right
-			float localY3 = -originY + height;
-			float localY2 = -originY + height*(side==Side.RIGHT?0.71f:1f);
-			float worldOriginX = this.x - localX;
-			float worldOriginY = this.y - localY;
+			float localY3 = -originY + (side == Side.LEFT ? height * Point.SQRT12 : height);
+			//bottom right
+			float localX4 = -originX + width;
+			float localY4 = -originY + (side == Side.RIGHT ? height * (1-Point.SQRT12) : 0f);
+			
+			float worldOriginX = this.x + originX;
+			float worldOriginY = this.y + originY;
+			
+			if (side == Side.LEFT) {
+				localY1 += height * (1-Point.SQRT12);
+			}
+			
+			if (side == Side.TOP) {
+				localY1 += height * 0.5f;
+				localX2 += width * 0.5f;
+				localY3 -= height * 0.5f;
+				localX4 -= width * 0.5f;
+			}
 			
 			if (scaleX != 1 || scaleY != 1) {
-				localX *= scaleX;
-				localY *= scaleY;
+				localX1 *= scaleX;
+				localY1 *= scaleY;
 				localX3 *= scaleX;
 				localY3 *= scaleY;
 			}
 			
-			float[] vertices = this.vertices;
 			if (rotation != 0) {
 				final float cos = MathUtils.cosDeg(rotation);
 				final float sin = MathUtils.sinDeg(rotation);
-				final float localXCos = localX * cos;
-				final float localXSin = localX * sin;
-				final float localYCos = localY * cos;
-				final float localYSin = localY * sin;
+				final float localXCos = localX1 * cos;
+				final float localXSin = localX1 * sin;
+				final float localYCos = localY1 * cos;
+				final float localYSin = localY1 * sin;
 				final float localX2Cos = localX3 * cos;
 				final float localX2Sin = localX3 * sin;
 				final float localY2Cos = localY3 * cos;
@@ -645,23 +662,26 @@ public class SideSprite extends TextureRegion {
 				vertices[X4] = x1 + (x3 - x2);
 				vertices[Y4] = y3 - (y2 - y1);
 			} else {
-				final float x1 = localX + worldOriginX;
-				final float y1 = localY + worldOriginY;
+				final float x1 = localX1 + worldOriginX;
+				final float y1 = localY1 + worldOriginY;
+				final float x2 = localX2 + worldOriginX;
 				final float y2 = localY2 + worldOriginY;
 				final float x3 = localX3 + worldOriginX;
 				final float y3 = localY3 + worldOriginY;
+				final float x4 = localX4 + worldOriginX;
+				final float y4 = localY4 + worldOriginY;
 
 				vertices[X1] = x1;//bottom left
 				vertices[Y1] = y1;
 
-				vertices[X2] = x1;//top left
+				vertices[X2] = x2;//top left
 				vertices[Y2] = y2;
 
 				vertices[X3] = x3;//top right
 				vertices[Y3] = y3;
 
-				vertices[X4] = x3;//botoom right
-				vertices[Y4] = y1;
+				vertices[X4] = x4;//bottom right
+				vertices[Y4] = y4;
 			}
 		}
 		return vertices;
@@ -829,18 +849,18 @@ public class SideSprite extends TextureRegion {
 	public void setRegion(float u, float v, float u2, float v2) {
 		super.setRegion(u, v, u2, v2);
 
-		float[] vertices = this.vertices;
+		final float f = Block.VIEW_WIDTH4/(float) getTexture().getWidth();//s/4096=x, where s is a quarter of the block width which is by default s=50
 		vertices[U1] = u;
-		vertices[V1] = v2;
+		vertices[V1] = v2 - ((side == Side.LEFT || side == Side.TOP) ? f : 0f);
 
-		vertices[U2] = u;
-		vertices[V2] = v+(side==Side.RIGHT?0.0123f:0f);
+		vertices[U2] = u + (side == Side.TOP ? f*2 : 0f);
+		vertices[V2] = v + (side == Side.RIGHT ? f : 0f);
 
 		vertices[U3] = u2;
-		vertices[V3] = v;
+		vertices[V3] = v + (side == Side.LEFT ? f : 0f) + (side == Side.TOP ? f : 0f);
 
-		vertices[U4] = u2;
-		vertices[V4] = v2;
+		vertices[U4] = u2 - (side == Side.TOP ? f*2 : 0f);
+		vertices[V4] = v2 - (side == Side.RIGHT ? f : 0f);
 	}
 
 	/**
@@ -882,35 +902,11 @@ public class SideSprite extends TextureRegion {
 	 */
 	@Override
 	public void setV2(float v2) {
-		super.setV2(v2*0.7f);
-		vertices[V1] = v2*0.7f;
-		vertices[V4] = v2*0.7f;
+		super.setV2(v2);
+		vertices[V1] = v2;
+		vertices[V4] = v2;
 	}
 
-	@Override
-	public float getU() {
-		return super.getU()*0.7f;
-	}
-
-	@Override
-	public float getU2() {
-		return super.getU2()*0.7f;
-	}
-	
-
-	@Override
-	public float getV() {
-		return super.getV()*0.7f;
-	}
-
-	@Override
-	public float getV2() {
-		return super.getV2()*0.7f;
-	}
-	
-	
-	
-	
 
 	/**
 	 * Set the sprite's flip state regardless of current condition

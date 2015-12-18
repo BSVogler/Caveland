@@ -6,6 +6,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
+import com.bombinggames.caveland.GameObjects.logicblocks.Flagpole;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
@@ -110,7 +111,12 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		RAILSBOOSTER((byte) 56, "boos	ter rails", false),
+		RAILSBOOSTER((byte) 56, "booster rails", false),
+		
+		/**
+		 *
+		 */
+		FLAGPOLE((byte) 60, "flag pole", false),
 
 		/**
 		 *
@@ -161,6 +167,8 @@ public class CavelandBlocks implements CustomBlocks {
 					return RAILS;
 				case 56:
 					return RAILSBOOSTER;
+				case 60:
+					return FLAGPOLE;
 				case 72:
 					return TREE;
 				default:
@@ -176,7 +184,7 @@ public class CavelandBlocks implements CustomBlocks {
 		 * 
 		 * @param id
 		 * @param name
-		 * @param hasSides 
+		 * @param hasSides rendered with sides or without
 		 */
 		private CLBlocks(byte id, String name, boolean hasSides) {
 			this.id = id;
@@ -263,6 +271,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==72) return true;
 		if (id==46) return true;
 		if (id==52) return true;
+		if (id==60) return true;
 		return false;
 	}
 
@@ -285,6 +294,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==54) return true;
 		if (id==55) return true;
 		if (id==56) return true;
+		if (id==60) return true;
 		if (id==72) return true;
 		return false;
 	}
@@ -363,6 +373,9 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id == 43) {
 			return true;
 		}
+		if (id == 60) {
+			return true;
+		}
 		if (id == 3) {
 			return true;//stone
 		}
@@ -371,35 +384,39 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
-		if (block.getId() == CLBlocks.ENTRY.id) {
+		byte id = block.getId();
+		if (id == CLBlocks.ENTRY.id) {
 			return new PortalBlockLogic(block, coord);
 		}
-		if (block.getId() == CLBlocks.CONSTRUCTIONSITE.id) {
+		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSite(block, coord);
 		}
-		if (block.getId() == CLBlocks.OVEN.id) {
+		if (id == CLBlocks.OVEN.id) {
 			return new OvenLogic(block, coord);
 		}
-		if (block.getId() == CLBlocks.POWERSTATION.id) {
+		if (id == CLBlocks.POWERSTATION.id) {
 			return new PowerStationLogic(block, coord);
 		}
-		if (block.getId() == CLBlocks.LIFT.id) {
+		if (id == CLBlocks.LIFT.id) {
 			return new LiftLogic(block, coord);
 		}
-		if (block.getId() == CLBlocks.ROBOTFACTORY.id) {
+		if (id == CLBlocks.ROBOTFACTORY.id) {
 			return new RobotFactory(block, coord);
 		}
-		if (block.getId() == CLBlocks.POWERCABLE.id) {
+		if (id == CLBlocks.POWERCABLE.id) {
 			return new CableBlock(block, coord);
 		}
-		if (block.getId() == CLBlocks.RAILSBOOSTER.id) {
+		if (id == CLBlocks.RAILSBOOSTER.id) {
 			return new BoosterLogic(block, coord);
 		}
-		if (block.getId() == CLBlocks.TURRET.id) {
+		if (id == CLBlocks.TURRET.id) {
 			return new Turret(block, coord);
 		}
-		if (block.getId() == CLBlocks.TORCH.id) {
+		if (id == CLBlocks.TORCH.id) {
 			return new PowerTorch(block, coord);
+		}
+		if (id == CLBlocks.FLAGPOLE.id) {
+			return new Flagpole(block, coord);
 		}
 		return null;
 	}

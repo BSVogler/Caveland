@@ -86,6 +86,9 @@ public class CLGameController extends Controller {
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ");
 		saveCvars.register(new BooleanCVar(false), "IntroCutsceneCompleted");
 		saveCvars.register(new IntCVar(0), "money");
+		saveCvars.register(new IntCVar(0), "respawnX");
+		saveCvars.register(new IntCVar(0), "respawnY");
+		saveCvars.register(new IntCVar(10), "respawnZ");
 		saveCvars.load();
 		
 		spawnPlayers();

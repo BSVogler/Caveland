@@ -15,13 +15,14 @@ import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A robot which can be evil or friendly.
  *
  * @author Benedikt Vogler
  */
-public class Robot extends MovableEntity implements Telegraph{
+public class Robot extends MovableEntity implements Telegraph, HasTeam{
 
 	private static final long serialVersionUID = 3L;
 	/**
@@ -170,10 +171,16 @@ public class Robot extends MovableEntity implements Telegraph{
 			energy = ((int) (energy + dt));
 
 			//find nearby target if there is none
-			if (target == null && teamId == 0) {
-				ArrayList<Ejira> nearby = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Ejira.class);
-				if (!nearby.isEmpty()) {
-					target = nearby.get(0);
+			if (target == null && getTeamId() != 0) {
+				ArrayList<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, HasTeam.class);
+				if (!nearbyWithFaction.isEmpty()) {
+					Iterator<HasTeam> it = nearbyWithFaction.iterator();
+					while (it.hasNext()) {
+						HasTeam next = it.next();
+						if (next instanceof MovableEntity && next.getTeamId() != getTeamId()) {
+							target = (MovableEntity) next;
+						}
+					}
 				}
 			}
 		}
@@ -196,13 +203,14 @@ public class Robot extends MovableEntity implements Telegraph{
 	 */
 	public void setTeamId(int id) {
 		this.teamId = id;
-		if (teamId == 0) {
+		if (teamId == 1) {
 			setName("Evil Robot");
 		} else {
 			setName("Friendly Robot");
 		}
 	}
 
+	@Override
 	public int getTeamId() {
 		return teamId;
 	}
@@ -255,7 +263,7 @@ public class Robot extends MovableEntity implements Telegraph{
 				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 
-				if (teamId==0)
+				if (teamId!=2)
 					new Money().spawn(getPosition().toPoint());
 				
 				if (KILLSOUND != null) {

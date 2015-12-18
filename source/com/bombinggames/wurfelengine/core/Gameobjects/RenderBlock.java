@@ -391,20 +391,6 @@ public class RenderBlock extends AbstractGameObject{
 	 * helper function
 	 * @param view
 	 * @param camera
-	 * @param aopos does not alter the field
-	 * @param value 
-	 */
-	private void renderAO(final GameView view, final Camera camera, final Position aopos, final byte value){
-		SimpleEntity ao = new SimpleEntity((byte) 2, value);
-		ao.setPosition(aopos);
-		ao.setColor(new Color(0.5f, 0.5f, 0.5f, ambientOcclusion));
-		ao.render(view, camera);
-	}
-	
-	/**
-	 * helper function
-	 * @param view
-	 * @param camera
 	 * @param aopos
 	 * @param value 
 	 */

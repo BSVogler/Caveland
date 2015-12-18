@@ -30,7 +30,6 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
@@ -519,7 +518,7 @@ public class RenderBlock extends AbstractGameObject{
 		if (id <= 0) return;
 		byte value = getSpriteValue();
 		if (value < 0) return;
-        Sprite sprite = new Sprite(getBlockSprite(id, value, side));
+        SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side);
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
             sprite.setOrigin(0, 0);

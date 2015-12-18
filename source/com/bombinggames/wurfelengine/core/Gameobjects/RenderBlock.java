@@ -283,7 +283,8 @@ public class RenderBlock extends AbstractGameObject{
 					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
 					(int) (yPos+VIEW_HEIGHT*(1+getScaling())),
 					Side.TOP,
-					color
+					color,
+					0
 				);
 
 				if (staticShade) {
@@ -297,7 +298,8 @@ public class RenderBlock extends AbstractGameObject{
 					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
 					yPos,
 					Side.LEFT,
-					color
+					color,
+					0
 				);
 
 				if (staticShade) {
@@ -308,7 +310,8 @@ public class RenderBlock extends AbstractGameObject{
 					xPos,
 					yPos,
 					Side.RIGHT,
-					color
+					color,
+					0
 				);
             } else
                 super.render(view, xPos, yPos+VIEW_DEPTH4, color);
@@ -345,6 +348,10 @@ public class RenderBlock extends AbstractGameObject{
 			color = Controller.getLightEngine().getColor(side).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
+		int aoFlags = 0;
+		if (ambientOcclusion > 0) {
+			aoFlags = getBlockData().getAOFlags();
+		}
         renderSide(
 			view,
             coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
@@ -358,7 +365,8 @@ public class RenderBlock extends AbstractGameObject{
 						? color.add(0.25f, 0.25f, 0.25f, 0)
 						: color
 					)
-				: color//pass color if not shading static
+				: color,//pass color if not shading static
+			aoFlags
         );
 		
 		if (getBlockData().getHealth() <= 50) {
@@ -375,80 +383,6 @@ public class RenderBlock extends AbstractGameObject{
 					break;
 				default:
 					break;
-			}
-		}
-				
-		
-		//render ambient occlusion
-		if (ambientOcclusion > 0) {
-			int aoFlags = getBlockData().getAOFlags();
-			if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition();
-				if ((aoFlags & (1 << 2)) != 0) {//if right
-					renderAO(view, camera, aopos, (byte) 11);
-				}
-				if ((aoFlags & (1 << 4)) != 0) {//if bottom
-					renderAO(view, camera, aopos, (byte) 10);
-				} else {
-					if ((aoFlags & (1 << 3)) != 0) {//if bottom right
-						renderAO(view, camera, aopos, (byte) 13);
-					}
-					if ((aoFlags & (1 << 5)) != 0) {//if bottom left
-						renderAO(view, camera, aopos, (byte) 16);
-					}
-				}
-				if ((aoFlags & (1 << 6)) != 0) {//if left
-					renderAO(view, camera, aopos, (byte) 9);
-				}
-			}
-
-			if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition().addVector(0, 0, 1);//move one up
-				if ((aoFlags & (1 << 9)) != 0) {//if back right
-					renderAO(view, camera, aopos, (byte) 0);
-				}
-
-				if ((aoFlags & (1 << 11)) != 0) {//if front right
-					renderAO(view, camera, aopos, (byte) 4);
-				} else if ((aoFlags & (1 << 10)) != 0) {//if right
-					renderAO(view, camera, aopos, (byte) 3);
-				}
-				
-				//12 is never visible
-				
-				if ((aoFlags & (1 << 13)) != 0) {//if front left
-					renderAO(view, camera, aopos, (byte) 5);
-				} else if ((aoFlags & (1 << 14)) != 0) {//if left
-					renderAO(view, camera, aopos, (byte) 6);
-				}
-				if ((aoFlags & (1 << 15)) != 0) {//if back left
-					renderAO(view, camera, aopos, (byte) 1);
-				} else if ((aoFlags & 1 << 8) != 0) {//if back
-					renderAO(view, camera, aopos, (byte) 2);
-				}
-				aopos.addVector(0, 0, -1); //move down again
-			}
-
-			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
-				Coordinate aopos = getPosition();
-				if ((aoFlags & (1 << 18)) != 0) {//if right
-					renderAO(view, camera, aopos, (byte) 7);
-				}
-
-				if ((aoFlags & (1 << 20)) != 0) {//if bottom
-					renderAO(view, camera, aopos, (byte) 8);
-				} else {
-					if ((aoFlags & (1 << 19)) != 0) {//if bottom right
-						renderAO(view, camera, aopos, (byte) 15);
-					}
-					if ((aoFlags & (1 << 21)) != 0) {//if bottom left
-						renderAO(view, camera, aopos, (byte) 14);
-					}
-				}
-
-				if ((aoFlags & (1 << 22)) != 0) {//if left
-					renderAO(view, camera, aopos, (byte) 12);
-				}
 			}
 		}
     }
@@ -502,7 +436,8 @@ public class RenderBlock extends AbstractGameObject{
             xPos,
             yPos,
             side,
-            color
+            color,
+			0
         );
     }
     /**
@@ -512,13 +447,14 @@ public class RenderBlock extends AbstractGameObject{
      * @param yPos rendering position
      * @param side The number identifying the side. 0=left, 1=top, 2=right
      * @param color a tint in which the sprite gets rendered. If null color gets ignored
+	 * @param ao ambient occlusion flags. if no ao pass 0
      */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color){
+    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color, int ao){
 		byte id = getSpriteId();
 		if (id <= 0) return;
 		byte value = getSpriteValue();
 		if (value < 0) return;
-        SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side);
+        SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side, ao);
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
             sprite.setOrigin(0, 0);

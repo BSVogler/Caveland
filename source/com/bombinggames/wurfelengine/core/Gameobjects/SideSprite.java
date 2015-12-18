@@ -78,6 +78,7 @@ public class SideSprite extends TextureRegion {
 	private boolean dirty = true;
 	private Rectangle bounds;
 	private final Side side;
+	private int aoFlags;
 
 	/**
 	 * Creates an uninitialized sprite. The sprite will need a texture region
@@ -152,9 +153,10 @@ public class SideSprite extends TextureRegion {
 		this.side = Side.TOP;
 	}
 	
-	public SideSprite(TextureRegion region, Side side) {
+	public SideSprite(TextureRegion region, Side side, int aoFlags) {
 		this.side = side;
 		setRegion(region);
+		this.aoFlags = aoFlags;
 		setColor(1, 1, 1, 1);
 		setSize(region.getRegionWidth(), region.getRegionHeight());
 		setOrigin(width / 2, height / 2);
@@ -682,6 +684,84 @@ public class SideSprite extends TextureRegion {
 
 				vertices[X4] = x4;//bottom right
 				vertices[Y4] = y4;
+			}
+				
+				
+			//render ambient occlusion
+			int intBits = ((int) (255 * 1f) << 24) | ((int) (255 * 0.3f) << 16) | ((int) (255 * 0.3f) << 8) | ((int) (255 * 0.3f));
+			float shadowcolor = NumberUtils.intToFloatColor(intBits);
+			if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
+				if ((aoFlags & (1 << 2)) != 0) {//if right
+					vertices[C3] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				}
+				if ((aoFlags & (1 << 4)) != 0) {//if bottom
+					vertices[C1] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				} else {
+					if ((aoFlags & (1 << 3)) != 0) {//if bottom right
+						vertices[C4] = shadowcolor;
+					}
+					if ((aoFlags & (1 << 5)) != 0) {//if bottom left
+						vertices[C1] = shadowcolor;
+					}
+				}
+				if ((aoFlags & (1 << 6)) != 0) {//if left
+					vertices[C1] = shadowcolor;
+					vertices[C2] = shadowcolor;
+				}
+			}
+
+			if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
+				if ((aoFlags & (1 << 9)) != 0) {//if back right
+					vertices[C2] = shadowcolor;
+					vertices[C3] = shadowcolor;
+				}
+
+				if ((aoFlags & (1 << 11)) != 0) {//if front right
+					vertices[C3] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				} else if ((aoFlags & (1 << 10)) != 0) {//if right
+					vertices[C3] = shadowcolor;
+				}
+
+				//12 is never visible
+				if ((aoFlags & (1 << 13)) != 0) {//if front left
+					vertices[C1] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				} else if ((aoFlags & (1 << 14)) != 0) {//if left
+					vertices[C1] = shadowcolor;
+				}
+				if ((aoFlags & (1 << 15)) != 0) {//if back left
+					vertices[C1] = shadowcolor;
+					vertices[C2] = shadowcolor;
+				} else if ((aoFlags & 1 << 8) != 0) {//if back
+					vertices[C2] = shadowcolor;
+				}
+			}
+
+			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
+				if ((aoFlags & (1 << 18)) != 0) {//if right
+					vertices[C3] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				}
+
+				if ((aoFlags & (1 << 20)) != 0) {//if bottom
+					vertices[C1] = shadowcolor;
+					vertices[C4] = shadowcolor;
+				} else {
+					if ((aoFlags & (1 << 19)) != 0) {//if bottom right
+						vertices[C4] = shadowcolor;
+					}
+					if ((aoFlags & (1 << 21)) != 0) {//if bottom left
+						vertices[C1] = shadowcolor;
+					}
+				}
+
+				if ((aoFlags & (1 << 22)) != 0) {//if left
+					vertices[C1] = shadowcolor;
+					vertices[C2] = shadowcolor;
+				}
 			}
 		}
 		return vertices;

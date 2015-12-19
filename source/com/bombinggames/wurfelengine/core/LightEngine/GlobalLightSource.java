@@ -121,11 +121,6 @@ public class GlobalLightSource {
      * @return
      */
     public float getAzimuthSpeed() {
-		if (amplitude==45) {//if a moon
-			if (height<0)
-				return 2* WE.getCVars().getValueF("LEAzimutSpeed");
-			else return WE.getCVars().getValueF("LEAzimutSpeed")/2f;
-		}
         return WE.getCVars().getValueF("LEAzimutSpeed");
     }
 

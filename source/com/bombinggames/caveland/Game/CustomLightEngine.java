@@ -32,6 +32,7 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.LightEngine.GlobalLightSource;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.Position;
@@ -42,43 +43,61 @@ import com.bombinggames.wurfelengine.core.Map.Position;
  */
 public class CustomLightEngine extends LightEngine {
 	private final GlobalLightSource customSun;
-	private final GlobalLightSource customMoon;
+	private final GlobalLightSource caveSun;
 
 	/**
 	 *
 	 */
 	public CustomLightEngine() {
 		super();
-		customSun = new GlobalLightSource(40, 40, new Color(0.1f, 0.3f, 0.3f, 1), new Color(0.1f, 0.4f, 0.4f, 1), 90);
-		customSun.setFixedPosition(true);
+		customSun = new GlobalLightSource(
+			-WE.getCVars().getValueI("worldSpinAngle"),
+			0,
+			new Color(1.0f, 0.8f, 0.3f, 1),
+			new Color(0.5f, 0.5f, 0.4f, 1),
+			1.5f,
+			60
+		);
+		setSun(customSun);
+		
 		//invisible moon
-		customMoon = new GlobalLightSource(40+180, 40+180, Color.BLACK.cpy(), Color.BLACK.cpy(), 90);
-		customMoon.setFixedPosition(true);
+//		customMoon = new GlobalLightSource(40+180, 40+180, Color.BLACK.cpy(), Color.BLACK.cpy(), 90);
+//		customMoon.setFixedPosition(true);
+//		setMoon(customMoon);
+		
+		caveSun = new GlobalLightSource(
+			40,
+			40,
+			new Color(0.1f, 0.3f, 0.3f, 1),
+			new Color(0.1f, 0.4f, 0.4f, 1),
+			1f,
+			90
+		);
+		caveSun.setFixedPosition(true);
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		customMoon.update(dt);
-		customSun.update(dt);
+		caveSun.update(dt);
 	}
-	
-	
 	
 	
 	@Override
 	public GlobalLightSource getSun(Position pos) {
 		//in caves uses another light source
-		if (pos.toCoord().getY()>ChunkGenerator.CAVESBORDER)
-			return customSun;
-		else return super.getSun(pos);
+		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER) {
+			return caveSun;
+		} else {
+			return super.getSun(pos);
+		}
 	}
 	
 	@Override
 	public GlobalLightSource getMoon(Position pos) {
 		//in caves use another light source
 		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER)
-			return customMoon;
+			return null;
 		else return super.getMoon(pos);
 	}
 
@@ -86,7 +105,7 @@ public class CustomLightEngine extends LightEngine {
 	public Color getAmbient(Position pos) {
 		//in caves use anotehr lgiht source
 		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER)
-			return customSun.getAmbient();
+			return caveSun.getAmbient();
 		else return super.getAmbient(pos);
 	}
 }

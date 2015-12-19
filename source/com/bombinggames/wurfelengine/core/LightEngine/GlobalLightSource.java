@@ -40,7 +40,7 @@ import com.bombinggames.wurfelengine.WE;
  */
 public class GlobalLightSource {   
     /**
-     *The brightness of the light source. Scalar.
+     *The brightness of the light source. Scalar. Not clamped.
      */
     private float power;
 	/**
@@ -64,20 +64,23 @@ public class GlobalLightSource {
 	 * if true movement is deactivated
 	 */
 	private boolean fixedPosition;	
+	private final float brightnessF;
 
     /**
      * A GlobalLightSource can be the moon, the sun or even something new.
      * @param azimuth The starting position in degrees from left. CCW
      * @param height The starting position in degrees above the horizon.
-     * @param color the starting color of the light. With this parameter you controll its brightness. Full bright is white.
-     * @param ambient
+     * @param tone the starting color of the light. With this parameter you do not controll its brightness.
+     * @param ambient color vector
+	 * @param brghtFac brightness factor 0.5f is default. the higher the brighter
      * @param amplitudeHeight the maximum degree during a day the LightSource rises
      */
-    public GlobalLightSource(float azimuth, float height, Color color, Color ambient, int amplitudeHeight) {
+    public GlobalLightSource(float azimuth, float height, Color tone, Color ambient, float brghtFac, int amplitudeHeight) {
         this.azimuth = azimuth;
         this.height = height;
-        this.tone = color;
+        this.tone = tone;
         this.ambient = ambient;
+		this.brightnessF = brghtFac;
         this.amplitude = amplitudeHeight;
     }
 
@@ -118,6 +121,11 @@ public class GlobalLightSource {
      * @return
      */
     public float getAzimuthSpeed() {
+		if (amplitude==45) {//if a moon
+			if (height<0)
+				return 2* WE.getCVars().getValueF("LEAzimutSpeed");
+			else return WE.getCVars().getValueF("LEAzimutSpeed")/2f;
+		}
         return WE.getCVars().getValueF("LEAzimutSpeed");
     }
 
@@ -171,29 +179,18 @@ public class GlobalLightSource {
      */
     public void update(float dt) {    
         //automove
-		if (!fixedPosition) {
-			if (getAzimuthSpeed() != 0) {
-				azimuth += getAzimuthSpeed() * dt;
-				height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
-			}
+		if (!fixedPosition && getAzimuthSpeed()!= 0 ) {
+			azimuth += getAzimuthSpeed() * dt;
+			height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
 		}
             
       //brightness calculation
-		if (height > amplitude / 2 && height < 180) {
-			power = 1;//day
-		} else if (height < -amplitude / 2) {
+	  //clamp at night
+		if (height < -amplitude / 2) {
 			power = 0;//night
 		} else if (height < amplitude / 2) {
-			power = (float) (0.5f + 0.5f * Math.sin(height * Math.PI / amplitude)); //morning & evening
+			power = (float) (0.5f + brightnessF * Math.sin(height * Math.PI / amplitude)); //morning & evening
 		}
-		//clamp
-		if (power > 1f) {
-			power = 1f;
-		}
-		if (power < 0f) {
-			power = 0f;
-		}
-        //power =1f;
         
         //if (azimuth>180+IGLPrototype.TWISTDIRECTION)
         //color = new Color(127 + (int) (power * 128), 255, 255);

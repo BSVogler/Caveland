@@ -345,7 +345,7 @@ public class RenderBlock extends AbstractGameObject{
 
 		//if vertex shaded then use different shading for each side
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
-			color = Controller.getLightEngine().getColor(side).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
+			color = Controller.getLightEngine().getColor(side, getPosition()).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
 		int aoFlags = 0;
@@ -413,7 +413,7 @@ public class RenderBlock extends AbstractGameObject{
     public void renderSide(final GameView view, final int xPos, final int yPos, final Side side){
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
-			color = Controller.getLightEngine().getColor(side);
+			color = Controller.getLightEngine().getColor(side, getPosition());
         } else
 			color = Color.GRAY.cpy();
 		 

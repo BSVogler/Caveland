@@ -482,16 +482,17 @@ public class GameView implements GameManager {
      * @param xPos space from left
      * @param yPos space from top
      * @param color the colro of the text.
+	 * @deprecated v1.6
      */
     public void drawText(final String text, final int xPos, final int yPos, final Color color){
-        WE.getEngineView().getFont().setColor(Color.BLACK);
+        WE.getEngineView().getFont().setColor(color);
         //WE.getEngineView().getFont().setScale(1.01f);
         WE.getEngineView().getFont().draw(spriteBatch, text, xPos, yPos);
         
 //        WE.getEngineView().getFont().setColor(Color.WHITE);
 //        WE.getEngineView().getFont().setScale(1f);
 //        spriteBatch.begin();
-//        WE.getEngineView().getFont().drawMultiLine(spriteBatch, text, xPos, yPos);
+        //WE.getEngineView().getFont().drawdrawMultiLine(spriteBatch, text, xPos, yPos);
 //        spriteBatch.end();
     }
 

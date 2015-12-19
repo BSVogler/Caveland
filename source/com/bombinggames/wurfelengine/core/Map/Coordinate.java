@@ -622,8 +622,11 @@ public class Coordinate implements Position {
 	 * @param channel 
 	 */
 	public void addLightlevel(float lightlevel, Side side, int channel) {
-		getChunk().setLightFlag(this.cpy());
-		getBlock().addLightlevel(lightlevel, side, channel);
+		Chunk chunk = getChunk();
+		if (chunk!=null) {
+			chunk.setLightFlag(this.cpy());
+			getBlock().addLightlevel(lightlevel, side, channel);
+		}
 	}
 
 	@Override

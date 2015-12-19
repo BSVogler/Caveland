@@ -61,7 +61,7 @@ public class LightEngine implements MapObserver {
     private boolean debuging = false;
     //diagramm data
     private int posX = Gdx.graphics.getWidth()/2;
-    private int posY = Gdx.graphics.getHeight()-250;
+    private int posY = Gdx.graphics.getHeight()/2;
     private final int size = 500;
 	/**
 	 * shade pixel or vertex based
@@ -487,41 +487,60 @@ public class LightEngine implements MapObserver {
 
 			view.getSpriteBatch().begin();
             int y = Gdx.graphics.getHeight()-150;
-            view.drawText(
+            view.drawString(
 				"Lat: "+sun.getHeight()+"\n"
 				+"Long: "+sun.getAzimuth()+"\n"
 				+"PowerSun: "+sun.getPower()*100+"%\n"
 				+"Normal:"+sun.getNormal(),
-				600,
+				900,
 				100,
-				Color.WHITE
+				false
 			);
-			if (moon != null)
-				view.drawString("PowerMoon: "+moon.getPower()*100+"%", 600, y+=10, Color.WHITE);
-            view.drawString("Ambient: "+getAmbient(pos).toString(), 600, y+=10, Color.WHITE);
+			if (moon != null) {
+				view.drawString(
+					"PowerMoon: " + moon.getPower() * 100 + "%",
+					420, y+45, false);
+			}
+            view.drawString("Ambient: ", 600, y+110, false);
+			view.drawString("Diffuse: ", 680, y+110, false);
+			view.drawString(getAmbient(pos).toString(), 620, y+=10, false);
+			view.getSpriteBatch().end();
            // view.drawString("avg. color: "+sun.getColor().toString(), 600, y+=10, Color.WHITE);
 			
             shR.begin(ShapeType.Filled);
                 //draw ambient light
-                shR.setColor(Color.WHITE);
-                shR.rect(600, y+=10, 70, 70);
-                shR.setColor(getAmbient(pos));
-                shR.rect(610, y+=10, 50, 50);
+				shR.setColor(Color.WHITE);
+				shR.rect(600, y += 10, 70, 70);//background
+				shR.setColor(sun.getAmbient());
+				y += 10;
+				shR.rect(600, y+ 25, 19, 25);//draw sun ambient color
 				if (moon != null) {
-					shR.setColor(moon.getAmbient());
-					shR.rect(600, y, 20, 25);
+					shR.setColor(moon.getAmbient());//draw moon ambient color
+					shR.rect(600, y, 19, 25);
 				}
-                shR.setColor(sun.getAmbient());
-                shR.rect(600, y+25, 20, 25);
-                
-                view.drawString("+", 670, y+25, Color.WHITE);
-                //draw emmittinlights
-                shR.setColor(Color.WHITE);
-                shR.rect(680, y-10, 70, 70);
-                shR.setColor(getEmittingLights().mul(getVertexBrightness()));
-                shR.rect(690, y, 50, 50);
-                
-                view.drawString("=", 760, y+25, Color.WHITE);
+				shR.setColor(getAmbient(pos));//draw combined color
+				shR.rect(620, y, 50, 50);
+
+				view.drawString("+", 670, y + 25, true);
+				
+				//draw sun
+				shR.setColor(Color.WHITE);
+				shR.rect(680, y - 10, 70, 70);
+				//shR.setColor(getEmittingLights().mul(getVertexBrightness()));
+				shR.setColor(getSun(pos).getLight());
+				shR.rect(690, y, 50, 50);
+				
+				y-=60;
+				//moon
+				if (getMoon(pos)!=null) {
+					shR.setColor(Color.WHITE);
+					shR.rect(680, y - 10, 70, 70);
+					//shR.setColor(getEmittingLights().mul(getVertexBrightness()));
+					shR.setColor(getMoon(pos).getLight());
+					shR.rect(690, y, 50, 50);
+				}
+
+				//view.drawString("=", 760, y + 25, true);
                  //draw result
 //                shR.setColor(Color.WHITE);
 //                shR.rect(770, y-10, 70, 70);
@@ -531,28 +550,28 @@ public class LightEngine implements MapObserver {
 //                shR.rect(780, y+25, 50, 30);
 //                shR.setColor(getColor(Side.RIGHT));
 //                shR.rect(805, y, 25, 30);
-//                
-//                shR.setColor(getColor());
-//                shR.rect(800, y+20, 15, 15);
+                
+               // shR.setColor(getColor());
+                //shR.rect(800, y+20, 15, 15);
 				
-				shR.setColor(Color.WHITE);
-                shR.rect(780, 390, 70, 70);
-                shR.setColor(getSun(pos).getLight());
-                shR.rect(780, 400, 50, 50);
+//				shR.setColor(Color.WHITE);
+//                shR.rect(780, y-10, 70, 70);
+//                shR.setColor(getSun(pos).getLight());
+//                shR.rect(790, y, 50, 50);
 
 
                  //info bars
 
                 //left side
                 y = Gdx.graphics.getHeight()-100;
-                view.drawText(Float.toString(I_diff0), (int) (I_0*size), y, Color.WHITE);
+                view.drawString(Float.toString(I_diff0), (int) (I_0*size), y, true);
                 shR.setColor(Color.RED);
                 shR.rect(0, y, I_diff0*size, 8);
 
 
                 //top side
                 y = Gdx.graphics.getHeight()-180;
-                view.drawText(I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), y, Color.WHITE);
+                view.drawString(I_diff1+"\n+"+ I_spec1+"\n="+I_1, (int) (I_1*size), y, true);
                 shR.setColor(Color.RED);
                 shR.rect(0, y, I_diff1*size, 8);
                 shR.setColor(Color.BLUE);
@@ -560,13 +579,12 @@ public class LightEngine implements MapObserver {
 
                 //right side
                 y = Gdx.graphics.getHeight()-260;
-                view.drawString(Float.toString(I_diff2), (int) (I_2*size), y, Color.WHITE);
+                view.drawString(Float.toString(I_diff2), (int) (I_2*size), y, true);
                 shR.setColor(Color.RED);
                 shR.rect(0, y, I_diff2*size, 8);
             
             shR.end();
-			view.getSpriteBatch().end();
-            Gdx.gl20.glLineWidth(1);
+            Gdx.gl20.glLineWidth(1);//reset
         }
     }
     

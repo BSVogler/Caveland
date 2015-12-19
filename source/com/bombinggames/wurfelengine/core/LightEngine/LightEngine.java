@@ -154,18 +154,23 @@ public class LightEngine implements MapObserver {
         float sunI = sun.getPower();
         
         //diffusion
-        //diff0
-        I_diff0 = (float) (sunI  * k_diff * Math.cos(((sun.getHeight())  * Math.PI)/180) * Math.cos(((sun.getAzimuth() -45)*Math.PI)/180));
-        if (I_diff0<0) I_diff0=0;
-        
-       
-        //diff0
-        I_diff1 = (float) (sunI * k_diff * Math.cos(((sun.getHeight() -90)*Math.PI)/180)); 
-        if (I_diff1<0) I_diff1=0;
-        
-        //diff2
-        I_diff2 = (float) (sunI * k_diff * Math.cos(((sun.getHeight()) *Math.PI)/180)*Math.cos(((sun.getAzimuth() -135)*Math.PI)/180));
-        if (I_diff2<0) I_diff2=0;
+   //diff0
+		I_diff0 = (float) (sunI * k_diff * Math.cos(((sun.getHeight()) * Math.PI) / 180) * Math.cos(((sun.getAzimuth() - 45) * Math.PI) / 180));
+		if (I_diff0 < 0) {
+			I_diff0 = 0;
+		}
+
+		//diff0
+		I_diff1 = (float) (sunI * k_diff * Math.cos(((sun.getHeight() - 90) * Math.PI) / 180));
+		if (I_diff1 < 0) {
+			I_diff1 = 0;
+		}
+
+		//diff2
+		I_diff2 = (float) (sunI * k_diff * Math.cos(((sun.getHeight()) * Math.PI) / 180) * Math.cos(((sun.getAzimuth() - 135) * Math.PI) / 180));
+		if (I_diff2 < 0) {
+			I_diff2 = 0;
+		}
         
         //specular
         
@@ -181,15 +186,13 @@ public class LightEngine implements MapObserver {
 //                        );
 
         
-        I_spec1 = (float) (
-            sunI
-            * k_specular
-            * Math.pow(
-                Math.sin(sun.getHeight()*Math.PI/180)*Math.sin(sun.getAzimuth()*Math.PI/180)/ Math.sqrt(2)//y
-              + Math.sin((sun.getHeight()-90)*Math.PI/180)/ Math.sqrt(2)//z
-            ,n_spec)
-            *(n_spec+2)/(2*Math.PI)
-        );
+      I_spec1 = (float) (sunI
+			* k_specular
+			* Math.pow(
+				Math.sin(sun.getHeight() * Math.PI / 180) * Math.sin(sun.getAzimuth() * Math.PI / 180) / Math.sqrt(2)//y
+				+ Math.sin((sun.getHeight() - 90) * Math.PI / 180) / Math.sqrt(2)//z
+				, n_spec)
+			* (n_spec + 2) / (2 * Math.PI));
          
       //it is impossible to get specular light with a GlobalLightSource over the horizon on side 0 and 2. Just left in case it someday may help somebody.
         //        I_spec2 =(int) (
@@ -207,25 +210,27 @@ public class LightEngine implements MapObserver {
         I_2 = I_diff2;
         
         
-        //update input
-        if (Gdx.input.isButtonPressed(0)&& debuging){
-            //sun.setHeight(sun.getHeight()+Gdx.input.getDeltaY()*30f);
-            sun.setAzimuth(Gdx.input.getX());
-            if (moon != null)
-				moon.setAzimuth(Gdx.input.getX()-180);
-        }
+       //update input
+		if (Gdx.input.isButtonPressed(0) && debuging) {
+			//sun.setHeight(sun.getHeight()+Gdx.input.getDeltaY()*30f);
+			sun.setAzimuth(Gdx.input.getX());
+			if (moon != null) {
+				moon.setAzimuth(Gdx.input.getX() - 180);
+			}
+		}
     }
     
-    /**
-     * Returns the average brightness.
-     * @return
-     */
-    public static float getVertexBrightness() {
-        return (I_0+I_1+I_2)/3f;
-    }
+  /**
+	 * Returns the average brightness.
+	 *
+	 * @return
+	 */
+	public static float getVertexBrightness() {
+		return (I_0 + I_1 + I_2) / 3f;
+	}
 	
 	/**
-	 *
+	 * You can pass the position if the sun changes relative to the postition.
 	 * @param pos relative to this position
 	 * @return
 	 */
@@ -234,17 +239,17 @@ public class LightEngine implements MapObserver {
 	}
 
 	/**
-	 *
+	 * You can pass the position if the moon changes relative to the postition.
 	 * @param pos
 	 * @return
 	 */
 	public GlobalLightSource getMoon(Position pos) {
 		return moon;
 	}
-	
 
 	/**
 	 * The light engine can shade the world pixel based or vertext based.
+	 *
 	 * @return true if rendering via normal map false if vertext based
 	 */
 	public boolean isShadingPixelBased() {
@@ -287,75 +292,86 @@ public class LightEngine implements MapObserver {
      * @return pseudoGrey color, copy safe
      */
      private Color getDiff(Side normal){
-        if (normal==Side.LEFT)
-            return getEmittingLights().mul(I_diff0, I_diff0, I_diff0, 1);
-        else if (normal==Side.TOP)
-            return getEmittingLights().mul(I_diff1, I_diff1, I_diff1, 1);
-        else
-            return getEmittingLights().mul(I_diff2, I_diff2, I_diff2, 1);
+        if (null==normal)
+			throw new IllegalArgumentException();
+		switch (normal) {
+		case LEFT:
+			return getEmittingLights().mul(I_diff0, I_diff0, I_diff0, 1);
+		case TOP:
+			return getEmittingLights().mul(I_diff1, I_diff1, I_diff1, 1);
+		default:
+			return getEmittingLights().mul(I_diff2, I_diff2, I_diff2, 1);
+		}
     }
      
-    /**
-     * 
-     * @param normal
-     * @return pseudoGrey color, copy safe
-     */
-     private Color getSpec(Side normal){
-        if (normal==Side.TOP)
-            return getEmittingLights().mul(I_spec1);//only top side can have specular light
-        else
-            return Color.BLACK.cpy();
-    }
-	 
+   /**
+	 *
+	 * @param normal
+	 * @return pseudoGrey color, copy safe
+	 */
+	private Color getSpec(Side normal) {
+		if (normal == Side.TOP) {
+			return getEmittingLights().mul(I_spec1);//only top side can have specular light
+		} else {
+			return Color.BLACK.cpy();
+		}
+	}
+
 	/**
 	 * copy safe
+	 *
 	 * @param normal
-	 * @return 
+	 * @return
 	 */
-	public Color getColor(Side normal){
+	public Color getColor(Side normal) {
 		return getSpec(normal).add(getDiff(normal));
 	}
-    
-    
-    /**
-     * Returns the sum of every light source's ambient light
-	 * @param pos
-     * @return a color with a tone
-     */
-    public Color getAmbient(Position pos){
-		Color amb = sun.getAmbient();
-		if (moon!= null)
-			amb.add(moon.getAmbient());
-        return amb;
-    }
-    
-    /**
-     * Mix of both light sources. Used for diff and spec.
-     * @return a color with a tone, copy safe
-     */
-    private Color getEmittingLights(){
-		Color light = sun.getLight();
-		if (moon!= null)
-			light.add(moon.getLight());
-        return light;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public boolean isInDebug() {
-        return debuging;
-    }
 
-    /**
-     *Should diagrams be rendered showing the data of the LE.
-     * @param debug
-     */
-    public void setDebug(boolean debug) {
-        this.debuging = debug;
-    }
     
+    /**
+	 * Returns the sum of every light source's ambient light
+	 *
+	 * @param pos
+	 * @return a color with a tone
+	 */
+	public Color getAmbient(Position pos) {
+		Color amb = sun.getAmbient();
+		if (moon != null) {
+			amb.add(moon.getAmbient());
+		}
+		return amb;
+	}
+
+	/**
+	 * Mix of both light sources. Used for diff and spec.
+	 *
+	 * @return a color with a tone, copy safe
+	 */
+	private Color getEmittingLights() {
+		Color light = sun.getLight();
+		if (moon != null) {
+			light.add(moon.getLight());
+		}
+		return light;
+	}
+    
+    /**
+	 *
+	 * @return
+	 */
+	public boolean isInDebug() {
+		return debuging;
+	}
+
+	/**
+	 * Should diagrams be rendered showing the data of the LE.
+	 *
+	 * @param debug
+	 */
+	public void setDebug(boolean debug) {
+		this.debuging = debug;
+	}
+
     
     
     /**
@@ -522,23 +538,24 @@ public class LightEngine implements MapObserver {
     }
     
     /**
-     *
+     *	
 	 * @param pos
-     */
-    public void setToNoon(Position pos){
-        sun.setAzimuth(90);
-		if (moon != null) 
+	 */
+	public void setToNoon(Position pos) {
+		getSun(pos).setAzimuth(90);
+		if (moon != null) {
 			moon.setAzimuth(270);
-    }
-    
-    /**
-     *
+		}
+	}
+
+	/**
+	 *
 	 * @param pos
-     */
-    public void setToNight(Position pos){
-        sun.setAzimuth(270);
-        moon.setAzimuth(90);
-    }
+	 */
+	public void setToNight(Position pos) {
+		sun.setAzimuth(270);
+		moon.setAzimuth(90);
+	}
 
 	@Override
 	public void onMapChange() {

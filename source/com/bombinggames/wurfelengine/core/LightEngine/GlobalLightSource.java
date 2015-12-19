@@ -35,15 +35,21 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 
 /**
- * Something shiny infinetelly far away.
+ * Something shiny infinetelly far away. Stores postiion and color.
  * @author Benedikt Vogler
  */
 public class GlobalLightSource {   
     /**
-     *The brightness of the light source
+     *The brightness of the light source. Scalar.
      */
     private float power;
-    private Color tone; //the color of the light
+	/**
+	 * the color of the light. vector
+	 */
+    private Color tone;
+	/**
+	 * the color of the ambient light. vector
+	 */
     private final Color ambient;
     /**
      * Current height above horizon.
@@ -54,7 +60,10 @@ public class GlobalLightSource {
      */
     private float azimuth;
     private final int amplitude; //the max possible angle (from horizon) the sun can has
-	private boolean fixedPosition;
+	/**
+	 * if true movement is deactivated
+	 */
+	private boolean fixedPosition;	
 
     /**
      * A GlobalLightSource can be the moon, the sun or even something new.
@@ -162,23 +171,28 @@ public class GlobalLightSource {
      */
     public void update(float dt) {    
         //automove
-		if (!fixedPosition)
+		if (!fixedPosition) {
 			if (getAzimuthSpeed() != 0) {
 				azimuth += getAzimuthSpeed() * dt;
 				height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
 			}
+		}
             
-        //brightness calculation
-        if (height > amplitude/2 && height < 180)
-                power = 1;//day
-        else if (height < -amplitude/2)
-                 power = 0;//night
-            else if (height < amplitude/2) 
-                    power = (float) (0.5f + 0.5f*Math.sin(height * Math.PI/amplitude)); //morning & evening
-        
-        //clamp
-        if (power > 1f) power=1f;
-        if (power < 0f) power=0f;  
+      //brightness calculation
+		if (height > amplitude / 2 && height < 180) {
+			power = 1;//day
+		} else if (height < -amplitude / 2) {
+			power = 0;//night
+		} else if (height < amplitude / 2) {
+			power = (float) (0.5f + 0.5f * Math.sin(height * Math.PI / amplitude)); //morning & evening
+		}
+		//clamp
+		if (power > 1f) {
+			power = 1f;
+		}
+		if (power < 0f) {
+			power = 0f;
+		}
         //power =1f;
         
         //if (azimuth>180+IGLPrototype.TWISTDIRECTION)
@@ -188,30 +202,30 @@ public class GlobalLightSource {
     }
 
     /**
-     * Returns the light the GLS emits.
-     * @return applied with pseudogray, copy safe
+     * Returns the diffuse light which this object emits.
+     * @return copy safe
      */
     public Color getLight() {
         return tone.cpy().mul(power);
     }
     
     /**
-     * Returns the ambient the GLS emits.
-     * @return applied with pseudogray. "pointer-safe"
+     * Returns the ambient light the GLS emits.
+     * @return copy safe
      */
     public Color getAmbient() {
         return ambient.cpy().mul(power);
     }
 	
 	/**
-	 * 
+	 *
 	 * @return the normal of the GlobalLightSource
 	 */
 	public Vector3 getNormal() {
 		return new Vector3(
-			(float) -Math.cos(getAzimuth()*Math.PI/180f),
-			(float) Math.sin(getAzimuth()*Math.PI/180f),
-			(float) Math.sin(getHeight()*Math.PI/180f)
+			(float) -Math.cos(getAzimuth() * Math.PI / 180f),
+			(float) Math.sin(getAzimuth() * Math.PI / 180f),
+			(float) Math.sin(getHeight() * Math.PI / 180f)
 		).nor();
 	}
 }

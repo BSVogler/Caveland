@@ -44,7 +44,7 @@ public class GlobalLightSource {
      */
     private float power;
     private Color tone; //the color of the light
-    private Color ambient;
+    private final Color ambient;
     /**
      * Current height above horizon.
      */

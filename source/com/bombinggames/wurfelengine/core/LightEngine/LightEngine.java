@@ -60,7 +60,7 @@ public class LightEngine implements MapObserver {
 	 */
     private boolean debuging = false;
     //diagramm data
-    private int posX = 250;
+    private int posX = Gdx.graphics.getWidth()/2;
     private int posY = Gdx.graphics.getHeight()-250;
     private final int size = 500;
 	/**
@@ -377,7 +377,7 @@ public class LightEngine implements MapObserver {
     /**
      *Shows the data of the light engine in diagramms.
      * @param view 
-	 * @param pos get the light data from this position	
+	 * @param pos display the light data at this position	
      */
     public void render(GameView view, Position pos){
         if (debuging) {
@@ -391,7 +391,6 @@ public class LightEngine implements MapObserver {
             shR.begin(ShapeType.Line);
                 shR.circle(posX, posY, size);
 
-
                 //cut through
                 shR.translate(posX, posY, 0);
                 shR.scale(1f, (0.5f), 1f);
@@ -401,54 +400,88 @@ public class LightEngine implements MapObserver {
 
                 //perfect/correct line
                 shR.setColor(Color.ORANGE);
-                if ((sun.getMaxAngle()/90f-0.5f) != 0) {
-                    shR.translate(posX, posY, 0);
-                    shR.rotate(0, 0, 1, -WE.getCVars().getValueI("worldSpinAngle"));
-                    shR.scale(1f, (sun.getMaxAngle()/90f-0.5f), 1f);
-                    shR.circle(0, 0, size);
-                    shR.scale(1f, (1/(sun.getMaxAngle()/90f-0.5f)), 1f);
-                    shR.rotate(0, 0, 1, +WE.getCVars().getValueI("worldSpinAngle"));
+                if ((sun.getMaxAngle() / 90f - 0.5f) != 0) {//check if line
+                   shR.translate(posX, posY, 0);
+					shR.rotate(0, 0, 1, -WE.getCVars().getValueI("worldSpinAngle"));
+					shR.scale(1f, (sun.getMaxAngle() / 90f - 0.5f), 1f);
+					shR.circle(0, 0, size);
+					shR.scale(1f, (1 / (sun.getMaxAngle() / 90f - 0.5f)), 1f);
+					shR.rotate(0, 0, 1, +WE.getCVars().getValueI("worldSpinAngle"));
                     shR.translate(-posX, -posY, 0);
                 } else {
-                    shR.line(posX-size, posY, posX+size, posY);
+                    shR.line(posX - size, posY, posX + size, posY);
                 }
 
                 //sun position
                 //longitude
                 shR.setColor(Color.RED);
                 shR.line(
-                    posX +(int) (size* sun.getNormal().x),
-                    posY -(int) (size/2*sun.getNormal().y),
                     posX,
-                    posY
+                    posY,
+					posX + (int) (size * sun.getNormal().x),
+					posY - (int) (size / 2 * sun.getNormal().y)
                 );
-
+				
+				//connection to end pos
+				if (sun.getNormal().z>0) {
+					shR.setColor(Color.GRAY);
+					shR.line(
+						posX + (int) (size * sun.getNormal().x),
+						posY - (int) (size / 2 * sun.getNormal().y),
+						posX + (int) (size * sun.getNormal().x),
+						posY + (int) (size * (-sun.getNormal().y / 2 + sun.getNormal().z))
+					);
+				}
+				
                 //latitude
                 shR.setColor(Color.MAGENTA);
                 shR.line(
-                    posX -(int) (size/2 * (1-sun.getNormal().z)+size/2),
-                    posY +(int) (size/2*sun.getNormal().z),
                     posX,
-                    posY
+					posY,
+					posX - (int) (size / 2 * (1 - sun.getNormal().z) + size / 2),
+					posY + (int) (size / 2 * sun.getNormal().z)
                 );
-
+				
                 //long+lat of sun position
                 shR.setColor(Color.YELLOW);
                 shR.line(
-                    posX +(int) ( size*sun.getNormal().x ),
-                    posY +(int) (size*( -sun.getNormal().y/2+sun.getNormal().z)),
                     posX,
-                    posY
+                    posY,
+                    posX + (int) (size * sun.getNormal().x),
+					posY + (int) (size * (-sun.getNormal().y / 2 + sun.getNormal().z))
                  );
+				
+				view.drawString(
+					"SUN",
+					posX + (int) (size * sun.getNormal().x),
+					posY + (int) (size * (-sun.getNormal().y / 2 + sun.getNormal().z)),
+					true
+				);
 
-                shR.setColor(Color.BLUE);
 				if (moon != null) {
+					//connection to end pos
+					if (moon.getNormal().z > 0) {
+						shR.setColor(Color.GRAY);
+						shR.line(
+							posX + (int) (size * moon.getNormal().x),
+							posY - (int) (size / 2 * moon.getNormal().y),
+							posX + (int) (size * moon.getNormal().x),
+							posY + (int) (size * (-moon.getNormal().y / 2 + moon.getNormal().z))
+						);
+					}
+					shR.setColor(Color.BLUE);
 					shR.line(
-						posX +(int) ( size*Math.sin((moon.getAzimuth()+90)*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180) ),
-						posY +(int) ( size/2*Math.sin((moon.getAzimuth())*Math.PI/180) * Math.sin((moon.getHeight()-90)*Math.PI/180)) +(int) (size/2*Math.sin((moon.getHeight())*Math.PI/180)),
 						posX,
-						posY
-					 );
+						posY,
+						posX + (int) (size * moon.getNormal().x),
+						posY + (int) (size * (-moon.getNormal().y / 2 + moon.getNormal().z))
+					);
+					view.drawString(
+						"MOON",
+						posX + (int) (size * moon.getNormal().x),
+						posY + (int) (size * (-moon.getNormal().y / 2 + moon.getNormal().z)),
+						true
+					);
 				}
             shR.end();
 
@@ -481,14 +514,14 @@ public class LightEngine implements MapObserver {
                 shR.setColor(sun.getAmbient());
                 shR.rect(600, y+25, 20, 25);
                 
-                view.drawText("+", 670, y+25, Color.WHITE);
+                view.drawString("+", 670, y+25, Color.WHITE);
                 //draw emmittinlights
                 shR.setColor(Color.WHITE);
                 shR.rect(680, y-10, 70, 70);
                 shR.setColor(getEmittingLights().mul(getVertexBrightness()));
                 shR.rect(690, y, 50, 50);
                 
-                view.drawText("=", 760, y+25, Color.WHITE);
+                view.drawString("=", 760, y+25, Color.WHITE);
                  //draw result
 //                shR.setColor(Color.WHITE);
 //                shR.rect(770, y-10, 70, 70);
@@ -527,7 +560,7 @@ public class LightEngine implements MapObserver {
 
                 //right side
                 y = Gdx.graphics.getHeight()-260;
-                view.drawText(Float.toString(I_diff2), (int) (I_2*size), y, Color.WHITE);
+                view.drawString(Float.toString(I_diff2), (int) (I_2*size), y, Color.WHITE);
                 shR.setColor(Color.RED);
                 shR.rect(0, y, I_diff2*size, 8);
             

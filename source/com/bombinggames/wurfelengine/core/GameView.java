@@ -38,6 +38,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -310,6 +311,8 @@ public class GameView implements GameManager {
 		useDefaultShader();
 		spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 		shRenderer.setProjectionMatrix(libGDXcamera.combined);
+		//spriteBatch.setTransformMatrix(new Matrix4());//reset transformation
+		shRenderer.setTransformMatrix(new Matrix4());//reset transformation
 
 		Gdx.gl20.glLineWidth(1);
 
@@ -319,7 +322,7 @@ public class GameView implements GameManager {
 		if (controller.getDevTools() != null) {
 			controller.getDevTools().render(this);
 		}
-
+		
 		//render light engine based on first camera
 		if (Controller.getLightEngine() != null && !getCameras().isEmpty()) {
 			Controller.getLightEngine().render(this, getCameras().get(0).getCenter());

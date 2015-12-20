@@ -54,7 +54,7 @@ import com.bombinggames.wurfelengine.core.Map.Position;
 public class RenderBlock extends AbstractGameObject{
     private static final long serialVersionUID = 1L;
 	/**
-	 * {id}{value}{side}
+	 * indexed acces to spritesheet {id}{value}{side}
 	 */
     private static AtlasRegion[][][] blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];
 	
@@ -90,11 +90,13 @@ public class RenderBlock extends AbstractGameObject{
 			throw new NullPointerException("No spritesheet found.");
 		}
 
-		if (blocksprites[id][value][side.getCode()] == null) { //load if not already loaded
+		if (blocksprites[id][value][side.getCode()] != null) { //load if not already loaded
+			return blocksprites[id][value][side.getCode()];
+		} else {
 			AtlasRegion sprite = getSpritesheet().findRegion('b' + Byte.toString(id) + "-" + value + "-" + side.getCode());
-			if (sprite == null) { //if there is no sprite show the default "sprite not found sprite" for this category
+			if (sprite == null) {
 				Gdx.app.debug("debug", 'b' + Byte.toString(id) + "-" + value + "-" + side.getCode() + " not found");
-
+				//if there is no sprite show the default "sprite not found sprite" for this category
 				sprite = getSpritesheet().findRegion("b0-0-" + side.getCode());
 
 				if (sprite == null) {//load generic error sprite if category sprite failed
@@ -106,8 +108,6 @@ public class RenderBlock extends AbstractGameObject{
 			}
 			blocksprites[id][value][side.getCode()] = sprite;
 			return sprite;
-		} else {
-			return blocksprites[id][value][side.getCode()];
 		}
 	}
 	
@@ -164,10 +164,17 @@ public class RenderBlock extends AbstractGameObject{
     }
 	
     /**
-     *dipsose the static fields
+     * dipsose the static fields
      */
     public static void staticDispose(){
-        blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];//{id}{value}{side}
+		//clear index
+		for (AtlasRegion[][] blocksprite : blocksprites) {
+			for (AtlasRegion[] atlasRegions : blocksprite) {
+				for (int i = 0; i < atlasRegions.length; i++) {
+					atlasRegions[i] = null;
+				}
+			}
+		}
     }
 	
 	

@@ -57,6 +57,9 @@ public abstract class AbstractGameObject implements Serializable, HasID {
     private transient static TextureAtlas spritesheet;
 	private transient static String spritesheetPath = "com/bombinggames/wurfelengine/core/images/Spritesheet";
     private transient static Pixmap pixmap;
+	/**
+	 * indexed acces to the spritesheet
+	 */
     private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][Block.OBJECTTYPESNUM][Block.VALUESNUM];//{category}{id}{value}
     private transient static int drawCalls =0;
 	private static Texture textureDiff;
@@ -69,8 +72,16 @@ public abstract class AbstractGameObject implements Serializable, HasID {
         spritesheet.dispose();//is this line needed?
         WE.getAssetManager().unload(spritesheetPath+".txt");
         spritesheet = null;
-        sprites = new AtlasRegion['z'][Block.OBJECTTYPESNUM][Block.VALUESNUM];
-        //pixmap.dispose();
+		//clear index
+		for (AtlasRegion[][] type : sprites) {
+			for (AtlasRegion[] id : type) {
+				for (int i = 0; i < id.length; i++) {
+					id[i] = null;
+				}
+			}
+		}
+        if (pixmap != null)
+			pixmap.dispose();
         pixmap = null;
     }
 	

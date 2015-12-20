@@ -633,7 +633,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-     *
+     * disposes every chunk
 	 * @param save
      */
     public void dispose(boolean save){

@@ -380,13 +380,13 @@ public class RenderBlock extends AbstractGameObject{
 			if (null != side) //render damage
 			switch (side) {
 				case LEFT:
-					renderDO(view, camera, getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
+					renderDamageOverlay(view, camera, getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
 					break;
 				case TOP:
-					renderDO(view, camera, getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
+					renderDamageOverlay(view, camera, getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
 					break;
 				case RIGHT:
-					renderDO(view, camera, getPosition().toPoint().add(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
+					renderDamageOverlay(view, camera, getPosition().toPoint().add(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
 					break;
 				default:
 					break;
@@ -401,7 +401,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param aopos
 	 * @param value 
 	 */
-	private void renderDO(final GameView view, final Camera camera, final Position aopos, final byte value){
+	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value){
 		SimpleEntity destruct = new SimpleEntity((byte) 3,value);
 		destruct.setPosition(aopos);
 		destruct.setColor(new Color(0.5f, 0.5f, 0.5f, 0.7f));

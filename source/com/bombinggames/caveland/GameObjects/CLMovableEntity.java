@@ -36,7 +36,7 @@ public class CLMovableEntity extends MovableEntity {
 	}
 
 	@Override
-	public boolean collidesHorizontal(Point pos, float colissionRadius) {
+	public boolean collidesWithWorld(Point pos, float colissionRadius) {
 		//check for total height blocking blocks
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
 			Point checkpos = pos.cpy();
@@ -66,7 +66,7 @@ public class CLMovableEntity extends MovableEntity {
 		
 		
 		//do regular check
-		return super.collidesHorizontal(pos, colissionRadius);
+		return super.collidesWithWorld(pos, colissionRadius);
 	}
 
 	@Override

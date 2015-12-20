@@ -265,7 +265,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 			Point newPos = getPosition().cpy().add(dMove);
 			//check if movement to new position is okay
-			if (collider && collidesHorizontal(newPos, colissionRadius)) {
+			if (collider && collidesWithWorld(newPos, colissionRadius)) {
 				//stop
 				setHorMovement(new Vector2());
 				MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
@@ -494,22 +494,51 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	@Override
 	public void render(GameView view, int xPos, int yPos) {
-		if (view.debugRendering()){
+		if (view.debugRendering()) {
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos-Block.VIEW_WIDTH2,
-				yPos+Block.VIEW_HEIGHT,
-				getHealth()*Block.VIEW_WIDTH/1000,
+				xPos - Block.VIEW_WIDTH2,
+				yPos + Block.VIEW_HEIGHT,
+				getHealth() * Block.VIEW_WIDTH / 1000,
 				5
 			);
 			sh.end();
 		}
 		super.render(view, xPos, yPos);
 	}
-    
+
+	/**
+	 * O(1)
+	 *
+	 * @param pos not modified
+	 * @return true if colliding
+	 */
+	private boolean checkCollisionCorners(final Point pos) {
+		Block block = pos.getBlock();
+		//back corner top
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+		//front corner
+		block = pos.add(0, 2 * colissionRadius, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+
+		//check X
+		//left
+		block = pos.add(-colissionRadius, -colissionRadius, 0).getBlock();
+		if (block != null && block.isObstacle()) {
+			return true;
+		}
+		//bottom corner
+		block = pos.add(2 * colissionRadius, 0, 0).getBlock();
+		return block != null && block.isObstacle();
+	}
+	
 	/**
 	 * check for horizontal colission (x and y)<br>
 	 * O(1)
@@ -518,113 +547,64 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param colissionRadius
 	 * @return true if colliding horizontal
 	 */
-	public boolean collidesHorizontal(final Point pos, final float colissionRadius) {
-		Point checkPoint = pos.cpy(); 
-		//check for movement in y
-		//top corner
-		Block block = checkPoint.add(0, -colissionRadius, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		//bottom corner
-		block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
+	public boolean collidesWithWorld(final Point pos, final float colissionRadius) {
+		Point checkPoint = pos.cpy();
+		checkCollisionCorners(checkPoint);
 
-        //check X
-		//left
-		block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		//right corner
-		block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		
 		//chek in the middle if bigger then a block
-		if (getDimensionZ() > Block.GAME_EDGELENGTH){
-			//back corner back
-			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
-			if (block != null && block.isObstacle()) {
-				return true;
-			}
-			//front corner
-			block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
-			if (block != null && block.isObstacle()) {
-				return true;
-			}
-
-			//check X
-			//left
-			block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
-			if (block != null && block.isObstacle()) {
-				return true;
-			}
-			//bottom corner
-			block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
-			if (block != null && block.isObstacle()) {
-				return true;
-			}
-			
-			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()/2).getBlock();
+		if (getDimensionZ() > Block.GAME_EDGELENGTH) {
+			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ() / 2);
+			checkCollisionCorners(checkPoint);
+			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ() / 2);
 		} else {
-			block = checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ()).getBlock();
+			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ());
 		}
-		
-		//back corner top
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		//front corner
-		block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-
-        //check X
-		//left
-		block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		//bottom corner
-		block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
-		if (block != null && block.isObstacle()) {
-			return true;
-		}
-		
-		return false;
+		//check top
+		return checkCollisionCorners(checkPoint);
 	}
     
-    /**
-     * Sets the sound to be played when falling.
-     * @param fallingSound
-     */
-    public void setFallingSound(String fallingSound) {
-        this.fallingSound = fallingSound;
-    }
+	/**
+	 * Check if the top is coliding with a block. O(1)
+	 *
+	 * @param pos the position to check
+	 * @return
+	 */
+	public boolean isOnCeil(final Point pos) {
+		if (pos == null || pos.getZ() <= 0 || pos.getZ() > Chunk.getGameHeight()) {
+			return false;
+		}
+
+		return checkCollisionCorners(new Point(pos.getX(), pos.getY(), pos.getZ() + getDimensionZ()));
+	}
 	
-    /**
-     * Set the sound to be played when running.
-     * @param runningSound
-     */
-    public void setRunningSound(String runningSound) {
-        this.runningSound = runningSound;
-    }
+   /**
+	 * Sets the sound to be played when falling.
+	 *
+	 * @param fallingSound
+	 */
+	public void setFallingSound(String fallingSound) {
+		this.fallingSound = fallingSound;
+	}
+
+	/**
+	 * Set the sound to be played when running.
+	 *
+	 * @param runningSound
+	 */
+	public void setRunningSound(String runningSound) {
+		this.runningSound = runningSound;
+	}
     
 
     /**
-     * Set the value of jumpingSound
-     *
-     * @param jumpingSound new value of jumpingSound
-     */
-    public void setJumpingSound(String jumpingSound) {
-        this.jumpingSound = jumpingSound;
-    }
-    
+	 * Set the value of jumpingSound
+	 *
+	 * @param jumpingSound new value of jumpingSound
+	 */
+	public void setJumpingSound(String jumpingSound) {
+		this.jumpingSound = jumpingSound;
+	}
+
 	/**
 	 *
 	 * @param sound
@@ -825,7 +805,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				pos.setZ(pos.getZ() - 1);//move one down for check
 
 				Block block = pos.getBlock();
-				boolean colission = (block != null && block.isObstacle()) || collidesHorizontal(pos, colissionRadius);
+				boolean colission = (block != null && block.isObstacle()) || collidesWithWorld(pos, colissionRadius);
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;
@@ -835,58 +815,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		}
     }
 	
-	/**
-	 * 
-	 * @param pos
-	 * @return 
-	 */
-	public boolean isOnCeil(Point pos){
-		if (pos == null) {
-			return false;
-		} else {
-			if (pos.getZ() > 0) {
-				if (pos.getZ() > Chunk.getGameHeight()) {
-					return false;
-				}
-				Point checkPoint = pos.cpy();
-				checkPoint.setZ(checkPoint.getZ() + getDimensionZ());// top
-
-				//center check
-				Block block = checkPoint.getBlock();
-				if (block != null && block.isObstacle()) {
-					return true;
-				}
-				
-				block = checkPoint.add(0, -colissionRadius, 0).getBlock();
-				//back corner top
-				if (block != null && block.isObstacle()) {
-					return true;
-				}
-				//front corner
-				block = checkPoint.add(0, 2*colissionRadius, 0).getBlock();
-				if (block != null && block.isObstacle()) {
-					return true;
-				}
-
-				//check X
-				//left
-				block = checkPoint.add(-colissionRadius, -colissionRadius, 0).getBlock();
-				if (block != null && block.isObstacle()) {
-					return true;
-				}
-				//bottom corner
-				block = checkPoint.add(2*colissionRadius, 0, 0).getBlock();
-				if (block != null && block.isObstacle()) {
-					return true;
-				}
-
-				return false;
-			} else {
-				return true;
-			}
-		}
-	}
-
     /**
      * Is the character standing in a liquid?
      * @return 
@@ -974,6 +902,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		return false;
 	}
 
+	/**
+	 * checks the colissions with entities
+	 */
 	private void checkEntColl() {
 		ArrayList<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);
 		for (MovableEntity ent : nearbyEnts) {

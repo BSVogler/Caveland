@@ -878,7 +878,7 @@ public class Chunk {
 	 * @param coord 
 	 */
 	private void resetShadingCoord(int idexX, int idexY, int idexZ){
-		if (idexZ < Chunk.blocksZ && idexZ > 0) {
+		if (idexZ < Chunk.blocksZ && idexZ >= 0) {
 			Block block = getBlockViaIndex(idexX, idexY, idexZ);
 			if (block != null) {
 				data[idexX][idexY][idexZ].setLightlevel(1);

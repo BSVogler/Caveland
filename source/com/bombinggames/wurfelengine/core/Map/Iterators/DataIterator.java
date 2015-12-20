@@ -34,7 +34,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
- * An iterator iterating over a 3d array
+ * An iterator iterating over a 3d array. Starts outside the array so first call before acces must be {@link #next()}.
  *
  * @author Benedikt Vogler
  * @param <T>

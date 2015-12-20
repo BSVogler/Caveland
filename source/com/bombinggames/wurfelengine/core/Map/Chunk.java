@@ -867,9 +867,9 @@ public class Chunk {
 	private void initShading(){
 		DataIterator<Block> it = getIterator(0, blocksZ-1);
 		while (it.hasNext()) {
+			it.next();
 			int[] index = it.getCurrentIndex();
 			resetShadingCoord(index[0],index[1],index[2]);
-			it.next();
 		}
 	}
 	

@@ -172,7 +172,7 @@ public class Chunk {
 	public void update(float dt) {
 		processModification();
 
-		resetShading();
+		resetShadingForDirty();
 
 		//update logicblocks
 		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
@@ -213,33 +213,37 @@ public class Chunk {
     public void fill(final Generator generator){
 		int left = blocksX*coordX;
 		int top = blocksY*coordY;
-        for (int x = 0; x < blocksX; x++)
-            for (int y = 0; y < blocksY; y++)
-                for (int z = 0; z < blocksZ; z++){
-                    data[x][y][z] = generator.generate(
-						left+x,
-						top+y,
+        for (int x = 0; x < blocksX; x++) {
+            for (int y = 0; y < blocksY; y++) {
+				for (int z = 0; z < blocksZ; z++) {
+					data[x][y][z] = generator.generate(
+						left + x,
+						top + y,
 						z
 					);
 					if (data[x][y][z] != null) {
 						AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
-							new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+							new Coordinate(coordX * blocksX + x, coordY * blocksY + y, z)
 						);
-						if (logic != null)
+						if (logic != null) {
 							logicBlocks.add(logic);
+						}
 					}
-					
+
 					generator.spawnEntities(
-						left+x,
-						top+y,
+						left + x,
+						top + y,
 						z
 					);
 				}
+			}
+		}
+		initShading();
 		modified = true;
     }
 
 	/**
-	 * copies  something
+	 * copies something
 	 * @param path
 	 * @param saveSlot
 	 * @param coordX
@@ -415,6 +419,7 @@ public class Chunk {
 				}
 
 				modified = true;
+				initShading();
 				return true;
 
 			} catch (IOException ex){
@@ -631,7 +636,7 @@ public class Chunk {
 	/**
 	 * Returns an iterator which iterates over the data in this chunk.
 	 * @param startingZ
-	 * @param limitZ
+	 * @param limitZ the last layer (including).
 	 * @return
 	 */
 	public DataIterator<Block> getIterator(final int startingZ, final int limitZ){
@@ -846,47 +851,64 @@ public class Chunk {
 	}
 
 	/**
-	 * reset light to normal level
+	 * reset light to normal level for corodiantes marked as dirty
 	 */
-	private void resetShading() {
-		int maxZ = Chunk.getBlocksZ();
+	private void resetShadingForDirty() {
 		for (Coordinate coord : dirtyFlag) {
-			int x = coord.getX()-topleft.getX();
-			int y = coord.getY()-topleft.getY();
-			int z = coord.getZ();
-			if (z < Chunk.blocksZ && z>0) {
-				Block block = getBlockViaIndex(x, y, z);
-				if (block != null) {
-					data[x][y][z].setLightlevel(1);
+			resetShadingCoord(
+				coord.getX() - topleft.getX(),
+				coord.getY() - topleft.getY(),
+				coord.getZ()
+			);
+		}
+		dirtyFlag.clear();
+	}
+	
+	private void initShading(){
+		DataIterator<Block> it = getIterator(0, blocksZ-1);
+		while (it.hasNext()) {
+			int[] index = it.getCurrentIndex();
+			resetShadingCoord(index[0],index[1],index[2]);
+			it.next();
+		}
+	}
+	
+	/**
+	 * Resets the shading for one block.
+	 * @param coord 
+	 */
+	private void resetShadingCoord(int idexX, int idexY, int idexZ){
+		if (idexZ < Chunk.blocksZ && idexZ > 0) {
+			Block block = getBlockViaIndex(idexX, idexY, idexZ);
+			if (block != null) {
+				data[idexX][idexY][idexZ].setLightlevel(1);
 
-					if (
-						z < maxZ-2
+				if (
+					idexZ < Chunk.blocksZ - 2
+					&& (
+						data[idexX][idexY][idexZ + 1] == null
+						|| data[idexX][idexY][idexZ + 1].isTransparent()
+					)
+				){
+					//two block above is a block casting shadows
+					if (data[idexX][idexY][idexZ + 2] != null
+						&& !data[idexX][idexY][idexZ + 2].isTransparent()
+					) {
+						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP);
+					} else if (
+						idexZ < Chunk.blocksZ - 3
 						&& (
-							data[x][y][z+1] == null
-							|| data[x][y][z+1].isTransparent()
+							data[idexX][idexY][idexZ+2] == null
+							|| data[idexX][idexY][idexZ+2].isTransparent()
 						)
-					){
-						//two block above is a block casting shadows
-						if (data[x][y][z+2] != null
-							&& !data[x][y][z+2].isTransparent()
-						) {
-							data[x][y][z].setLightlevel(0.8f, Side.TOP);
-						} else if (
-							z < maxZ-3
-							&& (
-								data[x][y][z+2] == null
-								|| data[x][y][z+2].isTransparent()
-							)
-							&& data[x][y][z+3] != null
-							&& !data[x][y][z+3].isTransparent()
-						) {
-							data[x][y][z].setLightlevel(0.9f, Side.TOP);
-						}
+						&& data[idexX][idexY][idexZ+3] != null
+						&& !data[idexX][idexY][idexZ+3].isTransparent()
+					) {
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP);
 					}
 				}
 			}
 		}
-		dirtyFlag.clear();
 	}
 
 }

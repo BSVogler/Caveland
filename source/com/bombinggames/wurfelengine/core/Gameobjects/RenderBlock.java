@@ -64,10 +64,6 @@ public class RenderBlock extends AbstractGameObject{
     private static final Color[][] COLORLIST = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
-	/**
-	 * the brightness of the ao
-	 */
-	private static float ambientOcclusion;
 
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
@@ -189,7 +185,6 @@ public class RenderBlock extends AbstractGameObject{
         super(id);
 		blockData = Block.getInstance(id);
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.getCVars().getValueF("ambientOcclusion");
     }
 	
 	/**
@@ -201,7 +196,6 @@ public class RenderBlock extends AbstractGameObject{
 		super(id, value);
 		blockData = Block.getInstance(id, value);
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.getCVars().getValueF("ambientOcclusion");
 	}
 	
 	/**
@@ -212,7 +206,6 @@ public class RenderBlock extends AbstractGameObject{
 		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
-		ambientOcclusion = WE.getCVars().getValueF("ambientOcclusion");
 	}
 	
 	
@@ -355,10 +348,6 @@ public class RenderBlock extends AbstractGameObject{
 			color = Controller.getLightEngine().getColor(side, getPosition()).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
-		int aoFlags = 0;
-		if (ambientOcclusion > 0) {
-			aoFlags = getBlockData().getAOFlags();
-		}
         renderSide(
 			view,
             coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
@@ -373,7 +362,7 @@ public class RenderBlock extends AbstractGameObject{
 						: color
 					)
 				: color,//pass color if not shading static
-			aoFlags
+			getBlockData().getAOFlags()
         );
 		
 		if (getBlockData().getHealth() <= 50) {

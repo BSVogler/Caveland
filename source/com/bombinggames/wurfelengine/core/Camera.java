@@ -44,6 +44,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.SideSprite;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
@@ -524,7 +525,8 @@ public class Camera implements MapObserver {
 
 			//settings for this frame
 			RenderBlock.setStaticShade(WE.getCVars().getValueB("enableAutoShade"));
-
+			SideSprite.setAO(WE.getCVars().getValueF("ambientOcclusion"));
+			
 			//render vom bottom to top
 			for (int i = 0; i < objectsToBeRendered; i++) {
 				depthlist[i].render(view, camera);

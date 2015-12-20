@@ -67,9 +67,16 @@ public class SideSprite extends TextureRegion {
 
 	static final int VERTEX_SIZE = 2 + 1 + 2;
 	static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
+	/**
+	 * the brightness of the ao
+	 */
+	private static float ambientOcclusion;
 
+	public static void setAO(float brightness) {
+		ambientOcclusion = brightness;
+	}
+	
 	final float[] vertices = new float[SPRITE_SIZE];
-	private final Color color = new Color(1, 1, 1, 1);
 	private float x, y;
 	private float width, height;
 	private float originX, originY;
@@ -405,7 +412,6 @@ public class SideSprite extends TextureRegion {
 	 */
 	public void setColor(Color tint) {
 		float color = tint.toFloatBits();
-		float[] vertices = this.vertices;
 		vertices[C1] = color;
 		vertices[C2] = color;
 		vertices[C3] = color;
@@ -685,86 +691,96 @@ public class SideSprite extends TextureRegion {
 				vertices[X4] = x4;//bottom right
 				vertices[Y4] = y4;
 			}
-				
-				
-			//render ambient occlusion
-			int intBits = ((int) (255 * 1f) << 24) | ((int) (255 * 0.3f) << 16) | ((int) (255 * 0.3f) << 8) | ((int) (255 * 0.3f));
-			float shadowcolor = NumberUtils.intToFloatColor(intBits);
-			if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
-				if ((aoFlags & (1 << 2)) != 0) {//if right
-					vertices[C3] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				}
-				if ((aoFlags & (1 << 4)) != 0) {//if bottom
-					vertices[C1] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				} else {
-					if ((aoFlags & (1 << 3)) != 0) {//if bottom right
-						vertices[C4] = shadowcolor;
-					}
-					if ((aoFlags & (1 << 5)) != 0) {//if bottom left
-						vertices[C1] = shadowcolor;
-					}
-				}
-				if ((aoFlags & (1 << 6)) != 0) {//if left
-					vertices[C1] = shadowcolor;
-					vertices[C2] = shadowcolor;
-				}
-			}
-
-			if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
-				if ((aoFlags & (1 << 9)) != 0) {//if back right
-					vertices[C2] = shadowcolor;
-					vertices[C3] = shadowcolor;
-				}
-
-				if ((aoFlags & (1 << 11)) != 0) {//if front right
-					vertices[C3] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				} else if ((aoFlags & (1 << 10)) != 0) {//if right
-					vertices[C3] = shadowcolor;
-				}
-
-				//12 is never visible
-				if ((aoFlags & (1 << 13)) != 0) {//if front left
-					vertices[C1] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				} else if ((aoFlags & (1 << 14)) != 0) {//if left
-					vertices[C1] = shadowcolor;
-				}
-				if ((aoFlags & (1 << 15)) != 0) {//if back left
-					vertices[C1] = shadowcolor;
-					vertices[C2] = shadowcolor;
-				} else if ((aoFlags & 1 << 8) != 0) {//if back
-					vertices[C2] = shadowcolor;
-				}
-			}
-
-			if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
-				if ((aoFlags & (1 << 18)) != 0) {//if right
-					vertices[C3] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				}
-
-				if ((aoFlags & (1 << 20)) != 0) {//if bottom
-					vertices[C1] = shadowcolor;
-					vertices[C4] = shadowcolor;
-				} else {
-					if ((aoFlags & (1 << 19)) != 0) {//if bottom right
-						vertices[C4] = shadowcolor;
-					}
-					if ((aoFlags & (1 << 21)) != 0) {//if bottom left
-						vertices[C1] = shadowcolor;
-					}
-				}
-
-				if ((aoFlags & (1 << 22)) != 0) {//if left
-					vertices[C1] = shadowcolor;
-					vertices[C2] = shadowcolor;
-				}
-			}
 		}
 		return vertices;
+	}
+	
+	protected void applyAO(){
+		//render ambient occlusion
+
+		int intBits1 = NumberUtils.floatToIntColor(vertices[C1]);
+		int intBits2 = NumberUtils.floatToIntColor(vertices[C2]);
+		int intBits3 = NumberUtils.floatToIntColor(vertices[C3]);
+		int intBits4 = NumberUtils.floatToIntColor(vertices[C4]);
+			
+		float shadowColor1 = NumberUtils.intToFloatColor((((intBits1 >>> 24) & 0xff) << 24) | ((int) (((intBits1 >>> 16) & 0xff) * ambientOcclusion) << 16) | ((int) (((intBits1 >>> 8) & 0xff) * ambientOcclusion) << 8) | ((int) ((intBits1 & 0xff) * ambientOcclusion)));
+		float shadowColor2 = NumberUtils.intToFloatColor((((intBits2 >>> 24) & 0xff) << 24) | ((int) (((intBits2 >>> 16) & 0xff) * ambientOcclusion) << 16) | ((int) (((intBits2 >>> 8) & 0xff) * ambientOcclusion) << 8) | ((int) ((intBits2 & 0xff) * ambientOcclusion)));
+		float shadowColor3 = NumberUtils.intToFloatColor((((intBits3 >>> 24) & 0xff) << 24) | ((int) (((intBits3 >>> 16) & 0xff) * ambientOcclusion) << 16) | ((int) (((intBits3 >>> 8) & 0xff) * ambientOcclusion) << 8) | ((int) ((intBits3 & 0xff) * ambientOcclusion)));
+		float shadowColor4 = NumberUtils.intToFloatColor((((intBits4 >>> 24) & 0xff) << 24) | ((int) (((intBits4 >>> 16) & 0xff) * ambientOcclusion) << 16) | ((int) (((intBits4 >>> 8) & 0xff) * ambientOcclusion) << 8) | ((int) ((intBits2 & 0xff) * ambientOcclusion)));
+			
+		if (side == Side.LEFT && ((byte) (aoFlags)) != 0) {//only if top side and there is ambient occlusion
+			if ((aoFlags & (1 << 2)) != 0) {//if right
+				vertices[C3] = shadowColor3;
+				vertices[C4] = shadowColor4;
+			}
+			if ((aoFlags & (1 << 4)) != 0) {//if bottom
+				vertices[C1] = shadowColor1;
+				vertices[C4] = shadowColor4;
+			} else {
+				if ((aoFlags & (1 << 3)) != 0) {//if bottom right
+					vertices[C4] = shadowColor4;
+				}
+				if ((aoFlags & (1 << 5)) != 0) {//if bottom left
+					vertices[C1] = shadowColor1;
+				}
+			}
+			if ((aoFlags & (1 << 6)) != 0) {//if left
+				vertices[C1] = shadowColor1;
+				vertices[C2] = shadowColor2;
+			}
+		}
+
+		if (side == Side.TOP && ((byte) (aoFlags >> 8)) != 0) {//only if top side and there is ambient occlusion
+			if ((aoFlags & (1 << 9)) != 0) {//if back right
+				vertices[C2] = shadowColor2;
+				vertices[C3] = shadowColor3;
+			}
+
+			if ((aoFlags & (1 << 11)) != 0) {//if front right
+				vertices[C3] = shadowColor3;
+				vertices[C4] = shadowColor4;
+			} else if ((aoFlags & (1 << 10)) != 0) {//if right
+				vertices[C3] = shadowColor3;
+			}
+
+			//12 is never visible
+			if ((aoFlags & (1 << 13)) != 0) {//if front left
+				vertices[C1] = shadowColor1;
+				vertices[C4] = shadowColor4;
+			} else if ((aoFlags & (1 << 14)) != 0) {//if left
+				vertices[C1] = shadowColor1;
+			}
+			if ((aoFlags & (1 << 15)) != 0) {//if back left
+				vertices[C1] = shadowColor1;
+				vertices[C2] = shadowColor2;
+			} else if ((aoFlags & 1 << 8) != 0) {//if back
+				vertices[C2] = shadowColor2;
+			}
+		}
+
+		if (side == Side.RIGHT && ((byte) (aoFlags >> 16)) != 0) {//only if top side and there is ambient occlusion
+			if ((aoFlags & (1 << 18)) != 0) {//if right
+				vertices[C3] = shadowColor3;
+				vertices[C4] = shadowColor4;
+			}
+
+			if ((aoFlags & (1 << 20)) != 0) {//if bottom
+				vertices[C1] = shadowColor1;
+				vertices[C4] = shadowColor4;
+			} else {
+				if ((aoFlags & (1 << 19)) != 0) {//if bottom right
+					vertices[C4] = shadowColor4;
+				}
+				if ((aoFlags & (1 << 21)) != 0) {//if bottom left
+					vertices[C1] = shadowColor1;
+				}
+			}
+
+			if ((aoFlags & (1 << 22)) != 0) {//if left
+				vertices[C1] = shadowColor1;
+				vertices[C2] = shadowColor2;
+			}
+		}
 	}
 
 	/**
@@ -814,6 +830,7 @@ public class SideSprite extends TextureRegion {
 	 * @param batch
 	 */
 	public void draw(Batch batch) {
+		applyAO();
 		batch.draw(getTexture(), getVertices(), 0, SPRITE_SIZE);
 	}
 
@@ -910,12 +927,12 @@ public class SideSprite extends TextureRegion {
 	 */
 	public Color getColor() {
 		int intBits = NumberUtils.floatToIntColor(vertices[C1]);
-		Color color = this.color;
-		color.r = (intBits & 0xff) / 255f;
-		color.g = ((intBits >>> 8) & 0xff) / 255f;
-		color.b = ((intBits >>> 16) & 0xff) / 255f;
-		color.a = ((intBits >>> 24) & 0xff) / 255f;
-		return color;
+		return new Color(
+			(intBits & 0xff) / 255f,
+			((intBits >>> 8) & 0xff) / 255f,
+			((intBits >>> 16) & 0xff) / 255f,
+			((intBits >>> 24) & 0xff) / 255f
+		);
 	}
 
 	/**

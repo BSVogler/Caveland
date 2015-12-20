@@ -55,7 +55,7 @@ public class CustomLightEngine extends LightEngine {
 			0,
 			new Color(1.0f, 0.8f, 0.3f, 1),
 			new Color(0.5f, 0.5f, 0.4f, 1),
-			1.5f,
+			1.0f,
 			60
 		);
 		setSun(customSun);

@@ -101,7 +101,7 @@ public class LightEngine implements MapObserver {
 			0,
 			new Color(0.4f,0.9f,0.9f,1),
 			new Color(0, 0, 0.1f, 1),
-			2f,
+			1.0f,
 			45
 		);
 		

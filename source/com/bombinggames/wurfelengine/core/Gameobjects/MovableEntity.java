@@ -517,25 +517,26 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @return true if colliding
 	 */
 	private boolean checkCollisionCorners(final Point pos) {
-		Block block = pos.getBlock();
+		Point checkPos = pos.cpy();
+		Block block = checkPos.add(0, -colissionRadius, 0).getBlock();
 		//back corner top
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 		//front corner
-		block = pos.add(0, 2 * colissionRadius, 0).getBlock();
+		block = checkPos.add(0, 2 * colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 
 		//check X
 		//left
-		block = pos.add(-colissionRadius, -colissionRadius, 0).getBlock();
+		block = checkPos.add(-colissionRadius, -colissionRadius, 0).getBlock();
 		if (block != null && block.isObstacle()) {
 			return true;
 		}
 		//bottom corner
-		block = pos.add(2 * colissionRadius, 0, 0).getBlock();
+		block = checkPos.add(2 * colissionRadius, 0, 0).getBlock();
 		return block != null && block.isObstacle();
 	}
 	
@@ -549,15 +550,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public boolean collidesWithWorld(final Point pos, final float colissionRadius) {
 		Point checkPoint = pos.cpy();
-		checkCollisionCorners(checkPoint);
+		if (checkCollisionCorners(checkPoint)) {
+			return true;
+		}
 
 		//chek in the middle if bigger then a block
 		if (getDimensionZ() > Block.GAME_EDGELENGTH) {
-			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ() / 2);
-			checkCollisionCorners(checkPoint);
-			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ() / 2);
+			checkPoint.add(0, 0, getDimensionZ() / 2);
+			if (checkCollisionCorners(checkPoint)) {
+				return true;
+			}
+			checkPoint.add(0, 0, getDimensionZ() / 2);
 		} else {
-			checkPoint.add(-colissionRadius, -colissionRadius, getDimensionZ());
+			checkPoint.add(0, 0, getDimensionZ());
 		}
 		//check top
 		return checkCollisionCorners(checkPoint);

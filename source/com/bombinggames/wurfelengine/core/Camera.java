@@ -498,20 +498,28 @@ public class Camera implements MapObserver {
 						"moonNormal",
 						new Vector3()
 					);
+					view.getShader().setUniformf(
+						"moonColor",
+						new Color()
+					);
+					view.getShader().setUniformf(
+						"ambientColor",
+						new Color()
+					);
 				} else {
 					view.getShader().setUniformf(
 						"moonNormal",
 						Controller.getLightEngine().getMoon(getCenter()).getNormal()
 					);
+					view.getShader().setUniformf(
+						"moonColor",
+						Controller.getLightEngine().getMoon(getCenter()).getLight()
+					);
+					view.getShader().setUniformf(
+						"ambientColor",
+						Controller.getLightEngine().getAmbient(getCenter())
+					);
 				}
-				view.getShader().setUniformf(
-					"moonColor",
-					Controller.getLightEngine().getMoon(getCenter()).getLight()
-				);
-				view.getShader().setUniformf(
-					"ambientColor",
-					Controller.getLightEngine().getAmbient(getCenter())
-				);
 			}
 
 			//bind normal map to texture unit 1

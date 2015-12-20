@@ -617,11 +617,11 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	}
 
 	/**
-	 * try throwing an item from inventory
+	 * try throwing an item from inventory. Throw must be prepared beforehand
 	 */
 	public void throwItem() {
 		Collectible item = inventory.retrieveFrontItem();
-		if (item != null) {//throw is performed if there is an item to throw
+		if (item != null && prepareThrow) {//throw is performed if there is an item to throw
 			//play animation
 			if (action != 't') {//check if not in loaded position
 				playAnimation('t');
@@ -655,6 +655,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			item.setHidden(false);
 			item.preventPickup(this, 800);
 		}
+		playAnimation('w');
 	}
 	
 	/**

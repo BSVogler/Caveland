@@ -96,7 +96,7 @@ public class LightEngine implements MapObserver {
 			1f,
 			60
 		);
-		moon = new GlobalLightSource(
+		moon = new Moon(
 			180-WE.getCVars().getValueI("worldSpinAngle"),
 			0,
 			new Color(0.4f,0.9f,0.9f,1),
@@ -124,7 +124,11 @@ public class LightEngine implements MapObserver {
      * @param dt
      */
     public void update(float dt) {
+		float before = sun.getAzimuth();
         sun.update(dt);
+		
+		if (before<90 && sun.getAzimuth()>90)
+			moon.setAzimuth(300);
 		
         if (moon != null) {
 			moon.update(dt);

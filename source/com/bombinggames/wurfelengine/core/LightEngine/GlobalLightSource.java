@@ -175,7 +175,7 @@ public class GlobalLightSource {
     public void update(float dt) {    
         //automove
 		if (!fixedPosition && getAzimuthSpeed()!= 0 ) {
-			azimuth += getAzimuthSpeed() * dt;
+			setAzimuth(getAzimuth()+getAzimuthSpeed() * dt);
 			height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
 		}
             

@@ -491,10 +491,18 @@ public class Camera implements MapObserver {
 					"sunColor",
 					Controller.getLightEngine().getSun(getCenter()).getLight()
 				);
-				view.getShader().setUniformf(
-					"moonNormal",
-					Controller.getLightEngine().getMoon(getCenter()).getNormal()
-				);
+				
+				if (Controller.getLightEngine().getMoon(getCenter()) == null) {
+					view.getShader().setUniformf(
+						"moonNormal",
+						new Vector3()
+					);
+				} else {
+					view.getShader().setUniformf(
+						"moonNormal",
+						Controller.getLightEngine().getMoon(getCenter()).getNormal()
+					);
+				}
 				view.getShader().setUniformf(
 					"moonColor",
 					Controller.getLightEngine().getMoon(getCenter()).getLight()

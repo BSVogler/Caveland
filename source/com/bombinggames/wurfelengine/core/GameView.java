@@ -191,36 +191,37 @@ public class GameView implements GameManager {
 	 */
 	public void loadShaders() throws Exception {
 		Gdx.app.debug("Shader", "loading");
-		String vertexShader;
-		String fragmentShader;
 		//shaders are very fast to load and the asset loader does not support text files out of the box
-		if (WE.getCVars().getValueB("LEnormalMapRendering")) {
-			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertexNM.vs").readString();
-			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragmentNM.fs").readString();
-		} else {
-			vertexShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/vertex.vs").readString();
-			fragmentShader = Gdx.files.internal("com/bombinggames/wurfelengine/core/fragment.fs").readString();
-		}
+		String fragmentShader = Gdx.files.internal(
+			"com/bombinggames/wurfelengine/core/fragment"
+			+ (WE.getCVars().getValueB("LEnormalMapRendering") ? "NM" : "")
+			+ ".fs"
+		).readString();
+		String vertexShader = Gdx.files.internal(
+			"com/bombinggames/wurfelengine/core/vertex"
+			+ (WE.getCVars().getValueB("LEnormalMapRendering") ? "NM" : "")
+			+ ".vs"
+		).readString();
 		//Setup shader
 		ShaderProgram.pedantic = false;
 
 		ShaderProgram newshader = new ShaderProgram(vertexShader, fragmentShader);
 		if (newshader.isCompiled()) {
 			shader = newshader;
-		} else if (shader == null) {
+			
+			//print any warnings
+			if (shader.getLog().length() != 0) {
+				System.out.println(shader.getLog());
+			}
+
+			//setup default uniforms
+			shader.begin();
+			//our normal map
+			shader.setUniformi("u_normals", 1); //GL_TEXTURE1
+			shader.end();
+		} else {
 			throw new Exception("Could not compile shader: " + newshader.getLog());
 		}
-
-		//print any warnings
-		if (shader.getLog().length() != 0) {
-			System.out.println(shader.getLog());
-		}
-
-		//setup default uniforms
-		shader.begin();
-		//our normal map
-		shader.setUniformi("u_normals", 1); //GL_TEXTURE1
-		shader.end();
 	}
 
 	/**

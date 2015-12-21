@@ -37,16 +37,19 @@ void main() {
 		//check if moon is shining, if not ignore it
 		if (moonColor.r > 0.05 || moonColor.g > 0.05 || moonColor.b> 0.05) {
 			moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
-
-			//saturation
-			//DiffuseColor.rgb = DiffuseColor.rgb-0.6*(DiffuseColor.rgb-vec3(dot(DiffuseColor.rgb, vec3(.222, .707, .071)) ));
-
-			//contrast
-			//DiffuseColor.rgb = ((DiffuseColor.rgb - 0.5) * max(1.0+0.4*moonColor.b, 0.0)) + 0.5;
-
 		}
+		
+		//should interpolate linearly
+		if (sunLight.r < 0.05 && sunLight.g < 0.05 && sunLight.b < 0.05) {
+			//saturation decrease
+			DiffuseColor.rgb = DiffuseColor.rgb-0.6*(DiffuseColor.rgb-vec3(dot(DiffuseColor.rgb, vec3(.222, .707, .071)) ));
+
+			//contrast increase
+			DiffuseColor.rgb = ((DiffuseColor.rgb - 0.5) * max(1.0+0.4*moonColor.b, 0.0)) + 0.5;
+	}
+
 //vertice color * texture color*(sun, moon and ambient) 
-//use vertice color 0,5 as a base level on which light sources are added. Vertice color os some sort of light source and not emissivity of texture.
+//use vertice color 0.5 as a base level on which light sources are added. Vertice color is handeled as some sort of light source and not emissivity of texture.
 		gl_FragColor = vec4(
 			DiffuseColor.rgb*(vertex-vec3(2)+sunLight*1.3+moonLight+ambientColor.rgb*2.0)
 			,DiffuseColor.a*v_color.a

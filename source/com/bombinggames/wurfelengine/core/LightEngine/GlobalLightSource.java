@@ -76,7 +76,7 @@ public class GlobalLightSource {
      * @param amplitudeHeight the maximum degree during a day the LightSource rises
      */
     public GlobalLightSource(float azimuth, float height, Color tone, Color ambient, float brghtFac, int amplitudeHeight) {
-        this.azimuth = azimuth;
+        setAzimuth(azimuth);
         this.height = height;
         this.tone = tone;
         this.ambient = ambient;
@@ -174,13 +174,13 @@ public class GlobalLightSource {
      */
     public void update(float dt) {    
         //automove
-		if (!fixedPosition && getAzimuthSpeed()!= 0 ) {
-			setAzimuth(getAzimuth()+getAzimuthSpeed() * dt);
+		if (!fixedPosition && getAzimuthSpeed() != 0) {
+			setAzimuth(getAzimuth() + getAzimuthSpeed() * dt);
 			height = (float) (amplitude * Math.sin((azimuth + WE.getCVars().getValueI("worldSpinAngle")) * Math.PI / 180));
 		}
-            
-      //brightness calculation
-	  //clamp at night
+
+		//brightness calculation
+		//clamp at night
 		if (height < -amplitude / 2) {
 			power = 0;//night
 		} else if (height < amplitude / 2) {

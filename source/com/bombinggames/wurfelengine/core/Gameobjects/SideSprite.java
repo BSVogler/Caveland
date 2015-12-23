@@ -211,6 +211,7 @@ public class SideSprite extends TextureRegion {
 
 		float x2 = x + width;
 		float y2 = y + height;
+		@SuppressWarnings("MismatchedReadAndWriteOfArray")
 		float[] vertices = this.vertices;
 		vertices[X1] = x;
 		vertices[Y1] = y;
@@ -249,6 +250,7 @@ public class SideSprite extends TextureRegion {
 
 		float x2 = x + width;
 		float y2 = y + height;
+		@SuppressWarnings("MismatchedReadAndWriteOfArray")
 		float[] vertices = this.vertices;
 		vertices[X1] = x;
 		vertices[Y1] = y;
@@ -347,6 +349,7 @@ public class SideSprite extends TextureRegion {
 			return;
 		}
 
+		@SuppressWarnings("MismatchedReadAndWriteOfArray")
 		float[] vertices = this.vertices;
 		vertices[X1] += xAmount;
 		vertices[X2] += xAmount;
@@ -368,6 +371,7 @@ public class SideSprite extends TextureRegion {
 			return;
 		}
 
+		@SuppressWarnings("MismatchedReadAndWriteOfArray")
 		float[] vertices = this.vertices;
 		vertices[Y1] += yAmount;
 		vertices[Y2] += yAmount;
@@ -391,6 +395,7 @@ public class SideSprite extends TextureRegion {
 			return;
 		}
 
+		@SuppressWarnings("MismatchedReadAndWriteOfArray")
 		float[] vertices = this.vertices;
 		vertices[X1] += xAmount;
 		vertices[Y1] += yAmount;

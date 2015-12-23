@@ -17,7 +17,7 @@ void main() {
     //RGBA of our diffuse color
     vec4 DiffuseColor = texture2D(u_texture, v_texCoords);
 	vec3 normalColor = texture2D(u_normals, v_texCoords).rgb;
-	vec3 vertex = v_color.rgb*4.0;
+	vec3 vertex = v_color.rgb*4.0-vec3(1);//scale vertex color by two, so that range 0..1 is now 0..2
 
 	//don't shade fragment's where there is no normal map => diffuse = normal
 	if (abs(DiffuseColor.r-normalColor.r)<0.08 && abs(DiffuseColor.g-normalColor.g)<0.08 && abs(DiffuseColor.b-normalColor.b)<0.08) {
@@ -51,8 +51,8 @@ void main() {
 //vertice color * texture color*(sun, moon and ambient) 
 //use vertice color 0.5 as a base level on which light sources are added. Vertice color is handeled as some sort of light source and not emissivity of texture.
 		gl_FragColor = vec4(
-			DiffuseColor.rgb*(vertex-vec3(2)+sunLight*1.3+moonLight+ambientColor.rgb*2.0)
-			,DiffuseColor.a*v_color.a
+			vertex*( + sunLight + moonLight + ambientColor.rgb*2.0)*DiffuseColor.rgb,
+			DiffuseColor.a*v_color.a
 		);
 	}
 }

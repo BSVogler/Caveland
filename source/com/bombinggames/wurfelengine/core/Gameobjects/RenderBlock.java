@@ -436,6 +436,7 @@ public class RenderBlock extends AbstractGameObject{
 		if (id <= 0) return;
 		byte value = getSpriteValue();
 		if (value < 0) return;
+		
         SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side, ao);
         sprite.setPosition(xPos, yPos);
         if (getScaling() != 0) {
@@ -445,11 +446,17 @@ public class RenderBlock extends AbstractGameObject{
 		
 		if (color != null) {
 			color.r *= blockData.getLightlevelR(side);
-			if (color.r>1) color.r=1;
+			if (color.r > 1) {//values above 1 can not be casted later
+				color.r = 1;
+			}
 			color.g *= blockData.getLightlevelG(side);
-			if (color.g>1) color.g=1;
+			if (color.g > 1) {//values above 1 can not be casted later
+				color.g = 1;
+			}
 			color.b *= blockData.getLightlevelB(side);
-			if (color.b>1) color.b=1;
+			if (color.b > 1) {//values above 1 can not be casted later
+				color.b = 1;
+			}
 			
 			sprite.setColor(color);
 		}

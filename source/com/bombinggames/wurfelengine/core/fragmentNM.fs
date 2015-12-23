@@ -51,7 +51,7 @@ void main() {
 //vertice color * texture color*(sun, moon and ambient) 
 //use vertice color 0.5 as a base level on which light sources are added. Vertice color is handeled as some sort of light source and not emissivity of texture.
 		gl_FragColor = vec4(
-			vertex*( + sunLight + moonLight + ambientColor.rgb*2.0)*DiffuseColor.rgb,
+			vertex*0.8*( vertex*0.8+ sunLight + moonLight + ambientColor.rgb*2.0)*DiffuseColor.rgb,
 			DiffuseColor.a*v_color.a
 		);
 	}

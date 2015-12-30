@@ -124,11 +124,15 @@ public class LightEngine implements MapObserver {
      * @param dt
      */
     public void update(float dt) {
-		float before = sun.getAzimuth();
         sun.update(dt);
 		
-		if (before<90 && sun.getAzimuth()>90)
-			moon.setAzimuth(300);
+		//set moon to rise if sun is going down and moon is not about to rise
+		if (getTimeOfDay() > 0.25f &&
+			getTimeOfDay() < 0.3f &&
+			Math.abs((moon.getAzimuth() -210 - WE.getCVars().getValueI("worldSpinAngle"))%360) > 10
+		) {
+			moon.setAzimuth(210 + WE.getCVars().getValueI("worldSpinAngle"));
+		}
 		
         if (moon != null) {
 			moon.update(dt);
@@ -758,5 +762,13 @@ public class LightEngine implements MapObserver {
 
 	@Override
 	public void onMapReload() {
+	}
+
+	/**
+	 *
+	 * @return value between 0 and 1
+	 */
+	public float getTimeOfDay() {
+		return (sun.getAzimuth() + WE.getCVars().getValueI("worldSpinAngle")) % 360 / 360f;
 	}
 }

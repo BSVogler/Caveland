@@ -22,7 +22,7 @@ void main() {
 	//don't shade fragment's where there is no normal map => diffuse = normal
 	if (abs(DiffuseColor.r-normalColor.r)<0.08 && abs(DiffuseColor.g-normalColor.g)<0.08 && abs(DiffuseColor.b-normalColor.b)<0.08) {
 		gl_FragColor = vec4(vertex+vec3(0.5,0.5,0.5),v_color.a)*DiffuseColor;
-	} else{
+	} else {
 	
 		vec3 N = (normalColor*2.0- 1.0);//-0.058)*1.25 to normalize because normals are not 100% correct
 		N.x = -N.x;//x is flipped in texture, so fix this in shaders
@@ -39,15 +39,25 @@ void main() {
 			moonLight = vec3(moonColor) * max(dot(N, moonNormal), 0.0);
 		}
 		
-		//should interpolate linearly
-		if (sunLight.r < 0.05 && sunLight.g < 0.05 && sunLight.b < 0.05) {
+		//apply night color
+		float nightMix = sunNormal.z/-0.2;
+		if (nightMix > 1.0) {
+			nightMix = 1.0;
+		}
+		if (nightMix < 0.0) {
+			nightMix = 0.0;
+		}
+		if (nightMix > 0.0) {
 			//saturation decrease
-			DiffuseColor.rgb = DiffuseColor.rgb-0.6*(DiffuseColor.rgb-vec3(dot(DiffuseColor.rgb, vec3(.222, .707, .071)) ));
+			vec3 nightcolor = DiffuseColor.rgb-0.6*(DiffuseColor.rgb-vec3(dot(DiffuseColor.rgb, vec3(.222, .707, .071)) ));
 
 			//contrast increase
-			DiffuseColor.rgb = ((DiffuseColor.rgb - 0.5) * max(1.0+0.4*moonColor.b, 0.0)) + 0.5;
-	}
+			nightcolor = ((nightcolor.rgb - 0.5) * max(1.0+0.4*moonColor.b, 0.0)) + 0.5;
 
+			//combine active color with night color
+			DiffuseColor.rgb = DiffuseColor.rgb*(1.0-nightMix)+nightcolor*nightMix;
+		}
+		
 //vertice color * texture color*(sun, moon and ambient) 
 //use vertice color 0.5 as a base level on which light sources are added. Vertice color is handeled as some sort of light source and not emissivity of texture.
 		gl_FragColor = vec4(

@@ -417,20 +417,6 @@ public class LightEngine implements MapObserver {
 			shR.scale(1f, (2), 1f);
 			shR.translate(-posX, -posY, 0);
 
-			//perfect/correct line
-			shR.setColor(Color.ORANGE);
-			if ((sun.getMaxAngle() / 90f - 0.5f) != 0) {//check if line
-				shR.translate(posX, posY, 0);
-				shR.rotate(0, 0, 1, -WE.getCVars().getValueI("worldSpinAngle"));
-				shR.scale(1f, (sun.getMaxAngle() / 90f - 0.5f), 1f);
-				shR.circle(0, 0, size);
-				shR.scale(1f, (1 / (sun.getMaxAngle() / 90f - 0.5f)), 1f);
-				shR.rotate(0, 0, 1, +WE.getCVars().getValueI("worldSpinAngle"));
-				shR.translate(-posX, -posY, 0);
-			} else {
-				shR.line(posX - size, posY, posX + size, posY);
-			}
-
 			//sun position
 			//longitude
 			shR.setColor(Color.RED);

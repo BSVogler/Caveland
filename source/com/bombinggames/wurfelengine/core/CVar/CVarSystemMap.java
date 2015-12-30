@@ -69,6 +69,10 @@ public class CVarSystemMap extends AbstractCVarSystem {
 		return saveSystem;
 	}
 
+	/**
+	 * Set the save system for this map.
+	 * @param saveSystem 
+	 */
 	public void setSaveCVars(CVarSystemSave saveSystem) {
 		this.saveSystem = saveSystem;
 	}

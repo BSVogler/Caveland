@@ -40,7 +40,7 @@ import java.io.File;
 public class CVarSystemSave extends AbstractCVarSystem {
 
 	/**
-	 *
+	 * Registers hardcoded cvars.
 	 * @param path
 	 */
 	public CVarSystemSave(File path) {

@@ -611,7 +611,7 @@ public class Console {
     }
 
 	/**
-	 * 
+	 * Set a path as the current path for the console access.
 	 * @param path 
 	 */
 	public void setPath(String path) {

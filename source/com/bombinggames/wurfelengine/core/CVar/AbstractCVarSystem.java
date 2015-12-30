@@ -138,7 +138,7 @@ public abstract class AbstractCVarSystem {
 
 	/**
 	 * load CVars from file and overwrite engine cvars. You must register the
-	 * cvars first.
+	 * cvars first before the values can be read.
 	 *
 	 * @since v1.4.2
 	 */

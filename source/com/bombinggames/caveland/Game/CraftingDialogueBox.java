@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.Game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.bombinggames.caveland.Game.CraftingRecipesList.Recipe;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class CraftingDialogueBox extends ActionBox {
 	private final Inventory inventory;
 	private final CraftingRecipesList knownRecipes = new CraftingRecipesList();
+	private static final Color COLORNOTAVAILABLE = new Color(1, 1, 1, 0.3f);
 
 	/**
 	 * creates a new inventory
@@ -30,29 +31,44 @@ public class CraftingDialogueBox extends ActionBox {
 		super("Crafting", BoxModes.CUSTOM, null);
 		this.inventory = player.getInventory();
 		
-		fillWindowContent();
+		//add matching first then unavailable ones
+		ArrayList<Recipe> orderedList = getRecipeOrdered();
+		for (byte i = 0; i < orderedList.size(); i++) {
+			if (orderedList.get(i).resultIsCollectible()) {
+				addSelection(new SelectionOption(i, orderedList.get(i).getResultType().toString()));
+			} else {
+				addSelection(new SelectionOption(i, orderedList.get(i).getResultClass().getSimpleName()));
+			}
+		}
 		
 		setSelectAction((boolean up, ActionBox.SelectionOption result, AbstractEntity actor) -> {
-			ArrayList<Recipe> recList = findMatchingRecipes();
+			ArrayList<Recipe> recList = getRecipeOrdered();
 			if (!recList.isEmpty()) {
-				
-				fillWindowContent();
+				updateContent();
 			}
 		});
 	}
 	
-	private void fillWindowContent(){
-		ArrayList<Recipe> recipes = findMatchingRecipes();
-		
-		if (!recipes.isEmpty()) {
-			for (byte i = 0; i < recipes.size(); i++) {
-				addSelection(new SelectionOption(i, recipes.get(i).getResultType().toString()));
-			}
-			
+	private ArrayList<Recipe> getRecipeOrdered(){
+		ArrayList<Recipe> list = findMatchingRecipes();
+		CraftingRecipesList rest = (CraftingRecipesList) knownRecipes.clone();
+		rest.removeAll(findMatchingRecipes());
+		list.addAll(rest);
+		return list;
+	}
+	
+	@Override
+	public void updateContent(){
+		ArrayList<Recipe> orderedList = getRecipeOrdered();
+		if (!orderedList.isEmpty()) {
 			getWindow().clearChildren();
-			Recipe recipe = recipes.get(getSelected().id);
+			
+			Recipe recipe = orderedList.get(getSelected().id);
 			//A
 			Image imgA = recipe.getIngredientImage(0);
+			if (inventory.contains(recipe.ingredients[0]) == 0) {
+				imgA.setColor(COLORNOTAVAILABLE);
+			}
 			getWindow().addActor(imgA);
 
 			//+
@@ -63,6 +79,9 @@ public class CraftingDialogueBox extends ActionBox {
 			//B
 			Image imgB = recipe.getIngredientImage(1);
 			imgB.setPosition(150, 0);
+			if (inventory.contains(recipe.ingredients[1]) == 0) {
+				imgB.setColor(COLORNOTAVAILABLE);
+			}
 			getWindow().addActor(imgB);
 			//+ maybe C
 			if (recipe.ingredients.length > 2) {
@@ -73,8 +92,10 @@ public class CraftingDialogueBox extends ActionBox {
 				//C
 				Image imgC = recipe.getIngredientImage(2);
 				imgC.setPosition(300, 0);
+				if (inventory.contains(recipe.ingredients[2]) == 0) {
+					imgC.setColor(COLORNOTAVAILABLE);
+				}
 				getWindow().addActor(imgC);
-
 			}
 			
 			//=
@@ -83,52 +104,71 @@ public class CraftingDialogueBox extends ActionBox {
 			equals.setPosition(420, 0);
 			
 			//result
-			Image resultImage = findMatchingRecipes().get(getSelected().id).getResultImage();
+			Image resultImage = orderedList.get(getSelected().id).getResultImage();
 			resultImage.setPosition(450, 0);
+			if (!canCraft(recipe, inventory.getContentDef())) {
+				resultImage.setColor(COLORNOTAVAILABLE);
+			}
 			getWindow().addActor(resultImage);
 		} else {
 			getWindow().addActor(new Label("Not enough ingredients.", WE.getEngineView().getSkin()));
 		}
 	}
+	
 	/**
-	 * check wheter you can craft with the ingredients
+	 * 
+	 * @param recipe
+	 * @param inventory
 	 * @return 
 	 */
-	public ArrayList<CraftingRecipesList.Recipe> findMatchingRecipes(){
-		ArrayList<CraftingRecipesList.Recipe> matchingRecipes = new ArrayList<>(2);
-		CollectibleType[] invent = inventory.getContentDef();
-		for (CraftingRecipesList.Recipe recipe : knownRecipes.getReceipts()) {
-			int ing1 = -1;//not found in receipt
-			if (recipe.ingredients[0]==invent[0])
-				ing1 = 0;
-			if (recipe.ingredients[0]==invent[1])
-				ing1 = 1;
-			if (recipe.ingredients[0]==invent[2])
-				ing1 = 2;
-			
-			int ing2 = -1;//not found in receipt
-			if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1]==invent[0])
-				ing2 = 0;
-			if (ing1 != 1 && ing1 != 1  && recipe.ingredients[1]==invent[1])
-				ing2 = 1;
-			if (ing1 != 2 && ing1 != 2  && recipe.ingredients[1]==invent[2])
-				ing2 = 2;
-			
-			if (recipe.ingredients.length > 2) {
-				int ing3 = -1;//not found in receipt
-				if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2]==invent[0])
-					ing3 = 0;
-				if (ing1 != -1 && ing1 != 1 && ing2 != -1 && ing2 != 1 && recipe.ingredients[2]==invent[1])
-					ing3 = 1;
-				if (ing1 != -1 && ing1 != 2 && ing2 != -1 && ing2 != 2 && recipe.ingredients[2]==invent[2])
-					ing3 = 2;
+	public boolean canCraft(Recipe recipe, CollectibleType[] inventory){
+		int ing1 = -1;//not found in receipt
+		if (recipe.ingredients[0]==inventory[0])
+			ing1 = 0;
+		if (recipe.ingredients[0]==inventory[1])
+			ing1 = 1;
+		if (recipe.ingredients[0]==inventory[2])
+			ing1 = 2;
 
-				if (ing1 != -1 && ing2 != -1 && ing3 != -1)
-					matchingRecipes.add(recipe);
-			} else {
-				if (ing1 != -1 && ing2 != -1)
-					matchingRecipes.add(recipe);
+		int ing2 = -1;//not found in receipt
+		if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1]==inventory[0])
+			ing2 = 0;
+		if (ing1 != 1 && ing1 != 1  && recipe.ingredients[1]==inventory[1])
+			ing2 = 1;
+		if (ing1 != 2 && ing1 != 2  && recipe.ingredients[1]==inventory[2])
+			ing2 = 2;
+
+		if (recipe.ingredients.length > 2) {
+			int ing3 = -1;//not found in receipt
+			if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2]==inventory[0])
+				ing3 = 0;
+			if (ing1 != -1 && ing1 != 1 && ing2 != -1 && ing2 != 1 && recipe.ingredients[2]==inventory[1])
+				ing3 = 1;
+			if (ing1 != -1 && ing1 != 2 && ing2 != -1 && ing2 != 2 && recipe.ingredients[2]==inventory[2])
+				ing3 = 2;
+
+			if (ing1 != -1 && ing2 != -1 && ing3 != -1)
+				return true;
+		} else {
+			if (ing1 != -1 && ing2 != -1)
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * check wheter you can craft with the ingredients
+	 *
+	 * @return
+	 */
+	public ArrayList<Recipe> findMatchingRecipes() {
+		ArrayList<Recipe> matchingRecipes = new ArrayList<>(2);
+		CollectibleType[] invent = inventory.getContentDef();
+		for (Recipe recipe : knownRecipes) {
+			if (canCraft(recipe, invent)) {
+				matchingRecipes.add(recipe);
 			}
+
 		}
 		return matchingRecipes;
 	}
@@ -153,7 +193,7 @@ public class CraftingDialogueBox extends ActionBox {
 					recipe.getResultType().createInstance().spawn(inventory.getPosition().cpy());
 				} else {
 					try {
-						recipe.getResultClass().newInstance().spawn(inventory.getPosition().cpy());
+					recipe.getResultClass().newInstance().spawn(inventory.getPosition().cpy());
 					} catch (InstantiationException | IllegalAccessException ex) {
 						Logger.getLogger(CraftingDialogueBox.class.getName()).log(Level.SEVERE, null, ex);
 					}
@@ -182,9 +222,8 @@ public class CraftingDialogueBox extends ActionBox {
 	@Override
 	public SelectionOption confirm(AbstractEntity actor) {
 		SelectionOption result = super.confirm(actor);
-		ArrayList<CraftingRecipesList.Recipe> recipes = findMatchingRecipes();
-		if (!recipes.isEmpty()) {
-			craft(recipes.get(getSelected().id));
+		if (!getRecipeOrdered().isEmpty()) {
+			craft(getRecipeOrdered().get(getSelected().id));
 		}
 		return result;
 	}

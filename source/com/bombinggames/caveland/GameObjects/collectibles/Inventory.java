@@ -163,11 +163,30 @@ public class Inventory extends CollectibleContainer {
 	 * @return can have null in array
 	 */
 	public CollectibleType[] getContentDef() {
-		Collectible[] tmp = getContentAsArray();
 		return new CollectibleType[]{
-			(tmp[0] == null ? null : tmp[0].getType()),
-			(tmp[1] == null ? null : tmp[1].getType()),
-			(tmp[2] == null ? null : tmp[2].getType()),};
+			(get(0) == null ? null : get(0).getType()),
+			(get(1) == null ? null : get(1).getType()),
+			(get(2) == null ? null : get(2).getType())};
+	}
+	
+	/**
+	 * check if the inventory contains a type of this item
+	 *
+	 * @param ingredient
+	 * @return the amount the item is contained
+	 */
+	public int contains(CollectibleType ingredient) {
+		int count = 0;
+		if (getContentDef()[0] != null && getContentDef()[0] == ingredient) {
+			count++;
+		}
+		if (getContentDef()[1] != null && getContentDef()[1] == ingredient) {
+			count++;
+		}
+		if (getContentDef()[2] != null && getContentDef()[2] == ingredient) {
+			count++;
+		}
+		return count;
 	}
 
 	/**

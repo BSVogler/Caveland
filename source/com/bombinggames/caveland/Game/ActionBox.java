@@ -371,7 +371,7 @@ public class ActionBox extends WidgetGroup {
 	/**
 	 * clears window content then add new
 	 */
-	private void updateContent() {
+	public void updateContent() {
 		window.clear();
 		window.add(text);
 		window.row();
@@ -474,7 +474,7 @@ public class ActionBox extends WidgetGroup {
 		public String name;
 
 		/**
-		 *
+		 * Saves information about a possible selection
 		 * @param id
 		 * @param name
 		 */

@@ -1,29 +1,20 @@
 package com.bombinggames.caveland.Game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *A list which stores the possibles recipes.
  * @author Benedikt Vogler
  */
-public class CraftingRecipesList extends Table {
-	private final ArrayList<Recipe> receipts= new ArrayList<>(10);
+public class CraftingRecipesList extends ArrayList<Recipe>{
 	
 	/**
 	 * adds teh receipes to a list
 	 */
 	public CraftingRecipesList() {
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Sulfur,
@@ -34,7 +25,7 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Wood,
@@ -45,7 +36,7 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Wood,
@@ -56,7 +47,7 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Iron,
@@ -67,7 +58,7 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Iron,
@@ -78,7 +69,7 @@ public class CraftingRecipesList extends Table {
 			)
 		);
 		
-		receipts.add(
+		add(
 			new Recipe(
 				new CollectibleType[]{
 					CollectibleType.Iron,
@@ -89,124 +80,5 @@ public class CraftingRecipesList extends Table {
 				MineCart.class
 			)
 		);
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public ArrayList<Recipe> getReceipts() {
-		return receipts;
-	}
-	
-	/**
-	 *
-	 */
-	public class Recipe {
-		/**
-		 * a list of the ingredient
-		 */
-		protected final CollectibleType[] ingredients;
-		/**
-		 * what is the result of the recipe.
-		 */
-		private final CollectibleType result;
-		private final Class<? extends AbstractEntity> resultClass;
-
-		/**
-		 * 
-		 * @param ingredients
-		 * @param name
-		 * @param result 
-		 * @see #Recipe(CollectibleType[], String, java.lang.Class) 
-		 */
-		public Recipe(CollectibleType[] ingredients, String name, CollectibleType result) {
-			this.ingredients = ingredients;
-			this.result = result;
-			this.resultClass = null;
-		}
-		
-		/**
-		 * 
-		 * @param ingredients
-		 * @param name
-		 * @param result 
-		 * @see #Recipe(CollectibleType[], String, CollectibleType) 
-		 */
-		public Recipe(CollectibleType[] ingredients, String name, Class<? extends AbstractEntity> result) {
-			this.ingredients = ingredients;
-			this.result = null;
-			this.resultClass = result;
-		}
-		
-		/**
-		 * 
-		 * @return can return null if failed to get image
-		 */
-		public Image getResultImage(){
-			if (resultIsCollectible()) {
-				return new Image(
-					new SpriteDrawable(
-						new Sprite(
-							AbstractGameObject.getSprite('e', result.getId(),(byte)  0)
-						)
-					)
-				);
-			} else {
-				try {
-					return new Image(
-						new SpriteDrawable(
-							new Sprite(
-								AbstractGameObject.getSprite('e', resultClass.newInstance().getSpriteId(), (byte) 0)
-							)
-						)
-					);
-				} catch (InstantiationException | IllegalAccessException ex) {
-					Logger.getLogger(CraftingRecipesList.class.getName()).log(Level.SEVERE, null, ex);
-				}
-			}
-			return null;
-		}
-		
-		/**
-		 *
-		 * @param slot
-		 * @return
-		 */
-		public Image getIngredientImage(int slot){
-			return new Image(
-				new SpriteDrawable(
-					new Sprite(
-						AbstractGameObject.getSprite('e', ingredients[slot].getId(), (byte) 0)
-					)
-				)
-			);
-		}
-		
-		/**
-		 *
-		 * @return
-		 */
-		public boolean resultIsCollectible(){
-			return this.result != null;
-		}
-
-		/**
-		 *
-		 * @return
-		 */
-		public CollectibleType getResultType() {
-			return result;
-		}
-		
-		/**
-		 *
-		 * @return
-		 */
-		public Class<? extends AbstractEntity> getResultClass() {
-			return resultClass;
-		}
-		
-		
 	}
 }

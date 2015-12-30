@@ -69,16 +69,17 @@ public class CraftingDialogueBox extends ActionBox {
 			if (inventory.contains(recipe.ingredients[0]) == 0) {
 				imgA.setColor(COLORNOTAVAILABLE);
 			}
+			imgA.setPosition(0, 50);
 			getWindow().addActor(imgA);
 
 			//+
 			Label plus = new Label("+", WE.getEngineView().getSkin());
-			plus.setPosition(100, 0);
+			plus.setPosition(100, 70);
 			getWindow().addActor(plus);
 
 			//B
 			Image imgB = recipe.getIngredientImage(1);
-			imgB.setPosition(150, 0);
+			imgB.setPosition(150, 50);
 			if (inventory.contains(recipe.ingredients[1]) == 0) {
 				imgB.setColor(COLORNOTAVAILABLE);
 			}
@@ -86,12 +87,12 @@ public class CraftingDialogueBox extends ActionBox {
 			//+ maybe C
 			if (recipe.ingredients.length > 2) {
 				Label plus2 = new Label("+", WE.getEngineView().getSkin());
-				plus2.setPosition(250, 0);
+				plus2.setPosition(250, 70);
 				getWindow().addActor(plus2);
 
 				//C
 				Image imgC = recipe.getIngredientImage(2);
-				imgC.setPosition(300, 0);
+				imgC.setPosition(300, 50);
 				if (inventory.contains(recipe.ingredients[2]) == 0) {
 					imgC.setColor(COLORNOTAVAILABLE);
 				}
@@ -101,15 +102,28 @@ public class CraftingDialogueBox extends ActionBox {
 			//=
 			Label equals = new Label("=", WE.getEngineView().getSkin());
 			getWindow().addActor(equals);
-			equals.setPosition(420, 0);
+			equals.setPosition(420, 70);
 			
 			//result
 			Image resultImage = orderedList.get(getSelected().id).getResultImage();
-			resultImage.setPosition(450, 0);
+			resultImage.setPosition(450, 50);
 			if (!canCraft(recipe, inventory.getContentDef())) {
 				resultImage.setColor(COLORNOTAVAILABLE);
 			}
 			getWindow().addActor(resultImage);
+			
+			if (getSelectionNum() < orderedList.size()-1){
+				Label down = new Label("\\/", WE.getEngineView().getSkin());
+				getWindow().addActor(down);
+				down.setPosition(getWindow().getWidth()/2, 10);
+			}
+			
+			if (getSelectionNum() > 0){
+				Label up = new Label("/\\", WE.getEngineView().getSkin());
+				getWindow().addActor(up);
+				up.setPosition(getWindow().getWidth()/2, getWindow().getHeight()-50);
+			}
+			
 		} else {
 			getWindow().addActor(new Label("Not enough ingredients.", WE.getEngineView().getSkin()));
 		}

@@ -369,6 +369,15 @@ public class ActionBox extends WidgetGroup {
 	}
 
 	/**
+	 * the position of the selection.
+	 * @return 
+	 */
+	public byte getSelectionNum() {
+		return selectionNum;
+	}
+	
+
+	/**
 	 * clears window content then add new
 	 */
 	public void updateContent() {

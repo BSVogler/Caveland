@@ -109,7 +109,7 @@ public class GlobalLightSource {
     }
 
     /**
-     *
+     * origin is left side
      * @return in degrees 0-360°
      */
     public float getAzimuth() {

@@ -106,6 +106,9 @@ public class LightEngine implements MapObserver {
 		);
 		
 		pixelBasedShading = WE.getCVars().getValueB("LEnormalMapRendering");
+		//restore light engine setting position
+		getSun(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEsunAzimuth"));
+		getMoon(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEmoonAzimuth"));
     }
 	
     /**
@@ -261,8 +264,13 @@ public class LightEngine implements MapObserver {
 		this.moon = moon;
 	}
 
+	/**
+	 * restores position via save cvar "LEsunAzimuth".
+	 * @param sun 
+	 */
 	public void setSun(GlobalLightSource sun) {
 		this.sun = sun;
+		getSun(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEsunAzimuth"));
 	}
 
 	/**

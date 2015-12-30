@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -605,10 +606,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
     }
 	
 	/**
-	 * save every chunk using the current active save slot
+	 * save every chunk using the current active save slot. Saves position of the sun and moon at origin.
 	 * @return 
 	 */
 	public boolean save(){
+		WE.getCVarsSave().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
+		WE.getCVarsSave().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
 		return save(activeSaveSlot);
 	}
 
@@ -671,18 +674,20 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * uses a specific save slot for loading and saving the map
+	 * uses a specific save slot for loading and saving the map. Loads the save cvars.
 	 *
 	 * @param slot
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
+		WE.getCVarsMap().get("currentSaveSlot").setValue(slot);
+		//load save cvars
 		WE.getCVarsMap().setSaveCVars(
 			new CVarSystemSave(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
-		WE.getCVarsMap().get("currentSaveSlot").setValue(slot);
+		WE.getCVarsSave().load();
 	}
 
 	/**

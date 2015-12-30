@@ -42,7 +42,6 @@ import com.bombinggames.wurfelengine.core.Map.Position;
  * @author Benedikt Vogler
  */
 public class CustomLightEngine extends LightEngine {
-	private final GlobalLightSource customSun;
 	private final GlobalLightSource caveSun;
 
 	/**
@@ -50,7 +49,7 @@ public class CustomLightEngine extends LightEngine {
 	 */
 	public CustomLightEngine() {
 		super();
-		customSun = new GlobalLightSource(
+		GlobalLightSource customSun = new GlobalLightSource(
 			-WE.getCVars().getValueI("worldSpinAngle"),
 			0,
 			new Color(1.0f, 0.8f, 0.3f, 1),

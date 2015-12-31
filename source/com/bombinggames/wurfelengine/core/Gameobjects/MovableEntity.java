@@ -253,6 +253,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			
 			if (moveToAi != null) {
 				moveToAi.update(dt);
+				if (moveToAi.atGoal()){
+					moveToAi = null;
+				}
 			}
 			
 			/*HORIZONTAL MOVEMENT*/
@@ -878,10 +881,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 *
-	 * @return
+	 * Get the ai which moves the entity to a goal.
+	 * @return can be null
 	 */
-	public MoveToAi getMovementGoal() {
+	public MoveToAi getMovementAI() {
 		return moveToAi;
 	}
 	

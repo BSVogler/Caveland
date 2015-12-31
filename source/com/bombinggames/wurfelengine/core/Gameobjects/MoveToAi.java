@@ -33,7 +33,6 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
 
@@ -44,11 +43,12 @@ import java.io.Serializable;
 public class MoveToAi implements Telegraph, Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final MovableEntity body;
 	/**
 	 * where does it move to?
 	 */
 	private Point movementGoal;
-	private final MovableEntity body;
 	private int runningagainstwallCounter = 0;
 	/**
 	 * used for detecting that is runnning against a wall
@@ -58,28 +58,28 @@ public class MoveToAi implements Telegraph, Serializable {
 	public MoveToAi(MovableEntity body, Point goal) {
 		this.body = body;
 	}
-	
-	public void update(float dt){
-		if (movementGoal != null) {
-			if (body.getPosition().dst2(movementGoal) < 20) {
-				movementGoal = null;
-			} else {
-				//movement logic
-				Vector3 d = new Vector3();
 
-				d.x = movementGoal.getX() - body.getPosition().getX();
-				d.y = movementGoal.getY() - body.getPosition().getY();
+	public void update(float dt) {
+		if (movementGoal != null) {
+			if (!atGoal()) {
+				//movement logic
+				Vector3 d = new Vector3(
+					movementGoal.getX() - body.getPosition().getX(),
+					movementGoal.getY() - body.getPosition().getY(),
+					body.isFloating() ? movementGoal.getZ() - body.getPosition().getZ() : 0
+				).nor();//direction only
+
 				float movementSpeed;
 				if (body.isFloating()) {
-					d.z = movementGoal.getZ() - body.getPosition().getZ();
 					movementSpeed = body.getSpeed();
 				} else {
 					movementSpeed = body.getSpeedHor();
 				}
-				d.nor();//direction only
-				if (movementSpeed<2)
-					movementSpeed=2;
+				if (movementSpeed < 2) {
+					movementSpeed = 2;
+				}
 				d.scl(movementSpeed);
+				//if walking keep momentum
 				if (!body.isFloating()) {
 					d.z = body.getMovement().z;
 				}
@@ -101,6 +101,19 @@ public class MoveToAi implements Telegraph, Serializable {
 					runningagainstwallCounter = 0;
 				}
 			}
+		}
+	}
+	
+	public boolean atGoal(){
+		if (movementGoal == null) return true;
+		if (body.getPosition() == null) {
+			return false;
+		}
+		if (body.getPosition().dst2(movementGoal) < 20) {//sqrt(20)~=4,4
+			movementGoal = null;//arrived
+			return true;
+		} else {
+			return false;
 		}
 	}
 

@@ -49,6 +49,9 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	 * what kind of robot
 	 */
 	private int type = 0;
+	/**
+	 * 0 is neutral, 1 is PC, 2 is player
+	 */
 	private int teamId;
 	
 	private final IdleAI idleaAI = new IdleAI(this);
@@ -199,7 +202,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	/**
 	 * attacks every other team id.
 	 *
-	 * @param id 0 is for enemy CP.
+	 * @param id 0 is neutral, 1 is PC, 2 is player
 	 */
 	public void setTeamId(int id) {
 		this.teamId = id;

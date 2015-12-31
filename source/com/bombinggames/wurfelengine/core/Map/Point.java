@@ -124,7 +124,7 @@ public class Point extends Vector3 implements Position {
     @Override
     public Coordinate toCoord() {
         //find out where the position is (basic)
-        Coordinate coords = new Coordinate(
+        Coordinate coord = new Coordinate(
 			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
             Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
 			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
@@ -135,11 +135,30 @@ public class Point extends Vector3 implements Position {
        
 		//return coords;
         //find the specific coordinate (detail)
-        return coords.goToNeighbour(Coordinate.getNeighbourSide(getX() % Block.GAME_DIAGLENGTH,
+        return coord.goToNeighbour(Coordinate.getNeighbourSide(
+				getX() % Block.GAME_DIAGLENGTH,
                 getY() % Block.GAME_DIAGLENGTH
             )
         );
     }
+	
+	/**
+	 * uses the coord in the parameter so you can avoid a new instance
+	 * @param coord overwrites this coordinate
+	 * @return 
+	 * @see #toCoord() 
+	 */
+	public Coordinate toCoord(Coordinate coord){
+		coord.set(
+			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
+			Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) *2+1,
+			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
+		);
+        return coord.goToNeighbour(Coordinate.getNeighbourSide(
+			getX() % Block.GAME_DIAGLENGTH,
+			getY() % Block.GAME_DIAGLENGTH
+		));
+	}
     
     /**
      *Get the game world position from left
@@ -381,27 +400,30 @@ public class Point extends Vector3 implements Position {
 		float tDeltaY = stepY / dir.y;
 		float tDeltaZ = stepZ / dir.z;
 
+		isectC = new Coordinate(curX, curY, curZ);
 		/* ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
 			&& isectC.isInMemoryAreaHorizontal()
 		) {
 
-			isectC = new Coordinate(curX, curY, curZ);
-			Block block = isectC.getBlock();
+			isectC.set(curX, curY, curZ);
 			//intersect?
 			if ((
 				camera == null
 				||
 				(curZ < camera.getZRenderingLimit() && !camera.isClipped(isectC))
-			   )
-				&& block != null
-				&& !(hitFullOpaque && block.isTransparent())
-			){
-				//found intersection point
-				if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)
-					return Intersection.intersect(isectC, this, dir);
-				else return null;
+			)) {
+				Block block = isectC.getBlock();
+				if (
+					block != null
+					&& !(hitFullOpaque && block.isTransparent())
+				){
+					//found intersection point
+					if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)
+						return Intersection.intersect(isectC, this, dir);
+					else return null;
+				}
 			}
 
             /*tMaxX stores the t-value at which we cross a cube boundary along the
@@ -504,20 +526,22 @@ public class Point extends Vector3 implements Position {
 		){
 			//move
 			traverseP.add(dir);
-
-			isectC = traverseP.toCoord();
-			Block block = isectC.getBlock();
-			if ((
+			traverseP.toCoord(isectC);
+			
+			if (
 				camera == null
 				||
 				(isectC.getZ() < camera.getZRenderingLimit() && !camera.isClipped(isectC))
-			   )
-				&& block != null
-				&& (hitCondition == null || hitCondition.test(block))
-			){
-				Intersection interse = new Intersection(traverseP, null, distanceTo(traverseP));
-				interse.calcNormal(traverseP);
-				return interse;
+			) {
+				Block block = isectC.getBlock();
+				if (
+					block != null
+					&& (hitCondition == null || hitCondition.test(block))
+				){
+					Intersection interse = new Intersection(traverseP, null, distanceTo(traverseP));
+					interse.calcNormal(traverseP);
+					return interse;
+				}
 			}
 		}
 		//check for ground hit

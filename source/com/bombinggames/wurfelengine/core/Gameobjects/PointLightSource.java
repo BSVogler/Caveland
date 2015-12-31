@@ -39,19 +39,20 @@ public class PointLightSource extends AbstractEntity {
 		this.radius = (int) Math.ceil(maxRadius);
 		this.brightness = brightness;
 		this.color = color;
-		if (radius==0)
+		if (radius == 0) {
 			this.lightcache = new float[1][1][1][3];
-		else
+		} else {
 			this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
+		}
 	}
 	
-	private void clearCache(){
+	private void clearCache() {
 		for (float[][][] x : lightcache) {
 			for (float[][] y : x) {
 				for (float[] z : y) {
-					z[0]=0;
-					z[1]=0;
-					z[2]=0;
+					z[0] = 0;
+					z[1] = 0;
+					z[2] = 0;
 				}
 			}
 		}

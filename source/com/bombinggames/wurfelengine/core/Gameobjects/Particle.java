@@ -22,6 +22,7 @@ public class Particle extends MovableEntity {
 	private Color startingColor = new Color(1, 1, 1, 0.5f);
 	private float startingAlpha;
 	private ParticleType type = ParticleType.REGULAR;
+	private boolean rotateRight;
 
 	/**
 	 * With TTL 2000. 
@@ -55,6 +56,7 @@ public class Particle extends MovableEntity {
 		setName("Particle");
 		setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
 		setMass(0.0005f);
+		rotateRight = Math.random()>0.5f;
 	}
 
 	/**
@@ -113,8 +115,9 @@ public class Particle extends MovableEntity {
 //		CoreData block = getPosition().getBlock();
 //		if (block!=null && block.isObstacle())
 //			getPosition().addVector(step.scl(-1));//reverse step
-
-		setRotation(getRotation() - dt / 10f);
+		if (rotateRight)
+			setRotation(getRotation() - dt / 10f);
+		else setRotation(getRotation() + dt / 10f);
 		if (type.isGrowing()) {
 			setScaling(getScaling() + dt / 700f);
 		}

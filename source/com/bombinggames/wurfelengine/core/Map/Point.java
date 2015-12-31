@@ -517,16 +517,26 @@ public class Point extends Vector3 implements Position {
 		}
 		
 		Point traverseP = cpy();
-		dir.cpy().nor();
+		dir.cpy().nor().scl(3);
 		Coordinate isectC = traverseP.toCoord();
+		int lastCoordX = 0;
+		int lastCoordY = 0;
+		int lastCoordZ = 0;
 		while (
-			isectC.isInMemoryAreaHorizontal()
-			&& traverseP.getZ() >= 0
+			(lastCoordX == isectC.getX()
+			&& lastCoordY == isectC.getY()
+			&& lastCoordZ == isectC.getZ()
+			&& lastCoordZ > 0
+			&& lastCoordZ < Chunk.getBlocksZ()
+			|| isectC.isInMemoryArea())
 			&& distanceToSquared(traverseP) < maxDistance*Block.GAME_EDGELENGTH*maxDistance*Block.GAME_EDGELENGTH
 		){
 			//move
 			traverseP.add(dir);
 			traverseP.toCoord(isectC);
+			lastCoordX = isectC.getX();
+			lastCoordY = isectC.getY();
+			lastCoordZ = isectC.getZ();
 			
 			if (
 				camera == null

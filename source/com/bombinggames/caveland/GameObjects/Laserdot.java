@@ -66,7 +66,7 @@ public class Laserdot extends SimpleEntity {
 			
 			Intersection raycast = origin.rayMarching(
 				aimDir,
-				Block.GAME_EDGELENGTH*20,
+				12,
 				null,
 				(Block t) -> !t.isTransparent() && t.getId() != ignoreId
 			);

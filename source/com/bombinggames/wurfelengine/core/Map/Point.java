@@ -379,7 +379,7 @@ public class Point extends Vector3 implements Position {
         if (dir.isZero()) {
 			throw new Error("Raycast in zero direction!");
 		}
-		dir.nor();
+		dir.cpy().nor();
 		
 		Coordinate isectC = toCoord();
         int curX = isectC.getX();
@@ -517,7 +517,7 @@ public class Point extends Vector3 implements Position {
 		}
 		
 		Point traverseP = cpy();
-		dir.nor();
+		dir.cpy().nor();
 		Coordinate isectC = traverseP.toCoord();
 		while (
 			isectC.isInMemoryAreaHorizontal()

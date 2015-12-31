@@ -82,7 +82,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
     private transient Laserdot laserdot;
 
 	private Vector3 aimDir = new Vector3(0, 0, 0);
-	private int ignoreId;
+	private byte ignoreId;
 	/**
 	 * true if just fired and weapon is still moving from the shot
 	 */
@@ -398,7 +398,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	 * 
 	 * @param id 
 	 */
-	public void ignoreBlock(int id){
+	public void ignoreBlock(byte id){
 		this.ignoreId = id;
 	}
     

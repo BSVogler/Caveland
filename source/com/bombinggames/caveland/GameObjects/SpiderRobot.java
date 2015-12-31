@@ -31,6 +31,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
@@ -47,6 +48,8 @@ public class SpiderRobot extends Robot{
 	private static final long serialVersionUID = 2L;
 	private transient long walkingSound;
 	private transient Laserdot laserdot;
+	private transient boolean moveUp;
+	private float scanHeight;
 
 	/**
 	 *
@@ -80,14 +83,27 @@ public class SpiderRobot extends Robot{
 				laserdot = (Laserdot) new Laserdot().spawn(getPosition().cpy());
 				laserdot.setColor(COLORTEAM.cpy());
 			}
-			//laserdot.ignoreBlock(ignoreId);
 			laserdot.update(
-				getAiming()
-					//.add(0.5f*(float) Math.random()-0.5f, 0.5f*(float) Math.random()-0.5f, 0.5f*(float) Math.random()-0.5f).nor()
-					,
+				getAiming(),
 				getPosition()
 			);
+			
+			if (moveUp) {
+				scanHeight += dt / 300f;
+			} else {
+				scanHeight -= dt / 300f;
+			}
+			
+			if (scanHeight >= 1) {
+				moveUp = false;
+				scanHeight = 1;
+			}
 
+			if (scanHeight <= -1) {
+				moveUp = true;
+				scanHeight = -1;
+			}
+			
 			//sound
 			if (getMovementHor().len2() > 0 && isOnGround()) {
 				if (walkingSound == 0l) {
@@ -124,6 +140,13 @@ public class SpiderRobot extends Robot{
 		}
 		return coordList;
 	}
+
+	@Override
+	public Vector3 getAiming() {
+		return new Vector3(getOrientation(), scanHeight).nor();
+	}
+	
+	
 
 	@Override
 	public void disposeFromMap() {

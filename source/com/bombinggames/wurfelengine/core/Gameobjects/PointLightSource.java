@@ -135,7 +135,7 @@ public class PointLightSource extends AbstractEntity {
 								dir,
 								floatradius * 2,
 								null,
-								true
+								(Block t) -> !t.isTransparent()
 							);
 //							Particle dust = (Particle) new Particle(
 //								(byte) 22,

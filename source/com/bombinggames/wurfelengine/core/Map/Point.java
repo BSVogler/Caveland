@@ -349,7 +349,7 @@ public class Point extends Vector3 implements Position {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-		public Intersection raycast(final Vector3 dir, float maxDistance, final Camera camera, final boolean hitFullOpaque) {
+		public Intersection raycast(final Vector3 dir, float maxDistance, final Camera camera, final Predicate<Block> hitCondition) {
 		/*  Call the callback with (x,y,z,value,normal) of all blocks along the line
 		segment from point 'origin' in vector dir 'dir' of length
 		'maxDistance'. 'maxDistance' may be infinite.
@@ -417,7 +417,7 @@ public class Point extends Vector3 implements Position {
 				Block block = isectC.getBlock();
 				if (
 					block != null
-					&& !(hitFullOpaque && block.isTransparent())
+					&& (hitCondition == null || hitCondition.test(block))
 				){
 					//found intersection point
 					if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)

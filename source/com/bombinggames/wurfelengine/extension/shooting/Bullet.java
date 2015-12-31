@@ -114,9 +114,9 @@ public class Bullet extends MovableEntity {
 				damage
 			);
 			Particle blood = new Particle();
-			blood.setColor(new Color(1,0,0,1));
-			blood.setTTL(400);
-			blood.setType(ParticleType.REGULAR);//blood
+			blood.setColor(new Color(0.1f,0.05f,0.05f,1));
+			blood.setTTL(300);
+			blood.setType(ParticleType.SMOKE);//blood
 			blood.spawn(getPosition().cpy());
 			dispose();
 		}

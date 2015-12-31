@@ -90,8 +90,8 @@ public class ParticleEmitter extends AbstractEntity {
 			}
 
 			timer += dt;
-			if (timer >= timeEachSpawn) {
-				timer %= timeEachSpawn;
+			while (timer >= timeEachSpawn) {
+				timer -= timeEachSpawn;
 				Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
 				particle.setType(prototype.getType());
 				particle.setColor(prototype.getColor().cpy());

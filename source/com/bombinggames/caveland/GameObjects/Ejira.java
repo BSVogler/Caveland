@@ -182,22 +182,25 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		Particle particle = new Particle((byte) 22, 800);
 		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 1f));
 		particle.setType(ParticleType.FIRE);
+		particle.setTTL(1800f);
 		emitter = new ParticleEmitter();
-		emitter.setParticleDelay(10);
+		emitter.setParticleDelay(7);
 		emitter.setPrototype(particle);
 		emitter.setBrightness(0.1f);
 		emitter.setActive(false);
 		emitter.setHidden(true);
 		emitter.setSaveToDisk(false);
+		emitter.setParticleSpread(new Vector3(1.6f, 0.6f, 0.5f));
 		
 		emitter2 = new ParticleEmitter();
-		emitter2.setParticleDelay(10);
+		emitter2.setParticleDelay(7);
 		emitter2.setPrototype(particle);
 		emitter2.setBrightness(0.1f);
 		emitter2.setActive(false);
 		emitter2.setHidden(true);
 		emitter2.setSaveToDisk(false);
-
+		emitter2.setParticleSpread(new Vector3(0.6f, 0.6f, 0.5f));
+ 
 		setSaveToDisk(false);
 	}
 
@@ -458,9 +461,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 				emitter.setActive(true);
 				emitter2.setActive(true);
 				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-				emitter.setParticleSpread(new Vector3(1f, 1f, 0.7f));
 				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-				emitter2.setParticleSpread(new Vector3(0.4f, 0.4f, 0.3f));
 			} else {
 				emitter.setActive(false);
 				emitter2.setActive(false);

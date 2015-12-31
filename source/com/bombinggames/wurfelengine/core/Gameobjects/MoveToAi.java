@@ -48,7 +48,7 @@ public class MoveToAi implements Telegraph, Serializable {
 	/**
 	 * where does it move to?
 	 */
-	private Point movementGoal;
+	private final Point movementGoal;
 	private int runningagainstwallCounter = 0;
 	/**
 	 * used for detecting that is runnning against a wall
@@ -57,35 +57,36 @@ public class MoveToAi implements Telegraph, Serializable {
 
 	public MoveToAi(MovableEntity body, Point goal) {
 		this.body = body;
+		this.movementGoal = goal;
 	}
 
 	public void update(float dt) {
 		if (movementGoal != null) {
 			if (!atGoal()) {
 				//movement logic
-				Vector3 d = new Vector3(
-					movementGoal.getX() - body.getPosition().getX(),
-					movementGoal.getY() - body.getPosition().getY(),
-					body.isFloating() ? movementGoal.getZ() - body.getPosition().getZ() : 0
-				).nor();//direction only
-
+				Vector3 d = movementGoal.cpy().sub(body.getPosition());
 				float movementSpeed;
 				if (body.isFloating()) {
 					movementSpeed = body.getSpeed();
 				} else {
+					d.z = 0;
 					movementSpeed = body.getSpeedHor();
 				}
+
 				if (movementSpeed < 2) {
 					movementSpeed = 2;
 				}
-				d.scl(movementSpeed);
+				d.nor().scl(movementSpeed);//direction only
 				//if walking keep momentum
 				if (!body.isFloating()) {
 					d.z = body.getMovement().z;
 				}
 
 				body.setMovement(d);// update the movement vector
+			} else {
+				body.setSpeedHorizontal(0);// update the movement vector
 			}
+			
 			//Movement AI: if standing on same position as in last update
 			if (!body.isFloating()) {
 				if (body.getPosition().equals(lastPos) && body.getSpeed() > 0) {//not standing still
@@ -109,12 +110,7 @@ public class MoveToAi implements Telegraph, Serializable {
 		if (body.getPosition() == null) {
 			return false;
 		}
-		if (body.getPosition().dst2(movementGoal) < 20) {//sqrt(20)~=4,4
-			movementGoal = null;//arrived
-			return true;
-		} else {
-			return false;
-		}
+		return body.getPosition().dst2(movementGoal) < 20; //sqrt(20)~=4,4
 	}
 
 	@Override

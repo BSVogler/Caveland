@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
 
 /**
- *
+ * an AI which moves a movable entity around.
  * @author Benedikt Vogler
  */
 public class IdleAI implements Telegraph, Serializable {
@@ -50,8 +50,12 @@ public class IdleAI implements Telegraph, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private final MovableEntity body;
+	/**
+	 * position where the ai will return
+	 */
 	private Point home;
 	private float timeTillMove;
+	private final float idleRaidus = Block.GAME_EDGELENGTH * 2;
 
 	/**
 	 *
@@ -71,44 +75,47 @@ public class IdleAI implements Telegraph, Serializable {
 				home = body.getPosition().cpy();
 			}
 
-			if (timeTillMove > 0)
+			if (timeTillMove > 0) {
 				timeTillMove -= dt;
+			}
 
-			if (timeTillMove <= 0 && body.getMovementGoal() == null) {
-				body.setSpeedHorizontal(2);
+			//generate new movement goal
+			if (timeTillMove <= 0 && body.getMovementAI() == null) {
 				timeTillMove = 1500;
 
 				Point target;
 				//only 100 trials
-				int i=0;
+				int i = 0;
 				//find target in radius
 				do {	
 					i++;
+					target = home.cpy();
 					if (body.isFloating())
-						target = home.cpy().add(
+						target.add(
 							new Vector3(
 								(float) (Math.random() - 0.5f),
 								(float) (Math.random() - 0.5f),
 								(float) (Math.random() - 0.5f)
-							).nor().scl(Block.GAME_EDGELENGTH * 2)
+							).nor().scl(idleRaidus)
 						);
 					else {
-						target = home.cpy().add(
+						target.add(
 							new Vector2(
 								(float) (Math.random() - 0.5f),
 								(float) (Math.random() - 0.5f)
-							).nor().scl(Block.GAME_EDGELENGTH * 2)
+							).nor().scl(idleRaidus)
 						);
 					}
 				} while (
 					i < 100
 					&& (
-					(target.getBlock() != null
-					&& target.getBlock().isObstacle())
-					|| body.getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 3)
+						(target.getBlock() != null
+						&& target.getBlock().isObstacle())
+					)
 				);
 				
 				if (i < 100){
+					body.setSpeedHorizontal(2);
 					MessageManager.getInstance().dispatchMessage(
 						0,
 						this,

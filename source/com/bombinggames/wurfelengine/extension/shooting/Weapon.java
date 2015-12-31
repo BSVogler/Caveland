@@ -34,6 +34,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.GameObjects.Laserdot;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -41,8 +42,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 
@@ -80,7 +79,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
     /** The current time between shots. If reaches zero another bullet is spawned*/
     private float bulletDelay;
     private int explode;
-    private transient AbstractEntity laserdot;
+    private transient Laserdot laserdot;
 
 	private Vector3 aimDir = new Vector3(0, 0, 0);
 	private int ignoreId;
@@ -322,34 +321,12 @@ public class Weapon extends AbstractEntity implements Telegraph {
 			}
 		}
 	   
-		updateLaserDot();
 		
-	}
-	
-	private void updateLaserDot(){
-		if (hasPosition() && !aimDir.isZero()) {
-			
-			if (laserdot == null){
-				laserdot = new SimpleEntity((byte) 22).spawn(getPosition().cpy());
-				laserdot.setColor(new Color(1, 0, 0, 1));
-				laserdot.setScaling(-0.85f);
-				laserdot.setName("Laser dot");
-				laserdot.disableShadow();
-			}
-			
-			Intersection raycast = getPosition().rayMarching(
-				aimDir,
-				Block.GAME_EDGELENGTH*20,
-				null,
-				(Block t) -> !t.isTransparent() && t.getId() != ignoreId
-			);
-			laserdot.setHidden(raycast == null);
-			if (raycast != null && raycast.getPoint() != null) {
-				laserdot.setPosition(raycast.getPoint());
-			} else {
-				laserdot.getPosition().setValues(getPosition());
-			}
+		if (laserdot == null){
+			laserdot = (Laserdot) new Laserdot().spawn(getPosition().cpy());
 		}
+		laserdot.ignoreBlock(ignoreId);
+		laserdot.update(aimDir, getPosition());
 	}
 	
 	/**
@@ -358,7 +335,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	 */
 	public void setAimDir(Vector3 dir){
 		this.aimDir = dir.nor();
-		updateLaserDot();
+		laserdot.update(aimDir, getPosition());
 	}
     
     /**

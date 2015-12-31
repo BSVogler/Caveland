@@ -61,7 +61,6 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		//lastPos = point;
 		//lightNearbyBlocks(0);
 		return this;
 	}
@@ -69,7 +68,6 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public void setPosition(Point pos) {
 		super.setPosition(pos);
-		//lastPos = pos;
 		
 		//if moved
 		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
@@ -81,7 +79,6 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public void setPosition(Position pos) {
 		super.setPosition(pos);
-		//lastPos = pos.toPoint();
 		
 		//if moved
 		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
@@ -98,7 +95,7 @@ public class PointLightSource extends AbstractEntity {
 	public void lightNearbyBlocks(float delta) {
 		if (hasPosition()) {
 			Point lightPos = getPosition();
-			lastPos = lightPos;
+			lastPos = lightPos.cpy();
 			
 			float rand = (float) Math.random();
 			float noiseX = rand * 2 - 1;

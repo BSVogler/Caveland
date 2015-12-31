@@ -30,7 +30,13 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import java.util.ArrayList;
 
 /**
  *
@@ -38,8 +44,9 @@ import com.bombinggames.wurfelengine.WE;
  */
 public class SpiderRobot extends Robot{
 	
-	private static final long serialVersionUID = 1L;
-	private long walkingSound;
+	private static final long serialVersionUID = 2L;
+	private transient long walkingSound;
+	private transient Laserdot laserdot;
 
 	/**
 	 *
@@ -51,16 +58,80 @@ public class SpiderRobot extends Robot{
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (getMovementHor().len2() > 0 && isOnGround()) {
-			if (walkingSound == 0l) {
-				walkingSound = WE.SOUND.loop("robot2walk", getPosition());
+		
+		if (hasPosition()) {
+			//look for resources
+			ArrayList<Coordinate> nearbResources = nearbyResources();
+			if (!nearbResources.isEmpty()) {
+				MessageManager.getInstance().dispatchMessage(
+					this,
+					this,
+					Events.moveTo.getId(),
+					nearbResources.get(0).toPoint()
+				);
 			}
-		} else {
-			WE.SOUND.stop("robot2walk", walkingSound);
-			walkingSound = 0;
+
+
+			//go to resources
+			//gather resources
+			//place them on storage
+
+			if (laserdot == null){
+				laserdot = (Laserdot) new Laserdot().spawn(getPosition().cpy());
+				laserdot.setColor(COLORTEAM.cpy());
+			}
+			//laserdot.ignoreBlock(ignoreId);
+			laserdot.update(
+				getAiming()
+					//.add(0.5f*(float) Math.random()-0.5f, 0.5f*(float) Math.random()-0.5f, 0.5f*(float) Math.random()-0.5f).nor()
+					,
+				getPosition()
+			);
+
+			//sound
+			if (getMovementHor().len2() > 0 && isOnGround()) {
+				if (walkingSound == 0l) {
+					walkingSound = WE.SOUND.loop("robot2walk", getPosition());
+				}
+			} else {
+				WE.SOUND.stop("robot2walk", walkingSound);
+				walkingSound = 0;
+			}
 		}
 	}
 	
+	protected ArrayList<Coordinate> nearbyResources(){
+		ArrayList<Coordinate> coordList = new ArrayList<>(2);
+		
+		for (int x = -4; x < 4; x++) {
+			for (int y = -4; y < 4; y++) {
+				for (int z = -2; z < 2; z++) {
+					Coordinate tmpCoord = getPosition().toCoord().addVector(x, y, z);
+					Block block = tmpCoord.getBlock();
+					if (block!=null) {
+						byte id = tmpCoord.getBlock().getId();
+						if ((id == CavelandBlocks.CLBlocks.COAL.getId()
+							|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
+							|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
+							|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
+							&& getPosition().canSee(tmpCoord.toPoint(), 12)
+						) {
+							coordList.add(tmpCoord);
+						}
+					}
+				}
+			}
+		}
+		return coordList;
+	}
+
+	@Override
+	public void disposeFromMap() {
+		WE.SOUND.stop("robot2walk", walkingSound);
+		walkingSound = 0;
+		laserdot.dispose();
+		super.disposeFromMap();
+	}
 	
 	
 	

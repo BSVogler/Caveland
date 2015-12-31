@@ -44,12 +44,15 @@ import com.bombinggames.wurfelengine.core.Map.Point;
  */
 public class Laserdot extends SimpleEntity {
 
+	private static final long serialVersionUID = 1L;
+
 	private byte ignoreId;
 
 	public Laserdot() {
 		super((byte) 22);
 		setColor(new Color(1, 0, 0, 1));
-		setScaling(-0.85f);
+		setScaling(-0.95f);
+		setSaveToDisk(false);
 		setName("Laser dot");
 		disableShadow();
 	}
@@ -76,7 +79,7 @@ public class Laserdot extends SimpleEntity {
 			} else {
 				getPosition().setValues(getPosition());
 			}
-	}
+		}
 	}
 
 	public void ignoreBlock(byte ignoreId) {

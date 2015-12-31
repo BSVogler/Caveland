@@ -699,7 +699,7 @@ public class Point extends Vector3 implements Position {
 	 * @return 
 	 */
 	public boolean canSee(Point p, float maxdistance) {
-		Vector3 vecToTarget = cpy().sub(p).nor();
+		Vector3 vecToTarget = p.cpy().sub(this).nor();
 		//check if can see target
 		Intersection intersect = p.rayMarching(
 			vecToTarget,

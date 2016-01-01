@@ -124,22 +124,14 @@ public class Point extends Vector3 implements Position {
     @Override
     public Coordinate toCoord() {
         //find out where the position is (basic)
-        Coordinate coord = new Coordinate(
+        return new Coordinate(
 			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
-            Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) *2+1, //maybe dangerous to optimize code here!
+			Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) * 2 + 1, //maybe dangerous to optimize code here!
 			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
-		);
-//		//clamp at top border
-//		if (coords.getZ() >= Chunk.getBlocksZ())
-//			coords.setZ(Chunk.getBlocksZ()-1);
-       
-		//return coords;
-        //find the specific coordinate (detail)
-        return coord.goToNeighbour(Coordinate.getNeighbourSide(
-				getX() % Block.GAME_DIAGLENGTH,
-                getY() % Block.GAME_DIAGLENGTH
-            )
-        );
+		).goToNeighbour(Coordinate.getNeighbourSide( //find the specific coordinate (detail)
+			x % Block.GAME_DIAGLENGTH,
+			y % Block.GAME_DIAGLENGTH
+		));
     }
 	
     /**

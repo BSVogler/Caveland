@@ -68,7 +68,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 		for (int x = -radius; x < radius; x++) {
 			for (int y = -radius * 2; y < radius * 2; y++) {
 				for (int z = -radius; z < radius; z++) {
-					Coordinate coord = point.toCoord().addVector(x, y, z);
+					Coordinate coord = point.toCoord().add(x, y, z);
    					int intdamage = (int) (damage
 						* (1 - getPosition().distanceToSquared(coord)
 						/ (radius * radius * Block.GAME_EDGELENGTH * Block.GAME_EDGELENGTH)));

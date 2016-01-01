@@ -65,7 +65,7 @@ public class ExitPortal extends Portal implements Interactable {
 							robot = new Robot();
 						}
 						robot.spawn(
-							ChunkGenerator.getCaveCenter(cavenumber).addVector(
+							ChunkGenerator.getCaveCenter(cavenumber).add(
 								(int) (Math.random() * 4 - 2),
 								(int) (Math.random() * 4 - 2),
 								2
@@ -86,8 +86,8 @@ public class ExitPortal extends Portal implements Interactable {
 					fahrstuhlkorb = new SimpleEntity((byte) 22);
 					fahrstuhlkorb.setName("Lift Basket");
 					fahrstuhlkorb.spawn(getGround().toPoint());
-					if (getGround().addVector(0, 1, 0).getBlock().isObstacle())
-						getGround().addVector(0, 1, 0).destroy();
+					if (getGround().add(0, 1, 0).getBlock().isObstacle())
+						getGround().add(0, 1, 0).destroy();
 				} else {
 					//teleport non-moving objects on the liftUp
 					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
@@ -108,9 +108,9 @@ public class ExitPortal extends Portal implements Interactable {
 		Coordinate ground = getPosition().toCoord();
 		//find ground
 		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {
-			ground.addVector(0, 0, -1);
+			ground.add(0, 0, -1);
 		}
-		return ground.addVector(0, 0, 1);
+		return ground.add(0, 0, 1);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class ExitPortal extends Portal implements Interactable {
 			return null;
 		}
 
-		AbstractBlockLogicExtension logic = getTarget().addVector(0, -1, 0).getLogic();
+		AbstractBlockLogicExtension logic = getTarget().add(0, -1, 0).getLogic();
 		if (logic instanceof LiftLogic) {
 			return (LiftLogic) logic;
 		} else {

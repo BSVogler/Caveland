@@ -33,7 +33,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	@Override
 	public void update(float dt) {
 		//teleport minecarts
-		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().addVector(0, 0, -1).getLogic();
+		AbstractBlockLogicExtension holeLogic = getPosition().toCoord().add(0, 0, -1).getLogic();
 		if (holeLogic != null && holeLogic instanceof PortalBlockLogic) {
 			ArrayList<MineCart> mineCarts = getPosition().getEntitiesInside(MineCart.class);
 			if (!mineCarts.isEmpty()) {
@@ -42,7 +42,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 				//teleport minecarts to the ground
 				mineCarts.forEach(cart -> {
-					cart.setPosition(ground.addVector(-1, 1, 0));
+					cart.setPosition(ground.add(-1, 1, 0));
 					if (cart.getPassenger() != null){
 						cart.centerPassenger(true);
 					}
@@ -54,7 +54,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		AbstractBlockLogicExtension hole = getPosition().toCoord().addVector(0, 0, -1).getLogic();
+		AbstractBlockLogicExtension hole = getPosition().toCoord().add(0, 0, -1).getLogic();
 		if (hole != null && hole instanceof PortalBlockLogic) {
 			((PortalBlockLogic) hole).getPortal().teleport(actor);
 		}

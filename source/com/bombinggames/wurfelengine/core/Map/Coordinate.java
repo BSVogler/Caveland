@@ -255,7 +255,7 @@ public class Coordinate implements Position {
 	 * @param z
 	 * @return the new coordiantes which resulted of the addition
 	 */
-	public Coordinate addVector(int x, int y, int z) {
+	public Coordinate add(int x, int y, int z) {
 		this.x += x;
 		this.y += y;
 		this.z += z;

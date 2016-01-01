@@ -81,19 +81,19 @@ public class PfNode extends Coordinate implements IndexedNode<PfNode> {
 	@Override
 	public Array<Connection<PfNode>> getConnections() {
 		Array<Connection<PfNode>> a = new Array<>(4);
-		PfNode neigh = new PfNode(cpy().addVector(-1, 0, 0));
+		PfNode neigh = new PfNode(cpy().add(-1, 0, 0));
 		if (neigh.getBlock() == null || !neigh.getBlock().isObstacle())
 			a.add(new CoordConnection(this, neigh));
 		
-		neigh = new PfNode(cpy().addVector(1, 0, 0));
+		neigh = new PfNode(cpy().add(1, 0, 0));
 		if (neigh.getBlock() == null || !neigh.getBlock().isObstacle())
 			a.add(new CoordConnection(this, neigh));
 		
-		neigh = new PfNode(cpy().addVector(0, 2, 0));
+		neigh = new PfNode(cpy().add(0, 2, 0));
 		if (neigh.getBlock() == null || !neigh.getBlock().isObstacle())
 			a.add(new CoordConnection(this, neigh));
 		
-		neigh = new PfNode(cpy().addVector(0, -2, 0));
+		neigh = new PfNode(cpy().add(0, -2, 0));
 		if (neigh.getBlock() == null || !neigh.getBlock().isObstacle())
 			a.add(new CoordConnection(this, neigh));
 

@@ -679,72 +679,72 @@ public class LightEngine implements MapObserver {
 				//left side, side 0
 
 				//right corner
-				Block neighbor = coord.addVector(0, 2, -1).getBlock();
+				Block neighbor = coord.add(0, 2, -1).getBlock();
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 3;//first byte position 3
 				}
-				coord.addVector(0, -2, 1);//revert
+				coord.add(0, -2, 1);//revert
 				
 				//check bottom left
-				neighbor = coord.addVector(-1, 0, -1).getBlock();
+				neighbor = coord.add(-1, 0, -1).getBlock();
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 5;//first byte position 5
 				}
-				coord.addVector(1, 0, 1);
+				coord.add(1, 0, 1);
 				
 				//check left half, which is equivalent to top right at pos 7
-				neighbor = coord.addVector(-1, 0, 0).getBlock();//go to left
+				neighbor = coord.add(-1, 0, 0).getBlock();//go to left
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 6;//first byte position 6
 					aoFlags &= ~(1 << 5);//set next to false
 					aoFlags &= ~(1 << 7);//Set previous to false
 				}
-				coord.addVector(1, 0, 0);//revert
+				coord.add(1, 0, 0);//revert
 				
 				//check bottom side, which is equivalent ot top right at pos 5
-				neighbor = coord.addVector(0, 0, -1).goToNeighbour(5).getBlock();//revert changes and go to neighbor
+				neighbor = coord.add(0, 0, -1).goToNeighbour(5).getBlock();//revert changes and go to neighbor
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 4;//first byte position 4
 					aoFlags &= ~(1 << 5);//set next to false
 					aoFlags &= ~(1 << 3);//Set previous to false
 				}
-				coord.goToNeighbour(1).addVector(0, 0, 1);//revert
+				coord.goToNeighbour(1).add(0, 0, 1);//revert
 				
 				//right side, side 2=======
 				
 				//check bottom left
-				neighbor = coord.addVector(1, 0, -1).getBlock();
+				neighbor = coord.add(1, 0, -1).getBlock();
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 19;//third byte position 3
 				}
-				coord.addVector(-1, 0, 1);
+				coord.add(-1, 0, 1);
 				
 				//check left corner
-				neighbor = coord.addVector(0, 2, -1).getBlock();//revert changes and go to neighbor
+				neighbor = coord.add(0, 2, -1).getBlock();//revert changes and go to neighbor
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 21;//third byte position 5
 				}
-				coord.addVector(0, -2, 1);
+				coord.add(0, -2, 1);
 				
 				//right
-				neighbor = coord.addVector(1, 0, 0).getBlock();
+				neighbor = coord.add(1, 0, 0).getBlock();
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 18;//third byte position 2
 					aoFlags &= ~(1 << 17);//set next to false
 					aoFlags &= ~(1 << 19);//Set previous to false
 				}
-				coord.addVector(-1, 0, 0);
+				coord.add(-1, 0, 0);
 				
 				//check bottom side, which is equivalent to top right at pos 3
-				neighbor = coord.addVector(0, 0, -1).goToNeighbour(3).getBlock();//revert changes and go to neighbor
+				neighbor = coord.add(0, 0, -1).goToNeighbour(3).getBlock();//revert changes and go to neighbor
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 20;//third byte position 4
 					aoFlags &= ~(1 << 21);//set next to false
 					aoFlags &= ~(1 << 19);//Set previous to false
 				}
-				coord.goToNeighbour(7).addVector(0, 0, 1);
+				coord.goToNeighbour(7).add(0, 0, 1);
 
-				neighbor = coord.addVector(0, 2, 0).getBlock();//revert changes and go to neighbor
+				neighbor = coord.add(0, 2, 0).getBlock();//revert changes and go to neighbor
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 					aoFlags |= 1 << 2;//first byte position 2
 					aoFlags |= 1 << 22;//third byte position 6

@@ -102,9 +102,9 @@ public class Portal extends AbstractEntity implements Telegraph {
 	public void teleport(AbstractEntity e){
 		if (verifyExit) {
 			ExitPortal eportal = getExitPortal();
-			if (getPosition().toCoord().addVector(0, 0, 1).getLogic() instanceof LiftLogic) {
+			if (getPosition().toCoord().add(0, 0, 1).getLogic() instanceof LiftLogic) {
 				//teleport in front of lift
-				e.setPosition(eportal.getGround().addVector(0, 1, 0));
+				e.setPosition(eportal.getGround().add(0, 1, 0));
 			} else {
 				e.setPosition(target);
 			}
@@ -132,7 +132,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 		if (getPosition().toCoord().getX() % 2 == 0) {
 			x = -1;
 		}
-		Coordinate exitTarget = getPosition().toCoord().addVector(x, 1, 1);
+		Coordinate exitTarget = getPosition().toCoord().add(x, 1, 1);
 		if (!exitPortal.getTarget().equals(exitTarget)) {
 			exitPortal.setTarget(exitTarget);
 		}

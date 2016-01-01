@@ -121,7 +121,7 @@ public class Cursor extends AbstractEntity {
 					coords = coords.goToNeighbour(5);
 					break;
 				case TOP:
-					coords.addVector(0, 0, 1);
+					coords.add(0, 0, 1);
 					break;
 				case RIGHT:
 					coords = coords.goToNeighbour(3);

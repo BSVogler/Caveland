@@ -333,9 +333,9 @@ public class CavelandBlocks implements CustomBlocks {
 					//destroy other half
 					Coordinate otherHalf;
 					if (value == CustomTree.TREETOPVALUE) {
-						otherHalf = coord.cpy().addVector(0, 0, -1);
+						otherHalf = coord.cpy().add(0, 0, -1);
 					} else {
-						otherHalf = coord.cpy().addVector(0, 0, 1);
+						otherHalf = coord.cpy().add(0, 0, 1);
 					}
 
 					if (otherHalf.getBlock() != null && otherHalf.getBlock().getId() == id) {

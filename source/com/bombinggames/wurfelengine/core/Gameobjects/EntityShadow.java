@@ -68,12 +68,12 @@ public class EntityShadow extends AbstractEntity {
 			Block block = newHeight.getBlock();
 			while (newHeight.getZ() > 0
 				&& (block == null || block.isTransparent())) {
-				newHeight.addVector(0, 0, -1);
+				newHeight.add(0, 0, -1);
 				block = newHeight.getBlock();
 			}
 
 			setPosition(character.getPosition().cpy());
-			getPosition().setZ(newHeight.addVector(0, 0, 1).toPoint().add(0, 0, -2).getZ());
+			getPosition().setZ(newHeight.add(0, 0, 1).toPoint().add(0, 0, -2).getZ());
 		}
 	}
 

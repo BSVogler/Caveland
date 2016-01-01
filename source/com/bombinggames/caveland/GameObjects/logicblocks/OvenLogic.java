@@ -158,7 +158,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 			//if reached zero this frame
 			if (oldCountDown > 0 && productionCountDown == 0) {
 				//produce
-				((Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().addVector(0, 0, 1).toPoint())).sparkle();
+				((Collectible) CollectibleType.Iron.createInstance().spawn(getPosition().toCoord().add(0, 0, 1).toPoint())).sparkle();
 			}
 		}
 		//decrease timer

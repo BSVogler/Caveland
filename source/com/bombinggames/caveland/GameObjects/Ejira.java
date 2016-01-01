@@ -382,11 +382,11 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			for (int x = -2; x < 2; x++) {
 				for (int y = -2; y < 2; y++) {
 					for (int z = -2; z < 2; z++) {
-						AbstractBlockLogicExtension logic = getPosition().toCoord().addVector(x, y, z).getLogic();
+						AbstractBlockLogicExtension logic = getPosition().toCoord().add(x, y, z).getLogic();
 						if (
 							logic != null
 							&& logic instanceof Interactable
-							&& getPosition().toCoord().addVector(x, y, z).distanceTo(getPosition()) <= GAME_EDGELENGTH * 2
+							&& getPosition().toCoord().add(x, y, z).distanceTo(getPosition()) <= GAME_EDGELENGTH * 2
 						) {
 							nearbyInteractable.add((Interactable) logic);
 						}
@@ -1178,7 +1178,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			WE.getCVarsSave().getValueI("respawnY"),
 			WE.getCVarsSave().getValueI("respawnZ")
 		);
-		respawn.addVector(0, 1, 0);
+		respawn.add(0, 1, 0);
 		
 		setPosition(respawn);
 	}

@@ -125,7 +125,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 		if (actor instanceof Ejira) {
 			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift? You can always enter the caves by jumping into the hole.")
 				.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
-					Coordinate top = getPosition().cpy().addVector(0, 0, 1);
+					Coordinate top = getPosition().cpy().add(0, 0, 1);
 					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getInstance());
 					ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(top);
 					constructionSiteLogic.setResult(CLBlocks.LIFT.getId());
@@ -137,10 +137,10 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 
 	@Override
 	public boolean interactable() {
-		if (getPosition().cpy().addVector(0, 0, 1).getBlock() == null) {
+		if (getPosition().cpy().add(0, 0, 1).getBlock() == null) {
 			return true;
 		}
-		return getPosition().cpy().addVector(0, 0, 1).getBlock().getSpriteId() == 0;
+		return getPosition().cpy().add(0, 0, 1).getBlock().getSpriteId() == 0;
 	}
 
 	@Override

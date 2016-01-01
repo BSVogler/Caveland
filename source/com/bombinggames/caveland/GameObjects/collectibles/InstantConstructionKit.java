@@ -217,7 +217,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 					}
 					
 					if (up) {
-						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).addVector(0, 0, 1).toPoint();
+						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).add(0, 0, 1).toPoint();
 					} else {
 						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).toPoint();
 					}

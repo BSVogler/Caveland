@@ -141,9 +141,9 @@ public class PointLightSource extends AbstractEntity {
 //							).spawn(lightPos.cpy());
 //							dust.setMovement(dir.cpy().scl(9f));
 							if (inters != null && inters.getPoint() != null) {
-								float pow = lightPos.distanceTo(getPosition().toCoord().addVector(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
+								float pow = lightPos.distanceTo(getPosition().toCoord().add(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
 								float l = (1 + brightness) / (pow * pow);
-								Vector3 target = getPosition().toCoord().addVector(x, y, z).toPoint().cpy();
+								Vector3 target = getPosition().toCoord().add(x, y, z).toPoint().cpy();
 								
 								//side 0
 								float lambert = lightPos.cpy().sub(

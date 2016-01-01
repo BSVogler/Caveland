@@ -74,7 +74,7 @@ public class PathfindingTest extends SimpleEntity {
 				end.setName("End Pathfinding test");
 			}
 			if (!end.hasPosition()){
-				end.spawn(getPosition().toCoord().addVector(0, 1, 0).toPoint());
+				end.spawn(getPosition().toCoord().add(0, 1, 0).toPoint());
 				directAimBand.setTarget(end);
 			}
 			

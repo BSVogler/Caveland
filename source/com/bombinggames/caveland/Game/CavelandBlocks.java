@@ -222,6 +222,54 @@ public class CavelandBlocks implements CustomBlocks {
 		}
 
 	}
+	
+	
+	
+	//Caveland specific details
+	/**
+	 * indestructable by diggin
+	 *
+	 * @param id
+	 * @return
+	 */
+	public static boolean hardMaterial(byte id) {
+		if (id == 17) {
+			return true;
+		}
+		if (id == 41) {
+			return true;
+		}
+		if (id == 43) {
+			return true;
+		}
+		if (id == 60) {
+			return true;
+		}
+		if (id == 3) {
+			return true;//stone
+		}
+		return false;
+	}
+	
+	public static CollectibleType getLoot(byte id) {
+		switch (id) {
+			case 3:
+				return CollectibleType.Stone;
+			case 41:
+				return CollectibleType.Cristall;
+			case 42:
+				return CollectibleType.Sulfur;
+			case 43:
+				return CollectibleType.Ironore;
+			case 44:
+				return CollectibleType.Coal;
+			case 72:
+				return CollectibleType.Wood;
+		}
+		return null;
+	}
+	
+	//overwrites
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
 		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
@@ -313,40 +361,24 @@ public class CavelandBlocks implements CustomBlocks {
 	@Override
 	public void onSetHealth(Coordinate coord, byte health, byte id, byte value) {
 		if (health <= 0) {
-			switch (id) {
-				case 3:
-					CollectibleType.Stone.createInstance().spawn(coord.toPoint());
-					break;
-				case 41:
-					CollectibleType.Cristall.createInstance().spawn(coord.toPoint());
-					break;
-				case 42:
-					CollectibleType.Sulfur.createInstance().spawn(coord.toPoint());
-					break;
-				case 43:
-					CollectibleType.Ironore.createInstance().spawn(coord.toPoint());
-					break;
-				case 44:
-					CollectibleType.Coal.createInstance().spawn(coord.toPoint());
-					break;
-				case 72:
-					//destroy other half
-					Coordinate otherHalf;
-					if (value == CustomTree.TREETOPVALUE) {
-						otherHalf = coord.cpy().add(0, 0, -1);
-					} else {
-						otherHalf = coord.cpy().add(0, 0, 1);
-					}
-
-					if (otherHalf.getBlock() != null && otherHalf.getBlock().getId() == id) {
-						otherHalf.destroy();
-					}
-
-					WE.SOUND.play("blockDestroy");//to-do should be a wood chop down sound
-					CollectibleType.Wood.createInstance().spawn(coord.toPoint());
-					break;
-				default:
+			CollectibleType lootType = getLoot(id);
+			if (lootType != null) {
+				lootType.createInstance().spawn(coord.toPoint());
 			}
+			if (id == CLBlocks.TREE.id) {
+				//destroy other half
+				Coordinate otherHalf;
+				if (value == CustomTree.TREETOPVALUE) {
+					otherHalf = coord.cpy().add(0, 0, -1);
+				} else {
+					otherHalf = coord.cpy().add(0, 0, 1);
+				}
+
+				if (otherHalf.getBlock() != null && otherHalf.getBlock().getId() == id) {
+					otherHalf.destroy();
+				}
+			}
+			WE.SOUND.play("blockDestroy");//to-do should be a wood chop down sound for tree
 
 			//view only relevant. should only be done if visible
 			//todo, check if visible
@@ -354,32 +386,6 @@ public class CavelandBlocks implements CustomBlocks {
 				new DestructionParticle((byte) 44).spawn(coord.toPoint());
 			}
 		}
-	}
-
-	//Caveland specific details
-	/**
-	 * indestructable by diggin
-	 *
-	 * @param id
-	 * @return
-	 */
-	public static boolean hardMaterial(byte id) {
-		if (id == 17) {
-			return true;
-		}
-		if (id == 41) {
-			return true;
-		}
-		if (id == 43) {
-			return true;
-		}
-		if (id == 60) {
-			return true;
-		}
-		if (id == 3) {
-			return true;//stone
-		}
-		return false;
 	}
 
 	@Override

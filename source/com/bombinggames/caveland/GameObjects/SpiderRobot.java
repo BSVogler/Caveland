@@ -80,9 +80,9 @@ public class SpiderRobot extends Robot{
 				scanHeight = 1;
 			}
 
-			if (scanHeight <= -1) {
+			if (scanHeight <= -0.3f) {
 				moveUp = true;
-				scanHeight = -1;
+				scanHeight = -0.3f;
 			}
 			
 			if (moveRight) {
@@ -107,7 +107,7 @@ public class SpiderRobot extends Robot{
 			}
 			laserdot.update(
 				getAiming(),
-				getPosition()
+				getPosition().cpy().add(getOrientation().scl(20f)).add(0, 0, 20)
 			);
 			
 			Block block = laserdot.getPosition().getBlock();
@@ -118,28 +118,71 @@ public class SpiderRobot extends Robot{
 					|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
 					|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
 				) {
-					//go to resources
-					if (workingBlock == null) {
+					if (workingBlock == null || workingBlock.getBlock() == null) {
 						workingBlock = new Coordinate(0, 0, 0);
+						workingBlock.setFromPoint(laserdot.getPosition());
+						//go to resources
+						MessageManager.getInstance().dispatchMessage(
+							this,
+							this,
+							Events.moveTo.getId(),
+							laserdot.getPosition().cpy()
+						);
 					}
-					workingBlock.setFromPoint(laserdot.getPosition());
+				}
+			}
+			
+			//validate workinBlock
+			if (workingBlock != null) {
+				block = workingBlock.getBlock();
+				if (block == null) {
+					workingBlock = null;
+				} else {
+					byte id = block.getId();
+					if (!(id == CavelandBlocks.CLBlocks.COAL.getId()
+						|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
+						|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
+						|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
+					) {
+						workingBlock = null;
+					}
+				}
+			}
+			
+			
+			//gather resources
+			if (workingBlock != null) {
+				//if nearby
+				if (getPosition().distanceTo(workingBlock) < Block.GAME_EDGELENGTH*1.8f) {
 					MessageManager.getInstance().dispatchMessage(
-						this,
-						this,
-						Events.moveTo.getId(),
-						laserdot.getPosition().cpy()
-					);
+							this,
+							this,
+							Events.standStill.getId()
+						);
+					if (performAttack()) {
+						workingBlock.damage((byte) 1);
+						
+					}
+				} else {
+					//if block is below move away
+					if (workingBlock.getZ()<getPosition().toCoord().getZ()) {
+						MessageManager.getInstance().dispatchMessage(
+							this,
+							this,
+							Events.moveTo.getId(),
+							workingBlock.cpy().add(1,0,0).toPoint()
+						);
+					} else {
+						MessageManager.getInstance().dispatchMessage(
+							this,
+							this,
+							Events.moveTo.getId(),
+							workingBlock.toPoint()
+						);
+					}
 				}
 			}
 
-			
-			//gather resources
-			//if nearby
-			if (getPosition().distanceTo(workingBlock) < Block.GAME_EDGELENGTH2) {
-				performAttack();
-				workingBlock.damage((byte) 1);
-			}
-			
 			//place them on storage
 			
 			//sound
@@ -160,7 +203,7 @@ public class SpiderRobot extends Robot{
 		for (int x = -4; x < 4; x++) {
 			for (int y = -4; y < 4; y++) {
 				for (int z = -2; z < 2; z++) {
-					Coordinate tmpCoord = getPosition().toCoord().addVector(x, y, z);
+					Coordinate tmpCoord = getPosition().toCoord().add(x, y, z);
 					Block block = tmpCoord.getBlock();
 					if (block != null) {
 						byte id = block.getId();

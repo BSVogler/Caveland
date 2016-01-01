@@ -13,7 +13,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -32,8 +31,10 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	private static final String KILLSOUND = "robot1destroy";
 	private static final String RUNNINGSOUND = "robot1Wobble";
 
-	private transient MovableEntity target;
-	private transient AimBand particleBand;
+	/**
+	 * if following an enemy
+	 */
+	private transient MovableEntity enemyTarget;
 	private transient long movementSoundPlaying;
 	/**
 	 * in m/s
@@ -115,13 +116,12 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			//follow the target
-			if (target != null && target.hasPosition()) {
-				if (getPosition().distanceTo(target) > Block.GAME_EDGELENGTH * 1.5f) {
-					MessageManager.getInstance().dispatchMessage(
-						this,
+			if (enemyTarget != null && enemyTarget.hasPosition()) {
+				if (getPosition().distanceTo(enemyTarget) > Block.GAME_EDGELENGTH * 1.5f) {
+					MessageManager.getInstance().dispatchMessage(this,
 						this,
 						Events.moveTo.getId(),
-						target.getPosition()
+						enemyTarget.getPosition()
 					);
 					setSpeedHorizontal(movementSpeed);
 				} else {
@@ -141,22 +141,18 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 			energy = ((int) (energy + dt));
 
 			//find nearby target if there is none
-			if (target == null && getTeamId() != 0) {
+			if (enemyTarget == null && getTeamId() != 0) {
 				ArrayList<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, HasTeam.class);
 				if (!nearbyWithFaction.isEmpty()) {
 					Iterator<HasTeam> it = nearbyWithFaction.iterator();
 					while (it.hasNext()) {
 						HasTeam next = it.next();
 						if (next instanceof MovableEntity && next.getTeamId() != getTeamId()) {
-							target = (MovableEntity) next;
+							enemyTarget = (MovableEntity) next;
 						}
 					}
 				}
 			}
-		}
-		
-		if (particleBand != null) {
-			particleBand.update();
 		}
 	}
 
@@ -191,7 +187,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	 * @param target an character
 	 */
 	public void setTarget(MovableEntity target) {
-		this.target = target;
+		this.enemyTarget = target;
 	}
 
 	@Override
@@ -206,15 +202,14 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	protected boolean performAttack() {
 		if (energy >= 1000) {
 			energy = 0;//reset
-			if (target != null && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH * 2f) {
-				SimpleEntity hit = (SimpleEntity) new SimpleEntity((byte) 33).spawn(target.getPosition().cpy());
+			if (enemyTarget != null && getPosition().distanceTo(enemyTarget) < Block.GAME_EDGELENGTH * 2f) {
+				SimpleEntity hit = (SimpleEntity) new SimpleEntity((byte) 33).spawn(enemyTarget.getPosition().cpy());
 				hit.setAnimation(
 					new EntityAnimation(new int[]{300}, true, false)
 				);
 				hit.setName("hit sprite");
-				MessageManager.getInstance().dispatchMessage(
-					this,
-					target,
+				MessageManager.getInstance().dispatchMessage(this,
+					enemyTarget,
 					Events.damage.getId(),
 					(byte) 1
 				);
@@ -243,23 +238,13 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 				new DestructionParticle((byte) 35).spawn(getPosition().toPoint());
 				new DestructionParticle((byte) 36).spawn(getPosition().toPoint());
 
-				if (teamId!=2)
+				if (teamId != 2) {
 					new Money().spawn(getPosition().toPoint());
-				
+				}
+
 				if (KILLSOUND != null) {
 					WE.SOUND.play(KILLSOUND);
 				}
-			}
-		} else if (msg.message == Events.deselectInEditor.getId()) {
-			if (particleBand != null) {
-				particleBand.dispose();
-				particleBand = null;
-			}
-		} else if (msg.message == Events.selectInEditor.getId()) {
-			if (particleBand == null) {
-				particleBand = new AimBand(this, target);
-			} else {
-				particleBand.setTarget(target);
 			}
 		}
 		return true;

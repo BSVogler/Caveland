@@ -132,6 +132,23 @@ public class Coordinate implements Position {
 	}
 	
 	
+	/**
+	 * avoids a new instance.
+	 * @param from
+	 * @return 
+	 * @see #toCoord() 
+	 */
+	public Coordinate setFromPoint(Point from) {
+		set(
+			Math.floorDiv((int) from.getX(), Block.GAME_DIAGLENGTH),
+			Math.floorDiv((int) from.getY(), Block.GAME_DIAGLENGTH) *2+1,
+			Math.floorDiv((int) from.getZ(), Block.GAME_EDGELENGTH)
+		);
+        return goToNeighbour(Coordinate.getNeighbourSide(
+			getX() % Block.GAME_DIAGLENGTH,
+			getY() % Block.GAME_DIAGLENGTH
+		));
+	}
 
 	/**
 	 * Checks if the calculated value is inside the map dimensions and if not

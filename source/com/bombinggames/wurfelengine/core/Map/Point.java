@@ -142,24 +142,6 @@ public class Point extends Vector3 implements Position {
         );
     }
 	
-	/**
-	 * uses the coord in the parameter so you can avoid a new instance
-	 * @param coord overwrites this coordinate
-	 * @return 
-	 * @see #toCoord() 
-	 */
-	public Coordinate toCoord(Coordinate coord){
-		coord.set(
-			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
-			Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) *2+1,
-			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
-		);
-        return coord.goToNeighbour(Coordinate.getNeighbourSide(
-			getX() % Block.GAME_DIAGLENGTH,
-			getY() % Block.GAME_DIAGLENGTH
-		));
-	}
-    
     /**
      *Get the game world position from left
      * @return
@@ -533,7 +515,7 @@ public class Point extends Vector3 implements Position {
 		){
 			//move
 			traverseP.add(dir);
-			traverseP.toCoord(isectC);
+			isectC.setFromPoint(traverseP);
 			lastCoordX = isectC.getX();
 			lastCoordY = isectC.getY();
 			lastCoordZ = isectC.getZ();

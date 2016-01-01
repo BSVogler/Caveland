@@ -67,7 +67,7 @@ public class CollectibleContainerWindow extends ActionBox {
 			if (selection.id == 0) {
 				Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 				if (frontItem != null) {
-					parent.addCollectible(frontItem);
+					parent.add(frontItem);
 				}
 			} else if (selection.id==1){
 				//fetch item

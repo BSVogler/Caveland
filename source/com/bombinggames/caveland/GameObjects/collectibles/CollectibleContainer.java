@@ -102,8 +102,9 @@ public class CollectibleContainer extends AbstractEntity {
 	 * only allows collectibles to be added.
 	 *
 	 * @param collectible if not an collectible nothing happens
+	 * @return 
 	 */
-	public void addCollectibleFront(Collectible collectible) {
+	public boolean addFront(Collectible collectible) {
 		if (!collectible.hasPosition()) {
 			collectible.spawn(getPosition().cpy());
 		}
@@ -112,6 +113,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setFloating(true);
 		collectible.setPosition(getPosition().cpy());
 		content.add(0, collectible);
+		return true;
 	}
 
 	/**

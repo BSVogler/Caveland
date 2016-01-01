@@ -95,14 +95,14 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 			switch (collectible.getType()) {
 				case Coal:
 					burntime += 20000;//20s
-					container.addCollectible(collectible);
+					container.add(collectible);
 					break;
 				case Wood:
 					burntime += 5000;//20s
-					container.addCollectible(collectible);
+					container.add(collectible);
 					break;
 				case Ironore:
-					container.addCollectible(collectible);
+					container.add(collectible);
 					break;
 				default:
 					break;

@@ -126,9 +126,10 @@ public class Inventory extends CollectibleContainer {
 	 * @param col the item you add
 	 * @return false if inventory is full. True if sucessfull.
 	 */
+	@Override
 	public final boolean add(Collectible col) {
 		if (size() < 3) {
-			addCollectible(col);
+			super.add(col);
 			return true;
 		}
 		return false;
@@ -140,9 +141,10 @@ public class Inventory extends CollectibleContainer {
 	 * @param col
 	 * @return false if inventory is full. True if sucessfull.
 	 */
+	@Override
 	public final boolean addFront(Collectible col) {
 		if (size() < 3) {
-			addCollectibleFront(col);
+			super.addFront(col);
 			return true;
 		}
 		return false;

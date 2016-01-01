@@ -50,7 +50,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * links to items
 	 */
 	private final ArrayList<Collectible> content = new ArrayList<>(3);
-	private boolean backpack;
+	private Object owner;
 	/**
 	 * experimental feature. may cause problems when leaving the game and the saving. todo
 	 */
@@ -58,9 +58,11 @@ public class CollectibleContainer extends AbstractEntity {
 
 	/**
 	 * using the default backpack sprite
+	 * @param owner
 	 */
-	public CollectibleContainer() {
+	public CollectibleContainer(Object owner) {
 		super((byte) 56);
+		this.owner = owner;
 		setName("Container");
 		setIndestructible(true);
 	}
@@ -68,26 +70,25 @@ public class CollectibleContainer extends AbstractEntity {
 	/**
 	 * 
 	 * @param id for custom sprite id
+	 * @param owner
 	 */
-	public CollectibleContainer(byte id) {
+	public CollectibleContainer(byte id, Object owner ) {
 		super(id);
+		this.owner = owner;
 		setName("Container");
 		setIndestructible(true);
 	}
 
-	/**
-	 * 
-	 * @param backpack 
-	 */
-	public void setBackpack(boolean backpack) {
-		this.backpack = backpack;
+	public Object getOwner() {
+		return owner;
 	}
 
 	/**
 	 *
 	 * @param collectible 
+	 * @return  
 	 */
-	public void addCollectible(Collectible collectible) {
+	public boolean add(Collectible collectible) {
 		if (!collectible.hasPosition()) {
 			collectible.spawn(getPosition().cpy());
 		}
@@ -96,6 +97,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setFloating(true);
 		collectible.setPosition(getPosition().cpy());
 		content.add(collectible);
+		return true;
 	}
 	
 	/**
@@ -177,7 +179,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @return
 	 */
 	public Collectible retrieveCollectibleReference(int pos) {
-		Collectible collectible = CollectibleContainer.this.retrieveCollectible(pos);
+		Collectible collectible = retrieveCollectible(pos);
 		collectible.disposeFromMap();
 		return collectible;
 	}
@@ -293,8 +295,8 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-		//show if loaded a backpack
-		if (backpack) {
+		//show if no owner
+		if (owner==null) {
 			if (content==null || content.isEmpty()) {
 				dispose();
 			} else {

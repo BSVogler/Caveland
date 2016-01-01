@@ -18,7 +18,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 public class Inventory extends CollectibleContainer {
 
 	private static final long serialVersionUID = 3L;
-	private final Ejira player;
 
 	/**
 	 *
@@ -27,9 +26,7 @@ public class Inventory extends CollectibleContainer {
 	 * @param player
 	 */
 	public Inventory(Ejira player) {
-		super();
-		this.player = player;
-		setBackpack(true);
+		super(player);
 		setName("Inventory");
 		setHidden(true);
 	}
@@ -40,15 +37,15 @@ public class Inventory extends CollectibleContainer {
 	 * @return
 	 */
 	public AbstractEntity spawn() {
-		super.spawn(player.getPosition());
+		super.spawn(((Ejira)getOwner()).getPosition());
 		return this;
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (hasPosition() && player.hasPosition())
-			this.getPosition().setValues(player.getPosition());
+		if (hasPosition() && ((Ejira)getOwner()).hasPosition())
+			this.getPosition().setValues(((Ejira)getOwner()).getPosition());
 	}
 
 	/**
@@ -82,7 +79,6 @@ public class Inventory extends CollectibleContainer {
 		if (result == null) {
 			return null;
 		}
-		result.disposeFromMap();
 		return result;
 	}
 

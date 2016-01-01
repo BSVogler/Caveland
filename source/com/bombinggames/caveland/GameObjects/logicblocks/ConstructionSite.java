@@ -45,6 +45,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The logic for a construciton site
@@ -217,15 +218,20 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 		
 		if (isValid()) {
-			//find existing container
-			ArrayList<AbstractEntity> list = getPosition().getEntitiesInside(CollectibleContainer.class);
-			if (!list.isEmpty()) {
-				container = (CollectibleContainer) list.get(0);
+			//find existing unclaimed container on map
+			ArrayList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+			Iterator<CollectibleContainer> it = list.iterator();
+			while (it.hasNext()) {
+				CollectibleContainer next = it.next();
+				if (next.getOwner()==null) {
+					container = list.get(0);
+					break;
+				}
 			}
 
 			//respawn container if needed
 			if (container == null || container.shouldBeDisposed()) {
-				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
 			}
 		}
 	}
@@ -239,7 +245,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		private final ConstructionSite parent;
 
 		ConstructionSiteWindow(CLGameView view, AbstractEntity actor, ConstructionSite parent) {
-			super("Build id: " + CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
+			super("Buildf " + CavelandBlocks.CLBlocks.valueOf(parent.result).toString(), ActionBox.BoxModes.SELECTION, null);
 			this.parent = parent;
 			//make list of options
 			ArrayList<SelectionOption> list = new ArrayList<>(parent.container.getContent().size());
@@ -273,7 +279,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 						if (canAddFrontItem(actor)) {
 							Collectible frontItem = player.getInventory().retrieveFrontItemReference();
 							if (frontItem != null) {
-								parent.container.addCollectible(frontItem);
+								parent.container.add(frontItem);
 							}
 						}	break;
 					case 1:

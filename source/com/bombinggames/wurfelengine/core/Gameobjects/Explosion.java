@@ -4,10 +4,10 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 	private static String explosionsound;
 
 	private final int radius;
-	private final byte damage;
+	private final int damage;
 	private transient Camera camera;
 
 	/**
@@ -41,7 +41,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 	 * @param damage Damage at center.
 	 * @param camera can be null. used for screen shake
 	 */
-	public Explosion(int radius, byte damage, Camera camera) {
+	public Explosion(int radius, int damage, Camera camera) {
 		super((byte) 0);
 		this.radius = radius;
 		this.damage = damage;
@@ -69,37 +69,50 @@ public class Explosion extends AbstractEntity implements Telegraph {
 			for (int y = -radius * 2; y < radius * 2; y++) {
 				for (int z = -radius; z < radius; z++) {
 					Coordinate coord = point.toCoord().addVector(x, y, z);
-					if (x * x + (y / 2) * (y / 2) + z * z <= radius * radius) {//check if in radius
-						coord.damage((byte) (100 * (1 - (x * x + (y / 2) * (y / 2) + z * z) / (radius * radius))));
-//						coord.damage((byte) (damage * (1 - (x * x + (y / 2) * (y / 2) + z * z) / (radius * radius))));
-
-						//get every entity which is attacked
-						ArrayList<MovableEntity> list
-							= Controller.getMap().getEntitysOnCoord(
-								coord,
-								MovableEntity.class
-							);
-
-						for (MovableEntity ent : list) {
-							MessageManager.getInstance().dispatchMessage(
-								this,
-								(Telegraph) ent,
-								Events.damage.getId(),
-								damage
-							);
+   					int intdamage = (int) (damage
+						* (1 - getPosition().distanceToSquared(coord)
+						/ (radius * radius * Block.GAME_EDGELENGTH * Block.GAME_EDGELENGTH)));
+					if (intdamage > 0) {
+						if (intdamage > 100) {
+							intdamage = 100; //clamp so it's under 127 to avoid byte overflow
 						}
-						
-
-						Particle dust = (Particle) new Particle(
-							(byte) 22,
-							1700
-						).spawn(coord.toPoint());//spawn at center
-						dust.setColor(new Color(0.5f, 0.45f, 0.4f, 1f));
-						dust.setType(ParticleType.FIRE);
-						dust.addMovement(
-							coord.toPoint().sub(point).nor().scl(4f)
-						);//move from center to outside
+						coord.damage(
+							(byte) intdamage
+						);
 					}
+					
+					//get every entity which is attacked
+					ArrayList<MovableEntity> list
+						= Controller.getMap().getEntitysOnCoord(
+							coord,
+							MovableEntity.class
+						);
+
+					for (MovableEntity ent : list) {
+						intdamage = (int) (damage
+						* (1 - getPosition().distanceToSquared(ent)
+						/ (radius * radius * Block.GAME_EDGELENGTH * Block.GAME_EDGELENGTH)));
+						intdamage*=1.2;//entities should break a little easier
+						if (intdamage > 100) {
+							intdamage = 100; //clamp so it's under 127 to avoid byte overflow
+						}
+						MessageManager.getInstance().dispatchMessage(
+							this,
+							(Telegraph) ent,
+							Events.damage.getId(),
+							(byte) intdamage
+						);
+					}
+
+					Particle dust = (Particle) new Particle(
+						(byte) 22,
+						1700
+					).spawn(point.cpy().add((float) Math.random()*20f, (float) Math.random()*20f, (float) Math.random()*20f));//spawn at center
+					dust.setColor(new Color(0.6f, 0.55f, 0.4f, 1f));
+					dust.setType(ParticleType.FIRE);
+					dust.addMovement(
+						coord.toPoint().sub(point).nor().scl(4f)
+					);//move from center to outside
 				}
 			}
 		}

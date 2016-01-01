@@ -72,7 +72,7 @@ public class TFlint extends Collectible implements Interactable {
 			if (timer <= 0) {
 				new Explosion(
 					3,
-					(byte) 50,
+					150,
 					WE.getGameplay().getView().getCameras().get(0)
 				).spawn(getPosition());
 				dispose();

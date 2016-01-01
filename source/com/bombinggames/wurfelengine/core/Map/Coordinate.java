@@ -565,8 +565,12 @@ public class Coordinate implements Position {
 	 */
 	public boolean damage(byte amount) {
 		Block block = getBlock();
-		if (block != null) {
-			block.setHealth(this, (byte) (block.getHealth() - amount));
+		if (block != null && amount > 0) {
+			if (block.getHealth() - amount < 0){
+				block.setHealth(this, (byte) 0);
+			} else {
+				block.setHealth(this, (byte) (block.getHealth() - amount));
+			}
 			if (block.getHealth() <= 0 && !block.isIndestructible()) {
 				//broadcast event that this block got destroyed
 				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);

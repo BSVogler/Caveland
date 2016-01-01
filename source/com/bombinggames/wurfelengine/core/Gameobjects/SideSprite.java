@@ -641,8 +641,12 @@ public class SideSprite extends TextureRegion {
 			if (scaleX != 1 || scaleY != 1) {
 				localX1 *= scaleX;
 				localY1 *= scaleY;
+				localX2 *= scaleX;
+				localY2 *= scaleX;
 				localX3 *= scaleX;
 				localY3 *= scaleY;
+				localX4 *= scaleX;
+				localY4 *= scaleX;
 			}
 			
 			if (rotation != 0) {

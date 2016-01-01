@@ -30,6 +30,7 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;

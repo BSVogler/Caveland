@@ -319,7 +319,7 @@ public class Point extends Vector3 implements Position {
      * @param dir dir of the ray
      * @param maxDistance the distane after which it should stop. (in game meters)
      * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>
-     * @param hitFullOpaque if true only intersects with blocks which are not transparent =full opaque
+	 * @param hitCondition
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
@@ -457,7 +457,7 @@ public class Point extends Vector3 implements Position {
 		} else {
 			s = mod(s, 1);
 			// problem is now s+t*ds = 1
-			return (int) ((1-s)/ds);
+			return (int) ((1 - s) / ds);
 		}
 	}
 
@@ -543,19 +543,21 @@ public class Point extends Vector3 implements Position {
 	}
 		
 	/**
-	 * 
+	 *
 	 * @param pos
-	 * @return the distance from this point to the other point in game world coordinates
+	 * @return the distance from this point to the other point in game world
+	 * coordinates
 	 */
 	@Override
 	public float distanceTo(Position pos) {
 		return distanceTo(pos.toPoint());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param point
-	 * @return the distance from this point to the other point in game coordinates
+	 * @return the distance from this point to the other point in game
+	 * coordinates
 	 */
 	public float distanceTo(Point point) {
 		float dX = x - point.x;
@@ -578,7 +580,6 @@ public class Point extends Vector3 implements Position {
 	public float distanceToSquared(AbstractGameObject object) {
 		return distanceToSquared(object.getPosition().toPoint());
 	}
-	
 
 	@Override
 	public float distanceToSquared(Position pos) {
@@ -586,9 +587,10 @@ public class Point extends Vector3 implements Position {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param point
-	 * @return the distance from this point to the other point in game coordinates squared
+	 * @return the distance from this point to the other point in game
+	 * coordinates squared
 	 */
 	public float distanceToSquared(Point point) {
 		float dX = x - point.x;
@@ -596,7 +598,7 @@ public class Point extends Vector3 implements Position {
 		float dZ = z - point.z;
 		return dX * dX + dY * dY + dZ * dZ;
 	}
-	
+
 	/**
 	 * checks only x and y.
 	 *
@@ -608,8 +610,7 @@ public class Point extends Vector3 implements Position {
 	public float distanceToHorizontal(AbstractGameObject object) {
 		return distanceToHorizontal(object.getPosition().toPoint());
 	}
-	
-	
+
 	@Override
 	public float distanceToHorizontal(Position pos) {
 		return distanceToHorizontal(pos.toPoint());
@@ -617,6 +618,7 @@ public class Point extends Vector3 implements Position {
 
 	/**
 	 * checks only x and y.
+	 *
 	 * @param point
 	 * @return the distance from this point to the other point only regarding
 	 * horizontal components.
@@ -627,10 +629,9 @@ public class Point extends Vector3 implements Position {
 		return (float) Math.sqrt(dX * dX + dY * dY);
 	}
 
-
-
 	/**
 	 * get entities in radius
+	 *
 	 * @param radius in game dimension pixels
 	 * @return every entitie in radius
 	 */

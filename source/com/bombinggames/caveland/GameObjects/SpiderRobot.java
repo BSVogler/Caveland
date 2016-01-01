@@ -30,7 +30,6 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
-import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
@@ -38,6 +37,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
 import java.util.ArrayList;
 
 /**
@@ -47,12 +47,14 @@ import java.util.ArrayList;
 public class SpiderRobot extends Robot{
 	
 	private static final long serialVersionUID = 2L;
+	
 	private transient long walkingSound;
 	private transient Laserdot laserdot;
 	private transient boolean moveUp;
 	private transient boolean moveRight;
-	private float scanHeight;
-	private float laserRotate;
+	private transient float scanHeight;
+	private transient float laserRotate;
+	private transient Coordinate workingBlock;
 
 	/**
 	 *
@@ -67,21 +69,6 @@ public class SpiderRobot extends Robot{
 		
 		if (hasPosition()) {
 			//look for resources
-			ArrayList<Coordinate> nearbResources = nearbyResources();
-			if (!nearbResources.isEmpty()) {
-				MessageManager.getInstance().dispatchMessage(
-					this,
-					this,
-					Events.moveTo.getId(),
-					nearbResources.get(0).toPoint()
-				);
-			}
-
-
-			//go to resources
-			//gather resources
-			//place them on storage
-			
 			if (moveUp) {
 				scanHeight += dt / 300f;
 			} else {
@@ -123,6 +110,38 @@ public class SpiderRobot extends Robot{
 				getPosition()
 			);
 			
+			Block block = laserdot.getPosition().getBlock();
+			if (block != null) {
+				byte id = block.getId();
+				if ((id == CavelandBlocks.CLBlocks.COAL.getId()
+					|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
+					|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
+					|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
+				) {
+					//go to resources
+					if (workingBlock == null) {
+						workingBlock = new Coordinate(0, 0, 0);
+					}
+					workingBlock.setFromPoint(laserdot.getPosition());
+					MessageManager.getInstance().dispatchMessage(
+						this,
+						this,
+						Events.moveTo.getId(),
+						laserdot.getPosition().cpy()
+					);
+				}
+			}
+
+			
+			//gather resources
+			//if nearby
+			if (getPosition().distanceTo(workingBlock) < Block.GAME_EDGELENGTH2) {
+				performAttack();
+				workingBlock.damage((byte) 1);
+			}
+			
+			//place them on storage
+			
 			//sound
 			if (getMovementHor().len2() > 0 && isOnGround()) {
 				if (walkingSound == 0l) {
@@ -143,8 +162,8 @@ public class SpiderRobot extends Robot{
 				for (int z = -2; z < 2; z++) {
 					Coordinate tmpCoord = getPosition().toCoord().addVector(x, y, z);
 					Block block = tmpCoord.getBlock();
-					if (block!=null) {
-						byte id = tmpCoord.getBlock().getId();
+					if (block != null) {
+						byte id = block.getId();
 						if ((id == CavelandBlocks.CLBlocks.COAL.getId()
 							|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
 							|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()

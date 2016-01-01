@@ -106,40 +106,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		if (attackInProgess > 0) {
 			attackInProgess -= dt;
 			movementSpeed = 0;
-			Vector2 orientation = getOrientation();
-			if (orientation.x < -Math.sin(Math.PI / 3)) {
-				setSpriteValue((byte) 1);//west
-			} else if (orientation.x < -0.5) {
-				//y
-				if (orientation.y < 0) {
-					setSpriteValue((byte) 2);//north-west
-				} else {
-					setSpriteValue((byte) 0);//south-east
-				}
-			} else if (orientation.x < 0.5) {
-				//y
-				if (orientation.y < 0) {
-					setSpriteValue((byte) 3);//north
-				} else {
-					setSpriteValue((byte) 7);//south
-				}
-			} else if (orientation.x < Math.sin(Math.PI / 3)) {
-				//y
-				if (orientation.y < 0) {
-					setSpriteValue((byte) 4);//north-east
-				} else {
-					setSpriteValue((byte) 6);//sout-east
-				}
-			} else {
-				setSpriteValue((byte) 5);//east
-			}
-			if (attackInProgess > ATTACKTIME * 2 / 3f) {
-				setSpriteValue((byte) (getSpriteValue() + 40));
-			} else if (attackInProgess > ATTACKTIME / 3f) {
-				setSpriteValue((byte) (getSpriteValue() + 48));
-			} else {
-				setSpriteValue((byte) (getSpriteValue() + 56));
-			}
+			playAttackAnimation();
 		} else {
 			attackInProgess = 0;//clamp
 			movementSpeed = 2;
@@ -232,7 +199,11 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		return super.clone();
 	}
 
-	private void performAttack() {
+	/**
+	 *	
+	 * @return if attack was started return true 
+	 */
+	protected boolean performAttack() {
 		if (energy >= 1000 && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH * 2f) {
 			energy = 0;//reset
 			SimpleEntity hit = (SimpleEntity) new SimpleEntity((byte) 33).spawn(target.getPosition().cpy());
@@ -248,7 +219,9 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 			);
 			pauseMovementAnimation();
 			attackInProgess = ATTACKTIME;//1500ms until the attack is done
+			return true;
 		}
+		return false;
 	}
 
 	@Override
@@ -303,6 +276,43 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		} else if (type==0) {
 			setFloating(true);
 			setContinuousWalkingAnimation(1f);
+		}
+	}
+
+	private void playAttackAnimation() {
+		Vector2 orientation = getOrientation();
+		if (orientation.x < -Math.sin(Math.PI / 3)) {
+			setSpriteValue((byte) 1);//west
+		} else if (orientation.x < -0.5) {
+			//y
+			if (orientation.y < 0) {
+				setSpriteValue((byte) 2);//north-west
+			} else {
+				setSpriteValue((byte) 0);//south-east
+			}
+		} else if (orientation.x < 0.5) {
+			//y
+			if (orientation.y < 0) {
+				setSpriteValue((byte) 3);//north
+			} else {
+				setSpriteValue((byte) 7);//south
+			}
+		} else if (orientation.x < Math.sin(Math.PI / 3)) {
+			//y
+			if (orientation.y < 0) {
+				setSpriteValue((byte) 4);//north-east
+			} else {
+				setSpriteValue((byte) 6);//sout-east
+			}
+		} else {
+			setSpriteValue((byte) 5);//east
+		}
+		if (attackInProgess > ATTACKTIME * 2 / 3f) {
+			setSpriteValue((byte) (getSpriteValue() + 40));
+		} else if (attackInProgess > ATTACKTIME / 3f) {
+			setSpriteValue((byte) (getSpriteValue() + 48));
+		} else {
+			setSpriteValue((byte) (getSpriteValue() + 56));
 		}
 	}
 }

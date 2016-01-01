@@ -67,6 +67,11 @@ public class SpiderRobot extends Robot{
 	public void update(float dt) {
 		super.update(dt);
 		
+		if (dt == 0 && walkingSound != 0) {
+			WE.SOUND.stop("robot2walk", walkingSound);
+			walkingSound = 0;
+		}
+		
 		if (hasPosition()) {
 			//look for resources
 			if (moveUp) {

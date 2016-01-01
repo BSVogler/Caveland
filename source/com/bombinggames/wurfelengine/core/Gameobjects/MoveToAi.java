@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.Serializable;
@@ -105,12 +106,19 @@ public class MoveToAi implements Telegraph, Serializable {
 		}
 	}
 	
-	public boolean atGoal(){
-		if (movementGoal == null) return true;
+	public boolean atGoal() {
+		if (movementGoal == null) {
+			return true;
+		}
 		if (body.getPosition() == null) {
 			return false;
 		}
-		return body.getPosition().dst2(movementGoal) < 20; //sqrt(20)~=4,4
+		if (body.isFloating()) {
+			return body.getPosition().dst2(movementGoal) < 20; //sqrt(20)~=4,4
+		} else {
+			return new Vector2(body.getPosition().x, body.getPosition().y).dst2(new Vector2(movementGoal.x, movementGoal.y)) < 20; //sqrt(20)~=4,4
+		}
+			
 	}
 
 	@Override

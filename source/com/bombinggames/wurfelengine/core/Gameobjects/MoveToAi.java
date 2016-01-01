@@ -125,4 +125,8 @@ public class MoveToAi implements Telegraph, Serializable {
 	public boolean handleMessage(Telegram msg) {
 		return false;
 	}
+
+	public Point getGoal() {
+		return movementGoal;
+	}
 }

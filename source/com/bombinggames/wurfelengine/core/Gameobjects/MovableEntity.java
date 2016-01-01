@@ -40,6 +40,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 
 /**
@@ -107,6 +108,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	private boolean walkingPaused = false;
 	
 	private transient MoveToAi moveToAi;
+	private transient AimBand particleBand;
 
 	/**
 	 * Simple MovableEntity with no animation.
@@ -256,6 +258,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				if (moveToAi.atGoal()){
 					moveToAi = null;
 				}
+			}
+			
+			if (particleBand != null) {
+				particleBand.update();
 			}
 			
 			/*HORIZONTAL MOVEMENT*/
@@ -905,6 +911,19 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			moveToAi = null;
 			setSpeedHorizontal(0);
 			return true;
+		}
+		
+		if (msg.message == Events.deselectInEditor.getId()) {
+			if (particleBand != null) {
+				particleBand.dispose();
+				particleBand = null;
+			}
+		} else if (msg.message == Events.selectInEditor.getId() && getMovementAI() != null) {
+			if (particleBand == null) {
+				particleBand = new AimBand(this, getMovementAI().getGoal());
+			} else {
+				particleBand.setTarget(getMovementAI().getGoal());
+			}
 		}
 		
 		return false;

@@ -166,7 +166,7 @@ public class SpiderRobot extends Robot{
 						);
 					if (performAttack()) {
 						workingBlock.damage((byte) 1);
-						if (workingBlock.getBlock().getHealth() % 8 == 0) {
+						if (workingBlock.getBlock() != null && workingBlock.getBlock().getHealth() % 8 == 0) {
 							CavelandBlocks.getLoot(workingBlock.getBlock().getId()).createInstance().spawn(getPosition().cpy());
 						}
 					}

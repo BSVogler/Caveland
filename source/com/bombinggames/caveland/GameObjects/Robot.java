@@ -35,7 +35,10 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	 * if following an enemy
 	 */
 	private transient MovableEntity enemyTarget;
-	private transient long movementSoundPlaying;
+	/**
+	 * sound played if activated
+	 */
+	private transient long runningSound;
 	/**
 	 * in m/s
 	 */
@@ -83,7 +86,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	@Override
 	public AbstractEntity spawn(final Point point) {
 		if (type == 0) {
-			movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);
+			runningSound = WE.SOUND.loop(RUNNINGSOUND, point);
 		}
 		return super.spawn(point);
 	}
@@ -97,6 +100,11 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	public void update(float dt) {
 		//update as usual
 		super.update(dt);
+		
+		if (dt == 0 && runningSound != 0) {
+			WE.SOUND.stop(RUNNINGSOUND, runningSound);
+			runningSound = 0;
+		}
 
 		
 		if (idleaAI != null) {
@@ -224,7 +232,8 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	@Override
 	public void disposeFromMap() {
 		super.disposeFromMap();
-		WE.SOUND.stop(RUNNINGSOUND, movementSoundPlaying);
+		WE.SOUND.stop(RUNNINGSOUND, runningSound);
+		runningSound = 0;
 	}
 
 	@Override

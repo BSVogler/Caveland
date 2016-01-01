@@ -348,6 +348,8 @@ public class RenderBlock extends AbstractGameObject{
 			color = Controller.getLightEngine().getColor(side, getPosition()).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
+		Block blockdata = getBlockData();
+		
         renderSide(
 			view,
             coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
@@ -362,23 +364,48 @@ public class RenderBlock extends AbstractGameObject{
 						: color
 					)
 				: color,//pass color if not shading static
-			getBlockData().getAOFlags()
+			blockdata.getAOFlags()
         );
 		
-		if (getBlockData().getHealth() <= 50) {
-			if (null != side) //render damage
-			switch (side) {
-				case LEFT:
-					renderDamageOverlay(view, camera, getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 3);
-					break;
-				case TOP:
-					renderDamageOverlay(view, camera, getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH), (byte) 4);
-					break;
-				case RIGHT:
-					renderDamageOverlay(view, camera, getPosition().toPoint().add(Block.GAME_DIAGLENGTH2/2, 0, 0), (byte) 5);
-					break;
-				default:
-					break;
+		if (blockdata.getHealth() < 100) {
+			int damageOverlayStep = 0;
+			if (blockdata.getHealth() <= 50) {
+				damageOverlayStep = 1;
+			}
+			if (blockdata.getHealth() <= 25) {
+				damageOverlayStep = 2;
+			}
+			
+			if (damageOverlayStep > -1) {
+				//render damage
+				switch (side) {
+					case LEFT:
+						renderDamageOverlay(
+							view,
+							camera,
+							getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2 / 2, 0, 0),
+							(byte) (3 * damageOverlayStep)
+						);
+						break;
+					case TOP:
+						renderDamageOverlay(
+							view,
+							camera,
+							getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH),
+							(byte) (3 * damageOverlayStep + 1)
+						);
+						break;
+					case RIGHT:
+						renderDamageOverlay(
+							view,
+							camera,
+							getPosition().toPoint().add(Block.GAME_DIAGLENGTH2 / 2, 0, 0),
+							(byte) (3 * damageOverlayStep + 2)
+						);
+						break;
+					default:
+						break;
+				}
 			}
 		}
     }
@@ -388,7 +415,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param view
 	 * @param camera
 	 * @param aopos
-	 * @param value 
+	 * @param value damage sprite value
 	 */
 	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value){
 		SimpleEntity destruct = new SimpleEntity((byte) 3,value);

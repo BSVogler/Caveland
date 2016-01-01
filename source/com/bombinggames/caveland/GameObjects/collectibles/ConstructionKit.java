@@ -55,19 +55,6 @@ public class ConstructionKit extends Collectible implements Interactable {
 		}
 	}
 	
-	byte getResult(int index){
-		switch (index) {
-			case 0:
-				return CavelandBlocks.CLBlocks.OVEN.getId();
-			case  1:
-				return CavelandBlocks.CLBlocks.ROBOTFACTORY.getId();
-			case 2:
-				return CLBlocks.POWERSTATION.getId();
-			default:
-				return CavelandBlocks.CLBlocks.LIFT.getId();
-		}
-	}
-
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
@@ -91,7 +78,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 					)
 				)
 				.setConfirmAction((SelectionOption result, AbstractEntity actor1) -> {
-						build(actor1.getPosition().toCoord(), getResult(result.id));//spawn construction site
+						build(actor1.getPosition().toCoord(), result.id);//spawn construction site
 					}
 				)
 				.setCancelAction(
@@ -104,15 +91,15 @@ public class ConstructionKit extends Collectible implements Interactable {
 				)
 				.setSelectAction(
 					(boolean up, SelectionOption result, AbstractEntity actor1) -> {
-						//spawn rails
+						//spawn preview
 						if (preview == null) {
-							preview = (EntityBlock) new EntityBlock(getResult(result.id),(byte) 0)
+							preview = (EntityBlock) new EntityBlock(result.id,(byte) 0)
 								.spawn(actor1.getPosition().toCoord().toPoint());
 							preview.setName("preview");
 							preview.setSaveToDisk(false);
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else {
-							preview.setSpriteId(getResult(result.id));
+							preview.setSpriteId(result.id);
 						}
 					}
 				)

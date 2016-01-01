@@ -232,7 +232,7 @@ public class ActionBox extends WidgetGroup {
 	}
 
 	/**
-	 * Set the action what should ahppen if you select something before
+	 * Set the action what should happen if you select something before
 	 * confirming it.
 	 *
 	 * @param hoverAction new value of selectAction
@@ -473,12 +473,12 @@ public class ActionBox extends WidgetGroup {
 	public static class SelectionOption {
 
 		/**
-		 *
+		 * arbitrary semantic
 		 */
 		public final byte id;
 
 		/**
-		 *
+		 *arbitrary semantic
 		 */
 		public String name;
 

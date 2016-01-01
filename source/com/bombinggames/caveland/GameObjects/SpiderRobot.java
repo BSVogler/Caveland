@@ -49,7 +49,9 @@ public class SpiderRobot extends Robot{
 	private transient long walkingSound;
 	private transient Laserdot laserdot;
 	private transient boolean moveUp;
+	private transient boolean moveRight;
 	private float scanHeight;
+	private float laserRotate;
 
 	/**
 	 *
@@ -78,15 +80,6 @@ public class SpiderRobot extends Robot{
 			//go to resources
 			//gather resources
 			//place them on storage
-
-			if (laserdot == null){
-				laserdot = (Laserdot) new Laserdot().spawn(getPosition().cpy());
-				laserdot.setColor(COLORTEAM.cpy());
-			}
-			laserdot.update(
-				getAiming(),
-				getPosition()
-			);
 			
 			if (moveUp) {
 				scanHeight += dt / 300f;
@@ -103,6 +96,31 @@ public class SpiderRobot extends Robot{
 				moveUp = true;
 				scanHeight = -1;
 			}
+			
+			if (moveRight) {
+				laserRotate += dt / 500f;
+			} else {
+				laserRotate -= dt / 500f;
+			}
+			
+			if (laserRotate >= 1) {
+				moveRight = false;
+				laserRotate = 1;
+			}
+
+			if (laserRotate <= -1) {
+				moveRight = true;
+				laserRotate = -1;
+			}
+			
+			if (laserdot == null){
+				laserdot = (Laserdot) new Laserdot().spawn(getPosition().cpy());
+				laserdot.setColor(COLORTEAM.cpy());
+			}
+			laserdot.update(
+				getAiming(),
+				getPosition()
+			);
 			
 			//sound
 			if (getMovementHor().len2() > 0 && isOnGround()) {
@@ -143,10 +161,8 @@ public class SpiderRobot extends Robot{
 
 	@Override
 	public Vector3 getAiming() {
-		return new Vector3(getOrientation(), scanHeight).nor();
+		return new Vector3(getOrientation(), scanHeight).rotate(Vector3.Z, laserRotate*90f).nor();
 	}
-	
-	
 
 	@Override
 	public void disposeFromMap() {
@@ -155,7 +171,4 @@ public class SpiderRobot extends Robot{
 		laserdot.dispose();
 		super.disposeFromMap();
 	}
-	
-	
-	
 }

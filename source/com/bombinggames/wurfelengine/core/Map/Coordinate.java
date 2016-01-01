@@ -145,8 +145,8 @@ public class Coordinate implements Position {
 			Math.floorDiv((int) from.getZ(), Block.GAME_EDGELENGTH)
 		);
         return goToNeighbour(Coordinate.getNeighbourSide(
-			getX() % Block.GAME_DIAGLENGTH,
-			getY() % Block.GAME_DIAGLENGTH
+			from.getX() % Block.GAME_DIAGLENGTH,
+			from.getY() % Block.GAME_DIAGLENGTH
 		));
 	}
 

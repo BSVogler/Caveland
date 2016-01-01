@@ -235,9 +235,11 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	private void performAttack() {
 		if (energy >= 1000 && getPosition().distanceTo(target) < Block.GAME_EDGELENGTH * 2f) {
 			energy = 0;//reset
-			new SimpleEntity((byte) 33).spawn(target.getPosition().cpy()).setAnimation(
+			SimpleEntity hit = (SimpleEntity) new SimpleEntity((byte) 33).spawn(target.getPosition().cpy());
+			hit.setAnimation(
 				new EntityAnimation(new int[]{300}, true, false)
 			);
+			hit.setName("hit sprite");
 			MessageManager.getInstance().dispatchMessage(
 				this,
 				target,

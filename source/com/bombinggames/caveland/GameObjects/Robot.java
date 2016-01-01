@@ -144,6 +144,8 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 				if (attackInProgess == 0) {
 					performAttack();
 				}
+			} else {
+				enemyTarget = null;
 			}
 
 			energy = ((int) (energy + dt));

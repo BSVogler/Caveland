@@ -80,5 +80,14 @@ public class CraftingRecipesList extends ArrayList<Recipe>{
 				MineCart.class
 			)
 		);
+		add(
+			new Recipe(
+				new CollectibleType[]{
+					CollectibleType.Iron
+			},
+			"Drop Space Flag",
+			CollectibleType.DropSpaceFlagConstructionKit
+			)
+		);
 	}
 }

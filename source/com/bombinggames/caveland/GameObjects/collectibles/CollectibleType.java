@@ -31,70 +31,65 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
+import com.bombinggames.caveland.GameObjects.DropSpaceFlagConstructionKit;
+
 /**
- * a enum which lists the types of collectibles. Saves information about the sprites and connets the enum with the classes.
+ * a enum which lists the types of collectibles. Saves information about the
+ * sprites and connets the enum with the classes.
  */
 public enum CollectibleType {
 
 	/**
 	 *
+	 *//**
+	 *
 	 */
 	Rails((byte) 16, (byte) 2),
-
 	/**
 	 *
 	 */
 	Wood((byte) 46, (byte) 5),
-
 	/**
 	 *
 	 */
 	Explosives((byte) 47, (byte) 8),
-
 	/**
 	 *
 	 */
 	Ironore((byte) 48, (byte) 5),
-
 	/**
 	 *
 	 */
 	Coal((byte) 49, (byte) 5),
-
 	/**
 	 *
 	 */
 	Cristall((byte) 50, (byte) 5),
-
 	/**
 	 *
 	 */
 	Sulfur((byte) 51, (byte) 5),
-
 	/**
 	 *
 	 */
 	Stone((byte) 52, (byte) 5),
-
 	/**
 	 *
 	 */
 	Toolkit((byte) 53, (byte) 8),
-
 	/**
 	 *
 	 */
 	Torch((byte) 54, (byte) 2),
-
 	/**
 	 *
 	 */
 	Iron((byte) 55, (byte) 4),
-
 	/**
 	 *
 	 */
-	Powercable((byte) 57, (byte) 1);
+	Powercable((byte) 57, (byte) 1),
+	DropSpaceFlagConstructionKit((byte) 23, (byte) 1);
 
 	/**
 	 *
@@ -122,50 +117,47 @@ public enum CollectibleType {
 
 	/**
 	 * get the sprite id of this type
-	 * @return 
+	 *
+	 * @return
 	 */
 	public byte getId() {
 		return id;
 	}
-	
+
 	/**
 	 * the amount of sprites
-	 * @return 
+	 *
+	 * @return
 	 */
 	public int getAnimationSteps() {
 		return steps;
 	}
-	
+
 	/**
 	 * factory method to createInstance an abstract entitiy from the definition
 	 *
 	 * @return
 	 */
 	public Collectible createInstance() {
-		Collectible obj = null;
 		if (null != this) {
 			switch (this) {
 				case Explosives:
-					obj = new TFlint();
-					break;
+					return new TFlint();
 				case Toolkit:
-					obj = new ConstructionKit();
-					break;
+					return new ConstructionKit();
 				case Torch:
-					obj = new TorchCollectible();
-					break;
+					return new TorchCollectible();
 				case Rails:
-					obj = new InstantConstructionKit(this);
-					break;
+					return new InstantConstructionKit(this);
 				case Powercable:
-					obj = new InstantConstructionKit(this);
-					break;
+					return new InstantConstructionKit(this);
+				case DropSpaceFlagConstructionKit:
+					return new DropSpaceFlagConstructionKit();
 				default:
-					obj = new Collectible(this);
-					break;
+					return new Collectible(this);
 			}
 		}
-		return obj;
+		return null;
 	}
 
 }

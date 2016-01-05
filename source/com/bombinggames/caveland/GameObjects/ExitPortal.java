@@ -78,10 +78,14 @@ public class ExitPortal extends Portal implements Interactable {
 
 			//spawn lift only if a lift is built
 			if (getLift() == null){
+				//has no lift
+				setSpriteValue((byte) 1);
 				if (fahrstuhlkorb != null){
 					fahrstuhlkorb.disposeFromMap();
 				}
 			} else {
+				//has lift
+				setSpriteValue((byte) 0);
 				if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
 					fahrstuhlkorb = new LiftBasket();
 					fahrstuhlkorb.spawn(getGround().toPoint());

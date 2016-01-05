@@ -121,7 +121,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 			camera.shake(radius * 100 / 3f, 100);
 		}
 		if (explosionsound != null) {
-			WE.SOUND.play(explosionsound);
+			WE.SOUND.play(explosionsound, getPosition());
 		}
 		dispose();
 		return this;

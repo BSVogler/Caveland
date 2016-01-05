@@ -47,7 +47,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 		coord.setBlock(Block.getInstance((byte) 11));
 		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);
 		constructionSiteLogic.setResult(id, (byte) 0);
-		WE.SOUND.play("metallic");
+		WE.SOUND.play("metallic", coord);
 		dispose();//dispose tool kit
 		if (preview != null) {
 			preview.dispose();

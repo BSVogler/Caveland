@@ -215,7 +215,7 @@ public class SpiderRobot extends Robot{
 						);
 						if (performAttack()) {
 							workingBlock.damage((byte) 1);
-							WE.SOUND.play("impact");
+							WE.SOUND.play("impact", getPosition());
 							if (workingBlock.getBlock() != null && workingBlock.getBlock().getHealth() % 8 == 0) {
 								carry = CavelandBlocks.getLoot(workingBlock.getBlock().getId()).createInstance();
 								carry.spawn(getPosition().cpy());

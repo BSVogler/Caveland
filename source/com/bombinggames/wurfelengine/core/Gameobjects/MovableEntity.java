@@ -398,7 +398,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
                     runningSoundPlaying = false;
                 } else {
                     if (!runningSoundPlaying){
-                        WE.SOUND.play(runningSound);
+                        WE.SOUND.play(runningSound, getPosition());
                         runningSoundPlaying = true;
                     }
                 }

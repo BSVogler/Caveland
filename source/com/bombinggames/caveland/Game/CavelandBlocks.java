@@ -378,7 +378,7 @@ public class CavelandBlocks implements CustomBlocks {
 					otherHalf.destroy();
 				}
 			}
-			WE.SOUND.play("blockDestroy");//to-do should be a wood chop down sound for tree
+			WE.SOUND.play("blockDestroy", coord);//to-do should be a wood chop down sound for tree
 
 			//view only relevant. should only be done if visible
 			//todo, check if visible

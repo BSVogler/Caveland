@@ -254,7 +254,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 				}
 
 				if (KILLSOUND != null) {
-					WE.SOUND.play(KILLSOUND);
+					WE.SOUND.play(KILLSOUND, getPosition());
 				}
 			}
 		}

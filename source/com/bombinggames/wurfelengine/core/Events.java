@@ -37,7 +37,7 @@ package com.bombinggames.wurfelengine.core;
 public enum Events {
 	
 	/**
-	 *
+	 *an entitiy which will receive this event will be damaged
 	 */
 	damage(11),
 
@@ -72,7 +72,7 @@ public enum Events {
 	landed(17),
 
 	/**
-	 *
+	 *moves an object. extra information must contain {@link com.bombinggames.wurfelengine.core.Map.Point}
 	 */
 	moveTo(18),
 

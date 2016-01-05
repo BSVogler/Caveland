@@ -88,6 +88,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 
 	@Override
 	public void dispose() {
+		linkToRobot.dispose();
 	}
 
 	@Override

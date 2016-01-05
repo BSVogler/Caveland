@@ -185,6 +185,8 @@ public class GlobalLightSource {
 			power = 0;//night
 		} else if (height < amplitude / 2) {
 			power = (float) (0.5f + brightnessF * Math.sin(height * Math.PI / amplitude)); //morning & evening
+		} else {
+			power = 0.5f + brightnessF;
 		}
         
         //if (azimuth>180+IGLPrototype.TWISTDIRECTION)

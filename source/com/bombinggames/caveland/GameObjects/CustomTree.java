@@ -26,7 +26,7 @@ public class CustomTree extends RenderBlock {
 	 * @param data
 	 */
 	public CustomTree(Block data) {
-		super(data.getSpriteId());
+		super(data);
 		setSpriteValue(data.getSpriteValue());
 		
 		if (getSpriteValue() == TREETOPVALUE)

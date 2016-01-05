@@ -29,7 +29,7 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
 /**
- *A block who has an animation.
+ *A block which has an animation.
  * @author Benedikt
  */
 public class AnimatedBlock extends RenderBlock implements Animatable{
@@ -46,13 +46,13 @@ public class AnimatedBlock extends RenderBlock implements Animatable{
     
     /**
      * Create this RenderBlock with an array wich has the time of every animation step in ms in it.
-     * @param id the id of the block.
+     * @param data the data of the block.
      * @param animationsinformation  an array wich has the duraion of every animationstep inside
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time. 
      */
-    public AnimatedBlock(byte id, int[] animationsinformation, boolean autostart, boolean loop){
-        super(id);
+    public AnimatedBlock(Block data, int[] animationsinformation, boolean autostart, boolean loop){
+        super(data);
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

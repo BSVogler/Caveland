@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras nor should use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
- * The internal block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
+ * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @see Block
  * @author Benedikt Vogler
  */
@@ -178,8 +178,9 @@ public class RenderBlock extends AbstractGameObject{
 	private Coordinate coord;
 	
 	/**
-	 * 
+	 * Does not wrap a {@link Block} instance.
 	 * @param id 
+	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
 	 */
     public RenderBlock(byte id){
         super(id);
@@ -191,6 +192,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * 
 	 * @param id
 	 * @param value 
+	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
@@ -199,11 +201,11 @@ public class RenderBlock extends AbstractGameObject{
 	}
 	
 	/**
-	 * Create a new render block referencing to an existing coreData object.
+	 * Create a new render block referencing to an existing {@link Block} object.
 	 * @param data 
 	 */
 	public RenderBlock(Block data){
-		super(data.getId(), data.getValue());//copy id's from data for rendering
+		super(data.getSpriteId(), data.getSpriteValue());//copy id's from data for rendering
 		blockData = data;
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}

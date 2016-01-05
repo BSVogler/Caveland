@@ -378,14 +378,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 								|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
 							)
 						)
-						||
-						(
-							neighbour != null
-							&& (
-								neighbour.hidingPastBlock()
-								|| neighbour.isLiquid() && current.isLiquid()
-							)
-						)
+						|| (neighbour != null && neighbour.hidingPastBlock())
 					) {
 						current.setClippedTop();
 					}

@@ -320,7 +320,7 @@ public class Block implements HasID, Serializable {
 		}
 
 		if (id == 9) {
-			return new Sea(id);
+			return new Sea(this);
 		}
 
 		if (customBlocks != null) {

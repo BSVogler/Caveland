@@ -28,21 +28,24 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
+
 /**
  *A Sea Block which has a "waves" effect.
  * @author Benedikt Vogler
  */
 public class Sea extends AnimatedBlock {
 	private static final long serialVersionUID = 1L;
-        
-    /**
-     *
-     * @param id
-     */
-    public Sea(final byte id) {
-        super(id,new int[]{400,400,400,400}, true, true);
+
+	public Sea(final Block block) {
+		super(block,new int[]{400,400,400,400}, true, true);
 		setBounce(true);
 		setSpriteValue((byte) (Math.random()*4));
     }
-
+     
+	@Override
+	public RenderBlock spawn(Coordinate coord) {
+		//getBlockData().setClippedTop();
+		return super.spawn(coord);
+	}
 }

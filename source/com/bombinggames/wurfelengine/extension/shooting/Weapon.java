@@ -41,6 +41,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 
@@ -90,6 +91,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	private boolean bustSoundReady;
 	private Point fixedPos = null;
 	private transient AimBand particleBand;
+	private transient PointLightSource lightSource;
 
     /**
      *
@@ -292,7 +294,12 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		
 		//move back
 		if (hasPosition() && fixedPos != null) {
+			if (lightSource==null && fixedPos != null){
+				lightSource= (PointLightSource) new PointLightSource(Color.WHITE.cpy(), 3, 30f).spawn(fixedPos.cpy());
+				lightSource.setSaveToDisk(false);
+			}
 			if (firing){
+				lightSource.enable();
 				float t;
 				if (bulletDelay > delayBetweenShots/2){
 					t = (bulletDelay-(delayBetweenShots/2f))/(delayBetweenShots/2f);
@@ -304,6 +311,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 					t
 				);
 			} else {
+				lightSource.disable();
 				this.setPosition(fixedPos.cpy());
 			}
 		}

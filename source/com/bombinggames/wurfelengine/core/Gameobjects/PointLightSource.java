@@ -29,7 +29,7 @@ public class PointLightSource extends AbstractEntity {
 	 * @param color
 	 * @param maxRadius cut at distance of this amount of meters. boosts
 	 * game performance if smaller
-	 * @param brightness
+	 * @param brightness empirical factor ~5-30
 	 */
 	public PointLightSource(Color color, float maxRadius, float brightness) {
 		super((byte) 0);

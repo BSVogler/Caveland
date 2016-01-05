@@ -120,7 +120,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 							default:
 								break;
 						}
-						robot.setTeamId(2);
+						robot.setTeamId(((Ejira) actor).getTeamId());//copy team id
 						linkToRobot.setRobot(robot);
 						WE.SOUND.play("construct");
 					}

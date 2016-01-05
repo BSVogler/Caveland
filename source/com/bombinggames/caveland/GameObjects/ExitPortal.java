@@ -83,8 +83,7 @@ public class ExitPortal extends Portal implements Interactable {
 				}
 			} else {
 				if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
-					fahrstuhlkorb = new SimpleEntity((byte) 22);
-					fahrstuhlkorb.setName("Lift Basket");
+					fahrstuhlkorb = new LiftBasket();
 					fahrstuhlkorb.spawn(getGround().toPoint());
 					if (getGround().add(0, 1, 0).getBlock().isObstacle())
 						getGround().add(0, 1, 0).destroy();
@@ -101,7 +100,7 @@ public class ExitPortal extends Portal implements Interactable {
 	}
 
 	/**
-	 *
+	 * Get the groudn under the portal.
 	 * @return copy safe
 	 */
 	public Coordinate getGround(){

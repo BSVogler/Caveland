@@ -67,7 +67,10 @@ public class Weapon extends AbstractEntity implements Telegraph {
     private final float delayBetweenShots;
     private final int shots;
     private final int relodingTime;
-    private final int distance;
+	/**
+	 * distance in m
+	 */
+    private float distance;
     private final int bps;//bullets per shot
     private final float spread;
     private final byte damage;
@@ -257,6 +260,14 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		this.fixedPos = fixedPos;
 	}
 
+	
+	/**
+	 * 
+	 * @param maxDistance 
+	 */
+	public void setMaxDistance(float maxDistance){
+		this.distance = maxDistance;
+	}
 	/**
 	 *
 	 * @return can be null
@@ -390,7 +401,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
                 aiming.y += Math.random() * (spread*2) -spread;
 				bullet.setMovement(aiming.scl(40f));
 				bullet.setScaling(-0.8f);
-                bullet.setMaxDistance(distance*100+100);
+                bullet.setMaxDistance(distance*Block.GAME_EDGELENGTH);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);
                 bullet.setImpactSprite(impactSprite);

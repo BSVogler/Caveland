@@ -58,7 +58,7 @@ public class Bullet extends MovableEntity {
 	 */
 	private byte damage;
 	private int distance = 0;//distance traveled
-	private int maxDistance = 1000;//default maxDistance
+	private float maxDistance = 1000;//default maxDistance
 	private int explosive = 0;
 	private int impactSprite;
 	private Coordinate ignoreCoord;
@@ -124,9 +124,9 @@ public class Bullet extends MovableEntity {
 
 	/**
 	 *
-	 * @param maxDistance
+	 * @param maxDistance in game space
 	 */
-	public void setMaxDistance(int maxDistance) {
+	public void setMaxDistance(float maxDistance) {
 		this.maxDistance = maxDistance;
 	}
 

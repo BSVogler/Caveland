@@ -50,7 +50,7 @@ public class Turret extends AbstractPowerBlock {
 	private float online;
 
 	/**
-	 *
+	 *the radius where enemies can be seen
 	 */
 	public final float MAXDISTANCE = 20;
 	private int teamId = 1;
@@ -120,12 +120,11 @@ public class Turret extends AbstractPowerBlock {
 			target = null;
 			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Robot.class);
 			if (!nearby.isEmpty()) {
-				Vector3 vecToTarget = null;
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {
 					target = it.next();
 					if (target.getTeamId() != getTeamId()) {
-						vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
+						Vector3 vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
 						//check if can see target
 						Intersection intersect = gun.getFixedPos().rayMarching(
 							vecToTarget,
@@ -141,7 +140,7 @@ public class Turret extends AbstractPowerBlock {
 							//can not see
 							target = null;
 						} else {
-							//can see target
+							//can see targetgg
 							if (
 								target != null
 								&& target.hasPosition()

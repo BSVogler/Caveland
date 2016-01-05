@@ -156,9 +156,9 @@ public class Inventory extends CollectibleContainer {
 	}
 
 	/**
-	 * Get type definitions. Does not alter anything.
+	 * Get type definitions for every inventory slot. Does not alter anything.
 	 *
-	 * @return can have null in array
+	 * @return can have null inside array
 	 */
 	public CollectibleType[] getContentDef() {
 		return new CollectibleType[]{

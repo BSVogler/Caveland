@@ -72,18 +72,21 @@ public class CraftingDialogueBox extends ActionBox {
 			imgA.setPosition(0, 50);
 			getWindow().addActor(imgA);
 
-			//+
-			Label plus = new Label("+", WE.getEngineView().getSkin());
-			plus.setPosition(100, 70);
-			getWindow().addActor(plus);
+			if (recipe.ingredients.length > 1) {
+				//+
+				Label plus = new Label("+", WE.getEngineView().getSkin());
+				plus.setPosition(100, 70);
+				getWindow().addActor(plus);
 
-			//B
-			Image imgB = recipe.getIngredientImage(1);
-			imgB.setPosition(150, 50);
-			if (inventory.contains(recipe.ingredients[1]) == 0) {
-				imgB.setColor(COLORNOTAVAILABLE);
+				//B
+				Image imgB = recipe.getIngredientImage(1);
+				imgB.setPosition(150, 50);
+				if (inventory.contains(recipe.ingredients[1]) == 0) {
+					imgB.setColor(COLORNOTAVAILABLE);
+				}
+				getWindow().addActor(imgB);
 			}
-			getWindow().addActor(imgB);
+			
 			//+ maybe C
 			if (recipe.ingredients.length > 2) {
 				Label plus2 = new Label("+", WE.getEngineView().getSkin());
@@ -136,36 +139,53 @@ public class CraftingDialogueBox extends ActionBox {
 	 * @return 
 	 */
 	public boolean canCraft(Recipe recipe, CollectibleType[] inventory){
-		int ing1 = -1;//not found in receipt
-		if (recipe.ingredients[0]==inventory[0])
+		if (inventory == null || inventory.length == 0 || recipe.ingredients.length > inventory.length) {
+			return false;
+		}
+		
+		int ing1 = -1;//slot number, -1 means not found in receipt
+		if (recipe.ingredients[0] == inventory[0]) {
 			ing1 = 0;
-		if (recipe.ingredients[0]==inventory[1])
+		}
+		if (recipe.ingredients[0] == inventory[1]) {
 			ing1 = 1;
-		if (recipe.ingredients[0]==inventory[2])
+		}
+		if (recipe.ingredients[0] == inventory[2]) {
 			ing1 = 2;
+		}
 
-		int ing2 = -1;//not found in receipt
-		if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1]==inventory[0])
-			ing2 = 0;
-		if (ing1 != 1 && ing1 != 1  && recipe.ingredients[1]==inventory[1])
-			ing2 = 1;
-		if (ing1 != 2 && ing1 != 2  && recipe.ingredients[1]==inventory[2])
-			ing2 = 2;
+		if (recipe.ingredients.length>1) {
+			int ing2 = -1;//not found in receipt
+			if (ing1 != -1 && ing1 != 0 && recipe.ingredients[1] == inventory[0]) {
+				ing2 = 0;
+			}
+			if (ing1 != 1 && ing1 != 1 && recipe.ingredients[1] == inventory[1]) {
+				ing2 = 1;
+			}
+			if (ing1 != 2 && ing1 != 2 && recipe.ingredients[1] == inventory[2]) {
+				ing2 = 2;
+			}
 
-		if (recipe.ingredients.length > 2) {
-			int ing3 = -1;//not found in receipt
-			if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2]==inventory[0])
-				ing3 = 0;
-			if (ing1 != -1 && ing1 != 1 && ing2 != -1 && ing2 != 1 && recipe.ingredients[2]==inventory[1])
-				ing3 = 1;
-			if (ing1 != -1 && ing1 != 2 && ing2 != -1 && ing2 != 2 && recipe.ingredients[2]==inventory[2])
-				ing3 = 2;
+			if (recipe.ingredients.length > 2) {
+				int ing3 = -1;//not found in receipt
+				if (ing1 != -1 && ing1 != 0 && ing2 != -1 && ing2 != 0 && recipe.ingredients[2] == inventory[0]) {
+					ing3 = 0;
+				}
+				if (ing1 != -1 && ing1 != 1 && ing2 != -1 && ing2 != 1 && recipe.ingredients[2] == inventory[1]) {
+					ing3 = 1;
+				}
+				if (ing1 != -1 && ing1 != 2 && ing2 != -1 && ing2 != 2 && recipe.ingredients[2] == inventory[2]) {
+					ing3 = 2;
+				}
 
-			if (ing1 != -1 && ing2 != -1 && ing3 != -1)
+				if (ing1 != -1 && ing2 != -1 && ing3 != -1) {
+					return true;
+				}
+			} else if (ing1 != -1 && ing2 != -1) {
 				return true;
-		} else {
-			if (ing1 != -1 && ing2 != -1)
-				return true;
+			}
+		} else if (ing1 != -1) {
+			return true;
 		}
 		return false;
 	}
@@ -194,14 +214,15 @@ public class CraftingDialogueBox extends ActionBox {
 	public void craft(Recipe recipe){
 		if (knownRecipes != null){
 			Collectible a = inventory.retrieveCollectible(recipe.ingredients[0]);
-			Collectible b = inventory.retrieveCollectible(recipe.ingredients[1]);
-			boolean thirdingredient = true;
+			Collectible b = null;
+			if (recipe.ingredients.length > 1) {
+				b = inventory.retrieveCollectible(recipe.ingredients[1]);
+			}
 			Collectible c = null;
 			if (recipe.ingredients.length > 2) {
-				thirdingredient = false;
 				c = inventory.getCollectible(recipe.ingredients[2]);
 			}
-			if (a != null && b != null && (thirdingredient || c != null)) {//can be crafted
+			if (a != null && (recipe.ingredients.length <= 1 || b != null) && (recipe.ingredients.length <= 2 || c != null)) {//can be crafted
 				//create new object at same position of inventory
 				if (recipe.resultIsCollectible()) {
 					recipe.getResultType().createInstance().spawn(inventory.getPosition().cpy());
@@ -215,8 +236,10 @@ public class CraftingDialogueBox extends ActionBox {
 				//delete them
 				a.dispose();
 				a = null;
-				b.dispose();
-				b = null;
+				if (b != null) {
+					b.dispose();
+					b = null;
+				}
 				if (c != null) {
 					c.dispose();
 				}

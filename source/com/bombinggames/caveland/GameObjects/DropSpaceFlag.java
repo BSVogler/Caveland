@@ -30,16 +30,36 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class DropSpaceFlag extends SimpleEntity{
+public class DropSpaceFlag extends SimpleEntity implements Interactable {
+
+	private static final long serialVersionUID = 1L;
 	
 	public DropSpaceFlag() {
 		super((byte) 24);
+	}
+
+	@Override
+	public void interact(CLGameView view, AbstractEntity actor) {
+		new DropSpaceFlagConstructionKit().spawn(actor.getPosition().cpy());
+		dispose();
+	}
+
+	@Override
+	public boolean interactable() {
+		return true;
+	}
+
+	@Override
+	public boolean interactableOnlyWithPickup() {
+		return false;
 	}
 	
 }

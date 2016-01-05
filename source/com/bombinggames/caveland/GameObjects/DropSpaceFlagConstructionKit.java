@@ -53,7 +53,7 @@ public class DropSpaceFlagConstructionKit extends Collectible implements Interac
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		new DropSpaceFlag().spawn(actor.getPosition());
+		new DropSpaceFlag().spawn(actor.getPosition().cpy());
 		dispose();
 	}
 

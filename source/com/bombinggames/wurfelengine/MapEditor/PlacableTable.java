@@ -88,7 +88,6 @@ public class PlacableTable extends Table {
 				//add air
 				add(
 					new PlacableItem(
-						this,
 						new BlockDrawable((byte) 0,(byte) 0, -0.7f),
 						new BlockListener((byte) 0)
 					)
@@ -104,7 +103,6 @@ public class PlacableTable extends Table {
 						) {
 							add(
 								new PlacableItem(
-									this,
 									new BlockDrawable(i, (byte) 0, -0.7f),
 									new BlockListener(i)
 								)
@@ -118,17 +116,18 @@ public class PlacableTable extends Table {
 				}
 			} else {
 				//add every registered entity class
-				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
-					: AbstractEntity.getRegisteredEntities().entrySet()) {
+				for (
+					Map.Entry<String, Class<? extends AbstractEntity>> entry
+					: AbstractEntity.getRegisteredEntities().entrySet()
+				) {
 					PlacableItem button = new PlacableItem(
-						this,
 						new EntityDrawable(entry.getValue()),
 						new EntityListener(entry.getKey(), entry.getValue())
 					);
 					add(button);
 
 					foundItems++;
-					if (foundItems % 4 == 0) {
+					if (foundItems % 5 == 0) {
 						row();//make new row
 					}
 				}
@@ -174,7 +173,8 @@ public class PlacableTable extends Table {
 		placeBlocks = false;
 		placableGUI.setMode(placeBlocks);
 		if (placableGUI.getEntity() == null) {//no init value for entity
-			placableGUI.setEntity(AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
+			placableGUI.setEntity(
+				AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
 		}

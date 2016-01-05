@@ -14,11 +14,10 @@ public class PlacableItem extends Stack {
 
 	/**
 	 * 
-	 * @param parent
 	 * @param drawable
 	 * @param result result of a click on it
 	 */
-	public PlacableItem(PlacableTable parent, TextureRegionDrawable drawable, ClickListener result) {
+	public PlacableItem(TextureRegionDrawable drawable, ClickListener result) {
 		//background
 		Image bgIcon = new Image(AbstractGameObject.getSprite('i', (byte) 10,(byte)  0));
 		

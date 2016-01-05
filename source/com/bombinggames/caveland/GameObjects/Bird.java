@@ -71,7 +71,6 @@ public class Bird extends MovableEntity {
 			);
 		}
 		
-		
 		addMovement(
 			new Vector2(
 				(float) (Math.random()-0.5f)*dt*0.02f,
@@ -79,7 +78,5 @@ public class Bird extends MovableEntity {
 			)
 		);
 	}
-	
-	
 	
 }

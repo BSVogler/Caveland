@@ -31,6 +31,7 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Ejira;
@@ -41,7 +42,9 @@ import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
+import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
@@ -54,12 +57,12 @@ import java.util.ArrayList;
 public class OvenLogic extends AbstractBlockLogicExtension implements Interactable {
 
 	private static final long serialVersionUID = 1L;
-	private final ParticleEmitter emitter;
+	private transient ParticleEmitter emitter;
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
 	private float burntime;
 	private CollectibleContainer container;
-	private final transient SimpleEntity fire = new SimpleEntity((byte) 17);
+	private transient SimpleEntity fire;
 
 	/**
 	 *
@@ -68,11 +71,6 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	 */
 	public OvenLogic(Block block, Coordinate coord) {
 		super(block, coord);
-		emitter = (ParticleEmitter) new ParticleEmitter().spawn(coord.toPoint());
-		emitter.setHidden(true);
-		emitter.setParticleStartMovement(Vector3.Z.cpy());
-		emitter.setActive(false);
-		fire.setLightlevel(10);
 	}
 
 	@Override
@@ -134,9 +132,27 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		}
 
 		if (burntime > 0) {//while the oven is burning
-			emitter.setActive(true);
+			if (fire == null || fire.shouldBeDisposed()) {
+				fire = (SimpleEntity) new SimpleEntity((byte) 17).spawn(getPosition().toPoint());
+				fire.setName("Oven Fire");
+				fire.setLightlevel(10);
+				fire.setSaveToDisk(false);
+			}
 			fire.setHidden(false);
-			emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
+			if (emitter == null || emitter.shouldBeDisposed()) {
+				emitter = (ParticleEmitter) new ParticleEmitter().spawn(getPosition().toPoint().add(25, 25, 5));
+				Particle prototype = new Particle();
+				prototype.setTTL(1000);
+				prototype.setColor(new Color(0.5f, 0.4f, 0.3f, 0.5f));
+				prototype.setType(ParticleType.SMOKE);
+				emitter.setPrototype(prototype);
+				emitter.setHidden(true);
+				emitter.setParticleStartMovement(Vector3.Z.cpy());
+				emitter.setActive(false);
+			//	emitter.set
+				emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
+			}
+			emitter.setActive(true);
 
 			//burn ironore
 			if (productionCountDown == 0) {
@@ -152,7 +168,6 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 			//decrease timer
 			if (productionCountDown > 0) {
 				productionCountDown -= dt;
-				emitter.setParticleSpread(new Vector3(3f, 1f, -0.5f));
 			}
 			//clamp
 			if (productionCountDown < 0) {

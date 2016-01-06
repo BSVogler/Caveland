@@ -38,12 +38,12 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 public enum ParticleType {
 
 	/**
-	 *
+	 *fades to black bevor fading and vanishing
 	 */
 	FIRE(true, true, true),
 
 	/**
-	 *
+	 *fades and vanishes
 	 */
 	SMOKE(true, false, true),
 

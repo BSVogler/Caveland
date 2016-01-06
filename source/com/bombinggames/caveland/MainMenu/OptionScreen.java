@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -115,7 +116,7 @@ public class OptionScreen extends WEScreen {
 		
 		fullscreenCB = new CheckBox("Fullscreen", WE.getEngineView().getSkin());
 		fullscreenCB.setPosition(stage.getWidth() / 2 + 100, 450);
-		fullscreenCB.setChecked(WE.isFullscreen());
+		fullscreenCB.setChecked(Gdx.graphics.isFullscreen());
 		stage.addActor(fullscreenCB);
 		
 		limitFPSCB = new CheckBox("limit FPS (recommended)", WE.getEngineView().getSkin());
@@ -224,7 +225,7 @@ public class OptionScreen extends WEScreen {
 	public void resize(int width, int height) {
 		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x"+Gdx.graphics.getHeight());
 		//stage.getViewport().setWorldSize(width, height);
-        Gdx.gl.glViewport(0, 0, width,height);
+        HdpiUtils.glViewport(0, 0, width, height);
 //		stage.clear();
 //		stage = new Stage( new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 //		fillStage();

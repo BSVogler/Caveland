@@ -35,6 +35,7 @@ import com.badlogic.gdx.graphics.Color;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -190,8 +191,8 @@ public class Camera implements MapObserver {
 	 */
 	public Camera(GameView view) {
 		gameView = view;
-		screenWidth = Gdx.graphics.getWidth();
-		screenHeight = Gdx.graphics.getHeight();
+		screenWidth = Gdx.graphics.getBackBufferWidth();
+		screenHeight = Gdx.graphics.getBackBufferHeight();
 		updateViewSpaceSize();
 
 		Point center = Controller.getMap().getCenter();
@@ -467,7 +468,7 @@ public class Camera implements MapObserver {
 			view.getSpriteBatch().setProjectionMatrix(combined);
 			view.getShapeRenderer().setProjectionMatrix(combined);
 			//set up the viewport, yIndex-up
-			Gdx.gl.glViewport(
+			HdpiUtils.glViewport(
 				screenPosX,
 				Gdx.graphics.getHeight() - screenHeight - screenPosY,
 				screenWidth,

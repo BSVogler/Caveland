@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.bombinggames.wurfelengine.MapEditor.EditorView;
 import com.bombinggames.wurfelengine.WE;
 import static com.bombinggames.wurfelengine.core.Controller.getMap;
@@ -128,7 +129,7 @@ public class GameplayScreen extends WEScreen {
 	public void resize(final int width, final int height) {
 		Gdx.graphics.setTitle("Wurfelengine V" + WE.VERSION + " " + Gdx.graphics.getWidth() + "x" + Gdx.graphics.getHeight());
 		view.resize(width, height);
-		Gdx.gl.glViewport(0, 0, width, height);
+		HdpiUtils.glViewport(0, 0, width, height);
 		//WE.getEngineView().getStage().setViewport(width, height);
 	}
 

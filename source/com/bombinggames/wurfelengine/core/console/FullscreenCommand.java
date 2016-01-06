@@ -5,6 +5,7 @@
  */
 package com.bombinggames.wurfelengine.core.console;
 
+import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import java.util.StringTokenizer;
@@ -17,7 +18,7 @@ public class FullscreenCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
-		WE.setFullscreen(!WE.isFullscreen());
+		WE.setFullscreen(!Gdx.graphics.isFullscreen());
         return true;
 	}
 

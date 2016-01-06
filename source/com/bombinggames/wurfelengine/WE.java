@@ -34,7 +34,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -66,17 +66,17 @@ import java.util.ArrayList;
 /**
  * The main class of the engine. To create a new engine use
  * {@link WE#launch(String, String[])} The Wurfel Engine needs Java &gt;= v1.8
- * and the API libGDX v1.6.2 (may work with older versions).
+ * and the API libGDX v1.8.0 (may work with older versions).
  *
  * @author Benedikt S. Vogler
- * @version 1.6.7
+ * @version 1.6.8
  */
 public class WE {
 
 	/**
 	 * The version of the Engine
 	 */
-	public static final String VERSION = "1.6.7";
+	public static final String VERSION = "1.6.8";
 	/**
 	 * the working directory where the config and files are saved
 	 */
@@ -155,7 +155,7 @@ public class WE {
 	 */
 	public static void launch(final String title, final String[] args) {
 		config.resizable = false;
-		config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
+		//config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
 		config.fullscreen = true;
 		config.vSyncEnabled = false;//if set to true the FPS is locked to 60
 
@@ -213,31 +213,25 @@ public class WE {
 
 		//load saved resolution
 		int width = CVARS.getValueI("resolutionx");
-		if (width > 0 && config.width == 0) {
+		if (width > 0 && config.width <= 640) {
 			config.width = width;
 		}
 
 		int height = CVARS.getValueI("resolutiony");
-		if (height > 0 && config.height == 0) {
+		if (height > 0 && config.height <= 480) {
 			config.height = CVARS.getValueI("resolutiony");
 		}
 
 		//find dpm with biggest width
-		Graphics.DisplayMode[] dpms = LwjglApplicationConfiguration.getDisplayModes();
-		Graphics.DisplayMode maxDPM = dpms[0];
-		for (Graphics.DisplayMode dpm : dpms) {
-			if (dpm.width > maxDPM.width) {
-				maxDPM = dpm;
-			}
-		}
-
+		DisplayMode dpms = LwjglApplicationConfiguration.getDesktopDisplayMode();
+		
 		//limit resolution to maximum
-		if (config.width > maxDPM.width) {
-			config.width = maxDPM.width;
+		if (config.width > dpms.width) {
+			config.width = dpms.width;
 		}
 
-		if (config.height > maxDPM.height) {
-			config.height = maxDPM.height;
+		if (config.height > dpms.height) {
+			config.height = dpms.height;
 		}
 
 		config.title = title + " " + config.width + "x" + config.height;
@@ -479,9 +473,14 @@ public class WE {
 	 * @param fullscreen
 	 */
 	public static void setFullscreen(final boolean fullscreen) {
-		Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fullscreen);
+		DisplayMode currentMode = Gdx.graphics.getDisplayMode();
+		if (fullscreen)
+			Gdx.graphics.setFullscreenMode(currentMode);
+		else {
+			Gdx.graphics.setWindowedMode(currentMode.width, currentMode.height);
+		}
 		config.fullscreen = Gdx.graphics.isFullscreen();
-		Gdx.app.debug("Wurfel Engine", "Set to fullscreen:" + fullscreen + " It is now:" + WE.isFullscreen());
+		Gdx.app.debug("Wurfel Engine", "Set to fullscreen:" + fullscreen + " It is now:" + Gdx.graphics.isFullscreen());
 	}
 
 	/**
@@ -493,20 +492,6 @@ public class WE {
 	 */
 	public static <T> T getAsset(String filename) {
 		return assetManager.get(filename);
-	}
-
-	/**
-	 * Check if the game is running in fullscreen.
-	 *
-	 * @return true when running in fullscreen, false if in window mode
-	 */
-	public static boolean isFullscreen() {
-		if (game != null) {
-			return Gdx.graphics.isFullscreen();
-		} else {
-			Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
-			return false;
-		}
 	}
 
 	/**
@@ -677,6 +662,11 @@ public class WE {
 
 		@Override
 		public void create() {
+			// get the current display mode of the monitor the window is on
+			DisplayMode mode = Gdx.graphics.getDisplayMode();
+			// set the window to fullscreen mode
+			//Gdx.graphics.setFullscreenMode(mode);
+			Gdx.graphics.getBackBufferWidth();
 			if (!skipintro) {
 				game.setScreen(new WurfelEngineIntro());
 			}

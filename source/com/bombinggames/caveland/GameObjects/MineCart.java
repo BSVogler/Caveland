@@ -45,12 +45,12 @@ public class MineCart extends MovableEntity implements Interactable {
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private transient float rollingCycle;
 	private transient long isPlayingSound;
-	private transient SimpleEntity back = new SimpleEntity((byte) 42,(byte) 0);
-	private transient SimpleEntity front = new SimpleEntity((byte) 42,(byte) 1);
+	private transient SimpleEntity back;
+	private transient SimpleEntity front;
 	private transient PointLightSource lightsource;
 	
 	/**
-	 * Has a front and back plate while the main part ist invisible.
+	 * Has a front and back plate while the main part ist hidden.
 	 */
 	public MineCart() {
 		super((byte) 42, 0);
@@ -62,14 +62,22 @@ public class MineCart extends MovableEntity implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		back = (SimpleEntity) back.spawn(point.cpy());
+		createBackAndFront();
+		setHidden(true);
+		MessageManager.getInstance().addListener(this, Events.teleport.getId());
+		return this;
+	}
+	
+	private void createBackAndFront(){
+		back = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 0).spawn(getPosition().cpy());
 		back.setSaveToDisk(false);
 		back.setName("MineCart Back");
-		front = (SimpleEntity) front.spawn(point.cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
+		//back = new SimpleEntity((byte) 42,(byte) 1);
+		//back.spawn(getPosition().cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
+		back.setSaveToDisk(false);
+		front = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 1).spawn(getPosition().cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
-		setHidden(true);
-		return this;
 	}
 
 	@Override
@@ -429,9 +437,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject(); //fills fld1 and fld2;
-		back = new SimpleEntity((byte) 42,(byte) 1);
-		back.spawn(getPosition().cpy().add(0, Block.GAME_DIAGLENGTH2, 0));//the back is located in back
-		back.setSaveToDisk(false);
+		createBackAndFront();
 	}
 
 	@Override

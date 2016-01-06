@@ -184,6 +184,13 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 
 	@Override
 	public void dispose() {
+		if (emitter != null) {
+			emitter.dispose();
+		}
+		if (fire != null) {
+			fire.dispose();
+		}
+		container.dispose();
 	}
 
 	@Override

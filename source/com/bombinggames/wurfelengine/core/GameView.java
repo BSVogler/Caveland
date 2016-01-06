@@ -97,11 +97,6 @@ public class GameView implements GameManager {
 	 */
 	private float gameSpeed = 1f;
 	
-		/**
-	 * @since v1.3.12
-	 */
-	private int orientation = 0;
-    
     /**
      * Shoud be called before the object get initialized.
      * Initializes class fields.

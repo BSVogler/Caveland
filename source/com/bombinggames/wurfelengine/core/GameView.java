@@ -501,7 +501,7 @@ public class GameView implements GameManager {
 
 
     /**
-     *
+     * to render in screen space with view space scaling?
      * @return
      */
     public ShapeRenderer getShapeRenderer() {

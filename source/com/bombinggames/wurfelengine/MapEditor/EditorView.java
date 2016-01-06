@@ -89,11 +89,11 @@ public class EditorView extends GameView implements Telegraph {
 	private Toolbar toolSelection;
 	private boolean selecting = false;
 	/**
-	 * start of selection in view space
+	 * start of selection in screen space
 	 */
 	private int selectDownX;
 	/**
-	 * start of selection in view space
+	 * start of selection in screen space
 	 */
 	private int selectDownY;
 	/**
@@ -249,9 +249,8 @@ public class EditorView extends GameView implements Telegraph {
     @Override
     public void render() {
         super.render();
-
+		ShapeRenderer shr = getShapeRenderer();
 		if (controller.getSelectedEntities() != null) {
-			ShapeRenderer shr = getShapeRenderer();
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
 			
@@ -271,20 +270,23 @@ public class EditorView extends GameView implements Telegraph {
 					true
 				);
 			}
-
+			shr.end();
+			shr = WE.getEngineView().getShapeRenderer();
+			shr.begin(ShapeRenderer.ShapeType.Line);
 			//selection outline
 			if (selecting) {
-				shr.rect(
-					viewToScreenX(selectDownX, camera),
-					viewToScreenY(selectDownY, camera),
-					viewToScreenX((int) (screenXtoView(Gdx.input.getX(), camera)) - viewToScreenX(selectDownX, camera), camera),//todo bug here
-					viewToScreenY((int) (screenYtoView(Gdx.input.getY(), camera)) - viewToScreenY(selectDownY, camera), camera)
+				WE.getEngineView().getShapeRenderer().rect(
+					selectDownX,
+					-selectDownY+Gdx.graphics.getHeight(),
+					Gdx.input.getX() - selectDownX,//todo bug here
+					(selectDownY-Gdx.input.getY())
 				);
 			}
-			shr.end();
+			WE.getEngineView().getShapeRenderer().end();
 		}
+		
 		nav.render(this);
-		toolSelection.render(WE.getEngineView().getShapeRenderer());
+		toolSelection.render(shr);
     }
 
     @Override
@@ -487,9 +489,9 @@ public class EditorView extends GameView implements Telegraph {
 					case SELECT:
 						if (WE.getEngineView().getCursor() != 2) {//not dragging
 							selecting = true;
-							selectDownX = (int) screenXtoView(screenX, camera);
-							selectDownY = (int) screenYtoView(screenY, camera);
-							select(selectDownX, selectDownY, selectDownX, selectDownY);
+							selectDownX = screenX;
+							selectDownY = screenY;
+							select((int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera), (int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera));
 						}
 						break;
 					case SPAWN:
@@ -561,8 +563,8 @@ public class EditorView extends GameView implements Telegraph {
 				}
 			} else if (selecting) {//currently selecting
 				select(
-					selectDownX,
-					selectDownY,
+					(int) screenXtoView(selectDownX, camera),
+					(int) screenYtoView(selectDownY, camera),
 					(int) screenXtoView(screenX, camera),
 					(int) screenYtoView(screenY, camera)
 				);

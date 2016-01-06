@@ -1292,14 +1292,15 @@ public class Camera implements MapObserver {
 	}
 
 	private void drawDebug(GameView view, Camera camera) {
-		view.getShapeRenderer().setColor(Color.RED.cpy());
-		view.getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-		view.getShapeRenderer().rect(-Chunk.getGameWidth(),//one chunk to the left
+		ShapeRenderer sh = view.getShapeRenderer();
+		sh.setColor(Color.RED.cpy());
+		sh.begin(ShapeRenderer.ShapeType.Line);
+		sh.rect(-Chunk.getGameWidth(),//one chunk to the left
 			-Chunk.getGameDepth(),//two chunks down
 			Chunk.getGameWidth()*3,
 			Chunk.getGameDepth()*3 / 2
 		);
-		view.getShapeRenderer().line(-Chunk.getGameWidth(),
+		sh.line(-Chunk.getGameWidth(),
 			-Chunk.getGameDepth() / 2,
 			-Chunk.getGameWidth() + Chunk.getGameWidth()*3,
 			-Chunk.getGameDepth() / 2
@@ -1309,19 +1310,19 @@ public class Camera implements MapObserver {
 			-Chunk.getGameWidth() + Chunk.getGameWidth()*3,
 			0
 		);
-		view.getShapeRenderer().line(
+		sh.line(
 			0,
 			Chunk.getGameDepth() / 2,
 			0,
 			-Chunk.getGameDepth()
 		);
-		view.getShapeRenderer().line(
+		sh.line(
 			Chunk.getGameWidth(),
 			Chunk.getGameDepth() / 2,
 			Chunk.getGameWidth(),
 			-Chunk.getGameDepth()
 		);
-		view.getShapeRenderer().end();
+		sh.end();
 	}
 
 }

@@ -123,8 +123,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * Get the amount of save files for this map.
+	 *
 	 * @param path
-	 * @return 
+	 * @return
 	 */
 	public static int getSavesCount(File path) {
 		FileHandle children = Gdx.files.absolute(path.getAbsolutePath());
@@ -157,7 +158,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		return copy;
 	}
 
-		/**
+	/**
 	 * every entity on the map is stored in this field
 	 */
 	private final ArrayList<AbstractEntity> entityList = new ArrayList<>(40);
@@ -174,27 +175,32 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	private boolean isLoading = false;
 
-    /** Stores the data of the map. */
-    private ArrayList<Chunk> data;
+	/**
+	 * Stores the data of the map.
+	 */
+	private ArrayList<Chunk> data;
 
-    /**
-     * Loads a map using the default generator.
-     * @param name if available on disk it will be load
+	/**
+	 * Loads a map using the default generator.
+	 *
+	 * @param name if available on disk it will be load
 	 * @param saveslot
-     * @throws java.io.IOException
-     */
-    public Map(final File name, int saveslot) throws IOException{
-        this(name, getDefaultGenerator(), saveslot);
-    }
+	 * @throws java.io.IOException
+	 */
+	public Map(final File name, int saveslot) throws IOException {
+		this(name, getDefaultGenerator(), saveslot);
+	}
 
-    /**
-     * Loads a map.
-     * @param name if available on disk it will load the meta file
-     * @param generator the generator used for generating new chunks
+	/**
+	 * Loads a map.
+	 *
+	 * @param name if available on disk it will load the meta file
+	 * @param generator the generator used for generating new chunks
 	 * @param saveSlot
-     * @throws java.io.IOException thrown if there is no full read/write access to the map file
-     */
-    public Map(final File name, Generator generator, int saveSlot) throws IOException {
+	 * @throws java.io.IOException thrown if there is no full read/write access
+	 * to the map file
+	 */
+	public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		this.generator = generator;
@@ -208,15 +214,16 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 		useSaveSlot(saveSlot);
 
-        Gdx.app.debug("Map","Map named \""+ name +"\", saveslot "+ saveSlot +" should be loaded");
+		Gdx.app.debug("Map", "Map named \"" + name + "\", saveslot " + saveSlot + " should be loaded");
 
-        data = new ArrayList<>(9);
+		data = new ArrayList<>(9);
 
 		//printCoords();
-    }
+	}
 
 	/**
-	 *Updates mostly the entities.
+	 * Updates Ïmostly the entities.
+	 *
 	 * @param dt time in ms
 	 */
 	public void update(float dt) {
@@ -226,10 +233,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		for (int i = 0; i < data.size(); i++) {
 			data.get(i).update(dt);
 		}
-		
+
 		//update every entity
 		//old style for loop because allows modification during loop
-		float rawDelta = Gdx.graphics.getRawDeltaTime()*1000f;
+		float rawDelta = Gdx.graphics.getRawDeltaTime() * 1000f;
 		for (int i = 0; i < entityList.size(); i++) {
 			AbstractEntity entity = entityList.get(i);
 			if (!entity.isInMemoryArea()) {
@@ -245,9 +252,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		//remove not spawned objects from list
 		entityList.removeIf((AbstractEntity entity) -> !entity.hasPosition());
 	}
-	
+
 	/**
 	 * Called after the view update to catch changes caused by the view
+	 *
 	 * @param dt
 	 */
 	public void postUpdate(float dt) {
@@ -267,16 +275,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * loads a chunk from disk
+	 * loads a chunk from disk if not already loaded.
+	 *
 	 * @param chunkX
 	 * @param chunkY
 	 * @return the loaded chunk. can return null
 	 */
-	public Chunk loadChunk(int chunkX, int chunkY){
-		//TODO check if already there.
-		
+	public Chunk loadChunk(int chunkX, int chunkY) {
 		//load only if not already in the process of loading
-		if (!isLoading){
+		if (!isLoading && getChunk(chunkX, chunkY) == null) {
 			isLoading = true;
 			Chunk chunk = new Chunk(this, getPath(), chunkX, chunkY, getGenerator());
 			data.add(chunk);
@@ -286,19 +293,23 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Loads a chunk from disk.
+	 * loads a chunk from disk if not already loaded.
+	 *
 	 * @param coord
 	 * @return the loaded chunk. can return null
 	 */
-	public Chunk loadChunk(Coordinate coord){
+	public Chunk loadChunk(Coordinate coord) {
 		return loadChunk(coord.getChunkX(), coord.getChunkY());
 	}
 
 	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
-	 * @param camera the camera which is used for the limits. Gets stored globally so only one camera can be used. Calling this method more then once ith different cameras overwrites the result.
+	 *
+	 * @param camera the camera which is used for the limits. Gets stored
+	 * globally so only one camera can be used. Calling this method more then
+	 * once ith different cameras overwrites the result.
 	 * @param chunkX chunk coordinate
 	 * @param chunkY chunk coordinate
 	 */
@@ -322,12 +333,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 //					-1
 //				);
 //		}
-
 		//iterate over chunk
 		DataIterator<Block> dataIter = new DataIterator<>(
 			chunkData,
 			0,
-			camera.getZRenderingLimit()-1
+			camera.getZRenderingLimit() - 1
 		);
 
 		while (dataIter.hasNext()) {
@@ -343,43 +353,37 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 				//left side
 				//get neighbour block
 				if (y % 2 == 0) {//next row is shifted right
-					neighbour = getIndex(chunk, x-1, y+1, z);
-				} else
-					neighbour = getIndex(chunk, x, y+1, z);
+					neighbour = getIndex(chunk, x - 1, y + 1, z);
+				} else {
+					neighbour = getIndex(chunk, x, y + 1, z);
+				}
 
-				if (neighbour!= null
-					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-				) {
+				if (neighbour != null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
 					current.setClippedLeft();
 				}
 
 				//right side
 				//get neighbour block
 				if (y % 2 == 0)//next row is shifted right
-					neighbour = getIndex(chunk, x, y+1, z);
-				else {
-					neighbour = getIndex(chunk, x+1, y+1, z);
+				{
+					neighbour = getIndex(chunk, x, y + 1, z);
+				} else {
+					neighbour = getIndex(chunk, x + 1, y + 1, z);
 				}
 
-				if (neighbour!= null
-					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))
-				) {
+				if (neighbour != null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
 					current.setClippedRight();
 				}
 
 				//check top
-				if (z < Chunk.getBlocksZ()-1) {
-					neighbour = getIndex(chunk, x, y+2, z+1);
-					if (
-						(
-							chunkData[x][y][z+1] != null
-							&& (
-								chunkData[x][y][z+1].hidingPastBlock()
-								|| chunkData[x][y][z+1].isLiquid() && current.isLiquid()
-							)
-						)
-						|| (neighbour != null && neighbour.hidingPastBlock())
-					) {
+				if (z < Chunk.getBlocksZ() - 1) {
+					neighbour = getIndex(chunk, x, y + 2, z + 1);
+					if ((chunkData[x][y][z + 1] != null
+						&& (chunkData[x][y][z + 1].hidingPastBlock()
+						|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
+						|| (neighbour != null && neighbour.hidingPastBlock())) {
 						current.setClippedTop();
 					}
 				}
@@ -389,32 +393,35 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * Helper function. Gets a block at an index. can be outside of this chunk
+	 *
 	 * @param chunk
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return
 	 */
-	private Block getIndex(Chunk chunk, int x, int y, int z){
-		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX())//index outside current chunk
+	private Block getIndex(Chunk chunk, int x, int y, int z) {
+		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX()) {//index outside current chunk
 			return getBlock(
-				chunk.getTopLeftCoordinate().getX()+x,
-				chunk.getTopLeftCoordinate().getY()+y,
+				chunk.getTopLeftCoordinate().getX() + x,
+				chunk.getTopLeftCoordinate().getY() + y,
 				z
 			);
-		else
+		} else {
 			return chunk.getBlockViaIndex(x, y, z);
+		}
 	}
 
-    /**
-     * Get the data of the map
-     * @return
-     */
+	/**
+	 * Get the data of the map
+	 *
+	 * @return
+	 */
 	public ArrayList<Chunk> getData() {
 		return data;
 	}
 
-   	/**
+	/**
 	 * Returns a block without checking the parameters first. Good for debugging
 	 * and also faster. O(n)
 	 *
@@ -423,26 +430,27 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-    public Block getBlock(final int x, final int y, final int z){
+	public Block getBlock(final int x, final int y, final int z) {
 		return getBlock(new Coordinate(x, y, z));
-    }
+	}
 
-    /**
+	/**
 	 * If the block can not be found returns null pointer.
 	 *
 	 * @param coord
 	 * @return
 	 */
-    public Block getBlock(final Coordinate coord){
-		if (coord.getZ() < 0)
+	public Block getBlock(final Coordinate coord) {
+		if (coord.getZ() < 0) {
 			return getNewGroundBlockInstance();
+		}
 		Chunk chunk = getChunk(coord);
-		if (chunk==null)
+		if (chunk == null) {
 			return null;
-		else
+		} else {
 			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
-
-    }
+		}
+	}
 
 	/**
 	 * Replace a block. Assume that the map already has been filled at this
@@ -452,12 +460,13 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @see
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
-    public void setBlock(final RenderBlock block) {
+	public void setBlock(final RenderBlock block) {
 		getChunk(block.getPosition()).setBlock(block);
-    }
+	}
 
-		/**
-	 * Set a block at this coordinate. This creates a logic instance if the block if it has a logic.
+	/**
+	 * Set a block at this coordinate. This creates a logic instance if the
+	 * block if it has a logic.
 	 *
 	 * @param coord
 	 * @param block
@@ -467,11 +476,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void setBlock(Coordinate coord, Block block) {
 		getChunk(coord).setBlock(coord, block);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param coord
-	 * @param value 
+	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
 		getChunk(coord).setValue(coord, value);
@@ -479,17 +488,17 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * get the chunk where the coordinates are on
+	 *
 	 * @param coord not altered
 	 * @return can return null if not loaded
 	 */
-	public Chunk getChunk(final Coordinate coord){
+	public Chunk getChunk(final Coordinate coord) {
 		//checks every chunk in memory
 		for (Chunk chunk : data) {
 			int left = chunk.getTopLeftCoordinate().getX();
-			int top  = chunk.getTopLeftCoordinate().getY();
+			int top = chunk.getTopLeftCoordinate().getY();
 			//check if coordinates are inside the chunk
-			if (
-				   left <= coord.getX()
+			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
 				&& coord.getY() < top + Chunk.getBlocksY()
@@ -501,7 +510,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c) where c =
+	 * get the chunk with the given chunk coords. <br>Runtime: O(c)  c:
 	 * amount of chunks -&gt; O(1)
 	 *
 	 * @param chunkX
@@ -520,18 +529,18 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * Get every entity on a chunk.
+	 *
 	 * @param xChunk
 	 * @param yChunk
 	 * @return
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnChunk(final int xChunk, final int yChunk){
+	public ArrayList<AbstractEntity> getEntitysOnChunk(final int xChunk, final int yChunk) {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-        for (AbstractEntity ent : getEntitys()) {
+		for (AbstractEntity ent : getEntitys()) {
             if (
-					ent.isGettingSaved() //save only entities which are flagged
-				&& ent.hasPosition()
+					ent.hasPosition()
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&
@@ -542,23 +551,24 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 					ent.getPosition().getY() < (yChunk+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
-             }
-        }
+			}
+		}
 
-        return list;
+		return list;
 	}
 
-		/**
+	/**
 	 * Get every entity on a chunk which should be saved
+	 *
 	 * @param xChunk
 	 * @param yChunk
 	 * @return
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(final int xChunk, final int yChunk){
+	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(final int xChunk, final int yChunk) {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-        for (AbstractEntity ent : getEntitys()) {
+		for (AbstractEntity ent : getEntitys()) {
             if (
 					ent.isGettingSaved() && ent.hasPosition() //save only entities which are flagged
 				&&
@@ -571,19 +581,19 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 					ent.getPosition().getY() < (yChunk+1)*Chunk.getGameDepth()//top chunk border
             ){
 				list.add(ent);//add it to list
-            }
-        }
+			}
+		}
 
-        return list;
+		return list;
 	}
 
-    /**
+	/**
 	 * saves every chunk on the map
 	 *
 	 * @param saveSlot
 	 * @return
 	 */
-    public boolean save(int saveSlot) {
+	public boolean save(int saveSlot) {
 		for (Chunk chunk : data) {
 			try {
 				chunk.save(
@@ -596,13 +606,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			}
 		}
 		return true;
-    }
-	
+	}
+
 	/**
-	 * save every chunk using the current active save slot. Saves position of the sun and moon at origin.
-	 * @return 
+	 * save every chunk using the current active save slot. Saves position of
+	 * the sun and moon at origin.
+	 *
+	 * @return
 	 */
-	public boolean save(){
+	public boolean save() {
 		WE.getCVarsSave().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
 		WE.getCVarsSave().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
 		return save(activeSaveSlot);
@@ -612,8 +624,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * prints the map to console
 	 */
 	public void print() {
-		MemoryMapIterator iter = getIterator(0, Chunk.getBlocksZ()-1);
-		while (iter.hasNext()){
+		MemoryMapIterator iter = getIterator(0, Chunk.getBlocksZ() - 1);
+		while (iter.hasNext()) {
 			//if (!iter.hasNextY() && !iter.hasNextX())
 			//	System.out.print("\n\n");
 			//if (!iter.hasNsextX())
@@ -629,10 +641,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-     * disposes every chunk
+	 * disposes every chunk
+	 *
 	 * @param save
-     */
-    public void dispose(boolean save){
+	 */
+	public void dispose(boolean save) {
 		for (Chunk chunk : data) {
 			if (save) {
 				chunk.dispose(getPath());
@@ -641,7 +654,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			}
 		}
 		disposeEntities();
-    }
+	}
 
 	/**
 	 *
@@ -659,7 +672,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * Add a logicblock to the map.
-	 * @param block 
+	 *
+	 * @param block
 	 */
 	public void addLogic(AbstractBlockLogicExtension block) {
 		Chunk chunk = getChunk(block.getPosition());
@@ -667,7 +681,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * uses a specific save slot for loading and saving the map. Loads the save cvars.
+	 * uses a specific save slot for loading and saving the map. Loads the save
+	 * cvars.
 	 *
 	 * @param slot
 	 */
@@ -722,7 +737,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		return getSavesCount(directory);
 	}
 
-		/**
+	/**
 	 * should be executed after the update method
 	 */
 	public void modificationCheck() {
@@ -757,19 +772,18 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		this.generator = generator;
 	}
 
-
-
 	/**
 	 * The name of the map on the file.
+	 *
 	 * @return
 	 */
 	public File getPath() {
 		return directory;
 	}
 
-
 	/**
 	 * Creates a new instance of the groundblock.
+	 *
 	 * @return
 	 */
 	public Block getNewGroundBlockInstance() {
@@ -783,7 +797,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public ArrayList<MapObserver> getOberservers() {
 		return observers;
 	}
-	
+
 	/**
 	 *
 	 * @param linked
@@ -819,7 +833,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * called when the map reloaded. Ideally should find this out by itself.
 	 */
-	public void onReload(){
+	public void onReload() {
 		//recalculates the light if requested
 		Gdx.app.debug("Map", "onReload");
 		for (MapObserver observer : observers) {
@@ -834,7 +848,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		this.modified = true;
 	}
 
-
 	/**
 	 * Returns a coordinate pointing to the absolute center of the map. Height
 	 * is half the map's height.
@@ -842,7 +855,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(Chunk.getBlocksZ()* Block.GAME_EDGELENGTH / 2);
+		return getCenter(Chunk.getBlocksZ() * Block.GAME_EDGELENGTH / 2);
 	}
 
 	/**
@@ -870,9 +883,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * Adds entities.
+	 *
 	 * @param ent entities should be already spawned
 	 */
-	public void addEntities(AbstractEntity... ent){
+	public void addEntities(AbstractEntity... ent) {
 		//remove duplicates
 		for (AbstractEntity e : ent) {
 			entityList.remove(e);
@@ -881,9 +895,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 *Disposes every entity on the map and clears the list.
+	 * Disposes every entity on the map and clears the list.
 	 */
-	public void disposeEntities(){
+	public void disposeEntities() {
 		entityList.forEach((AbstractEntity e) -> e.dispose());
 		entityList.clear();
 	}
@@ -941,7 +955,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			if (ent.hasPosition()
 				&& ent.getPosition().toCoord().equals(coord)//on coordinate?
 				&& filter.isInstance(ent)//of tipe of filter?
-			) {
+				) {
 				result.add((type) ent);//add it to list
 			}
 		}
@@ -966,9 +980,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	@Override
 	public Array<Connection<PfNode>> getConnections(PfNode fromNode) {
 		return fromNode.getConnections();
-		
+
 	}
-	
+
 	/**
 	 *
 	 * @param start
@@ -978,40 +992,39 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public DefaultGraphPath<PfNode> findPath(Coordinate start, Coordinate goal) {
 		IndexedAStarPathFinder<PfNode> pathFinder;
 		pathFinder = new IndexedAStarPathFinder<>(this, true);
-		
+
 		DefaultGraphPath<PfNode> path = new DefaultGraphPath<>();
 		path.clear();
 		Heuristic<PfNode> heuristic = new ManhattanDistanceHeuristic();
-		
+
 		boolean found = pathFinder.searchNodePath(
 			new PfNode(start),
 			new PfNode(goal),
 			heuristic,
 			path
 		);
-		
-		
+
 		return path;
 	}
 
 	@Override
 	public int getNodeCount() {
-		return Chunk.getBlocksX()*Chunk.getBlocksY();
+		return Chunk.getBlocksX() * Chunk.getBlocksY();
 	}
 
 	private static class ManhattanDistanceHeuristic implements Heuristic<PfNode> {
 
 		@Override
 		public float estimate(PfNode node, PfNode endNode) {
-			 return Math.abs(endNode.getX() - node.getX()) + Math.abs(endNode.getY() - node.getY());
+			return Math.abs(endNode.getX() - node.getX()) + Math.abs(endNode.getY() - node.getY());
 		}
 	}
-	
-	private static class EuklideanDistanceHeuristic implements Heuristic<PfNode >{
+
+	private static class EuklideanDistanceHeuristic implements Heuristic<PfNode> {
 
 		@Override
 		public float estimate(PfNode node, PfNode endNode) {
-			 return node.distanceTo(endNode);
+			return node.distanceTo(endNode);
 		}
 	}
 }

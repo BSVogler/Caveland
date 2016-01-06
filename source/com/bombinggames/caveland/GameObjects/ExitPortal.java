@@ -94,7 +94,7 @@ public class ExitPortal extends Portal implements Interactable {
 						getGround().add(0, 1, 0).destroy();
 					}
 				} else {
-					//teleport non-moving objects on the liftUp
+					//teleport objects on the lift
 					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
 					for (MovableEntity ent : entsOnLiftUp) {
 						teleport(ent);

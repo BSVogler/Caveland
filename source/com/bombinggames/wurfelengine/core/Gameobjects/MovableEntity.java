@@ -907,6 +907,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			return true;
 		}
 		
+		if (msg.message == Events.teleport.getId() && msg.receiver == this) {
+			setPosition(((Point) msg.extraInfo).cpy());
+			return true;
+		}
+		
 		if (msg.message == Events.standStill.getId() && msg.receiver == this) {
 			moveToAi = null;
 			setSpeedHorizontal(0);

@@ -1,9 +1,13 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.MineCart;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -14,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class LiftLogic extends AbstractBlockLogicExtension implements Interactable {
+public class LiftLogic extends AbstractBlockLogicExtension implements Interactable, Telegraph {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -42,7 +46,12 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 				//teleport minecarts to the ground
 				mineCarts.forEach(cart -> {
-					cart.setPosition(ground.goToNeighbour(5));
+					MessageManager.getInstance().dispatchMessage(
+						this,
+						cart,
+						Events.teleport.getId(),
+						ground.goToNeighbour(5).toPoint()
+					);
 					if (cart.getPassenger() != null){
 						cart.centerPassenger(true);
 					}
@@ -71,6 +80,11 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	
 	@Override
 	public boolean interactableOnlyWithPickup() {
+		return false;
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
 		return false;
 	}
 }

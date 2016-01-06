@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
@@ -28,7 +29,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 	/**
 	 * if true checks if at the target there is an exit pointing to this entry
 	 */
-	private boolean verifyExit;
+	private boolean verifiedExit;
 	private transient ExitPortal exitPortal;
 
 	/**
@@ -100,17 +101,24 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 * @param e
 	 */
 	public void teleport(AbstractEntity e){
-		if (verifyExit) {
-			ExitPortal eportal = getExitPortal();
+		if (verifiedExit) {
 			if (getPosition().toCoord().add(0, 0, 1).getLogic() instanceof LiftLogic) {
 				//teleport in front of lift
-				e.setPosition(eportal.getGround().add(0, 1, 0));
-			} else {
-				e.setPosition(target);
+				MessageManager.getInstance().dispatchMessage(
+					this,
+					e,
+					Events.teleport.getId(),
+					getExitPortal().getGround().goToNeighbour(6).toPoint()
+				);
+				return;
 			}
-		} else {
-			e.setPosition(target);
 		}
+		MessageManager.getInstance().dispatchMessage(
+			this,
+			e,
+			Events.teleport.getId(),
+			target.toPoint()
+		);
 	}
 
 	/**
@@ -157,7 +165,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 * @param verifyExit 
 	 */
 	public void setVerifyExit(boolean verifyExit) {
-		this.verifyExit = verifyExit;
+		this.verifiedExit = verifyExit;
 	}
 	
 	/**

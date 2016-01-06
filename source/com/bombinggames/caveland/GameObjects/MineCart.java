@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -48,6 +49,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private transient SimpleEntity back;
 	private transient SimpleEntity front;
 	private transient PointLightSource lightsource;
+	//private transient boolean passengerTeleported;
 	
 	/**
 	 * Has a front and back plate while the main part ist hidden.
@@ -64,7 +66,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		super.spawn(point);
 		createBackAndFront();
 		setHidden(true);
-		MessageManager.getInstance().addListener(this, Events.teleport.getId());
+		//MessageManager.getInstance().addListener(this, Events.teleport.getId());
 		return this;
 	}
 	
@@ -508,6 +510,16 @@ public class MineCart extends MovableEntity implements Interactable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		super.handleMessage(msg);
+		//possible hack to prevent passenger getting lost during teleportation
+//		if (msg.message == Events.teleport.getId() && msg.receiver==passenger) {
+//			passengerTeleported = true;
+//		}
+		return false;
 	}
 
 }

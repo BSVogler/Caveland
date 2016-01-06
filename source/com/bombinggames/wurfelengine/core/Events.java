@@ -79,7 +79,12 @@ public enum Events {
 	/**
 	 *
 	 */
-	standStill(19);
+	standStill(19),
+	
+	/**
+	 * extra information must contain {@link com.bombinggames.wurfelengine.core.Map.Point}
+	 */
+	teleport(20);
 	
 	private final int id;
 

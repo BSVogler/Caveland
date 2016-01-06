@@ -9,7 +9,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.Flagpole;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.PortalBlockLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.CaveEntryBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.GameObjects.logicblocks.RobotFactory;
@@ -392,7 +392,7 @@ public class CavelandBlocks implements CustomBlocks {
 	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
 		byte id = block.getId();
 		if (id == CLBlocks.ENTRY.id) {
-			return new PortalBlockLogic(block, coord);
+			return new CaveEntryBlockLogic(block, coord);
 		}
 		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSite(block, coord);

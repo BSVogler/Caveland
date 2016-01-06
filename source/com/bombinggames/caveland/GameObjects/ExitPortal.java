@@ -106,7 +106,7 @@ public class ExitPortal extends Portal implements Interactable {
 	}
 
 	/**
-	 * Get the groudn under the portal.
+	 * Get the ground coordinate under the portal.
 	 * @return copy safe
 	 */
 	public Coordinate getGround(){
@@ -144,7 +144,7 @@ public class ExitPortal extends Portal implements Interactable {
 			return null;
 		}
 
-		AbstractBlockLogicExtension logic = getTarget().add(0, -1, 0).getLogic();
+		AbstractBlockLogicExtension logic = getTarget().goToNeighbour(1).getLogic();//lift is to the back right
 		if (logic instanceof LiftLogic) {
 			return (LiftLogic) logic;
 		} else {

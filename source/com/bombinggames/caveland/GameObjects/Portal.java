@@ -2,8 +2,8 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
@@ -127,12 +127,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 		}
 		
 		//check target of exitportal
-		//target is left from portal
-		int x = 0;
-		if (getPosition().toCoord().getX() % 2 == 0) {
-			x = -1;
-		}
-		Coordinate exitTarget = getPosition().toCoord().add(x, 1, 1);
+		Coordinate exitTarget = getPosition().toCoord().goToNeighbour(5).add(0, 0, 1);//target is left from portal
 		if (!exitPortal.getTarget().equals(exitTarget)) {
 			exitPortal.setTarget(exitTarget);
 		}

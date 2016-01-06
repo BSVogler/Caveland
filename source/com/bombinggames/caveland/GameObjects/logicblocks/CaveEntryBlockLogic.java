@@ -50,7 +50,7 @@ import java.util.ArrayList;
  * Entry to the caves. Spawns a portal inside the block.
  * @author Benedikt Vogler
  */
-public class PortalBlockLogic extends AbstractBlockLogicExtension implements Interactable {
+public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements Interactable {
 
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
@@ -61,7 +61,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	 * @param block
 	 * @param coord
 	 */
-	public PortalBlockLogic(Block block, Coordinate coord) {
+	public CaveEntryBlockLogic(Block block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -83,7 +83,7 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 					//set target to new cave
 					int portalnumber = ChunkGenerator.getCaveNumber(getPosition());
 					if (portalnumber < 0) {//outside
-						portal.setTarget(ChunkGenerator.getCaveUp(0));
+						portal.setTarget(ChunkGenerator.getCaveUp(0));//every cave entry outside points to first cave
 					} else {
 						portal.setTarget(ChunkGenerator.getCaveUp(portalnumber + 1));
 					}
@@ -123,13 +123,13 @@ public class PortalBlockLogic extends AbstractBlockLogicExtension implements Int
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
-			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift? You can always enter the caves by jumping into the hole.")
+			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift?\n You can always enter the caves by jumping into the hole.")
 				.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 					Coordinate top = getPosition().cpy().add(0, 0, 1);
 					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getInstance());
 					ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(top);
 					constructionSiteLogic.setResult(CLBlocks.LIFT.getId());
-					WE.SOUND.play("metallic");
+					WE.SOUND.play("metallic", actor.getPosition());
 				})
 				.register(view, ((Ejira) actor).getPlayerNumber(), actor, getPosition());
 		}

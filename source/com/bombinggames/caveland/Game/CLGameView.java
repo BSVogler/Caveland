@@ -23,6 +23,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import org.lwjgl.opengl.Display;
 
 
 /**
@@ -195,9 +196,8 @@ public class CLGameView extends GameView{
 	@Override
     public void onEnter() {
         WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
-		
 		//is there a controller?
-		if (Controllers.getControllers().size > 0) {
+		if (Display.isActive() && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
 			//if there is second controller use it for second player
 			controllerListenerA = new XboxListener(this, getPlayer(0), 0);
 			Controllers.getControllers().get(0).addListener(controllerListenerA);

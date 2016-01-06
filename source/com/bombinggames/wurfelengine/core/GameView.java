@@ -410,7 +410,7 @@ public class GameView implements GameManager {
      * @param y the y position on the screen from bottom
      * @return the position on the map. can return null if no camera available
      */
-    public Intersection screenToGame(final int x, final int y){
+	public Intersection screenToGame(final int x, final int y) {
 		if (cameras.size() > 0) {
 			Point p = screenToGameBasic(x, y);
 			//find point at top of map
@@ -426,44 +426,49 @@ public class GameView implements GameManager {
 		} else {
 			return null;
 		}
-    }
+	}
 	
 	/**
 	 * Not a homomorphism, which means f(a*b) != f(a)*f(b)
+	 *
 	 * @param x view space
 	 * @param camera
 	 * @return screen space
 	 */
-	public int viewToScreenX(int x, Camera camera){
-		return (int) (x-camera.getViewSpaceX()+camera.getWidthInScreenSpc()/2);
+	public int viewToScreenX(int x, Camera camera) {
+		return (int) (x - camera.getViewSpaceX() + camera.getWidthInScreenSpc() / 2);
 	}
-	
+
 	/**
 	 * Not a homomorphism, which means f(a*b) != f(a)*f(b)
+	 *
 	 * @param y view space
 	 * @param camera
-	 * @return screen space 
+	 * @return screen space
 	 */
-	public int viewToScreenY(int y, Camera camera){
-		return (int) (y-camera.getViewSpaceY()+camera.getHeightInScreenSpc()/2);
+	public int viewToScreenY(int y, Camera camera) {
+		return (int) (y - camera.getViewSpaceY() + camera.getHeightInScreenSpc() / 2);
 	}
-    
+
 	/**
-     *Draw a string using the color white.
-     * @param msg
-     * @param xPos screen space
-     * @param yPos screen space
+	 * Draw a string using the color white.
+	 *
+	 * @param msg
+	 * @param xPos screen space
+	 * @param yPos screen space
 	 * @param openbatch true if begin/end shoould be called
-     */
-    public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
-        if (openbatch) {
+	 */
+	public void drawString(final String msg, final int xPos, final int yPos, boolean openbatch) {
+		if (openbatch) {
 			spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 			spriteBatch.begin();
 		}
 		WE.getEngineView().getFont().setColor(Color.WHITE.cpy());
 		WE.getEngineView().getFont().draw(spriteBatch, msg, xPos, yPos);
-        if (openbatch) spriteBatch.end();
-    }
+		if (openbatch) {
+			spriteBatch.end();
+		}
+	}
     
     /**
      *Draw a string in a color. Using open batch.

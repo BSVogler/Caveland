@@ -73,8 +73,8 @@ public class ConstructionKit extends Collectible implements Interactable {
 						CavelandBlocks.CLBlocks.POWERSTATION.toString()
 					),
 					new SelectionOption(
-						CavelandBlocks.CLBlocks.LIFT.getId(),
-						CavelandBlocks.CLBlocks.LIFT.toString()
+						CavelandBlocks.CLBlocks.TURRET.getId(),
+						CavelandBlocks.CLBlocks.TURRET.toString()
 					)
 				)
 				.setConfirmAction((SelectionOption result, AbstractEntity actor1) -> {

@@ -49,10 +49,11 @@ import java.util.Iterator;
 
 /**
  * The logic for a construciton site
+ *
  * @author Benedikt Vogler
  */
-public class ConstructionSite extends AbstractBlockLogicExtension implements Interactable  {
-	
+public class ConstructionSite extends AbstractBlockLogicExtension implements Interactable {
+
 	private static final long serialVersionUID = 1L;
 	private CollectibleContainer container;
 	private CollectibleType[] neededItems;
@@ -94,12 +95,15 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			case 2:
 				setResult(CavelandBlocks.CLBlocks.LIFT.getId());
 				break;
-			default:
+			case 3:
 				setResult(CavelandBlocks.CLBlocks.ROBOTFACTORY.getId());
+				break;
+			default:
+				setResult(CavelandBlocks.CLBlocks.TURRET.getId());
 				break;
 		}
 	}
-	
+
 	/**
 	 * The result if you finish the construction. Value is set to 0
 	 *
@@ -111,14 +115,14 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		if (resultId == CavelandBlocks.CLBlocks.OVEN.getId()) {
 			neededAmount = new int[]{2, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Stone, CollectibleType.Wood};
-		} else if (resultId == CavelandBlocks.CLBlocks.ROBOTFACTORY.getId()){
-			neededAmount = new int[]{2, 1,1};
+		} else if (resultId == CavelandBlocks.CLBlocks.ROBOTFACTORY.getId()) {
+			neededAmount = new int[]{2, 1, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Powercable, CollectibleType.Stone};
 		} else {
 			neededAmount = new int[]{2, 1};
 			neededItems = new CollectibleType[]{CollectibleType.Iron, CollectibleType.Wood};
 		}
-		
+
 		//set value for saving
 		if (resultId == CavelandBlocks.CLBlocks.OVEN.getId()) {
 			getPosition().setValue((byte) 0);
@@ -126,6 +130,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			getPosition().setValue((byte) 1);
 		} else if (resultId == CavelandBlocks.CLBlocks.LIFT.getId()) {
 			getPosition().setValue((byte) 2);
+		} else if (resultId == CavelandBlocks.CLBlocks.ROBOTFACTORY.getId()) {
+			getPosition().setValue((byte) 3);
+		} else if (resultId == CavelandBlocks.CLBlocks.TURRET.getId()) {
+			getPosition().setValue((byte) 4);
 		}
 	}
 
@@ -141,7 +149,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 		return string;
 	}
-	
+
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
@@ -154,7 +162,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			);
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param actor
@@ -175,7 +183,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 		return found;
 	}
-	
+
 	/**
 	 * transforms the construction site into the wanted building
 	 *
@@ -191,7 +199,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		WE.SOUND.play("construct");
 		return true;
 	}
-	
+
 	/**
 	 * if the block can be transformed
 	 *
@@ -206,24 +214,24 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 		}
 		return true;
 	}
-	
+
 	/**
 	 *
 	 * @param dt
 	 */
 	@Override
 	public void update(float dt) {
-		if (result==-1) {
+		if (result == -1) {
 			restoreResultFromValue();
 		}
-		
+
 		if (isValid()) {
 			//find existing unclaimed container on map
 			ArrayList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
 			Iterator<CollectibleContainer> it = list.iterator();
 			while (it.hasNext()) {
 				CollectibleContainer next = it.next();
-				if (next.getOwner()==null) {
+				if (next.getOwner() == null) {
 					container = list.get(0);
 					break;
 				}
@@ -281,7 +289,8 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 							if (frontItem != null) {
 								parent.container.add(frontItem);
 							}
-						}	break;
+						}
+						break;
 					case 1:
 						//fetch item
 						parent.container.retrieveCollectible(num.id - 1);
@@ -305,5 +314,5 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	public boolean interactableOnlyWithPickup() {
 		return false;
 	}
-	
+
 }

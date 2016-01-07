@@ -36,35 +36,26 @@ import com.bombinggames.wurfelengine.core.Map.Map;
 import java.util.NoSuchElementException;
 
 /**
- *A map iterator which loops only over area covered by the camera
+ * A map iterator which loops only over the chunks covered by the camera (0-8).
+ *
  * @author Benedikt Vogler
  */
 public class CameraSpaceIterator extends AbstractMapIterator {
+
 	private final int centerChunkX;
 	private final int centerChunkY;
 	private Chunk current;
-	
+
+	private int chunkNum = -1;
+
 	/**
-	 * The left chunk border index position. not equivalent to a coordinate
-	 */
-	private int chunkBorderX;
-	/**
-	 * The top chunk border index position. not equivalent to a coordinate
-	 */
-	private int chunkBorderY;
-	
-	private void updateChunkBorders() {
-		chunkBorderX = (current.getChunkX() - centerChunkX + 1) * Chunk.getBlocksX();
-		chunkBorderY = (current.getChunkY() - centerChunkY + 1) * Chunk.getBlocksY();
-	}
-	
-	/**
-	 * Starts at z=-1. 
+	 * Starts at z = -1.
+	 *
 	 * @param map
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
-	 * @param topLevel the top limit of the z axis 
+	 * @param topLevel the top limit of the z axis
 	 */
 	public CameraSpaceIterator(Map map, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
 		super(map);
@@ -72,66 +63,79 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		setStartingZ(startingZ);
 		centerChunkX = centerCoordX;
 		centerChunkY = centerCoordY;
-		//bring starting position to top left
-		current = map.getChunk(centerChunkX-1, centerChunkY-1);
-		if (current == null) {
-			current = map.loadChunk(centerChunkX-1, centerChunkY-1);
-		}
-		blockIterator = current.getIterator(startingZ, topLevel);
-		updateChunkBorders();
 	}
 
 	/**
-	 *Loops over the map areas covered by the camera.
-	 * @return 
+	 * Loops over the map areas covered by the camera.
+	 *
+	 * @return
 	 */
 	@Override
 	public Block next() throws NoSuchElementException {
-		if (!blockIterator.hasNext()){
+		if (blockIterator == null || !blockIterator.hasNext()) {
 			//reached end of chunk, move to next chunk
-			if (hasNextChunk()){//if has one move to next
-				if (centerChunkX >= current.getChunkX()) {//current is left or middle column
-					//continue one chunk to the right
-					current = map.getChunk(
-						current.getChunkX()+1,
-						current.getChunkY()
-					);
-					updateChunkBorders();
-				} else {
-					//move one row down
-					current = map.getChunk(
-						centerChunkX-1,
-						current.getChunkY()+1
-					);
-					updateChunkBorders();
-				}
-
+			current = null;
+			while (hasNextChunk() && current == null) {//if has one move to next
+				chunkNum++;
+				current = map.getChunk(
+					centerChunkX - 1 + chunkNum % 3,
+					centerChunkY - 1 + chunkNum / 3
+				);
+			}
+			if (current != null) {
 				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
 			}
 		}
 
-		return blockIterator.next();
+		if (chunkNum >= 9 || blockIterator == null) {
+			return null;
 		}
+		return blockIterator.next();
+	}
 
 	/**
 	 * get the indices position inside the chunk/data matrix
+	 *
 	 * @return copy safe
 	 */
 	public int[] getCurrentIndex() {
 		int[] inChunk = blockIterator.getCurrentIndex();
-		return new int[]{inChunk[0] + chunkBorderX, inChunk[1] + chunkBorderY, inChunk[2]};
+		return new int[]{
+			(chunkNum % 3) * Chunk.getBlocksX() + inChunk[0],
+			(chunkNum / 3) * Chunk.getBlocksY() + inChunk[1],
+			inChunk[2]
+		};
 	}
-	
+
 	@Override
 	public boolean hasNextChunk() {
-		return current.getChunkX() < centerChunkX+1//has next x
-			|| current.getChunkY() < centerChunkY+1; //or has next Y
+		return getNextChunk(chunkNum) != null;
+	}
+
+	private Chunk getNextChunk(int start) {
+		int i = start;
+		if (i < 0) {
+			i = 0;
+		}
+		while (i < 8) { //if has one move to next
+			Chunk chunk = map.getChunk(
+				centerChunkX - 1 + i % 3,
+				centerChunkY - 1 + i / 3
+			);
+			i++;
+			if (chunk != null) {
+				return chunk;
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return blockIterator.hasNext() || hasNextChunk();
+		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || hasNextChunk());
 	}
 
-
+	public boolean hasAnyBlock() {
+		return getNextChunk(0) != null;
+	}
 }

@@ -139,6 +139,9 @@ public class Inventory extends CollectibleContainer {
 	 */
 	@Override
 	public final boolean addFront(Collectible col) {
+		if (col == null) {
+			return false;
+		}
 		if (size() < 3) {
 			super.addFront(col);
 			return true;
@@ -263,11 +266,16 @@ public class Inventory extends CollectibleContainer {
 	 */
 	public void action(CLGameView view, AbstractEntity actor) {
 		//Get the first item and activate it. Then put it back.
-		Collectible item = retrieveFrontItem();
-		if (item != null && item instanceof Interactable) {
+		Collectible item = retrieveFrontItemReference();
+		if (item != null && item instanceof Interactable && ((Interactable) item).interactable()) {
+			//spawn it
+			item.setFloating(false);
+			item.allowPickup();
+			item.setHidden(false);
 			((Interactable) item).interact(view, actor);
-			addFront(item);
 		}
+		//turn back if not destroyed
+		addFront(item);
 	}
 
 	/**

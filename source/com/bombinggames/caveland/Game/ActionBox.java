@@ -38,6 +38,7 @@ public class ActionBox extends WidgetGroup {
 	private ActionBoxCancelAction cancelAction;
 	private ActionBoxSelectAction selectAction;
 	private boolean closed = false;
+	private String confirmSound = "menuConfirm";
 
 	/**
 	 *
@@ -254,7 +255,7 @@ public class ActionBox extends WidgetGroup {
 		if (selections != null && !selections.isEmpty())
 			result = selections.get(selectionNum);
 		remove();
-		WE.SOUND.play("menuConfirm");
+		WE.SOUND.play(confirmSound, actor.getPosition());
 		closed = true;
 		if (confirmAction != null) {
 			confirmAction.confirm(result, actor);
@@ -415,6 +416,10 @@ public class ActionBox extends WidgetGroup {
 			window.row();
 		}
 		//window.pack();
+	}
+	
+	public void setConfirmSound(String sound) {
+		this.confirmSound = sound;
 	}
 
 	boolean closed() {

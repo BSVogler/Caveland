@@ -44,8 +44,12 @@ public class CustomLoading extends LoadingScreen {
 		manager.load("com/bombinggames/caveland/sounds/throwFail.wav", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/droneLoop.mp3", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/robot2walk.mp3", Sound.class);
+		manager.load("com/bombinggames/caveland/sounds/robotScream.mp3", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/craft.wav", Sound.class);
 		manager.load("com/bombinggames/caveland/sounds/moneyPickup.wav", Sound.class);
+		manager.load("com/bombinggames/caveland/sounds/merchantAha.mp3", Sound.class);
+		manager.load("com/bombinggames/caveland/sounds/merchantWelcome.mp3", Sound.class);
+		manager.load("com/bombinggames/caveland/sounds/robotWeep.wav", Sound.class);
 	}
 	
 }

@@ -32,6 +32,7 @@ package com.bombinggames.caveland.GameObjects;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 
@@ -51,6 +52,7 @@ public class Shopkeeper extends MovableEntity implements Interactable {
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
+			WE.SOUND.play("merchantWelcome", actor.getPosition());
 			ActionBox shopWindow = new ActionBox(
 				getName(),
 				ActionBox.BoxModes.SELECTION,
@@ -58,6 +60,7 @@ public class Shopkeeper extends MovableEntity implements Interactable {
 			);
 			shopWindow.addSelection(new ActionBox.SelectionOption((byte) 1, "test"));
 			shopWindow.register(view, ((Ejira) actor).getPlayerNumber(), actor, this);
+			shopWindow.setConfirmSound("merchantAha");
 		}
 	}
 

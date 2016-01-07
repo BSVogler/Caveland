@@ -76,6 +76,11 @@ public class SpiderRobot extends Robot{
 			walkingSound = 0;
 		}
 		
+		boolean hadNoBlock = false;
+		if (workingBlock == null || workingBlock.getBlock() == null) {
+			hadNoBlock = true;
+		}
+		
 		if (hasPosition()) {
 			if (laserdot != null) {
 				//look for resources
@@ -121,6 +126,7 @@ public class SpiderRobot extends Robot{
 					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH, DropSpaceFlag.class);
 					if (!flagsnearby.isEmpty()) {
 						storage = flagsnearby.get(0).getPosition().toCoord();
+						WE.SOUND.play("robotWeep", getPosition());
 					}
 				}
 
@@ -147,7 +153,6 @@ public class SpiderRobot extends Robot{
 					}
 				}
 			}
-			
 			//validate workingBlock
 			if (workingBlock != null) {
 				Block block = workingBlock.getBlock();
@@ -162,6 +167,10 @@ public class SpiderRobot extends Robot{
 					) {
 						workingBlock = null;
 					}
+				}
+				//had no blok but now has
+				if (hadNoBlock && workingBlock != null) {
+					WE.SOUND.play("robotWeep", getPosition());
 				}
 			} else {
 				enableScanner();

@@ -415,8 +415,8 @@ public class Chunk {
 				FileInputStream fis = new FileInputStream(savepath.file());
 
 				byte bChar = loadBlocks(fis);
-				if (bChar == SIGN_ENDBLOCKS)
-					System.out.println("loaded block sucessfull");
+				//if (bChar == SIGN_ENDBLOCKS)
+					//Gdx.app.debug("Chunk","Loaded blocks sucessfull");
 
 				if (fis.available() > 0) {//not eof
 					loadEntities(fis, path);

@@ -274,8 +274,10 @@ public class Inventory extends CollectibleContainer {
 			item.setHidden(false);
 			((Interactable) item).interact(view, actor);
 		}
-		//turn back if not destroyed
-		addFront(item);
+		if (item!= null && !item.shouldBeDisposed()) {
+			//turn back if not destroyed
+			addFront(item);
+		}
 	}
 
 	/**

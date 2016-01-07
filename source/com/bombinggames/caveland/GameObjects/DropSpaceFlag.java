@@ -30,6 +30,7 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.bombinggames.caveland.GameObjects.collectibles.DropSpaceFlagConstructionKit;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;

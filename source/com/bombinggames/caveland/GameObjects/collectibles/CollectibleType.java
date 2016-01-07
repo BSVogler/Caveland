@@ -31,8 +31,6 @@
  */
 package com.bombinggames.caveland.GameObjects.collectibles;
 
-import com.bombinggames.caveland.GameObjects.DropSpaceFlagConstructionKit;
-
 /**
  * a enum which lists the types of collectibles. Saves information about the
  * sprites and connets the enum with the classes.

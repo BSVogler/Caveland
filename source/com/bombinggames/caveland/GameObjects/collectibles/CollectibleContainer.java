@@ -101,7 +101,7 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 	
 	/**
-	 * only allows collectibles to be added.
+	 * only allows collectibles to be added. spawns them
 	 *
 	 * @param collectible if not an collectible nothing happens
 	 * @return 

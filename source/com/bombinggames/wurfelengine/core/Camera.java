@@ -369,7 +369,7 @@ public class Camera implements MapObserver {
 		if (
 			getVisibleLeftBorder()
 			<
-			map.getChunk(centerChunkX-1, centerChunkY).getTopLeftCoordinate().getX()
+			(centerChunkX-1)*Chunk.getBlocksX()
 			//&& centerChunkX-1==//calculated xIndex -1
 			) {
 			centerChunkX--;
@@ -378,7 +378,7 @@ public class Camera implements MapObserver {
 		if (
 			getVisibleRightBorder()
 			>
-			map.getChunk(centerChunkX+1, centerChunkY).getTopLeftCoordinate().getX()+Chunk.getBlocksX()
+			(centerChunkX+2)*Chunk.getBlocksX()
 			//&& centerChunkX-1==//calculated xIndex -1
 			) {
 			centerChunkX++;
@@ -429,15 +429,11 @@ public class Camera implements MapObserver {
 	private void checkNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || WE.getCVars().getValueB("mapChunkSwitch")) {
-			checkChunk(centerChunkX - 1, centerChunkY - 1);
-			checkChunk(centerChunkX, centerChunkY - 1);
-			checkChunk(centerChunkX + 1, centerChunkY - 1);
-			checkChunk(centerChunkX - 1, centerChunkY);
-			checkChunk(centerChunkX, centerChunkY);
-			checkChunk(centerChunkX + 1, centerChunkY);
-			checkChunk(centerChunkX - 1, centerChunkY + 1);
-			checkChunk(centerChunkX, centerChunkY + 1);
-			checkChunk(centerChunkX + 1, centerChunkY + 1);
+			for (int x = -2; x < 2; x++) {
+				for (int y = -2; y < 2; x++) {
+					checkChunk(centerChunkX + x, centerChunkY + y);
+				}
+			}
 		}
 	}
 
@@ -782,21 +778,23 @@ public class Camera implements MapObserver {
 			Chunk.getBlocksZ() - 1
 		);
 
-		while (csIter.hasNext()) {
-			Block block = csIter.next();
-			int[] ind = csIter.getCurrentIndex();
-			if (block == null) {
-				cameraContent[ind[0]][ind[1]][ind[2] + 1] = null;
-			} else {
-				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toRenderBlock();
-				if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
-					cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
-						new Coordinate(
-							getCoveredLeftBorder() + ind[0],
-							getCoveredBackBorder() + ind[1],
-							ind[2]
-						)
-					);
+		if (csIter.hasAnyBlock()){
+			while (csIter.hasNext()) {
+				Block block = csIter.next();
+				int[] ind = csIter.getCurrentIndex();
+				if (block == null) {
+					cameraContent[ind[0]][ind[1]][ind[2] + 1] = null;
+				} else {
+					cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toRenderBlock();
+					if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
+						cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
+							new Coordinate(
+								getCoveredLeftBorder() + ind[0],
+								getCoveredBackBorder() + ind[1],
+								ind[2]
+							)
+						);
+					}
 				}
 			}
 		}

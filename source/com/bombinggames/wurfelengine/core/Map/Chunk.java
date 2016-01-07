@@ -98,6 +98,7 @@ public class Chunk {
 	 * a list of coordiants marked as dirty
 	 */
 	private final ArrayList<Coordinate> dirtyFlag = new ArrayList<>(10);
+	private ArrayList<AbstractEntity> entities = new ArrayList<>(15);
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -354,45 +355,48 @@ public class Chunk {
 		return bChar;
 	}
 
-
+	/**
+	 * fills entitie cache
+	 * @param fis
+	 * @param path 
+	 */
 	private void loadEntities(FileInputStream fis, File path){
 		//ends with a sign for logic or entities or eof
 		try (ObjectInputStream ois = new ObjectInputStream(fis)) {
 			byte bChar = ois.readByte();
-			if (bChar == SIGN_COMMAND)
+			if (bChar == SIGN_COMMAND) {
 				bChar = ois.readByte();
+			}
 
-			if (bChar==SIGN_ENTITIES){
-				if (WE.getCVars().getValueB("loadEntities")) {
-					try {
-						//loading entities
-						byte length = ois.readByte(); //amount of entities
-						Gdx.app.debug("Chunk", "Loading " + length +" entities.");
+			if (bChar == SIGN_ENTITIES && WE.getCVars().getValueB("loadEntities")){
+				try {
+					//loading entities
+					byte length = ois.readByte(); //amount of entities
+					Gdx.app.debug("Chunk", "Loading " + length +" entities.");
 
-						AbstractEntity object;
-						for (int i = 0; i < length; i++) {
-							try {
-								object = (AbstractEntity) ois.readObject();
-								Controller.getMap().addEntities(object);
-								Gdx.app.debug("Chunk", "Loaded entity: "+object.getName());
-								//objectIn.close();
-							} catch (ClassNotFoundException | InvalidClassException ex) {
-								Gdx.app.error("Chunk", "An entity could not be loaded: "+ex.getMessage());
-							}
+					AbstractEntity ent;
+					for (int i = 0; i < length; i++) {
+						try {
+							ent = (AbstractEntity) ois.readObject();
+							entities.add(ent);
+							Gdx.app.debug("Chunk", "Loaded entity: " + ent.getName());
+						} catch (ClassNotFoundException | InvalidClassException ex) {
+							Gdx.app.error("Chunk", "An entity could not be loaded: "+ex.getMessage());
 						}
-					} catch (IOException ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
-					} catch (java.lang.NoClassDefFoundError ex) {
-						Gdx.app.error("Chunk","Loading of entities in chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
 					}
+					ois.close();
+				} catch (IOException ex) {
+					Gdx.app.error("Chunk", "Loading of entities in chunk" + path + "/" + coordX + "," + coordY + " failed: " + ex);
+				} catch (java.lang.NoClassDefFoundError ex) {
+					Gdx.app.error("Chunk", "Loading of entities in chunk " + path + "/" + coordX + "," + coordY + " failed. Map file corrupt: " + ex);
 				}
 			}
 		} catch (IOException ex) {
-			Gdx.app.error("Chunk","Loading of chunk" +path+"/"+coordX+","+coordY + " failed: "+ex);
+			Gdx.app.error("Chunk", "Loading of chunk" + path + "/" + coordX + "," + coordY + " failed: " + ex);
 		} catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
-			Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Map file corrupt: "+ex);
-		} catch (ArrayIndexOutOfBoundsException ex){
-			Gdx.app.error("Chunk","Loading of chunk " +path+"/"+coordX+","+coordY + " failed. Chunk or meta file corrupt: "+ex);
+			Gdx.app.error("Chunk", "Loading of chunk " + path + "/" + coordX + "," + coordY + " failed. Map file corrupt: " + ex);
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			Gdx.app.error("Chunk", "Loading of chunk " + path + "/" + coordX + "," + coordY + " failed. Chunk or meta file corrupt: " + ex);
 		}
 	}
 
@@ -433,6 +437,12 @@ public class Chunk {
 
         return false;
     }
+
+	public ArrayList<AbstractEntity> retrieveEntities() {
+		ArrayList<AbstractEntity> tmp = entities;
+		entities = null;
+		return tmp;
+	}
 
 
     /**

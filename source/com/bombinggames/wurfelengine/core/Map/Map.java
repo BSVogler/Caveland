@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -170,15 +171,13 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
-	/**
-	 * to prevent recursion where the loading process loads new chunks
-	 */
-	private boolean isLoading = false;
 
 	/**
 	 * Stores the data of the map.
 	 */
 	private ArrayList<Chunk> data;
+	
+	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 
 	/**
 	 * Loads a map using the default generator.
@@ -229,6 +228,16 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void update(float dt) {
 		dt *= WE.getCVars().getValueF("timespeed");//aplly game speed
 
+		for (int i = 0; i < loadingRunnables.size(); i++) {
+			ChunkLoader runnable = loadingRunnables.get(i);
+			if (runnable.getChunk() != null) {
+				getData().add(runnable.getChunk());
+				addEntities(runnable.getChunk().retrieveEntities());
+				setModified();
+				loadingRunnables.remove(i);
+			}
+		}
+		
 		//oldschool loop to allow new chunks during update
 		for (int i = 0; i < data.size(); i++) {
 			data.get(i).update(dt);
@@ -279,29 +288,23 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 *
 	 * @param chunkX
 	 * @param chunkY
-	 * @return the loaded chunk. can return null
 	 */
-	public Chunk loadChunk(int chunkX, int chunkY) {
-		//load only if not already in the process of loading
-		if (!isLoading && getChunk(chunkX, chunkY) == null) {
-			isLoading = true;
-			Chunk chunk = new Chunk(this, getPath(), chunkX, chunkY, getGenerator());
-			data.add(chunk);
-			setModified();
-			isLoading = false;
-			return chunk;
+	public void loadChunk(int chunkX, int chunkY) {
+		if (getChunk(chunkX, chunkY) == null) {
+			ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
+			loadingRunnables.add(cl);
+			Thread thread = new Thread(cl, "loadChunk");
+			thread.start();
 		}
-		return null;
 	}
 
 	/**
 	 * loads a chunk from disk if not already loaded.
 	 *
 	 * @param coord
-	 * @return the loaded chunk. can return null
 	 */
-	public Chunk loadChunk(Coordinate coord) {
-		return loadChunk(coord.getChunkX(), coord.getChunkY());
+	public void loadChunk(Coordinate coord) {
+		loadChunk(coord.getChunkX(), coord.getChunkY());
 	}
 
 	/**
@@ -893,6 +896,20 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 		entityList.addAll(Arrays.asList(ent));
 	}
+	
+	/**
+	 * Adds entities.
+	 *
+	 * @param ent entities should be already spawned
+	 */
+	public void addEntities(Collection<AbstractEntity> ent) {
+		//remove duplicates
+		for (AbstractEntity e : ent) {
+			entityList.remove(e);
+		}
+		entityList.addAll(ent);
+	}
+	
 
 	/**
 	 * Disposes every entity on the map and clears the list.
@@ -912,7 +929,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	@SuppressWarnings(value = {"unchecked"})
 	public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> filter) {
-		ArrayList<type> result = new ArrayList<>(30); //defautl size 30
+		ArrayList<type> result = new ArrayList<>(30); //default size 30
+		if (filter == null) {
+			throw new IllegalArgumentException();
+		}
 		for (AbstractEntity entity : entityList) {
 			if (entity.hasPosition() && filter.isInstance(entity)) {
 				result.add((type) entity);
@@ -1010,6 +1030,14 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	@Override
 	public int getNodeCount() {
 		return Chunk.getBlocksX() * Chunk.getBlocksY();
+	}
+
+	public boolean isLoading(int chunkX, int chunkY) {
+		for (ChunkLoader lR : loadingRunnables) {
+			if (lR.getCoordX() == chunkX && lR.getCoordY() == chunkY)
+				return true;
+		}
+		return false;
 	}
 
 	private static class ManhattanDistanceHeuristic implements Heuristic<PfNode> {

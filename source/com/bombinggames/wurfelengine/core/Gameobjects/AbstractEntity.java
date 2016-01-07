@@ -35,6 +35,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.Map.Position;
 import java.io.IOException;
@@ -513,10 +514,15 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 */
 	public void requestChunk() {
 		if (hasPosition()) {
-			Chunk chunk = position.toCoord().getChunk();
+			Coordinate coord = position.toCoord();
+			Chunk chunk = coord.getChunk();
 			if (chunk == null) {
-				WE.getConsole().add("entity "+ getName() +" requested chunk "+position.toCoord().getChunkX()+","+position.toCoord().getChunkY());
-				Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
+				int chunkX = coord.getChunkX();
+				int chunkY = coord.getChunkY();
+				if (!Controller.getMap().isLoading(chunkX, chunkY)) {
+					WE.getConsole().add("Entity " + getName() + " requested chunk " + position.toCoord().getChunkX() + "," + position.toCoord().getChunkY());
+					Controller.getMap().loadChunk(position.toCoord().getChunkX(), position.toCoord().getChunkY());
+				}
 			}
 		}
 	}

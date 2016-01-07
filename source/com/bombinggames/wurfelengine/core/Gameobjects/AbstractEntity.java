@@ -441,7 +441,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	@SuppressWarnings({"unchecked"})
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-		enableShadow(); 
     }
 
 	/**

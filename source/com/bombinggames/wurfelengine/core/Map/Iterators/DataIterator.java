@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
@@ -39,7 +38,7 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  * @param <T>
  */
-public class DataIterator<T extends HasID> implements Iterator<T> {
+public class DataIterator<T> implements Iterator<T> {
 
 	/**
 	 * current position

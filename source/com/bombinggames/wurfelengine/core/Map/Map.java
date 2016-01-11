@@ -293,7 +293,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		if (getChunk(chunkX, chunkY) == null) {
 			ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
 			loadingRunnables.add(cl);
-			Thread thread = new Thread(cl, "loadChunk");
+			Thread thread = new Thread(cl, "loadChunk "+chunkX+","+chunkY);
 			thread.start();
 		}
 	}

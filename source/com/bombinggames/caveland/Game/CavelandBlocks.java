@@ -5,11 +5,11 @@ import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
+import com.bombinggames.caveland.GameObjects.logicblocks.CaveEntryBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.Flagpole;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.CaveEntryBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.GameObjects.logicblocks.RobotFactory;
@@ -274,7 +274,7 @@ public class CavelandBlocks implements CustomBlocks {
 	public RenderBlock toRenderBlock(Block data) {
 		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
 			RenderBlock a = new RenderBlock(data);
-			if (data.getSpriteValue() > 0){
+			if (data.getValue() > 0){
 				a.setSpriteId((byte) 3);
 			}
 			return a;

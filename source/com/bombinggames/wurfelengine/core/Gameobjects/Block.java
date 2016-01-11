@@ -191,13 +191,15 @@ public class Block implements HasID, Serializable {
 		return customBlocks.newLogicInstance(this, coord);
 	}
 
+	//controller data
 	private byte id;
 	private byte value;
 	private byte health = 100;
 
+	//view data
 	/**
 	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
-	 * by fraction /1023.
+	 * by fraction /2^10-1 = 1023.
 	 */
 	private int colorLeft = (55 << 16) + (55 << 8) + 55;
 	private int colorTop = (55 << 16) + (55 << 8) + 55;
@@ -212,6 +214,9 @@ public class Block implements HasID, Serializable {
 	 * 5 / 4 \ 3<br>
 	 */
 	private int aoFlags;
+	/**
+	 * three bits used, for each side one: TODO: move to aoFlags byte 3
+	 */
 	private byte clipping;
 
 	private Block(byte id) {
@@ -535,7 +540,7 @@ public class Block implements HasID, Serializable {
 		}
 	}
 	
-		/**
+	/**
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
@@ -545,40 +550,39 @@ public class Block implements HasID, Serializable {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
-		
-		byte colorBitshift = 0;
-		if (channel==0)
-			colorBitshift = 20;
-		else if (channel==1)
-			colorBitshift = 10;
-		
+
+		byte colorBitShift = (byte) (20 - 10 * channel);
+
 		float l = lightlevel * 512;
 		if (l > 1023) {
 			l = 1023;
 		}
-		
+
 		switch (side) {
-			case LEFT:{
-				int newl = (int) (((colorLeft >> colorBitshift) & 0x3FF) / 511f+l);
-				if (newl > 1023)
+			case LEFT: {
+				int newl = (int) (((colorLeft >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
 					newl = 1023;
-				colorLeft |= (newl << colorBitshift);
-					break;
 				}
-			case TOP:{
-				int newl = (int) (((colorTop >> colorBitshift) & 0x3FF) / 511f+l);
-				if (newl > 1023)
+				colorLeft |= (newl << colorBitShift);
+				break;
+			}
+			case TOP: {
+				int newl = (int) (((colorTop >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
 					newl = 1023;
-				colorTop  |= (newl << colorBitshift);
-					break;
 				}
-			default:{
-				int newl = (int) (((colorRight >> colorBitshift) & 0x3FF) / 511f+l);
-				if (newl > 1023)
+				colorTop |= (newl << colorBitShift);
+				break;
+			}
+			default: {
+				int newl = (int) (((colorRight >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
 					newl = 1023;
-				colorRight |= (newl << colorBitshift);
-					break;
 				}
+				colorRight |= (newl << colorBitShift);
+				break;
+			}
 		}
 	}
 

@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.Map.Position;
 import java.io.Serializable;
 
 /**
- *An AbstractGameObject is something wich can be found in the game world.
+ * An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
 public abstract class AbstractGameObject implements Serializable, HasID {

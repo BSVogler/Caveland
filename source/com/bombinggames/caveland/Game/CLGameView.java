@@ -253,7 +253,7 @@ public class CLGameView extends GameView{
 					if (next != null) {
 						//clip floor
 						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
-							next.getBlockData().setClippedTop();
+							next.setClippedTop();
 						}
 						////h
 //						int iout = ChunkGenerator.insideOutside(next.getPosition());

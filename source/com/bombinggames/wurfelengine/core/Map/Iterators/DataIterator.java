@@ -64,6 +64,7 @@ public class DataIterator<T> implements Iterator<T> {
 	) {
 		pos = new int[]{-1, 0, startingZ}; //start at -1 because the first call of next should return the first element
 		this.limitZ = limitZ;
+		if (data==null) throw new IllegalArgumentException();
 		this.data = data;
 
 		left = 0;

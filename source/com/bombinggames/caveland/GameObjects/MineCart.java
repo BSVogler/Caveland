@@ -168,7 +168,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				//percentageOfCurve += getMovementHor().len()*Block.GAME_EDGELENGTH/(Math.PI*Block.GAME_EDGELENGTH2);//divide by quaarter of circle outline
 				//left or right side offset
 						int offset = -1;
-						if (block.getSpriteValue() == 5) {
+						if (block.getValue()== 5) {
 							offset = 1;
 						}
 						Vector3 circularVec = getPosition().cpy().sub(//0P
@@ -189,7 +189,7 @@ public class MineCart extends MovableEntity implements Interactable {
 						);
 						
 						offset = 1;
-						if (block.getSpriteValue() == 4) {
+						if (block.getValue()== 4) {
 							offset = -1;
 						}
 						circularVec = getPosition().cpy().sub(//0P
@@ -210,7 +210,7 @@ public class MineCart extends MovableEntity implements Interactable {
 					}
 
 					//booster
-					if (block.getSpriteId() == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
+					if (block.getId()== CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
 						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
 							&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled()) {
 							setSpeedHorizontal(BOOSTERSPEED);
@@ -226,27 +226,27 @@ public class MineCart extends MovableEntity implements Interactable {
 
 				//jump on ramp
 				if (
-					   block.getSpriteValue() == 6 && getMovementHor().x > 0
-					|| block.getSpriteValue() == 7 && getMovementHor().y < 0
-					|| block.getSpriteValue() == 8 && getMovementHor().x < 0
-					|| block.getSpriteValue() == 9 && getMovementHor().y > 0
+					   block.getValue()== 6 && getMovementHor().x > 0
+					|| block.getValue() == 7 && getMovementHor().y < 0
+					|| block.getValue() == 8 && getMovementHor().x < 0
+					|| block.getValue() == 9 && getMovementHor().y > 0
 				) {
 					setMovement(new Vector3(getMovementHor().nor(), 0.8f).nor().scl(getMovement().len()*0.9f));
 				}
 				//roll down?
-				if (block.getSpriteValue() == 6 && getMovementHor().x <= 0) {
+				if (block.getValue() == 6 && getMovementHor().x <= 0) {
 					setOrientation(new Vector2(-1, 1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getSpriteValue() == 7 && getMovementHor().x >= 0) {
+				if (block.getValue() == 7 && getMovementHor().x >= 0) {
 					setOrientation(new Vector2(1, 1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getSpriteValue() == 8 && getMovementHor().x >= 0) {
+				if (block.getValue() == 8 && getMovementHor().x >= 0) {
 					setOrientation(new Vector2(1, -1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}
-				if (block.getSpriteValue() == 9 && getMovementHor().x <= 0) {
+				if (block.getValue() == 9 && getMovementHor().x <= 0) {
 					setOrientation(new Vector2(-1, -1).nor());
 					setSpeedHorizontal(MAXSPEED);
 				}

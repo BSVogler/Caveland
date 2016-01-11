@@ -30,9 +30,10 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Map;
+import com.bombinggames.wurfelengine.core.Map.RenderChunk;
 import java.util.NoSuchElementException;
 
 /**
@@ -40,29 +41,47 @@ import java.util.NoSuchElementException;
  *
  * @author Benedikt Vogler
  */
-public class CameraSpaceIterator extends AbstractMapIterator {
+public class CameraSpaceIterator {
 
+	/**
+	 * Always points to a block. Iterates over a chunk.
+	 */
+	private DataIterator<RenderBlock> blockIterator;
 	private final int centerChunkX;
 	private final int centerChunkY;
-	private Chunk current;
+	private RenderChunk current;
 
+	private int topLevel;
+	private final int startingZ;
 	private int chunkNum = -1;
+	private final GameView gameView;
 
 	/**
 	 * Starts at z = -1.
 	 *
-	 * @param map
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
 	 * @param topLevel the top limit of the z axis
 	 */
-	public CameraSpaceIterator(Map map, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
-		super(map);
-		setTopLimitZ(topLevel);
-		setStartingZ(startingZ);
+	public CameraSpaceIterator(GameView gameView, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+		this.gameView = gameView;
+		this.topLevel = topLevel;
+		this.startingZ = startingZ;
 		centerChunkX = centerCoordX;
 		centerChunkY = centerCoordY;
+	}
+
+	/**
+	 * set the top/last limit of the iteration (including).
+	 *
+	 * @param zLimit
+	 */
+	public void setTopLimitZ(int zLimit) {
+		this.topLevel = zLimit;
+		if (blockIterator != null) {
+			blockIterator.setTopLimitZ(zLimit);
+		}
 	}
 
 	/**
@@ -70,20 +89,19 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 	 *
 	 * @return
 	 */
-	@Override
-	public Block next() throws NoSuchElementException {
+	public RenderBlock next() throws NoSuchElementException {
 		if (blockIterator == null || !blockIterator.hasNext()) {
 			//reached end of chunk, move to next chunk
 			current = null;
 			while (hasNextChunk() && current == null) {//if has one move to next
 				chunkNum++;
-				current = map.getChunk(
+				current = gameView.getRenderStorage().getChunk(
 					centerChunkX - 1 + chunkNum % 3,
 					centerChunkY - 1 + chunkNum / 3
 				);
 			}
 			if (current != null) {
-				blockIterator = current.getIterator(getStartingZ(), getTopLimitZ());//reset chunkIterator
+				blockIterator = current.getIterator(startingZ, topLevel);//reset chunkIterator
 			}
 		}
 
@@ -107,18 +125,17 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		};
 	}
 
-	@Override
 	public boolean hasNextChunk() {
 		return getNextChunk(chunkNum) != null;
 	}
 
-	private Chunk getNextChunk(int start) {
+	private RenderChunk getNextChunk(int start) {
 		int i = start;
 		if (i < 0) {
 			i = 0;
 		}
 		while (i < 8) { //if has one move to next
-			Chunk chunk = map.getChunk(
+			RenderChunk chunk = gameView.getRenderStorage().getChunk(
 				centerChunkX - 1 + i % 3,
 				centerChunkY - 1 + i / 3
 			);
@@ -130,7 +147,6 @@ public class CameraSpaceIterator extends AbstractMapIterator {
 		return null;
 	}
 
-	@Override
 	public boolean hasNext() {
 		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || hasNextChunk());
 	}

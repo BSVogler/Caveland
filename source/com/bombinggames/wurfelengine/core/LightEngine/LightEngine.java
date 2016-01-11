@@ -35,12 +35,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.Map.RenderChunk;
 
 
 /**
@@ -629,18 +631,18 @@ public class LightEngine implements MapObserver {
 	@Override
 	public void onChunkChange(Chunk chunk) {
 		//perform light change only on this chunk
-		calcAO(chunk);
+		//calcAO(chunk.getRenderChunk());
 	}
 
 	/**
 	 * calcualtes the ambient occlusion for a chunk
 	 * @param chunk 
 	 */
-	private void calcAO(Chunk chunk) {
+	private void calcAO(RenderChunk chunk) {
 		//iterate over every block in chunk
-		DataIterator<Block> iterator = chunk.getIterator(0, Chunk.getBlocksZ() - 1);
+		DataIterator<RenderBlock> iterator = chunk.getIterator(0, Chunk.getBlocksZ() - 1);
 		while (iterator.hasNext()) {
-			Block next = iterator.next();
+			RenderBlock next = iterator.next();
 			//skip air and blocks without sides
 			if (next != null && next.hasSides()) {
 				//analyze top side

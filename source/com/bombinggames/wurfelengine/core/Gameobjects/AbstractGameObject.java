@@ -50,7 +50,7 @@ import java.io.Serializable;
  * An AbstractGameObject is something wich can be found in the game world.
  * @author Benedikt
  */
-public abstract class AbstractGameObject implements Serializable, HasID {
+public abstract class AbstractGameObject implements Serializable, Renderable {
 	private transient static final long serialVersionUID = 2L;
 	
     /**The sprite texture which contains every object texture*/

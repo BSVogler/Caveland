@@ -130,7 +130,7 @@ public class Minimap implements MapObserver {
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
                 int z = Chunk.getBlocksZ() -1;//start at top
-                while ( z>-1 && Controller.getMap().getBlock(x, y, z).getSpriteId() ==0 ) {
+                while ( z>-1 && Controller.getMap().getBlock(x, y, z).getId()==0 ) {
                     z--;//find topmost block in row
                 }
 
@@ -145,11 +145,11 @@ public class Minimap implements MapObserver {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getNewGroundBlockInstance().getSpriteId(),(byte) 0);
+                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getNewGroundBlockInstance().getId(),(byte) 0);
                 else {
                     Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
-                    if (block.getSpriteId()!=0)
-                        mapdata[x][y] = RenderBlock.getRepresentingColor(block.getSpriteId(), block.getSpriteValue());
+                    if (block.getId()!=0)
+                        mapdata[x][y] = RenderBlock.getRepresentingColor(block.getId(), block.getValue());
                     else 
                         mapdata[x][y] = new Color();//make air black
                 } 

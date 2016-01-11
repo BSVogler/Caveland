@@ -48,6 +48,7 @@ import java.util.ArrayList;
 
 /**
  * Entry to the caves. Spawns a portal inside the block.
+ *
  * @author Benedikt Vogler
  */
 public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements Interactable {
@@ -79,7 +80,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 					portal = portals.get(0);
 				} else {
 					portal = new Portal();
-					
+
 					//set target to new cave
 					int portalnumber = ChunkGenerator.getCaveNumber(getPosition());
 					if (portalnumber < 0) {//outside
@@ -89,23 +90,23 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 					}
 				}
 			}
-			
-			if (portal.shouldBeDisposed() || !portal.hasPosition()){//respawn if needed
+
+			if (portal.shouldBeDisposed() || !portal.hasPosition()) {//respawn if needed
 				portal.spawn(getPosition().toPoint());
 			} else {
 				portal.setPosition(getPosition().toPoint());//force at position
 			}
-			
+
 			//(re)configure
 			portal.setVerifyExit(true);
 
 			if (!interactable()) {
 				//inactive for falling into it
-				getPosition().getBlock().setSpriteValue((byte) 1);
+				getPosition().getBlock().setValue((byte) 1);
 				portal.setActive(false);
 			} else {
 				//active for falling into it
-				getPosition().getBlock().setSpriteValue((byte) 0);
+				getPosition().getBlock().setValue((byte) 0);
 				portal.setActive(true);
 			}
 		}
@@ -140,17 +141,17 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 		if (getPosition().cpy().add(0, 0, 1).getBlock() == null) {
 			return true;
 		}
-		return getPosition().cpy().add(0, 0, 1).getBlock().getSpriteId() == 0;
+		return getPosition().cpy().add(0, 0, 1).getBlock().getId() == 0;
 	}
 
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;
 	}
-	
+
 	@Override
 	public void dispose() {
 		portal.dispose();
 	}
-	
+
 }

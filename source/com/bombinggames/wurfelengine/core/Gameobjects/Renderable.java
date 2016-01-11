@@ -4,7 +4,7 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
  *Interface for objects whether they are blocks and entities.
  * @author Benedikt Vogler
  */
-public interface HasID {
+public interface Renderable {
 	
 	/**
      * returns the id of a object
@@ -69,12 +69,6 @@ public interface HasID {
 	 * @return <i>true</i> if it has sides, <i>false</i> if is rendered as a single sprite
 	 */
 	public abstract boolean hasSides();
-	
-	/**
-	 * A liquid has some physical properties which differ from solid blocks. The surface is rendered only once.
-	 * @return 
-	 */
-	public abstract boolean isLiquid();
 	
 	/**
 	 * Read the name of a id value combination.

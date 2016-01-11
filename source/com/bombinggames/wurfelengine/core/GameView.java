@@ -51,6 +51,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.LoadMenu;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +61,22 @@ import java.util.logging.Logger;
  * @author Benedikt
  */
 public class GameView implements GameManager {
+
+	    /**
+     * Shoud be called before the object get initialized.
+     * Initializes class fields.
+     */
+    public static void classInit(){
+        //set up font
+        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
+        //font.scale(2);
+
+        //font.scale(-0.5f);
+        
+        //load sprites
+        RenderBlock.loadSheet();
+    }
+	
 	/**
 	 * the cameras rendering the scene
 	 */
@@ -97,21 +114,9 @@ public class GameView implements GameManager {
 	 */
 	private float gameSpeed = 1f;
 	
-    /**
-     * Shoud be called before the object get initialized.
-     * Initializes class fields.
-     */
-    public static void classInit(){
-        //set up font
-        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
-        //font.scale(2);
-
-        //font.scale(-0.5f);
-        
-        //load sprites
-        RenderBlock.loadSheet();
-    }
 	private boolean useDefaultShader;
+	
+	private RenderStorage renderstorage;
     
 	/**
 	 * Loades some files and set up everything. This should be done after
@@ -151,6 +156,7 @@ public class GameView implements GameManager {
 
 		useDefaultShader();//set default shader
 
+		renderstorage = new RenderStorage(cameras);
 		initalized = true;
 	}
 	
@@ -258,6 +264,7 @@ public class GameView implements GameManager {
      * @param dt time since last update in ms.
      */
     public void update(final float dt){
+		renderstorage.update(dt);
 		gameSpeed = WE.getCVars().getValueF("timespeed");
 		
         AbstractGameObject.resetDrawCalls();
@@ -280,6 +287,10 @@ public class GameView implements GameManager {
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
     }
 	    
+	public RenderStorage getRenderStorage() {
+		return renderstorage;
+	}
+	
     /**
      * Main method which is called every time and renders everything. You must manually render the devtools e.g. in an extended render method.
      */

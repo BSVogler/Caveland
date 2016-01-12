@@ -212,9 +212,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 		
 		//update chunks
-		//oldschool loop to allow new chunks during update
-		for (int i = 0; i < data.size(); i++) {
-			data.get(i).update(dt);
+		 for (Chunk chunk : data) {
+			chunk.update(dt);
 		}
 
 		//update every entity

@@ -103,6 +103,8 @@ public class RenderChunk {
 			}
 		}
 	}
+	
+	
 	/**
 	 * reset light to normal level for corodiantes marked as dirty
 	 */
@@ -192,11 +194,11 @@ public class RenderChunk {
 		);
 	}
 
-	int getChunkX() {
+	public int getChunkX() {
 		return chunk.getChunkX();
 	}
 
-	int getChunkY() {
+	public int getChunkY() {
 		return chunk.getChunkY();
 	}
 

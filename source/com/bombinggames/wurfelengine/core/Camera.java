@@ -415,10 +415,6 @@ public class Camera implements MapObserver {
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 
 		checkNeededChunks();
-		//if changed
-		if (oldX != centerChunkX || oldY != centerChunkY) {
-			fillCameraContentBlocks();
-		}
 	}
 
 	/**
@@ -767,7 +763,7 @@ public class Camera implements MapObserver {
 	/**
 	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
 	 */
-	private void fillCameraContentBlocks() {
+	public void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			gameView,

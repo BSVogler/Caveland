@@ -97,12 +97,20 @@ public class RenderStorage implements MapObserver  {
 		
 		//check if needed chunks are there and mark them
 		for (Camera camera : cameraContainer) {
+			boolean changesToCameraCache = false;
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
-					checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y);
+					if (checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y)) {
+						changesToCameraCache = true;
+					}
 				}
 			}
+			if (changesToCameraCache) {
+				camera.fillCameraContentBlocks();
+			}
 		}
+		
+		
 		//remove chunks which are not used
 		data.removeIf(chunk -> !chunk.cameraAccess());
 	}
@@ -112,15 +120,18 @@ public class RenderStorage implements MapObserver  {
 	 *
 	 * @param x
 	 * @param y
+	 * @return true if added new renderchunk
 	 */
-	private void checkChunk(int x, int y) {
+	private boolean checkChunk(int x, int y) {
 		RenderChunk rChunk = getChunk(x, y);
 		if (rChunk == null) {//not in storage
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
-				RenderChunk newrChunk = new RenderChunk(mapChunk);
-				data.add(newrChunk);
-				newrChunk.setCameraAccess(true);
+				RenderChunk newRChunk = new RenderChunk(mapChunk);
+				data.add(newRChunk);
+				newRChunk.setCameraAccess(true);
+				hiddenSurfaceDetection(newRChunk, cameraContainer.get(0).getZRenderingLimit() - 1);
+				
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
 				if (neighbor != null) {
@@ -134,10 +145,12 @@ public class RenderStorage implements MapObserver  {
 				if (neighbor != null) {
 					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
 				}
+				return true;
 			}
 		} else {
 			rChunk.setCameraAccess(true);
 		}
+		return false;
 	}
 	
 	/**

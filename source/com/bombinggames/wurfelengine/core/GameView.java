@@ -265,7 +265,6 @@ public class GameView implements GameManager {
      * @param dt time since last update in ms.
      */
     public void update(final float dt){
-		renderstorage.update(dt);
 		gameSpeed = WE.getCVars().getValueF("timespeed");
 		
         AbstractGameObject.resetDrawCalls();
@@ -279,6 +278,8 @@ public class GameView implements GameManager {
         for (Camera camera : cameras) {
             camera.update(dt);
         }
+		
+		renderstorage.update(dt);
 		
         // toggle the dev menu?
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {

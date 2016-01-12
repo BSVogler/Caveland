@@ -291,8 +291,6 @@ public class EditorView extends GameView implements Telegraph {
 
     @Override
 	public void update(final float dt) {
-		super.update(dt);
-
 		if (camera != null) {
 			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "screen"-game time
 			camera.move((int) (camermove.x * cameraspeed * rdt), (int) (camermove.y * cameraspeed * rdt));
@@ -304,6 +302,8 @@ public class EditorView extends GameView implements Telegraph {
 				(AbstractEntity e) -> e.getPosition().setZ(e.getPosition().getZ()+moveEntities*5)
 			);
 		}
+		
+		super.update(dt);
 	}
 
 	@Override

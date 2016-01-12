@@ -63,6 +63,13 @@ public class RenderStorage implements MapObserver  {
 	
 	public void update(float dt){
 		checkNeededChunks();
+		
+	}
+	
+	public void preUpdate(float dt){
+		for (RenderChunk chunk : data) {
+			chunk.update();
+		}
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
@@ -14,7 +15,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 public class BoosterLogic extends AbstractBlockLogicExtension {
 
 	private boolean power = false;
-	private final PointLightSource light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12);
+	private final PointLightSource light;
 
 	/**
 	 *
@@ -24,6 +25,7 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	 */
 	public BoosterLogic(Block block, Coordinate coord) {
 		super(block, coord);
+		light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12, WE.getGameplay().getView());
 		light.setSaveToDisk(false);
 		light.disable();
 		light.spawn(coord.toPoint().add(0, 0, Block.GAME_EDGELENGTH2*0.5f));

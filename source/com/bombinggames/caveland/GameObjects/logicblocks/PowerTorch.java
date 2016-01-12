@@ -32,6 +32,7 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -64,7 +65,7 @@ public class PowerTorch extends AbstractPowerBlock {
 		super.update(dt);
 		
 		if (lightsource == null) {
-			lightsource = new PointLightSource(Color.YELLOW, 3, 15);
+			lightsource = new PointLightSource(Color.YELLOW, 3, 15, WE.getGameplay().getView());
 		}
 
 		if (lightsource.getPosition() == null) {

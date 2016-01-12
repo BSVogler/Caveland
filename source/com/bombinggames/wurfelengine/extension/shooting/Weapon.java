@@ -306,7 +306,12 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		//move back
 		if (hasPosition() && fixedPos != null) {
 			if (lightSource==null && fixedPos != null){
-				lightSource= (PointLightSource) new PointLightSource(Color.WHITE.cpy(), 3, 30f).spawn(fixedPos.cpy());
+				lightSource= (PointLightSource) new PointLightSource(
+					Color.WHITE.cpy(),
+					3,
+					30f,
+					WE.getGameplay().getView()
+				).spawn(fixedPos.cpy());
 				lightSource.setSaveToDisk(false);
 			}
 			if (firing){

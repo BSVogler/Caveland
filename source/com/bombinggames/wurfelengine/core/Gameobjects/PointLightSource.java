@@ -3,7 +3,6 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
@@ -31,6 +30,7 @@ public class PointLightSource extends AbstractEntity {
 	private float brightness;
 	private boolean enabled = true;
 	private Point lastPos;
+	private final GameView view;
 
 	/**
 	 *
@@ -38,8 +38,9 @@ public class PointLightSource extends AbstractEntity {
 	 * @param maxRadius cut at distance of this amount of meters. boosts
 	 * game performance if smaller
 	 * @param brightness empirical factor ~5-30
+	 * @param view
 	 */
-	public PointLightSource(Color color, float maxRadius, float brightness) {
+	public PointLightSource(Color color, float maxRadius, float brightness, GameView view) {
 		super((byte) 0);
 		setName("LightSource");
 		disableShadow();
@@ -52,6 +53,7 @@ public class PointLightSource extends AbstractEntity {
 		} else {
 			this.lightcache = new float[this.radius * 2][this.radius * 4][this.radius * 2][3];
 		}
+		this.view = view;
 	}
 	
 	private void clearCache() {
@@ -69,7 +71,6 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		//lightNearbyBlocks(0);
 		return this;
 	}
 
@@ -80,7 +81,6 @@ public class PointLightSource extends AbstractEntity {
 		//if moved
 		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
 			clearCache();
-			//lightNearbyBlocks(0);
 		}
 	}
 
@@ -91,7 +91,6 @@ public class PointLightSource extends AbstractEntity {
 		//if moved
 		if (hasPosition() && enabled && (lastPos==null || !lastPos.equals(getPosition()))){
 			clearCache();
-			//lightNearbyBlocks(0);
 		}
 	}
 	
@@ -196,15 +195,9 @@ public class PointLightSource extends AbstractEntity {
 		
 		if (enabled && hasPosition()) {
 			if (lastPos==null || !lastPos.equals(getPosition())) {
-				//lightNearbyBlocks(dt);
+				lightNearbyBlocks(dt);
 			}
-		}
-	}
-	
-	@Override
-	public void render(GameView view, Camera camera) {
-		if (enabled && hasPosition()) {
-
+			
 			//apply cache
 			Coordinate tmp = getPosition().toCoord();
 			int xCenter = tmp.getX();
@@ -231,8 +224,8 @@ public class PointLightSource extends AbstractEntity {
 				}
 			}
 		}
+		
 	}
-	
 
 	/**
 	 *

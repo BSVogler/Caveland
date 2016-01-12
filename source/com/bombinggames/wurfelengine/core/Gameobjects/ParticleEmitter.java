@@ -34,6 +34,7 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Map.Point;
 
 /**
@@ -191,7 +192,7 @@ public class ParticleEmitter extends AbstractEntity {
 	private void checkLightSource() {
 		if (hasPosition() && prototype.getType() == ParticleType.FIRE) {
 			if (lightsource == null) {
-				lightsource = new PointLightSource(Color.YELLOW, 5, 11);
+				lightsource = new PointLightSource(Color.YELLOW, 5, 11, WE.getGameplay().getView());
 				lightsource.setPosition(getPosition().cpy());
 			} else {
 				lightsource.getPosition().setValues(getPosition());

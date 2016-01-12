@@ -93,7 +93,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			Block block = pos.getBlock();
 			
 			if (lightsource == null) {
-				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1);
+				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1, WE.getGameplay().getView());
 				lightsource.setSaveToDisk(false);
 				lightsource.setPosition(getPosition().cpy());
 			}

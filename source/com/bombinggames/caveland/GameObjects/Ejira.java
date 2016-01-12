@@ -200,7 +200,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter2.setHidden(true);
 		emitter2.setSaveToDisk(false);
 		emitter2.setParticleSpread(new Vector3(0.6f, 0.6f, 0.5f));
- 
+		
 		setSaveToDisk(false);
 	}
 
@@ -212,10 +212,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter.spawn(point.cpy());
 		emitter2.spawn(point.cpy());
 		
-		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10);
+		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10, WE.getGameplay().getView());
 		lightsource.setSaveToDisk(false);
-		lightsource.spawn(point.cpy().add(0, 0, Block.GAME_EDGELENGTH2));
-		
+		lightsource.spawn(getPosition().cpy().add(0, 0, Block.GAME_EDGELENGTH2));
 		return this;
 	}
 	

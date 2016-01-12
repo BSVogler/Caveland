@@ -263,6 +263,14 @@ public class GameView implements GameManager {
 		WE.getCVars().get("timespeed").setValue(gameSpeed);
 		onEnter();
 	}
+	
+	/**
+	 * update before the game logic calls
+	 * @param dt 
+	 */
+	public void preUpdate(final float dt){
+		renderstorage.preUpdate(dt);
+	}
 
     /**
      *Updates every camera and everything else which must be updated.

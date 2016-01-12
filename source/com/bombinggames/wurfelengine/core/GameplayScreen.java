@@ -116,6 +116,7 @@ public class GameplayScreen extends WEScreen {
 		float dt = delta * WE.getCVars().getValueF("timespeed");
 		//update data
 		MessageManager.getInstance().update(delta);
+		view.preUpdate(dt);
 		controller.update(dt);
 		Controller.staticUpdate(dt);
 		view.update(dt);

@@ -96,10 +96,10 @@ public class RenderChunk {
 	public void update(){
 		resetShadingForDirty();
 	}
+	
 	/**
 	 *
 	 */
-	
 	protected void resetClipping() {
 		int blocksZ = Chunk.getBlocksZ();
 		int blocksX = Chunk.getBlocksX();
@@ -117,7 +117,7 @@ public class RenderChunk {
 	
 	
 	/**
-	 * reset light to normal level for corodiantes marked as dirty
+	 * reset light to normal level for cordinates marked as dirty
 	 */
 	private void resetShadingForDirty() {
 		for (Coordinate coord : dirtyFlag) {
@@ -145,7 +145,6 @@ public class RenderChunk {
 	
 	/**
 	 * Resets the shading for one block.
-	 * @param coord 
 	 */
 	private void resetShadingCoord(int idexX, int idexY, int idexZ){
 		int blocksZ = Chunk.getBlocksZ();

@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -68,14 +67,11 @@ public class RenderStorage implements MapObserver  {
 	
 	@Override
 	public void onChunkChange(Chunk chunk) {
-		if (WE.getCVars().getValueB("mapUseChunks")) {
-			RenderChunk rChunk = getChunk(chunk.getChunkX(), chunk.getChunkY());
-			if (rChunk != null){
-				//use first camera for top limit
-				Gdx.app.debug("ChunkMap", "HSD for chunk " + chunk.getChunkX() + "," + chunk.getChunkY());
-				hiddenSurfaceDetection(rChunk, cameraContainer.get(0).getZRenderingLimit() - 1);
-				//perform light change only on this chunk
-				AmbientOcclusionCalculator.calcAO(rChunk);
+		data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));
+		checkChunk(chunk.getChunkX(), chunk.getChunkY());
+		for (Camera camera : cameraContainer) {
+			if (camera.isEnabled()) {
+				camera.fillCameraContentBlocks();
 			}
 		}
 	}
@@ -97,22 +93,28 @@ public class RenderStorage implements MapObserver  {
 		
 		//check if needed chunks are there and mark them
 		for (Camera camera : cameraContainer) {
-			boolean changesToCameraCache = false;
-			for (int x = -1; x <= 1; x++) {
-				for (int y = -1; y <= 1; y++) {
-					if (checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y)) {
-						changesToCameraCache = true;
+			if (camera.isEnabled()) {
+				boolean changesToCameraCache = false;
+				for (int x = -1; x <= 1; x++) {
+					for (int y = -1; y <= 1; y++) {
+						if (checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y)) {
+							changesToCameraCache = true;
+						}
 					}
 				}
-			}
-			if (changesToCameraCache) {
-				camera.fillCameraContentBlocks();
+				if (changesToCameraCache) {
+					camera.fillCameraContentBlocks();
+				}
 			}
 		}
 		
-		
 		//remove chunks which are not used
 		data.removeIf(chunk -> !chunk.cameraAccess());
+	}
+	
+	public void refresh(){
+		data.clear();
+		checkNeededChunks();
 	}
 	
 	/**
@@ -130,8 +132,9 @@ public class RenderStorage implements MapObserver  {
 				RenderChunk newRChunk = new RenderChunk(mapChunk);
 				data.add(newRChunk);
 				newRChunk.setCameraAccess(true);
+				AmbientOcclusionCalculator.calcAO(newRChunk);
 				hiddenSurfaceDetection(newRChunk, cameraContainer.get(0).getZRenderingLimit() - 1);
-				
+
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
 				if (neighbor != null) {
@@ -168,8 +171,7 @@ public class RenderStorage implements MapObserver  {
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
-				&& coord.getY() < top + Chunk.getBlocksY()
-			) {
+				&& coord.getY() < top + Chunk.getBlocksY()) {
 				return chunk;
 			}
 		}
@@ -177,8 +179,8 @@ public class RenderStorage implements MapObserver  {
 	}
 
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c)  c:
-	 * amount of chunks -&gt; O(1)
+	 * get the chunk with the given chunk coords. <br>Runtime: O(c) c: amount of
+	 * chunks -&gt; O(1)
 	 *
 	 * @param chunkX
 	 * @param chunkY
@@ -194,7 +196,7 @@ public class RenderStorage implements MapObserver  {
 		return null;//not found
 	}
 
-		/**
+	/**
 	 * Returns a block without checking the parameters first. Good for debugging
 	 * and also faster. O(n)
 	 *
@@ -207,7 +209,7 @@ public class RenderStorage implements MapObserver  {
 		return getBlock(new Coordinate(x, y, z));
 	}
 
-		/**
+	/**
 	 * If the block can not be found returns null pointer.
 	 *
 	 * @param coord
@@ -314,9 +316,9 @@ public class RenderStorage implements MapObserver  {
 	 * Helper function. Gets a block at an index. can be outside of this chunk
 	 *
 	 * @param chunk
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x index
+	 * @param y index
+	 * @param z index
 	 * @return
 	 */
 	private RenderBlock getIndex(RenderChunk chunk, int x, int y, int z) {

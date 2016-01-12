@@ -775,20 +775,7 @@ public class Camera implements MapObserver {
 			while (csIter.hasNext()) {
 				RenderBlock block = csIter.next();
 				int[] ind = csIter.getCurrentIndex();
-				if (block == null) {
-					cameraContent[ind[0]][ind[1]][ind[2] + 1] = null;
-				} else {
-					cameraContent[ind[0]][ind[1]][ind[2] + 1] = block;
-					if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
-						cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
-							new Coordinate(
-								getCoveredLeftBorder() + ind[0],
-								getCoveredBackBorder() + ind[1],
-								ind[2]
-							)
-						);
-					}
-				}
+				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block;
 			}
 		}
 
@@ -1319,6 +1306,10 @@ public class Camera implements MapObserver {
 
 	public int getCenterChunkY() {
 		return centerChunkY;
+	}
+
+	public boolean isEnabled() {
+		return active;
 	}
 	
 

@@ -57,12 +57,23 @@ public class RenderChunk {
 	public RenderChunk(Chunk chunk) {
 		this.chunk = chunk;
 		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+		
+		int tlX = chunk.getTopLeftCoordinate().getX();
+		int tlY = chunk.getTopLeftCoordinate().getY();
+		
 		for (int x = 0; x < Chunk.getBlocksX(); x++) {
 			for (int y = 0; y < Chunk.getBlocksY(); y++) {
 				for (int z = 0; z < Chunk.getBlocksZ(); z++) {
 					Block block = chunk.getBlockViaIndex(x, y, z);
 					if (block != null) {
 						data[x][y][z] = block.toRenderBlock();
+						data[x][y][z].setPosition(
+							new Coordinate(
+								tlX + x,
+								tlY + y,
+								z
+							)
+						);
 					}
 				}
 			}
@@ -119,6 +130,9 @@ public class RenderChunk {
 		dirtyFlag.clear();
 	}
 	
+	/**
+	 * calcualtes drop shadow
+	 */
 	private void initShading(){
 		DataIterator<RenderBlock> it = getIterator(0, Chunk.getBlocksZ()-1);
 		while (it.hasNext()) {

@@ -238,12 +238,16 @@ public class GameView implements GameManager {
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
-		Controller.getMap().getOberservers().add(renderstorage);
+		if (!Controller.getMap().getOberservers().contains(renderstorage)) {
+			Controller.getMap().getOberservers().add(renderstorage);
+		}
 
 		//enable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(true);
 		}
+		
+		renderstorage.refresh();
 
 		if (WE.SOUND != null) {
 			WE.SOUND.setView(this);
@@ -275,11 +279,16 @@ public class GameView implements GameManager {
 		/**
 		 * problem! Write acces in view. causes 1 frame hack without hacks. Workaround by post-update method.
 		 */
+		//at least one active camera
+		boolean cameraactive = false;
         for (Camera camera : cameras) {
             camera.update(dt);
+			if (camera.isEnabled())
+				cameraactive = true;
         }
-		
-		renderstorage.update(dt);
+		if (cameraactive) {
+			renderstorage.update(dt);
+		}
 		
         // toggle the dev menu?
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
@@ -628,6 +637,9 @@ public class GameView implements GameManager {
 		//disable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(false);
+		}
+		if (Controller.getMap().getOberservers().contains(renderstorage)) {
+			Controller.getMap().getOberservers().remove(renderstorage);
 		}
 	}
 

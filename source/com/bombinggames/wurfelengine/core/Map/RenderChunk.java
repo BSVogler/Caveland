@@ -34,7 +34,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import java.util.ArrayList;
 
 /**
  *
@@ -42,10 +41,6 @@ import java.util.ArrayList;
  */
 public class RenderChunk {
 
-	/**
-	 * a list of coordiants marked as dirty
-	 */
-	private final ArrayList<Coordinate> dirtyFlag = new ArrayList<>(10);
 	private final RenderBlock data[][][];
 	private final Chunk chunk;
 	private boolean cameraAccess;
@@ -93,10 +88,6 @@ public class RenderChunk {
 		return data;
 	}
 
-	public void update(){
-		resetShadingForDirty();
-	}
-	
 	/**
 	 *
 	 */
@@ -117,20 +108,6 @@ public class RenderChunk {
 	
 	
 	/**
-	 * reset light to normal level for cordinates marked as dirty
-	 */
-	private void resetShadingForDirty() {
-		for (Coordinate coord : dirtyFlag) {
-			resetShadingCoord(
-				coord.getX() - chunk.getTopLeftCoordinate().getX(),
-				coord.getY() - chunk.getTopLeftCoordinate().getY(),
-				coord.getZ()
-			);
-		}
-		dirtyFlag.clear();
-	}
-	
-	/**
 	 * calcualtes drop shadow
 	 */
 	private void initShading(){
@@ -146,7 +123,7 @@ public class RenderChunk {
 	/**
 	 * Resets the shading for one block.
 	 */
-	private void resetShadingCoord(int idexX, int idexY, int idexZ){
+	public void resetShadingCoord(int idexX, int idexY, int idexZ){
 		int blocksZ = Chunk.getBlocksZ();
 		if (idexZ < Chunk.getBlocksZ() && idexZ >= 0) {
 			RenderBlock block = getBlockViaIndex(idexX, idexY, idexZ);
@@ -164,7 +141,10 @@ public class RenderChunk {
 					if (data[idexX][idexY][idexZ + 2] != null
 						&& !data[idexX][idexY][idexZ + 2].isTransparent()
 					) {
-						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP);
+						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP, 0);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 1);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 2);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 3);//todo every vertex
 					} else if (
 						idexZ < blocksZ - 3
 						&& (
@@ -174,7 +154,10 @@ public class RenderChunk {
 						&& data[idexX][idexY][idexZ+3] != null
 						&& !data[idexX][idexY][idexZ+3].isTransparent()
 					) {
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP);
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 0);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 1);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 2);//todo every vertex
+						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 3);//todo every vertex
 					}
 				}
 			}
@@ -185,14 +168,6 @@ public class RenderChunk {
 		return chunk.getTopLeftCoordinate();
 	}
 	
-	/**
-	 * marks this coordinage as "dirty".
-	 * @param coord	 
-	 */
-	public void setLightFlag(Coordinate coord) {
-		dirtyFlag.add(coord);
-	}
-
 	/**
 	 * Returns an iterator which iterates over the data in this chunk.
 	 * @param startingZ

@@ -51,6 +51,10 @@ public class RenderStorage implements MapObserver  {
 	 */
 	private final ArrayList<RenderChunk> data = new ArrayList<>(18);//amout of cameras *9
 	private final List<Camera> cameraContainer;
+	/**
+	 * a list of coordiants marked as dirty
+	 */
+	private final ArrayList<Coordinate> dirtyFlag = new ArrayList<>(20);
 
 	/**
 	 *
@@ -63,13 +67,10 @@ public class RenderStorage implements MapObserver  {
 	
 	public void update(float dt){
 		checkNeededChunks();
-		
 	}
 	
 	public void preUpdate(float dt){
-		for (RenderChunk chunk : data) {
-			chunk.update();
-		}
+		resetShadingForDirty();
 	}
 	
 	@Override
@@ -89,6 +90,31 @@ public class RenderStorage implements MapObserver  {
 
 	@Override
 	public void onMapReload() {
+	}
+	
+		
+	/**
+	 * reset light to normal level for cordinates marked as dirty
+	 */
+	private void resetShadingForDirty() {
+		for (Coordinate coord : dirtyFlag) {
+			RenderChunk chunk = getChunk(coord);
+			chunk.resetShadingCoord(
+				coord.getX() - chunk.getTopLeftCoordinate().getX(),
+				coord.getY() - chunk.getTopLeftCoordinate().getY(),
+				coord.getZ()
+			);
+		}
+		dirtyFlag.clear();
+	}
+	
+		/**
+	 * marks this coordinage as "dirty".
+	 * @param coord	 
+	 */
+	public void setLightFlag(Coordinate coord) {
+		if (!dirtyFlag.contains(coord))
+			dirtyFlag.add(coord);
 	}
 	
 	/**

@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -636,21 +637,6 @@ public class Coordinate implements Position {
 		Controller.getMap().setValue(this,value);
 	}
 
-	/**
-	 *
-	 * @param gameView
-	 * @param lightlevel
-	 * @param side
-	 * @param channel
-	 */
-	public void addLightlevel(GameView gameView, float lightlevel, Side side, int channel) {
-		RenderChunk chunk = getRenderChunk(gameView);
-		if (chunk != null) {
-			chunk.setLightFlag(this.cpy());
-			getRenderBlock(gameView).addLightlevel(lightlevel, side, channel);
-		}
-	}
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
@@ -674,13 +660,47 @@ public class Coordinate implements Position {
 		return gameView.getRenderStorage().getChunk(this);
 	}
 
-	private RenderBlock getRenderBlock(GameView gameView) {
+	public RenderBlock getRenderBlock(GameView gameView) {
 		if (z < 0) {
 			return Controller.getMap().getNewGroundBlockInstance().toRenderBlock();
 		} else if (z >= Chunk.getBlocksZ()){
 			return null;
 		} else {
 			return gameView.getRenderStorage().getBlock(this);
+		}
+	}
+	
+	public void addLight(GameView view, Side side, Color color,int vertex){
+		RenderBlock neighb = getRenderBlock(view);
+		if (neighb != null) {
+			view.getRenderStorage().setLightFlag(this);
+			neighb.addLightlevel(color.r, side, 0, vertex);
+			neighb.addLightlevel(color.g, side, 1, vertex);
+			neighb.addLightlevel(color.b, side, 2, vertex);
+		}
+	}
+
+	public void addLightlevel(GameView view, Color color, Side side) {
+		if (side==Side.TOP) {
+			addLight(view, side, color, 1);
+			cpy().goToNeighbour(0).addLight(view, side, color, 3);
+			cpy().goToNeighbour(1).addLight(view, side, color, 0);
+			cpy().goToNeighbour(7).addLight(view, side, color, 2);
+		} else {
+			RenderBlock neighb = getRenderBlock(view);
+			view.getRenderStorage().setLightFlag(this);
+			neighb.addLightlevel(color.r, side, 0, 0);
+			neighb.addLightlevel(color.g, side, 1, 0);
+			neighb.addLightlevel(color.b, side, 2, 0);
+			neighb.addLightlevel(color.r, side, 0, 1);
+			neighb.addLightlevel(color.g, side, 1, 1);
+			neighb.addLightlevel(color.b, side, 2, 1);
+			neighb.addLightlevel(color.r, side, 0, 2);
+			neighb.addLightlevel(color.g, side, 1, 2);
+			neighb.addLightlevel(color.b, side, 2, 2);
+			neighb.addLightlevel(color.r, side, 0, 3);
+			neighb.addLightlevel(color.g, side, 1, 3);
+			neighb.addLightlevel(color.b, side, 2, 3);
 		}
 	}
 }

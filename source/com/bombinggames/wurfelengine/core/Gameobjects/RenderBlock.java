@@ -180,10 +180,26 @@ public class RenderBlock extends AbstractGameObject{
 	/**
 	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
 	 * by fraction /2^10-1 = 1023.
+	 * each field is vertex 0-3
 	 */
-	private int colorLeft = (55 << 16) + (55 << 8) + 55;
-	private int colorTop = (55 << 16) + (55 << 8) + 55;
-	private int colorRight = (55 << 16) + (55 << 8) + 55;
+	private int[] colorLeft = new int[]{
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55
+	};
+	private int[] colorTop = new int[]{
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55
+	};
+	private int[] colorRight = new int[]{
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55,
+		(55 << 16) + (55 << 8) + 55
+	};
 	/**
 	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
 	 * bit order: <br>
@@ -496,20 +512,32 @@ public class RenderBlock extends AbstractGameObject{
         }
 		
 		if (color != null) {
-			color.r *= getLightlevelR(side);
-			if (color.r > 1) {//values above 1 can not be casted later
-				color.r = 1;
-			}
-			color.g *= getLightlevelG(side);
-			if (color.g > 1) {//values above 1 can not be casted later
-				color.g = 1;
-			}
-			color.b *= getLightlevelB(side);
-			if (color.b > 1) {//values above 1 can not be casted later
-				color.b = 1;
-			}
-			
-			sprite.setColor(color);
+//			color.r *= getLightlevelR(side);
+//			if (color.r > 1) {//values above 1 can not be casted later
+//				color.r = 1;
+//			}
+//			color.g *= getLightlevelG(side);
+//			if (color.g > 1) {//values above 1 can not be casted later
+//				color.g = 1;
+//			}
+//			color.b *= getLightlevelB(side);
+//			if (color.b > 1) {//values above 1 can not be casted later
+//				color.b = 1;
+//			}
+			sprite.setColor(
+				new Color(
+					getLightlevel(side,0,0)/2f, getLightlevel(side,0,1)/2f, getLightlevel(side,0,2)/2f, 1
+				),
+				new Color(
+					getLightlevel(side,1,0)/2f,getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
+				),
+				new Color(
+					getLightlevel(side,2,0)/2f,getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
+				),
+				new Color(
+					getLightlevel(side,3,0)/2f,getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
+				)
+			);
 		}
  
 		//draw only outline or regularly?
@@ -621,59 +649,34 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	@Override
 	public float getLightlevelR() {
-		return (getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
+		return (getLightlevel(Side.LEFT, 0,0) + getLightlevel(Side.TOP, 0,0) + getLightlevel(Side.RIGHT, 0,0)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelG() {
-		return (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
+		return (getLightlevel(Side.LEFT, 0,1) + getLightlevel(Side.TOP, 0,1) + getLightlevel(Side.RIGHT, 0,1)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelB() {
-		return (getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
+		return (getLightlevel(Side.LEFT, 0, 2) + getLightlevel(Side.TOP, 0,2) + getLightlevel(Side.RIGHT, 0,2)) / 3f;
 	}
 
 	/**
 	 *
 	 * @param side
+	 * @param vert
+	 * @param channel
 	 * @return range 0-2.
 	 */
-	public float getLightlevelR(Side side) {
+	public float getLightlevel(Side side, int vert, int channel) {
+		byte colorBitShift = (byte) (20 - 10 * channel);
 		if (side == Side.LEFT) {
-			return ((colorLeft >> 20) & 0x3FF) / 511f;
+			return ((colorLeft[vert]  >> colorBitShift) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return ((colorTop >> 20) & 0x3FF) / 511f;
+			return ((colorTop[vert]  >> colorBitShift) & 0x3FF) / 511f;
 		}
-		return ((colorRight >> 20) & 0x3FF) / 511f;
-	}
-
-	/**
-	 *
-	 * @param side
-	 * @return range 0-2.
-	 */
-	public float getLightlevelG(Side side) {
-		if (side == Side.LEFT) {
-			return ((colorLeft >> 10) & 0x3FF) / 511f;
-		} else if (side == Side.TOP) {
-			return ((colorTop >> 10) & 0x3FF) / 511f;
-		}
-		return ((colorRight >> 10) & 0x3FF) / 511f;
-	}
-
-	/**
-	 *
-	 * @param side
-	 * @return range 0 -2
-	 */
-	public float getLightlevelB(Side side) {
-		if (side == Side.LEFT) {
-			return (colorLeft & 0x3FF) / 511f;
-		} else if (side == Side.TOP) {
-			return (colorTop & 0x3FF) / 511f;
-		}
-		return (colorRight & 0x3FF) / 511f;
+		return ((colorRight[vert]  >> colorBitShift) & 0x3FF) / 511f;
 	}
 
 	/**
@@ -683,19 +686,25 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	@Override
 	public void setLightlevel(float lightlevel) {
+		int color;
 		if (lightlevel <= 0) {
-			colorLeft = 0;
-			this.colorTop = colorLeft;
-			this.colorRight = colorLeft;
+			color = 0;
 		} else {
 			int l = (int) (lightlevel * 512);
 			//clamp
 			if (l > 1023) {
 				l = 1023;
 			}
-			colorLeft = (l << 20) + (l << 10) + l;//RGB;
-			this.colorTop = colorLeft;
-			this.colorRight = colorLeft;
+			color = (l << 20) + (l << 10) + l;
+		}
+		for (int i = 0; i < colorLeft.length; i++) {
+			colorLeft[i] = color;//512 base 10 for each color channel
+		}
+		for (int i = 0; i < colorTop.length; i++) {
+			colorTop[i] = color;//512 base 10 for each color channel
+		}
+		for (int i = 0; i < colorRight.length; i++) {
+			colorRight[i] = color;//512 base 10 for each color channel
 		}
 	}
 	
@@ -703,17 +712,24 @@ public class RenderBlock extends AbstractGameObject{
 	 * sets the light to 1
 	 */
 	public void resetLight(){
-		colorLeft = 537395712;//512 base 10 for each color channel
-		this.colorTop = colorLeft;
-		this.colorRight = colorLeft;
+		for (int i = 0; i < colorLeft.length; i++) {
+			colorLeft[i] = 537395712;//512 base 10 for each color channel
+		}
+		for (int i = 0; i < colorTop.length; i++) {
+			colorTop[i] = 537395712;//512 base 10 for each color channel
+		}
+		for (int i = 0; i < colorRight.length; i++) {
+			colorRight[i] = 537395712;//512 base 10 for each color channel
+		}
 	}
 
 	/**
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
+	 * @param vertex
 	 */
-	public void setLightlevel(float lightlevel, Side side) {
+	public void setLightlevel(float lightlevel, Side side, int vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
@@ -724,13 +740,13 @@ public class RenderBlock extends AbstractGameObject{
 
 		switch (side) {
 			case LEFT:
-				colorLeft = (l << 20) + (l << 10) + l;//RGB;
+				colorLeft[vertex] = (l << 20) + (l << 10) + l;//RGB;
 				break;
 			case TOP:
-				colorTop = (l << 20) + (l << 10) + l;//RGB;
+				colorTop[vertex] = (l << 20) + (l << 10) + l;//RGB;
 				break;
 			default:
-				colorRight = (l << 20) + (l << 10) + l;//RGB
+				colorRight[vertex] = (l << 20) + (l << 10) + l;//RGB
 				break;
 		}
 	}
@@ -739,18 +755,15 @@ public class RenderBlock extends AbstractGameObject{
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
-	 * @param channel
+	 * @param channel r g oder b,
+	 * @param vertex
 	 */
-	public void setLightlevel(float lightlevel, Side side, int channel) {
+	public void setLightlevel(float lightlevel, Side side, int channel, int vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
 		
-		byte colorBitshift = 0;
-		if (channel==0)
-			colorBitshift = 20;
-		else if (channel==1)
-			colorBitshift = 10;
+		byte colorBitShift = (byte) (20 - 10 * channel);
 		
 		int l = (int) (lightlevel * 512);
 		if (l > 1023) {
@@ -759,13 +772,13 @@ public class RenderBlock extends AbstractGameObject{
 		
 		switch (side) {
 			case LEFT:
-				colorLeft |= (l << colorBitshift);
+				colorLeft[vertex] |= (l << colorBitShift);
 				break;
 			case TOP:
-				colorTop |= (l << colorBitshift);
+				colorTop[vertex] |= (l << colorBitShift);
 				break;
 			default:
-				colorRight |= (l << colorBitshift);
+				colorRight[vertex] |= (l << colorBitShift);
 				break;
 		}
 	}
@@ -775,8 +788,9 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
 	 * @param channel 0 = R, 1 =G, 2=B
+	 * @param vertex
 	 */
-	public void addLightlevel(float lightlevel, Side side, int channel) {
+	public void addLightlevel(float lightlevel, Side side, int channel, int vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
@@ -790,27 +804,27 @@ public class RenderBlock extends AbstractGameObject{
 
 		switch (side) {
 			case LEFT: {
-				int newl = (int) (((colorLeft >> colorBitShift) & 0x3FF) / 511f + l);
+				int newl = (int) (((colorLeft[vertex] >> colorBitShift) & 0x3FF) / 511f + l);
 				if (newl > 1023) {
 					newl = 1023;
 				}
-				colorLeft |= (newl << colorBitShift);
+				colorLeft[vertex] |= (newl << colorBitShift);
 				break;
 			}
 			case TOP: {
-				int newl = (int) (((colorTop >> colorBitShift) & 0x3FF) / 511f + l);
+				int newl = (int) (((colorTop[vertex] >> colorBitShift) & 0x3FF) / 511f + l);
 				if (newl > 1023) {
 					newl = 1023;
 				}
-				colorTop |= (newl << colorBitShift);
+				colorTop[vertex] |= (newl << colorBitShift);
 				break;
 			}
 			default: {
-				int newl = (int) (((colorRight >> colorBitShift) & 0x3FF) / 511f + l);
+				int newl = (int) (((colorRight[vertex] >> colorBitShift) & 0x3FF) / 511f + l);
 				if (newl > 1023) {
 					newl = 1023;
 				}
-				colorRight |= (newl << colorBitShift);
+				colorRight[vertex] |= (newl << colorBitShift);
 				break;
 			}
 		}

@@ -192,12 +192,12 @@ public class PointLightSource extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		
+
 		if (enabled && hasPosition()) {
-			if (lastPos==null || !lastPos.equals(getPosition())) {
+			if (lastPos == null || !lastPos.equals(getPosition())) {
 				lightNearbyBlocks(dt);
 			}
-			
+
 			//apply cache
 			Coordinate tmp = getPosition().toCoord();
 			int xCenter = tmp.getX();
@@ -208,23 +208,16 @@ public class PointLightSource extends AbstractEntity {
 					for (int z = -radius; z < radius; z++) {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
-						tmp.set(xCenter+x,yCenter+y,zCenter+z);
-						if (tmp.getBlock() != null) {
-							tmp.addLightlevel(view, blocklight[0] * color.r, Side.LEFT, 0);
-							tmp.addLightlevel(view, blocklight[0] * color.g, Side.LEFT, 1);
-							tmp.addLightlevel(view, blocklight[0] * color.b, Side.LEFT, 2);
-							tmp.addLightlevel(view, blocklight[1] * color.r, Side.TOP, 0);
-							tmp.addLightlevel(view, blocklight[1] * color.g, Side.TOP, 1);
-							tmp.addLightlevel(view, blocklight[1] * color.b, Side.TOP, 2);
-							tmp.addLightlevel(view, blocklight[2] * color.r, Side.RIGHT, 0);
-							tmp.addLightlevel(view, blocklight[2] * color.g, Side.RIGHT, 1);
-							tmp.addLightlevel(view, blocklight[2] * color.b, Side.RIGHT, 2);
+						tmp.set(xCenter + x, yCenter + y, zCenter + z);
+						if (tmp.getRenderBlock(view) != null) {
+							tmp.addLightlevel(view, color.cpy().mul(blocklight[0]), Side.LEFT);
+							tmp.addLightlevel(view, color.cpy().mul(blocklight[1]), Side.TOP);
+							tmp.addLightlevel(view, color.cpy().mul(blocklight[2]), Side.RIGHT);
 						}
 					}
 				}
 			}
 		}
-		
 	}
 
 	/**

@@ -429,8 +429,8 @@ public class Camera implements MapObserver {
 	private void checkNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || WE.getCVars().getValueB("mapChunkSwitch")) {
-			for (int x = -2; x < 2; x++) {
-				for (int y = -2; y < 2; y++) {
+			for (int x = -2; x <= 2; x++) {
+				for (int y = -2; y <= 2; y++) {
 					checkChunk(centerChunkX + x, centerChunkY + y);
 				}
 			}

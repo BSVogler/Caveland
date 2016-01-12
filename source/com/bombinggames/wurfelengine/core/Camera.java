@@ -359,11 +359,9 @@ public class Camera implements MapObserver {
 	 * 
 	 */
 	public void updateCenter() {
-		//if chunkmap check for chunk movement
+		//check for chunk movement
 		int oldX = centerChunkX;
 		int oldY = centerChunkY;
-
-		Map map = Controller.getMap();
 
 		//check if chunkswitch left
 		if (
@@ -385,8 +383,8 @@ public class Camera implements MapObserver {
 		}
 
 		int dxMovement = getCenter().getChunkX()-oldX;
-		if (dxMovement > 1){
-			//above move does not work. use absolute position of center
+		if (dxMovement*dxMovement > 1){
+			//above relative move does not work. use absolute position of center
 			centerChunkX = getCenter().getChunkX();
 		}
 		

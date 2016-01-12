@@ -1179,15 +1179,6 @@ public class Camera implements MapObserver {
 		}
 	}
 
-	@Override
-	public void onChunkChange(Chunk chunk) {
-		if (active) {
-			if (WE.getCVars().getValueB("mapUseChunks")) {
-				gameView.getRenderStorage().hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
-			}
-		}
-	}
-
 	/**
 	 * Returns the focuspoint
 	 *
@@ -1289,6 +1280,12 @@ public class Camera implements MapObserver {
 	public void onMapReload() {
 		checkNeededChunks();
 	}
+
+	@Override
+	public void onChunkChange(Chunk chunk) {
+	}
+	
+	
 
 	private void drawDebug(GameView view, Camera camera) {
 		ShapeRenderer sh = view.getShapeRenderer();

@@ -238,6 +238,7 @@ public class GameView implements GameManager {
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
+		Controller.getMap().getOberservers().add(renderstorage);
 
 		//enable cameras
 		for (Camera camera : cameras) {

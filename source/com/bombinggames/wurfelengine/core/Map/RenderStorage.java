@@ -36,27 +36,28 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.LightEngine.AmbientOcclusionCalculator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class RenderStorage {
+public class RenderStorage implements MapObserver  {
 
 	/**
 	 * Stores the data of the map.
 	 */
 	private final ArrayList<RenderChunk> data = new ArrayList<>(18);//amout of cameras *9
-	private final AbstractCollection<Camera> cameraContainer;
+	private final List<Camera> cameraContainer;
 
 	/**
 	 *
 	 * @param cameraContainer
 	 */
-	public RenderStorage(AbstractCollection<Camera> cameraContainer) {
+	public RenderStorage(List<Camera> cameraContainer) {
 		this.cameraContainer = cameraContainer;
 	}
 
@@ -65,7 +66,29 @@ public class RenderStorage {
 		checkNeededChunks();
 	}
 	
-		/**
+	@Override
+	public void onChunkChange(Chunk chunk) {
+		if (WE.getCVars().getValueB("mapUseChunks")) {
+			RenderChunk rChunk = getChunk(chunk.getChunkX(), chunk.getChunkY());
+			if (rChunk != null){
+				//use first camera for top limit
+				Gdx.app.debug("ChunkMap", "HSD for chunk " + chunk.getChunkX() + "," + chunk.getChunkY());
+				hiddenSurfaceDetection(rChunk, cameraContainer.get(0).getZRenderingLimit() - 1);
+				//perform light change only on this chunk
+				AmbientOcclusionCalculator.calcAO(rChunk);
+			}
+		}
+	}
+	
+	@Override
+	public void onMapChange() {
+	}
+
+	@Override
+	public void onMapReload() {
+	}
+	
+	/**
 	 * checks which chunks must be loaded around the center
 	 */
 	private void checkNeededChunks() {
@@ -74,8 +97,8 @@ public class RenderStorage {
 		
 		//check if needed chunks are there and mark them
 		for (Camera camera : cameraContainer) {
-			for (int x = -1; x < 1; x++) {
-				for (int y = -1; y < 1; y++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
 					checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y);
 				}
 			}
@@ -98,6 +121,19 @@ public class RenderStorage {
 				RenderChunk newrChunk = new RenderChunk(mapChunk);
 				data.add(newrChunk);
 				newrChunk.setCameraAccess(true);
+				//update neighbors
+				RenderChunk neighbor = getChunk(x - 1, y);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+				}
+				neighbor = getChunk(x + 1, y);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+				}
+				neighbor = getChunk(x, y - 1);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+				}
 			}
 		} else {
 			rChunk.setCameraAccess(true);
@@ -179,86 +215,82 @@ public class RenderStorage {
 	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
 	 *
-	 * @param camera the camera which is used for the limits. Gets stored
-	 * globally so only one camera can be used. Calling this method more then
-	 * once ith different cameras overwrites the result.
-	 * @param chunkX chunk coordinate
-	 * @param chunkY chunk coordinate
+	 * @param chunk
+	 * @param toplimit
 	 */
-	public void hiddenSurfaceDetection(final Camera camera, final int chunkX, final int chunkY) {
-		Gdx.app.debug("ChunkMap", "HSD for chunk " + chunkX + "," + chunkY);
-		RenderChunk chunk = getChunk(chunkX, chunkY);
-		if (chunk!=null) {
-			RenderBlock[][][] chunkData = chunk.getData();
+	public void hiddenSurfaceDetection(final RenderChunk chunk, final int toplimit) {
+		if (chunk == null) {
+			throw new IllegalArgumentException();
+		}
+		RenderBlock[][][] chunkData = chunk.getData();
 
-			chunk.resetClipping();
+		chunk.resetClipping();
 
-			//loop over floor for ground level
-			//DataIterator floorIterator = chunk.getIterator(0, 0);
-	//		while (floorIterator.hasNext()) {
-	//			if (((Block) floorIterator.next()).hidingPastBlock())
-	//				chunk.getBlock(
-	//					floorIterator.getCurrentIndex()[0],
-	//					floorIterator.getCurrentIndex()[1],
-	//					chunkY)setClippedTop(
-	//					floorIterator.getCurrentIndex()[0],
-	//					floorIterator.getCurrentIndex()[1],
-	//					-1
-	//				);
-	//		}
-			//iterate over chunk
-			DataIterator<RenderBlock> dataIter = new DataIterator<>(
-				chunkData,
-				0,
-				camera.getZRenderingLimit() - 1
-			);
+		//loop over floor for ground level
+		//DataIterator floorIterator = chunk.getIterator(0, 0);
+//		while (floorIterator.hasNext()) {
+//			if (((Block) floorIterator.next()).hidingPastBlock())
+//				chunk.getBlock(
+//					floorIterator.getCurrentIndex()[0],
+//					floorIterator.getCurrentIndex()[1],
+//					chunkY)setClippedTop(
+//					floorIterator.getCurrentIndex()[0],
+//					floorIterator.getCurrentIndex()[1],
+//					-1
+//				);
+//		}
+		//iterate over chunk
+		DataIterator<RenderBlock> dataIter = new DataIterator<>(
+			chunkData,
+			0,
+			toplimit
+		);
 
-			while (dataIter.hasNext()) {
-				RenderBlock current = dataIter.next();//next is the current block
+		while (dataIter.hasNext()) {
+			RenderBlock current = dataIter.next();//next is the current block
 
-				if (current != null) {
-					//calculate index position relative to camera border
-					final int x = dataIter.getCurrentIndex()[0];
-					final int y = dataIter.getCurrentIndex()[1];
-					final int z = dataIter.getCurrentIndex()[2];
+			if (current != null) {
+				//calculate index position relative to camera border
+				final int x = dataIter.getCurrentIndex()[0];
+				final int y = dataIter.getCurrentIndex()[1];
+				final int z = dataIter.getCurrentIndex()[2];
 
-					RenderBlock neighbour;
-					//left side
-					//get neighbour block
-					if (y % 2 == 0) {//next row is shifted right
-						neighbour = getIndex(chunk, x - 1, y + 1, z);
-					} else {
-						neighbour = getIndex(chunk, x, y + 1, z);
-					}
+				RenderBlock neighbour;
+				//left side
+				//get neighbour block
+				if (y % 2 == 0) {//next row is shifted right
+					neighbour = getIndex(chunk, x - 1, y + 1, z);
+				} else {
+					neighbour = getIndex(chunk, x, y + 1, z);
+				}
 
-					if (neighbour != null
-						&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
-						current.setClippedLeft();
-					}
+				if (neighbour != null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
+					current.setClippedLeft();
+				}
 
-					//right side
-					//get neighbour block
-					if (y % 2 == 0)//next row is shifted right
-					{
-						neighbour = getIndex(chunk, x, y + 1, z);
-					} else {
-						neighbour = getIndex(chunk, x + 1, y + 1, z);
-					}
+				//right side
+				//get neighbour block
+				if (y % 2 == 0)//next row is shifted right
+				{
+					neighbour = getIndex(chunk, x, y + 1, z);
+				} else {
+					neighbour = getIndex(chunk, x + 1, y + 1, z);
+				}
 
-					if (neighbour != null
-						&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
-						current.setClippedRight();
-					}
+				if (neighbour != null
+					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
+					current.setClippedRight();
+				}
 
-					//check top
-					if (z < Chunk.getBlocksZ() - 1) {
-						neighbour = getIndex(chunk, x, y + 2, z + 1);
-						if ((chunkData[x][y][z + 1] != null
-							&& (chunkData[x][y][z + 1].hidingPastBlock()
-							|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
-							|| (neighbour != null && neighbour.hidingPastBlock())) {
-							current.setClippedTop();
-						}
+				//check top
+				if (z < Chunk.getBlocksZ() - 1) {
+					neighbour = getIndex(chunk, x, y + 2, z + 1);
+					if ((chunkData[x][y][z + 1] != null
+						&& (chunkData[x][y][z + 1].hidingPastBlock()
+						|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
+						|| (neighbour != null && neighbour.hidingPastBlock())) {
+						current.setClippedTop();
 					}
 				}
 			}
@@ -288,6 +320,10 @@ public class RenderStorage {
 
 	private RenderBlock getNewGroundBlockInstance() {
 		return Block.getInstance((byte) WE.getCVars().getValueI("groundBlockID")).toRenderBlock(); //the representative of the bottom layer (ground) block
+	}
+
+	public ArrayList<RenderChunk> getData() {
+		return data;
 	}
 
 }

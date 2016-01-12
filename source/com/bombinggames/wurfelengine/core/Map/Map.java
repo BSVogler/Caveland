@@ -204,7 +204,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
 			if (runnable.getChunk() != null) {
-				getData().add(runnable.getChunk());
+				data.add(runnable.getChunk());
 				addEntities(runnable.getChunk().retrieveEntities());
 				setModified();
 				loadingRunnables.remove(i);
@@ -258,10 +258,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void loadChunk(int chunkX, int chunkY) {
 		if (getChunk(chunkX, chunkY) == null) {
-			ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
-			loadingRunnables.add(cl);
-			Thread thread = new Thread(cl, "loadChunk "+chunkX+","+chunkY);
-			thread.start();
+			if (!isLoading(chunkX, chunkY)) {
+				ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
+				loadingRunnables.add(cl);
+				Thread thread = new Thread(cl, "loadChunk "+chunkX+","+chunkY);
+				thread.start();
+			}
 		}
 	}
 

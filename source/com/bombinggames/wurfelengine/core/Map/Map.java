@@ -200,6 +200,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void update(float dt) {
 		dt *= WE.getCVars().getValueF("timespeed");//aplly game speed
 
+		//add parralell loaded chunks serial to avoid conflicts
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
 			if (runnable.getChunk() != null) {
@@ -241,13 +242,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt
 	 */
 	public void postUpdate(float dt) {
-		if (WE.getCVars().getValueB("mapChunkSwitch")) {
-			//some custom garbage collection, removes chunks
-			for (int i = 0; i < data.size(); i++) {
-				data.get(i).resetCameraAccesCounter();
-			}
-		}
-
 		//check for modification flag
 		for (Chunk chunk : data) {
 			chunk.processModification();

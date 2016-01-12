@@ -58,6 +58,10 @@ public class ChunkLoader implements Runnable{
 		chunk = new Chunk(map, path, coordX, coordY, generator);
 	}
 
+	/**
+	 * has a chunk if it has finished loading
+	 * @return 
+	 */
 	public Chunk getChunk() {
 		return chunk;
 	}

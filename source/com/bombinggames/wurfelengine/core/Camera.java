@@ -441,8 +441,6 @@ public class Camera implements MapObserver {
 		Map chunkMap = Controller.getMap();
 		if (chunkMap.getChunk(x, y) == null) {
 			chunkMap.loadChunk(x, y);//load missing chunks
-		} else {
-			chunkMap.getChunk(x, y).increaseCameraHandleCounter();//mark that it was accessed
 		}
 	}
 

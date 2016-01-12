@@ -90,10 +90,6 @@ public class Chunk {
 	 */
 	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;
-	/**
-	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
-	 */
-	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
 
 	private ArrayList<AbstractEntity> entities = new ArrayList<>(15);
@@ -145,7 +141,6 @@ public class Chunk {
 				fill(generator);
 			}
 		} else fill(generator);
-		increaseCameraHandleCounter();
     }
 
     /**
@@ -783,29 +778,6 @@ public class Chunk {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Set that no camera is accessing this chunk.
-	 */
-	public void resetCameraAccesCounter() {
-		cameraAccessCounter = 0;
-	}
-
-	/**
-	 *
-	 */
-	public final void increaseCameraHandleCounter() {
-		cameraAccessCounter++;
-	}
-
-	/**
-	 * Can this can be removed from memory?
-	 *
-	 * @return true if no camera is rendering this chunk
-	 */
-	boolean shouldBeRemoved() {
-		return cameraAccessCounter <= 0;
 	}
 
 	/**

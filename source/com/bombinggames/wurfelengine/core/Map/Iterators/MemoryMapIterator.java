@@ -39,13 +39,21 @@ import java.util.NoSuchElementException;
 
 /**
  * Iterates over the blocks in memory.
+ *
  * @author Benedikt Vogler
  */
-public class MemoryMapIterator extends AbstractMapIterator {
+public class MemoryMapIterator {
+
 	/**
 	 * use to iterate over chunks
 	 */
 	private Iterator<Chunk> chunkIterator;
+	/**
+	 * Always points to a block. Iterates over a chunk.
+	 */
+	private DataIterator<Block> blockIterator;
+	private int topLevel;
+	private final int startingZ;
 
 	/**
 	 *
@@ -53,41 +61,37 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 * @param startingZ
 	 */
 	public MemoryMapIterator(Map map, int startingZ) {
-		super(map);
-		setTopLimitZ(Chunk.getBlocksZ()-1);
-		setStartingZ(startingZ);
-		
+		this.topLevel = Chunk.getBlocksZ() - 1;
+		this.startingZ = startingZ;
+
 		ArrayList<Chunk> mapdata = map.getData();
 		chunkIterator = mapdata.iterator();
-		blockIterator = mapdata.get(0).getIterator(startingZ, getTopLimitZ());
+		blockIterator = mapdata.get(0).getIterator(startingZ, topLevel);
 	}
-	
 
 	/**
-	 *Loops over the complete map. Also loops over bottom layer
-	 * @return 
+	 * Loops over the complete map. Also loops over bottom layer
+	 *
+	 * @return
 	 */
-	@Override
 	public Block next() throws NoSuchElementException {
 		Block block = blockIterator.next();
-		if (!blockIterator.hasNext()){
+		if (!blockIterator.hasNext()) {
 			//end of chunk, move to next chunk
-			blockIterator = chunkIterator.next().getIterator(getStartingZ(), getTopLimitZ());
+			blockIterator = chunkIterator.next().getIterator(startingZ, topLevel);
 		}
 		return block;
 	}
-	
-	
+
 	/**
 	 * Reached end of y row?
-	 * @return 
+	 *
+	 * @return
 	 */
-	@Override
 	public boolean hasNextChunk() {
 		return chunkIterator.hasNext();
 	}
 
-	@Override
 	public boolean hasNext() {
 		return blockIterator.hasNext() || hasNextChunk();
 	}
@@ -98,5 +102,17 @@ public class MemoryMapIterator extends AbstractMapIterator {
 	 */
 	public int[] getCurrentIndex() {
 		return blockIterator.getCurrentIndex();
+	}
+
+	/**
+	 * set the top/last limit of the iteration (including).
+	 *
+	 * @param zLimit
+	 */
+	public void setTopLimitZ(int zLimit) {
+		this.topLevel = zLimit;
+		if (blockIterator != null) {
+			blockIterator.setTopLimitZ(zLimit);
+		}
 	}
 }

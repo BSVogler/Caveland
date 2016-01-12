@@ -359,11 +359,9 @@ public class Camera implements MapObserver {
 	 * 
 	 */
 	public void updateCenter() {
-		//if chunkmap check for chunk movement
+		//check for chunk movement
 		int oldX = centerChunkX;
 		int oldY = centerChunkY;
-
-		Map map = Controller.getMap();
 
 		//check if chunkswitch left
 		if (
@@ -385,8 +383,8 @@ public class Camera implements MapObserver {
 		}
 
 		int dxMovement = getCenter().getChunkX()-oldX;
-		if (dxMovement > 1){
-			//above move does not work. use absolute position of center
+		if (dxMovement*dxMovement > 1){
+			//above relative move does not work. use absolute position of center
 			centerChunkX = getCenter().getChunkX();
 		}
 		
@@ -417,10 +415,6 @@ public class Camera implements MapObserver {
 		centerChunkY = (int) Math.floor(-position.y / Chunk.getViewDepth());
 
 		checkNeededChunks();
-		//if changed
-		if (oldX != centerChunkX || oldY != centerChunkY) {
-			fillCameraContentBlocks();
-		}
 	}
 
 	/**
@@ -429,8 +423,8 @@ public class Camera implements MapObserver {
 	private void checkNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || WE.getCVars().getValueB("mapChunkSwitch")) {
-			for (int x = -2; x < 2; x++) {
-				for (int y = -2; y < 2; y++) {
+			for (int x = -2; x <= 2; x++) {
+				for (int y = -2; y <= 2; y++) {
 					checkChunk(centerChunkX + x, centerChunkY + y);
 				}
 			}
@@ -447,8 +441,6 @@ public class Camera implements MapObserver {
 		Map chunkMap = Controller.getMap();
 		if (chunkMap.getChunk(x, y) == null) {
 			chunkMap.loadChunk(x, y);//load missing chunks
-		} else {
-			chunkMap.getChunk(x, y).increaseCameraHandleCounter();//mark that it was accessed
 		}
 	}
 
@@ -603,11 +595,12 @@ public class Camera implements MapObserver {
 				//only add if in viewMat plane to-do
 				if (
 					block != null
-					&& !block.getBlockData().isClipped()
+					&& !block.isClipped()
 					&& !block.isHidden()
 					&& inViewFrustum(
 							block.getPosition().getViewSpcX(),
-							block.getPosition().getViewSpcY())
+							block.getPosition().getViewSpcY()
+					)
 				) {
 					depthlist[objectsToBeRendered] = block;
 					objectsToBeRendered++;
@@ -768,10 +761,10 @@ public class Camera implements MapObserver {
 	/**
 	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
 	 */
-	private void fillCameraContentBlocks() {
+	public void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
-			Controller.getMap(),
+			gameView,
 			centerChunkX,
 			centerChunkY,
 			0,
@@ -780,22 +773,9 @@ public class Camera implements MapObserver {
 
 		if (csIter.hasAnyBlock()){
 			while (csIter.hasNext()) {
-				Block block = csIter.next();
+				RenderBlock block = csIter.next();
 				int[] ind = csIter.getCurrentIndex();
-				if (block == null) {
-					cameraContent[ind[0]][ind[1]][ind[2] + 1] = null;
-				} else {
-					cameraContent[ind[0]][ind[1]][ind[2] + 1] = block.toRenderBlock();
-					if (cameraContent[ind[0]][ind[1]][ind[2] + 1] != null) {
-						cameraContent[ind[0]][ind[1]][ind[2] + 1].setPosition(
-							new Coordinate(
-								getCoveredLeftBorder() + ind[0],
-								getCoveredBackBorder() + ind[1],
-								ind[2]
-							)
-						);
-					}
-				}
+				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block;
 			}
 		}
 
@@ -803,12 +783,12 @@ public class Camera implements MapObserver {
 		for (int x = 0; x < cameraContent.length; x++) {
 			for (int y = 0; y < cameraContent[x].length; y++) {
 				cameraContent[x][y][0] = new RenderBlock(Controller.getMap().getNewGroundBlockInstance());
-				cameraContent[x][y][0].getBlockData().setClippedLeft();//always clipped left
+				cameraContent[x][y][0].setClippedLeft();//always clipped left
 				//chek if clipped top
 				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
-					cameraContent[x][y][0].getBlockData().setClippedTop();
+					cameraContent[x][y][0].setClippedTop();
 				}
-				cameraContent[x][y][0].getBlockData().setClippedRight();//always clipped right
+				cameraContent[x][y][0].setClippedRight();//always clipped right
 				cameraContent[x][y][0].setPosition(
 					new Coordinate(
 						getCoveredLeftBorder() + x,
@@ -1178,15 +1158,6 @@ public class Camera implements MapObserver {
 		}
 	}
 
-	@Override
-	public void onChunkChange(Chunk chunk) {
-		if (active) {
-			if (WE.getCVars().getValueB("mapUseChunks")) {
-				Controller.getMap().hiddenSurfaceDetection(this, chunk.getChunkX(), chunk.getChunkY());
-			}
-		}
-	}
-
 	/**
 	 * Returns the focuspoint
 	 *
@@ -1250,7 +1221,7 @@ public class Camera implements MapObserver {
 			&& indexY < cameraContent[0].length
 			&& cameraContent[indexX][indexY][coords.getZ() + 1] != null //not air
 			) {
-			return cameraContent[indexX][indexY][coords.getZ() + 1].getBlockData().isClipped();
+			return cameraContent[indexX][indexY][coords.getZ() + 1].isClipped();
 		} else {
 			//if not return fully clipped
 			return true;
@@ -1289,6 +1260,12 @@ public class Camera implements MapObserver {
 		checkNeededChunks();
 	}
 
+	@Override
+	public void onChunkChange(Chunk chunk) {
+	}
+	
+	
+
 	private void drawDebug(GameView view, Camera camera) {
 		ShapeRenderer sh = view.getShapeRenderer();
 		sh.setColor(Color.RED.cpy());
@@ -1322,5 +1299,18 @@ public class Camera implements MapObserver {
 		);
 		sh.end();
 	}
+
+	public int getCenterChunkX() {
+		return centerChunkX;
+	}
+
+	public int getCenterChunkY() {
+		return centerChunkY;
+	}
+
+	public boolean isEnabled() {
+		return active;
+	}
+	
 
 }

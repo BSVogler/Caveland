@@ -46,7 +46,7 @@ import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
- * It is something which can be rendered and therefore render information saved. A RenderBlock should not be shared across cameras nor should use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
+ * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
  * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @see Block
  * @author Benedikt Vogler
@@ -176,6 +176,28 @@ public class RenderBlock extends AbstractGameObject{
 	
 	private final Block blockData;
 	private Coordinate coord;
+	//view data
+	/**
+	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
+	 * by fraction /2^10-1 = 1023.
+	 */
+	private int colorLeft = (55 << 16) + (55 << 8) + 55;
+	private int colorTop = (55 << 16) + (55 << 8) + 55;
+	private int colorRight = (55 << 16) + (55 << 8) + 55;
+	/**
+	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
+	 * bit order: <br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | - | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
+	 */
+	private int aoFlags;
+	/**
+	 * three bits used, for each side one: TODO: move to aoFlags byte 3
+	 */
+	private byte clipping;
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -205,7 +227,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param data 
 	 */
 	public RenderBlock(Block data){
-		super(data.getSpriteId(), data.getSpriteValue());//copy id's from data for rendering
+		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
@@ -238,7 +260,7 @@ public class RenderBlock extends AbstractGameObject{
         if (!isHidden()) {
             if (hasSides()) {
 				Coordinate coords = getPosition();
-				byte clipping = blockData.getClipping();
+				byte clipping = getClipping();
                 if ((clipping & (1 << 1)) == 0)
                     renderSide(view, camera, coords, Side.TOP, staticShade);
 				if ((clipping & 1) == 0)
@@ -366,7 +388,7 @@ public class RenderBlock extends AbstractGameObject{
 						: color
 					)
 				: color,//pass color if not shading static
-			blockdata.getAOFlags()
+			getAOFlags()
         );
 		
 		if (blockdata.getHealth() < 100) {
@@ -474,15 +496,15 @@ public class RenderBlock extends AbstractGameObject{
         }
 		
 		if (color != null) {
-			color.r *= blockData.getLightlevelR(side);
+			color.r *= getLightlevelR(side);
 			if (color.r > 1) {//values above 1 can not be casted later
 				color.r = 1;
 			}
-			color.g *= blockData.getLightlevelG(side);
+			color.g *= getLightlevelG(side);
 			if (color.g > 1) {//values above 1 can not be casted later
 				color.g = 1;
 			}
-			color.b *= blockData.getLightlevelB(side);
+			color.b *= getLightlevelB(side);
 			if (color.b > 1) {//values above 1 can not be casted later
 				color.b = 1;
 			}
@@ -555,14 +577,6 @@ public class RenderBlock extends AbstractGameObject{
 		return Block.getInstance(getSpriteId(), getSpriteValue());
 	}
 	
-	/**
-	 * hides the block after it?
-	 * @return 
-	 */
-	public boolean hidingPastBlock(){
-		return blockData.hasSides() && !blockData.isTransparent();
-	}
-
 	@Override
 	public boolean isTransparent() {
 		return blockData.isTransparent();
@@ -582,41 +596,11 @@ public class RenderBlock extends AbstractGameObject{
 	}
 
 	@Override
-	public float getLightlevelR() {
-		return blockData.getLightlevelR();
-	}
-	
-	@Override
-	public float getLightlevelG() {
-		return blockData.getLightlevelG();
-	}
-	
-	@Override
-	public float getLightlevelB() {
-		return blockData.getLightlevelB();
-	}
-
-	@Override
-	public void setLightlevel(float lightlevel) {
-		blockData.setLightlevel(lightlevel);
-	}
-
-	/**
-	 * 
-	 * @param lightlevel 1 default
-	 * @param side 
-	 */
-	public void setLightlevel(float lightlevel, Side side) {
-		blockData.setLightlevel(lightlevel, side);
-	}
-
-	@Override
 	public void setSpriteValue(byte value) {
 		super.setSpriteValue(value);
-		blockData.setSpriteValue(value);
+		//blockData.setValue(value);
 	}
 
-	@Override
 	public boolean isLiquid() {
 		if (blockData==null) return false;
 		return blockData.isLiquid();
@@ -629,4 +613,300 @@ public class RenderBlock extends AbstractGameObject{
 	public Block getBlockData() {
 		return blockData;
 	}
+	
+	/**
+	 * get the average brightness above all the sides
+	 *
+	 * @return
+	 */
+	@Override
+	public float getLightlevelR() {
+		return (getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
+	}
+
+	@Override
+	public float getLightlevelG() {
+		return (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
+	}
+
+	@Override
+	public float getLightlevelB() {
+		return (getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
+	}
+
+	/**
+	 *
+	 * @param side
+	 * @return range 0-2.
+	 */
+	public float getLightlevelR(Side side) {
+		if (side == Side.LEFT) {
+			return ((colorLeft >> 20) & 0x3FF) / 511f;
+		} else if (side == Side.TOP) {
+			return ((colorTop >> 20) & 0x3FF) / 511f;
+		}
+		return ((colorRight >> 20) & 0x3FF) / 511f;
+	}
+
+	/**
+	 *
+	 * @param side
+	 * @return range 0-2.
+	 */
+	public float getLightlevelG(Side side) {
+		if (side == Side.LEFT) {
+			return ((colorLeft >> 10) & 0x3FF) / 511f;
+		} else if (side == Side.TOP) {
+			return ((colorTop >> 10) & 0x3FF) / 511f;
+		}
+		return ((colorRight >> 10) & 0x3FF) / 511f;
+	}
+
+	/**
+	 *
+	 * @param side
+	 * @return range 0 -2
+	 */
+	public float getLightlevelB(Side side) {
+		if (side == Side.LEFT) {
+			return (colorLeft & 0x3FF) / 511f;
+		} else if (side == Side.TOP) {
+			return (colorTop & 0x3FF) / 511f;
+		}
+		return (colorRight & 0x3FF) / 511f;
+	}
+
+	/**
+	 * Stores the lightlevel overriding each side
+	 *
+	 * @param lightlevel range 0 -2
+	 */
+	@Override
+	public void setLightlevel(float lightlevel) {
+		if (lightlevel <= 0) {
+			colorLeft = 0;
+			this.colorTop = colorLeft;
+			this.colorRight = colorLeft;
+		} else {
+			int l = (int) (lightlevel * 512);
+			//clamp
+			if (l > 1023) {
+				l = 1023;
+			}
+			colorLeft = (l << 20) + (l << 10) + l;//RGB;
+			this.colorTop = colorLeft;
+			this.colorRight = colorLeft;
+		}
+	}
+	
+	/**
+	 * sets the light to 1
+	 */
+	public void resetLight(){
+		colorLeft = 537395712;//512 base 10 for each color channel
+		this.colorTop = colorLeft;
+		this.colorRight = colorLeft;
+	}
+
+	/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 */
+	public void setLightlevel(float lightlevel, Side side) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+		int l = (int) (lightlevel * 512);
+		if (l > 1023) {
+			l = 1023;
+		}
+
+		switch (side) {
+			case LEFT:
+				colorLeft = (l << 20) + (l << 10) + l;//RGB;
+				break;
+			case TOP:
+				colorTop = (l << 20) + (l << 10) + l;//RGB;
+				break;
+			default:
+				colorRight = (l << 20) + (l << 10) + l;//RGB
+				break;
+		}
+	}
+	
+		/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 * @param channel
+	 */
+	public void setLightlevel(float lightlevel, Side side, int channel) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+		
+		byte colorBitshift = 0;
+		if (channel==0)
+			colorBitshift = 20;
+		else if (channel==1)
+			colorBitshift = 10;
+		
+		int l = (int) (lightlevel * 512);
+		if (l > 1023) {
+			l = 1023;
+		}
+		
+		switch (side) {
+			case LEFT:
+				colorLeft |= (l << colorBitshift);
+				break;
+			case TOP:
+				colorTop |= (l << colorBitshift);
+				break;
+			default:
+				colorRight |= (l << colorBitshift);
+				break;
+		}
+	}
+	
+	/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 * @param channel 0 = R, 1 =G, 2=B
+	 */
+	public void addLightlevel(float lightlevel, Side side, int channel) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+
+		byte colorBitShift = (byte) (20 - 10 * channel);
+
+		float l = lightlevel * 512;
+		if (l > 1023) {
+			l = 1023;
+		}
+
+		switch (side) {
+			case LEFT: {
+				int newl = (int) (((colorLeft >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
+					newl = 1023;
+				}
+				colorLeft |= (newl << colorBitShift);
+				break;
+			}
+			case TOP: {
+				int newl = (int) (((colorTop >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
+					newl = 1023;
+				}
+				colorTop |= (newl << colorBitShift);
+				break;
+			}
+			default: {
+				int newl = (int) (((colorRight >> colorBitShift) & 0x3FF) / 511f + l);
+				if (newl > 1023) {
+					newl = 1023;
+				}
+				colorRight |= (newl << colorBitShift);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @return true if it hides the block behind and below
+	 */
+	public boolean hidingPastBlock() {
+		return hasSides() && !isTransparent();
+	}
+
+	/**
+	 * Set flags for the ambient occlusion algorithm to true
+	 * @param side
+	 */
+	public void setAOFlagTrue(int side) {
+		this.aoFlags |= 1 << side;//set n'th bit to true via OR operator
+	}
+
+	/**
+	 * Set flags for the ambient occlusion algorithm to false
+	 * @param side 
+	 */
+	public void setAOFlagFalse(int side) {
+		this.aoFlags &= ~(1 << side);//set n'th bit to false via AND operator
+	}
+
+	/**
+	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
+	 * bit order: <br>
+	 * 7 \ 0 / 1<br>
+	 * -------<br>
+	 * 6 | - | 2<br>
+	 * -------<br>
+	 * 5 / 4 \ 3<br>
+	 *
+	 * @return four bytes in an int
+	 */
+	public int getAOFlags() {
+		return aoFlags;
+	}
+
+	/**
+	 * Set all flags at once
+	 * @param aoFlags 
+	 */
+	public void setAoFlags(int aoFlags) {
+		this.aoFlags = aoFlags;
+	}
+
+	/**
+	 * a block is only clipped if every side is clipped
+	 *
+	 * @return
+	 */
+	public byte getClipping() {
+		return clipping;
+	}
+
+	/**
+	 * a block is only clipped if every side is clipped
+	 *
+	 * @return
+	 */
+	public boolean isClipped() {
+		return clipping == 0b111;
+	}
+
+	/**
+	 *
+	 */
+	public void setClippedLeft() {
+		clipping |= 1;
+	}
+
+	/**
+	 *
+	 */
+	public void setClippedTop() {
+		clipping |= 1 << 1;
+	}
+
+	/**
+	 *
+	 */
+	public void setClippedRight() {
+		clipping |= 1 << 2;
+	}
+
+	/**
+	 *
+	 */
+	public void setUnclipped() {
+		clipping = (byte) 0;
+	}
+
 }

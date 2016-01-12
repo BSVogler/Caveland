@@ -38,7 +38,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtensio
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Side;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,24 +79,19 @@ public class Chunk {
 	 * chunk coordinate
 	 */
 	private final int coordX, coordY;
+	
 	/**
 	 * the ids are stored here
 	 */
     private final Block data[][][];
+	
 	/**
 	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
 	 */
 	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;
-	/**
-	 * How many cameras are pointing at this chunk? If &lt;= 0 delete from memory.
-	 */
-	private int cameraAccessCounter = 0;
 	private Coordinate topleft;
-	/**
-	 * a list of coordiants marked as dirty
-	 */
-	private final ArrayList<Coordinate> dirtyFlag = new ArrayList<>(10);
+
 	private ArrayList<AbstractEntity> entities = new ArrayList<>(15);
 
     /**
@@ -127,8 +121,6 @@ public class Chunk {
 			}
 		}
 		
-		resetClipping();
-
 		modified = true;
     }
 
@@ -149,7 +141,6 @@ public class Chunk {
 				fill(generator);
 			}
 		} else fill(generator);
-		increaseCameraHandleCounter();
     }
 
     /**
@@ -172,8 +163,6 @@ public class Chunk {
 	 */
 	public void update(float dt) {
 		processModification();
-
-		resetShadingForDirty();
 
 		//update logicblocks
 		for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
@@ -211,11 +200,11 @@ public class Chunk {
      * Fills the chunk's block using a generator.
      * @param generator
      */
-    public void fill(final Generator generator){
-		int left = blocksX*coordX;
-		int top = blocksY*coordY;
-        for (int x = 0; x < blocksX; x++) {
-            for (int y = 0; y < blocksY; y++) {
+   public void fill(final Generator generator) {
+		int left = blocksX * coordX;
+		int top = blocksY * coordY;
+		for (int x = 0; x < blocksX; x++) {
+			for (int y = 0; y < blocksY; y++) {
 				for (int z = 0; z < blocksZ; z++) {
 					data[x][y][z] = generator.generate(
 						left + x,
@@ -230,7 +219,7 @@ public class Chunk {
 							logicBlocks.add(logic);
 						}
 					}
-
+					
 					generator.spawnEntities(
 						left + x,
 						top + y,
@@ -239,9 +228,8 @@ public class Chunk {
 				}
 			}
 		}
-		initShading();
 		modified = true;
-    }
+	}
 
 	/**
 	 * copies something
@@ -423,7 +411,6 @@ public class Chunk {
 				}
 
 				modified = true;
-				initShading();
 				return true;
 
 			} catch (IOException ex){
@@ -794,30 +781,8 @@ public class Chunk {
 	}
 
 	/**
-	 * Set that no camera is accessing this chunk.
-	 */
-	public void resetCameraAccesCounter() {
-		cameraAccessCounter = 0;
-	}
-
-	/**
-	 *
-	 */
-	public final void increaseCameraHandleCounter() {
-		cameraAccessCounter++;
-	}
-
-	/**
-	 * Can this can be removed from memory?
-	 *
-	 * @return true if no camera is rendering this chunk
-	 */
-	boolean shouldBeRemoved() {
-		return cameraAccessCounter <= 0;
-	}
-
-	/**
 	 * disposes the chunk
+	 *
 	 * @param path if null, does not save the file
 	 */
 	public void dispose(File path) {
@@ -837,88 +802,7 @@ public class Chunk {
 		}
 	}
 
-	/**
-	 *
-	 */
-	protected void resetClipping() {
-		for (int x = 0; x < blocksX; x++) {
-			for (int y = 0; y < blocksY; y++) {
-				for (int z = 0; z < blocksZ; z++) {
-					if (data[x][y][z] != null) {
-						data[x][y][z].setUnclipped();
-					}
-				}
-			}
-		}
+	public RenderChunk getRenderChunk(RenderStorage storage) {
+		return storage.getChunk(coordX, coordY);
 	}
-
-	/**
-	 * marks this coordinage as "dirty".
-	 * @param coord	 
-	 */
-	public void setLightFlag(Coordinate coord) {
-		dirtyFlag.add(coord);
-	}
-
-	/**
-	 * reset light to normal level for corodiantes marked as dirty
-	 */
-	private void resetShadingForDirty() {
-		for (Coordinate coord : dirtyFlag) {
-			resetShadingCoord(
-				coord.getX() - topleft.getX(),
-				coord.getY() - topleft.getY(),
-				coord.getZ()
-			);
-		}
-		dirtyFlag.clear();
-	}
-	
-	private void initShading(){
-		DataIterator<Block> it = getIterator(0, blocksZ-1);
-		while (it.hasNext()) {
-			it.next();
-			int[] index = it.getCurrentIndex();
-			resetShadingCoord(index[0],index[1],index[2]);
-		}
-	}
-	
-	/**
-	 * Resets the shading for one block.
-	 * @param coord 
-	 */
-	private void resetShadingCoord(int idexX, int idexY, int idexZ){
-		if (idexZ < Chunk.blocksZ && idexZ >= 0) {
-			Block block = getBlockViaIndex(idexX, idexY, idexZ);
-			if (block != null) {
-				data[idexX][idexY][idexZ].setLightlevel(1);
-
-				if (
-					idexZ < Chunk.blocksZ - 2
-					&& (
-						data[idexX][idexY][idexZ + 1] == null
-						|| data[idexX][idexY][idexZ + 1].isTransparent()
-					)
-				){
-					//two block above is a block casting shadows
-					if (data[idexX][idexY][idexZ + 2] != null
-						&& !data[idexX][idexY][idexZ + 2].isTransparent()
-					) {
-						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP);
-					} else if (
-						idexZ < Chunk.blocksZ - 3
-						&& (
-							data[idexX][idexY][idexZ+2] == null
-							|| data[idexX][idexY][idexZ+2].isTransparent()
-						)
-						&& data[idexX][idexY][idexZ+3] != null
-						&& !data[idexX][idexY][idexZ+3].isTransparent()
-					) {
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP);
-					}
-				}
-			}
-		}
-	}
-
 }

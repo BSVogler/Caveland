@@ -136,7 +136,6 @@ public class Controller implements GameManager, MapObserver {
 	 */
 	public static void setLightEngine(LightEngine le) {
 		lightEngine = le;
-		getMap().getOberservers().add(lightEngine);
 	}
 
 	/**
@@ -297,7 +296,6 @@ public class Controller implements GameManager, MapObserver {
 		//create default light engine
 		if (WE.getCVars().getValueB("enableLightEngine") && Controller.lightEngine == null) {
 			lightEngine = new LightEngine(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-			getMap().getOberservers().add(lightEngine);
 		}
 
 		initalized = true;

@@ -28,50 +28,66 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Map;
+package com.bombinggames.wurfelengine.extension;
 
-import java.io.File;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.RenderChunk;
+import java.util.ArrayList;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class ChunkLoader implements Runnable{
-	private Chunk chunk;
-	private final Generator generator;
-	private final File path;
-	private final int coordY;
-	private final int coordX;
-	private final Map map;
-
-	public ChunkLoader(final Map map, final File path, final int coordX, final int coordY, final Generator generator) {
-		this.map = map;
-		this.coordX = coordX;
-		this.coordY = coordY;
-		this.path = path;
-		this.generator = generator;
-	}
+public class MiniMapChunkDebug {
+	private boolean visible = true;
 	
-	
-	@Override
-	public void run() {
-		chunk = new Chunk(map, path, coordX, coordY, generator);
-	}
-
-	/**
-	 * has a chunk if it has finished loading
-	 * @return 
+	    /**
+	 * distance from left
 	 */
-	public Chunk getChunk() {
-		return chunk;
-	}
-	
-	public int getCoordX() {
-		return coordX;
-	}
+	private final int posX;
+	/**
+	 * distance from bottom
+	 */
+	private final int posY;
 
-	public int getCoordY() {
-		return coordY;
+	public MiniMapChunkDebug(int posX, int posY) {
+		this.posX = posX;
+		this.posY = posY;
 	}
+	   
+	
+	/**
+     * Renders the Minimap.
+     * @param view the view using this render method 
+     */
+    public void render(final GameView view) {
+        if (visible) {
+			ShapeRenderer sh = view.getShapeRenderer();
+			sh.begin(ShapeRenderer.ShapeType.Filled);
+			sh.setColor(0, 1, 0, 1);
+			ArrayList<Chunk> mapdata = Controller.getMap().getData();
+            for (Chunk chunk : mapdata) {
+				sh.rect(posX+chunk.getChunkX()*20, posY-chunk.getChunkY()*20, 19, 19);
+			}
+			sh.setColor(1, 1, 0, 0.1f);
+			ArrayList<RenderChunk> rS = view.getRenderStorage().getData();
+			for (RenderChunk chunk : rS) {
+				sh.rect(posX+chunk.getChunkX()*20, posY-chunk.getChunkY()*20, 19, 19);
+			}
+			sh.end();
+			
+//				//camera position
+//				view.drawString(
+//					camera.getViewSpaceX() +" | "+ camera.getViewSpaceY(),
+//					posX,
+//					(int) (posY- 3*Chunk.getBlocksY()*scaleY + 15),
+//					Color.WHITE
+//				);
+//			}
+        }
+    }
 	
 }

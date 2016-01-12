@@ -3,6 +3,8 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.Point;
@@ -194,8 +196,14 @@ public class PointLightSource extends AbstractEntity {
 		
 		if (enabled && hasPosition()) {
 			if (lastPos==null || !lastPos.equals(getPosition())) {
-				lightNearbyBlocks(dt);
+				//lightNearbyBlocks(dt);
 			}
+		}
+	}
+	
+	@Override
+	public void render(GameView view, Camera camera) {
+		if (enabled && hasPosition()) {
 
 			//apply cache
 			Coordinate tmp = getPosition().toCoord();
@@ -209,21 +217,22 @@ public class PointLightSource extends AbstractEntity {
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
 						tmp.set(xCenter+x,yCenter+y,zCenter+z);
 						if (tmp.getBlock() != null) {
-							tmp.addLightlevel(blocklight[0] * color.r, Side.LEFT, 0);
-							tmp.addLightlevel(blocklight[0] * color.g, Side.LEFT, 1);
-							tmp.addLightlevel(blocklight[0] * color.b, Side.LEFT, 2);
-							tmp.addLightlevel(blocklight[1] * color.r, Side.TOP, 0);
-							tmp.addLightlevel(blocklight[1] * color.g, Side.TOP, 1);
-							tmp.addLightlevel(blocklight[1] * color.b, Side.TOP, 2);
-							tmp.addLightlevel(blocklight[2] * color.r, Side.RIGHT, 0);
-							tmp.addLightlevel(blocklight[2] * color.g, Side.RIGHT, 1);
-							tmp.addLightlevel(blocklight[2] * color.b, Side.RIGHT, 2);
+							tmp.addLightlevel(view, blocklight[0] * color.r, Side.LEFT, 0);
+							tmp.addLightlevel(view, blocklight[0] * color.g, Side.LEFT, 1);
+							tmp.addLightlevel(view, blocklight[0] * color.b, Side.LEFT, 2);
+							tmp.addLightlevel(view, blocklight[1] * color.r, Side.TOP, 0);
+							tmp.addLightlevel(view, blocklight[1] * color.g, Side.TOP, 1);
+							tmp.addLightlevel(view, blocklight[1] * color.b, Side.TOP, 2);
+							tmp.addLightlevel(view, blocklight[2] * color.r, Side.RIGHT, 0);
+							tmp.addLightlevel(view, blocklight[2] * color.g, Side.RIGHT, 1);
+							tmp.addLightlevel(view, blocklight[2] * color.b, Side.RIGHT, 2);
 						}
 					}
 				}
 			}
 		}
 	}
+	
 
 	/**
 	 *

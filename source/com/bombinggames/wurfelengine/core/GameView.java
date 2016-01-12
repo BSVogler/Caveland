@@ -51,6 +51,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Intersection;
 import com.bombinggames.wurfelengine.core.Map.LoadMenu;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +61,22 @@ import java.util.logging.Logger;
  * @author Benedikt
  */
 public class GameView implements GameManager {
+
+	    /**
+     * Shoud be called before the object get initialized.
+     * Initializes class fields.
+     */
+    public static void classInit(){
+        //set up font
+        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
+        //font.scale(2);
+
+        //font.scale(-0.5f);
+        
+        //load sprites
+        RenderBlock.loadSheet();
+    }
+	
 	/**
 	 * the cameras rendering the scene
 	 */
@@ -97,21 +114,9 @@ public class GameView implements GameManager {
 	 */
 	private float gameSpeed = 1f;
 	
-    /**
-     * Shoud be called before the object get initialized.
-     * Initializes class fields.
-     */
-    public static void classInit(){
-        //set up font
-        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
-        //font.scale(2);
-
-        //font.scale(-0.5f);
-        
-        //load sprites
-        RenderBlock.loadSheet();
-    }
 	private boolean useDefaultShader;
+	
+	private RenderStorage renderstorage;
     
 	/**
 	 * Loades some files and set up everything. This should be done after
@@ -151,6 +156,7 @@ public class GameView implements GameManager {
 
 		useDefaultShader();//set default shader
 
+		renderstorage = new RenderStorage(cameras);
 		initalized = true;
 	}
 	
@@ -232,11 +238,16 @@ public class GameView implements GameManager {
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
+		if (!Controller.getMap().getOberservers().contains(renderstorage)) {
+			Controller.getMap().getOberservers().add(renderstorage);
+		}
 
 		//enable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(true);
 		}
+		
+		renderstorage.refresh();
 
 		if (WE.SOUND != null) {
 			WE.SOUND.setView(this);
@@ -268,9 +279,16 @@ public class GameView implements GameManager {
 		/**
 		 * problem! Write acces in view. causes 1 frame hack without hacks. Workaround by post-update method.
 		 */
+		//at least one active camera
+		boolean cameraactive = false;
         for (Camera camera : cameras) {
             camera.update(dt);
+			if (camera.isEnabled())
+				cameraactive = true;
         }
+		if (cameraactive) {
+			renderstorage.update(dt);
+		}
 		
         // toggle the dev menu?
         if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
@@ -280,6 +298,10 @@ public class GameView implements GameManager {
         keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
     }
 	    
+	public RenderStorage getRenderStorage() {
+		return renderstorage;
+	}
+	
     /**
      * Main method which is called every time and renders everything. You must manually render the devtools e.g. in an extended render method.
      */
@@ -615,6 +637,9 @@ public class GameView implements GameManager {
 		//disable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(false);
+		}
+		if (Controller.getMap().getOberservers().contains(renderstorage)) {
+			Controller.getMap().getOberservers().remove(renderstorage);
 		}
 	}
 

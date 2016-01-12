@@ -405,11 +405,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		return false;
 	}
 
-	@Override
-	public boolean isLiquid() {
-		return false;
-	}
-
 	/**
      * called when gets damage. Health is between 0 and 100. Plays a sound.
 	 * Should not be called from outside. Use event instead.

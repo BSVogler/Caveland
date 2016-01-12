@@ -39,7 +39,7 @@ import java.io.Serializable;
  *
  * @author Benedikt Vogler
  */
-public class Block implements HasID, Serializable {
+public class Block implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -196,29 +196,6 @@ public class Block implements HasID, Serializable {
 	private byte value;
 	private byte health = 100;
 
-	//view data
-	/**
-	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
-	 * by fraction /2^10-1 = 1023.
-	 */
-	private int colorLeft = (55 << 16) + (55 << 8) + 55;
-	private int colorTop = (55 << 16) + (55 << 8) + 55;
-	private int colorRight = (55 << 16) + (55 << 8) + 55;
-	/**
-	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
-	 * bit order: <br>
-	 * 7 \ 0 / 1<br>
-	 * -------<br>
-	 * 6 | - | 2<br>
-	 * -------<br>
-	 * 5 / 4 \ 3<br>
-	 */
-	private int aoFlags;
-	/**
-	 * three bits used, for each side one: TODO: move to aoFlags byte 3
-	 */
-	private byte clipping;
-
 	private Block(byte id) {
 		this.id = id;
 	}
@@ -253,26 +230,6 @@ public class Block implements HasID, Serializable {
 		this.value = value;
 	}
 	
-	@Override
-	public byte getSpriteId() {
-		return id;
-	}
-
-
-	@Override
-	public byte getSpriteValue() {
-		return value;
-	}
-	
-	/**
-	 * This method should not be used to change the value of a block because the map gets not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
-	 * @see Coordinate#setValue(byte) 
-	 */
-	@Override
-	public void setSpriteValue(byte value) {
-		this.value = value;
-	}
-
 	/**
 	 * value between 0-100
 	 *
@@ -335,7 +292,6 @@ public class Block implements HasID, Serializable {
 		return new RenderBlock(this);
 	}
 
-	@Override
 	public boolean isObstacle() {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isObstacle(id, value);
@@ -347,7 +303,6 @@ public class Block implements HasID, Serializable {
 		return id != 0;
 	}
 
-	@Override
 	public boolean isTransparent() {
 		if (id == 9) {
 			return true;
@@ -368,7 +323,6 @@ public class Block implements HasID, Serializable {
 	 *
 	 * @return true if liquid, false if not
 	 */
-	@Override
 	public boolean isLiquid() {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isLiquid(id, value);
@@ -376,7 +330,6 @@ public class Block implements HasID, Serializable {
 		return id == 9;
 	}
 	
-	@Override
 	public boolean isIndestructible() {
 		if (customBlocks != null) {
 			return customBlocks.isIndestructible(id, value);
@@ -385,213 +338,10 @@ public class Block implements HasID, Serializable {
 	}
 
 	/**
-	 * get the average brightness above all the sides
-	 *
-	 * @return
-	 */
-	@Override
-	public float getLightlevelR() {
-		return (getLightlevelR(Side.LEFT) + getLightlevelR(Side.TOP) + getLightlevelR(Side.RIGHT)) / 3f;
-	}
-
-	@Override
-	public float getLightlevelG() {
-		return (getLightlevelG(Side.LEFT) + getLightlevelG(Side.TOP) + getLightlevelG(Side.RIGHT)) / 3f;
-	}
-
-	@Override
-	public float getLightlevelB() {
-		return (getLightlevelB(Side.LEFT) + getLightlevelB(Side.TOP) + getLightlevelB(Side.RIGHT)) / 3f;
-	}
-
-	/**
-	 *
-	 * @param side
-	 * @return range 0-2.
-	 */
-	public float getLightlevelR(Side side) {
-		if (side == Side.LEFT) {
-			return ((colorLeft >> 20) & 0x3FF) / 511f;
-		} else if (side == Side.TOP) {
-			return ((colorTop >> 20) & 0x3FF) / 511f;
-		}
-		return ((colorRight >> 20) & 0x3FF) / 511f;
-	}
-
-	/**
-	 *
-	 * @param side
-	 * @return range 0-2.
-	 */
-	public float getLightlevelG(Side side) {
-		if (side == Side.LEFT) {
-			return ((colorLeft >> 10) & 0x3FF) / 511f;
-		} else if (side == Side.TOP) {
-			return ((colorTop >> 10) & 0x3FF) / 511f;
-		}
-		return ((colorRight >> 10) & 0x3FF) / 511f;
-	}
-
-	/**
-	 *
-	 * @param side
-	 * @return range 0 -2
-	 */
-	public float getLightlevelB(Side side) {
-		if (side == Side.LEFT) {
-			return (colorLeft & 0x3FF) / 511f;
-		} else if (side == Side.TOP) {
-			return (colorTop & 0x3FF) / 511f;
-		}
-		return (colorRight & 0x3FF) / 511f;
-	}
-
-	/**
-	 * Stores the lightlevel overriding each side
-	 *
-	 * @param lightlevel range 0 -2
-	 */
-	@Override
-	public void setLightlevel(float lightlevel) {
-		if (lightlevel <= 0) {
-			colorLeft = 0;
-			this.colorTop = colorLeft;
-			this.colorRight = colorLeft;
-		} else {
-			int l = (int) (lightlevel * 512);
-			//clamp
-			if (l > 1023) {
-				l = 1023;
-			}
-			colorLeft = (l << 20) + (l << 10) + l;//RGB;
-			this.colorTop = colorLeft;
-			this.colorRight = colorLeft;
-		}
-	}
-	
-	/**
-	 * sets the light to 1
-	 */
-	public void resetLight(){
-		colorLeft = 537395712;//512 base 10 for each color channel
-		this.colorTop = colorLeft;
-		this.colorRight = colorLeft;
-	}
-
-	/**
-	 *
-	 * @param lightlevel a factor in range [0-2]
-	 * @param side
-	 */
-	public void setLightlevel(float lightlevel, Side side) {
-		if (lightlevel < 0) {
-			lightlevel = 0;
-		}
-		int l = (int) (lightlevel * 512);
-		if (l > 1023) {
-			l = 1023;
-		}
-
-		switch (side) {
-			case LEFT:
-				colorLeft = (l << 20) + (l << 10) + l;//RGB;
-				break;
-			case TOP:
-				colorTop = (l << 20) + (l << 10) + l;//RGB;
-				break;
-			default:
-				colorRight = (l << 20) + (l << 10) + l;//RGB
-				break;
-		}
-	}
-	
-		/**
-	 *
-	 * @param lightlevel a factor in range [0-2]
-	 * @param side
-	 * @param channel
-	 */
-	public void setLightlevel(float lightlevel, Side side, int channel) {
-		if (lightlevel < 0) {
-			lightlevel = 0;
-		}
-		
-		byte colorBitshift = 0;
-		if (channel==0)
-			colorBitshift = 20;
-		else if (channel==1)
-			colorBitshift = 10;
-		
-		int l = (int) (lightlevel * 512);
-		if (l > 1023) {
-			l = 1023;
-		}
-		
-		switch (side) {
-			case LEFT:
-				colorLeft |= (l << colorBitshift);
-				break;
-			case TOP:
-				colorTop |= (l << colorBitshift);
-				break;
-			default:
-				colorRight |= (l << colorBitshift);
-				break;
-		}
-	}
-	
-	/**
-	 *
-	 * @param lightlevel a factor in range [0-2]
-	 * @param side
-	 * @param channel 0 = R, 1 =G, 2=B
-	 */
-	public void addLightlevel(float lightlevel, Side side, int channel) {
-		if (lightlevel < 0) {
-			lightlevel = 0;
-		}
-
-		byte colorBitShift = (byte) (20 - 10 * channel);
-
-		float l = lightlevel * 512;
-		if (l > 1023) {
-			l = 1023;
-		}
-
-		switch (side) {
-			case LEFT: {
-				int newl = (int) (((colorLeft >> colorBitShift) & 0x3FF) / 511f + l);
-				if (newl > 1023) {
-					newl = 1023;
-				}
-				colorLeft |= (newl << colorBitShift);
-				break;
-			}
-			case TOP: {
-				int newl = (int) (((colorTop >> colorBitShift) & 0x3FF) / 511f + l);
-				if (newl > 1023) {
-					newl = 1023;
-				}
-				colorTop |= (newl << colorBitShift);
-				break;
-			}
-			default: {
-				int newl = (int) (((colorRight >> colorBitShift) & 0x3FF) / 511f + l);
-				if (newl > 1023) {
-					newl = 1023;
-				}
-				colorRight |= (newl << colorBitShift);
-				break;
-			}
-		}
-	}
-
-	/**
 	 * get the name of a combination of id and value
 	 *
 	 * @return
 	 */
-	@Override
 	public String getName() {
 		if (id < 10) {
 			switch (id) {
@@ -621,7 +371,6 @@ public class Block implements HasID, Serializable {
 		}
 	}
 
-	@Override
 	public boolean hasSides() {
 		if (id == 0) {
 			return false;
@@ -634,99 +383,6 @@ public class Block implements HasID, Serializable {
 			return customBlocks.hasSides(id, value);
 		}
 		return true;
-	}
-
-	/**
-	 * 
-	 * @return true if it hides the block behind and below
-	 */
-	public boolean hidingPastBlock() {
-		return hasSides() && !isTransparent();
-	}
-
-	/**
-	 * Set flags for the ambient occlusion algorithm to true
-	 * @param side
-	 */
-	public void setAOFlagTrue(int side) {
-		this.aoFlags |= 1 << side;//set n'th bit to true via OR operator
-	}
-
-	/**
-	 * Set flags for the ambient occlusion algorithm to false
-	 * @param side 
-	 */
-	public void setAOFlagFalse(int side) {
-		this.aoFlags &= ~(1 << side);//set n'th bit to false via AND operator
-	}
-
-	/**
-	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
-	 * bit order: <br>
-	 * 7 \ 0 / 1<br>
-	 * -------<br>
-	 * 6 | - | 2<br>
-	 * -------<br>
-	 * 5 / 4 \ 3<br>
-	 *
-	 * @return four bytes in an int
-	 */
-	public int getAOFlags() {
-		return aoFlags;
-	}
-
-	/**
-	 * Set all flags at once
-	 * @param aoFlags 
-	 */
-	public void setAoFlags(int aoFlags) {
-		this.aoFlags = aoFlags;
-	}
-
-	/**
-	 * a block is only clipped if every side is clipped
-	 *
-	 * @return
-	 */
-	public byte getClipping() {
-		return clipping;
-	}
-
-	/**
-	 * a block is only clipped if every side is clipped
-	 *
-	 * @return
-	 */
-	public boolean isClipped() {
-		return clipping == 0b111;
-	}
-
-	/**
-	 *
-	 */
-	public void setClippedLeft() {
-		clipping |= 1;
-	}
-
-	/**
-	 *
-	 */
-	public void setClippedTop() {
-		clipping |= 1 << 1;
-	}
-
-	/**
-	 *
-	 */
-	public void setClippedRight() {
-		clipping |= 1 << 2;
-	}
-
-	/**
-	 *
-	 */
-	public void setUnclipped() {
-		clipping = (byte) 0;
 	}
 
 }

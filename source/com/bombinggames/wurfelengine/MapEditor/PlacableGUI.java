@@ -133,7 +133,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public byte getId() {
-		return block.getSpriteId();
+		return block.getId();
 	}
 		
 	/**
@@ -141,7 +141,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @return
 	 */
 	public byte getValue() {
-		return block.getSpriteValue();
+		return block.getValue();
 	}	
 	
 	/**

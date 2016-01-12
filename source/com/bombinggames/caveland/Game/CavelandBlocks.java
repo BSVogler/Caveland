@@ -274,7 +274,7 @@ public class CavelandBlocks implements CustomBlocks {
 	public RenderBlock toRenderBlock(Block data) {
 		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
 			RenderBlock a = new RenderBlock(data);
-			if (data.getValue() > 0){
+			if (data.getValue()> 0){
 				a.setSpriteId((byte) 3);
 			}
 			return a;

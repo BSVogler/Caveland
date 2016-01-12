@@ -637,16 +637,17 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * 
+	 *
+	 * @param gameView
 	 * @param lightlevel
 	 * @param side
-	 * @param channel 
+	 * @param channel
 	 */
-	public void addLightlevel(float lightlevel, Side side, int channel) {
-		Chunk chunk = getChunk();
-		if (chunk!=null) {
+	public void addLightlevel(GameView gameView, float lightlevel, Side side, int channel) {
+		RenderChunk chunk = getRenderChunk(gameView);
+		if (chunk != null) {
 			chunk.setLightFlag(this.cpy());
-			getBlock().addLightlevel(lightlevel, side, channel);
+			getRenderBlock(gameView).addLightlevel(lightlevel, side, channel);
 		}
 	}
 
@@ -667,5 +668,19 @@ public class Coordinate implements Position {
 	@Override
 	public Chunk getChunk() {
 		return Controller.getMap().getChunk(this);
+	}
+	
+	public RenderChunk getRenderChunk(GameView gameView) {
+		return gameView.getRenderStorage().getChunk(this);
+	}
+
+	private RenderBlock getRenderBlock(GameView gameView) {
+		if (z < 0) {
+			return Controller.getMap().getNewGroundBlockInstance().toRenderBlock();
+		} else if (z >= Chunk.getBlocksZ()){
+			return null;
+		} else {
+			return gameView.getRenderStorage().getBlock(this);
+		}
 	}
 }

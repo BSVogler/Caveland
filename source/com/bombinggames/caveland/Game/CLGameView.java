@@ -23,6 +23,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
 import org.lwjgl.opengl.Display;
 
 
@@ -60,6 +61,8 @@ public class CLGameView extends GameView{
 	 * a widget group that can be opened modal.
 	 */
 	private WidgetGroup modalGroup;
+	
+	private MiniMapChunkDebug minimap;
 	
     @Override
     public void init(Controller controller, GameView oldView) {
@@ -253,7 +256,7 @@ public class CLGameView extends GameView{
 					if (next != null) {
 						//clip floor
 						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
-							next.getBlockData().setClippedTop();
+							next.setClippedTop();
 						}
 						////h
 //						int iout = ChunkGenerator.insideOutside(next.getPosition());
@@ -403,28 +406,31 @@ public class CLGameView extends GameView{
 		useDefaultShader();
 		//getSpriteBatch().setColor(Color.WHITE.cpy());
 		getSpriteBatch().begin();
-		if (coop > -1) {
-			PlayerCompass pC = new PlayerCompass();
-			pC.drawHUD(getPlayer(1), this, getCameras().get(0));
-			PlayerCompass pC2 = new PlayerCompass();
-			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
-		}
-		drawString(
-			"Money: "+WE.getCVarsSave().getValueI("money"),
-			Gdx.graphics.getWidth()/2-50,
-			Gdx.graphics.getHeight()-100,
-			Color.WHITE.cpy()
-		);
-		
-		if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
+			if (coop > -1) {
+				PlayerCompass pC = new PlayerCompass();
+				pC.drawHUD(getPlayer(1), this, getCameras().get(0));
+				PlayerCompass pC2 = new PlayerCompass();
+				pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
+			}
 			drawString(
-				"Cave Level: "+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
-				50,
-				50,
+				"Money: "+WE.getCVarsSave().getValueI("money"),
+				Gdx.graphics.getWidth()/2-50,
+				Gdx.graphics.getHeight()-100,
 				Color.WHITE.cpy()
 			);
-		}
+
+			if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
+				drawString(
+					"Cave Level: "+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
+					50,
+					50,
+					Color.WHITE.cpy()
+				);
+			}
 		getSpriteBatch().end();
+		if (minimap==null)
+			minimap = new MiniMapChunkDebug(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+		minimap.render(this);
 	}
 
 	/**

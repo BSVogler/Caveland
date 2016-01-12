@@ -27,7 +27,7 @@ public class CustomTree extends RenderBlock {
 	 */
 	public CustomTree(Block data) {
 		super(data);
-		setSpriteValue(data.getSpriteValue());
+		setSpriteValue(data.getValue());
 		
 		if (getSpriteValue() == TREETOPVALUE)
 			setHidden(true);

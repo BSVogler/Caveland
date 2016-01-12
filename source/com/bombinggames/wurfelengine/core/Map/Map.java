@@ -41,14 +41,12 @@ import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
-import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator;
-import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.MemoryMapIterator;
 import java.io.File;
 import java.io.IOException;
@@ -138,28 +136,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Copies an array with three dimensions. Deep copy until the cells content
-	 * of cells shallow copy.
-	 *
-	 * @param array the data you want to copy
-	 * @return The copy of the array-
-	 */
-	private static RenderBlock[][][] copyBlocks(final RenderBlock[][][] array) {
-		RenderBlock[][][] copy = new RenderBlock[array.length][][];
-		for (int i = 0; i < array.length; i++) {
-			copy[i] = new RenderBlock[array[i].length][];
-			for (int j = 0; j < array[i].length; j++) {
-				copy[i][j] = new RenderBlock[array[i][j].length];
-				System.arraycopy(
-					array[i][j], 0, copy[i][j], 0,
-					array[i][j].length
-				);
-			}
-		}
-		return copy;
-	}
-
-	/**
 	 * every entity on the map is stored in this field
 	 */
 	private final ArrayList<AbstractEntity> entityList = new ArrayList<>(40);
@@ -175,7 +151,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * Stores the data of the map.
 	 */
-	private ArrayList<Chunk> data;
+	private final ArrayList<Chunk> data = new ArrayList<>(40);
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 
@@ -214,10 +190,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		useSaveSlot(saveSlot);
 
 		Gdx.app.debug("Map", "Map named \"" + name + "\", saveslot " + saveSlot + " should be loaded");
-
-		data = new ArrayList<>(9);
-
-		//printCoords();
 	}
 
 	/**
@@ -228,6 +200,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void update(float dt) {
 		dt *= WE.getCVars().getValueF("timespeed");//aplly game speed
 
+		//add parralell loaded chunks serial to avoid conflicts
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
 			if (runnable.getChunk() != null) {
@@ -238,6 +211,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			}
 		}
 		
+		//update chunks
 		//oldschool loop to allow new chunks during update
 		for (int i = 0; i < data.size(); i++) {
 			data.get(i).update(dt);
@@ -268,13 +242,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt
 	 */
 	public void postUpdate(float dt) {
-		if (WE.getCVars().getValueB("mapChunkSwitch")) {
-			//some custom garbage collection, removes chunks
-			for (int i = 0; i < data.size(); i++) {
-				data.get(i).resetCameraAccesCounter();
-			}
-		}
-
 		//check for modification flag
 		for (Chunk chunk : data) {
 			chunk.processModification();
@@ -306,115 +273,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	public void loadChunk(Coordinate coord) {
 		loadChunk(coord.getChunkX(), coord.getChunkY());
 	}
-
-	/**
-	 * performs a simple viewFrustum check by looking at the direct neighbours.
-	 *
-	 * @param camera the camera which is used for the limits. Gets stored
-	 * globally so only one camera can be used. Calling this method more then
-	 * once ith different cameras overwrites the result.
-	 * @param chunkX chunk coordinate
-	 * @param chunkY chunk coordinate
-	 */
-	public void hiddenSurfaceDetection(final Camera camera, final int chunkX, final int chunkY) {
-		Gdx.app.debug("ChunkMap", "HSD for chunk " + chunkX + "," + chunkY);
-		Chunk chunk = getChunk(chunkX, chunkY);
-		Block[][][] chunkData = chunk.getData();
-
-		chunk.resetClipping();
-
-		//loop over floor for ground level
-		//DataIterator floorIterator = chunk.getIterator(0, 0);
-//		while (floorIterator.hasNext()) {
-//			if (((Block) floorIterator.next()).hidingPastBlock())
-//				chunk.getBlock(
-//					floorIterator.getCurrentIndex()[0],
-//					floorIterator.getCurrentIndex()[1],
-//					chunkY)setClippedTop(
-//					floorIterator.getCurrentIndex()[0],
-//					floorIterator.getCurrentIndex()[1],
-//					-1
-//				);
-//		}
-		//iterate over chunk
-		DataIterator<Block> dataIter = new DataIterator<>(
-			chunkData,
-			0,
-			camera.getZRenderingLimit() - 1
-		);
-
-		while (dataIter.hasNext()) {
-			Block current = dataIter.next();//next is the current block
-
-			if (current != null) {
-				//calculate index position relative to camera border
-				final int x = dataIter.getCurrentIndex()[0];
-				final int y = dataIter.getCurrentIndex()[1];
-				final int z = dataIter.getCurrentIndex()[2];
-
-				Block neighbour;
-				//left side
-				//get neighbour block
-				if (y % 2 == 0) {//next row is shifted right
-					neighbour = getIndex(chunk, x - 1, y + 1, z);
-				} else {
-					neighbour = getIndex(chunk, x, y + 1, z);
-				}
-
-				if (neighbour != null
-					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
-					current.setClippedLeft();
-				}
-
-				//right side
-				//get neighbour block
-				if (y % 2 == 0)//next row is shifted right
-				{
-					neighbour = getIndex(chunk, x, y + 1, z);
-				} else {
-					neighbour = getIndex(chunk, x + 1, y + 1, z);
-				}
-
-				if (neighbour != null
-					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
-					current.setClippedRight();
-				}
-
-				//check top
-				if (z < Chunk.getBlocksZ() - 1) {
-					neighbour = getIndex(chunk, x, y + 2, z + 1);
-					if ((chunkData[x][y][z + 1] != null
-						&& (chunkData[x][y][z + 1].hidingPastBlock()
-						|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
-						|| (neighbour != null && neighbour.hidingPastBlock())) {
-						current.setClippedTop();
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Helper function. Gets a block at an index. can be outside of this chunk
-	 *
-	 * @param chunk
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	private Block getIndex(Chunk chunk, int x, int y, int z) {
-		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX()) {//index outside current chunk
-			return getBlock(
-				chunk.getTopLeftCoordinate().getX() + x,
-				chunk.getTopLeftCoordinate().getY() + y,
-				z
-			);
-		} else {
-			return chunk.getBlockViaIndex(x, y, z);
-		}
-	}
-
 	/**
 	 * Get the data of the map
 	 *

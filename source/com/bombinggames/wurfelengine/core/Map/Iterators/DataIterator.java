@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.HasID;
 import java.util.Iterator;
 
 /**
@@ -39,7 +38,7 @@ import java.util.Iterator;
  * @author Benedikt Vogler
  * @param <T>
  */
-public class DataIterator<T extends HasID> implements Iterator<T> {
+public class DataIterator<T> implements Iterator<T> {
 
 	/**
 	 * current position
@@ -65,6 +64,7 @@ public class DataIterator<T extends HasID> implements Iterator<T> {
 	) {
 		pos = new int[]{-1, 0, startingZ}; //start at -1 because the first call of next should return the first element
 		this.limitZ = limitZ;
+		if (data==null) throw new IllegalArgumentException();
 		this.data = data;
 
 		left = 0;

@@ -59,6 +59,7 @@ public class CameraSpaceIterator {
 	/**
 	 * Starts at z = -1.
 	 *
+	 * @param gameView
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1

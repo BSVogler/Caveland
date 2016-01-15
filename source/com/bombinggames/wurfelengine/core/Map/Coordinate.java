@@ -215,11 +215,7 @@ public class Coordinate implements Position {
 	 * @param block the block you want to set.
 	 */
 	public void setBlock(Block block) {
-		if (block != null) {
-			Controller.getMap().setBlock(this, block);
-		} else {
-			Controller.getMap().setBlock(this, null);
-		}
+		Controller.getMap().setBlock(this, block);
 	}
 	
 	/**

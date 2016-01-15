@@ -715,25 +715,28 @@ public class Chunk {
 	}
 
 	/**
-	 * Almost lowest level method to set a block in the map. If the block has logic a new logicinstance will be created.
-	 * @param coord The position where you insert the block. Must be inside the bounds of the chunk.
+	 * Almost lowest level method to set a block in the map. If the block has
+	 * logic a new logicinstance will be created.
+	 *
+	 * @param coord The position where you insert the block. Must be inside the
+	 * bounds of the chunk.
 	 * @param block
 	 */
 	public void setBlock(Coordinate coord, Block block) {
-		int xIndex = coord.getX()-topleft.getX();
-		int yIndex = coord.getY()-topleft.getY();
+		int xIndex = coord.getX() - topleft.getX();
+		int yIndex = coord.getY() - topleft.getY();
 		int z = coord.getZ();
-		if (z >= 0){
+		if (z >= 0) {
 			data[xIndex][yIndex][z] = block;
 			modified = true;
-		}
-		
-		//get corresponding logic and update
-		if (block != null) {
-			//create new instance
-			AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
-			if (logic != null)
-				logicBlocks.add(logic);
+			//get corresponding logic and update
+			if (block != null) {
+				//create new instance
+				AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
+				if (logic != null) {
+					logicBlocks.add(logic);
+				}
+			}
 		}
 	}
 	
@@ -743,10 +746,10 @@ public class Chunk {
 	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
-		int xIndex = coord.getX()-topleft.getX();
-		int yIndex = coord.getY()-topleft.getY();
+		int xIndex = coord.getX() - topleft.getX();
+		int yIndex = coord.getY() - topleft.getY();
 		int z = coord.getZ();
-		if (z >= 0){
+		if (z >= 0) {
 			if (data[xIndex][yIndex][z].getValue() != value) {
 				data[xIndex][yIndex][z].setValue(value);
 				modified = true;
@@ -764,6 +767,7 @@ public class Chunk {
 
 	/**
 	 * Get the logic to a logicblock.
+	 *
 	 * @param coord
 	 * @return can return null
 	 */

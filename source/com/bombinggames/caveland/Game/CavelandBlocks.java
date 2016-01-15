@@ -57,7 +57,7 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		LIFT((byte) 15, "Lift", true),
+		LIFT((byte) 15, "Lift", false),
 
 		/**
 		 *
@@ -72,7 +72,7 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		LIFT_Ground((byte) 18, "Lift (Ground)", false),
+		LIFT_Ground((byte) 18, "Lift (Ground)", true),
 
 		/**
 		 *

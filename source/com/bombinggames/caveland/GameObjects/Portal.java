@@ -3,7 +3,6 @@ package com.bombinggames.caveland.GameObjects;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -97,22 +96,12 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 */
 	public void teleport(AbstractEntity e){
 		//if above is an lift installed
-		if (getPosition().toCoord().add(0, 0, 1).getLogic() instanceof LiftLogic) {
-			//teleport in front of lift
-			MessageManager.getInstance().dispatchMessage(
-				this,
-				e,
-				Events.teleport.getId(),
-				getExitPortal().getGround().goToNeighbour(5).toPoint()
-			);
-		} else {
-			MessageManager.getInstance().dispatchMessage(
-				this,
-				e,
-				Events.teleport.getId(),
-				target.toPoint()
-			);
-		}
+		MessageManager.getInstance().dispatchMessage(
+			this,
+			e,
+			Events.teleport.getId(),
+			target.toPoint()
+		);
 	}
 
 	/**

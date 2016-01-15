@@ -26,10 +26,6 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 */
 	private transient boolean active = true;
 	private transient AimBand particleBand;
-	/**
-	 * if true checks if at the target there is an exit pointing to this entry
-	 */
-	private boolean verifiedExit;
 	private transient ExitPortal exitPortal;
 
 	/**
@@ -91,8 +87,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 					) {
 						teleport(e);
 					}
-				}
-				);
+				});
 		}
 	}
 	
@@ -101,24 +96,23 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 * @param e
 	 */
 	public void teleport(AbstractEntity e){
-		if (verifiedExit) {
-			if (getPosition().toCoord().add(0, 0, 1).getLogic() instanceof LiftLogic) {
-				//teleport in front of lift
-				MessageManager.getInstance().dispatchMessage(
-					this,
-					e,
-					Events.teleport.getId(),
-					getExitPortal().getGround().goToNeighbour(6).toPoint()
-				);
-				return;
-			}
+		//if above is an lift installed
+		if (getPosition().toCoord().add(0, 0, 1).getLogic() instanceof LiftLogic) {
+			//teleport in front of lift
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				e,
+				Events.teleport.getId(),
+				getExitPortal().getGround().goToNeighbour(5).toPoint()
+			);
+		} else {
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				e,
+				Events.teleport.getId(),
+				target.toPoint()
+			);
 		}
-		MessageManager.getInstance().dispatchMessage(
-			this,
-			e,
-			Events.teleport.getId(),
-			target.toPoint()
-		);
 	}
 
 	/**
@@ -158,14 +152,6 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 */
 	public boolean isActive() {
 		return active;
-	}
-
-	/**
-	 * if true checks that at the target is an exitPortal
-	 * @param verifyExit 
-	 */
-	public void setVerifyExit(boolean verifyExit) {
-		this.verifiedExit = verifyExit;
 	}
 	
 	/**

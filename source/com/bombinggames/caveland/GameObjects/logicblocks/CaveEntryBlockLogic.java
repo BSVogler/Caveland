@@ -91,14 +91,12 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 				}
 			}
 
+			//keep portal there
 			if (portal.shouldBeDisposed() || !portal.hasPosition()) {//respawn if needed
 				portal.spawn(getPosition().toPoint());
 			} else {
 				portal.setPosition(getPosition().toPoint());//force at position
 			}
-
-			//(re)configure
-			portal.setVerifyExit(true);
 
 			if (!interactable()) {
 				//inactive for falling into it

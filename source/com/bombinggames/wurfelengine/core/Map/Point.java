@@ -647,12 +647,7 @@ public class Point extends Vector3 implements Position {
 		return result;
 	}
 	
-	/**
-	 * get entities in radius (horizontal only)
-	 *
-	 * @param radius in game dimension pixels
-	 * @return every entitie in radius
-	 */
+	@Override
 	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
@@ -665,14 +660,8 @@ public class Point extends Vector3 implements Position {
 		return result;
 	}
 
-	/**
-	 * get entities in horizontal radius (like a pipe)
-	 * @param <type>
-	 * @param radius in game dimension pixels
-	 * @param type
-	 * @return every entitie in radius
-	 */
 	@SuppressWarnings("unchecked")
+	@Override
 	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();

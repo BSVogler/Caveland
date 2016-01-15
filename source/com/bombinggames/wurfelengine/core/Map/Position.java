@@ -143,7 +143,7 @@ public interface Position extends Serializable {
 	
 	/**
 	 * Faster but result is squared.
-	 * @param object
+	 * @param pos
 	 * @return the distance from this point to the other object squared
 	 * @see #distanceTo(Position) 
 	 */
@@ -172,6 +172,24 @@ public interface Position extends Serializable {
 	 * @return every entitie in radius
 	 */
 	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type);
+	
+	/**
+	 * get entities in horizontal radius (like a pipe)
+	 * @param <type>
+	 * @param radius in game dimension pixels
+	 * @param type whitelist
+	 * @return every entitie in radius
+	 */
+	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type);
+	
+	/**
+	 * get entities in radius (horizontal only)
+	 *
+	 * @param radius in game dimension pixels
+	 * @return every entitie in radius
+	 */
+	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius);
+	
 	
 	/**
 	 * 

@@ -650,6 +650,44 @@ public class Coordinate implements Position {
 
 		return result;
 	}
+	
+	/**
+	 * get entities in radius (horizontal only)
+	 *
+	 * @param radius in game dimension pixels
+	 * @return every entitie in radius
+	 */
+	@Override
+	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
+		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
+		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
+		for (AbstractEntity entity : entityList) {
+			if (distanceToHorizontal(entity.getPosition().toPoint()) < radius) {
+				result.add(entity);
+			}
+		}
+
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
+		ArrayList<type> result = new ArrayList<>(5);//default size 5
+		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
+
+        for (AbstractEntity entity : entityList) {//check every entity
+            if (
+				entity.hasPosition()
+				&& type.isInstance(entity) //if the entity is of the wanted type
+				&& distanceToHorizontal(entity.getPosition().toPoint()) < radius//TODO should use squared values for improved speed
+			) {
+                result.add((type) entity);//add it to list
+            }
+        }
+
+        return result;
+	}
 
 	@Override
 	public Chunk getChunk() {

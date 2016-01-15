@@ -73,7 +73,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 	@Override
 	public void update(float dt) {
 		if (getPosition() != null && isValid()) {
-			//check if portal is there
+			//check if portal is inside the block
 			if (portal == null) {
 				ArrayList<Portal> portals = getPosition().getEntitiesInside(Portal.class);
 				if (!portals.isEmpty()) {

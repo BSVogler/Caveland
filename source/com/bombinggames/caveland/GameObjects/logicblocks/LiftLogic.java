@@ -19,7 +19,6 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class LiftLogic extends AbstractBlockLogicExtension implements Interactable, Telegraph {
-	private static final long serialVersionUID = 1L;
 	
 	/**
 	 *

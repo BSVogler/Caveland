@@ -68,7 +68,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	/**
 	 * Direction and speed of movement.
 	 */
-	private Vector3 movement;
+	private final Vector3 movement;
 	/**
 	 * saves the viewing direction even if the player is not moving. Should never be len()==0
 	 */
@@ -662,11 +662,11 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 	
 	/**
-	 * Sets speed and direction.
+	 * Sets speed and direction values.
 	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
 	 */
 	public void setMovement(Vector3 movement){
-		this.movement = movement;
+		this.movement.set(movement);
 		updateOrientation();
 	}
 	
@@ -728,7 +728,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @param speed in m/s
 	 */
 	public void setSpeedIncludingZ(float speed) {
-		movement = movement.nor().scl(speed);
+		movement.nor().scl(speed);
 	}
 
 	/**

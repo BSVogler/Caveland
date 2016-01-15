@@ -9,6 +9,7 @@ import com.bombinggames.caveland.GameObjects.logicblocks.CaveEntryBlockLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
 import com.bombinggames.caveland.GameObjects.logicblocks.Flagpole;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
+import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogicGround;
 import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
@@ -56,7 +57,7 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		LIFT((byte) 15, "Lift", false),
+		LIFT((byte) 15, "Lift", true),
 
 		/**
 		 *
@@ -67,6 +68,11 @@ public class CavelandBlocks implements CustomBlocks {
 		 *
 		 */
 		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
+		
+		/**
+		 *
+		 */
+		LIFT_Ground((byte) 18, "Lift (Ground)", false),
 
 		/**
 		 *
@@ -149,6 +155,8 @@ public class CavelandBlocks implements CustomBlocks {
 					return ENTRY;
 				case 17:
 					return INDESTRUCTIBLEOBSTACLE;
+				case 18:
+					return LIFT_Ground;
 				case 41:
 					return CRYSTAL;
 				case 42:
@@ -313,6 +321,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==14) return true;
 		if (id == 16 && value == 1) return true;
 		if (id==17) return true;
+		if (id==18) return true;
 		if (id==11) return false;
 		if (id>=41 && id<=44)//ores
 			return true;
@@ -405,6 +414,10 @@ public class CavelandBlocks implements CustomBlocks {
 		}
 		if (id == CLBlocks.LIFT.id) {
 			return new LiftLogic(block, coord);
+		}
+		
+		if (id == CLBlocks.LIFT_Ground.id) {
+			return new LiftLogicGround(block, coord);
 		}
 		if (id == CLBlocks.ROBOTFACTORY.id) {
 			return new RobotFactory(block, coord);

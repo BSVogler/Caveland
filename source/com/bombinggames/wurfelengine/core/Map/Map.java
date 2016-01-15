@@ -336,7 +336,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public void setBlock(Coordinate coord, Block block) {
-		getChunk(coord).setBlock(coord, block);
+		Chunk chunk = getChunk(coord);
+		if (chunk != null) {
+			chunk.setBlock(coord, block);
+		}
 	}
 
 	/**

@@ -180,7 +180,7 @@ public class ChunkGenerator implements Generator {
 		return new Coordinate(
 			(int) (roomWithPadding*caveNumber+g),
 			GENERATORBORDER+66,
-			4
+			7
 		);
 	}
 	

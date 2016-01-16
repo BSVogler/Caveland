@@ -11,6 +11,7 @@ import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
@@ -347,13 +348,15 @@ public class MineCart extends MovableEntity implements Interactable {
 	 * @param forceHeight
 	 */
 	public void centerPassenger(boolean forceHeight){
-		if (forceHeight) {
-			passenger.getPosition().setValues(getPosition());
-			passenger.getPosition().setZ(getPosition().getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
-		} else {
-			float oldHeight = passenger.getPosition().getZ();
-			passenger.getPosition().setValues(getPosition());
-			passenger.getPosition().setZ(oldHeight);
+		if (passenger!=null) {
+			if (forceHeight) {
+				passenger.getPosition().setValues(getPosition());
+				passenger.getPosition().setZ(getPosition().getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
+			} else {
+				float oldHeight = passenger.getPosition().getZ();
+				passenger.getPosition().setValues(getPosition());
+				passenger.getPosition().setZ(oldHeight);
+			}	
 		}
 	}
 
@@ -516,11 +519,11 @@ public class MineCart extends MovableEntity implements Interactable {
 	public boolean handleMessage(Telegram msg) {
 		super.handleMessage(msg);
 		//possible hack to prevent passenger getting lost during teleportation
-//		if (msg.message == Events.teleport.getId() && msg.receiver==passenger) {
-//			//passengerTeleported = true;
-//			//if (cart.getPassenger() != null) {
-//			centerPassenger(true);
-//		}
+		if (msg.message == Events.teleport.getId()) {
+			//passengerTeleported = true;
+			//if (cart.getPassenger() != null) {
+			centerPassenger(true);
+		}
 		return false;
 	}
 

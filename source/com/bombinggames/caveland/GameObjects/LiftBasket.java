@@ -30,11 +30,11 @@
  */
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
@@ -56,6 +56,7 @@ public class LiftBasket extends MovableEntity {
 	private transient SimpleEntity back;
 	private int movementDir;
 	private MovableEntity passenger;
+	private transient MovableEntity leavingPassenger;
 
 	public LiftBasket() {
 		super((byte) 25, (byte) 0);
@@ -64,6 +65,7 @@ public class LiftBasket extends MovableEntity {
 		setSaveToDisk(false);
 		setFloating(true);
 		setMass(150);
+		enableShadow();
 	}
 
 	@Override
@@ -72,6 +74,10 @@ public class LiftBasket extends MovableEntity {
 		super.update(dt);
 
 		if (hasPosition()) {
+
+			if (leavingPassenger != null && leavingPassenger.getPosition().distanceTo(this) > Block.GAME_EDGELENGTH) {
+				leavingPassenger = null;
+			}
 
 			//reached top
 			if (movementDir > 0) {
@@ -84,31 +90,29 @@ public class LiftBasket extends MovableEntity {
 
 			if (isOnSurface()) {
 				//stop upwards movement if in air
-				if (
-					movementDir > 0//moving up
+				if (movementDir > 0//moving up
 					&& (getPosition().getBlock() == null || !getPosition().getBlock().isObstacle())//may be a problem if chunk not yet loaded, todo
-				) {
+					) {
 					stop();
 				} else if (movementDir < 0//moving down
 					&& getPosition().getBlock() != null && !getPosition().getBlock().isObstacle()//may be a problem if chunk not yet loaded, todo
-				) {
+					) {
 					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, Portal.class);
 					if (!possibleExitPortals.isEmpty()) {
 						possibleExitPortals.get(0).teleport(this);
 					}
 				}
-			} else {  //underworld
-				if (getPosition().z > Block.GAME_EDGELENGTH * 9) {
+			} else //underworld
+			 if (getPosition().z > Block.GAME_EDGELENGTH * 9) {
 					ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, ExitPortal.class);
 					if (!possibleExitPortals.isEmpty()) {
 						possibleExitPortals.get(0).teleport(this);
-					} else  {
+					} else {
 						setMovementDir(-1);//come back
 					}
 				} else if (movementDir < 0 && isOnGround()) {
 					stop();
 				}
-			}
 
 			//update passenger
 			if (passenger != null) {
@@ -119,12 +123,9 @@ public class LiftBasket extends MovableEntity {
 				}
 			} else {
 				//enter with minecart
-				ArrayList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH, MineCart.class);
+				ArrayList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH2, MineCart.class);
 				if (!possibleMineCart.isEmpty()) {
 					setPassenger(possibleMineCart.get(0));
-					if (isOnSurface())
-						setMovementDir(-1);
-					else setMovementDir(1);
 				}
 			}
 
@@ -141,12 +142,20 @@ public class LiftBasket extends MovableEntity {
 	}
 
 	public void setPassenger(MovableEntity passenger) {
-		this.passenger = passenger;
+		if (leavingPassenger != passenger) {
+			this.passenger = passenger;
+			if (isOnSurface()) {
+				setMovementDir(-1);
+			} else {
+				setMovementDir(1);
+			}
+		}
 	}
 
 	private void stop() {
 		if (passenger != null) {
-			passenger.setMovement(new Vector2(-1, 1));//little bit of movement
+			passenger.setMovement(new Vector2(-1, 1).nor().scl(4f));//little bit of movement
+			leavingPassenger = passenger;
 			passenger = null;
 		}
 		setMovement(new Vector3());
@@ -166,7 +175,12 @@ public class LiftBasket extends MovableEntity {
 		super.handleMessage(msg);
 		if (passenger != null) {
 			if (msg.message == Events.teleport.getId() && msg.receiver == this) {
-				passenger.getPosition().setValues((Point) msg.extraInfo);
+				MessageManager.getInstance().dispatchMessage(
+					this,
+					passenger,
+					Events.teleport.getId(),
+					(Point) msg.extraInfo
+				);
 			}
 		}
 		return false;
@@ -205,23 +219,6 @@ public class LiftBasket extends MovableEntity {
 			front.getPosition().setValues(getPosition());
 			front.getPosition().y += 20;
 		}
-	}
-
-	/**
-	 *
-	 * @return can be null
-	 */
-	private LiftLogic getLiftLogic() {
-//		if (getPortal().getTarget() == null) {
-//			return null;
-//		}
-//
-//		AbstractBlockLogicExtension logic = getPortal().getTarget().goToNeighbour(1).getLogic();//lift is to the back right
-//		if (logic instanceof LiftLogic) {
-//			return (LiftLogic) logic;
-//		} else {
-		return null;
-		//}
 	}
 
 	private boolean isOnSurface() {

@@ -89,6 +89,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 		if (basket == null) {
 			basket.dispose();
 		}
+		getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH2, LiftBasket.class).forEach(e -> e.dispose());
 	}
 
 	@Override

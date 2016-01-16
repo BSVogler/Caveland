@@ -111,6 +111,9 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 	@Override
 	public void dispose() {
+		if (basket == null) {
+			basket.dispose();
+		}
 	}
 
 	@Override

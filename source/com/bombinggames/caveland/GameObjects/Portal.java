@@ -95,13 +95,15 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 * @param e
 	 */
 	public void teleport(AbstractEntity e){
-		//if above is an lift installed
-		MessageManager.getInstance().dispatchMessage(
-			this,
-			e,
-			Events.teleport.getId(),
-			target.toPoint()
-		);
+		if (target!=null) {
+			//if above is an lift installed
+			MessageManager.getInstance().dispatchMessage(
+				this,
+				e,
+				Events.teleport.getId(),
+				target.toPoint()
+			);
+		}
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 		}
 		
 		//check target of exitportal
-		Coordinate exitTarget = getPosition().toCoord().goToNeighbour(5).add(0, 0, 1);//target is left from portal
+		Coordinate exitTarget = getPosition().toCoord().add(0, 0, 1);
 		if (!exitPortal.getTarget().equals(exitTarget)) {
 			exitPortal.setTarget(exitTarget);
 		}
@@ -141,14 +143,6 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 */
 	public boolean isActive() {
 		return active;
-	}
-	
-	/**
-	 * if at the target there is an exit portal returns it.
-	 * @return 
-	 */
-	public ExitPortal getCorrespondingExitPortal(){
-		return exitPortal;
 	}
 	
 	@Override

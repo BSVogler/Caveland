@@ -1,14 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
-import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import java.util.ArrayList;
 
@@ -22,7 +18,6 @@ public class ExitPortal extends Portal implements Interactable {
 	private static final long serialVersionUID = 2L;
 	private boolean spawner;
 	private final ArrayList<Robot> spawnedList = new ArrayList<>(3);
-	private transient SimpleEntity fahrstuhlkorb;
 	private float spawnCooldown;
 
 	/**
@@ -36,9 +31,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		if (getTarget() != null) {
-			actor.setPosition(getTarget());
-		}
+		teleport(actor);
 	}
 
 	@Override
@@ -74,32 +67,12 @@ public class ExitPortal extends Portal implements Interactable {
 						spawnedList.add(robot);
 					}
 				}
-			}
-
-			//spawn lift only if a lift is built
-			if (getLift() == null){
-				//has no lift
-				setSpriteValue((byte) 1);
-				if (fahrstuhlkorb != null){
-					fahrstuhlkorb.disposeFromMap();
-				}
-			} else {
-				//has lift
-				setSpriteValue((byte) 0);
-				if (fahrstuhlkorb == null || !fahrstuhlkorb.hasPosition()) {
-					fahrstuhlkorb = new LiftBasket();
-					fahrstuhlkorb.spawn(getGround().toPoint());
-					Block groundBlock = getGround().add(0, 1, 0).getBlock();
-					if (groundBlock != null && groundBlock.isObstacle()) {
-						getGround().add(0, 1, 0).destroy();
-					}
+				
+				//has lift on exit
+				if (getTarget().add(0, 0, 1).getLogic() instanceof LiftLogic){
+					setSpriteValue((byte) 1);
 				} else {
-					//teleport objects on the lift
-					ArrayList<MovableEntity> entsOnLiftUp = fahrstuhlkorb.getPosition().toCoord().getEntitiesInside(MovableEntity.class);
-					for (MovableEntity ent : entsOnLiftUp) {
-						teleport(ent);
-						ent.setMovement(new Vector2(-1, 1));
-					}
+					setSpriteValue((byte) 0);
 				}
 			}
 		}
@@ -115,7 +88,7 @@ public class ExitPortal extends Portal implements Interactable {
 		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {
 			ground.add(0, 0, -1);
 		}
-		return ground.add(0, 0, 1);
+		return ground;
 	}
 
 	/**
@@ -127,28 +100,11 @@ public class ExitPortal extends Portal implements Interactable {
 
 	@Override
 	public boolean interactable() {
-		return true;
+		return getSpriteId()==1;
 	}
 
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;
-	}
-
-	/**
-	 *
-	 * @return can be null
-	 */
-	public LiftLogic getLift(){
-		if (getTarget() == null) {
-			return null;
-		}
-
-		AbstractBlockLogicExtension logic = getTarget().goToNeighbour(1).getLogic();//lift is to the back right
-		if (logic instanceof LiftLogic) {
-			return (LiftLogic) logic;
-		} else {
-			return null;
-		}
 	}
 }

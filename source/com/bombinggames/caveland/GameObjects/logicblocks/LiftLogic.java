@@ -1,22 +1,17 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.LiftBasket;
-import com.bombinggames.caveland.GameObjects.MineCart;
 import com.bombinggames.caveland.GameObjects.Portal;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import java.util.ArrayList;
 
 /**
  *
@@ -45,26 +40,6 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 		Portal portal = getPortal();
 		if (portal != null) {
 			portal.setActive(false);
-			
-			ArrayList<MineCart> mineCarts = getPosition().getEntitiesInside(MineCart.class);
-			if (!mineCarts.isEmpty()) {
-				//make sure that there is an exitPortal
-				Coordinate ground = portal.getExitPortal().getGround();
-
-				//teleport minecarts to the ground
-				mineCarts.forEach(cart -> {
-					MessageManager.getInstance().dispatchMessage(
-						this,
-						cart,
-						Events.teleport.getId(),
-						ground.goToNeighbour(5).toPoint()
-					);
-					if (cart.getPassenger() != null) {
-						cart.centerPassenger(true);
-					}
-					cart.setMovement(new Vector2(-1, 1));//little bit of movement
-				});
-			}
 		}
 
 		//spawn lift only if a lift is built
@@ -74,7 +49,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 				basket = new LiftBasket();
 			}
 			if (!basket.hasPosition()) {
-				basket.spawn(getPortal().getTarget().toPoint());
+				basket.spawn(getPosition().toPoint());
 			}
 
 			if (ground.getBlock() == null || ground.getBlock().getId() != CavelandBlocks.CLBlocks.LIFT_Ground.getId()) {

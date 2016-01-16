@@ -517,7 +517,9 @@ public class MineCart extends MovableEntity implements Interactable {
 		super.handleMessage(msg);
 		//possible hack to prevent passenger getting lost during teleportation
 //		if (msg.message == Events.teleport.getId() && msg.receiver==passenger) {
-//			passengerTeleported = true;
+//			//passengerTeleported = true;
+//			//if (cart.getPassenger() != null) {
+//			centerPassenger(true);
 //		}
 		return false;
 	}

@@ -31,6 +31,7 @@
 package com.bombinggames.caveland.GameObjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
@@ -56,23 +57,12 @@ public class LiftBasket extends MovableEntity {
 
 	public LiftBasket() {
 		super((byte) 25, (byte) 0);
-		setHidden(true);
-
-		back = new SimpleEntity((byte) 25, (byte) 0);
-		back.setDimensionZ(Block.GAME_EDGELENGTH * 2);
-		back.setName("Lift Basket Back");
-		back.setSaveToDisk(false);
-		setName("Lift Basket");
-		front = new SimpleEntity((byte) 25, (byte) 1);
-		front.setName("Lift Basket front");
-		front.setDimensionZ(Block.GAME_EDGELENGTH * 2);
-		front.setSaveToDisk(false);
+		checkComponents();
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		setHidden(true);
 
 		if (hasPosition()) {
 
@@ -118,36 +108,11 @@ public class LiftBasket extends MovableEntity {
 			//move passenger
 			if (passenger != null) {
 				passenger.getPosition().setValues(getPosition());
+				passenger.setMovement(Vector2.Zero);
 			}
 
 			//manage sprites
-			if (back == null) {
-				back = new SimpleEntity((byte) 25, (byte) 0);
-				back.setDimensionZ(Block.GAME_EDGELENGTH * 2);
-				back.setName("Lift Basket Back");
-				back.setSaveToDisk(false);
-			}
-
-			if (!back.hasPosition()) {
-				back.spawn(getPosition().cpy());
-			}
-
-			back.getPosition().setValues(getPosition());
-			back.getPosition().y -= Block.GAME_DIAGLENGTH2;
-
-			//front
-			if (front == null) {
-				front = new SimpleEntity((byte) 25, (byte) 1);
-				front.setName("Lift Basket front");
-				front.setDimensionZ(Block.GAME_EDGELENGTH * 2);
-				front.setSaveToDisk(false);
-			}
-			if (!front.hasPosition()) {
-				front.spawn(getPosition().cpy());
-			}
-
-			front.getPosition().setValues(getPosition());
-			front.getPosition().y += 20;
+			checkComponents();
 		}
 
 //		if (getLiftLogic() == null) {
@@ -160,17 +125,6 @@ public class LiftBasket extends MovableEntity {
 
 	public void setPassenger(MovableEntity passenger) {
 		this.passenger = passenger;
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		if (front != null) {
-			front.dispose();
-		}
-		if (back != null) {
-			back.dispose();
-		}
 	}
 
 	/**
@@ -190,6 +144,37 @@ public class LiftBasket extends MovableEntity {
 			}
 		}
 		return false;
+	}
+	
+	private void checkComponents(){
+		setHidden(true);
+		if (back == null) {
+			back = new SimpleEntity((byte) 25, (byte) 0);
+			back.setDimensionZ(Block.GAME_EDGELENGTH * 2);
+			back.setName("Lift Basket Back");
+			back.setSaveToDisk(false);
+		}
+
+		if (!back.hasPosition()) {
+			back.spawn(getPosition().cpy());
+		}
+
+		back.getPosition().setValues(getPosition());
+		back.getPosition().y -= Block.GAME_DIAGLENGTH2;
+
+		//front
+		if (front == null) {
+			front = new SimpleEntity((byte) 25, (byte) 1);
+			front.setName("Lift Basket front");
+			front.setDimensionZ(Block.GAME_EDGELENGTH * 2);
+			front.setSaveToDisk(false);
+		}
+		if (!front.hasPosition()) {
+			front.spawn(getPosition().cpy());
+		}
+
+		front.getPosition().setValues(getPosition());
+		front.getPosition().y += 20;
 	}
 
 	/**
@@ -211,5 +196,16 @@ public class LiftBasket extends MovableEntity {
 
 	public int getMovementDir() {
 		return movementDir;
+	}
+	
+		@Override
+	public void dispose() {
+		super.dispose();
+		if (front != null) {
+			front.dispose();
+		}
+		if (back != null) {
+			back.dispose();
+		}
 	}
 }

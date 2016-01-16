@@ -229,7 +229,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		this.spriteId = id;
 		if (id == 0)
 			setHidden(true);
-		this.spriteValue = 0;
     }
 	
 	 /**

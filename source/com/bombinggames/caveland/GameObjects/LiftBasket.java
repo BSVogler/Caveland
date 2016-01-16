@@ -91,7 +91,7 @@ public class LiftBasket extends MovableEntity {
 					stop();
 				} else if (movementDir < 0//moving down
 					&& getPosition().getBlock() != null && !getPosition().getBlock().isObstacle()//may be a problem if chunk not yet loaded, todo
-					) {
+				) {
 					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, Portal.class);
 					if (!possibleExitPortals.isEmpty()) {
 						possibleExitPortals.get(0).teleport(this);

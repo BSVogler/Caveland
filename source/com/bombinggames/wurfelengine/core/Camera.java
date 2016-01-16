@@ -627,7 +627,7 @@ public class Camera implements MapObserver {
 		if (zRenderingLimit < Chunk.getBlocksZ())
 			activatedRenderLimit = true;
 		
-		for (AbstractEntity entity : Controller.getMap().getEntitys()) {
+		for (AbstractEntity entity : Controller.getMap().getEntities()) {
 			if (objectsToBeRendered >= depthlist.length) {
 				break;//fill only up to available size
 			}

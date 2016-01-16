@@ -527,7 +527,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * @return 
 	 */
 	public ArrayList<AbstractEntity> getCollidingEntities(){
-		ArrayList<AbstractEntity> ents = Controller.getMap().getEntitys();
+		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//default size 5
 		for (AbstractEntity entity : ents) {
 			if (collidesWith(entity)) {

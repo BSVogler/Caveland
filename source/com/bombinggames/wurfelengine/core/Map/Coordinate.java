@@ -656,7 +656,7 @@ public class Coordinate implements Position {
 	@Override
 	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
-		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
+		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 		for (AbstractEntity entity : entityList) {
 			if (distanceToHorizontal(entity.getPosition().toPoint()) < radius) {
 				result.add(entity);
@@ -670,7 +670,7 @@ public class Coordinate implements Position {
 	@Override
 	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
-		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntitys();
+		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 
         for (AbstractEntity entity : entityList) {//check every entity
             if (

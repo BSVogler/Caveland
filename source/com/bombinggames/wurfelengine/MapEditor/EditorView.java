@@ -188,7 +188,7 @@ public class EditorView extends GameView implements Telegraph {
 			y2 = tmp;
 		}
 		ArrayList<AbstractEntity> newSel = new ArrayList<>(4);
-		for (AbstractEntity ent : getMap().getEntitys()) {
+		for (AbstractEntity ent : getMap().getEntities()) {
 			if (ent.hasPosition()) {
 				TextureAtlas.AtlasRegion aR = ent.getAtlasRegion();
 				if (aR != null
@@ -608,7 +608,7 @@ public class EditorView extends GameView implements Telegraph {
 			AbstractEntity entityUnderMouse = null;
 			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting){
 				//find ent under mouse
-				for (AbstractEntity ent : getMap().getEntitys()) {
+				for (AbstractEntity ent : getMap().getEntities()) {
 					if (
 						ent.hasPosition()
 						&& ent.getSpriteId() > 0

@@ -475,7 +475,7 @@ public class Chunk {
 		fos.write(new byte[]{SIGN_COMMAND, SIGN_ENDBLOCKS});
 		fos.flush();
 
-		ArrayList<AbstractEntity> entities = map.getEntitysOnChunkWhichShouldBeSaved(coordX, coordY);
+		ArrayList<AbstractEntity> entities = map.getEntitiesOnChunkSavedOnly(coordX, coordY);
 
 		if (entities.size() > 0){
 			try (ObjectOutputStream fileOut = new ObjectOutputStream(fos)) {
@@ -800,7 +800,7 @@ public class Chunk {
 		}
 
 		//remove entities on this chunk from map
-		ArrayList<AbstractEntity> entities = map.getEntitysOnChunk(coordX, coordY);
+		ArrayList<AbstractEntity> entities = map.getEntitiesOnChunk(coordX, coordY);
 		for (AbstractEntity ent : entities) {
 			ent.disposeFromMap();
 		}

@@ -399,11 +399,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param yChunk
 	 * @return
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnChunk(final int xChunk, final int yChunk) {
+	public ArrayList<AbstractEntity> getEntitiesOnChunk(final int xChunk, final int yChunk) {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-		for (AbstractEntity ent : getEntitys()) {
+		for (AbstractEntity ent : getEntities()) {
             if (
 					ent.hasPosition()
 				&&
@@ -429,11 +429,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param yChunk
 	 * @return
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnChunkWhichShouldBeSaved(final int xChunk, final int yChunk) {
+	public ArrayList<AbstractEntity> getEntitiesOnChunkSavedOnly(final int xChunk, final int yChunk) {
 		ArrayList<AbstractEntity> list = new ArrayList<>(10);
 
 		//loop over every loaded entity
-		for (AbstractEntity ent : getEntitys()) {
+		for (AbstractEntity ent : getEntities()) {
             if (
 					ent.isGettingSaved() && ent.hasPosition() //save only entities which are flagged
 				&&
@@ -742,7 +742,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 *
 	 * @return every item on the map
 	 */
-	public ArrayList<AbstractEntity> getEntitys() {
+	public ArrayList<AbstractEntity> getEntities() {
 		return entityList;
 	}
 

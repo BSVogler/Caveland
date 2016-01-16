@@ -89,13 +89,13 @@ public class Portal extends AbstractEntity implements Telegraph {
 				});
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param e
 	 */
-	public void teleport(AbstractEntity e){
-		if (target!=null) {
+	public void teleport(AbstractEntity e) {
+		if (target != null) {
 			//if above is an lift installed
 			MessageManager.getInstance().dispatchMessage(
 				this,
@@ -107,10 +107,12 @@ public class Portal extends AbstractEntity implements Telegraph {
 	}
 
 	/**
-	 * Verifies and repairs if needed so that at the target there is an exitPortal pointing back to this portal.
-	 * @return 
-	 */	
-	public ExitPortal getExitPortal(){
+	 * Verifies and repairs if needed so that at the target there is an
+	 * exitPortal pointing back to this portal.
+	 *
+	 * @return
+	 */
+	public ExitPortal getExitPortal() {
 		ArrayList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
 		if (exitPortalList.isEmpty()) {
 			//spawn new exitportal if missing
@@ -118,7 +120,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 		} else {
 			exitPortal = exitPortalList.get(0);
 		}
-		
+
 		//check target of exitportal
 		Coordinate exitTarget = getPosition().toCoord().add(0, 0, 1);
 		if (!exitPortal.getTarget().equals(exitTarget)) {
@@ -144,15 +146,15 @@ public class Portal extends AbstractEntity implements Telegraph {
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	@Override
 	public boolean handleMessage(Telegram msg) {
-		 if (msg.message == Events.deselectInEditor.getId()){
+		if (msg.message == Events.deselectInEditor.getId()) {
 			if (particleBand != null) {
 				particleBand.dispose();
 				particleBand = null;
 			}
-		} else if (msg.message == Events.selectInEditor.getId()){
+		} else if (msg.message == Events.selectInEditor.getId()) {
 			if (particleBand == null) {
 				particleBand = new AimBand(this, target);
 			} else {
@@ -161,5 +163,5 @@ public class Portal extends AbstractEntity implements Telegraph {
 		}
 		return true;
 	}
-	
+
 }

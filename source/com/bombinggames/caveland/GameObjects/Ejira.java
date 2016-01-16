@@ -634,7 +634,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			item.getPosition().setValues(getPosition()).add(0, 0, GAME_EDGELENGTH * 1f);
 			item.setHidden(false);
 		} else {
-			WE.SOUND.play("throwFail");
+			WE.SOUND.play("interactionFail");
 		}
 	}
 

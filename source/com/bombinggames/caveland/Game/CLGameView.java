@@ -95,7 +95,7 @@ public class CLGameView extends GameView{
 		WE.SOUND.register("metallic", "com/bombinggames/caveland/sounds/metallic.wav");
 		WE.SOUND.register("construct", "com/bombinggames/caveland/sounds/construct.wav");
 		WE.SOUND.register("huhu", "com/bombinggames/caveland/sounds/huhu.wav");
-		WE.SOUND.register("throwFail", "com/bombinggames/caveland/sounds/throwFail.wav");
+		WE.SOUND.register("interactionFail", "com/bombinggames/caveland/sounds/throwFail.wav");
 		WE.SOUND.register("droneLoop", "com/bombinggames/caveland/sounds/droneLoop.mp3");
 		WE.SOUND.register("robot2walk", "com/bombinggames/caveland/sounds/robot2walk.mp3");
 		WE.SOUND.register("robotScream", "com/bombinggames/caveland/sounds/robotScream.mp3");

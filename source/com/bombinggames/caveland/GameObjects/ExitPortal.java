@@ -1,8 +1,10 @@
 package com.bombinggames.caveland.GameObjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -25,6 +27,7 @@ public class ExitPortal extends Portal implements Interactable {
 	 */
 	public ExitPortal() {
 		super((byte) 15);
+		setSpriteValue((byte) 1);
 		setName("Exit Portal");
 		setActive(false);
 	}
@@ -36,6 +39,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 	@Override
 	public void update(float dt) {
+		super.update(dt);
 		if (hasPosition()) {
 			if (spawner) {
 				//remove killed enemys
@@ -67,13 +71,13 @@ public class ExitPortal extends Portal implements Interactable {
 						spawnedList.add(robot);
 					}
 				}
+			}
 				
-				//has lift on exit
-				if (getTarget().add(0, 0, 1).getLogic() instanceof LiftLogic){
-					setSpriteValue((byte) 1);
-				} else {
-					setSpriteValue((byte) 0);
-				}
+			//has lift on exit
+			if (getTarget().getLogic() instanceof LiftLogic){
+				setSpriteValue((byte) 0);
+			} else {
+				setSpriteValue((byte) 1);
 			}
 		}
 	}
@@ -100,7 +104,7 @@ public class ExitPortal extends Portal implements Interactable {
 
 	@Override
 	public boolean interactable() {
-		return getSpriteId()==1;
+		return getSpriteValue()==1;
 	}
 
 	@Override

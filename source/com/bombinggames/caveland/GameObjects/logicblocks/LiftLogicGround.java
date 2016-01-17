@@ -7,6 +7,7 @@ import com.bombinggames.caveland.GameObjects.ExitPortal;
 import com.bombinggames.caveland.GameObjects.Interactable;
 import com.bombinggames.caveland.GameObjects.LiftBasket;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -21,7 +22,8 @@ import java.util.ArrayList;
 public class LiftLogicGround extends AbstractBlockLogicExtension implements Interactable, Telegraph {
 
 	private transient LiftBasket basket;
-	private LiftLogic interactionCreatesBasket;
+	private Coordinate requestedBasketAt;
+	private AbstractEntity requestor;
 
 	/**
 	 *
@@ -44,20 +46,29 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 			basket = possibleBaskets.get(0);
 		}
 
-		if (basket == null) {
-			ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, ExitPortal.class);
-			if (!possibleExitPortals.isEmpty()) {
-				try {
-					interactionCreatesBasket = (LiftLogic) possibleExitPortals.get(0).getTarget().getLogic();
-				} catch (NullPointerException ex) {
-
-				}
-			}
-		}
-
 		//stop at ground
 		if (basket != null && basket.getMovementDir() < 0 && basket.isOnGround() && getPosition().distanceToHorizontal(basket) < Block.GAME_EDGELENGTH) {
 			basket.setMovementDir(0);
+		}
+
+		if (basket != null) {
+			requestedBasketAt = null;
+			requestor = null;
+		}
+
+		//requested basket and fulfil request
+		if (requestedBasketAt != null
+			&& requestedBasketAt.isInMemoryArea()
+			&& requestedBasketAt.getLogic() instanceof LiftLogic) {
+			//request basket
+			if (basket == null) {
+				basket = new LiftBasket();
+			}
+			if (!basket.hasPosition()) {
+				basket.spawn(requestedBasketAt.toPoint());
+			}
+			toggleBasket(requestor);
+			return;
 		}
 
 		//clear entry
@@ -70,18 +81,25 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (basket != null) {
-			toggleBasket(actor);
-			return;
-		} else if (interactionCreatesBasket != null) {
-			if (basket == null) {
-				basket = new LiftBasket();
-			}
-			if (!basket.hasPosition()) {
-				basket.spawn(interactionCreatesBasket.getPosition().toPoint());
-			}
+			//has basket, so toggle him
 			toggleBasket(actor);
 			return;
 		}
+
+		ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, ExitPortal.class);
+		if (!possibleExitPortals.isEmpty()) {
+			try {
+				if (!possibleExitPortals.get(0).getTarget().isInMemoryAreaHorizontal()) {
+					Controller.getMap().loadChunk(possibleExitPortals.get(0).getTarget());
+				}
+				requestedBasketAt = possibleExitPortals.get(0).getTarget();
+				requestor = actor;
+				return;
+			} catch (NullPointerException ex) {
+
+			}
+		}
+
 		WE.SOUND.play("interactionFail", getPosition());
 	}
 
@@ -93,11 +111,9 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 			if (actor instanceof MovableEntity) {
 				basket.setPassenger((MovableEntity) actor);
 			}
-		} else //get back down
-		{
-			if (basket.getMovementDir() >= 0) {
-				basket.setMovementDir(-1);
-			}
+		} else//get back down
+		if (basket.getMovementDir() >= 0) {
+			basket.setMovementDir(-1);
 		}
 	}
 

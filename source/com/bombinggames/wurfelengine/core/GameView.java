@@ -569,7 +569,7 @@ public class GameView implements GameManager {
     }
 
     /**
-     * Add a camera to the game.
+     * Add a camera to the game. Adds this camera to the used {@link RenderStorage}.
      * @param camera
      */
     protected void addCamera(final Camera camera) {

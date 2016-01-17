@@ -155,6 +155,24 @@ public class Camera implements MapObserver {
 	}
 
 	/**
+	 * Creates a fullscale camera pointing at the middle of the map.
+	 *
+	 * @param view
+	 */
+	public Camera(final GameView view) {
+		gameView = view;
+		screenWidth = Gdx.graphics.getBackBufferWidth();
+		screenHeight = Gdx.graphics.getBackBufferHeight();
+		updateViewSpaceSize();
+
+		Point center = Controller.getMap().getCenter();
+		position.x = center.getViewSpcX();
+		position.y = center.getViewSpcY();
+		fullWindow = true;
+		initFocus();
+	}
+	
+	/**
 	 * Creates a camera pointing at the middle of the map.
 	 *
 	 * @param x the position in the application window (viewport position).
@@ -167,7 +185,7 @@ public class Camera implements MapObserver {
 	 * the application window (viewport)
 	 * @param view
 	 */
-	public Camera(final int x, final int y, final int width, final int height, GameView view) {
+	public Camera(final GameView view, final int x, final int y, final int width, final int height) {
 		zRenderingLimit = Chunk.getBlocksZ();
 
 		gameView = view;
@@ -181,24 +199,6 @@ public class Camera implements MapObserver {
 		Point center = Controller.getMap().getCenter();
 		position.x = center.getViewSpcX();
 		position.y = center.getViewSpcY();
-		initFocus();
-	}
-
-	/**
-	 * Creates a fullscale camera pointing at the middle of the map.
-	 *
-	 * @param view
-	 */
-	public Camera(GameView view) {
-		gameView = view;
-		screenWidth = Gdx.graphics.getBackBufferWidth();
-		screenHeight = Gdx.graphics.getBackBufferHeight();
-		updateViewSpaceSize();
-
-		Point center = Controller.getMap().getCenter();
-		position.x = center.getViewSpcX();
-		position.y = center.getViewSpcY();
-		fullWindow = true;
 		initFocus();
 	}
 
@@ -218,7 +218,7 @@ public class Camera implements MapObserver {
 	 * the application window (viewport)
 	 * @param view
 	 */
-	public Camera(final Point center, final int x, final int y, final int width, final int height, GameView view) {
+	public Camera(final GameView view, final int x, final int y, final int width, final int height, final Point center) {
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -246,7 +246,7 @@ public class Camera implements MapObserver {
 	 * the application window (viewport)
 	 * @param view
 	 */
-	public Camera(final AbstractEntity focusentity, final int x, final int y, final int width, final int height, GameView view) {
+	public Camera(final GameView view, final int x, final int y, final int width, final int height, final AbstractEntity focusentity) {
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;

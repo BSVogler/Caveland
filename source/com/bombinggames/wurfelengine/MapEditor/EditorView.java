@@ -109,15 +109,31 @@ public class EditorView extends GameView implements Telegraph {
         this.controller = controller;
         this.gameplayView = oldView;
 		
-		camera = new Camera(
-			oldView.getCameras().get(0).getCenter(),//keep position
-			0,
-			0,
-			Gdx.graphics.getWidth(),
-			Gdx.graphics.getHeight(),
-			this
-		);
+		if (oldView != null){
+			camera = new Camera(
+				this,
+				0,
+				0,
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight(),
+				oldView.getCameras().get(0).getCenter()//keep position
+			);
+		} else {
+			camera = new Camera(
+				this,
+				0,
+				0,
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight()
+			);
+		}
+		
         addCamera(camera);
+		
+		if (oldView != null) {
+			setRenderStorage(oldView.getRenderStorage());//use the same render storage
+			getRenderStorage().addCamera(camera);
+		}
         
 		leftColorGUI = new PlacableGUI(getStage(), this.controller.getCursor(), true);
 		getStage().addActor(leftColorGUI);

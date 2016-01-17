@@ -109,22 +109,22 @@ public class CLGameView extends GameView{
 			Camera camera0;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
 				camera0  = new Camera(
-					getPlayer(0),
+					this,
 					0, //left
 					0, //top
 					Gdx.graphics.getWidth()/2, //width
 					Gdx.graphics.getHeight(),//height
-					this
+					getPlayer(0)
 				);
 				camera0.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
 			} else {
 				camera0  = new Camera(
-					getPlayer(0),
+					this,
 					0, //left
 					0, //top
 					Gdx.graphics.getWidth(), //width
 					Gdx.graphics.getHeight()/2,//height
-					this
+					getPlayer(0)
 				);
 			}
 			camera0.setZoom(WE.getCVars().getValueF("coopZoom"));
@@ -134,22 +134,22 @@ public class CLGameView extends GameView{
 			Camera camera1;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
 				camera1 = new Camera(
-					getPlayer(1),
+					this,
 					Gdx.graphics.getWidth()/2,
 					0,
 					Gdx.graphics.getWidth()/2,
 					Gdx.graphics.getHeight(),
-					this
+					getPlayer(1)
 				);
 				camera1.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
 			} else {
 				camera1 = new Camera(
-					getPlayer(1),
+					this,
 					0,
 					Gdx.graphics.getHeight()/2,
 					Gdx.graphics.getWidth(),
 					Gdx.graphics.getHeight()/2,
-					this
+					getPlayer(1)
 				);
 			}
 			camera1.setZoom(WE.getCVars().getValueF("coopZoom"));
@@ -158,12 +158,12 @@ public class CLGameView extends GameView{
 		} else {
 			//it's a singleplayer game
 			Camera camera0  = new Camera(
-				getPlayer(0),
+				this,
 				0, //left
 				0, //top
 				Gdx.graphics.getWidth(), //width
 				Gdx.graphics.getHeight(),//height
-				this
+				getPlayer(0)
 			);
 			camera0.setFullWindow(true);
 			getPlayer(0).setCamera(camera0);

@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * A RenderStorage is container which saves {@link RenderChunk}s used for rendering data only chunks. It manages which {@link Chunk}s must be transformed to {@link RenderChunk}s.
  * @author Benedikt Vogler
  */
 public class RenderStorage implements MapObserver  {
@@ -57,14 +57,14 @@ public class RenderStorage implements MapObserver  {
 	private final ArrayList<Coordinate> dirtyFlags = new ArrayList<>(20);
 
 	/**
-	 *
-	 * @param cameraContainer
+	 * Creates a new renderstorage.
+	 * @param cameras the cameras which are checked to fill it.
 	 */
-	public RenderStorage(List<Camera> cameraContainer) {
-		this.cameraContainer = cameraContainer;
+	public RenderStorage(List<Camera> cameras) {
+		this.cameraContainer = new ArrayList<>(cameras.size());
+		cameras.forEach(e->this.cameraContainer.add(e));
 	}
 
-	
 	public void update(float dt){
 		checkNeededChunks();
 	}
@@ -375,6 +375,15 @@ public class RenderStorage implements MapObserver  {
 
 	public ArrayList<RenderChunk> getData() {
 		return data;
+	}
+
+	/**
+	 * avoids duplicates
+	 * @param camera 
+	 */
+	public void addCamera(Camera camera) {
+		if (!cameraContainer.contains(camera))//avoid duplicates
+			this.cameraContainer.add(camera);
 	}
 
 }

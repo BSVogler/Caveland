@@ -309,6 +309,10 @@ public class GameView implements GameManager {
 	public RenderStorage getRenderStorage() {
 		return renderstorage;
 	}
+
+	public void setRenderStorage(RenderStorage renderstorage) {
+		this.renderstorage = renderstorage;
+	}
 	
     /**
      * Main method which is called every time and renders everything. You must manually render the devtools e.g. in an extended render method.
@@ -570,6 +574,7 @@ public class GameView implements GameManager {
      */
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
+		getRenderStorage().addCamera(camera);
 		Controller.getMap().getOberservers().add(camera);
     }
     

@@ -156,7 +156,7 @@ public class GameView implements GameManager {
 
 		useDefaultShader();//set default shader
 
-		renderstorage = new RenderStorage(cameras);
+		renderstorage = new RenderStorage();
 		initalized = true;
 	}
 	

@@ -80,12 +80,13 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		if (basket.shouldBeDisposed()) {
+		if (basket != null && basket.shouldBeDisposed()) {
 			basket = null;
 		}
 		if (basket != null) {
 			//has basket, so toggle him
 			toggleBasket(actor);
+			
 			return;
 		}
 

@@ -49,8 +49,10 @@ public class RenderStorage implements MapObserver  {
 	/**
 	 * Stores the data of the map.
 	 */
-	private final ArrayList<RenderChunk> data = new ArrayList<>(18);//amout of cameras *9
+	private final ArrayList<RenderChunk> data;
 	private final List<Camera> cameraContainer;
+	private final ArrayList<Integer> lastCenterX;
+	private final ArrayList<Integer> lastCenterY;
 	/**
 	 * a list of coordiants marked as dirty
 	 */
@@ -58,11 +60,12 @@ public class RenderStorage implements MapObserver  {
 
 	/**
 	 * Creates a new renderstorage.
-	 * @param cameras the cameras which are checked to fill it.
 	 */
-	public RenderStorage(List<Camera> cameras) {
-		this.cameraContainer = new ArrayList<>(cameras.size());
-		cameras.forEach(e->this.cameraContainer.add(e));
+	public RenderStorage() {
+		this.cameraContainer = new ArrayList<>(1);
+		data = new ArrayList<>(cameraContainer.size()*9);
+		lastCenterX = new ArrayList<>(1);
+		lastCenterY = new ArrayList<>(1);
 	}
 
 	public void update(float dt){
@@ -128,18 +131,20 @@ public class RenderStorage implements MapObserver  {
 		data.forEach(chunk -> chunk.setCameraAccess(false));
 		
 		//check if needed chunks are there and mark them
-		for (Camera camera : cameraContainer) {
+		for (int i = 0; i < cameraContainer.size(); i++) {
+			Camera camera = cameraContainer.get(i);
 			if (camera.isEnabled()) {
-				boolean changesToCameraCache = false;
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
-						if (checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y)) {
-							changesToCameraCache = true;
-						}
+						checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y);//todo remove check if loaded
 					}
 				}
-				if (changesToCameraCache) {
+				//check if center changed
+				if (lastCenterX.get(i)==null || lastCenterY==null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
+					//if (changesToCameraCache) {
 					camera.fillCameraContentBlocks();
+					lastCenterX.set(i, camera.getCenterChunkX());
+					lastCenterY.set(i, camera.getCenterChunkY());
 				}
 			}
 		}
@@ -158,7 +163,7 @@ public class RenderStorage implements MapObserver  {
 	 *
 	 * @param x
 	 * @param y
-	 * @return true if added new renderchunk
+	 * @return true if added a new renderchunk in the check
 	 */
 	private boolean checkChunk(int x, int y) {
 		RenderChunk rChunk = getChunk(x, y);
@@ -382,8 +387,12 @@ public class RenderStorage implements MapObserver  {
 	 * @param camera 
 	 */
 	public void addCamera(Camera camera) {
-		if (!cameraContainer.contains(camera))//avoid duplicates
+		if (!cameraContainer.contains(camera)) {//avoid duplicates
 			this.cameraContainer.add(camera);
+			data.ensureCapacity(cameraContainer.size()*9);//redundant?
+			lastCenterX.add(null);
+			lastCenterY.add(null);
+		}
 	}
 
 }

@@ -55,6 +55,8 @@ import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Creates a virtual camera wich displays the game world on the viewport. A camer acan be locked to an entity.
@@ -135,9 +137,9 @@ public class Camera implements MapObserver {
 	 * true if camera is currently rendering
 	 */
 	private boolean active = false;
-	private AbstractGameObject[] depthlist;
+	private final LinkedList<AbstractGameObject> depthlist = new LinkedList<>();
 	/**
-	 * amount of objects to be rendered
+	 * amount of objects to be rendered, used as an index during filling
 	 */
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
@@ -525,8 +527,8 @@ public class Camera implements MapObserver {
 			SideSprite.setAO(WE.getCVars().getValueF("ambientOcclusion"));
 			
 			//render vom bottom to top
-			for (int i = 0; i < objectsToBeRendered; i++) {
-				depthlist[i].render(view, camera);
+			for (AbstractGameObject obj : depthlist) {
+				obj.render(view, camera);
 			}
 			view.getSpriteBatch().end();
 
@@ -535,8 +537,8 @@ public class Camera implements MapObserver {
 				view.setDebugRendering(true);
 				view.getSpriteBatch().begin();
 				//render vom bottom to top
-				for (int i = 0; i < objectsToBeRendered; i++) {
-					depthlist[i].render(view, camera);
+				for (AbstractGameObject obj : depthlist) {
+					obj.render(view, camera);
 				}
 				view.getSpriteBatch().end();
 			}
@@ -569,13 +571,47 @@ public class Camera implements MapObserver {
 	 *
 	 * @return the depthlist
 	 */
-	private AbstractGameObject[] createDepthList() {
+	private LinkedList<AbstractGameObject> createDepthList() {
 		//register memory space only once then reuse
-		if (depthlist == null || WE.getCVars().getValueI("MaxSprites") != depthlist.length) {
-			depthlist = new AbstractGameObject[WE.getCVars().getValueI("MaxSprites")];
-		}
+		depthlist.clear();
+		int maxsprites = WE.getCVars().getValueI("MaxSprites");
 
 		objectsToBeRendered = 0;
+		
+		//add entitys which should be rendered
+		boolean activatedRenderLimit = false;
+		if (zRenderingLimit < Chunk.getBlocksZ())
+			activatedRenderLimit = true;
+		
+		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
+		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(20);
+		for (AbstractEntity entity : ents) {
+			if (entity.hasPosition()
+				&& !entity.isHidden()
+				&& inViewFrustum(
+					entity.getPosition().getViewSpcX(),
+					entity.getPosition().getViewSpcY()
+				)
+				&& (!activatedRenderLimit || entity.getPosition().getZGrid() < zRenderingLimit)
+			) {
+				entsToRender.add(entity);
+			}
+		}
+		
+		
+		//sort valid in order of depth
+		entsToRender.sort((AbstractEntity o1, AbstractEntity o2) -> {
+			float d1 = o1.getDepth();
+			float d2 = o2.getDepth();
+			if (d1 < d2) {
+				return 1;
+			} else {
+				if (d1==d2) return 0;
+				return -1;
+			}
+		});
+		
+		//add blocks
 		DataIterator<RenderBlock> iterator = new DataIterator<>(
 			cameraContent,//iterate over camera content
 			0, //from layer0 which is aeqeuivalent to -1
@@ -602,9 +638,10 @@ public class Camera implements MapObserver {
 							block.getPosition().getViewSpcY()
 					)
 				) {
-					depthlist[objectsToBeRendered] = block;
+					//block
+					depthlist.add(block);
 					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) {
+					if (objectsToBeRendered >= maxsprites) {
 						break;//fill only up to available size
 					}
 				}
@@ -613,41 +650,55 @@ public class Camera implements MapObserver {
 			while (iterator.hasNext()) {
 				RenderBlock block = iterator.next();
 				if (block != null && !block.isHidden()) {
-					depthlist[objectsToBeRendered] = block;
+					depthlist.add(block);
 					objectsToBeRendered++;
-					if (objectsToBeRendered >= depthlist.length) {
+					if (objectsToBeRendered >= maxsprites) {
 						break;//fill only up to available size
 					}
 				}
 			}
 		}
-
-		//add entitys
-		boolean activatedRenderLimit = false;
-		if (zRenderingLimit < Chunk.getBlocksZ())
-			activatedRenderLimit = true;
 		
-		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		for (AbstractEntity entity : ents) {
-			if (objectsToBeRendered >= depthlist.length) {
-				break;//fill only up to available size
+		//insert entities to depthlist
+		for (AbstractEntity ent : entsToRender) {
+			int lastvalid = 0;
+			Iterator<AbstractGameObject> dlIt = depthlist.iterator();
+			int i = 0;
+			while (dlIt.hasNext()) {
+				i++;
+				AbstractGameObject objectInList = dlIt.next();
+				if (objectInList instanceof  RenderBlock) {
+					Point objPos = objectInList.getPosition().toPoint();
+					//entfront = ent.getPosition().add(Block.GAME_DIAGLENGTH2, 0, 0);
+					//check if ent is before block
+					Point entPos = ent.getPosition();
+					if (
+						   entPos.getX() >=  objPos.getX() - Block.GAME_DIAGLENGTH2 //left side
+						&& entPos.getY() >=  objPos.getY() - Block.GAME_DIAGLENGTH2 //top side
+						&& entPos.getX() <=  objPos.getX() + Block.GAME_DIAGLENGTH2 //right side
+						&& entPos.getY() <=  objPos.getY() + Block.GAME_DIAGLENGTH2 //bottom side
+						&& entPos.getZ() >=  objPos.getZ()+Block.GAME_EDGELENGTH2 //bottom side
+					) {
+						lastvalid = i;
+						objectsToBeRendered++;
+						if (objectsToBeRendered >= maxsprites) {
+							break;//fill only up to available size
+						}
+					}
+					
+					//improve speed by skipping block which can not be the next
+					if (objPos.getY()>entPos.getY()+Block.GAME_DIAGLENGTH)
+						break;
+				}
 			}
-			if (entity.hasPosition()
-				&& !entity.isHidden()
-				&& inViewFrustum(
-					entity.getPosition().getViewSpcX(),
-					entity.getPosition().getViewSpcY()
-				)
-				&& (!activatedRenderLimit || entity.getPosition().getZGrid() < zRenderingLimit)
-			) {
-				depthlist[objectsToBeRendered] = entity;
-				objectsToBeRendered++;
+			if (lastvalid + 1 >= depthlist.size()) {
+				depthlist.addLast(ent);
+			} else {
+				//insert after lastvalid
+				depthlist.add(lastvalid + 1, ent);
 			}
 		}
-		//sort the list
-		if (objectsToBeRendered > 1) {
-			return sortDepthListParallel(depthlist);
-		}
+		
 		return depthlist;
 	}
 

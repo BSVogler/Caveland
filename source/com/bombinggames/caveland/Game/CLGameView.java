@@ -430,9 +430,12 @@ public class CLGameView extends GameView{
 				);
 			}
 		getSpriteBatch().end();
-		if (minimap==null)
-			minimap = new MiniMapChunkDebug(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-		minimap.render(this);
+		if (WE.getCVars().getValueB("showMiniMapChunk")) {
+			if (minimap == null) {
+				minimap = new MiniMapChunkDebug(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+			}
+			minimap.render(this);
+		}
 	}
 
 	/**

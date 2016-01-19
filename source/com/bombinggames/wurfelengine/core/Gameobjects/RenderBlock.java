@@ -30,6 +30,7 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
@@ -518,7 +519,7 @@ public class RenderBlock extends AbstractGameObject{
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();
         } else {
-			if (color != null) {
+			//if (color != null) {
 	//			color.r *= getLightlevelR(side);
 	//			if (color.r > 1) {//values above 1 can not be casted later
 	//				color.r = 1;
@@ -545,9 +546,22 @@ public class RenderBlock extends AbstractGameObject{
 						getLightlevel(side,3,0)/2f, getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
 					)
 				);
-			}
+			//}
 			sprite.draw(view.getSpriteBatch());
 			increaseDrawCalls();
+		}
+		
+		//draw grass
+		if (id==1 && side==Side.TOP){
+			Sprite gras = new Sprite(getSprite('e', (byte) 7, (byte) 0));
+			
+			for (int i = 0; i < 10; i++) {
+				gras.setColor(new Color(
+				getLightlevel(side,1,0)/2f-0.1f,getLightlevel(side,1,1)/2f-(xPos*yPos+i)%3*0.02f, getLightlevel(side,1,2)/2f, 1
+			));
+				gras.setPosition(xPos+((xPos*(yPos+i))%27)*7+30, yPos+50-(((yPos+i)*xPos)%7)*5);
+				gras.draw(view.getSpriteBatch());
+			}
 		}
     }
 

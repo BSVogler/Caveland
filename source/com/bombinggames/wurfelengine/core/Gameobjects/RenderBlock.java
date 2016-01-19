@@ -555,7 +555,7 @@ public class RenderBlock extends AbstractGameObject{
 		if (id==1 && side==Side.TOP){
 			Sprite gras = new Sprite(getSprite('e', (byte) 7, (byte) 0));
 			
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 10; i++) {
 				gras.setColor(new Color(
 				getLightlevel(side,1,0)/2f-0.1f,getLightlevel(side,1,1)/2f-(xPos*yPos+i)%3*0.02f, getLightlevel(side,1,2)/2f, 1
 			));

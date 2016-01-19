@@ -511,34 +511,7 @@ public class RenderBlock extends AbstractGameObject{
             sprite.scale(getScaling());
         }
 		
-		if (color != null) {
-//			color.r *= getLightlevelR(side);
-//			if (color.r > 1) {//values above 1 can not be casted later
-//				color.r = 1;
-//			}
-//			color.g *= getLightlevelG(side);
-//			if (color.g > 1) {//values above 1 can not be casted later
-//				color.g = 1;
-//			}
-//			color.b *= getLightlevelB(side);
-//			if (color.b > 1) {//values above 1 can not be casted later
-//				color.b = 1;
-//			}
-			sprite.setColor(
-				new Color(
-					getLightlevel(side,0,0)/2f, getLightlevel(side,0,1)/2f, getLightlevel(side,0,2)/2f, 1
-				),
-				new Color(
-					getLightlevel(side,1,0)/2f,getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
-				),
-				new Color(
-					getLightlevel(side,2,0)/2f,getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
-				),
-				new Color(
-					getLightlevel(side,3,0)/2f,getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
-				)
-			);
-		}
+		
  
 		//draw only outline or regularly?
         if (view.debugRendering()){
@@ -547,6 +520,34 @@ public class RenderBlock extends AbstractGameObject{
             sh.rect(xPos, yPos, sprite.getWidth(), sprite.getHeight());
             sh.end();
         } else {
+			if (color != null) {
+	//			color.r *= getLightlevelR(side);
+	//			if (color.r > 1) {//values above 1 can not be casted later
+	//				color.r = 1;
+	//			}
+	//			color.g *= getLightlevelG(side);
+	//			if (color.g > 1) {//values above 1 can not be casted later
+	//				color.g = 1;
+	//			}
+	//			color.b *= getLightlevelB(side);
+	//			if (color.b > 1) {//values above 1 can not be casted later
+	//				color.b = 1;
+	//			}
+				sprite.setColor(
+					new Color(
+						getLightlevel(side,0,0)/2f, getLightlevel(side,0,1)/2f, getLightlevel(side,0,2)/2f, 1
+					),
+					new Color(
+						getLightlevel(side,1,0)/2f,getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
+					),
+					new Color(
+						getLightlevel(side,2,0)/2f,getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
+					),
+					new Color(
+						getLightlevel(side,3,0)/2f,getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
+					)
+				);
+			}
 			sprite.draw(view.getSpriteBatch());
 			increaseDrawCalls();
 		}

@@ -62,14 +62,14 @@ public class Navigation {
             int steps = topBorder/(Chunk.getBlocksZ()+1);
 
             for (int i = 1; i < Chunk.getBlocksZ()+1; i++) {
-                if (view.getCameras().get(0).getZRenderingLimit() == i )
+                if (view.getRenderStorage().getZRenderingLimit() == i )
                     sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0,0.1f));
                 else 
                     sh.setColor(Color.GRAY.cpy().sub(0, 0, 0,0.5f));
                 sh.line(
                     rightborder,
                     i*steps,
-                    rightborder-50- ( view.getCameras().get(0).getZRenderingLimit() == i ?40:0),
+                    rightborder-50- ( view.getRenderStorage().getZRenderingLimit() == i ?40:0),
                     i*steps
                 );
 
@@ -78,7 +78,7 @@ public class Navigation {
                 sh.line(
                     rightborder,
                     i*steps+3,
-                    rightborder-50- ( view.getCameras().get(0).getZRenderingLimit() == i ?40:0),
+                    rightborder-50- ( view.getRenderStorage().getZRenderingLimit() == i ?40:0),
                     i*steps+3
                 ); 
             }

@@ -323,7 +323,7 @@ public class Point extends Vector3 implements Position {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-		public Intersection raycast(final Vector3 dir, float maxDistance, final Camera camera, final Predicate<Block> hitCondition) {
+		public Intersection raycast(final Vector3 dir, float maxDistance, final GameView view, final Predicate<Block> hitCondition) {
 		/*  Call the callback with (x,y,z,value,normal) of all blocks along the line
 		segment from point 'origin' in vector dir 'dir' of length
 		'maxDistance'. 'maxDistance' may be infinite.
@@ -383,11 +383,11 @@ public class Point extends Vector3 implements Position {
 
 			isectC.set(curX, curY, curZ);
 			//intersect?
-			if ((
-				camera == null
+			if (
+				view == null
 				||
-				(curZ < camera.getZRenderingLimit() && !camera.isClipped(isectC))
-			)) {
+				(curZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
+			) {
 				Block block = isectC.getBlock();
 				if (
 					block != null
@@ -479,7 +479,7 @@ public class Point extends Vector3 implements Position {
 	public Intersection rayMarching(
 		final Vector3 dir,
 		float maxDistance,
-		final Camera camera,
+		final GameView view,
 		final Predicate<Block> hitCondition
 	){
 		if (dir == null) {
@@ -513,9 +513,9 @@ public class Point extends Vector3 implements Position {
 			lastCoordZ = isectC.getZ();
 			
 			if (
-				camera == null
+				view == null
 				||
-				(isectC.getZ() < camera.getZRenderingLimit() && !camera.isClipped(isectC))
+				(lastCoordZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
 				Block block = isectC.getBlock();
 				if (

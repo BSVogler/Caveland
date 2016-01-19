@@ -22,8 +22,10 @@ import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.Map.RenderChunk;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
+import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
 
 
@@ -245,12 +247,12 @@ public class CLGameView extends GameView{
 		}
 		
 		//manual clipping in caves for black areas
-		for (Camera camera : getCameras()) {
-			RenderBlock[][][] cc = camera.getCameraContent();
-			//check if the chunk is a cave
-			if (cc[cc.length - 1][cc[0].length - 1][0].getPosition().getY() > ChunkGenerator.CAVESBORDER) {
+		ArrayList<RenderChunk> cc = getRenderStorage().getData();
+		//check if the chunk is a cave
+		for (RenderChunk renderChunk : cc) {
+			if (renderChunk.getTopLeftCoordinate().getY() > ChunkGenerator.CAVESBORDER) {
 				//iterate over cameracontent
-				DataIterator<RenderBlock> iterator = new DataIterator<>(cc, 0, Chunk.getBlocksZ());//take offset into account
+				DataIterator<RenderBlock> iterator = renderChunk.getIterator(0, Chunk.getBlocksZ()-1);
 				while (iterator.hasNext()) {
 					RenderBlock next = iterator.next();
 					if (next != null) {
@@ -259,11 +261,11 @@ public class CLGameView extends GameView{
 							next.setClippedTop();
 						}
 						////h
-//						int iout = ChunkGenerator.insideOutside(next.getPosition());
-//						if (iout==-1)
-//							next.setHidden(true);
-//						else if (iout==0)
-//							next.getBlockData().setUnclipped();
+	//						int iout = ChunkGenerator.insideOutside(next.getPosition());
+	//						if (iout==-1)
+	//							next.setHidden(true);
+	//						else if (iout==0)
+	//							next.getBlockData().setUnclipped();
 					}
 				}
 			}

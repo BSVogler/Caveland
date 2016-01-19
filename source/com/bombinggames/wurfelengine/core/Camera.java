@@ -66,7 +66,7 @@ public class Camera implements MapObserver {
 	/**
 	 * top limit
 	 */
-	private int zRenderingLimit = Chunk.getBlocksZ();
+	private int zRenderingLimit = Chunk.getBlocksZ()-1;
 
 	/**
 	 * A 3d array which has the blocks in it which are possibly rendered. Shoudl be 3x3 chunks. Only the relevant portion of the map is moved to this array.
@@ -186,7 +186,7 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final GameView view, final int x, final int y, final int width, final int height) {
-		zRenderingLimit = Chunk.getBlocksZ();
+		zRenderingLimit = Chunk.getBlocksZ()-1;
 
 		gameView = view;
 		screenWidth = width;
@@ -329,19 +329,6 @@ public class Camera implements MapObserver {
 			
 			//recalculate the center position
 			updateCenter();
-
-
-			if (cameraContent != null) {
-				for (RenderBlock[][] x : cameraContent) {
-					for (RenderBlock[] y : x) {
-						for (RenderBlock z : y) {
-							if (z != null) {
-								z.update(dt);
-							}
-						}
-					}
-				}
-			}
 
 			//don't know what this does
 			//Gdx.gl20.glMatrixMode(GL20.GL_PROJECTION);
@@ -598,8 +585,8 @@ public class Camera implements MapObserver {
 					&& !block.isClipped()
 					&& !block.isHidden()
 					&& inViewFrustum(
-							block.getPosition().getViewSpcX(),
-							block.getPosition().getViewSpcY()
+						block.getPosition().getViewSpcX(),
+						block.getPosition().getViewSpcY()
 					)
 				) {
 					depthlist[objectsToBeRendered] = block;
@@ -624,7 +611,7 @@ public class Camera implements MapObserver {
 
 		//add entitys
 		boolean activatedRenderLimit = false;
-		if (zRenderingLimit < Chunk.getBlocksZ())
+		if (zRenderingLimit < Chunk.getBlocksZ()-1)
 			activatedRenderLimit = true;
 		
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
@@ -771,7 +758,7 @@ public class Camera implements MapObserver {
 			0,
 			Chunk.getBlocksZ() - 1
 		);
-
+		
 		if (csIter.hasAnyBlock()){
 			while (csIter.hasNext()) {
 				RenderBlock block = csIter.next();
@@ -841,14 +828,6 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 *
-	 * @return The highest level wich is rendered.
-	 */
-	public int getZRenderingLimit() {
-		return zRenderingLimit;
-	}
-
-	/**
 	 * If the limit is set to the map's height or more it becomes deactivated.
 	 *
 	 * @param limit minimum is 0, everything to this limit becomes rendered
@@ -860,7 +839,7 @@ public class Camera implements MapObserver {
 
 			//clamp
 			if (limit >= Chunk.getBlocksZ()) {
-				zRenderingLimit = Chunk.getBlocksZ();
+				zRenderingLimit = Chunk.getBlocksZ()-1;
 			} else if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
@@ -948,7 +927,7 @@ public class Camera implements MapObserver {
 	public int getVisibleFrontBorderHigh() {
 		return (int) ((position.y - getHeightInProjSpc() / 2) //bottom camera border
 			/ -Block.VIEW_DEPTH2 //back to game coordinates
-			+ cameraContent[0][0].length * Block.VIEW_HEIGHT / Block.VIEW_DEPTH2 //todo verify, try to add z component
+			+ Chunk.getBlocksY()*3 * Block.VIEW_HEIGHT / Block.VIEW_DEPTH2 //todo verify, try to add z component
 			);
 	}
 
@@ -1198,38 +1177,6 @@ public class Camera implements MapObserver {
 	}
 	
 	/**
-	 * get if a coordinate is clipped
-	 *
-	 * @param coords
-	 * @return
-	 */
-	public boolean isClipped(Coordinate coords) {
-		if (coords.getZ() >= zRenderingLimit) {
-			return true;
-		}
-		
-		if (coords.getZ() < -1)//filter below lowest level
-			return true;
-		
-
-		//get the index position in the clipping field
-		int indexX = coords.getX() - getCoveredLeftBorder();
-		int indexY = coords.getY() - getCoveredBackBorder();
-		//check if covered by camera
-		if (indexX >= 0
-			&& indexX < cameraContent.length
-			&& indexY >= 0
-			&& indexY < cameraContent[0].length
-			&& cameraContent[indexX][indexY][coords.getZ() + 1] != null //not air
-			) {
-			return cameraContent[indexX][indexY][coords.getZ() + 1].isClipped();
-		} else {
-			//if not return fully clipped
-			return true;
-		}
-	}
-
-	/**
 	 * enable or disable the camera
 	 *
 	 * @param active
@@ -1246,15 +1193,6 @@ public class Camera implements MapObserver {
 		this.active = active;
 	}
 
-	/**
-	 * The camea content is the block content which is displayed by the camera.
-	 * Has the ground layer in 0, therefore offset in z of one.
-	 *
-	 * @return reference
-	 */
-	public RenderBlock[][][] getCameraContent() {
-		return cameraContent;
-	}
 
 	@Override
 	public void onMapReload() {
@@ -1265,7 +1203,7 @@ public class Camera implements MapObserver {
 	public void onChunkChange(Chunk chunk) {
 	}
 	
-	
+
 
 	private void drawDebug(GameView view, Camera camera) {
 		ShapeRenderer sh = view.getShapeRenderer();

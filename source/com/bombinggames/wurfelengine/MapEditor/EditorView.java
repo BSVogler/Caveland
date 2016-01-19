@@ -672,7 +672,7 @@ public class EditorView extends GameView implements Telegraph {
 
 		@Override
 		public boolean scrolled(int amount) {
-			camera.setZRenderingLimit(camera.getZRenderingLimit() - amount);
+			camera.setZRenderingLimit(view.getRenderStorage().getZRenderingLimit() - amount);
 			return true;
 		}
 

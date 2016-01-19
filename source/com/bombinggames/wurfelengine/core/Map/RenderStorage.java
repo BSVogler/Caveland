@@ -57,6 +57,7 @@ public class RenderStorage implements MapObserver  {
 	 * a list of coordiants marked as dirty
 	 */
 	private final ArrayList<Coordinate> dirtyFlags = new ArrayList<>(20);
+	private int zRenderingLimit;
 
 	/**
 	 * Creates a new renderstorage.
@@ -66,10 +67,23 @@ public class RenderStorage implements MapObserver  {
 		data = new ArrayList<>(cameraContainer.size()*9);
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
+		zRenderingLimit = Chunk.getBlocksZ();
 	}
 
 	public void update(float dt){
 		checkNeededChunks();
+		//update rendderblocks
+		for (RenderChunk renderChunk : data) {
+			for (RenderBlock[][] x : renderChunk.getData()) {
+				for (RenderBlock[] y : x) {
+					for (RenderBlock z : y) {
+						if (z != null) {
+							z.update(dt);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void preUpdate(float dt){
@@ -174,20 +188,20 @@ public class RenderStorage implements MapObserver  {
 				data.add(newRChunk);
 				newRChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(newRChunk);
-				hiddenSurfaceDetection(newRChunk, cameraContainer.get(0).getZRenderingLimit() - 1);
+				hiddenSurfaceDetection(newRChunk, zRenderingLimit - 1);
 
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
 				}
 				neighbor = getChunk(x + 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
 				}
 				neighbor = getChunk(x, y - 1);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, cameraContainer.get(0).getZRenderingLimit() - 1);
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
 				}
 				return true;
 			}
@@ -393,6 +407,30 @@ public class RenderStorage implements MapObserver  {
 			lastCenterX.add(null);
 			lastCenterY.add(null);
 		}
+	}
+	
+	/**
+	 * get if a coordinate is clipped
+	 *
+	 * @param coords
+	 * @return
+	 */
+	public boolean isClipped(Coordinate coords) {
+		if (coords.getZ() >= zRenderingLimit) {
+			return true;
+		}
+		
+		if (coords.getZ() < -1)//filter below lowest level
+			return true;
+		
+		RenderBlock block = getBlock(coords);
+		if (block==null)
+			return false;
+		return block.isClipped();
+	}
+
+	public int getZRenderingLimit() {
+		return zRenderingLimit;
 	}
 
 }

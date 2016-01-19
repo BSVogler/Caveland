@@ -55,6 +55,8 @@ public class CameraSpaceIterator {
 	private final int startingZ;
 	private int chunkNum = -1;
 	private final GameView gameView;
+	private int left;
+	private int right;
 
 	/**
 	 * Starts at z = -1.
@@ -63,7 +65,7 @@ public class CameraSpaceIterator {
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
-	 * @param topLevel the top limit of the z axis
+	 * @param topLevel the top limit of the z axis, last level is included
 	 */
 	public CameraSpaceIterator(GameView gameView, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
 		this.gameView = gameView;
@@ -155,4 +157,24 @@ public class CameraSpaceIterator {
 	public boolean hasAnyBlock() {
 		return getNextChunk(0) != null;
 	}
+
+	/**
+	 * 
+	 * @param left coordinate
+	 * @param right coordinate
+	 * @param back
+	 * @param front 
+	 */
+	public void setBorders(int left, int right, int back, int front) {
+		this.left = left;
+		this.right = right;
+		//blockIterator.setBordersCoordiante(left, right, back, front);
+//		if (back > 0) {
+//			this.back = back;
+//		}
+//		if (front < data[0].length - 1) {
+//			this.front = front;
+//		}
+	}
+
 }

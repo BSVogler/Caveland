@@ -419,18 +419,18 @@ public class SideSprite extends TextureRegion {
 	 * @param v4
 	 */
 	public void setColor(Color v1, Color v2,Color v3,Color v4) {
-		if (v1.r>1)v1.r=1;
-		if (v1.g>1)v1.g=1;
-		if (v1.b>1)v1.b=1;
-		if (v2.r>1)v2.r=1;
-		if (v2.g>1)v2.g=1;
-		if (v2.b>1)v2.b=1;
-		if (v3.r>1)v3.r=1;
-		if (v3.g>1)v3.g=1;
-		if (v3.b>1)v3.b=1;
-		if (v4.r>1)v4.r=1;
-		if (v4.g>1)v4.g=1;
-		if (v4.b>1)v4.b=1;
+		if (v1.r > 1) v1.r = 1;
+		if (v1.g > 1) v1.g = 1;
+		if (v1.b > 1) v1.b = 1;
+		if (v2.r > 1) v2.r = 1;
+		if (v2.g > 1) v2.g = 1;
+		if (v2.b > 1) v2.b = 1;
+		if (v3.r > 1) v3.r = 1;
+		if (v3.g > 1) v3.g = 1;
+		if (v3.b > 1) v3.b = 1;
+		if (v4.r > 1) v4.r = 1;
+		if (v4.g > 1) v4.g = 1;
+		if (v4.b > 1) v4.b = 1;
 		vertices[C1] = v1.toFloatBits();
 		vertices[C2] = v2.toFloatBits();
 		vertices[C3] = v3.toFloatBits();

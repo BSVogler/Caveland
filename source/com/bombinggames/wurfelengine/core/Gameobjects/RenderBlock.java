@@ -511,8 +511,6 @@ public class RenderBlock extends AbstractGameObject{
             sprite.scale(getScaling());
         }
 		
-		
- 
 		//draw only outline or regularly?
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();
@@ -538,13 +536,13 @@ public class RenderBlock extends AbstractGameObject{
 						getLightlevel(side,0,0)/2f, getLightlevel(side,0,1)/2f, getLightlevel(side,0,2)/2f, 1
 					),
 					new Color(
-						getLightlevel(side,1,0)/2f,getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
+						getLightlevel(side,1,0)/2f, getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
 					),
 					new Color(
-						getLightlevel(side,2,0)/2f,getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
+						getLightlevel(side,2,0)/2f, getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
 					),
 					new Color(
-						getLightlevel(side,3,0)/2f,getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
+						getLightlevel(side,3,0)/2f, getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
 					)
 				);
 			}

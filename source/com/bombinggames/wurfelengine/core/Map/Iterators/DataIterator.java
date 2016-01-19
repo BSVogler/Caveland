@@ -62,7 +62,7 @@ public class DataIterator<T> implements Iterator<T> {
 		final int startingZ,
 		final int limitZ
 	) {
-		pos = new int[]{-1, 0, startingZ}; //start at -1 because the first call of next should return the first element
+		pos = new int[]{0, 0, startingZ-1}; //start at -1 because the first call of next should return the first element
 		this.limitZ = limitZ;
 		if (data==null) throw new IllegalArgumentException();
 		this.data = data;
@@ -91,15 +91,15 @@ public class DataIterator<T> implements Iterator<T> {
 
 	@Override
 	public T next() {
-		if (pos[0] < right) { // go right if it can
+		if (pos[2] < limitZ) {// go higher if it can and go to x=0, y=0
+			pos[2]++;
+		} else if (pos[0] < right) { // go right if it can
 			pos[0]++;
+			pos[2] = 0;
 		} else if (pos[1] < front) {// go down if it can and start at x=0
 			pos[1]++;
 			pos[0] = left;
-		} else if (pos[2] < limitZ) {// go higher if it can and go to x=0, y=0
-			pos[2]++;
-			pos[1] = back;
-			pos[0] = left;
+			pos[2] = 0;
 		}
 		return data[pos[0]][pos[1]][pos[2]];
 	}

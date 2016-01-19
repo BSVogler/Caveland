@@ -182,19 +182,19 @@ public class RenderBlock extends AbstractGameObject{
 	 * by fraction /2^10-1 = 1023.
 	 * each field is vertex 0-3
 	 */
-	private int[] colorLeft = new int[]{
+	private final int[] colorLeft = new int[]{
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55
 	};
-	private int[] colorTop = new int[]{
+	private final int[] colorTop = new int[]{
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55
 	};
-	private int[] colorRight = new int[]{
+	private final int[] colorRight = new int[]{
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,
 		(55 << 16) + (55 << 8) + 55,

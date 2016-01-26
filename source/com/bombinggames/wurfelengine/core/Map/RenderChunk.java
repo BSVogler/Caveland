@@ -121,7 +121,7 @@ public class RenderChunk {
 	
 	
 	/**
-	 * Resets the shading for one block.
+	 * Resets the shading for one block. Calculates drop shadow from blocks above.
 	 * @param idexX
 	 * @param idexY
 	 * @param idexZ

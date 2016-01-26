@@ -694,6 +694,11 @@ public class Coordinate implements Position {
 		return gameView.getRenderStorage().getChunk(this);
 	}
 
+	/**
+	 * 
+	 * @param gameView
+	 * @return can return null
+	 */
 	public RenderBlock getRenderBlock(GameView gameView) {
 		if (z < 0) {
 			return Controller.getMap().getNewGroundBlockInstance().toRenderBlock();

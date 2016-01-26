@@ -271,11 +271,7 @@ public class Block implements Serializable {
 	 * @return
 	 */
 	public RenderBlock toRenderBlock() {
-		if (id == 0) {
-			return null;
-		}
-		
-		if (id == 4) {//invisible wall
+		if (id == 0 || id == 4) {//invisible wall
 			RenderBlock a = new RenderBlock(this);
 			a.setHidden(true);
 			return a;

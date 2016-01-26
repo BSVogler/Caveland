@@ -43,9 +43,10 @@ public class DataIterator<T> implements Iterator<T> {
 	/**
 	 * current position
 	 */
-	private final int[] pos;
+	private final int[] pos = new int[3];
 	private final T[][][] data;
 	private int limitZ;
+	private final int startingZ;
 	/**
 	 * index positions
 	 */
@@ -62,7 +63,7 @@ public class DataIterator<T> implements Iterator<T> {
 		final int startingZ,
 		final int limitZ
 	) {
-		pos = new int[]{0, 0, startingZ-1}; //start at -1 because the first call of next should return the first element
+		this.startingZ  = startingZ;
 		this.limitZ = limitZ;
 		if (data==null) throw new IllegalArgumentException();
 		this.data = data;
@@ -71,6 +72,7 @@ public class DataIterator<T> implements Iterator<T> {
 		right = data.length - 1;
 		back = 0;
 		front = data[0].length - 1;
+		restart();
 	}
 
 	/**
@@ -140,6 +142,13 @@ public class DataIterator<T> implements Iterator<T> {
 		if (front < data[0].length - 1) {
 			this.front = front;
 		}
+		restart();
+	}
+	
+	public void restart() {
+		pos[0] = left;
+		pos[1] = back;
+		pos[2] = startingZ - 1; //start at -1 because the first call of next should return the first element
 	}
 
 }

@@ -578,34 +578,40 @@ public class RenderBlock extends AbstractGameObject{
 	//			if (color.b > 1) {//values above 1 can not be casted later
 	//				color.b = 1;
 	//			}
-				sprite.setColor(
-					new Color(
-						getLightlevel(side,0,0)/2f, getLightlevel(side,0,1)/2f, getLightlevel(side,0,2)/2f, 1
-					),
-					new Color(
-						getLightlevel(side,1,0)/2f, getLightlevel(side,1,1)/2f, getLightlevel(side,1,2)/2f, 1
-					),
-					new Color(
-						getLightlevel(side,2,0)/2f, getLightlevel(side,2,1)/2f, getLightlevel(side,2,2)/2f, 1
-					),
-					new Color(
-						getLightlevel(side,3,0)/2f, getLightlevel(side,3,1)/2f, getLightlevel(side,3,2)/2f, 1
-					)
-				);
+			sprite.setColor(
+				getLightlevel(side, 0, 0) / 2f,
+				getLightlevel(side, 0, 1) / 2f,
+				getLightlevel(side, 0, 2) / 2f,
+				getLightlevel(side, 1, 0) / 2f,
+				getLightlevel(side, 1, 1) / 2f,
+				getLightlevel(side, 1, 2) / 2f,
+				getLightlevel(side, 2, 0) / 2f,
+				getLightlevel(side, 2, 1) / 2f,
+				getLightlevel(side, 2, 2) / 2f,
+				getLightlevel(side, 3, 0) / 2f,
+				getLightlevel(side, 3, 1) / 2f,
+				getLightlevel(side, 3, 2) / 2f
+			);
 			//}
 			sprite.draw(view.getSpriteBatch());
 			increaseDrawCalls();
 		}
 		
 		//draw grass
-		if (id==1 && side==Side.TOP){
+		if (id == 1 && side == Side.TOP) {
 			Sprite gras = new Sprite(getSprite('e', (byte) 7, (byte) 0));
-			
+
 			for (int i = 0; i < 10; i++) {
-				gras.setColor(new Color(
-				getLightlevel(side,1,0)/2f-0.1f,getLightlevel(side,1,1)/2f-(xPos*yPos+i)%3*0.02f, getLightlevel(side,1,2)/2f, 1
-			));
-				gras.setPosition(xPos+((xPos*(yPos+i))%27)*7+30, yPos+50-(((yPos+i)*xPos)%7)*5);
+				gras.setColor(
+					getLightlevel(side, 1, 0) / 2f - 0.1f,
+					getLightlevel(side, 1, 1) / 2f - (xPos * yPos + i) % 3 * 0.02f,
+					getLightlevel(side, 1, 2) / 2f,
+					1
+				);
+				gras.setPosition(
+					xPos + ((xPos * (yPos + i)) % 27) * 7 + 30,
+					yPos + 50 - (((yPos + i) * xPos) % 7) * 5
+				);
 				gras.draw(view.getSpriteBatch());
 			}
 		}

@@ -413,28 +413,55 @@ public class SideSprite extends TextureRegion {
 	/**
 	 * Sets the color used to tint this sprite. Default is {@link Color#WHITE}.
 	 *
-	 * @param v1
-	 * @param v2
-	 * @param v3
-	 * @param v4
+	 * @param v1r
+	 * @param v1g
+	 * @param v1b
+	 * @param v2r
+	 * @param v2g
+	 * @param v2b
+	 * @param v3r
+	 * @param v3g
+	 * @param v3b
+	 * @param v4r
+	 * @param v4g
+	 * @param v4b
 	 */
-	public void setColor(Color v1, Color v2,Color v3,Color v4) {
-		if (v1.r > 1) v1.r = 1;
-		if (v1.g > 1) v1.g = 1;
-		if (v1.b > 1) v1.b = 1;
-		if (v2.r > 1) v2.r = 1;
-		if (v2.g > 1) v2.g = 1;
-		if (v2.b > 1) v2.b = 1;
-		if (v3.r > 1) v3.r = 1;
-		if (v3.g > 1) v3.g = 1;
-		if (v3.b > 1) v3.b = 1;
-		if (v4.r > 1) v4.r = 1;
-		if (v4.g > 1) v4.g = 1;
-		if (v4.b > 1) v4.b = 1;
-		vertices[C1] = v1.toFloatBits();
-		vertices[C2] = v2.toFloatBits();
-		vertices[C3] = v3.toFloatBits();
-		vertices[C4] = v4.toFloatBits();
+	public void setColor(
+		float v1r,
+		float v1g,
+		float v1b,
+		float v2r,
+		float v2g,
+		float v2b,
+		float v3r,
+		float v3g,
+		float v3b,
+		float v4r,
+		float v4g,
+		float v4b
+	) {
+		if (v1r > 1) v1r = 1;
+		if (v1g > 1) v1g = 1;
+		if (v1b > 1) v1b = 1;
+		if (v2r > 1) v2r = 1;
+		if (v2g > 1) v2g = 1;
+		if (v2b > 1) v2b = 1;
+		if (v3r > 1) v3r = 1;
+		if (v3g > 1) v3g = 1;
+		if (v3b > 1) v3b = 1;
+		if (v4r > 1) v4r = 1;
+		if (v4g > 1) v4g = 1;
+		if (v4b > 1) v4b = 1;
+		
+		int v1 = (255 << 24) | ((int)(255 * v1b) << 16) | ((int)(255 * v1g) << 8) | ((int)(255 * v1r));
+		int v2 = (255 << 24) | ((int)(255 * v2b) << 16) | ((int)(255 * v2g) << 8) | ((int)(255 * v2r));
+		int v3 = (255 << 24) | ((int)(255 * v3b) << 16) | ((int)(255 * v3g) << 8) | ((int)(255 * v3r));
+		int v4 = (255 << 24) | ((int)(255 * v4b) << 16) | ((int)(255 * v4g) << 8) | ((int)(255 * v4r));
+		
+		vertices[C1] = Float.intBitsToFloat(v1 & 0xfeffffff);
+		vertices[C2] = Float.intBitsToFloat(v2 & 0xfeffffff);
+		vertices[C3] = Float.intBitsToFloat(v3 & 0xfeffffff);
+		vertices[C4] = Float.intBitsToFloat(v4 & 0xfeffffff);
 	}
 	
 		/**

@@ -562,15 +562,13 @@ public class Camera implements MapObserver {
 		depthlist.clear();
 		maxsprites = WE.getCVars().getValueI("MaxSprites");
 
-		objectsToBeRendered = 0;
-		
 		//add entitys which should be rendered
 		boolean activatedRenderLimit = false;
 		if (zRenderingLimit < Chunk.getBlocksZ())
 			activatedRenderLimit = true;
 		
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(20);
+		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);
 		for (AbstractEntity entity : ents) {
 			if (entity.hasPosition()
 				&& !entity.isHidden()
@@ -615,15 +613,15 @@ public class Camera implements MapObserver {
 			RenderBlock block = iterator.next();
 			if (block != null) {
 				block.unmarkPermanent();
-				block.getEntsInThisCell().clear();
+				block.getEntsInCellBelow().clear();
 				//block.fillCovered(gameView);
-				//remove entities from covered list
+				//remove entitiaes from covered list
 			}
 		}
 		
 		//add entities to renderstorage
 		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord());
+			RenderBlock block = ent.getPosition().toCoord().add(0, 0, 1).getRenderBlock(gameView);
 			if (block != null) {
 				//block.fillCovered(gameView);
 				block.addEnt(ent);
@@ -631,6 +629,7 @@ public class Camera implements MapObserver {
 			}
 		}
 		
+		objectsToBeRendered = 0;
 		//add blocks
 		iterator.restart();
 		

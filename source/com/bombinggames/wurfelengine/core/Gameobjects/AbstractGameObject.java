@@ -565,7 +565,13 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
 		ArrayList<Renderable> res = new ArrayList<>(4);
 		Coordinate pos = getPosition().toCoord();
-		RenderBlock block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
+		
+		RenderBlock block = rs.getBlock(pos);//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		
+		block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
 		if (block != null) {
 			res.add(block);
 		}

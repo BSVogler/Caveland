@@ -218,7 +218,7 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	private byte clipping;
 	private final ArrayList<Renderable> coveredBlocks = new ArrayList<>(7);
-	private final ArrayList<AbstractEntity> entsInThisCell = new ArrayList<>(2);
+	private final ArrayList<AbstractEntity> entsInCellBelow = new ArrayList<>(2);
 	
 	
 	/**
@@ -1002,8 +1002,8 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param ent 
 	 */
 	public void addEnt(AbstractEntity ent) {
-		if (!entsInThisCell.contains(ent))
-			entsInThisCell.add(ent);
+		if (!entsInCellBelow.contains(ent))
+			entsInCellBelow.add(ent);
 	}
 
 	@Override
@@ -1020,18 +1020,18 @@ public class RenderBlock extends AbstractGameObject{
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
 		if (coord.getZ() > 0) {
-			if (entsInThisCell.size() > 0) {
-				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+entsInThisCell.size());
+			if (entsInCellBelow.size() > 0) {
+				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+entsInCellBelow.size());
 				covered.addAll(coveredBlocks);
-				covered.addAll(entsInThisCell);
+				covered.addAll(entsInCellBelow);
 				return covered;
 			}
 		}
 		return coveredBlocks;
 	}
 
-	public ArrayList<AbstractEntity> getEntsInThisCell() {
-		return entsInThisCell;
+	public ArrayList<AbstractEntity> getEntsInCellBelow() {
+		return entsInCellBelow;
 	}
 	
 	

@@ -422,7 +422,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
      * Returns the name of the object
      * @return the name of the object
      */
-	@Override
     public abstract String getName();
 
 

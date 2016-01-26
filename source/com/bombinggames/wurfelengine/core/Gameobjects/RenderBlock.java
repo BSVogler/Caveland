@@ -249,8 +249,6 @@ public class RenderBlock extends AbstractGameObject{
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 	
-	
-	@Override
 	public boolean isObstacle() {
 		return blockData.isObstacle();
 	}
@@ -618,23 +616,31 @@ public class RenderBlock extends AbstractGameObject{
 		return Block.getInstance(getSpriteId(), getSpriteValue());
 	}
 	
-	@Override
+	/**
+	 * Can light travel through object?
+	 * @return
+	 */
 	public boolean isTransparent() {
 		return blockData.isTransparent();
 	}
 	
-	@Override
 	public boolean isIndestructible() {
 		return blockData.isIndestructible();
 	}
-
-	@Override
+	/**
+	 * Is the block a true block with three sides or does it get rendered by a single sprite?<br>
+	 * This field is only used for representation (view) related data.<br>
+	 * Only used for blocks. Entities should return <i>false</i>.
+	 * @return <i>true</i> if it has sides, <i>false</i> if is rendered as a single sprite
+	 */
 	public boolean hasSides() {
 		if (blockData == null) {
 			return false;
 		}
 		return blockData.hasSides();
 	}
+	
+	
 
 	@Override
 	public void setSpriteValue(byte value) {

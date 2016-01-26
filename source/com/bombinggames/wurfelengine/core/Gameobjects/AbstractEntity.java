@@ -357,7 +357,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
         this.obstacle = obstacle;
     }
 
-	@Override
 	public boolean isObstacle() {
 		return obstacle;
 	}
@@ -378,7 +377,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		this.mass = mass;
 	}
 	
-	@Override
 	public boolean isTransparent() {
 		return true;
 	}
@@ -387,7 +385,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 *
 	 * @return
 	 */
-	@Override
 	public boolean isIndestructible() {
 		return indestructible;
 	}
@@ -398,11 +395,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 */
 	public void setIndestructible(boolean indestructible) {
 		this.indestructible = indestructible;
-	}
-
-	@Override
-	public boolean hasSides() {
-		return false;
 	}
 
 	/**

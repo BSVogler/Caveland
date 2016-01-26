@@ -997,6 +997,10 @@ public class RenderBlock extends AbstractGameObject{
 		clipping = (byte) 0;
 	}
 
+	/**
+	 * adds the entitiy into a cell
+	 * @param ent 
+	 */
 	public void addEnt(AbstractEntity ent) {
 		if (!entsInThisCell.contains(ent))
 			entsInThisCell.add(ent);

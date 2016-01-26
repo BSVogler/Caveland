@@ -709,25 +709,39 @@ public class Coordinate implements Position {
 		}
 	}
 	
+	/**
+	 * Add the coordiante to a list of changed.
+	 * @param view
+	 * @param side
+	 * @param color
+	 * @param vertex 
+	 */
 	public void addLight(GameView view, Side side, Color color,int vertex){
 		RenderBlock neighb = getRenderBlock(view);
 		if (neighb != null) {
-			view.getRenderStorage().setLightFlag(this);
+			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, vertex);
 			neighb.addLightlevel(color.g, side, 1, vertex);
 			neighb.addLightlevel(color.b, side, 2, vertex);
 		}
 	}
 
+	/**
+	 * Add light to the top of a coordinate
+	 * @param view
+	 * @param color
+	 * @param side 
+	 */
 	public void addLightlevel(GameView view, Color color, Side side) {
 		if (side==Side.TOP) {
 			addLight(view, side, color, 1);
-			cpy().goToNeighbour(0).addLight(view, side, color, 3);
-			cpy().goToNeighbour(1).addLight(view, side, color, 0);
-			cpy().goToNeighbour(7).addLight(view, side, color, 2);
+			goToNeighbour(0).addLight(view, side, color, 3);
+			goToNeighbour(3).addLight(view, side, color, 0);
+			goToNeighbour(6).addLight(view, side, color, 2);
+			goToNeighbour(3);//go back
 		} else {
 			RenderBlock neighb = getRenderBlock(view);
-			view.getRenderStorage().setLightFlag(this);
+			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, 0);
 			neighb.addLightlevel(color.g, side, 1, 0);
 			neighb.addLightlevel(color.b, side, 2, 0);

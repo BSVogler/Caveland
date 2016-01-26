@@ -318,7 +318,7 @@ public class Point extends Vector3 implements Position {
      * Does not work properly with the staggered map.
      * @param dir dir of the ray
      * @param maxDistance the distane after which it should stop. (in game meters)
-     * @param camera if set only intersect with blocks which are rendered (not clipped). ignores clipping if set to <i>null</i>
+	 * @param view
 	 * @param hitCondition
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
@@ -471,7 +471,7 @@ public class Point extends Vector3 implements Position {
 	 * 
 	 * @param dir
 	 * @param maxDistance game space in meters
-	 * @param camera
+	 * @param view
 	 * @param hitCondition can be null
 	 * @return 
 	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 

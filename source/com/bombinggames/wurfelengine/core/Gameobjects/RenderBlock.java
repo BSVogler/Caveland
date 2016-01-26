@@ -998,13 +998,11 @@ public class RenderBlock extends AbstractGameObject{
 
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
-		Coordinate pos = getPosition();
-		if (pos.getZ() > 0) {
-			RenderBlock block = rs.getBlock(pos.getX(), pos.getY(), pos.getZ());
-			if (block != null && block.entsInThisCell.size() > 0) {
-				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+block.entsInThisCell.size());
+		if (coord.getZ() > 0) {
+			if (entsInThisCell.size() > 0) {
+				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+entsInThisCell.size());
 				covered.addAll(coveredBlocks);
-				covered.addAll(block.entsInThisCell);
+				covered.addAll(entsInThisCell);
 				return covered;
 			}
 		}

@@ -122,6 +122,9 @@ public class RenderChunk {
 	
 	/**
 	 * Resets the shading for one block.
+	 * @param idexX
+	 * @param idexY
+	 * @param idexZ
 	 */
 	public void resetShadingCoord(int idexX, int idexY, int idexZ){
 		int blocksZ = Chunk.getBlocksZ();

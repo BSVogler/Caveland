@@ -255,7 +255,7 @@ public class CLGameView extends GameView{
 				DataIterator<RenderBlock> iterator = renderChunk.getIterator(0, Chunk.getBlocksZ()-1);
 				while (iterator.hasNext()) {
 					RenderBlock next = iterator.next();
-					if (next != null) {
+					if (next != null && next.getBlockData()!=null) {
 						//clip floor
 						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
 							next.setClippedTop();

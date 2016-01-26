@@ -101,12 +101,8 @@ public class PointLightSource extends AbstractEntity {
 	 */
 	public void lightNearbyBlocks(float delta) {
 		if (hasPosition()) {
-			Point lightPos = getPosition();
-			lastPos = lightPos.cpy();
-			
-			float rand = (float) Math.random();
-			float noiseX = rand * 2 - 1;
-			float noiseY = (float) Math.random() * 2 - 1;
+			Point origin = getPosition();
+			lastPos = origin.cpy();
 			
 			//light blocks under the torch
 			for (int z = -radius; z < radius; z++) {
@@ -115,69 +111,49 @@ public class PointLightSource extends AbstractEntity {
 
 						//slowly decrease
 						if (lightcache[x + radius][y + radius * 2][z + radius][0] > 0) {
-							lightcache[x + radius][y + radius * 2][z + radius][0] -= delta * 0.0001f;
-							if (lightcache[x + radius][y + radius * 2][z + radius][0] < 0) {
-								lightcache[x + radius][y + radius * 2][z + radius][0] = 0;
-							}
+							lightcache[x + radius][y + radius * 2][z + radius][0] = 0;
 						}
 						if (lightcache[x + radius][y + radius * 2][z + radius][1] > 0) {
-							lightcache[x + radius][y + radius * 2][z + radius][1] -= delta * 0.0001f;
-							if (lightcache[x + radius][y + radius * 2][z + radius][1] < 0) {
-								lightcache[x + radius][y + radius * 2][z + radius][1] = 0;
-							}
+							lightcache[x + radius][y + radius * 2][z + radius][1] = 0;
 						}
 						if (lightcache[x + radius][y + radius * 2][z + radius][2] > 0) {
-							lightcache[x + radius][y + radius * 2][z + radius][2] -= delta * 0.0001f;
-							if (lightcache[x + radius][y + radius * 2][z + radius][2] < 0) {
-								lightcache[x + radius][y + radius * 2][z + radius][2] = 0;
-							}
+							lightcache[x + radius][y + radius * 2][z + radius][2] = 0;
 						}
 
 						//send rays
-						Vector3 dir = new Vector3(x + noiseX, y + noiseY, z + rand * 2 - 1).nor();
+						Vector3 dir = new Vector3(x + 0.1f, y + 0.2f, z + 0.3f * 2 - 1).nor();
 						if (dir.len2() > 0) {//filter some rays
-							Intersection inters = lightPos.raycast(
+							Intersection inters = origin.raycast(
 								dir,
 								floatradius * 2,
 								null,
 								(Block t) -> !t.isTransparent()
 							);
-//							Particle dust = (Particle) new Particle(
-//								(byte) 22,
-//								200f
-//							).spawn(lightPos.cpy());
-//							dust.setMovement(dir.cpy().scl(9f));
 							if (inters != null && inters.getPoint() != null) {
-								float pow = lightPos.distanceTo(getPosition().toCoord().add(x, y, z).toPoint()) / Block.GAME_EDGELENGTH;
+								Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
+								float pow = origin.distanceTo(impactP) / Block.GAME_EDGELENGTH;
 								float l = (1 + brightness) / (pow * pow);
-								Vector3 target = getPosition().toCoord().add(x, y, z).toPoint().cpy();
 								
 								//side 0
-								float lambert = lightPos.cpy().sub(
-									target.add(-Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
-								).nor().dot(Side.LEFT.toVector());
+								float lambert = origin.cpy().sub(impactP).nor().dot(Side.LEFT.toVector());
 								
-								float newbright = l *lambert* (0.15f + rand * 0.005f);
+								float newbright = l *lambert* (0.15f + 0.1f * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
 									lightcache[x + radius][y + radius * 2][z + radius][0] = newbright;
 								}
 								
 								//side 1
-								lambert = lightPos.cpy().sub(
-									target.add(0, 0, Block.GAME_EDGELENGTH)
-								).nor().dot(Side.TOP.toVector());
+								lambert = origin.cpy().sub(impactP).nor().dot(Side.TOP.toVector());
 
-								newbright = l * lambert * (0.15f + rand * 0.005f);
+								newbright = l * lambert * (0.15f + 0.2f * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
 									lightcache[x + radius][y + radius * 2][z + radius][1] = newbright;
 								}
 
 								//side 2
-								lambert = lightPos.cpy().sub(
-									target.add(Block.GAME_DIAGLENGTH2, Block.GAME_DIAGLENGTH2, 0)
-								).nor().dot(Side.RIGHT.toVector());
+								lambert = origin.cpy().sub(impactP).nor().dot(Side.RIGHT.toVector());
 
-								newbright = l *lambert* (0.15f + rand * 0.005f);
+								newbright = l *lambert* (0.15f + 0.25f * 0.005f);
 								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {
 									lightcache[x + radius][y + radius * 2][z + radius][2] = newbright;
 								}

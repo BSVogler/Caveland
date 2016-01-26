@@ -81,9 +81,7 @@ public class RenderChunk {
 
 	RenderBlock getBlock(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) return null;
-		int xIndex = x - chunk.getTopLeftCoordinate().getX();
-		int yIndex = y - chunk.getTopLeftCoordinate().getY();
-		return data[xIndex][yIndex][z];
+		return data[x - chunk.getTopLeftCoordinate().getX()][y - chunk.getTopLeftCoordinate().getY()][z];
 	}
 
 	RenderBlock[][][] getData() {

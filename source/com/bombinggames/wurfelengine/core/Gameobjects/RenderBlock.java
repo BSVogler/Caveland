@@ -256,34 +256,45 @@ public class RenderBlock extends AbstractGameObject{
 	
 	public void fillCovered(GameView view){
 		coveredBlocks.clear();
-		Coordinate nghb = getPosition().toCoord().add(0,0,-1);
-		RenderBlock block = nghb.getRenderBlock(view);
-		if (block!=null)
-			coveredBlocks.add(block);
-		nghb.goToNeighbour(1);
+		Coordinate nghb = getPosition().toCoord();
+		RenderBlock block;
+		if (nghb.getZ() > 0) {
+			nghb.add(0, 0, -1);
+			block = nghb.getRenderBlock(view);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(1);
+			block = nghb.getRenderBlock(view);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(6);
+			block = nghb.getRenderBlock(view);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(1);
+			block = nghb.getRenderBlock(view);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.add(0, 0, 1);
+		}
 		block = nghb.getRenderBlock(view);
-		if (block!=null)
+		if (block != null) {
 			coveredBlocks.add(block);
-		nghb.goToNeighbour(6);
-		block = nghb.getRenderBlock(view);
-		if (block!=null)
-			coveredBlocks.add(block);
-		nghb.goToNeighbour(1);
-		block = nghb.getRenderBlock(view);
-		if (block!=null)
-			coveredBlocks.add(block);
-		nghb.add(0, 0, 1);
-		block = nghb.getRenderBlock(view);
-		if (block!=null)
-			coveredBlocks.add(block);
+		}
 		nghb.goToNeighbour(3);
 		block = nghb.getRenderBlock(view);
-		if (block!=null)
+		if (block != null) {
 			coveredBlocks.add(block);
+		}
 		nghb.goToNeighbour(6);
 		block = nghb.getRenderBlock(view);
-		if (block!=null)
+		if (block != null) {
 			coveredBlocks.add(block);
+		}
 	}
 	
 	public boolean isObstacle() {

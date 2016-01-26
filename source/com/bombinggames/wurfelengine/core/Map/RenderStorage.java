@@ -54,9 +54,9 @@ public class RenderStorage implements MapObserver  {
 	private final ArrayList<Integer> lastCenterX;
 	private final ArrayList<Integer> lastCenterY;
 	/**
-	 * a list of coordiants marked as dirty
+	 * a list of Blocks marked as dirty
 	 */
-	private final ArrayList<Coordinate> dirtyFlags = new ArrayList<>(20);
+	private final ArrayList<RenderBlock> dirtyFlags = new ArrayList<>(20);
 	private int zRenderingLimit;
 
 	/**
@@ -114,7 +114,8 @@ public class RenderStorage implements MapObserver  {
 	 * reset light to normal level for cordinates marked as dirty
 	 */
 	private void resetShadingForDirty() {
-		for (Coordinate coord : dirtyFlags) {
+		for (RenderBlock rb : dirtyFlags) {
+			Coordinate coord = rb.getPosition();
 			RenderChunk chunk = getChunk(coord);
 			//should be loaded but check nevertheless
 			if (chunk != null) {
@@ -129,12 +130,12 @@ public class RenderStorage implements MapObserver  {
 	}
 	
 		/**
-	 * marks this coordinage as "dirty".
-	 * @param coord	 
+	 * marks this block as "dirty".
+	 * @param rB
 	 */
-	public void setLightFlag(Coordinate coord) {
-		if (!dirtyFlags.contains(coord))
-			dirtyFlags.add(coord);
+	public void setLightFlag(RenderBlock rB) {
+		if (!dirtyFlags.contains(rB))
+			dirtyFlags.add(rB);
 	}
 	
 	/**

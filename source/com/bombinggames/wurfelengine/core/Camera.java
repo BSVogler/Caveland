@@ -45,17 +45,15 @@ import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
+import com.bombinggames.wurfelengine.core.Gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.Gameobjects.SideSprite;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Map;
 import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -137,12 +135,13 @@ public class Camera implements MapObserver {
 	 * true if camera is currently rendering
 	 */
 	private boolean active = false;
-	private final LinkedList<AbstractGameObject> depthlist = new LinkedList<>();
+	private final LinkedList<Renderable> depthlist = new LinkedList<>();
 	/**
 	 * amount of objects to be rendered, used as an index during filling
 	 */
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
+	private int maxsprites;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -514,7 +513,7 @@ public class Camera implements MapObserver {
 			SideSprite.setAO(WE.getCVars().getValueF("ambientOcclusion"));
 			
 			//render vom bottom to top
-			for (AbstractGameObject obj : depthlist) {
+			for (Renderable obj : depthlist) {
 				obj.render(view, camera);
 			}
 			view.getSpriteBatch().end();
@@ -524,7 +523,7 @@ public class Camera implements MapObserver {
 				view.setDebugRendering(true);
 				view.getSpriteBatch().begin();
 				//render vom bottom to top
-				for (AbstractGameObject obj : depthlist) {
+				for (Renderable obj : depthlist) {
 					obj.render(view, camera);
 				}
 				view.getSpriteBatch().end();
@@ -558,10 +557,10 @@ public class Camera implements MapObserver {
 	 *
 	 * @return the depthlist
 	 */
-	private LinkedList<AbstractGameObject> createDepthList() {
+	private LinkedList<Renderable> createDepthList() {
 		//register memory space only once then reuse
 		depthlist.clear();
-		int maxsprites = WE.getCVars().getValueI("MaxSprites");
+		maxsprites = WE.getCVars().getValueI("MaxSprites");
 
 		objectsToBeRendered = 0;
 		
@@ -598,7 +597,7 @@ public class Camera implements MapObserver {
 			}
 		});
 		
-		//add blocks
+		//clear/reset flags
 		DataIterator<RenderBlock> iterator = new DataIterator<>(
 			cameraContent,//iterate over camera content
 			0, //from layer0 which is aeqeuivalent to -1
@@ -610,93 +609,76 @@ public class Camera implements MapObserver {
 			getVisibleBackBorder() - getCoveredBackBorder(),
 			getVisibleFrontBorderHigh() - getCoveredBackBorder()
 		);
-
-		if (WE.getCVars().getValueB("enableHSD")) {
-			//add hidden surfeace depth buffer
-			while (iterator.hasNext()) {
-				RenderBlock block = iterator.next();
-				//only add if in viewMat plane to-do
-				if (
-					block != null
-					&& !block.isClipped()
-					&& !block.isHidden()
-					&& inViewFrustum(
-						block.getPosition().getViewSpcX(),
-						block.getPosition().getViewSpcY()
-					)
-				) {
-					//block
-					depthlist.add(block);
-					objectsToBeRendered++;
-					if (objectsToBeRendered >= maxsprites) {
-						break;//fill only up to available size
-					}
-				}
-			}
-		} else {
-			while (iterator.hasNext()) {
-				RenderBlock block = iterator.next();
-				if (block != null && !block.isHidden()) {
-					depthlist.add(block);
-					objectsToBeRendered++;
-					if (objectsToBeRendered >= maxsprites) {
-						break;//fill only up to available size
-					}
-				}
+		
+		//check every block
+		while (iterator.hasNext()) {
+			RenderBlock block = iterator.next();
+			if (block != null) {
+				block.unmarkPermanent();
+				block.getEntsInThisCell().clear();
+				//block.fillCovered(gameView);
+				//remove entities from covered list
 			}
 		}
-
-		//insert entities to depthlist
+		
+		//add entities to renderstorage
 		for (AbstractEntity ent : entsToRender) {
-			int lastvalid = 0;
-			Iterator<AbstractGameObject> dlIt = depthlist.iterator();
-			int i = 0;
-			while (dlIt.hasNext()) {
-				i++;
-				AbstractGameObject objectInList = dlIt.next();
-				if (objectInList instanceof  RenderBlock) {
-					Point objPos = objectInList.getPosition().toPoint();
-					//entfront = ent.getPosition().add(Block.GAME_DIAGLENGTH2, 0, 0);
-					//check if ent is before block
-					Point entPos = ent.getPosition();
-					if (
-						   entPos.getX() >=  objPos.getX() - Block.GAME_DIAGLENGTH2 //left side
-						&& entPos.getY() >=  objPos.getY() - Block.GAME_DIAGLENGTH2 //top side
-						&& entPos.getX() <=  objPos.getX() + Block.GAME_DIAGLENGTH2 //right side
-						&& entPos.getY() <=  objPos.getY() + Block.GAME_DIAGLENGTH2 //bottom side
-						&& entPos.getZ() >=  objPos.getZ()+Block.GAME_EDGELENGTH2 //bottom side
-					) {
-						lastvalid = i;
-						objectsToBeRendered++;
-						if (objectsToBeRendered >= maxsprites) {
-							break;//fill only up to available size
-						}
-					}
-					
-					//improve speed by skipping block which can not be the next
-					if (objPos.getY()>entPos.getY()+Block.GAME_DIAGLENGTH)
-						break;
-				}
+			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord());
+			if (block != null) {
+				//block.fillCovered(gameView);
+				block.addEnt(ent);
+				ent.unmarkPermanent();
 			}
-			if (lastvalid + 1 >= depthlist.size()) {
-				depthlist.addLast(ent);
-			} else {
-				//insert after lastvalid
-				depthlist.add(lastvalid + 1, ent);
+		}
+		
+		//add blocks
+		iterator.restart();
+		
+		//check every block
+		while (iterator.hasNext()) {
+			RenderBlock cell = iterator.next();
+
+			if (cell != null && !cell.isMarked()) {
+				visit(cell);
 			}
 		}
 		
 		return depthlist;
+	}
+	
+	private void visit(Renderable n) {
+		if (n.isMarkedTemporarily()) {
+			//throw new Error("Found a circle. Not a DAG");
+			return;
+		}
+		if (!n.isMarked()) {
+			n.markTemporarily();
+			ArrayList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
+			if (covered != null) {
+				for (Renderable m : covered) {
+					visit(m);
+				}
+			}
+			n.markPermanent();
+			n.unmarkTemporarily();
+			if (n.shouldBeRendered(this)) {
+				depthlist.add(n);
+				objectsToBeRendered++;
+				if (objectsToBeRendered >= maxsprites) {
+					//break;//fill only up to available size
+				}
+			}
+		}
 	}
 
 	/**
 	 * checks if the projected position is inside the viewMat Frustum
 	 *
 	 * @param proX projective space
-	 * @param proY
+	 * @param proY projective space
 	 * @return
 	 */
-	private boolean inViewFrustum(int proX, int proY){
+	public boolean inViewFrustum(int proX, int proY){
 		return
 				(position.y + getHeightInProjSpc() / 2)
 				>
@@ -717,87 +699,6 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Using Quicksort to sort. From small to big values.
-	 *
-	 * @param depthsort the unsorted list
-	 * @param low the lower border
-	 * @param high the higher border
-	 */
-	private ArrayList<AbstractGameObject> sortDepthListQuick(ArrayList<AbstractGameObject> depthsort, int low, int high) {
-		int left = low;
-		int right = high;
-		float middle = depthsort.get((low + high) / 2).getDepth();
-
-		while (left <= right) {
-			while (depthsort.get(left).getDepth() < middle) {
-				left++;
-			}
-			while (depthsort.get(right).getDepth() > middle) {
-				right--;
-			}
-
-			if (left <= right) {
-				AbstractGameObject tmp = depthsort.set(left, depthsort.get(right));
-				depthsort.set(right, tmp);
-				left++;
-				right--;
-			}
-		}
-		return depthsort;
-	}
-
-	/**
-	 * experimental feature. Can be slower or faster depending on the scene.
-	 *
-	 * @param depthsort the unsorted list
-	 * @return sorted ArrayList
-	 * @since v1.5.3
-	 */
-	private AbstractGameObject[] sortDepthListParallel(AbstractGameObject[] depthsort) {
-		Arrays.parallelSort(
-			depthsort,
-			0,
-			objectsToBeRendered,
-			(AbstractGameObject o1, AbstractGameObject o2) -> {
-				float a = o1.getDepth();
-				float b = o2.getDepth();
-				if (a < b) {
-					return -1;
-				} else if (a == b) {
-					return 0;
-				} else {
-					return 1;
-				}
-			}
-		);
-
-		return depthsort;
-	}
-
-	/**
-	 * Using InsertionSort to sort. Needs further testing but actually a bit
-	 * faster than quicksort because data ist almost presorted.
-	 *
-	 * @param depthsort unsorted list
-	 * @return sorted list
-	 * @since 1.2.20
-	 */
-	private ArrayList<AbstractGameObject> sortDepthListInsertion(ArrayList<AbstractGameObject> depthsort) {
-		int i, j;
-		AbstractGameObject newValue;
-		for (i = 1; i < depthsort.size(); i++) {
-			newValue = depthsort.get(i);
-			j = i;
-			while (j > 0 && depthsort.get(j - 1).getDepth() > newValue.getDepth()) {
-				depthsort.set(j, depthsort.get(j - 1));
-				j--;
-			}
-			depthsort.set(j, newValue);
-		}
-		return depthsort;
-	}
-
-	/**
 	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
 	 */
 	public void fillCameraContentBlocks() {
@@ -810,33 +711,37 @@ public class Camera implements MapObserver {
 			Chunk.getBlocksZ() - 1
 		);
 		
-		if (csIter.hasAnyBlock()){
+		if (csIter.hasAnyBlock()) {
 			while (csIter.hasNext()) {
 				RenderBlock block = csIter.next();
+				if (block != null) {
+					block.fillCovered(gameView);
+				}
 				int[] ind = csIter.getCurrentIndex();
 				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block;
 			}
 		}
 
-		//2. add ground layer
-		for (int x = 0; x < cameraContent.length; x++) {
-			for (int y = 0; y < cameraContent[x].length; y++) {
-				cameraContent[x][y][0] = new RenderBlock(Controller.getMap().getNewGroundBlockInstance());
-				cameraContent[x][y][0].setClippedLeft();//always clipped left
-				//chek if clipped top
-				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
-					cameraContent[x][y][0].setClippedTop();
-				}
-				cameraContent[x][y][0].setClippedRight();//always clipped right
-				cameraContent[x][y][0].setPosition(
-					new Coordinate(
-						getCoveredLeftBorder() + x,
-						getCoveredBackBorder() + y,
-						-1
-					)
-				);
-			}
-		}
+//		//2. add ground layer
+//		for (int x = 0; x < cameraContent.length; x++) {
+//			for (int y = 0; y < cameraContent[x].length; y++) {
+//				cameraContent[x][y][0] = new RenderBlock(Controller.getMap().getNewGroundBlockInstance());
+//				cameraContent[x][y][0].setClippedLeft();//always clipped left
+//				//chek if clipped top
+//				if (cameraContent[x][y][1] != null && !cameraContent[x][y][1].isTransparent()) {
+//					cameraContent[x][y][0].setClippedTop();
+//				}
+//				cameraContent[x][y][0].setClippedRight();//always clipped right
+//				cameraContent[x][y][0].setPosition(
+//					new Coordinate(
+//						getCoveredLeftBorder() + x,
+//						getCoveredBackBorder() + y,
+//						-1
+//					)
+//				);
+//				cameraContent[x][y][0].fillCovered(gameView);
+//			}
+//		}
 	}
 
 	/**

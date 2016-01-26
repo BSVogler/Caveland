@@ -62,14 +62,16 @@ public class RenderChunk {
 					Block block = chunk.getBlockViaIndex(x, y, z);
 					if (block != null) {
 						data[x][y][z] = block.toRenderBlock();
-						data[x][y][z].setPosition(
-							new Coordinate(
-								tlX + x,
-								tlY + y,
-								z
-							)
-						);
+					} else {
+						data[x][y][z] = new RenderBlock((byte) 0);
 					}
+					data[x][y][z].setPosition(
+						new Coordinate(
+							tlX + x,
+							tlY + y,
+							z
+						)
+					);
 				}
 			}
 		}

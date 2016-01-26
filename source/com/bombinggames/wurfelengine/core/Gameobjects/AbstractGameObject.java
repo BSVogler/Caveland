@@ -42,9 +42,12 @@ import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * An AbstractGameObject is something wich can be found in the game world.
@@ -220,6 +223,8 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * default is RGBA 0x808080FF.
 	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f); 
+	private boolean marked;
+	private boolean tmpMarked;
 
     /**
      * Creates an object.
@@ -515,4 +520,68 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	public AtlasRegion getAtlasRegion(){
 		return getSprite(getCategory(), spriteId, spriteValue);
 	}
+
+	/**
+	 *
+	 */
+	@Override
+	public void unmarkTemporarily() {
+		tmpMarked = false;
+	}
+	
+	@Override
+	public void unmarkPermanent() {
+		marked = false;
+	}
+	
+	@Override
+	public boolean isMarked() {
+		return marked;
+
+	}
+	
+	@Override
+	public boolean isMarkedTemporarily() {
+		return tmpMarked;
+
+	}
+	
+	@Override
+	public void markTemporarily() {
+		tmpMarked = true;
+	}
+
+	@Override
+	public void markPermanent() {
+		this.marked = true;
+	}
+
+	@Override
+	public boolean shouldBeRendered(Camera camera) {
+		return true;
+	}
+
+	@Override
+	public ArrayList<Renderable> getCovered(RenderStorage rs) {
+		ArrayList<Renderable> res = new ArrayList<>(0);
+		Coordinate pos = getPosition().toCoord();
+		RenderBlock block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.goToNeighbour(5));//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.add(1, 0, 0));//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.goToNeighbour(5));//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		return res;
+	}
+	
 }

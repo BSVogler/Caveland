@@ -45,6 +45,8 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import java.util.ArrayList;
 
 /**
  * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
@@ -215,6 +217,9 @@ public class RenderBlock extends AbstractGameObject{
 	 * three bits used, for each side one: TODO: move to aoFlags byte 3
 	 */
 	private byte clipping;
+	private final ArrayList<Renderable> coveredBlocks = new ArrayList<>(7);
+	private final ArrayList<AbstractEntity> entsInThisCell = new ArrayList<>(2);
+	
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -225,7 +230,7 @@ public class RenderBlock extends AbstractGameObject{
         super(id);
 		blockData = Block.getInstance(id);
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
-    }
+	}
 	
 	/**
 	 * 
@@ -247,6 +252,38 @@ public class RenderBlock extends AbstractGameObject{
 		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
+	}
+	
+	public void fillCovered(GameView view){
+		coveredBlocks.clear();
+		Coordinate nghb = getPosition().toCoord().add(0,0,-1);
+		RenderBlock block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.goToNeighbour(1);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.goToNeighbour(6);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.goToNeighbour(1);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.add(0, 0, 1);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.goToNeighbour(3);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
+		nghb.goToNeighbour(6);
+		block = nghb.getRenderBlock(view);
+		if (block!=null)
+			coveredBlocks.add(block);
 	}
 	
 	public boolean isObstacle() {
@@ -621,6 +658,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @return
 	 */
 	public boolean isTransparent() {
+		if (blockData==null) return true;
 		return blockData.isTransparent();
 	}
 	
@@ -942,4 +980,40 @@ public class RenderBlock extends AbstractGameObject{
 		clipping = (byte) 0;
 	}
 
+	public void addEnt(AbstractEntity ent) {
+		if (!entsInThisCell.contains(ent))
+			entsInThisCell.add(ent);
+	}
+
+	@Override
+	public boolean shouldBeRendered(Camera camera) {
+		return blockData != null
+				&& !isClipped()
+				&& !isHidden()
+				&& camera.inViewFrustum(
+					coord.getViewSpcX(),
+					coord.getViewSpcY()
+				);
+	}
+
+	@Override
+	public ArrayList<Renderable> getCovered(RenderStorage rs) {
+		Coordinate pos = getPosition();
+		if (pos.getZ() > 0) {
+			RenderBlock block = rs.getBlock(pos.getX(), pos.getY(), pos.getZ());
+			if (block != null && block.entsInThisCell.size() > 0) {
+				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+block.entsInThisCell.size());
+				covered.addAll(coveredBlocks);
+				covered.addAll(block.entsInThisCell);
+				return covered;
+			}
+		}
+		return coveredBlocks;
+	}
+
+	public ArrayList<AbstractEntity> getEntsInThisCell() {
+		return entsInThisCell;
+	}
+	
+	
 }

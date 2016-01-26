@@ -1,5 +1,11 @@
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import java.util.ArrayList;
+
 /**
  *Interface for objects whether they are blocks and entities.
  * @author Benedikt Vogler
@@ -49,4 +55,29 @@ public interface Renderable {
 	 * @param lightlevel 1 is default bright. 0 is black.
 	 */
 	void setLightlevel(float lightlevel);
+
+	public void markPermanent();
+
+	public void unmarkTemporarily();
+	
+	public void unmarkPermanent();
+
+	public void render(GameView view, Camera camera);
+
+	public void markTemporarily();
+
+	public boolean isMarked();
+
+	public boolean isMarkedTemporarily();
+
+	public Position getPosition();
+
+	public boolean shouldBeRendered(Camera camera);
+
+	/**
+	 * get the stuff which must be rendered before
+	 * @param rs
+	 * @return 
+	 */
+	public ArrayList<Renderable> getCovered(RenderStorage rs);
 }

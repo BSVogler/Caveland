@@ -701,7 +701,7 @@ public class Coordinate implements Position {
 	 */
 	public RenderBlock getRenderBlock(GameView gameView) {
 		if (z < 0) {
-			return Controller.getMap().getNewGroundBlockInstance().toRenderBlock();
+			return null;
 		} else if (z >= Chunk.getBlocksZ()){
 			return null;
 		} else {

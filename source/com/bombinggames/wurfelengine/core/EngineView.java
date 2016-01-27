@@ -55,11 +55,10 @@ public class EngineView extends GameView {//is GameView so it can render in game
     private Cursor cursor;
 	private Cursor cursorDrag;
 	private Cursor cursorPointer;
-    private InputMultiplexer inpMulPlex;
-    private Array<InputProcessor> inactiveInpProcssrs;
 	private int cursorId;
 	private OrthographicCamera camera;
     private EditorToggler editorToggler;
+	private InputProcessor inactiveInpProcssrs;
 
 	@Override
 	public void init(Controller controller, GameView oldView) {
@@ -99,7 +98,6 @@ public class EngineView extends GameView {//is GameView so it can render in game
      */
     public void resetInputProcessors() {
         Gdx.input.setInputProcessor(getStage());
-        inpMulPlex = null;
         inactiveInpProcssrs = null;
         addInputProcessor(getStage());
     }
@@ -109,7 +107,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      * @param processor 
      */
     public void addInputProcessor(final InputProcessor processor){
-        inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
+		InputMultiplexer inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
         inpMulPlex.addProcessor(processor);
         Gdx.input.setInputProcessor(inpMulPlex);
     }
@@ -121,7 +119,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      * @since V1.2.21
      */
     public void focusInputProcessor(final InputProcessor processor){
-        inactiveInpProcssrs = inpMulPlex.getProcessors();//save current ones
+        inactiveInpProcssrs = Gdx.input.getInputProcessor();//save current ones
         Gdx.input.setInputProcessor(getStage()); //reset
         addInputProcessor(processor);//add the focus
     }
@@ -132,11 +130,8 @@ public class EngineView extends GameView {//is GameView so it can render in game
      * @since V1.2.21
      */
     public void unfocusInputProcessor(){
-        Gdx.app.debug("View", "There are IPs: "+inactiveInpProcssrs.toString(","));
         Gdx.input.setInputProcessor(getStage()); //reset
-        for (InputProcessor ip : inactiveInpProcssrs) {
-            addInputProcessor(ip);
-        }
+		addInputProcessor(inactiveInpProcssrs);
     }
     
     /**

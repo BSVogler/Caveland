@@ -254,7 +254,7 @@ public class RenderBlock extends AbstractGameObject{
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 	
-	public void fillCovered(GameView view){
+	public void fillCoveredList(GameView view){
 		coveredBlocks.clear();
 		Coordinate nghb = getPosition().toCoord();
 		RenderBlock block;
@@ -1001,7 +1001,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * adds the entitiy into a cell
 	 * @param ent 
 	 */
-	public void addEnt(AbstractEntity ent) {
+	public void addCoveredEnts(AbstractEntity ent) {
 		if (!entsInCellBelow.contains(ent))
 			entsInCellBelow.add(ent);
 	}

@@ -624,7 +624,7 @@ public class Camera implements MapObserver {
 			RenderBlock block = ent.getPosition().toCoord().add(0, 0, 1).getRenderBlock(gameView);//add in cell above
 			if (block != null) {
 				//block.fillCovered(gameView);
-				block.addEnt(ent);
+				block.addCoveredEnts(ent);
 				ent.unmarkPermanent();
 			}
 		}
@@ -715,7 +715,7 @@ public class Camera implements MapObserver {
 			while (csIter.hasNext()) {
 				RenderBlock block = csIter.next();
 				if (block != null) {
-					block.fillCovered(gameView);
+					block.fillCoveredList(gameView);
 				}
 				int[] ind = csIter.getCurrentIndex();
 				cameraContent[ind[0]][ind[1]][ind[2] + 1] = block;

@@ -621,7 +621,7 @@ public class Camera implements MapObserver {
 		
 		//add entities to renderstorage
 		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = ent.getPosition().toCoord().add(0, 0, 1).getRenderBlock(gameView);
+			RenderBlock block = ent.getPosition().toCoord().add(0, 0, 1).getRenderBlock(gameView);//add in cell above
 			if (block != null) {
 				//block.fillCovered(gameView);
 				block.addEnt(ent);
@@ -645,6 +645,10 @@ public class Camera implements MapObserver {
 		return depthlist;
 	}
 	
+	/**
+	 * topological sort
+	 * @param n 
+	 */
 	private void visit(Renderable n) {
 		if (n.isMarkedTemporarily()) {
 			//throw new Error("Found a circle. Not a DAG");
@@ -661,10 +665,10 @@ public class Camera implements MapObserver {
 			n.markPermanent();
 			n.unmarkTemporarily();
 			if (n.shouldBeRendered(this)) {
-				depthlist.add(n);
-				objectsToBeRendered++;
-				if (objectsToBeRendered >= maxsprites) {
-					//break;//fill only up to available size
+				if (objectsToBeRendered < maxsprites) {
+					//fill only up to available size
+					depthlist.add(n);
+					objectsToBeRendered++;
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.EngineView;
 import com.bombinggames.wurfelengine.core.GameView;
 
 /**
@@ -39,7 +40,7 @@ public class EditorToggler {
 	 * @param view The gameView which renders the buttons.
 	 * @param dt
 	 */
-	public void update(GameView view, float dt) {
+	public void update(EngineView view, float dt) {
 		if (WE.isInEditor() && visible) {
 			if (playButton == null && this.gameView != null) {
 				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");

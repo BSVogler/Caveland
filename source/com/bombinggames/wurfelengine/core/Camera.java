@@ -557,7 +557,7 @@ public class Camera implements MapObserver {
 	 *
 	 * @return the depthlist
 	 */
-	private LinkedList<Renderable> createDepthList() {
+	private void createDepthList() {
 		//register memory space only once then reuse
 		depthlist.clear();
 		maxsprites = WE.getCVars().getValueI("MaxSprites");
@@ -630,7 +630,6 @@ public class Camera implements MapObserver {
 		}
 		
 		objectsToBeRendered = 0;
-		//add blocks
 		iterator.restart();
 		
 		//check every block
@@ -641,8 +640,6 @@ public class Camera implements MapObserver {
 				visit(cell);
 			}
 		}
-		
-		return depthlist;
 	}
 	
 	/**

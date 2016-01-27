@@ -39,8 +39,11 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
 import com.bombinggames.wurfelengine.WE;
 
@@ -49,7 +52,7 @@ import com.bombinggames.wurfelengine.WE;
  * @author Benedikt Vogler
  * @since 1.2.26
  */
-public class EngineView extends GameView {//is GameView so it can render in game space
+public class EngineView {//is GameView so it can render in game space
     private BitmapFont font;
     private Skin skin;
     private Cursor cursor;
@@ -58,12 +61,16 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	private int cursorId;
 	private OrthographicCamera camera;
     private EditorToggler editorToggler;
+	private ShapeRenderer shRenderer;
+	private OrthographicCamera libGDXcamera;
+	private final SpriteBatch spriteBatch = new SpriteBatch(2000);
+	private Stage stage;
 	private InputProcessor inactiveInpProcssrs;
 
-	@Override
 	public void init(Controller controller, GameView oldView) {
-		super.init(controller, oldView);
 		Gdx.app.debug("EngineView","Initializing...");
+		shRenderer = new ShapeRenderer();
+		libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(false);
@@ -72,26 +79,67 @@ public class EngineView extends GameView {//is GameView so it can render in game
         font.setColor(Color.GREEN);
         //font.scale(-0.5f);
         
-        //load sprites
-        Gdx.input.setInputProcessor(getStage());
-
         skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/core/skin/uiskin.json"));
         
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.update();
-        getSpriteBatch().setProjectionMatrix(camera.combined);
-		getShapeRenderer().setProjectionMatrix(camera.combined);
+        //getSpriteBatch().setProjectionMatrix(camera.combined);
+		//getShapeRenderer().setProjectionMatrix(camera.combined);
 		
 		editorToggler = new EditorToggler();
+		
+		stage = new Stage(
+			new StretchViewport(
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight()
+			),
+			spriteBatch
+		);//spawn at fullscreen
+		Gdx.input.setInputProcessor(stage);
+		
+		//spriteBatch.setProjectionMatrix(libGDXcamera.combined);
+		//shRenderer.setProjectionMatrix(libGDXcamera.combined);
+		//spriteBatch.setTransformMatrix(new Matrix4());//reset transformation
+		//shRenderer.setTransformMatrix(new Matrix4());//reset transformation
 	}
+	
+	/**
+     * The libGDX scene2d stage
+     * @return 
+     */
+    public Stage getStage() {
+        return stage;
+    }
 
-	@Override
 	public void update(float dt) {
-		super.update(dt);
 		editorToggler.setVisible(WE.getCVars().getValueB("editorVisible"));
 		editorToggler.update(this, dt);
 	}
+	
+	/**
+     * render in screen space
+     * @return 
+     */
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+	
+	 /**
+     * to render in screen space with view space scaling?
+     * @return
+     */
+    public ShapeRenderer getShapeRenderer() {
+        return shRenderer;
+    }
+	
+	   /**
+     * The equalizationScale is a factor which scales the GUI/HUD to have the same relative size with different resolutions.
+     * @return the scale factor
+     */
+    public float getEqualizationScale() {
+		return Gdx.graphics.getWidth() / (int) WE.getCVars().get("renderResolutionWidth").getValue();
+    }
 	
     /**
      * Resets the input processors.
@@ -99,7 +147,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
     public void resetInputProcessors() {
         Gdx.input.setInputProcessor(getStage());
         inactiveInpProcssrs = null;
-        addInputProcessor(getStage());
+        addInputProcessor(stage);
     }
     
     /**
@@ -120,7 +168,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      */
     public void focusInputProcessor(final InputProcessor processor){
         inactiveInpProcssrs = Gdx.input.getInputProcessor();//save current ones
-        Gdx.input.setInputProcessor(getStage()); //reset
+        Gdx.input.setInputProcessor(stage); //reset
         addInputProcessor(processor);//add the focus
     }
     
@@ -130,7 +178,7 @@ public class EngineView extends GameView {//is GameView so it can render in game
      * @since V1.2.21
      */
     public void unfocusInputProcessor(){
-        Gdx.input.setInputProcessor(getStage()); //reset
+        Gdx.input.setInputProcessor(stage); //reset
 		addInputProcessor(inactiveInpProcssrs);
     }
     
@@ -197,9 +245,5 @@ public class EngineView extends GameView {//is GameView so it can render in game
 	 */
 	public EditorToggler getEditorToggler() {
 		return editorToggler;
-	}
-
-	@Override
-	public void onEnter() {
 	}
 }

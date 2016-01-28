@@ -247,7 +247,7 @@ public class GameView implements GameManager {
 			camera.setActive(true);
 		}
 		
-		renderstorage.refresh();
+		//renderstorage.refresh();
 
 		if (WE.SOUND != null) {
 			WE.SOUND.setView(this);

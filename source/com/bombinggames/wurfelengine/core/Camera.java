@@ -623,7 +623,6 @@ public class Camera implements MapObserver {
 		for (AbstractEntity ent : entsToRender) {
 			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
 			if (block != null) {
-				//block.fillCovered(gameView);
 				block.addCoveredEnts(ent);
 				ent.unmarkPermanent();
 			}
@@ -699,7 +698,7 @@ public class Camera implements MapObserver {
 	}
 
 	/**
-	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Only done when content in the map changes.
+	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Should only be performed when content in the map changes.
 	 */
 	public void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum

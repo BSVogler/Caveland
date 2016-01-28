@@ -565,7 +565,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
-		ArrayList<Renderable> res = new ArrayList<>(4);
+		ArrayList<Renderable> res = new ArrayList<>(5);
 		Coordinate pos = position.toCoord();
 		
 		RenderBlock block = rs.getBlock(pos);//draw block below first

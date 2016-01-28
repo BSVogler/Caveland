@@ -219,6 +219,7 @@ public class RenderBlock extends AbstractGameObject{
 	private byte clipping;
 	private final ArrayList<Renderable> coveredBlocks = new ArrayList<>(7);
 	private final ArrayList<AbstractEntity> entsInCellBelow = new ArrayList<>(2);
+	private ArrayList<Renderable> allcovered;
 	
 	
 	/**
@@ -295,6 +296,9 @@ public class RenderBlock extends AbstractGameObject{
 		if (block != null) {
 			coveredBlocks.add(block);
 		}
+		
+		allcovered = new ArrayList<>(coveredBlocks.size());
+		allcovered.addAll(coveredBlocks);
 	}
 	
 	public boolean isObstacle() {
@@ -999,11 +1003,16 @@ public class RenderBlock extends AbstractGameObject{
 
 	/**
 	 * adds the entitiy into a cell
-	 * @param ent 
+	 *
+	 * @param ent
 	 */
 	public void addCoveredEnts(AbstractEntity ent) {
-		if (!entsInCellBelow.contains(ent))
+		if (!entsInCellBelow.contains(ent)) {
 			entsInCellBelow.add(ent);
+			allcovered = new ArrayList<>(coveredBlocks.size()+entsInCellBelow.size());
+			allcovered.addAll(coveredBlocks);
+			allcovered.addAll(entsInCellBelow);
+		}
 	}
 
 	@Override
@@ -1019,15 +1028,7 @@ public class RenderBlock extends AbstractGameObject{
 
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
-		if (coord.getZ() > 0) {
-			if (entsInCellBelow.size() > 0) {
-				ArrayList<Renderable> covered = new ArrayList<>(coveredBlocks.size()+entsInCellBelow.size());
-				covered.addAll(coveredBlocks);
-				covered.addAll(entsInCellBelow);
-				return covered;
-			}
-		}
-		return coveredBlocks;
+		return allcovered;
 	}
 
 	public ArrayList<AbstractEntity> getEntsInCellBelow() {

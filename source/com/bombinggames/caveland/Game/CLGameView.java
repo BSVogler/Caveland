@@ -18,14 +18,9 @@ import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.core.Map.RenderChunk;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
-import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
 
 
@@ -247,29 +242,29 @@ public class CLGameView extends GameView{
 		}
 		
 		//manual clipping in caves for black areas
-		ArrayList<RenderChunk> cc = getRenderStorage().getData();
-		//check if the chunk is a cave
-		for (RenderChunk renderChunk : cc) {
-			if (renderChunk.getTopLeftCoordinate().getY() > ChunkGenerator.CAVESBORDER) {
-				//iterate over cameracontent
-				DataIterator<RenderBlock> iterator = renderChunk.getIterator(0, Chunk.getBlocksZ()-1);
-				while (iterator.hasNext()) {
-					RenderBlock next = iterator.next();
-					if (next != null && next.getBlockData()!=null) {
-						//clip floor
-						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
-							next.setClippedTop();
-						}
-						////h
-	//						int iout = ChunkGenerator.insideOutside(next.getPosition());
-	//						if (iout==-1)
-	//							next.setHidden(true);
-	//						else if (iout==0)
-	//							next.getBlockData().setUnclipped();
-					}
-				}
-			}
-		}
+//		ArrayList<RenderChunk> cc = getRenderStorage().getData();
+//		//check if the chunk is a cave
+//		for (RenderChunk renderChunk : cc) {
+//			if (renderChunk.getTopLeftCoordinate().getY() > ChunkGenerator.CAVESBORDER) {
+//				//iterate over cameracontent
+//				DataIterator<RenderBlock> iterator = renderChunk.getIterator(0, Chunk.getBlocksZ()-1);
+//				while (iterator.hasNext()) {
+//					RenderBlock next = iterator.next();
+//					if (next != null && next.getBlockData()!=null) {
+//						//clip floor
+//						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
+//							next.setClippedTop();
+//						}
+//						////h
+//	//						int iout = ChunkGenerator.insideOutside(next.getPosition());
+//	//						if (iout==-1)
+//	//							next.setHidden(true);
+//	//						else if (iout==0)
+//	//							next.getBlockData().setUnclipped();
+//					}
+//				}
+//			}
+//		}
 		
 		if (WE.getCVars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
 			//todo should compare in view space

@@ -653,10 +653,8 @@ public class Camera implements MapObserver {
 		if (!n.isMarked()) {
 			n.markTemporarily();
 			ArrayList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
-			if (covered != null) {
-				for (Renderable m : covered) {
-					visit(m);
-				}
+			for (Renderable m : covered) {
+				visit(m);
 			}
 			n.markPermanent();
 			n.unmarkTemporarily();

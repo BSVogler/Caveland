@@ -42,10 +42,4 @@ public class Sea extends AnimatedBlock {
 		setBounce(true);
 		setSpriteValue((byte) (Math.random()*4));
     }
-     
-	@Override
-	public RenderBlock spawn(Coordinate coord) {
-		//getBlockData().setClippedTop();
-		return super.spawn(coord);
-	}
 }

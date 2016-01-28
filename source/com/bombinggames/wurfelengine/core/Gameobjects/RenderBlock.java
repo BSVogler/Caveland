@@ -262,56 +262,6 @@ public class RenderBlock extends AbstractGameObject{
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 
-	/**
-	 * fill lists containing the nodes which are hidden by this block 
-	 * @param rs
-	 */
-	public void fillCoveredList(RenderStorage rs){
-		coveredBlocks.clear();
-		Coordinate nghb = getPosition().toCoord();
-		RenderBlock block;
-		if (nghb.getZ() > 0) {
-			nghb.add(0, 0, -1);
-			block = nghb.getRenderBlock(rs);
-			if (block != null) {
-				coveredBlocks.add(block);
-			}
-			nghb.goToNeighbour(1);
-			block = nghb.getRenderBlock(rs);
-			if (block != null) {
-				coveredBlocks.add(block);
-			}
-			nghb.goToNeighbour(6);
-			block = nghb.getRenderBlock(rs);
-			if (block != null) {
-				coveredBlocks.add(block);
-			}
-			nghb.goToNeighbour(1);
-			block = nghb.getRenderBlock(rs);
-			if (block != null) {
-				coveredBlocks.add(block);
-			}
-			nghb.add(0, 0, 1);
-		}
-		block = nghb.getRenderBlock(rs);
-		if (block != null) {
-			coveredBlocks.add(block);
-		}
-		nghb.goToNeighbour(3);
-		block = nghb.getRenderBlock(rs);
-		if (block != null) {
-			coveredBlocks.add(block);
-		}
-		nghb.goToNeighbour(6);
-		block = nghb.getRenderBlock(rs);
-		if (block != null) {
-			coveredBlocks.add(block);
-		}
-		
-		allcovered = new ArrayList<>(coveredBlocks.size());
-		allcovered.addAll(coveredBlocks);
-	}
-	
 	public boolean isObstacle() {
 		return blockData.isObstacle();
 	}
@@ -1050,6 +1000,56 @@ public class RenderBlock extends AbstractGameObject{
 		return allcovered;
 	}
 
+	/**
+	 * fill lists containing the nodes which are hidden by this block 
+	 * @param rs
+	 */
+	public void fillCoveredList(RenderStorage rs){
+		coveredBlocks.clear();
+		Coordinate nghb = getPosition().toCoord();
+		RenderBlock block;
+		if (nghb.getZ() > 0) {
+			nghb.add(0, 0, -1);
+			block = nghb.getRenderBlock(rs);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(1);//back right
+			block = nghb.getRenderBlock(rs);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(6);//back left
+			block = nghb.getRenderBlock(rs);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.goToNeighbour(1);//back
+			block = nghb.getRenderBlock(rs);
+			if (block != null) {
+				coveredBlocks.add(block);
+			}
+			nghb.add(0, 0, 1);
+		}
+		block = nghb.getRenderBlock(rs);//back
+		if (block != null) {
+			coveredBlocks.add(block);
+		}
+		nghb.goToNeighbour(3);//back right
+		block = nghb.getRenderBlock(rs);
+		if (block != null) {
+			coveredBlocks.add(block);
+		}
+		nghb.goToNeighbour(6);//back left
+		block = nghb.getRenderBlock(rs);
+		if (block != null) {
+			coveredBlocks.add(block);
+		}
+		
+		allcovered = new ArrayList<>(coveredBlocks.size());
+		allcovered.addAll(coveredBlocks);
+	}
+	
 	public ArrayList<AbstractEntity> getEntsInCellBelow() {
 		return entsInCellBelow;
 	}

@@ -614,8 +614,7 @@ public class Camera implements MapObserver {
 			if (block != null) {
 				block.unmarkPermanent();
 				block.getEntsInCellBelow().clear();
-				//block.fillCovered(gameView);
-				//remove entitiaes from covered list
+				block.getCovered(null).clear();
 			}
 		}
 		

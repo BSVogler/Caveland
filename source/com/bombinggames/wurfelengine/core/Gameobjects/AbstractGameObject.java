@@ -261,6 +261,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
      * Return the coordinates of the object.
      * @return Reference to the position object which points to the location in the game world.
      */
+	@Override
     public abstract Position getPosition();
     
     /**

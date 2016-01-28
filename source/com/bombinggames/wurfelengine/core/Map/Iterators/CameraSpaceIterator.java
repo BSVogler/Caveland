@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.RenderChunk;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.util.NoSuchElementException;
 
 /**
@@ -54,21 +54,21 @@ public class CameraSpaceIterator {
 	private int topLevel;
 	private final int startingZ;
 	private int chunkNum = -1;
-	private final GameView gameView;
+	private final RenderStorage renderStorage;
 	private int left;
 	private int right;
 
 	/**
 	 * Starts at z = -1.
 	 *
-	 * @param gameView
+	 * @param renderStorage
 	 * @param centerCoordX the center chunk coordinate
 	 * @param centerCoordY the center chunk coordinate
 	 * @param startingZ to loop over ground level pass -1
 	 * @param topLevel the top limit of the z axis, last level is included
 	 */
-	public CameraSpaceIterator(GameView gameView, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
-		this.gameView = gameView;
+	public CameraSpaceIterator(RenderStorage renderStorage, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+		this.renderStorage = renderStorage;
 		this.topLevel = topLevel;
 		this.startingZ = startingZ;
 		centerChunkX = centerCoordX;
@@ -98,7 +98,7 @@ public class CameraSpaceIterator {
 			current = null;
 			while (hasNextChunk() && current == null) {//if has one move to next
 				chunkNum++;
-				current = gameView.getRenderStorage().getChunk(
+				current = renderStorage.getChunk(
 					centerChunkX - 1 + chunkNum % 3,
 					centerChunkY - 1 + chunkNum / 3
 				);
@@ -138,7 +138,7 @@ public class CameraSpaceIterator {
 			i = 0;
 		}
 		while (i < 8) { //if has one move to next
-			RenderChunk chunk = gameView.getRenderStorage().getChunk(
+			RenderChunk chunk = renderStorage.getChunk(
 				centerChunkX - 1 + i % 3,
 				centerChunkY - 1 + i / 3
 			);

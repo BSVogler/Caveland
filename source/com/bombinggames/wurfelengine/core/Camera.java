@@ -703,7 +703,7 @@ public class Camera implements MapObserver {
 	public void fillCameraContentBlocks() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
-			gameView,
+			gameView.getRenderStorage(),
 			centerChunkX,
 			centerChunkY,
 			0,

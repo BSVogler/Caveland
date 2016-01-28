@@ -81,6 +81,13 @@ public class RenderChunk {
 		resetClipping();
 	}
 
+	/**
+	 * 
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @param z coordinate
+	 * @return 
+	 */
 	RenderBlock getBlock(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) return null;
 		return data[x - chunk.getTopLeftCoordinate().getX()][y - chunk.getTopLeftCoordinate().getY()][z];

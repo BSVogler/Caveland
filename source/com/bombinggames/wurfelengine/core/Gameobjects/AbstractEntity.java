@@ -141,7 +141,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		
     //AbstractGameObject implementation
     @Override
-    public Point getPosition() {
+    public final Point getPosition() {
         return position;
     }
 
@@ -566,7 +566,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
 		ArrayList<Renderable> res = new ArrayList<>(4);
-		Coordinate pos = getPosition().toCoord();
+		Coordinate pos = position.toCoord();
 		
 		RenderBlock block = rs.getBlock(pos);//draw block below first
 		if (block != null) {

@@ -1021,9 +1021,8 @@ public class RenderBlock extends AbstractGameObject{
 	public void addCoveredEnts(AbstractEntity ent) {
 		if (!entsInCellBelow.contains(ent)) {
 			entsInCellBelow.add(ent);
-			allcovered = new ArrayList<>(coveredBlocks.size()+entsInCellBelow.size());
-			allcovered.addAll(coveredBlocks);
-			allcovered.addAll(entsInCellBelow);
+			//add to allcovered
+			allcovered.add(ent);
 		}
 	}
 

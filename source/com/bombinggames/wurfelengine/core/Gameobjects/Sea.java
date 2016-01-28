@@ -28,8 +28,6 @@
  */
 package com.bombinggames.wurfelengine.core.Gameobjects;
 
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-
 /**
  *A Sea Block which has a "waves" effect.
  * @author Benedikt Vogler

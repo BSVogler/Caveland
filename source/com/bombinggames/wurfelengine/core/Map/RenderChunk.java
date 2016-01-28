@@ -64,7 +64,7 @@ public class RenderChunk {
 					if (block != null) {
 						data[x][y][z] = block.toRenderBlock();
 					} else {
-						data[x][y][z] = new RenderBlock((byte) 0);
+						data[x][y][z] = new RenderBlock();
 					}
 					data[x][y][z].setPosition(
 						rS,

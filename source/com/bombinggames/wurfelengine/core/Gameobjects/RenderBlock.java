@@ -223,6 +223,14 @@ public class RenderBlock extends AbstractGameObject{
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
+	 */
+	public RenderBlock(){
+		super((byte) 0);
+		blockData = null;
+	}
+	
+	/**
+	 * Does not wrap a {@link Block} instance.
 	 * @param id 
 	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
 	 */
@@ -233,7 +241,7 @@ public class RenderBlock extends AbstractGameObject{
 	}
 	
 	/**
-	 * 
+	 * Does not wrap a {@link Block} instance.
 	 * @param id
 	 * @param value 
 	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  

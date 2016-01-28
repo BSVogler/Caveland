@@ -200,20 +200,6 @@ public class Coordinate implements Position {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(RenderBlock block) {
-		if (block!= null) {
-			block.setPosition(this);
-			Controller.getMap().setBlock(block);
-		} else {
-			Controller.getMap().setBlock(this, null);
-		}
-	}
-	
-	/**
-	 * Set a block in the map where the coordinate is pointing to.
-	 *
-	 * @param block the block you want to set.
-	 */
 	public void setBlock(Block block) {
 		Controller.getMap().setBlock(this, block);
 	}
@@ -696,16 +682,16 @@ public class Coordinate implements Position {
 
 	/**
 	 * 
-	 * @param gameView
+	 * @param rs
 	 * @return can return null
 	 */
-	public RenderBlock getRenderBlock(GameView gameView) {
+	public RenderBlock getRenderBlock(RenderStorage rs) {
 		if (z < 0) {
 			return null;
 		} else if (z >= Chunk.getBlocksZ()){
 			return null;
 		} else {
-			return gameView.getRenderStorage().getBlock(this);
+			return rs.getBlock(this);
 		}
 	}
 	
@@ -717,7 +703,7 @@ public class Coordinate implements Position {
 	 * @param vertex 
 	 */
 	public void addLight(GameView view, Side side, Color color,int vertex){
-		RenderBlock neighb = getRenderBlock(view);
+		RenderBlock neighb = getRenderBlock(view.getRenderStorage());
 		if (neighb != null) {
 			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, vertex);
@@ -740,7 +726,7 @@ public class Coordinate implements Position {
 			goToNeighbour(6).addLight(view, side, color, 2);
 			goToNeighbour(3);//go back
 		} else {
-			RenderBlock neighb = getRenderBlock(view);
+			RenderBlock neighb = getRenderBlock(view.getRenderStorage());
 			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, 0);
 			neighb.addLightlevel(color.g, side, 1, 0);

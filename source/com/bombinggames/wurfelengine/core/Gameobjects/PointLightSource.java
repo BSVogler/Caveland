@@ -185,7 +185,7 @@ public class PointLightSource extends AbstractEntity {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
 						tmp.set(xCenter + x, yCenter + y, zCenter + z);
-						if (tmp.getRenderBlock(view) != null) {
+						if (tmp.getRenderBlock(view.getRenderStorage()) != null) {
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[0]), Side.LEFT);
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[1]), Side.TOP);
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[2]), Side.RIGHT);

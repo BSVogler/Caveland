@@ -38,7 +38,7 @@ import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 
 /**
- * a class what renders a block using the drawableinterface.
+ * a class what renders a block using the drawable interface.
  * @author Benedikt Vogler
  */
 public class BlockDrawable extends TextureRegionDrawable {
@@ -54,9 +54,9 @@ public class BlockDrawable extends TextureRegionDrawable {
      */
     public BlockDrawable(byte id) {
 		if (id >= Block.OBJECTTYPESNUM)
-			this.block = new RenderBlock((byte) 0);
+			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
         else
-			this.block = new RenderBlock(id);
+			this.block = new RenderBlock(id, (byte) 0);
 		block.setScaling(size);
     }
 	
@@ -69,7 +69,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	public BlockDrawable(byte id, byte value, float size) {
 		if (id >= Block.OBJECTTYPESNUM)
-			this.block = new RenderBlock((byte) 0);//invalid id.
+			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
         else
 			this.block = new RenderBlock(id, value);
 		this.size = size;

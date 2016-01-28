@@ -221,7 +221,6 @@ public class RenderBlock extends AbstractGameObject{
 	private final ArrayList<AbstractEntity> entsInCellBelow = new ArrayList<>(2);
 	private ArrayList<Renderable> allcovered;
 	
-	
 	/**
 	 * Does not wrap a {@link Block} instance.
 	 * @param id 
@@ -254,45 +253,49 @@ public class RenderBlock extends AbstractGameObject{
 		blockData = data;
 		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
-	
-	public void fillCoveredList(GameView view){
+
+	/**
+	 * fill lists containing the nodes which are hidden by this block 
+	 * @param rs
+	 */
+	public void fillCoveredList(RenderStorage rs){
 		coveredBlocks.clear();
 		Coordinate nghb = getPosition().toCoord();
 		RenderBlock block;
 		if (nghb.getZ() > 0) {
 			nghb.add(0, 0, -1);
-			block = nghb.getRenderBlock(view);
+			block = nghb.getRenderBlock(rs);
 			if (block != null) {
 				coveredBlocks.add(block);
 			}
 			nghb.goToNeighbour(1);
-			block = nghb.getRenderBlock(view);
+			block = nghb.getRenderBlock(rs);
 			if (block != null) {
 				coveredBlocks.add(block);
 			}
 			nghb.goToNeighbour(6);
-			block = nghb.getRenderBlock(view);
+			block = nghb.getRenderBlock(rs);
 			if (block != null) {
 				coveredBlocks.add(block);
 			}
 			nghb.goToNeighbour(1);
-			block = nghb.getRenderBlock(view);
+			block = nghb.getRenderBlock(rs);
 			if (block != null) {
 				coveredBlocks.add(block);
 			}
 			nghb.add(0, 0, 1);
 		}
-		block = nghb.getRenderBlock(view);
+		block = nghb.getRenderBlock(rs);
 		if (block != null) {
 			coveredBlocks.add(block);
 		}
 		nghb.goToNeighbour(3);
-		block = nghb.getRenderBlock(view);
+		block = nghb.getRenderBlock(rs);
 		if (block != null) {
 			coveredBlocks.add(block);
 		}
 		nghb.goToNeighbour(6);
-		block = nghb.getRenderBlock(view);
+		block = nghb.getRenderBlock(rs);
 		if (block != null) {
 			coveredBlocks.add(block);
 		}
@@ -307,17 +310,18 @@ public class RenderBlock extends AbstractGameObject{
 
     @Override
     public String getName() {
-        return  blockData.getName();
+        return blockData.getName();
     }
 	
 	/**
 	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call. A regular renderblock is not spawned expect explicitely called.
+	 * @param rS
 	 * @param coord the position on the map
 	 * @return itself
 	 * @see #setPosition(com.bombinggames.wurfelengine.core.Map.AbstractPosition) 
 	 */
-	public RenderBlock spawn(Coordinate coord){
-		setPosition(coord);
+	public RenderBlock spawn(RenderStorage rS, Coordinate coord){
+		setPosition(rS, coord);
 		Controller.getMap().setBlock(this);
 		return this;
 	};
@@ -515,8 +519,6 @@ public class RenderBlock extends AbstractGameObject{
 		destruct.render(view, camera);
 	}
 	
-	
-	
     /**
      * Ignores lightlevel.
      * @param view the view using this render method
@@ -649,7 +651,7 @@ public class RenderBlock extends AbstractGameObject{
 	}
 
 	@Override
-	public Coordinate getPosition() {
+	public final Coordinate getPosition() {
 		return coord;
 	}
 
@@ -664,6 +666,16 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	public void setPosition(Coordinate coord){
 		this.coord = coord;
+	}	
+	
+	/**
+	 * keeps reference
+	 * @param rS
+	 * @param coord 
+	 */
+	public void setPosition(RenderStorage rS, Coordinate coord){
+		this.coord = coord;
+		fillCoveredList(rS);
 	}	
 	
 	/**

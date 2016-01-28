@@ -47,9 +47,10 @@ public class RenderChunk {
 	
 	/**
 	 * 
+	 * @param rS
 	 * @param chunk linked chunk
 	 */
-	public RenderChunk(Chunk chunk) {
+	public RenderChunk(RenderStorage rS, Chunk chunk) {
 		this.chunk = chunk;
 		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
 		
@@ -66,6 +67,7 @@ public class RenderChunk {
 						data[x][y][z] = new RenderBlock((byte) 0);
 					}
 					data[x][y][z].setPosition(
+						rS,
 						new Coordinate(
 							tlX + x,
 							tlY + y,

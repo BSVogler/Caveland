@@ -185,7 +185,7 @@ public class RenderStorage implements MapObserver  {
 		if (rChunk == null) {//not in storage
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
-				RenderChunk newRChunk = new RenderChunk(mapChunk);
+				RenderChunk newRChunk = new RenderChunk(this, mapChunk);
 				data.add(newRChunk);
 				newRChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(newRChunk);

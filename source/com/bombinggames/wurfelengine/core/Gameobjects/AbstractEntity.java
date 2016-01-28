@@ -38,6 +38,7 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -559,5 +560,35 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		if (!ent.hasPosition())
 			return false;
 		return getPosition().distanceToSquared(ent) < (colissionRadius + ent.colissionRadius)*(colissionRadius + ent.colissionRadius);
+	}
+	
+	
+	@Override
+	public ArrayList<Renderable> getCovered(RenderStorage rs) {
+		ArrayList<Renderable> res = new ArrayList<>(4);
+		Coordinate pos = getPosition().toCoord();
+		
+		RenderBlock block = rs.getBlock(pos);//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		
+		block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.goToNeighbour(5));
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.add(1, 0, 0));
+		if (block != null) {
+			res.add(block);
+		}
+		block = rs.getBlock(pos.goToNeighbour(5));
+		if (block != null) {
+			res.add(block);
+		}
+		return res;
 	}
 }

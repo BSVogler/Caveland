@@ -42,12 +42,9 @@ import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import com.bombinggames.wurfelengine.core.Map.Position;
-import com.bombinggames.wurfelengine.core.Map.RenderStorage;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * An AbstractGameObject is something wich can be found in the game world.
@@ -561,33 +558,4 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		return true;
 	}
 
-	@Override
-	public ArrayList<Renderable> getCovered(RenderStorage rs) {
-		ArrayList<Renderable> res = new ArrayList<>(4);
-		Coordinate pos = getPosition().toCoord();
-		
-		RenderBlock block = rs.getBlock(pos);//draw block below first
-		if (block != null) {
-			res.add(block);
-		}
-		
-		block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
-		if (block != null) {
-			res.add(block);
-		}
-		block = rs.getBlock(pos.goToNeighbour(5));
-		if (block != null) {
-			res.add(block);
-		}
-		block = rs.getBlock(pos.add(1, 0, 0));
-		if (block != null) {
-			res.add(block);
-		}
-		block = rs.getBlock(pos.goToNeighbour(5));
-		if (block != null) {
-			res.add(block);
-		}
-		return res;
-	}
-	
 }

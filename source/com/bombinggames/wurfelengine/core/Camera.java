@@ -64,9 +64,9 @@ import java.util.LinkedList;
 public class Camera implements MapObserver {
 
 	/**
-	 * top limit
+	 * top limit in game space
 	 */
-	private int zRenderingLimit = Chunk.getBlocksZ()-1;
+	private float zRenderingLimit = Float.POSITIVE_INFINITY;
 
 	/**
 	 * A 3d array which has the blocks in it which are possibly rendered. Shoudl be 3x3 chunks. Only the relevant portion of the map is moved to this array.
@@ -563,10 +563,6 @@ public class Camera implements MapObserver {
 		maxsprites = WE.getCVars().getValueI("MaxSprites");
 
 		//add entitys which should be rendered
-		boolean activatedRenderLimit = false;
-		if (zRenderingLimit < Chunk.getBlocksZ())
-			activatedRenderLimit = true;
-		
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
 		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);
 		for (AbstractEntity entity : ents) {
@@ -576,12 +572,11 @@ public class Camera implements MapObserver {
 					entity.getPosition().getViewSpcX(),
 					entity.getPosition().getViewSpcY()
 				)
-				&& (!activatedRenderLimit || entity.getPosition().getZGrid() < zRenderingLimit)
+				&& entity.getPosition().getZ() < zRenderingLimit
 			) {
 				entsToRender.add(entity);
 			}
 		}
-		
 		
 		//sort valid in order of depth
 		entsToRender.sort((AbstractEntity o1, AbstractEntity o2) -> {
@@ -781,18 +776,15 @@ public class Camera implements MapObserver {
 	 *
 	 * @param limit minimum is 0, everything to this limit becomes rendered
 	 */
-	public void setZRenderingLimit(int limit) {
+	public void setZRenderingLimit(float limit) {
 		if (limit != zRenderingLimit) {//only if it differs
 
 			zRenderingLimit = limit;
 
 			//clamp
-			if (limit >= Chunk.getBlocksZ()) {
-				zRenderingLimit = Chunk.getBlocksZ()-1;
-			} else if (limit < 0) {
+			if (limit < 0) {
 				zRenderingLimit = 0;//min is 0
 			}
-			//to do hsd()
 		}
 	}
 

@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
+import com.bombinggames.wurfelengine.core.Map.Chunk;
 import java.util.Iterator;
 
 /**
@@ -65,6 +66,12 @@ public class DataIterator<T> implements Iterator<T> {
 	) {
 		this.startingZ  = startingZ;
 		this.limitZ = limitZ;
+		if (this.limitZ > Chunk.getBlocksZ()) {
+			this.limitZ = Chunk.getBlocksZ();
+		}
+		if (this.limitZ <= startingZ) {
+			this.limitZ = startingZ+1;
+		}
 		if (data==null) throw new IllegalArgumentException();
 		this.data = data;
 

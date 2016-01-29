@@ -430,6 +430,10 @@ public class RenderStorage implements MapObserver  {
 		return block.isClipped();
 	}
 
+	/**
+	 * 
+	 * @return coordinate
+	 */
 	public int getZRenderingLimit() {
 		return zRenderingLimit;
 	}

@@ -65,6 +65,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private static Texture textureDiff;
 	private static Texture textureNormal;
 	
+	
     /**
      *disposes static fields
      */
@@ -208,6 +209,13 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
     public static TextureAtlas getSpritesheet() {
         return spritesheet;
     }
+
+	/**
+	 * inverses the dirty flag comparison so everything marked is now unmarked
+	 */
+	public static void inverseDirtyFlag() {
+		currentDirtyFlag = !currentDirtyFlag;
+	}
 	
 	//render information
     private boolean hidden; 
@@ -219,8 +227,9 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * default is RGBA 0x808080FF.
 	 */
-	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f); 
-	private boolean marked;
+	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f);
+	private static boolean currentDirtyFlag;
+	private boolean dirtyFlag;
 	private boolean tmpMarked;
 
     /**
@@ -528,20 +537,18 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 	
 	@Override
-	public void unmarkPermanent() {
-		marked = false;
+	public final boolean isMarked() {
+		return this.dirtyFlag == AbstractGameObject.currentDirtyFlag;
 	}
 	
 	@Override
-	public boolean isMarked() {
-		return marked;
-
+	public void markPermanent() {
+		this.dirtyFlag = AbstractGameObject.currentDirtyFlag;
 	}
 	
 	@Override
 	public boolean isMarkedTemporarily() {
 		return tmpMarked;
-
 	}
 	
 	@Override
@@ -549,10 +556,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		tmpMarked = true;
 	}
 
-	@Override
-	public void markPermanent() {
-		this.marked = true;
-	}
 
 	@Override
 	public boolean shouldBeRendered(Camera camera) {

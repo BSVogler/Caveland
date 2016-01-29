@@ -58,17 +58,15 @@ public interface Renderable {
 
 	public void markPermanent();
 
+	public boolean isMarked();
+	
 	public void unmarkTemporarily();
 	
-	public void unmarkPermanent();
-
-	public void render(GameView view, Camera camera);
-
 	public void markTemporarily();
 
-	public boolean isMarked();
-
 	public boolean isMarkedTemporarily();
+
+	public void render(GameView view, Camera camera);
 
 	public Position getPosition();
 

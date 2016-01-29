@@ -623,13 +623,13 @@ public class Camera implements MapObserver {
 			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
 			if (block != null) {
 				block.addCoveredEnts(ent);
-				ent.unmarkPermanent();
 			}
 		}
 		
 		objectsToBeRendered = 0;
 		iterator.restart();
 		
+		AbstractGameObject.inverseDirtyFlag();
 		//check every block
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();

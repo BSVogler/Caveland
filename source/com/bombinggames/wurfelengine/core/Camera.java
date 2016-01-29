@@ -564,7 +564,7 @@ public class Camera implements MapObserver {
 
 		//add entitys which should be rendered
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);
+		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);//assume that we have 40 entities on  camera
 		for (AbstractEntity entity : ents) {
 			if (entity.hasPosition()
 				&& !entity.isHidden()
@@ -590,11 +590,26 @@ public class Camera implements MapObserver {
 			}
 		});
 		
+		//add entities to renderstorage
+		ArrayList<RenderBlock> modifiedCells = new ArrayList<>(entsToRender.size());
+		ArrayList<AbstractEntity> renderAppendix = new ArrayList<>(3);
+		for (AbstractEntity ent : entsToRender) {
+			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
+			if (block != null) {
+				block.addCoveredEnts(ent);
+				modifiedCells.add(block);
+			} else {
+				//add at end of renderList
+				renderAppendix.add(ent);
+			}
+		}
+		
+		objectsToBeRendered = 0;
 		//clear/reset flags
 		DataIterator<RenderBlock> iterator = new DataIterator<>(
 			cameraContent,//iterate over camera content
 			0, //from layer0 which is aeqeuivalent to -1
-			zRenderingLimit//one more because of ground layer
+			(int) (zRenderingLimit/Block.GAME_EDGELENGTH)//one more because of ground layer
 		);
 		iterator.setBorders(
 			getVisibleLeftBorder() - getCoveredLeftBorder(),
@@ -602,27 +617,6 @@ public class Camera implements MapObserver {
 			getVisibleBackBorder() - getCoveredBackBorder(),
 			getVisibleFrontBorderHigh() - getCoveredBackBorder()
 		);
-		
-		//check every block
-		while (iterator.hasNext()) {
-			RenderBlock block = iterator.next();
-			if (block != null) {
-				block.unmarkPermanent();
-				block.getEntsInCellBelow().clear();
-				block.getCovered(null).clear();
-			}
-		}
-		
-		//add entities to renderstorage
-		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
-			if (block != null) {
-				block.addCoveredEnts(ent);
-			}
-		}
-		
-		objectsToBeRendered = 0;
-		iterator.restart();
 		
 		AbstractGameObject.inverseDirtyFlag();
 		//check every block
@@ -632,6 +626,12 @@ public class Camera implements MapObserver {
 			if (cell != null && !cell.isMarked()) {
 				visit(cell);
 			}
+		}
+		depthlist.addAll(renderAppendix);
+		
+		//cleanup
+		for (RenderBlock cell : modifiedCells) {
+			cell.fillCoveredList(gameView.getRenderStorage());
 		}
 	}
 	

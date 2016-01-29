@@ -587,7 +587,7 @@ public class Camera implements MapObserver {
 		entsToRender.sort((AbstractEntity o1, AbstractEntity o2) -> {
 			float d1 = o1.getDepth();
 			float d2 = o2.getDepth();
-			if (d1 < d2) {
+			if (d1 > d2) {
 				return 1;
 			} else {
 				if (d1==d2) return 0;

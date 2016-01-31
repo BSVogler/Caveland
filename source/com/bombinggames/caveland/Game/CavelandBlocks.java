@@ -67,7 +67,7 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
+		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", true),
 		
 		/**
 		 *
@@ -302,18 +302,9 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
-		if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id && value > 0) {
-			return true;
-		}
 		return CLBlocks.valueOf(id).hasSides;
 	}
 
-	/**
-	 *
-	 * @param id
-	 * @param value
-	 * @return
-	 */
 	@Override
 	public boolean isObstacle(byte id, byte value) {
 		if (id==12) return true;
@@ -332,12 +323,6 @@ public class CavelandBlocks implements CustomBlocks {
 		return false;
 	}
 
-	/**
-	 *
-	 * @param id
-	 * @param value
-	 * @return
-	 */
 	@Override
 	public boolean isTransparent(byte id, byte value) {
 		if (id==12) return true;

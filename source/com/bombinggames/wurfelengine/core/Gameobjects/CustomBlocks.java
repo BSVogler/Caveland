@@ -42,7 +42,7 @@ public interface CustomBlocks {
 	
 	/**
 	 * 
-	 * @param data there are id's &lt; 10 which are fitlered before
+	 * @param data there are id's &lt; 10 which are filtered before
 	 * @return 
 	 */
 	public RenderBlock toRenderBlock(Block data);

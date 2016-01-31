@@ -565,17 +565,23 @@ public class RenderBlock extends AbstractGameObject{
 			Sprite gras = new Sprite(getSprite('e', (byte) 7, (byte) 0));
 
 			for (int i = 0; i < 10; i++) {
-				gras.setColor(
-					getLightlevel(side, 1, 0) / 2f - 0.1f,
-					getLightlevel(side, 1, 1) / 2f - (xPos * yPos + i) % 3 * 0.02f,
-					getLightlevel(side, 1, 2) / 2f,
-					1
-				);
-				gras.setPosition(
-					xPos + ((xPos * (yPos + i)) % 27) * 7 + 30,
-					yPos + 50 - (((yPos + i) * xPos) % 7) * 5
-				);
-				gras.draw(view.getSpriteBatch());
+				int xOffset = Math.abs((xPos-3)*i * (yPos)) % Block.VIEW_WIDTH-Block.VIEW_WIDTH2;
+				int yOffset = Math.abs(((xPos-i)*3 * (yPos*3-i))) % Block.VIEW_DEPTH-Block.VIEW_DEPTH2;
+				if (Math.abs(xOffset)+Math.abs(yOffset) < Block.VIEW_WIDTH2-10) {
+					gras.setColor(
+						getLightlevel(side, 1, 0) / 2f - 0.1f,
+						getLightlevel(side, 1, 1) / 2f - (xOffset*yPos + i) % 3 * 0.02f,
+						getLightlevel(side, 1, 2) / 2f,
+						1
+					);
+					gras.setPosition(
+						xPos + xOffset+Block.VIEW_WIDTH2,
+						yPos - yOffset+Block.VIEW_DEPTH2-10
+					);
+					float windRotate = (float) xOffset%17/17f*10f-2.5f;
+					gras.rotate(windRotate);
+					gras.draw(view.getSpriteBatch());
+				}
 			}
 		}
     }

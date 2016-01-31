@@ -1072,13 +1072,6 @@ public class Camera implements MapObserver {
 		shakeTime = time;
 	}
 
-	@Override
-	public void onMapChange() {
-		if (active) {
-			fillCameraContentBlocks();
-		}
-	}
-
 	/**
 	 * Returns the focuspoint
 	 *
@@ -1144,7 +1137,13 @@ public class Camera implements MapObserver {
 	public void onChunkChange(Chunk chunk) {
 	}
 	
-
+	@Override
+	public void onMapChange() {
+		if (active) {
+			fillCameraContentBlocks();
+		}
+	}
+	
 
 	private void drawDebug(GameView view, Camera camera) {
 		ShapeRenderer sh = view.getShapeRenderer();

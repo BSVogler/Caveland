@@ -92,13 +92,8 @@ public class RenderStorage implements MapObserver  {
 	
 	@Override
 	public void onChunkChange(Chunk chunk) {
-		data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));
+		data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));//chunk is outdatet so remove it
 		checkChunk(chunk.getChunkX(), chunk.getChunkY());
-		for (Camera camera : cameraContainer) {
-			if (camera.isEnabled()) {
-				camera.fillCameraContentBlocks();
-			}
-		}
 	}
 	
 	@Override

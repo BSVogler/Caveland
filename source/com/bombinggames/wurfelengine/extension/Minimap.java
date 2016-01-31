@@ -30,6 +30,8 @@
  */
 package com.bombinggames.wurfelengine.extension;
    
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,13 +40,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Map;
-import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 
@@ -52,7 +54,7 @@ import java.util.ArrayList;
  *A minimap is a view that draws the map from top in a small window.
  * @author Benedikt
  */
-public class Minimap implements MapObserver {
+public class Minimap implements Telegraph {
     /**
 	 * distance from left
 	 */
@@ -370,17 +372,11 @@ public class Minimap implements MapObserver {
 	}
 
 	@Override
-	public void onMapChange() {
-		needsRebuild();
+	public boolean handleMessage(Telegram msg) {
+		if (msg.message == Events.mapChanged.getId()){
+			needsRebuild();
+			return true;
+		}
+		return false;
 	}
-
-	@Override
-	public void onChunkChange(Chunk chunk) {
-	}
-
-	@Override
-	public void onMapReload() {
-	}
-	
-	
 }

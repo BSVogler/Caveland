@@ -31,9 +31,11 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -190,9 +192,7 @@ public class Chunk {
 
 			Controller.getMap().setModified();
 			//notify observers that a chunk changed
-			for (MapObserver observer : Controller.getMap().getOberservers()) {
-				observer.onChunkChange(this);
-			}
+			MessageManager.getInstance().dispatchMessage(Events.chunkChanged.getId(), this);
 		}
 	}
 

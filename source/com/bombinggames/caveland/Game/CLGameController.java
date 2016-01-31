@@ -1,6 +1,8 @@
 package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.GameObjects.Ejira;
 import com.bombinggames.caveland.GameObjects.Robot;
@@ -11,6 +13,7 @@ import com.bombinggames.wurfelengine.core.CVar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.CVar.IntCVar;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Coordinate;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt
  */
-public class CLGameController extends Controller {
+public class CLGameController extends Controller implements Telegraph {
 
 	private Ejira player1;
 	private Ejira player2;
@@ -68,13 +71,6 @@ public class CLGameController extends Controller {
 		}
 	}
 
-	@Override
-	public void onMapReload() {
-		super.onMapReload();
-		Gdx.app.log("CustomGameController", "onMapLoad");
-		mapSetup();
-	}
-	
 	/**
 	 * loads save cvars and check if map is okay
 	 */
@@ -203,4 +199,14 @@ public class CLGameController extends Controller {
 		}
 		return super.save();
 	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		if (msg.message == Events.mapReloaded.getId()){
+			mapSetup();
+			return true;
+		}
+		return false;
+	}
+	
 }

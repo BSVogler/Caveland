@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
@@ -42,6 +43,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.CVar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
@@ -143,7 +145,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * observer pattern
 	 */
-	private ArrayList<MapObserver> observers = new ArrayList<>(3);//camera + light engine=2 minimum
 	private Generator generator;
 	private final File directory;
 	private int activeSaveSlot;
@@ -607,7 +608,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void modificationCheck() {
 		if (modified) {
-			onModified();
+			MessageManager.getInstance().dispatchMessage(Events.mapChanged.getId());
 			modified = false;
 		}
 	}
@@ -656,22 +657,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 *
-	 * @return reference to list containing the observers
-	 */
-	public ArrayList<MapObserver> getOberservers() {
-		return observers;
-	}
-
-	/**
-	 *
-	 * @param linked
-	 */
-	public void setObservers(ArrayList<MapObserver> linked) {
-		observers = linked;
-	}
-
-	/**
 	 * Get an iteration which can loop throug the map
 	 *
 	 * @param startLimit the starting level
@@ -682,28 +667,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		MemoryMapIterator mapIterator = new MemoryMapIterator(this, startLimit);
 		mapIterator.setTopLimitZ(topLimitZ);
 		return mapIterator;
-	}
-
-	/**
-	 * called when the map is modified
-	 */
-	private void onModified() {
-		//recalculates the light if requested
-		Gdx.app.debug("Map", "onModified");
-		for (MapObserver observer : observers) {
-			observer.onMapChange();
-		}
-	}
-
-	/**
-	 * called when the map reloaded. Ideally should find this out by itself.
-	 */
-	public void onReload() {
-		//recalculates the light if requested
-		Gdx.app.debug("Map", "onReload");
-		for (MapObserver observer : observers) {
-			observer.onMapReload();
-		}
 	}
 
 	/**

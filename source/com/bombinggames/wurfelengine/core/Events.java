@@ -84,7 +84,14 @@ public enum Events {
 	/**
 	 * extra information must contain {@link com.bombinggames.wurfelengine.core.Map.Point}
 	 */
-	teleport(20);
+	teleport(20),
+	
+	chunkChanged(21),
+	
+	mapChanged(22),
+	
+	mapReloaded(23)
+	;
 	
 	private final int id;
 

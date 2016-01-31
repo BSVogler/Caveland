@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.bombinggames.wurfelengine.Command;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
@@ -41,7 +42,6 @@ import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
 import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Map;
-import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  *
  * @author Benedikt Vogler
  */
-public class Controller implements GameManager, MapObserver {
+public class Controller implements GameManager {
 
 	private static LightEngine lightEngine;
 	private static Map map;
@@ -78,18 +78,13 @@ public class Controller implements GameManager, MapObserver {
 	 * @return returns true if the map could be loaded and false if it failed
 	 */
 	public static boolean loadMap(File path, int saveslot) {
-		ArrayList<MapObserver> linked = null;
 		if (map != null) {
 			map.dispose(false);
 			//if loading another map, save linked objects
-			linked = map.getOberservers();
 		}
 		try {
 			map = new Map(path, saveslot);
-			if (linked != null) {
-				map.setObservers(linked);
-			}
-			map.onReload();
+			MessageManager.getInstance().dispatchMessage(Events.mapReloaded.getId());
 
 			return true;
 		} catch (IOException ex) {
@@ -287,10 +282,6 @@ public class Controller implements GameManager, MapObserver {
 				// Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex1);
 				// }
 			}
-			//add controller to observers
-			if (!map.getOberservers().contains(this)) {
-				map.getOberservers().add(this);
-			}
 		}
 
 		//create default light engine
@@ -366,18 +357,6 @@ public class Controller implements GameManager, MapObserver {
 
 	@Override
 	public void dispose() {
-	}
-
-	@Override
-	public void onMapChange() {
-	}
-
-	@Override
-	public void onChunkChange(Chunk chunk) {
-	}
-
-	@Override
-	public void onMapReload() {
 	}
 
 	/**

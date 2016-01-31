@@ -31,6 +31,9 @@
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,7 +54,6 @@ import com.bombinggames.wurfelengine.core.Map.Chunk;
 import com.bombinggames.wurfelengine.core.Map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.Map.Map;
-import com.bombinggames.wurfelengine.core.Map.MapObserver;
 import com.bombinggames.wurfelengine.core.Map.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -61,7 +63,7 @@ import java.util.LinkedList;
  *
  * @author Benedikt Vogler
  */
-public class Camera implements MapObserver {
+public class Camera implements Telegraph {
 
 	/**
 	 * top limit in game space
@@ -161,6 +163,7 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final GameView view) {
+		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 		gameView = view;
 		screenWidth = Gdx.graphics.getBackBufferWidth();
 		screenHeight = Gdx.graphics.getBackBufferHeight();
@@ -187,6 +190,7 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final GameView view, final int x, final int y, final int width, final int height) {
+		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 		zRenderingLimit = Chunk.getBlocksZ()-1;
 
 		gameView = view;
@@ -220,6 +224,7 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final GameView view, final int x, final int y, final int width, final int height, final Point center) {
+		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -248,6 +253,7 @@ public class Camera implements MapObserver {
 	 * @param view
 	 */
 	public Camera(final GameView view, final int x, final int y, final int width, final int height, final AbstractEntity focusentity) {
+		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -1127,24 +1133,6 @@ public class Camera implements MapObserver {
 		this.active = active;
 	}
 
-
-	@Override
-	public void onMapReload() {
-		checkNeededChunks();
-	}
-
-	@Override
-	public void onChunkChange(Chunk chunk) {
-	}
-	
-	@Override
-	public void onMapChange() {
-		if (active) {
-			fillCameraContentBlocks();
-		}
-	}
-	
-
 	private void drawDebug(GameView view, Camera camera) {
 		ShapeRenderer sh = view.getShapeRenderer();
 		sh.setColor(Color.RED.cpy());
@@ -1190,6 +1178,20 @@ public class Camera implements MapObserver {
 	public boolean isEnabled() {
 		return active;
 	}
-	
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		if (msg.message == Events.mapChanged.getId()){
+			if (active) {
+				fillCameraContentBlocks();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	void dispose() {
+		MessageManager.getInstance().removeListener(this, Events.mapChanged.getId());
+	}
 
 }

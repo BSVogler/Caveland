@@ -238,10 +238,6 @@ public class GameView implements GameManager {
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
-		if (!Controller.getMap().getOberservers().contains(renderstorage)) {
-			Controller.getMap().getOberservers().add(renderstorage);
-		}
-
 		//enable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(true);
@@ -552,7 +548,6 @@ public class GameView implements GameManager {
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
 		getRenderStorage().addCamera(camera);
-		Controller.getMap().getOberservers().add(camera);
     }
     
      /**
@@ -628,13 +623,14 @@ public class GameView implements GameManager {
 		for (Camera camera : cameras) {
 			camera.setActive(false);
 		}
-		if (Controller.getMap().getOberservers().contains(renderstorage)) {
-			Controller.getMap().getOberservers().remove(renderstorage);
-		}
 	}
 
 	@Override
 	public void dispose() {
+		for (Camera camera : cameras) {
+			camera.dispose();
+		}
+		renderstorage.dispose();
 		shRenderer.dispose();
 		spriteBatch.dispose();
 		stage.dispose();

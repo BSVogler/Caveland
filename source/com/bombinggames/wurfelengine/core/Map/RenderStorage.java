@@ -30,9 +30,13 @@
  */
 package com.bombinggames.wurfelengine.core.Map;
 
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.LightEngine.AmbientOcclusionCalculator;
@@ -44,7 +48,7 @@ import java.util.List;
  * A RenderStorage is container which saves {@link RenderChunk}s used for rendering data only chunks. It manages which {@link Chunk}s must be transformed to {@link RenderChunk}s.
  * @author Benedikt Vogler
  */
-public class RenderStorage implements MapObserver  {
+public class RenderStorage implements Telegraph  {
 
 	/**
 	 * Stores the data of the map.
@@ -68,6 +72,7 @@ public class RenderStorage implements MapObserver  {
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
 		zRenderingLimit = Chunk.getBlocksZ();
+		MessageManager.getInstance().addListener(this, Events.chunkChanged.getId());
 	}
 
 	public void update(float dt){
@@ -90,21 +95,6 @@ public class RenderStorage implements MapObserver  {
 		resetShadingForDirty();
 	}
 	
-	@Override
-	public void onChunkChange(Chunk chunk) {
-		data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));//chunk is outdatet so remove it
-		checkChunk(chunk.getChunkX(), chunk.getChunkY());
-	}
-	
-	@Override
-	public void onMapChange() {
-	}
-
-	@Override
-	public void onMapReload() {
-	}
-	
-		
 	/**
 	 * reset light to normal level for cordinates marked as dirty
 	 */
@@ -431,6 +421,22 @@ public class RenderStorage implements MapObserver  {
 	 */
 	public int getZRenderingLimit() {
 		return zRenderingLimit;
+	}
+	
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		if (msg.message==Events.chunkChanged.getId()) {
+			Chunk chunk = (Chunk) msg.extraInfo;
+			data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));//chunk is outdatet so remove it
+			checkChunk(chunk.getChunkX(), chunk.getChunkY());
+			return true;
+		}
+		return false;
+	}
+
+	public void dispose() {
+		MessageManager.getInstance().removeListener(this, Events.chunkChanged.getId());
 	}
 
 }

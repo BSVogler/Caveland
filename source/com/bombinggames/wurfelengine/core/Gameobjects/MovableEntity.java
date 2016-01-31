@@ -935,7 +935,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	}
 
 	/**
-	 * checks the colissions with entities
+	 * checks the colissions with entities, O(n)
 	 */
 	private void checkEntColl() {
 		ArrayList<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);

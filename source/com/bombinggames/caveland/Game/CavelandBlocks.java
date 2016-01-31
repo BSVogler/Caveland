@@ -334,7 +334,7 @@ public class CavelandBlocks implements CustomBlocks {
 		if (id==13) return true;
 		if (id==14) return true;
 		if (id==15) return true;
-		if (id==17) return true;
+		if (id==17 && value==0) return true;
 		if (id==11) return true;
 		if (id==52) return true;
 		if (id==53) return true;

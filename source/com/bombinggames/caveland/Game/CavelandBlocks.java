@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.GrassBlock;
 import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
+import com.bombinggames.caveland.GameObjects.GrassBlock;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
@@ -68,7 +68,7 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", true),
+		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
 		
 		/**
 		 *
@@ -307,6 +307,9 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public boolean hasSides(byte id, byte value) {
+		if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id && value > 0) {
+			return true;
+		}
 		return CLBlocks.valueOf(id).hasSides;
 	}
 

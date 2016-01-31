@@ -186,7 +186,7 @@ public class Controller implements GameManager, MapObserver {
 	 *
 	 */
 	public void undoCommand() {
-		if (lastCommandPos >= 0 && lastCommandPos < commandHistory.length - 1) {
+		if (lastCommandPos >= 0 && lastCommandPos <= commandHistory.length - 1) {
 			commandHistory[lastCommandPos].undo();
 			lastCommandPos--;
 		}

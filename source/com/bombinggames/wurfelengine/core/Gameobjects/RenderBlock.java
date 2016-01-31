@@ -30,7 +30,6 @@ package com.bombinggames.wurfelengine.core.Gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
@@ -557,31 +556,6 @@ public class RenderBlock extends AbstractGameObject{
 			//}
 			sprite.draw(view.getSpriteBatch());
 			increaseDrawCalls();
-		}
-		
-		//draw grass
-		if (id == 1 && side == Side.TOP) {
-			Sprite gras = new Sprite(getSprite('e', (byte) 7, (byte) 0));
-
-			for (int i = 0; i < 10; i++) {
-				int xOffset = Math.abs((xPos - 3) * i * (yPos)) % Block.VIEW_WIDTH - Block.VIEW_WIDTH2;
-				int yOffset = Math.abs(((xPos - i) * 3 * (yPos * 3 - i))) % Block.VIEW_DEPTH - Block.VIEW_DEPTH2;
-				if (Math.abs(xOffset) + Math.abs(yOffset) < Block.VIEW_WIDTH2 - 10) {
-					gras.setColor(
-						getLightlevel(side, 1, 0) / 2f - 0.1f,
-						getLightlevel(side, 1, 1) / 2f - (xOffset * yPos + i) % 3 * 0.02f,
-						getLightlevel(side, 1, 2) / 2f,
-						1
-					);
-					gras.setPosition(
-						xPos + xOffset + Block.VIEW_WIDTH2,
-						yPos - yOffset + Block.VIEW_DEPTH2 - 10
-					);
-					float windRotate = (float) xOffset % 17 / 17f * 10f - 2.5f;
-					gras.rotate(windRotate);
-					gras.draw(view.getSpriteBatch());
-				}
-			}
 		}
     }
 

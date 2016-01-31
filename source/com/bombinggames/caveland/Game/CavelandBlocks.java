@@ -1,5 +1,6 @@
 package com.bombinggames.caveland.Game;
 
+import com.bombinggames.caveland.GameObjects.GrassBlock;
 import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
 import com.bombinggames.caveland.GameObjects.CustomTree;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
@@ -280,15 +281,19 @@ public class CavelandBlocks implements CustomBlocks {
 	//overwrites
 	@Override
 	public RenderBlock toRenderBlock(Block data) {
-		if (data.getId() == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
-			RenderBlock a = new RenderBlock(data);
+		byte dataId = data.getId();
+		if (dataId == 1) {
+			GrassBlock grass = new GrassBlock(data);
+			return grass;
+		} else if (dataId == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
+			RenderBlock iO = new RenderBlock(data);
 			if (data.getValue()> 0){
-				a.setSpriteId((byte) 3);
+				iO.setSpriteId((byte) 3);
 			}
-			return a;
-		} else if (data.getId() == CLBlocks.TREE.id) {
+			return iO;
+		} else if (dataId == CLBlocks.TREE.id) {
 			return new CustomTree(data);
-		} else if (data.getId() == CLBlocks.CONSTRUCTIONSITE.id) {
+		} else if (dataId == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSiteRender(data);
 		}else {
 			return new RenderBlock(data);

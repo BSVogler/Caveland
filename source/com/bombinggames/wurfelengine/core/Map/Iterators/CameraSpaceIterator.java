@@ -55,8 +55,6 @@ public class CameraSpaceIterator {
 	private final int startingZ;
 	private int chunkNum = -1;
 	private final RenderStorage renderStorage;
-	private int left;
-	private int right;
 
 	/**
 	 * Starts at z = -1.
@@ -132,8 +130,13 @@ public class CameraSpaceIterator {
 		return getNextChunk(chunkNum) != null;
 	}
 
-	private RenderChunk getNextChunk(int start) {
-		int i = start;
+	/**
+	 * 
+	 * @param current 0-8
+	 * @return 
+	 */
+	private RenderChunk getNextChunk(int current) {
+		int i = current;
 		if (i < 0) {
 			i = 0;
 		}
@@ -157,24 +160,4 @@ public class CameraSpaceIterator {
 	public boolean hasAnyBlock() {
 		return getNextChunk(0) != null;
 	}
-
-	/**
-	 * 
-	 * @param left coordinate
-	 * @param right coordinate
-	 * @param back
-	 * @param front 
-	 */
-	public void setBorders(int left, int right, int back, int front) {
-		this.left = left;
-		this.right = right;
-		//blockIterator.setBordersCoordiante(left, right, back, front);
-//		if (back > 0) {
-//			this.back = back;
-//		}
-//		if (front < data[0].length - 1) {
-//			this.front = front;
-//		}
-	}
-
 }

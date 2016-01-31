@@ -70,6 +70,8 @@ public class CLGameView extends GameView{
 		if (!WE.getCVars().getValueB("ignorePlayer"))
 			Ejira.loadSheet();
 		
+		GrassBlock.initGrass();
+		
 		//register Sounds
 		WE.SOUND.register("turret", "com/bombinggames/caveland/sounds/turret.ogg");
 		WE.SOUND.register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");

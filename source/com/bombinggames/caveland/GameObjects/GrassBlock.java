@@ -54,14 +54,16 @@ public class GrassBlock extends RenderBlock {
 	
 	private final float seed;
 
+	public static void initGrass(){
+		grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
+		grasSprite.setOrigin(grasSprite.getWidth()/2f,0);
+	}
+	
 	public GrassBlock(Block data) {
 		super(data);
-		if (grasSprite == null) {
-			grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
-			grasSprite.setOrigin(grasSprite.getWidth()/2f,0);
-		}
 		seed = randomGenerator.nextFloat();
 	}
+	
 
 	public static void updateWind(float dt) {
 		windWholeCircle = (windWholeCircle + dt * 0.01f) % WINDAMPLITUDE;

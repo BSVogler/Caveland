@@ -37,29 +37,45 @@ import static com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject.
 import com.bombinggames.wurfelengine.core.Gameobjects.Block;
 import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
 import com.bombinggames.wurfelengine.core.Gameobjects.Side;
+import java.util.Random;
 
 /**
  *
  * @author Benedikt Vogler
  */
 public class GrassBlock extends RenderBlock {
-	
+
 	private static final long serialVersionUID = 1L;
-	private final Sprite grasSprite;
+	private static Sprite grasSprite;
+	private static float wind;
+	private static float windWholeCircle;
+	public static final float WINDAMPLITUDE = 30f;
+	private final static Random randomGenerator = new java.util.Random();
+	
+	private final float seed;
 
 	public GrassBlock(Block data) {
 		super(data);
-		grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
+		if (grasSprite == null) {
+			grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
+			grasSprite.setOrigin(grasSprite.getWidth()/2f,0);
+		}
+		seed = randomGenerator.nextFloat();
+	}
+
+	public static void updateWind(float dt) {
+		windWholeCircle = (windWholeCircle + dt * 0.01f) % WINDAMPLITUDE;
+		wind = Math.abs(windWholeCircle - WINDAMPLITUDE / 2)//value between 0 and amp/2
+			-WINDAMPLITUDE / 2;//value between -amp/2 and + amp/2
 	}
 
 	@Override
 	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color, int ao) {
 		super.renderSide(view, xPos, yPos, side, color, ao);
 		Sprite gras = grasSprite;
-
 		for (int i = 0; i < 10; i++) {
-			int xOffset = Math.abs((xPos - 3) * i * (yPos)) % Block.VIEW_WIDTH - Block.VIEW_WIDTH2;
-			int yOffset = Math.abs(((xPos - i) * 3 * (yPos * 3 - i))) % Block.VIEW_DEPTH - Block.VIEW_DEPTH2;
+			int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % Block.VIEW_WIDTH - Block.VIEW_WIDTH2);
+			int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % Block.VIEW_DEPTH - Block.VIEW_DEPTH2);
 			if (Math.abs(xOffset) + Math.abs(yOffset) < Block.VIEW_WIDTH2 - 10) {
 				gras.setColor(
 					getLightlevel(side, 1, 0) / 2f - 0.1f,
@@ -71,17 +87,10 @@ public class GrassBlock extends RenderBlock {
 					xPos + xOffset + Block.VIEW_WIDTH2,
 					yPos - yOffset + Block.VIEW_DEPTH2 - 10
 				);
-				float windRotate = (float) xOffset % 17 / 17f * 10f - 2.5f;
-				gras.rotate(windRotate);
+				gras.setRotation(wind+randomGenerator.nextFloat()*0.1f*WINDAMPLITUDE/2);
 				gras.draw(view.getSpriteBatch());
 			}
 		}
 	}
 
-	
-	
-	
-	
-	
-	
 }

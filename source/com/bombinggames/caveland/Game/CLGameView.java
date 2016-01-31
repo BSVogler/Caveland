@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.bombinggames.caveland.Game.igmenu.IGMenu;
 import com.bombinggames.caveland.GameObjects.Ejira;
+import com.bombinggames.caveland.GameObjects.GrassBlock;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -230,6 +231,9 @@ public class CLGameView extends GameView{
     @Override
     public void update(float dt) {
         super.update(dt);
+		
+		GrassBlock.updateWind(dt);
+		
 		//get input and do actions
 		Input input = Gdx.input;
 

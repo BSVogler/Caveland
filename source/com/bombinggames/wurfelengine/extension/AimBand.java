@@ -179,7 +179,7 @@ public class AimBand {
 	 */
 	public void dispose() {
 		for (Particle particle : list) {
-			particle.disposeFromMap();
+			particle.removeFromMap();
 		}
 		list.clear();
 	}

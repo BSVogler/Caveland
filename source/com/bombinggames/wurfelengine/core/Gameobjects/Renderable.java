@@ -3,7 +3,6 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
-import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.ArrayList;
 
@@ -14,9 +13,12 @@ import java.util.ArrayList;
 public interface Renderable {
 	
 	/**
-     * returns the id of a object
-     * @return 
-     */
+	 * the id of the sprite using for rendering.<br>
+	 * By default is the same as the object id but in some cases some
+	 * objects share one sprite so they can have the same.
+	 *
+	 * @return if spritevalue is not custom set uses value.
+	 */
 	public byte getSpriteId();
 	
 	/**
@@ -57,20 +59,54 @@ public interface Renderable {
 	 */
 	void setLightlevel(float lightlevel);
 
+	/**
+	 * Marked as visited.
+	 */
 	public void markPermanent();
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isMarked();
 	
+	/**
+	 *
+	 */
 	public void unmarkTemporarily();
 	
+	/**
+	 * Mark temporarily for depth sort.
+	 */
 	public void markTemporarily();
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isMarkedTemporarily();
 
+	/**
+	 * Draws an object if it is not hidden and not clipped.
+	 *
+	 * @param view the view using this render method
+	 * @param camera The camera rendering the scene
+	 */
 	public void render(GameView view, Camera camera);
 
+	/**
+	 * Return the coordinates of the object in the game world.
+	 *
+	 * @return Reference to the position object which points to the location in
+	 * the game world.
+	 */
 	public Position getPosition();
 
+	/**
+	 *
+	 * @param camera
+	 * @return
+	 */
 	public boolean shouldBeRendered(Camera camera);
 
 	/**

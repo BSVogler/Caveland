@@ -502,28 +502,35 @@ public class RenderBlock extends AbstractGameObject{
 			0
         );
     }
-    /**
-     * Draws a side of a block at a custom position. Apllies color before rendering and takes the lightlevel into account.
-     * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
-     * @param side The number identifying the side. 0=left, 1=top, 2=right
-     * @param color a tint in which the sprite gets rendered. If null color gets ignored
+  /**
+	 * Draws a side of a block at a custom position. Apllies color before
+	 * rendering and takes the lightlevel into account.
+	 *
+	 * @param view the view using this render method
+	 * @param xPos rendering position
+	 * @param yPos rendering position
+	 * @param side The number identifying the side. 0=left, 1=top, 2=right
+	 * @param color a tint in which the sprite gets rendered. If null color gets
+	 * ignored
 	 * @param ao ambient occlusion flags. if no ao pass 0
-     */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color, int ao){
+	 */
+	public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color, int ao) {
 		byte id = getSpriteId();
-		if (id <= 0) return;
+		if (id <= 0) {
+			return;
+		}
 		byte value = getSpriteValue();
-		if (value < 0) return;
-		
-        SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side, ao);
-        sprite.setPosition(xPos, yPos);
-        if (getScaling() != 0) {
-            sprite.setOrigin(0, 0);
-            sprite.scale(getScaling());
-        }
-		
+		if (value < 0) {
+			return;
+		}
+
+		SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side, ao);
+		sprite.setPosition(xPos, yPos);
+		if (getScaling() != 0) {
+			sprite.setOrigin(0, 0);
+			sprite.scale(getScaling());
+		}
+
 		//draw only outline or regularly?
         if (view.debugRendering()){
             ShapeRenderer sh = view.getShapeRenderer();
@@ -571,21 +578,11 @@ public class RenderBlock extends AbstractGameObject{
     public void update(float dt) {
     }
     
-
-
-    /**
-     *
-     * @return
-     */
     @Override
     public char getCategory() {
         return 'b';
     }
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public int getDimensionZ() {
 		return Block.GAME_EDGELENGTH;
@@ -639,11 +636,15 @@ public class RenderBlock extends AbstractGameObject{
 	public boolean isIndestructible() {
 		return blockData.isIndestructible();
 	}
+	
 	/**
-	 * Is the block a true block with three sides or does it get rendered by a single sprite?<br>
+	 * Is the block a true block with three sides or does it get rendered by a
+	 * single sprite?<br>
 	 * This field is only used for representation (view) related data.<br>
 	 * Only used for blocks. Entities should return <i>false</i>.
-	 * @return <i>true</i> if it has sides, <i>false</i> if is rendered as a single sprite
+	 *
+	 * @return <i>true</i> if it has sides, <i>false</i> if is rendered as a
+	 * single sprite
 	 */
 	public boolean hasSides() {
 		if (blockData == null) {
@@ -651,33 +652,23 @@ public class RenderBlock extends AbstractGameObject{
 		}
 		return blockData.hasSides();
 	}
-	
-	
-
-	@Override
-	public void setSpriteValue(byte value) {
-		super.setSpriteValue(value);
-		//blockData.setValue(value);
-	}
 
 	public boolean isLiquid() {
-		if (blockData==null) return false;
+		if (blockData == null) {
+			return false;
+		}
 		return blockData.isLiquid();
 	}
-	
+
 	/**
 	 * Get the pointer to the data.
+	 *
 	 * @return
 	 */
 	public Block getBlockData() {
 		return blockData;
 	}
 	
-	/**
-	 * get the average brightness above all the sides
-	 *
-	 * @return
-	 */
 	@Override
 	public float getLightlevelR() {
 		return (getLightlevel(Side.LEFT, 0,0) + getLightlevel(Side.TOP, 0,0) + getLightlevel(Side.RIGHT, 0,0)) / 3f;
@@ -902,7 +893,8 @@ public class RenderBlock extends AbstractGameObject{
 
 	/**
 	 * Set all flags at once
-	 * @param aoFlags 
+	 *
+	 * @param aoFlags
 	 */
 	public void setAoFlags(int aoFlags) {
 		this.aoFlags = aoFlags;

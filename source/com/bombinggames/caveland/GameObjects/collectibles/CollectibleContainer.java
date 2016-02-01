@@ -180,7 +180,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public Collectible retrieveCollectibleReference(int pos) {
 		Collectible collectible = retrieveCollectible(pos);
-		collectible.disposeFromMap();
+		collectible.removeFromMap();
 		return collectible;
 	}
 
@@ -214,7 +214,7 @@ public class CollectibleContainer extends AbstractEntity {
 		Collectible collectible = getCollectible(def);
 		if (collectible != null) {
 			content.remove(collectible);
-			collectible.disposeFromMap();
+			collectible.removeFromMap();
 		}
 		return collectible;
 	}
@@ -313,7 +313,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * makes the content appear in the world if configured
 	 */
 	@Override
-	public void disposeFromMap() {
+	public void removeFromMap() {
 		if (releaseContentOnDestroy) {
 			//makes the content appear in the world
 			for (int i = 0; i < size(); i++) {
@@ -324,7 +324,7 @@ public class CollectibleContainer extends AbstractEntity {
 				col.dispose();
 			}
 		}
-		super.disposeFromMap();
+		super.removeFromMap();
 	}
 
 	/**

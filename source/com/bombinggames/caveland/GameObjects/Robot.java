@@ -232,8 +232,8 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	}
 
 	@Override
-	public void disposeFromMap() {
-		super.disposeFromMap();
+	public void removeFromMap() {
+		super.removeFromMap();
 		WE.SOUND.stop(RUNNINGSOUND, runningSound);
 		runningSound = 0;
 	}

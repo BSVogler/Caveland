@@ -280,12 +280,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 */
 	public abstract int getDimensionZ();
 
-	/**
-	 * Return the coordinates of the object.
-	 *
-	 * @return Reference to the position object which points to the location in
-	 * the game world.
-	 */
 	@Override
 	public abstract Position getPosition();
 
@@ -314,12 +308,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		drawCalls++;
 	}
 
-	/**
-	 * Draws an object if it is not hidden and not clipped.
-	 *
-	 * @param view the view using this render method
-	 * @param camera The camera rendering the scene
-	 */
 	@Override
 	public void render(GameView view, Camera camera) {
 		if (!hidden) {
@@ -435,23 +423,12 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	//getter & setter
-	/**
-	 * the id of the sprite. should be the same as id but in some cases some
-	 * objects share their sprites.
-	 *
-	 * @return
-	 */
 	@Override
 	public byte getSpriteId() {
 		return spriteId;
 	}
 
-	/**
-	 * the id of the sprite. should be the same as id but in some cases some
-	 * objects share their sprites.
-	 *
-	 * @return if spritevalue is not custom set uses value.
-	 */
+
 	@Override
 	public byte getSpriteValue() {
 		return spriteValue;
@@ -527,12 +504,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		spriteId = id;
 	}
 
-	/**
-	 * The id of the sprite. Default is the same as the id but in some cases
-	 * some objects share their sprites.
-	 *
-	 * @param value
-	 */
 	@Override
 	public void setSpriteValue(byte value) {
 		if (value < Block.VALUESNUM) {
@@ -569,9 +540,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		return AbstractGameObject.getSprite(getCategory(), spriteId, spriteValue);
 	}
 
-	/**
-	 *
-	 */
 	@Override
 	public void unmarkTemporarily() {
 		tmpMarked = false;

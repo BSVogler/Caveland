@@ -804,7 +804,7 @@ public class Chunk {
 		//remove entities on this chunk from map
 		ArrayList<AbstractEntity> entities = map.getEntitiesOnChunk(coordX, coordY);
 		for (AbstractEntity ent : entities) {
-			ent.disposeFromMap();
+			ent.removeFromMap();
 		}
 	}
 

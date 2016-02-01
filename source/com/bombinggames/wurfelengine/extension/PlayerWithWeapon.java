@@ -143,7 +143,7 @@ public class PlayerWithWeapon extends MovableEntity {
 	 */
 	public void equipWeapon(Weapon weapon) {
 		if (this.weapon != null) {
-			this.weapon.disposeFromMap();
+			this.weapon.removeFromMap();
 		}
 		this.weapon = weapon;
 		weapon.reload();

@@ -295,11 +295,11 @@ public class SpiderRobot extends Robot{
 	}
 
 	@Override
-	public void disposeFromMap() {
+	public void removeFromMap() {
 		WE.SOUND.stop("robot2walk", walkingSound);
 		walkingSound = 0;
 		laserdot.dispose();
-		super.disposeFromMap();
+		super.removeFromMap();
 	}
 	
 	/**

@@ -125,14 +125,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	public static String getSpritesheetPath() {
 		return spritesheetPath;
 	}
-	
-	/**
-     *
-     * @return
-     */
-    public static AtlasRegion[][][] getSprites() {
-        return sprites;
-    }
 
     /**
      * Reset couner for this frame

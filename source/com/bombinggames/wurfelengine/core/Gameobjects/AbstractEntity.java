@@ -26,19 +26,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_DIAGLENGTH2;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.core.Map.Position;
-import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_DIAGLENGTH2;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.Position;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -145,7 +146,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
         return position;
     }
 
-    @Override
+	@Override
     public void setPosition(Position pos) {
         this.position = pos.toPoint();
     }

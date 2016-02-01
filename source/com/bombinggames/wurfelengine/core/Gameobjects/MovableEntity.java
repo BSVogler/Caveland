@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
@@ -37,9 +37,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 

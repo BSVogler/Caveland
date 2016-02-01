@@ -29,13 +29,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
  *

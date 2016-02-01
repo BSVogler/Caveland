@@ -3,15 +3,15 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
+import com.bombinggames.wurfelengine.core.gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
  *

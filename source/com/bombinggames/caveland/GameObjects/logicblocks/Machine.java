@@ -1,13 +1,13 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.bombinggames.caveland.GameObjects.MineCart;
+import com.bombinggames.caveland.gameobjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.collectibles.Flint;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
 /**

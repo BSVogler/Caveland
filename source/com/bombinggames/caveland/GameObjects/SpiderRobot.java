@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
@@ -36,9 +36,9 @@ import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
 import java.util.ArrayList;
 

@@ -1,13 +1,13 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.ChunkGenerator;
 import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
 /**

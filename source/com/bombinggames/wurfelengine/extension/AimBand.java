@@ -32,11 +32,11 @@ package com.bombinggames.wurfelengine.extension;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.ArrayList;
-import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.map.Position;
 
 /**
  * A band which points to a point or entity. It most only be updated to work. It should eb disposed if not used any more.

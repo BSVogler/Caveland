@@ -29,9 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.bombinggames.wurfelengine.core.Map;
+package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
 
 /**
  *An interface for a map generator.

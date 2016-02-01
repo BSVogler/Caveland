@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
@@ -6,13 +6,13 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
-import com.bombinggames.wurfelengine.core.Gameobjects.EntityAnimation;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 

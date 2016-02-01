@@ -1,4 +1,4 @@
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;

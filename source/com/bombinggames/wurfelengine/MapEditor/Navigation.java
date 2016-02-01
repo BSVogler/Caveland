@@ -36,7 +36,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 
 /**
  *A bar which schows the current fitlering level.

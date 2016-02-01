@@ -28,15 +28,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject.getSprite;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.Side;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import java.util.Random;
 
 /**

@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.ConstructionSiteRender;
-import com.bombinggames.caveland.GameObjects.CustomTree;
-import com.bombinggames.caveland.GameObjects.GrassBlock;
+import com.bombinggames.caveland.gameobjects.ConstructionSiteRender;
+import com.bombinggames.caveland.gameobjects.CustomTree;
+import com.bombinggames.caveland.gameobjects.GrassBlock;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
@@ -17,12 +17,12 @@ import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.GameObjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.GameObjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.CustomBlocks;
-import com.bombinggames.wurfelengine.core.Gameobjects.DestructionParticle;
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
+import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
  *

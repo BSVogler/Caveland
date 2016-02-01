@@ -1,10 +1,10 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
  * A movable entity with special caveland logic.

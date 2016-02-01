@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 
 /**
  * An item for the {@link PlacableTable}

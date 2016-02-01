@@ -7,7 +7,7 @@ package com.bombinggames.wurfelengine.core.console;
 
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.StringTokenizer;
 
 /**

@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.MainMenu;
+package com.bombinggames.caveland.mainmenu;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;

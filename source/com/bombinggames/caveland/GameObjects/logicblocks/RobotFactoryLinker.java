@@ -31,9 +31,9 @@
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.bombinggames.caveland.GameObjects.Robot;
+import com.bombinggames.caveland.gameobjects.Robot;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 
 /**
  * Saves a link to a robot. Used for saving. Displayed as a LED.

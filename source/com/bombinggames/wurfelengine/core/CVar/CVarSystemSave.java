@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.CVar;
+package com.bombinggames.wurfelengine.core.cvar;
 
-import com.bombinggames.wurfelengine.core.Map.Map;
+import com.bombinggames.wurfelengine.core.map.Map;
 import java.io.File;
 
 /**

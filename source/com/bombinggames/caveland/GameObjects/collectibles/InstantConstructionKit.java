@@ -38,14 +38,14 @@ import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.ActionBox.SelectionOption;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.Ejira;
-import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.caveland.gameobjects.Ejira;
+import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.EntityBlock;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityBlock;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
  * Instantly creates an object without spawning a construction site.

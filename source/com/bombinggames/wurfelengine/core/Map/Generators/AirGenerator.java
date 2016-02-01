@@ -31,8 +31,8 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Generator;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Generator;
 
 /**
  * A simple generator who returns only air.

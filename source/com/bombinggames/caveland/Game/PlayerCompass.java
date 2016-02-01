@@ -34,8 +34,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 
 /**
  * SHows the direction of the coop player.

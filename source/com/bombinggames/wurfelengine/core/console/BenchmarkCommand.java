@@ -6,9 +6,9 @@
 package com.bombinggames.wurfelengine.core.console;
 
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.Gameobjects.BenchmarkBall;
+import com.bombinggames.wurfelengine.core.gameobjects.BenchmarkBall;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 import java.util.StringTokenizer;
 
 /**

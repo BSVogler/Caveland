@@ -4,14 +4,14 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.LiftBasket;
-import com.bombinggames.caveland.GameObjects.Portal;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.caveland.gameobjects.Interactable;
+import com.bombinggames.caveland.gameobjects.LiftBasket;
+import com.bombinggames.caveland.gameobjects.Portal;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
  *

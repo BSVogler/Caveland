@@ -3,10 +3,10 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.Game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
  *

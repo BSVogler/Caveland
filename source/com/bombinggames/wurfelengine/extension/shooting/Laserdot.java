@@ -33,10 +33,10 @@ package com.bombinggames.wurfelengine.extension.shooting;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.Intersection;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.Intersection;
+import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
  *

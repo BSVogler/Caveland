@@ -35,17 +35,17 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.GameObjects.Ejira;
-import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.caveland.GameObjects.Quadrocopter;
-import com.bombinggames.caveland.GameObjects.Robot;
-import com.bombinggames.caveland.GameObjects.SpiderRobot;
+import com.bombinggames.caveland.gameobjects.Ejira;
+import com.bombinggames.caveland.gameobjects.Interactable;
+import com.bombinggames.caveland.gameobjects.Quadrocopter;
+import com.bombinggames.caveland.gameobjects.Robot;
+import com.bombinggames.caveland.gameobjects.SpiderRobot;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
 /**

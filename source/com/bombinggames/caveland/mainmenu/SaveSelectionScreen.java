@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.MainMenu;
+package com.bombinggames.caveland.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Map.Map;
+import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;

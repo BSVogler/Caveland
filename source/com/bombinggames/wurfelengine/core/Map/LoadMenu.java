@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.bombinggames.wurfelengine.core.Map;
+package com.bombinggames.wurfelengine.core.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

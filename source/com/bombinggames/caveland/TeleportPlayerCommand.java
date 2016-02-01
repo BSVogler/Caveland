@@ -2,8 +2,8 @@ package com.bombinggames.caveland;
 
 import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
 import com.bombinggames.wurfelengine.core.console.ConsoleCommand;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.StringTokenizer;
 
 /**

@@ -31,7 +31,7 @@
 package com.bombinggames.wurfelengine.soundengine;
 
 import com.badlogic.gdx.audio.Sound;
-import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.map.Position;
 
 /**
  * An object which saves a playing sound.

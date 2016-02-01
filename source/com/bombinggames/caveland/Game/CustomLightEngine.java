@@ -33,9 +33,9 @@ package com.bombinggames.caveland.Game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.LightEngine.GlobalLightSource;
-import com.bombinggames.wurfelengine.core.LightEngine.LightEngine;
-import com.bombinggames.wurfelengine.core.Map.Position;
+import com.bombinggames.wurfelengine.core.lightengine.GlobalLightSource;
+import com.bombinggames.wurfelengine.core.lightengine.LightEngine;
+import com.bombinggames.wurfelengine.core.map.Position;
 
 /**
  *

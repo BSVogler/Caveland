@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.RenderBlock;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.RenderChunk;
-import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
 import java.util.NoSuchElementException;
 
 /**

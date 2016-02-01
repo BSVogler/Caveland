@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.MineCart;
+import com.bombinggames.caveland.gameobjects.MineCart;
 import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
 import java.util.ArrayList;
 

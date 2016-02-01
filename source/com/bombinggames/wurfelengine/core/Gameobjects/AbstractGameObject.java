@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -39,11 +39,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.Map.Point;
-import com.bombinggames.wurfelengine.core.Map.Position;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.Position;
 import java.io.Serializable;
 
 /**
@@ -301,6 +301,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
      * @param view the view using this render method
      * @param camera The camera rendering the scene
      */
+	@Override
     public void render(GameView view, Camera camera) {
         if (!hidden) {
 			Color fogcolor = null;

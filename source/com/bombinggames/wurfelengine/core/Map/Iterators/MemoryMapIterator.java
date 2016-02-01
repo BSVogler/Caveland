@@ -30,9 +30,9 @@
  */
 package com.bombinggames.wurfelengine.core.Map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.Map;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Map;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

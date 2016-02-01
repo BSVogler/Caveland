@@ -32,7 +32,7 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;

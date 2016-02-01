@@ -28,13 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
-import com.bombinggames.wurfelengine.core.Map.Chunk;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 
 /**
  *

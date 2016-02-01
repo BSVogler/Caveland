@@ -1,9 +1,10 @@
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Map.Position;
-import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
+import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
+import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.ArrayList;
 
 /**

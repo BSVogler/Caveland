@@ -30,8 +30,8 @@
  */
 package com.bombinggames.caveland.GameObjects.logicblocks;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
  *

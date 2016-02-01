@@ -32,10 +32,10 @@ package com.bombinggames.caveland.GameObjects.logicblocks;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.Robot;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Intersection;
+import com.bombinggames.caveland.gameobjects.Robot;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import java.util.ArrayList;
 import java.util.Iterator;

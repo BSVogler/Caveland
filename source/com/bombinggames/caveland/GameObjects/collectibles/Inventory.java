@@ -2,12 +2,12 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.GameObjects.Ejira;
-import com.bombinggames.caveland.GameObjects.Interactable;
+import com.bombinggames.caveland.gameobjects.Ejira;
+import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 
 /**
  * The inventory is a special limited collectible container. It also moves the

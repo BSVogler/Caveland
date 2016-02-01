@@ -33,8 +33,8 @@ package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.ActionBox;
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.GameObjects.Ejira;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.caveland.gameobjects.Ejira;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import java.util.ArrayList;
 
 /**

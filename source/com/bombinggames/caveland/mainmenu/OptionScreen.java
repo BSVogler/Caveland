@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.MainMenu;
+package com.bombinggames.caveland.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -22,9 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.ActionBox;
-import static com.bombinggames.caveland.MainMenu.MainMenuScreen.MANAGER;
+import static com.bombinggames.caveland.mainmenu.MainMenuScreen.MANAGER;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 

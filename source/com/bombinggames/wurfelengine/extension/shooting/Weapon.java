@@ -36,13 +36,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
-import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
+import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.extension.AimBand;
 
 /**

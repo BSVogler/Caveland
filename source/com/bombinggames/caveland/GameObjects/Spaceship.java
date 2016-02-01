@@ -1,15 +1,15 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Gameobjects.Explosion;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Particle;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleEmitter;
-import com.bombinggames.wurfelengine.core.Gameobjects.ParticleType;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Particle;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
 /**

@@ -32,4 +32,4 @@
 /**
  * Game Objects are objects like entities and block which can be found in the map.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.gameobjects;

@@ -37,10 +37,10 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.bombinggames.wurfelengine.core.Map.Position;
 
 /**
  * Manages the sounds in the game world.

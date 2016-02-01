@@ -1,9 +1,9 @@
 package com.bombinggames.caveland.Game;
 
-import com.bombinggames.caveland.GameObjects.ExitPortal;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Generator;
+import com.bombinggames.caveland.gameobjects.ExitPortal;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Generator;
 
 /**
  *

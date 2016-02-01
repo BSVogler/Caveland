@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.GameObjects;
+package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
@@ -12,14 +12,14 @@ import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.GAME_EDGELENGTH2;
-import com.bombinggames.wurfelengine.core.Gameobjects.MovableEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.PointLightSource;
-import com.bombinggames.wurfelengine.core.Gameobjects.SimpleEntity;
-import com.bombinggames.wurfelengine.core.Map.Point;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH2;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
+import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 

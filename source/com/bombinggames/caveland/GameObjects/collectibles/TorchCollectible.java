@@ -32,9 +32,9 @@
 package com.bombinggames.caveland.GameObjects.collectibles;
 
 import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.GameObjects.Interactable;
-import com.bombinggames.wurfelengine.core.Gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
+import com.bombinggames.caveland.gameobjects.Interactable;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
 
 /**
  *

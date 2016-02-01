@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Gameobjects;
+package com.bombinggames.wurfelengine.core.Map.rendering;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -36,15 +36,20 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_DEPTH4;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.Map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Position;
-import com.bombinggames.wurfelengine.core.Map.RenderStorage;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH4;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
+import com.bombinggames.wurfelengine.core.gameobjects.Side;
+import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.ArrayList;
 
 /**

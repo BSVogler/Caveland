@@ -31,9 +31,9 @@
 
 package com.bombinggames.wurfelengine.core.Map.Generators;
 
-import com.bombinggames.wurfelengine.core.Gameobjects.Block;
-import static com.bombinggames.wurfelengine.core.Gameobjects.Block.OBJECTTYPESNUM;
-import com.bombinggames.wurfelengine.core.Map.Generator;
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import static com.bombinggames.wurfelengine.core.gameobjects.Block.OBJECTTYPESNUM;
+import com.bombinggames.wurfelengine.core.map.Generator;
 
 /**
  *A generator which uses every block.

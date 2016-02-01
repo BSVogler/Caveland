@@ -24,20 +24,20 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
 import org.lwjgl.opengl.Display;
 
-
 /**
  *
  * @author Benedikt
  */
-public class CLGameView extends GameView{
+public class CLGameView extends GameView {
+
 	/**
 	 * -1 = not down, 0=just pressed down, >0 time down
 	 */
-	private float inventoryDownP1 =-1;
+	private float inventoryDownP1 = -1;
 	private int inventoryDownP2;
-	private final float[] throwDown =new float[]{-1,-1};
-	private float interactDownP1 =-1;
-	private float interactDownP2 =-1;
+	private final float[] throwDown = new float[]{-1, -1};
+	private float interactDownP1 = -1;
+	private float interactDownP2 = -1;
 	/**
 	 * -1 disable, 0 keyboard only, 1 one or two controller
 	 */
@@ -50,7 +50,7 @@ public class CLGameView extends GameView{
 	 * listener 2 controls player 1
 	 */
 	private XboxListener controllerListenerA;
-	
+
 	/**
 	 * contains or may not contain currently active dialogues
 	 */
@@ -59,19 +59,20 @@ public class CLGameView extends GameView{
 	 * a widget group that can be opened modal.
 	 */
 	private WidgetGroup modalGroup;
-	
+
 	private MiniMapChunkDebug minimap;
-	
-    @Override
-    public void init(Controller controller, GameView oldView) {
-        super.init(controller, oldView);
-        Gdx.app.debug("CustomGameView", "Initializing");
-		
-		if (!WE.getCVars().getValueB("ignorePlayer"))
+
+	@Override
+	public void init(Controller controller, GameView oldView) {
+		super.init(controller, oldView);
+		Gdx.app.debug("CustomGameView", "Initializing");
+
+		if (!WE.getCVars().getValueB("ignorePlayer")) {
 			Ejira.loadSheet();
-		
+		}
+
 		GrassBlock.initGrass();
-		
+
 		//register Sounds
 		WE.SOUND.register("turret", "com/bombinggames/caveland/sounds/turret.ogg");
 		WE.SOUND.register("jetpack", "com/bombinggames/caveland/sounds/jetpack.wav");
@@ -104,51 +105,51 @@ public class CLGameView extends GameView{
 		WE.SOUND.register("moneyPickup", "com/bombinggames/caveland/sounds/moneyPickup.wav");
 		WE.SOUND.register("merchantAha", "com/bombinggames/caveland/sounds/merchantAha.mp3");
 		WE.SOUND.register("merchantWelcome", "com/bombinggames/caveland/sounds/merchantWelcome.mp3");
-		
-		if (coop > -1){//it is a coop game
+
+		if (coop > -1) {//it is a coop game
 			Camera camera0;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
-				camera0  = new Camera(
+				camera0 = new Camera(
 					this,
 					0, //left
 					0, //top
-					Gdx.graphics.getWidth()/2, //width
+					Gdx.graphics.getWidth() / 2, //width
 					Gdx.graphics.getHeight(),//height
 					getPlayer(0)
 				);
-				camera0.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
+				camera0.setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth") / 2);
 			} else {
-				camera0  = new Camera(
+				camera0 = new Camera(
 					this,
 					0, //left
 					0, //top
 					Gdx.graphics.getWidth(), //width
-					Gdx.graphics.getHeight()/2,//height
+					Gdx.graphics.getHeight() / 2,//height
 					getPlayer(0)
 				);
 			}
 			camera0.setZoom(WE.getCVars().getValueF("coopZoom"));
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
-			
+
 			Camera camera1;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
 				camera1 = new Camera(
 					this,
-					Gdx.graphics.getWidth()/2,
+					Gdx.graphics.getWidth() / 2,
 					0,
-					Gdx.graphics.getWidth()/2,
+					Gdx.graphics.getWidth() / 2,
 					Gdx.graphics.getHeight(),
 					getPlayer(1)
 				);
-				camera1.setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
+				camera1.setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth") / 2);
 			} else {
 				camera1 = new Camera(
 					this,
 					0,
-					Gdx.graphics.getHeight()/2,
+					Gdx.graphics.getHeight() / 2,
 					Gdx.graphics.getWidth(),
-					Gdx.graphics.getHeight()/2,
+					Gdx.graphics.getHeight() / 2,
 					getPlayer(1)
 				);
 			}
@@ -157,7 +158,7 @@ public class CLGameView extends GameView{
 			getPlayer(1).setCamera(camera1);
 		} else {
 			//it's a singleplayer game
-			Camera camera0  = new Camera(
+			Camera camera0 = new Camera(
 				this,
 				0, //left
 				0, //top
@@ -169,40 +170,39 @@ public class CLGameView extends GameView{
 			getPlayer(0).setCamera(camera0);
 			addCamera(camera0);
 		}
-		
+
 		WE.SOUND.setMusic("com/bombinggames/caveland/music/overworld.mp3");
-    }
+	}
 
 	/**
 	 * Shortcut method.
+	 *
 	 * @param id 0 is first player, 1 is second
-	 * @return 
-	 * @see CustomGameController#getPlayer(int) 
+	 * @return
+	 * @see CustomGameController#getPlayer(int)
 	 */
-	public Ejira getPlayer(int id){
+	public Ejira getPlayer(int id) {
 		return ((CLGameController) getController()).getPlayer(id);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param id player number starting at 0
 	 */
 	private void toogleCrafting(int id) {
 		if (focusOnGame(id)) {
 			//open
 			CraftingDialogueBox crafting = new CraftingDialogueBox(this, getPlayer(id));
-			crafting.register(this, id+1, getPlayer(id));
-		} else {
-			//close
-			if (openDialogue[id] instanceof CraftingDialogueBox) {
-				openDialogue[id].cancel(getPlayer(id));
-			}
+			crafting.register(this, id + 1, getPlayer(id));
+		} else //close
+		if (openDialogue[id] instanceof CraftingDialogueBox) {
+			openDialogue[id].cancel(getPlayer(id));
 		}
 	}
-	
+
 	@Override
-    public void onEnter() {
-        WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
+	public void onEnter() {
+		WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
 		//is there a controller?
 		if (Display.isActive() && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
 			//if there is second controller use it for second player
@@ -217,7 +217,7 @@ public class CLGameView extends GameView{
 		//hide cursor
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(200, 200);
-    }
+	}
 
 	@Override
 	public void exit() {
@@ -229,13 +229,13 @@ public class CLGameView extends GameView{
 			Controllers.getControllers().get(1).removeListener(controllerListenerB);
 		}
 	}
-	
-    @Override
-    public void update(float dt) {
-        super.update(dt);
-		
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+
 		GrassBlock.updateWind(dt);
-		
+
 		//get input and do actions
 		Input input = Gdx.input;
 
@@ -246,7 +246,7 @@ public class CLGameView extends GameView{
 		if (openDialogue[1] != null && openDialogue[1].closed()) {
 			openDialogue[1] = null;
 		}
-		
+
 		//manual clipping in caves for black areas
 //		ArrayList<RenderChunk> cc = getRenderStorage().getData();
 //		//check if the chunk is a cave
@@ -271,53 +271,53 @@ public class CLGameView extends GameView{
 //				}
 //			}
 //		}
-		
-		if (WE.getCVars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2){
+		if (WE.getCVars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2) {
 			//todo should compare in view space
-			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < Block.GAME_EDGELENGTH*5){
-				if (!getCameras().get(0).isFullWindow())
+			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < Block.GAME_EDGELENGTH * 5) {
+				if (!getCameras().get(0).isFullWindow()) {
 					getCameras().get(0).setFullWindow(true);
+				}
 				getCameras().get(0).setCenter((Point) getPlayer(0).getPosition().cpy().lerp(getPlayer(1).getPosition(), 0.5f));
-				getCameras().get(0).setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth"));
+				getCameras().get(0).setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth"));
 				getCameras().get(1).setActive(false);
 			} else if (getCameras().get(0).isFullWindow()) {
 				getCameras().get(0).setFocusEntity(getPlayer(0));
 				getCameras().get(1).setFocusEntity(getPlayer(1));
 				getCameras().get(1).setActive(true);
 				getCameras().get(0).setScreenSize(
-					Gdx.graphics.getWidth()/2,
+					Gdx.graphics.getWidth() / 2,
 					Gdx.graphics.getHeight()
 				);
-				getCameras().get(0).setInternalRenderResolution( WE.getCVars().getValueI("renderResolutionWidth")/2);
+				getCameras().get(0).setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth") / 2);
 			}
 		}
-		
+
 		if (focusOnGame(0)) {
 			//walk
-			if (getPlayer(0) != null){
+			if (getPlayer(0) != null) {
 				getPlayer(0).walk(
 					input.isKeyPressed(Input.Keys.W),
 					input.isKeyPressed(Input.Keys.S),
 					input.isKeyPressed(Input.Keys.A),
 					input.isKeyPressed(Input.Keys.D),
-					WE.getCVars().getValueF("playerWalkingSpeed")*(WE.getCVars().getValueB("devmode") && input.isKeyPressed(Input.Keys.SHIFT_LEFT)? 1.5f: 1),
+					WE.getCVars().getValueF("playerWalkingSpeed") * (WE.getCVars().getValueB("devmode") && input.isKeyPressed(Input.Keys.SHIFT_LEFT) ? 1.5f : 1),
 					dt
 				);
 			} else {
 				//update camera position
 				Camera camera = getCameras().get(0);
 				camera.move(
-					(input.isKeyPressed(Input.Keys.D)? 3: 0)
-					- (input.isKeyPressed(Input.Keys.A)? 3: 0),
-					+ (input.isKeyPressed(Input.Keys.W)? 3: 0)
-					- (input.isKeyPressed(Input.Keys.S)? 3: 0)
+					(input.isKeyPressed(Input.Keys.D) ? 3 : 0)
+					- (input.isKeyPressed(Input.Keys.A) ? 3 : 0),
+					+(input.isKeyPressed(Input.Keys.W) ? 3 : 0)
+					- (input.isKeyPressed(Input.Keys.S) ? 3 : 0)
 				);
 			}
 		}
-		
+
 		if (focusOnGame(1)) {
 			//update player2
-			if (getPlayer(1) != null){
+			if (getPlayer(1) != null) {
 				getPlayer(1).walk(
 					input.isKeyPressed(Input.Keys.UP),
 					input.isKeyPressed(Input.Keys.DOWN),
@@ -330,43 +330,45 @@ public class CLGameView extends GameView{
 		}
 
 		if (controllerListenerA != null) {//first controller used
-			if (controllerListenerA.speed > 0){
-				getPlayer(controllerListenerA.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed")*controllerListenerA.speed)
+			if (controllerListenerA.speed > 0) {
+				getPlayer(controllerListenerA.player.getPlayerNumber() - 1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed") * controllerListenerA.speed)
 				);
 			}
 		}
-		
+
 		if (controllerListenerB != null) {//second controller used
-			if (controllerListenerB.speed > 0){
-				getPlayer(controllerListenerB.player.getPlayerNumber()-1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed")*controllerListenerB.speed)
+			if (controllerListenerB.speed > 0) {
+				getPlayer(controllerListenerB.player.getPlayerNumber() - 1).setSpeedHorizontal((WE.getCVars().getValueF("playerWalkingSpeed") * controllerListenerB.speed)
 				);
 			}
 		}
-		
-		if (interactDownP1==0){
+
+		if (interactDownP1 == 0) {
 			getPlayer(0).interactWithNearestThing(this);
 		}
-		if (coop>-1)
-			if (interactDownP2==0){
+		if (coop > -1) {
+			if (interactDownP2 == 0) {
 				getPlayer(1).interactWithNearestThing(this);
 			}
-		
-		if (inventoryDownP1==0){
+		}
+
+		if (inventoryDownP1 == 0) {
 			getPlayer(0).useItem(this);
 		}
-		
-		if (coop > -1)
-			if (inventoryDownP2==0){
+
+		if (coop > -1) {
+			if (inventoryDownP2 == 0) {
 				getPlayer(1).useItem(this);
 			}
-		
+		}
+
 		if (throwDown[0] == 0) {
 			getPlayer(0).prepareThrow();
 		}
 		if (coop > -1 && throwDown[1] == 0) {
 			getPlayer(1).prepareThrow();
 		}
-		
+
 		if (throwDown[0] >= WE.getCVars().getValueF("playerItemDropTime")) {
 			getPlayer(0).dropItem();
 			throwDown[0] = -1;
@@ -376,21 +378,25 @@ public class CLGameView extends GameView{
 			getPlayer(1).dropItem();
 			throwDown[1] = -1;
 		}
-		
-		
-		
-		if (inventoryDownP1>-1)
-			inventoryDownP1+=dt;
-		if (inventoryDownP2>-1)
-			inventoryDownP2+=dt;
-		if (throwDown[0] > -1)
+
+		if (inventoryDownP1 > -1) {
+			inventoryDownP1 += dt;
+		}
+		if (inventoryDownP2 > -1) {
+			inventoryDownP2 += dt;
+		}
+		if (throwDown[0] > -1) {
 			throwDown[0] += dt;
-		if (throwDown[1] > -1)
+		}
+		if (throwDown[1] > -1) {
 			throwDown[1] += dt;
-		if (interactDownP1>-1)
-			interactDownP1+=dt;
-		if (interactDownP2>-1)
-			interactDownP2+=dt;
+		}
+		if (interactDownP1 > -1) {
+			interactDownP1 += dt;
+		}
+		if (interactDownP2 > -1) {
+			interactDownP2 += dt;
+		}
 
 	}
 
@@ -400,36 +406,36 @@ public class CLGameView extends GameView{
 		//Draw HUD
 		setShader(getShader());
 		getSpriteBatch().begin();
-			getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
-			if (coop > -1) {
-				getPlayer(1).getInventory().drawHUD(this,getCameras().get(1));
-			}
+		getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
+		if (coop > -1) {
+			getPlayer(1).getInventory().drawHUD(this, getCameras().get(1));
+		}
 		getSpriteBatch().end();
-		
+
 		useDefaultShader();
 		//getSpriteBatch().setColor(Color.WHITE.cpy());
 		getSpriteBatch().begin();
-			if (coop > -1) {
-				PlayerCompass pC = new PlayerCompass();
-				pC.drawHUD(getPlayer(1), this, getCameras().get(0));
-				PlayerCompass pC2 = new PlayerCompass();
-				pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
-			}
+		if (coop > -1) {
+			PlayerCompass pC = new PlayerCompass();
+			pC.drawHUD(getPlayer(1), this, getCameras().get(0));
+			PlayerCompass pC2 = new PlayerCompass();
+			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
+		}
+		drawString(
+			"Money: " + WE.getCVarsSave().getValueI("money"),
+			Gdx.graphics.getWidth() / 2 - 50,
+			Gdx.graphics.getHeight() - 100,
+			Color.WHITE.cpy()
+		);
+
+		if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER) {
 			drawString(
-				"Money: "+WE.getCVarsSave().getValueI("money"),
-				Gdx.graphics.getWidth()/2-50,
-				Gdx.graphics.getHeight()-100,
+				"Cave Level: " + ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
+				50,
+				50,
 				Color.WHITE.cpy()
 			);
-
-			if (getPlayer(0).hasPosition() && getPlayer(0).getPosition().toCoord().getY() > ChunkGenerator.GENERATORBORDER){
-				drawString(
-					"Cave Level: "+ChunkGenerator.getCaveNumber(getPlayer(0).getPosition().toCoord()),
-					50,
-					50,
-					Color.WHITE.cpy()
-				);
-			}
+		}
 		getSpriteBatch().end();
 		if (WE.getCVars().getValueB("showMiniMapChunk")) {
 			if (minimap == null) {
@@ -440,7 +446,7 @@ public class CLGameView extends GameView{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param flag -1 disable, 0 keyboard only, 1 one or two controller
 	 */
 	public void enableCoop(int flag) {
@@ -448,11 +454,12 @@ public class CLGameView extends GameView{
 	}
 
 	private class XboxListener implements ControllerListener {
+
 		private final Ejira player;
 		/**
 		 * speed of one player
 		 */
-		protected float speed =-1;
+		protected float speed = -1;
 		/**
 		 * starting at 0
 		 */
@@ -462,10 +469,10 @@ public class CLGameView extends GameView{
 		private final String OS;
 
 		/**
-		 * 
+		 *
 		 * @param parent
 		 * @param controllable
-		 * @param id  starting with 0
+		 * @param id starting with 0
 		 */
 		XboxListener(CLGameView parent, Ejira controllable, int id) {
 			this.player = controllable;
@@ -484,45 +491,53 @@ public class CLGameView extends GameView{
 
 		@Override
 		public boolean buttonDown(com.badlogic.gdx.controllers.Controller controller, int buttonCode) {
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonB")) {//B
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonB")) {//B
 				if (parent.openDialogue[id] != null) {
 					parent.toogleCrafting(id);
 				} else {
 					player.jump();
 				}
 			}
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonA")) { //A
-				if (parent.openDialogue[id] != null)
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonA")) { //A
+				if (parent.openDialogue[id] != null) {
 					parent.openDialogue[id].confirm(parent.getPlayer(id));
-				else
+				} else {
 					player.attack();
+				}
 			}
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonX")){//X
-				if (id==0)
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonX")) {//X
+				if (id == 0) {
 					parent.throwDown[0] = 0;
-				else
+				} else {
 					parent.throwDown[1] = 0;
+				}
 			}
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonY")) //14=Y
-				if (id==0)
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonY")) { //14=Y
+				if (id == 0) {
 					parent.inventoryDownP1 = 0;
-				else
+				} else {
 					parent.inventoryDownP2 = 0;
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonLB"))//LB
+				}
+			}
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonLB")) {//LB
 				player.getInventory().switchItems(true);
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonRB"))//RB
+			}
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonRB")) {//RB
 				player.getInventory().switchItems(false);
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonSelect")) //Select
+			}
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonSelect")) { //Select
 				parent.toogleCrafting(id);
-			
-			if (buttonCode == WE.getCVars().getValueI("controller"+OS+"ButtonStart"))
-                WE.showMainMenu();
+			}
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonStart")) {
+				WE.showMainMenu();
+			}
 			return false;
 		}
 
@@ -534,66 +549,70 @@ public class CLGameView extends GameView{
 				} else {
 					parent.throwDown[1] = -1;
 				}
-				if (throwDown[player.getPlayerNumber()-1] >= WE.getCVars().getValueF("playerItemDropTime")) {
+				if (throwDown[player.getPlayerNumber() - 1] >= WE.getCVars().getValueF("playerItemDropTime")) {
 					player.throwItem();
 				}
 			}
-			
-			if (buttonCode==WE.getCVars().getValueI("controller"+OS+"ButtonY"))
-				if (id==0)
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonY")) {
+				if (id == 0) {
 					parent.inventoryDownP1 = -1;
-				else
+				} else {
 					parent.inventoryDownP2 = -1;
-			
-			if (buttonCode==WE.getCVars().getValueI("controller"+OS+"ButtonA"))
+				}
+			}
+
+			if (buttonCode == WE.getCVars().getValueI("controller" + OS + "ButtonA")) {
 				player.attackLoadingStopped();
-			
+			}
+
 			return true;
 		}
 
 		@Override
 		public boolean axisMoved(com.badlogic.gdx.controllers.Controller controller, int axisCode, float value) {
-			if (axisCode == WE.getCVars().getValueI("controller"+OS+"AxisRT")) {//RT
+			if (axisCode == WE.getCVars().getValueI("controller" + OS + "AxisRT")) {//RT
 				//button down
-				if (oldRTvalue < -0.75f && value>-0.75f) {
-					if (id==0)
+				if (oldRTvalue < -0.75f && value > -0.75f) {
+					if (id == 0) {
 						parent.interactDownP1 = 0;
-					else
+					} else {
 						parent.interactDownP2 = 0;
+					}
 				}
 				//button up
-				if (oldRTvalue > 0.75f && value<-0.75f) {
-					if (id==0)
+				if (oldRTvalue > 0.75f && value < -0.75f) {
+					if (id == 0) {
 						parent.interactDownP1 = -1;
-					else
+					} else {
 						parent.interactDownP2 = -1;
+					}
 				}
-				oldRTvalue=value;
+				oldRTvalue = value;
 			} else {
-			
-				float xDeflec = controller.getAxis(WE.getCVars().getValueI("controller"+OS+"AxisLX"));
-				float yDeflec = controller.getAxis(WE.getCVars().getValueI("controller"+OS+"AxisLY"));
+				float xDeflec = controller.getAxis(WE.getCVars().getValueI("controller" + OS + "AxisLX"));
+				float yDeflec = controller.getAxis(WE.getCVars().getValueI("controller" + OS + "AxisLY"));
 				speed = (float) Math.sqrt(
-					 xDeflec*xDeflec
-					+yDeflec*yDeflec
+					xDeflec * xDeflec
+					+ yDeflec * yDeflec
 				);
 
-				if (speed > 0.1f)  //move only if stick is a bit moved
+				if (speed > 0.1f) { //move only if stick is a bit moved
 					player.setMovement(new Vector3(
-							xDeflec,
-							yDeflec,
-							player.getMovement().z
-						)
+						xDeflec,
+						yDeflec,
+						player.getMovement().z
+					)
 					);
+				}
 
-				if (speed < 0.2f){//if moving to little only set orientation
+				if (speed < 0.2f) {//if moving to little only set orientation
 					speed = 0;
 				}
 
 				player.setSpeedHorizontal(
-					(WE.getCVars().getValueF("playerWalkingSpeed")*speed)
+					(WE.getCVars().getValueF("playerWalkingSpeed") * speed)
 				);
-			
 			}
 			return false;
 		}
@@ -618,16 +637,17 @@ public class CLGameView extends GameView{
 			return false;
 		}
 	}
-    
-    private class MouseKeyboardListener implements InputProcessor {
+
+	private class MouseKeyboardListener implements InputProcessor {
+
 		private final CLGameView parent;
 
 		MouseKeyboardListener(CLGameView parent) {
 			this.parent = parent;
 		}
 
-        @Override
-        public boolean keyDown(int keycode) {
+		@Override
+		public boolean keyDown(int keycode) {
 			if (!WE.getConsole().isActive()) {
 				if (focusOnGame(0)) {
 					//use inventory
@@ -764,8 +784,8 @@ public class CLGameView extends GameView{
 			return true;
 		}
 
-        @Override
-        public boolean keyUp(int keycode) {
+		@Override
+		public boolean keyUp(int keycode) {
 			if (keycode == Input.Keys.N) {
 				if (focusOnGame(0)) {
 					getPlayer(0).attackLoadingStopped();
@@ -806,10 +826,10 @@ public class CLGameView extends GameView{
 			return false;
 		}
 
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
+		@Override
+		public boolean keyTyped(char character) {
+			return false;
+		}
 
 		@Override
 		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -847,36 +867,37 @@ public class CLGameView extends GameView{
 			return true;
 		}
 
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
+		@Override
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			return false;
+		}
 
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
+		@Override
+		public boolean mouseMoved(int screenX, int screenY) {
+			return false;
+		}
 
-        @Override
-        public boolean scrolled(int amount) {
-            getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount/100f);
-            
-            WE.getConsole().add("Zoom: " + getCameras().get(0).getZoom()+"\n");   
-            return true;
-        }
-    }
-	
+		@Override
+		public boolean scrolled(int amount) {
+			getCameras().get(0).setZoom(getCameras().get(0).getZoom() - amount / 100f);
+
+			WE.getConsole().add("Zoom: " + getCameras().get(0).getZoom() + "\n");
+			return true;
+		}
+	}
+
 	/**
 	 * is the focus of the player on the game or is it redirected by some popup?
+	 *
 	 * @param playerId starts with 0
-	 * @return 
+	 * @return
 	 */
-	private boolean focusOnGame(int playerId){
+	private boolean focusOnGame(int playerId) {
 		return !WE.getConsole().isActive()
 			&& openDialogue[playerId] == null
 			&& modalGroup == null;
 	}
-	
+
 	/**
 	 * Set an actionbox to a modal dialogue, so that the input gets redirected
 	 * to the dialoge and not the character. The modality is only valid for one
@@ -896,7 +917,7 @@ public class CLGameView extends GameView{
 			} else if (playerNumber == 1) {
 				actionBox.setPosition(
 					getStage().getWidth() / 4 - actionBox.getWindow().getWidth() / 2,
-					getStage().getHeight()/5
+					getStage().getHeight() / 5
 				);
 			} else {
 				actionBox.setPosition(
@@ -907,12 +928,14 @@ public class CLGameView extends GameView{
 			getStage().addActor(actionBox);
 		}
 	}
-	
+
 	/**
-	 * Set a global modal widget. Both inputs get redirected there. Adds the widget to the stage.
+	 * Set a global modal widget. Both inputs get redirected there. Adds the
+	 * widget to the stage.
+	 *
 	 * @param group can be null
 	 */
-	public void setModal(WidgetGroup group){
+	public void setModal(WidgetGroup group) {
 		if (group == null && modalGroup != null) {
 			this.modalGroup.remove();
 		}
@@ -920,23 +943,23 @@ public class CLGameView extends GameView{
 		if (this.modalGroup != null) {
 			getStage().addActor(modalGroup);
 			modalGroup.setPosition(
-				getStage().getWidth()/2 -modalGroup.getWidth()/2,
-				getStage().getHeight()/2-modalGroup.getHeight()/2
+				getStage().getWidth() / 2 - modalGroup.getWidth() / 2,
+				getStage().getHeight() / 2 - modalGroup.getHeight() / 2
 			);
 		}
 	}
-	
+
 	/**
 	 *
 	 */
-	public void pauseTime(){
+	public void pauseTime() {
 		WE.getCVars().get("timespeed").setValue(0f);
 	}
-	
+
 	/**
 	 *
 	 */
-	public void continueTime(){
+	public void continueTime() {
 		WE.getCVars().get("timespeed").setValue(1f);
 	}
 }

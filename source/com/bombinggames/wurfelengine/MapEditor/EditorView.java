@@ -205,12 +205,12 @@ public class EditorView extends GameView implements Telegraph {
 		ArrayList<AbstractEntity> newSel = new ArrayList<>(4);
 		for (AbstractEntity ent : getMap().getEntities()) {
 			if (ent.hasPosition()) {
-				TextureAtlas.AtlasRegion aR = ent.getAtlasRegion();
+				TextureAtlas.AtlasRegion aR = ent.getSprite();
 				if (aR != null
-					&& ent.getPosition().getViewSpcX() + ent.getAtlasRegion().getRegionWidth() / 2 >= x1 //right sprite borde
-					&& ent.getPosition().getViewSpcX() - ent.getAtlasRegion().getRegionWidth() / 2 <= x2 //left spr. border
-					&& ent.getPosition().getViewSpcY() - ent.getAtlasRegion().getRegionHeight() / 2 <= y2 //bottom spr. border
-					&& ent.getPosition().getViewSpcY() + ent.getAtlasRegion().getRegionHeight() / 2 >= y1 //top spr. border
+					&& ent.getPosition().getViewSpcX() + ent.getSprite().getRegionWidth() / 2 >= x1 //right sprite borde
+					&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth() / 2 <= x2 //left spr. border
+					&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight() / 2 <= y2 //bottom spr. border
+					&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= y1 //top spr. border
 				){
 					newSel.add(ent);
 					MessageManager.getInstance().dispatchMessage(
@@ -271,7 +271,7 @@ public class EditorView extends GameView implements Telegraph {
 			
 			//outlines for selected entities
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
-				TextureAtlas.AtlasRegion aR = selectedEntity.getAtlasRegion();
+				TextureAtlas.AtlasRegion aR = selectedEntity.getSprite();
 				shr.rect(
 					selectedEntity.getPosition().getProjectionSpaceX(this, camera) - aR.getRegionWidth() / 2,
 					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
@@ -628,10 +628,10 @@ public class EditorView extends GameView implements Telegraph {
 						ent.hasPosition()
 						&& ent.getSpriteId() > 0
 						&& ent.getSpriteValue() > -1
-						&& ent.getPosition().getViewSpcX() + ent.getAtlasRegion().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
-						&& ent.getPosition().getViewSpcX() - ent.getAtlasRegion().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
-						&& ent.getPosition().getViewSpcY() - ent.getAtlasRegion().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
-						&& ent.getPosition().getViewSpcY() + ent.getAtlasRegion().getRegionHeight()/2 >= (int) screenYtoView(screenY, camera) //top spr. border
+						&& ent.getPosition().getViewSpcX() + ent.getSprite().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
+						&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
+						&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
+						&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight()/2 >= (int) screenYtoView(screenY, camera) //top spr. border
 						&& !(ent instanceof EntityShadow)
 						&& !ent.getName().equals("normal")
 						&& !ent.getName().equals("selectionEntity")

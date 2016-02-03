@@ -18,9 +18,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.Game.CLGameController;
 import com.bombinggames.caveland.Game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.map.Map;
 import java.io.File;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class SaveSelectionScreen extends WEScreen {
 
 		//map selection
 		Label mapBoxLabel = new Label("Map", WE.getEngineView().getSkin());
-		mapBoxLabel.setPosition(stage.getWidth()/2-400/2, stage.getHeight()*.8f);
+		mapBoxLabel.setPosition(stage.getWidth()/2-450, stage.getHeight()*.6f);
 		stage.addActor(mapBoxLabel);
 		
 		if (mapList.size() > 1){	
@@ -77,7 +77,7 @@ public class SaveSelectionScreen extends WEScreen {
 				nameList.add(i.getName());
 			});
 			mapSelection.setItems(nameList);
-			mapSelection.setBounds(stage.getWidth()/2-400/2, stage.getHeight()*.75f,150,50);
+			mapSelection.setBounds(stage.getWidth()/2-450, stage.getHeight()*.55f,150,50);
 			mapSelection.addListener(new ChangeListener() {
 
 				@Override
@@ -97,7 +97,7 @@ public class SaveSelectionScreen extends WEScreen {
 		int savesCount = Map.getSavesCount(new File(WorkingDirectory.getMapsFolder()+"/"+mapSelection.getSelected()));
 		
 		TextButton continueButton = new TextButton("Continue", skin);
-		continueButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,400,150);
+		continueButton.setBounds(stage.getWidth()/2-400/2+100, stage.getHeight()/2+50,300,150);
 		continueButton.addListener(
 				new ChangeListener() {
 
@@ -124,7 +124,7 @@ public class SaveSelectionScreen extends WEScreen {
 		} else {
 			//save slot selection
 			selectBoxLabel = new Label("Save Slot", WE.getEngineView().getSkin());
-			selectBoxLabel.setPosition(stage.getWidth()/2+400/2+50, stage.getHeight()/2+100);
+			selectBoxLabel.setPosition(stage.getWidth()/2-400/2, stage.getHeight()/2+180);
 			stage.addActor(selectBoxLabel);
 			
 			selectBox = new SelectBox<>(skin);
@@ -133,13 +133,14 @@ public class SaveSelectionScreen extends WEScreen {
 				arstr.add(Integer.toString(i));
 			}
 			selectBox.setItems(arstr);
-			selectBox.setBounds(stage.getWidth()/2+400/2+50, stage.getHeight()/2+50,50,50);
+			selectBox.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2+50,50,50);
 			stage.addActor(selectBox);
 		}
 		
+		float rowtwo = stage.getHeight()/2-100;
 		//new game button
 		TextButton newgameButton = new TextButton("New Game", skin);
-		newgameButton.setBounds(stage.getWidth()/2-400/2, stage.getHeight()/2-200,400,150);
+		newgameButton.setBounds(stage.getWidth()/2-400/2, rowtwo,400,100);
 		newgameButton.addListener(new ChangeListener() {
 
 			@Override
@@ -150,8 +151,13 @@ public class SaveSelectionScreen extends WEScreen {
 		stage.addActor(newgameButton);
 		
 		//new empty map button
-		TextButton newEmptyMap = new TextButton("New empty map", skin);
-		newEmptyMap.setBounds(stage.getWidth()*0.8f, stage.getHeight()*0.2f,200,50);
+		Image newEmptyMapImage = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/grass.jpg")));
+		newEmptyMapImage.setBounds(stage.getWidth()*0.8f, rowtwo, 200, 97);
+		stage.addActor(newEmptyMapImage);
+		
+		Label newEmptyMap = new Label("New empty map", skin);
+		newEmptyMap.setColor(1, 1, 1, 1f);
+		newEmptyMap.setBounds(stage.getWidth()*0.8f+35, rowtwo,200,100);
 		newEmptyMap.addListener(new ChangeListener() {
 
 			@Override
@@ -161,9 +167,6 @@ public class SaveSelectionScreen extends WEScreen {
 		});
 		stage.addActor(newEmptyMap);
 		
-		Image newEmptyMapImage = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/grass.jpg")));
-		newEmptyMapImage.setBounds(newEmptyMap.getX(), newEmptyMap.getY()+newEmptyMap.getHeight(), 200, 97);
-		stage.addActor(newEmptyMapImage);
 		
 		//back button
 		TextButton backButton = new TextButton("Back…", skin);

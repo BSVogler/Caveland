@@ -146,7 +146,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			}
 		}
 		);
-		menuItems[i].setPosition(stage.getWidth() / 2 - 400, top);
+		menuItems[i].setPosition(stage.getWidth() / 2 - 400, top-20);
 
 		i++;
 		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_credits.png")));

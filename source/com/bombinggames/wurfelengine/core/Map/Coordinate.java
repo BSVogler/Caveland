@@ -30,8 +30,8 @@
  */
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
@@ -43,7 +43,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtensio
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import java.util.ArrayList;
 

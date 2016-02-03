@@ -31,11 +31,11 @@
 package com.bombinggames.wurfelengine.core.lightengine;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 
 /**
  *

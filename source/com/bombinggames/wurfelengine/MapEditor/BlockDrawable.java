@@ -35,7 +35,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * a class what renders a block using the drawable interface.

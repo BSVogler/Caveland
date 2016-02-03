@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.bombinggames.wurfelengine.core.Map.Generators;
+package com.bombinggames.wurfelengine.core.map.Generators;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.OBJECTTYPESNUM;

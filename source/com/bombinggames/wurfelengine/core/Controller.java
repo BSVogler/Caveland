@@ -38,7 +38,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.lightengine.LightEngine;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;

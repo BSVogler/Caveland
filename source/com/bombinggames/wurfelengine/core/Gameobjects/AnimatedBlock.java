@@ -28,7 +28,7 @@
  */
 package com.bombinggames.wurfelengine.core.gameobjects;
 
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *A block which has an animation.

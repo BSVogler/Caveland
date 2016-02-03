@@ -30,7 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.gameobjects;
 
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.io.Serializable;

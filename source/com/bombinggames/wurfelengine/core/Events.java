@@ -72,7 +72,7 @@ public enum Events {
 	landed(17),
 
 	/**
-	 *moves an object. extra information must contain {@link com.bombinggames.wurfelengine.core.Map.Point}
+	 *moves an object. extra information must contain {@link com.bombinggames.wurfelengine.core.map.Point}
 	 */
 	moveTo(18),
 
@@ -82,7 +82,7 @@ public enum Events {
 	standStill(19),
 	
 	/**
-	 * extra information must contain {@link com.bombinggames.wurfelengine.core.Map.Point}
+	 * extra information must contain {@link com.bombinggames.wurfelengine.core.map.Point}
 	 */
 	teleport(20),
 	

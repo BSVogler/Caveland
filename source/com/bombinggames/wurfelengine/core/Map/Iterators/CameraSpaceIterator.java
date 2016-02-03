@@ -28,12 +28,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Map.Iterators;
+package com.bombinggames.wurfelengine.core.map.Iterators;
 
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderChunk;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderStorage;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.NoSuchElementException;
 
 /**

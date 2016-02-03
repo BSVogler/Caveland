@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Map.Generators;
+package com.bombinggames.wurfelengine.core.map.Generators;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Generator;
@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.map.Generator;
  * Fills the complete map with a block of a specific id.
  * @author Benedikt Vogler
  * @since 1.2.38
- * @see com.bombinggames.wurfelengine.core.Map.Generators.AirGenerator
+ * @see com.bombinggames.wurfelengine.core.map.Generators.AirGenerator
  */
 public class FullMapGenerator implements Generator {
     private final byte id;

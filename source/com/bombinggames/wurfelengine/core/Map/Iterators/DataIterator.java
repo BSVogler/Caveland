@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Map.Iterators;
+package com.bombinggames.wurfelengine.core.map.Iterators;
 
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import java.util.Iterator;

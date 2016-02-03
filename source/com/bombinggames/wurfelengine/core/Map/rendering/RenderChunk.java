@@ -28,13 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.Map.rendering;
+package com.bombinggames.wurfelengine.core.map.rendering;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.core.Map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 
 /**
  *

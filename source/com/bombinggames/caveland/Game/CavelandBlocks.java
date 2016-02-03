@@ -21,7 +21,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtensio
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
-import com.bombinggames.wurfelengine.core.Map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**

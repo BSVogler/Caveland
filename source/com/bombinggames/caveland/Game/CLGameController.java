@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;

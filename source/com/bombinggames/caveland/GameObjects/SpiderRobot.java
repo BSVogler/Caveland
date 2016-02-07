@@ -32,8 +32,8 @@ package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
+import com.bombinggames.caveland.game.CavelandBlocks;
+import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;

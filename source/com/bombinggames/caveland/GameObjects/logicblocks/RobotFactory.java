@@ -28,13 +28,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.ActionBox;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.Quadrocopter;

@@ -29,7 +29,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.collectibles;
+package com.bombinggames.caveland.gameobjects.collectibles;
 
 /**
  * a enum which lists the types of collectibles. Saves information about the

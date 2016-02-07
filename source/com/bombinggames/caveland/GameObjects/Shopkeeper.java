@@ -30,8 +30,8 @@
  */
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.ActionBox;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;

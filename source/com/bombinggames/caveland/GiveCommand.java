@@ -1,7 +1,7 @@
 package com.bombinggames.caveland;
 
-import com.bombinggames.caveland.Game.CLGameController;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.game.CLGameController;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.console.ConsoleCommand;

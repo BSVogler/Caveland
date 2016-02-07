@@ -1,7 +1,7 @@
-package com.bombinggames.caveland.GameObjects.collectibles;
+package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.core.Camera;

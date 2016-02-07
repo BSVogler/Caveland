@@ -1,13 +1,13 @@
 package com.bombinggames.caveland;
 
 import com.badlogic.gdx.audio.Sound;
-import com.bombinggames.caveland.Game.CLGameController;
-import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.ChunkGenerator;
-import com.bombinggames.caveland.GameObjects.collectibles.ConstructionKit;
-import com.bombinggames.caveland.GameObjects.collectibles.TFlint;
-import com.bombinggames.caveland.GameObjects.collectibles.TorchCollectible;
+import com.bombinggames.caveland.game.CLGameController;
+import com.bombinggames.caveland.game.CLGameView;
+import com.bombinggames.caveland.game.CavelandBlocks;
+import com.bombinggames.caveland.game.ChunkGenerator;
+import com.bombinggames.caveland.gameobjects.collectibles.ConstructionKit;
+import com.bombinggames.caveland.gameobjects.collectibles.TFlint;
+import com.bombinggames.caveland.gameobjects.collectibles.TorchCollectible;
 import com.bombinggames.caveland.gameobjects.Bird;
 import com.bombinggames.caveland.gameobjects.ExitPortal;
 import com.bombinggames.caveland.gameobjects.MineCart;

@@ -1,7 +1,7 @@
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;

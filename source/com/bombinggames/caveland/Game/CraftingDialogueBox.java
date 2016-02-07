@@ -1,12 +1,12 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.bombinggames.caveland.gameobjects.Ejira;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.caveland.GameObjects.collectibles.Inventory;
+import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.gameobjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import java.util.ArrayList;

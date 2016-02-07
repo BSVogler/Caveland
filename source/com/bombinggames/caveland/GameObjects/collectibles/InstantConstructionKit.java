@@ -29,15 +29,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.collectibles;
+package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.ActionBox.SelectionOption;
-import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.game.ActionBox;
+import com.bombinggames.caveland.game.ActionBox.SelectionOption;
+import com.bombinggames.caveland.game.CLGameView;
+import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.WE;

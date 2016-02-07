@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.GameObjects.collectibles;
+package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.gameobjects.CLMovableEntity;

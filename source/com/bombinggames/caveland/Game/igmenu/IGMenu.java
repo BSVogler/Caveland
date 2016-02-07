@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 
 /**

@@ -3,7 +3,7 @@ package com.bombinggames.caveland.mainmenu;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.game.ActionBox;
 import com.bombinggames.wurfelengine.WE;
 
 /**

@@ -1,28 +1,28 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.game;
 
 import com.bombinggames.caveland.gameobjects.ConstructionSiteRender;
 import com.bombinggames.caveland.gameobjects.CustomTree;
 import com.bombinggames.caveland.gameobjects.GrassBlock;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
-import com.bombinggames.caveland.GameObjects.logicblocks.BoosterLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.CableBlock;
-import com.bombinggames.caveland.GameObjects.logicblocks.CaveEntryBlockLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
-import com.bombinggames.caveland.GameObjects.logicblocks.Flagpole;
-import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.LiftLogicGround;
-import com.bombinggames.caveland.GameObjects.logicblocks.OvenLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.PowerStationLogic;
-import com.bombinggames.caveland.GameObjects.logicblocks.PowerTorch;
-import com.bombinggames.caveland.GameObjects.logicblocks.RobotFactory;
-import com.bombinggames.caveland.GameObjects.logicblocks.Turret;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.gameobjects.logicblocks.BoosterLogic;
+import com.bombinggames.caveland.gameobjects.logicblocks.CableBlock;
+import com.bombinggames.caveland.gameobjects.logicblocks.CaveEntryBlockLogic;
+import com.bombinggames.caveland.gameobjects.logicblocks.ConstructionSite;
+import com.bombinggames.caveland.gameobjects.logicblocks.Flagpole;
+import com.bombinggames.caveland.gameobjects.logicblocks.LiftLogic;
+import com.bombinggames.caveland.gameobjects.logicblocks.LiftLogicGround;
+import com.bombinggames.caveland.gameobjects.logicblocks.OvenLogic;
+import com.bombinggames.caveland.gameobjects.logicblocks.PowerStationLogic;
+import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
+import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
+import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *

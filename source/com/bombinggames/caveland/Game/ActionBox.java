@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;

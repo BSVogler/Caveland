@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.Game;
+package com.bombinggames.caveland.game;
 
 import com.bombinggames.caveland.gameobjects.ExitPortal;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;

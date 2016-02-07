@@ -28,10 +28,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;

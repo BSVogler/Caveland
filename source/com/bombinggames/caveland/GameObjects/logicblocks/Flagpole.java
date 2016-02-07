@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.bombinggames.caveland.gameobjects.Flag;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;

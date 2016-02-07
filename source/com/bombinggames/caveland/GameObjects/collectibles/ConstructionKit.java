@@ -1,15 +1,15 @@
-package com.bombinggames.caveland.GameObjects.collectibles;
+package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.caveland.Game.ActionBox;
-import com.bombinggames.caveland.Game.ActionBox.BoxModes;
-import com.bombinggames.caveland.Game.ActionBox.SelectionOption;
-import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.Game.CavelandBlocks;
-import com.bombinggames.caveland.Game.CavelandBlocks.CLBlocks;
+import com.bombinggames.caveland.game.ActionBox;
+import com.bombinggames.caveland.game.ActionBox.BoxModes;
+import com.bombinggames.caveland.game.ActionBox.SelectionOption;
+import com.bombinggames.caveland.game.CLGameView;
+import com.bombinggames.caveland.game.CavelandBlocks;
+import com.bombinggames.caveland.game.CavelandBlocks.CLBlocks;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
-import com.bombinggames.caveland.GameObjects.logicblocks.ConstructionSite;
+import com.bombinggames.caveland.gameobjects.logicblocks.ConstructionSite;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;

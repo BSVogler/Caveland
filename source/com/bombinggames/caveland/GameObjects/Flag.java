@@ -32,7 +32,7 @@ package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;

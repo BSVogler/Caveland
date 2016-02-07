@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;

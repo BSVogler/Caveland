@@ -1,9 +1,9 @@
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.bombinggames.caveland.Game.CLGameView;
-import com.bombinggames.caveland.Game.CavelandBlocks;
+import com.bombinggames.caveland.game.CLGameView;
+import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.LiftBasket;
 import com.bombinggames.caveland.gameobjects.Portal;

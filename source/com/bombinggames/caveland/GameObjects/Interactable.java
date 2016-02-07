@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.wurfelengine.core.map.Position;
 
 /**

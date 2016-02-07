@@ -29,16 +29,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.caveland.GameObjects.logicblocks;
+package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.caveland.Game.CLGameView;
+import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
-import com.bombinggames.caveland.GameObjects.collectibles.Collectible;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleContainer;
-import com.bombinggames.caveland.GameObjects.collectibles.CollectibleType;
+import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;

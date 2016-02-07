@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.bombinggames.caveland.Game.ActionBox;
+import com.bombinggames.caveland.game.ActionBox;
 import static com.bombinggames.caveland.mainmenu.MainMenuScreen.MANAGER;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;

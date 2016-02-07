@@ -9,6 +9,8 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class CraftingRecipesList extends ArrayList<Recipe>{
+
+	private static final long serialVersionUID = 6685214636761664764L;
 	
 	/**
 	 * adds teh receipes to a list

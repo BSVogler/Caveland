@@ -157,7 +157,12 @@ public class WE {
 		//config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
 		CONFIG.fullscreen = true;
 		CONFIG.vSyncEnabled = false;//if set to true the FPS is locked to 60
-
+		
+		//get current resolution
+		DisplayMode dpms = LwjglApplicationConfiguration.getDesktopDisplayMode();
+		CONFIG.width = dpms.width;
+		CONFIG.height = dpms.height;
+		
 		//arguments
 		if (args.length > 0) {
 			//look if contains launch parameters
@@ -221,9 +226,6 @@ public class WE {
 			CONFIG.height = CVARS.getValueI("resolutiony");
 		}
 
-		//find dpm with biggest width
-		DisplayMode dpms = LwjglApplicationConfiguration.getDesktopDisplayMode();
-		
 		//limit resolution to maximum
 		if (CONFIG.width > dpms.width) {
 			CONFIG.width = dpms.width;

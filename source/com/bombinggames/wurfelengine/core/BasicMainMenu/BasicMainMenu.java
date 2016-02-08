@@ -29,9 +29,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.bombinggames.wurfelengine.core.BasicMainMenu;
+package com.bombinggames.wurfelengine.core.basicmainmenu;
 
 import com.bombinggames.wurfelengine.core.AbstractMainMenu;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.GameView;
 
 /**
  *This class provides a simple basic main menu if you don't want to set up your own and just want to test your game controllers.
@@ -41,8 +43,8 @@ public class BasicMainMenu extends AbstractMainMenu {
  
     private static MenuView view;
     private static MenuController controller;
-    private final BasicMenuItem[] menuItems;
     private boolean warning = true;
+	private final BasicMenuItem[] menuItems;
 
     /**
      * Use this constructor to pass your controller and views in order of the main menu
@@ -50,14 +52,22 @@ public class BasicMainMenu extends AbstractMainMenu {
 
      */
     public BasicMainMenu(BasicMenuItem[] menuItems) {
-        this.menuItems = menuItems;
+       this.menuItems = menuItems;
     }
-    
+
+	public BasicMainMenu() {
+		this.menuItems = new BasicMenuItem[]{
+			new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class),
+			new BasicMenuItem(1, "Options"),
+			new BasicMenuItem(2, "Exit")
+		};
+		
+	}
     
     @Override
     public void init(){
-        controller = new MenuController(menuItems); 
-        view = new MenuView(controller);
+		controller = new MenuController(menuItems);
+		view = new MenuView(controller);
     }
 
     @Override

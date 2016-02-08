@@ -28,49 +28,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.BasicMainMenu;
+package com.bombinggames.wurfelengine.core.basicmainmenu;
 
 import com.badlogic.gdx.Gdx;
 
 /**
  * The controller of the main Menu manages the data.
+ *
  * @author Benedikt
  */
 public class MenuController {
-    private final BasicMenuItem[] menuItems;
-    
-    /**
-     * Creates a new Controller
-     * @param menuItems
-     */
-    public MenuController(BasicMenuItem[] menuItems) {
-        this.menuItems = menuItems;
-        BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/core/BasicMainMenu/click2.wav")));
-    }
-    
-    /**
-     * updates screen logic
-     * @param dt
-     */
-    public void update(float dt){
-        for (BasicMenuItem basicMenuItem : menuItems) {
-            if (basicMenuItem.isClicked()) basicMenuItem.action();
-        }
-    }
 
-    /**
-     *
-     */
-    public void show(){
+	private final BasicMenuItem[] menuItems;
 
-    }
+	/**
+	 * Creates a new Controller
+	 *
+	 * @param menuItems
+	 */
+	public MenuController(BasicMenuItem[] menuItems) {
+		this.menuItems = menuItems;
+		BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/core/BasicMainMenu/click2.wav")));
+	}
 
-    /**
-     *
-     * @return
-     */
-    public BasicMenuItem[] getMenuItems() {
-        return menuItems;
-    }
-    
-    }
+	/**
+	 * updates screen logic
+	 *
+	 * @param dt
+	 */
+	public void update(float dt) {
+		for (BasicMenuItem basicMenuItem : menuItems) {
+			if (basicMenuItem.isClicked()) {
+				basicMenuItem.action();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void show() {
+
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public BasicMenuItem[] getMenuItems() {
+		return menuItems;
+	}
+
+}

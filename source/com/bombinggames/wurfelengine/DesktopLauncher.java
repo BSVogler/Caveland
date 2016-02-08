@@ -30,10 +30,10 @@
  */
 package com.bombinggames.wurfelengine;
 
-import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMainMenu;
-import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMenuItem;
-import com.bombinggames.wurfelengine.core.BasicMainMenu.GameViewWithCamera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.basicmainmenu.BasicMainMenu;
+import com.bombinggames.wurfelengine.core.basicmainmenu.BasicMenuItem;
+import com.bombinggames.wurfelengine.core.basicmainmenu.GameViewWithCamera;
 import com.bombinggames.wurfelengine.mapeditor.EditorView;
 
 /**
@@ -51,7 +51,7 @@ public class DesktopLauncher {
             new BasicMenuItem(1, "Map Editor", Controller.class, EditorView.class),
             new BasicMenuItem(2, "Options"),
             new BasicMenuItem(3, "Exit")
-        };   
+        };
         
         WE.setMainMenu(new BasicMainMenu(menuItems));
         WE.launch("Wurfelengine V" + WE.VERSION, args);  

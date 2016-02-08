@@ -45,20 +45,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.bombinggames.wurfelengine.core.AbstractMainMenu;
-import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMainMenu;
-import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMenuItem;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemRoot;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.EngineView;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.basicmainmenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.core.console.Console;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemRoot;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.soundengine.SoundEngine;
 import java.io.File;
 import java.util.ArrayList;
@@ -674,12 +673,7 @@ public class WE {
 			if (mainMenu == null) {
 				Gdx.app.error("WEMain", "No main menu object could be found. Pass one with 'setMainMenu()' before launching.");
 				Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
-				BasicMenuItem[] menuItems = new BasicMenuItem[]{
-					new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class),
-					new BasicMenuItem(1, "Options"),
-					new BasicMenuItem(2, "Exit")
-				};
-				mainMenu = new BasicMainMenu(menuItems);
+				mainMenu = new BasicMainMenu();
 			}
 			engineView = new EngineView();
 			engineView.init(null, null);

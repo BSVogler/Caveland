@@ -50,8 +50,7 @@ public class DesktopLauncher {
 		BasicMenuItem[] menuItems = new BasicMenuItem[]{
 			new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class),
 			new BasicMenuItem(1, "Map Editor", Controller.class, EditorView.class),
-			new BasicMenuItem(2, "Options"),
-			new BasicMenuItem(3, "Exit")
+			new BasicMenuItem(2, "Exit")
 		};
 
 		WE.setMainMenu(new BasicMainMenu(menuItems));

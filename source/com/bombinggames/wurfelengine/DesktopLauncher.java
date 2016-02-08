@@ -37,24 +37,25 @@ import com.bombinggames.wurfelengine.core.basicmainmenu.GameViewWithCamera;
 import com.bombinggames.wurfelengine.mapeditor.EditorView;
 
 /**
- *A test class for starting the engine.
+ * A test class for starting the engine.
+ *
  * @author Benedikt Vogler
  */
 public class DesktopLauncher {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        BasicMenuItem[] menuItems = new BasicMenuItem[]{
-            new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class),
-            new BasicMenuItem(1, "Map Editor", Controller.class, EditorView.class),
-            new BasicMenuItem(2, "Options"),
-            new BasicMenuItem(3, "Exit")
-        };
-        
-        WE.setMainMenu(new BasicMainMenu(menuItems));
-        WE.launch("Wurfelengine V" + WE.VERSION, args);  
-    }
-    
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		BasicMenuItem[] menuItems = new BasicMenuItem[]{
+			new BasicMenuItem(0, "Load Map", Controller.class, GameViewWithCamera.class),
+			new BasicMenuItem(1, "Map Editor", Controller.class, EditorView.class),
+			new BasicMenuItem(2, "Options"),
+			new BasicMenuItem(3, "Exit")
+		};
+
+		WE.setMainMenu(new BasicMainMenu(menuItems));
+		WE.launch("Wurfelengine V" + WE.VERSION, args);
+	}
+
 }

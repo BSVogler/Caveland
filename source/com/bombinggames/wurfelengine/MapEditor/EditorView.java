@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.bombinggames.wurfelengine.MapEditor;
+package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -43,7 +43,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.bombinggames.wurfelengine.MapEditor.Toolbar.Tool;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -56,6 +55,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.mapeditor.Toolbar.Tool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.bombinggames.wurfelengine.MapEditor;
+package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

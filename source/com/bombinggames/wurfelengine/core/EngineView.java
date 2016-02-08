@@ -44,8 +44,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.bombinggames.wurfelengine.MapEditor.EditorToggler;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.mapeditor.EditorToggler;
 
 /**
  * A view which is not dependend on the currently active game. Singleton.

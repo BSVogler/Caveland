@@ -1,4 +1,4 @@
-package com.bombinggames.wurfelengine.MapEditor;
+package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;

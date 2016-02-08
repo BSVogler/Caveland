@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.MapEditor;
+package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -81,7 +81,11 @@ public class PlacableGUI extends WidgetGroup {
 		label = new Label(Integer.toString(getId()) + " - " + Integer.toString(getValue()), WE.getEngineView().getSkin());
 		addActor(label);
 
-		blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
+		if (selection != null && selection.hasPosition()) {
+			blockPosition = new Label(selection.getPosition().toCoord().toString(), WE.getEngineView().getSkin());
+		} else {
+			blockPosition = new Label("no cursor found", WE.getEngineView().getSkin());
+		}
 		blockPosition.setPosition(60, 30);
 
 		if (left) {

@@ -30,11 +30,11 @@
  */
 package com.bombinggames.wurfelengine;
 
-import com.bombinggames.wurfelengine.MapEditor.EditorView;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.BasicMenuItem;
 import com.bombinggames.wurfelengine.core.BasicMainMenu.GameViewWithCamera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.mapeditor.EditorView;
 
 /**
  *A test class for starting the engine.

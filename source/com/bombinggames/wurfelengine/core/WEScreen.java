@@ -37,46 +37,55 @@ import com.bombinggames.wurfelengine.WE;
 import java.util.ArrayList;
 
 /**
- *A WEScreen is a {@link Screen} which supports Wurfel Engine features liek the {@link Console}.
+ * A WEScreen is a {@link Screen} which supports Wurfel Engine features like the
+ * {@link com.bombinggames.wurfelengine.core.console.Console}.
+ *
  * @author Benedikt Vogler
  */
 public abstract class WEScreen implements Screen {
+
 	ArrayList<Actor> buttons = new ArrayList<>(5);
 	private int selection;
-	
+
 	@Override
 	@SuppressWarnings("AssignmentToMethodParameter")
-	public final void render(float delta){
+	public final void render(float delta) {
 		delta *= 1000;//to ms
-		if (delta >= WE.getCVars().getValueF("MaxDelta")) delta=1f/60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
+		if (delta >= WE.getCVars().getValueF("MaxDelta")) {
+			delta = 1f / 60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
+		}
 		renderImpl(delta);
 		WE.updateAndRender(delta);
 	}
-	
+
 	/**
-	 * Main method which get's called every frame. Should be split up in data managment and data displaying.
-	 * @param dt time in ms 
+	 * Main method which get's called every frame. Should be split up in data
+	 * managment and data displaying.
+	 *
+	 * @param dt time in ms
 	 */
 	public abstract void renderImpl(float dt);
 
-	public void addButton(Actor button){
+	public void addButton(Actor button) {
 		buttons.add(button);
-	};
+	}
+
+	;
 	
-	public void select(int i){
+	public void select(int i) {
 		selection = i;
 	}
-	
-	public void enterSelection(){
+
+	public void enterSelection() {
 		buttons.get(selection).fire(new ChangeListener.ChangeEvent());
 	}
 
 	public int getSelection() {
 		return selection;
 	}
-	
-	public int getButtonAmount(){
+
+	public int getButtonAmount() {
 		return buttons.size();
 	}
-	
+
 }

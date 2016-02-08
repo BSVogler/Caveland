@@ -38,18 +38,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.GameplayScreen;
+import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.cvar.CVar;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
-import com.bombinggames.wurfelengine.core.GameplayScreen;
-import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- *The message system can manage&show messages (Line).
+ * The message system can manage&show messages (Line).
+ *
  * @author Benedikt
  */
 public class Console {

@@ -150,7 +150,7 @@ public class WE {
 	 *
 	 * @param title The title, which is displayed in the window.
 	 * @param args Wurfel Engine launch parameters. For a list look in the wiki.
-	 * @see #setMainMenu(com.bombinggames.wurfelengine.Core.MainMenuInterface)
+	 * @see #setMainMenu(com.bombinggames.wurfelengine.core.AbstractMainMenu)
 	 */
 	public static void launch(final String title, final String[] args) {
 		CONFIG.resizable = false;
@@ -290,7 +290,7 @@ public class WE {
 
 	/**
 	 * Use different controller and views, which reinitializes them. Enter the
-	 * editor via {@link #startEditor(boolean)}
+	 * editor via {@link #startEditor()}
 	 *
 	 * @param controller the new controller
 	 * @param view the new view
@@ -510,7 +510,7 @@ public class WE {
 	}
 
 	/**
-	 * Returns the Console. Use {@link com.bombinggames.wurfelengine.Core.Console#add(java.lang.String)
+	 * Returns the Console. Use {@link com.bombinggames.wurfelengine.core.console.Console#add(java.lang.String)
 	 * }to add messages to the console.
 	 *
 	 * @return The console.

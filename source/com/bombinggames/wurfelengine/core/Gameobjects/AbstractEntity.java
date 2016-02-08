@@ -32,14 +32,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_DIAGLENGTH2;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
 
 /**
@@ -276,18 +276,19 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		category = c;
 	}
     
-    @Override
-    public String getName() {
-		if (name==null)
+ @Override
+	public String getName() {
+		if (name == null) {
 			return "undefined";
-        return name;
-    }
+		}
+		return name;
+	}
 	
 	/**
 	 *
 	 * @param name
 	 */
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -299,11 +300,11 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void setDimensionZ(int dimensionZ) {
 		this.dimensionZ = dimensionZ;
 	}
-	
+
 	@Override
-    public int getDimensionZ() {
-        return dimensionZ;
-    }
+	public int getDimensionZ() {
+		return dimensionZ;
+	}
 	
 	/**
 	 * Deletes the object from the map. The opposite to
@@ -362,7 +363,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * true if on chunk which is in memory
 	 *
 	 * @return
-	 * @see Coord#isInMemoryAreaHorizontal()
+	 * @see com.bombinggames.wurfelengine.core.map.Coordinate#isInMemoryAreaHorizontal()
 	 */
 	public boolean isInMemoryArea() {
 		if (position == null) {

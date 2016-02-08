@@ -83,7 +83,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new BooleanCVar(false), "enableMinimap");
 		register(new FloatCVar(1.0f), "walkingAnimationSpeedCorrection");
 		register(new FloatCVar(4.0f), "playerWalkingSpeed");
-		register(new FloatCVar(1f), "timeSpeed", CVar.CVarFlags.CVAR_VOLATILE);
+		register(new FloatCVar(1f), "timeSpeed", CVarFlags.CVAR_VOLATILE);
 		register(new FloatCVar(0.001f), "friction");
 		register(new FloatCVar(0.03f), "playerfriction");
 		register(new IntCVar(6000), "soundDecay");
@@ -129,7 +129,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new IntCVar(90), "CameraLeapRadius");
 		register(new FloatCVar(0.5f), "ambientOcclusion");
 		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
-		register(new StringCVar(""),"loadedMap", CVar.CVarFlags.CVAR_VOLATILE); 
+		register(new StringCVar(""),"loadedMap", CVarFlags.CVAR_VOLATILE); 
 		register(new StringCVar(""), "lastConsoleCommand");
 		register(new IntCVar(20), "historySize");
 	}

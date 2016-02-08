@@ -45,7 +45,7 @@ public class CVarSystemSave extends AbstractCVarSystem {
 	 */
 	public CVarSystemSave(File path) {
 		super(path);
-		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVarFlags.CVAR_ALWAYSSAVE);
 		register(new FloatCVar(0), "LEsunAzimuth");
 		register(new FloatCVar(180), "LEmoonAzimuth");
 	}

@@ -51,14 +51,14 @@ public class CVarSystemMap extends AbstractCVarSystem {
 	
 	public CVarSystemMap(File path) {
 		super(path);
-		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVar.CVarFlags.CVAR_ALWAYSSAVE);
+		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVarFlags.CVAR_ALWAYSSAVE);
 		register(new IntCVar(1), "groundBlockID");
 		register(new IntCVar(10), "chunkBlocksX");
 		register(new IntCVar(40), "chunkBlocksY");
 		register(new IntCVar(10), "chunkBlocksZ");
 		register(new StringCVar(""), "mapname");
 		register(new StringCVar(""), "description");
-		register(new IntCVar(-1), "currentSaveSlot", CVar.CVarFlags.CVAR_VOLATILE);
+		register(new IntCVar(-1), "currentSaveSlot", CVarFlags.CVAR_VOLATILE);
 		
 		if (customRegistration != null) {
 			customRegistration.register(this);

@@ -278,7 +278,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @param rS
 	 * @param coord the position on the map
 	 * @return itself
-	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.AbstractPosition) 
+	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.Position)
 	 */
 	public RenderBlock spawn(RenderStorage rS, Coordinate coord){
 		setPosition(rS, coord);

@@ -502,7 +502,8 @@ public class SideSprite extends TextureRegion {
 	}
 
 	/**
-	 * @param color * @see #setColor(Color)
+	 * Sets the color to each vertice.
+	 * @param color
 	 * @see Color#toFloatBits()
 	 */
 	public void setColor(float color) {
@@ -633,8 +634,8 @@ public class SideSprite extends TextureRegion {
 
 	/**
 	 * Sets the sprite's scale relative to the current scale. for example:
-	 * original scale 2 -> sprite.scale(4) -> final scale 6. The sprite scales
-	 * out from the origin. This will not affect the values returned by
+	 * original scale 2 -&gt; sprite.scale(4) -&gt; final scale 6. The sprite
+	 * scales out from the origin. This will not affect the values returned by
 	 * {@link #getWidth()} and {@link #getHeight()}
 	 *
 	 * @param amount
@@ -972,7 +973,7 @@ public class SideSprite extends TextureRegion {
 
 	/**
 	 * Returns the color of this sprite. Changing the returned color will have
-	 * no affect, {@link #setColor(Color)} or
+	 * no affect, {@link #setColor(float)} or
 	 * {@link #setColor(float, float, float, float)} must be used.
 	 *
 	 * @return

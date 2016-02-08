@@ -474,7 +474,7 @@ public class Point extends Vector3 implements Position {
 	 * @param view
 	 * @param hitCondition can be null
 	 * @return 
-	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.Camera, boolean) 
+	 * @see #raycast(com.badlogic.gdx.math.Vector3, float, com.bombinggames.wurfelengine.core.GameView, java.util.function.Predicate) 
 	 */
 	public Intersection rayMarching(
 		final Vector3 dir,

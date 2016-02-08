@@ -1,6 +1,6 @@
 package com.bombinggames.caveland;
 
-import com.bombinggames.wurfelengine.core.cvar.CVar;
+import com.bombinggames.wurfelengine.core.cvar.CVarFlags;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.IntCVar;
 import com.bombinggames.wurfelengine.core.map.CustomMapCVarRegistration;
@@ -17,7 +17,7 @@ public class CavelandMapCVars implements CustomMapCVarRegistration{
 	 */
 	@Override
 	public void register(CVarSystemMap system) {
-		system.register( new IntCVar(1), "groundBlockID", CVar.CVarFlags.CVAR_ARCHIVE);
+		system.register( new IntCVar(1), "groundBlockID", CVarFlags.CVAR_ARCHIVE);
 	}
 	
 }

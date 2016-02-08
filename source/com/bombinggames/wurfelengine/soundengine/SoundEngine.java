@@ -157,7 +157,8 @@ public class SoundEngine {
 	 *
 	 * @param identifier name of sound
 	 * @param volume
-	 * @param pitch the pitch multiplier, 1 == default, >1 == faster, 1 == slower, the value has to be between 0.5 and 2.0
+	 * @param pitch the pitch multiplier, 1 == default, &gt;1 == faster, 1 ==
+	 * slower, the value has to be between 0.5 and 2.0
 	 * @return
 	 */
 	public long play(String identifier, float volume, float pitch) {

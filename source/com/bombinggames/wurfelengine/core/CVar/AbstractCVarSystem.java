@@ -205,9 +205,9 @@ public abstract class AbstractCVarSystem {
 				CVar cvar = pairs.getValue();
 				try {
 					//if should be saved and different then default: save
-					if (cvar.flags == CVar.CVarFlags.CVAR_ARCHIVE
+					if (cvar.flags == CVarFlags.CVAR_ARCHIVE
 						&& !cvar.getDefaultValue().equals(cvar.getValue())
-						|| cvar.flags == CVar.CVarFlags.CVAR_ALWAYSSAVE) {
+						|| cvar.flags == CVarFlags.CVAR_ALWAYSSAVE) {
 						writer.write(pairs.getKey() + " " + cvar.toString() + "\n");
 					}
 
@@ -251,7 +251,7 @@ public abstract class AbstractCVarSystem {
 	 * @param flag
 	 * @since v1.4.2
 	 */
-	public void register(CVar cvar, String name, CVar.CVarFlags flag) {
+	public void register(CVar cvar, String name, CVarFlags flag) {
 		cvar.register(name, flag, this);
 		//if already registered new value is set
 		if (cvars.containsKey(cvar.name)) {
@@ -265,14 +265,14 @@ public abstract class AbstractCVarSystem {
 	 * Registering should only be done by the game or the engine in init phase.
 	 * Also saves as defaultValue. if already registered updates the default and
 	 * current value.<br>
-	 * Uses {@link CVarFlags.CVAR_ARCHIVE}
+	 * Uses {@link com.bombinggames.wurfelengine.core.cvar.CVarFlags.CVAR_ARCHIVE}
 	 *
 	 * @param cvar
 	 * @param name
 	 * @since v1.4.2
 	 */
 	public void register(CVar cvar, String name) {
-		register(cvar, name, CVar.CVarFlags.CVAR_ARCHIVE);
+		register(cvar, name, CVarFlags.CVAR_ARCHIVE);
 	}
 
 	/**

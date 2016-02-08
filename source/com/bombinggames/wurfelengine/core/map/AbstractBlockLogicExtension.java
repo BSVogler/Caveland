@@ -1,14 +1,21 @@
 package com.bombinggames.wurfelengine.core.map;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
- * Manages the game logic for a block. The instances are not saved in the map save file therfore every data saved in the fields are lost after quitting.<br>
- * Points to a {@link Coordinate} in the map. If the content of the coordinate changes it will be removed via {@link  com.bombinggames.wurfelengine.core.map.Map}. Check if is about to be removed via {@link #isValid() }.<br> If you want to save information in the save file you have to use and spawn an {@link AbstractEntity}.
+ * Manages the game logic for a block. The instances are not saved in the map
+ * save file therfore every data saved in the fields are lost after
+ * quitting.<br>
+ * Points to a {@link Coordinate} in the map. If the content of the coordinate
+ * changes it will be removed via
+ * {@link  com.bombinggames.wurfelengine.core.map.Map}. Check if is about to be
+ * removed via {@link #isValid() }.<br> If you want to save information in the
+ * save file you have to use and spawn an {@link AbstractEntity}.
+ *
  * @author Benedikt Vogler
  */
 public abstract class AbstractBlockLogicExtension {
+
 	private static final long serialVersionUID = 2L;
 	/**
 	 * pointer to the according coordinate
@@ -20,19 +27,24 @@ public abstract class AbstractBlockLogicExtension {
 	private final byte id;
 
 	/**
-	 * Called when spawned. Should not access the map because during map creating this method is called and the map still empty.
+	 * Called when spawned. Should not access the map because during map
+	 * creating this method is called and the map still empty.
+	 *
 	 * @param block the block at the position
 	 * @param coord the position where the logic block is placed
 	 */
 	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
 		this.id = block.getId();
-		if (coord == null)
+		if (coord == null) {
 			throw new NullPointerException();
+		}
 		this.coord = coord;
 	}
-	
+
 	/**
-	 * This method be named "getPosition" so that this method can implement the interface {@link com.bombinggames.caveland.GameObjects.Interactable}
+	 * This method must be named "getPosition" so that this method can implement
+	 * other interfaces using this API signature
+	 *
 	 * @return not copy safe. never null
 	 */
 	public Coordinate getPosition() {
@@ -60,5 +72,5 @@ public abstract class AbstractBlockLogicExtension {
 	 * called when removed
 	 */
 	public abstract void dispose();
-	
+
 }

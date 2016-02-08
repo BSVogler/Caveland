@@ -1,5 +1,6 @@
-package com.bombinggames.wurfelengine.core.gameobjects;
+package com.bombinggames.wurfelengine.core.map;
 
+import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**

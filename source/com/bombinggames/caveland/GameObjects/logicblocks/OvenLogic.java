@@ -39,7 +39,7 @@ import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;

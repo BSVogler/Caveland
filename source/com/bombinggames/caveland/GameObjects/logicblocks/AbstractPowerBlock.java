@@ -2,8 +2,8 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**

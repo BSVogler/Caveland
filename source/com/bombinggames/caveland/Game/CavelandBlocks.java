@@ -17,7 +17,7 @@ import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;

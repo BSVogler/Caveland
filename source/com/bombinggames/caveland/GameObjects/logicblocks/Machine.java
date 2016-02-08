@@ -4,7 +4,7 @@ import com.bombinggames.caveland.gameobjects.MineCart;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.gameobjects.collectibles.Flint;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractBlockLogicExtension;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Coordinate;

@@ -89,17 +89,17 @@ public class WE {
 	 * The sound engine managing the sfx.
 	 */
 	public static final SoundEngine SOUND = new SoundEngine();
-	private static final WEGame game = new WEGame();
+	private static final WEGame GAME = new WEGame();
+	private static final AssetManager ASSETMANAGER = new AssetManager();
+	private static final LwjglApplicationConfiguration CONFIG = new LwjglApplicationConfiguration();
+	private static final ArrayList<LaunchCommand> POSTLAUNCHCOMMANDS = new ArrayList<>(0);
 	private static GameplayScreen gameplayScreen;
 	private static AbstractMainMenu mainMenu;
-	private static final AssetManager assetManager = new AssetManager();
-	private static final LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 	private static Console console;
 	private static EngineView engineView;
 	private static LwjglApplication application;
 	private static boolean skipintro = false;
 	private static String iconPath = null;
-	private static final ArrayList<LaunchCommand> commandsAfterLaunch = new ArrayList<>(0);
 	/**
 	 * default is that every manager state is game.
 	 */
@@ -123,7 +123,7 @@ public class WE {
 	 */
 	public static void setScreen(WEScreen screen) {
 		engineView.resetInputProcessors();
-		game.setScreen(screen);
+		GAME.setScreen(screen);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class WE {
 	 * @param command
 	 */
 	public static void addPostLaunchCommands(LaunchCommand command) {
-		commandsAfterLaunch.add(command);
+		POSTLAUNCHCOMMANDS.add(command);
 	}
 
 	/**
@@ -153,10 +153,10 @@ public class WE {
 	 * @see #setMainMenu(com.bombinggames.wurfelengine.Core.MainMenuInterface)
 	 */
 	public static void launch(final String title, final String[] args) {
-		config.resizable = false;
+		CONFIG.resizable = false;
 		//config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-		config.fullscreen = true;
-		config.vSyncEnabled = false;//if set to true the FPS is locked to 60
+		CONFIG.fullscreen = true;
+		CONFIG.vSyncEnabled = false;//if set to true the FPS is locked to 60
 
 		//arguments
 		if (args.length > 0) {
@@ -166,20 +166,20 @@ public class WE {
 					case "-fullscreen":
 					case "-f":
 						//start in fullscreen
-						config.fullscreen = true;
+						CONFIG.fullscreen = true;
 						break;
 					case "-windowed":
 						//start in windowed mode
-						config.fullscreen = false;
+						CONFIG.fullscreen = false;
 						break;
 					case "-w":
 						//set the width
-						config.width = Integer.parseInt(args[i + 1]);
+						CONFIG.width = Integer.parseInt(args[i + 1]);
 						i++;
 						break;
 					case "-h":
 						//set the height
-						config.height = Integer.parseInt(args[i + 1]);
+						CONFIG.height = Integer.parseInt(args[i + 1]);
 						i++;
 						break;
 					case "-skipintro":
@@ -203,43 +203,43 @@ public class WE {
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
 		}
 
-		config.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
-		config.backgroundFPS = 60;//60 FPS in background
+		CONFIG.foregroundFPS = CVARS.getValueI("limitFPS");//don't lock FPS
+		CONFIG.backgroundFPS = 60;//60 FPS in background
 		//config.addIcon("com/BombingGames/caveland/icon.png", Files.FileType.Internal); //commented this line because on mac this get's overwritten by something during runtime. mac build is best made via native packaging
 		if (iconPath != null) {
-			config.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
+			CONFIG.addIcon(iconPath, Files.FileType.Internal);//windows and linux?
 		}
 
 		//load saved resolution
 		int width = CVARS.getValueI("resolutionx");
-		if (width > 0 && config.width <= 640) {
-			config.width = width;
+		if (width > 0 && CONFIG.width <= 640) {
+			CONFIG.width = width;
 		}
 
 		int height = CVARS.getValueI("resolutiony");
-		if (height > 0 && config.height <= 480) {
-			config.height = CVARS.getValueI("resolutiony");
+		if (height > 0 && CONFIG.height <= 480) {
+			CONFIG.height = CVARS.getValueI("resolutiony");
 		}
 
 		//find dpm with biggest width
 		DisplayMode dpms = LwjglApplicationConfiguration.getDesktopDisplayMode();
 		
 		//limit resolution to maximum
-		if (config.width > dpms.width) {
-			config.width = dpms.width;
+		if (CONFIG.width > dpms.width) {
+			CONFIG.width = dpms.width;
 		}
 
-		if (config.height > dpms.height) {
-			config.height = dpms.height;
+		if (CONFIG.height > dpms.height) {
+			CONFIG.height = dpms.height;
 		}
 
-		config.title = title + " " + config.width + "x" + config.height;
+		CONFIG.title = title + " " + CONFIG.width + "x" + CONFIG.height;
 
 		//register entitys
 		AbstractEntity.registerEngineEntities();
 
 		System.out.println("Fire Engine…");
-		application = new LwjglApplication(game, config);
+		application = new LwjglApplication(GAME, CONFIG);
 		application.setLogLevel(Application.LOG_DEBUG);
 	}
 
@@ -249,7 +249,7 @@ public class WE {
 	 * @return
 	 */
 	public static LwjglApplicationConfiguration getLwjglApplicationConfiguration() {
-		return config;
+		return CONFIG;
 	}
 
 	/**
@@ -262,10 +262,10 @@ public class WE {
 	 * @see com.bombinggames.wurfelengine.WE#startGame()
 	 */
 	public static void initAndStartGame(final Controller controller, final GameView view, LoadingScreen customLoadingScreen) {
-		if (game != null) {
+		if (GAME != null) {
 			Gdx.app.log("Wurfel Engine", "Initializing game using Controller:" + controller.toString());
 			Gdx.app.log("Wurfel Engine", "and View:" + view.toString());
-			Gdx.app.log("Wurfel Engine", "and Config:" + config.toString());
+			Gdx.app.log("Wurfel Engine", "and Config:" + CONFIG.toString());
 
 			getEngineView().getEditorToggler().setGameplayManagers(
 				view
@@ -412,7 +412,7 @@ public class WE {
 	public static void startGame() {
 		SOUND.disposeMusic();
 		Gdx.app.log("Wurfel Engine", "Starting the gameplay…");
-		game.setScreen(gameplayScreen);
+		GAME.setScreen(gameplayScreen);
 		inGame = true;
 		inEditor = false;
 	}
@@ -438,7 +438,7 @@ public class WE {
 		inGame = false;
 		gameplayScreen = null;
 		engineView.resetInputProcessors();
-		game.setScreen(mainMenu);
+		GAME.setScreen(mainMenu);
 	}
 
 	/**
@@ -478,7 +478,7 @@ public class WE {
 		else {
 			Gdx.graphics.setWindowedMode(currentMode.width, currentMode.height);
 		}
-		config.fullscreen = Gdx.graphics.isFullscreen();
+		CONFIG.fullscreen = Gdx.graphics.isFullscreen();
 		Gdx.app.debug("Wurfel Engine", "Set to fullscreen:" + fullscreen + " It is now:" + Gdx.graphics.isFullscreen());
 	}
 
@@ -490,7 +490,7 @@ public class WE {
 	 * @return returns the asset
 	 */
 	public static <T> T getAsset(String filename) {
-		return assetManager.get(filename);
+		return ASSETMANAGER.get(filename);
 	}
 
 	/**
@@ -499,8 +499,8 @@ public class WE {
 	 * @return the asset manager.
 	 */
 	public static AssetManager getAssetManager() {
-		if (game != null) {
-			return assetManager;
+		if (GAME != null) {
+			return ASSETMANAGER;
 		} else {
 			Gdx.app.error("Wurfel Engine", "There is no instance of the engine. You should call initGame first.");
 			return null;
@@ -667,7 +667,7 @@ public class WE {
 			//Gdx.graphics.setFullscreenMode(mode);
 			Gdx.graphics.getBackBufferWidth();
 			if (!skipintro) {
-				game.setScreen(new WurfelEngineIntro());
+				GAME.setScreen(new WurfelEngineIntro());
 			}
 
 			if (mainMenu == null) {
@@ -691,7 +691,7 @@ public class WE {
 				setScreen(mainMenu);
 			}
 
-			commandsAfterLaunch.forEach(a -> {
+			POSTLAUNCHCOMMANDS.forEach(a -> {
 				a.perform();
 			});
 		}

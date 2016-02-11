@@ -43,6 +43,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -61,7 +62,7 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * a list of Blocks marked as dirty
 	 */
-	private final ArrayList<RenderBlock> dirtyFlags = new ArrayList<>(20);
+	private final LinkedList<RenderBlock> dirtyFlags = new LinkedList<>();
 	private int zRenderingLimit;
 
 	/**
@@ -115,8 +116,8 @@ public class RenderStorage implements Telegraph  {
 		dirtyFlags.clear();
 	}
 	
-		/**
-	 * marks this block as "dirty".
+	/**
+	 * Marks this block as "dirty". O(n)
 	 * @param rB
 	 */
 	public void setLightFlag(RenderBlock rB) {

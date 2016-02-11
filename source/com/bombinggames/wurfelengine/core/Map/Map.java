@@ -40,15 +40,15 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.core.map.Iterators.MemoryMapIterator;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -212,7 +212,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		}
 		
 		//update chunks
-		 for (Chunk chunk : data) {
+		for (Chunk chunk : data) {
 			chunk.update(dt);
 		}
 

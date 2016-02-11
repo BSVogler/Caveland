@@ -30,18 +30,20 @@
  */
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.files.FileHandle;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -57,7 +59,7 @@ import java.util.logging.Logger;
  * A Chunk is filled with many Blocks and is a part of the map.
  * @author Benedikt
  */
-public class Chunk {
+public class Chunk implements Telegraph {
     /**The suffix of a chunk files.*/
     protected static final String CHUNKFILESUFFIX = "wec";
 
@@ -193,7 +195,7 @@ public class Chunk {
 
 			Controller.getMap().setModified();
 			//notify observers that a chunk changed
-			MessageManager.getInstance().dispatchMessage(Events.chunkChanged.getId(), this);
+			MessageManager.getInstance().dispatchMessage(this, Events.chunkChanged.getId(), this);
 		}
 	}
 
@@ -809,5 +811,10 @@ public class Chunk {
 
 	public RenderChunk getRenderChunk(RenderStorage storage) {
 		return storage.getChunk(coordX, coordY);
+	}
+
+	@Override
+	public boolean handleMessage(Telegram msg) {
+		return false;
 	}
 }

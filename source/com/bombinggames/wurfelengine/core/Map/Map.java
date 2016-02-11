@@ -371,7 +371,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
 				&& coord.getY() < top + Chunk.getBlocksY()) {
-				data.addFirst(data.remove());
+				data.addFirst(data.removeLast());
 				return chunk;
 			}
 		}

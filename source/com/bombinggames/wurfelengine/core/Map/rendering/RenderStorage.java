@@ -226,14 +226,15 @@ public class RenderStorage implements Telegraph  {
 		int left, top;
 		//loop over storage
 		for (RenderChunk chunk : data) {
-			left = chunk.getTopLeftCoordinate().getX();
-			top = chunk.getTopLeftCoordinate().getY();
+			Coordinate tl = chunk.getTopLeftCoordinate();
+			left = tl.getX();
+			top = tl.getY();
 			//check if coordinates are inside the chunk
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
 				&& coord.getY() < top + Chunk.getBlocksY()) {
-				data.addFirst(data.remove());
+				data.addFirst(data.removeLast());
 				return chunk;
 			}
 		}

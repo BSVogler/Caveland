@@ -43,21 +43,39 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 public class RenderChunk {
 
 	private final RenderBlock data[][][];
-	private final Chunk chunk;
+	private Chunk chunk;
 	private boolean cameraAccess;
 	
+	
 	/**
-	 * 
+	 * Without init
+	 */
+	public RenderChunk() {
+		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+	}
+	
+	/**
+	 * With init
 	 * @param rS
 	 * @param chunk linked chunk
 	 */
 	public RenderChunk(RenderStorage rS, Chunk chunk) {
-		this.chunk = chunk;
 		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+		init(rS, chunk);
+	}
+	
+	/**
+	 * update the content
+	 * @param rS
+	 * @param chunk 
+	 */
+	public void init(RenderStorage rS, Chunk chunk){
+		this.chunk = chunk;
 		
 		int tlX = chunk.getTopLeftCoordinate().getX();
 		int tlY = chunk.getTopLeftCoordinate().getY();
 		
+		//fill every data cell
 		for (int x = 0; x < Chunk.getBlocksX(); x++) {
 			for (int y = 0; y < Chunk.getBlocksY(); y++) {
 				for (int z = 0; z < Chunk.getBlocksZ(); z++) {

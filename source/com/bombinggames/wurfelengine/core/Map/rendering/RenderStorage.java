@@ -57,6 +57,7 @@ public class RenderStorage implements Telegraph  {
 	 */
 	private final ArrayList<RenderChunk> data;
 	private final List<Camera> cameraContainer;
+	private final LinkedList<RenderChunk> chunkPool = new LinkedList<>();
 	private final ArrayList<Integer> lastCenterX;
 	private final ArrayList<Integer> lastCenterY;
 	/**
@@ -172,7 +173,8 @@ public class RenderStorage implements Telegraph  {
 		if (rChunk == null) {//not in storage
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
-				RenderChunk newRChunk = new RenderChunk(this, mapChunk);
+				RenderChunk newRChunk = getChunkFromPool();
+				newRChunk.init(this, mapChunk);
 				data.add(newRChunk);
 				newRChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(newRChunk);
@@ -197,6 +199,21 @@ public class RenderStorage implements Telegraph  {
 			rChunk.setCameraAccess(true);
 		}
 		return false;
+	}
+	
+	/**
+	 * Delivers a new chunk prefering the pool.
+	 *
+	 * @param rS
+	 * @param chunk
+	 * @return
+	 */
+	private RenderChunk getChunkFromPool() {
+		if (!chunkPool.isEmpty()) {
+			return chunkPool.remove();
+		} else {
+			return new RenderChunk();
+		}
 	}
 	
 	/**
@@ -425,12 +442,16 @@ public class RenderStorage implements Telegraph  {
 		return zRenderingLimit;
 	}
 	
-
 	@Override
 	public boolean handleMessage(Telegram msg) {
-		if (msg.message==Events.chunkChanged.getId()) {
+		if (msg.message == Events.chunkChanged.getId()) {
 			Chunk chunk = (Chunk) msg.extraInfo;
-			data.remove(getChunk(chunk.getChunkX(), chunk.getChunkY()));//chunk is outdatet so remove it
+			//renderchunk is outdatet so remove it
+			RenderChunk rChunk = getChunk(chunk.getChunkX(), chunk.getChunkY());
+			if (rChunk!=null) {
+				chunkPool.add(rChunk);
+				data.remove(rChunk);
+			}
 			checkChunk(chunk.getChunkX(), chunk.getChunkY());
 			return true;
 		}

@@ -705,7 +705,7 @@ public class Coordinate implements Position {
 	 */
 	public void addLight(GameView view, Side side, Color color,int vertex){
 		RenderBlock neighb = getRenderBlock(view.getRenderStorage());
-		if (neighb != null && !neighb.isHidden()) {
+		if (!neighb.isHidden()) {
 			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, vertex);
 			neighb.addLightlevel(color.g, side, 1, vertex);
@@ -728,8 +728,8 @@ public class Coordinate implements Position {
 			goToNeighbour(3);//go back
 		} else {
 			RenderBlock neighb = getRenderBlock(view.getRenderStorage());
-			if (neighb != null && !neighb.isHidden()) {
-				view.getRenderStorage().setLightFlag(neighb);
+			if (!neighb.isHidden()) {
+				//view.getRenderStorage().setLightFlag(neighb); //in the way this algorthm is used this line is not needed
 				neighb.addLightlevel(color.r, side, 0, 0);
 				neighb.addLightlevel(color.g, side, 1, 0);
 				neighb.addLightlevel(color.b, side, 2, 0);

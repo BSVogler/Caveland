@@ -35,7 +35,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -68,12 +68,12 @@ public class MiniMapChunkDebug {
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(0, 1, 0, 1);
-			ArrayList<Chunk> mapdata = Controller.getMap().getData();
+			LinkedList<Chunk> mapdata = Controller.getMap().getData();
             for (Chunk chunk : mapdata) {
 				sh.rect(posX+chunk.getChunkX()*20, posY-chunk.getChunkY()*20, 19, 19);
 			}
 			sh.setColor(1, 1, 0, 0.1f);
-			ArrayList<RenderChunk> rS = view.getRenderStorage().getData();
+			LinkedList<RenderChunk> rS = view.getRenderStorage().getData();
 			for (RenderChunk chunk : rS) {
 				sh.rect(posX+chunk.getChunkX()*20, posY-chunk.getChunkY()*20, 19, 19);
 			}

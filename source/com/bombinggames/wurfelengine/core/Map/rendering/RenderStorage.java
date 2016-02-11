@@ -55,7 +55,7 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * Stores the data of the map.
 	 */
-	private final ArrayList<RenderChunk> data;
+	private final LinkedList<RenderChunk> data;
 	private final List<Camera> cameraContainer;
 	private final LinkedList<RenderChunk> chunkPool = new LinkedList<>();
 	private final ArrayList<Integer> lastCenterX;
@@ -71,7 +71,7 @@ public class RenderStorage implements Telegraph  {
 	 */
 	public RenderStorage() {
 		this.cameraContainer = new ArrayList<>(1);
-		data = new ArrayList<>(cameraContainer.size()*9);
+		data = new LinkedList<>();
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
 		zRenderingLimit = Chunk.getBlocksZ();
@@ -223,15 +223,17 @@ public class RenderStorage implements Telegraph  {
 	 * @return can return null if not loaded
 	 */
 	public RenderChunk getChunk(final Coordinate coord) {
-		//checks every chunk in memory
+		int left, top;
+		//loop over storage
 		for (RenderChunk chunk : data) {
-			int left = chunk.getTopLeftCoordinate().getX();
-			int top = chunk.getTopLeftCoordinate().getY();
+			left = chunk.getTopLeftCoordinate().getX();
+			top = chunk.getTopLeftCoordinate().getY();
 			//check if coordinates are inside the chunk
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
 				&& coord.getY() < top + Chunk.getBlocksY()) {
+				data.addFirst(data.remove());
 				return chunk;
 			}
 		}
@@ -397,7 +399,7 @@ public class RenderStorage implements Telegraph  {
 		return Block.getInstance((byte) WE.getCVars().getValueI("groundBlockID")).toRenderBlock(); //the representative of the bottom layer (ground) block
 	}
 
-	public ArrayList<RenderChunk> getData() {
+	public LinkedList<RenderChunk> getData() {
 		return data;
 	}
 
@@ -408,7 +410,6 @@ public class RenderStorage implements Telegraph  {
 	public void addCamera(Camera camera) {
 		if (!cameraContainer.contains(camera)) {//avoid duplicates
 			this.cameraContainer.add(camera);
-			data.ensureCapacity(cameraContainer.size()*9);//redundant?
 			lastCenterX.add(null);
 			lastCenterY.add(null);
 		}

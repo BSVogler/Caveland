@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -151,7 +152,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * Stores the data of the map.
 	 */
-	private final ArrayList<Chunk> data = new ArrayList<>(40);
+	private final LinkedList<Chunk> data = new LinkedList<>();
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 
@@ -198,7 +199,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param dt time in ms
 	 */
 	public void update(float dt) {
-		dt *= WE.getCVars().getValueF("timespeed");//aplly game speed
+		dt *= WE.getCVars().getValueF("timespeed");//apply game speed
 
 		//add parralell loaded chunks serial to avoid conflicts
 		for (int i = 0; i < loadingRunnables.size(); i++) {
@@ -211,8 +212,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			}
 		}
 		
-		//update chunks
-		for (Chunk chunk : data) {
+		//update chunks, use clone so that each chunk get's updated but the field can be changed
+		@SuppressWarnings("unchecked")
+		LinkedList<Chunk> clone = (LinkedList<Chunk>) data.clone();
+		for (Chunk chunk : clone) {
 			chunk.update(dt);
 		}
 
@@ -279,7 +282,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 *
 	 * @return
 	 */
-	public ArrayList<Chunk> getData() {
+	public LinkedList<Chunk> getData() {
 		return data;
 	}
 
@@ -358,16 +361,17 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunk(final Coordinate coord) {
-		//checks every chunk in memory
+		int left, top;
+		//loop over storage
 		for (Chunk chunk : data) {
-			int left = chunk.getTopLeftCoordinate().getX();
-			int top = chunk.getTopLeftCoordinate().getY();
+			left = chunk.getTopLeftCoordinate().getX();
+			top = chunk.getTopLeftCoordinate().getY();
 			//check if coordinates are inside the chunk
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
-				&& coord.getY() < top + Chunk.getBlocksY()
-			) {
+				&& coord.getY() < top + Chunk.getBlocksY()) {
+				data.addFirst(data.remove());
 				return chunk;
 			}
 		}

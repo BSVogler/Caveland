@@ -33,8 +33,8 @@ package com.bombinggames.wurfelengine.core.map.Iterators;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
@@ -64,7 +64,7 @@ public class MemoryMapIterator {
 		this.topLevel = Chunk.getBlocksZ() - 1;
 		this.startingZ = startingZ;
 
-		ArrayList<Chunk> mapdata = map.getData();
+		LinkedList<Chunk> mapdata = map.getData();
 		chunkIterator = mapdata.iterator();
 		blockIterator = mapdata.get(0).getIterator(startingZ, topLevel);
 	}

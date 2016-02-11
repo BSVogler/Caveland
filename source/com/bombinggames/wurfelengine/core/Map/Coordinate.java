@@ -30,8 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
@@ -42,8 +40,10 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
 
 /**
@@ -705,7 +705,7 @@ public class Coordinate implements Position {
 	 */
 	public void addLight(GameView view, Side side, Color color,int vertex){
 		RenderBlock neighb = getRenderBlock(view.getRenderStorage());
-		if (neighb != null) {
+		if (neighb != null && !neighb.isHidden()) {
 			view.getRenderStorage().setLightFlag(neighb);
 			neighb.addLightlevel(color.r, side, 0, vertex);
 			neighb.addLightlevel(color.g, side, 1, vertex);
@@ -721,26 +721,28 @@ public class Coordinate implements Position {
 	 */
 	public void addLightlevel(GameView view, Color color, Side side) {
 		if (side==Side.TOP) {
-			addLight(view, side, color, 1);
+			this.addLight(view, side, color, 1);
 			goToNeighbour(0).addLight(view, side, color, 3);
 			goToNeighbour(3).addLight(view, side, color, 0);
 			goToNeighbour(6).addLight(view, side, color, 2);
 			goToNeighbour(3);//go back
 		} else {
 			RenderBlock neighb = getRenderBlock(view.getRenderStorage());
-			view.getRenderStorage().setLightFlag(neighb);
-			neighb.addLightlevel(color.r, side, 0, 0);
-			neighb.addLightlevel(color.g, side, 1, 0);
-			neighb.addLightlevel(color.b, side, 2, 0);
-			neighb.addLightlevel(color.r, side, 0, 1);
-			neighb.addLightlevel(color.g, side, 1, 1);
-			neighb.addLightlevel(color.b, side, 2, 1);
-			neighb.addLightlevel(color.r, side, 0, 2);
-			neighb.addLightlevel(color.g, side, 1, 2);
-			neighb.addLightlevel(color.b, side, 2, 2);
-			neighb.addLightlevel(color.r, side, 0, 3);
-			neighb.addLightlevel(color.g, side, 1, 3);
-			neighb.addLightlevel(color.b, side, 2, 3);
+			if (neighb != null && !neighb.isHidden()) {
+				view.getRenderStorage().setLightFlag(neighb);
+				neighb.addLightlevel(color.r, side, 0, 0);
+				neighb.addLightlevel(color.g, side, 1, 0);
+				neighb.addLightlevel(color.b, side, 2, 0);
+				neighb.addLightlevel(color.r, side, 0, 1);
+				neighb.addLightlevel(color.g, side, 1, 1);
+				neighb.addLightlevel(color.b, side, 2, 1);
+				neighb.addLightlevel(color.r, side, 0, 2);
+				neighb.addLightlevel(color.g, side, 1, 2);
+				neighb.addLightlevel(color.b, side, 2, 2);
+				neighb.addLightlevel(color.r, side, 0, 3);
+				neighb.addLightlevel(color.g, side, 1, 3);
+				neighb.addLightlevel(color.b, side, 2, 3);
+			}
 		}
 	}
 }

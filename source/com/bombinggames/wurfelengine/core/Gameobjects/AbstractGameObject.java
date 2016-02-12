@@ -280,9 +280,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 */
 	public abstract int getDimensionZ();
 
-	@Override
-	public abstract Position getPosition();
-
 	/**
 	 * Set the coordinates without safety check. May use different object
 	 * pointing to the same position.

@@ -221,7 +221,10 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	private byte clipping;
 	private final ArrayList<Renderable> coveredBlocks = new ArrayList<>(7);
-	private ArrayList<Renderable> allcovered;
+	/**
+	 * for topological sort. Contains entities and blocks
+	 */
+	private final ArrayList<Renderable> allcovered = new ArrayList<>(7);
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -613,8 +616,18 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	public void setPosition(RenderStorage rS, Coordinate coord){
 		this.coord = coord;
-		fillCoveredList(rS);
+		fillCovered(rS);
 	}	
+
+	@Override
+	public float getX() {
+		return coord.getX() * Block.GAME_DIAGLENGTH + (coord.getY() % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+	}
+
+	@Override
+	public float getY() {
+		return coord.getY() * Block.GAME_DIAGLENGTH2;
+	}
 	
 	/**
 	 * gets the identifier and stores them in the map
@@ -975,7 +988,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * fill lists containing the nodes which are hidden by this block 
 	 * @param rs
 	 */
-	public void fillCoveredList(RenderStorage rs){
+	public void fillCovered(RenderStorage rs){
 		coveredBlocks.clear();
 		Coordinate nghb = getPosition().toCoord();
 		RenderBlock block;
@@ -1017,7 +1030,8 @@ public class RenderBlock extends AbstractGameObject{
 			coveredBlocks.add(block);
 		}
 		
-		allcovered = new ArrayList<>(coveredBlocks.size());
+		allcovered.clear();
+		allcovered.ensureCapacity(coveredBlocks.size());
 		allcovered.addAll(coveredBlocks);
 	}
 }

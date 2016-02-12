@@ -159,6 +159,17 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void setPosition(Point pos) {
 		this.position = pos;
 	}
+
+	@Override
+	public float getX() {
+		return position.getX();
+	}
+	
+	@Override
+	public float getY() {
+		return position.getY();
+	}
+	
 	
     /**
      * Is the entity laying/standing on the ground?

@@ -94,25 +94,30 @@ public class CameraSpaceIterator {
 		if (blockIterator == null || !blockIterator.hasNext()) {
 			//reached end of chunk, move to next chunk
 			currentChunk = null;
+			blockIterator = null;
 			while (currentChunk == null && hasNextChunk()) {//if has one move to next
-				chunkNum++;
 				currentChunk = getNextChunk(chunkNum);
+				chunkNum++;
 			}
 			//found chunk
 			if (currentChunk != null) {
 				blockIterator = currentChunk.getIterator(startingZ, topLevel);//reset chunkIterator
 			}
+			//could not find a new  block iterator
+			if (blockIterator == null) {
+				return null;
+			}
 		}
 
-		if (chunkNum > 8 || blockIterator == null) {
-			return null;
-		} else {
+		if (chunkNum < 9) {
 			return blockIterator.next();
+		} else {
+			return null;
 		}
 	}
 
 	/**
-	 * get the indices position inside the chunk/data matrix
+	 * get the indices position relative to a 3x3 chunk matrix.
 	 *
 	 * @return copy safe
 	 */
@@ -125,8 +130,8 @@ public class CameraSpaceIterator {
 		};
 	}
 
-	public boolean hasNextChunk() {
-		return getNextChunk(chunkNum+1) != null;
+	private boolean hasNextChunk() {
+		return getNextChunk(chunkNum) != null;
 	}
 
 	/**
@@ -136,11 +141,11 @@ public class CameraSpaceIterator {
 	 */
 	private RenderChunk getNextChunk(int current) {
 		while (current < 8) { //if has one move to next
+			current++;
 			RenderChunk chunk = renderStorage.getChunk(
 				centerChunkX - 1 + current % 3,
 				centerChunkY - 1 + current / 3
 			);
-			current++;
 			if (chunk != null) {
 				return chunk;
 			}
@@ -151,5 +156,4 @@ public class CameraSpaceIterator {
 	public boolean hasNext() {
 		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || hasNextChunk());
 	}
-
 }

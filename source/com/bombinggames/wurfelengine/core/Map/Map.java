@@ -245,7 +245,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void postUpdate(float dt) {
 		//check for modification flag
-		for (Chunk chunk : data) {
+		@SuppressWarnings("unchecked")
+		LinkedList<Chunk> clone = (LinkedList<Chunk>) data.clone();
+		for (Chunk chunk : clone) {
 			chunk.processModification();
 		}
 

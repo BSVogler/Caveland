@@ -698,7 +698,7 @@ public class Camera implements Telegraph {
 	/**
 	 * Fill the viewMat frustum {@link #cameraContent} with {@link RenderBlock}s. Should only be performed when content in the map changes.
 	 */
-	public void fillCameraContentBlocks() {
+	public void updateCache() {
 		//1. put every block in the viewMat frustum
 		CameraSpaceIterator csIter = new CameraSpaceIterator(
 			gameView.getRenderStorage(),
@@ -1127,7 +1127,7 @@ public class Camera implements Telegraph {
 			if (WE.getCVars().getValueB("mapUseChunks")) {
 				checkNeededChunks();
 			}
-			fillCameraContentBlocks();
+			updateCache();
 		}
 
 		this.active = active;
@@ -1183,7 +1183,7 @@ public class Camera implements Telegraph {
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()){
 			if (active) {
-				fillCameraContentBlocks();
+				updateCache();
 			}
 			return true;
 		}

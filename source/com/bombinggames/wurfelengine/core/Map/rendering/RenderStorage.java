@@ -145,7 +145,7 @@ public class RenderStorage implements Telegraph  {
 				//check if center changed
 				if (lastCenterX.get(i)==null || lastCenterY==null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
 					//if (changesToCameraCache) {
-					camera.fillCameraContentBlocks();
+					camera.updateCache();
 					lastCenterX.set(i, camera.getCenterChunkX());
 					lastCenterY.set(i, camera.getCenterChunkY());
 				}

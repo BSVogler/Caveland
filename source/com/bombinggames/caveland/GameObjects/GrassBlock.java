@@ -35,8 +35,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.Random;
 
 /**

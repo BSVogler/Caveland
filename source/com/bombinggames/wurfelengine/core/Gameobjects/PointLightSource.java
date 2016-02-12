@@ -8,6 +8,7 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * A light source is an invisible entity which spawns light from one point.
@@ -185,7 +186,8 @@ public class PointLightSource extends AbstractEntity {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
 						tmp.set(xCenter + x, yCenter + y, zCenter + z);
-						if (tmp.getRenderBlock(view.getRenderStorage()) != null) {
+						RenderBlock rB = tmp.getRenderBlock(view.getRenderStorage());
+						if (rB != null && !rB.isHidden()) {
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[0]), Side.LEFT);
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[1]), Side.TOP);
 							tmp.addLightlevel(view, color.cpy().mul(blocklight[2]), Side.RIGHT);

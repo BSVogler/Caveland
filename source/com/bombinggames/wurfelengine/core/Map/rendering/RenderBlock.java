@@ -48,9 +48,10 @@ import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_WIDTH2;
 import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
@@ -224,11 +225,11 @@ public class RenderBlock extends AbstractGameObject{
 	 * three bits used, for each side one: TODO: move to aoFlags byte 3
 	 */
 	private byte clipping;
-	private final ArrayList<Renderable> covered = new ArrayList<>(7);
+	private final LinkedList<Renderable> covered = new LinkedList<>();
 	/**
 	 * for topological sort. Contains entities and blocks
 	 */
-	private final ArrayList<Renderable> coveredEnts = new ArrayList<>(7);
+	private final LinkedList<Renderable> coveredEnts = new LinkedList<>();
 	private static boolean rebuildCoverList = true;
 	
 	/**
@@ -975,14 +976,14 @@ public class RenderBlock extends AbstractGameObject{
 	}
 
 	@Override
-	public ArrayList<Renderable> getCovered(RenderStorage rs) {
+	public LinkedList<Renderable> getCovered(RenderStorage rs) {
 		if (rebuildCoverList) {
-			ArrayList<Renderable> covered = this.covered;
+			LinkedList<Renderable> covered = this.covered;
 			covered.clear();
 			Coordinate nghb = getPosition();
 			RenderBlock block;
 			if (nghb.getZ() > 0) {
-				block = rs.getBlock(nghb.add(0, 0, -1));
+				block = rs.getBlock(nghb.add(0, 0, -1));//go down
 				if (block != null) {
 					covered.add(block);
 				}

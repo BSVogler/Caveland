@@ -41,6 +41,7 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * An entity is a game object which has the key feature that is has a position.
@@ -605,8 +606,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	
 	@Override
-	public ArrayList<Renderable> getCovered(RenderStorage rs) {
-		ArrayList<Renderable> res = new ArrayList<>(11);
+	public LinkedList<Renderable> getCovered(RenderStorage rs) {
+		LinkedList<Renderable> res = new LinkedList<>();
 		if (position!=null) {
 			Coordinate coord = position.toCoord();
 

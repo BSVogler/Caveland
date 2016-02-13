@@ -4,7 +4,7 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *Interface for objects whether they are blocks and entities.
@@ -118,5 +118,5 @@ public interface Renderable {
 	 * @param rs
 	 * @return 
 	 */
-	public ArrayList<Renderable> getCovered(RenderStorage rs);
+	public LinkedList<Renderable> getCovered(RenderStorage rs);
 }

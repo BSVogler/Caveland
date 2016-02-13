@@ -634,7 +634,7 @@ public class Camera{
 		}
 		if (!n.isMarked()) {
 			n.markTemporarily();
-			ArrayList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
+			LinkedList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
 			for (Renderable m : covered) {
 				visit(m);
 			}

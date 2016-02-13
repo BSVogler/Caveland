@@ -70,12 +70,6 @@ public class PointLightSource extends AbstractEntity {
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
-		super.spawn(point);
-		return this;
-	}
-
-	@Override
 	public void setPosition(Point pos) {
 		super.setPosition(pos);
 		

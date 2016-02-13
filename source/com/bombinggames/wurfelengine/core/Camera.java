@@ -50,6 +50,7 @@ import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import com.bombinggames.wurfelengine.core.map.rendering.SideSprite;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -596,9 +597,10 @@ public class Camera{
 		}
 		
 		objectsToBeRendered = 0;
+		RenderStorage rS = gameView.getRenderStorage();
 		//clear/reset flags
 		CameraSpaceIterator iterator= new CameraSpaceIterator(
-			gameView.getRenderStorage(),
+			rS,
 			centerChunkX,
 			centerChunkY,
 			0,
@@ -617,7 +619,7 @@ public class Camera{
 		
 		//cleanup
 		for (RenderBlock cell : modifiedCells) {
-			cell.clearCoveredEnts();
+			cell.clearCoveredEnts(rS);
 		}
 		//has been rebuild
 		RenderBlock.setRebuildCoverList(false);

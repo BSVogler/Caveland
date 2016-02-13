@@ -978,70 +978,76 @@ public class RenderBlock extends AbstractGameObject{
 	@Override
 	public LinkedList<Renderable> getCovered(RenderStorage rs) {
 		if (rebuildCoverList) {
-			LinkedList<Renderable> covered = this.covered;
-			covered.clear();
-			Coordinate nghb = getPosition();
-			RenderBlock block;
-			if (nghb.getZ() > 0) {
-				block = rs.getBlock(nghb.add(0, 0, -1));//go down
-				if (block != null) {
-					covered.add(block);
-				}
-				//back right
-				block = rs.getBlock(nghb.goToNeighbour(1));
-				if (block != null) {
-					covered.add(block);
-				}
-				//back left
-				block = rs.getBlock(nghb.goToNeighbour(6));
-				if (block != null) {
-					covered.add(block);
-				}
-				//back
-				block = rs.getBlock(nghb.goToNeighbour(1));
-				if (block != null) {
-					covered.add(block);
-				}
-				nghb.add(0, 2, 1);
-			}
-			block = rs.getBlock(nghb.add(0, -2, 0));//back
+			rebuildCovered(rs);
+		}
+		if (!coveredEnts.isEmpty()) {
+			coveredEnts.addAll(covered);
+			return coveredEnts;
+		}
+		return covered;
+	}
+	
+	private void rebuildCovered(RenderStorage rs){
+		LinkedList<Renderable> covered = this.covered;
+		covered.clear();
+		Coordinate nghb = getPosition();
+		RenderBlock block;
+		if (nghb.getZ() > 0) {
+			block = rs.getBlock(nghb.add(0, 0, -1));//go down
 			if (block != null) {
 				covered.add(block);
 			}
-			block = rs.getBlock(nghb.goToNeighbour(3));//back right
+			//back right
+			block = rs.getBlock(nghb.goToNeighbour(1));
 			if (block != null) {
 				covered.add(block);
 			}
-			
 			//back left
 			block = rs.getBlock(nghb.goToNeighbour(6));
 			if (block != null) {
 				covered.add(block);
 			}
-			if (nghb.getZ() < Chunk.getBlocksZ()-1){
-				block = rs.getBlock(nghb.add(0, 0, 1));//back
-				if (block != null) {
-					covered.add(block);
-				}
-				block = rs.getBlock(nghb.add(1, 0, 0));//back
-				if (block != null) {
-					covered.add(block);
-				}
-				nghb.add(-1, 0, -1);
+			//back
+			block = rs.getBlock(nghb.goToNeighbour(1));
+			if (block != null) {
+				covered.add(block);
 			}
-			
-			nghb.goToNeighbour(3);//return to origin
+			nghb.add(0, 2, 1);
 		}
-		if (!coveredEnts.isEmpty())
-			covered.addAll(coveredEnts);
-		return covered;
+		block = rs.getBlock(nghb.add(0, -2, 0));//back
+		if (block != null) {
+			covered.add(block);
+		}
+		block = rs.getBlock(nghb.goToNeighbour(3));//back right
+		if (block != null) {
+			covered.add(block);
+		}
+
+		//back left
+		block = rs.getBlock(nghb.goToNeighbour(6));
+		if (block != null) {
+			covered.add(block);
+		}
+		if (nghb.getZ() < Chunk.getBlocksZ()-1){
+			block = rs.getBlock(nghb.add(0, 0, 1));//back
+			if (block != null) {
+				covered.add(block);
+			}
+			block = rs.getBlock(nghb.add(1, 0, 0));//back
+			if (block != null) {
+				covered.add(block);
+			}
+			nghb.add(-1, 0, -1);
+		}
+
+		nghb.goToNeighbour(3);//return to origin
 	}
 
 	public static void setRebuildCoverList(boolean rebuildCoverList) {
 		RenderBlock.rebuildCoverList = rebuildCoverList;
 	}
 	
-	public void clearCoveredEnts(){
+	public void clearCoveredEnts(RenderStorage rS){
 		coveredEnts.clear();
 	}
 

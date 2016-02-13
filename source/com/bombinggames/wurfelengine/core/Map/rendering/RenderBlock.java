@@ -59,7 +59,7 @@ import java.util.LinkedList;
  * @see Block
  * @author Benedikt Vogler
  */
-public class RenderBlock extends AbstractGameObject{
+public class RenderBlock extends AbstractGameObject {
     private static final long serialVersionUID = 1L;
 	/**
 	 * indexed acces to spritesheet {id}{value}{side}
@@ -231,6 +231,9 @@ public class RenderBlock extends AbstractGameObject{
 	 */
 	private final LinkedList<Renderable> coveredEnts = new LinkedList<>();
 	private static boolean rebuildCoverList = true;
+	private SideSprite site1;
+	private SideSprite site3;
+	private SideSprite site2;
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -533,7 +536,28 @@ public class RenderBlock extends AbstractGameObject{
 			return;
 		}
 
-		SideSprite sprite = new SideSprite(getBlockSprite(id, value, side), side, ao);
+		//lazy init
+		SideSprite sprite;
+		switch (side) {
+			case LEFT:
+				if (site1 == null) {
+					site1 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+				}
+				sprite = site1;
+				break;
+			case TOP:
+				if (site2 == null) {
+					site2 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+				}
+				sprite = site2;
+				break;
+			default:
+				if (site3 == null) {
+					site3 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+				}
+				sprite = site3;
+				break;
+		}
 		sprite.setPosition(xPos, yPos);
 		if (getScaling() != 0) {
 			sprite.setOrigin(0, 0);

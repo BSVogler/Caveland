@@ -74,23 +74,25 @@ public class GrassBlock extends RenderBlock {
 	@Override
 	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color, int ao) {
 		super.renderSide(view, xPos, yPos, side, color, ao);
-		Sprite gras = grasSprite;
-		for (int i = 0; i < 10; i++) {
-			int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % Block.VIEW_WIDTH - Block.VIEW_WIDTH2);
-			int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % Block.VIEW_DEPTH - Block.VIEW_DEPTH2);
-			if (Math.abs(xOffset) + Math.abs(yOffset) < Block.VIEW_WIDTH2 - 10) {
-				gras.setColor(
-					getLightlevel(side, 1, 0) / 2f - 0.1f,
-					getLightlevel(side, 1, 1) / 2f - (xOffset * yPos + i) % 3 * 0.02f,
-					getLightlevel(side, 1, 2) / 2f,
-					1
-				);
-				gras.setPosition(
-					xPos + xOffset + Block.VIEW_WIDTH2,
-					yPos - yOffset + Block.VIEW_DEPTH2 - 10
-				);
-				gras.setRotation(wind+randomGenerator.nextFloat()*0.1f*WINDAMPLITUDE/2);
-				gras.draw(view.getSpriteBatch());
+		if (side==Side.TOP) {
+			Sprite gras = grasSprite;
+			for (int i = 0; i < 50; i++) {
+				int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % Block.VIEW_WIDTH - Block.VIEW_WIDTH2);
+				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % Block.VIEW_DEPTH - Block.VIEW_DEPTH2+15);
+				if (Math.abs(xOffset) + Math.abs(yOffset) < Block.VIEW_WIDTH2-10) {
+					gras.setColor(
+						getLightlevel(side, 1, 0) / 2f,
+						getLightlevel(side, 1, 1) / 2f - (xOffset + i) % 7 * 0.005f,
+						getLightlevel(side, 1, 2) / 2f,
+						1
+					);
+					gras.setPosition(
+						xPos + xOffset + Block.VIEW_WIDTH2,
+						yPos - yOffset + Block.VIEW_DEPTH2
+					);
+					gras.setRotation(i*0.4f-10.2f+wind+randomGenerator.nextFloat()*0.1f*WINDAMPLITUDE/2);
+					gras.draw(view.getSpriteBatch());
+				}
 			}
 		}
 	}

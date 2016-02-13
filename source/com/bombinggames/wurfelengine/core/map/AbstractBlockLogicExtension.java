@@ -28,7 +28,7 @@ public abstract class AbstractBlockLogicExtension {
 
 	/**
 	 * Called when spawned. Should not access the map because during map
-	 * creating this method is called and the map still empty.
+	 * creating this method is called and the map still empty. Also entities can not be spawned here.
 	 *
 	 * @param block the block at the position
 	 * @param coord the position where the logic block is placed

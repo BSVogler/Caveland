@@ -3,9 +3,9 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
@@ -15,7 +15,7 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 public class BoosterLogic extends AbstractBlockLogicExtension {
 
 	private boolean power = false;
-	private final PointLightSource light;
+	private PointLightSource light;
 
 	/**
 	 *
@@ -25,10 +25,6 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	 */
 	public BoosterLogic(Block block, Coordinate coord) {
 		super(block, coord);
-		light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12, WE.getGameplay().getView());
-		light.setSaveToDisk(false);
-		light.disable();
-		light.spawn(coord.toPoint().add(0, 0, Block.GAME_EDGELENGTH2*0.5f));
 	}
 
 	/**
@@ -37,6 +33,12 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	 */
 	@Override
 	public void update(float dt) {
+		if (light == null) {
+			light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12, WE.getGameplay().getView());
+			light.setSaveToDisk(false);
+			light.disable();
+			light.spawn(getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH2 * 0.5f));
+		}
 		//power surrounding cables
 		power = false;
 		Block neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();

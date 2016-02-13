@@ -140,8 +140,7 @@ public class SpiderRobot extends Robot{
 						|| id == CavelandBlocks.CLBlocks.SULFUR.getId()
 					) {
 						if (workingBlock == null || workingBlock.getBlock() == null) {
-							workingBlock = new Coordinate(0, 0, 0);
-							workingBlock.setFromPoint(laserdot.getPosition());
+							workingBlock = laserdot.getPosition().toCoord();
 							//go to resources
 							MessageManager.getInstance().dispatchMessage(
 								this,

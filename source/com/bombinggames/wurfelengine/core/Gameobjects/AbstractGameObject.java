@@ -307,7 +307,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 
 	@Override
 	public void render(GameView view, Camera camera) {
-		if (!hidden) {
+		if (!hidden && getPosition()!=null) {
 			Color fogcolor = null;
 			if (WE.getCVars().getValueB("enableFog")) {
 				//can use CVars for dynamic change. using harcored values for performance reasons

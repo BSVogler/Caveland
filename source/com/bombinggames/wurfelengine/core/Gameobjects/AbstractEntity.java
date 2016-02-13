@@ -162,11 +162,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	@Override
 	public float getX() {
+		if (position==null) return 0;
 		return position.getX();
 	}
 	
 	@Override
 	public float getY() {
+		if (position==null) return 0;
 		return position.getY();
 	}
 	

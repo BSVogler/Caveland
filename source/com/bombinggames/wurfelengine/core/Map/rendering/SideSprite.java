@@ -31,7 +31,6 @@
 package com.bombinggames.wurfelengine.core.map.rendering;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import static com.badlogic.gdx.graphics.g2d.Batch.C1;
 import static com.badlogic.gdx.graphics.g2d.Batch.C2;
@@ -88,79 +87,6 @@ public class SideSprite extends TextureRegion {
 	private Rectangle bounds;
 	private final Side side;
 	private int aoFlags;
-
-	/**
-	 * Creates an uninitialized sprite. The sprite will need a texture region
-	 * and bounds set before it can be drawn.
-	 */
-	public SideSprite() {
-		setColor(1, 1, 1, 1);
-		this.side = Side.TOP;
-	}
-
-	/**
-	 * Creates a sprite with width, height, and texture region equal to the size
-	 * of the texture.
-	 *
-	 * @param texture
-	 */
-	public SideSprite(Texture texture) {
-		this(texture, 0, 0, texture.getWidth(), texture.getHeight());
-	}
-
-	/**
-	 * Creates a sprite with width, height, and texture region equal to the
-	 * specified size. The texture region's upper left corner will be 0,0.
-	 *
-	 * @param texture
-	 * @param srcWidth The width of the texture region. May be negative to flip
-	 * the sprite when drawn.
-	 * @param srcHeight The height of the texture region. May be negative to
-	 * flip the sprite when drawn.
-	 */
-	public SideSprite(Texture texture, int srcWidth, int srcHeight) {
-		this(texture, 0, 0, srcWidth, srcHeight);
-	}
-
-	/**
-	 * Creates a sprite with width, height, and texture region equal to the
-	 * specified size.
-	 *
-	 * @param texture
-	 * @param srcX
-	 * @param srcY
-	 * @param srcWidth The width of the texture region. May be negative to flip
-	 * the sprite when drawn.
-	 * @param srcHeight The height of the texture region. May be negative to
-	 * flip the sprite when drawn.
-	 */
-	public SideSprite(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
-		if (texture == null) {
-			throw new IllegalArgumentException("texture cannot be null.");
-		}
-		this.side = Side.TOP;
-		setTexture(texture);
-		setRegion(srcX, srcY, srcWidth, srcHeight);
-		setColor(1, 1, 1, 1);
-		setSize(Math.abs(srcWidth), Math.abs(srcHeight));
-		setOrigin(width / 2, height / 2);
-	}
-
-	// Note the region is copied.
-	/**
-	 * Creates a sprite based on a specific TextureRegion, the new sprite's
-	 * region is a copy of the parameter region - altering one does not affect
-	 * the other
-	 *
-	 * @param region
-	 */
-	public SideSprite(TextureRegion region) {
-		setRegion(region);
-		setColor(1, 1, 1, 1);
-		setSize(region.getRegionWidth(), region.getRegionHeight());
-		setOrigin(width / 2, height / 2);
-		this.side = Side.TOP;
-	}
 	
 	public SideSprite(TextureRegion region, Side side, int aoFlags) {
 		this.side = side;
@@ -168,26 +94,6 @@ public class SideSprite extends TextureRegion {
 		this.aoFlags = aoFlags;
 		setColor(1, 1, 1, 1);
 		setSize(region.getRegionWidth(), region.getRegionHeight());
-		setOrigin(width / 2, height / 2);
-	}
-
-	/**
-	 * Creates a sprite with width, height, and texture region equal to the
-	 * specified size, relative to specified sprite's texture region.
-	 *
-	 * @param region
-	 * @param srcX
-	 * @param srcY
-	 * @param srcWidth The width of the texture region. May be negative to flip
-	 * the sprite when drawn.
-	 * @param srcHeight The height of the texture region. May be negative to
-	 * flip the sprite when drawn.
-	 */
-	public SideSprite(TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-		this.side = Side.TOP;
-		setRegion(region, srcX, srcY, srcWidth, srcHeight);
-		setColor(1, 1, 1, 1);
-		setSize(Math.abs(srcWidth), Math.abs(srcHeight));
 		setOrigin(width / 2, height / 2);
 	}
 

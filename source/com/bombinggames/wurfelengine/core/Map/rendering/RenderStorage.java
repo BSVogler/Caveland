@@ -151,6 +151,11 @@ public class RenderStorage implements Telegraph  {
 		}
 		
 		//remove chunks which are not used
+		data.forEach(chunk -> {
+			if (!chunk.cameraAccess()) {
+				chunkPool.add(chunk);
+			}
+		});
 		data.removeIf(chunk -> !chunk.cameraAccess());
 	}
 	
@@ -158,6 +163,7 @@ public class RenderStorage implements Telegraph  {
 	 * clears the used RenderChunks then resets
 	 */
 	public void refresh(){
+		data.forEach(chunk -> chunkPool.add(chunk));
 		data.clear();
 		checkNeededChunks();
 	}
@@ -167,19 +173,20 @@ public class RenderStorage implements Telegraph  {
 	 *
 	 * @param x
 	 * @param y
-	 * @return true if added a new renderchunk in the check
+	 * @return true if created a new renderchunk in the check
 	 */
 	private boolean checkChunk(int x, int y) {
 		RenderChunk rChunk = getChunk(x, y);
-		if (rChunk == null) {//not in storage
+		//check if in storage
+		if (rChunk == null) {
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
-				RenderChunk newRChunk = getChunkFromPool();
-				newRChunk.init(this, mapChunk);
-				data.add(newRChunk);
-				newRChunk.setCameraAccess(true);
-				AmbientOcclusionCalculator.calcAO(newRChunk);
-				hiddenSurfaceDetection(newRChunk, zRenderingLimit - 1);
+				rChunk = getChunkFromPool();
+				rChunk.init(this, mapChunk);
+				data.add(rChunk);
+				rChunk.setCameraAccess(true);
+				AmbientOcclusionCalculator.calcAO(rChunk);
+				hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
 
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
@@ -451,8 +458,8 @@ public class RenderStorage implements Telegraph  {
 			Chunk chunk = (Chunk) msg.extraInfo;
 			//renderchunk is outdatet so remove it
 			RenderChunk rChunk = getChunk(chunk.getChunkX(), chunk.getChunkY());
-			if (rChunk!=null) {
-				chunkPool.add(rChunk);
+			if (rChunk != null) {
+				chunkPool.add(rChunk);//add to pool
 				data.remove(rChunk);
 			}
 			checkChunk(chunk.getChunkX(), chunk.getChunkY());

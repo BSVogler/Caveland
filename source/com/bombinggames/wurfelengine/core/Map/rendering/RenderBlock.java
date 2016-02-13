@@ -639,16 +639,6 @@ public class RenderBlock extends AbstractGameObject {
 		this.coord = coord;
 	}	
 	
-	@Override
-	public float getX() {
-		return coord.getX() * Block.GAME_DIAGLENGTH + (coord.getY() % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
-	}
-
-	@Override
-	public float getY() {
-		return coord.getY() * Block.GAME_DIAGLENGTH2;
-	}
-	
 	/**
 	 * gets the identifier and stores them in the map
 	 * @return 

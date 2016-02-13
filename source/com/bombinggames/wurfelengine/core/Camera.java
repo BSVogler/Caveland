@@ -627,28 +627,25 @@ public class Camera{
 	
 	/**
 	 * topological sort
-	 * @param n root node
+	 * @param r root node
 	 */
-	private void visit(Renderable n) {
-		if (n.isMarkedTemporarily()) {
+	private void visit(Renderable r) {
+		if (r.isMarkedTemporarily()) {
 			//throw new Error("Found a circle. Not a DAG");
 			return;
 		}
-		if (!n.isMarked()) {
-			n.markTemporarily();
-			LinkedList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
+		if (!r.isMarked()) {
+			r.markTemporarily();
+			LinkedList<Renderable> covered = r.getCovered(gameView.getRenderStorage());
 			for (Renderable m : covered) {
 				visit(m);
 			}
-			n.markPermanent();
-			n.unmarkTemporarily();
-			if (n.getX() >= getVisibleLeftBorderVS() &&
-				n.getX() <= getVisibleRightBorderVS() &&
-				//n.getY() >= getVisibleBackBorder() &&
-				n.shouldBeRendered(this)) {
+			r.markPermanent();
+			r.unmarkTemporarily();
+			if (r.shouldBeRendered(this)) {
 				if (objectsToBeRendered < maxsprites) {
 					//fill only up to available size
-					depthlist.add(n);
+					depthlist.add(r);
 					objectsToBeRendered++;
 				}
 			}

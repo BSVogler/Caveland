@@ -102,10 +102,6 @@ public interface Renderable {
 	 */
 	public Position getPosition();
 
-	public float getX();
-	
-	public float getY();
-	
 	/**
 	 *
 	 * @param camera

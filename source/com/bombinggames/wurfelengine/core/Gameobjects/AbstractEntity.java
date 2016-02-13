@@ -161,19 +161,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		this.position = pos;
 	}
 
-	@Override
-	public float getX() {
-		if (position==null) return 0;
-		return position.getX();
-	}
-	
-	@Override
-	public float getY() {
-		if (position==null) return 0;
-		return position.getY();
-	}
-	
-	
     /**
      * Is the entity laying/standing on the ground?
      * @return true when on the ground. False if in air or not in memory.

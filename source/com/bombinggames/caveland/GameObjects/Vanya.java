@@ -120,9 +120,9 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 			if (nextWaypoint == null) {
 				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * Block.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
-					Vector3 vec3 = ejiraList.get(0).getPosition().cpy().sub(getPosition().toPoint());
+					Vector3 vecToEjira = ejiraList.get(0).getPosition().cpy().sub(getPosition());
 					setSpeedHorizontal(0);
-					setOrientation(new Vector2(vec3.x, vec3.y).nor());
+					setOrientation(new Vector2(vecToEjira.x, vecToEjira.y).nor());
 				}
 			}
 			

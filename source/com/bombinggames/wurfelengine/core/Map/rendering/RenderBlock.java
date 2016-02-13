@@ -207,14 +207,18 @@ public class RenderBlock extends AbstractGameObject{
 		(55 << 16) + (55 << 8) + 55
 	};
 	/**
-	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte
+	 * byte 0: left side, byte 1: top side, byte 2: right side.<br>In each byte the
 	 * bit order: <br>
-	 * 7 \ 0 / 1<br>
-	 * -------<br>
-	 * 6 | - | 2<br>
-	 * -------<br>
-	 * 5 / 4 \ 3<br>
-	 */
+	 * &nbsp;&nbsp;\&nbsp;0/<br>
+	 * 7&nbsp;&nbsp;\/1<br>
+	 * \&nbsp;&nbsp;/\&nbsp;&nbsp;/<br>
+	 * 6\/8&nbsp;\/2<br>
+	 * &nbsp;/\&nbsp;&nbsp;/\<br>
+	 * /&nbsp;&nbsp;\/&nbsp;3\<br>
+	 * &nbsp;&nbsp;5/\<br>
+	 * &nbsp;&nbsp;/&nbsp;4\<br>
+	 * <br>
+	 **/
 	private int aoFlags;
 	/**
 	 * three bits used, for each side one: TODO: move to aoFlags byte 3

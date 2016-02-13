@@ -38,11 +38,11 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.lightengine.LightEngine;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -302,7 +302,7 @@ public class Controller implements GameManager {
 			if (devtools == null) {
 				devtools = new DevTools(10, 50);
 			}
-			devtools.update(Gdx.graphics.getRawDeltaTime() * 1000f);
+			devtools.update();
 		} else {
 			devtools = null;
 		}

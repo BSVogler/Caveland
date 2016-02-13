@@ -48,7 +48,7 @@ public class DevTools {
     /**
      *The visualised width of every data
      */
-    public static final int width=2;
+    public static final int WIDTH=3;
     private final float[] data = new float[100];
     private final int leftOffset, topOffset, maxHeight;
     private float timeStepMin;
@@ -60,31 +60,28 @@ public class DevTools {
     private long maxMemory;
     private long usedMemory;
 
-    /**
-     *
-     * @param xPos the position of the diagram from left
-     * @param yPos the position of the diagram from top
-     */
-    public DevTools(final int xPos, final int yPos) {
-        this.leftOffset = xPos;
-        this.topOffset = yPos;
-        maxHeight=150;   
-    }
+  /**
+	 *
+	 * @param xPos the position of the diagram from left
+	 * @param yPos the position of the diagram from top
+	 */
+	public DevTools(final int xPos, final int yPos) {
+		this.leftOffset = xPos;
+		this.topOffset = yPos;
+		maxHeight = 150;
+	}
     
     /**
-     *Updates the diagramm
-     * @param dt
-     */
-    public void update(float dt){
-        timeStepMin += dt;
-        if (timeStepMin>50){//update only every t ms
-            timeStepMin = 0;
-            
-            field++;//move to next field
-            if (field >= data.length) field = 0; //start over           
-            
-            data[field] = Gdx.graphics.getDeltaTime();//save delta time
-        }
+	 * Updates the diagramm
+	 *
+	 */
+	public void update() {
+		float dt = Gdx.graphics.getRawDeltaTime();
+		field++;//move to next field
+		if (field >= data.length) {
+			field = 0; //start over           
+		}
+		data[field] = dt;//save delta time
         
         Runtime runtime = Runtime.getRuntime();
         NumberFormat format = NumberFormat.getInstance();
@@ -128,30 +125,30 @@ public class DevTools {
 			
             shr.rect(xPos, yPos, getWidth(), -maxHeight);
             
-            //render current field bar
-            shr.setColor(new Color(1, 0, 1, 0.8f));
-            shr.rect(
-                xPos+width*field,
-                yPos-maxHeight,
-                width,
-                getSavedFPS(field)
-            );
             
             //render RAM
-            shr.setColor(new Color(.2f, 1, .2f, 0.8f));
-            shr.rect(
-                xPos,
-                yPos,
-                usedMemory*width*data.length/allocatedMemory,
-                -20
-            );
-            
-            shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.8f));
-            shr.rect(
-                xPos + usedMemory*width*data.length/allocatedMemory,
-                yPos,
-                width*data.length - width*data.length*usedMemory/allocatedMemory,
-                -20
+			shr.setColor(new Color(.2f, 1, .2f, 0.5f));
+			shr.rect(
+				xPos,
+				yPos,
+				usedMemory * WIDTH * data.length / allocatedMemory,
+				-20
+			);
+
+			shr.setColor(new Color(0.5f, 0.5f, 0.5f, 0.6f));
+			shr.rect(
+				xPos + usedMemory * WIDTH * data.length / allocatedMemory,
+				yPos,
+				WIDTH * data.length - WIDTH * data.length * usedMemory / allocatedMemory,
+				-20
+			);
+			
+            //render current field bar
+            shr.setColor(new Color(getSavedDelta(field)/0.0333f-0.5f, 0, 1, 0.8f));
+            shr.rect(xPos+WIDTH*field,
+                yPos-maxHeight,
+                WIDTH,
+                getSavedDelta(field)*3000
             );
             
             shr.end();
@@ -161,46 +158,36 @@ public class DevTools {
             
             //render steps
             shr.setColor(Color.GRAY);
-            shr.line(xPos, yPos-maxHeight, xPos+width*data.length, yPos-maxHeight);
-            shr.line(xPos, yPos-maxHeight+30, xPos+width*data.length, yPos-maxHeight+30);
-            shr.line(xPos, yPos-maxHeight+60, xPos+width*data.length, yPos-maxHeight+60);
-            shr.line(xPos, yPos-maxHeight+120, xPos+width*data.length, yPos-maxHeight+120);
-            
-            //render each FPS field in memory
+            shr.line(xPos, yPos-maxHeight, xPos+WIDTH*data.length, yPos-maxHeight);
+            shr.line(xPos, yPos-maxHeight+0.0166f*3000, xPos+WIDTH*data.length, yPos-maxHeight+0.0166f*3000);
+            shr.line(xPos, yPos-maxHeight+0.0333f*3000, xPos+WIDTH*data.length, yPos-maxHeight+0.0333f*3000);
+            shr.line(xPos, yPos-maxHeight+0.0666f*3000, xPos+WIDTH*data.length, yPos-maxHeight+0.0666f*3000);
+            //render each delta field in memory
             for (int i = 0; i < data.length-1; i++) {
-                shr.setColor(new Color(0, 0, 1, 0.9f));
-                shr.line(
-                    xPos+width*i+width/2,
-                    yPos+getSavedFPS(i)-maxHeight,
-                    xPos+width*(i+1.5f),
-                    yPos+getSavedFPS(i+1)-maxHeight
+				shr.end();
+				shr.setColor(new Color(getSavedDelta(i+1)/0.0333f-0.5f, 1f-getSavedDelta(i+1)/0.0333f, 0, 0.9f));
+				shr.begin(ShapeRenderer.ShapeType.Line);
+                shr.line(xPos+WIDTH*i+WIDTH/2,
+                    yPos+getSavedDelta(i)*3000-maxHeight,
+                    xPos+WIDTH*(i+1.5f),
+                    yPos+getSavedDelta(i+1)*3000-maxHeight
                 );
+				
             }
             
-            //render average FPS         
-
+            //render average values       
             float avg = getAverage();
             if (avg>0) {
-                //FPS
-               shr.setColor(new Color(1, 0, 1, 0.8f));
-                shr.line(
-                    xPos,
-                    yPos-maxHeight+1/avg,
-                    xPos+width*data.length,
-                    yPos-maxHeight+1/avg
-                );
-                
                  //delta values
                 shr.setColor(new Color(0, 0.3f, 0.8f, 0.7f));
-                shr.line(
-                    xPos,
+                shr.line(xPos,
                     yPos-maxHeight+avg*3000,
-                    xPos+width*data.length,
+                    xPos+WIDTH*data.length,
                     yPos-maxHeight+avg*3000
                 );
                 String deltaT = new DecimalFormat("#.##").format(avg*1000);
 				view.getSpriteBatch().begin();
-				view.drawString("d: " + deltaT, xPos, (int) (yPos - maxHeight + avg * 3000), new Color(0, 0.3f, 0.8f, 0.7f));
+				view.drawString("d: " + deltaT, xPos, (int) (yPos-maxHeight+avg*3000), new Color(0, 0.3f, 0.8f, 0.7f));
 				view.getSpriteBatch().end();
             }
            
@@ -211,19 +198,33 @@ public class DevTools {
         }
     }
     
-    /**
-     *Get a recorded FPS value. The time between savings is at least the timeStepMin
-     * @param pos the array position
-     * @return FPS value
-     * @see #getTimeStepMin() 
-     */
-    public int getSavedFPS(int pos){
-        if (data[pos]==0)
-            return 0;
-        else
-            return (int) (1/data[pos]);
-    }
+	/**
+	 * Get a recorded FPS value. The time between savings is at least the
+	 * timeStepMin
+	 *
+	 * @param pos the array position
+	 * @return FPS value
+	 * @see #getTimeStepMin()
+	 */
+	public int getSavedFPS(int pos) {
+		if (data[pos] == 0) {
+			return 0;
+		} else {
+			return (int) (data[pos]);
+		}
+	}
 
+	/**
+	 * Get a recorded FPS value. The time between savings is at least the
+	 * timeStepMin
+	 *
+	 * @param pos the array position
+	 * @return time in s
+	 */
+	public float getSavedDelta(int pos) {
+		return data[pos];
+	}
+	
     /**
      * The minimum time between two FPS values.
      * @return 
@@ -233,7 +234,7 @@ public class DevTools {
     }
     
     /**
-     *Returns the average delta time.
+     * Returns the average delta time.
      * @return
      */
     public float getAverage(){
@@ -284,6 +285,6 @@ public class DevTools {
      * @return in pixels
      */
     public int getWidth() {
-        return width*data.length;
+        return WIDTH*data.length;
     }
 }

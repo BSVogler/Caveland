@@ -154,6 +154,9 @@ public class RenderStorage implements Telegraph  {
 		data.removeIf(chunk -> !chunk.cameraAccess());
 	}
 	
+	/**
+	 * clears the used RenderChunks then resets
+	 */
 	public void refresh(){
 		data.clear();
 		checkNeededChunks();
@@ -245,7 +248,7 @@ public class RenderStorage implements Telegraph  {
 	 *
 	 * @param chunkX
 	 * @param chunkY
-	 * @return if not in memory return null
+	 * @return if not in memory returns null
 	 */
 	public RenderChunk getChunk(int chunkX, int chunkY) {
 		for (RenderChunk chunk : data) {

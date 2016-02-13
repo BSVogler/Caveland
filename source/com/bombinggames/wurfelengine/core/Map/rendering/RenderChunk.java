@@ -225,10 +225,18 @@ public class RenderChunk {
 		return data[x][y][z];
 	}
 
+	/**
+	 * 
+	 * @return treu if a camera rendered this chunk this frame
+	 */
 	boolean cameraAccess() {
 		return cameraAccess;
 	}
 
+	/**
+	 * camera used this chunk
+	 * @param b 
+	 */
 	void setCameraAccess(boolean b) {
 		cameraAccess = b;
 	}

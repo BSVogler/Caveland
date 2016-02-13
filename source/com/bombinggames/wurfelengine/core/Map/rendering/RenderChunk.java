@@ -146,19 +146,6 @@ public class RenderChunk {
 	}
 
 	/**
-	 * /**
-	 * calcualtes drop shadow
-	 */
-	private void initShading() {
-		DataIterator<RenderBlock> it = getIterator(0, Chunk.getBlocksZ() - 1);
-		while (it.hasNext()) {
-			it.next();
-			int[] index = it.getCurrentIndex();
-			resetShadingCoord(index[0], index[1], index[2]);
-		}
-	}
-
-	/**
 	 * Resets the shading for one block. Calculates drop shadow from blocks
 	 * above.
 	 *

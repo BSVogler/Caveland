@@ -277,7 +277,31 @@ public class RenderStorage implements Telegraph  {
 	 * @return the single block you wanted
 	 */
 	public RenderBlock getBlock(final int x, final int y, final int z) {
-		return getBlock(new Coordinate(x, y, z));
+		if (z < 0) {
+			return getNewGroundBlockInstance();
+		}
+		RenderChunk chunkWithBlock = null;
+		int left, top;
+		//loop over storage
+		for (RenderChunk chunk : data) {
+			Coordinate tl = chunk.getTopLeftCoordinate();
+			left = tl.getX();
+			top = tl.getY();
+			//check if coordinates are inside the chunk
+			if (left <= x
+				&& x < left + Chunk.getBlocksX()
+				&& top <= y
+				&& y < top + Chunk.getBlocksY()) {
+				data.addFirst(data.removeLast());
+				chunkWithBlock = chunk;
+				break;
+			}
+		}
+		if (chunkWithBlock == null) {
+			return null;
+		} else {
+			return chunkWithBlock.getBlock(x, y, z);//find chunk in x coord
+		}
 	}
 
 	/**

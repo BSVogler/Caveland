@@ -219,7 +219,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	/**
-	 * inverses the dirty flag comparison so everything marked is now unmarked
+	 * inverses the dirty flag comparison so everything marked is now unmarked. used to mark the visited obejcts with depthsort.
 	 */
 	public static void inverseDirtyFlag() {
 		currentDirtyFlag = !currentDirtyFlag;

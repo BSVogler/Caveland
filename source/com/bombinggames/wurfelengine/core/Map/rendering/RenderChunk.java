@@ -80,19 +80,22 @@ public class RenderChunk {
 			for (int y = 0; y < Chunk.getBlocksY(); y++) {
 				for (int z = 0; z < Chunk.getBlocksZ(); z++) {
 					Block block = chunk.getBlockViaIndex(x, y, z);
-					if (block != null) {
-						data[x][y][z] = block.toRenderBlock();
-					} else {
-						data[x][y][z] = new RenderBlock();
+					//update only if cell changed
+					if (data[x][y][z] == null || block != data[x][y][z].getBlockData()) {
+						if (block != null) {
+							data[x][y][z] = block.toRenderBlock();
+						} else {
+							data[x][y][z] = new RenderBlock();
+						}
+						data[x][y][z].setPosition(
+							new Coordinate(
+								tlX + x,
+								tlY + y,
+								z
+							)
+						);
 					}
-					data[x][y][z].setPosition(
-						rS,
-						new Coordinate(
-							tlX + x,
-							tlY + y,
-							z
-						)
-					);
+					data[x][y][z].fillCovered(rS);
 				}
 			}
 		}

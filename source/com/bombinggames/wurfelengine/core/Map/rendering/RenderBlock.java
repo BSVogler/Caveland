@@ -284,7 +284,7 @@ public class RenderBlock extends AbstractGameObject{
 	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.Position)
 	 */
 	public RenderBlock spawn(RenderStorage rS, Coordinate coord){
-		setPosition(rS, coord);
+		setPosition(coord);
 		Controller.getMap().setBlock(this);
 		return this;
 	};
@@ -609,16 +609,6 @@ public class RenderBlock extends AbstractGameObject{
 		this.coord = coord;
 	}	
 	
-	/**
-	 * keeps reference
-	 * @param rS
-	 * @param coord 
-	 */
-	public void setPosition(RenderStorage rS, Coordinate coord){
-		this.coord = coord;
-		fillCovered(rS);
-	}	
-
 	@Override
 	public float getX() {
 		return coord.getX() * Block.GAME_DIAGLENGTH + (coord.getY() % 2 != 0 ? Block.VIEW_WIDTH2 : 0);

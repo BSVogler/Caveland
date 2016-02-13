@@ -607,66 +607,68 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	@Override
 	public ArrayList<Renderable> getCovered(RenderStorage rs) {
 		ArrayList<Renderable> res = new ArrayList<>(11);
-		Coordinate pos = position.toCoord();
+		if (position!=null) {
+			Coordinate coord = position.toCoord();
 
-		RenderBlock block;
-		//block = rs.getBlock(pos);//draw block in this cell first
-//		if (block != null) {
-//			res.add(block);
-//		}
-		block = rs.getBlock(pos.goToNeighbour(0));//block behind
-		if (block != null) {
-			res.add(block);
-		}
-		pos.goToNeighbour(4);
-		block = rs.getBlock(pos.goToNeighbour(2));//block behind
-		if (block != null) {
-			res.add(block);
-		}
-		pos.goToNeighbour(6);
-		block = rs.getBlock(pos.goToNeighbour(6));//block behind
-		if (block != null) {
-			res.add(block);
-		}
-		pos.goToNeighbour(2);
-		
-		//render this ent before blocks below
-		if (pos.getZ() > 0) {
-			block = rs.getBlock(pos.add(0, 0, -1));//draw block below first
+			RenderBlock block;
+			//block = rs.getBlock(pos);//draw block in this cell first
+	//		if (block != null) {
+	//			res.add(block);
+	//		}
+			block = rs.getBlock(coord.goToNeighbour(0));//block behind
 			if (block != null) {
 				res.add(block);
 			}
-			block = rs.getBlock(pos.goToNeighbour(7));//back left
+			coord.goToNeighbour(4);
+			block = rs.getBlock(coord.goToNeighbour(2));//block behind
 			if (block != null) {
 				res.add(block);
 			}
-			block = rs.getBlock(pos.goToNeighbour(1));//back
+			coord.goToNeighbour(6);
+			block = rs.getBlock(coord.goToNeighbour(6));//block behind
 			if (block != null) {
 				res.add(block);
 			}
-			block = rs.getBlock(pos.goToNeighbour(3));//back right
-			if (block != null) {
-				res.add(block);
-			}
-			block = rs.getBlock(pos.goToNeighbour(3));//right
-			if (block != null) {
-				res.add(block);
-			}
-			block = rs.getBlock(pos.goToNeighbour(5));//front right
-			if (block != null) {
-				res.add(block);
-			}
-			block = rs.getBlock(pos.goToNeighbour(5));
-			if (block != null) {
-				res.add(block);
-			}
-			block = rs.getBlock(pos.goToNeighbour(7));
-			if (block != null) {
-				res.add(block);
-			}
-			block = rs.getBlock(pos.goToNeighbour(7));
-			if (block != null) {
-				res.add(block);
+			coord.goToNeighbour(2);
+
+			//render this ent before blocks below
+			if (coord.getZ() > 0) {
+				block = rs.getBlock(coord.add(0, 0, -1));//draw block below first
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(7));//back left
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(1));//back
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(3));//back right
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(3));//right
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(5));//front right
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(5));
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(7));
+				if (block != null) {
+					res.add(block);
+				}
+				block = rs.getBlock(coord.goToNeighbour(7));
+				if (block != null) {
+					res.add(block);
+				}
 			}
 		}
 		return res;

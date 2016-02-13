@@ -617,8 +617,10 @@ public class Camera{
 		
 		//cleanup
 		for (RenderBlock cell : modifiedCells) {
-			cell.fillCovered(gameView.getRenderStorage());
+			cell.clearCoveredEnts();
 		}
+		//has been rebuild
+		RenderBlock.setRebuildCoverList(false);
 	}
 	
 	/**

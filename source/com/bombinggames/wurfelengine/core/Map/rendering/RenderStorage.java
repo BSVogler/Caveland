@@ -75,7 +75,7 @@ public class RenderStorage implements Telegraph  {
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
 		zRenderingLimit = Chunk.getBlocksZ();
-		MessageManager.getInstance().addListener(this, Events.chunkChanged.getId());
+		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 	}
 
 	public void update(float dt){
@@ -146,6 +146,7 @@ public class RenderStorage implements Telegraph  {
 				if (lastCenterX.get(i)==null || lastCenterY==null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
 					lastCenterX.set(i, camera.getCenterChunkX());
 					lastCenterY.set(i, camera.getCenterChunkY());
+					RenderBlock.setRebuildCoverList(true);
 				}
 			}
 		}
@@ -162,10 +163,16 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * clears the used RenderChunks then resets
 	 */
-	public void refresh(){
-		data.forEach(chunk -> chunkPool.add(chunk));
-		data.clear();
-		checkNeededChunks();
+	public void reinitChunks(){
+		RenderStorage rS = this;
+		@SuppressWarnings("unchecked")
+		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
+		dataclone.forEach((RenderChunk chunk) -> {
+			chunk.init(rS);
+			AmbientOcclusionCalculator.calcAO(chunk);
+			hiddenSurfaceDetection(chunk, zRenderingLimit - 1);
+		});
+	
 	}
 	
 	/**
@@ -478,22 +485,16 @@ public class RenderStorage implements Telegraph  {
 	
 	@Override
 	public boolean handleMessage(Telegram msg) {
-		if (msg.message == Events.chunkChanged.getId()) {
-			Chunk chunk = (Chunk) msg.extraInfo;
-			//renderchunk is outdatet so remove it
-			RenderChunk rChunk = getChunk(chunk.getChunkX(), chunk.getChunkY());
-			if (rChunk != null) {
-				chunkPool.add(rChunk);//add to pool
-				data.remove(rChunk);
-			}
-			checkChunk(chunk.getChunkX(), chunk.getChunkY());
+		if (msg.message == Events.mapChanged.getId()) {
+			reinitChunks();
+			RenderBlock.setRebuildCoverList(true);
 			return true;
 		}
 		return false;
 	}
 
 	public void dispose() {
-		MessageManager.getInstance().removeListener(this, Events.chunkChanged.getId());
+		MessageManager.getInstance().removeListener(this, Events.mapChanged.getId());
 	}
 
 }

@@ -943,7 +943,7 @@ public class RenderBlock extends AbstractGameObject{
 	}
 
 	/**
-	 *
+	 * Makes every side visible
 	 */
 	public void setUnclipped() {
 		clipping = (byte) 0;

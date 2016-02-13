@@ -82,7 +82,7 @@ public class SpiderRobot extends Robot{
 		}
 		
 		if (hasPosition()) {
-			if (laserdot != null) {
+			if (laserdot != null && laserdot.hasPosition()) {
 				//look for resources
 				if (moveUp) {
 					scanHeight += dt / 300f;

@@ -1012,11 +1012,24 @@ public class RenderBlock extends AbstractGameObject{
 			if (block != null) {
 				covered.add(block);
 			}
+			
 			//back left
 			block = rs.getBlock(nghb.goToNeighbour(6));
 			if (block != null) {
 				covered.add(block);
 			}
+			if (nghb.getZ() < Chunk.getBlocksZ()-1){
+				block = rs.getBlock(nghb.add(0, 0, 1));//back
+				if (block != null) {
+					covered.add(block);
+				}
+				block = rs.getBlock(nghb.add(1, 0, 0));//back
+				if (block != null) {
+					covered.add(block);
+				}
+				nghb.add(-1, 0, -1);
+			}
+			
 			nghb.goToNeighbour(3);//return to origin
 		}
 		if (!coveredEnts.isEmpty())

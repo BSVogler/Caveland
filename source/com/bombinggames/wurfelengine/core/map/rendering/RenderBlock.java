@@ -129,8 +129,11 @@ public class RenderBlock extends AbstractGameObject {
 			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue());
 		return 	sprite != null;
 	}
+	
+	public static void setRebuildCoverList(boolean rebuildCoverList) {
+		RenderBlock.rebuildCoverList = rebuildCoverList;
+	}
 
-    
    /**
      * Returns a color representing the block. Picks from the sprite sprite.
      * @param id id of the RenderBlock
@@ -345,10 +348,11 @@ public class RenderBlock extends AbstractGameObject {
     public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
         if (!isHidden()) {
             if (hasSides()) {
+				float scale = getScaling();
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
-					(int) (yPos+VIEW_HEIGHT*(1+getScaling())),
+					(int) (xPos-VIEW_WIDTH2*scale),
+					(int) (yPos+VIEW_HEIGHT*scale),
 					Side.TOP,
 					color,
 					0
@@ -362,7 +366,7 @@ public class RenderBlock extends AbstractGameObject {
 				}
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*(1+getScaling())),
+					(int) (xPos-VIEW_WIDTH2*scale),
 					yPos,
 					Side.LEFT,
 					color,
@@ -419,8 +423,8 @@ public class RenderBlock extends AbstractGameObject {
 		
         renderSide(
 			view,
-            coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(1+getScaling())) : 0),//right side is  half a block more to the right,
-            coords.getViewSpcY() - VIEW_HEIGHT2 + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(1+getScaling())) : 0),//the top is drawn a quarter blocks higher,
+            coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(getScaling())) : 0),//right side is  half a block more to the right,
+            coords.getViewSpcY() - VIEW_HEIGHT2 + ( side == Side.TOP ? (int) (VIEW_HEIGHT*(getScaling())) : 0),//the top is drawn a quarter blocks higher,
             side,
             staticShade ?
 				side == Side.RIGHT
@@ -559,9 +563,9 @@ public class RenderBlock extends AbstractGameObject {
 				break;
 		}
 		sprite.setPosition(xPos, yPos);
-		if (getScaling() != 0) {
+		if (getScaling() != 1) {
 			sprite.setOrigin(0, 0);
-			sprite.scale(getScaling());
+			sprite.setScale(getScaling());
 		}
 
 		//draw only outline or regularly?
@@ -1057,10 +1061,6 @@ public class RenderBlock extends AbstractGameObject {
 		nghb.goToNeighbour(3);//return to origin
 	}
 
-	public static void setRebuildCoverList(boolean rebuildCoverList) {
-		RenderBlock.rebuildCoverList = rebuildCoverList;
-	}
-	
 	public void clearCoveredEnts(RenderStorage rS){
 		coveredEnts.clear();
 	}

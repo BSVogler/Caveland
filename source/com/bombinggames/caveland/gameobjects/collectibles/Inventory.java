@@ -225,15 +225,15 @@ public class Inventory extends CollectibleContainer {
 		}
 		ent = get(1);
 		if (ent != null) {
-			ent.setScaling(-0.4f);
+			ent.setScaling(0.4f);
 			ent.render(view, (int) (left + 80), y);
-			ent.setScaling(0);
+			ent.setScaling(1);
 		}
 		ent = get(2);
 		if (ent != null) {
-			ent.setScaling(-0.4f);
+			ent.setScaling(0.4f);
 			ent.render(view, (int) (left + 140), y);
-			ent.setScaling(0);
+			ent.setScaling(1);
 		}
 		
 //		bgSprite.setX(leftbgSprite + 80);

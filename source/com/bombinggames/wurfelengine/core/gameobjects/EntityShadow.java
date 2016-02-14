@@ -82,7 +82,7 @@ public class EntityShadow extends AbstractEntity {
 		if (character == null || !character.hasPosition() || !hasPosition() || character.isHidden()) {
 			dispose();
 		} else {
-			setScaling(0);
+			setScaling(1);
 			setColor(
 				new Color(
 					.5f,
@@ -97,7 +97,7 @@ public class EntityShadow extends AbstractEntity {
 				setColor(
 					new Color(.5f, .5f, .5f, 0.2f)
 				);
-				setScaling(-0.5f);
+				setScaling(0.5f);
 				super.render(view, camera);
 			}
 		}

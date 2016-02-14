@@ -45,7 +45,7 @@ import java.util.logging.Logger;
  */
 public class EntityDrawable extends TextureRegionDrawable {
 	private AbstractEntity instance = null;
-	private float scaling = 0;
+	private float scaling = 1;
 	private float size = -0.5f;
 
 	/**

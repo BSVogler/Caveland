@@ -228,7 +228,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	//render information
 	private boolean hidden;
 	private float rotation;
-	private float scaling;
+	private float scaling = 1;
 	private byte spriteId;
 	private byte spriteValue = 0;
 
@@ -357,7 +357,8 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 				VIEW_HEIGHT2 - texture.offsetY
 			);
 			sprite.rotate(rotation);
-			sprite.scale(scaling);
+			//sprite.setOrigin(0, 0);
+			sprite.setScale(scaling);
 
 			sprite.setPosition(
 				xPos + texture.offsetX - texture.originalWidth / 2,
@@ -450,7 +451,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * Returns the scale factor of the object.
 	 *
-	 * @return 0 is no scaling
+	 * @return 1 is no scaling
 	 */
 	public float getScaling() {
 		return scaling;
@@ -485,7 +486,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 
 	/**
 	 *
-	 * @param scaling 0 no scaling
+	 * @param scaling 1 no scaling, &gt; bigger, &lt; 1 smaller
 	 */
 	public void setScaling(float scaling) {
 		this.scaling = scaling;

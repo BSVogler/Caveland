@@ -70,7 +70,7 @@ public class PlacableGUI extends WidgetGroup {
 	public PlacableGUI(Stage stage, Cursor selection, boolean left) {
 		this.stage = stage;
 
-		image = new Image(new BlockDrawable(getId(), getValue(), -0.4f));
+		image = new Image(new BlockDrawable(getId(), getValue(), 0.3f));
 		image.setPosition(50, 60);
 		addActor(image);
 		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
@@ -156,10 +156,10 @@ public class PlacableGUI extends WidgetGroup {
 		this.block = block;
 		if (block != null) {
 			label.setText(block.getName() + " "+ block.getId() + " - "+ block.getValue());
-			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), 0.3f));
 		} else {
 			label.setText("air 0 - 0");
-			image.setDrawable(new BlockDrawable((byte) 0, (byte) 0, -0.4f));
+			image.setDrawable(new BlockDrawable((byte) 0, (byte) 0, 0.3f));
 		}
 	}
 
@@ -172,7 +172,7 @@ public class PlacableGUI extends WidgetGroup {
 			if (placeBlocks) {
 				this.block = Block.getInstance(block.getId(), value);
 				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-				image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), -0.4f));
+				image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), 0.3f));
 			} else if (value == -1) {
 				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
 			} else {

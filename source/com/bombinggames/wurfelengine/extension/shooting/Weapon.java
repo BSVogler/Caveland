@@ -405,7 +405,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
                 aiming.x += Math.random() * (spread*2) -spread;
                 aiming.y += Math.random() * (spread*2) -spread;
 				bullet.setMovement(aiming.scl(40f));
-				bullet.setScaling(-0.8f);
+				bullet.setScaling(0.2f);
                 bullet.setMaxDistance(distance*Block.GAME_EDGELENGTH);
                 bullet.setDamage(damage);
                 bullet.setExplosive(explode);

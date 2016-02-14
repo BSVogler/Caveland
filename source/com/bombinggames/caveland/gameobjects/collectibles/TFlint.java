@@ -37,7 +37,7 @@ public class TFlint extends Collectible implements Interactable {
 		Particle sparkle = new Particle();
 		sparkle.setTTL(400);
 		sparkle.setType(ParticleType.FIRE);
-		sparkle.setScaling(-0.5f);
+		sparkle.setScaling(0.5f);
 		sparkle.setColor(new Color(0.9f,0.8f, 0.5f,1f));
 		sparksGenerator.setPrototype(sparkle);
 	}

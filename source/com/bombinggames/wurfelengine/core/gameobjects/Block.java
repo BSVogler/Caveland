@@ -268,7 +268,7 @@ public class Block implements Serializable {
 	}
 
 	/**
-	 * creates a new RenderBlock instance based on he data
+	 * creates a new RenderBlock instance based on the data
 	 *
 	 * @return
 	 */

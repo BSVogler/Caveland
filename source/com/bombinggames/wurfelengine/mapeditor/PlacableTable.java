@@ -31,6 +31,7 @@
 package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -64,7 +65,7 @@ public class PlacableTable extends Table {
 		setY(10);
 
 		if (left) {
-			setX(0);
+			setX(30);
 		} else {
 			setX(1480);
 		}
@@ -79,32 +80,31 @@ public class PlacableTable extends Table {
 			placableGUI.setVisible(true);
 			setVisible(true);
 		}
-		
-		//setScale(5f);
 
+		//setScale(5f);
 		if (!hasChildren()) {
 			int foundItems = 1;
 			if (placeBlocks) {//add blocks
 				//add air
 				add(
 					new PlacableItem(
-						new BlockDrawable((byte) 0,(byte) 0, -0.7f),
-						new BlockListener((byte) 0)
+						new BlockDrawable((byte) 0, (byte) 0, 0.35f),
+						new BlockListener((byte) 0, (byte) 0)
 					)
 				);
 				//add rest
-				for (byte i = 1; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
+				byte c = -1;
+				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 					Block block = Block.getInstance(i);
 					if (block != null) {
 						RenderBlock rBlock = block.toRenderBlock();
-						if (rBlock == null //add air
-							|| RenderBlock.isSpriteDefined(rBlock) //add defined blocks
-							|| !block.getName().equals("undefined")
-						) {
+						if (RenderBlock.isSpriteDefined(rBlock) //add defined blocks
+							|| !block.getName().equals("undefined")) {
+							c++;
 							add(
 								new PlacableItem(
-									new BlockDrawable(i, (byte) 0, -0.7f),
-									new BlockListener(i)
+									new BlockDrawable(i, (byte) 0, 0.35f),
+									new BlockListener(c, i)
 								)
 							);
 							foundItems++;
@@ -116,10 +116,8 @@ public class PlacableTable extends Table {
 				}
 			} else {
 				//add every registered entity class
-				for (
-					Map.Entry<String, Class<? extends AbstractEntity>> entry
-					: AbstractEntity.getRegisteredEntities().entrySet()
-				) {
+				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
+					: AbstractEntity.getRegisteredEntities().entrySet()) {
 					PlacableItem button = new PlacableItem(
 						new EntityDrawable(entry.getValue()),
 						new EntityListener(entry.getKey(), entry.getValue())
@@ -215,18 +213,26 @@ public class PlacableTable extends Table {
 	 */
 	private class BlockListener extends ClickListener {
 
+		private final byte blockId;
 		private final byte id;
 
-		BlockListener(byte id) {
+		BlockListener(byte id, byte blockId) {
+			this.blockId = blockId;
 			this.id = id;
 		}
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			if (id == 0) {
+			if (blockId == 0) {
 				placableGUI.setBlock(null);
 			} else {
-				placableGUI.setBlock(Block.getInstance(id));
+				placableGUI.setBlock(Block.getInstance(blockId));
+			}
+			if (id <= getChildren().size) {
+				for (Actor c : getChildren()) {
+					c.setScale(0.35f);
+				}
+				getChildren().get(id + 1).setScale(0.4f);
 			}
 		}
 	}

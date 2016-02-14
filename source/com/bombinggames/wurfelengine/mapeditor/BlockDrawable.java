@@ -28,7 +28,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -39,71 +38,77 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * a class what renders a block using the drawable interface.
+ *
  * @author Benedikt Vogler
  */
 public class BlockDrawable extends TextureRegionDrawable {
-    private final RenderBlock block;
-	/**
-	 * a factor relative to original size. 0 is default
-	 */
-    private float size = 0;
-    
-    /**
-     *
-     * @param id
-     */
-    public BlockDrawable(byte id) {
-		if (id >= Block.OBJECTTYPESNUM)
-			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
-        else
-			this.block = new RenderBlock(id, (byte) 0);
-		block.setScaling(size);
-    }
-	
+
+	private final RenderBlock block;
 
 	/**
-	 * 
+	 *
+	 * @param id
+	 */
+	public BlockDrawable(byte id) {
+		if (id >= Block.OBJECTTYPESNUM) {
+			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
+		} else {
+			this.block = new RenderBlock(id, (byte) 0);
+		}
+	}
+
+	/**
+	 *
 	 * @param id block id
 	 * @param value block value
 	 * @param size relative size
 	 */
 	public BlockDrawable(byte id, byte value, float size) {
-		if (id >= Block.OBJECTTYPESNUM)
+		if (id >= Block.OBJECTTYPESNUM) {
 			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
-        else
+		} else {
 			this.block = new RenderBlock(id, value);
-		this.size = size;
+		}
 		block.setScaling(size);
 	}
 
 	@Override
 	public void draw(Batch batch, float x, float y, float width, float height) {
 		if (block != null && block.getSpriteId() != 0) {
-		batch.end();//end current batch
-		//then use gameplay batch
-		boolean wasDefault = false;
-		if (WE.getGameplay().getView().isUsingDefaultShader()) {
-			WE.getGameplay().getView().setShader(WE.getGameplay().getView().getShader());
-			wasDefault = true;
-		}
-		WE.getGameplay().getView().getSpriteBatch().begin();
+			batch.end();//end current batch
+			//then use gameplay batch
+			boolean wasDefault = false;
+			if (WE.getGameplay().getView().isUsingDefaultShader()) {
+				WE.getGameplay().getView().setShader(WE.getGameplay().getView().getShader());
+				wasDefault = true;
+			}
+			//batch.setColor(new Color(1, 1, 1, 1));
+			batch.begin();
 
-		//block.setColor(new Color(1, 1, 1, 1));
-		block.render(
-			WE.getGameplay().getView(),
-			(int) (x + Block.VIEW_WIDTH2 * (1f + size)),
-			(int) y,
-			null,
-			true
-		);
-		
-		WE.getGameplay().getView().getSpriteBatch().end();
-		if (wasDefault) {
+			//block.setColor(new Color(1, 1, 1, 1));
+			block.resetLight();
+			block.render(WE.getGameplay().getView(),
+				(int) (x + Block.VIEW_WIDTH2 * block.getScaling()),//should be with -getLeftWidth() but then deos not align
+				(int) y,
+				null,
+				true
+			);
+
+			batch.end();
+			if (wasDefault) {
 				WE.getGameplay().getView().useDefaultShader();
 			}
-		batch.begin();
+			batch.begin();
 		}
 	}
+
+	@Override
+	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
+		block.setScaling(scaleY);
+		draw(batch, x, y, width, height);
+	}
+	
+	
 
 	/**
 	 *
@@ -111,16 +116,16 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getLeftWidth() {
-		return Block.VIEW_WIDTH2*(1f+size);
+		return Block.VIEW_WIDTH2 * block.getScaling();
 	}
-	
+
 	/**
 	 *
 	 * @return
 	 */
 	@Override
 	public float getRightWidth() {
-		return Block.VIEW_WIDTH2*(1f+size);
+		return Block.VIEW_WIDTH2 * block.getScaling();
 	}
 
 	/**
@@ -140,22 +145,22 @@ public class BlockDrawable extends TextureRegionDrawable {
 	public float getBottomHeight() {
 		return 0;
 	}
-	
-    /**
-     *
-     * @return
-     */
-    @Override
-    public float getMinHeight() {
-        return (Block.VIEW_HEIGHT+Block.VIEW_DEPTH)*(1f+size);
-    }
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public float getMinWidth() {
-        return Block.VIEW_WIDTH*(1f+size);
-    }
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public float getMinHeight() {
+		return (Block.VIEW_HEIGHT + Block.VIEW_DEPTH) * block.getScaling();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	@Override
+	public float getMinWidth() {
+		return Block.VIEW_WIDTH * block.getScaling();
+	}
 }

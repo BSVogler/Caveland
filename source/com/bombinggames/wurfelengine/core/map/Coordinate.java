@@ -671,7 +671,7 @@ public class Coordinate implements Position {
 
 	@Override
 	public Chunk getChunk() {
-		return Controller.getMap().getChunk(this);
+		return Controller.getMap().getChunkWithCoords(this);
 	}
 	
 	public RenderChunk getRenderChunk(GameView gameView) {

@@ -298,7 +298,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return the single block you wanted
 	 */
 	public Block getBlock(final int x, final int y, final int z) {
-		return getBlock(new Coordinate(x, y, z));
+		if (z < 0) {
+			return getNewGroundBlockInstance();
+		}
+		Chunk chunk = getChunkWithCoords(x, y);
+		if (chunk == null) {
+			return null;
+		} else {
+			return chunk.getBlock(x, y, z);//find chunk in x coord
+		}
 	}
 
 	/**
@@ -311,7 +319,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		if (coord.getZ() < 0) {
 			return getNewGroundBlockInstance();
 		}
-		Chunk chunk = getChunk(coord);
+		Chunk chunk = getChunkWithCoords(coord);
 		if (chunk == null) {
 			return null;
 		} else {
@@ -328,7 +336,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public void setBlock(final RenderBlock block) {
-		getChunk(block.getPosition()).setBlock(block);
+		getChunkWithCoords(block.getPosition()).setBlock(block);
 	}
 
 	/**
@@ -341,7 +349,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public void setBlock(Coordinate coord, Block block) {
-		Chunk chunk = getChunk(coord);
+		Chunk chunk = getChunkWithCoords(coord);
 		if (chunk != null) {
 			chunk.setBlock(coord, block);
 		}
@@ -353,7 +361,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
-		getChunk(coord).setValue(coord, value);
+		getChunkWithCoords(coord).setValue(coord, value);
 	}
 
 	/**
@@ -362,7 +370,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param coord not altered
 	 * @return can return null if not loaded
 	 */
-	public Chunk getChunk(final Coordinate coord) {
+	public Chunk getChunkWithCoords(final Coordinate coord) {
 		int left, top;
 		//loop over storage
 		for (Chunk chunk : data) {
@@ -373,6 +381,31 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
 				&& coord.getY() < top + Chunk.getBlocksY()) {
+				data.addFirst(data.removeLast());
+				return chunk;
+			}
+		}
+		return null;//not found
+	}
+
+	/**
+	 * get the chunk where the coordinates are on
+	 *
+	 * @param x grid coordinate
+	 * @param y grid coordinate
+	 * @return can return null if not loaded
+	 */
+	public Chunk getChunkWithCoords(int x, int y) {
+		int left, top;
+		//loop over storage
+		for (Chunk chunk : data) {
+			left = chunk.getTopLeftCoordinate().getX();
+			top = chunk.getTopLeftCoordinate().getY();
+			//check if coordinates are inside the chunk
+			if (left <= x
+				&& x < left + Chunk.getBlocksX()
+				&& top <= y
+				&& y < top + Chunk.getBlocksY()) {
 				data.addFirst(data.removeLast());
 				return chunk;
 			}
@@ -533,7 +566,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
-		Chunk chunk = getChunk(coord);
+		Chunk chunk = getChunkWithCoords(coord);
 		if (chunk == null) {
 			return null;
 		} else {
@@ -547,7 +580,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param block
 	 */
 	public void addLogic(AbstractBlockLogicExtension block) {
-		Chunk chunk = getChunk(block.getPosition());
+		Chunk chunk = getChunkWithCoords(block.getPosition());
 		chunk.addLogic(block);
 	}
 

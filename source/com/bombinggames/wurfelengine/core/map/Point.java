@@ -396,6 +396,7 @@ public class Point extends Vector3 implements Position {
 		dir.cpy().nor();
 		
 		Coordinate isectC = toCoord();
+		Point isectP = new Point(0, 0, 0);
         int curX = isectC.getX();
         int curY = isectC.getY();
         int curZ = isectC.getZ();
@@ -414,7 +415,6 @@ public class Point extends Vector3 implements Position {
 		float tDeltaY = stepY / dir.y;
 		float tDeltaZ = stepZ / dir.z;
 
-		isectC = new Coordinate(curX, curY, curZ);
 		/* ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
@@ -434,7 +434,8 @@ public class Point extends Vector3 implements Position {
 					&& (hitCondition == null || hitCondition.test(block))
 				){
 					//found intersection point
-					if (distanceTo(isectC.toPoint()) <= maxDistance*Block.GAME_EDGELENGTH)
+					isectP.setFromCoord(isectC);
+					if (distanceTo(isectP) <= maxDistance*Block.GAME_EDGELENGTH)
 						return Intersection.intersect(isectC, this, dir);
 					else return null;
 				}
@@ -613,12 +614,12 @@ public class Point extends Vector3 implements Position {
 	 */
 	@Override
 	public float distanceTo(AbstractGameObject object) {
-		return distanceTo(object.getPosition().toPoint());
+		return distanceTo(object.getPoint());
 	}
 
 	@Override
 	public float distanceToSquared(AbstractGameObject object) {
-		return distanceToSquared(object.getPosition().toPoint());
+		return distanceToSquared(object.getPoint());
 	}
 
 	@Override
@@ -648,7 +649,7 @@ public class Point extends Vector3 implements Position {
 	 */
 	@Override
 	public float distanceToHorizontal(AbstractGameObject object) {
-		return distanceToHorizontal(object.getPosition().toPoint());
+		return distanceToHorizontal(object.getPoint());
 	}
 
 	@Override
@@ -679,7 +680,7 @@ public class Point extends Vector3 implements Position {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 
 		for (AbstractEntity entity : Controller.getMap().getEntities()) {
-			if (entity.hasPosition() && distanceTo(entity.getPosition().toPoint()) < radius) {
+			if (entity.hasPosition() && distanceTo(entity.getPoint()) < radius) {
 				result.add(entity);
 			}
 		}
@@ -692,7 +693,7 @@ public class Point extends Vector3 implements Position {
 		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 		for (AbstractEntity entity : entityList) {
-			if (distanceToHorizontal(entity.getPosition().toPoint()) < radius) {
+			if (distanceToHorizontal(entity.getPoint()) < radius) {
 				result.add(entity);
 			}
 		}
@@ -710,7 +711,7 @@ public class Point extends Vector3 implements Position {
             if (
 				entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
-				&& distanceToHorizontal(entity.getPosition().toPoint()) < radius//TODO should use squared values for improved speed
+				&& distanceToHorizontal(entity.getPoint()) < radius//TODO should use squared values for improved speed
 			) {
                 result.add((type) entity);//add it to list
             }
@@ -779,6 +780,12 @@ public class Point extends Vector3 implements Position {
 
 	@Override
 	public Chunk getChunk() {
-		return Controller.getMap().getChunk(toCoord());
+		return Controller.getMap().getChunkWithCoords(toCoord());
+	}
+
+	private void setFromCoord(Coordinate coord) {
+		x = coord.getX() * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+		y = coord.getY() * Block.GAME_DIAGLENGTH2;
+		z = coord.getZ() * Block.GAME_EDGELENGTH;
 	}
 }

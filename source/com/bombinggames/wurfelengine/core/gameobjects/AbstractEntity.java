@@ -596,7 +596,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public LinkedList<Renderable> getCovered(RenderStorage rs) {
 		LinkedList<Renderable> res = new LinkedList<>();
 		if (position!=null) {
-			Coordinate coord = position.toCoord();
+			Coordinate coord = getCoord();
 
 			RenderBlock block;
 			//block = rs.getBlock(pos);//draw block in this cell first
@@ -661,4 +661,16 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		}
 		return res;
 	}
+
+	@Override
+	public Point getPoint() {
+		return position;
+	}
+
+	@Override
+	public Coordinate getCoord() {
+		return position.toCoord();
+	}
+	
+	
 }

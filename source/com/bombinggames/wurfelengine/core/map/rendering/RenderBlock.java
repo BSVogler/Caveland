@@ -50,6 +50,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
@@ -186,6 +187,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 	private final Block blockData;
 	private Coordinate coord;
+	
 	//view data
 	/**
 	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
@@ -287,7 +289,17 @@ public class RenderBlock extends AbstractGameObject {
     public String getName() {
         return blockData.getName();
     }
-	
+
+	@Override
+	public Point getPoint() {
+		return coord.toPoint();
+	}
+
+	@Override
+	public Coordinate getCoord() {
+		return coord;
+	}
+
 	/**
 	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call. A regular renderblock is not spawned expect explicitely called.
 	 * @param rS

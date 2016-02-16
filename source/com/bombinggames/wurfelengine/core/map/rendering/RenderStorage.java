@@ -314,7 +314,7 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * If the block can not be found returns null pointer.
 	 *
-	 * @param coord
+	 * @param coord transform safe
 	 * @return
 	 */
 	public RenderBlock getBlock(final Coordinate coord) {

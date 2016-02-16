@@ -2,6 +2,8 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.LinkedList;
@@ -95,12 +97,28 @@ public interface Renderable {
 	public void render(GameView view, Camera camera);
 
 	/**
-	 * Return the coordinates of the object in the game world.
+	 * Return the coordinates of the object in the game world. Copy safe.
 	 *
 	 * @return Reference to the position object which points to the location in
 	 * the game world.
+	 * @see #getPoint() 
 	 */
 	public Position getPosition();
+	
+	/**
+	 * can be copy safe but must not
+	 * @return 
+	 * @see #getPosition() 
+	 */
+	public Point getPoint();
+	
+	/**
+	 * can be copy safe but must not
+	 * @return 
+	 * @see #getPosition() 
+	 */
+	public Coordinate getCoord();
+	
 
 	/**
 	 *

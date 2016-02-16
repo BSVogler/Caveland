@@ -239,6 +239,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private static boolean currentDirtyFlag;
 	private boolean dirtyFlag;
 	private boolean tmpMarked;
+	private Sprite sprite;
 
 	/**
 	 * Creates an object.
@@ -294,7 +295,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * @return distance from zero level
 	 */
 	public float getDepth() {
-		Point pos = getPosition().toPoint();
+		Point pos = getPoint();
 		return pos.getY() + (pos.getZ() + getDimensionZ()) * Block.ZAXISSHORTENING;//or Point.SQRT12?
 	}
 
@@ -351,7 +352,11 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	public void render(GameView view, int xPos, int yPos, Color color) {
 		if (spriteId > 0 && spriteValue >= 0) {
 			AtlasRegion texture = AbstractGameObject.getSprite(getCategory(), spriteId, spriteValue);
-			Sprite sprite = new Sprite(texture);
+			if (sprite==null) {
+				sprite = new Sprite(texture);
+			}
+			Sprite sprite = this.sprite;
+			sprite.setTexture(texture.getTexture());
 			sprite.setOrigin(
 				texture.originalWidth / 2 - texture.offsetX,
 				VIEW_HEIGHT2 - texture.offsetY

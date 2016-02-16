@@ -46,6 +46,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -586,7 +587,8 @@ public class Camera{
 		ArrayList<RenderBlock> modifiedCells = new ArrayList<>(entsToRender.size());
 		ArrayList<AbstractEntity> renderAppendix = new ArrayList<>(3);
 		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
+			Coordinate coord = ent.getCoord();
+			RenderBlock block = gameView.getRenderStorage().getBlock(coord.getX(), coord.getY(), coord.getZ()+1);//add in cell above
 			if (block != null) {
 				block.addCoveredEnts(ent);
 				modifiedCells.add(block);

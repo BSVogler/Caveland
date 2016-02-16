@@ -31,10 +31,10 @@
 package com.bombinggames.wurfelengine.core.lightengine;
 
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 
 /**
@@ -51,18 +51,17 @@ public class AmbientOcclusionCalculator {
 	public static void calcAO(RenderChunk chunk) {
 		if (chunk==null) throw new IllegalArgumentException("Chunk can not be null.");
 		//iterate over every block in chunk
+		Coordinate coord = new Coordinate(0, 0, 0);
 		DataIterator<RenderBlock> iterator = chunk.getIterator(0, Chunk.getBlocksZ() - 1);
 		while (iterator.hasNext()) {
 			RenderBlock next = iterator.next();
 			//skip air and blocks without sides
 			if (next != null && next.hasSides()) {
 				//analyze top side
-				Coordinate coord = chunk.getTopLeftCoordinate().cpy().add(
-					new int[]{
-						iterator.getCurrentIndex()[0],
-						iterator.getCurrentIndex()[1],
-						iterator.getCurrentIndex()[2] + 1
-					}
+				coord = coord.set(chunk.getTopLeftCoordinate()).add(
+					iterator.getCurrentIndex()[0],
+					iterator.getCurrentIndex()[1],
+					iterator.getCurrentIndex()[2] + 1
 				);
 
 				int aoFlags = 0;
@@ -72,7 +71,7 @@ public class AmbientOcclusionCalculator {
 					if (side == 8) {
 						side = 1;
 					}
-					Block neighbor = coord.cpy().goToNeighbour(side).getBlock();
+					Block neighbor = coord.goToNeighbour(side).getBlock();
 					if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {
 						aoFlags |= 1 << (side + 8);
 						//don't double draw the sides in between
@@ -83,11 +82,12 @@ public class AmbientOcclusionCalculator {
 					} else {
 						aoFlags &= ~(1 << (side + 8));
 					}
+					coord.goToNeighbour((side+4) % 8);//go back to center
 				}
 
 				//right side, side 2
 				//check right half, which is equivalent to top right at pos 1
-				coord = chunk.getTopLeftCoordinate().cpy().add(iterator.getCurrentIndex());//get current coordinate
+				coord = coord.set(chunk.getTopLeftCoordinate()).add(iterator.getCurrentIndex());//get current coordinate
 
 				//left side, side 0
 				//right corner
@@ -122,7 +122,7 @@ public class AmbientOcclusionCalculator {
 				}
 				coord.goToNeighbour(1).add(0, 0, 1);//revert
 
-				//right side, side 2=======
+				//right side, side 2
 				//check bottom left
 				neighbor = coord.add(1, 0, -1).getBlock();
 				if (neighbor != null && !neighbor.isTransparent() && neighbor.hasSides()) {

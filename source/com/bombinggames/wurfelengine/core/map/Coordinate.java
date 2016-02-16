@@ -119,13 +119,6 @@ public class Coordinate implements Position {
 		return z;
 	}
 
-	public Coordinate set(int[] values) {
-		x = values[0];
-		y = values[1];
-		z = values[2];
-		return this;
-	}
-	
 	public Coordinate set(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -133,6 +126,12 @@ public class Coordinate implements Position {
 		return this;
 	}
 	
+	public Coordinate set(Coordinate coord){
+		this.x = coord.x;
+		this.y = coord.y;
+		this.z = coord.z;
+		return this;
+	}
 	
 	/**
 	 * avoids a new instance.

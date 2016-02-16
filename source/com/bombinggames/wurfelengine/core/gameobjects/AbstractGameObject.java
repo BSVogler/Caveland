@@ -356,7 +356,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 				texture.originalWidth / 2 - texture.offsetX,
 				VIEW_HEIGHT2 - texture.offsetY
 			);
-			sprite.rotate(rotation);
+			sprite.setRotation(rotation);
 			//sprite.setOrigin(0, 0);
 			sprite.setScale(scaling);
 
@@ -442,7 +442,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * Returns the rotation of the object.
 	 *
-	 * @return
+	 * @return in degrees
 	 */
 	public float getRotation() {
 		return rotation;

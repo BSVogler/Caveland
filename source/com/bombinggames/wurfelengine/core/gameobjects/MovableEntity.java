@@ -823,10 +823,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		this.floating = floating;
 	}
 	
-    /**
-     * Checks if standing on blocks. overrides the method by checking with a radius.
-     * @return 
-     */
     @Override
     public boolean isOnGround() {
 		Point pos = getPosition();

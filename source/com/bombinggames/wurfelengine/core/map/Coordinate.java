@@ -401,28 +401,28 @@ public class Coordinate implements Position {
 				y -= 2;
 				break;
 			case 1:
-				x += getY() % 2 == 0 ? 0 : 1;
+				x += y % 2 == 0 ? 0 : 1;
 				y--;
 				break;
 			case 2:
 				x++;
 				break;
 			case 3:
-				x += getY() % 2 == 0 ? 0 : 1;
+				x += y % 2 == 0 ? 0 : 1;
 				y++;
 				break;
 			case 4:
 				y += 2;
 				break;
 			case 5:
-				x -= getY() % 2 == 0 ? 1 : 0;
+				x -= y % 2 == 0 ? 1 : 0;
 				y++;
 				break;
 			case 6:
 				x--;
 				break;
 			case 7:
-				x -= getY() % 2 == 0 ? 1 : 0;
+				x -= y % 2 == 0 ? 1 : 0;
 				y--;
 				break;
 		}

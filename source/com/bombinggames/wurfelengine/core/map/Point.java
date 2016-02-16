@@ -174,18 +174,6 @@ public class Point extends Vector3 implements Position {
 		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
 	}
 	
-	/**
-	 * 
-	 * @return the offset to the coordiantes center.
-	 */
-	public Vector3 getRelToCoord(){
-		return new Vector3(
-			getRelToCoordX(),
-			getRelToCoordY(),
-			getRelToCoordZ()
-		);
-	}
-	
    @Override
 	public Block getBlock() {
 		if (z >= Chunk.getGameHeight()) {

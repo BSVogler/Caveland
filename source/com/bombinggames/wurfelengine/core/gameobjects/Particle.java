@@ -115,15 +115,17 @@ public class Particle extends MovableEntity {
 //		CoreData block = getPosition().getBlock();
 //		if (block!=null && block.isObstacle())
 //			getPosition().addVector(step.scl(-1));//reverse step
-		if (rotateRight)
+		if (rotateRight) {
 			setRotation(getRotation() - dt / 10f);
-		else setRotation(getRotation() + dt / 10f);
+		} else {
+			setRotation(getRotation() + dt / 10f);
+		}
 		if (type.isGrowing()) {
 			setScaling(getScaling() + dt / 800f);
 		}
 		if (type.fade()) {
 			float t = (timeTillDeath) / maxtime;
-			getColor().a = startingAlpha*Interpolation.fade.apply(t);
+			getColor().a = startingAlpha * Interpolation.fade.apply(t);
 		}
 		if (type.fadeToBlack()) {
 			getColor().r = startingColor.r * (timeTillDeath / maxtime);

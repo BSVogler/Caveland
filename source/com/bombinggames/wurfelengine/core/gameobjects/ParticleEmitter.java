@@ -34,6 +34,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Pool;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.map.Point;
 
@@ -58,6 +59,13 @@ public class ParticleEmitter extends AbstractEntity {
 	private Vector3 spread = new Vector3(0, 0, 0);
 	private PointLightSource lightsource;
 	private Particle prototype = new Particle((byte) 22);
+	private final Pool<Particle> pool = new Pool<Particle>(50) {
+		@Override
+		protected Particle newObject() {
+			Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
+			return particle;
+		}
+	};
 
 	/**
 	 * active by default
@@ -93,9 +101,9 @@ public class ParticleEmitter extends AbstractEntity {
 			timer += dt;
 			while (timer >= timeEachSpawn) {
 				timer -= timeEachSpawn;
-				Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
+				Particle particle = pool.obtain();
 				particle.setType(prototype.getType());
-				particle.setColor(prototype.getColor().cpy());
+				particle.getColor().set(prototype.getColor());
 				particle.setRotation((float) (Math.random()*360f));
 				particle.addMovement(
 					startingVector.add(
@@ -104,7 +112,11 @@ public class ParticleEmitter extends AbstractEntity {
 						(float) (Math.random() - 0.5f) * 2 * spread.z
 					)
 				);
-				particle.spawn(getPosition().cpy());
+				if (particle.hasPosition()) {
+					particle.getPosition().setValues(getPosition());
+				} else {
+					particle.spawn(getPosition().cpy());
+				}
 			}
 		} else {
 			setColor(new Color(0.5f, 0.5f, 0.5f, 1));

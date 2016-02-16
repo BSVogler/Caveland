@@ -39,25 +39,34 @@ public class CLMovableEntity extends MovableEntity {
 	public boolean collidesWithWorld(Point pos, float colissionRadius) {
 		//check for total height blocking blocks
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
-			Point checkpos = pos.cpy();
+			Point checkpos = pos;
+			float prevZ = pos.z;
 			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
 			
 			Block block = checkpos.add(0, -colissionRadius, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				checkpos.z = prevZ;
+				pos.add(0, colissionRadius, 0);
 				return true;
 			}
 			block = checkpos.add(0, 2*colissionRadius, 0).getBlock();
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				checkpos.z = prevZ;
+				pos.add(0, -colissionRadius, 0);
 				return true;
 			}
-			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlock();
+			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlock();//left
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+				checkpos.z = prevZ;
+				pos.add(colissionRadius, 0, 0);
 				return true;
 			}
-			block = checkpos.add(2*colissionRadius, 0, 0).getBlock();
+			block = checkpos.add(2*colissionRadius, 0, 0).getBlock();//right
+			pos.add(-colissionRadius, 0, 0);
+			checkpos.z = prevZ;
 			if (block != null
 				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;

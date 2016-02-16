@@ -252,6 +252,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		/*Here comes the stuff where the character interacts with the environment*/
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			float t = dt * 0.001f; //t = time in s
+			Vector3 movement = this.movement;
 			
 			if (moveToAi != null) {
 				moveToAi.update(dt);
@@ -285,15 +286,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			//apply gravity
 			if (!floating && !isOnGround()) {
 				addMovement(
-					new Vector3(0, 0, -WE.getCVars().getValueF("gravity") * t) //in m/s
+					0, 0, -WE.getCVars().getValueF("gravity") * t //in m/s
 				);
 			}
 			
-			newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
+			newPos = newPos.setValues(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
 			
 			if (collider && movement.z > 0 && isOnCeil(newPos)) {
 				movement.z = 0;
-				newPos = getPosition().cpy().add(getMovement().scl(GAME_EDGELENGTH * t));
+				newPos = newPos.setValues(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
 			}
 			
 			//check collision with other entities
@@ -526,26 +527,30 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * @return true if colliding
 	 */
 	private boolean checkCollisionCorners(final Point pos) {
-		Point checkPos = pos.cpy();
-		Block block = checkPos.add(0, -colissionRadius, 0).getBlock();
+		int colRad = colissionRadius;
+		Block block = pos.add(0, -colRad, 0).getBlock();
 		//back corner top
 		if (block != null && block.isObstacle()) {
+			pos.add(0, colRad, 0);
 			return true;
 		}
 		//front corner
-		block = checkPos.add(0, 2 * colissionRadius, 0).getBlock();
+		block = pos.add(0, 2 * colRad, 0).getBlock();
 		if (block != null && block.isObstacle()) {
+			pos.add(0, -colRad, 0);
 			return true;
 		}
 
 		//check X
 		//left
-		block = checkPos.add(-colissionRadius, -colissionRadius, 0).getBlock();
+		block = pos.add(-colRad, -colRad, 0).getBlock();
 		if (block != null && block.isObstacle()) {
+			pos.add(colRad, 0, 0);
 			return true;
 		}
 		//bottom corner
-		block = checkPos.add(2 * colissionRadius, 0, 0).getBlock();
+		block = pos.add(2 * colRad, 0, 0).getBlock();
+		pos.add(-colRad, 0, 0);
 		return block != null && block.isObstacle();
 	}
 	
@@ -553,28 +558,31 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * check for horizontal colission (x and y)<br>
 	 * O(1)
 	 *
-	 * @param pos the new position
+	 * @param pos the new position, not modified
 	 * @param colissionRadius
 	 * @return true if colliding horizontal
 	 */
 	public boolean collidesWithWorld(final Point pos, final float colissionRadius) {
-		Point checkPoint = pos.cpy();
-		if (checkCollisionCorners(checkPoint)) {
+		if (checkCollisionCorners(pos)) {
 			return true;
 		}
 
+		float heightBefore = pos.z;
+		int dimZ = getDimensionZ();
 		//chek in the middle if bigger then a block
-		if (getDimensionZ() > Block.GAME_EDGELENGTH) {
-			checkPoint.add(0, 0, getDimensionZ() / 2);
-			if (checkCollisionCorners(checkPoint)) {
+		if (dimZ > Block.GAME_EDGELENGTH) {
+			pos.add(0, 0, dimZ / 2);
+			if (checkCollisionCorners(pos)) {
+				pos.add(0, 0, -dimZ / 2);
 				return true;
 			}
-			checkPoint.add(0, 0, getDimensionZ() / 2);
+			pos.add(0, 0, dimZ / 2);
 		} else {
-			checkPoint.add(0, 0, getDimensionZ());
+			pos.add(0, 0, dimZ);
 		}
+		pos.z = heightBefore;
 		//check top
-		return checkCollisionCorners(checkPoint);
+		return checkCollisionCorners(pos);
 	}
     
 	/**
@@ -587,8 +595,10 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		if (pos == null || pos.getZ() <= 0 || pos.getZ() > Chunk.getGameHeight()) {
 			return false;
 		}
-
-		return checkCollisionCorners(new Point(pos.getX(), pos.getY(), pos.getZ() + getDimensionZ()));
+		pos.z += getDimensionZ();
+		boolean result = checkCollisionCorners(pos);
+		pos.z -= getDimensionZ();
+		return result;
 	}
 	
    /**
@@ -631,7 +641,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * Direction of movement. Normalized.
 	 * @return unit vector for x and y component. copy safe
 	 */
-	public Vector2 getOrientation() {
+	public final Vector2 getOrientation() {
 		return orientation.cpy();
 	}
 	
@@ -639,7 +649,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 * Get the movement vector as the product of direction and speed.
 	 * @return in m/s. copy safe
 	 */
-	public Vector3 getMovement(){
+	public final Vector3 getMovement(){
 		return movement.cpy();
 	}
 	
@@ -647,7 +657,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 *Get the movement vector as the product of direction and speed.
 	 * @return in m/s. copy safe
 	 */
-	public Vector2 getMovementHor(){
+	public final Vector2 getMovementHor(){
 		return new Vector2(movement.x, movement.y);
 	}
 
@@ -687,6 +697,17 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	public void addMovement(Vector3 movement){
 		this.movement.add(movement);
+		updateOrientation();
+	}
+	
+	/**
+	 * Adds speed and direction.
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void addMovement(float x, float y, float z){
+		this.movement.add(x,y,z);
 		updateOrientation();
 	}
 	

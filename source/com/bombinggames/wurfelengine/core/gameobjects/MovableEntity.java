@@ -250,7 +250,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		super.update(dt);
 
 		/*Here comes the stuff where the character interacts with the environment*/
-		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
+		if (hasPosition()) {
 			float t = dt * 0.001f; //t = time in s
 			Vector3 movement = this.movement;
 			
@@ -307,88 +307,87 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			updateOrientation();
 
 			//movement has applied, now maybe outside memory area 
-			if (getPosition().isInMemoryAreaHorizontal()) {
-				//check new height for colission            
-				//land if standing in or under 0-level or there is an obstacle
-				if (movement.z < 0 && isOnGround()) {
-					
-					//stop movement
-					if (collider)
-						movement.z = 0;
+			//check new height for colission            
+			//land if standing in or under 0-level or there is an obstacle
+			if (movement.z < 0 && isOnGround()) {
 
-					//set on ground level of blockl
-					//send event
-					MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+				//stop movement
+				if (collider) {
+					movement.z = 0;
+				}
+
+				//set on ground level of block
+				//send event
+				MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());
+				if (!hasPosition()) {
+					return;//object may be destroyed during colission event
+				}
+
+				if (!floating) {
+					MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
 					if (!hasPosition()) {
-						return;//object may be destroyed during colission event
+						return;//object may be destroyed during colission
 					}
-					
-					if (!floating) {
-						MessageManager.getInstance().dispatchMessage(this, Events.landed.getId());
-						if (!hasPosition()) {
-							return;//object may be destroyed during colission
+				}
+				if (collider) {
+					getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
+				}
+			}
+			
+			Block block = getPosition().getBlock();
+			//if entering water
+			if (!inLiquid && block != null && block.isLiquid() && getMass() > 1f) {
+				if (waterSound != null) {
+					WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
+				}
+			}
+
+			if (block != null) {
+				inLiquid = block.isLiquid();//save if in water
+			} else {
+				inLiquid = false;
+			}
+
+			if (!walkingPaused) {
+				//walking cycle
+				if (walkOnTheSpot > 0) {
+					walkingCycle += dt * walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
+				} else if (floating || isOnGround()) {
+					walkingCycle += dt * getSpeed() * WE.getCVars().getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
+				}
+
+				if (walkingCycle >= 1000) {
+					walkingCycle %= 1000;
+					stepSoundPlayedInCiclePhase = false;//reset variable
+				}
+
+				//make a step
+				if (floating || isOnGround()) {
+					//play sound twice a cicle
+					if (walkingCycle < 250) {
+						if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
+							step();
+						}
+					} else if (walkingCycle < 500) {
+						stepSoundPlayedInCiclePhase = false;
+					} else if (walkingCycle > 500) {
+						if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
+							step();
 						}
 					}
-					if (collider)
-						getPosition().setZ((int) (oldHeight / GAME_EDGELENGTH) * GAME_EDGELENGTH);
-				}
-				
-				Block block = getPosition().getBlock();
-				//if entering water
-				if (!inLiquid && block != null && block.isLiquid() && getMass() > 1f) {
-					if (waterSound != null) {
-						WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
-					}
 				}
 
-				if (block != null) {
-					inLiquid = block.isLiquid();//save if in water
-				} else {
-					inLiquid = false;
+				//slow walking down
+				if (isOnGround()) {
+					//stop at a threshold
+					if (movement.x * movement.x + movement.y * movement.y > 0.1f) {
+						setHorMovement(getMovementHor().scl(1f / (dt * friction + 1f)));//with this formula this fraction is always <1
+					} else {
+						setHorMovement(new Vector2());
+					}
 				}
 
-				if (!walkingPaused) {
-					//walking cycle
-					if(walkOnTheSpot > 0) {
-						walkingCycle += dt*walkOnTheSpot;//multiply by factor to make the animation fit the movement speed
-					} else if (floating || isOnGround()) {
-						walkingCycle += dt * getSpeed() * WE.getCVars().getValueF("walkingAnimationSpeedCorrection");//multiply by factor to make the animation fit the movement speed
-					}
-
-					if (walkingCycle >= 1000) {
-						walkingCycle %= 1000;
-						stepSoundPlayedInCiclePhase = false;//reset variable
-					}
-
-					//make a step
-					if (floating || isOnGround()) {
-						//play sound twice a cicle
-						if (walkingCycle < 250) {
-							if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
-								step();
-							}
-						} else if (walkingCycle < 500) {
-							stepSoundPlayedInCiclePhase = false;
-						} else if (walkingCycle > 500) {
-							if (stepSound1Grass != null && !stepSoundPlayedInCiclePhase && isOnGround()) {
-								step();
-							}
-						}
-					}
-
-					//slow walking down
-					if (isOnGround()) {
-						//stop at a threshold
-						if (getMovementHor().len() > 0.1f) {
-							setHorMovement(getMovementHor().scl(1f / (dt * friction + 1f)));//with this formula this fraction is always <1
-						} else {
-							setHorMovement(new Vector2());
-						}
-					}
-
-
-					updateSprite();
-				}
+				updateSprite();
 			}
 
             /* SOUNDS */

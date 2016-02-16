@@ -125,7 +125,7 @@ public class AimBand {
 		if (getEnd() != null) {
 			//move particles
 			for (Particle p : list) {
-				p.getPosition().setValues(getStart()).lerp(getEnd(), 1 - p.getPercentageOfLife());
+				p.getPosition().set(getStart()).lerp(getEnd(), 1 - p.getPercentageOfLife());
 			}
 		} else {
 			list.forEach(p -> p.dispose());

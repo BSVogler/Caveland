@@ -66,7 +66,7 @@ public class TFlint extends Collectible implements Interactable {
 		if (!shouldBeDisposed()) {
 			sparksGenerator.setActive(lit);
 			if (lit) {
-				sparksGenerator.getPosition().setValues(getPosition()).add(0, 0, Block.GAME_EDGELENGTH*0.8f);
+				sparksGenerator.getPosition().set(getPosition()).add(0, 0, Block.GAME_EDGELENGTH*0.8f);
 				timer-=dt;
 			}
 			if (timer <= 0) {

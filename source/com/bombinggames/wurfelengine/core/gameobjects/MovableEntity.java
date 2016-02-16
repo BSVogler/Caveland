@@ -290,18 +290,18 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				);
 			}
 			
-			newPos = newPos.setValues(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
+			newPos = newPos.set(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
 			
 			if (collider && movement.z > 0 && isOnCeil(newPos)) {
 				movement.z = 0;
-				newPos = newPos.setValues(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
+				newPos = newPos.set(getPosition()).add(movement.cpy().scl(GAME_EDGELENGTH * t));
 			}
 			
 			//check collision with other entities
 			checkEntColl();
 			
 			//apply movement
-			getPosition().setValues(newPos);
+			getPosition().set(newPos);
 
 			//save orientation
 			updateOrientation();

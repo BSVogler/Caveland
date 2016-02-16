@@ -118,7 +118,7 @@ public class LiftBasket extends MovableEntity {
 			if (passenger != null) {
 				//lock passenger if moving
 				if (movementDir != 0) {
-					passenger.getPosition().setValues(getPosition());
+					passenger.getPosition().set(getPosition());
 					passenger.setMovement(Vector2.Zero);
 				}
 			} else {
@@ -209,14 +209,14 @@ public class LiftBasket extends MovableEntity {
 				back.spawn(getPosition().cpy());
 			}
 
-			back.getPosition().setValues(getPosition());
+			back.getPosition().set(getPosition());
 			back.getPosition().y -= Block.GAME_DIAGLENGTH2;
 
 			if (!front.hasPosition()) {
 				front.spawn(getPosition().cpy());
 			}
 
-			front.getPosition().setValues(getPosition());
+			front.getPosition().set(getPosition());
 			front.getPosition().y += 20;
 		}
 	}

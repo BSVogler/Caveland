@@ -222,7 +222,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 						nextCell = actor1.getPosition().toCoord().goToNeighbour(lastDir).toPoint();
 					}
 					
-					actor.getPosition().setValues(nextCell);
+					actor.getPosition().set(nextCell);
 					//update orientation
 					Vector3 newOr = actor1.getPosition().cpy().sub(beforeMove).nor();
 					((MovableEntity) actor1).setOrientation(

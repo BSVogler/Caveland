@@ -435,16 +435,16 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			//update attached objects position
 			if (lightsource.hasPosition())
-				lightsource.getPosition().setValues(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
+				lightsource.getPosition().set(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
 			
 			Vector3 vecToJetpack = new Vector3(getOrientation().scl(-20), 0);
 			float angleOrient = (float) Math.acos(getOrientation().y);
 			Vector3 vecToEmitter = new Vector3(-25, 0, Block.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
 			if (emitter.hasPosition())
-				emitter.getPosition().setValues(getPosition()).add(vecToEmitter).add(vecToJetpack);
+				emitter.getPosition().set(getPosition()).add(vecToEmitter).add(vecToJetpack);
 			vecToEmitter = new Vector3(25, 0, Block.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
 			if (emitter2.hasPosition())
-				emitter2.getPosition().setValues(getPosition()).add(vecToEmitter).add(vecToJetpack);
+				emitter2.getPosition().set(getPosition()).add(vecToEmitter).add(vecToJetpack);
 			
 			if (jetpackOn){
 				jetPackTime -= dt;
@@ -636,7 +636,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			item.setMovement(getMovement().cpy().add(getAiming().scl(3f)));//throw with 3 m/s+current movement
 			item.preventPickup(this, 400);
-			item.getPosition().setValues(getPosition()).add(0, 0, GAME_EDGELENGTH * 1f);
+			item.getPosition().set(getPosition()).add(0, 0, GAME_EDGELENGTH * 1f);
 			item.setHidden(false);
 		} else {
 			WE.SOUND.play("interactionFail");

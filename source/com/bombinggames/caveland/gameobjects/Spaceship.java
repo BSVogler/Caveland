@@ -53,7 +53,7 @@ public class Spaceship extends MovableEntity {
 	 */
 	public void addContent(AbstractEntity ent) {
 		content.add(ent);
-		ent.getPosition().setValues(getPosition());
+		ent.getPosition().set(getPosition());
 		ent.setHidden(true);
 	}
 
@@ -86,7 +86,7 @@ public class Spaceship extends MovableEntity {
 		super.update(dt);
 		
 		if (!crashed && content != null){
-			content.forEach(c -> {c.getPosition().setValues(getPosition());});
+			content.forEach(c -> {c.getPosition().set(getPosition());});
 		}
 		
 		if (!crashed && !crashing && crashCoordinates != null) {
@@ -116,7 +116,7 @@ public class Spaceship extends MovableEntity {
 			Particle particle = new Particle((byte) 22, 4000);
 			particle.setType(ParticleType.FIRE);
 			fireEmitter.setPrototype(particle);
-			fireEmitter.getPosition().setValues(getPosition()).add(0, 0, 0);
+			fireEmitter.getPosition().set(getPosition()).add(0, 0, 0);
 			ejectContent();
 			crashed = true;
 			//save that already crashed

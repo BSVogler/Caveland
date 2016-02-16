@@ -113,7 +113,7 @@ public class ParticleEmitter extends AbstractEntity {
 					)
 				);
 				if (particle.hasPosition()) {
-					particle.getPosition().setValues(getPosition());
+					particle.getPosition().set(getPosition());
 				} else {
 					particle.spawn(getPosition().cpy());
 				}
@@ -207,7 +207,7 @@ public class ParticleEmitter extends AbstractEntity {
 				lightsource = new PointLightSource(Color.YELLOW, 5, 11, WE.getGameplay().getView());
 				lightsource.setPosition(getPosition().cpy());
 			} else {
-				lightsource.getPosition().setValues(getPosition());
+				lightsource.getPosition().set(getPosition());
 			}
 			lightsource.enable();
 		}

@@ -53,7 +53,7 @@ public class Flagpole extends AbstractBlockLogicExtension {
 		if (flag == null || flag.shouldBeDisposed()) {
 			flag = (Flag) new Flag().spawn(getPosition().toPoint());
 		}
-		flag.getPosition().setValues(getPosition().toPoint().add(0, 0, 2.5f*Block.GAME_EDGELENGTH));
+		flag.getPosition().set(getPosition().toPoint().add(0, 0, 2.5f*Block.GAME_EDGELENGTH));
 	}
 
 	@Override

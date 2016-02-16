@@ -99,7 +99,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				lightsource.setPosition(getPosition().cpy());
 			}
 			
-			lightsource.getPosition().setValues(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
+			lightsource.getPosition().set(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
 			lightsource.update(dt);
 
 			//on rails?
@@ -270,8 +270,8 @@ public class MineCart extends MovableEntity implements Interactable {
 				dispose();
 				return;
 			}
-			back.getPosition().setValues(pos);
-			front.getPosition().setValues(pos).add(0, FRONTOFFSET, 0);
+			back.getPosition().set(pos);
+			front.getPosition().set(pos).add(0, FRONTOFFSET, 0);
 
 			//animation
 			//moving down left or up right
@@ -350,11 +350,11 @@ public class MineCart extends MovableEntity implements Interactable {
 	public void centerPassenger(boolean forceHeight){
 		if (passenger!=null) {
 			if (forceHeight) {
-				passenger.getPosition().setValues(getPosition());
+				passenger.getPosition().set(getPosition());
 				passenger.getPosition().setZ(getPosition().getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
 			} else {
 				float oldHeight = passenger.getPosition().getZ();
-				passenger.getPosition().setValues(getPosition());
+				passenger.getPosition().set(getPosition());
 				passenger.getPosition().setZ(oldHeight);
 			}	
 		}

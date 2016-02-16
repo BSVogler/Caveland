@@ -45,7 +45,7 @@ public class Inventory extends CollectibleContainer {
 	public void update(float dt) {
 		super.update(dt);
 		if (hasPosition() && ((Ejira)getOwner()).hasPosition())
-			this.getPosition().setValues(((Ejira)getOwner()).getPosition());
+			this.getPosition().set(((Ejira)getOwner()).getPosition());
 	}
 
 	/**

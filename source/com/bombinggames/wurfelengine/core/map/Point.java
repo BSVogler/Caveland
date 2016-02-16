@@ -715,7 +715,7 @@ public class Point extends Vector3 implements Position {
 	 * @param point is not modified
 	 * @return itself for chaining
 	 */
-	public Point setValues(final Point point) {
+	public Point set(final Point point) {
 		this.x = point.x;
 		this.y = point.y;
 		this.z = point.z;

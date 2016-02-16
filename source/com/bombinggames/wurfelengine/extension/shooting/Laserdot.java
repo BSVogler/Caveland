@@ -77,7 +77,7 @@ public class Laserdot extends SimpleEntity {
 			if (raycast != null && raycast.getPoint() != null) {
 				setPosition(raycast.getPoint());
 			} else {
-				getPosition().setValues(getPosition());
+				getPosition().set(getPosition());
 			}
 		}
 	}

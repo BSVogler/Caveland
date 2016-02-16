@@ -602,8 +602,9 @@ public class Chunk implements Telegraph {
 	public boolean hasPoint(Point point){
 		float x = point.getX();
 		float y = point.getY();
-		float left = getTopLeftCoordinate().toPoint().getX();
-		float top = getTopLeftCoordinate().toPoint().getY();
+		Coordinate tl = getTopLeftCoordinate();
+		float top = tl.getY();
+		float left = tl.getX() * Block.GAME_DIAGLENGTH + (top % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
 		return (x >= left
 				&& x < left + getGameWidth()
 				&& y >= top

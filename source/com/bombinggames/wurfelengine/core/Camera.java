@@ -135,6 +135,7 @@ public class Camera{
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
 	private int maxsprites;
+	private Point center = new Point(0, 0, 0);
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -1011,7 +1012,7 @@ public class Camera{
 	 * @return in game space, copy safe
 	 */
 	public Point getCenter() {
-		return new Point(
+		return (Point) center.set(
 			position.x,
 			-position.y * 2,
 			0

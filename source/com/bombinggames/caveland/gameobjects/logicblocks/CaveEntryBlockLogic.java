@@ -40,10 +40,11 @@ import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.Portal;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.ArrayList;
 
 /**
@@ -55,6 +56,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
+	private transient Point point = null;
 
 	/**
 	 * teleports to level 1 by default
@@ -95,7 +97,10 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 			if (portal.shouldBeDisposed() || !portal.hasPosition()) {//respawn if needed
 				portal.spawn(getPosition().toPoint());
 			} else {
-				portal.setPosition(getPosition().toPoint());//force at position
+				if (point == null) {
+					point = getPosition().toPoint();
+				}
+				portal.getPosition().set(point);//force at position
 			}
 
 			if (!interactable()) {

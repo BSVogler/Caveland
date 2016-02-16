@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.map;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
@@ -98,16 +97,20 @@ public class Intersection {
 	 * @return null if not hitting
 	 */
 	public static Intersection intersect(final Coordinate target, final Point p, final Vector3 dir) {
-		final Vector3 back = target.toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
-		final Vector3 front = target.toPoint().add(0, Block.GAME_DIAGLENGTH2, Block.GAME_EDGELENGTH);
+		float backX = target.getX() * Block.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+		float backY = target.getY() * Block.GAME_DIAGLENGTH2 - Block.GAME_DIAGLENGTH2;
+		float backZ = target.getZ() * Block.GAME_EDGELENGTH;
+		float frontX = target.getX() * Block.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+		float frontY = target.getY() * Block.GAME_DIAGLENGTH2 + Block.GAME_DIAGLENGTH2;
+		float frontZ = target.getZ() * Block.GAME_EDGELENGTH + Block.GAME_DIAGLENGTH2;
 
 		Intersection inter = new Intersection();
 
 		float a = Float.NEGATIVE_INFINITY;
 		float b = Float.NEGATIVE_INFINITY;
 		if (dir.x != 0) {
-			a = (back.x - p.getX()) / dir.x;
-			b = (front.x - p.getX()) / dir.x;
+			a = (backX - p.getX()) / dir.x;
+			b = (frontX - p.getX()) / dir.x;
 		}
 
 		float tmin = Math.min(a, b);
@@ -116,8 +119,8 @@ public class Intersection {
 		a = Float.NEGATIVE_INFINITY;
 		b = Float.NEGATIVE_INFINITY;
 		if (dir.y != 0) {
-			a = (back.y - p.getY()) / dir.y;
-			b = (front.y - p.getY()) / dir.y;
+			a = (backY - p.getY()) / dir.y;
+			b = (frontY - p.getY()) / dir.y;
 		}
 
 		tmin = Math.max(tmin, Math.min(a, b));
@@ -127,8 +130,8 @@ public class Intersection {
 		a = Float.NEGATIVE_INFINITY;
 		b = Float.NEGATIVE_INFINITY;
 		if (dir.z != 0) {
-			a = (back.z - p.getZ()) / dir.z;
-			b = (front.z - p.getZ()) / dir.z;
+			a = (backZ - p.getZ()) / dir.z;
+			b = (frontZ - p.getZ()) / dir.z;
 		}
 		tmin = Math.max(tmin, Math.min(a, b));
 		tmax = Math.min(tmax, Math.max(a, b));
@@ -143,31 +146,30 @@ public class Intersection {
 		}
 
 		//add dir because dir*t end's outside the target
-		Vector3 i_outside3 = p.cpy().add(dir.cpy().scl(t));//regular i calculation
-		Vector2 i_outside2 = new Vector2(i_outside3.x, i_outside3.y);
+		Vector3 i_outside3 = p.cpy().add(
+			dir.x*t,
+			dir.y*t,
+			dir.z*t
+		);//regular i calculation
 		//center as 2d vector
-		Vector2 c = new Vector2(target.toPoint().x, target.toPoint().y);
-		Vector2 d = i_outside2.sub(c);
-		Vector2 i_inside2 = new Vector2(d.x, d.y).scl(0.5f);//move from center in direction of intersection point, empiracl factor 0.5 becaue it's bugged
-		
-		Point intersPoint;
-		
+		Point targetP = target.toPoint();
+
 		//lower a bit to prevent that is at next grid level
-		if (i_outside3.z >= target.toPoint().getZ() + Block.GAME_EDGELENGTH) {
-			intersPoint = new Point(
+		if (i_outside3.z >= targetP.getZ() + Block.GAME_EDGELENGTH) {
+			inter.point = new Point(
 				i_outside3.x,
 				i_outside3.y,
-				i_outside3.z-1
+				i_outside3.z - 1
 			);
-		}else {
-			intersPoint = new Point(
-				target.toPoint().getX() + i_inside2.x,
-				target.toPoint().getY() + i_inside2.y,
+		} else {
+			//move from center in direction of intersection point, empiracl factor 0.5 becaue it's bugged
+			inter.point = new Point(
+				targetP.getX() + (i_outside3.x - targetP.x) * 0.5f,
+				targetP.getY() + (i_outside3.y - targetP.y) * 0.5f,
 				i_outside3.z
 			);
 		}
 
-		inter.point = intersPoint;
 		inter.normal = Side.calculateNormal(inter.point);
 		
 //		Vector3 stepBack = inter.normal.toVector();

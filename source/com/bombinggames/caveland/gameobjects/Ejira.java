@@ -20,7 +20,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
@@ -35,6 +34,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -378,14 +378,16 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			);
 			
 			//check nearby blocks
+			final Coordinate origin = getPosition().toCoord();
+			final Coordinate tmp = getPosition().toCoord();
 			for (int x = -2; x < 2; x++) {
 				for (int y = -2; y < 2; y++) {
 					for (int z = -2; z < 2; z++) {
-						AbstractBlockLogicExtension logic = getPosition().toCoord().add(x, y, z).getLogic();
+						AbstractBlockLogicExtension logic = tmp.set(origin).add(x, y, z).getLogic();
 						if (
 							logic != null
 							&& logic instanceof Interactable
-							&& getPosition().toCoord().add(x, y, z).distanceTo(getPosition()) <= GAME_EDGELENGTH * 2
+							&& tmp.distanceTo(getPosition()) <= GAME_EDGELENGTH * 2
 						) {
 							nearbyInteractable.add((Interactable) logic);
 						}
@@ -416,7 +418,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			}
 
 			//if collecting a backpack
-			ArrayList<CollectibleContainer> backpacksOnCoord = pos.toCoord().getEntitiesInside(CollectibleContainer.class);
+			ArrayList<CollectibleContainer> backpacksOnCoord = origin.getEntitiesInside(CollectibleContainer.class);
 			CollectibleContainer backpack=null;
 			if (backpacksOnCoord.size()>0)
 				backpack = backpacksOnCoord.get(0);

@@ -370,7 +370,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		if (position == null) {
 			return false;
 		}
-		return position.toCoord().isInMemoryAreaHorizontal();
+		return position.isInMemoryAreaHorizontal();
 	}
 
 	/**

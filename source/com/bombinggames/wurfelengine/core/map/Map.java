@@ -803,7 +803,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.hasPosition()
-				&& ent.getPosition().toCoord().equals(coord)//on coordinate?
+				&& coord.contains(ent.getPosition())//on coordinate?
 				&& filter.isInstance(ent)//of tipe of filter?
 				) {
 				result.add((type) ent);//add it to list

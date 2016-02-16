@@ -250,18 +250,19 @@ public class Coordinate implements Position {
 	public Block getBlock() {
 		if (z < 0) {
 			return Controller.getMap().getNewGroundBlockInstance();
-		} else if (z >= Chunk.getBlocksZ()){
+		} else if (z >= Chunk.getBlocksZ()) {
 			return null;
 		} else {
 			return Controller.getMap().getBlock(this);
 		}
 	}
-	
+
 	/**
 	 * get the logic to a block.
+	 *
 	 * @return can return null if the block has no logic
 	 */
-	public AbstractBlockLogicExtension getLogic(){
+	public AbstractBlockLogicExtension getLogic() {
 		if (z < 0 || z >= Chunk.getBlocksZ()) {
 			return null;
 		} else {
@@ -566,13 +567,11 @@ public class Coordinate implements Position {
 	}
 	
 	@Override
-	@SuppressWarnings("SuspiciousNameCombination")
 	public int getChunkX(){
 		return Math.floorDiv(x, Chunk.getBlocksX());
 	}
 	
 	@Override
-	@SuppressWarnings("SuspiciousNameCombination")
 	public int getChunkY(){
 		return Math.floorDiv(y, Chunk.getBlocksY());
 	}
@@ -604,7 +603,7 @@ public class Coordinate implements Position {
 
 	@Override
 	public int hashCode() {
-		return 13*(425+ 37*x) + 13*y + 2953*z;
+		return 13 * (425 + 37 * x) + 13 * y + 2953 * z;
 	}
 
 	@Override
@@ -613,11 +612,11 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * 
-	 * @param value 
+	 *
+	 * @param value
 	 */
 	public void setValue(byte value) {
-		Controller.getMap().setValue(this,value);
+		Controller.getMap().setValue(this, value);
 	}
 
 	@Override
@@ -659,17 +658,16 @@ public class Coordinate implements Position {
 		ArrayList<type> result = new ArrayList<>(5);//default size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 
-        for (AbstractEntity entity : entityList) {//check every entity
-            if (
-				entity.hasPosition()
+		for (AbstractEntity entity : entityList) {//check every entity
+			if (entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
 				&& distanceToHorizontal(entity.getPosition().toPoint()) < radius//TODO should use squared values for improved speed
-			) {
-                result.add((type) entity);//add it to list
-            }
-        }
+				) {
+				result.add((type) entity);//add it to list
+			}
+		}
 
-        return result;
+		return result;
 	}
 
 	@Override

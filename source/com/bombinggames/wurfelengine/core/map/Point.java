@@ -43,88 +43,98 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 /**
- *A point is a single position in the game world not bound to the grid. Use this for entities.
+ * A point is a single position in the game world not bound to the grid. Use
+ * this for entities.
+ *
  * @author Benedikt Vogler
  * @since WE1.1
  */
 public class Point extends Vector3 implements Position {
+
 	private static final long serialVersionUID = 2L;
 
-    /**
-     * Creates a point refering to a position in the game world.
-     * @param posX The distance from the left border of the map (game space)
-     * @param posY The distance from the top border of the map (game space)
-     * @param height The distance from ground  (game space)
-     */
-    public Point(float posX, float posY, float height) {
+	/**
+	 * Creates a point refering to a position in the game world.
+	 *
+	 * @param posX The distance from the left border of the map (game space)
+	 * @param posY The distance from the top border of the map (game space)
+	 * @param height The distance from ground (game space)
+	 */
+	public Point(float posX, float posY, float height) {
 		this.x = posX;
 		this.y = posY;
-        this.z = height;
-    }
-	
+		this.z = height;
+	}
+
 	/**
-	 * 
-	 * @param vec 
+	 *
+	 * @param vec
 	 */
-	public Point(Vector3 vec){
+	public Point(Vector3 vec) {
 		this.x = vec.x;
 		this.y = vec.y;
 		this.z = vec.z;
 	}
-    
-    /**
-     * Copy-constructor. This constructor copies the values.
-     * @param point the source of the copy
-     */
-    public Point(Point point) {
+
+	/**
+	 * Copy-constructor. This constructor copies the values.
+	 *
+	 * @param point the source of the copy
+	 */
+	public Point(Point point) {
 		this.x = point.x;
 		this.y = point.y;
 		this.z = point.z;
-    }
-	
+	}
 
-    /**
-     *Returns copy of itself.
-     * @return
-     */
-    @Override
-    public Point toPoint() {
-       return this.cpy();
-    }
-	
-	    /**
-     * Get the height (z-value) of the coordinate.
-     * @return game dimension
-     */
-    public float getZ() {
-        return z;
-    }
-	
 	/**
-     * Get the z in block grid coordinates of the coordinate. Faster the transofmring to coordinate first.
-     * @return in grid coordinates.
-     */
-    public int getZGrid() {
-        return (int) (z/Block.GAME_EDGELENGTH);
-    }
+	 * Returns copy of itself.
+	 *
+	 * @return
+	 */
+	@Override
+	public Point toPoint() {
+		return this.cpy();
+	}
 
-    /**
-     * 
-     * @param height 
-     */
-    public void setZ(float height) {
-        this.z = height;
-    }
-    
-    /**
-     * returns coordinate aquivalent. Removes floating of block.<br> Copy safe.<br>
+	/**
+	 * Get the height (z-value) of the coordinate.
+	 *
+	 * @return game dimension
+	 */
+	public float getZ() {
+		return z;
+	}
+
+	/**
+	 * Get the z in block grid coordinates of the coordinate. Faster the
+	 * transofmring to coordinate first.
+	 *
+	 * @return in grid coordinates.
+	 */
+	public int getZGrid() {
+		return (int) (z / Block.GAME_EDGELENGTH);
+	}
+
+	/**
+	 *
+	 * @param height
+	 */
+	public void setZ(float height) {
+		this.z = height;
+	}
+
+	/**
+	 * returns coordinate aquivalent. Removes floating of block.<br> Copy
+	 * safe.<br>
 	 * Looks complicated but has runtime O(const)
-     * @return coordinate aquivalent
-     */
-    @Override
-    public Coordinate toCoord() {
-        //find out where the position is (basic)
-        return new Coordinate(
+	 *
+	 * @return coordinate aquivalent
+	 */
+	@Override
+	public Coordinate toCoord() {
+		//find out where the position is (basic)
+		return new Coordinate(
 			Math.floorDiv((int) x, Block.GAME_DIAGLENGTH),
 			Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) * 2 + 1, //maybe dangerous to optimize code here!
 			Math.floorDiv((int) z, Block.GAME_EDGELENGTH)
@@ -132,46 +142,48 @@ public class Point extends Vector3 implements Position {
 			x % Block.GAME_DIAGLENGTH,
 			y % Block.GAME_DIAGLENGTH
 		));
-    }
-	
-    /**
-     *Get the game world position from left
-     * @return
-     */
-    public float getX() {
-        return x;
-    }
-    
-    /**
-     *Get the game world position from top.
-     * @return
-     */
-    public float getY() {
-        return y;
-    }
-	
-	/**
-	 * 
-	 * @return  the offset to the coordiantes center.
-	 */
-	public float getRelToCoordX(){
-		return x - toCoord().toPoint().x;
 	}
-	
+
 	/**
-	 * 
-	 * @return  the offset to the coordiantes center.
+	 * Get the game world position from left
+	 *
+	 * @return
 	 */
-	public float getRelToCoordY(){
-		return y - toCoord().toPoint().y;
+	public float getX() {
+		return x;
 	}
-	
+
 	/**
-	 * 
+	 * Get the game world position from top.
+	 *
+	 * @return
+	 */
+	public float getY() {
+		return y;
+	}
+
+	/**
+	 *
 	 * @return the offset to the coordiantes center.
 	 */
-	public float getRelToCoordZ(){
-		return getZ() - getZGrid()*Block.GAME_EDGELENGTH;
+	public float getRelToCoordX() {
+		return x - toCoord().toPoint().x;
+	}
+
+	/**
+	 *
+	 * @return the offset to the coordiantes center.
+	 */
+	public float getRelToCoordY() {
+		return y - toCoord().toPoint().y;
+	}
+
+	/**
+	 *
+	 * @return the offset to the coordiantes center.
+	 */
+	public float getRelToCoordZ() {
+		return getZ() - getZGrid() * Block.GAME_EDGELENGTH;
 	}
 	
    @Override
@@ -717,12 +729,12 @@ public class Point extends Vector3 implements Position {
 	public int getChunkY() {
 		return Math.floorDiv((int) y, Chunk.getGameDepth());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param p
 	 * @param maxdistance game space in meters
-	 * @return 
+	 * @return
 	 */
 	public boolean canSee(Point p, float maxdistance) {
 		Vector3 vecToTarget = p.cpy().sub(this).nor();
@@ -735,11 +747,13 @@ public class Point extends Vector3 implements Position {
 		);
 		return !(intersect != null
 			&& distanceTo(intersect.getPoint()) < distanceTo(p)//check if point is before
-);
+			);
 	}
 
 	/**
-	 * overwrites the coordinates with values from another point. Faster then creating a new object-
+	 * overwrites the coordinates with values from another point. Faster then
+	 * creating a new object-
+	 *
 	 * @param point is not modified
 	 * @return itself for chaining
 	 */

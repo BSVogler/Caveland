@@ -55,6 +55,14 @@ public class Quadrocopter extends Robot {
 	}
 
 	@Override
+	public void update(float dt) {
+		super.update(dt);
+		GrassBlock.setMainForce(getPosition());
+	}
+	
+	
+
+	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
 		movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);

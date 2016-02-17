@@ -586,7 +586,7 @@ public class Camera{
 		
 		//add entities to renderstorage
 		ArrayList<RenderBlock> modifiedCells = new ArrayList<>(entsToRender.size());
-		ArrayList<AbstractEntity> renderAppendix = new ArrayList<>(3);
+		LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 		for (AbstractEntity ent : entsToRender) {
 			Coordinate coord = ent.getCoord();
 			RenderBlock block = gameView.getRenderStorage().getBlock(coord.getX(), coord.getY(), coord.getZ()+1);//add in cell above

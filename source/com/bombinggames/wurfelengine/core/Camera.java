@@ -670,7 +670,7 @@ public class Camera{
 			&&
 				(proY + Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH)//top of sprite
 				>
-				position.y - getHeightInProjSpc() / 2
+				position.y - getHeightInProjSpc() / 2-30
 			&&
 				(proX + Block.VIEW_WIDTH2)//right side of sprite
 				>

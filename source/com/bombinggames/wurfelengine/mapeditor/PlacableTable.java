@@ -103,7 +103,7 @@ public class PlacableTable extends Table {
 							add(
 								new PlacableItem(
 									new BlockDrawable(i, (byte) 0, 0.35f),
-									new BlockListener((byte) (foundItems-1), i)
+									new BlockListener(foundItems, i)
 								)
 							);
 							foundItems++;
@@ -119,7 +119,7 @@ public class PlacableTable extends Table {
 					: AbstractEntity.getRegisteredEntities().entrySet()) {
 					PlacableItem button = new PlacableItem(
 						new EntityDrawable(entry.getValue()),
-						new EntityListener(entry.getKey(), entry.getValue())
+						new EntityListener(entry.getKey(), entry.getValue(), foundItems)
 					);
 					add(button);
 
@@ -187,15 +187,29 @@ public class PlacableTable extends Table {
 
 		private final Class<? extends AbstractEntity> entclass;
 		private final String name;
+		private final byte id;
 
-		EntityListener(String name, Class<? extends AbstractEntity> entclass) {
+		/**
+		 * 
+		 * @param name
+		 * @param entclass
+		 * @param id 
+		 */
+		EntityListener(String name, Class<? extends AbstractEntity> entclass, byte id) {
 			this.entclass = entclass;
 			this.name = name;
+			this.id = id;
 		}
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			placableGUI.setEntity(name, entclass);
+			if (id <= getChildren().size) {
+				for (Actor c : getChildren()) {
+					c.setScale(0.5f);
+				}
+				getChildren().get(id).setScale(0.6f);
+			}
 		}
 	}
 
@@ -223,7 +237,7 @@ public class PlacableTable extends Table {
 				for (Actor c : getChildren()) {
 					c.setScale(0.35f);
 				}
-				getChildren().get(id + 1).setScale(0.4f);
+				getChildren().get(id).setScale(0.4f);
 			}
 		}
 	}

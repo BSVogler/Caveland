@@ -56,13 +56,11 @@ public class EntityDrawable extends TextureRegionDrawable {
 			instance = type.newInstance();
 			if (instance.getSpriteId() > 0) {
 				//if bigger then default sprite size
-				int spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
-				int regularHeight = Block.VIEW_HEIGHT+Block.VIEW_DEPTH;
-				if (
-					spiteHeight
-					> regularHeight
-				)
-					scaling =  (((float) regularHeight)/ ((float) spiteHeight));
+				float spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
+				float regularHeight = Block.VIEW_HEIGHT+Block.VIEW_DEPTH;
+				if (spiteHeight > regularHeight) {
+					scaling = (regularHeight / spiteHeight);
+				}
 			}
 			instance.setScaling(scaling*0.5f);
 		} catch (InstantiationException | IllegalAccessException ex) {
@@ -90,6 +88,12 @@ public class EntityDrawable extends TextureRegionDrawable {
 			batch.begin();
 		}
     }
+	
+	@Override
+	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
+		instance.setScaling(scaling*scaleY);
+		draw(batch, x, y, width, height);
+	}
 	
 	/**
 	 *

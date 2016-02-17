@@ -107,8 +107,6 @@ public class BlockDrawable extends TextureRegionDrawable {
 		block.setScaling(scaleY);
 		draw(batch, x, y, width, height);
 	}
-	
-	
 
 	/**
 	 *

@@ -61,7 +61,7 @@ public class PlacableTable extends Table {
 		this.placableGUI = colorGUI;
 
 		setWidth(400);
-		setHeight(Gdx.graphics.getHeight() - 100);
+		setHeight(Gdx.graphics.getHeight()*0.80f);
 		setY(10);
 
 		if (left) {
@@ -83,7 +83,7 @@ public class PlacableTable extends Table {
 
 		//setScale(5f);
 		if (!hasChildren()) {
-			int foundItems = 1;
+			byte foundItems = 0;
 			if (placeBlocks) {//add blocks
 				//add air
 				add(
@@ -92,19 +92,18 @@ public class PlacableTable extends Table {
 						new BlockListener((byte) 0, (byte) 0)
 					)
 				);
+				foundItems++;
 				//add rest
-				byte c = -1;
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
 					Block block = Block.getInstance(i);
 					if (block != null) {
 						RenderBlock rBlock = block.toRenderBlock();
 						if (RenderBlock.isSpriteDefined(rBlock) //add defined blocks
 							|| !block.getName().equals("undefined")) {
-							c++;
 							add(
 								new PlacableItem(
 									new BlockDrawable(i, (byte) 0, 0.35f),
-									new BlockListener(c, i)
+									new BlockListener((byte) (foundItems-1), i)
 								)
 							);
 							foundItems++;
@@ -125,7 +124,7 @@ public class PlacableTable extends Table {
 					add(button);
 
 					foundItems++;
-					if (foundItems % 5 == 0) {
+					if (foundItems % 4 == 0) {
 						row();//make new row
 					}
 				}
@@ -179,14 +178,6 @@ public class PlacableTable extends Table {
 
 		clearChildren();
 		show(view);
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public PlacableGUI getPlacableGUI() {
-		return placableGUI;
 	}
 
 	/**

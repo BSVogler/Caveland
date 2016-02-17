@@ -32,7 +32,6 @@ package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -51,7 +50,6 @@ import java.util.logging.Logger;
  */
 public class PlacableGUI extends WidgetGroup {
 	private Block block = Block.getInstance((byte) 1);
-	private final Image image;
 	private final Label label;
 	private String name;
 	private final Label blockPosition;
@@ -70,9 +68,6 @@ public class PlacableGUI extends WidgetGroup {
 	public PlacableGUI(Stage stage, Cursor selection, boolean left) {
 		this.stage = stage;
 
-		image = new Image(new BlockDrawable(getId(), getValue(), 0.3f));
-		image.setPosition(50, 60);
-		addActor(image);
 		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
@@ -89,40 +84,14 @@ public class PlacableGUI extends WidgetGroup {
 		blockPosition.setPosition(60, 30);
 
 		if (left) {
-			setPosition(200, stage.getHeight() - 300);
+			setPosition(200, stage.getHeight()*0.9f);
 		} else {
-			setPosition(stage.getWidth() - 200, stage.getHeight() - 300);
+			setPosition(stage.getWidth() - 200, stage.getHeight()*0.9f);
 		}
 
 		addActor(blockPosition);
 	}
 
-	@Override
-	public void setPosition(float x, float y) {
-		super.setPosition(x, y);
-		image.setPosition(x+50, y+60);
-	}
-
-	/**
-	 *
-	 * @param x
-	 */
-	@Override
-	public void setX(float x) {
-		super.setX(x);
-		image.setPosition(x+50, 60);
-	}
-
-	/**
-	 *
-	 * @param y
-	 */
-	@Override
-	public void setY(float y) {
-		super.setY(y);
-		image.setPosition(50, y+60);
-	}
-	
 	/**
 	 * 
 	 * @param selection the selection entity of the editor
@@ -156,10 +125,8 @@ public class PlacableGUI extends WidgetGroup {
 		this.block = block;
 		if (block != null) {
 			label.setText(block.getName() + " "+ block.getId() + " - "+ block.getValue());
-			image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), 0.3f));
 		} else {
 			label.setText("air 0 - 0");
-			image.setDrawable(new BlockDrawable((byte) 0, (byte) 0, 0.3f));
 		}
 	}
 
@@ -172,7 +139,6 @@ public class PlacableGUI extends WidgetGroup {
 			if (placeBlocks) {
 				this.block = Block.getInstance(block.getId(), value);
 				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-				image.setDrawable(new BlockDrawable(block.getId(), block.getValue(), 0.3f));
 			} else if (value == -1) {
 				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
 			} else {
@@ -219,7 +185,6 @@ public class PlacableGUI extends WidgetGroup {
 		entityClass = entclass;
 		this.name = name; 
 		label.setText(name);
-		image.setDrawable(new EntityDrawable(entclass));
 	}
 
 	/**

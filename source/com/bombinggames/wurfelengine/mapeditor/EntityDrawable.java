@@ -62,9 +62,9 @@ public class EntityDrawable extends TextureRegionDrawable {
 					spiteHeight
 					> regularHeight
 				)
-					scaling =  -(((float) regularHeight)/ ((float) spiteHeight));
-				instance.setScaling(instance.getScaling());
+					scaling =  (((float) regularHeight)/ ((float) spiteHeight));
 			}
+			instance.setScaling(scaling*0.5f);
 		} catch (InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(EntityDrawable.class.getName()).log(Level.SEVERE, null, ex);
 		}

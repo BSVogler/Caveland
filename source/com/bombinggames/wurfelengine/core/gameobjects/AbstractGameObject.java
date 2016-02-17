@@ -218,13 +218,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		return spritesheet;
 	}
 
-	/**
-	 * inverses the dirty flag comparison so everything marked is now unmarked. used to mark the visited obejcts with depthsort.
-	 */
-	public static void inverseDirtyFlag() {
-		currentDirtyFlag = !currentDirtyFlag;
-	}
-
 	//render information
 	private boolean hidden;
 	private float rotation;
@@ -236,7 +229,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * default is RGBA 0x808080FF.
 	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f);
-	private static boolean currentDirtyFlag;
 	private boolean dirtyFlag;
 	private boolean tmpMarked;
 
@@ -544,13 +536,13 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	@Override
-	public final boolean isMarked() {
-		return this.dirtyFlag == AbstractGameObject.currentDirtyFlag;
+	public final boolean getDepthListMarking() {
+		return this.dirtyFlag;
 	}
 
 	@Override
-	public void markPermanent() {
-		this.dirtyFlag = AbstractGameObject.currentDirtyFlag;
+	public void markPermanent(boolean flag) {
+		this.dirtyFlag = flag;
 	}
 
 	@Override

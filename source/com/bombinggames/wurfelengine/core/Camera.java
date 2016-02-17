@@ -136,6 +136,7 @@ public class Camera{
 	private int renderResWidth;
 	private int maxsprites;
 	private Point center = new Point(0, 0, 0);
+	private boolean currentDirtyFlag;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -591,14 +592,25 @@ public class Camera{
 			Coordinate coord = ent.getCoord();
 			RenderBlock block = gameView.getRenderStorage().getBlock(coord.getX(), coord.getY(), coord.getZ()+1);//add in cell above
 			if (block != null) {
-				block.addCoveredEnts(ent);
-				modifiedCells.add(block);
+				if (block.isHidden()) {
+					RenderBlock parent = block.getParent();
+					if (parent == null) {
+						renderAppendix.add(ent);
+					} else {
+						parent.addCoveredEnts(ent);
+						modifiedCells.add(parent);
+					}
+				} else {
+					block.addCoveredEnts(ent);
+					modifiedCells.add(block);
+				}
 			} else {
 				//add at end of renderList
 				renderAppendix.add(ent);
 			}
 		}
 		
+		//iterate over renderstorage
 		objectsToBeRendered = 0;
 		RenderStorage rS = gameView.getRenderStorage();
 		//clear/reset flags
@@ -609,12 +621,16 @@ public class Camera{
 			0,
 			Chunk.getBlocksZ() - 1
 		);		
-		AbstractGameObject.inverseDirtyFlag();
+		currentDirtyFlag = !currentDirtyFlag;//inverse dirty flag
+		if (RenderBlock.rebuildCoverList) {
+			RenderBlock.inverseVisitedFlag();
+		}
 		//check every block
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
-
-			if (cell != null && !cell.isMarked()) {
+			if (cell != null && cell.getDepthListMarking() != currentDirtyFlag) {//if cell has not been visited yet
+				if (RenderBlock.rebuildCoverList)
+					cell.rebuildCovered(gameView.getRenderStorage(), null);
 				visit(cell);
 			}
 		}
@@ -637,14 +653,18 @@ public class Camera{
 			//throw new Error("Found a circle. Not a DAG");
 			return;
 		}
-		if (!r.isMarked()) {
-			r.markTemporarily();
+		if (r.getDepthListMarking() != currentDirtyFlag) {
 			LinkedList<Renderable> covered = r.getCovered(gameView.getRenderStorage());
-			for (Renderable m : covered) {
-				visit(m);
+			if (covered.size() > 0) {
+				r.markTemporarily();
+				for (Renderable m : covered) {
+					if (m.getDepthListMarking() != currentDirtyFlag) {
+						visit(m);
+					}
+				}
+				r.unmarkTemporarily();
 			}
-			r.markPermanent();
-			r.unmarkTemporarily();
+			r.markPermanent(currentDirtyFlag);
 			if (r.shouldBeRendered(this)) {
 				if (objectsToBeRendered < maxsprites) {
 					//fill only up to available size

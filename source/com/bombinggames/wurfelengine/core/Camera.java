@@ -46,12 +46,10 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import com.bombinggames.wurfelengine.core.map.rendering.SideSprite;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -589,21 +587,10 @@ public class Camera{
 		ArrayList<RenderBlock> modifiedCells = new ArrayList<>(entsToRender.size());
 		LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 		for (AbstractEntity ent : entsToRender) {
-			Coordinate coord = ent.getCoord();
-			RenderBlock block = gameView.getRenderStorage().getBlock(coord.getX(), coord.getY(), coord.getZ()+1);//add in cell above
+			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
 			if (block != null) {
-				if (block.isHidden()) {
-					RenderBlock parent = block.getParent();
-					if (parent == null) {
-						renderAppendix.add(ent);
-					} else {
-						parent.addCoveredEnts(ent);
-						modifiedCells.add(parent);
-					}
-				} else {
-					block.addCoveredEnts(ent);
-					modifiedCells.add(block);
-				}
+				block.addCoveredEnts(ent);
+				modifiedCells.add(block);
 			} else {
 				//add at end of renderList
 				renderAppendix.add(ent);
@@ -612,25 +599,21 @@ public class Camera{
 		
 		//iterate over renderstorage
 		objectsToBeRendered = 0;
-		RenderStorage rS = gameView.getRenderStorage();
 		//clear/reset flags
 		CameraSpaceIterator iterator= new CameraSpaceIterator(
-			rS,
+			gameView.getRenderStorage(),
 			centerChunkX,
 			centerChunkY,
 			0,
 			Chunk.getBlocksZ() - 1
-		);		
-		currentDirtyFlag = !currentDirtyFlag;//inverse dirty flag
-		if (RenderBlock.rebuildCoverList) {
-			RenderBlock.inverseVisitedFlag();
-		}
+		);
+		//inverse dirty flag
+		AbstractGameObject.inverseDirtyFlag();
 		//check every block
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
-			if (cell != null && cell.getDepthListMarking() != currentDirtyFlag) {//if cell has not been visited yet
-				if (RenderBlock.rebuildCoverList)
-					cell.rebuildCovered(gameView.getRenderStorage(), null);
+
+			if (cell != null) {
 				visit(cell);
 			}
 		}
@@ -638,7 +621,7 @@ public class Camera{
 		
 		//cleanup
 		for (RenderBlock cell : modifiedCells) {
-			cell.clearCoveredEnts(rS);
+			cell.clearCoveredEnts();
 		}
 		//has been rebuild
 		RenderBlock.setRebuildCoverList(false);
@@ -646,29 +629,21 @@ public class Camera{
 	
 	/**
 	 * topological sort
-	 * @param r root node
+	 * @param n root node
 	 */
-	private void visit(Renderable r) {
-		if (r.isMarkedTemporarily()) {
-			//throw new Error("Found a circle. Not a DAG");
-			return;
-		}
-		if (r.getDepthListMarking() != currentDirtyFlag) {
-			LinkedList<Renderable> covered = r.getCovered(gameView.getRenderStorage());
-			if (covered.size() > 0) {
-				r.markTemporarily();
+	private void visit(Renderable n) {
+		if (!n.isMarked()) {
+			LinkedList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
+			if (covered.size()>0) {
+				n.markPermanent();
 				for (Renderable m : covered) {
-					if (m.getDepthListMarking() != currentDirtyFlag) {
-						visit(m);
-					}
+					visit(m);
 				}
-				r.unmarkTemporarily();
 			}
-			r.markPermanent(currentDirtyFlag);
-			if (r.shouldBeRendered(this)) {
+			if (n.shouldBeRendered(this)) {
 				if (objectsToBeRendered < maxsprites) {
 					//fill only up to available size
-					depthlist.add(r);
+					depthlist.add(n);
 					objectsToBeRendered++;
 				}
 			}
@@ -690,7 +665,7 @@ public class Camera{
 			&&
 				(proY + Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH)//top of sprite
 				>
-				position.y - getHeightInProjSpc() / 2-30
+				position.y - getHeightInProjSpc() / 2
 			&&
 				(proX + Block.VIEW_WIDTH2)//right side of sprite
 				>

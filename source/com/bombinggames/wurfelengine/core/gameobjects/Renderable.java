@@ -63,15 +63,11 @@ public interface Renderable {
 
 	/**
 	 * Marked as visited.
-	 * @param flag
 	 */
-	public void markPermanent(boolean flag);
+	public void markPermanent();
 
-	/**
-	 *
-	 * @return
-	 */
-	public boolean getDepthListMarking();
+	
+	public boolean isMarked();
 	
 	/**
 	 *

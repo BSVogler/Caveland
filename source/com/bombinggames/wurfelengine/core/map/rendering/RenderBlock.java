@@ -183,7 +183,7 @@ public class RenderBlock extends AbstractGameObject {
 			}
 		}
     }
-	
+
 	
 	private final Block blockData;
 	private Coordinate coord;
@@ -239,9 +239,6 @@ public class RenderBlock extends AbstractGameObject {
 	private SideSprite site1;
 	private SideSprite site3;
 	private SideSprite site2;
-	private static boolean visitedFlag;
-	private boolean visitedCovered;
-	private RenderBlock parent;
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -997,10 +994,6 @@ public class RenderBlock extends AbstractGameObject {
 		coveredEnts.add(ent);
 	}
 
-	public RenderBlock getParent() {
-		return parent;
-	}
-	
 	@Override
 	public boolean shouldBeRendered(Camera camera) {
 		return blockData != null
@@ -1014,6 +1007,9 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public LinkedList<Renderable> getCovered(RenderStorage rs) {
+		if (rebuildCoverList) {
+			rebuildCovered(rs);
+		}
 		if (!coveredEnts.isEmpty()) {
 			coveredEnts.addAll(covered);
 			return coveredEnts;
@@ -1021,74 +1017,64 @@ public class RenderBlock extends AbstractGameObject {
 		return covered;
 	}
 	
-	/**
-	 * rebuilds using this node as root
-	 * @param rs
-	 * @param parent
-	 * @return 
-	 */
-	public LinkedList<Renderable> rebuildCovered(RenderStorage rs, RenderBlock parent){
-		visitedCovered = visitedFlag;
-		this.parent = parent;
-		LinkedList<Renderable> covered = this.covered;
-		covered.clear();
-		Coordinate nghb = getPosition();
-		
-		if (nghb.getZ() > 0) {
-			visitCovered(rs, nghb.add(0, 0, -1));//go down
-			visitCovered(rs, nghb.goToNeighbour(1));//back right
-			visitCovered(rs, nghb.goToNeighbour(6));//back left
-			visitCovered(rs, nghb.goToNeighbour(1));//back
-			nghb.add(0, 2, 1);
-		}
-		
-		visitCovered(rs, nghb.add(0, -2, 0));//back
-		visitCovered(rs, nghb.goToNeighbour(3));//back right
-		visitCovered(rs, nghb.goToNeighbour(6));//back left
-		
-		//top
-		if (nghb.getZ() < Chunk.getBlocksZ()-1){
-			visitCovered(rs, nghb.add(0, 0, 1));//back left
-			visitCovered(rs, nghb.add(1, 0, 0));//back right
-			nghb.add(-1, 0, -1);
-		}
-
-		nghb.goToNeighbour(3);//return to origin
-		
-		return covered;
-	}
-
-	/**
-	 * adds a neighbor
-	 *
-	 * @param rs
-	 * @param node
-	 */
-	void visitCovered(RenderStorage rs, Coordinate node) {
-		RenderBlock neighbB = rs.getBlock(node);//back right
-		if (neighbB != null) {
-			if (!neighbB.isHidden()) {
-				covered.add(neighbB);//add neighbor as a covered cell, unless it is hidden
-			}
-			if (neighbB.visitedCovered != visitedFlag) {
-				LinkedList<Renderable> rebuildCovered = neighbB.rebuildCovered(rs, isHidden() ? parent : this);
-				if (neighbB.isHidden()) {//if it is hidden, then add it's neighbors
-					rebuildCovered.forEach((Renderable r) -> {
-						covered.add(r);
-					});
+	private void rebuildCovered(RenderStorage rs){
+			LinkedList<Renderable> covered = this.covered;
+			covered.clear();
+			Coordinate nghb = getPosition();
+			RenderBlock block;
+			if (nghb.getZ() > 0) {
+				block = rs.getBlock(nghb.add(0, 0, -1));//go down
+				if (block != null) {
+					covered.add(block);
 				}
+				//back right
+				block = rs.getBlock(nghb.goToNeighbour(1));
+				if (block != null) {
+					covered.add(block);
+				}
+				//back left
+				block = rs.getBlock(nghb.goToNeighbour(6));
+				if (block != null) {
+					covered.add(block);
+				}
+				//back
+				block = rs.getBlock(nghb.goToNeighbour(1));
+				if (block != null) {
+					covered.add(block);
+				}
+				nghb.add(0, 2, 1);
 			}
-		}
-	}
+			block = rs.getBlock(nghb.add(0, -2, 0));//back
+			if (block != null) {
+				covered.add(block);
+			}
+			block = rs.getBlock(nghb.goToNeighbour(3));//back right
+			if (block != null) {
+				covered.add(block);
+			}
 
-	public void clearCoveredEnts(RenderStorage rS){
+			//back left
+			block = rs.getBlock(nghb.goToNeighbour(6));
+			if (block != null) {
+				covered.add(block);
+			}
+			if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
+				block = rs.getBlock(nghb.add(0, 0, 1));//back
+				if (block != null) {
+					covered.add(block);
+				}
+				block = rs.getBlock(nghb.add(1, 0, 0));//back
+				if (block != null) {
+					covered.add(block);
+				}
+				nghb.add(-1, 0, -1);
+			}
+
+			nghb.goToNeighbour(3);//return to origin
+		}
+
+	public void clearCoveredEnts(){
 		coveredEnts.clear();
 	}
-
-	public static void inverseVisitedFlag() {
-		RenderBlock.visitedFlag = !RenderBlock.visitedFlag;
-	}
-	
-	
 
 }

@@ -599,10 +599,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 			Coordinate coord = getCoord();
 
 			RenderBlock block;
-			//block = rs.getBlock(pos);//draw block in this cell first
-	//		if (block != null) {
-	//			res.add(block);
-	//		}
+//			block = rs.getBlock(coord);//draw block in this cell first
+//			if (block != null) {
+//				res.add(block);
+//			}
 			block = rs.getBlock(coord.goToNeighbour(0));//block behind
 			if (block != null) {
 				res.add(block);

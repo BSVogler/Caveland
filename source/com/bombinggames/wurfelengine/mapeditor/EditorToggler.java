@@ -84,14 +84,15 @@ public class EditorToggler {
 					resetButton.setY(Gdx.graphics.getHeight() - offsetY);
 					resetButton.addListener(
 						new ClickListener() {
-							@Override
-							public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-								Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
-								if (!WE.isInEditor())
-									WE.startEditor();
-								return true;
+						@Override
+						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+							Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
+							if (!WE.isInEditor()) {
+								WE.startEditor();
 							}
+							return true;
 						}
+					}
 					);
 				}
 				view.getStage().addActor(resetButton);

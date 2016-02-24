@@ -70,22 +70,6 @@ public interface Renderable {
 	public boolean isMarked();
 	
 	/**
-	 *
-	 */
-	public void unmarkTemporarily();
-	
-	/**
-	 * Mark temporarily for depth sort.
-	 */
-	public void markTemporarily();
-
-	/**
-	 *
-	 * @return
-	 */
-	public boolean isMarkedTemporarily();
-
-	/**
 	 * Draws an object if it is not hidden and not clipped.
 	 *
 	 * @param view the view using this render method
@@ -129,5 +113,5 @@ public interface Renderable {
 	 * @param rs
 	 * @return 
 	 */
-	public LinkedList<Renderable> getCovered(RenderStorage rs);
+	public LinkedList<AbstractGameObject> getCovered(RenderStorage rs);
 }

@@ -238,7 +238,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f);
 	private static boolean currentDirtyFlag;
 	private boolean dirtyFlag;
-	private boolean tmpMarked;
 
 	/**
 	 * Creates an object.

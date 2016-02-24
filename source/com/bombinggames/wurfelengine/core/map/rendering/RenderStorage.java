@@ -75,7 +75,6 @@ public class RenderStorage implements Telegraph  {
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
 		zRenderingLimit = Chunk.getBlocksZ();
-		MessageManager.getInstance().addListener(this, Events.mapChanged.getId());
 	}
 
 	public void update(float dt){

@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -157,6 +158,7 @@ public class GameView implements GameManager {
 		useDefaultShader();//set default shader
 
 		renderstorage = new RenderStorage();
+		MessageManager.getInstance().addListener(renderstorage, Events.mapChanged.getId());
 		initalized = true;
 	}
 	
@@ -307,6 +309,8 @@ public class GameView implements GameManager {
 	}
 
 	public void setRenderStorage(RenderStorage renderstorage) {
+		if (this.renderstorage != null)
+			MessageManager.getInstance().removeListener(this.renderstorage, Events.mapChanged.getId());	
 		this.renderstorage = renderstorage;
 	}
 	
@@ -630,6 +634,8 @@ public class GameView implements GameManager {
 		for (Camera camera : cameras) {
 			camera.dispose();
 		}
+		if (this.renderstorage != null)
+			MessageManager.getInstance().removeListener(this.renderstorage, Events.mapChanged.getId());	
 		renderstorage.dispose();
 		shRenderer.dispose();
 		spriteBatch.dispose();

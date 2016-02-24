@@ -30,38 +30,40 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
 
-
 /**
- *A simple static basic entity. You can use it for simple images like an effect.
- * @author  Benedikt Vogler
+ * A simple static basic entity. You can use it for simple images like an
+ * effect.
+ *
+ * @author Benedikt Vogler
  */
 public class SimpleEntity extends AbstractEntity {
+
 	private static final long serialVersionUID = 1L;
 
-    /**
-     *
-     * @param id
-     */
-    public SimpleEntity(byte id) {
-        super(id);
+	/**
+	 *
+	 * @param id
+	 */
+	public SimpleEntity(byte id) {
+		super(id);
 		setName("Simple Entity");
-    }
-	
-	 /**
-     *
-     * @param id
-	 * @param value
-     */
-    public SimpleEntity(byte id, byte value) {
-        super(id, value);
-		setName("Simple Entity");
-    }
+	}
 
-    @Override
-    public void update(float dt) {
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 */
+	public SimpleEntity(byte id, byte value) {
+		super(id, value);
+		setName("Simple Entity");
+	}
+
+	@Override
+	public void update(float dt) {
 		super.update(dt);
-    }
-	
+	}
+
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return true;

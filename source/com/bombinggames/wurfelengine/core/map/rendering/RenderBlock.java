@@ -261,7 +261,6 @@ public class RenderBlock extends AbstractGameObject {
     public RenderBlock(byte id){
         super(id);
 		blockData = Block.getInstance(id);
-		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 	
 	/**
@@ -273,7 +272,6 @@ public class RenderBlock extends AbstractGameObject {
 	public RenderBlock(byte id, byte value){
 		super(id, value);
 		blockData = Block.getInstance(id, value);
-		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 	
 	/**
@@ -283,7 +281,6 @@ public class RenderBlock extends AbstractGameObject {
 	public RenderBlock(Block data){
 		super(data.getId(), data.getValue());//copy id's from data for rendering
 		blockData = data;
-		fogEnabled = WE.getCVars().getValueB("enableFog");//refresh cache
 	}
 
 	public boolean isObstacle() {

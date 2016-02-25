@@ -86,8 +86,8 @@ public class GrassBlock extends RenderBlock {
 	
 
 	@Override
-	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color, int ao) {
-		super.renderSide(view, xPos, yPos, side, color, ao);
+	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color) {
+		super.renderSide(view, xPos, yPos, side, color);
 		if (side==Side.TOP) {
 			Sprite gras = grasSprite;
 			for (int i = 0; i < 50; i++) {

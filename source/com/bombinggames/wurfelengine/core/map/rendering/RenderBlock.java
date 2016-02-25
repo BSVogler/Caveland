@@ -383,8 +383,7 @@ public class RenderBlock extends AbstractGameObject {
 					(int) (xPos-VIEW_WIDTH2*scale),
 					(int) (yPos+VIEW_HEIGHT*scale),
 					Side.TOP,
-					color,
-					0
+					color
 				);
 
 				if (staticShade) {
@@ -398,8 +397,7 @@ public class RenderBlock extends AbstractGameObject {
 					(int) (xPos-VIEW_WIDTH2*scale),
 					yPos,
 					Side.LEFT,
-					color,
-					0
+					color
 				);
 
 				if (staticShade) {
@@ -410,8 +408,7 @@ public class RenderBlock extends AbstractGameObject {
 					xPos,
 					yPos,
 					Side.RIGHT,
-					color,
-					0
+					color
 				);
             } else
                 super.render(view, xPos, yPos+VIEW_DEPTH4, color);
@@ -463,8 +460,7 @@ public class RenderBlock extends AbstractGameObject {
 						? color.add(0.25f, 0.25f, 0.25f, 0)
 						: color
 					)
-				: color,//pass color if not shading static
-			getAOFlags()
+				: color//pass color if not shading static
         );
 		
 		if (blockdata.getHealth() < 100) {
@@ -543,8 +539,7 @@ public class RenderBlock extends AbstractGameObject {
             xPos,
             yPos,
             side,
-            color,
-			0
+            color
         );
     }
   /**
@@ -557,9 +552,8 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param side The number identifying the side. 0=left, 1=top, 2=right
 	 * @param color a tint in which the sprite gets rendered. If null color gets
 	 * ignored
-	 * @param ao ambient occlusion flags. if no ao pass 0
 	 */
-	public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color, int ao) {
+	public void renderSide(final GameView view, final int xPos, final int yPos, final Side side, Color color) {
 		byte id = getSpriteId();
 		if (id <= 0) {
 			return;
@@ -574,19 +568,19 @@ public class RenderBlock extends AbstractGameObject {
 		switch (side) {
 			case LEFT:
 				if (site1 == null) {
-					site1 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+					site1 = new SideSprite(getBlockSprite(id, value, side), side, aoFlags);
 				}
 				sprite = site1;
 				break;
 			case TOP:
 				if (site2 == null) {
-					site2 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+					site2 = new SideSprite(getBlockSprite(id, value, side), side, aoFlags);
 				}
 				sprite = site2;
 				break;
 			default:
 				if (site3 == null) {
-					site3 = new SideSprite(getBlockSprite(id, value, side), side, ao);
+					site3 = new SideSprite(getBlockSprite(id, value, side), side, aoFlags);
 				}
 				sprite = site3;
 				break;
@@ -938,6 +932,18 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param aoFlags
 	 */
 	public void setAoFlags(int aoFlags) {
+		if (aoFlags!=this.aoFlags){
+			if (site1 != null) {
+				site1.setAoFlags(aoFlags);
+			}
+			if (site2 != null) {
+				site2.setAoFlags(aoFlags);
+			}
+			if (site3 != null) {
+				site3.setAoFlags(aoFlags);
+			}
+		}
+			
 		this.aoFlags = aoFlags;
 	}
 

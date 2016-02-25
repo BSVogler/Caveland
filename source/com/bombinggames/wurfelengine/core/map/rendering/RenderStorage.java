@@ -171,11 +171,13 @@ public class RenderStorage implements Telegraph  {
 		//loop over clone because may add new chunks to data
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
-		dataclone.forEach((RenderChunk chunk) -> {
-			chunk.init(rS);
-			AmbientOcclusionCalculator.calcAO(chunk);
-			hiddenSurfaceDetection(chunk, zRenderingLimit - 1);
+		dataclone.forEach((RenderChunk rChunk) -> {
+			rChunk.init(rS);
 		});
+		dataclone.forEach((RenderChunk rChunk) -> {
+			AmbientOcclusionCalculator.calcAO(rChunk);
+			hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
+		});			
 	}
 	
 	/**
@@ -493,6 +495,7 @@ public class RenderStorage implements Telegraph  {
 			RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
 			return true;
 		}
+		
 		return false;
 	}
 

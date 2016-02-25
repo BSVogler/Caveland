@@ -654,6 +654,9 @@ public class SideSprite extends TextureRegion {
 		return vertices;
 	}
 	
+	/**
+	 * aply the ao to the vertice color
+	 */
 	protected void applyAO(){
 		//render ambient occlusion
 
@@ -1033,5 +1036,9 @@ public class SideSprite extends TextureRegion {
 			vertices[V3] = v;
 			vertices[V4] = v2;
 		}
+	}
+
+	public void setAoFlags(int aoFlags) {
+		this.aoFlags = aoFlags;
 	}
 }

@@ -250,7 +250,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		if (id == 0) {
 			setHidden(true);
 		}
-		marked = currentMarkedFlag;//create as marked
+		markPermanent();//create as marked
 	}
 
 	/**
@@ -265,9 +265,9 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 			setHidden(true);
 		}
 		this.spriteValue = value;
-		marked = currentMarkedFlag;//create as marked
+		markPermanent();//create as marked
 	}
-
+	
 	/**
 	 * Get the category letter for accessing sprites.
 	 *

@@ -75,6 +75,10 @@ public class RenderChunk {
 		init(rS);
 	}
 
+	/**
+	 * fills every cell with the accoring data
+	 * @param rS 
+	 */
 	public void init(RenderStorage rS) {
 		int tlX = chunk.getTopLeftCoordinate().getX();
 		int tlY = chunk.getTopLeftCoordinate().getY();

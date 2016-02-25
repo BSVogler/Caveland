@@ -68,6 +68,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private transient static int drawCalls = 0;
 	private static Texture textureDiff;
 	private static Texture textureNormal;
+	private static boolean currentMarkedFlag;
 
 	/**
 	 * disposes static fields
@@ -219,10 +220,11 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	/**
-	 * inverses the dirty flag comparison so everything marked is now unmarked. used to mark the visited obejcts with depthsort.
+	 * inverses the dirty flag comparison so everything marked is now unmarked.
+	 * used to mark the visited obejcts with depthsort.
 	 */
-	public static void inverseDirtyFlag() {
-		currentDirtyFlag = !currentDirtyFlag;
+	public static void inverseMarkedFlag() {
+		currentMarkedFlag = !currentMarkedFlag;
 	}
 
 	//render information
@@ -236,8 +238,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * default is RGBA 0x808080FF.
 	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f);
-	private static boolean currentDirtyFlag;
-	private boolean dirtyFlag;
+	private boolean marked;
 
 	/**
 	 * Creates an object.
@@ -249,6 +250,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		if (id == 0) {
 			setHidden(true);
 		}
+		marked = currentMarkedFlag;//create as marked
 	}
 
 	/**
@@ -263,6 +265,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 			setHidden(true);
 		}
 		this.spriteValue = value;
+		marked = currentMarkedFlag;//create as marked
 	}
 
 	/**
@@ -538,28 +541,13 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	@Override
-	public void unmarkTemporarily() {
-		tmpMarked = false;
-	}
-
-	@Override
 	public final boolean isMarked() {
-		return this.dirtyFlag == AbstractGameObject.currentDirtyFlag;
+		return marked == AbstractGameObject.currentMarkedFlag;
 	}
 
 	@Override
 	public void markPermanent() {
-		this.dirtyFlag = AbstractGameObject.currentDirtyFlag;
-	}
-
-	@Override
-	public boolean isMarkedTemporarily() {
-		return tmpMarked;
-	}
-
-	@Override
-	public void markTemporarily() {
-		tmpMarked = true;
+		marked = AbstractGameObject.currentMarkedFlag;
 	}
 
 	@Override

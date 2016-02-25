@@ -58,8 +58,10 @@ public class RenderStorage implements Telegraph  {
 	private final LinkedList<RenderChunk> data;
 	private final List<Camera> cameraContainer;
 	private final LinkedList<RenderChunk> chunkPool = new LinkedList<>();
-	private final ArrayList<Integer> lastCenterX;
-	private final ArrayList<Integer> lastCenterY;
+	/**
+	 * index means camera
+	 */
+	private final ArrayList<Integer> lastCenterX, lastCenterY;
 	/**
 	 * a list of Blocks marked as dirty
 	 */
@@ -142,10 +144,12 @@ public class RenderStorage implements Telegraph  {
 					}
 				}
 				//check if center changed
-				if (lastCenterX.get(i)==null || lastCenterY==null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
+				if (lastCenterX.get(i) == null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
+					//update the last center
 					lastCenterX.set(i, camera.getCenterChunkX());
 					lastCenterY.set(i, camera.getCenterChunkY());
-					RenderBlock.setRebuildCoverList(true);
+					//rebuild
+					RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
 				}
 			}
 		}
@@ -162,8 +166,9 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * clears the used RenderChunks then resets
 	 */
-	public void reinitChunks(){
+	public void reinitChunks() {
 		RenderStorage rS = this;
+		//loop over clone because may add new chunks to data
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk chunk) -> {
@@ -171,7 +176,6 @@ public class RenderStorage implements Telegraph  {
 			AmbientOcclusionCalculator.calcAO(chunk);
 			hiddenSurfaceDetection(chunk, zRenderingLimit - 1);
 		});
-	
 	}
 	
 	/**
@@ -486,7 +490,7 @@ public class RenderStorage implements Telegraph  {
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()) {
 			reinitChunks();
-			RenderBlock.setRebuildCoverList(true);
+			RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
 			return true;
 		}
 		return false;

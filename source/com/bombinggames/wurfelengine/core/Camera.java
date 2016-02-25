@@ -135,6 +135,8 @@ public class Camera{
 	private int maxsprites;
 	private Point center = new Point(0, 0, 0);
 	private boolean currentDirtyFlag;
+	private int recursiveDepth;
+	private int maxDepth;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -608,37 +610,53 @@ public class Camera{
 			Chunk.getBlocksZ() - 1
 		);
 		//inverse dirty flag
-		AbstractGameObject.inverseDirtyFlag();
+		AbstractGameObject.inverseMarkedFlag();
 		//check every block
+		recursiveDepth=0;
+		maxDepth=0;
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
 
 			if (cell != null) {
-				visit(cell);
+				if (inViewFrustum(
+					cell.getPosition().getViewSpcX(),
+					cell.getPosition().getViewSpcY()
+				)) {
+					visit(cell);
+					recursiveDepth--;
+				}
 			}
 		}
-		depthlist.addAll(renderAppendix);
-		
-		//cleanup
-		for (RenderBlock cell : modifiedCells) {
-			cell.clearCoveredEnts();
+		for (RenderBlock modifiedCell : modifiedCells) {
+			visit(modifiedCell);
+			modifiedCell.clearCoveredEnts();
+			recursiveDepth--;
 		}
-		//has been rebuild
-		RenderBlock.setRebuildCoverList(false);
+		depthlist.addAll(renderAppendix);
 	}
 	
 	/**
 	 * topological sort
 	 * @param n root node
 	 */
-	private void visit(Renderable n) {
+	private void visit(AbstractGameObject n) {
+		recursiveDepth++;
+		if (recursiveDepth > maxDepth) {
+			maxDepth = recursiveDepth;
+		}
 		if (!n.isMarked()) {
-			LinkedList<Renderable> covered = n.getCovered(gameView.getRenderStorage());
-			if (covered.size()>0) {
+			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
+			if (covered.size() > 0) {
 				n.markPermanent();
-				for (Renderable m : covered) {
-					visit(m);
-				}
+					for (AbstractGameObject m : covered) {
+						if (inViewFrustum(
+							m.getPosition().getViewSpcX(),
+							m.getPosition().getViewSpcY()
+						)) {
+							visit(m);
+							recursiveDepth--;
+						}
+					}
 			}
 			if (n.shouldBeRendered(this)) {
 				if (objectsToBeRendered < maxsprites) {

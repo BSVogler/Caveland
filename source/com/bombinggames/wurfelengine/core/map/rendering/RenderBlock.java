@@ -45,7 +45,6 @@ import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH4;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_WIDTH2;
-import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
@@ -73,6 +72,8 @@ public class RenderBlock extends AbstractGameObject {
     private static final Color[][] COLORLIST = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
+	private static long rebuildCoverList = 0;
+	
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
 	 * @param shade 
@@ -131,8 +132,12 @@ public class RenderBlock extends AbstractGameObject {
 		return 	sprite != null;
 	}
 	
-	public static void setRebuildCoverList(boolean rebuildCoverList) {
-		RenderBlock.rebuildCoverList = rebuildCoverList;
+	/**
+	 * set the timestamp when the content changed
+	 * @param frameNum 
+	 */
+	public static void setRebuildCoverList(long frameNum) {
+		RenderBlock.rebuildCoverList = frameNum;
 	}
 
    /**
@@ -230,15 +235,15 @@ public class RenderBlock extends AbstractGameObject {
 	 * three bits used, for each side one: TODO: move to aoFlags byte 3
 	 */
 	private byte clipping;
-	private final LinkedList<Renderable> covered = new LinkedList<>();
+	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
 	/**
 	 * for topological sort. Contains entities and blocks
 	 */
-	private final LinkedList<Renderable> coveredEnts = new LinkedList<>();
-	public static boolean rebuildCoverList = true;
+	private final LinkedList<AbstractGameObject> coveredEnts = new LinkedList<>();
 	private SideSprite site1;
 	private SideSprite site3;
 	private SideSprite site2;
+	private long lastRebuild;
 	
 	/**
 	 * Does not wrap a {@link Block} instance.
@@ -1006,8 +1011,8 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	@Override
-	public LinkedList<Renderable> getCovered(RenderStorage rs) {
-		if (rebuildCoverList) {
+	public LinkedList<AbstractGameObject> getCovered(RenderStorage rs) {
+		if (lastRebuild < rebuildCoverList) {
 			rebuildCovered(rs);
 		}
 		if (!coveredEnts.isEmpty()) {
@@ -1017,61 +1022,62 @@ public class RenderBlock extends AbstractGameObject {
 		return covered;
 	}
 	
-	private void rebuildCovered(RenderStorage rs){
-			LinkedList<Renderable> covered = this.covered;
-			covered.clear();
-			Coordinate nghb = getPosition();
-			RenderBlock block;
-			if (nghb.getZ() > 0) {
-				block = rs.getBlock(nghb.add(0, 0, -1));//go down
-				if (block != null) {
-					covered.add(block);
-				}
-				//back right
-				block = rs.getBlock(nghb.goToNeighbour(1));
-				if (block != null) {
-					covered.add(block);
-				}
-				//back left
-				block = rs.getBlock(nghb.goToNeighbour(6));
-				if (block != null) {
-					covered.add(block);
-				}
-				//back
-				block = rs.getBlock(nghb.goToNeighbour(1));
-				if (block != null) {
-					covered.add(block);
-				}
-				nghb.add(0, 2, 1);
-			}
-			block = rs.getBlock(nghb.add(0, -2, 0));//back
+	private void rebuildCovered(RenderStorage rs) {
+		LinkedList<AbstractGameObject> covered = this.covered;
+		covered.clear();
+		Coordinate nghb = getPosition();
+		RenderBlock block;
+		if (nghb.getZ() > 0) {
+			block = rs.getBlock(nghb.add(0, 0, -1));//go down
 			if (block != null) {
 				covered.add(block);
 			}
-			block = rs.getBlock(nghb.goToNeighbour(3));//back right
+			//back right
+			block = rs.getBlock(nghb.goToNeighbour(1));
 			if (block != null) {
 				covered.add(block);
 			}
-
 			//back left
 			block = rs.getBlock(nghb.goToNeighbour(6));
 			if (block != null) {
 				covered.add(block);
 			}
-			if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
-				block = rs.getBlock(nghb.add(0, 0, 1));//back
-				if (block != null) {
-					covered.add(block);
-				}
-				block = rs.getBlock(nghb.add(1, 0, 0));//back
-				if (block != null) {
-					covered.add(block);
-				}
-				nghb.add(-1, 0, -1);
+			//back
+			block = rs.getBlock(nghb.goToNeighbour(1));
+			if (block != null) {
+				covered.add(block);
 			}
-
-			nghb.goToNeighbour(3);//return to origin
+			nghb.add(0, 2, 1);
 		}
+		block = rs.getBlock(nghb.goToNeighbour(0));//back
+		if (block != null) {
+			covered.add(block);
+		}
+		block = rs.getBlock(nghb.goToNeighbour(3));//back right
+		if (block != null) {
+			covered.add(block);
+		}
+
+		//back left
+		block = rs.getBlock(nghb.goToNeighbour(6));
+		if (block != null) {
+			covered.add(block);
+		}
+		if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
+			block = rs.getBlock(nghb.add(0, 0, 1));//back
+			if (block != null) {
+				covered.add(block);
+			}
+			block = rs.getBlock(nghb.goToNeighbour(2));//back
+			if (block != null) {
+				covered.add(block);
+			}
+			nghb.add(-1, 0, -1);
+		}
+
+		nghb.goToNeighbour(3);//return to origin
+		lastRebuild = WE.getGameplay().getFrameNum();
+	}
 
 	public void clearCoveredEnts(){
 		coveredEnts.clear();

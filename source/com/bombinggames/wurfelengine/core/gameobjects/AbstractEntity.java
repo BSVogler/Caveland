@@ -593,70 +593,40 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	
 	@Override
-	public LinkedList<Renderable> getCovered(RenderStorage rs) {
-		LinkedList<Renderable> res = new LinkedList<>();
+	public LinkedList<AbstractGameObject> getCovered(RenderStorage rs) {
+		LinkedList<AbstractGameObject> res = new LinkedList<>();
 		if (position!=null) {
 			Coordinate coord = getCoord();
-
+			coord.add(0, 0, -1);//go one down because the ents are added one too high
 			RenderBlock block;
 //			block = rs.getBlock(coord);//draw block in this cell first
 //			if (block != null) {
 //				res.add(block);
 //			}
-			block = rs.getBlock(coord.goToNeighbour(0));//block behind
-			if (block != null) {
-				res.add(block);
-			}
-			coord.goToNeighbour(4);
-			block = rs.getBlock(coord.goToNeighbour(2));//block behind
-			if (block != null) {
-				res.add(block);
-			}
-			coord.goToNeighbour(6);
-			block = rs.getBlock(coord.goToNeighbour(6));//block behind
-			if (block != null) {
-				res.add(block);
-			}
-			coord.goToNeighbour(2);
+//			block = rs.getBlock(coord.goToNeighbour(7));//block behind left
+//			if (block != null) {
+//				res.add(block);
+//			}
+//			block = rs.getBlock(coord.goToNeighbour(1));//block behind
+//			if (block != null) {
+//				res.add(block);
+//			}
+//			block = rs.getBlock(coord.goToNeighbour(3));//block behind right
+//			if (block != null) {
+//				res.add(block);
+//			}
+//			coord.goToNeighbour(5);
 
 			//render this ent before blocks below
 			if (coord.getZ() > 0) {
-				block = rs.getBlock(coord.add(0, 0, -1));//draw block below first
+//				if (block != null) {
+//					res.add(block);
+//				}
+				block = rs.getBlock(coord.add(0, 0, -1).goToNeighbour(4));//front right
 				if (block != null) {
 					res.add(block);
 				}
-				block = rs.getBlock(coord.goToNeighbour(7));//back left
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(1));//back
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(3));//back right
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(3));//right
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(5));//front right
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(5));
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(7));
-				if (block != null) {
-					res.add(block);
-				}
-				block = rs.getBlock(coord.goToNeighbour(7));
-				if (block != null) {
-					res.add(block);
-				}
+				
 			}
 		}
 		return res;

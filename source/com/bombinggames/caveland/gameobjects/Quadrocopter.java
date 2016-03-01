@@ -57,7 +57,8 @@ public class Quadrocopter extends Robot {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		GrassBlock.setMainForce(getPosition());
+		if (hasPosition())
+			GrassBlock.setMainForce(getPosition());
 	}
 	
 	

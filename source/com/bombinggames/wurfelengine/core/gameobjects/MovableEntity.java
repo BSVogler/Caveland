@@ -816,7 +816,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 
 	/**
 	 * Should the object be affected by gravity?
-	 * @param floating 
+	 * @param floating if true then not affacted
 	 */
 	public void setFloating(boolean floating) {
 		this.floating = floating;

@@ -2,6 +2,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.utils.Pool;
 
 /**
  *
@@ -23,9 +24,10 @@ public class Particle extends MovableEntity {
 	private float startingAlpha;
 	private ParticleType type = ParticleType.REGULAR;
 	private boolean rotateRight;
+	private Pool<Particle> pool;
 
 	/**
-	 * With TTL 2000. 
+	 * With TTL 2000.
 	 */
 	public Particle() {
 		this((byte) 22, 2000f);
@@ -33,7 +35,8 @@ public class Particle extends MovableEntity {
 
 	/**
 	 * With TTL 2000
-	 * @param id 
+	 *
+	 * @param id
 	 */
 	public Particle(byte id) {
 		this(id, 2000f);
@@ -46,17 +49,23 @@ public class Particle extends MovableEntity {
 	 */
 	public Particle(byte id, float maxtime) {
 		super(id, 0, false);
+		init(maxtime);
+	}
+	
+	public void init(float maxtime){
 		this.maxtime = maxtime;
 		timeTillDeath = maxtime;
 		setSaveToDisk(false);
-		if (type.isGrowing())
+		if (type.isGrowing()) {
 			setScaling(0);
-		else setScaling(0.3f);
+		} else {
+			setScaling(0.3f);
+		}
 		setFloating(true);
 		setName("Particle");
 		setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
 		setMass(0.0005f);
-		rotateRight = Math.random()>0.5f;
+		rotateRight = Math.random() > 0.5f;
 	}
 
 	/**
@@ -143,9 +152,10 @@ public class Particle extends MovableEntity {
 	 *
 	 * @return
 	 */
-	public float getPercentageOfLife(){
+	public float getPercentageOfLife() {
 		return timeTillDeath / maxtime;
 	}
+
 	/**
 	 * the amount of time the object lives maximum.
 	 *
@@ -154,4 +164,17 @@ public class Particle extends MovableEntity {
 	public float getLivingTime() {
 		return maxtime;
 	}
+
+	void setPool(Pool<Particle> pool) {
+		this.pool = pool;
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (pool != null) {
+			pool.free(this);
+		}
+	}
+
 }

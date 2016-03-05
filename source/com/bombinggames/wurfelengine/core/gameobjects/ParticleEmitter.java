@@ -59,25 +59,47 @@ public class ParticleEmitter extends AbstractEntity {
 	private Vector3 spread = new Vector3(0, 0, 0);
 	private PointLightSource lightsource;
 	private Particle prototype = new Particle((byte) 22);
-	private final Pool<Particle> pool = new Pool<Particle>(50) {
-		@Override
-		protected Particle newObject() {
-			Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
-			return particle;
-		}
-	};
+	private Pool<Particle> pool;
 
 	/**
+	 * Initializes with defautl size
+	 */
+	public ParticleEmitter() {
+		this(50);
+	}
+	
+	/**
 	 * active by default
+	 * @param size size of pool
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
-	public ParticleEmitter() {
+	public ParticleEmitter(int size) {
 		super((byte) 14);
 		//this.particleClass = Dust.class;
 		disableShadow();
 		setIndestructible(true);
 		setName("Particle Emitter");
 		setActive(true);
+		pool = new Pool<Particle>(size) {
+			@Override
+			protected Particle newObject() {
+				Particle particle = new Particle(prototype.getSpriteId(), prototype.getLivingTime());
+				return particle;
+			}
+
+			@Override
+			public Particle obtain() {
+				boolean init = false;
+				if (getFree() > 0) {
+					init = true;//will obtain from pool
+				}
+				Particle particle = super.obtain();
+				if (init) {
+					particle.init(2000f);
+				}
+				return particle;
+			}
+		};
 	}
 
 	@Override
@@ -102,6 +124,7 @@ public class ParticleEmitter extends AbstractEntity {
 			while (timer >= timeEachSpawn) {
 				timer -= timeEachSpawn;
 				Particle particle = pool.obtain();
+				particle.setPool(pool);
 				particle.setType(prototype.getType());
 				particle.getColor().set(prototype.getColor());
 				particle.setRotation((float) (Math.random()*360f));
@@ -119,7 +142,7 @@ public class ParticleEmitter extends AbstractEntity {
 				}
 			}
 		} else {
-			setColor(new Color(0.5f, 0.5f, 0.5f, 1));
+			getColor().set(0.5f, 0.5f, 0.5f, 1);
 		}
 	}
 

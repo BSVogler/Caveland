@@ -45,19 +45,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Shows the current "color"(block) selection in the editor.
+ * Saves the current "color"(block) selection in the editor.
  * @author Benedikt Vogler
  */
-public class PlacableGUI extends WidgetGroup {
+public class SelectionDetails extends WidgetGroup {
 	private Block block = Block.getInstance((byte) 1);
 	private final Label label;
-	private String name;
 	private final Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
 	private boolean placeBlocks = true;
 	private final Slider slider;
 	/** parent stage*/
 	private final Stage stage;
+	private PlacableTable table;
 
 	/**
 	 *
@@ -65,7 +65,7 @@ public class PlacableGUI extends WidgetGroup {
 	 * @param selection the selection-Entity where the color comes from
 	 * @param left left mouse button tool?
 	 */
-	public PlacableGUI(Stage stage, Cursor selection, boolean left) {
+	public SelectionDetails(Stage stage, Cursor selection, boolean left) {
 		this.stage = stage;
 
 		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
@@ -171,7 +171,7 @@ public class PlacableGUI extends WidgetGroup {
 				ent.setSpriteValue((byte) slider.getValue());
 			return ent;
 		} catch (InstantiationException | IllegalAccessException ex) {
-			Logger.getLogger(PlacableGUI.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(SelectionDetails.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
@@ -183,7 +183,6 @@ public class PlacableGUI extends WidgetGroup {
 	 */
 	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {
 		entityClass = entclass;
-		this.name = name; 
 		label.setText(name);
 	}
 
@@ -229,17 +228,23 @@ public class PlacableGUI extends WidgetGroup {
 		setVisible(false);
 	}
 
-	private static class ChangeListenerImpl extends ChangeListener {
-		private final PlacableGUI parent;
+	void setTable(PlacableTable table) {
+		this.table = table;
+	}
 
-		ChangeListenerImpl(PlacableGUI parent) {
+	private static class ChangeListenerImpl extends ChangeListener {
+		private final SelectionDetails parent;
+
+		ChangeListenerImpl(SelectionDetails parent) {
 			this.parent = parent;
 		}
 
 		@Override
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			if (((ProgressBar)actor).getValue() > -1)
-				parent.setValue((byte) ((ProgressBar)actor).getValue());
+			if (((ProgressBar) actor).getValue() > -1) {
+				parent.setValue((byte) ((ProgressBar) actor).getValue());
+				parent.table.setValue((byte) ((ProgressBar) actor).getValue());
+			}
 		}
 	}
 }

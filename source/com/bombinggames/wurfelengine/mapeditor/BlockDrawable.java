@@ -71,6 +71,10 @@ public class BlockDrawable extends TextureRegionDrawable {
 		}
 		block.setScaling(size);
 	}
+	
+	void setValue(byte value) {
+		this.block.setSpriteValue(value);
+	}
 
 	@Override
 	public void draw(Batch batch, float x, float y, float width, float height) {

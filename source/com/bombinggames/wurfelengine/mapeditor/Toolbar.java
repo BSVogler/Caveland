@@ -132,7 +132,7 @@ public class Toolbar extends Window {
 		 * @param placableGUI
 		 * @return
 		 */
-		public Command getCommand(GameView view, Cursor cursor, PlacableGUI placableGUI){
+		public Command getCommand(GameView view, Cursor cursor, SelectionDetails placableGUI){
 			switch (this) {
 				case DRAW:
 					return new Command() {

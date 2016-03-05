@@ -39,6 +39,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -48,16 +49,21 @@ import java.util.Map;
  */
 public class PlacableTable extends Table {
 
-	private final PlacableGUI placableGUI;
+	private final SelectionDetails placableGUI;
 
 	private boolean placeBlocks = true;
+	private byte selected;
+	/**
+	 * stores the block drawables
+	 */
+	private final ArrayList<BlockDrawable> blockDrawables = new ArrayList<>(40);
 
 	/**
 	 *
 	 * @param colorGUI the linked preview of the selection
 	 * @param left
 	 */
-	public PlacableTable(PlacableGUI colorGUI, boolean left) {
+	public PlacableTable(SelectionDetails colorGUI, boolean left) {
 		this.placableGUI = colorGUI;
 
 		setWidth(400);
@@ -85,10 +91,13 @@ public class PlacableTable extends Table {
 		if (!hasChildren()) {
 			byte foundItems = 0;
 			if (placeBlocks) {//add blocks
+				blockDrawables.clear();
 				//add air
+				BlockDrawable blockDrawable = new BlockDrawable((byte) 0, (byte) 0, 0.35f);
+				blockDrawables.add(blockDrawable);
 				add(
 					new PlacableItem(
-						new BlockDrawable((byte) 0, (byte) 0, 0.35f),
+						blockDrawable,
 						new BlockListener((byte) 0, (byte) 0)
 					)
 				);
@@ -100,9 +109,11 @@ public class PlacableTable extends Table {
 						RenderBlock rBlock = block.toRenderBlock();
 						if (RenderBlock.isSpriteDefined(rBlock) //add defined blocks
 							|| !block.getName().equals("undefined")) {
+							blockDrawable = new BlockDrawable(i, (byte) 0, 0.35f);
+							blockDrawables.add(blockDrawable);
 							add(
 								new PlacableItem(
-									new BlockDrawable(i, (byte) 0, 0.35f),
+									blockDrawable,
 									new BlockListener(foundItems, i)
 								)
 							);
@@ -116,12 +127,14 @@ public class PlacableTable extends Table {
 			} else {
 				//add every registered entity class
 				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
-					: AbstractEntity.getRegisteredEntities().entrySet()) {
-					PlacableItem button = new PlacableItem(
-						new EntityDrawable(entry.getValue()),
-						new EntityListener(entry.getKey(), entry.getValue(), foundItems)
+					: AbstractEntity.getRegisteredEntities().entrySet()
+				) {
+					add(
+						new PlacableItem(
+							new EntityDrawable(entry.getValue()),
+							new EntityListener(entry.getKey(), entry.getValue(), foundItems)
+						)
 					);
-					add(button);
 
 					foundItems++;
 					if (foundItems % 4 == 0) {
@@ -181,19 +194,44 @@ public class PlacableTable extends Table {
 	}
 
 	/**
+	 * selects the item //TODO needs more generic method including entities
+	 * @param id the id of the listener
+	 */
+	void selectBlock(byte id) {
+		if (id <= getChildren().size) {
+			selected = id;
+			for (Actor c : getChildren()) {
+				c.setScale(0.35f);
+			}
+			getChildren().get(selected).setScale(0.4f);
+		}
+	}
+
+	/**
+	 * sets the value of the selected
+	 * @param value 
+	 */
+	void setValue(byte value) {
+		blockDrawables.get(selected).setValue(value);
+	}
+
+	/**
 	 * detects a click on an entity in the list
 	 */
 	private class EntityListener extends ClickListener {
 
 		private final Class<? extends AbstractEntity> entclass;
 		private final String name;
+		/**
+		 * id of this listener
+		 */
 		private final byte id;
 
 		/**
 		 * 
 		 * @param name
 		 * @param entclass
-		 * @param id 
+		 * @param id id of this listener
 		 */
 		EntityListener(String name, Class<? extends AbstractEntity> entclass, byte id) {
 			this.entclass = entclass;
@@ -218,9 +256,17 @@ public class PlacableTable extends Table {
 	 */
 	private class BlockListener extends ClickListener {
 
+		/**
+		 * id of represented block
+		 */
 		private final byte blockId;
 		private final byte id;
 
+		/**
+		 * 
+		 * @param id id of the listener
+		 * @param blockId representing block id
+		 */
 		BlockListener(byte id, byte blockId) {
 			this.blockId = blockId;
 			this.id = id;
@@ -233,12 +279,7 @@ public class PlacableTable extends Table {
 			} else {
 				placableGUI.setBlock(Block.getInstance(blockId));
 			}
-			if (id <= getChildren().size) {
-				for (Actor c : getChildren()) {
-					c.setScale(0.35f);
-				}
-				getChildren().get(id).setScale(0.4f);
-			}
+			selectBlock(id);
 		}
 	}
 }

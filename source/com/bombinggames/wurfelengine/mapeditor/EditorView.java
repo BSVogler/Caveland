@@ -81,10 +81,10 @@ public class EditorView extends GameView implements Telegraph {
     private final Vector2 camermove = new Vector2(); 
     
     private final Navigation nav = new Navigation();
-    private PlacableTable leftSelector;
-	private PlacableGUI leftColorGUI;
-	private PlacableTable rightSelector;
-	private PlacableGUI rightColorGUI;
+    private PlacableTable leftTable;
+	private SelectionDetails leftColorGUI;
+	private PlacableTable rightTable;
+	private SelectionDetails rightColorGUI;
 	
 	private Toolbar toolSelection;
 	private boolean selecting = false;
@@ -134,15 +134,16 @@ public class EditorView extends GameView implements Telegraph {
 		
         addCamera(camera);
 		
-		leftColorGUI = new PlacableGUI(getStage(), this.controller.getCursor(), true);
+		leftColorGUI = new SelectionDetails(getStage(), this.controller.getCursor(), true);
 		getStage().addActor(leftColorGUI);
-        leftSelector = new PlacableTable(leftColorGUI, true);
-        getStage().addActor(leftSelector);
+        leftTable = new PlacableTable(leftColorGUI, true);
+		leftColorGUI.setTable(leftTable);
+        getStage().addActor(leftTable);
 		
-		rightColorGUI = new PlacableGUI(getStage(), this.controller.getCursor(), false);
+		rightColorGUI = new SelectionDetails(getStage(), this.controller.getCursor(), false);
 		getStage().addActor(rightColorGUI);
-        rightSelector = new PlacableTable(rightColorGUI, false);
-        getStage().addActor(rightSelector);
+        rightTable = new PlacableTable(rightColorGUI, false);
+        getStage().addActor(rightTable);
 
         //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
@@ -170,7 +171,7 @@ public class EditorView extends GameView implements Telegraph {
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 		
-		toolSelection = new Toolbar(this, spritesheet, leftSelector, rightSelector, controller.getCursor());
+		toolSelection = new Toolbar(this, spritesheet, leftTable, rightTable, controller.getCursor());
 		getStage().addActor(toolSelection);
     }
 

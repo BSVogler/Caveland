@@ -90,7 +90,7 @@ public class GrassBlock extends RenderBlock {
 		super.renderSide(view, xPos, yPos, side, color);
 		if (side==Side.TOP) {
 			Sprite gras = grasSprite;
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 10; i++) {
 				//game space
 				int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % Block.GAME_EDGELENGTH - Block.GAME_EDGELENGTH2);
 				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % Block.GAME_EDGELENGTH - Block.GAME_EDGELENGTH2+15);

@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.core.lightengine.AmbientOcclusionCalculator
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -333,6 +334,62 @@ public class RenderStorage implements Telegraph  {
 			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 		}
 	}
+	
+		/**
+	 * If the block can not be found returns null pointer.
+	 *
+	 * @param point transform safe
+	 * @return
+	 */
+	public RenderBlock getBlock(final Point point) {
+		if (point.getZ() < 0) {
+			return getNewGroundBlockInstance();
+		}
+		
+		float x = point.x;
+		float y = point.y;
+		//bloated in-place code to avoid heap call with toCoord()
+		int xCoord = Math.floorDiv((int) x, Block.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			x % Block.GAME_DIAGLENGTH,
+			y % Block.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
+		}
+
+		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, Block.GAME_EDGELENGTH));
+	}
+	
+	
 	
 	/**
 	 * performs a simple viewFrustum check by looking at the direct neighbours.

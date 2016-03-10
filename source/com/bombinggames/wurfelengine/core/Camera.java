@@ -137,6 +137,8 @@ public class Camera{
 	private boolean currentDirtyFlag;
 	private int recursiveDepth;
 	private int maxDepth;
+	private ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);//assume that we have 40 entities on  camera
+	private ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -559,7 +561,8 @@ public class Camera{
 
 		//add entitys which should be rendered
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);//assume that we have 40 entities on  camera
+		ArrayList<AbstractEntity> entsToRender = this.entsToRender;
+		entsToRender.clear();
 		for (AbstractEntity entity : ents) {
 			if (entity.hasPosition()
 				&& !entity.isHidden()
@@ -586,10 +589,13 @@ public class Camera{
 		});
 		
 		//add entities to renderstorage
-		ArrayList<RenderBlock> modifiedCells = new ArrayList<>(entsToRender.size());
+		ArrayList<RenderBlock> modifiedCells = this.modifiedCells;
+		modifiedCells.clear();
+		modifiedCells.ensureCapacity(entsToRender.size());
 		LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().toCoord().add(0, 0, 1));//add in cell above
+			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, Block.GAME_EDGELENGTH));//add in cell above
+			ent.getPosition().add(0, 0, -Block.GAME_EDGELENGTH);//reverse change
 			if (block != null) {
 				block.addCoveredEnts(ent);
 				modifiedCells.add(block);
@@ -602,7 +608,7 @@ public class Camera{
 		//iterate over renderstorage
 		objectsToBeRendered = 0;
 		//clear/reset flags
-		CameraSpaceIterator iterator= new CameraSpaceIterator(
+		CameraSpaceIterator iterator = new CameraSpaceIterator(
 			gameView.getRenderStorage(),
 			centerChunkX,
 			centerChunkY,
@@ -612,8 +618,8 @@ public class Camera{
 		//inverse dirty flag
 		AbstractGameObject.inverseMarkedFlag();
 		//check every block
-		recursiveDepth=0;
-		maxDepth=0;
+		recursiveDepth = 0;
+		maxDepth = 0;
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
 

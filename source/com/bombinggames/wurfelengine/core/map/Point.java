@@ -788,7 +788,11 @@ public class Point extends Vector3 implements Position {
 		return Controller.getMap().getChunkWithCoords(toCoord());
 	}
 
-	private void setFromCoord(Coordinate coord) {
+	/**
+	 * Set x,y,z based on a coordinate.
+	 * @param coord 
+	 */
+	private void setFromCoord(final Coordinate coord) {
 		x = coord.getX() * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
 		y = coord.getY() * Block.GAME_DIAGLENGTH2;
 		z = coord.getZ() * Block.GAME_EDGELENGTH;

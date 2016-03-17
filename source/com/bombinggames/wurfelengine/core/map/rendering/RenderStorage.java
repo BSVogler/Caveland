@@ -56,9 +56,8 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * Stores the data of the map.
 	 */
-	private final LinkedList<RenderChunk> data;
+	private final LinkedList<RenderChunk> data = new LinkedList<>();
 	private final List<Camera> cameraContainer;
-	private final LinkedList<RenderChunk> chunkPool = new LinkedList<>();
 	/**
 	 * index means camera
 	 */
@@ -74,10 +73,13 @@ public class RenderStorage implements Telegraph  {
 	 */
 	public RenderStorage() {
 		this.cameraContainer = new ArrayList<>(1);
-		data = new LinkedList<>();
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
 		zRenderingLimit = Chunk.getBlocksZ();
+	}
+	
+	public void preUpdate(float dt){
+		resetShadingForDirty();
 	}
 
 	public void update(float dt){
@@ -96,9 +98,82 @@ public class RenderStorage implements Telegraph  {
 		}
 	}
 	
-	public void preUpdate(float dt){
-		resetShadingForDirty();
+	/**
+	 * checks which chunks must be loaded around the center
+	 */
+	private void checkNeededChunks() {
+		//set every to false
+		data.forEach(chunk -> chunk.setCameraAccess(false));
+		
+		//check if needed chunks are loaded
+		for (int i = 0; i < cameraContainer.size(); i++) {
+			Camera camera = cameraContainer.get(i);
+			if (camera.isEnabled()) {
+				//check 3x3 around center
+				for (int x = -1; x <= 1; x++) {
+					for (int y = -1; y <= 1; y++) {
+						checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y);
+					}
+				}
+				//check if center changed
+				if (lastCenterX.get(i) == null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
+					//update the last center
+					lastCenterX.set(i, camera.getCenterChunkX());
+					lastCenterY.set(i, camera.getCenterChunkY());
+					//rebuild
+					RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
+				}
+			}
+		}
+		
+		//remove chunks which are not used
+		data.forEach(chunk -> {
+			if (!chunk.cameraAccess()) {
+				chunk.dispose();
+			}
+		});
+		data.removeIf(chunk -> !chunk.cameraAccess());
 	}
+	
+	/**
+	 * Checks if chunk must be loaded or deleted.
+	 *
+	 * @param x
+	 * @param y
+	 * @return true if created a new renderchunk in the check
+	 */
+	private void checkChunk(int x, int y) {
+		RenderChunk rChunk = getChunk(x, y);
+		//check if in storage
+		if (rChunk == null) {
+			Chunk mapChunk = Controller.getMap().getChunk(x, y);
+			if (mapChunk != null) {
+				//get chunk from pool if possible
+				rChunk = new RenderChunk(this, mapChunk);
+				data.add(rChunk);
+				rChunk.setCameraAccess(true);
+				AmbientOcclusionCalculator.calcAO(rChunk);
+				hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
+
+				//update neighbors
+				RenderChunk neighbor = getChunk(x - 1, y);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+				}
+				neighbor = getChunk(x + 1, y);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+				}
+				neighbor = getChunk(x, y - 1);
+				if (neighbor != null) {
+					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+				}
+			}
+		} else {
+			rChunk.setCameraAccess(true);
+		}
+	}
+
 	
 	/**
 	 * reset light to normal level for cordinates marked as dirty
@@ -128,41 +203,6 @@ public class RenderStorage implements Telegraph  {
 			dirtyFlags.add(rB);
 	}
 	
-	/**
-	 * checks which chunks must be loaded around the center
-	 */
-	private void checkNeededChunks() {
-		//set every to false
-		data.forEach(chunk -> chunk.setCameraAccess(false));
-		
-		//check if needed chunks are there and mark them
-		for (int i = 0; i < cameraContainer.size(); i++) {
-			Camera camera = cameraContainer.get(i);
-			if (camera.isEnabled()) {
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						checkChunk(camera.getCenterChunkX() + x, camera.getCenterChunkY() + y);//todo remove check if loaded
-					}
-				}
-				//check if center changed
-				if (lastCenterX.get(i) == null || lastCenterX.get(i) != camera.getCenterChunkX() || lastCenterY.get(i) != camera.getCenterChunkY()) {
-					//update the last center
-					lastCenterX.set(i, camera.getCenterChunkX());
-					lastCenterY.set(i, camera.getCenterChunkY());
-					//rebuild
-					RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
-				}
-			}
-		}
-		
-		//remove chunks which are not used
-		data.forEach(chunk -> {
-			if (!chunk.cameraAccess()) {
-				chunkPool.add(chunk);
-			}
-		});
-		data.removeIf(chunk -> !chunk.cameraAccess());
-	}
 	
 	/**
 	 * clears the used RenderChunks then resets
@@ -179,62 +219,6 @@ public class RenderStorage implements Telegraph  {
 			AmbientOcclusionCalculator.calcAO(rChunk);
 			hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
 		});			
-	}
-	
-	/**
-	 * Checks if chunk must be loaded or deleted.
-	 *
-	 * @param x
-	 * @param y
-	 * @return true if created a new renderchunk in the check
-	 */
-	private boolean checkChunk(int x, int y) {
-		RenderChunk rChunk = getChunk(x, y);
-		//check if in storage
-		if (rChunk == null) {
-			Chunk mapChunk = Controller.getMap().getChunk(x, y);
-			if (mapChunk != null) {
-				rChunk = getChunkFromPool();
-				rChunk.init(this, mapChunk);
-				data.add(rChunk);
-				rChunk.setCameraAccess(true);
-				AmbientOcclusionCalculator.calcAO(rChunk);
-				hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
-
-				//update neighbors
-				RenderChunk neighbor = getChunk(x - 1, y);
-				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
-				}
-				neighbor = getChunk(x + 1, y);
-				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
-				}
-				neighbor = getChunk(x, y - 1);
-				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
-				}
-				return true;
-			}
-		} else {
-			rChunk.setCameraAccess(true);
-		}
-		return false;
-	}
-	
-	/**
-	 * Delivers a new chunk prefering the pool.
-	 *
-	 * @param rS
-	 * @param chunk
-	 * @return
-	 */
-	private RenderChunk getChunkFromPool() {
-		if (!chunkPool.isEmpty()) {
-			return chunkPool.remove();
-		} else {
-			return new RenderChunk();
-		}
 	}
 	
 	/**
@@ -262,7 +246,7 @@ public class RenderStorage implements Telegraph  {
 	}
 
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c) c: amount of
+	 * Get the chunk with the given chunk coords from the active pool. <br>Runtime: O(c) c: amount of
 	 * chunks -&gt; O(1)
 	 *
 	 * @param chunkX

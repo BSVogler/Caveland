@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.map.rendering;
 
+import com.badlogic.gdx.utils.Pool;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
@@ -43,14 +44,17 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 public class RenderChunk {
 
 	private final RenderBlock data[][][];
+	private static final Pool<RenderBlock[][][]> dataPool;
 	private Chunk chunk;
 	private boolean cameraAccess;
 
-	/**
-	 * Without init
-	 */
-	public RenderChunk() {
-		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+	static {
+		dataPool = new Pool<RenderBlock[][][]>(3) {
+			@Override
+			protected RenderBlock[][][] newObject() {
+				return new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+			}
+		};
 	}
 
 	/**
@@ -60,7 +64,7 @@ public class RenderChunk {
 	 * @param chunk linked chunk
 	 */
 	public RenderChunk(RenderStorage rS, Chunk chunk) {
-		data = new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+		data = dataPool.obtain();
 		init(rS, chunk);
 	}
 
@@ -193,7 +197,7 @@ public class RenderChunk {
 	public int getTopLeftCoordinateX() {
 		return chunk.getTopLeftCoordinateX();
 	}
-	
+
 	public int getTopLeftCoordinateY() {
 		return chunk.getTopLeftCoordinateY();
 	}
@@ -221,7 +225,7 @@ public class RenderChunk {
 		return chunk.getChunkY();
 	}
 
-	RenderBlock getBlockViaIndex(int x, int y, int z) {
+	protected RenderBlock getBlockViaIndex(int x, int y, int z) {
 		return data[x][y][z];
 	}
 
@@ -229,7 +233,7 @@ public class RenderChunk {
 	 *
 	 * @return treu if a camera rendered this chunk this frame
 	 */
-	boolean cameraAccess() {
+	public boolean cameraAccess() {
 		return cameraAccess;
 	}
 
@@ -238,8 +242,12 @@ public class RenderChunk {
 	 *
 	 * @param b
 	 */
-	void setCameraAccess(boolean b) {
+	public void setCameraAccess(boolean b) {
 		cameraAccess = b;
+	}
+
+	void dispose() {
+		dataPool.free(data);
 	}
 
 }

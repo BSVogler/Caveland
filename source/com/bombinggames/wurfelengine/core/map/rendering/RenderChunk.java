@@ -72,7 +72,7 @@ public class RenderChunk {
 	 */
 	public void init(RenderStorage rS, Chunk chunk) {
 		this.chunk = chunk;
-		init(rS);
+		initData(rS);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class RenderChunk {
 	 *
 	 * @param rS
 	 */
-	public void init(RenderStorage rS) {
+	public void initData(RenderStorage rS) {
 		int tlX = chunk.getTopLeftCoordinateX();
 		int tlY = chunk.getTopLeftCoordinateY();
 
@@ -88,27 +88,27 @@ public class RenderChunk {
 		int blocksZ = Chunk.getBlocksZ();
 		int blocksX = Chunk.getBlocksX();
 		int blocksY = Chunk.getBlocksY();
-		for (int x = 0; x < blocksX; x++) {
-			for (int y = 0; y < blocksY; y++) {
+		for (int xInd = 0; xInd < blocksX; xInd++) {
+			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
-					Block block = chunk.getBlockViaIndex(x, y, z);
+					Block block = chunk.getBlockViaIndex(xInd, yInd, z);
 					//update only if cell changed
-					if (data[x][y][z] == null || block != data[x][y][z].getBlockData()) {
+					if (data[xInd][yInd][z] == null || block != data[xInd][yInd][z].getBlockData()) {
 						if (block != null) {
-							data[x][y][z] = block.toRenderBlock();
+							data[xInd][yInd][z] = block.toRenderBlock();
 						} else {
-							data[x][y][z] = new RenderBlock();
+							data[xInd][yInd][z] = new RenderBlock();
 						}
-						data[x][y][z].setPosition(
+						data[xInd][yInd][z].setPosition(
 							new Coordinate(
-								tlX + x,
-								tlY + y,
+								tlX + xInd,
+								tlY + yInd,
 								z
 							)
 						);
 					}
-					data[x][y][z].setUnclipped();
-					resetShadingCoord(x, y, z);
+					data[xInd][yInd][z].setUnclipped();
+					resetShadingCoord(xInd, yInd, z);
 				}
 			}
 		}

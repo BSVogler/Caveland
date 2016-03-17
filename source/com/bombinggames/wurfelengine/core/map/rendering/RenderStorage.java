@@ -173,7 +173,7 @@ public class RenderStorage implements Telegraph  {
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk rChunk) -> {
-			rChunk.init(rS);
+			rChunk.initData(rS);
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
 			AmbientOcclusionCalculator.calcAO(rChunk);
@@ -299,11 +299,12 @@ public class RenderStorage implements Telegraph  {
 			left = chunk.getTopLeftCoordinateX();
 			top = chunk.getTopLeftCoordinateY();
 			//check if coordinates are inside the chunk
-			if (left <= x
+			if ( x >= left
 				&& x < left + Chunk.getBlocksX()
-				&& top <= y
-				&& y < top + Chunk.getBlocksY()) {
-				data.addFirst(data.removeLast());
+				&& y >= top
+				&& y < top + Chunk.getBlocksY()
+			) {
+				data.addFirst(data.removeLast());//move in front to speed up lookup
 				chunkWithBlock = chunk;
 				break;
 			}

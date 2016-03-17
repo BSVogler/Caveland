@@ -1020,6 +1020,19 @@ public class RenderBlock extends AbstractGameObject {
 		}
 		if (!coveredEnts.isEmpty()) {
 			coveredEnts.addAll(covered);
+			//sort valid in order of depth
+			coveredEnts.sort((AbstractGameObject o1, AbstractGameObject o2) -> {
+				float d1 = o1.getDepth();
+				float d2 = o2.getDepth();
+				if (d1 > d2) {
+					return 1;
+				} else {
+					if (d1 == d2) {
+						return 0;
+					}
+					return -1;
+				}
+			});
 			return coveredEnts;
 		}
 		return covered;

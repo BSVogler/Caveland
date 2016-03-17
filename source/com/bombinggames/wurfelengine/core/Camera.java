@@ -134,11 +134,10 @@ public class Camera{
 	private int renderResWidth;
 	private int maxsprites;
 	private Point center = new Point(0, 0, 0);
-	private boolean currentDirtyFlag;
 	private int recursiveDepth;
 	private int maxDepth;
-	private ArrayList<AbstractEntity> entsToRender = new ArrayList<>(40);//assume that we have 40 entities on  camera
 	private ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
+	private LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -555,53 +554,35 @@ public class Camera{
 	 * @return the depthlist
 	 */
 	private void createDepthList() {
-		//register memory space only once then reuse
 		depthlist.clear();
 		maxsprites = WE.getCVars().getValueI("MaxSprites");
 
 		//add entitys which should be rendered
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		ArrayList<AbstractEntity> entsToRender = this.entsToRender;
-		entsToRender.clear();
-		for (AbstractEntity entity : ents) {
-			if (entity.hasPosition()
-				&& !entity.isHidden()
-				&& inViewFrustum(
-					entity.getPosition().getViewSpcX(),
-					entity.getPosition().getViewSpcY()
-				)
-				&& entity.getPosition().getZ() < zRenderingLimit
-			) {
-				entsToRender.add(entity);
-			}
-		}
-		
-		//sort valid in order of depth
-		entsToRender.sort((AbstractEntity o1, AbstractEntity o2) -> {
-			float d1 = o1.getDepth();
-			float d2 = o2.getDepth();
-			if (d1 > d2) {
-				return 1;
-			} else {
-				if (d1==d2) return 0;
-				return -1;
-			}
-		});
-		
+				
 		//add entities to renderstorage
 		ArrayList<RenderBlock> modifiedCells = this.modifiedCells;
 		modifiedCells.clear();
-		modifiedCells.ensureCapacity(entsToRender.size());
-		LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
-		for (AbstractEntity ent : entsToRender) {
-			RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, Block.GAME_EDGELENGTH));//add in cell above
-			ent.getPosition().add(0, 0, -Block.GAME_EDGELENGTH);//reverse change
-			if (block != null) {
-				block.addCoveredEnts(ent);
-				modifiedCells.add(block);
-			} else {
-				//add at end of renderList
-				renderAppendix.add(ent);
+		modifiedCells.ensureCapacity(ents.size());
+		LinkedList<AbstractEntity> renderAppendix = this.renderAppendix;
+		
+		for (AbstractEntity ent : ents) {
+			if (ent.hasPosition()
+				&& !ent.isHidden()
+				&& inViewFrustum(ent.getPosition().getViewSpcX(),
+					ent.getPosition().getViewSpcY()
+				)
+				&& ent.getPosition().getZ() < zRenderingLimit
+			) {
+				RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, Block.GAME_EDGELENGTH));//add in cell above
+				ent.getPosition().add(0, 0, -Block.GAME_EDGELENGTH);//reverse change in line above
+				if (block != null) {
+					block.addCoveredEnts(ent);
+					modifiedCells.add(block);
+				} else {
+					//add at end of renderList
+					renderAppendix.add(ent);
+				}
 			}
 		}
 		

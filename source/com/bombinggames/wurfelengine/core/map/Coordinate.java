@@ -432,7 +432,7 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * Copy safe. O(const)
+	 * Copy safe. Creates new instance. O(const)
 	 *
 	 * @return the coordiante's origin is the center
 	 */

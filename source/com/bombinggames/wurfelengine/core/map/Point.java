@@ -233,6 +233,10 @@ public class Point extends Vector3 implements Position {
 		return Controller.getMap().getBlock(xCoord, yCoord, Math.floorDiv((int) z, Block.GAME_EDGELENGTH));
 	}
     
+	/**
+	 * avoid this method because it creates a new instance.
+	 * @return 
+	 */
     @Override
     public Point cpy() {
         return new Point(this);
@@ -264,7 +268,7 @@ public class Point extends Vector3 implements Position {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		return Controller.getMap().getData().stream().anyMatch((chunk) -> (chunk.hasPoint(this)));//todo may not be possible to access a ceel even if returns true
+		return Controller.getMap().getData().stream().anyMatch((chunk) -> (chunk.hasPoint(this)));//todo may not be possible to access a cell even if returns true
     }
 	
 	@Override
@@ -289,7 +293,7 @@ public class Point extends Vector3 implements Position {
     }
     
 	/**
-     *Add a vector to the position
+     * Add a vector to the position
      * @param vector all values in game world values
      * @return
      */
@@ -300,7 +304,7 @@ public class Point extends Vector3 implements Position {
     }
 	
      /**
-     *Add a vector to the position
+     * Add a vector to the position
      * @param vector all values in game world values
      * @return
      */
@@ -313,7 +317,7 @@ public class Point extends Vector3 implements Position {
     }
 
     /**
-     *
+     * Add a vector to the position
      * @param x x value to add
      * @param y y value to add
      * @param z height to add
@@ -335,19 +339,19 @@ public class Point extends Vector3 implements Position {
 	 * @param z offset from origin
 	 */
 	public void setPositionRelativeToCoord(float x, float y, float z) {
-		Point origin = toCoord().toPoint();
+		Point origin = toCoord().toPoint();//todo should be replaced by non-heap method
 		this.x = origin.x + x;
 		this.y = origin.y + y;
 		this.z = origin.z + z;
 	}
 
 	/**
-	 * Relative to the current coordiante field set the offset.
+	 * Set offset relative to the current coordiante.
 	 *
 	 * @param shift offset from origin
 	 */
 	public void setPositionRelativeToCoord(Vector3 shift) {
-		Point origin = toCoord().toPoint();
+		Point origin = toCoord().toPoint();//todo should be replaced by non-heap method
 		this.x = origin.x + shift.x;
 		this.y = origin.y + shift.y;
 		this.z = origin.z + shift.z;

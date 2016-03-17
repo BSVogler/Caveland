@@ -99,12 +99,12 @@ public class PointLightSource extends AbstractEntity {
 			Point origin = getPosition();
 			lastPos = origin.cpy();
 			
-			//light blocks under the torch
+			//light blocks around
 			for (int z = -radius; z < radius; z++) {
 				for (int x = -radius; x < radius; x++) {
 					for (int y = -radius * 2; y < radius * 2; y++) {
 
-						//slowly decrease
+						//reset cell in cache
 						if (lightcache[x + radius][y + radius * 2][z + radius][0] > 0) {
 							lightcache[x + radius][y + radius * 2][z + radius][0] = 0;
 						}
@@ -165,6 +165,7 @@ public class PointLightSource extends AbstractEntity {
 		super.update(dt);
 
 		if (enabled && hasPosition()) {
+			//check if moved and therefore has to be recalculated
 			if (lastPos == null || !lastPos.equals(getPosition())) {
 				lightNearbyBlocks(dt);
 			}
@@ -193,21 +194,21 @@ public class PointLightSource extends AbstractEntity {
 	}
 
 	/**
-	 *
+	 *Turn light on.
 	 */
 	public void enable() {
 		enabled = true;
 	}
 
 	/**
-	 *
+	 * Turn light off.
 	 */
 	public void disable() {
 		enabled = false;
 	}
 
 	/**
-	 *
+	 * Is light on?
 	 * @return
 	 */
 	public boolean isEnabled() {
@@ -215,8 +216,8 @@ public class PointLightSource extends AbstractEntity {
 	}
 
 	/**
-	 *
-	 * @param brightness
+	 * 
+	 * @param brightness value  &gt;= 0
 	 */
 	public void setBrightness(float brightness) {
 		this.brightness = brightness;

@@ -505,14 +505,10 @@ public class Point extends Vector3 implements Position {
 		if (ds < 0) {
 			return intbound(-s, -ds);
 		} else {
-			s = mod(s, 1);
+			s = (s % 1 + 1) % 1;//modulo
 			// problem is now s+t*ds = 1
 			return (int) ((1 - s) / ds);
 		}
-	}
-
-	private float mod(float value, int modulus) {
-		return (value % modulus + modulus) % modulus;
 	}
 
 	/**

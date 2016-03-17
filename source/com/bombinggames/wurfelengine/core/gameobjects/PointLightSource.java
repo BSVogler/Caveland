@@ -100,6 +100,7 @@ public class PointLightSource extends AbstractEntity {
 			lastPos = origin.cpy();
 			
 			//light blocks around
+			Vector3 dir = new Vector3();
 			for (int z = -radius; z < radius; z++) {
 				for (int x = -radius; x < radius; x++) {
 					for (int y = -radius * 2; y < radius * 2; y++) {
@@ -116,42 +117,42 @@ public class PointLightSource extends AbstractEntity {
 						}
 
 						//send rays
-						Vector3 dir = new Vector3(x + 0.1f, y + 0.2f, z + 0.3f * 2 - 1).nor();
-						if (dir.len2() > 0) {//filter some rays
-							Intersection inters = origin.raycast(
-								dir,
-								floatradius * 2,
-								null,
-								(Block t) -> !t.isTransparent()
-							);
-							if (inters != null && inters.getPoint() != null) {
-								Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
-								float pow = origin.distanceTo(impactP) / Block.GAME_EDGELENGTH;
-								float l = (1 + brightness) / (pow * pow);
-								
-								//side 0
-								float lambert = origin.cpy().sub(impactP).nor().dot(Side.LEFT.toVector());
-								
-								float newbright = l *lambert* (0.15f + 0.1f * 0.005f);
-								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
-									lightcache[x + radius][y + radius * 2][z + radius][0] = newbright;
-								}
-								
-								//side 1
-								lambert = origin.cpy().sub(impactP).nor().dot(Side.TOP.toVector());
+						dir.set(x + 0.1f, y + 0.2f, z + 0.3f * 2 - 1).nor();
+						Intersection inters = origin.raycast(
+							dir,
+							floatradius * 2,
+							null,
+							(Block t) -> !t.isTransparent()
+						);
+						//check if intersected
+						if (inters != null && inters.getPoint() != null) {
+							//get back edge of block
+							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
+							float pow = origin.distanceTo(impactP) / Block.GAME_EDGELENGTH;
+							float l = (1 + brightness) / (pow * pow);
 
-								newbright = l * lambert * (0.15f + 0.2f * 0.005f);
-								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
-									lightcache[x + radius][y + radius * 2][z + radius][1] = newbright;
-								}
+							//side 0
+							float lambert = origin.cpy().sub(impactP).nor().dot(Side.LEFT.toVector());
 
-								//side 2
-								lambert = origin.cpy().sub(impactP).nor().dot(Side.RIGHT.toVector());
+							float newbright = l *lambert* (0.15f + 0.1f * 0.005f);
+							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
+								lightcache[x + radius][y + radius * 2][z + radius][0] = newbright;
+							}
 
-								newbright = l *lambert* (0.15f + 0.25f * 0.005f);
-								if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {
-									lightcache[x + radius][y + radius * 2][z + radius][2] = newbright;
-								}
+							//side 1
+							lambert = origin.cpy().sub(impactP).nor().dot(Side.TOP.toVector());
+
+							newbright = l * lambert * (0.15f + 0.2f * 0.005f);
+							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
+								lightcache[x + radius][y + radius * 2][z + radius][1] = newbright;
+							}
+
+							//side 2
+							lambert = origin.cpy().sub(impactP).nor().dot(Side.RIGHT.toVector());
+
+							newbright = l *lambert* (0.15f + 0.25f * 0.005f);
+							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {
+								lightcache[x + radius][y + radius * 2][z + radius][2] = newbright;
 							}
 						}
 					}

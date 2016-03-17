@@ -68,8 +68,8 @@ public class PfNode extends Coordinate implements IndexedNode<PfNode> {
 	 * @return
 	 */
 	public int calculateIndex() {
-		Coordinate tl = getChunk().getTopLeftCoordinate();
-		return getX() - tl.getX() + (getY() - tl.getY()) * Chunk.getBlocksX();
+		Chunk chunk = getChunk();
+		return getX() - chunk.getTopLeftCoordinateX()+ (getY() - chunk.getTopLeftCoordinateY()) * Chunk.getBlocksX();
 	}
 
 	

@@ -81,8 +81,8 @@ public class RenderChunk {
 	 * @param rS
 	 */
 	public void init(RenderStorage rS) {
-		int tlX = chunk.getTopLeftCoordinate().getX();
-		int tlY = chunk.getTopLeftCoordinate().getY();
+		int tlX = chunk.getTopLeftCoordinateX();
+		int tlY = chunk.getTopLeftCoordinateY();
 
 		//fill every data cell
 		int blocksZ = Chunk.getBlocksZ();
@@ -125,7 +125,7 @@ public class RenderChunk {
 		if (z >= Chunk.getBlocksZ()) {
 			return null;
 		}
-		return data[x - chunk.getTopLeftCoordinate().getX()][y - chunk.getTopLeftCoordinate().getY()][z];
+		return data[x - chunk.getTopLeftCoordinateX()][y - chunk.getTopLeftCoordinateY()][z];
 	}
 
 	RenderBlock[][][] getData() {
@@ -190,8 +190,12 @@ public class RenderChunk {
 		}
 	}
 
-	public Coordinate getTopLeftCoordinate() {
-		return chunk.getTopLeftCoordinate();
+	public int getTopLeftCoordinateX() {
+		return chunk.getTopLeftCoordinateX();
+	}
+	
+	public int getTopLeftCoordinateY() {
+		return chunk.getTopLeftCoordinateY();
 	}
 
 	/**

@@ -374,8 +374,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		int left, top;
 		//loop over storage
 		for (Chunk chunk : data) {
-			left = chunk.getTopLeftCoordinate().getX();
-			top = chunk.getTopLeftCoordinate().getY();
+			left = chunk.getTopLeftCoordinateX();
+			top = chunk.getTopLeftCoordinateY();
 			//check if coordinates are inside the chunk
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
@@ -399,8 +399,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		int left, top;
 		//loop over storage
 		for (Chunk chunk : data) {
-			left = chunk.getTopLeftCoordinate().getX();
-			top = chunk.getTopLeftCoordinate().getY();
+			left = chunk.getTopLeftCoordinateX();
+			top = chunk.getTopLeftCoordinateY();
 			//check if coordinates are inside the chunk
 			if (left <= x
 				&& x < left + Chunk.getBlocksX()

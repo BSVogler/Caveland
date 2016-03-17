@@ -110,8 +110,8 @@ public class RenderStorage implements Telegraph  {
 			//should be loaded but check nevertheless
 			if (chunk != null) {
 				chunk.resetShadingCoord(
-					coord.getX() - chunk.getTopLeftCoordinate().getX(),
-					coord.getY() - chunk.getTopLeftCoordinate().getY(),
+					coord.getX() - chunk.getTopLeftCoordinateX(),
+					coord.getY() - chunk.getTopLeftCoordinateY(),
 					coord.getZ()
 				);
 			}
@@ -247,9 +247,8 @@ public class RenderStorage implements Telegraph  {
 		int left, top;
 		//loop over storage
 		for (RenderChunk chunk : data) {
-			Coordinate tl = chunk.getTopLeftCoordinate();
-			left = tl.getX();
-			top = tl.getY();
+			left = chunk.getTopLeftCoordinateX();
+			top = chunk.getTopLeftCoordinateY();
 			//check if coordinates are inside the chunk
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
@@ -297,9 +296,8 @@ public class RenderStorage implements Telegraph  {
 		int left, top;
 		//loop over storage
 		for (RenderChunk chunk : data) {
-			Coordinate tl = chunk.getTopLeftCoordinate();
-			left = tl.getX();
-			top = tl.getY();
+			left = chunk.getTopLeftCoordinateX();
+			top = chunk.getTopLeftCoordinateY();
 			//check if coordinates are inside the chunk
 			if (left <= x
 				&& x < left + Chunk.getBlocksX()
@@ -488,8 +486,8 @@ public class RenderStorage implements Telegraph  {
 	private RenderBlock getIndex(RenderChunk chunk, int x, int y, int z) {
 		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX()) {//index outside current chunk
 			return getBlock(
-				chunk.getTopLeftCoordinate().getX() + x,
-				chunk.getTopLeftCoordinate().getY() + y,
+				chunk.getTopLeftCoordinateX() + x,
+				chunk.getTopLeftCoordinateY() + y,
 				z
 			);
 		} else {

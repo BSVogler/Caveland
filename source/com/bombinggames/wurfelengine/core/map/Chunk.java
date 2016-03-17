@@ -95,9 +95,10 @@ public class Chunk implements Telegraph {
 	 */
 	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;
-	private Coordinate topleft;
 
 	private ArrayList<AbstractEntity> entities = new ArrayList<>(15);
+	private int topleftX;
+	private int topleftY;
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
@@ -115,7 +116,8 @@ public class Chunk implements Telegraph {
 		blocksY = WE.getCVarsMap().getValueI("chunkBlocksY");
 		blocksZ = WE.getCVarsMap().getValueI("chunkBlocksZ");
 
-		topleft = new Coordinate(coordX*blocksX, coordY*blocksY, 0);
+		topleftX = coordX*blocksX;
+		topleftY = coordY*blocksY;
 		data = new Block[blocksX][blocksY][blocksZ];
 
        for (int x = 0; x < blocksX; x++) {
@@ -585,8 +587,8 @@ public class Chunk implements Telegraph {
 	public boolean hasCoord(Coordinate coord){
 		int x = coord.getX();
 		int y = coord.getY();
-		int left = topleft.getX();
-		int top = topleft.getY();
+		int left = topleftX;
+		int top = topleftY;
 		return (   x >= left
 				&& x <  left + blocksX
 				&& y >= top
@@ -602,9 +604,8 @@ public class Chunk implements Telegraph {
 	public boolean hasPoint(Point point){
 		float x = point.getX();
 		float y = point.getY();
-		Coordinate tl = getTopLeftCoordinate();
-		float top = tl.getY();
-		float left = tl.getX() * Block.GAME_DIAGLENGTH + (top % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+		float top = topleftY;
+		float left = topleftX * Block.GAME_DIAGLENGTH + (top % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
 		return (x >= left
 				&& x < left + getGameWidth()
 				&& y >= top
@@ -668,8 +669,16 @@ public class Chunk implements Telegraph {
 	 *
 	 * @return not copy safe
 	 */
-	public Coordinate getTopLeftCoordinate(){
-		return topleft;
+	public int getTopLeftCoordinateX(){
+		return topleftX;
+	}
+	
+	/**
+	 *
+	 * @return not copy safe
+	 */
+	public int getTopLeftCoordinateY(){
+		return topleftY;
 	}
 
 	/**
@@ -681,8 +690,8 @@ public class Chunk implements Telegraph {
 	 */
 	public Block getBlock(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) return null;
-		int xIndex = x-topleft.getX();
-		int yIndex = y-topleft.getY();
+		int xIndex = x-topleftX;
+		int yIndex = y-topleftY;
 		return data[xIndex][yIndex][z];
 	}
 
@@ -702,8 +711,8 @@ public class Chunk implements Telegraph {
 	 * @param block no null pointer allowed
 	 */
 	public void setBlock(RenderBlock block) {
-		int xIndex = block.getPosition().getX()-topleft.getX();
-		int yIndex = block.getPosition().getY()-topleft.getY();
+		int xIndex = block.getPosition().getX()-topleftX;
+		int yIndex = block.getPosition().getY()-topleftY;
 		int z = block.getPosition().getZ();
 		if (z >= 0){
 			data[xIndex][yIndex][z] = block.toStorageBlock();
@@ -727,8 +736,8 @@ public class Chunk implements Telegraph {
 	 * @param block
 	 */
 	public void setBlock(Coordinate coord, Block block) {
-		int xIndex = coord.getX() - topleft.getX();
-		int yIndex = coord.getY() - topleft.getY();
+		int xIndex = coord.getX() - topleftX;
+		int yIndex = coord.getY() - topleftY;
 		int z = coord.getZ();
 		if (z >= 0) {
 			data[xIndex][yIndex][z] = block;
@@ -750,8 +759,8 @@ public class Chunk implements Telegraph {
 	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
-		int xIndex = coord.getX() - topleft.getX();
-		int yIndex = coord.getY() - topleft.getY();
+		int xIndex = coord.getX() - topleftX;
+		int yIndex = coord.getY() - topleftY;
 		int z = coord.getZ();
 		if (z >= 0) {
 			if (data[xIndex][yIndex][z].getValue() != value) {

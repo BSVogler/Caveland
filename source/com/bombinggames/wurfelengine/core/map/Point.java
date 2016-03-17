@@ -401,6 +401,7 @@ public class Point extends Vector3 implements Position {
 		
 		Coordinate isectC = toCoord();
 		Point isectP = new Point(0, 0, 0);
+		//curent coordinate position
         int curX = isectC.getX();
         int curY = isectC.getY();
         int curZ = isectC.getZ();
@@ -475,7 +476,7 @@ public class Point extends Vector3 implements Position {
                 }
             }
         }
-        //ground hit, must be 0,0,0
+        //ground hit
         if (curZ <= 0) {
 			Point intersectpoint = new Point(
 				curX * Block.GAME_DIAGLENGTH + (curY % 2 != 0 ? Block.VIEW_WIDTH2 : 0),

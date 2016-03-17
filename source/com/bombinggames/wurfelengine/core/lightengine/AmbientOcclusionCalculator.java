@@ -58,9 +58,9 @@ public class AmbientOcclusionCalculator {
 			//skip air and blocks without sides
 			if (next != null && next.hasSides()) {
 				//analyze top side
-				coord = coord.set(chunk.getTopLeftCoordinate()).add(
-					iterator.getCurrentIndex()[0],
-					iterator.getCurrentIndex()[1],
+				coord = coord.set(
+					chunk.getTopLeftCoordinateX() + iterator.getCurrentIndex()[0],
+					chunk.getTopLeftCoordinateY() + iterator.getCurrentIndex()[1],
 					iterator.getCurrentIndex()[2] + 1
 				);
 
@@ -87,7 +87,11 @@ public class AmbientOcclusionCalculator {
 
 				//right side, side 2
 				//check right half, which is equivalent to top right at pos 1
-				coord = coord.set(chunk.getTopLeftCoordinate()).add(iterator.getCurrentIndex());//get current coordinate
+				coord = coord.set(
+					chunk.getTopLeftCoordinateX() + iterator.getCurrentIndex()[0],
+					chunk.getTopLeftCoordinateY() + iterator.getCurrentIndex()[1],
+					iterator.getCurrentIndex()[2]
+				);//get current coordinate
 
 				//left side, side 0
 				//right corner

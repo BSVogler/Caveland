@@ -117,7 +117,7 @@ public class PointLightSource extends AbstractEntity {
 						}
 
 						//send rays
-						dir.set(x + 0.1f, y + 0.2f, z + 0.3f * 2 - 1).nor();
+						dir.set(x + 0.1f, y + 0.2f, z - 0.4f).nor();//offset because???
 						Intersection inters = origin.raycast(
 							dir,
 							floatradius * 2,

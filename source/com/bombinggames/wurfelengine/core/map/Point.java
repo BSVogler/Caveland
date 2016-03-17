@@ -477,7 +477,11 @@ public class Point extends Vector3 implements Position {
         }
         //ground hit, must be 0,0,0
         if (curZ <= 0) {
-			Point intersectpoint = new Coordinate(curX, curY, 0).toPoint();
+			Point intersectpoint = new Point(
+				curX * Block.GAME_DIAGLENGTH + (curY % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
+				curY * Block.GAME_DIAGLENGTH2,
+				0
+			);
 			float distance = this.distanceTo(intersectpoint);
 			if (distance <= Block.GAME_EDGELENGTH * maxDistance) {
 				return new Intersection(intersectpoint, Side.TOP, distance);

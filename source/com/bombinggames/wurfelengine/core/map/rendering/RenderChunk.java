@@ -56,6 +56,10 @@ public class RenderChunk {
 			}
 		};
 	}
+	
+	public static void clearPool(){
+		dataPool.clear();
+	}
 
 	/**
 	 * With init
@@ -110,6 +114,11 @@ public class RenderChunk {
 								z
 							)
 						);
+					} else {
+						data[xInd][yInd][z].getPosition().set(
+							tlX + xInd,
+							tlY + yInd,
+							z);
 					}
 					data[xInd][yInd][z].setUnclipped();
 					resetShadingCoord(xInd, yInd, z);

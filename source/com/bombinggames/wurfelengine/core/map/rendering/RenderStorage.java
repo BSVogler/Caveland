@@ -540,6 +540,7 @@ public class RenderStorage implements Telegraph  {
 	}
 
 	public void dispose() {
+		RenderChunk.clearPool();
 		MessageManager.getInstance().removeListener(this, Events.mapChanged.getId());
 	}
 

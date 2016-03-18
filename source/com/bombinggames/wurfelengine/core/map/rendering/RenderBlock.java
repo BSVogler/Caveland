@@ -337,16 +337,13 @@ public class RenderBlock extends AbstractGameObject {
 		}
 	}
 
-	public static boolean hasSides(byte id, byte value) {
-		if (id == 0) {
+	public static boolean hasSides(byte spriteId, byte spriteValue) {
+		if (spriteId == 0 || spriteId == 4) {
 			return false;
 		}
 		
-		if (id==4)
-			return false;
-		
-		if (id > 9 && customBlocks != null) {
-			return customBlocks.hasSides(id, value);
+		if (spriteId > 9 && customBlocks != null) {
+			return customBlocks.hasSides(spriteId, spriteValue);
 		}
 		return true;
 	}
@@ -395,18 +392,14 @@ public class RenderBlock extends AbstractGameObject {
 	
 	/**
 	 * checks if a sprite is defined. if not the error sprite will be rendered
-	 * @param block
+	 * @param spriteId
+	 * @param spriteValue
 	 * @return 
 	 */
-	public static boolean isSpriteDefined(final RenderBlock block){
-		if (block == null) return false;
-		if (getSpritesheet() == null) return false;
-		AtlasRegion sprite;
-		if (block.hasSides())
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue()+"-0");
-		else
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue());
-		return 	sprite != null;
+	public static boolean isSpriteDefined(byte spriteId, byte spriteValue) {
+		return spriteId != 0
+			&& getSpritesheet() != null
+			&& getSpritesheet().findRegion('b' + Byte.toString(spriteId) + "-" + spriteValue + "-0" + (RenderBlock.hasSides(spriteId, spriteValue) ? "-0" : "")) != null;
 	}
 	
 	/**
@@ -528,14 +521,6 @@ public class RenderBlock extends AbstractGameObject {
 	private long lastRebuild;
 	
 	/**
-	 * Does not wrap a {@link Block} instance.
-	 */
-	public RenderBlock(){
-		super((byte) 0);
-	}
-	
-	/**
-	 * Does not wrap a {@link Block} instance.
 	 * @param id 
 	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
 	 */
@@ -545,7 +530,6 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	/**
-	 * Does not wrap a {@link Block} instance.
 	 * @param id
 	 * @param value 
 	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  

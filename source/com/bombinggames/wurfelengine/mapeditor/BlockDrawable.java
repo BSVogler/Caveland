@@ -34,7 +34,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * a class what renders a block using the drawable interface.
@@ -50,11 +49,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 * @param id
 	 */
 	public BlockDrawable(byte id) {
-		if (id >= RenderBlock.OBJECTTYPESNUM) {
-			this.block = new RenderBlock((byte) 0, (byte) 0);//invalid id.
-		} else {
-			this.block = new RenderBlock(id, (byte) 0);
-		}
+		this(id, (byte) 0, 1);
 	}
 
 	/**

@@ -239,23 +239,23 @@ public class RenderChunk {
 	}
 
 	/**
-	 *
-	 * @return treu if a camera rendered this chunk this frame
+	 * If not used can be removed.
+	 * @return true if a camera rendered this chunk this frame. 
 	 */
-	public boolean cameraAccess() {
+	protected boolean cameraAccess() {
 		return cameraAccess;
 	}
 
 	/**
-	 * camera used this chunk
+	 * Camera used this chunk this frame?
 	 *
 	 * @param b
 	 */
-	public void setCameraAccess(boolean b) {
+	protected void setCameraAccess(boolean b) {
 		cameraAccess = b;
 	}
 
-	void dispose() {
+	protected void dispose() {
 		DATAPOOL.free(data);
 	}
 

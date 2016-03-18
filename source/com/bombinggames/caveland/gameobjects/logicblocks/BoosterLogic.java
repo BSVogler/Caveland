@@ -20,11 +20,11 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	/**
 	 *
 	 *
-	 * @param block
+	 * @param id
 	 * @param coord
 	 */
-	public BoosterLogic(Block block, Coordinate coord) {
-		super(block, coord);
+	public BoosterLogic(byte id, Coordinate coord) {
+		super(id, coord);
 	}
 
 	/**
@@ -41,34 +41,30 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 		}
 		//power surrounding cables
 		power = false;
-		Block neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 1
+		int neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& (byte) ((neighBlock>>8)&255) == 1
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(3).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 3
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 3
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(5).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 1
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 1
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(7).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 3
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 3
 		) {
 			power = true;
 		}

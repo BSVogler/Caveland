@@ -43,7 +43,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -137,8 +136,8 @@ public class Toolbar extends Window {
 				case DRAW:
 					return new Command() {
 						private Coordinate coord;
-						private Block previous;
-						private Block block;
+						private int previous;
+						private int block;
 						
 						public void init(){
 							
@@ -162,8 +161,8 @@ public class Toolbar extends Window {
 				case REPLACE:
 					return new Command() {
 						private Coordinate coord;
-						private Block previous;
-						private Block block;
+						private int previous;
+						private int block;
 						
 						@Override
 						public void execute() {
@@ -204,7 +203,7 @@ public class Toolbar extends Window {
 				default:
 					//erase
 					return new Command() {
-						private Block previous;
+						private int previous;
 						private Coordinate coord;
 
 						@Override
@@ -213,7 +212,7 @@ public class Toolbar extends Window {
 								coord = cursor.getPosition().toCoord();
 								previous = coord.getBlock();
 							}
-							Controller.getMap().setBlock(coord, null);
+							Controller.getMap().setBlock(coord, (byte) 0);
 						}
 
 						@Override

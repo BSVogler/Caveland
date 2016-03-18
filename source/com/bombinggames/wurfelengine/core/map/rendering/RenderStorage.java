@@ -481,7 +481,7 @@ public class RenderStorage implements Telegraph  {
 	}
 
 	private RenderBlock getNewGroundBlockInstance() {
-		return Block.getInstance((byte) WE.getCVars().getValueI("groundBlockID")).toRenderBlock(); //the representative of the bottom layer (ground) block
+		return new RenderBlock((byte) WE.getCVars().getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
 	}
 
 	public LinkedList<RenderChunk> getData() {

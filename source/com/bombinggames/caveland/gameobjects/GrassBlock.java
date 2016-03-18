@@ -79,8 +79,8 @@ public class GrassBlock extends RenderBlock {
 	private static float force = 9000;
 
 	
-	public GrassBlock(Block data) {
-		super(data);
+	public GrassBlock(byte id, byte value) {
+		super(id, value);
 		seed = RANDOMGENERATOR.nextFloat();
 	}
 	

@@ -1,6 +1,5 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
@@ -12,10 +11,11 @@ public class ConstructionSiteRender extends RenderBlock {
 	
 	/**
 	 *
-	 * @param data
+	 * @param id
+	 * @param value
 	 */
-	public ConstructionSiteRender(Block data) {
-		super(data);
+	public ConstructionSiteRender(byte id, byte value) {
+		super(id, value);
 		setSpriteValue((byte) 0);
 	}
 

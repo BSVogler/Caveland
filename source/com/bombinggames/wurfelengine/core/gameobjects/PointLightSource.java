@@ -122,7 +122,7 @@ public class PointLightSource extends AbstractEntity {
 							dir,
 							floatradius * 2,
 							null,
-							(Block t) -> !t.isTransparent()
+							(Byte t) -> !Block.isTransparent(t.byteValue(), (byte) 0)
 						);
 						//check if intersected
 						if (inters != null && inters.getPoint() != null) {

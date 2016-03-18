@@ -104,23 +104,19 @@ public class PlacableTable extends Table {
 				foundItems++;
 				//add rest
 				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
-					Block block = Block.getInstance(i);
-					if (block != null) {
-						RenderBlock rBlock = block.toRenderBlock();
-						if (RenderBlock.isSpriteDefined(rBlock) //add defined blocks
-							|| !block.getName().equals("undefined")) {
-							blockDrawable = new BlockDrawable(i, (byte) 0, 0.35f);
-							blockDrawables.add(blockDrawable);
-							add(
-								new PlacableItem(
-									blockDrawable,
-									new BlockListener(foundItems, i)
-								)
-							);
-							foundItems++;
-							if (foundItems % 4 == 0) {
-								row();//make new row
-							}
+					if (RenderBlock.isSpriteDefined(new RenderBlock(i)) //add defined blocks
+						|| !Block.getName(i, (byte) 0).equals("undefined")) {
+						blockDrawable = new BlockDrawable(i, (byte) 0, 0.35f);
+						blockDrawables.add(blockDrawable);
+						add(
+							new PlacableItem(
+								blockDrawable,
+								new BlockListener(foundItems, i)
+							)
+						);
+						foundItems++;
+						if (foundItems % 4 == 0) {
+							row();//make new row
 						}
 					}
 				}
@@ -274,11 +270,7 @@ public class PlacableTable extends Table {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			if (blockId == 0) {
-				placableGUI.setBlock(null);
-			} else {
-				placableGUI.setBlock(Block.getInstance(blockId));
-			}
+			placableGUI.setId(blockId);
 			selectBlock(id);
 		}
 	}

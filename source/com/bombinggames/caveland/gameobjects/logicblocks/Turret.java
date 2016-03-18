@@ -60,7 +60,7 @@ public class Turret extends AbstractPowerBlock {
 	 * @param block
 	 * @param coord
 	 */
-	public Turret(Block block, Coordinate coord) {
+	public Turret(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 	
@@ -130,7 +130,7 @@ public class Turret extends AbstractPowerBlock {
 							vecToTarget,
 							MAXDISTANCE,
 							null,
-							(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+							(Byte t) -> !Block.isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
 						);
 
 						if (

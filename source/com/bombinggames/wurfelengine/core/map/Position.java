@@ -34,7 +34,6 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -99,7 +98,7 @@ public interface Position extends Serializable {
      * Get the block at the position.  Clamps positions over the map at topmost layer.
      * @return If the coordiante is not in memory will crash.
      */
-    public abstract Block getBlock();
+    public abstract byte getBlockId();
     
     /**
      *

@@ -153,7 +153,7 @@ public class RenderBlock extends AbstractGameObject {
             COLORLIST[id][value] = new Color();
             int colorInt;
             
-            if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
+            if (Block.hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -192,7 +192,9 @@ public class RenderBlock extends AbstractGameObject {
     }
 
 	
-	private final Block blockData;
+	private byte id;
+	private byte value;
+	private byte health;
 	private Coordinate coord;
 	
 	//view data
@@ -255,7 +257,6 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public RenderBlock(){
 		super((byte) 0);
-		blockData = null;
 	}
 	
 	/**
@@ -265,7 +266,7 @@ public class RenderBlock extends AbstractGameObject {
 	 */
     public RenderBlock(byte id){
         super(id);
-		blockData = Block.getInstance(id);
+		this.id = id;
 	}
 	
 	/**
@@ -276,25 +277,15 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
-		blockData = Block.getInstance(id, value);
 	}
 	
-	/**
-	 * Create a new render block referencing to an existing {@link Block} object.
-	 * @param data 
-	 */
-	public RenderBlock(Block data){
-		super(data.getId(), data.getValue());//copy id's from data for rendering
-		blockData = data;
-	}
-
 	public boolean isObstacle() {
-		return blockData.isObstacle();
+		return Block.isObstacle(id, value);
 	}
 
     @Override
     public String getName() {
-        return blockData.getName();
+        return Block.getName(id, value);
     }
 
 	@Override
@@ -450,8 +441,6 @@ public class RenderBlock extends AbstractGameObject {
 			color = Controller.getLightEngine().getColor(side, getPosition()).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
-		Block blockdata = getBlockData();
-		
         renderSide(
 			view,
             coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(getScaling())) : 0),//right side is  half a block more to the right,
@@ -468,12 +457,13 @@ public class RenderBlock extends AbstractGameObject {
 				: color//pass color if not shading static
         );
 		
-		if (blockdata.getHealth() < 100) {
+		byte health = getHealth();
+		if (health < 100) {
 			int damageOverlayStep = 0;
-			if (blockdata.getHealth() <= 50) {
+			if (health <= 50) {
 				damageOverlayStep = 1;
 			}
-			if (blockdata.getHealth() <= 25) {
+			if (health <= 25) {
 				damageOverlayStep = 2;
 			}
 			
@@ -657,24 +647,16 @@ public class RenderBlock extends AbstractGameObject {
 	}	
 	
 	/**
-	 * gets the identifier and stores them in the map
-	 * @return 
-	 */
-	public Block toStorageBlock(){
-		return Block.getInstance(getSpriteId(), getSpriteValue());
-	}
-	
-	/**
 	 * Can light travel through object?
 	 * @return
 	 */
 	public boolean isTransparent() {
-		if (blockData==null) return true;
-		return blockData.isTransparent();
+		if (id==0) return true;
+		return Block.isTransparent(id,value);
 	}
 	
 	public boolean isIndestructible() {
-		return blockData.isIndestructible();
+		return Block.isIndestructible(id,value);
 	}
 	
 	/**
@@ -687,28 +669,19 @@ public class RenderBlock extends AbstractGameObject {
 	 * single sprite
 	 */
 	public boolean hasSides() {
-		if (blockData == null) {
+		if (id == 0) {
 			return false;
 		}
-		return blockData.hasSides();
+		return Block.hasSides(id,value);
 	}
 
 	public boolean isLiquid() {
-		if (blockData == null) {
+		if (id == 0) {
 			return false;
 		}
-		return blockData.isLiquid();
+		return Block.isLiquid(id,value);
 	}
 
-	/**
-	 * Get the pointer to the data.
-	 *
-	 * @return
-	 */
-	public Block getBlockData() {
-		return blockData;
-	}
-	
 	@Override
 	public float getLightlevelR() {
 		return (getLightlevel(Side.LEFT, 0,0) + getLightlevel(Side.TOP, 0,0) + getLightlevel(Side.RIGHT, 0,0)) / 3f;
@@ -1009,7 +982,7 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public boolean shouldBeRendered(Camera camera) {
-		return blockData != null
+		return id != 0
 				&& !isClipped()
 				&& !isHidden()
 				&& camera.inViewFrustum(
@@ -1102,6 +1075,18 @@ public class RenderBlock extends AbstractGameObject {
 
 	public void clearCoveredEnts(){
 		coveredEnts.clear();
+	}
+
+	public byte getId() {
+		return id;
+	}
+
+	public byte getValue() {
+		return value;
+	}
+
+	public byte getHealth() {
+		return health;
 	}
 
 }

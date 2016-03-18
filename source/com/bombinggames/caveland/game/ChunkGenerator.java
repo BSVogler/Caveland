@@ -1,7 +1,6 @@
 package com.bombinggames.caveland.game;
 
 import com.bombinggames.caveland.gameobjects.ExitPortal;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Generator;
 
@@ -65,15 +64,15 @@ public class ChunkGenerator implements Generator {
 	}
 	
 	@Override
-	public Block generate(int x, int y, int z) {
+	public int generate(int x, int y, int z) {
 		if (y<CAVESBORDER) {//overworld
 			
 			//floor
-			if (z<3) return Block.getInstance((byte)2);
-			if (z==3) return Block.getInstance((byte)1);
+			if (z<3) return 2;
+			if (z==3) return 1;
 		} else {
 			if (y < GENERATORBORDER)
-				return null;
+				return 0;
 			
 			//underworld
 			int insideout = insideOutside(x, y, z);
@@ -82,40 +81,37 @@ public class ChunkGenerator implements Generator {
 //				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getSpriteId());
 			
 			if (insideout==2)
-				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getId());
+				return CavelandBlocks.CLBlocks.ENTRY.getId();
 				
 			//walls
 			if (insideout==0) {//build a wall
 				if (z<=4)
-					return Block.getInstance(
-						CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId(),
-						(byte) 1
-					);
+					return CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()+(1<<8);
 			}
 			
 			if (insideout==-1)//build air for outside
-				return null;	
+				return 0;	
 			
 			if (z==3)
 				if ((x*y*2+x+y*3+500) % 8==y % 7)
 					if (x%2==0 && y%2==0){
 						if (y%5==0)
-							return Block.getInstance(CavelandBlocks.CLBlocks.SULFUR.getId());
+							return CavelandBlocks.CLBlocks.SULFUR.getId();
 						else
-							return Block.getInstance(CavelandBlocks.CLBlocks.COAL.getId());
+							return CavelandBlocks.CLBlocks.COAL.getId();
 					} else {
 						if (y%8==0)
-							return Block.getInstance(CavelandBlocks.CLBlocks.IRONORE.getId());
+							return CavelandBlocks.CLBlocks.IRONORE.getId();
 						else
-							return Block.getInstance((byte)2);
+							return 2;
 					}
 			
 			//floor
 			if (z<=2)
-				return Block.getInstance((byte)2);
+				return (byte)2;
 			
 		}
-		return null;
+		return 0;
 	}
 	
 	/**

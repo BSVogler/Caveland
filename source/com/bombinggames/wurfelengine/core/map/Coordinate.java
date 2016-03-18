@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core.map;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
@@ -200,8 +201,18 @@ public class Coordinate implements Position {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(Block block) {
-		Controller.getMap().setBlock(this, block);
+	public void setBlock(int block) {
+		Controller.getMap().setBlock(this, (byte) (block&255), (byte) (block>>16&255));
+	}
+	
+	/**
+	 * Set a block in the map where the coordinate is pointing to.
+	 *
+	 * @param id
+	 * @param value
+	 */
+	public void setBlock(byte id, byte value) {
+		Controller.getMap().setBlock(this, id, value);
 	}
 
 	/**
@@ -245,14 +256,35 @@ public class Coordinate implements Position {
 		return this;
 	}
 
-	@Override
-	public Block getBlock() {
+	public int getBlock() {
 		if (z < 0) {
-			return Controller.getMap().getNewGroundBlockInstance();
+			return (byte) WE.getCVars().getValueI("groundBlockID");
 		} else if (z >= Chunk.getBlocksZ()) {
-			return null;
+			return 0;
 		} else {
 			return Controller.getMap().getBlock(this);
+		}
+	}
+	
+	
+	@Override
+	public byte getBlockId() {
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		} else if (z >= Chunk.getBlocksZ()) {
+			return 0;
+		} else {
+			return Controller.getMap().getBlockId(this);
+		}
+	}
+	
+	public byte getBlockValue() {
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		} else if (z >= Chunk.getBlocksZ()) {
+			return 0;
+		} else {
+			return Controller.getMap().getBlockId(this);
 		}
 	}
 
@@ -536,10 +568,10 @@ public class Coordinate implements Position {
 	 * destroys the block at the current position, replacing by air.
 	 */
 	public void destroy() {
-		Block block = getBlock();
-		if (block != null && block.getHealth() > 0) {
-			block.setHealth(this, (byte) 0);
-			setBlock((Block) null);
+		int block = getBlock();
+		if ((block&255) != 0&& ((block>>16)&255) > 0) {
+			Controller.getMap().setHealth(this, (byte) 0);
+			setBlock(0);
 			//broadcast event that this block got destroyed
 			MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 		}
@@ -552,17 +584,17 @@ public class Coordinate implements Position {
 	 * @return
 	 */
 	public boolean damage(byte amount) {
-		Block block = getBlock();
-		if (block != null && amount > 0) {
-			if (block.getHealth() - amount < 0) {
-				block.setHealth(this, (byte) 0);
+		byte block = getBlockId();
+		if (block != 0 && amount > 0) {
+			if (getHealth() - amount < 0) {
+				setHealth((byte) 0);
 			} else {
-				block.setHealth(this, (byte) (block.getHealth() - amount));
+				Controller.getMap().setHealth(this, (byte) (getHealth() - amount));
 			}
-			if (block.getHealth() <= 0 && !block.isIndestructible()) {
+			if (getHealth() <= 0 && !Block.isIndestructible(block, (byte)0)) {
 				//broadcast event that this block got destroyed
 				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
-				setBlock((Block) null);
+				setBlock(0);
 			}
 			return true;
 		}
@@ -792,4 +824,17 @@ public class Coordinate implements Position {
 			|| xCoord != x
 			|| yCoord != y);
 	}
+
+	public boolean isObstacle(){
+		return false;
+	}
+
+	private void setHealth(byte health) {
+		Controller.getMap().setHealth(this, health);
+	}
+
+	private byte getHealth() {
+		return Controller.getMap().getHealth(this);
+	}
+	
 }

@@ -178,8 +178,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 				pos.setZ(pos.getZ() - 1);//move one up for check
 
-				Block block = pos.getBlock();
-				boolean colission = (block != null && block.isObstacle());
+				boolean colission = pos.isObstacle();
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;

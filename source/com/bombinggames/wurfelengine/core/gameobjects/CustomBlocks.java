@@ -49,7 +49,7 @@ public interface CustomBlocks {
 	 * @param data there are id's &lt; 10 which are filtered before
 	 * @return
 	 */
-	public RenderBlock toRenderBlock(Block data);
+	public RenderBlock toRenderBlock(byte id, byte value);
 
 	/**
 	 * Is the block a true block with three sides or does it get rendered by a
@@ -85,9 +85,10 @@ public interface CustomBlocks {
 
 	/**
 	 *
-	 * @param block
+	 * @param id
+	 * @param value
 	 * @param coord
 	 * @return
 	 */
-	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord);
+	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord);
 }

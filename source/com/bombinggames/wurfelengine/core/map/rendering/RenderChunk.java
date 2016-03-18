@@ -31,7 +31,6 @@
 package com.bombinggames.wurfelengine.core.map.rendering;
 
 import com.badlogic.gdx.utils.Pool;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -99,14 +98,11 @@ public class RenderChunk {
 		for (int xInd = 0; xInd < blocksX; xInd++) {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
-					Block block = chunk.getBlockViaIndex(xInd, yInd, z);
+					int block = chunk.getBlockViaIndex(xInd, yInd, z);
 					//update only if cell changed
-					if (data[xInd][yInd][z] == null || block != data[xInd][yInd][z].getBlockData()) {
-						if (block != null) {
-							data[xInd][yInd][z] = block.toRenderBlock();
-						} else {
-							data[xInd][yInd][z] = new RenderBlock();
-						}
+					if (
+						data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
+						data[xInd][yInd][z] = new RenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
 						data[xInd][yInd][z].setPosition(
 							new Coordinate(
 								tlX + xInd,

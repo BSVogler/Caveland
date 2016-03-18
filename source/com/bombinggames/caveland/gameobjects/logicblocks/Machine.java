@@ -4,9 +4,8 @@ import com.bombinggames.caveland.gameobjects.MineCart;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.gameobjects.collectibles.Flint;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
@@ -25,7 +24,7 @@ public class Machine extends AbstractBlockLogicExtension  {
 	 * @param block
 	 * @param coord
 	 */
-	public Machine(Block block, Coordinate coord) {
+	public Machine(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 

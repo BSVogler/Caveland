@@ -56,7 +56,7 @@ public class PowerTorch extends AbstractPowerBlock {
 	 * @param block
 	 * @param coord
 	 */
-	public PowerTorch(Block block, Coordinate coord) {
+	public PowerTorch(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 

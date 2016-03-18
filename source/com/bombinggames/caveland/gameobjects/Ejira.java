@@ -744,9 +744,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			//damage blocks
 			Coordinate aimCoord = getPosition().cpy().add(0, 0, GAME_EDGELENGTH2).add(getAiming().scl(80)).toCoord();
 			//check if the player can damage the blocks
-			if (aimCoord.getBlock() != null && !aimCoord.getBlock().isLiquid()) {
+			if (!Block.isLiquid(aimCoord.getBlock())) {
 				getCamera().shake(20, 50);
-				byte id = aimCoord.getBlock().getId();
+				byte id = aimCoord.getBlockId();
 				if (!CavelandBlocks.hardMaterial( id )){
 					//destructible by hand
 					if (aimCoord.damage(attackDamage)) {

@@ -43,32 +43,28 @@ public class CLMovableEntity extends MovableEntity {
 			float prevZ = pos.z;
 			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
 			
-			Block block = checkpos.add(0, -colissionRadius, 0).getBlock();
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			byte block = checkpos.add(0, -colissionRadius, 0).getBlockId();
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(0, colissionRadius, 0);
 				return true;
 			}
-			block = checkpos.add(0, 2*colissionRadius, 0).getBlock();
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			block = checkpos.add(0, 2*colissionRadius, 0).getBlockId();
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(0, -colissionRadius, 0);
 				return true;
 			}
-			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlock();//left
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlockId();//left
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(colissionRadius, 0, 0);
 				return true;
 			}
-			block = checkpos.add(2*colissionRadius, 0, 0).getBlock();//right
+			block = checkpos.add(2*colissionRadius, 0, 0).getBlockId();//right
 			pos.add(-colissionRadius, 0, 0);
 			checkpos.z = prevZ;
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
 		}

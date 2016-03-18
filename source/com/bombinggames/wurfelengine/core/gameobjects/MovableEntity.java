@@ -334,16 +334,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 			}
 			
-			Block block = getPosition().getBlock();
 			//if entering water
-			if (!inLiquid && block != null && block.isLiquid() && getMass() > 1f) {
+			if (!inLiquid && Block.isLiquid(getPosition().getBlockId()) && getMass() > 1f) {
 				if (waterSound != null) {
 					WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
 				}
-			}
-
-			if (block != null) {
-				inLiquid = block.isLiquid();//save if in water
+				inLiquid = Block.isLiquid(getPosition().getBlockId());//save if in water
 			} else {
 				inLiquid = false;
 			}
@@ -527,15 +523,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private boolean checkCollisionCorners(final Point pos) {
 		int colRad = colissionRadius;
-		Block block = pos.add(0, -colRad, 0).getBlock();
+		int block = (byte) pos.add(0, -colRad, 0).getBlock();
 		//back corner top
-		if (block != null && block.isObstacle()) {
+		if (Block.isObstacle(block)) {
 			pos.add(0, colRad, 0);
 			return true;
 		}
 		//front corner
 		block = pos.add(0, 2 * colRad, 0).getBlock();
-		if (block != null && block.isObstacle()) {
+		if (Block.isObstacle(block)) {
 			pos.add(0, -colRad, 0);
 			return true;
 		}
@@ -543,14 +539,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		//check X
 		//left
 		block = pos.add(-colRad, -colRad, 0).getBlock();
-		if (block != null && block.isObstacle()) {
+		if (Block.isObstacle(block)) {
 			pos.add(colRad, 0, 0);
 			return true;
 		}
 		//bottom corner
 		block = pos.add(2 * colRad, 0, 0).getBlock();
 		pos.add(-colRad, 0, 0);
-		return block != null && block.isObstacle();
+		return Block.isObstacle(block);
 	}
 	
 	/**
@@ -834,8 +830,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 				pos.setZ(pos.getZ() - 1);//move one down for check
 
-				Block block = pos.getBlock();
-				boolean colission = (block != null && block.isObstacle()) || collidesWithWorld(pos, colissionRadius);
+				boolean colission = (pos.isObstacle()) || collidesWithWorld(pos, colissionRadius);
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;

@@ -5,7 +5,6 @@
  */
 package com.bombinggames.wurfelengine.core.console;
 
-import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameplayScreen;
 import java.util.StringTokenizer;
 
@@ -17,8 +16,8 @@ public class PrintmapCommand implements ConsoleCommand {
 
 	@Override
 	public boolean perform(StringTokenizer parameters, GameplayScreen gameplay) {
-		Controller.getMap().print();
-		return true;
+		//Controller.getMap().print();
+		return false;
 	}
 
 	@Override

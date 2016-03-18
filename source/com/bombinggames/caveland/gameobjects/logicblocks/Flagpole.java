@@ -43,7 +43,7 @@ public class Flagpole extends AbstractBlockLogicExtension {
 
 	private Flag flag;
 
-	public Flagpole(Block block, Coordinate coord) {
+	public Flagpole(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 

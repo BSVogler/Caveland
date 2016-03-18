@@ -13,7 +13,6 @@ import com.bombinggames.caveland.gameobjects.logicblocks.ConstructionSite;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
@@ -39,12 +38,12 @@ public class ConstructionKit extends Collectible implements Interactable {
 	 */
 	protected void build(Coordinate coord, byte id){
 		//don't allow lift on non-hole
-		if (id == CLBlocks.LIFT.getId() && getPosition().toCoord().add(0, 0, -1).getBlock().getId() != CLBlocks.ENTRY.getId()){
+		if (id == CLBlocks.LIFT.getId() && getPosition().toCoord().add(0, 0, -1).getBlockId() != CLBlocks.ENTRY.getId()){
 			return;
 		}
 				
 		//spawn construction site
-		coord.setBlock(Block.getInstance((byte) 11));
+		coord.setBlock((byte) 11);
 		ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(coord);
 		constructionSiteLogic.setResult(id, (byte) 0);
 		WE.SOUND.play("metallic", coord);

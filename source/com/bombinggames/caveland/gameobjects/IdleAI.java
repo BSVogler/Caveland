@@ -106,13 +106,7 @@ public class IdleAI implements Telegraph, Serializable {
 							).nor().scl(idleRaidus)
 						);
 					}
-				} while (
-					i < 100
-					&& (
-						(target.getBlock() != null
-						&& target.getBlock().isObstacle())
-					)
-				);
+				} while (i < 100 && (target.isObstacle()));
 				
 				if (i < 100){
 					body.setSpeedHorizontal(2);

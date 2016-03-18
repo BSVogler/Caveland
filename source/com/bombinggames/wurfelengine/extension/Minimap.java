@@ -38,16 +38,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 
 /**
@@ -132,7 +133,7 @@ public class Minimap implements Telegraph {
         for (int x = 0; x < mapdata.length; x++) {
             for (int y = 0; y < mapdata[x].length; y++) {
                 int z = Chunk.getBlocksZ() -1;//start at top
-                while ( z>-1 && Controller.getMap().getBlock(x, y, z).getId()==0 ) {
+                while ( z>-1 && Controller.getMap().getBlockId(x, y, z)==0 ) {
                     z--;//find topmost block in row
                 }
 
@@ -147,11 +148,11 @@ public class Minimap implements Telegraph {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = RenderBlock.getRepresentingColor(Controller.getMap().getNewGroundBlockInstance().getId(),(byte) 0);
+                    mapdata[x][y] = RenderBlock.getRepresentingColor((byte) WE.getCVars().getValueI("groundblockinstance"),(byte) 0);
                 else {
-                    Block block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
-                    if (block.getId()!=0)
-                        mapdata[x][y] = RenderBlock.getRepresentingColor(block.getId(), block.getValue());
+                    int block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
+                    if ((block&255) !=0)
+                        mapdata[x][y] = RenderBlock.getRepresentingColor((byte)(block&255), (byte)((block>>8)&255));
                     else 
                         mapdata[x][y] = new Color();//make air black
                 } 

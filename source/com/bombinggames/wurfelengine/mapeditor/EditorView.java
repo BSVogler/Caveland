@@ -478,8 +478,7 @@ public class EditorView extends GameView implements Telegraph {
             
 			//pipet
 			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
-                Block block = coords.getBlock();
-				leftColorGUI.setBlock(block);
+				leftColorGUI.setBlock(coords.getBlockId(), coords.getBlockValue());
             } else {
 				Tool toolUsed;
 				
@@ -592,8 +591,8 @@ public class EditorView extends GameView implements Telegraph {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
-					if (Controller.getMap().getBlock(coords) == null) {
-						Controller.getMap().setBlock(coords, leftColorGUI.getBlock());
+					if (coords.getBlockId() == 0) {
+						Controller.getMap().setBlock(coords, leftColorGUI.getId(),leftColorGUI.getValue());
 					}
 				}
 			}
@@ -604,8 +603,8 @@ public class EditorView extends GameView implements Telegraph {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
-					if (Controller.getMap().getBlock(coords) != null) {
-						Controller.getMap().setBlock(coords, leftColorGUI.getBlock());
+					if (Controller.getMap().getBlockId(coords) != 0) {
+						Controller.getMap().setBlock(coords, leftColorGUI.getId(), leftColorGUI.getValue());
 					}
 				}
 			}
@@ -696,7 +695,8 @@ public class EditorView extends GameView implements Telegraph {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
 						new Coordinate(x, y, from.getZ()),
-						leftColorGUI.getBlock()
+						leftColorGUI.getId(),
+						leftColorGUI.getValue()
 					);
 				}
 			}

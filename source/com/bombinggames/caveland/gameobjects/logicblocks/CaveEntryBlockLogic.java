@@ -41,7 +41,6 @@ import com.bombinggames.caveland.gameobjects.Portal;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -61,11 +60,11 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 	/**
 	 * teleports to level 1 by default
 	 *
-	 * @param block
+	 * @param id
 	 * @param coord
 	 */
-	public CaveEntryBlockLogic(Block block, Coordinate coord) {
-		super(block, coord);
+	public CaveEntryBlockLogic(byte id, Coordinate coord) {
+		super(id, coord);
 	}
 
 	/**
@@ -105,11 +104,11 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 
 			if (!interactable()) {
 				//inactive for falling into it
-				getPosition().getBlock().setValue((byte) 1);
+				getPosition().setValue((byte) 1);
 				portal.setActive(false);
 			} else {
 				//active for falling into it
-				getPosition().getBlock().setValue((byte) 0);
+				getPosition().setValue((byte) 0);
 				portal.setActive(true);
 			}
 		}
@@ -130,7 +129,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 			new ActionBox("Construct a lift construction site", ActionBox.BoxModes.BOOLEAN, "Create construction site for lift?\n You can always enter the caves by jumping into the hole.")
 				.setConfirmAction((ActionBox.SelectionOption result, AbstractEntity actor1) -> {
 					Coordinate top = getPosition().cpy().add(0, 0, 1);
-					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getInstance());
+					top.setBlock(CLBlocks.CONSTRUCTIONSITE.getId());
 					ConstructionSite constructionSiteLogic = (ConstructionSite) Controller.getMap().getLogic(top);
 					constructionSiteLogic.setResult(CLBlocks.LIFT.getId());
 					WE.SOUND.play("metallic", actor.getPosition());
@@ -141,10 +140,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 
 	@Override
 	public boolean interactable() {
-		if (getPosition().cpy().add(0, 0, 1).getBlock() == null) {
-			return true;
-		}
-		return getPosition().cpy().add(0, 0, 1).getBlock().getId() == 0;
+		return getPosition().cpy().add(0, 0, 1).getBlockId() == 0;
 	}
 
 	@Override
@@ -154,7 +150,8 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 
 	@Override
 	public void dispose() {
-		portal.dispose();
+		if (portal!=null)
+			portal.dispose();
 	}
 
 }

@@ -187,9 +187,55 @@ public class Point extends Vector3 implements Position {
 	}
 	
    @Override
-	public Block getBlock() {
+	public byte getBlockId() {
 		if (z >= Chunk.getGameHeight()) {
-			return null;
+			return 0;
+		}
+
+		//bloated in-place code to avoid heap call with toCoord()
+		int xCoord = Math.floorDiv((int) x, Block.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			x % Block.GAME_DIAGLENGTH,
+			y % Block.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
+		}
+
+		return Controller.getMap().getBlockId(xCoord, yCoord, Math.floorDiv((int) z, Block.GAME_EDGELENGTH));
+	}
+	
+	public int getBlock(){
+		if (z >= Chunk.getGameHeight()) {
+			return 0;
 		}
 
 		//bloated in-place code to avoid heap call with toCoord()
@@ -276,7 +322,7 @@ public class Point extends Vector3 implements Position {
 		if (z < 0 || z > Chunk.getGameWidth()){
 			return false;
 		} else {
-			return getBlock() != null;
+			return getBlockId() != 0;
 		}
     }
 
@@ -367,7 +413,7 @@ public class Point extends Vector3 implements Position {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-		public Intersection raycast(final Vector3 dir, float maxDistance, final GameView view, final Predicate<Block> hitCondition) {
+		public Intersection raycast(final Vector3 dir, float maxDistance, final GameView view, final Predicate<Byte> hitCondition) {
 		/*  Call the callback with (x,y,z,value,normal) of all blocks along the line
 		segment from point 'origin' in vector dir 'dir' of length
 		'maxDistance'. 'maxDistance' may be infinite.
@@ -433,10 +479,10 @@ public class Point extends Vector3 implements Position {
 				||
 				(curZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
-				Block block = isectC.getBlock();
+				byte id = isectC.getBlockId();
 				if (
-					block != null
-					&& (hitCondition == null || hitCondition.test(block))
+					id != 0
+					&& (hitCondition == null || hitCondition.test(id))
 				){
 					//found intersection point
 					isectP.setFromCoord(isectC);
@@ -526,7 +572,7 @@ public class Point extends Vector3 implements Position {
 		final Vector3 dir,
 		float maxDistance,
 		final GameView view,
-		final Predicate<Block> hitCondition
+		final Predicate<Byte> hitCondition
 	){
 		if (dir == null) {
 			throw new NullPointerException("Direction of raycasting not defined");
@@ -563,10 +609,10 @@ public class Point extends Vector3 implements Position {
 				||
 				(lastCoordZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
-				Block block = isectC.getBlock();
+				byte id = isectC.getBlockId();
 				if (
-					block != null
-					&& (hitCondition == null || hitCondition.test(block))
+					id != 0
+					&& (hitCondition == null || hitCondition.test(id))
 				){
 					Intersection interse = new Intersection(traverseP, null, distanceTo(traverseP));
 					interse.calcNormal(traverseP);
@@ -749,7 +795,7 @@ public class Point extends Vector3 implements Position {
 			vecToTarget,
 			maxdistance,
 			null,
-			(Block t) -> !t.isTransparent()
+			(Byte t) -> !Block.isTransparent(t,(byte)0)
 		);
 		return !(intersect != null
 			&& distanceTo(intersect.getPoint()) < distanceTo(p)//check if point is before
@@ -796,5 +842,9 @@ public class Point extends Vector3 implements Position {
 		x = coord.getX() * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
 		y = coord.getY() * Block.GAME_DIAGLENGTH2;
 		z = coord.getZ() * Block.GAME_EDGELENGTH;
+	}
+
+	public boolean isObstacle() {
+		return Block.isObstacle(getBlockId());
 	}
 }

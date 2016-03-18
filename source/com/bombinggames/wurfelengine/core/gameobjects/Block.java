@@ -32,7 +32,6 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.Serializable;
 
 /**
@@ -147,153 +146,71 @@ public class Block implements Serializable {
 	}
 
 	/**
-	 * Use for creating new blocks.
-	 *
-	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
-	 * @return returns null for id==0
-	 */
-	public static Block getInstance(byte id) {
-		if (id == 0) {
-			return null;
-		}
-		return new Block(id, (byte) 0);
-	}
-
-	/**
-	 * Use for creating new objects.
-	 *
-	 * @param id in range 0 to {@link #OBJECTTYPESNUM}
-	 * @param value sub-id in range 0 to {@link #VALUESNUM}
-	 * @return returns null for id==0
-	 */
-	public static Block getInstance(byte id, byte value) {
-		if (id == 0) {
-			return null;
-		}
-		if (id > OBJECTTYPESNUM) {
-			return null;
-		}
-		if (value > VALUESNUM) {
-			return null;
-		}
-		return new Block(id, value);
-	}
-
-	/**
 	 * Creates a new logic instance. This can happen before the chunk is filled
 	 * at this position.
 	 *
 	 * @param coord
 	 * @return
 	 */
-	public AbstractBlockLogicExtension createLogicInstance(Coordinate coord) {
+	public static AbstractBlockLogicExtension createLogicInstance(byte id, byte value, Coordinate coord) {
 		if (customBlocks == null) {
 			return null;
 		}
-		return customBlocks.newLogicInstance(this, coord);
+		return customBlocks.newLogicInstance(id, value, coord);
 	}
 
-	//controller data
-	private byte id;
-	private byte value;
-	/**
-	 * value [0;100]
-	 */
-	private byte health = 100;
-
-	private Block(byte id) {
-		this.id = id;
-	}
-
-	private Block(byte id, byte value) {
-		this.id = id;
-		this.value = value;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public byte getId() {
-		return id;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public byte getValue(){
-		return value;
-	}
-	
-	/**
-	 * This method should not be used to change the value of a block because the map gets not informed about the change if you do this directly. Use {@link Coordinate#setValue(byte)} instead.
-	 * @param value 
-	 * @see Coordinate#setValue(byte) 
-	 */
-	public void setValue(byte value) {
-		this.value = value;
-	}
-	
 	/**
 	 * value between 0-100
 	 *
 	 * @param coord
 	 * @param health
 	 */
-	public void setHealth(Coordinate coord, byte health) {
-		this.health = health;
-		if (customBlocks != null) {
-			customBlocks.onSetHealth(coord, health, id, value);
-		}
-		if (health <= 0 && !isIndestructible()) {
-			//make an invalid air instance (should be null)
-			this.id = 0;
-			this.value = 0;
-		}
-	}
-
-	/**
-	 * value between 0-100. This method should only be used for non-bocks.
-	 *
-	 * @param health
-	 */
-	public void setHealth(byte health) {
-		this.health = health;
-	}
+//	public static void setHealth(Coordinate coord, byte id, byte value, byte health) {
+//		if (customBlocks != null) {
+//			customBlocks.onSetHealth(coord, health, id, value);
+//		}
+//		if (health <= 0 && !isIndestructible(id, value)) {
+//			//make an invalid air instance (should be null)
+//			this.id = 0;
+//			this.value = 0;
+//		}
+//	}
 
 	/**
 	 * The health is stored in a byte in the range [0;100]
+	 * @param block
 	 * @return 
 	 */
-	public byte getHealth() {
-		return health;
+	public static byte getHealth(int block) {
+		return (byte) ((block>>16)&255);
 	}
 
 	/**
 	 * creates a new RenderBlock instance based on the data
 	 *
+	 * @param id
+	 * @param value
 	 * @return
 	 */
-	public RenderBlock toRenderBlock() {
-		if (id == 0 || id == 4) {//air and invisible wall
-			RenderBlock a = new RenderBlock(this);
-			a.setHidden(true);
-			return a;
-		}
+//	public RenderBlock toRenderBlock() {
+//		if (id == 0 || id == 4) {//air and invisible wall
+//			RenderBlock a = new RenderBlock(this);
+//			a.setHidden(true);
+//			return a;
+//		}
+//
+//		if (id == 9) {
+//			return new Sea(this);
+//		}
+//
+//		if (customBlocks != null) {
+//			return customBlocks.toRenderBlock(this);
+//		}
+//
+//		return new RenderBlock(this);
+//	}
 
-		if (id == 9) {
-			return new Sea(this);
-		}
-
-		if (customBlocks != null) {
-			return customBlocks.toRenderBlock(this);
-		}
-
-		return new RenderBlock(this);
-	}
-
-	public boolean isObstacle() {
+	public static boolean isObstacle(byte id, byte value) {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isObstacle(id, value);
 		}
@@ -303,8 +220,13 @@ public class Block implements Serializable {
 		
 		return id != 0;
 	}
+	
+	public static boolean isObstacle(int block) {
+		return  isObstacle((byte)(block&255), (byte)((block>>8)&255));
+	}
+	
 
-	public boolean isTransparent() {
+	public static boolean isTransparent(byte id, byte value) {
 		if (id == 9) {
 			return true;
 		}
@@ -322,16 +244,28 @@ public class Block implements Serializable {
 	/**
 	 * Check if the block is liquid.
 	 *
+	 * @param id
+	 * @param value
 	 * @return true if liquid, false if not
 	 */
-	public boolean isLiquid() {
+	public static boolean isLiquid(byte id, byte value) {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isLiquid(id, value);
 		}
 		return id == 9;
 	}
 	
-	public boolean isIndestructible() {
+		/**
+	 * Check if the block is liquid.
+	 *
+	 * @param block first byte id, second value, third health
+	 * @return true if liquid, false if not
+	 */
+	public static boolean isLiquid(int block) {
+		return isLiquid((byte)(block&255), (byte)((block>>8)&255));
+	}
+	
+	public static boolean isIndestructible(byte id, byte value) {
 		if (customBlocks != null) {
 			return customBlocks.isIndestructible(id, value);
 		}
@@ -341,9 +275,11 @@ public class Block implements Serializable {
 	/**
 	 * get the name of a combination of id and value
 	 *
+	 * @param id
+	 * @param value
 	 * @return
 	 */
-	public String getName() {
+	public static String getName(byte id, byte value) {
 		if (id < 10) {
 			switch (id) {
 				case 0:
@@ -372,7 +308,7 @@ public class Block implements Serializable {
 		}
 	}
 
-	public boolean hasSides() {
+	public static boolean hasSides(byte id, byte value) {
 		if (id == 0) {
 			return false;
 		}
@@ -385,5 +321,4 @@ public class Block implements Serializable {
 		}
 		return true;
 	}
-
 }

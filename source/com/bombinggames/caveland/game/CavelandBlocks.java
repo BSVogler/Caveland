@@ -17,10 +17,9 @@ import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
@@ -221,17 +220,7 @@ public class CavelandBlocks implements CustomBlocks {
 		final public byte getId() {
 			return id;
 		}
-
-		/**
-		 *
-		 * @return
-		 */
-		public Block getInstance() {
-			return Block.getInstance(id);
-		}
-
 	}
-	
 	
 	
 	//Caveland specific details
@@ -280,23 +269,22 @@ public class CavelandBlocks implements CustomBlocks {
 	
 	//overwrites
 	@Override
-	public RenderBlock toRenderBlock(Block data) {
-		byte dataId = data.getId();
-		if (dataId == 1) {
-			GrassBlock grass = new GrassBlock(data);
+	public RenderBlock toRenderBlock(byte id, byte value) {
+		if (id == 1) {
+			GrassBlock grass = new GrassBlock(id, value);
 			return grass;
-		} else if (dataId == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
-			RenderBlock iO = new RenderBlock(data);
-			if (data.getValue()> 0){
+		} else if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
+			RenderBlock iO = new RenderBlock(id, value);
+			if (value> 0){
 				iO.setSpriteId((byte) 3);
 			}
 			return iO;
-		} else if (dataId == CLBlocks.TREE.id) {
-			return new CustomTree(data);
-		} else if (dataId == CLBlocks.CONSTRUCTIONSITE.id) {
-			return new ConstructionSiteRender(data);
+		} else if (id == CLBlocks.TREE.id) {
+			return new CustomTree(id, value);
+		} else if (id == CLBlocks.CONSTRUCTIONSITE.id) {
+			return new ConstructionSiteRender(id, value);
 		}else {
-			return new RenderBlock(data);
+			return new RenderBlock(id, value);
 		}
 	}
 
@@ -376,7 +364,7 @@ public class CavelandBlocks implements CustomBlocks {
 					otherHalf = coord.cpy().add(0, 0, 1);
 				}
 
-				if (otherHalf.getBlock() != null && otherHalf.getBlock().getId() == id) {
+				if (otherHalf.getBlockId() != 0 && otherHalf.getBlockId() == id) {
 					otherHalf.destroy();
 				}
 			}
@@ -391,44 +379,43 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 
 	@Override
-	public AbstractBlockLogicExtension newLogicInstance(Block block, Coordinate coord) {
-		byte id = block.getId();
+	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord) {
 		if (id == CLBlocks.ENTRY.id) {
-			return new CaveEntryBlockLogic(block, coord);
+			return new CaveEntryBlockLogic(id, coord);
 		}
 		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
-			return new ConstructionSite(block, coord);
+			return new ConstructionSite(id, coord);
 		}
 		if (id == CLBlocks.OVEN.id) {
-			return new OvenLogic(block, coord);
+			return new OvenLogic(id, coord);
 		}
 		if (id == CLBlocks.POWERSTATION.id) {
-			return new PowerStationLogic(block, coord);
+			return new PowerStationLogic(id, coord);
 		}
 		if (id == CLBlocks.LIFT.id) {
-			return new LiftLogic(block, coord);
+			return new LiftLogic(id, coord);
 		}
 		
 		if (id == CLBlocks.LIFT_Ground.id) {
-			return new LiftLogicGround(block, coord);
+			return new LiftLogicGround(id, coord);
 		}
 		if (id == CLBlocks.ROBOTFACTORY.id) {
-			return new RobotFactory(block, coord);
+			return new RobotFactory(id, coord);
 		}
 		if (id == CLBlocks.POWERCABLE.id) {
-			return new CableBlock(block, coord);
+			return new CableBlock(id, value, coord);
 		}
 		if (id == CLBlocks.RAILSBOOSTER.id) {
-			return new BoosterLogic(block, coord);
+			return new BoosterLogic(id, coord);
 		}
 		if (id == CLBlocks.TURRET.id) {
-			return new Turret(block, coord);
+			return new Turret(id, coord);
 		}
 		if (id == CLBlocks.TORCH.id) {
-			return new PowerTorch(block, coord);
+			return new PowerTorch(id, coord);
 		}
 		if (id == CLBlocks.FLAGPOLE.id) {
-			return new Flagpole(block, coord);
+			return new Flagpole(id, coord);
 		}
 		return null;
 	}

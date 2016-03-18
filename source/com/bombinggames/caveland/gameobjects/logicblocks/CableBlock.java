@@ -30,7 +30,6 @@
  */
 package com.bombinggames.caveland.gameobjects.logicblocks;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
@@ -43,12 +42,13 @@ public class CableBlock extends AbstractPowerBlock{
 	
 	/**
 	 *
-	 * @param block
+	 * @param id
+	 * @param value
 	 * @param coord
 	 */
-	public CableBlock(Block block, Coordinate coord) {
-		super(block, coord);
-		type = block.getValue()/2;
+	public CableBlock(byte id, byte value, Coordinate coord) {
+		super(id, coord);
+		type = value/2;
 	}
 	
 	@Override
@@ -56,15 +56,15 @@ public class CableBlock extends AbstractPowerBlock{
 		super.update(dt);
 		if (initalized) {
 			//turn off
-			Block block = getPosition().getBlock();
-			getPosition().setValue((byte) (block.getValue() - block.getValue() % 2));
+			byte value = getPosition().getBlockValue();
+			getPosition().setValue((byte) (value - value % 2));
 			initalized = true;
 		}
 		
 		//turn on or off depending if hat power
-		Block lblock = getPosition().getBlock();
+		byte value = getPosition().getBlockValue();
 		getPosition().setValue(
-			(byte) (lblock.getValue() - (lblock.getValue() % 2)
+			(byte) (value - (value % 2)
 			+ (hasPower() ? 1 : 0))
 		);
 	}

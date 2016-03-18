@@ -40,7 +40,6 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
@@ -88,7 +87,7 @@ public class Chunk implements Telegraph {
 	/**
 	 * the ids are stored here
 	 */
-    private final Block data[][][];
+    private final byte data[][][];
 	
 	/**
 	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
@@ -118,12 +117,16 @@ public class Chunk implements Telegraph {
 
 		topleftX = coordX*blocksX;
 		topleftY = coordY*blocksY;
-		data = new Block[blocksX][blocksY][blocksZ];
+		data = new byte[blocksX][blocksY][blocksZ*3];
 
        for (int x = 0; x < blocksX; x++) {
 			for (int y = 0; y < blocksY; y++) {
-				for (int z = 0; z < blocksZ; z++) {
-					data[x][y][z] = null;
+				for (int z = 0; z < blocksZ*3; z++) {
+					if (z % 3 == 2) {
+						data[x][y][z] = 100;
+					} else {
+						data[x][y][z] = 0;
+					}
 				}
 			}
 		}
@@ -201,30 +204,36 @@ public class Chunk implements Telegraph {
 		}
 	}
 
-    /**
-     * Fills the chunk's block using a generator.
-     * @param generator
-     */
-   public void fill(final Generator generator) {
+   /**
+	 * Fills the chunk's block using a generator.
+	 *
+	 * @param generator
+	 */
+	public void fill(final Generator generator) {
 		int left = blocksX * coordX;
 		int top = blocksY * coordY;
 		for (int x = 0; x < blocksX; x++) {
 			for (int y = 0; y < blocksY; y++) {
-				for (int z = 0; z < blocksZ; z++) {
-					data[x][y][z] = generator.generate(
+				for (int z = 0; z < blocksZ * 3; z += 3) {
+					int generated = generator.generate(
 						left + x,
 						top + y,
 						z
 					);
-					if (data[x][y][z] != null) {
-						AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
+					data[x][y][z] = (byte) (generated&255);
+					data[x][y][z + 1] = (byte) ((generated>>16)&255);
+					data[x][y][z + 2] = 100;
+					if (data[x][y][z] != 0) {
+						AbstractBlockLogicExtension logic = Block.createLogicInstance(
+							data[x][y][z],
+							data[x][y][z + 1],
 							new Coordinate(coordX * blocksX + x, coordY * blocksY + y, z)
 						);
 						if (logic != null) {
 							logicBlocks.add(logic);
 						}
 					}
-					
+
 					generator.spawnEntities(
 						left + x,
 						top + y,
@@ -284,7 +293,9 @@ public class Chunk implements Telegraph {
 					if (bChar == SIGN_EMTPYLAYER) {
 						for (x = 0; x < blocksX; x++) {
 							for (y = 0; y < blocksY; y++) {
-								data[x][y][z] = null;
+								data[x][y][z] = 0;
+								data[x][y][z+1] = 0;
+								data[x][y][z+2] = 100;
 							}
 						}
 						skip = true;
@@ -305,7 +316,9 @@ public class Chunk implements Telegraph {
 
 						id = bChar;
 						if (id == 0) {
-							data[x][y][z] = null;
+							data[x][y][z] = 0;
+							data[x][y][z+1] = 0;
+							data[x][y][z+2] = 100;
 							id = -1;
 							x++;
 							if (x == blocksX) {
@@ -319,10 +332,14 @@ public class Chunk implements Telegraph {
 							}
 						}
 					} else {
-						data[x][y][z] = Block.getInstance(id, bChar);
+						data[x][y][z] = id;
+						data[x][y][z+1] = bChar;
+						data[x][y][z+2] = 100;
 						//if has logicblock then add logicblock
-						if (data[x][y][z] != null) {
-							AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
+						if (data[x][y][z] != 0) {
+							AbstractBlockLogicExtension logic = Block.createLogicInstance(
+								data[x][y][z],
+								data[x][y][z+1],
 								new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
 							);
 							if (logic != null)
@@ -337,7 +354,7 @@ public class Chunk implements Telegraph {
 						if (y == blocksY) {
 							x=0;
 							y=0;
-							z++;
+							z+=3;
 						}
 					}
 				} catch (ArrayIndexOutOfBoundsException ex){
@@ -453,12 +470,12 @@ public class Chunk implements Telegraph {
         savepath.createNewFile();
 
 		FileOutputStream fos = new FileOutputStream(savepath);
-		for (byte z = 0; z < blocksZ; z++) {
+		for (byte z = 0; z < blocksZ*3; z+=3) {
 			//check if layer is empty
 			boolean dirty = false;
 			for (int x = 0; x < blocksX; x++) {
 				for (int y = 0; y < blocksY; y++) {
-					if (data[x][y][z] != null) {
+					if (data[x][y][z] != 0) {
 						dirty = true;
 					}
 				}
@@ -466,10 +483,10 @@ public class Chunk implements Telegraph {
 			if (dirty) {
 				for (int y = 0; y < blocksY; y++) {
 					for (int x = 0; x < blocksX; x++) {
-						if (data[x][y][z] == null) {
+						if (data[x][y][z] == 0) {
 							fos.write(0);
 						} else {
-							fos.write(new byte[]{data[x][y][z].getId(), data[x][y][z].getValue()});
+							fos.write(new byte[]{data[x][y][z], data[x][y][z+1]});
 						}
 					}
 				}
@@ -533,7 +550,7 @@ public class Chunk implements Telegraph {
      * Returns the data of the chunk
      * @return
      */
-    public Block[][][] getData() {
+    public byte[][][] getData() {
         return data;
     }
 
@@ -620,33 +637,19 @@ public class Chunk implements Telegraph {
 	@Override
 	public String toString() {
 		String strg = null;
-		for (int z = 0; z < blocksZ; z++) {
+		for (int z = 0; z < blocksZ*3; z+=3) {
 			for (int y = 0; y < blocksY; y++) {
 				for (int x = 0; x < blocksX; x++) {
-					if (data[x][y][z].getId()==0)
+					if (data[x][y][z]==0)
 						strg += "  ";
 					else
-						strg += data[x][y][z].getId() + " ";
+						strg += data[x][y][z] + " ";
 				}
 				strg += "\n";
 			}
 			strg += "\n\n";
 		}
 		return strg;
-	}
-
-	/**
-	 * Returns an iterator which iterates over the data in this chunk.
-	 * @param startingZ
-	 * @param limitZ the last layer (including).
-	 * @return
-	 */
-	public DataIterator<Block> getIterator(final int startingZ, final int limitZ){
-		return new DataIterator<>(
-			data,
-			startingZ,
-			limitZ
-		);
 	}
 
 	/**
@@ -682,46 +685,23 @@ public class Chunk implements Telegraph {
 	}
 
 	/**
-	 *
-	 * @param x coordinate
-	 * @param y coordinate
-	 * @param z coordinate
-	 * @return can be null
-	 */
-	public Block getBlock(int x, int y, int z) {
-		if (z >= Chunk.blocksZ) return null;
-		int xIndex = x-topleftX;
-		int yIndex = y-topleftY;
-		return data[xIndex][yIndex][z];
-	}
-
-	/**
-	 * Get the block at the index position
-	 * @param x index pos
-	 * @param y index pos
-	 * @param z index pos
-	 * @return
-	 */
-	public Block getBlockViaIndex(int x, int y, int z) {
-		return data[x][y][z];
-	}
-
-	/**
 	 * sets a block in the map. if position is under the map does nothing.
-	 * @param block no null pointer allowed
+	 * @param rblock no null pointer allowed
 	 */
-	public void setBlock(RenderBlock block) {
-		int xIndex = block.getPosition().getX()-topleftX;
-		int yIndex = block.getPosition().getY()-topleftY;
-		int z = block.getPosition().getZ();
+	public void setBlock(RenderBlock rblock) {
+		int xIndex = rblock.getPosition().getX()-topleftX;
+		int yIndex = rblock.getPosition().getY()-topleftY;
+		int z = rblock.getPosition().getZ()*3;
 		if (z >= 0){
-			data[xIndex][yIndex][z] = block.toStorageBlock();
+			data[xIndex][yIndex][z] = rblock.getId();
+			data[xIndex][yIndex][z+1] = rblock.getValue();
+			data[xIndex][yIndex][z+2] = rblock.getHealth();
 			modified = true;
 		}
 		
 		//get corresponding logic and update
-		if (block.getBlockData() != null) {
-			AbstractBlockLogicExtension logic = block.getBlockData().createLogicInstance(block.getPosition());
+		if (rblock.getId() != 0) {
+			AbstractBlockLogicExtension logic = Block.createLogicInstance(rblock.getId(), rblock.getValue(), rblock.getPosition());
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -733,23 +713,68 @@ public class Chunk implements Telegraph {
 	 *
 	 * @param coord The position where you insert the block. Must be inside the
 	 * bounds of the chunk.
-	 * @param block
+	 * @param id
+	 * @param value
+	 * @param health
 	 */
-	public void setBlock(Coordinate coord, Block block) {
+	public void setBlock(Coordinate coord, byte id, byte value, byte health) {
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;
-		int z = coord.getZ();
-		if (z >= 0) {
-			data[xIndex][yIndex][z] = block;
+		int z = coord.getZ()*3;
+		if (z >= 0){
+			data[xIndex][yIndex][z] = id;
+			data[xIndex][yIndex][z+1] = value;
+			data[xIndex][yIndex][z+2] = health;
 			modified = true;
-			//get corresponding logic and update
-			if (block != null) {
-				//create new instance
-				AbstractBlockLogicExtension logic = block.createLogicInstance(coord);
-				if (logic != null) {
-					logicBlocks.add(logic);
-				}
-			}
+		}
+		
+		//get corresponding logic and update
+		if (id != 0) {
+			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, value, coord);
+			if (logic != null)
+				logicBlocks.add(logic);
+		}
+	}
+	
+	public void setBlock(Coordinate coord, byte id, byte value) {
+		int xIndex = coord.getX() - topleftX;
+		int yIndex = coord.getY() - topleftY;
+		int z = coord.getZ()*3;
+		if (z >= 0){
+			data[xIndex][yIndex][z] = id;
+			data[xIndex][yIndex][z+1] = value;
+			modified = true;
+		}
+		
+		//get corresponding logic and update
+		if (id != 0) {
+			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, value, coord);
+			if (logic != null)
+				logicBlocks.add(logic);
+		}
+	}
+	
+	/**
+	 * healed and value set to 0
+	 * @param coord
+	 * @param id 
+	 */
+		public void setBlock(Coordinate coord, byte id) {
+		int xIndex = coord.getX() - topleftX;
+		int yIndex = coord.getY() - topleftY;
+		int z = coord.getZ()*3;
+		if (z >= 0){
+			data[xIndex][yIndex][z] = id;
+			data[xIndex][yIndex][z+1] = 0;
+			data[xIndex][yIndex][z+2] = 100;
+			modified = true;
+		}
+		
+		//get corresponding logic and update
+		if (id != 0) {
+			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, (byte) 0, coord);
+			if (logic != null)
+				logicBlocks.add(logic);
 		}
 	}
 	
@@ -761,10 +786,22 @@ public class Chunk implements Telegraph {
 	public void setValue(Coordinate coord, byte value) {
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;
-		int z = coord.getZ();
+		int z = coord.getZ()*3;
 		if (z >= 0) {
-			if (data[xIndex][yIndex][z].getValue() != value) {
-				data[xIndex][yIndex][z].setValue(value);
+			if (data[xIndex][yIndex][z+1] != value) {
+				data[xIndex][yIndex][z+1] = value;
+				modified = true;
+			}
+		}
+	}
+	
+	void setHealth(Coordinate coord, byte health) {
+		int xIndex = coord.getX() - topleftX;
+		int yIndex = coord.getY() - topleftY;
+		int z = coord.getZ()*3;
+		if (z >= 0) {
+			if (data[xIndex][yIndex][z+2] != health) {
+				data[xIndex][yIndex][z+2] = health;
 				modified = true;
 			}
 		}
@@ -785,8 +822,7 @@ public class Chunk implements Telegraph {
 	 * @return can return null
 	 */
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
-		Block block = coord.getBlock();
-		if (block != null) {
+		if (coord.getBlockId() != 0) {
 			//find the logicBlock
 			for (AbstractBlockLogicExtension logicBlock : logicBlocks) {
 				if (logicBlock.getPosition().equals(coord) && logicBlock.isValid()) {
@@ -826,5 +862,39 @@ public class Chunk implements Telegraph {
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return false;
+	}
+	
+	/*
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @param z coordinate
+	 * @return can be null
+	 */
+	public byte getBlockId(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) return 0;
+		int xIndex = x-topleftX;
+		int yIndex = y-topleftY;
+		return data[xIndex][yIndex][z*3];
+	}
+	
+	public int getBlock(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) return 0;
+		int xIndex = x-topleftX;
+		int yIndex = y-topleftY;
+		return data[xIndex][yIndex][z*3]+(data[xIndex][yIndex][z*3+1]<<8)+(data[xIndex][yIndex][z*3+2]<<16);
+	}
+	
+	public int getBlockViaIndex(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) return 0;
+		return data[x][y][z*3]+(data[x][y][z*3+1]<<8)+(data[x][y][z*3+2]<<16);
+	}
+	
+	
+	
+	public  byte getHealth(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) return 0;
+		int xIndex = x-topleftX;
+		int yIndex = y-topleftY;
+		return data[xIndex][yIndex][z*3+2];
 	}
 }

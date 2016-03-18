@@ -91,11 +91,11 @@ public class LiftBasket extends MovableEntity {
 			if (isOnSurface()) {
 				//stop upwards movement if in air
 				if (movementDir > 0//moving up
-					&& (getPosition().getBlock() == null || !getPosition().getBlock().isObstacle())//may be a problem if chunk not yet loaded, todo
+					&& (!getPosition().isObstacle())//may be a problem if chunk not yet loaded, todo
 					) {
 					stop();
 				} else if (movementDir < 0//moving down
-					&& getPosition().getBlock() != null && !getPosition().getBlock().isObstacle()//may be a problem if chunk not yet loaded, todo
+					&& !getPosition().isObstacle()//may be a problem if chunk not yet loaded, todo
 					) {
 					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(Block.GAME_EDGELENGTH * 2, Portal.class);
 					if (!possibleExitPortals.isEmpty()) {
@@ -226,8 +226,7 @@ public class LiftBasket extends MovableEntity {
 			Coordinate checkpos = getPosition().toCoord();
 			checkpos.setZ(z);//set height
 
-			Block block = checkpos.getBlock();
-			if (block != null && block.getId() == CavelandBlocks.CLBlocks.LIFT.getId()) {
+			if (checkpos.getBlockId()== CavelandBlocks.CLBlocks.LIFT.getId()) {
 				return true;
 			}
 		}

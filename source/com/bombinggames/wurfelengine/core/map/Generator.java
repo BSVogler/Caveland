@@ -31,8 +31,6 @@
 
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
-
 /**
  *An interface for a map generator.
  * @author Benedikt Vogler
@@ -46,7 +44,7 @@ public interface Generator {
      * @param z absolute coord
      * @return the block which belongs to the given coordinates
      */
-    public abstract Block generate(int x, int y, int z);   
+    public abstract int generate(int x, int y, int z);   
 	
 	/**
 	 * Define which entities should appear at which coordinate. This method should spawn them.

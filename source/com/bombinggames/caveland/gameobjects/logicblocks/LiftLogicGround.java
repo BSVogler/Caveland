@@ -8,10 +8,10 @@ import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.LiftBasket;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 	 * @param block
 	 * @param coord
 	 */
-	public LiftLogicGround(Block block, Coordinate coord) {
+	public LiftLogicGround(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -72,8 +72,8 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 		}
 
 		//clear entry
-		Block groundBlock = getPosition().cpy().goToNeighbour(5).add(0, 0, 1).getBlock();
-		if (groundBlock != null && groundBlock.isObstacle()) {
+		int groundBlock = getPosition().cpy().goToNeighbour(5).add(0, 0, 1).getBlock();
+		if ((groundBlock&255) != 0 && Block.isObstacle(groundBlock)) {
 			getPosition().cpy().goToNeighbour(5).add(0, 0, 1).destroy();
 		}
 	}

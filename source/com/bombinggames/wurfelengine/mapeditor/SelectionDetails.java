@@ -49,7 +49,8 @@ import java.util.logging.Logger;
  * @author Benedikt Vogler
  */
 public class SelectionDetails extends WidgetGroup {
-	private Block block = Block.getInstance((byte) 1);
+	private byte id;
+	private byte value;
 	private final Label label;
 	private final Label blockPosition;
 	private Class<? extends AbstractEntity> entityClass;
@@ -106,7 +107,7 @@ public class SelectionDetails extends WidgetGroup {
 	 * @return
 	 */
 	public byte getId() {
-		return block.getId();
+		return id;
 	}
 		
 	/**
@@ -114,20 +115,18 @@ public class SelectionDetails extends WidgetGroup {
 	 * @return
 	 */
 	public byte getValue() {
-		return block.getValue();
+		return value;
 	}	
 	
 	/**
 	 *
-	 * @param block
+	 * @param id
+	 * @param value
 	 */
-	public void setBlock(Block block) {
-		this.block = block;
-		if (block != null) {
-			label.setText(block.getName() + " "+ block.getId() + " - "+ block.getValue());
-		} else {
-			label.setText("air 0 - 0");
-		}
+	public void setBlock(byte id, byte value) {
+		this.id = id;
+		this.value = value;
+		label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
 	}
 
 	/**
@@ -135,27 +134,13 @@ public class SelectionDetails extends WidgetGroup {
 	 * @param value
 	 */
 	public void setValue(byte value) {
-		if (block != null) {
-			if (placeBlocks) {
-				this.block = Block.getInstance(block.getId(), value);
-				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-			} else if (value == -1) {
-				label.setText(block.getName() + " " + block.getId() + " - " + block.getValue());
-			} else {
-				label.setText(block.getName() + " " + block.getId() + " - forced: " + block.getValue());
-			}
-		}
-	}
-	
-	/**
-	 * Get a new instance of a selected block.
-	 * @return a new Block instance of the selected id and value.
-	 */
-	public Block getBlock(){
-		if (block == null) {
-			return null;
+		if (placeBlocks) {
+			this.value = value;
+			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
+		} else if (value == -1) {
+			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
 		} else {
-			return Block.getInstance(block.getId(), block.getValue());
+			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
 		}
 	}
 	
@@ -228,8 +213,16 @@ public class SelectionDetails extends WidgetGroup {
 		setVisible(false);
 	}
 
-	void setTable(PlacableTable table) {
+	public void setTable(PlacableTable table) {
 		this.table = table;
+	}
+
+	public void setId(byte id) {
+		this.id = id;
+	}
+
+	public int getBlock() {
+		return id+(value<<8);
 	}
 
 	private static class ChangeListenerImpl extends ChangeListener {

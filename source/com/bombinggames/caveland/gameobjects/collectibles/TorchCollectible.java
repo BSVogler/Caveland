@@ -34,7 +34,6 @@ package com.bombinggames.caveland.gameobjects.collectibles;
 import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 
 /**
  *
@@ -60,7 +59,7 @@ public class TorchCollectible extends Collectible implements Interactable {
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		actor.getPosition().toCoord().setBlock(Block.getInstance((byte) 13));
+		actor.getPosition().toCoord().setBlock((byte) 13);
 		dispose();//dispose tool kit
 	}
 	

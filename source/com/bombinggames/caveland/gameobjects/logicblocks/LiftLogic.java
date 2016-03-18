@@ -7,10 +7,10 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.caveland.gameobjects.LiftBasket;
 import com.bombinggames.caveland.gameobjects.Portal;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
@@ -26,7 +26,7 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 	 * @param block
 	 * @param coord
 	 */
-	public LiftLogic(Block block, Coordinate coord) {
+	public LiftLogic(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -52,8 +52,8 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 				basket.spawn(getPosition().toPoint());
 			}
 
-			if (ground.getBlock() == null || ground.getBlock().getId() != CavelandBlocks.CLBlocks.LIFT_Ground.getId()) {
-				ground.setBlock(Block.getInstance(CavelandBlocks.CLBlocks.LIFT_Ground.getId()));
+			if (ground.getBlockId() != CavelandBlocks.CLBlocks.LIFT_Ground.getId()) {
+				ground.setBlock(CavelandBlocks.CLBlocks.LIFT_Ground.getId());
 			}
 			
 			

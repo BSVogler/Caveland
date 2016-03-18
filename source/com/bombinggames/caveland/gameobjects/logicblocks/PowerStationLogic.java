@@ -5,7 +5,6 @@
  */
 package com.bombinggames.caveland.gameobjects.logicblocks;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
 /**
@@ -20,7 +19,7 @@ public class PowerStationLogic extends AbstractPowerBlock {
 	 * @param block
 	 * @param coord
 	 */
-	public PowerStationLogic(Block block, Coordinate coord) {
+	public PowerStationLogic(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 

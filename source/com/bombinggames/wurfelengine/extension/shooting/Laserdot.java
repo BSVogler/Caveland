@@ -71,7 +71,7 @@ public class Laserdot extends SimpleEntity {
 				aimDir,
 				12,
 				null,
-				(Block t) -> !t.isTransparent() && t.getId() != ignoreId
+				(Byte t) -> !Block.isTransparent(t,(byte) 0) && t != ignoreId
 			);
 			setHidden(raycast == null);
 			if (raycast != null && raycast.getPoint() != null) {

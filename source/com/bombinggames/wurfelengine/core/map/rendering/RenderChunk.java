@@ -43,13 +43,13 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
  */
 public class RenderChunk {
 
+	private static final Pool<RenderBlock[][][]> DATAPOOL;
 	private final RenderBlock data[][][];
-	private static final Pool<RenderBlock[][][]> dataPool;
 	private Chunk chunk;
 	private boolean cameraAccess;
 
 	static {
-		dataPool = new Pool<RenderBlock[][][]>(3) {
+		DATAPOOL = new Pool<RenderBlock[][][]>(3) {
 			@Override
 			protected RenderBlock[][][] newObject() {
 				return new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
@@ -58,7 +58,7 @@ public class RenderChunk {
 	}
 	
 	public static void clearPool(){
-		dataPool.clear();
+		DATAPOOL.clear();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class RenderChunk {
 	 * @param chunk linked chunk
 	 */
 	public RenderChunk(RenderStorage rS, Chunk chunk) {
-		data = dataPool.obtain();
+		data = DATAPOOL.obtain();
 		init(rS, chunk);
 	}
 
@@ -256,7 +256,7 @@ public class RenderChunk {
 	}
 
 	void dispose() {
-		dataPool.free(data);
+		DATAPOOL.free(data);
 	}
 
 }

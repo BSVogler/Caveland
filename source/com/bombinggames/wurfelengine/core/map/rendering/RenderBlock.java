@@ -74,6 +74,7 @@ public class RenderBlock extends AbstractGameObject {
 	private static boolean staticShade;
 	private static long rebuildCoverList = 0;
 	private static SimpleEntity destruct = new SimpleEntity((byte) 3,(byte) 0);
+	private static Color tmpColor = new Color();
 	
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
@@ -434,14 +435,14 @@ public class RenderBlock extends AbstractGameObject {
 		final Side side,
 		final boolean staticShade
 	){
-		Color color;
+		Color color = tmpColor;
 		if (fogEnabled) {
 			//can use CVars for dynamic change. using harcored values for performance reasons
 			float factor = (float) (Math.exp(0.025f * (camera.getVisibleFrontBorderHigh() - coords.toCoord().getY() - 18.0)) - 1);
 			//float factor = (float) (Math.exp( 0.0005f*(coords.getDepth(view)-500) )-1 );
-			color = new Color(0.5f + 0.3f * factor, 0.5f + 0.4f * factor, 0.5f + 1f * factor, 1);
+			color.set(0.5f + 0.3f * factor, 0.5f + 0.4f * factor, 0.5f + 1f * factor, 1);
 		} else {
-			color = Color.GRAY.cpy();
+			color.set(Color.GRAY);
 		}
 
 		//if vertex shaded then use different shading for each side

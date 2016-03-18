@@ -133,11 +133,9 @@ public class Camera{
 	private int objectsToBeRendered = 0;
 	private int renderResWidth;
 	private int maxsprites;
-	private Point center = new Point(0, 0, 0);
-	private int recursiveDepth;
-	private int maxDepth;
-	private ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
-	private LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
+	private final Point center = new Point(0, 0, 0);
+	private final ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
+	private final LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -599,8 +597,6 @@ public class Camera{
 		//inverse dirty flag
 		AbstractGameObject.inverseMarkedFlag();
 		//check every block
-		recursiveDepth = 0;
-		maxDepth = 0;
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
 
@@ -610,14 +606,12 @@ public class Camera{
 					cell.getPosition().getViewSpcY()
 				)) {
 					visit(cell);
-					recursiveDepth--;
 				}
 			}
 		}
 		for (RenderBlock modifiedCell : modifiedCells) {
 			visit(modifiedCell);
 			modifiedCell.clearCoveredEnts();
-			recursiveDepth--;
 		}
 		depthlist.addAll(renderAppendix);
 	}
@@ -627,10 +621,6 @@ public class Camera{
 	 * @param n root node
 	 */
 	private void visit(AbstractGameObject n) {
-		recursiveDepth++;
-		if (recursiveDepth > maxDepth) {
-			maxDepth = recursiveDepth;
-		}
 		if (!n.isMarked()) {
 			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
 			if (covered.size() > 0) {
@@ -641,7 +631,6 @@ public class Camera{
 							m.getPosition().getViewSpcY()
 						)) {
 							visit(m);
-							recursiveDepth--;
 						}
 					}
 			}

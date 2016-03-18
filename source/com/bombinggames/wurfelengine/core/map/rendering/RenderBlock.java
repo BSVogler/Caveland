@@ -73,6 +73,7 @@ public class RenderBlock extends AbstractGameObject {
 	private static boolean fogEnabled;
 	private static boolean staticShade;
 	private static long rebuildCoverList = 0;
+	private static SimpleEntity destruct = new SimpleEntity((byte) 3,(byte) 0);
 	
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
@@ -243,6 +244,9 @@ public class RenderBlock extends AbstractGameObject {
 	private SideSprite site1;
 	private SideSprite site3;
 	private SideSprite site2;
+	/**
+	 * frame number to avoid multiple calculations in one frame
+	 */
 	private long lastRebuild;
 	
 	/**
@@ -514,9 +518,9 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param value damage sprite value
 	 */
 	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value){
-		SimpleEntity destruct = new SimpleEntity((byte) 3,value);
+		destruct.setSpriteValue(value);
 		destruct.setPosition(aopos);
-		destruct.setColor(new Color(0.5f, 0.5f, 0.5f, 0.7f));
+		destruct.getColor().set(0.5f, 0.5f, 0.5f, 0.7f);
 		destruct.render(view, camera);
 	}
 	

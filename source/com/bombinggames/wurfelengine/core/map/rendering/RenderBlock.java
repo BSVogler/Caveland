@@ -234,7 +234,7 @@ public class RenderBlock extends AbstractGameObject {
 	 **/
 	private int aoFlags;
 	/**
-	 * three bits used, for each side one: TODO: move to aoFlags byte 3
+	 * three bits used, for each side one: TODO: move to aoFlags byte #3
 	 */
 	private byte clipping;
 	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();

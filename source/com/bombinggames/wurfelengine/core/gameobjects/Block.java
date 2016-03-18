@@ -37,7 +37,7 @@ import java.io.Serializable;
 
 /**
  * A small block object hich stores only id and value and is only used for
- * storing in memory. Stores only 8 bytes.
+ * storing in memory. 12 object + 3 byte (fields) + 8 bytes boundary = 23 bytes per object.
  *
  * @author Benedikt Vogler
  */
@@ -196,6 +196,9 @@ public class Block implements Serializable {
 	//controller data
 	private byte id;
 	private byte value;
+	/**
+	 * value [0;100]
+	 */
 	private byte health = 100;
 
 	private Block(byte id) {

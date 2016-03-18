@@ -63,7 +63,7 @@ public class RenderStorage implements Telegraph  {
 	 */
 	private final ArrayList<Integer> lastCenterX, lastCenterY;
 	/**
-	 * a list of Blocks marked as dirty
+	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
 	 */
 	private final LinkedList<RenderBlock> dirtyFlags = new LinkedList<>();
 	private int zRenderingLimit;

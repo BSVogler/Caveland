@@ -1,10 +1,10 @@
 package com.bombinggames.caveland.gameobjects;
 
 import com.bombinggames.caveland.game.CavelandBlocks;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * A movable entity with special caveland logic.
@@ -41,7 +41,7 @@ public class CLMovableEntity extends MovableEntity {
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
 			Point checkpos = pos;
 			float prevZ = pos.z;
-			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
+			checkpos.setZ(RenderBlock.GAME_EDGELENGTH*z);//set height
 			
 			byte block = checkpos.add(0, -colissionRadius, 0).getBlockId();
 			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {

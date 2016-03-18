@@ -39,8 +39,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,7 +69,7 @@ public class SelectionDetails extends WidgetGroup {
 	public SelectionDetails(Stage stage, Cursor selection, boolean left) {
 		this.stage = stage;
 
-		slider = new Slider(-1, Block.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
+		slider = new Slider(-1, RenderBlock.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
 		slider.setPosition(0, 20);
 		slider.addListener(new ChangeListenerImpl(this));
 		addActor(slider);
@@ -126,7 +126,7 @@ public class SelectionDetails extends WidgetGroup {
 	public void setBlock(byte id, byte value) {
 		this.id = id;
 		this.value = value;
-		label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
+		label.setText(RenderBlock.getName(id, value) + " "+ id + " - "+ value);
 	}
 
 	/**
@@ -136,11 +136,11 @@ public class SelectionDetails extends WidgetGroup {
 	public void setValue(byte value) {
 		if (placeBlocks) {
 			this.value = value;
-			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
+			label.setText(RenderBlock.getName(id, value) + " "+ id + " - "+ value);
 		} else if (value == -1) {
-			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
+			label.setText(RenderBlock.getName(id, value) + " "+ id + " - "+ value);
 		} else {
-			label.setText(Block.getName(id, value) + " "+ id + " - "+ value);
+			label.setText(RenderBlock.getName(id, value) + " "+ id + " - "+ value);
 		}
 	}
 	

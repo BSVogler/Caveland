@@ -122,13 +122,13 @@ public class PointLightSource extends AbstractEntity {
 							dir,
 							floatradius * 2,
 							null,
-							(Byte t) -> !Block.isTransparent(t.byteValue(), (byte) 0)
+							(Byte t) -> !RenderBlock.isTransparent(t.byteValue(), (byte) 0)
 						);
 						//check if intersected
 						if (inters != null && inters.getPoint() != null) {
 							//get back edge of block
-							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -Block.GAME_DIAGLENGTH2, 0);
-							float pow = origin.distanceTo(impactP) / Block.GAME_EDGELENGTH;
+							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -RenderBlock.GAME_DIAGLENGTH2, 0);
+							float pow = origin.distanceTo(impactP) / RenderBlock.GAME_EDGELENGTH;
 							float l = (1 + brightness) / (pow * pow);
 
 							//side 0

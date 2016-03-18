@@ -36,7 +36,7 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
@@ -123,7 +123,7 @@ public class SpiderRobot extends Robot{
 				
 				//find storage
 				if (storage == null) {
-					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH, DropSpaceFlag.class);
+					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderBlock.GAME_EDGELENGTH, DropSpaceFlag.class);
 					if (!flagsnearby.isEmpty()) {
 						storage = flagsnearby.get(0).getPosition().toCoord();
 						WE.SOUND.play("robotWeep", getPosition());
@@ -213,7 +213,7 @@ public class SpiderRobot extends Robot{
 				//gather resources
 				if (workingBlock != null) {
 					//if nearby
-					if (getPosition().distanceTo(workingBlock) < Block.GAME_EDGELENGTH*1.8f) {
+					if (getPosition().distanceTo(workingBlock) < RenderBlock.GAME_EDGELENGTH*1.8f) {
 						MessageManager.getInstance().dispatchMessage(
 							this,
 							this,

@@ -44,7 +44,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -205,11 +205,11 @@ public class Minimap implements Telegraph {
 					float rectX = 
 						+ ((ent.getPosition().getX()
 						+ (ent.getPosition().toCoord().getY()%2==1?0.5f:0)
-						)/Block.GAME_DIAGLENGTH
+						)/RenderBlock.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
 					float rectY = 
-						- (ent.getPosition().getY()/Block.GAME_DIAGLENGTH
+						- (ent.getPosition().getY()/RenderBlock.GAME_DIAGLENGTH
 						+ 0.5f
 						)* scaleY*2;
 					sh.translate(rectX, rectY, 0);
@@ -229,9 +229,9 @@ public class Minimap implements Telegraph {
 					rectX = (int) (
 						(tmpPos.getX()
 							+ (tmpPos.toCoord().getY()%2==1 ? 0.5f : 0)
-						  ) / Block.GAME_DIAGLENGTH * scaleX
+						  ) / RenderBlock.GAME_DIAGLENGTH * scaleX
 					);
-					rectY = (int) (tmpPos.getY()/Block.GAME_DIAGLENGTH2 * scaleY);
+					rectY = (int) (tmpPos.getY()/RenderBlock.GAME_DIAGLENGTH2 * scaleY);
 
 					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
@@ -299,10 +299,10 @@ public class Minimap implements Telegraph {
 						//ground level
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
-					sh.rect(scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2,
-						scaleX*camera.getWidthInProjSpc()/ Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc()/ Block.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2,
+						scaleX*camera.getWidthInProjSpc()/ RenderBlock.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ RenderBlock.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
@@ -319,11 +319,11 @@ public class Minimap implements Telegraph {
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
-					sh.rect(scaleX * camera.getViewSpaceX() / Block.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / Block.VIEW_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * Block.VIEW_HEIGHT)/ Block.VIEW_DEPTH,
-						scaleX*camera.getWidthInProjSpc() / Block.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc() / Block.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
+						scaleX*camera.getWidthInProjSpc() / RenderBlock.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / RenderBlock.VIEW_DEPTH2
 					);
 					
 				sh.end();

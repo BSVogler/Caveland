@@ -33,7 +33,7 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
@@ -48,7 +48,7 @@ public class PowerTorch extends AbstractPowerBlock {
 	/**
 	 *
 	 */
-	public final static float POINTRADIUS = 3 * Block.GAME_EDGELENGTH;
+	public final static float POINTRADIUS = 3 * RenderBlock.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
 
 	/**
@@ -69,7 +69,7 @@ public class PowerTorch extends AbstractPowerBlock {
 		}
 
 		if (lightsource.getPosition() == null) {
-			lightsource.setPosition(getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH2));
+			lightsource.setPosition(getPosition().toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH2));
 		}
 		
 		if (hasPower()) {

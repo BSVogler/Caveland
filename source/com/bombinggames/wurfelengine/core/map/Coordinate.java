@@ -40,7 +40,6 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
@@ -142,13 +141,13 @@ public class Coordinate implements Position {
 	 */
 	public Coordinate setFromPoint(Point from) {
 		set(
-			Math.floorDiv((int) from.getX(), Block.GAME_DIAGLENGTH),
-			Math.floorDiv((int) from.getY(), Block.GAME_DIAGLENGTH) * 2 + 1,
-			Math.floorDiv((int) from.getZ(), Block.GAME_EDGELENGTH)
+			Math.floorDiv((int) from.getX(), RenderBlock.GAME_DIAGLENGTH),
+			Math.floorDiv((int) from.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1,
+			Math.floorDiv((int) from.getZ(), RenderBlock.GAME_EDGELENGTH)
 		);
 		return goToNeighbour(Coordinate.getNeighbourSide(
-			from.getX() % Block.GAME_DIAGLENGTH,
-			from.getY() % Block.GAME_DIAGLENGTH
+			from.getX() % RenderBlock.GAME_DIAGLENGTH,
+			from.getY() % RenderBlock.GAME_DIAGLENGTH
 		));
 	}
 
@@ -372,31 +371,31 @@ public class Coordinate implements Position {
 	public static int getNeighbourSide(float x, float y) {
 		//modulo
 		if (y < 0) {
-			y += Block.GAME_DIAGLENGTH;
+			y += RenderBlock.GAME_DIAGLENGTH;
 		}
 		if (x < 0) {
-			x += Block.GAME_DIAGLENGTH;
+			x += RenderBlock.GAME_DIAGLENGTH;
 		}
 
 		int result = 8;//standard result
-		if (x + y <= Block.GAME_DIAGLENGTH2) {
+		if (x + y <= RenderBlock.GAME_DIAGLENGTH2) {
 			result = 7;
 		}
-		if (x - y >= Block.GAME_DIAGLENGTH2) {
+		if (x - y >= RenderBlock.GAME_DIAGLENGTH2) {
 			if (result == 7) {
 				result = 0;
 			} else {
 				result = 1;
 			}
 		}
-		if (x + y >= 3 * Block.GAME_DIAGLENGTH2) {
+		if (x + y >= 3 * RenderBlock.GAME_DIAGLENGTH2) {
 			if (result == 1) {
 				result = 2;
 			} else {
 				result = 3;
 			}
 		}
-		if (-x + y >= Block.GAME_DIAGLENGTH2) {
+		if (-x + y >= RenderBlock.GAME_DIAGLENGTH2) {
 			switch (result) {
 				case 3:
 					result = 4;
@@ -471,9 +470,9 @@ public class Coordinate implements Position {
 	@Override
 	public Point toPoint() {
 		return new Point(
-			x * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
-			y * Block.GAME_DIAGLENGTH2,
-			z * Block.GAME_EDGELENGTH
+			x * RenderBlock.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0),
+			y * RenderBlock.GAME_DIAGLENGTH2,
+			z * RenderBlock.GAME_EDGELENGTH
 		);
 	}
 
@@ -514,14 +513,14 @@ public class Coordinate implements Position {
 
 	@Override
 	public int getViewSpcX() {
-		return x * Block.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * RenderBlock.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY() {
-		return -y * Block.VIEW_DEPTH2 + z * Block.VIEW_HEIGHT;
+		return -y * RenderBlock.VIEW_DEPTH2 + z * RenderBlock.VIEW_HEIGHT;
 	}
 
 	@Override
@@ -591,7 +590,7 @@ public class Coordinate implements Position {
 			} else {
 				Controller.getMap().setHealth(this, (byte) (getHealth() - amount));
 			}
-			if (getHealth() <= 0 && !Block.isIndestructible(block, (byte)0)) {
+			if (getHealth() <= 0 && !RenderBlock.isIndestructible(block, (byte)0)) {
 				//broadcast event that this block got destroyed
 				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 				setBlock(0);
@@ -783,12 +782,12 @@ public class Coordinate implements Position {
 
 	boolean contains(Point point) {
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) point.x, Block.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) point.y, Block.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) point.x, RenderBlock.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) point.y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
-			point.x % Block.GAME_DIAGLENGTH,
-			point.y % Block.GAME_DIAGLENGTH
+			point.x % RenderBlock.GAME_DIAGLENGTH,
+			point.y % RenderBlock.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -820,7 +819,7 @@ public class Coordinate implements Position {
 				break;
 		}
 
-		return !(Math.floorDiv((int) point.z, Block.GAME_EDGELENGTH) != z
+		return !(Math.floorDiv((int) point.z, RenderBlock.GAME_EDGELENGTH) != z
 			|| xCoord != x
 			|| yCoord != y);
 	}

@@ -14,9 +14,9 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.cvar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.cvar.IntCVar;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 
 /**
@@ -106,7 +106,7 @@ public class CLGameController extends Controller implements Telegraph {
 		spawnPlayers();
 		
 		if (tutorialVanya == null){
-			ArrayList<Vanya> foundVanya = getPlayer(0).getPosition().getEntitiesNearby(10*Block.GAME_EDGELENGTH, Vanya.class);
+			ArrayList<Vanya> foundVanya = getPlayer(0).getPosition().getEntitiesNearby(10*RenderBlock.GAME_EDGELENGTH, Vanya.class);
 			if (foundVanya.isEmpty())
 				tutorialVanya = (Vanya) new Vanya().spawn(new Coordinate(-3, 8, 6).toPoint());
 			else {

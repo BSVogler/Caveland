@@ -39,7 +39,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
@@ -224,7 +224,7 @@ public class Chunk implements Telegraph {
 					data[x][y][z + 1] = (byte) ((generated>>16)&255);
 					data[x][y][z + 2] = 100;
 					if (data[x][y][z] != 0) {
-						AbstractBlockLogicExtension logic = Block.createLogicInstance(
+						AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
 							data[x][y][z],
 							data[x][y][z + 1],
 							new Coordinate(coordX * blocksX + x, coordY * blocksY + y, z)
@@ -337,7 +337,7 @@ public class Chunk implements Telegraph {
 						data[x][y][z+2] = 100;
 						//if has logicblock then add logicblock
 						if (data[x][y][z] != 0) {
-							AbstractBlockLogicExtension logic = Block.createLogicInstance(
+							AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
 								data[x][y][z],
 								data[x][y][z+1],
 								new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
@@ -559,7 +559,7 @@ public class Chunk implements Telegraph {
      * @return
      */
     public static int getViewWidth(){
-        return blocksX*Block.VIEW_WIDTH;
+        return blocksX*RenderBlock.VIEW_WIDTH;
     }
 
     /**
@@ -567,7 +567,7 @@ public class Chunk implements Telegraph {
      * @return
      */
     public static int getViewDepth() {
-        return blocksY*Block.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
+        return blocksY*RenderBlock.VIEW_DEPTH2;// Divided by 2 because of shifted each second row.
     }
 
     /**
@@ -575,7 +575,7 @@ public class Chunk implements Telegraph {
      * @return
      */
     public static int getGameWidth(){
-        return blocksX*Block.GAME_DIAGLENGTH;
+        return blocksX*RenderBlock.GAME_DIAGLENGTH;
     }
 
     /**
@@ -583,7 +583,7 @@ public class Chunk implements Telegraph {
      * @return
      */
     public static int getGameDepth() {
-        return blocksY*Block.GAME_DIAGLENGTH2;
+        return blocksY*RenderBlock.GAME_DIAGLENGTH2;
     }
 
         /**
@@ -591,7 +591,7 @@ public class Chunk implements Telegraph {
      * @return in game size
      */
     public static int getGameHeight(){
-        return blocksZ*Block.GAME_EDGELENGTH;
+        return blocksZ*RenderBlock.GAME_EDGELENGTH;
     }
 
 
@@ -622,7 +622,7 @@ public class Chunk implements Telegraph {
 		float x = point.getX();
 		float y = point.getY();
 		float top = topleftY;
-		float left = topleftX * Block.GAME_DIAGLENGTH + (top % 2 != 0 ? Block.VIEW_WIDTH2 : 0);
+		float left = topleftX * RenderBlock.GAME_DIAGLENGTH + (top % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0);
 		return (x >= left
 				&& x < left + getGameWidth()
 				&& y >= top
@@ -701,7 +701,7 @@ public class Chunk implements Telegraph {
 		
 		//get corresponding logic and update
 		if (rblock.getId() != 0) {
-			AbstractBlockLogicExtension logic = Block.createLogicInstance(rblock.getId(), rblock.getValue(), rblock.getPosition());
+			AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(rblock.getId(), rblock.getValue(), rblock.getPosition());
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -730,7 +730,7 @@ public class Chunk implements Telegraph {
 		
 		//get corresponding logic and update
 		if (id != 0) {
-			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, value, coord);
+			AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(id, value, coord);
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -748,7 +748,7 @@ public class Chunk implements Telegraph {
 		
 		//get corresponding logic and update
 		if (id != 0) {
-			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, value, coord);
+			AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(id, value, coord);
 			if (logic != null)
 				logicBlocks.add(logic);
 		}
@@ -772,7 +772,7 @@ public class Chunk implements Telegraph {
 		
 		//get corresponding logic and update
 		if (id != 0) {
-			AbstractBlockLogicExtension logic = Block.createLogicInstance(id, (byte) 0, coord);
+			AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(id, (byte) 0, coord);
 			if (logic != null)
 				logicBlocks.add(logic);
 		}

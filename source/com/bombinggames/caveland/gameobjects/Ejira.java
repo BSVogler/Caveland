@@ -22,10 +22,6 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH2;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT2;
 import com.bombinggames.wurfelengine.core.gameobjects.Controllable;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
@@ -39,6 +35,10 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH2;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.VIEW_HEIGHT2;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -175,7 +175,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		setStepSound1Grass("step");
 		setJumpingSound("urfJump");
 		setFriction((float) WE.getCVars().get("playerfriction").getValue());
-		setDimensionZ((int) (Block.GAME_EDGELENGTH*1.4f));
+		setDimensionZ((int) (RenderBlock.GAME_EDGELENGTH*1.4f));
 		setObstacle(true);
 		setMass(60f);
 		
@@ -214,7 +214,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		
 		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10, WE.getGameplay().getView());
 		lightsource.setSaveToDisk(false);
-		lightsource.spawn(getPosition().cpy().add(0, 0, Block.GAME_EDGELENGTH2));
+		lightsource.spawn(getPosition().cpy().add(0, 0, RenderBlock.GAME_EDGELENGTH2));
 		return this;
 	}
 	
@@ -257,8 +257,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			//if in cave force in it
 			if ( getPosition().toCoord().getY() > ChunkGenerator.CAVESBORDER ){
-				if (pos.getZ()>Chunk.getGameHeight()-Block.GAME_EDGELENGTH)
-					pos.setZ(Chunk.getGameHeight()-Block.GAME_EDGELENGTH);
+				if (pos.getZ()>Chunk.getGameHeight()-RenderBlock.GAME_EDGELENGTH)
+					pos.setZ(Chunk.getGameHeight()-RenderBlock.GAME_EDGELENGTH);
 			}
 
 			/*ANIMATION*/
@@ -332,7 +332,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 					MineCart minecart = it.next();
 					//if contact with lore and it has no passenger
 					if (minecart.getPassenger() == null
-						&& pos.getZ() > (minecart.getPosition().getZ() + Block.GAME_EDGELENGTH2/2)
+						&& pos.getZ() > (minecart.getPosition().getZ() + RenderBlock.GAME_EDGELENGTH2/2)
 					) {
 						//enter chu chu
 						minecart.setPassanger(this);
@@ -437,14 +437,14 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			//update attached objects position
 			if (lightsource.hasPosition())
-				lightsource.getPosition().set(getPosition()).add(0, 0, Block.GAME_EDGELENGTH2);
+				lightsource.getPosition().set(getPosition()).add(0, 0, RenderBlock.GAME_EDGELENGTH2);
 			
 			Vector3 vecToJetpack = new Vector3(getOrientation().scl(-20), 0);
 			float angleOrient = (float) Math.acos(getOrientation().y);
-			Vector3 vecToEmitter = new Vector3(-25, 0, Block.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
+			Vector3 vecToEmitter = new Vector3(-25, 0, RenderBlock.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
 			if (emitter.hasPosition())
 				emitter.getPosition().set(getPosition()).add(vecToEmitter).add(vecToJetpack);
-			vecToEmitter = new Vector3(25, 0, Block.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
+			vecToEmitter = new Vector3(25, 0, RenderBlock.GAME_EDGELENGTH2).rotateRad(new Vector3(0, 0, 1), angleOrient);
 			if (emitter2.hasPosition())
 				emitter2.getPosition().set(getPosition()).add(vecToEmitter).add(vecToJetpack);
 			
@@ -744,7 +744,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			//damage blocks
 			Coordinate aimCoord = getPosition().cpy().add(0, 0, GAME_EDGELENGTH2).add(getAiming().scl(80)).toCoord();
 			//check if the player can damage the blocks
-			if (!Block.isLiquid(aimCoord.getBlock())) {
+			if (!RenderBlock.isLiquid(aimCoord.getBlock())) {
 				getCamera().shake(20, 50);
 				byte id = aimCoord.getBlockId();
 				if (!CavelandBlocks.hardMaterial( id )){
@@ -964,7 +964,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			new Vector3(
 				-getMovementHor().x*0.1f,
 				-getMovementHor().y*0.1f,
-				Block.GAME_EDGELENGTH / 500f
+				RenderBlock.GAME_EDGELENGTH / 500f
 			)
 		);
 	}
@@ -1125,14 +1125,14 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	 */
 	public void showInteractButton(byte buttonID, Position pos) {
 		if (interactButton == null) {
-			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().add(0, 0, Block.GAME_EDGELENGTH)
+			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH)
 			);
 			interactButton.setName("Interact Button");
 			interactButton.setCategory('i');
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {
-			interactButton.setPosition(pos.toPoint().add(0, 0, Block.GAME_EDGELENGTH));
+			interactButton.setPosition(pos.toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH));
 		}
 	}
 

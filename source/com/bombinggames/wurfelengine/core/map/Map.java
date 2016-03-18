@@ -45,7 +45,7 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.File;
@@ -733,7 +733,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(Chunk.getBlocksZ() * Block.GAME_EDGELENGTH / 2);
+		return getCenter(Chunk.getBlocksZ() * RenderBlock.GAME_EDGELENGTH / 2);
 	}
 
 	/**

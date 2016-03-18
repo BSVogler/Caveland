@@ -78,7 +78,7 @@ public class ChunkGenerator implements Generator {
 			int insideout = insideOutside(x, y, z);
 			
 //			if (insideout==2)
-//				return Block.getInstance(CavelandBlocks.CLBlocks.ENTRY.getSpriteId());
+//				return RenderBlock.getInstance(CavelandBlocks.CLBlocks.ENTRY.getSpriteId());
 			
 			if (insideout==2)
 				return CavelandBlocks.CLBlocks.ENTRY.getId();

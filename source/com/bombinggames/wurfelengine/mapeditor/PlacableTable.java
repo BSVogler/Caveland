@@ -37,7 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 import java.util.Map;
@@ -103,9 +103,9 @@ public class PlacableTable extends Table {
 				);
 				foundItems++;
 				//add rest
-				for (byte i = 0; i < Block.OBJECTTYPESNUM; i++) {//add every possible block
+				for (byte i = 0; i < RenderBlock.OBJECTTYPESNUM; i++) {//add every possible block
 					if (RenderBlock.isSpriteDefined(new RenderBlock(i)) //add defined blocks
-						|| !Block.getName(i, (byte) 0).equals("undefined")) {
+						|| !RenderBlock.getName(i, (byte) 0).equals("undefined")) {
 						blockDrawable = new BlockDrawable(i, (byte) 0, 0.35f);
 						blockDrawables.add(blockDrawable);
 						add(

@@ -37,7 +37,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.lightengine.AmbientOcclusionCalculator;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -332,12 +331,12 @@ public class RenderStorage implements Telegraph  {
 		float x = point.x;
 		float y = point.y;
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) x, Block.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, Block.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
-			x % Block.GAME_DIAGLENGTH,
-			y % Block.GAME_DIAGLENGTH
+			x % RenderBlock.GAME_DIAGLENGTH,
+			y % RenderBlock.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -369,7 +368,7 @@ public class RenderStorage implements Telegraph  {
 				break;
 		}
 
-		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, Block.GAME_EDGELENGTH));
+		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, RenderBlock.GAME_EDGELENGTH));
 	}
 	
 	

@@ -34,7 +34,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
@@ -92,9 +91,9 @@ public class GrassBlock extends RenderBlock {
 			Sprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
-				int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % Block.GAME_EDGELENGTH - Block.GAME_EDGELENGTH2);
-				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % Block.GAME_EDGELENGTH - Block.GAME_EDGELENGTH2+15);
-				if (Math.abs(xOffset) + Math.abs(yOffset) < Block.VIEW_WIDTH2-10) {
+				int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2);
+				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2+15);
+				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderBlock.VIEW_WIDTH2-10) {
 					gras.setColor(
 						getLightlevel(side, 1, 0) / 2f,
 						getLightlevel(side, 1, 1) / 2f - (xOffset + i) % 7 * 0.005f,
@@ -102,8 +101,8 @@ public class GrassBlock extends RenderBlock {
 						1
 					);
 					gras.setPosition(
-						xPos + xOffset + Block.VIEW_WIDTH2,
-						yPos - yOffset*0.5f + Block.VIEW_DEPTH2
+						xPos + xOffset + RenderBlock.VIEW_WIDTH2,
+						yPos - yOffset*0.5f + RenderBlock.VIEW_DEPTH2
 					);
 					
 					float distanceToForceCenter = (xPos+xOffset-posXForce)*(xPos+xOffset-posXForce)

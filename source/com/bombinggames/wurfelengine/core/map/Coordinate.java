@@ -835,5 +835,14 @@ public class Coordinate implements Position {
 	private byte getHealth() {
 		return Controller.getMap().getHealth(this);
 	}
-	
+
+	@Override
+	public Coordinate getCoord() {
+		return this;
+	}
+
+	@Override
+	public Point getPoint() {
+		return toPoint();
+	}
 }

@@ -88,16 +88,6 @@ public class Point extends Vector3 implements Position {
 	}
 
 	/**
-	 * Returns copy of itself.
-	 *
-	 * @return
-	 */
-	@Override
-	public Point toPoint() {
-		return this.cpy();
-	}
-
-	/**
 	 * Get the height (z-value) of the coordinate.
 	 *
 	 * @return game dimension
@@ -144,6 +134,21 @@ public class Point extends Vector3 implements Position {
 		));
 	}
 
+	@Override
+	public Coordinate getCoord() {
+		return toCoord();
+	}
+
+	@Override
+	public Point getPoint() {
+		return this;
+	}
+	
+	@Override
+	public Point toPoint() {
+		return this.cpy();
+	}
+	
 	/**
 	 * Get the game world position from left
 	 *

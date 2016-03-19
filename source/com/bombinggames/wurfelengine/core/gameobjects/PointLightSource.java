@@ -30,7 +30,7 @@ public class PointLightSource extends AbstractEntity {
 	private final transient Color color;
 	private float brightness;
 	private boolean enabled = true;
-	private Point lastPos;
+	private Point lastPos = new Point(0, 0, 0);
 	private final GameView view;
 
 	/**
@@ -97,7 +97,7 @@ public class PointLightSource extends AbstractEntity {
 	public void lightNearbyBlocks(float delta) {
 		if (hasPosition()) {
 			Point origin = getPosition();
-			lastPos = origin.cpy();
+			lastPos.set(origin);
 			
 			//light blocks around
 			Vector3 dir = new Vector3();

@@ -36,6 +36,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.lightengine.GlobalLightSource;
 import com.bombinggames.wurfelengine.core.lightengine.LightEngine;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *
@@ -95,7 +96,7 @@ public class CustomLightEngine extends LightEngine {
 	@Override
 	public GlobalLightSource getMoon(Position pos) {
 		//in caves use another light source
-		if (pos.toCoord().getY() > ChunkGenerator.CAVESBORDER)
+		if (pos.getPoint().getY() > ChunkGenerator.CAVESBORDER*RenderBlock.GAME_DIAGLENGTH)
 			return null;
 		else return super.getMoon(pos);
 	}

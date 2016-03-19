@@ -46,10 +46,12 @@ public interface CustomBlocks {
 
 	/**
 	 *
-	 * @param data there are id's &lt; 10 which are filtered before
+	 * @param id there are id's &lt; 10 which are filtered before
+	 * @param value
+	 * @param health
 	 * @return
 	 */
-	public RenderBlock toRenderBlock(byte id, byte value);
+	public RenderBlock toRenderBlock(byte id, byte value, byte health);
 
 	/**
 	 * Is the block a true block with three sides or does it get rendered by a

@@ -177,6 +177,8 @@ public class RenderBlock extends AbstractGameObject {
 	 * Creates a new logic instance. This can happen before the chunk is filled
 	 * at this position.
 	 *
+	 * @param id
+	 * @param value
 	 * @param coord
 	 * @return
 	 */
@@ -219,23 +221,24 @@ public class RenderBlock extends AbstractGameObject {
 	 *
 	 * @param id
 	 * @param value
+	 * @param health [0,100]
 	 * @return
 	 */
-	public static RenderBlock getRenderBlock(byte id, byte value) {
+	public static RenderBlock getRenderBlock(byte id, byte value, byte health) {
 		if (id == 0 || id == 4) {//air and invisible wall
-			RenderBlock a = new RenderBlock(id, value);
+			RenderBlock a = new RenderBlock(id, value, health);
 			a.setHidden(true);
 			return a;
 		}
 
 		if (id == 9) {
-			return new Sea(id, value);
+			return new Sea(id, value, health);
 		}
 
 		if (customBlocks != null) {
-			return customBlocks.toRenderBlock(id, value);
+			return customBlocks.toRenderBlock(id, value, health);
 		} else {
-			return new RenderBlock(id, value);
+			return new RenderBlock(id, value, health);
 		}
 	}
 
@@ -251,7 +254,7 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	public static boolean isObstacle(int block) {
-		return  isObstacle((byte)(block&255), (byte)((block>>8)&255));
+		return isObstacle((byte)(block&255), (byte)((block>>8)&255));
 	}
 	
 
@@ -460,9 +463,9 @@ public class RenderBlock extends AbstractGameObject {
     }
 
 	
-	private byte id;
+	private final byte id;
 	private byte value;
-	private byte health;
+	private byte health = 100;
 	private Coordinate coord;
 	
 	//view data
@@ -540,6 +543,20 @@ public class RenderBlock extends AbstractGameObject {
 		super(id, value);
 		this.id = id;
 		this.value = value;
+	}
+	
+	/**
+	 * For direct creation. You should use the factory method instead.
+	 * @param id
+	 * @param value 
+	 * @param health 
+	 * @see #getRenderBlock(byte, byte) 
+	 */
+	public RenderBlock(byte id, byte value, byte health){
+		super(id, value);
+		this.id = id;
+		this.value = value;
+		this.health = health;
 	}
 	
 	public boolean isObstacle() {
@@ -948,7 +965,7 @@ public class RenderBlock extends AbstractGameObject {
 		if (id == 0) {
 			return false;
 		}
-		return RenderBlock.hasSides(id,value);
+		return RenderBlock.hasSides(getSpriteId(),getSpriteValue());
 	}
 
 	public boolean isLiquid() {
@@ -1361,6 +1378,10 @@ public class RenderBlock extends AbstractGameObject {
 		return value;
 	}
 
+	/**
+	 * get the health byte
+	 * @return 
+	 */
 	public byte getHealth() {
 		return health;
 	}

@@ -269,22 +269,22 @@ public class CavelandBlocks implements CustomBlocks {
 	
 	//overwrites
 	@Override
-	public RenderBlock toRenderBlock(byte id, byte value) {
+	public RenderBlock toRenderBlock(byte id, byte value, byte health) {
 		if (id == 1) {
-			GrassBlock grass = new GrassBlock(id, value);
+			GrassBlock grass = new GrassBlock(id, value, health);
 			return grass;
 		} else if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
-			RenderBlock iO = new RenderBlock(id, value);
+			RenderBlock iO = new RenderBlock(id, value, health);
 			if (value> 0){
 				iO.setSpriteId((byte) 3);
 			}
 			return iO;
 		} else if (id == CLBlocks.TREE.id) {
-			return new CustomTree(id, value);
+			return new CustomTree(id, value, health);
 		} else if (id == CLBlocks.CONSTRUCTIONSITE.id) {
-			return new ConstructionSiteRender(id, value);
+			return new ConstructionSiteRender(id, value, health);
 		}else {
-			return new RenderBlock(id, value);
+			return new RenderBlock(id, value, health);
 		}
 	}
 

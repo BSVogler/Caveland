@@ -35,7 +35,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 public class Sea extends AnimatedBlock {
 	private static final long serialVersionUID = 1L;
 
-	public Sea(final byte id, byte value) {
+	public Sea(final byte id, byte value, byte health) {
 		super(id, value,new int[]{400,400,400,400}, true, true);
 		setBounce(true);
 		setSpriteValue((byte) (Math.random()*4));

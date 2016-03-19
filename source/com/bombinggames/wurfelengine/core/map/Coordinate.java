@@ -278,13 +278,7 @@ public class Coordinate implements Position {
 	}
 	
 	public byte getBlockValue() {
-		if (z < 0) {
-			return (byte) WE.getCVars().getValueI("groundBlockID");
-		} else if (z >= Chunk.getBlocksZ()) {
-			return 0;
-		} else {
-			return Controller.getMap().getBlockId(this);
-		}
+		return (byte) ((getBlock()>>8)&255);
 	}
 
 	/**

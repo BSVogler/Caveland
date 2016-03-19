@@ -100,8 +100,7 @@ public class RenderChunk {
 				for (int z = 0; z < blocksZ; z++) {
 					int block = chunk.getBlockViaIndex(xInd, yInd, z);
 					//update only if cell changed
-					if (
-						data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
+					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
 						data[xInd][yInd][z] = new RenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
 						data[xInd][yInd][z].setPosition(
 							new Coordinate(

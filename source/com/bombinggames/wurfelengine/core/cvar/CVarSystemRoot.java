@@ -131,7 +131,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new FloatCVar(200), "MaxDelta");//skip delta if under 5 FPS to prevent glitches
 		register(new StringCVar(""),"loadedMap", CVarFlags.CVAR_VOLATILE); 
 		register(new StringCVar(""), "lastConsoleCommand");
-		register(new IntCVar(20), "historySize");
+		register(new IntCVar(20), "undohistorySize");
 	}
 
 	public CVarSystemMap getMapCVars() {

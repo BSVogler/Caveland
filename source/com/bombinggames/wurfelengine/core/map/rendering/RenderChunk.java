@@ -33,7 +33,6 @@ package com.bombinggames.wurfelengine.core.map.rendering;
 import com.badlogic.gdx.utils.Pool;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 
 /**
@@ -98,23 +97,16 @@ public class RenderChunk {
 		for (int xInd = 0; xInd < blocksX; xInd++) {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
-					int block = chunk.getBlockViaIndex(xInd, yInd, z);
 					//update only if cell changed
+					int block = chunk.getBlockViaIndex(xInd, yInd, z);
 					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
-						data[xInd][yInd][z] = new RenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
-						data[xInd][yInd][z].setPosition(
-							new Coordinate(
-								tlX + xInd,
-								tlY + yInd,
-								z
-							)
-						);
-					} else {
-						data[xInd][yInd][z].getPosition().set(
-							tlX + xInd,
-							tlY + yInd,
-							z);
+						data[xInd][yInd][z] = RenderBlock.getRenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
 					}
+					data[xInd][yInd][z].getPosition().set(
+						tlX + xInd,
+						tlY + yInd,
+						z
+					);
 					data[xInd][yInd][z].setUnclipped();
 					resetShadingCoord(xInd, yInd, z);
 				}

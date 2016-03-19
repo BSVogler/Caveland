@@ -150,6 +150,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * Stores the data of the map.
 	 */
 	private Chunk[][] data;
+	/**
+	 * contains evey chunk which was loaded
+	 */
+	private ArrayList<Chunk> loadedChunks;
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 	private final int chunkDim;
@@ -176,11 +180,13 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
-		chunkDim = WE.getCVars().getValueI("mapChunkDim");
+		chunkDim = WE.getCVars().getValueI("mapIndexSpaceSize");
 		data = new Chunk[chunkDim][];
 		for (int i = 0; i < data.length; i++) {
 			data[i] = new Chunk[chunkDim / 2];//to have a quadratic map
 		}
+		int maxChunks = WE.getCVars().getValueI("mapMaxMemoryUse") / (Chunk.getBlocksX()*Chunk.getBlocksY()*Chunk.getBlocksZ()*3); //
+		loadedChunks = new ArrayList<>(maxChunks);
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		this.generator = generator;
 		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
@@ -208,6 +214,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
 			if (runnable.getChunk() != null) {
+				loadedChunks.add(runnable.getChunk());
 				data[runnable.getCoordX()+chunkDim/2][runnable.getCoordY()+chunkDim/4] = runnable.getChunk();
 				addEntities(runnable.getChunk().retrieveEntities());
 				setModified();
@@ -215,11 +222,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			}
 		}
 		
-		for (Chunk[] chunkX : data) {
-			for (Chunk chunkY : chunkX) {
-				if (chunkY != null) {
-					chunkY.update(dt);
-				}
+		for (Chunk chunk : loadedChunks) {
+			if (chunk != null) {
+				chunk.update(dt);
 			}
 		}
 
@@ -249,11 +254,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void postUpdate(float dt) {
 		//check for modification flag
-		for (Chunk[] chunkX : data) {
-			for (Chunk chunkY : chunkX) {
-				if (chunkY != null) {
-					chunkY.processModification();
-				}
+		for (Chunk chunk : loadedChunks) {
+			if (chunk != null) {
+				chunk.processModification();
 			}
 		}
 
@@ -292,6 +295,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public Chunk[][] getData() {
 		return data;
+	}
+	
+	public ArrayList<Chunk> getLoadedChunks(){
+		return loadedChunks;
 	}
 
 	/**
@@ -549,19 +556,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public boolean save(int saveSlot) {
-		for (Chunk[] chunkX : data) {
-			for (Chunk chunkY : chunkX) {
-				if (chunkY != null) {
-					try {
-						chunkY.save(
-							getPath(),
-							saveSlot
-						);
-					} catch (IOException ex) {
-						Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-						return false;
-					}
-				}
+		for (Chunk chunk : loadedChunks) {
+			try {
+				chunk.save(
+					getPath(),
+					saveSlot
+				);
+			} catch (IOException ex) {
+				Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+				return false;
 			}
 		}
 		return true;
@@ -577,26 +580,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		WE.getCVarsSave().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
 		WE.getCVarsSave().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
 		return save(activeSaveSlot);
-	}
-
-	/**
-	 * disposes every chunk
-	 *
-	 * @param save
-	 */
-	public void dispose(boolean save) {
-		for (Chunk[] chunkX : data) {
-			for (Chunk chunkY : chunkX) {
-				if (chunkY != null) {
-					if (save) {
-						chunkY.dispose(getPath());
-					} else {
-						chunkY.dispose(null);
-					}
-				}
-			}
-		}
-		disposeEntities();
 	}
 
 	/**
@@ -918,6 +901,22 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 				return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * disposes every chunk
+	 *
+	 * @param save
+	 */
+	public void dispose(boolean save) {
+		for (Chunk chunk : loadedChunks) {
+			if (save) {
+				chunk.dispose(getPath());
+			} else {
+				chunk.dispose(null);
+			}
+		}
+		disposeEntities();
 	}
 
 	private static class ManhattanDistanceHeuristic implements Heuristic<PfNode> {

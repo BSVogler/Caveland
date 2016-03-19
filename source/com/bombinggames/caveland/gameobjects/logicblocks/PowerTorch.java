@@ -33,9 +33,9 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *
@@ -84,7 +84,8 @@ public class PowerTorch extends AbstractPowerBlock {
 	@Override
 	public void dispose() {
 		super.dispose();
-		lightsource.dispose();
+		if (lightsource!=null)
+			lightsource.dispose();
 	}
 
 	

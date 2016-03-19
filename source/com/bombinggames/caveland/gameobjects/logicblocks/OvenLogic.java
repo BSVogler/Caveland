@@ -57,11 +57,11 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 
 	private static final long serialVersionUID = 1L;
 	private transient ParticleEmitter emitter;
+	private transient SimpleEntity fire;
 	private final float PRODUCTIONTIME = 3000;
 	private float productionCountDown;
 	private float burntime;
 	private CollectibleContainer container;
-	private transient SimpleEntity fire;
 
 	/**
 	 *
@@ -125,7 +125,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 
 			//respawn container if needed
 			if (container == null || container.shouldBeDisposed()) {
-				container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
 				container.setHidden(true);
 			}
 		}

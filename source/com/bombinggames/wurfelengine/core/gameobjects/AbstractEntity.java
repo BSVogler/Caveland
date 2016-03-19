@@ -309,7 +309,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	/**
 	 * Deletes the object from the map. The opposite to
 	 * {@link #spawn(Point)}<br>
-	 * Removes also all the children unless improperly implemented.
 	 *
 	 * @see #dispose()
 	 * @see #spawn(Point)

@@ -230,14 +230,14 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			while (it.hasNext()) {
 				CollectibleContainer next = it.next();
 				if (next.getOwner() == null) {
-					container = list.get(0);
+					container = next;
 					break;
 				}
 			}
 
 			//respawn container if needed
 			if (container == null || container.shouldBeDisposed()) {
-				container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
 			}
 		}
 	}

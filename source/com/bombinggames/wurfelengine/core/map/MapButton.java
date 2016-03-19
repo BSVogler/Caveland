@@ -37,9 +37,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import java.io.File;
 
 /**

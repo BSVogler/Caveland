@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bombinggames.caveland.game.CLGameController;
@@ -158,10 +160,9 @@ public class SaveSelectionScreen extends WEScreen {
 		Label newEmptyMap = new Label("New empty map", skin);
 		newEmptyMap.setColor(1, 1, 1, 1f);
 		newEmptyMap.setBounds(stage.getWidth()*0.8f+35, rowtwo,200,100);
-		newEmptyMap.addListener(new ChangeListener() {
-
+		newEmptyMap.addListener(new ClickListener() {
 			@Override
-			public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+			public void clicked(InputEvent event, float x, float y) {
 				startGame(true, true);
 			}
 		});

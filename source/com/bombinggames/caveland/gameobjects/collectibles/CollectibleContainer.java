@@ -45,48 +45,60 @@ import java.util.Iterator;
 public class CollectibleContainer extends AbstractEntity {
 
 	private static final long serialVersionUID = 2L;
-	
+
+	private AbstractEntity owner;
 	/**
 	 * links to items
 	 */
 	private final ArrayList<Collectible> content = new ArrayList<>(3);
-	private Object owner;
 	/**
-	 * experimental feature. may cause problems when leaving the game and the saving. todo
+	 * experimental feature. may cause problems when leaving the game and the
+	 * saving. todo
 	 */
-	private boolean releaseContentOnDestroy = false;
+	private boolean releaseContentOnDestroy = true;
 
 	/**
 	 * using the default backpack sprite
+	 *
 	 * @param owner
 	 */
-	public CollectibleContainer(Object owner) {
+	public CollectibleContainer(AbstractEntity owner) {
 		super((byte) 56);
 		this.owner = owner;
 		setName("Container");
 		setIndestructible(true);
 	}
-	
+
 	/**
-	 * 
+	 *
+	 * @param id for custom sprite id
+	 */
+	public CollectibleContainer(byte id) {
+		super(id);
+		setName("Container");
+		setIndestructible(true);
+	}
+
+	/**
+	 *
 	 * @param id for custom sprite id
 	 * @param owner
 	 */
-	public CollectibleContainer(byte id, Object owner ) {
+	public CollectibleContainer(byte id, AbstractEntity owner) {
 		super(id);
 		this.owner = owner;
 		setName("Container");
 		setIndestructible(true);
 	}
 
-	public Object getOwner() {
+	public AbstractEntity getOwner() {
 		return owner;
 	}
 
 	/**
 	 *
-	 * @param collectible 
-	 * @return  
+	 * @param collectible
+	 * @return
 	 */
 	public boolean add(Collectible collectible) {
 		if (!collectible.hasPosition()) {
@@ -99,12 +111,12 @@ public class CollectibleContainer extends AbstractEntity {
 		content.add(collectible);
 		return true;
 	}
-	
+
 	/**
 	 * only allows collectibles to be added. spawns them
 	 *
 	 * @param collectible if not an collectible nothing happens
-	 * @return 
+	 * @return
 	 */
 	public boolean addFront(Collectible collectible) {
 		if (!collectible.hasPosition()) {
@@ -131,17 +143,19 @@ public class CollectibleContainer extends AbstractEntity {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Get the content of the container.
-	 * @return 
+	 *
+	 * @return
 	 */
-	public ArrayList<Collectible> getCollectibles(){
+	public ArrayList<Collectible> getCollectibles() {
 		ArrayList<Collectible> col = new ArrayList<>(3);
 		content.stream().forEach((AbstractEntity ent) -> {
-				if (ent instanceof Collectible)
-					col.add((Collectible) ent);
+			if (ent instanceof Collectible) {
+				col.add((Collectible) ent);
 			}
+		}
 		);
 		return col;
 	}
@@ -168,7 +182,9 @@ public class CollectibleContainer extends AbstractEntity {
 			collectible.allowPickup();
 			collectible.setHidden(false);
 			return collectible;
-		} else return null;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -185,12 +201,12 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * Removes the first occurance of this type from the container. Makes the object appear in the world.
+	 * Removes the first occurance of this type from the container. Makes the
+	 * object appear in the world.
 	 *
 	 * @param def the definition of the object you are want to fetch.
 	 * @return can return null if not found
-	 * @see
-	 * #retrieveCollectible(int)
+	 * @see #retrieveCollectible(int)
 	 */
 	public Collectible retrieveCollectible(CollectibleType def) {
 		Collectible collectible = getCollectible(def);
@@ -202,13 +218,13 @@ public class CollectibleContainer extends AbstractEntity {
 		}
 		return collectible;
 	}
-	
+
 	/**
 	 * Removes the object from the container/world and returns only the
 	 * reference.
-	 * 
+	 *
 	 * @param def
-	 * @return 
+	 * @return
 	 */
 	public Collectible retrieveCollectibleReference(CollectibleType def) {
 		Collectible collectible = getCollectible(def);
@@ -218,13 +234,15 @@ public class CollectibleContainer extends AbstractEntity {
 		}
 		return collectible;
 	}
-	
+
 	/**
-	 * Does not alter the container. Looks for the definition and retrieves the first occurence.
+	 * Does not alter the container. Looks for the definition and retrieves the
+	 * first occurence.
+	 *
 	 * @param def
-	 * @return 
+	 * @return
 	 */
-	public Collectible getCollectible(CollectibleType def){
+	public Collectible getCollectible(CollectibleType def) {
 		Iterator<Collectible> iter = content.iterator();
 		Collectible collectible = null;
 		while (iter.hasNext()) {
@@ -235,17 +253,19 @@ public class CollectibleContainer extends AbstractEntity {
 		}
 		return collectible;
 	}
-	
+
 	/**
 	 * how many of this type are in this container?
+	 *
 	 * @param def
-	 * @return 
+	 * @return
 	 */
 	public int count(CollectibleType def) {
 		int counter = 0;
 		for (AbstractEntity children : content) {
-			if (children instanceof Collectible && ((Collectible) children).getType() == def)
+			if (children instanceof Collectible && ((Collectible) children).getType() == def) {
 				counter++;
+			}
 		}
 		return counter;
 	}
@@ -296,8 +316,8 @@ public class CollectibleContainer extends AbstractEntity {
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		//show if no owner
-		if (owner==null) {
-			if (content==null || content.isEmpty()) {
+		if (owner == null) {
+			if (content == null || content.isEmpty()) {
 				dispose();
 			} else {
 				setHidden(false);
@@ -334,7 +354,7 @@ public class CollectibleContainer extends AbstractEntity {
 	public ArrayList<Collectible> getContent() {
 		return content;
 	}
-	
+
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return true;

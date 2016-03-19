@@ -277,10 +277,10 @@ public class Chunk implements Telegraph {
 			boolean skip = false;
 
 			if (bChar == SIGN_COMMAND) {
-				skip = true;
 				command = true;
 			} else {
 				if (command) {
+					command = false;
 					if (bChar == SIGN_EMTPYLAYER) {
 						for (x = 0; x < blocksX; x++) {
 							for (y = 0; y < blocksY; y++) {
@@ -290,58 +290,57 @@ public class Chunk implements Telegraph {
 						skip = true;
 					}
 
-					if (bChar == SIGN_ENDBLOCKS || bChar==-1)
+					if (bChar == SIGN_ENDBLOCKS || bChar == -1) {
 						return bChar;
-
-					command = false;
+					}
 				}
-			}
 
+				if (!skip) {
+					try {
+						//fill layer block by block
+						if (id == -1) {
 
-			if (bChar != SIGN_COMMAND && skip == false) {
-				try {
-					//fill layer block by block
-					if (id == -1) {
-
-						id = bChar;
-						if (id == 0) {
+							id = bChar;
+							if (id == 0) {
 							data[x][y][z] = null;
+								id = -1;
+								x++;
+								if (x == blocksX) {
+									y++;
+									x = 0;
+								}
+								if (y == blocksY) {
+									x = 0;
+									y = 0;
+									z++;
+								}
+							}
+						} else {
+						data[x][y][z] = Block.getInstance(id, bChar);
+							//if has logicblock then add logicblock
+						if (data[x][y][z] != null) {
+							AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
+									new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+								);
+								if (logic != null) {
+									logicBlocks.add(logic);
+								}
+							}
 							id = -1;
 							x++;
 							if (x == blocksX) {
 								y++;
-								x=0;
+								x = 0;
 							}
 							if (y == blocksY) {
-								x=0;
-								y=0;
+								x = 0;
+								y = 0;
 								z++;
 							}
 						}
-					} else {
-						data[x][y][z] = Block.getInstance(id, bChar);
-						//if has logicblock then add logicblock
-						if (data[x][y][z] != null) {
-							AbstractBlockLogicExtension logic = data[x][y][z].createLogicInstance(
-								new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
-							);
-							if (logic != null)
-								logicBlocks.add(logic);
-						}
-						id = -1;
-						x++;
-						if (x == blocksX) {
-							y++;
-							x=0;
-						}
-						if (y == blocksY) {
-							x=0;
-							y=0;
-							z++;
-						}
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						Gdx.app.error("Chunk", "too much blocks loaded:" + x + "," + y + "," + z + ". Map file corrrupt?");
 					}
-				} catch (ArrayIndexOutOfBoundsException ex){
-					Gdx.app.error("Chunk", "too much blocks loaded:"+x+","+y+","+z+". Map file corrrupt?");
 				}
 			}
 		} while (bChar != -1);

@@ -122,7 +122,7 @@ public class PointLightSource extends AbstractEntity {
 							dir,
 							floatradius * 2,
 							null,
-							(Byte t) -> !RenderBlock.isTransparent(t.byteValue(), (byte) 0)
+							(Byte t) -> !RenderBlock.isTransparent(t, (byte) 0)
 						);
 						//check if intersected
 						if (inters != null && inters.getPoint() != null) {
@@ -131,8 +131,9 @@ public class PointLightSource extends AbstractEntity {
 							float pow = origin.distanceTo(impactP) / RenderBlock.GAME_EDGELENGTH;
 							float l = (1 + brightness) / (pow * pow);
 
+							Vector3 vecToBlock = origin.cpy().sub(impactP).nor();
 							//side 0
-							float lambert = origin.cpy().sub(impactP).nor().dot(Side.LEFT.toVector());
+							float lambert = vecToBlock.dot(Side.LEFT.toVector());
 
 							float newbright = l *lambert* (0.15f + 0.1f * 0.005f);
 							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][0]) {
@@ -140,7 +141,7 @@ public class PointLightSource extends AbstractEntity {
 							}
 
 							//side 1
-							lambert = origin.cpy().sub(impactP).nor().dot(Side.TOP.toVector());
+							lambert = vecToBlock.dot(Side.TOP.toVector());
 
 							newbright = l * lambert * (0.15f + 0.2f * 0.005f);
 							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][1]) {
@@ -148,7 +149,7 @@ public class PointLightSource extends AbstractEntity {
 							}
 
 							//side 2
-							lambert = origin.cpy().sub(impactP).nor().dot(Side.RIGHT.toVector());
+							lambert = vecToBlock.dot(Side.RIGHT.toVector());
 
 							newbright = l *lambert* (0.15f + 0.25f * 0.005f);
 							if (lambert > 0 && newbright > lightcache[x + radius][y + radius * 2][z + radius][2]) {

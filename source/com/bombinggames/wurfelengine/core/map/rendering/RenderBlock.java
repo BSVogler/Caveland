@@ -521,8 +521,9 @@ public class RenderBlock extends AbstractGameObject {
 	private long lastRebuild;
 	
 	/**
+	 * For direct creation. You should use the factory method instead.
 	 * @param id 
-	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
+	 * @see #getRenderBlock(byte, byte) 
 	 */
     public RenderBlock(byte id){
         super(id);
@@ -530,9 +531,10 @@ public class RenderBlock extends AbstractGameObject {
 	}
 	
 	/**
+	 * For direct creation. You should use the factory method instead.
 	 * @param id
 	 * @param value 
-	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
+	 * @see #getRenderBlock(byte, byte) 
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
@@ -573,53 +575,61 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call. A regular renderblock is not spawned expect explicitely called.
+	 * places the object on the map. You can extend this to get the coordinate.
+	 * RenderBlock may be placed without this method call. A regular renderblock
+	 * is not spawned expect explicitely called.
+	 *
 	 * @param rS
 	 * @param coord the position on the map
 	 * @return itself
 	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.Position)
 	 */
-	public RenderBlock spawn(RenderStorage rS, Coordinate coord){
+	public RenderBlock spawn(RenderStorage rS, Coordinate coord) {
 		setPosition(coord);
 		Controller.getMap().setBlock(this);
 		return this;
-	};
+	}
     
     @Override
-    public void render(final GameView view, final Camera camera) {
-        if (!isHidden()) {
-            if (hasSides()) {
+	public void render(final GameView view, final Camera camera) {
+		if (!isHidden()) {
+			if (hasSides()) {
 				Coordinate coords = getPosition();
 				byte clipping = getClipping();
-                if ((clipping & (1 << 1)) == 0)
-                    renderSide(view, camera, coords, Side.TOP, staticShade);
-				if ((clipping & 1) == 0)
-                    renderSide(view, camera, coords, Side.LEFT, staticShade);
-                if ((clipping & (1 << 2)) == 0)
-                    renderSide(view, camera, coords, Side.RIGHT, staticShade);
-            } else
-                super.render(view, camera);
-        }
-    }
+				if ((clipping & (1 << 1)) == 0) {
+					renderSide(view, camera, coords, Side.TOP, staticShade);
+				}
+				if ((clipping & 1) == 0) {
+					renderSide(view, camera, coords, Side.LEFT, staticShade);
+				}
+				if ((clipping & (1 << 2)) == 0) {
+					renderSide(view, camera, coords, Side.RIGHT, staticShade);
+				}
+			} else {
+				super.render(view, camera);
+			}
+		}
+	}
     
-    /**
-     * Render the whole block at a custom position. Checks if hidden.
-     * @param view the view using this render method
-     * @param xPos rendering position (screen)
-     * @param yPos rendering position (screen)
-     */
-    @Override
-    public void render(final GameView view, final int xPos, final int yPos) {
-        if (!isHidden()) {
-            if (hasSides()) {
-				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Side.TOP);
+ /**
+	 * Render the whole block at a custom position. Checks if hidden.
+	 *
+	 * @param view the view using this render method
+	 * @param xPos rendering position (screen)
+	 * @param yPos rendering position (screen)
+	 */
+	@Override
+	public void render(final GameView view, final int xPos, final int yPos) {
+		if (!isHidden()) {
+			if (hasSides()) {
+				renderSide(view, xPos, yPos + (VIEW_HEIGHT + VIEW_DEPTH), Side.TOP);
 				renderSide(view, xPos, yPos, Side.LEFT);
-				renderSide(view, xPos+VIEW_WIDTH2, yPos, Side.RIGHT);
+				renderSide(view, xPos + VIEW_WIDTH2, yPos, Side.RIGHT);
 			} else {
 				super.render(view, xPos, yPos);
 			}
-        }
-    }
+		}
+	}
 
     /**
      * Renders the whole block at a custom position.
@@ -629,27 +639,28 @@ public class RenderBlock extends AbstractGameObject {
      * @param color when the block has sides its sides gets shaded using this color.
      * @param staticShade makes one side brighter, opposite side darker
      */
-    public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
-        if (!isHidden()) {
-            if (hasSides()) {
+	public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
+		if (!isHidden()) {
+			if (hasSides()) {
 				float scale = getScaling();
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*scale),
-					(int) (yPos+VIEW_HEIGHT*scale),
+					(int) (xPos - VIEW_WIDTH2 * scale),
+					(int) (yPos + VIEW_HEIGHT * scale),
 					Side.TOP,
 					color
 				);
 
 				if (staticShade) {
-					if (color==null)
+					if (color == null) {
 						color = new Color(0.75f, 0.75f, 0.75f, 1);
-					else
+					} else {
 						color = color.cpy().add(0.25f, 0.25f, 0.25f, 0);
+					}
 				}
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*scale),
+					(int) (xPos - VIEW_WIDTH2 * scale),
 					yPos,
 					Side.LEFT,
 					color
@@ -665,10 +676,11 @@ public class RenderBlock extends AbstractGameObject {
 					Side.RIGHT,
 					color
 				);
-            } else
-                super.render(view, xPos, yPos+VIEW_DEPTH4, color);
-        }
-    }
+			} else {
+				super.render(view, xPos, yPos + VIEW_DEPTH4, color);
+			}
+		}
+	}
        
 	/**
      * Render a side of a block at the position of the coordinates.
@@ -759,43 +771,46 @@ public class RenderBlock extends AbstractGameObject {
 			}
 		}
     }
-	
+
 	/**
 	 * helper function
+	 *
 	 * @param view
 	 * @param camera
 	 * @param aopos
 	 * @param value damage sprite value
 	 */
-	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value){
+	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value) {
 		destruct.setSpriteValue(value);
 		destruct.setPosition(aopos);
 		destruct.getColor().set(0.5f, 0.5f, 0.5f, 0.7f);
 		destruct.render(view, camera);
 	}
-	
-    /**
-     * Ignores lightlevel.
-     * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
-     * @param side The number identifying the side. 0=left, 1=top, 2=right
-     */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side){
+
+	/**
+	 * Ignores lightlevel.
+	 *
+	 * @param view the view using this render method
+	 * @param xPos rendering position
+	 * @param yPos rendering position
+	 * @param side The number identifying the side. 0=left, 1=top, 2=right
+	 */
+	public void renderSide(final GameView view, final int xPos, final int yPos, final Side side) {
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
 			color = Controller.getLightEngine().getColor(side, getPosition());
-        } else
+		} else {
 			color = Color.GRAY.cpy();
-		 
-        renderSide(
+		}
+
+		renderSide(
 			view,
-            xPos,
-            yPos,
-            side,
-            color
-        );
-    }
+			xPos,
+			yPos,
+			side,
+			color
+		);
+	}
   /**
 	 * Draws a side of a block at a custom position. Apllies color before
 	 * rendering and takes the lightlevel into account.
@@ -1332,7 +1347,7 @@ public class RenderBlock extends AbstractGameObject {
 		lastRebuild = WE.getGameplay().getFrameNum();
 	}
 
-	public void clearCoveredEnts(){
+	public void clearCoveredEnts() {
 		coveredEnts.clear();
 	}
 

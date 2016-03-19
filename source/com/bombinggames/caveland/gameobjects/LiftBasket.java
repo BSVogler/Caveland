@@ -222,8 +222,8 @@ public class LiftBasket extends MovableEntity {
 	}
 
 	private boolean isOnSurface() {
+		Coordinate checkpos = getPosition().toCoord();
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
-			Coordinate checkpos = getPosition().toCoord();
 			checkpos.setZ(z);//set height
 
 			if (checkpos.getBlockId()== CavelandBlocks.CLBlocks.LIFT.getId()) {

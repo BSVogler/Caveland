@@ -40,9 +40,9 @@ import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -232,14 +232,14 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			while (it.hasNext()) {
 				CollectibleContainer next = it.next();
 				if (next.getOwner() == null) {
-					container = list.get(0);
+					container = next;
 					break;
 				}
 			}
 
 			//respawn container if needed
 			if (container == null || container.shouldBeDisposed()) {
-				container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
+				container = (CollectibleContainer) new CollectibleContainer((byte) 0).spawn(getPosition().toPoint());
 			}
 		}
 	}

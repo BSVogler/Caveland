@@ -261,12 +261,8 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * @param value
 	 */
 	protected AbstractGameObject(byte id, byte value) {
-		this.spriteId = id;
-		if (id == 0) {
-			setHidden(true);
-		}
+		this(id);
 		this.spriteValue = value;
-		markPermanent();//create as marked
 	}
 	
 	/**

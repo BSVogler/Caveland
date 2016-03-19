@@ -56,7 +56,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
 
@@ -88,6 +87,12 @@ public class SideSprite extends TextureRegion {
 	private final Side side;
 	private int aoFlags;
 	
+	/**
+	 * An object helping with rendering a blokc made out of sides
+	 * @param region the texture used for rendering this side
+	 * @param side which side does this represent?
+	 * @param aoFlags 
+	 */
 	public SideSprite(TextureRegion region, Side side, int aoFlags) {
 		this.side = side;
 		setRegion(region);

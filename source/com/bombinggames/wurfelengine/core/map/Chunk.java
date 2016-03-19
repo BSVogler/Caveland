@@ -867,17 +867,39 @@ public class Chunk implements Telegraph {
 	 * @return can be null
 	 */
 	public byte getBlockId(int x, int y, int z) {
-		if (z >= Chunk.blocksZ) return 0;
-		int xIndex = x-topleftX;
-		int yIndex = y-topleftY;
-		return data[xIndex][yIndex][z*3];
+		if (z >= Chunk.blocksZ) {
+			return 0;
+		}
+		int xIndex = x - topleftX;
+		int yIndex = y - topleftY;
+		return data[xIndex][yIndex][z * 3];
 	}
-	
+
+	public byte getBlockValue(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) {
+			return 0;
+		}
+		int xIndex = x - topleftX;
+		int yIndex = y - topleftY;
+		return data[xIndex][yIndex][z * 3 + 1];
+	}
+
+	public byte getHealth(int x, int y, int z) {
+		if (z >= Chunk.blocksZ) {
+			return 0;
+		}
+		int xIndex = x - topleftX;
+		int yIndex = y - topleftY;
+		return data[xIndex][yIndex][z * 3 + 2];
+	}
+
 	public int getBlock(int x, int y, int z) {
-		if (z >= Chunk.blocksZ) return 0;
-		int xIndex = x-topleftX;
-		int yIndex = y-topleftY;
-		return data[xIndex][yIndex][z*3]+(data[xIndex][yIndex][z*3+1]<<8)+(data[xIndex][yIndex][z*3+2]<<16);
+		if (z >= Chunk.blocksZ) {
+			return 0;
+		}
+		int xIndex = x - topleftX;
+		int yIndex = y - topleftY;
+		return data[xIndex][yIndex][z * 3] + (data[xIndex][yIndex][z * 3 + 1] << 8) + (data[xIndex][yIndex][z * 3 + 2] << 16);
 	}
 	
 	/**
@@ -890,14 +912,5 @@ public class Chunk implements Telegraph {
 	public int getBlockViaIndex(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) return 0;
 		return data[x][y][z*3]+(data[x][y][z*3+1]<<8)+(data[x][y][z*3+2]<<16);
-	}
-	
-	
-	
-	public  byte getHealth(int x, int y, int z) {
-		if (z >= Chunk.blocksZ) return 0;
-		int xIndex = x-topleftX;
-		int yIndex = y-topleftY;
-		return data[xIndex][yIndex][z*3+2];
 	}
 }

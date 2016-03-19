@@ -45,7 +45,6 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Generators.AirGenerator;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.File;
@@ -297,15 +296,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return the single block you wanted
 	 */
 	public byte getBlockId(final int x, final int y, final int z) {
-		if (z < 0) {
-			return (byte) WE.getCVars().getValueI("groundBlockID");
-		}
-		Chunk chunk = getChunkWithCoords(x, y);
-		if (chunk == null) {
-			return 0;
-		} else {
-			return chunk.getBlockId(x, y, z);//find chunk in x coord
-		}
+		return (byte) (getBlock(x, y, z) & 255);
 	}
 
 	/**
@@ -315,18 +306,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public byte getBlockId(final Coordinate coord) {
-		if (coord.getZ() < 0) {
-			return (byte) WE.getCVars().getValueI("groundBlockID");
-		}
-		Chunk chunk = getChunkWithCoords(coord);
-		if (chunk == null) {
-			return 0;
-		} else {
-			return chunk.getBlockId(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
-		}
+		return (byte) (getBlock(coord) & 255);
 	}
-	
-	int getBlock(Coordinate coord) {
+
+	/**
+	 * id, value and health
+	 * @param coord
+	 * @return 
+	 */
+	public int getBlock(Coordinate coord) {
 		if (coord.getZ() < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
 		}
@@ -337,7 +325,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 		}
 	}
-	
+
 	public int getBlock(int x, int y, int z) {
 		if (z < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
@@ -349,17 +337,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 			return chunk.getBlock(x, y, z);//find chunk in x coord
 		}
 	}
-	
+
 	public byte getHealth(Coordinate coord) {
-		if (coord.getZ() < 0) {
-			return 100;
-		}
-		Chunk chunk = getChunkWithCoords(coord);
-		if (chunk == null) {
-			return 100;
-		} else {
-			return chunk.getHealth(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
-		}
+		return (byte) ((getBlock(coord) >> 16) & 255);
 	}
 
 	/**

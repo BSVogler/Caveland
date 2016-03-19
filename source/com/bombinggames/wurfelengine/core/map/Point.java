@@ -37,8 +37,8 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -188,49 +188,7 @@ public class Point extends Vector3 implements Position {
 	
    @Override
 	public byte getBlockId() {
-		if (z >= Chunk.getGameHeight()) {
-			return 0;
-		}
-
-		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
-		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(
-			x % RenderBlock.GAME_DIAGLENGTH,
-			y % RenderBlock.GAME_DIAGLENGTH
-		)) {
-			case 0:
-				yCoord -= 2;
-				break;
-			case 1:
-				xCoord += yCoord % 2 == 0 ? 0 : 1;
-				yCoord--;
-				break;
-			case 2:
-				xCoord++;
-				break;
-			case 3:
-				xCoord += yCoord % 2 == 0 ? 0 : 1;
-				yCoord++;
-				break;
-			case 4:
-				yCoord += 2;
-				break;
-			case 5:
-				xCoord -= yCoord % 2 == 0 ? 1 : 0;
-				yCoord++;
-				break;
-			case 6:
-				xCoord--;
-				break;
-			case 7:
-				xCoord -= yCoord % 2 == 0 ? 1 : 0;
-				yCoord--;
-				break;
-		}
-
-		return Controller.getMap().getBlockId(xCoord, yCoord, Math.floorDiv((int) z, RenderBlock.GAME_EDGELENGTH));
+		return (byte) (getBlock()%255);
 	}
 	
 	public int getBlock(){
@@ -847,4 +805,5 @@ public class Point extends Vector3 implements Position {
 	public boolean isObstacle() {
 		return RenderBlock.isObstacle(getBlockId());
 	}
+
 }

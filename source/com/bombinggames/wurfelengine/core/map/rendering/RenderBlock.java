@@ -241,6 +241,12 @@ public class RenderBlock extends AbstractGameObject {
 		}
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
 	public static boolean isObstacle(byte id, byte value) {
 		if (id > 9 && customBlocks != null) {
 			return customBlocks.isObstacle(id, value);
@@ -252,17 +258,23 @@ public class RenderBlock extends AbstractGameObject {
 		return id != 0;
 	}
 	
+	/**
+	 * 
+	 * @param block
+	 * @return 
+	 */
 	public static boolean isObstacle(int block) {
 		return isObstacle((byte)(block&255), (byte)((block>>8)&255));
 	}
 	
-
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
 	public static boolean isTransparent(byte id, byte value) {
-		if (id == 9) {
-			return true;
-		}
-		
-		if (id == 4) {
+		if (id==0 || id == 9 || id == 4) {
 			return true;
 		}
 		
@@ -270,6 +282,15 @@ public class RenderBlock extends AbstractGameObject {
 			return customBlocks.isTransparent(id, value);
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @return 
+	 */
+	public static boolean isTransparent(int block) {
+		return isTransparent((byte)(block&255), (byte)((block>>8)&255));
 	}
 
 	/**

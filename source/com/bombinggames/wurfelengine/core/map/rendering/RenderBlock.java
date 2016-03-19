@@ -538,6 +538,8 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
+		this.id = id;
+		this.value = value;
 	}
 	
 	public boolean isObstacle() {

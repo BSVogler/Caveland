@@ -17,7 +17,7 @@ public class CustomTree extends RenderBlock {
 	 * creates a tree in a random shape
 	 */
 	public CustomTree(){
-		this((byte)72, (byte) (Math.random()*8), (byte) 100);
+		this((byte)72, (byte) (Math.random()*8));
 	}
 	
 	/**
@@ -26,7 +26,7 @@ public class CustomTree extends RenderBlock {
 	 * @param value
 	 * @param health
 	 */
-	public CustomTree(byte id, byte value, byte health) {
+	public CustomTree(byte id, byte value) {
 		super(id, value);
 		setSpriteValue(value);
 		

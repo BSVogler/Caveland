@@ -48,10 +48,9 @@ public interface CustomBlocks {
 	 *
 	 * @param id there are id's &lt; 10 which are filtered before
 	 * @param value
-	 * @param health
 	 * @return
 	 */
-	public RenderBlock toRenderBlock(byte id, byte value, byte health);
+	public RenderBlock toRenderBlock(byte id, byte value);
 
 	/**
 	 * Is the block a true block with three sides or does it get rendered by a

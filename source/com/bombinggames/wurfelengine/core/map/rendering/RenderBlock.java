@@ -221,24 +221,23 @@ public class RenderBlock extends AbstractGameObject {
 	 *
 	 * @param id
 	 * @param value
-	 * @param health [0,100]
 	 * @return
 	 */
-	public static RenderBlock getRenderBlock(byte id, byte value, byte health) {
+	public static RenderBlock getRenderBlock(byte id, byte value) {
 		if (id == 0 || id == 4) {//air and invisible wall
-			RenderBlock a = new RenderBlock(id, value, health);
+			RenderBlock a = new RenderBlock(id, value);
 			a.setHidden(true);
 			return a;
 		}
 
 		if (id == 9) {
-			return new Sea(id, value, health);
+			return new Sea(id, value);
 		}
 
 		if (customBlocks != null) {
-			return customBlocks.toRenderBlock(id, value, health);
+			return customBlocks.toRenderBlock(id, value);
 		} else {
-			return new RenderBlock(id, value, health);
+			return new RenderBlock(id, value);
 		}
 	}
 
@@ -465,8 +464,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 	private final byte id;
 	private byte value;
-	private byte health = 100;
-	private Coordinate coord;
+	private Coordinate coord = new Coordinate(0, 0, 0);
 	
 	//view data
 	/**
@@ -543,20 +541,6 @@ public class RenderBlock extends AbstractGameObject {
 		super(id, value);
 		this.id = id;
 		this.value = value;
-	}
-	
-	/**
-	 * For direct creation. You should use the factory method instead.
-	 * @param id
-	 * @param value 
-	 * @param health 
-	 * @see #getRenderBlock(byte, byte) 
-	 */
-	public RenderBlock(byte id, byte value, byte health){
-		super(id, value);
-		this.id = id;
-		this.value = value;
-		this.health = health;
 	}
 	
 	public boolean isObstacle() {
@@ -1379,11 +1363,15 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * get the health byte
-	 * @return 
+	 * get the health byte from the map.
+	 *
+	 * @return if no coordiante returns 100
 	 */
 	public byte getHealth() {
-		return health;
+		if (coord == null) {
+			return 100;
+		}
+		return Controller.getMap().getHealth(coord);
 	}
 
 }

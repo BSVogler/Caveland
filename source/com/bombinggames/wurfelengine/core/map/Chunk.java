@@ -880,6 +880,13 @@ public class Chunk implements Telegraph {
 		return data[xIndex][yIndex][z*3]+(data[xIndex][yIndex][z*3+1]<<8)+(data[xIndex][yIndex][z*3+2]<<16);
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
 	public int getBlockViaIndex(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) return 0;
 		return data[x][y][z*3]+(data[x][y][z*3+1]<<8)+(data[x][y][z*3+2]<<16);

@@ -50,6 +50,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	public BlockDrawable(byte id) {
 		this(id, (byte) 0, 1);
+		block.setPosition(null);
 	}
 
 	/**
@@ -60,10 +61,11 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	public BlockDrawable(byte id, byte value, float size) {
 		if (id >= RenderBlock.OBJECTTYPESNUM) {
-			this.block = RenderBlock.getRenderBlock((byte) 0, (byte) 0, (byte) 100);//invalid id.
+			this.block = RenderBlock.getRenderBlock((byte) 0, (byte) 0);//invalid id.
 		} else {
-			this.block = RenderBlock.getRenderBlock(id, value, (byte) 100);
+			this.block = RenderBlock.getRenderBlock(id, value);
 		}
+		block.setPosition(null);
 		block.setScaling(size);
 	}
 	

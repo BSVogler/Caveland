@@ -13,10 +13,9 @@ public class ConstructionSiteRender extends RenderBlock {
 	 *
 	 * @param id
 	 * @param value
-	 * @param health
 	 */
-	public ConstructionSiteRender(byte id, byte value, byte health) {
-		super(id, value, health);
+	public ConstructionSiteRender(byte id, byte value) {
+		super(id, value);
 		setSpriteValue((byte) 0);
 	}
 

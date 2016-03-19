@@ -376,10 +376,10 @@ public class Chunk implements Telegraph {
 					try {
 						//fill layer block by block
 						if (id == -1) {
-
 							id = bChar;
+							
 							if (id == 0) {
-								data[x][y][z * 3] = 0;
+								data[x][y][z * 3] = id;
 								data[x][y][z * 3 + 1] = 0;
 								data[x][y][z * 3 + 2] = 100;
 								id = -1;
@@ -399,7 +399,7 @@ public class Chunk implements Telegraph {
 							data[x][y][z * 3 + 1] = bChar;
 							data[x][y][z * 3 + 2] = 100;
 							//if has logicblock then add logicblock
-							if (data[x][y][z] != 0) {
+							if (id != 0) {
 								if (RenderBlock.hasLogic(id, bChar)) {
 									AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
 										id,
@@ -413,7 +413,6 @@ public class Chunk implements Telegraph {
 									logicBlocks.add(logic);
 								}
 							}
-							id = -1;
 							x++;
 							if (x == blocksX) {
 								y++;
@@ -424,6 +423,7 @@ public class Chunk implements Telegraph {
 								y = 0;
 								z++;
 							}
+							id = -1;
 						}
 					} catch (ArrayIndexOutOfBoundsException ex) {
 						Gdx.app.error("Chunk", "too much blocks loaded:" + x + "," + y + "," + z + ". Map file corrrupt?");

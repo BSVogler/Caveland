@@ -32,7 +32,6 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
@@ -65,14 +64,14 @@ public class EntityShadow extends AbstractEntity {
 			dispose();
 		} else {
 			//find height of shadow surface
-			Coordinate newHeight = character.getPosition().toCoord();//start at same height
-			while (newHeight.getZ() > 0
-				&& (RenderBlock.isTransparent(newHeight.getBlockId(),newHeight.getBlockValue()))) {
-				newHeight.add(0, 0, -1);
+			getPoint().set(character.getPosition());//start at character
+			while (getPoint().getZ() > 0
+				&& (RenderBlock.isTransparent(getPoint().getBlock()))
+			) {
+				getPoint().add(0, 0, -RenderBlock.GAME_EDGELENGTH);
 			}
 
-			getPosition().set(character.getPoint());
-			getPosition().setZ(newHeight.add(0, 0, 1).toPoint().getZ());
+			getPoint().setZ((getPoint().getZGrid()+1)*RenderBlock.GAME_EDGELENGTH);
 		}
 	}
 

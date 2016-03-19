@@ -337,7 +337,9 @@ public class Chunk implements Telegraph {
 							AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
 								data[x][y][z * 3],
 								data[x][y][z * 3 + 1],
-								new Coordinate(coordX * blocksX + x, coordY * blocksY + y, z)
+								coordX * blocksX + x,
+								coordY * blocksY + y,
+								z
 							);
 							if (logic != null) {
 								logicBlocks.add(logic);

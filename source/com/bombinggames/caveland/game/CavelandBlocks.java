@@ -379,6 +379,48 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 
 	@Override
+	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, int x, int y, int z) {
+		if (id == CLBlocks.ENTRY.id) {
+			return new CaveEntryBlockLogic(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
+			return new ConstructionSite(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.OVEN.id) {
+			return new OvenLogic(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.POWERSTATION.id) {
+			return new PowerStationLogic(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.LIFT.id) {
+			return new LiftLogic(id, new Coordinate(x, y, z));
+		}
+		
+		if (id == CLBlocks.LIFT_Ground.id) {
+			return new LiftLogicGround(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.ROBOTFACTORY.id) {
+			return new RobotFactory(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.POWERCABLE.id) {
+			return new CableBlock(id, value, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.RAILSBOOSTER.id) {
+			return new BoosterLogic(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.TURRET.id) {
+			return new Turret(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.TORCH.id) {
+			return new PowerTorch(id, new Coordinate(x, y, z));
+		}
+		if (id == CLBlocks.FLAGPOLE.id) {
+			return new Flagpole(id, new Coordinate(x, y, z));
+		}
+		return null;
+	}
+	
+	@Override
 	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord) {
 		if (id == CLBlocks.ENTRY.id) {
 			return new CaveEntryBlockLogic(id, coord);

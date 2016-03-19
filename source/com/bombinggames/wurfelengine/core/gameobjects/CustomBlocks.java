@@ -92,4 +92,15 @@ public interface CustomBlocks {
 	 * @return
 	 */
 	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord);
+	
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
+	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, int x, int y, int z);
 }

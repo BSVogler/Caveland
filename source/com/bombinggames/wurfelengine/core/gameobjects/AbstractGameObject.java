@@ -258,7 +258,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * Creates an object.
 	 *
 	 * @param id the id of the object which is used for rendering
-	 * @param value
+	 * @param value used for rendering
 	 */
 	protected AbstractGameObject(byte id, byte value) {
 		this(id);

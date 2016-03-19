@@ -40,7 +40,6 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.io.File;
@@ -221,7 +220,7 @@ public class Chunk implements Telegraph {
 						z
 					);
 					data[x][y][z] = (byte) (generated&255);
-					data[x][y][z + 1] = (byte) ((generated>>16)&255);
+					data[x][y][z + 1] = (byte) ((generated>>8)&255);
 					data[x][y][z + 2] = 100;
 					if (data[x][y][z] != 0) {
 						AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(

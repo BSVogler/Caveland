@@ -563,6 +563,7 @@ public class Camera{
 		modifiedCells.clear();
 		modifiedCells.ensureCapacity(ents.size());
 		LinkedList<AbstractEntity> renderAppendix = this.renderAppendix;
+		renderAppendix.clear();
 		
 		for (AbstractEntity ent : ents) {
 			if (ent.hasPosition()

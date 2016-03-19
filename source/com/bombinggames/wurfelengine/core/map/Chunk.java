@@ -793,7 +793,7 @@ public class Chunk implements Telegraph {
 		}
 	}
 	
-	void setHealth(Coordinate coord, byte health) {
+	public void setHealth(Coordinate coord, byte health) {
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;
 		int z = coord.getZ()*3;

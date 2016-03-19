@@ -37,9 +37,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 
@@ -334,16 +335,12 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 			}
 			
-			Block block = getPosition().getBlock();
 			//if entering water
-			if (!inLiquid && block != null && block.isLiquid() && getMass() > 1f) {
+			if (!inLiquid && RenderBlock.isLiquid(getPosition().getBlockId()) && getMass() > 1f) {
 				if (waterSound != null) {
 					WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
 				}
-			}
-
-			if (block != null) {
-				inLiquid = block.isLiquid();//save if in water
+				inLiquid = RenderBlock.isLiquid(getPosition().getBlockId());//save if in water
 			} else {
 				inLiquid = false;
 			}
@@ -509,9 +506,9 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 			sh.setColor(Color.GREEN);
 			//life bar
 			sh.rect(
-				xPos - Block.VIEW_WIDTH2,
-				yPos + Block.VIEW_HEIGHT,
-				getHealth() * Block.VIEW_WIDTH / 1000,
+				xPos - RenderBlock.VIEW_WIDTH2,
+				yPos + RenderBlock.VIEW_HEIGHT,
+				getHealth() * RenderBlock.VIEW_WIDTH / 1000,
 				5
 			);
 			sh.end();
@@ -527,15 +524,15 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 	 */
 	private boolean checkCollisionCorners(final Point pos) {
 		int colRad = colissionRadius;
-		Block block = pos.add(0, -colRad, 0).getBlock();
+		int block = (byte) pos.add(0, -colRad, 0).getBlock();
 		//back corner top
-		if (block != null && block.isObstacle()) {
+		if (RenderBlock.isObstacle(block)) {
 			pos.add(0, colRad, 0);
 			return true;
 		}
 		//front corner
 		block = pos.add(0, 2 * colRad, 0).getBlock();
-		if (block != null && block.isObstacle()) {
+		if (RenderBlock.isObstacle(block)) {
 			pos.add(0, -colRad, 0);
 			return true;
 		}
@@ -543,14 +540,14 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		//check X
 		//left
 		block = pos.add(-colRad, -colRad, 0).getBlock();
-		if (block != null && block.isObstacle()) {
+		if (RenderBlock.isObstacle(block)) {
 			pos.add(colRad, 0, 0);
 			return true;
 		}
 		//bottom corner
 		block = pos.add(2 * colRad, 0, 0).getBlock();
 		pos.add(-colRad, 0, 0);
-		return block != null && block.isObstacle();
+		return RenderBlock.isObstacle(block);
 	}
 	
 	/**
@@ -569,7 +566,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		float heightBefore = pos.z;
 		int dimZ = getDimensionZ();
 		//chek in the middle if bigger then a block
-		if (dimZ > Block.GAME_EDGELENGTH) {
+		if (dimZ > RenderBlock.GAME_EDGELENGTH) {
 			pos.add(0, 0, dimZ / 2);
 			if (checkCollisionCorners(pos)) {
 				pos.add(0, 0, -dimZ / 2);
@@ -834,8 +831,7 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 				}
 				pos.setZ(pos.getZ() - 1);//move one down for check
 
-				Block block = pos.getBlock();
-				boolean colission = (block != null && block.isObstacle()) || collidesWithWorld(pos, colissionRadius);
+				boolean colission = (pos.isObstacle()) || collidesWithWorld(pos, colissionRadius);
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;

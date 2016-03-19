@@ -42,9 +42,8 @@ import com.bombinggames.caveland.gameobjects.Robot;
 import com.bombinggames.caveland.gameobjects.SpiderRobot;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 
@@ -60,7 +59,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	 * @param block
 	 * @param coord
 	 */
-	public RobotFactory(Block block, Coordinate coord) {
+	public RobotFactory(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -88,7 +87,8 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 
 	@Override
 	public void dispose() {
-		linkToRobot.dispose();
+		if (linkToRobot!=null)
+			linkToRobot.dispose();
 	}
 
 	@Override

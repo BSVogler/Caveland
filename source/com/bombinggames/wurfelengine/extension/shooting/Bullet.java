@@ -201,13 +201,12 @@ public class Bullet extends MovableEntity {
 			//block hit -> spawn effect
 			if (
 				hasPosition()
-				&& getPosition().getBlock() != null
-				&& getPosition().getBlock().isObstacle()
+				&& getPosition().isObstacle()
 				&& (ignoreCoord == null
 					||
 					!ignoreCoord.equals(getPosition().toCoord())
 					)
-				&& ignoreId != getPosition().getBlock().getId()
+				&& ignoreId != getPosition().getBlockId()
 			) {
 				if (impactSprite != 0) {
 					Particle impactPart = new Particle();

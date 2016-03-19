@@ -1,7 +1,5 @@
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
-
 /**
  * Manages the game logic for a block. The instances are not saved in the map
  * save file therfore every data saved in the fields are lost after
@@ -30,11 +28,11 @@ public abstract class AbstractBlockLogicExtension {
 	 * Called when spawned. Should not access the map because during map
 	 * creating this method is called and the map still empty. Also entities can not be spawned here.
 	 *
-	 * @param block the block at the position
+	 * @param blockId the block at the position
 	 * @param coord the position where the logic block is placed
 	 */
-	public AbstractBlockLogicExtension(Block block, Coordinate coord) {
-		this.id = block.getId();
+	public AbstractBlockLogicExtension(byte blockId, Coordinate coord) {
+		this.id = blockId;
 		if (coord == null) {
 			throw new NullPointerException();
 		}
@@ -58,8 +56,7 @@ public abstract class AbstractBlockLogicExtension {
 	 * @return false if should be deleted
 	 */
 	public boolean isValid() {
-		Block blockatCoord = coord.getBlock();
-		return blockatCoord != null && blockatCoord.getId() == id;
+		return coord.getBlockId() == id;
 	}
 
 	/**

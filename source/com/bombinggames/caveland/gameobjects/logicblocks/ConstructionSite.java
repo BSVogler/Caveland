@@ -41,7 +41,6 @@ import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	 * @param block the block where this logic is performed
 	 * @param coord
 	 */
-	public ConstructionSite(Block block, Coordinate coord) {
+	public ConstructionSite(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -83,9 +82,8 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	}
 
 	private void restoreResultFromValue() {
-		byte value = getPosition().getBlock().getValue();
 		//set value for saving
-		switch (value) {
+		switch (getPosition().getBlockValue()) {
 			case 0:
 				setResult(CavelandBlocks.CLBlocks.OVEN.getId());
 				break;
@@ -194,7 +192,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 			return false;
 		}
 
-		getPosition().toCoord().setBlock(Block.getInstance(result, resultValue));
+		getPosition().toCoord().setBlock(result, resultValue);
 		container.dispose();
 		WE.SOUND.play("construct");
 		return true;

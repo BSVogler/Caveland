@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
@@ -125,7 +125,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
 			//follow the target
 			if (enemyTarget != null && enemyTarget.hasPosition()) {
-				if (getPosition().distanceTo(enemyTarget) > Block.GAME_EDGELENGTH * 1.5f) {
+				if (getPosition().distanceTo(enemyTarget) > RenderBlock.GAME_EDGELENGTH * 1.5f) {
 					MessageManager.getInstance().dispatchMessage(this,
 						this,
 						Events.moveTo.getId(),
@@ -152,7 +152,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 
 			//find nearby target if there is none
 			if (enemyTarget == null && getTeamId() != 0) {
-				ArrayList<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, HasTeam.class);
+				ArrayList<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_DIAGLENGTH * 4, HasTeam.class);
 				if (!nearbyWithFaction.isEmpty()) {
 					Iterator<HasTeam> it = nearbyWithFaction.iterator();
 					while (it.hasNext()) {
@@ -212,7 +212,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	protected boolean performAttack() {
 		if (energy >= 1000) {
 			energy = 0;//reset
-			if (enemyTarget != null && getPosition().distanceTo(enemyTarget) < Block.GAME_EDGELENGTH * 2f) {
+			if (enemyTarget != null && getPosition().distanceTo(enemyTarget) < RenderBlock.GAME_EDGELENGTH * 2f) {
 				SimpleEntity hit = (SimpleEntity) new SimpleEntity((byte) 33).spawn(enemyTarget.getPosition().cpy());
 				hit.setAnimation(
 					new EntityAnimation(new int[]{300}, true, false)

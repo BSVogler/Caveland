@@ -42,7 +42,6 @@ import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -158,7 +157,8 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 				amountLeft--;
 				//spawn rails
 				actor1.getPosition().toCoord().setBlock(
-					Block.getInstance(resultBlockId, result.id)
+					resultBlockId,
+					result.id
 				);
 				WE.SOUND.play("metallic");
 				if (preview != null) {
@@ -258,7 +258,7 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 
 	@Override
 	public boolean interactable() {
-		return getPosition().getBlock()==null;
+		return getPosition().getBlock()==0;
 	}
 
 	@Override

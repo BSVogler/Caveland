@@ -1,10 +1,10 @@
 package com.bombinggames.caveland.gameobjects;
 
 import com.bombinggames.caveland.game.CavelandBlocks;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  * A movable entity with special caveland logic.
@@ -41,34 +41,30 @@ public class CLMovableEntity extends MovableEntity {
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
 			Point checkpos = pos;
 			float prevZ = pos.z;
-			checkpos.setZ(Block.GAME_EDGELENGTH*z);//set height
+			checkpos.setZ(RenderBlock.GAME_EDGELENGTH*z);//set height
 			
-			Block block = checkpos.add(0, -colissionRadius, 0).getBlock();
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			byte block = checkpos.add(0, -colissionRadius, 0).getBlockId();
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(0, colissionRadius, 0);
 				return true;
 			}
-			block = checkpos.add(0, 2*colissionRadius, 0).getBlock();
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			block = checkpos.add(0, 2*colissionRadius, 0).getBlockId();
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(0, -colissionRadius, 0);
 				return true;
 			}
-			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlock();//left
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			block = checkpos.add(-colissionRadius, -colissionRadius, 0).getBlockId();//left
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				checkpos.z = prevZ;
 				pos.add(colissionRadius, 0, 0);
 				return true;
 			}
-			block = checkpos.add(2*colissionRadius, 0, 0).getBlock();//right
+			block = checkpos.add(2*colissionRadius, 0, 0).getBlockId();//right
 			pos.add(-colissionRadius, 0, 0);
 			checkpos.z = prevZ;
-			if (block != null
-				&& block.getId() == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
+			if (block == CavelandBlocks.CLBlocks.INDESTRUCTIBLEOBSTACLE.getId()) {
 				return true;
 			}
 		}

@@ -3,10 +3,10 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *
@@ -20,11 +20,11 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	/**
 	 *
 	 *
-	 * @param block
+	 * @param id
 	 * @param coord
 	 */
-	public BoosterLogic(Block block, Coordinate coord) {
-		super(block, coord);
+	public BoosterLogic(byte id, Coordinate coord) {
+		super(id, coord);
 	}
 
 	/**
@@ -37,38 +37,34 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 			light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12, WE.getGameplay().getView());
 			light.setSaveToDisk(false);
 			light.disable();
-			light.spawn(getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH2 * 0.5f));
+			light.spawn(getPosition().toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH2 * 0.5f));
 		}
 		//power surrounding cables
 		power = false;
-		Block neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 1
+		int neighBlock = getPosition().cpy().goToNeighbour(1).getBlock();
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& (byte) ((neighBlock>>8)&255) == 1
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(3).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 3
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 3
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(5).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 1
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 1
 		) {
 			power = true;
 		}
 
 		neighBlock = getPosition().cpy().goToNeighbour(7).getBlock();
-		if (neighBlock != null
-			&& neighBlock.getId() == CavelandBlocks.CLBlocks.POWERCABLE.getId()
-			&& neighBlock.getValue() == 3
+		if ((byte) (neighBlock&255) == CavelandBlocks.CLBlocks.POWERCABLE.getId()
+			&& ((neighBlock>>8)&255) == 3
 		) {
 			power = true;
 		}

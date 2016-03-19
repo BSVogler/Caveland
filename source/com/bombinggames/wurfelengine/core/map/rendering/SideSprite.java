@@ -56,7 +56,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
 
@@ -88,6 +87,12 @@ public class SideSprite extends TextureRegion {
 	private final Side side;
 	private int aoFlags;
 	
+	/**
+	 * An object helping with rendering a blokc made out of sides
+	 * @param region the texture used for rendering this side
+	 * @param side which side does this represent?
+	 * @param aoFlags 
+	 */
 	public SideSprite(TextureRegion region, Side side, int aoFlags) {
 		this.side = side;
 		setRegion(region);
@@ -908,7 +913,7 @@ public class SideSprite extends TextureRegion {
 	public void setRegion(float u, float v, float u2, float v2) {
 		super.setRegion(u, v, u2, v2);
 
-		final float f = Block.VIEW_WIDTH4/(float) getTexture().getWidth();//s/4096=x, where s is a quarter of the block width which is by default s=50
+		final float f = RenderBlock.VIEW_WIDTH4/(float) getTexture().getWidth();//s/4096=x, where s is a quarter of the block width which is by default s=50
 		vertices[U1] = u;
 		vertices[V1] = v2 - ((side == Side.LEFT || side == Side.TOP) ? f : 0f);
 

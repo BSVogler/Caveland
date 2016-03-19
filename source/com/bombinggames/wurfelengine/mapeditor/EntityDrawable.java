@@ -35,7 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +57,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 			if (instance.getSpriteId() > 0) {
 				//if bigger then default sprite size
 				float spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
-				float regularHeight = Block.VIEW_HEIGHT+Block.VIEW_DEPTH;
+				float regularHeight = RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH;
 				if (spiteHeight > regularHeight) {
 					scaling = (regularHeight / spiteHeight);
 				}
@@ -80,7 +80,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 				wasDefault = true;
 			}
 			WE.getGameplay().getView().getSpriteBatch().begin();
-			instance.render(WE.getGameplay().getView(), (int) ((int) x+Block.VIEW_WIDTH2*instance.getScaling()), (int) y);
+			instance.render(WE.getGameplay().getView(), (int) ((int) x+RenderBlock.VIEW_WIDTH2*instance.getScaling()), (int) y);
 			WE.getGameplay().getView().getSpriteBatch().end();
 			if (wasDefault) {
 				WE.getGameplay().getView().useDefaultShader();
@@ -101,7 +101,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getLeftWidth() {
-		return Block.VIEW_WIDTH2*(instance.getScaling());
+		return RenderBlock.VIEW_WIDTH2*(instance.getScaling());
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getRightWidth() {
-		return Block.VIEW_WIDTH2*(instance.getScaling());
+		return RenderBlock.VIEW_WIDTH2*(instance.getScaling());
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getTopHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(instance.getScaling());
+		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(instance.getScaling());
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class EntityDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getBottomHeight() {
-		return (Block.VIEW_HEIGHT2+Block.VIEW_DEPTH2)*(instance.getScaling());
+		return (RenderBlock.VIEW_HEIGHT2+RenderBlock.VIEW_DEPTH2)*(instance.getScaling());
 	}
 	
     /**
@@ -137,7 +137,7 @@ public class EntityDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinHeight() {
-        return (Block.VIEW_HEIGHT+Block.VIEW_DEPTH)*(instance.getScaling());
+        return (RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH)*(instance.getScaling());
     }
 
     /**
@@ -146,6 +146,6 @@ public class EntityDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinWidth() {
-        return Block.VIEW_WIDTH*(instance.getScaling());
+        return RenderBlock.VIEW_WIDTH*(instance.getScaling());
     }
 }

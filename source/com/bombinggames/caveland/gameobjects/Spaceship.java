@@ -3,7 +3,7 @@ package com.bombinggames.caveland.gameobjects;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
@@ -94,7 +94,7 @@ public class Spaceship extends MovableEntity {
 			dir.z = 0;
 			setMovement(dir.nor().scl(11));//always fly to startCrash point
 		}
-		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < Block.GAME_EDGELENGTH*25) {
+		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < RenderBlock.GAME_EDGELENGTH*25) {
 			startCrash();
 		}
 

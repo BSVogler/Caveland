@@ -32,13 +32,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_DIAGLENGTH2;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_DIAGLENGTH2;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -178,8 +178,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 				pos.setZ(pos.getZ() - 1);//move one up for check
 
-				Block block = pos.getBlock();
-				boolean colission = (block != null && block.isObstacle());
+				boolean colission = pos.isObstacle();
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;

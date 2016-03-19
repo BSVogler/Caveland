@@ -38,15 +38,11 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_DEPTH4;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.core.gameobjects.CustomBlocks;
+import com.bombinggames.wurfelengine.core.gameobjects.Sea;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -54,7 +50,7 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
 /**
- * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is shared, so changing this {@link RenderBlock} changes the data in the map.<br>
+ * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is not referenced, so changing this {@link RenderBlock} changes the data in the map.<br>
  * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @see Block
  * @author Benedikt Vogler
@@ -64,17 +60,324 @@ public class RenderBlock extends AbstractGameObject {
 	/**
 	 * indexed acces to spritesheet {id}{value}{side}
 	 */
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[Block.OBJECTTYPESNUM][Block.VALUESNUM][3];
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[RenderBlock.OBJECTTYPESNUM][RenderBlock.VALUESNUM][3];
 	
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] COLORLIST = new Color[Block.OBJECTTYPESNUM][Block.VALUESNUM];
+    private static final Color[][] COLORLIST = new Color[RenderBlock.OBJECTTYPESNUM][RenderBlock.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
 	private static long rebuildCoverList = 0;
 	private static SimpleEntity destruct = new SimpleEntity((byte) 3,(byte) 0);
 	private static Color tmpColor = new Color();
+	
+	/**
+	 * Screen depth of a block/object sprite in pixels. This is the length from
+	 * the top to the middle border of the block.
+	 */
+	public transient static final int VIEW_DEPTH = 100;
+	/**
+	 * The half (1/2) of VIEW_DEPTH. The short form of: VIEW_DEPTH/2
+	 */
+	public transient static final int VIEW_DEPTH2 = VIEW_DEPTH / 2;
+	/**
+	 * A quarter (1/4) of VIEW_DEPTH. The short form of: VIEW_DEPTH/4
+	 */
+	public transient static final int VIEW_DEPTH4 = VIEW_DEPTH / 4;
+
+	/**
+	 * The width (x-axis) of the sprite size.
+	 */
+	public transient static final int VIEW_WIDTH = 200;
+	/**
+	 * The half (1/2) of VIEW_WIDTH. The short form of: VIEW_WIDTH/2
+	 */
+	public transient static final int VIEW_WIDTH2 = VIEW_WIDTH / 2;
+	/**
+	 * A quarter (1/4) of VIEW_WIDTH. The short form of: VIEW_WIDTH/4
+	 */
+	public transient static final int VIEW_WIDTH4 = VIEW_WIDTH / 4;
+
+	/**
+	 * The height (y-axis) of the sprite size.
+	 */
+	public transient static final int VIEW_HEIGHT = 122;
+	/**
+	 * The half (1/2) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/2
+	 */
+	public transient static final int VIEW_HEIGHT2 = VIEW_HEIGHT / 2;
+	/**
+	 * A quarter (1/4) of VIEW_HEIGHT. The short form of: VIEW_WIDTH/4
+	 */
+	public transient static final int VIEW_HEIGHT4 = VIEW_HEIGHT / 4;
+
+	/**
+	 * The game space dimension size's aequivalent to VIEW_DEPTH or VIEW_WIDTH.
+	 * Because the x axis is not shortened those two are equal.
+	 */
+	public transient static final int GAME_DIAGLENGTH = VIEW_WIDTH;
+
+	/**
+	 * Half (1/2) of GAME_DIAGLENGTH.
+	 */
+	public transient static final int GAME_DIAGLENGTH2 = VIEW_WIDTH2;
+
+	/**
+	 * Pixels per game spaces meter (edge length).<br>
+	 * 1 game meter ^= 1 GAME_EDGELENGTH<br>
+	 * The value is calculated by VIEW_HEIGHT*sqrt(2) because of the axis
+	 * shortening.
+	 */
+	public transient static final int GAME_EDGELENGTH = (int) (GAME_DIAGLENGTH / 1.41421356237309504880168872420969807856967187537694807317667973799f);
+
+	/**
+	 * Half (1/2) of GAME_EDGELENGTH.
+	 */
+	public transient static final int GAME_EDGELENGTH2 = GAME_EDGELENGTH / 2;
+
+	/**
+	 * Some magic number which is the factor by what the Z axis is distorted
+	 * because of the angle of projection.
+	 */
+	public transient static final float ZAXISSHORTENING = VIEW_HEIGHT / (float) GAME_EDGELENGTH;
+
+	/**
+	 * the max. amount of different object types
+	 */
+	public transient static final int OBJECTTYPESNUM = 124;
+	/**
+	 * the max. amount of different values
+	 */
+	public transient static final int VALUESNUM = 64;
+
+	/**
+	 * the factory for custom blocks
+	 */
+	private static CustomBlocks customBlocks;
+	
+	/**
+	 * If you want to define custom id's &gt;39
+	 *
+	 * @param customBlockFactory new value of customBlockFactory
+	 */
+	public static void setCustomBlockFactory(CustomBlocks customBlockFactory) {
+		customBlocks = customBlockFactory;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public static CustomBlocks getFactory() {
+		return customBlocks;
+	}
+
+	/**
+	 * Creates a new logic instance. This can happen before the chunk is filled
+	 * at this position.
+	 *
+	 * @param id
+	 * @param value
+	 * @param coord
+	 * @return null if has no logic
+	 */
+	public static AbstractBlockLogicExtension createLogicInstance(byte id, byte value, Coordinate coord) {
+		if (customBlocks == null) {
+			return null;
+		}
+		return customBlocks.newLogicInstance(id, value, coord);
+	}
+	
+	
+	public static boolean hasLogic(byte id, byte value) {
+		if (customBlocks == null) {
+			return false;
+		}
+		return customBlocks.hasLogic(id, value);
+	}
+
+	/**
+	 * value between 0-100
+	 *
+	 * @param coord
+	 * @param health
+	 */
+//	public static void setHealth(Coordinate coord, byte id, byte value, byte health) {
+//		if (customBlocks != null) {
+//			customBlocks.onSetHealth(coord, health, id, value);
+//		}
+//		if (health <= 0 && !isIndestructible(id, value)) {
+//			//make an invalid air instance (should be null)
+//			this.id = 0;
+//			this.value = 0;
+//		}
+//	}
+
+	/**
+	 * The health is stored in a byte in the range [0;100]
+	 *
+	 * @param block
+	 * @return
+	 */
+	public static byte getHealth(int block) {
+		return (byte) ((block >> 16) & 255);
+	}
+
+	/**
+	 * creates a new RenderBlock instance based on the data
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
+	public static RenderBlock getRenderBlock(byte id, byte value) {
+		if (id == 0 || id == 4) {//air and invisible wall
+			RenderBlock a = new RenderBlock(id, value);
+			a.setHidden(true);
+			return a;
+		}
+
+		if (id == 9) {
+			return new Sea(id, value);
+		}
+
+		if (customBlocks != null) {
+			return customBlocks.toRenderBlock(id, value);
+		} else {
+			return new RenderBlock(id, value);
+		}
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
+	public static boolean isObstacle(byte id, byte value) {
+		if (id > 9 && customBlocks != null) {
+			return customBlocks.isObstacle(id, value);
+		}
+		if (id == 9) {
+			return false;
+		}
+		
+		return id != 0;
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @return 
+	 */
+	public static boolean isObstacle(int block) {
+		return isObstacle((byte)(block&255), (byte)((block>>8)&255));
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param value
+	 * @return 
+	 */
+	public static boolean isTransparent(byte id, byte value) {
+		if (id==0 || id == 9 || id == 4) {
+			return true;
+		}
+		
+		if (id > 9 && customBlocks != null) {
+			return customBlocks.isTransparent(id, value);
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @return 
+	 */
+	public static boolean isTransparent(int block) {
+		return isTransparent((byte)(block&255), (byte)((block>>8)&255));
+	}
+
+	/**
+	 * Check if the block is liquid.
+	 *
+	 * @param id
+	 * @param value
+	 * @return true if liquid, false if not
+	 */
+	public static boolean isLiquid(byte id, byte value) {
+		if (id > 9 && customBlocks != null) {
+			return customBlocks.isLiquid(id, value);
+		}
+		return id == 9;
+	}
+	
+		/**
+	 * Check if the block is liquid.
+	 *
+	 * @param block first byte id, second value, third health
+	 * @return true if liquid, false if not
+	 */
+	public static boolean isLiquid(int block) {
+		return isLiquid((byte)(block&255), (byte)((block>>8)&255));
+	}
+	
+	public static boolean isIndestructible(byte id, byte value) {
+		if (customBlocks != null) {
+			return customBlocks.isIndestructible(id, value);
+		}
+		return false;
+	}
+
+	/**
+	 * get the name of a combination of id and value
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
+	public static String getName(byte id, byte value) {
+		if (id < 10) {
+			switch (id) {
+				case 0:
+					return "air";
+				case 1:
+					return "grass";
+				case 2:
+					return "dirt";
+				case 3:
+					return "stone";
+				case 4:
+					return "invisible obstacle";
+				case 8:
+					return "sand";
+				case 9:
+					return "water";
+				default:
+					return "undefined";
+			}
+		} else {
+			if (customBlocks != null) {
+				return customBlocks.getName(id, value);
+			} else {
+				return "undefined";
+			}
+		}
+	}
+
+	public static boolean hasSides(byte spriteId, byte spriteValue) {
+		if (spriteId == 0 || spriteId == 4) {
+			return false;
+		}
+		
+		if (spriteId > 9 && customBlocks != null) {
+			return customBlocks.hasSides(spriteId, spriteValue);
+		}
+		return true;
+	}
 	
 	/**
 	 * Indicate whether the blocks should get shaded independent of the light engine by default.
@@ -120,18 +423,14 @@ public class RenderBlock extends AbstractGameObject {
 	
 	/**
 	 * checks if a sprite is defined. if not the error sprite will be rendered
-	 * @param block
+	 * @param spriteId
+	 * @param spriteValue
 	 * @return 
 	 */
-	public static boolean isSpriteDefined(final RenderBlock block){
-		if (block == null) return false;
-		if (getSpritesheet() == null) return false;
-		AtlasRegion sprite;
-		if (block.hasSides())
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue()+"-0");
-		else
-			sprite = getSpritesheet().findRegion('b'+Byte.toString(block.getSpriteId())+"-"+block.getSpriteValue());
-		return 	sprite != null;
+	public static boolean isSpriteDefined(byte spriteId, byte spriteValue) {
+		return spriteId != 0
+			&& getSpritesheet() != null
+			&& getSpritesheet().findRegion('b' + Byte.toString(spriteId) + "-" + spriteValue + "-0" + (RenderBlock.hasSides(spriteId, spriteValue) ? "-0" : "")) != null;
 	}
 	
 	/**
@@ -153,7 +452,7 @@ public class RenderBlock extends AbstractGameObject {
             COLORLIST[id][value] = new Color();
             int colorInt;
             
-            if (Block.getInstance(id, value).hasSides()){//if has sides, take top block    
+            if (RenderBlock.hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -192,8 +491,9 @@ public class RenderBlock extends AbstractGameObject {
     }
 
 	
-	private final Block blockData;
-	private Coordinate coord;
+	private final byte id;
+	private byte value;
+	private Coordinate coord = new Coordinate(0, 0, 0);
 	
 	//view data
 	/**
@@ -251,50 +551,34 @@ public class RenderBlock extends AbstractGameObject {
 	private long lastRebuild;
 	
 	/**
-	 * Does not wrap a {@link Block} instance.
-	 */
-	public RenderBlock(){
-		super((byte) 0);
-		blockData = null;
-	}
-	
-	/**
-	 * Does not wrap a {@link Block} instance.
+	 * For direct creation. You should use the factory method instead.
 	 * @param id 
-	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
+	 * @see #getRenderBlock(byte, byte) 
 	 */
     public RenderBlock(byte id){
         super(id);
-		blockData = Block.getInstance(id);
+		this.id = id;
 	}
 	
 	/**
-	 * Does not wrap a {@link Block} instance.
+	 * For direct creation. You should use the factory method instead.
 	 * @param id
 	 * @param value 
-	 * @see #RenderBlock(com.bombinggames.wurfelengine.core.Gameobjects.Block)  
+	 * @see #getRenderBlock(byte, byte) 
 	 */
 	public RenderBlock(byte id, byte value){
 		super(id, value);
-		blockData = Block.getInstance(id, value);
+		this.id = id;
+		this.value = value;
 	}
 	
-	/**
-	 * Create a new render block referencing to an existing {@link Block} object.
-	 * @param data 
-	 */
-	public RenderBlock(Block data){
-		super(data.getId(), data.getValue());//copy id's from data for rendering
-		blockData = data;
-	}
-
 	public boolean isObstacle() {
-		return blockData.isObstacle();
+		return RenderBlock.isObstacle(id, value);
 	}
 
     @Override
     public String getName() {
-        return blockData.getName();
+        return RenderBlock.getName(id, value);
     }
 
 	@Override
@@ -309,7 +593,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 	@Override
 	public int getDimensionZ() {
-		return Block.GAME_EDGELENGTH;
+		return RenderBlock.GAME_EDGELENGTH;
 	}
 
 	@Override
@@ -323,53 +607,61 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * places the object on the map. You can extend this to get the coordinate. RenderBlock may be placed without this method call. A regular renderblock is not spawned expect explicitely called.
+	 * places the object on the map. You can extend this to get the coordinate.
+	 * RenderBlock may be placed without this method call. A regular renderblock
+	 * is not spawned expect explicitely called.
+	 *
 	 * @param rS
 	 * @param coord the position on the map
 	 * @return itself
 	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.Position)
 	 */
-	public RenderBlock spawn(RenderStorage rS, Coordinate coord){
+	public RenderBlock spawn(RenderStorage rS, Coordinate coord) {
 		setPosition(coord);
 		Controller.getMap().setBlock(this);
 		return this;
-	};
+	}
     
     @Override
-    public void render(final GameView view, final Camera camera) {
-        if (!isHidden()) {
-            if (hasSides()) {
+	public void render(final GameView view, final Camera camera) {
+		if (!isHidden()) {
+			if (hasSides()) {
 				Coordinate coords = getPosition();
 				byte clipping = getClipping();
-                if ((clipping & (1 << 1)) == 0)
-                    renderSide(view, camera, coords, Side.TOP, staticShade);
-				if ((clipping & 1) == 0)
-                    renderSide(view, camera, coords, Side.LEFT, staticShade);
-                if ((clipping & (1 << 2)) == 0)
-                    renderSide(view, camera, coords, Side.RIGHT, staticShade);
-            } else
-                super.render(view, camera);
-        }
-    }
+				if ((clipping & (1 << 1)) == 0) {
+					renderSide(view, camera, coords, Side.TOP, staticShade);
+				}
+				if ((clipping & 1) == 0) {
+					renderSide(view, camera, coords, Side.LEFT, staticShade);
+				}
+				if ((clipping & (1 << 2)) == 0) {
+					renderSide(view, camera, coords, Side.RIGHT, staticShade);
+				}
+			} else {
+				super.render(view, camera);
+			}
+		}
+	}
     
-    /**
-     * Render the whole block at a custom position. Checks if hidden.
-     * @param view the view using this render method
-     * @param xPos rendering position (screen)
-     * @param yPos rendering position (screen)
-     */
-    @Override
-    public void render(final GameView view, final int xPos, final int yPos) {
-        if (!isHidden()) {
-            if (hasSides()) {
-				renderSide(view, xPos, yPos+(VIEW_HEIGHT+VIEW_DEPTH), Side.TOP);
+ /**
+	 * Render the whole block at a custom position. Checks if hidden.
+	 *
+	 * @param view the view using this render method
+	 * @param xPos rendering position (screen)
+	 * @param yPos rendering position (screen)
+	 */
+	@Override
+	public void render(final GameView view, final int xPos, final int yPos) {
+		if (!isHidden()) {
+			if (hasSides()) {
+				renderSide(view, xPos, yPos + (VIEW_HEIGHT + VIEW_DEPTH), Side.TOP);
 				renderSide(view, xPos, yPos, Side.LEFT);
-				renderSide(view, xPos+VIEW_WIDTH2, yPos, Side.RIGHT);
+				renderSide(view, xPos + VIEW_WIDTH2, yPos, Side.RIGHT);
 			} else {
 				super.render(view, xPos, yPos);
 			}
-        }
-    }
+		}
+	}
 
     /**
      * Renders the whole block at a custom position.
@@ -379,27 +671,28 @@ public class RenderBlock extends AbstractGameObject {
      * @param color when the block has sides its sides gets shaded using this color.
      * @param staticShade makes one side brighter, opposite side darker
      */
-    public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
-        if (!isHidden()) {
-            if (hasSides()) {
+	public void render(final GameView view, final int xPos, final int yPos, Color color, final boolean staticShade) {
+		if (!isHidden()) {
+			if (hasSides()) {
 				float scale = getScaling();
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*scale),
-					(int) (yPos+VIEW_HEIGHT*scale),
+					(int) (xPos - VIEW_WIDTH2 * scale),
+					(int) (yPos + VIEW_HEIGHT * scale),
 					Side.TOP,
 					color
 				);
 
 				if (staticShade) {
-					if (color==null)
+					if (color == null) {
 						color = new Color(0.75f, 0.75f, 0.75f, 1);
-					else
+					} else {
 						color = color.cpy().add(0.25f, 0.25f, 0.25f, 0);
+					}
 				}
 				renderSide(
 					view,
-					(int) (xPos-VIEW_WIDTH2*scale),
+					(int) (xPos - VIEW_WIDTH2 * scale),
 					yPos,
 					Side.LEFT,
 					color
@@ -415,10 +708,11 @@ public class RenderBlock extends AbstractGameObject {
 					Side.RIGHT,
 					color
 				);
-            } else
-                super.render(view, xPos, yPos+VIEW_DEPTH4, color);
-        }
-    }
+			} else {
+				super.render(view, xPos, yPos + VIEW_DEPTH4, color);
+			}
+		}
+	}
        
 	/**
      * Render a side of a block at the position of the coordinates.
@@ -450,8 +744,6 @@ public class RenderBlock extends AbstractGameObject {
 			color = Controller.getLightEngine().getColor(side, getPosition()).mul(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f, color.a + 0.5f);
 		}
 		
-		Block blockdata = getBlockData();
-		
         renderSide(
 			view,
             coords.getViewSpcX() - VIEW_WIDTH2 + ( side == Side.RIGHT ? (int) (VIEW_WIDTH2*(getScaling())) : 0),//right side is  half a block more to the right,
@@ -468,12 +760,13 @@ public class RenderBlock extends AbstractGameObject {
 				: color//pass color if not shading static
         );
 		
-		if (blockdata.getHealth() < 100) {
+		byte health = getHealth();
+		if (health < 100) {
 			int damageOverlayStep = 0;
-			if (blockdata.getHealth() <= 50) {
+			if (health <= 50) {
 				damageOverlayStep = 1;
 			}
-			if (blockdata.getHealth() <= 25) {
+			if (health <= 25) {
 				damageOverlayStep = 2;
 			}
 			
@@ -484,7 +777,7 @@ public class RenderBlock extends AbstractGameObject {
 						renderDamageOverlay(
 							view,
 							camera,
-							getPosition().toPoint().add(-Block.GAME_DIAGLENGTH2 / 2, 0, 0),
+							getPosition().toPoint().add(-RenderBlock.GAME_DIAGLENGTH2 / 2, 0, 0),
 							(byte) (3 * damageOverlayStep)
 						);
 						break;
@@ -492,7 +785,7 @@ public class RenderBlock extends AbstractGameObject {
 						renderDamageOverlay(
 							view,
 							camera,
-							getPosition().toPoint().add(0, 0, Block.GAME_EDGELENGTH),
+							getPosition().toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH),
 							(byte) (3 * damageOverlayStep + 1)
 						);
 						break;
@@ -500,7 +793,7 @@ public class RenderBlock extends AbstractGameObject {
 						renderDamageOverlay(
 							view,
 							camera,
-							getPosition().toPoint().add(Block.GAME_DIAGLENGTH2 / 2, 0, 0),
+							getPosition().toPoint().add(RenderBlock.GAME_DIAGLENGTH2 / 2, 0, 0),
 							(byte) (3 * damageOverlayStep + 2)
 						);
 						break;
@@ -510,43 +803,46 @@ public class RenderBlock extends AbstractGameObject {
 			}
 		}
     }
-	
+
 	/**
 	 * helper function
+	 *
 	 * @param view
 	 * @param camera
 	 * @param aopos
 	 * @param value damage sprite value
 	 */
-	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value){
+	private void renderDamageOverlay(final GameView view, final Camera camera, final Position aopos, final byte value) {
 		destruct.setSpriteValue(value);
 		destruct.setPosition(aopos);
 		destruct.getColor().set(0.5f, 0.5f, 0.5f, 0.7f);
 		destruct.render(view, camera);
 	}
-	
-    /**
-     * Ignores lightlevel.
-     * @param view the view using this render method
-     * @param xPos rendering position
-     * @param yPos rendering position
-     * @param side The number identifying the side. 0=left, 1=top, 2=right
-     */
-    public void renderSide(final GameView view, final int xPos, final int yPos, final Side side){
+
+	/**
+	 * Ignores lightlevel.
+	 *
+	 * @param view the view using this render method
+	 * @param xPos rendering position
+	 * @param yPos rendering position
+	 * @param side The number identifying the side. 0=left, 1=top, 2=right
+	 */
+	public void renderSide(final GameView view, final int xPos, final int yPos, final Side side) {
 		Color color;
 		if (Controller.getLightEngine() != null && !Controller.getLightEngine().isShadingPixelBased()) {
 			color = Controller.getLightEngine().getColor(side, getPosition());
-        } else
+		} else {
 			color = Color.GRAY.cpy();
-		 
-        renderSide(
+		}
+
+		renderSide(
 			view,
-            xPos,
-            yPos,
-            side,
-            color
-        );
-    }
+			xPos,
+			yPos,
+			side,
+			color
+		);
+	}
   /**
 	 * Draws a side of a block at a custom position. Apllies color before
 	 * rendering and takes the lightlevel into account.
@@ -657,24 +953,16 @@ public class RenderBlock extends AbstractGameObject {
 	}	
 	
 	/**
-	 * gets the identifier and stores them in the map
-	 * @return 
-	 */
-	public Block toStorageBlock(){
-		return Block.getInstance(getSpriteId(), getSpriteValue());
-	}
-	
-	/**
 	 * Can light travel through object?
 	 * @return
 	 */
 	public boolean isTransparent() {
-		if (blockData==null) return true;
-		return blockData.isTransparent();
+		if (id==0) return true;
+		return RenderBlock.isTransparent(id,value);
 	}
 	
 	public boolean isIndestructible() {
-		return blockData.isIndestructible();
+		return RenderBlock.isIndestructible(id,value);
 	}
 	
 	/**
@@ -687,28 +975,19 @@ public class RenderBlock extends AbstractGameObject {
 	 * single sprite
 	 */
 	public boolean hasSides() {
-		if (blockData == null) {
+		if (id == 0) {
 			return false;
 		}
-		return blockData.hasSides();
+		return RenderBlock.hasSides(getSpriteId(),getSpriteValue());
 	}
 
 	public boolean isLiquid() {
-		if (blockData == null) {
+		if (id == 0) {
 			return false;
 		}
-		return blockData.isLiquid();
+		return RenderBlock.isLiquid(id,value);
 	}
 
-	/**
-	 * Get the pointer to the data.
-	 *
-	 * @return
-	 */
-	public Block getBlockData() {
-		return blockData;
-	}
-	
 	@Override
 	public float getLightlevelR() {
 		return (getLightlevel(Side.LEFT, 0,0) + getLightlevel(Side.TOP, 0,0) + getLightlevel(Side.RIGHT, 0,0)) / 3f;
@@ -995,7 +1274,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * Makes every side visible
 	 */
 	public void setUnclipped() {
-		clipping = (byte) 0;
+		clipping = 0;
 	}
 
 	/**
@@ -1009,7 +1288,7 @@ public class RenderBlock extends AbstractGameObject {
 
 	@Override
 	public boolean shouldBeRendered(Camera camera) {
-		return blockData != null
+		return id != 0
 				&& !isClipped()
 				&& !isHidden()
 				&& camera.inViewFrustum(
@@ -1100,8 +1379,28 @@ public class RenderBlock extends AbstractGameObject {
 		lastRebuild = WE.getGameplay().getFrameNum();
 	}
 
-	public void clearCoveredEnts(){
+	public void clearCoveredEnts() {
 		coveredEnts.clear();
+	}
+
+	public byte getId() {
+		return id;
+	}
+
+	public byte getValue() {
+		return value;
+	}
+
+	/**
+	 * get the health byte from the map.
+	 *
+	 * @return if no coordiante returns 100
+	 */
+	public byte getHealth() {
+		if (coord == null) {
+			return 100;
+		}
+		return Controller.getMap().getHealth(coord);
 	}
 
 }

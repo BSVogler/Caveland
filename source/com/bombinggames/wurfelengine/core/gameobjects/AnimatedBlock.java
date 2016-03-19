@@ -48,13 +48,14 @@ public class AnimatedBlock extends RenderBlock implements Animatable{
     
     /**
      * Create this RenderBlock with an array wich has the time of every animation step in ms in it.
-     * @param data the data of the block.
+	 * @param id
+	 * @param value
      * @param animationsinformation  an array wich has the duraion of every animationstep inside
      * @param  autostart True when it should automatically start.
      * @param loop Set to true when it should loop, when false it stops after one time. 
      */
-    public AnimatedBlock(Block data, int[] animationsinformation, boolean autostart, boolean loop){
-        super(data);
+    public AnimatedBlock(byte id, byte value, int[] animationsinformation, boolean autostart, boolean loop){
+        super(id, value);
         this.animationsduration = animationsinformation;
         this.running = autostart;
         this.loop = loop;

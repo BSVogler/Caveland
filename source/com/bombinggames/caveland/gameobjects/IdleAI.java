@@ -36,9 +36,9 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.Serializable;
 
 /**
@@ -55,7 +55,7 @@ public class IdleAI implements Telegraph, Serializable {
 	 */
 	private Point home;
 	private float timeTillMove;
-	private final float idleRaidus = Block.GAME_EDGELENGTH * 2;
+	private final float idleRaidus = RenderBlock.GAME_EDGELENGTH * 2;
 
 	/**
 	 *
@@ -106,13 +106,7 @@ public class IdleAI implements Telegraph, Serializable {
 							).nor().scl(idleRaidus)
 						);
 					}
-				} while (
-					i < 100
-					&& (
-						(target.getBlock() != null
-						&& target.getBlock().isObstacle())
-					)
-				);
+				} while (i < 100 && (target.isObstacle()));
 				
 				if (i < 100){
 					body.setSpeedHorizontal(2);

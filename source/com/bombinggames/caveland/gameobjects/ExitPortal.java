@@ -1,13 +1,11 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.game.ChunkGenerator;
 import com.bombinggames.caveland.gameobjects.logicblocks.LiftLogic;
-import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +46,7 @@ public class ExitPortal extends Portal implements Interactable {
 					spawnCooldown -= dt;
 				
 				//if a player is not nearby
-				if (getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH * 13, Ejira.class).isEmpty() && spawnCooldown <= 0) {
+				if (getPosition().getEntitiesNearby(RenderBlock.GAME_EDGELENGTH * 13, Ejira.class).isEmpty() && spawnCooldown <= 0) {
 					spawnCooldown += 5000;//only spawn every 5 seconds
 					
 					//spawn enemies
@@ -89,7 +87,7 @@ public class ExitPortal extends Portal implements Interactable {
 	public Coordinate getGround(){
 		Coordinate ground = getPosition().toCoord();
 		//find ground
-		while (ground.getBlock() == null || !ground.getBlock().isObstacle()) {
+		while (!RenderBlock.isObstacle(ground.getBlockId())) {
 			ground.add(0, 0, -1);
 		}
 		return ground;

@@ -36,7 +36,7 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
@@ -77,7 +77,7 @@ public class SpiderRobot extends Robot{
 		}
 		
 		boolean hadNoBlock = false;
-		if (workingBlock == null || workingBlock.getBlock() == null) {
+		if (workingBlock == null || workingBlock.getBlockId()== 0) {
 			hadNoBlock = true;
 		}
 		
@@ -123,7 +123,7 @@ public class SpiderRobot extends Robot{
 				
 				//find storage
 				if (storage == null) {
-					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(Block.GAME_EDGELENGTH, DropSpaceFlag.class);
+					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderBlock.GAME_EDGELENGTH, DropSpaceFlag.class);
 					if (!flagsnearby.isEmpty()) {
 						storage = flagsnearby.get(0).getPosition().toCoord();
 						WE.SOUND.play("robotWeep", getPosition());
@@ -131,15 +131,14 @@ public class SpiderRobot extends Robot{
 				}
 
 				//find block to work on
-				Block block = laserdot.getPosition().getBlock();
-				if (block != null) {
-					byte id = block.getId();
+				byte id = laserdot.getPosition().getBlockId();
+				if (id != 0) {
 					if (id == CavelandBlocks.CLBlocks.COAL.getId()
 						|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
 						|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
 						|| id == CavelandBlocks.CLBlocks.SULFUR.getId()
 					) {
-						if (workingBlock == null || workingBlock.getBlock() == null) {
+						if (workingBlock == null || workingBlock.getBlockId()== 0) {
 							workingBlock = laserdot.getPosition().toCoord();
 							//go to resources
 							MessageManager.getInstance().dispatchMessage(
@@ -154,11 +153,10 @@ public class SpiderRobot extends Robot{
 			}
 			//validate workingBlock
 			if (workingBlock != null) {
-				Block block = workingBlock.getBlock();
-				if (block == null) {
+				byte id = workingBlock.getBlockId();
+				if (id == 0) {
 					workingBlock = null;
 				} else {
-					byte id = block.getId();
 					if (!(id == CavelandBlocks.CLBlocks.COAL.getId()
 						|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
 						|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
@@ -215,7 +213,7 @@ public class SpiderRobot extends Robot{
 				//gather resources
 				if (workingBlock != null) {
 					//if nearby
-					if (getPosition().distanceTo(workingBlock) < Block.GAME_EDGELENGTH*1.8f) {
+					if (getPosition().distanceTo(workingBlock) < RenderBlock.GAME_EDGELENGTH*1.8f) {
 						MessageManager.getInstance().dispatchMessage(
 							this,
 							this,
@@ -224,8 +222,9 @@ public class SpiderRobot extends Robot{
 						if (performAttack()) {
 							workingBlock.damage((byte) 1);
 							WE.SOUND.play("impact", getPosition());
-							if (workingBlock.getBlock() != null && workingBlock.getBlock().getHealth() % 8 == 0) {
-								carry = CavelandBlocks.getLoot(workingBlock.getBlock().getId()).createInstance();
+							int block = workingBlock.getBlock();
+							if ((block & 255) != 0 && ((block >> 16) & 255) % 8 == 0) {
+								carry = CavelandBlocks.getLoot((byte) (block & 255)).createInstance();
 								carry.spawn(getPosition().cpy());
 								//carry.setHidden(true);
 								carry.preventPickup();
@@ -270,17 +269,14 @@ public class SpiderRobot extends Robot{
 			for (int y = -4; y < 4; y++) {
 				for (int z = -2; z < 2; z++) {
 					Coordinate tmpCoord = getPosition().toCoord().add(x, y, z);
-					Block block = tmpCoord.getBlock();
-					if (block != null) {
-						byte id = block.getId();
-						if ((id == CavelandBlocks.CLBlocks.COAL.getId()
-							|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
-							|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
-							|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
-							&& getPosition().canSee(tmpCoord.toPoint(), 12)
-						) {
-							coordList.add(tmpCoord);
-						}
+					byte id = tmpCoord.getBlockId();
+					if ((id == CavelandBlocks.CLBlocks.COAL.getId()
+						|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
+						|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
+						|| id == CavelandBlocks.CLBlocks.SULFUR.getId())
+						&& getPosition().canSee(tmpCoord.toPoint(), 12)
+					) {
+						coordList.add(tmpCoord);
 					}
 				}
 			}

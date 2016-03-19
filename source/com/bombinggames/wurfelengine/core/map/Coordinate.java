@@ -33,13 +33,13 @@ package com.bombinggames.wurfelengine.core.map;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
@@ -141,13 +141,13 @@ public class Coordinate implements Position {
 	 */
 	public Coordinate setFromPoint(Point from) {
 		set(
-			Math.floorDiv((int) from.getX(), Block.GAME_DIAGLENGTH),
-			Math.floorDiv((int) from.getY(), Block.GAME_DIAGLENGTH) * 2 + 1,
-			Math.floorDiv((int) from.getZ(), Block.GAME_EDGELENGTH)
+			Math.floorDiv((int) from.getX(), RenderBlock.GAME_DIAGLENGTH),
+			Math.floorDiv((int) from.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1,
+			Math.floorDiv((int) from.getZ(), RenderBlock.GAME_EDGELENGTH)
 		);
 		return goToNeighbour(Coordinate.getNeighbourSide(
-			from.getX() % Block.GAME_DIAGLENGTH,
-			from.getY() % Block.GAME_DIAGLENGTH
+			from.getX() % RenderBlock.GAME_DIAGLENGTH,
+			from.getY() % RenderBlock.GAME_DIAGLENGTH
 		));
 	}
 
@@ -200,8 +200,18 @@ public class Coordinate implements Position {
 	 *
 	 * @param block the block you want to set.
 	 */
-	public void setBlock(Block block) {
-		Controller.getMap().setBlock(this, block);
+	public void setBlock(int block) {
+		Controller.getMap().setBlock(this, (byte) (block&255), (byte) (block>>8&255));
+	}
+	
+	/**
+	 * Set a block in the map where the coordinate is pointing to.
+	 *
+	 * @param id
+	 * @param value
+	 */
+	public void setBlock(byte id, byte value) {
+		Controller.getMap().setBlock(this, id, value);
 	}
 
 	/**
@@ -245,14 +255,35 @@ public class Coordinate implements Position {
 		return this;
 	}
 
-	@Override
-	public Block getBlock() {
+	public int getBlock() {
 		if (z < 0) {
-			return Controller.getMap().getNewGroundBlockInstance();
+			return (byte) WE.getCVars().getValueI("groundBlockID");
 		} else if (z >= Chunk.getBlocksZ()) {
-			return null;
+			return 0;
 		} else {
 			return Controller.getMap().getBlock(this);
+		}
+	}
+	
+	
+	@Override
+	public byte getBlockId() {
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		} else if (z >= Chunk.getBlocksZ()) {
+			return 0;
+		} else {
+			return Controller.getMap().getBlockId(this);
+		}
+	}
+	
+	public byte getBlockValue() {
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		} else if (z >= Chunk.getBlocksZ()) {
+			return 0;
+		} else {
+			return Controller.getMap().getBlockId(this);
 		}
 	}
 
@@ -340,31 +371,31 @@ public class Coordinate implements Position {
 	public static int getNeighbourSide(float x, float y) {
 		//modulo
 		if (y < 0) {
-			y += Block.GAME_DIAGLENGTH;
+			y += RenderBlock.GAME_DIAGLENGTH;
 		}
 		if (x < 0) {
-			x += Block.GAME_DIAGLENGTH;
+			x += RenderBlock.GAME_DIAGLENGTH;
 		}
 
 		int result = 8;//standard result
-		if (x + y <= Block.GAME_DIAGLENGTH2) {
+		if (x + y <= RenderBlock.GAME_DIAGLENGTH2) {
 			result = 7;
 		}
-		if (x - y >= Block.GAME_DIAGLENGTH2) {
+		if (x - y >= RenderBlock.GAME_DIAGLENGTH2) {
 			if (result == 7) {
 				result = 0;
 			} else {
 				result = 1;
 			}
 		}
-		if (x + y >= 3 * Block.GAME_DIAGLENGTH2) {
+		if (x + y >= 3 * RenderBlock.GAME_DIAGLENGTH2) {
 			if (result == 1) {
 				result = 2;
 			} else {
 				result = 3;
 			}
 		}
-		if (-x + y >= Block.GAME_DIAGLENGTH2) {
+		if (-x + y >= RenderBlock.GAME_DIAGLENGTH2) {
 			switch (result) {
 				case 3:
 					result = 4;
@@ -439,9 +470,9 @@ public class Coordinate implements Position {
 	@Override
 	public Point toPoint() {
 		return new Point(
-			x * Block.GAME_DIAGLENGTH + (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0),
-			y * Block.GAME_DIAGLENGTH2,
-			z * Block.GAME_EDGELENGTH
+			x * RenderBlock.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0),
+			y * RenderBlock.GAME_DIAGLENGTH2,
+			z * RenderBlock.GAME_EDGELENGTH
 		);
 	}
 
@@ -482,14 +513,14 @@ public class Coordinate implements Position {
 
 	@Override
 	public int getViewSpcX() {
-		return x * Block.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * RenderBlock.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (y % 2 != 0 ? Block.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY() {
-		return -y * Block.VIEW_DEPTH2 + z * Block.VIEW_HEIGHT;
+		return -y * RenderBlock.VIEW_DEPTH2 + z * RenderBlock.VIEW_HEIGHT;
 	}
 
 	@Override
@@ -536,10 +567,10 @@ public class Coordinate implements Position {
 	 * destroys the block at the current position, replacing by air.
 	 */
 	public void destroy() {
-		Block block = getBlock();
-		if (block != null && block.getHealth() > 0) {
-			block.setHealth(this, (byte) 0);
-			setBlock((Block) null);
+		int block = getBlock();
+		if ((block&255) != 0&& ((block>>16)&255) > 0) {
+			Controller.getMap().setHealth(this, (byte) 0);
+			setBlock(0);
 			//broadcast event that this block got destroyed
 			MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 		}
@@ -552,17 +583,17 @@ public class Coordinate implements Position {
 	 * @return
 	 */
 	public boolean damage(byte amount) {
-		Block block = getBlock();
-		if (block != null && amount > 0) {
-			if (block.getHealth() - amount < 0) {
-				block.setHealth(this, (byte) 0);
+		byte block = getBlockId();
+		if (block != 0 && amount > 0) {
+			if (getHealth() - amount < 0) {
+				setHealth((byte) 0);
 			} else {
-				block.setHealth(this, (byte) (block.getHealth() - amount));
+				Controller.getMap().setHealth(this, (byte) (getHealth() - amount));
 			}
-			if (block.getHealth() <= 0 && !block.isIndestructible()) {
+			if (getHealth() <= 0 && !RenderBlock.isIndestructible(block, (byte)0)) {
 				//broadcast event that this block got destroyed
 				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
-				setBlock((Block) null);
+				setBlock(0);
 			}
 			return true;
 		}
@@ -751,12 +782,12 @@ public class Coordinate implements Position {
 
 	boolean contains(Point point) {
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) point.x, Block.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) point.y, Block.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) point.x, RenderBlock.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) point.y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
-			point.x % Block.GAME_DIAGLENGTH,
-			point.y % Block.GAME_DIAGLENGTH
+			point.x % RenderBlock.GAME_DIAGLENGTH,
+			point.y % RenderBlock.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -788,8 +819,21 @@ public class Coordinate implements Position {
 				break;
 		}
 
-		return !(Math.floorDiv((int) point.z, Block.GAME_EDGELENGTH) != z
+		return !(Math.floorDiv((int) point.z, RenderBlock.GAME_EDGELENGTH) != z
 			|| xCoord != x
 			|| yCoord != y);
 	}
+
+	public boolean isObstacle(){
+		return false;
+	}
+
+	private void setHealth(byte health) {
+		Controller.getMap().setHealth(this, health);
+	}
+
+	private byte getHealth() {
+		return Controller.getMap().getHealth(this);
+	}
+	
 }

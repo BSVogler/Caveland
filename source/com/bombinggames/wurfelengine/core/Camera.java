@@ -43,7 +43,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
@@ -259,7 +258,7 @@ public class Camera{
 		}
 		position.x = focusEntity.getPosition().getViewSpcX();
 		position.y = (int) (focusEntity.getPosition().getViewSpcY()
-						+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2);//have middle of object in center
+						+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2);//have middle of object in center
 		initFocus();
 	}
 
@@ -275,7 +274,7 @@ public class Camera{
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(),
 					(int) (focusEntity.getPosition().getViewSpcY()
-						+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2)//have middle of object in center
+						+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2)//have middle of object in center
 				);
 
 				//only follow if outside leap radius
@@ -384,8 +383,8 @@ public class Camera{
 //		if (
 //		position.y- getHeightInProjSpc()/2
 //		<
-//		map.getBlocksZ()*Block.VIEW_HEIGHT
-//		-Block.VIEW_DEPTH2*(
+//		map.getBlocksZ()*RenderBlock.VIEW_HEIGHT
+//		-RenderBlock.VIEW_DEPTH2*(
 //		chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
 //		)
 //		//&& centerChunkX-1==//calculated xIndex -1
@@ -573,8 +572,8 @@ public class Camera{
 				)
 				&& ent.getPosition().getZ() < zRenderingLimit
 			) {
-				RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, Block.GAME_EDGELENGTH));//add in cell above
-				ent.getPosition().add(0, 0, -Block.GAME_EDGELENGTH);//reverse change in line above
+				RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, RenderBlock.GAME_EDGELENGTH));//add in cell above
+				ent.getPosition().add(0, 0, -RenderBlock.GAME_EDGELENGTH);//reverse change in line above
 				if (block != null) {
 					block.addCoveredEnts(ent);
 					modifiedCells.add(block);
@@ -656,17 +655,17 @@ public class Camera{
 		return
 				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY - Block.VIEW_HEIGHT * 2)//bottom of sprite
+				(proY - RenderBlock.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY + Block.VIEW_HEIGHT2 + Block.VIEW_DEPTH)//top of sprite
+				(proY + RenderBlock.VIEW_HEIGHT2 + RenderBlock.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX + Block.VIEW_WIDTH2)//right side of sprite
+				(proX + RenderBlock.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX - Block.VIEW_WIDTH2)//left side of sprite
+				(proX - RenderBlock.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInProjSpc() / 2
 		;
@@ -734,7 +733,7 @@ public class Camera{
 	 * @return left x position in view space
 	 */
 	public float getVisibleLeftBorderVS() {
-		return (position.x - getWidthInProjSpc() / 2)- Block.VIEW_WIDTH2;
+		return (position.x - getWidthInProjSpc() / 2)- RenderBlock.VIEW_WIDTH2;
 	}
 
 	/**
@@ -743,7 +742,7 @@ public class Camera{
 	 * @return the left (X) border coordinate
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / Block.VIEW_WIDTH - 1);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / RenderBlock.VIEW_WIDTH - 1);
 	}
 
 	/**
@@ -753,7 +752,7 @@ public class Camera{
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc() / 2) / Block.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc() / 2) / RenderBlock.VIEW_WIDTH + 1);
 	}
 	
 	/**
@@ -763,7 +762,7 @@ public class Camera{
 	 * @return measured in grid-coordinates
 	 */
 	public float getVisibleRightBorderVS() {
-		return position.x + getWidthInProjSpc() / 2 + Block.VIEW_WIDTH2;
+		return position.x + getWidthInProjSpc() / 2 + RenderBlock.VIEW_WIDTH2;
 	}
 
 	/**
@@ -774,7 +773,7 @@ public class Camera{
 	public int getVisibleBackBorder() {
 		//TODO verify
 		return (int) ((position.y + getHeightInProjSpc() / 2)//camera top border
-			/ -Block.VIEW_DEPTH2//back to game space
+			/ -RenderBlock.VIEW_DEPTH2//back to game space
 		);
 	}
 
@@ -787,7 +786,7 @@ public class Camera{
 	public int getVisibleFrontBorderLow() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -Block.VIEW_DEPTH2 //back to game coordinates
+			/ -RenderBlock.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
 
@@ -799,8 +798,8 @@ public class Camera{
 	 */
 	public int getVisibleFrontBorderHigh() {
 		return (int) ((position.y - getHeightInProjSpc() / 2) //bottom camera border
-			/ -Block.VIEW_DEPTH2 //back to game coordinates
-			+ Chunk.getBlocksY()*3 * Block.VIEW_HEIGHT / Block.VIEW_DEPTH2 //todo verify, try to add z component
+			/ -RenderBlock.VIEW_DEPTH2 //back to game coordinates
+			+ Chunk.getBlocksY()*3 * RenderBlock.VIEW_HEIGHT / RenderBlock.VIEW_DEPTH2 //todo verify, try to add z component
 			);
 	}
 
@@ -1029,7 +1028,7 @@ public class Camera{
 			position.set(
 				focusEntity.getPosition().getViewSpcX(),
 				(int) (focusEntity.getPosition().getViewSpcY()
-					+ focusEntity.getDimensionZ() * Block.ZAXISSHORTENING/2)//have middle of object in center
+					+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2)//have middle of object in center
 			);
 		}
 	}

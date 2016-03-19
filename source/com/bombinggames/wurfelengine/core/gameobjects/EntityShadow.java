@@ -32,7 +32,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *
@@ -64,16 +64,14 @@ public class EntityShadow extends AbstractEntity {
 			dispose();
 		} else {
 			//find height of shadow surface
-			Coordinate newHeight = character.getPosition().toCoord();//start at same height
-			Block block = newHeight.getBlock();
-			while (newHeight.getZ() > 0
-				&& (block == null || block.isTransparent())) {
-				newHeight.add(0, 0, -1);
-				block = newHeight.getBlock();
+			getPoint().set(character.getPosition());//start at character
+			while (getPoint().getZ() > 0
+				&& (RenderBlock.isTransparent(getPoint().getBlock()))
+			) {
+				getPoint().add(0, 0, -RenderBlock.GAME_EDGELENGTH);
 			}
 
-			getPosition().set(character.getPoint());
-			getPosition().setZ(newHeight.add(0, 0, 1).toPoint().getZ());
+			getPoint().setZ((getPoint().getZGrid()+1)*RenderBlock.GAME_EDGELENGTH);
 		}
 	}
 
@@ -88,7 +86,7 @@ public class EntityShadow extends AbstractEntity {
 					.5f,
 					.5f,
 					.5f,
-					1 - (character.getPosition().getZ() - getPosition().getZ()) / 2 / Block.GAME_EDGELENGTH+0.1f
+					1 - (character.getPosition().getZ() - getPosition().getZ()) / 2 / RenderBlock.GAME_EDGELENGTH+0.1f
 				)
 			);
 			super.render(view, camera);

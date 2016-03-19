@@ -33,7 +33,7 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
@@ -60,7 +60,7 @@ public class Turret extends AbstractPowerBlock {
 	 * @param block
 	 * @param coord
 	 */
-	public Turret(Block block, Coordinate coord) {
+	public Turret(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 	
@@ -109,7 +109,7 @@ public class Turret extends AbstractPowerBlock {
 		}
 		
 		gun.getFixedPos().setZ(
-			getPosition().toPoint().getZ()+Block.GAME_EDGELENGTH*0.8f+online*Block.GAME_EDGELENGTH*0.6f
+			getPosition().toPoint().getZ()+RenderBlock.GAME_EDGELENGTH*0.8f+online*RenderBlock.GAME_EDGELENGTH*0.6f
 		);
 		
 		
@@ -118,7 +118,7 @@ public class Turret extends AbstractPowerBlock {
 			
 			//locate target
 			target = null;
-			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(Block.GAME_DIAGLENGTH * 4, Robot.class);
+			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(RenderBlock.GAME_DIAGLENGTH * 4, Robot.class);
 			if (!nearby.isEmpty()) {
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {
@@ -130,7 +130,7 @@ public class Turret extends AbstractPowerBlock {
 							vecToTarget,
 							MAXDISTANCE,
 							null,
-							(Block t) -> !t.isTransparent() && t.getId() != CavelandBlocks.CLBlocks.TURRET.getId()
+							(Byte t) -> !RenderBlock.isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
 						);
 
 						if (
@@ -144,10 +144,10 @@ public class Turret extends AbstractPowerBlock {
 							if (
 								target != null
 								&& target.hasPosition()
-								&& getPosition().distanceTo(target) <= MAXDISTANCE * Block.GAME_EDGELENGTH
+								&& getPosition().distanceTo(target) <= MAXDISTANCE * RenderBlock.GAME_EDGELENGTH
 							) {
 								//aim a bit higher
-								vecToTarget = target.getPosition().cpy().add(0, 0, Block.GAME_EDGELENGTH2).sub(gun.getFixedPos()).nor();
+								vecToTarget = target.getPosition().cpy().add(0, 0, RenderBlock.GAME_EDGELENGTH2).sub(gun.getFixedPos()).nor();
 								gun.setAimDir(vecToTarget);
 								gun.shoot();
 							}

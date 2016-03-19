@@ -45,9 +45,7 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.map.Generators.AirGenerator;
-import com.bombinggames.wurfelengine.core.map.Iterators.MemoryMapIterator;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.io.File;
 import java.io.IOException;
@@ -297,16 +295,8 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-	public Block getBlock(final int x, final int y, final int z) {
-		if (z < 0) {
-			return getNewGroundBlockInstance();
-		}
-		Chunk chunk = getChunkWithCoords(x, y);
-		if (chunk == null) {
-			return null;
-		} else {
-			return chunk.getBlock(x, y, z);//find chunk in x coord
-		}
+	public byte getBlockId(final int x, final int y, final int z) {
+		return (byte) (getBlock(x, y, z) & 255);
 	}
 
 	/**
@@ -315,16 +305,41 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param coord
 	 * @return
 	 */
-	public Block getBlock(final Coordinate coord) {
+	public byte getBlockId(final Coordinate coord) {
+		return (byte) (getBlock(coord) & 255);
+	}
+
+	/**
+	 * id, value and health
+	 * @param coord
+	 * @return 
+	 */
+	public int getBlock(Coordinate coord) {
 		if (coord.getZ() < 0) {
-			return getNewGroundBlockInstance();
+			return (byte) WE.getCVars().getValueI("groundBlockID");
 		}
 		Chunk chunk = getChunkWithCoords(coord);
 		if (chunk == null) {
-			return null;
+			return 0;
 		} else {
 			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 		}
+	}
+
+	public int getBlock(int x, int y, int z) {
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		}
+		Chunk chunk = getChunkWithCoords(x, y);
+		if (chunk == null) {
+			return 0;
+		} else {
+			return chunk.getBlock(x, y, z);//find chunk in x coord
+		}
+	}
+
+	public byte getHealth(Coordinate coord) {
+		return (byte) ((getBlock(coord) >> 16) & 255);
 	}
 
 	/**
@@ -344,14 +359,29 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * block if it has a logic.
 	 *
 	 * @param coord
-	 * @param block
+	 * @param id
 	 * @see
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
-	public void setBlock(Coordinate coord, Block block) {
+	public void setBlock(Coordinate coord, byte id) {
 		Chunk chunk = getChunkWithCoords(coord);
 		if (chunk != null) {
-			chunk.setBlock(coord, block);
+			chunk.setBlock(coord, id);
+		}
+	}
+	
+	public void setBlock(Coordinate coord, int block) {
+		Chunk chunk = getChunkWithCoords(coord);
+		if (chunk != null) {
+			chunk.setBlock(coord, (byte)(block&255), (byte)((block>>8)&255));
+		}
+	}
+
+	
+	public void setBlock(Coordinate coord, byte id, byte value) {
+		Chunk chunk = getChunkWithCoords(coord);
+		if (chunk != null) {
+			chunk.setBlock(coord, id, value);
 		}
 	}
 
@@ -362,6 +392,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void setValue(Coordinate coord, byte value) {
 		getChunkWithCoords(coord).setValue(coord, value);
+	}
+	
+	void setHealth(Coordinate coord, byte health) {
+		getChunkWithCoords(coord).setHealth(coord, health);
 	}
 
 	/**
@@ -525,26 +559,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * prints the map to console
-	 */
-	public void print() {
-		MemoryMapIterator iter = getIterator(0, Chunk.getBlocksZ() - 1);
-		while (iter.hasNext()) {
-			//if (!iter.hasNextY() && !iter.hasNextX())
-			//	System.out.print("\n\n");
-			//if (!iter.hasNsextX())
-			//	System.out.print("\n");
-
-			Block block = iter.next();
-			if (block == null) {
-				System.out.print("  ");
-			} else {
-				System.out.print(block.getId() + " ");
-			}
-		}
-	}
-
-	/**
 	 * disposes every chunk
 	 *
 	 * @param save
@@ -686,28 +700,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Creates a new instance of the groundblock.
-	 *
-	 * @return
-	 */
-	public Block getNewGroundBlockInstance() {
-		return Block.getInstance((byte) WE.getCVars().getValueI("groundBlockID")); //the representative of the bottom layer (ground) block
-	}
-
-	/**
-	 * Get an iteration which can loop throug the map
-	 *
-	 * @param startLimit the starting level
-	 * @param topLimitZ the top limit of the iterations
-	 * @return
-	 */
-	public MemoryMapIterator getIterator(int startLimit, int topLimitZ) {
-		MemoryMapIterator mapIterator = new MemoryMapIterator(this, startLimit);
-		mapIterator.setTopLimitZ(topLimitZ);
-		return mapIterator;
-	}
-
-	/**
 	 * set the modified flag to true. usually not manually called.
 	 */
 	public void setModified() {
@@ -721,7 +713,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(Chunk.getBlocksZ() * Block.GAME_EDGELENGTH / 2);
+		return getCenter(Chunk.getBlocksZ() * RenderBlock.GAME_EDGELENGTH / 2);
 	}
 
 	/**

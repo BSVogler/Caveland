@@ -40,7 +40,6 @@ import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
@@ -69,7 +68,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	 * @param block
 	 * @param coord
 	 */
-	public OvenLogic(Block block, Coordinate coord) {
+	public OvenLogic(byte block, Coordinate coord) {
 		super(block, coord);
 	}
 
@@ -149,7 +148,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 				emitter.setHidden(true);
 				emitter.setParticleStartMovement(Vector3.Z.cpy());
 				emitter.setActive(false);
-			//	emitter.set
+				//	emitter.set
 				emitter.setParticleSpread(new Vector3(1.2f, 1.2f, -0.1f));
 			}
 			emitter.setActive(true);
@@ -205,7 +204,9 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		if (fire != null) {
 			fire.dispose();
 		}
-		container.dispose();
+		if (container != null) {
+			container.dispose();
+		}
 	}
 
 	@Override

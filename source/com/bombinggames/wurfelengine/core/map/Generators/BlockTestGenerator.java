@@ -31,9 +31,8 @@
 
 package com.bombinggames.wurfelengine.core.map.Generators;
 
-import com.bombinggames.wurfelengine.core.gameobjects.Block;
-import static com.bombinggames.wurfelengine.core.gameobjects.Block.OBJECTTYPESNUM;
 import com.bombinggames.wurfelengine.core.map.Generator;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.OBJECTTYPESNUM;
 
 /**
  *A generator which uses every block.
@@ -42,11 +41,11 @@ import com.bombinggames.wurfelengine.core.map.Generator;
 public class BlockTestGenerator implements Generator{
 
     @Override
-    public Block generate(int x, int y, int z) {
+    public int generate(int x, int y, int z) {
         if (z==0)
-			return Block.getInstance((byte) (Math.abs(y) % OBJECTTYPESNUM));
+			return (byte) (Math.abs(y) % OBJECTTYPESNUM);
         else
-            return null;
+            return 0;
     }
 
 	@Override
